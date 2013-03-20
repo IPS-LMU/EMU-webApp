@@ -4,9 +4,11 @@
          <meta charset="utf-8">
          <title>jspraatlabler</title>
          <link rel="stylesheet" href="css/bootstrap.min.css">
+         <link rel="stylesheet" href="css/my.css">
  </head>
  <body>
          
+
  <div class="container">
  <!-- Navbar
     ================================================== -->
@@ -45,6 +47,10 @@
          
 
 <div class="hero-unit">
+          <form class="navbar-form pull-left">
+            <input type="text" class="span2">
+          <button type="submit" class="btn">Submit</button>
+          </form>
           <div class="timeline">
               <div class="cursor" id="wave-cursor"></div>
               <canvas id="wave" width="1024" height="128"></canvas>
@@ -53,25 +59,35 @@
             <canvas id="spectrogram" width="1024" height="128"></canvas>
           </div>
           
+          <div class="tier">
+            <canvas id="tier1" width="1024" height="64"></canvas>
+          </div>
+          
+          <div class="tier">
+            <canvas id="tier2" width="1024" height="64"></canvas>
+          </div>
+          
+
           <div class="scrollbar">
-            <div class="cursor" id="wave-cursor"></div>
-          <canvas id="scrollbar" width="1024" height="12"></canvas>
-    </div>
+            <canvas id="scrollbar" width="1024" height="12"></canvas>
+          </div>
+          
 </div>
  <!-- .row -->
+ <div class="btn-group">
+  <button class="btn">all</button>
+  <button class="btn">in</button>
+  <button class="btn">out</button>
+  <button class="btn">sel</button>
+  <button class="btn">bak</button>
+</div>
+
  </div><!-- .container -->
+ 
  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
    <!-- // <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script> -->
    <!-- // <script src="js/bootstrap.min.js"></script> -->
    
-
-    <div class="spectrogram">
-        <canvas id="spectrogram" width="1024" height="128"></canvas>
-    </div>
-
-
-
-
    <script src="js/wavesurfer.js"></script>
    <script src="js/webaudio.js"></script>
    <script src="js/drawer.js"></script>

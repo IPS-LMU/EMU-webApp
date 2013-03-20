@@ -24,9 +24,10 @@ var WaveSurfer = {
             my.onAudioProcess();
         });
 
-        //this.bindClick(params.canvas, function (percents) {
-        //    my.playAt(percents);
-        //});
+        this.bindClick(params.canvas, function (percents) {
+            //my.playAt(percents);
+            console.log(percents);
+        });
 
         this.bindScrollClick(params.scrollCanvas, function (x) {
             my.scrollBarMoved(x);
@@ -106,7 +107,9 @@ var WaveSurfer = {
     },
 
     setView: function(sSample, eSample){
-        //console.log(sSample);
+
+        var oldStart = this.viewPort.sS; 
+        var oldEnd = this.viewPort.eS;
         if(sSample){
             this.viewPort.sS = sSample;
         }
@@ -114,10 +117,31 @@ var WaveSurfer = {
             this.viewPort.eS = eSample;
         }
 
+        // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
+        if (oldStart > this.viewPort.sS && oldEnd > this.viewPort.eS) {
+            //moved left
+            if(this.viewPort.sS < 1) {
+                this.viewPort.sS = 1;
+                this.viewPort.eS = oldEnd + Math.abs(this.viewPort.sS)-1;
+            }
+        }
+        if (oldStart < this.viewPort.sS && oldEnd < this.viewPort.eS) {
+            //moved right
+            if(this.viewPort.eS > this.backend.currentBuffer.length) {
+                this.viewPort.sS = oldStart;
+                this.viewPort.eS = this.backend.currentBuffer.length;
+            }
+        }
+
         // check if viewPort in range
-        if(this.viewPort.sS < 1) this.viewPort.sS = 1;
-        if(this.viewPort.eS > this.backend.currentBuffer.length)
-             this.viewPort.eS = this.backend.currentBuffer.length;
+        if(this.viewPort.sS < 1) {
+            this.viewPort.sS = 1;
+        }
+        if(this.viewPort.eS > this.backend.currentBuffer.length){
+            this.viewPort.eS = this.backend.currentBuffer.length;
+        }
+
+
 
         this.drawBuffer();
 
@@ -175,14 +199,14 @@ var WaveSurfer = {
     /**
      * Click to seek.
      */
-    // bindClick: function (element, callback) {
-    //     var my = this;
-    //     element.addEventListener('click', function (e) {
-    //         var relX = e.offsetX;
-    //         if (null == relX) { relX = e.layerX; }
-    //         callback(relX / this.clientWidth);
-    //     }, false);
-    // }
+    bindClick: function (element, callback) {
+        var my = this;
+        element.addEventListener('click', function (e) {
+            var relX = e.offsetX;
+            if (null == relX) { relX = e.layerX; }
+            callback(relX / this.clientWidth);
+        }, false);
+    },
 
     scrollBarMoved: function(relX){
         var delta = this.viewPort.eS-this.viewPort.sS;
