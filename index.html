@@ -1,6 +1,7 @@
 <!DOCTYPE html>
  <html>
  <head>
+         <meta name="apple-mobile-web-app-capable" content="yes">
          <meta charset="utf-8">
          <title>jspraatlabler</title>
          <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -38,6 +39,24 @@
               <li class="">
                 <a href="./index.html">Select</a>
               </li>
+              <li class="">
+                <a href="./index.html">Interval</a>
+              </li>
+              <li class="">
+                <a href="./index.html">Boundry</a>
+              </li>
+              <li class="">
+                <a href="./index.html">Tier</a>
+              </li>
+              <li class="">
+                <a href="./index.html">Pitch</a>
+              </li>
+              <li class="">
+                <a href="./index.html">Formant</a>
+              </li>
+              <li class="">
+                <a href="./index.html">Pulses</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -47,14 +66,12 @@
          
 
 <div class="hero-unit">
-          <form class="navbar-form pull-left">
-            <input type="text" class="span2">
-          <button type="submit" class="btn">Submit</button>
-          </form>
+          <input type="text" class="span2">
+
           <div class="timeline">
-              <div class="cursor" id="wave-cursor"></div>
               <canvas id="wave" width="1024" height="128"></canvas>
           </div>
+
           <div class="spectrogram">
             <canvas id="spectrogram" width="1024" height="128"></canvas>
           </div>
@@ -67,7 +84,6 @@
             <canvas id="tier2" width="1024" height="64"></canvas>
           </div>
           
-
           <div class="scrollbar">
             <canvas id="scrollbar" width="1024" height="12"></canvas>
           </div>
@@ -75,12 +91,16 @@
 </div>
  <!-- .row -->
  <div class="btn-group">
-  <button class="btn">all</button>
-  <button class="btn">in</button>
-  <button class="btn">out</button>
-  <button class="btn">sel</button>
-  <button class="btn">bak</button>
+  <button class="btn" onclick="wavesurfer.setView(-Infinity, Infinity);">all</button>
+  <button class="btn" onclick="wavesurfer.zoomViewPort(1);">in</button>
+  <button class="btn" onclick="wavesurfer.zoomViewPort(0);">out</button>
+  <button class="btn" onclick="wavesurfer.zoomSel();">sel</button>
+  <button class="btn" disabled>bak</button>
 </div>
+ 
+<a class="btn btn-primary btn-large" onclick="wavesurfer.playPause();">
+      Play/Pause
+</a>
 
  </div><!-- .container -->
  

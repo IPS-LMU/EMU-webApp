@@ -1,6 +1,22 @@
 var wavesurfer = (function () {
     'use strict';
 
+    var tier1canvas = document.querySelector('#tier1'); //SIC create dynamically
+    var tier2canvas = document.querySelector('#tier2'); //SIC create dynamically
+
+    var txtGridRep = {"tiersDetails": [
+        {"TierName": "TierOne", "type": "seg", "events": [
+            {"label": "@", "start": 64000, "end": 100000},
+            {"label": "b", "start": 70000, "end": 300000}
+        ]},
+        {"TierName": "TierTwo", "type": "point","events": [
+            {"label": "x", "time": 64000},
+            {"label": "y", "time": 70000}
+        ]}],
+        "canvases": [tier1canvas, tier2canvas]
+    };
+
+
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
@@ -14,7 +30,8 @@ var wavesurfer = (function () {
         waveColor: 'grey',
         progressColor: 'black',
         loadingColor: 'purple',
-        cursorColor: 'red'
+        cursorColor: 'red',
+        tierInfos: txtGridRep
     });
 
     wavesurfer.load('data/msajc003.wav');

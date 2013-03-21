@@ -39,6 +39,17 @@ WaveSurfer.Drawer = {
         this.scc = this.specCanvas.getContext('2d');
         this.scrollcc =  this.scrollCanvas.getContext('2d')
 
+        this.tierInfos= params.tierInfos;
+
+        this.tierInfos.contexts = [];
+
+        for (var i =0; i<=this.tierInfos.canvases.length - 1 ; i++) {
+            this.toRetinaRatio(this.tierInfos.canvases[i]);
+            this.tierInfos.contexts.push(this.tierInfos.canvases[i]);
+        }
+
+        //console.log(this.tierInfos);
+
         this.toRetinaRatio(this.cc);
         this.toRetinaRatio(this.scc);
         this.toRetinaRatio(this.scrollcc);
@@ -154,6 +165,31 @@ WaveSurfer.Drawer = {
             this.cc.strokeText(vP.sS, 5, 5+8);
             this.cc.strokeText(vP.eS, this.width-metrics.width-5, 5+8);
         }
+        //draw vPselected
+        if (vP.selectS != 0 && vP.selectE != 0){
+            var all = vP.eS-vP.sS;
+            var fracS = vP.selectS-vP.sS;
+            var procS = fracS/all;
+            var posS = this.width*procS;
+
+            var fracE = vP.selectE-vP.sS;
+            var procE = fracE/all;
+            var posE = this.width*procE;
+
+            this.cc.fillStyle = "rgba(0, 0, 255, 0.2)";
+            this.cc.fillRect(posS, 0, posE-posS, this.height);
+
+            this.cc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            this.cc.beginPath();
+            this.cc.moveTo(posS,0);
+            this.cc.lineTo(posS,this.height);
+            this.cc.moveTo(posE,0);
+            this.cc.lineTo(posE,this.height);
+            this.cc.closePath();
+            this.cc.stroke();
+        }
+        //
+        this.drawTiers(vP);
     },
 
     /**
@@ -311,7 +347,7 @@ WaveSurfer.Drawer = {
     },
 
     toRetinaRatio: function (canvas) {
-                var backingStoreRatio, ratio;
+        var backingStoreRatio, ratio;
         devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = this.cc.webkitBackingStorePixelRatio || this.cc.mozBackingStorePixelRatio || this.cc.msBackingStorePixelRatio || this.cc.oBackingStorePixelRatio || this.cc.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
 
         if (devicePixelRatio !== backingStoreRatio) {
@@ -330,8 +366,40 @@ WaveSurfer.Drawer = {
             // the fact that we've manually scaled
             // our canvas element
             this.cc.scale(ratio, ratio);
-        
         }
+    },
+
+    drawTiers: function(vP) {
+        //console.log(this.tierInfos.contexts.length);
+
+        var curcc;
+        var curCanv;
+        for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
+            console.log("here");
+            curCanv = this.tierInfos.canvases[i];
+            curcc = this.tierInfos.contexts[i].getContext('2d');
+
+
+            var all = vP.eS-vP.sS;
+            var fracS = vP.selectS-vP.sS;
+            var procS = fracS/all;
+            var posS = this.width*procS;
+
+            var fracE = vP.selectE-vP.sS;
+            var procE = fracE/all;
+            var posE = this.width*procE;
+
+            curcc.clearRect(0, 0, curCanv.width, curCanv.height);
+            curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            curcc.beginPath();
+            curcc.moveTo(posS,0);
+            curcc.lineTo(posS,this.height);
+            curcc.moveTo(posE,0);
+            curcc.lineTo(posE,this.height);
+            curcc.closePath();
+            curcc.stroke();
+        };
+
     }
 
 };

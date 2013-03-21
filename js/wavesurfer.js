@@ -26,12 +26,18 @@ var WaveSurfer = {
 
         this.bindClick(params.canvas, function (percents) {
             //my.playAt(percents);
-            console.log(percents);
+            //console.log(percents);
+
+            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents-0.1);
+            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents+0.1);
+            
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+
         });
 
         this.bindScrollClick(params.scrollCanvas, function (x) {
-            my.scrollBarMoved(x);
-            //console.log(x);
+            //my.scrollBarMoved(x);
+            console.log(x);
         });
 
     },
@@ -176,6 +182,11 @@ var WaveSurfer = {
 
 
     },
+
+    zoomSel: function () {
+        this.setView(this.viewPort.selectS, this.viewPort.selectE);
+    },
+
     /**
      * Loads an audio file via drag'n'drop.
      */
