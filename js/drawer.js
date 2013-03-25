@@ -398,6 +398,13 @@ WaveSurfer.Drawer = {
             curcc.lineTo(posE,this.height);
             curcc.closePath();
             curcc.stroke();
+
+            // draw name
+            curcc.strokeStyle = this.params.waveColor;
+            curcc.font="8px Arial";
+            curcc.strokeText(this.tierInfos.tiersDetails[i].TierName, 5, 5+8);
+
+
         };
 
     }
