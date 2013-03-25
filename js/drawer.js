@@ -44,15 +44,16 @@ WaveSurfer.Drawer = {
         this.tierInfos.contexts = [];
 
         for (var i =0; i<=this.tierInfos.canvases.length - 1 ; i++) {
-            this.toRetinaRatio(this.tierInfos.canvases[i]);
-            this.tierInfos.contexts.push(this.tierInfos.canvases[i]);
+            this.tierInfos.contexts.push(this.tierInfos.canvases[i].getContext('2d'));
+            this.toRetinaRatio(this.tierInfos.canvases[i], this.tierInfos.contexts[i]);
+            
         }
 
         //console.log(this.tierInfos);
 
-        this.toRetinaRatio(this.cc);
-        this.toRetinaRatio(this.scc);
-        this.toRetinaRatio(this.scrollcc);
+        this.toRetinaRatio(this.canvas, this.cc);
+        this.toRetinaRatio(this.specCanvas, this.scc);
+        this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
 
         if (params.image) {
             this.loadImage(params.image, this.drawImage.bind(this));
@@ -138,6 +139,11 @@ WaveSurfer.Drawer = {
     },
     
     drawBuffer: function (buffer, vP) {
+        if(vP.eS-vP.sS > buffer.length){
+            console.log("weeeeeeeeasdf");
+
+        }
+
         this.getPeaks(buffer, vP);
         this.progress(0, vP, buffer.length);
         this.drawTimeLine(vP);
@@ -346,26 +352,26 @@ WaveSurfer.Drawer = {
 
     },
 
-    toRetinaRatio: function (canvas) {
+    toRetinaRatio: function (canvas, context) {
         var backingStoreRatio, ratio;
-        devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = this.cc.webkitBackingStorePixelRatio || this.cc.mozBackingStorePixelRatio || this.cc.msBackingStorePixelRatio || this.cc.oBackingStorePixelRatio || this.cc.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
+        devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
 
         if (devicePixelRatio !== backingStoreRatio) {
 
             //waveCanvas
-            var oldWidth = this.width;
-            var oldHeight = this.height;
+            var oldWidth = canvas.clientWidth;
+            var oldHeight = canvas.clientHeight;
 
-            this.canvas.width = oldWidth * ratio;
-            this.canvas.height = oldHeight * ratio;
+            canvas.width = oldWidth * ratio;
+            canvas.height = oldHeight * ratio;
 
-            this.canvas.style.width = oldWidth + 'px';
-            this.canvas.style.height = oldHeight + 'px';
+            canvas.style.width = oldWidth + 'px';
+            canvas.style.height = oldHeight + 'px';
 
             // now scale the context to counter
             // the fact that we've manually scaled
             // our canvas element
-            this.cc.scale(ratio, ratio);
+            context.scale(ratio, ratio);
         }
     },
 
@@ -375,9 +381,9 @@ WaveSurfer.Drawer = {
         var curcc;
         var curCanv;
         for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
-            console.log("here");
+            //console.log("here");
             curCanv = this.tierInfos.canvases[i];
-            curcc = this.tierInfos.contexts[i].getContext('2d');
+            curcc = this.tierInfos.contexts[i];
 
 
             var all = vP.eS-vP.sS;
