@@ -37,7 +37,7 @@ WaveSurfer.Drawer = {
 
         this.cc = this.canvas.getContext('2d');
         this.scc = this.specCanvas.getContext('2d');
-        this.scrollcc =  this.scrollCanvas.getContext('2d')
+        this.scrollcc =  this.scrollCanvas.getContext('2d');
 
         this.tierInfos= params.tierInfos;
 
@@ -46,7 +46,6 @@ WaveSurfer.Drawer = {
         for (var i =0; i<=this.tierInfos.canvases.length - 1 ; i++) {
             this.tierInfos.contexts.push(this.tierInfos.canvases[i].getContext('2d'));
             this.toRetinaRatio(this.tierInfos.canvases[i], this.tierInfos.contexts[i]);
-            
         }
 
         //console.log(this.tierInfos);
@@ -66,21 +65,27 @@ WaveSurfer.Drawer = {
 
     getPeaks: function (buffer, vP) {
         //console.log(vP);
-        // PCM Samples per new pixel
+
         //var k = buffer.getChannelData(0).length / this.width;
         //console.log(buffer.getChannelData(0).length);
 
-        var k = (vP.eS-vP.sS)/ this.width;
-        
-        if(k<=1){
-            console.log("should start drawing lines!!!");
-        }
+        var k = (vP.eS-vP.sS)/ this.width; // PCM Samples per new pixel
 
         this.peaks = [];
+        this.minPeak = Infinity;
         this.maxPeak = -Infinity;
 
         var chan = buffer.getChannelData(c);
         var relData = chan.subarray(vP.sS, vP.eS);
+
+        if(k<=1){
+            console.log("should start drawing lines!!!");
+
+            this.minPeak = Math.min.apply(Math, relData);
+            this.maxPeak = Math.max.apply(Math, relData);
+            this.peaks = Array.prototype.slice.call(relData);
+        }else{
+
 
         for (var i = 0; i < this.width; i++) {
             var sum = 0;
@@ -96,7 +101,6 @@ WaveSurfer.Drawer = {
                         peak = vals[p];
                     }
                     av += vals[p];
-                    
                 }
                 //sum += peak;
                 sum += av/vals.length;
@@ -107,21 +111,21 @@ WaveSurfer.Drawer = {
                 this.maxPeak = sum;
             }
         }
+    }//else
     },
 
     progress: function (percents, vP, bufferLength) {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
-        this.cursorPos = ~~(this.width*(sInB-vP.sS)/(vP.eS-vP.sS)); 
+        this.cursorPos = ~~(this.width*(sInB-vP.sS)/(vP.eS-vP.sS));
 
-        this.redraw();
+        this.redraw(vP);
         this.drawTimeLine(vP);
     },
 
     drawSpec: function(fftData){
         //console.log(percents);
-        
         this.scc.fillStyle = this.params.progressColor;
         this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
 
@@ -131,18 +135,15 @@ WaveSurfer.Drawer = {
             //curVal = this.specHeight-fftData[i]/max*this.specHeight;
             curVal = Math.floor(255*fftData[i]/max);
             this.scc.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
-            
             this.scc.fillRect(this.cursorPos, i, 10, 1);
-
-        };
-    
-    },
-    
-    drawBuffer: function (buffer, vP) {
-        if(vP.eS-vP.sS > buffer.length){
-            console.log("weeeeeeeeasdf");
-
         }
+    },
+
+    drawBuffer: function (buffer, vP) {
+        // if(vP.eS-vP.sS > buffer.length){
+        //     console.log("weeeeeeeeasdf");
+
+        // }
 
         this.getPeaks(buffer, vP);
         this.progress(0, vP, buffer.length);
@@ -201,20 +202,27 @@ WaveSurfer.Drawer = {
     /**
      * Redraws the entire canvas on each audio frame.
      */
-    redraw: function () {
+    redraw: function (vP) {
         var my = this;
         this.clear();
 
-        // Draw WebAudio buffer peaks.
-        if (this.peaks) {
+        var k = (vP.eS-vP.sS)/ this.width; // PCM Samples per new pixel
+        // Draw WebAudio buffer peaks using draw frame
+        if (this.peaks && k >= 1) {
             this.peaks.forEach(function (peak, index) {
-                if (index!=0){
+                if (index!==0){
                     my.drawFrame(index, peak, my.maxPeak, my.peaks[index-1]);
                 }
             });
         // Or draw an image.
-        } else if (this.image) {
-            this.drawImage();
+        } else if (k < 1) {
+            this.cc.beginPath();
+            this.cc.moveTo(0,(this.peaks[0]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);
+            for (var i = 1; i < this.peaks.length; i++) {
+                this.cc.lineTo(i/k,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);
+            }
+            this.cc.lineTo(this.width,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);// SIC SIC SIC tail
+            this.cc.stroke();
         }
 
         this.drawCursor();
@@ -226,9 +234,8 @@ WaveSurfer.Drawer = {
 
     drawFrame: function (index, value, max, prevPeak) {
         //cur
-        var w = 1;        
+        var w = 1;
         var h = Math.round(value * (this.height / max)); //rel to max
-
         var x = index * w;
         var y = Math.round((this.height - h)/2);
 
@@ -247,14 +254,10 @@ WaveSurfer.Drawer = {
             this.cc.strokeStyle = this.params.waveColor;
         }
 
-        //this.cc.fillRect(x, y, w, h);
-        //this.cc.fillRect(x, y, 1, 1);
-        //this.cc.fillRect(x, y+h, 1, 1);
-        
         this.cc.beginPath();
         this.cc.moveTo(prevX,prevY);
         this.cc.lineTo(x,y);
-        this.cc.closePath();
+        //this.cc.closePath();
         this.cc.stroke();
 
 
@@ -316,7 +319,6 @@ WaveSurfer.Drawer = {
     },
 
     drawScroll: function (relX, vP, bufferLength) {
-        
         console.log(relX);
 
         this.scrollcc.clearRect(0, 0, this.scrollWidth, this.scrollHeight);
@@ -354,7 +356,7 @@ WaveSurfer.Drawer = {
 
     toRetinaRatio: function (canvas, context) {
         var backingStoreRatio, ratio;
-        devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
+        var devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
 
         if (devicePixelRatio !== backingStoreRatio) {
 
@@ -402,7 +404,7 @@ WaveSurfer.Drawer = {
             curcc.lineTo(posS,this.height);
             curcc.moveTo(posE,0);
             curcc.lineTo(posE,this.height);
-            curcc.closePath();
+            //curcc.closePath();
             curcc.stroke();
 
             // draw name
@@ -410,8 +412,29 @@ WaveSurfer.Drawer = {
             curcc.font="8px Arial";
             curcc.strokeText(this.tierInfos.tiersDetails[i].TierName, 5, 5+8);
 
+            var cI = this.tierInfos.tiersDetails[i];
 
-        };
+
+            if (cI.type == "seg"){
+                console.log(cI.type);
+            }else if(cI.type =="point"){
+                for (var ev = 0; ev < cI.events.length; ev++) {
+                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
+                        //console.log(cI.events[ev].time);
+                        //this.scc.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
+                        var perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
+                        curcc.fillRect(this.width*perc, 0, 1, this.height);
+                        curcc.strokeText(cI.events[ev].label, this.width*perc+5, 10); 
+
+                    }
+
+                }
+                //console.log(cI.events);
+
+            }
+
+
+        }
 
     }
 

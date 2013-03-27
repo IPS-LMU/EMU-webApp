@@ -5,11 +5,11 @@ var wavesurfer = (function () {
     var tier2canvas = document.querySelector('#tier2'); //SIC create dynamically
 
     var txtGridRep = {"tiersDetails": [
-        {"TierName": "TierOne", "type": "seg", "events": [
+        {"TierName": "TierOne(Segment)", "type": "seg", "events": [
             {"label": "@", "start": 64000, "end": 100000},
             {"label": "b", "start": 70000, "end": 300000}
         ]},
-        {"TierName": "TierTwo", "type": "point","events": [
+        {"TierName": "TierTwo(Point)", "type": "point","events": [
             {"label": "x", "time": 64000},
             {"label": "y", "time": 70000}
         ]}],
@@ -46,7 +46,6 @@ var wavesurfer = (function () {
         }
         if (119 == e.keyCode){
             wavesurfer.zoomViewPort(1);
-
         }
         if (115 == e.keyCode){
             wavesurfer.zoomViewPort(0);

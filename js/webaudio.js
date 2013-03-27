@@ -33,7 +33,7 @@ WaveSurfer.WebAudio = {
         this.dataArray = new Uint8Array(this.analyser.fftSize);
 
         this.verb = this.ac.createConvolver();
-        //this.verb.connect(this.destination);
+        this.verb.connect(this.destination);
 
         //this.reqFreqResp('data/ir.wav');
 

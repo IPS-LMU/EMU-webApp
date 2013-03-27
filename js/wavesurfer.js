@@ -28,8 +28,8 @@ var WaveSurfer = {
             //my.playAt(percents);
             //console.log(percents);
 
-            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents-0.1);
-            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents+0.1);
+            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
             
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
 
@@ -114,7 +114,7 @@ var WaveSurfer = {
 
     setView: function(sSample, eSample){
 
-        var oldStart = this.viewPort.sS; 
+        var oldStart = this.viewPort.sS;
         var oldEnd = this.viewPort.eS;
         if(sSample){
             this.viewPort.sS = sSample;
@@ -146,6 +146,10 @@ var WaveSurfer = {
         if(this.viewPort.eS > this.backend.currentBuffer.length){
             this.viewPort.eS = this.backend.currentBuffer.length;
         }
+        if(this.viewPort.eS-this.viewPort.sS < 4){
+            this.viewPort.sS = oldStart;
+            this.viewPort.eS = oldEnd;
+        }
 
 
 
@@ -154,14 +158,14 @@ var WaveSurfer = {
     },
 
 
-    zoomViewPort: function(zoomIn){
+    zoomViewPort: function(zoomInBool){
         var newStartS, newEndS;
-        if(zoomIn){
-            newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4); 
+        if(zoomInBool){
+            newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
             newEndS = this.viewPort.eS - ~~((this.viewPort.eS-this.viewPort.sS)/4);
         }else{
-            newStartS = this.viewPort.sS - ~~((this.viewPort.eS-this.viewPort.sS)/4);;
-            newEndS = this.viewPort.eS + ~~((this.viewPort.eS-this.viewPort.sS)/4);;
+            newStartS = this.viewPort.sS - ~~((this.viewPort.eS-this.viewPort.sS)/4);
+            newEndS = this.viewPort.eS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
 
         }
         this.setView(newStartS, newEndS);
@@ -171,11 +175,11 @@ var WaveSurfer = {
     incrViewP: function  (inc) {
         var newStartS, newEndS;
         if(inc){
-            newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4); 
+            newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
             newEndS = this.viewPort.eS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
         }else{
-            newStartS = this.viewPort.sS - ~~((this.viewPort.eS-this.viewPort.sS)/4);;
-            newEndS = this.viewPort.eS - ~~((this.viewPort.eS-this.viewPort.sS)/4);;
+            newStartS = this.viewPort.sS - ~~((this.viewPort.eS-this.viewPort.sS)/4);
+            newEndS = this.viewPort.eS - ~~((this.viewPort.eS-this.viewPort.sS)/4);
 
         }
         this.setView(newStartS, newEndS);
