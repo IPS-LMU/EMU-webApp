@@ -36,7 +36,7 @@ var wavesurfer = (function () {
         tierInfos: txtGridRep
     });
 
-    emulabeller.load('data/msajc003.wav');
+    emulabeller.load('data/msajc010.wav');
 
     //emulabeller.bindDragNDrop();
 
@@ -47,7 +47,10 @@ var wavesurfer = (function () {
             emulabeller.playPause();
         }
         if (114 == e.keyCode) {
-            emulabeller.playAt(true);
+            emulabeller.playInMode("sel");
+        }
+        if (102 == e.keyCode) {
+            emulabeller.playInMode("all");
         }
         if (119 == e.keyCode){
             emulabeller.zoomViewPort(1);
@@ -67,7 +70,7 @@ var wavesurfer = (function () {
         if (101 == e.keyCode){
             emulabeller.zoomSel();
         }
-        console.log(e.keyCode);
+        //console.log(e.keyCode);
     });
 
     return emulabeller;

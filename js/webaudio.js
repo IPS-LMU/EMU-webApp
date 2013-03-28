@@ -59,7 +59,7 @@ EmuLabeller.WebAudio = {
     },
 
     /**
-     * Loads audiobuffer.
+     * Loads audiobuffer 
      *
      * @param {AudioBuffer} audioData Audio data.
      */

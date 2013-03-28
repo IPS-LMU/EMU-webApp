@@ -7,7 +7,7 @@ var EmuLabeller = {
         if (params.audio) {
             backend = EmuLabeller.Audio;
             //console.log("here audio");
-        } else {
+        }else {
             backend = EmuLabeller.WebAudio;
             //console.log("web audio");
         }
@@ -18,11 +18,11 @@ var EmuLabeller = {
         this.drawer.init(params);
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
-        this.viewPort.init(1, 128086);// sic get length of data on load!
+        //this.viewPort.init(1, 128086);// sic get length of data on load!
 
         this.isDraging = false;
 
-        this.boolPlaySelectedMode = false;
+        this.playMode = "vP"; // can be "vP", "sel" or "all"
 
         //no selection of canvas
         params.canvas.setAttribute('unselectable', 'on');
@@ -33,27 +33,16 @@ var EmuLabeller = {
             my.onAudioProcess();
         });
 
-        // this.bindClick(params.canvas, function (percents) {
-        //     console.log("click");
-        //     my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
-        //     my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
-        //     my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-
-        // });
 
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.isDraging = true;
             my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
-            //console.log("button down");
-
-
         });
 
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-            //console.log("button up");
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
@@ -74,10 +63,14 @@ var EmuLabeller = {
     onAudioProcess: function () {
         var percRel;
         var percPlayed = this.backend.getPlayedPercents();
-        if (this.boolPlaySelectedMode) {
+        if (this.playMode == "sel") {
             percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
-        }else{
+        }
+        if(this.playMode == "vP"){
             percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+        }
+        if(this.playMode == "all"){
+            percRel = 1.0;
         }
 
 
@@ -93,21 +86,36 @@ var EmuLabeller = {
 
     },
 
-    playAt: function (boolPlaySelection) {
+    /**
+    * play audio in certain mode
+    * playmode can be vP, sel, all
+    */
+
+    playInMode: function (playmode) {
         var percS, percE;
 
-        if(!boolPlaySelection){
-            this.boolPlaySelectedMode = false;
+        if(playmode == "vP" || playmode===null){
+            //this.boolPlaySelectedMode = false;
+            this.playMode = "vP";
             console.log("play vP");
             percS = this.viewPort.sS/this.backend.currentBuffer.length;
             percE = this.viewPort.eS/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
-        }else{
-            this.boolPlaySelectedMode = true;
+        }
+        if(playmode == "sel" || playmode===null){
+            this.playMode = "sel";
+            //this.boolPlaySelectedMode = true;
             console.log("play selected");
             percS = this.viewPort.selectS/this.backend.currentBuffer.length;
             percE = this.viewPort.selectE/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
+
+        }
+        if(playmode == "all" || playmode===null){
+            this.playMode = "all";
+            console.log("play all");
+            // this.boolPlaySelectedMode = true;
+            this.backend.play(0, this.backend.getDuration());
 
         }
 
@@ -122,7 +130,7 @@ var EmuLabeller = {
     playPause: function () {
         if (this.backend.paused) {
             //console.log("set to 0");
-            this.playAt();
+            this.playInMode("vP");
         } else {
             this.pause();
         }
@@ -133,6 +141,12 @@ var EmuLabeller = {
         if (this.backend.currentBuffer) {
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort);
         }
+    },
+
+    newlyLoadedBufferReady: function(){
+        this.viewPort.init(1, this.backend.currentBuffer.length);
+        this.drawBuffer();
+
     },
 
     /**
@@ -156,7 +170,7 @@ var EmuLabeller = {
         xhr.addEventListener('load', function (e) {
             my.backend.loadData(
                 e.target.response,
-                my.drawBuffer.bind(my)
+                my.newlyLoadedBufferReady.bind(my)
             );//webaudio.js loadData function called
         }, false);
 
@@ -243,25 +257,6 @@ var EmuLabeller = {
         this.setView(this.viewPort.selectS, this.viewPort.selectE);
     },
 
-    /**
-     * Loads an audio file via drag'n'drop.
-     */
-    // bindDragNDrop: function (dropTarget) {
-    //     var my = this;
-    //     var reader = new FileReader();
-    //     reader.addEventListener('load', function (e) {
-    //         my.backend.loadData(
-    //             e.target.result,
-    //             my.drawBuffer.bind(my)
-    //         );
-    //     }, false);
-
-    //     (dropTarget || document).addEventListener('drop', function (e) {
-    //         e.preventDefault();
-    //         var file = e.dataTransfer.files[0];
-    //         file && reader.readAsArrayBuffer(file);
-    //     }, false);
-    // },
 
     /**
      * Click to seek.
