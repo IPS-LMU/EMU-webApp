@@ -26,7 +26,7 @@ var EmuLabeller = {
 
         //no selection of canvas
         params.canvas.setAttribute('unselectable', 'on');
-        //document.getElementById('canvas').setAttribute('unselectable', 'on');
+
 
         //bindings
         this.backend.bindUpdate(function () {
