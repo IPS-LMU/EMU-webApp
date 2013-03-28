@@ -145,6 +145,7 @@ var EmuLabeller = {
 
     newlyLoadedBufferReady: function(){
         this.viewPort.init(1, this.backend.currentBuffer.length);
+        console.log(this.backend.currentBuffer.length);
         this.drawBuffer();
 
     },

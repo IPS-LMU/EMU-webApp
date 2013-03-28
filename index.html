@@ -113,12 +113,20 @@
   <button class="btn" onclick="wavesurfer.zoomViewPort(1);">in</button>
   <button class="btn" onclick="wavesurfer.zoomViewPort(0);">out</button>
   <button class="btn" onclick="wavesurfer.zoomSel();">sel</button>
-  <button class="btn" disabled>bak</button>
 </div>
  
 <a class="btn btn-primary btn-large" onclick="wavesurfer.playPause();">
-      Play/Pause
+      Play/Pause in view
 </a>
+
+<a class="btn btn-primary btn-large" onclick="wavesurfer.playInMode('sel');">
+      Play selected
+</a>
+
+<a class="btn btn-primary btn-large" onclick="wavesurfer.playInMode('all');">
+      Play entire file
+</a>
+
 
  </div><!-- .container -->
  

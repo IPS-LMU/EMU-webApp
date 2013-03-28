@@ -428,13 +428,14 @@ EmuLabeller.Drawer = {
             if (cI.type == "seg"){
                 //draw seg
                 for (ev = 0; ev < cI.events.length; ev++) {
-                    if(cI.events[ev].start > vP.sS && cI.events[ev].start < vP.eS){
-                        perc = (cI.events[ev].start-vP.sS)/(vP.eS-vP.sS);
+                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
+                        perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
 
-                        tW = curcc.measureText(cI.events[ev].label).width;
-                        curcc.strokeText(cI.events[ev].label, curCanWidth*perc+10, curCanHeight/2);
-
+                        if(cI.events[ev].label != 'H#'){
+                            tW = curcc.measureText(cI.events[ev].label).width;
+                            curcc.strokeText(cI.events[ev].label, curCanWidth*perc-10, curCanHeight/2);
+                        }
                     }
                     if(cI.events[ev].end > vP.sS && cI.events[ev].end < vP.eS){
                         perc = (cI.events[ev].end-vP.sS)/(vP.eS-vP.sS);
