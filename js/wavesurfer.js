@@ -25,20 +25,17 @@ var WaveSurfer = {
         });
 
         this.bindClick(params.canvas, function (percents) {
-            //my.playAt(percents);
-            //console.log(percents);
 
             my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
             my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
-            
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
 
         });
 
-        this.bindScrollClick(params.scrollCanvas, function (x) {
-            //my.scrollBarMoved(x);
-            console.log(x);
-        });
+        // this.bindScrollClick(params.scrollCanvas, function (x) {
+        //     //my.scrollBarMoved(x);
+        //     console.log(x);
+        // });
 
     },
 

@@ -79,7 +79,7 @@ WaveSurfer.Drawer = {
         var relData = chan.subarray(vP.sS, vP.eS);
 
         if(k<=1){
-            console.log("should start drawing lines!!!");
+            console.log("over sample exact!!!");
 
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
@@ -216,6 +216,7 @@ WaveSurfer.Drawer = {
             });
         // Or draw an image.
         } else if (k < 1) {
+            this.cc.strokeStyle = this.params.waveColor;
             this.cc.beginPath();
             this.cc.moveTo(0,(this.peaks[0]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);
             for (var i = 1; i < this.peaks.length; i++) {
@@ -387,6 +388,9 @@ WaveSurfer.Drawer = {
             curCanv = this.tierInfos.canvases[i];
             curcc = this.tierInfos.contexts[i];
 
+            var curCanHeight = curCanv.clientHeight;
+            var curCanWidth = curCanv.clientWidth;
+
 
             var all = vP.eS-vP.sS;
             var fracS = vP.selectS-vP.sS;
@@ -397,14 +401,17 @@ WaveSurfer.Drawer = {
             var procE = fracE/all;
             var posE = this.width*procE;
 
-            curcc.clearRect(0, 0, curCanv.width, curCanv.height);
+            curcc.clearRect(0, 0, curCanWidth, curCanHeight);
             curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
             curcc.beginPath();
             curcc.moveTo(posS,0);
-            curcc.lineTo(posS,this.height);
+            curcc.lineTo(posS,curCanHeight);
             curcc.moveTo(posE,0);
-            curcc.lineTo(posE,this.height);
-            //curcc.closePath();
+            curcc.lineTo(posE,curCanHeight);
+            curcc.stroke();
+
+            curcc.beginPath();
+            curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
             curcc.stroke();
 
             // draw name
@@ -414,28 +421,56 @@ WaveSurfer.Drawer = {
 
             var cI = this.tierInfos.tiersDetails[i];
 
-
+            var ev, perc, tW;
             if (cI.type == "seg"){
-                console.log(cI.type);
-            }else if(cI.type =="point"){
-                for (var ev = 0; ev < cI.events.length; ev++) {
-                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
-                        //console.log(cI.events[ev].time);
-                        //this.scc.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
-                        var perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
-                        curcc.fillRect(this.width*perc, 0, 1, this.height);
-                        curcc.strokeText(cI.events[ev].label, this.width*perc+5, 10); 
+                //draw seg
+                for (ev = 0; ev < cI.events.length; ev++) {
+                    if(cI.events[ev].start > vP.sS && cI.events[ev].start < vP.eS){
+                        perc = (cI.events[ev].start-vP.sS)/(vP.eS-vP.sS);
+                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+
+                        tW = curcc.measureText(cI.events[ev].label).width;
+                        curcc.strokeText(cI.events[ev].label, curCanWidth*perc+10, curCanHeight/2);
 
                     }
-
+                    if(cI.events[ev].end > vP.sS && cI.events[ev].end < vP.eS){
+                        perc = (cI.events[ev].end-vP.sS)/(vP.eS-vP.sS);
+                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+                    }
                 }
-                //console.log(cI.events);
 
+            }else if(cI.type =="point"){
+                for (ev = 0; ev < cI.events.length; ev++) {
+                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
+
+                        perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
+                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
+
+                        tW = curcc.measureText(cI.events[ev].label).width;
+                        curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
+
+                        curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
+                    }
+                }
             }
 
 
         }
 
     }
+
+    // refactor later
+    // drawAnnot: function(event, vP, canvas, context) {
+
+    //      var perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
+    //      curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
+
+    //      var tW = curcc.measureText(cI.events[ev].label).width;
+    //      curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
+
+    //      curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
+
+
+    // }
 
 };

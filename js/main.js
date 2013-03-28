@@ -6,8 +6,8 @@ var wavesurfer = (function () {
 
     var txtGridRep = {"tiersDetails": [
         {"TierName": "TierOne(Segment)", "type": "seg", "events": [
-            {"label": "@", "start": 64000, "end": 100000},
-            {"label": "b", "start": 70000, "end": 300000}
+            {"label": "@", "start": 20000, "end": 40000},
+            {"label": "b", "start": 40000, "end": 100000}
         ]},
         {"TierName": "TierTwo(Point)", "type": "point","events": [
             {"label": "x", "time": 64000},
