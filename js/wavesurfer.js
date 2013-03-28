@@ -1,35 +1,67 @@
 'use strict';
 
-var WaveSurfer = {
+var EmuLabeller = {
     init: function (params) {
         var my = this;
-
+        var backend;
         if (params.audio) {
-            var backend = WaveSurfer.Audio;
+            backend = EmuLabeller.Audio;
             //console.log("here audio");
         } else {
-            backend = WaveSurfer.WebAudio;
+            backend = EmuLabeller.WebAudio;
             //console.log("web audio");
         }
         this.backend = Object.create(backend);
         this.backend.init(params);
 
-        this.drawer = Object.create(WaveSurfer.Drawer);
+        this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
 
-        this.viewPort = Object.create(WaveSurfer.ViewPort);
+        this.viewPort = Object.create(EmuLabeller.ViewPort);
         this.viewPort.init(1, 128086);// sic get length of data on load!
 
+        this.isDraging = false;
+
+        this.boolPlaySelectedMode = false;
+
+        //no selection of canvas
+        params.canvas.setAttribute('unselectable', 'on');
+        //document.getElementById('canvas').setAttribute('unselectable', 'on');
+
+        //bindings
         this.backend.bindUpdate(function () {
             my.onAudioProcess();
         });
 
-        this.bindClick(params.canvas, function (percents) {
+        // this.bindClick(params.canvas, function (percents) {
+        //     console.log("click");
+        //     my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
+        //     my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+        //     my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
 
+        // });
+
+        this.bindOnButtonDown(params.canvas, function (percents) {
+            my.isDraging = true;
             my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
-            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            //console.log("button down");
 
+
+        });
+
+        this.bindOnButtonUp(params.canvas, function (percents) {
+            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.isDraging = false;
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            //console.log("button up");
+        });
+
+        this.bindOnMouseMoved(params.canvas, function (percents) {
+            if(my.isDraging){
+                //console.log(percents);
+                my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            }
         });
 
         // this.bindScrollClick(params.scrollCanvas, function (x) {
@@ -40,17 +72,44 @@ var WaveSurfer = {
     },
 
     onAudioProcess: function () {
+        var percRel;
+        var percPlayed = this.backend.getPlayedPercents();
+        if (this.boolPlaySelectedMode) {
+            percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
+        }else{
+            percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+        }
+
+
         if (!this.backend.isPaused()) {
-            this.drawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
             this.drawer.drawSpec(this.backend.frequency());
         }
+        if (percPlayed>percRel) {
+            this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
+            this.drawer.drawSpec(this.backend.frequency());
+            this.pause();
+        }
+
     },
 
-    playAt: function (percents) {
+    playAt: function (boolPlaySelection) {
+        var percS, percE;
 
-        var percS = this.viewPort.sS/this.backend.currentBuffer.length;
-        var percE = this.viewPort.eS/this.backend.currentBuffer.length;
-        this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
+        if(!boolPlaySelection){
+            this.boolPlaySelectedMode = false;
+            console.log("play vP");
+            percS = this.viewPort.sS/this.backend.currentBuffer.length;
+            percE = this.viewPort.eS/this.backend.currentBuffer.length;
+            this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
+        }else{
+            this.boolPlaySelectedMode = true;
+            console.log("play selected");
+            percS = this.viewPort.selectS/this.backend.currentBuffer.length;
+            percE = this.viewPort.selectE/this.backend.currentBuffer.length;
+            this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
+
+        }
 
         //this.backend.play(this.backend.getDuration() * percents);
 
@@ -62,12 +121,8 @@ var WaveSurfer = {
 
     playPause: function () {
         if (this.backend.paused) {
-            if(this.backend.getPlayedPercents() <= 1){
-                this.playAt(this.backend.getPlayedPercents() || 0);
-            } else{
-                //console.log("set to 0");
-                this.playAt(0);
-            }
+            //console.log("set to 0");
+            this.playAt();
         } else {
             this.pause();
         }
@@ -220,6 +275,35 @@ var WaveSurfer = {
         }, false);
     },
 
+    bindOnButtonDown: function (element, callback) {
+        var my = this;
+        element.addEventListener('mousedown', function (e) {
+            var relX = e.offsetX;
+            if (null == relX) { relX = e.layerX; }
+            callback(relX / this.clientWidth);
+        }, false);
+    },
+
+    bindOnButtonUp: function (element, callback) {
+        var my = this;
+        element.addEventListener('mouseup', function (e) {
+            var relX = e.offsetX;
+            if (null == relX) { relX = e.layerX; }
+            callback(relX / this.clientWidth);
+        }, false);
+    },
+
+    bindOnMouseMoved: function (element, callback) {
+        var my = this;
+        element.addEventListener('mousemove', function (e) {
+            var relX = e.offsetX;
+            if (null == relX) { relX = e.layerX; }
+            callback(relX / this.clientWidth);
+        }, false);
+    },
+
+
+
     scrollBarMoved: function(relX){
         var delta = this.viewPort.eS-this.viewPort.sS;
         if (relX <=0.5) {
@@ -229,8 +313,6 @@ var WaveSurfer = {
             this.setView(this.viewPort.sS+delta, this.viewPort.eS+delta);
 
         }
-        //console.log(relX);
-        //this.drawer.drawScroll(relX, this.viewPort, this.backend.currentBuffer.length);
 
     },
 

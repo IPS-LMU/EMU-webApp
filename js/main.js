@@ -18,12 +18,14 @@ var wavesurfer = (function () {
 
 
     var canvas = document.querySelector('#wave');
+    canvas.setAttribute('unselectable');
+
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
 
-    var wavesurfer = Object.create(WaveSurfer);
+    var emulabeller = Object.create(EmuLabeller);
 
-    wavesurfer.init({
+    emulabeller.init({
         canvas: canvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
@@ -34,30 +36,39 @@ var wavesurfer = (function () {
         tierInfos: txtGridRep
     });
 
-    wavesurfer.load('data/msajc003.wav');
+    emulabeller.load('data/msajc003.wav');
 
-    //wavesurfer.bindDragNDrop();
+    //emulabeller.bindDragNDrop();
 
     document.addEventListener('keypress', function (e) {
         // spacebar
         if (32 == e.keyCode) {
             e.preventDefault();
-            wavesurfer.playPause();
+            emulabeller.playPause();
+        }
+        if (114 == e.keyCode) {
+            emulabeller.playAt(true);
         }
         if (119 == e.keyCode){
-            wavesurfer.zoomViewPort(1);
+            emulabeller.zoomViewPort(1);
         }
         if (115 == e.keyCode){
-            wavesurfer.zoomViewPort(0);
+            emulabeller.zoomViewPort(0);
         }
         if (100 == e.keyCode){
-            wavesurfer.incrViewP(1);
+            emulabeller.incrViewP(1);
         }
         if (97 == e.keyCode){
-            wavesurfer.incrViewP(0);
+            emulabeller.incrViewP(0);
         }
-        //console.log(e.keyCode);
+        if (113 == e.keyCode){
+            emulabeller.setView(-Infinity, Infinity);
+        }
+        if (101 == e.keyCode){
+            emulabeller.zoomSel();
+        }
+        console.log(e.keyCode);
     });
 
-    return wavesurfer;
+    return emulabeller;
 }());

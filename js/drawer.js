@@ -1,6 +1,6 @@
 'use strict';
 
-WaveSurfer.Drawer = {
+EmuLabeller.Drawer = {
     defaultParams: {
         waveColor: '#333',
         progressColor: '#777',
@@ -381,6 +381,7 @@ WaveSurfer.Drawer = {
     drawTiers: function(vP) {
         //console.log(this.tierInfos.contexts.length);
 
+        //console.log(vP);
         var curcc;
         var curCanv;
         for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
@@ -410,9 +411,11 @@ WaveSurfer.Drawer = {
             curcc.lineTo(posE,curCanHeight);
             curcc.stroke();
 
-            curcc.beginPath();
-            curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
-            curcc.stroke();
+            if(vP.selectS == vP.selectE){
+                curcc.beginPath();
+                curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
+                curcc.stroke();
+            }
 
             // draw name
             curcc.strokeStyle = this.params.waveColor;
@@ -458,19 +461,5 @@ WaveSurfer.Drawer = {
         }
 
     }
-
-    // refactor later
-    // drawAnnot: function(event, vP, canvas, context) {
-
-    //      var perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
-    //      curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
-
-    //      var tW = curcc.measureText(cI.events[ev].label).width;
-    //      curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
-
-    //      curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
-
-
-    // }
 
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-WaveSurfer.ViewPort = {
+EmuLabeller.ViewPort = {
 
 
     init: function (sSample, eSample) {
@@ -11,6 +11,5 @@ WaveSurfer.ViewPort = {
         this.selectS = 0;
         this.selectE = 0;
 
-    },
-
+    }
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-WaveSurfer.WebAudio = {
+EmuLabeller.WebAudio = {
     Defaults: {
         fftSize: 512,
         smoothingTimeConstant: 0.0
@@ -33,7 +33,7 @@ WaveSurfer.WebAudio = {
         this.dataArray = new Uint8Array(this.analyser.fftSize);
 
         this.verb = this.ac.createConvolver();
-        this.verb.connect(this.destination);
+        //this.verb.connect(this.destination);
 
         //this.reqFreqResp('data/ir.wav');
 
@@ -132,7 +132,7 @@ WaveSurfer.WebAudio = {
 
         this.lastPause = this.getCurrentTime();
 
-        this.source.noteOff(delay || 0);
+        this.source.stop(delay || 0);
 
         this.paused = true;
     },
@@ -141,7 +141,7 @@ WaveSurfer.WebAudio = {
         //console.log("sdfsadfsa");
         if (this.getCurrentTime() / this.getDuration() > 1) {
             this.pause();
-        };
+        }
         //console.log(this.getCurrentTime() / this.getDuration());
         return this.getCurrentTime() / this.getDuration();
 
