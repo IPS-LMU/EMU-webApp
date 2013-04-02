@@ -114,8 +114,8 @@ EmuLabeller.WebAudio = {
         this.setSource(this.ac.createBufferSource());
         this.source.buffer = this.currentBuffer;
 
-        console.log(this.source);
-        console.log(this.currentBuffer);
+        //console.log(this.source);
+        //console.log(this.currentBuffer);
         //if (null == start) { start = this.getCurrentTime(); }
         //if (null == end  ) { end = this.source.buffer.duration; }
         //if (null == delay) { delay = 0; }

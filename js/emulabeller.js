@@ -99,7 +99,7 @@ var EmuLabeller = {
         if(playmode == "vP" || playmode===null){
             //this.boolPlaySelectedMode = false;
             this.playMode = "vP";
-            console.log("play vP");
+            //console.log("play vP");
             percS = this.viewPort.sS/this.backend.currentBuffer.length;
             percE = this.viewPort.eS/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
@@ -107,7 +107,7 @@ var EmuLabeller = {
         if(playmode == "sel" || playmode===null){
             this.playMode = "sel";
             //this.boolPlaySelectedMode = true;
-            console.log("play selected");
+            //console.log("play selected");
             percS = this.viewPort.selectS/this.backend.currentBuffer.length;
             percE = this.viewPort.selectE/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
@@ -115,8 +115,8 @@ var EmuLabeller = {
         }
         if(playmode == "all" || playmode===null){
             this.playMode = "all";
-            console.log("play all");
-            // this.boolPlaySelectedMode = true;
+            //console.log("play all");
+            //this.boolPlaySelectedMode = true;
             this.backend.play(0, this.backend.getDuration());
 
         }
@@ -147,7 +147,7 @@ var EmuLabeller = {
 
     newlyLoadedBufferReady: function(){
         this.viewPort.init(1, this.backend.currentBuffer.length);
-        console.log(this.backend.currentBuffer.length);
+        //console.log(this.backend.currentBuffer.length);
         this.drawBuffer();
 
     },

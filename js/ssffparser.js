@@ -6,7 +6,7 @@ var SSFFparser = {
 
 
     newlyLoadedSSFF: function (buf) {
-        console.log('SSFF loaded');
+        //console.log('SSFF loaded');
         
         //var v2 = new Int8Array(buf);
         //console.log(v2[0]);
