@@ -292,7 +292,7 @@ EmuLabeller.Drawer = {
 
     /**
      * Draws a pre-drawn waveform image.
-     */
+     *
     drawImage: function () {
         var cc = this.cc;
         cc.drawImage(this.image, 0, 0, this.width, this.height);
@@ -301,7 +301,7 @@ EmuLabeller.Drawer = {
         cc.fillStyle = this.params.progressColor;
         cc.fillRect(0, 0, this.cursorPos, this.height);
         cc.restore();
-    },
+    },*/
 
     drawLoading: function (progress) {
         var color = this.params.loadingColor;
@@ -320,7 +320,7 @@ EmuLabeller.Drawer = {
     },
 
     drawScroll: function (relX, vP, bufferLength) {
-        console.log(relX);
+        //console.log(relX);
 
         this.scrollcc.clearRect(0, 0, this.scrollWidth, this.scrollHeight);
 

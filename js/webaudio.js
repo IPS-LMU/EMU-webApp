@@ -6,7 +6,10 @@ EmuLabeller.WebAudio = {
         smoothingTimeConstant: 0.0
     },
 
+
     ac: new (window.AudioContext || window.webkitAudioContext),
+    //ac: new window.webkitAudioContext(),
+
 
     /**
      * Initializes the analyser with given params.
@@ -100,16 +103,19 @@ EmuLabeller.WebAudio = {
      * relative to the beginning of the track.
      */
     play: function (start, end, delay) {
+        
         if (!this.currentBuffer) {
             return;
         }
+
 
         this.pause();
 
         this.setSource(this.ac.createBufferSource());
         this.source.buffer = this.currentBuffer;
 
-        //console.log(this.source);
+        console.log(this.source);
+        console.log(this.currentBuffer);
         //if (null == start) { start = this.getCurrentTime(); }
         //if (null == end  ) { end = this.source.buffer.duration; }
         //if (null == delay) { delay = 0; }
@@ -117,7 +123,8 @@ EmuLabeller.WebAudio = {
         this.lastStart = start;
         this.startTime = this.ac.currentTime;
 
-        this.source.start(delay, start, end - start); //when, offset, duration in seconds
+        //this.source.start(delay, start, end - start); //when, offset, duration in seconds
+        this.source.noteOn(delay, start, end - start); //when, offset, duration in seconds
 
         this.paused = false;
     },
@@ -132,7 +139,9 @@ EmuLabeller.WebAudio = {
 
         this.lastPause = this.getCurrentTime();
 
-        this.source.stop(delay || 0);
+        //this.source.stop(delay || 0);
+
+        this.source.noteOff(delay || 0); // deprecated version for safari... yay
 
         this.paused = true;
     },
@@ -192,7 +201,5 @@ EmuLabeller.WebAudio = {
         callback(buffer);
         };
         request.send();
-    },
-
-
+    }
 };

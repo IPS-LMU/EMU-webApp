@@ -61,13 +61,15 @@ var EmuLabeller = {
     },
 
     onAudioProcess: function () {
-        var percRel;
+        var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
         if (this.playMode == "sel") {
             percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
         }
         if(this.playMode == "vP"){
-            percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+            if(this.backend.currentBuffer){
+                percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+            }
         }
         if(this.playMode == "all"){
             percRel = 1.0;
