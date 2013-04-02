@@ -1,4 +1,4 @@
-var wavesurfer = (function () {
+var emulabeller = (function () {
     'use strict';
 
     var tier1canvas = document.querySelector('#tier1'); //SIC create dynamically
@@ -6,11 +6,11 @@ var wavesurfer = (function () {
 
     var txtGridRep = {"tiersDetails": [
         {"TierName": "Phonetic", "type": "seg", "events": [
-             {"label":"H#", "time": 3749  * (44100/20000)},
+             {"label":"H#", "time": 3749  * (44100/20000)}, //SIC resampled to 44100 from audio context
              {"label":"V", "time":  5139  * (44100/20000)},
-             {"label":"m", "time":  6804  * (44100/20000)}, 
-             {"label":"V", "time":  8534  * (44100/20000)}, 
-             {"label":"N", "time":  9669  * (44100/20000)}, 
+             {"label":"m", "time":  6804  * (44100/20000)},
+             {"label":"V", "time":  8534  * (44100/20000)},
+             {"label":"N", "time":  9669  * (44100/20000)},
              {"label":"s", "time":  11339 * (44100/20000)},
              {"label":"t", "time":  11934 * (44100/20000)},
              {"label":"H", "time":  13484 * (44100/20000)},
@@ -56,9 +56,9 @@ var wavesurfer = (function () {
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
 
-    var emulabeller = Object.create(EmuLabeller);
+    var labeller = Object.create(EmuLabeller);
 
-    emulabeller.init({
+    labeller.init({
         canvas: canvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
@@ -69,7 +69,7 @@ var wavesurfer = (function () {
         tierInfos: txtGridRep
     });
 
-    emulabeller.load('data/msajc003.wav');
+    labeller.load('data/msajc003.wav');
 
     //emulabeller.bindDragNDrop();
 
@@ -106,5 +106,5 @@ var wavesurfer = (function () {
         //console.log(e.keyCode);
     });
 
-    return emulabeller;
+    return labeller;
 }());

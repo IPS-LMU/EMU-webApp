@@ -460,7 +460,5 @@ EmuLabeller.Drawer = {
 
 
         }
-
     }
-
 };
