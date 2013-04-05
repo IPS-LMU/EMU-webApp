@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+    </style>
+
+</head>
+<body style="background-color: white;">
+
+
+<canvas id="canvas" width="400" height="128" style="display: block; background-color: black ;"></canvas>
+<canvas id="offline" width="400" height="128" style="display: float; background-color: red ;"></canvas>
+
+<button onclick="renderNextLine();">paint next line</button>
+
+
+<script type="text/javascript">
+
+	var i = 0;
+    var sampleLength = 256;
+    var fftSize = 512;
+    var sampleRate = 44100;
+    // var context = new webkitAudioContext;
+    var offlineContext = new webkitOfflineAudioContext(1,2*sampleRate,sampleRate);
+    var ojavascriptNode = offlineContext.createScriptProcessor(sampleLength, 1, 1);
+	// var javascriptNode = context.createScriptProcessor(sampleLength, 1, 1);
+    var audioBuffer;
+    var analyser;
+    var javascriptNode;
+    var data_array = new Uint8Array(fftSize);
+    var mega_array = new Array(1024);	
+    var ctx = $("#canvas").get()[0].getContext("2d");
+    var octx = $("#offline").get()[0].getContext("2d");
+    // create a temp canvas we use for copying
+    var tempCanvas = document.createElement("canvas");
+    var tempCtx = tempCanvas.getContext("2d");
+    tempCanvas.width=400;
+    tempCanvas.height=128;
+    // create a temp canvas we use for copying
+    var otempCanvas = document.createElement("canvas");
+    var otempCtx = otempCanvas.getContext("2d");
+    otempCanvas.width=400;
+    otempCanvas.height=128;
+
+
+    var chunks =[];
+    var curChunk=0;
+
+    // load the sound
+    loadSound("data/msajc003.wav");
+
+    // load the specified sound
+    function loadSound(url) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+
+        // When loaded decode the data
+        request.onload = function () {
+        
+
+            offlineContext.decodeAudioData(request.response, function (buffer) {
+        		
+        	
+        	var completeLength = buffer.length;
+        	var packets = Math.floor(completeLength/sampleLength);
+        	var rest = completeLength % sampleLength;
+        	rest!=0 && packets++;
+            var temp = new Float32Array(sampleLength);
+            for(var i=0;i<packets;i++) {
+            	for(var j=0;j<sampleLength;j++) {
+	            	temp[j] = buffer.getChannelData(0)[i*sampleLength+j];
+	            }
+               // window.setTimeout(renderLine(temp),2000);
+               chunks.push(temp);
+            }
+            
+
+                
+            }, function (buffer) { alert("error filling offline buffer"); });    
+            
+            // decode the data
+          //  context.decodeAudioData(request.response, function (buffer) {
+          //       // when the audio is decoded play the sound
+          //       javascriptNode.connect(context.destination);
+       			// analyser = context.createAnalyser();
+        		// analyser.smoothingTimeConstant = 0;
+        		// analyser.fftSize = fftSize;
+        		// // create a buffer source node
+        		// sourceNode = context.createBufferSource();
+          //       sourceNode.buffer = buffer;
+          //       sourceNode.connect(context.destination);
+          //       sourceNode.connect(analyser);
+          //       analyser.connect(javascriptNode);
+        		// sourceNode.noteOn(0);
+        		// sourceNode.loop = false;
+          //   }, function (buffer) { alert("error filling buffer"); });
+        
+        }
+        request.send();
+    }
+    
+
+
+	function renderNextLine() {
+
+    	console.log(chunks);
+        console.log(offlineContext);
+        var aBuffer = offlineContext.createBuffer(1,sampleLength,sampleRate);
+        aBuffer.getChannelData(0).set(chunks[curChunk]);
+        osourceNode = offlineContext.createBufferSource();
+        osourceNode.buffer = aBuffer;
+        ojavascriptNode.connect(offlineContext.destination);
+        
+            console.log("asdfadsfhjasioudhf");
+
+            oanalyser = offlineContext.createAnalyser();
+            oanalyser.smoothingTimeConstant = 0;
+            oanalyser.fftSize = fftSize;
+            // create a buffer source node
+            osourceNode.connect(offlineContext.destination);
+            osourceNode.connect(oanalyser);
+            oanalyser.connect(ojavascriptNode);
+            // osourceNode.noteOn(0);
+            osourceNode.loop = false;
+        
+
+        offlineContext.startRendering();
+
+        curChunk += 1;
+        //console.log(curChunk);
+
+    }
+    
+
+    // log if an error occurs
+    function onError(e) {
+        console.log(e);
+    }
+
+
+
+    ojavascriptNode.onaudioprocess = function () {
+
+        console.log("fft received");
+        console.log(osourceNode.PLAYING_STATE);
+        var array = new Uint8Array(oanalyser.frequencyBinCount);
+        oanalyser.getByteFrequencyData(array);
+
+        //if (osourceNode.playbackState == osourceNode.PLAYING_STATE) {
+        odrawSpectrogram(array);
+        //}
+    }
+ 
+ offlineContext.oncomplete = function(event) {
+    
+    console.log('rendering complete');
+
+    //var source = offlineContext.createBufferSource();
+    //source.buffer = event.renderedBuffer;
+    //source.connect(offlineContext.destination);
+    //source.noteOn(0);
+    
+    //console.dir(event.renderedBuffer.getChannelData(0));
+    //console.dir(event.renderedBuffer.getChannelData(0));
+};
+
+    
+     
+     function odrawSpectrogram(array) {
+        // copy the current canvas onto the temp canvas
+        var offline = document.getElementById("offline");
+		var max = Math.max.apply(Math, array);
+        otempCtx.drawImage(offline, 0, 0, 400, 128);
+
+        // iterate over the elements from the array
+        for (var i = 0; i < array.length; i++) {
+            // draw each pixel with the specific color
+            var value = array[i];
+         	var curVal = 255-Math.floor(255*value/max);		// with the specific color
+         	
+         	octx.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
+			//octx.fillStyle = 'rgb(0,0,0)';
+            // draw the line at the right side of the canvas
+            octx.fillRect(400 - 1, 128 - i, 1, 1);
+        }
+
+        // set translate on the canvas
+        octx.translate(-1, 0);
+        // draw the copied image
+        octx.drawImage(otempCanvas, 0, 0, 400, 128, 0, 0, 400, 128);
+
+        // reset the transformation matrix
+        octx.setTransform(1, 0, 0, 1, 0, 0);
+        
+
+    }    
+
+    function drawSpectrogram(array) {
+
+        // copy the current canvas onto the temp canvas
+        var canvas = document.getElementById("canvas");
+		var max = Math.max.apply(Math, array);
+        tempCtx.drawImage(canvas, 0, 0, 400, 128);
+
+        // iterate over the elements from the array
+        for (var i = 0; i < array.length; i++) {
+            // draw each pixel with the specific color
+            var value = array[i];
+         	var curVal = 255-Math.floor(255*value/max);		// with the specific color
+         	ctx.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
+
+            // draw the line at the right side of the canvas
+            ctx.fillRect(400 - 1, 128 - i, 1, 1);
+        }
+
+        // set translate on the canvas
+        ctx.translate(-1, 0);
+        // draw the copied image
+        ctx.drawImage(tempCanvas, 0, 0, 400, 128, 0, 0, 400, 128);
+
+        // reset the transformation matrix
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    }
+
+</script>
+
+</body>
+</html>
