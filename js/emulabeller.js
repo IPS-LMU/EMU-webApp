@@ -18,14 +18,13 @@ var EmuLabeller = {
         this.drawer.init(params);
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
-        //this.viewPort.init(1, 128086);// sic get length of data on load!
 
         this.isDraging = false;
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
 
         //no selection of canvas
-        params.canvas.setAttribute('unselectable', 'on');
+        // params.canvas.setAttribute('unselectable', 'on');
 
 
         //bindings
@@ -159,16 +158,6 @@ var EmuLabeller = {
         var my = this;
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'arraybuffer';
-
-        xhr.addEventListener('progress', function (e) {
-            if (e.lengthComputable) {
-                var percentComplete = e.loaded / e.total;
-            } else {
-                // TODO
-                percentComplete = 0;
-            }
-            my.drawer.drawLoading(percentComplete);
-        }, false);
 
         xhr.addEventListener('load', function (e) {
             my.backend.loadData(
@@ -321,5 +310,9 @@ var EmuLabeller = {
             if (null == relX) { relX = e.layerX; }
             callback(relX / this.clientWidth);
         }, false);
-    }
+    },
+
+
+
+
 };

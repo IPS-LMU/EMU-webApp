@@ -35,15 +35,15 @@ EmuLabeller.WebAudio = {
 
         this.dataArray = new Uint8Array(this.analyser.fftSize);
 
-        this.verb = this.ac.createConvolver();
+        // this.verb = this.ac.createConvolver();
         //this.verb.connect(this.destination);
 
         //this.reqFreqResp('data/ir.wav');
 
-        this.loadBuffer(this.ac, "data/ir.wav", function(buffer){
-        my.verb.buffer = buffer;
+        // this.loadBuffer(this.ac, "data/ir.wav", function(buffer){
+        // my.verb.buffer = buffer;
 
-    }),
+        // }),
 
         this.paused = true;
     },
@@ -55,10 +55,11 @@ EmuLabeller.WebAudio = {
     setSource: function (source) {
         this.source && this.source.disconnect();
         this.source = source;
-        this.source.connect(this.analyser);
-        this.source.connect(this.proc);
+        // this.source.connect(this.analyser);
+        // this.source.connect(this.proc);
 
-        this.source.connect(this.verb);
+        this.source.connect(this.destination);
+        // this.source.connect(this.verb);
     },
 
     /**
@@ -123,8 +124,8 @@ EmuLabeller.WebAudio = {
         this.lastStart = start;
         this.startTime = this.ac.currentTime;
 
-        this.source.start(delay, start, end - start); //when, offset, duration in seconds
-        //this.source.noteOn(delay, start, end - start); //when, offset, duration in seconds
+        //this.source.start(delay, start, end - start); //when, offset, duration in seconds
+        this.source.noteOn(delay, start, end - start); //when, offset, duration in seconds
 
         this.paused = false;
     },
@@ -139,9 +140,9 @@ EmuLabeller.WebAudio = {
 
         this.lastPause = this.getCurrentTime();
 
-        this.source.stop(delay || 0);
+        //this.source.stop(delay || 0);
 
-        //this.source.noteOff(delay || 0); // deprecated version for safari... yay
+        this.source.noteOff(delay || 0); // deprecated version for safari... yay
 
         this.paused = true;
     },

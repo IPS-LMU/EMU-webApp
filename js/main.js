@@ -51,7 +51,7 @@ var emulabeller = (function () {
 
 
     var canvas = document.querySelector('#wave');
-    canvas.setAttribute('unselectable');
+    // canvas.setAttribute('unselectable');
 
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
@@ -70,6 +70,8 @@ var emulabeller = (function () {
     });
 
     labeller.load('data/msajc003.wav');
+
+
 
     //emulabeller.bindDragNDrop();
 
@@ -108,3 +110,16 @@ var emulabeller = (function () {
 
     return labeller;
 }());
+
+
+// $(window).resize(function () {
+//     var w = $(window).width(),
+//         scale = 0.8; // TODO: calculate offset left and right
+
+//     $('#wave').css('width', (w*scale));
+//     $('#spectrogram').css('width', (w*scale));
+//     $('#tier1').css('width', (w*scale));
+//     $('#tier2').css('width', (w*scale));
+//     $('#scrollbar').css('width', (w*scale));
+    
+// }).resize();

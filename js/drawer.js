@@ -18,15 +18,15 @@ EmuLabeller.Drawer = {
             if (!(key in params)) { params[key] = my.defaultParams[key]; }
         });
 
-        this.canvas = params.canvas;
+        this.osciCanvas = params.canvas;
         this.specCanvas = params.specCanvas;
         this.scrollCanvas = params.scrollCanvas;
 
 
-        this.width = this.canvas.clientWidth;
-        this.height = this.canvas.clientHeight;
+        this.osciWidth = this.osciCanvas.clientWidth;
+        this.osciHeight = this.osciCanvas.clientHeight;
         this.start = 0;
-        this.end = this.width;
+        this.end = this.osciWidth;
 
         this.specWidth = this.specCanvas.clientWidth;
         this.specHeight = this.specCanvas.clientHeight;
@@ -35,7 +35,7 @@ EmuLabeller.Drawer = {
         this.scrollHeight = this.scrollCanvas.clientHeight;
 
 
-        this.cc = this.canvas.getContext('2d');
+        this.cc = this.osciCanvas.getContext('2d');
         this.scc = this.specCanvas.getContext('2d');
         this.scrollcc =  this.scrollCanvas.getContext('2d');
 
@@ -50,7 +50,7 @@ EmuLabeller.Drawer = {
 
         //console.log(this.tierInfos);
 
-        this.toRetinaRatio(this.canvas, this.cc);
+        this.toRetinaRatio(this.osciCanvas, this.cc);
         this.toRetinaRatio(this.specCanvas, this.scc);
         this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
 
@@ -58,7 +58,7 @@ EmuLabeller.Drawer = {
             this.loadImage(params.image, this.drawImage.bind(this));
         }
 
-        if (!this.width || !this.height) {
+        if (!this.osciWidth || !this.osciHeight) {
             console.error('Canvas size is zero.');
         }
     },
@@ -66,10 +66,10 @@ EmuLabeller.Drawer = {
     getPeaks: function (buffer, vP) {
         //console.log(vP);
 
-        //var k = buffer.getChannelData(0).length / this.width;
+        //var k = buffer.getChannelData(0).length / this.osciWidth;
         //console.log(buffer.getChannelData(0).length);
 
-        var k = (vP.eS-vP.sS)/ this.width; // PCM Samples per new pixel
+        var k = (vP.eS-vP.sS)/ this.osciWidth; // PCM Samples per new pixel
 
         this.peaks = [];
         this.minPeak = Infinity;
@@ -87,7 +87,7 @@ EmuLabeller.Drawer = {
         }else{
 
 
-        for (var i = 0; i < this.width; i++) {
+        for (var i = 0; i < this.osciWidth; i++) {
             var sum = 0;
             for (var c = 0; c < buffer.numberOfChannels; c++) {
 
@@ -118,7 +118,7 @@ EmuLabeller.Drawer = {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
-        this.cursorPos = ~~(this.width*(sInB-vP.sS)/(vP.eS-vP.sS));
+        this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
 
         this.redraw(vP);
         this.drawTimeLine(vP);
@@ -158,10 +158,10 @@ EmuLabeller.Drawer = {
         this.cc.beginPath();
         this.cc.moveTo(0,0);
         this.cc.lineTo(5,5);
-        this.cc.moveTo(this.width, 0);
-        this.cc.lineTo(this.width-5, 5);
-        this.cc.moveTo(0, this.height/2);
-        this.cc.lineTo(this.width, this.height/2);
+        this.cc.moveTo(this.osciWidth, 0);
+        this.cc.lineTo(this.osciWidth-5, 5);
+        this.cc.moveTo(0, this.osciHeight/2);
+        this.cc.lineTo(this.osciWidth, this.osciHeight/2);
         
         this.cc.closePath();
         this.cc.stroke();
@@ -170,28 +170,28 @@ EmuLabeller.Drawer = {
             this.cc.font="8px Arial";
             var metrics = this.cc.measureText(vP.eS);
             this.cc.strokeText(vP.sS, 5, 5+8);
-            this.cc.strokeText(vP.eS, this.width-metrics.width-5, 5+8);
+            this.cc.strokeText(vP.eS, this.osciWidth-metrics.width-5, 5+8);
         }
         //draw vPselected
         if (vP.selectS != 0 && vP.selectE != 0){
             var all = vP.eS-vP.sS;
             var fracS = vP.selectS-vP.sS;
             var procS = fracS/all;
-            var posS = this.width*procS;
+            var posS = this.osciWidth*procS;
 
             var fracE = vP.selectE-vP.sS;
             var procE = fracE/all;
-            var posE = this.width*procE;
+            var posE = this.osciWidth*procE;
 
             this.cc.fillStyle = "rgba(0, 0, 255, 0.2)";
-            this.cc.fillRect(posS, 0, posE-posS, this.height);
+            this.cc.fillRect(posS, 0, posE-posS, this.osciHeight);
 
             this.cc.strokeStyle = "rgba(0, 255, 0, 0.5)";
             this.cc.beginPath();
             this.cc.moveTo(posS,0);
-            this.cc.lineTo(posS,this.height);
+            this.cc.lineTo(posS,this.osciHeight);
             this.cc.moveTo(posE,0);
-            this.cc.lineTo(posE,this.height);
+            this.cc.lineTo(posE,this.osciHeight);
             this.cc.closePath();
             this.cc.stroke();
         }
@@ -203,10 +203,11 @@ EmuLabeller.Drawer = {
      * Redraws the entire canvas on each audio frame.
      */
     redraw: function (vP) {
+        //this.resizeCanvases();
         var my = this;
         this.clear();
 
-        var k = (vP.eS-vP.sS)/ this.width; // PCM Samples per new pixel
+        var k = (vP.eS-vP.sS)/ this.osciWidth; // PCM Samples per new pixel
         // Draw WebAudio buffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function (peak, index) {
@@ -218,11 +219,11 @@ EmuLabeller.Drawer = {
         } else if (k < 1) {
             this.cc.strokeStyle = this.params.waveColor;
             this.cc.beginPath();
-            this.cc.moveTo(0,(this.peaks[0]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);
+            this.cc.moveTo(0,(this.peaks[0]-my.minPeak)/(my.maxPeak-my.minPeak)*this.osciHeight);
             for (var i = 1; i < this.peaks.length; i++) {
-                this.cc.lineTo(i/k,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);
+                this.cc.lineTo(i/k,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.osciHeight);
             }
-            this.cc.lineTo(this.width,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.height);// SIC SIC SIC tail
+            this.cc.lineTo(this.osciWidth,(this.peaks[i]-my.minPeak)/(my.maxPeak-my.minPeak)*this.osciHeight);// SIC SIC SIC tail
             this.cc.stroke();
         }
 
@@ -230,21 +231,21 @@ EmuLabeller.Drawer = {
     },
 
     clear: function () {
-        this.cc.clearRect(0, 0, this.width, this.height);
+        this.cc.clearRect(0, 0, this.osciWidth, this.osciHeight);
     },
 
     drawFrame: function (index, value, max, prevPeak) {
         //cur
         var w = 1;
-        var h = Math.round(value * (this.height / max)); //rel to max
+        var h = Math.round(value * (this.osciHeight / max)); //rel to max
         var x = index * w;
-        var y = Math.round((this.height - h)/2);
+        var y = Math.round((this.osciHeight - h)/2);
 
         //prev
         var prevW = 1;
-        var prevH = Math.round(prevPeak * (this.height / max));
+        var prevH = Math.round(prevPeak * (this.osciHeight / max));
         var prevX = (index-1) * w;
-        var prevY =  Math.round((this.height - prevH) / 2);
+        var prevY =  Math.round((this.osciHeight - prevH) / 2);
 
 
         if (this.cursorPos >= x) {
@@ -266,58 +267,29 @@ EmuLabeller.Drawer = {
 
     drawCursor: function () {
         var w = this.params.cursorWidth;
-        var h = this.height;
+        var h = this.osciHeight;
 
-        var x = Math.min(this.cursorPos, this.width - w);
+        var x = Math.min(this.cursorPos, this.osciWidth - w);
         var y = 0;
 
         this.cc.fillStyle = this.params.cursorColor;
         this.cc.fillRect(x, y, w, h);
     },
 
-    /**
-     * Loads and caches an image.
-     */
-    loadImage: function (url, callback) {
-        var my = this;
-        var img = document.createElement('img');
-        var onLoad = function () {
-            img.removeEventListener('load', onLoad);
-            my.image = img;
-            callback(img);
-        };
-        img.addEventListener('load', onLoad, false);
-        img.src = url;
-    },
 
     /**
      * Draws a pre-drawn waveform image.
      *
     drawImage: function () {
         var cc = this.cc;
-        cc.drawImage(this.image, 0, 0, this.width, this.height);
+        cc.drawImage(this.image, 0, 0, this.osciWidth, this.osciHeight);
         cc.save();
         cc.globalCompositeOperation = 'source-atop';
         cc.fillStyle = this.params.progressColor;
-        cc.fillRect(0, 0, this.cursorPos, this.height);
+        cc.fillRect(0, 0, this.cursorPos, this.osciHeight);
         cc.restore();
     },*/
 
-    drawLoading: function (progress) {
-        var color = this.params.loadingColor;
-        var bars = this.params.loadingBars;
-        var barHeight = this.params.barHeight;
-        var margin = this.params.barMargin;
-        var barWidth = ~~(this.width / bars) - margin;
-        var progressBars = ~~(bars * progress);
-        var y = ~~(this.height - barHeight) / 2;
-
-        this.cc.fillStyle = color;
-        for (var i = 0; i < progressBars; i += 1) {
-            var x = i * barWidth + i * margin;
-            this.cc.fillRect(x, y, barWidth, barHeight);
-        }
-    },
 
     drawScroll: function (relX, vP, bufferLength) {
         //console.log(relX);
@@ -396,11 +368,11 @@ EmuLabeller.Drawer = {
             var all = vP.eS-vP.sS;
             var fracS = vP.selectS-vP.sS;
             var procS = fracS/all;
-            var posS = this.width*procS;
+            var posS = this.osciWidth*procS;
 
             var fracE = vP.selectE-vP.sS;
             var procE = fracE/all;
-            var posE = this.width*procE;
+            var posE = this.osciWidth*procE;
 
             curcc.clearRect(0, 0, curCanWidth, curCanHeight);
             curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
@@ -460,5 +432,7 @@ EmuLabeller.Drawer = {
 
 
         }
-    }
+    },
+
+
 };
