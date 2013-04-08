@@ -51,6 +51,10 @@ var emulabeller = (function () {
 
 
     var canvas = document.querySelector('#wave');
+
+    //dyn add makro...
+    $("#cans").append("<canvas id=\"spectrogram\" width=\"1024\" height=\"128\"></canvas>");
+
     // canvas.setAttribute('unselectable');
 
     var specCanvas = document.querySelector('#spectrogram');
@@ -121,5 +125,5 @@ var emulabeller = (function () {
 //     $('#tier1').css('width', (w*scale));
 //     $('#tier2').css('width', (w*scale));
 //     $('#scrollbar').css('width', (w*scale));
-    
+
 // }).resize();
