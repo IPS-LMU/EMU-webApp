@@ -1,6 +1,7 @@
 'use strict';
 
 var EmuLabeller = {
+
     init: function (params) {
         var my = this;
         var backend;
@@ -18,6 +19,9 @@ var EmuLabeller = {
         this.drawer.init(params);
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
+
+        this.fileReader = Object.create(EmuLabeller.FileReader);
+
 
         this.isDraging = false;
 
@@ -313,6 +317,33 @@ var EmuLabeller = {
     },
 
 
+    handleNewFile: function (evt) {
 
+        var f = evt.target.files[0];
 
+        if(f.type.match('audio.*')) {
+            console.log("is audio");
+            EmuLabeller.fileAPIreader(f); //what??
+        } 
+        if(f.name.match(".*f0")){
+            console.log("is f0");
+            EmuLabeller.fileAPIreader(f); //what??
+        }
+        if(f.name.match(".*lab")){
+            console.log("is lab file");
+            EmuLabeller.fileAPIreader(f); //what??
+        }
+        alert('File type not supported.... sorry!');
+    },
+
+    fileAPIreader: function (file) {
+        // Create a new FileReader Object
+        var reader = new FileReader();
+        // Set an onload handler because we load files into it asynchronously
+        reader.onload = function(e){
+            // The response contains the Data-Uri, which we can then load into the canvas
+            console.log( reader.result );
+        };
+        reader.readAsDataURL(file);
+    }
 };

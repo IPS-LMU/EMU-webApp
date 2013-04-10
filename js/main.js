@@ -77,6 +77,9 @@ var emulabeller = (function () {
 
 
 
+    document.getElementById('fileGetterBtn').addEventListener('change', labeller.handleNewFile, false);
+
+
     //emulabeller.bindDragNDrop();
 
     document.addEventListener('keypress', function (e) {
