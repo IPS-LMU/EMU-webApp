@@ -22,14 +22,15 @@ var EmuLabeller = {
 
         this.fileReader = Object.create(EmuLabeller.FileReader);
 
+        this.labParser = Object.create(EmuLabeller.LabFileParser);
+
+        this.tierInfos = params.tierInfos;
+
 
         this.isDraging = false;
+        this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
-
-        //no selection of canvas
-        // params.canvas.setAttribute('unselectable', 'on');
-
 
         //bindings
         this.backend.bindUpdate(function () {
@@ -77,7 +78,6 @@ var EmuLabeller = {
         if(this.playMode == "all"){
             percRel = 1.0;
         }
-
 
         if (!this.backend.isPaused()) {
             this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
@@ -317,33 +317,61 @@ var EmuLabeller = {
     },
 
 
-    handleNewFile: function (evt) {
+    parseNewFile: function (readerRes) {
+        var my = this;
+        var ft =    emulabeller.newFileType;
+        if(ft==0){
+            console.log(readerRes);
+            my.backend.loadData(
+                readerRes,
+                my.newlyLoadedBufferReady.bind(my)
+            );
 
-        var f = evt.target.files[0];
+        } else if(ft==1){
+            emulabeller.labParser.parseFile(readerRes, this.tierInfos);
+            // console.log(this.tierInfos);
+            var tName = this.tierInfos.tiers[this.tierInfos.tiers.length-1].TierName;
+            console.log(tName);
+            $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
+            this.tierInfos.canvases.push($("#"+tName)[0]);
+            emulabeller.drawer.addTier($("#"+tName)[0]);
+            this.drawBuffer();
 
-        if(f.type.match('audio.*')) {
-            console.log("is audio");
-            EmuLabeller.fileAPIreader(f); //what??
-        } 
-        if(f.name.match(".*f0")){
-            console.log("is f0");
-            EmuLabeller.fileAPIreader(f); //what??
         }
-        if(f.name.match(".*lab")){
-            console.log("is lab file");
-            EmuLabeller.fileAPIreader(f); //what??
-        }
-        alert('File type not supported.... sorry!');
     },
 
-    fileAPIreader: function (file) {
+    fileAPIread: function (evt) {
+
+        var file = evt.target.files[0];
+
         // Create a new FileReader Object
         var reader = new FileReader();
         // Set an onload handler because we load files into it asynchronously
         reader.onload = function(e){
             // The response contains the Data-Uri, which we can then load into the canvas
-            console.log( reader.result );
+            // console.log(file.type);
+            emulabeller.parseNewFile(reader.result); // my and this does not work?!
+
         };
-        reader.readAsDataURL(file);
+
+        if(file.type.match('audio.*')) {
+            console.log("is audio");
+            emulabeller.newFileType = 0;
+            reader.readAsArrayBuffer(file);
+        }
+        else if(file.name.match(".*lab") || file.name.match(".*tone")){
+            console.log("is lab file");
+            emulabeller.newFileType = 1;
+            reader.readAsText(file);
+        }
+        else if(file.name.match(".*f0")){
+            console.log("is f0");
+            emulabeller.newFileType = 2;
+            reader.readAsArrayBuffer(file);
+        }
+        else{
+            alert('File type not supported.... sorry!');
+        }
+
     }
 };

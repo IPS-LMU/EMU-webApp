@@ -1,59 +1,60 @@
 var emulabeller = (function () {
     'use strict';
 
-    var tier1canvas = document.querySelector('#tier1'); //SIC create dynamically
-    var tier2canvas = document.querySelector('#tier2'); //SIC create dynamically
+    var tier1canvas = $('#tierOld1')[0]; //SIC create dynamically
+    var tier2canvas = $('#tierOld2')[0]; //SIC create dynamically
 
-    var txtGridRep = {"tiersDetails": [
-        {"TierName": "Phonetic", "type": "seg", "events": [
-             {"label":"H#", "time": 3749  * (44100/20000)}, //SIC resampled to 44100 from audio context
-             {"label":"V", "time":  5139  * (44100/20000)},
-             {"label":"m", "time":  6804  * (44100/20000)},
-             {"label":"V", "time":  8534  * (44100/20000)},
-             {"label":"N", "time":  9669  * (44100/20000)},
-             {"label":"s", "time":  11339 * (44100/20000)},
-             {"label":"t", "time":  11934 * (44100/20000)},
-             {"label":"H", "time":  13484 * (44100/20000)},
-             {"label":"@:", "time": 14799 * (44100/20000)},
-             {"label":"f", "time": 17854  * (44100/20000)},
-             {"label":"r", "time": 18999  * (44100/20000)},
-             {"label":"E", "time": 20639  * (44100/20000)},
-             {"label":"n", "time": 23919  * (44100/20000)},
-             {"label":"z", "time": 25789  * (44100/20000)},
-             {"label":"S", "time": 28399  * (44100/20000)},
-             {"label":"i:", "time": 29264 * (44100/20000)},
-             {"label":"w", "time": 30124  * (44100/20000)},
-             {"label":"@", "time": 30969  * (44100/20000)},
-             {"label":"z", "time": 32689  * (44100/20000)},
-             {"label":"k", "time": 33519  * (44100/20000)},
-             {"label":"H", "time": 34309  * (44100/20000)},
-             {"label":"@", "time": 34829  * (44100/20000)},
-             {"label":"n", "time": 35829  * (44100/20000)},
-             {"label":"s", "time": 37864  * (44100/20000)},
-             {"label":"I", "time": 38909  * (44100/20000)},
-             {"label":"d", "time": 39334  * (44100/20000)},
-             {"label":"@", "time": 40674  * (44100/20000)},
-             {"label":"db", "time": 43004 * (44100/20000)},
-             {"label":"j", "time": 44224  * (44100/20000)},
-             {"label":"u:", "time": 45674 * (44100/20000)},
-             {"label":"dH", "time": 46059 * (44100/20000)},
-             {"label":"@", "time": 47239  * (44100/20000)},
-             {"label":"f", "time": 48949  * (44100/20000)},
-             {"label":"@", "time": 50126  * (44100/20000)},
-             {"label":"l", "time": 52089  * (44100/20000)}
-        ]},
-        {"TierName": "TierTwo(Point)", "type": "point","events": [
-            {"label": "x", "time": 64000},
-            {"label": "y", "time": 70000}
-        ]}],
-        "canvases": [tier1canvas, tier2canvas]
-    };
+    // var txtGridRep = {"tiers": [
+    //     {"TierName": "TierOld1", "type": "seg", "events": [
+    //          {"label":"H#", "time": 0.187498  * 44100}, //SIC resampled to 44100 from audio context
+    //          {"label":"V", "time":  0.256994  * 44100},
+    //          {"label":"m", "time":  0.340238 * 44100},
+    //          {"label":"V", "time":  0.426743  * 44100},
+    //          {"label":"N", "time":  0.483490  * 44100},
+    //          {"label":"s", "time":  0.566994 * 44100},
+    //          {"label":"t", "time":  0.596742 * 44100},
+    //          {"label":"H", "time":  0.674237 * 44100},
+    //          {"label":"@:", "time": 0.739994 * 44100},
+    //          {"label":"f", "time": 0.892734  * 44100},
+    //          {"label":"r", "time": 0.949994  * 44100},
+    //          {"label":"E", "time": 1.031989  * 44100},
+    //          {"label":"n", "time": 1.195988  * 44100},
+    //          {"label":"z", "time": 1.289494  * 44100},
+    //          {"label":"S", "time": 1.419986  * 44100},
+    //          {"label":"i:", "time": 1.463242 * 44100},
+    //          {"label":"w", "time": 1.506239  * 44100},
+    //          {"label":"@", "time": 1.548486  * 44100},
+    //          {"label":"z", "time": 1.634493  * 44100},
+    //          {"label":"k", "time": 1.675991  * 44100},
+    //          {"label":"H", "time": 1.715488  * 44100},
+    //          {"label":"@", "time": 1.741497  * 44100},
+    //          {"label":"n", "time": 1.791494  * 44100},
+    //          {"label":"s", "time": 1.893237  * 44100},
+    //          {"label":"I", "time": 1.945495  * 44100},
+    //          {"label":"d", "time": 1.966743  * 44100},
+    //          {"label":"@", "time": 2.033739  * 44100},
+    //          {"label":"db", "time": 2.150242 * 44100},
+    //          {"label":"j", "time": 2.211239  * 44100},
+    //          {"label":"u:", "time": 2.283744 * 44100},
+    //          {"label":"dH", "time": 2.302993 * 44100},
+    //          {"label":"@", "time": 2.361989  * 44100},
+    //          {"label":"f", "time": 2.447484  * 44100},
+    //          {"label":"@", "time": 2.506316  * 44100},
+    //          {"label":"l", "time": 2.604489  * 44100}
+    //     ]},
+    //     {"TierName": "TierOld2(point)", "type": "point","events": [
+    //         {"label": "x", "time": 64000},
+    //         {"label": "y", "time": 70000}
+    //     ]}],
+    //     "canvases": [tier1canvas, tier2canvas]
+    // };
+
+
+    var labFileRep = {"tiers": [],  "canvases": []};
+
 
 
     var canvas = document.querySelector('#wave');
-
-    //dyn add makro...
-    $("#cans").append("<canvas id=\"spectrogram\" width=\"1024\" height=\"128\"></canvas>");
 
     // canvas.setAttribute('unselectable');
 
@@ -70,14 +71,14 @@ var emulabeller = (function () {
         progressColor: 'black',
         loadingColor: 'purple',
         cursorColor: 'red',
-        tierInfos: txtGridRep
+        tierInfos: labFileRep
     });
 
-    labeller.load('data/msajc003.wav');
+    // labeller.load('data/msajc003.wav');
 
 
 
-    document.getElementById('fileGetterBtn').addEventListener('change', labeller.handleNewFile, false);
+    document.getElementById('fileGetterBtn').addEventListener('change', labeller.fileAPIread, false);
 
 
     //emulabeller.bindDragNDrop();

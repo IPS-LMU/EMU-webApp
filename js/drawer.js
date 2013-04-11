@@ -63,6 +63,13 @@ EmuLabeller.Drawer = {
         }
     },
 
+    addTier: function (canv) {
+        var newContext = canv.getContext('2d');
+        this.tierInfos.contexts.push(newContext);
+        this.toRetinaRatio(canv, newContext);
+    },
+
+
     getPeaks: function (buffer, vP) {
         //console.log(vP);
 
@@ -168,9 +175,9 @@ EmuLabeller.Drawer = {
 
         if(vP){
             this.cc.font="8px Arial";
-            var metrics = this.cc.measureText(vP.eS);
-            this.cc.strokeText(vP.sS, 5, 5+8);
-            this.cc.strokeText(vP.eS, this.osciWidth-metrics.width-5, 5+8);
+            var metrics = this.cc.measureText(Math.floor(vP.eS));
+            this.cc.strokeText(Math.floor(vP.sS), 5, 5+8);
+            this.cc.strokeText(Math.floor(vP.eS), this.osciWidth-metrics.width-5, 5+8);
         }
         //draw vPselected
         if (vP.selectS != 0 && vP.selectE != 0){
@@ -351,8 +358,7 @@ EmuLabeller.Drawer = {
     },
 
     drawTiers: function(vP) {
-        //console.log(this.tierInfos.contexts.length);
-
+        // console.log(this.tierInfos.contexts.length);
         //console.log(vP);
         var curcc;
         var curCanv;
@@ -392,9 +398,9 @@ EmuLabeller.Drawer = {
             // draw name
             curcc.strokeStyle = this.params.waveColor;
             curcc.font="8px Arial";
-            curcc.strokeText(this.tierInfos.tiersDetails[i].TierName, 5, 5+8);
+            curcc.strokeText(this.tierInfos.tiers[i].TierName + "(" + this.tierInfos.tiers[i].type +")", 5, 5+8);
 
-            var cI = this.tierInfos.tiersDetails[i];
+            var cI = this.tierInfos.tiers[i];
 
             var ev, perc, tW;
             if (cI.type == "seg"){
@@ -432,6 +438,4 @@ EmuLabeller.Drawer = {
 
         }
     }
-
-
 };
