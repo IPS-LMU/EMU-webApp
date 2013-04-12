@@ -7,45 +7,6 @@
          <link rel="stylesheet" href="css/bootstrap.min.css">
          <link rel="stylesheet" href="css/my.css">
 
-         <style type="text/css">
-      /* Sticky footer styles
-      -------------------------------------------------- */
-      html,
-      body {
-        -webkit-user-select: none;
-        height: 100%;
-        /* The html and body elements cannot have any padding or margin. */
-      }
-
-      /* Wrapper for page content to push down footer */
-      #wrap {
-        min-height: 100%;
-        height: auto !important;
-        height: 100%;
-        /* Negative indent footer by it's height */
-        margin: 0 auto -60px;
-      }
-
-      /* Set the fixed height of the footer here */
-      #push,
-      #footer {
-        height: 60px;
-      }
-      #footer {
-        background-color: #f5f5f5;
-      }
-
-      /* Lastly, apply responsive CSS fixes as necessary */
-      @media (max-width: 767px) {
-        #footer {
-          margin-left: -20px;
-          margin-right: -20px;
-          padding-left: 20px;
-          padding-right: 20px;
-        }
-      }
-
-         </style>
  </head>
  <body>
          
@@ -71,10 +32,10 @@
                 <button class="btn" onclick="console.log(234);">Save Tier to File</button>
               </li>
               <li class="">
-                <button class="btn" onclick="console.log(345);">Add tier</button>
+                <button class="btn" onclick="console.log(345);">Add Tier</button>
               </li>
               <li class="">
-                <button class="btn" onclick="console.log(5678);">Remove tier</button>
+                <button class="btn" onclick="console.log(5678);">Remove Tier</button>
               </li>
             </ul>
           </div>
@@ -85,7 +46,7 @@
          
 
 <div class="hero-unit">
-        <div id="cans">
+        <div id="alwaystherecans">
           
           <div class="timeline">
               <canvas id="wave" width="1024" height="128"></canvas>
@@ -95,17 +56,14 @@
             <canvas id="spectrogram" width="1024" height="128"></canvas>
           </div>
           
-          <!-- <div clss="tier">
-            <canvas id="tierOld1" width="1024" height="64"></canvas>
-          </div>
-           -->
-          <!-- <div class="tier">
-            <canvas id="tierOld2" width="1024" height="64"></canvas>
-          </div>
-           -->
       </div>
+      <div id="signalcans">
+      </div>
+      <div id="cans">
+      </div>
+
       <div class="scrollbar">
-          <canvas id="scrollbar" width="1024" height="12"></canvas>
+          <canvas id="scrollbar" width="1024" height="60"></canvas>
       </div>
 </div>
 
@@ -131,12 +89,6 @@
 
 
  </div><!-- .container -->
- 
-    <div id="footer">
-      <div class="container">
-      </div>
-    </div>
-
     
   <noscript>No javascript enabled...</noscript>
  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
@@ -147,7 +99,6 @@
   <script src="js/webaudio.js"></script>
   <script src="js/drawer.js"></script>
   <script src="js/view.js"></script>
-  <script src="js/filereader.js"></script>
   <script src="js/labfileparser.js"></script>
 
 

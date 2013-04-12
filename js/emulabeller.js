@@ -20,7 +20,7 @@ var EmuLabeller = {
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
 
-        this.fileReader = Object.create(EmuLabeller.FileReader);
+        // this.fileReader = Object.create(EmuLabeller.FileReader);
 
         this.labParser = Object.create(EmuLabeller.LabFileParser);
 
@@ -62,34 +62,34 @@ var EmuLabeller = {
         //     console.log(x);
         // });
 
-    },
+},
 
-    onAudioProcess: function () {
-        var percRel = 0;
-        var percPlayed = this.backend.getPlayedPercents();
-        if (this.playMode == "sel") {
-            percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
+onAudioProcess: function () {
+    var percRel = 0;
+    var percPlayed = this.backend.getPlayedPercents();
+    if (this.playMode == "sel") {
+        percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
+    }
+    if(this.playMode == "vP"){
+        if(this.backend.currentBuffer){
+            percRel = this.viewPort.eS/this.backend.currentBuffer.length;
         }
-        if(this.playMode == "vP"){
-            if(this.backend.currentBuffer){
-                percRel = this.viewPort.eS/this.backend.currentBuffer.length;
-            }
-        }
-        if(this.playMode == "all"){
-            percRel = 1.0;
-        }
+    }
+    if(this.playMode == "all"){
+        percRel = 1.0;
+    }
 
-        if (!this.backend.isPaused()) {
-            this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
-            this.drawer.drawSpec(this.backend.frequency());
-        }
-        if (percPlayed>percRel) {
-            this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
-            this.drawer.drawSpec(this.backend.frequency());
-            this.pause();
-        }
+    if (!this.backend.isPaused()) {
+        this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+        this.drawer.drawSpec(this.backend.frequency());
+    }
+    if (percPlayed>percRel) {
+        this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
+        this.drawer.drawSpec(this.backend.frequency());
+        this.pause();
+    }
 
-    },
+},
 
     /**
     * play audio in certain mode
@@ -141,24 +141,24 @@ var EmuLabeller = {
         }
     },
 
-    drawBuffer: function () {
+    drawBuffer: function (isNewlyLoaded) {
         //console.log(this);
         if (this.backend.currentBuffer) {
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort);
+            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded);
         }
     },
 
     newlyLoadedBufferReady: function(){
         this.viewPort.init(1, this.backend.currentBuffer.length);
         //console.log(this.backend.currentBuffer.length);
-        this.drawBuffer();
+        this.drawBuffer(true);
 
     },
 
     /**
      * Loads an audio file via XHR.
      */
-    load: function (src) {
+     load: function (src) {
         var my = this;
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'arraybuffer';
@@ -257,7 +257,7 @@ var EmuLabeller = {
     /**
      * Click to seek.
      */
-    bindClick: function (element, callback) {
+     bindClick: function (element, callback) {
         var my = this;
         element.addEventListener('click', function (e) {
             var relX = e.offsetX;
@@ -316,7 +316,6 @@ var EmuLabeller = {
         }, false);
     },
 
-
     parseNewFile: function (readerRes) {
         var my = this;
         var ft =    emulabeller.newFileType;
@@ -325,7 +324,7 @@ var EmuLabeller = {
             my.backend.loadData(
                 readerRes,
                 my.newlyLoadedBufferReady.bind(my)
-            );
+                );
 
         } else if(ft==1){
             emulabeller.labParser.parseFile(readerRes, this.tierInfos);

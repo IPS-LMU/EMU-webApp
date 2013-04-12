@@ -4,7 +4,7 @@ var emulabeller = (function () {
     var tier1canvas = $('#tierOld1')[0]; //SIC create dynamically
     var tier2canvas = $('#tierOld2')[0]; //SIC create dynamically
 
-    // var txtGridRep = {"tiers": [
+    // var labFileRep = {"tiers": [
     //     {"TierName": "TierOld1", "type": "seg", "events": [
     //          {"label":"H#", "time": 0.187498  * 44100}, //SIC resampled to 44100 from audio context
     //          {"label":"V", "time":  0.256994  * 44100},
@@ -56,7 +56,7 @@ var emulabeller = (function () {
 
     var canvas = document.querySelector('#wave');
 
-    // canvas.setAttribute('unselectable');
+    canvas.setAttribute('unselectable');
 
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');

@@ -32,7 +32,15 @@ EmuLabeller.Drawer = {
         this.specHeight = this.specCanvas.clientHeight;
 
         this.scrollWidth = this.scrollCanvas.clientWidth;
-        this.scrollHeight = this.scrollCanvas.clientHeight;
+        this.scrollHeight = 12;//this.scrollCanvas.clientHeight;
+
+        //create offline canvas for minimap
+        this.sTmpCanvas = document.createElement("canvas");
+        this.sTmpCtx = this.sTmpCanvas.getContext("2d");
+        this.sTmpCanvas.width = this.scrollWidth;
+        this.sTmpCanvas.height = this.scrollCanvas.clientHeight;
+        
+        // this.toRetinaRatio(this.sTmpCanvas, this.sTmpCtx);
 
 
         this.cc = this.osciCanvas.getContext('2d');
@@ -74,7 +82,7 @@ EmuLabeller.Drawer = {
         //console.log(vP);
 
         //var k = buffer.getChannelData(0).length / this.osciWidth;
-        //console.log(buffer.getChannelData(0).length);
+        //console.log(buffer.getChannelData(0).length); 
 
         var k = (vP.eS-vP.sS)/ this.osciWidth; // PCM Samples per new pixel
 
@@ -86,8 +94,7 @@ EmuLabeller.Drawer = {
         var relData = chan.subarray(vP.sS, vP.eS);
 
         if(k<=1){
-            console.log("over sample exact!!!");
-
+            // console.log("over sample exact!!!");
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
             this.peaks = Array.prototype.slice.call(relData);
@@ -146,7 +153,7 @@ EmuLabeller.Drawer = {
         }
     },
 
-    drawBuffer: function (buffer, vP) {
+    drawBuffer: function (buffer, vP, isInitDraw) {
         // if(vP.eS-vP.sS > buffer.length){
         //     console.log("weeeeeeeeasdf");
 
@@ -154,8 +161,40 @@ EmuLabeller.Drawer = {
 
         this.getPeaks(buffer, vP);
         this.progress(0, vP, buffer.length);
-        this.drawTimeLine(vP);
+        if(isInitDraw){
+            console.log("initDraw");
+            this.drawMiniMap(vP);
+        }
+        this.drawScroll(vP, buffer.length);
+        // this.drawTimeLine(vP);
     },
+
+    drawMiniMap: function (vP) {
+        //this.resizeCanvases();
+        console.log("sdfasdf");
+        var my = this;
+        // this.clear();
+
+        var k = (vP.eS-vP.sS)/ this.osciWidth; // PCM Samples per new pixel
+        my.sTmpCtx.strokeStyle = this.params.waveColor;
+        my.sTmpCtx.font="8px Arial";
+
+
+        my.peaks.forEach(function (peak, index) {
+            // console.log("hack");
+            var w = 1;
+            var h = Math.round(peak * (my.scrollCanvas.clientHeight / my.maxPeak)); //rel to max
+            var x = index * w;
+            var y = Math.round((my.scrollCanvas.clientHeight - h)/2);
+
+            my.sTmpCtx.fillStyle = my.params.waveColor;
+            my.sTmpCtx.fillRect(x, y, w, h);
+
+
+        })
+
+    },
+
 
     drawTimeLine: function (vP){
         //console.log(vP);
@@ -169,7 +208,7 @@ EmuLabeller.Drawer = {
         this.cc.lineTo(this.osciWidth-5, 5);
         this.cc.moveTo(0, this.osciHeight/2);
         this.cc.lineTo(this.osciWidth, this.osciHeight/2);
-        
+
         this.cc.closePath();
         this.cc.stroke();
 
@@ -284,53 +323,45 @@ EmuLabeller.Drawer = {
     },
 
 
-    /**
-     * Draws a pre-drawn waveform image.
-     *
-    drawImage: function () {
-        var cc = this.cc;
-        cc.drawImage(this.image, 0, 0, this.osciWidth, this.osciHeight);
-        cc.save();
-        cc.globalCompositeOperation = 'source-atop';
-        cc.fillStyle = this.params.progressColor;
-        cc.fillRect(0, 0, this.cursorPos, this.osciHeight);
-        cc.restore();
-    },*/
 
+    drawScroll: function (vP, bufferLength) {
 
-    drawScroll: function (relX, vP, bufferLength) {
-        //console.log(relX);
+        var cH = this.scrollCanvas.clientHeight;
+        this.scrollcc.clearRect(0, 0, this.scrollWidth, cH);
+        //draw osci minimap
+        this.scrollcc.drawImage(this.sTmpCanvas, 0, 0, this.scrollWidth, cH);
 
-        this.scrollcc.clearRect(0, 0, this.scrollWidth, this.scrollHeight);
-
-        var curCenter = relX * this.scrollWidth;
 
         var circCtl = 5;
         var curDiam = (((vP.eS-vP.sS)/bufferLength) * this.scrollWidth)/2 + 2*circCtl;
-        
+
+        var curCenter = (vP.sS/bufferLength*this.scrollWidth)+curDiam;
 
         this.scrollcc.beginPath();
-        this.scrollcc.moveTo(curCenter-curDiam, 1);
-        this.scrollcc.lineTo(curCenter+curDiam, 1);
-        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, 1,  
-                    curCenter+curDiam+circCtl, this.scrollHeight/2);
+        this.scrollcc.moveTo(curCenter-curDiam, cH-this.scrollHeight+1);
+        this.scrollcc.lineTo(curCenter+curDiam, cH-this.scrollHeight+1);
+        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-this.scrollHeight+1,
+                    curCenter+curDiam+circCtl, cH-this.scrollHeight/2);
 
-        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, this.scrollHeight-1,
-            curCenter+curDiam, this.scrollHeight-1);
+        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-1,
+            curCenter+curDiam, cH-1);
 
-        this.scrollcc.lineTo(curCenter-curDiam, this.scrollHeight-1);
+        this.scrollcc.lineTo(curCenter-curDiam, cH-1);
 
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, this.scrollHeight-1, 
-            curCenter-curDiam-circCtl, this.scrollHeight/2);
+        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1, 
+            curCenter-curDiam-circCtl, cH-this.scrollHeight/2);
 
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, 1, 
-             curCenter-curDiam, 1);
+        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-this.scrollHeight+1, 
+             curCenter-curDiam, cH-this.scrollHeight+1);
 
-        this.scrollcc.fillStyle = this.params.waveColor;
+        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.5)";
         this.scrollcc.fill();
 
-        this.scrollcc.strokeStyle = this.params.progressColor;
+        this.scrollcc.strokeStyle = "rgba(100, 100, 100, 0.9)";
         this.scrollcc.stroke();
+
+        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.2)";
+        this.scrollcc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
 
     },
 
