@@ -56,7 +56,6 @@ var emulabeller = (function () {
 
     var canvas = document.querySelector('#wave');
 
-    canvas.setAttribute('unselectable');
 
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
@@ -74,9 +73,12 @@ var emulabeller = (function () {
         tierInfos: labFileRep
     });
 
+    // for testing preload wav
     labeller.load('data/msajc003.wav');
 
-
+    // for testing prelaod ssff
+    labeller.newFileType = 2;
+    labeller.ssffParser.load('data/msajc003.f0');
 
     document.getElementById('fileGetterBtn').addEventListener('change', labeller.fileAPIread, false);
 

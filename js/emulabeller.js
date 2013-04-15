@@ -24,7 +24,13 @@ var EmuLabeller = {
 
         this.labParser = Object.create(EmuLabeller.LabFileParser);
 
+        this.ssffParser = Object.create(EmuLabeller.SSFFparser);
+        this.ssffParser.init();
+
+        // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;
+
+        this.ssffInfos = {data: [], canvases: []};
 
 
         this.isDraging = false;
@@ -40,19 +46,19 @@ var EmuLabeller = {
 
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.isDraging = true;
-            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.canvas, function (percents) {
-            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
-                my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
@@ -60,11 +66,11 @@ var EmuLabeller = {
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
             my.isDraging = true;
-            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.specCanvas, function (percents) {
-            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
         });
@@ -72,7 +78,7 @@ var EmuLabeller = {
         this.bindOnMouseMoved(params.specCanvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
-                my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
@@ -165,7 +171,7 @@ onAudioProcess: function () {
     drawBuffer: function (isNewlyLoaded) {
         //console.log(this);
         if (this.backend.currentBuffer) {
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded);
+            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
 
@@ -339,7 +345,7 @@ onAudioProcess: function () {
 
     parseNewFile: function (readerRes) {
         var my = this;
-        var ft =    emulabeller.newFileType;
+        var ft = emulabeller.newFileType;
         if(ft==0){
             console.log(readerRes);
             my.backend.loadData(
@@ -356,10 +362,20 @@ onAudioProcess: function () {
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
             this.drawBuffer();
+        } else if(ft==2){
+            var sCanName = "F0";
+            $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\"1024\" height=\"128\"></canvas>");
+            var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
+            emulabeller.ssffInfos.data.push(ssffData);
+            emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
+        
+            // console.log(emulabeller.ssffInfos);
         }
+
     },
 
     fileAPIread: function (evt) {
+        var my = this;
 
         var file = evt.target.files[0];
 

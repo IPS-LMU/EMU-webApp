@@ -2,4 +2,10 @@ canvas
 	{
 		border: 1px solid gray;
 		box-shadow: 3px 3px 7px #777;
+        background-color: rgb(230,230,230);
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
 	}

@@ -1,8 +1,9 @@
-var SSFFparser = {
+'use strict;'
 
+EmuLabeller.SSFFparser = {
 
     init: function () {
-        this.load('data/msajc003.f0');
+        // this.load('data/msajc003.f0');
         this.ssffData = {};
 
         this.ssffData.headID = "SSFF -- (c) SHLRC\n";
@@ -14,8 +15,9 @@ var SSFFparser = {
     },
 
 
-    newlyLoadedSSFF: function (buf) {
-        console.log('SSFF loaded');
+    parseSSFF: function (buf) {
+        var my = this;
+        // console.log('SSFF loaded');
 
         var uIntBuffView =  new Uint8Array(buf);
         var buffStr = String.fromCharCode.apply(null, uIntBuffView);
@@ -23,7 +25,7 @@ var SSFFparser = {
         var newLsep = buffStr.split(/^/m);
 
         //check if header has headID and machineID
-        if(newLsep[0] != this.ssffData.headID || newLsep[1] != this.ssffData.machineID){
+        if(newLsep[0] != my.ssffData.headID || newLsep[1] != my.ssffData.machineID){
             alert('no ssff file... or missing fields');
         }
         // check if Record_Freq+Start_Time is there
@@ -49,7 +51,7 @@ var SSFFparser = {
 
         // console.log(this.ssffData);
 
-        console.log(newLsep.slice(0,i+1).join("").length);
+        // console.log(newLsep.slice(0,i+1).join("").length);
 
         var curBinIdx = newLsep.slice(0,i+1).join("").length;
 
@@ -89,7 +91,8 @@ var SSFFparser = {
 
             }//for
         }//while
-        console.log(this.ssffData);
+        // console.log(this.ssffData);
+        return this.ssffData;
     },
 
     load: function (src) {
@@ -98,7 +101,7 @@ var SSFFparser = {
         xhr.responseType = 'arraybuffer';
 
         xhr.addEventListener('load', function (e) {
-            my.newlyLoadedSSFF(e.target.response);
+            emulabeller.parseNewFile(e.target.response);
         }, false);
 
         xhr.open('GET', src, true);
@@ -107,19 +110,18 @@ var SSFFparser = {
 };
 
 
-var ssffparser = (function () {
-    'use strict';
+// var ssffparser = (function () {
+//     'use strict';
 
-    var parser = Object.create(SSFFparser);
+//     var parser = Object.create(SSFFparser);
 
-    parser.init();
+//     parser.init();
 
-    return parser;
-}());
+//     return parser;
+// }());
 
 
 //expand ArrayBuffer with subarray function
-
 ArrayBuffer.prototype.subarray = function(offset, length){
     var sub = new ArrayBuffer(length);
     var subView = new Int8Array(sub);

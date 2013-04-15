@@ -128,14 +128,16 @@ EmuLabeller.Drawer = {
     }//else
     },
 
-    progress: function (percents, vP, bufferLength) {
+    progress: function (percents, vP, bufferLength, ssffInfos) {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
         this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
 
+
         this.redraw(vP);
         this.drawTimeLine(vP);
+        this.drawSSFF(ssffInfos, vP);
     },
 
     drawSpec: function(fftData){
@@ -153,14 +155,10 @@ EmuLabeller.Drawer = {
         }
     },
 
-    drawBuffer: function (buffer, vP, isInitDraw) {
-        // if(vP.eS-vP.sS > buffer.length){
-        //     console.log("weeeeeeeeasdf");
-
-        // }
+    drawBuffer: function (buffer, vP, isInitDraw, ssffInfos) {
 
         this.getPeaks(buffer, vP);
-        this.progress(0, vP, buffer.length);
+        this.progress(0, vP, buffer.length, ssffInfos);
         if(isInitDraw){
             console.log("initDraw");
             this.drawMiniMap(vP);
@@ -171,7 +169,6 @@ EmuLabeller.Drawer = {
 
     drawMiniMap: function (vP) {
         //this.resizeCanvases();
-        console.log("sdfasdf");
         var my = this;
         // this.clear();
 
@@ -189,8 +186,6 @@ EmuLabeller.Drawer = {
 
             my.sTmpCtx.fillStyle = my.params.waveColor;
             my.sTmpCtx.fillRect(x, y, w, h);
-
-
         })
 
     },
@@ -240,8 +235,9 @@ EmuLabeller.Drawer = {
             this.cc.lineTo(posE,this.osciHeight);
             this.cc.closePath();
             this.cc.stroke();
+
             // same thing on spec
-            this.scc.clearRect(0, 0, this.specWidth, this.specHeight)
+            this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
             this.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
             this.scc.fillRect(posS, 0, posE-posS, this.osciHeight);
 
@@ -430,10 +426,7 @@ EmuLabeller.Drawer = {
             var posE = this.osciWidth*procE;
 
             curcc.clearRect(0, 0, curCanWidth, curCanHeight);
-            if(vP.selTier == i){
-                curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";    
-                curcc.fillRect(0, 0, curCanWidth, curCanHeight);    
-            }
+
             curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
             curcc.beginPath();
             curcc.moveTo(posS,0);
@@ -488,7 +481,78 @@ EmuLabeller.Drawer = {
                     }
                 }
             }
+            //invert selected tier colors
+            if(vP.selTier == i){
+                this.invertCanvas(curCanv);
+            }
 
         }
+    },
+    invertCanvas: function (can) {
+        var context = can.getContext("2d");
+        // context.fillRect(0, 0, can.clientWidth, can.clientHeight);
+        var imageData = context.getImageData(0, 0, can.width, can.height);
+        var data = imageData.data;
+        var df = 100;
+        for (var i = 0; i < data.length; i += 4) {
+
+            data[i] = 255-data[i]; // red
+            data[i + 1] = 255-data[i + 1]; // green
+            data[i + 2] = 255-data[i + 2]; // blue
+            // i+3 is alpha (the fourth element)
+        }
+        // overwrite original image
+        context.putImageData(imageData, 0, 0);
+
+    },
+
+    drawSSFF: function (ssffInfos, vP){
+
+        if (ssffInfos.data[0].Columns[0].name !="F0") {
+            alert("not F0 column->not supported")
+        };
+
+        console.log(ssffInfos.data[0].Columns[0].values[346][0]);
+        var f0array = [];
+
+        for (var i = 0; i < ssffInfos.data[0].Columns[0].values.length; i++) {
+            // console.log(ssffInfos.data[0].Columns[0].values[i][0]);
+            f0array.push(ssffInfos.data[0].Columns[0].values[i][0]);
+        };
+
+        var origFreq = ssffInfos.data[0].Record_Freq
+
+        var start_time = ssffInfos.data[0].Start_Time;
+        var maxF0 = Math.max.apply(Math, f0array);
+        console.log(maxF0);
+
+        var curContext = ssffInfos.canvases[0].getContext("2d");
+        var h = ssffInfos.canvases[0].clientHeight;
+        var w = ssffInfos.canvases[0].clientWidth;
+
+        curContext.clearRect(0, 0, w, h);
+
+        for (var i = 1; i < f0array.length; i++) {
+            // curContext.fillStyle = "rgb(0,255,0)";
+            // curContext.fillRect(i,  128-f0array[i]/maxF0 * 128, 1, 128);
+            
+            curContext.moveTo(i-1, h-f0array[i-1]/maxF0*h);
+            curContext.lineTo(i, h-f0array[i]/maxF0)*h;
+
+        }
+        curContext.stroke();
+
+        // console.log(ssffInfos.data[0].End_Time);
+        // console.log(ssffInfos);
+
+
+
+        //find max... SIC... stupid to compute every time!
+        // for (var i = 0; i < ssffInfos.data[0].Columns[0].values.length; i++) {
+            // console.log(ssffInfos.data[0].Columns[0].values[i]);
+        // };
+
+
+
     }
 };
