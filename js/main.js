@@ -74,7 +74,7 @@ var emulabeller = (function () {
         tierInfos: labFileRep
     });
 
-    // labeller.load('data/msajc003.wav');
+    labeller.load('data/msajc003.wav');
 
 
 

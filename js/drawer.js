@@ -240,6 +240,22 @@ EmuLabeller.Drawer = {
             this.cc.lineTo(posE,this.osciHeight);
             this.cc.closePath();
             this.cc.stroke();
+            // same thing on spec
+            this.scc.clearRect(0, 0, this.specWidth, this.specHeight)
+            this.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
+            this.scc.fillRect(posS, 0, posE-posS, this.osciHeight);
+
+            this.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            this.scc.beginPath();
+            this.scc.moveTo(posS,0);
+            this.scc.lineTo(posS,this.osciHeight);
+            this.scc.moveTo(posE,0);
+            this.scc.lineTo(posE,this.osciHeight);
+            this.scc.closePath();
+            this.scc.stroke();
+
+
+
         }
         //
         this.drawTiers(vP);
@@ -319,7 +335,9 @@ EmuLabeller.Drawer = {
         var y = 0;
 
         this.cc.fillStyle = this.params.cursorColor;
-        this.cc.fillRect(x, y, w, h);
+        if(x > 0){
+            this.cc.fillRect(x, y, w, h);
+        }
     },
 
 
@@ -412,6 +430,10 @@ EmuLabeller.Drawer = {
             var posE = this.osciWidth*procE;
 
             curcc.clearRect(0, 0, curCanWidth, curCanHeight);
+            if(vP.selTier == i){
+                curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";    
+                curcc.fillRect(0, 0, curCanWidth, curCanHeight);    
+            }
             curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
             curcc.beginPath();
             curcc.moveTo(posS,0);

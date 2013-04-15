@@ -12,7 +12,7 @@ EmuLabeller.ViewPort = {
         this.selectE = 0;
 
 
-        this.selTier = -1;
+        this.selTier = 0;
         this.selSegment = -1;
     }
 };

@@ -55,8 +55,8 @@ EmuLabeller.WebAudio = {
     setSource: function (source) {
         this.source && this.source.disconnect();
         this.source = source;
-        // this.source.connect(this.analyser);
-        // this.source.connect(this.proc);
+        this.source.connect(this.analyser);
+        this.source.connect(this.proc);
 
         this.source.connect(this.destination);
         // this.source.connect(this.verb);

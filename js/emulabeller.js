@@ -57,6 +57,27 @@ var EmuLabeller = {
             }
         });
 
+        // same bindings for spec canvas
+        this.bindOnButtonDown(params.specCanvas, function (percents) {
+            my.isDraging = true;
+            my.viewPort.selectS = (my.viewPort.eS-my.viewPort.sS)*(percents);
+        });
+
+        this.bindOnButtonUp(params.specCanvas, function (percents) {
+            my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+            my.isDraging = false;
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+        });
+
+        this.bindOnMouseMoved(params.specCanvas, function (percents) {
+            if(my.isDraging){
+                //console.log(percents);
+                my.viewPort.selectE = (my.viewPort.eS-my.viewPort.sS)*(percents);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            }
+        });
+
+
         // this.bindScrollClick(params.scrollCanvas, function (x) {
         //     //my.scrollBarMoved(x);
         //     console.log(x);
@@ -257,7 +278,7 @@ onAudioProcess: function () {
     /**
      * Click to seek.
      */
-     bindClick: function (element, callback) {
+    bindClick: function (element, callback) {
         var my = this;
         element.addEventListener('click', function (e) {
             var relX = e.offsetX;
@@ -335,7 +356,6 @@ onAudioProcess: function () {
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
             this.drawBuffer();
-
         }
     },
 
@@ -372,5 +392,25 @@ onAudioProcess: function () {
             alert('File type not supported.... sorry!');
         }
 
+    },
+    addTier: function () {
+        console.log("addding tier");
+        console.log(this.tierInfos);
+        var tName;
+        if(this.tierInfos.tiers.length > 0){
+            tName = "Tier" + this.tierInfos.tiers.length;
+        }else{
+            console.log("here");
+            tName = "Tier0";
+        }
+        
+        this.tierInfos.tiers.push({TierName: tName, type: "seg", events: []}); // SIC what about point???
+        
+        console.log(tName);
+        $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
+        this.tierInfos.canvases.push($("#"+tName)[0]);
+        emulabeller.drawer.addTier($("#"+tName)[0]);
+        this.drawBuffer();
     }
+
 };
