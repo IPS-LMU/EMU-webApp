@@ -1,3 +1,5 @@
+//text/cache-manifest .manifest has to be returned from server to do offline stuff
+
 HOST = null; // localhost
 PORT = 8001;
 var sys = require("sys"),

@@ -83,12 +83,6 @@ var EmuLabeller = {
             }
         });
 
-
-        // this.bindScrollClick(params.scrollCanvas, function (x) {
-        //     //my.scrollBarMoved(x);
-        //     console.log(x);
-        // });
-
 },
 
 onAudioProcess: function () {
@@ -171,6 +165,7 @@ onAudioProcess: function () {
     drawBuffer: function (isNewlyLoaded) {
         //console.log(this);
         if (this.backend.currentBuffer) {
+            console.log(this);
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
@@ -281,15 +276,13 @@ onAudioProcess: function () {
     },
 
 
-    /**
-     * Click to seek.
-     */
-    bindClick: function (element, callback) {
+    
+    bindTierClick: function (element, callback) {
         var my = this;
         element.addEventListener('click', function (e) {
             var relX = e.offsetX;
             if (null == relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth);
+            callback(relX / this.clientWidth, element.id);
         }, false);
     },
 
@@ -427,6 +420,40 @@ onAudioProcess: function () {
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
         this.drawBuffer();
+    },
+
+    setMarkedEvent: function (percent, elID){
+        console.log(percent, elID);
+        var clickedTier;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            if(this.tierInfos.tiers[i].TierName == elID){
+                clickedTier = this.tierInfos.tiers[i];
+                break;
+            }
+        }
+        this.viewPort.selTier = i;
+
+        if(clickedTier.type=="seg"){
+            var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percent;
+            for (var i = 0; i < clickedTier.events.length; i++) {
+                // console.log("##########");
+                // console.log(clickedTier.events[i].time);
+                if (curSample < clickedTier.events[i].time) {
+                    var clickedEvtNr = i;
+                    break;
+                }
+            }
+            console.log(clickedTier.events[clickedEvtNr]);
+
+            this.viewPort.selSegment = clickedEvtNr;
+            // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
+            this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
+            this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
+
+        }
+
+        this.drawBuffer();
+
     }
 
 };

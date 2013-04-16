@@ -137,8 +137,11 @@ EmuLabeller.Drawer = {
 
         this.redraw(vP);
         this.drawTimeLine(vP);
-        if(ssffInfos.data.length > 0){
-            this.drawSSFF(ssffInfos, vP);
+        console.log("progress called");
+        if(ssffInfos){
+            if(ssffInfos.data.length > 0){
+                this.drawSSFF(ssffInfos, vP);
+            }
         }
     },
 
