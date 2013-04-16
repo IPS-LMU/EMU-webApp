@@ -77,8 +77,8 @@ var emulabeller = (function () {
     labeller.load('data/msajc003.wav');
 
     // for testing prelaod ssff
-    labeller.newFileType = 2;
-    labeller.ssffParser.load('data/msajc003.f0');
+    // labeller.newFileType = 2;
+    // labeller.ssffParser.load('data/msajc003.f0');
 
     document.getElementById('fileGetterBtn').addEventListener('change', labeller.fileAPIread, false);
 

@@ -368,7 +368,7 @@ onAudioProcess: function () {
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
-        
+            this.drawBuffer();
             // console.log(emulabeller.ssffInfos);
         }
 
