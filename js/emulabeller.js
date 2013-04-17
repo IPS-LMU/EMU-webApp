@@ -108,6 +108,8 @@ onAudioProcess: function () {
         this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
         this.drawer.drawSpec(this.backend.frequency());
         this.pause();
+        // console.log(this);
+        // this.playPause();
     }
 
 },
@@ -165,7 +167,7 @@ onAudioProcess: function () {
     drawBuffer: function (isNewlyLoaded) {
         //console.log(this);
         if (this.backend.currentBuffer) {
-            console.log(this);
+            // console.log(this);
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
@@ -347,6 +349,7 @@ onAudioProcess: function () {
                 );
 
         } else if(ft==1){
+            var my = this;
             emulabeller.labParser.parseFile(readerRes, this.tierInfos);
             // console.log(this.tierInfos);
             var tName = this.tierInfos.tiers[this.tierInfos.tiers.length-1].TierName;
@@ -354,6 +357,14 @@ onAudioProcess: function () {
             $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
+     
+            this.bindTierClick($('#'+tName)[0], function (percents, elID) {
+                console.log(percents);
+                console.log(elID);
+                my.setMarkedEvent(percents, elID);
+            });
+
+
             this.drawBuffer();
         } else if(ft==2){
             var sCanName = "F0";
@@ -419,6 +430,7 @@ onAudioProcess: function () {
         $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
+
         this.drawBuffer();
     },
 

@@ -124,8 +124,8 @@ EmuLabeller.WebAudio = {
         this.lastStart = start;
         this.startTime = this.ac.currentTime;
 
-        //this.source.start(delay, start, end - start); //when, offset, duration in seconds
-        this.source.noteOn(delay, start, end - start); //when, offset, duration in seconds
+        this.source.start(delay, start, end - start); //when, offset, duration in seconds
+        // this.source.noteOn(delay, start, end - start); //when, offset, duration in seconds
 
         this.paused = false;
     },
@@ -140,9 +140,9 @@ EmuLabeller.WebAudio = {
 
         this.lastPause = this.getCurrentTime();
 
-        //this.source.stop(delay || 0);
+        this.source.stop(delay || 0);
 
-        this.source.noteOff(delay || 0); // deprecated version for safari... yay
+        // this.source.noteOff(delay || 0); // deprecated version for safari... yay
 
         this.paused = true;
     },
