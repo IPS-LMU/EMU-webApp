@@ -39,7 +39,7 @@ EmuLabeller.Drawer = {
         this.sTmpCtx = this.sTmpCanvas.getContext("2d");
         this.sTmpCanvas.width = this.scrollWidth;
         this.sTmpCanvas.height = this.scrollCanvas.clientHeight;
-        
+
         // this.toRetinaRatio(this.sTmpCanvas, this.sTmpCtx);
 
 
@@ -242,12 +242,24 @@ EmuLabeller.Drawer = {
             this.cc.closePath();
             this.cc.stroke();
 
+            this.cc.strokeStyle = "rgba(0, 0, 255, 0.7)";
+            if(vP.selectS == vP.selectE){
+                this.cc.strokeText(Math.floor(vP.selectS), posS+5, 10);
+            }else{
+                var tW = this.cc.measureText(Math.floor(vP.selectS)).width;
+                this.cc.strokeText(Math.floor(vP.selectS), posS-tW-4, 10);
+                this.cc.strokeText(Math.floor(vP.selectE), posE+5, 10);
+
+            }
+
             // same thing on spec
             this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
             this.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
             this.scc.fillRect(posS, 0, posE-posS, this.osciHeight);
-
             this.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+
+
+
             this.scc.beginPath();
             this.scc.moveTo(posS,0);
             this.scc.lineTo(posS,this.osciHeight);
@@ -279,7 +291,7 @@ EmuLabeller.Drawer = {
                     my.drawFrame(index, peak, my.maxPeak, my.peaks[index-1]);
                 }
             });
-        // Or draw an image.
+        // over sample exact
         } else if (k < 1) {
             this.cc.strokeStyle = this.params.waveColor;
             this.cc.beginPath();
@@ -411,16 +423,27 @@ EmuLabeller.Drawer = {
     drawTiers: function(vP) {
         // console.log(this.tierInfos.contexts.length);
         //console.log(vP);
+        var markColor = "rgba(255, 255, 0, 0.7)";
+
         var curcc;
         var curCanv;
         for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
             //console.log("here");
             curCanv = this.tierInfos.canvases[i];
             curcc = this.tierInfos.contexts[i];
-
             var curCanHeight = curCanv.clientHeight;
             var curCanWidth = curCanv.clientWidth;
+            curcc.clearRect(0, 0, curCanWidth, curCanHeight);
 
+            //highlight selected tier if no segment is selected
+            if(vP.selSegment == -1 && vP.selTier == i){
+                curcc.fillStyle = markColor;
+                curcc.fillRect(0, 0, curCanv.clientWidth, curCanv.clientHeight);
+                curcc.fillStyle = "rgb(0, 0, 0)";
+            }
+            // console.log("------------");
+            // console.log(vP.selTier);
+            // console.log(vP.selSegment);
 
             var all = vP.eS-vP.sS;
             var fracS = vP.selectS-vP.sS;
@@ -430,8 +453,6 @@ EmuLabeller.Drawer = {
             var fracE = vP.selectE-vP.sS;
             var procE = fracE/all;
             var posE = this.osciWidth*procE;
-
-            curcc.clearRect(0, 0, curCanWidth, curCanHeight);
 
             curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
             curcc.beginPath();
@@ -447,6 +468,7 @@ EmuLabeller.Drawer = {
                 curcc.stroke();
             }
 
+
             // draw name
             curcc.strokeStyle = this.params.waveColor;
             curcc.font="8px Arial";
@@ -454,17 +476,23 @@ EmuLabeller.Drawer = {
 
             var cI = this.tierInfos.tiers[i];
 
-            var ev, perc, tW;
+            var ev, perc, tW, prevPerc;
             if (cI.type == "seg"){
                 //draw seg
                 for (ev = 0; ev < cI.events.length; ev++) {
                     if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
                         perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+                        if(ev == vP.selSegment && vP.selTier == i){
+                            prevPerc = (cI.events[ev-1].time-vP.sS)/(vP.eS-vP.sS);
+                            curcc.fillStyle = markColor;
+                            curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
+                            curcc.fillStyle = "rgb(0,0,0)";
+                        }
 
                         if(cI.events[ev].label != 'H#'){
                             tW = curcc.measureText(cI.events[ev].label).width;
-                            curcc.strokeText(cI.events[ev].label, curCanWidth*perc-10, curCanHeight/2);
+                            curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW-10, curCanHeight/2);
                         }
                     }
                     if(cI.events[ev].end > vP.sS && cI.events[ev].end < vP.eS){
@@ -487,29 +515,8 @@ EmuLabeller.Drawer = {
                     }
                 }
             }
-            //invert selected tier colors
-            if(vP.selTier == i){
-                this.invertCanvas(curCanv);
-            }
 
         }
-    },
-    invertCanvas: function (can) {
-        var context = can.getContext("2d");
-        // context.fillRect(0, 0, can.clientWidth, can.clientHeight);
-        var imageData = context.getImageData(0, 0, can.width, can.height);
-        var data = imageData.data;
-        var df = 100;
-        for (var i = 0; i < data.length; i += 4) {
-
-            data[i] = 255-data[i]; // red
-            data[i + 1] = 255-data[i + 1]; // green
-            data[i + 2] = 255-data[i + 2]; // blue
-            // i+3 is alpha (the fourth element)
-        }
-        // overwrite original image
-        context.putImageData(imageData, 0, 0);
-
     },
 
     drawSSFF: function (ssffInfos, vP){

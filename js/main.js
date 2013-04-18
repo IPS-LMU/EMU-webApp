@@ -81,57 +81,78 @@ var emulabeller = (function () {
     labeller.load('data/msajc003.wav');
 
     // labeller.bindTierClick($('#TierOld1')[0], function (percents, elID) {
-    //     console.log(percents);
-    //     console.log(elID);
     //     labeller.setMarkedEvent(percents, elID);
     // });
+
+    // labeller.bindTierClick($('#TierOld2')[0], function (percents, elID) {
+    //     labeller.setMarkedEvent(percents, elID);
+    // });
+
 
 
     // for testing prelaod ssff
     // labeller.newFileType = 2;
     // labeller.ssffParser.load('data/msajc003.f0');
 
-    document.getElementById('fileGetterBtn').addEventListener('change', labeller.fileAPIread, false);
+    $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
-
+    //hack for hiding inputs of dialogs..
+    $("#dialog-messageSh").hide();
+    $("#dialog-messageSetLabel").hide();
+    
     //emulabeller.bindDragNDrop();
 
     document.addEventListener('keypress', function (e) {
         // spacebar
-        if (32 == e.keyCode) {
-            // space bar
-            e.preventDefault();
-            emulabeller.playPause();
+        if(!emulabeller.isModalShowing){
+
+            if (32 == e.keyCode) {
+                // space bar
+                e.preventDefault();
+                emulabeller.playPause();
+            }
+            if (114 == e.keyCode) {
+                emulabeller.playInMode("sel");
+            }
+            if (102 == e.keyCode) {
+                emulabeller.playInMode("all");
+            }
+            if (119 == e.keyCode){
+                emulabeller.zoomViewPort(1);
+            }
+            if (115 == e.keyCode){
+                emulabeller.zoomViewPort(0);
+            }
+            if (100 == e.keyCode){
+                emulabeller.incrViewP(1);
+            }
+            if (97 == e.keyCode){
+                emulabeller.incrViewP(0);
+            }
+            if (113 == e.keyCode){
+                emulabeller.setView(-Infinity, Infinity);
+            }
+            if (101 == e.keyCode){
+                emulabeller.zoomSel();
+            }
+            if (111 == e.keyCode){
+                // O key
+                $('#fileGetterBtn').click();
+            }
+            if (104 == e.keyCode){
+                // h key
+                emulabeller.showHideTierDial();
+            }
+            if (99 == e.keyCode){
+                // c key
+                emulabeller.editLabel();
+            }            
+            if (116 == e.keyCode){
+                // T key
+                emulabeller.moveSelTierToTop();
+            }
+            console.log(e.keyCode);
         }
-        if (114 == e.keyCode) {
-            emulabeller.playInMode("sel");
-        }
-        if (102 == e.keyCode) {
-            emulabeller.playInMode("all");
-        }
-        if (119 == e.keyCode){
-            emulabeller.zoomViewPort(1);
-        }
-        if (115 == e.keyCode){
-            emulabeller.zoomViewPort(0);
-        }
-        if (100 == e.keyCode){
-            emulabeller.incrViewP(1);
-        }
-        if (97 == e.keyCode){
-            emulabeller.incrViewP(0);
-        }
-        if (113 == e.keyCode){
-            emulabeller.setView(-Infinity, Infinity);
-        }
-        if (101 == e.keyCode){
-            emulabeller.zoomSel();
-        }
-        if (111 == e.keyCode){
-            // O key
-            $('#fileGetterBtn').click();
-        }
-        console.log(e.keyCode);
     });
 
     return labeller;

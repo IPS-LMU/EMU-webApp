@@ -7,6 +7,7 @@
          <title>emulablerjs</title>
          <link rel="stylesheet" href="css/bootstrap.min.css">
          <link rel="stylesheet" href="css/my.css">
+           <link rel="stylesheet" href="css/jquery-ui.css" />
 
  </head>
  <body>
@@ -33,10 +34,13 @@
                 <button class="btn" onclick="emulabeller.addTier();">Add Tier</button>
               </li>
               <li class="">
-                <button class="btn" onclick="console.log(234);">Save Tier to File</button>
+                <button class="btn" onclick="console.log(234);" disabled>Save Tier to File</button>
               </li>
               <li class="">
-                <button class="btn" onclick="console.log(5678);">Remove Tier</button>
+                <button class="btn" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
+              </li>
+              <li class="">
+                <button class="btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
               </li>
             </ul>
           </div>
@@ -90,11 +94,24 @@
 
 
  </div><!-- .container -->
+
+<div id="dialog-messageSh" title="Show/Hide Tier with Name">
+  <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
+</div>
+
+<div id="dialog-messageSetLabel" title="Set label">
+  <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
+</div>
+
+
+
     
   <noscript>No javascript enabled...</noscript>
+
  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
    
   <script src="js/emulabeller.js"></script>
   <script src="js/webaudio.js"></script>
@@ -104,6 +121,7 @@
   <script src="js/ssffparser.js"></script>
 
   <script src="js/main.js"></script>
+
 
  </body>
 </html>

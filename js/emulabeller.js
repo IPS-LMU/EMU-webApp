@@ -36,6 +36,8 @@ var EmuLabeller = {
         this.isDraging = false;
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
 
+        this.isModalShowing = false;
+
         this.playMode = "vP"; // can be "vP", "sel" or "all"
 
         //bindings
@@ -346,7 +348,7 @@ onAudioProcess: function () {
             my.backend.loadData(
                 readerRes,
                 my.newlyLoadedBufferReady.bind(my)
-                );
+            );
 
         } else if(ft==1){
             var my = this;
@@ -363,7 +365,7 @@ onAudioProcess: function () {
                 console.log(elID);
                 my.setMarkedEvent(percents, elID);
             });
-
+            this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
             this.drawBuffer();
         } else if(ft==2){
@@ -414,28 +416,39 @@ onAudioProcess: function () {
 
     },
     addTier: function () {
+        var my = this;
         console.log("addding tier");
         console.log(this.tierInfos);
         var tName;
         if(this.tierInfos.tiers.length > 0){
             tName = "Tier" + this.tierInfos.tiers.length;
         }else{
-            console.log("here");
+            // console.log("here");
             tName = "Tier0";
         }
         
         this.tierInfos.tiers.push({TierName: tName, type: "seg", events: []}); // SIC what about point???
-        
+        this.viewPort.selTier = this.tierInfos.tiers.length-1;
+        this.viewPort.selSegment = -1;
+
         console.log(tName);
         $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
+        this.bindTierClick($('#'+tName)[0], function (percents, elID) {
+            console.log(percents);
+            console.log(elID);
+            my.setMarkedEvent(percents, elID);
+        });
+
+
         this.drawBuffer();
     },
 
     setMarkedEvent: function (percent, elID){
-        console.log(percent, elID);
+        // console.log("###############");
+        // console.log(percent, elID);
         var clickedTier;
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             if(this.tierInfos.tiers[i].TierName == elID){
@@ -457,15 +470,68 @@ onAudioProcess: function () {
             }
             console.log(clickedTier.events[clickedEvtNr]);
 
-            this.viewPort.selSegment = clickedEvtNr;
-            // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
-            this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
-            this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
+            if(clickedTier.events.length >0){
+                this.viewPort.selSegment = clickedEvtNr;
+                // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
+                this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
+                this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
+            }
 
         }
 
         this.drawBuffer();
 
-    }
+    },
 
+    showHideTierDial: function () {
+        emulabeller.isModalShowing = true;
+        $( "#dialog-messageSh" ).dialog({
+          modal: true,
+          close: function() {
+            console.log("closing");
+            emulabeller.isModalShowing = false;
+          },
+          buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+                var usrTxt = $("#dialShInput")[0].value;
+                // emulabeller.tierInfos.tiers[0] = {};
+                // emulabeller.tierInfos.canvases[0] = {};
+                $("#"+usrTxt).slideToggle();
+                emulabeller.isModalShowing = false;
+            }
+          }
+        });
+    },
+
+    editLabel: function () {
+        var my = this;
+        console.log(this.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label);
+        this.isModalShowing = true;
+        $("#dialLabelInput")[0].value = this.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label;
+        $("#dialog-messageSetLabel" ).dialog({
+          modal: true,
+          close: function() {
+            console.log("closing");
+            emulabeller.isModalShowing = false;
+          },
+          buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+                var usrTxt = $("#dialLabelInput")[0].value;
+                // this.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label = usrTxt;
+                console.log(my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selSegment].label);
+                my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selSegment].label = usrTxt;
+                my.drawBuffer();
+            }
+          }
+        });
+
+    },
+
+    moveSelTierToTop: function () {
+        var stN = this.tierInfos.tiers[this.viewPort.selTier].TierName;
+        $('#'+stN).prependTo('#cans');
+
+    }
 };
