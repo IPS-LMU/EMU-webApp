@@ -480,7 +480,6 @@ onAudioProcess: function () {
         }
 
         this.drawBuffer();
-
     },
 
     showHideTierDial: function () {
