@@ -532,5 +532,18 @@ onAudioProcess: function () {
         var stN = this.tierInfos.tiers[this.viewPort.selTier].TierName;
         $('#'+stN).prependTo('#cans');
 
+    },
+
+    sendTierinfosToServer: function () {
+        var sT = this.tierInfos.tiers[this.viewPort.selTier];
+        console.log(sT);
+        var data = {'bob':'foo','paul':'dog'};
+        $.ajax({
+            url: "http://127.0.0.1:8001/",
+            type: 'POST',
+            contentType:'application/json',
+            data: JSON.stringify(sT),
+            dataType:'json'
+        });
     }
 };

@@ -34,7 +34,7 @@
                 <button class="btn" onclick="emulabeller.addTier();">Add Tier</button>
               </li>
               <li class="">
-                <button class="btn" onclick="console.log(234);" disabled>Save Tier to File</button>
+                <button class="btn" onclick="emulabeller.sendTierinfosToServer()">Send to R</button>
               </li>
               <li class="">
                 <button class="btn" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
@@ -77,6 +77,8 @@
   <button class="btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
   <button class="btn" onclick="emulabeller.zoomViewPort(1);">in</button>
   <button class="btn" onclick="emulabeller.zoomViewPort(0);">out</button>
+  <button class="btn" onclick="emulabeller.incrViewP(0);;">lft</button>
+  <button class="btn" onclick="emulabeller.incrViewP(1);;">rght</button>
   <button class="btn" onclick="emulabeller.zoomSel();">sel</button>
 </div>
  
