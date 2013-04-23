@@ -1,5 +1,6 @@
 'use strict';
 
+
 var EmuLabeller = {
 
     init: function (params) {
@@ -415,7 +416,7 @@ onAudioProcess: function () {
         }
 
     },
-    addTier: function () {
+    addTier: function (addPointTier) {
         var my = this;
         console.log("addding tier");
         console.log(this.tierInfos);
@@ -427,7 +428,12 @@ onAudioProcess: function () {
             tName = "Tier0";
         }
         
-        this.tierInfos.tiers.push({TierName: tName, type: "seg", events: []}); // SIC what about point???
+        if(!addPointTier){
+            this.tierInfos.tiers.push({TierName: tName, type: "seg", events: []});
+        }else{
+            this.tierInfos.tiers.push({TierName: tName, type: "point", events: []});
+        }
+
         this.viewPort.selTier = this.tierInfos.tiers.length-1;
         this.viewPort.selSegment = -1;
 
@@ -448,7 +454,7 @@ onAudioProcess: function () {
 
     setMarkedEvent: function (percent, elID){
         // console.log("###############");
-        // console.log(percent, elID);
+        console.log(percent, elID);
         var clickedTier;
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             if(this.tierInfos.tiers[i].TierName == elID){
@@ -468,15 +474,19 @@ onAudioProcess: function () {
                     break;
                 }
             }
-            console.log(clickedTier.events[clickedEvtNr]);
+            // console.log(clickedTier.events[clickedEvtNr]);
 
-            if(clickedTier.events.length >0){
+            if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
                 this.viewPort.selSegment = clickedEvtNr;
                 // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
                 this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
                 this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
+            }else{
+                this.viewPort.selSegment = -1;
             }
 
+        }else{
+            this.viewPort.selSegment = -1;
         }
 
         this.drawBuffer();
@@ -545,5 +555,47 @@ onAudioProcess: function () {
             data: JSON.stringify(sT),
             dataType:'json'
         });
+    },
+
+    addSegmentAtSelection: function() {
+
+        var sT = emulabeller.tierInfos.tiers[emulabeller.viewPort.selTier];
+
+        if(emulabeller.viewPort.selectS == emulabeller.viewPort.selectE){
+            console.log("adding segments");
+            sT.events.push({label:"", time:emulabeller.viewPort.selectS});
+            console.log(sT.events);
+        }else{
+            sT.events.push({label:"", time:emulabeller.viewPort.selectS});
+            sT.events.push({label:"", time:emulabeller.viewPort.selectE});
+        }
+
+        //resort events here!
+        var bla = sT.events.sort(function(a,b) { return parseFloat(a.time) - parseFloat(b.time) } );
+        console.log(bla);
+        console.log(sT.events);
+
+        emulabeller.drawBuffer();
+    },
+    saveTiers: function () {
+        var myObject = {one: "weee", two: "woooo"};
+        var data = JSON.stringify(myObject);
+        console.log(data);
+
+        var url = "data:application/octet-stream;base64," + window.btoa(data);
+        var iframe;
+        iframe = document.getElementById("hiddenDownloader");
+        if (iframe === null)
+        {
+            iframe = document.createElement('iframe');
+            iframe.id = "hiddenDownloader";
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+        }
+        iframe.src = url;   
+
+
     }
+
+
 };

@@ -155,6 +155,10 @@ var emulabeller = (function () {
                 // T key
                 emulabeller.moveSelTierToTop();
             }
+            if (13 == e.keyCode){
+                // ENTER key
+                emulabeller.addSegmentAtSelection();
+            }
             console.log(e.keyCode);
         }
     });

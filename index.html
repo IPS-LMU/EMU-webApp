@@ -31,7 +31,10 @@
                 <input type="file" id="fileGetterBtn" name="file"/>
               </li>
               <li class="">
-                <button class="btn" onclick="emulabeller.addTier();">Add Tier</button>
+                <button class="btn" onclick="emulabeller.addTier();">Add Tier (seg)</button>
+              </li>
+              <li class="">
+                <button class="btn" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
               </li>
               <li class="">
                 <button class="btn" onclick="emulabeller.sendTierinfosToServer()">Send to R</button>
@@ -42,13 +45,15 @@
               <li class="">
                 <button class="btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
               </li>
+              <li class="">
+                <button class="btn" onclick="emulabeller.saveTiers();">Save Tiers</button>
+              </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-         
 
 <div class="hero-unit">
         <div id="alwaystherecans">
