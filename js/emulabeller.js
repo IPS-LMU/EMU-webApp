@@ -35,6 +35,8 @@ var EmuLabeller = {
 
 
         this.isDraging = false;
+        this.isDragingMiniMap = false;
+
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
 
         this.isModalShowing = false;
@@ -85,6 +87,35 @@ var EmuLabeller = {
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
+
+        // minimap bindings
+        this.bindOnButtonDown(params.scrollCanvas, function (percents) {
+            var bL = my.backend.currentBuffer.length;
+            var posInB = percents*bL;
+            var len = (my.viewPort.eS-my.viewPort.sS);
+            my.setView(posInB-len/2, posInB+len/2);
+            my.isDragingMiniMap = true;
+        });
+
+        this.bindOnButtonUp(params.scrollCanvas, function (percents) {
+            var bL = my.backend.currentBuffer.length;
+            var posInB = percents*bL;
+            var len = (my.viewPort.eS-my.viewPort.sS);
+            my.setView(posInB-len/2, posInB+len/2);
+            my.isDragingMiniMap = false;
+        });
+
+        this.bindOnMouseMoved(params.scrollCanvas, function (percents) {
+            if(my.isDragingMiniMap){
+                var bL = my.backend.currentBuffer.length;
+                var posInB = percents*bL;
+                var len = (my.viewPort.eS-my.viewPort.sS);
+                my.setView(posInB-len/2, posInB+len/2);
+            }
+        });
+
+
+
 
 },
 
@@ -240,8 +271,6 @@ onAudioProcess: function () {
             this.viewPort.eS = oldEnd;
         }
 
-
-
         this.drawBuffer();
 
     },
@@ -286,8 +315,10 @@ onAudioProcess: function () {
         var my = this;
         element.addEventListener('click', function (e) {
             var relX = e.offsetX;
-            if (null == relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth, element.id);
+            var relY = e.offsetY;
+            if (null === relX) { relX = e.layerX; }
+            if (null === relY) { relY = e.layerY; }
+            callback(relX / this.clientWidth,relY/this.clientHeight, element.id);
         }, false);
     },
 
@@ -318,28 +349,6 @@ onAudioProcess: function () {
         }, false);
     },
 
-
-
-    scrollBarMoved: function(relX){
-        var delta = this.viewPort.eS-this.viewPort.sS;
-        if (relX <=0.5) {
-
-            this.setView(this.viewPort.sS-delta, this.viewPort.eS-delta);
-        }else{
-            this.setView(this.viewPort.sS+delta, this.viewPort.eS+delta);
-
-        }
-
-    },
-
-    bindScrollClick: function (element, callback) {
-        var my = this;
-        element.addEventListener('click', function (e) {
-            var relX = e.offsetX;
-            if (null == relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth);
-        }, false);
-    },
 
     parseNewFile: function (readerRes) {
         var my = this;
@@ -452,9 +461,9 @@ onAudioProcess: function () {
         this.drawBuffer();
     },
 
-    setMarkedEvent: function (percent, elID){
+    setMarkedEvent: function (percX, percY, elID){ // SIC bad function name!! also adds labels if click is in circle
         // console.log("###############");
-        console.log(percent, elID);
+        console.log(percX, elID);
         var clickedTier;
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             if(this.tierInfos.tiers[i].TierName == elID){
@@ -464,8 +473,20 @@ onAudioProcess: function () {
         }
         this.viewPort.selTier = i;
 
-        if(clickedTier.type=="seg"){
-            var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percent;
+        var rXp = this.tierInfos.canvases[i].width*percX;
+        var rYp = this.tierInfos.canvases[i].height*percY;
+        var sXp = this.tierInfos.canvases[i].width*(this.viewPort.selectS / (this.viewPort.eS-this.viewPort.sS));
+        console.log("----------------");
+        console.log(rXp);
+        console.log(rYp);
+        console.log(sXp);
+        //see if close enough to circle
+        if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
+            console.log("hit the circle")
+            this.addSegmentAtSelection();
+        } else if(clickedTier.type=="seg"){
+
+            var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
             for (var i = 0; i < clickedTier.events.length; i++) {
                 // console.log("##########");
                 // console.log(clickedTier.events[i].time);
@@ -579,8 +600,9 @@ onAudioProcess: function () {
     },
     saveTiers: function () {
         var myObject = {one: "weee", two: "woooo"};
-        var data = JSON.stringify(myObject);
-        console.log(data);
+        console.log(this.tierInfos.tiers);
+        var data = JSON.stringify(this.tierInfos.tiers);
+        // console.log(data);
 
         var url = "data:application/octet-stream;base64," + window.btoa(data);
         var iframe;
@@ -592,10 +614,6 @@ onAudioProcess: function () {
             iframe.style.display = "none";
             document.body.appendChild(iframe);
         }
-        iframe.src = url;   
-
-
+        iframe.src = url;
     }
-
-
 };

@@ -462,12 +462,12 @@ EmuLabeller.Drawer = {
             curcc.lineTo(posE,curCanHeight);
             curcc.stroke();
 
+            //cirle with diam 5 for clicking range
             if(vP.selectS == vP.selectE){
                 curcc.beginPath();
                 curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
                 curcc.stroke();
             }
-
 
             // draw name
             curcc.strokeStyle = this.params.waveColor;

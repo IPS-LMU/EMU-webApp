@@ -83,15 +83,14 @@ var emulabeller = (function () {
 
     labeller.viewPort.selTier = 1;
 
-    labeller.bindTierClick($('#TierOld1')[0], function (percents, elID) {
-        labeller.setMarkedEvent(percents, elID);
+    labeller.bindTierClick($('#TierOld1')[0], function (percX, percY, elID) {
+        labeller.setMarkedEvent(percX, percY, elID);
     });
 
-    labeller.bindTierClick($('#TierOld2')[0], function (percents, elID) {
-        labeller.setMarkedEvent(percents, elID);
+    labeller.bindTierClick($('#TierOld2')[0], function (percX, percY, elID) {
+        labeller.setMarkedEvent(percX, percY, elID);
+
     });
-
-
 
     // for testing prelaod ssff
     // labeller.newFileType = 2;
