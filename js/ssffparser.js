@@ -101,6 +101,7 @@ EmuLabeller.SSFFparser = {
         xhr.responseType = 'arraybuffer';
 
         xhr.addEventListener('load', function (e) {
+            emulabeller.newFileType = 2;
             emulabeller.parseNewFile(e.target.response);
         }, false);
 

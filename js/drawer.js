@@ -47,7 +47,7 @@ EmuLabeller.Drawer = {
         this.scc = this.specCanvas.getContext('2d');
         this.scrollcc =  this.scrollCanvas.getContext('2d');
 
-        this.tierInfos= params.tierInfos;
+        this.tierInfos = params.tierInfos;
 
         this.tierInfos.contexts = [];
 
@@ -472,6 +472,7 @@ EmuLabeller.Drawer = {
             // draw name
             curcc.strokeStyle = this.params.waveColor;
             curcc.font="8px Arial";
+            console.log(i, this.tierInfos.tiers);
             curcc.strokeText(this.tierInfos.tiers[i].TierName + "(" + this.tierInfos.tiers[i].type +")", 5, 5+8);
 
             var cI = this.tierInfos.tiers[i];
@@ -515,7 +516,6 @@ EmuLabeller.Drawer = {
                     }
                 }
             }
-
         }
     },
 

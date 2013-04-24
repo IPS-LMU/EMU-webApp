@@ -24,6 +24,8 @@ var EmuLabeller = {
         // this.fileReader = Object.create(EmuLabeller.FileReader);
 
         this.labParser = Object.create(EmuLabeller.LabFileParser);
+        this.tgParser = Object.create(EmuLabeller.TextGridParser);
+
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
@@ -359,18 +361,19 @@ onAudioProcess: function () {
                 readerRes,
                 my.newlyLoadedBufferReady.bind(my)
             );
-
         } else if(ft==1){
-            var my = this;
-            emulabeller.labParser.parseFile(readerRes, this.tierInfos);
-            // console.log(this.tierInfos);
-            var tName = this.tierInfos.tiers[this.tierInfos.tiers.length-1].TierName;
+            var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
+            emulabeller.tierInfos.tiers.push(newTiers[0]);
+            
+            console.log(this.tierInfos.tiers);
+
+            var tName = newTiers[0].TierName;
             console.log(tName);
             $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
-            this.tierInfos.canvases.push($("#"+tName)[0]);
+            emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
      
-            this.bindTierClick($('#'+tName)[0], function (percents, elID) {
+            emulabeller.bindTierClick($('#'+tName)[0], function (percents, elID) {
                 console.log(percents);
                 console.log(elID);
                 my.setMarkedEvent(percents, elID);
@@ -386,8 +389,28 @@ onAudioProcess: function () {
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
             this.drawBuffer();
             // console.log(emulabeller.ssffInfos);
-        }
+        }else if(ft==3){
+            console.log("textgrid");
+            var newTiers = emulabeller.tgParser.parseFile(readerRes);
+            emulabeller.tierInfos.tiers.concat(newTiers);
+            for (var i = 0; i < newTiers.length; i++) {
+                var tName = newTiers[i].TierName;
+                $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
+                console.log(tName);
+                emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
+                emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
+            }
 
+            this.bindTierClick($('#'+tName)[0], function (percents, elID) {
+                console.log(percents);
+                console.log(elID);
+                my.setMarkedEvent(percents, elID);
+            });
+            this.viewPort.selTier = this.tierInfos.tiers.length-1;
+
+            this.drawBuffer();
+
+        }
     },
 
     fileAPIread: function (evt) {
@@ -433,7 +456,6 @@ onAudioProcess: function () {
         if(this.tierInfos.tiers.length > 0){
             tName = "Tier" + this.tierInfos.tiers.length;
         }else{
-            // console.log("here");
             tName = "Tier0";
         }
         
@@ -472,7 +494,7 @@ onAudioProcess: function () {
             }
         }
         this.viewPort.selTier = i;
-
+        console.log(this,i);
         var rXp = this.tierInfos.canvases[i].width*percX;
         var rYp = this.tierInfos.canvases[i].height*percY;
         var sXp = this.tierInfos.canvases[i].width*(this.viewPort.selectS / (this.viewPort.eS-this.viewPort.sS));
