@@ -79,7 +79,7 @@ var emulabeller = (function () {
 
 
     // for testing preload wav
-    labeller.load('data/msajc003.wav');
+    // labeller.load('data/msajc003.wav');
 
 
 
@@ -95,16 +95,15 @@ var emulabeller = (function () {
     // });
 
     // for testing preload lab
-    labeller.labParser.load('data/msajc003.lab');
-    labeller.labParser.load('data/msajc003.tone');
-    
+    // labeller.labParser.load('data/msajc003.lab');
+    // labeller.labParser.load('data/msajc003.tone');
+    // labeller.labParser.load('data/msajc003.lab');
     // labeller.labParser.load('data/msajc003.tone');
     // for testing preload ssff
     // labeller.newFileType = 2;
     // labeller.ssffParser.load('data/msajc003.f0');
 
     // for testing preload TextGrid
-    // labeller.newFileType = 3;
     // labeller.tgParser.load('data/msajc003.TextGrid');
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
@@ -120,33 +119,40 @@ var emulabeller = (function () {
         if(!emulabeller.isModalShowing){
 
             if (32 == e.keyCode) {
-                // space bar
+                // SPACEBAR -> play what is in view
                 e.preventDefault();
                 emulabeller.playPause();
             }
             if (114 == e.keyCode) {
+                // R key -> play sel
                 emulabeller.playInMode("sel");
             }
             if (102 == e.keyCode) {
+                // F key -> play entire file
                 emulabeller.playInMode("all");
             }
             if (119 == e.keyCode){
-                // W key
+                // W key -> zoom in
                 emulabeller.zoomViewPort(1);
             }
             if (115 == e.keyCode){
+                // S key -> zoom out 
                 emulabeller.zoomViewPort(0);
             }
             if (100 == e.keyCode){
+                // D key -> move right
                 emulabeller.incrViewP(1);
             }
             if (97 == e.keyCode){
+                // A key -> move left
                 emulabeller.incrViewP(0);
             }
             if (113 == e.keyCode){
+                // Q key -> view all
                 emulabeller.setView(-Infinity, Infinity);
             }
             if (101 == e.keyCode){
+                // E key -> zoom in to selected segment
                 emulabeller.zoomSel();
             }
             if (111 == e.keyCode){
@@ -154,13 +160,13 @@ var emulabeller = (function () {
                 $('#fileGetterBtn').click();
             }
             if (104 == e.keyCode){
-                // h key
+                // H key
                 emulabeller.showHideTierDial();
             }
             if (99 == e.keyCode){
                 // C key
                 emulabeller.editLabel();
-            }            
+            }
             if (116 == e.keyCode){
                 // T key
                 emulabeller.moveSelTierToTop();
@@ -172,6 +178,30 @@ var emulabeller = (function () {
             console.log(e.keyCode);
         }
     });
+    
+
+    document.body.addEventListener('dragstart', function(e) {
+      var a = e.target;
+      if (a.classList.contains('dragout')) {
+        e.dataTransfer.setData('DownloadURL', a.dataset.downloadurl);
+      }
+    }, false);
+
+    document.body.addEventListener('dragend', function(e) {
+      var a = e.target;
+      if (a.classList.contains('dragout')) {
+        cleanUp(a);
+      }
+    }, false);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.keyCode == 27) {  // Esc
+        document.querySelector('details').open = false;
+      } else if (e.shiftKey && e.keyCode == 191) { // shift + ?
+        document.querySelector('details').open = true;
+      }
+    }, false);
+
 
     return labeller;
 }());

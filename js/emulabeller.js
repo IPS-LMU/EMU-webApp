@@ -320,7 +320,7 @@ onAudioProcess: function () {
             var relY = e.offsetY;
             if (null === relX) { relX = e.layerX; }
             if (null === relY) { relY = e.layerY; }
-            callback(relX / this.clientWidth,relY/this.clientHeight, element.id);
+            callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
         }, false);
     },
 
@@ -373,10 +373,10 @@ onAudioProcess: function () {
             emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
      
-            emulabeller.bindTierClick($('#'+tName)[0], function (percents, elID) {
-                console.log(percents);
-                console.log(elID);
-                my.setMarkedEvent(percents, elID);
+            emulabeller.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+                // console.log(percents);
+                // console.log("whaaaaaaaaaat",elID);
+                my.setMarkedEvent(percX, percY, elID);
             });
             this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
@@ -392,20 +392,23 @@ onAudioProcess: function () {
         }else if(ft==3){
             console.log("textgrid");
             var newTiers = emulabeller.tgParser.parseFile(readerRes);
-            emulabeller.tierInfos.tiers.concat(newTiers);
+            for (var i = 0; i < newTiers.length; i++) {
+                emulabeller.tierInfos.tiers.push(newTiers[i]); // why doesn't concat work
+            };
+            // emulabeller.tierInfos.tiers.concat(newTiers);
+            // console.log(emulabeller.tierInfos.tiers);
+            // console.log(newTiers);
             for (var i = 0; i < newTiers.length; i++) {
                 var tName = newTiers[i].TierName;
                 $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
-                console.log(tName);
+                // console.log(tName);
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
+                // sic only last tier viewable
+                this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+                    my.setMarkedEvent(percX, percY, elID);
+                });
             }
-
-            this.bindTierClick($('#'+tName)[0], function (percents, elID) {
-                console.log(percents);
-                console.log(elID);
-                my.setMarkedEvent(percents, elID);
-            });
             this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
             this.drawBuffer();
@@ -442,6 +445,10 @@ onAudioProcess: function () {
             console.log("is f0");
             emulabeller.newFileType = 2;
             reader.readAsArrayBuffer(file);
+        }else if(file.name.match(".*TextGrid")){
+            console.log("is TextGrid");
+            emulabeller.newFileType = 3;
+            reader.readAsText(file);
         }
         else{
             alert('File type not supported.... sorry!');
@@ -473,10 +480,10 @@ onAudioProcess: function () {
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
-        this.bindTierClick($('#'+tName)[0], function (percents, elID) {
-            console.log(percents);
+        this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+            // console.log(percents);
             console.log(elID);
-            my.setMarkedEvent(percents, elID);
+            my.setMarkedEvent(percX, percY, elID);
         });
 
 
@@ -620,22 +627,59 @@ onAudioProcess: function () {
 
         emulabeller.drawBuffer();
     },
-    saveTiers: function () {
-        var myObject = {one: "weee", two: "woooo"};
-        console.log(this.tierInfos.tiers);
-        var data = JSON.stringify(this.tierInfos.tiers);
-        // console.log(data);
+    // saveTiers: function () {
+    //     var myObject = {one: "weee", two: "woooo"};
+    //     console.log(this.tierInfos.tiers);
+    //     var data = JSON.stringify(this.tierInfos.tiers);
+    //     // console.log(data);
 
-        var url = "data:application/octet-stream;base64," + window.btoa(data);
-        var iframe;
-        iframe = document.getElementById("hiddenDownloader");
-        if (iframe === null)
-        {
-            iframe = document.createElement('iframe');
-            iframe.id = "hiddenDownloader";
-            iframe.style.display = "none";
-            document.body.appendChild(iframe);
+    //     var url = "data:application/octet-stream;base64," + window.btoa(data);
+    //     var iframe;
+    //     iframe = document.getElementById("hiddenDownloader");
+    //     if (iframe === null)
+    //     {
+    //         iframe = document.createElement('iframe');
+    //         iframe.id = "hiddenDownloader";
+    //         iframe.style.display = "none";
+    //         document.body.appendChild(iframe);
+    //     }
+    //     iframe.src = url;
+    // },
+    prepDownload: function() {
+        var MIME_TYPE = 'text/plain';
+
+        var output = document.querySelector('output');
+
+        window.URL = window.webkitURL || window.URL;
+
+        console.log(window.URL);
+
+        var prevLink = output.querySelector('a');
+        if (prevLink) {
+            window.URL.revokeObjectURL(prevLink.href);
+            output.innerHTML = '';
         }
-        iframe.src = url;
+
+        var bb = new Blob([JSON.stringify(this.tierInfos.tiers)], {type: MIME_TYPE});
+
+        var a = document.createElement('a');
+        a.download = "emulabellerjsOutput.txt";
+        a.href = window.URL.createObjectURL(bb);
+        a.textContent = 'Download ready';
+
+        a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+        a.draggable = true; // Don't really need, but good practice.
+        a.classList.add('dragout');
+
+        output.appendChild(a);
+
+        a.onclick = function(e) {
+            if ('disabled' in this.dataset) {
+              return false;
+            }
+            a.textContent = 'Downloaded';
+            a.dataset.disabled = true;
+            // cleanUp(this);
+          };
     }
 };
