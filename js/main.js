@@ -96,6 +96,7 @@ var emulabeller = (function () {
 
     var isiPad = navigator.userAgent.match(/iPad/i) != null;
     if(isiPad){
+        labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
     }
     // for testing preload lab
