@@ -441,7 +441,7 @@ onAudioProcess: function () {
             emulabeller.newFileType = 1;
             reader.readAsText(file);
         }
-        else if(file.name.match(".*f0")){
+        else if(file.name.match(".*f0") || file.name.match(".*fms")){
             console.log("is f0");
             emulabeller.newFileType = 2;
             reader.readAsArrayBuffer(file);

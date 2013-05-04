@@ -24,7 +24,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand">emulabellerjs</a>
+          <!-- <a class="brand">emulabellerjs</a> -->
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="">
@@ -49,6 +49,9 @@
                 <button class="btn" onclick="emulabeller.prepDownload();">Prep. Download</button>
               </li>
               <output></output>
+              <div class="timeline">
+                <canvas id="wave" width="1024" height="128"></canvas>
+              </div>
             </ul>
           </div>
         </div>
@@ -59,10 +62,6 @@
 <div class="hero-unit">
         <div id="alwaystherecans">
           
-          <div class="timeline">
-              <canvas id="wave" width="1024" height="128"></canvas>
-          </div>
-
           <div class="spectrogram">
             <canvas id="spectrogram" width="1024" height="128"></canvas>
           </div>
@@ -73,37 +72,29 @@
       </div>
       <div id="cans">
       </div>
-      <div class="scrollbar">
-          <canvas id="scrollbar" width="1024" height="60"></canvas>
-      </div>
+      
 </div>
 
- <!-- .row -->
- <div class="btn-group">
-  <button class="btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
-  <button class="btn" onclick="emulabeller.zoomViewPort(1);">in</button>
-  <button class="btn" onclick="emulabeller.zoomViewPort(0);">out</button>
-  <button class="btn" onclick="emulabeller.incrViewP(0);;">lft</button>
-  <button class="btn" onclick="emulabeller.incrViewP(1);;">rght</button>
-  <button class="btn" onclick="emulabeller.zoomSel();">sel</button>
-</div>
+
+
  
-<a class="btn btn-primary btn-large" onclick="emulabeller.playPause();">
+<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playPause();">
       Play/Pause in view
 </a>
-
-<a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('sel');">
+ -->
+<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('sel');">
       Play selected
 </a>
-
-<a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('all');">
+ -->
+<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('all');">
       Play entire file
 </a>
-
+ -->
+<!--  
 <a class="btn btn-primary btn-large" onclick="emulabeller.editLabel();">
       Change Segment Label
 </a>
-
+ -->
 
  </div><!-- .container -->
 
@@ -115,6 +106,39 @@
   <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
 </div>
 
+ <div class="navbar navbar-inverse navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="brand">emulabellerjs</a> -->
+          <div class="nav-collapse collapse">
+          
+
+          <div class="scrollbar">
+            <canvas id="scrollbar" width="1024" height="32"></canvas>
+          </div>
+          <!-- .row -->
+          <div class="btn-group">
+            <button class="btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
+            <button class="btn" onclick="emulabeller.zoomViewPort(1);">in</button>
+            <button class="btn" onclick="emulabeller.zoomViewPort(0);">out</button>
+            <button class="btn" onclick="emulabeller.incrViewP(0);;">lft</button>
+            <button class="btn" onclick="emulabeller.incrViewP(1);;">rght</button>
+            <button class="btn" onclick="emulabeller.zoomSel();">sel</button>
+            <button class="btn" onclick="emulabeller.playPause();">Play/Pause in view</button>            
+            <button class="btn" onclick="emulabeller.playInMode('sel');">Play selected</button>            
+            <button class="btn" onclick="emulabeller.playInMode('all');">Play entire file</button>
+            <button class="btn" onclick="emulabeller.editLabel();">Change Segment Label</button>            
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     

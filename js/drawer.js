@@ -32,7 +32,7 @@ EmuLabeller.Drawer = {
         this.specHeight = this.specCanvas.clientHeight;
 
         this.scrollWidth = this.scrollCanvas.clientWidth;
-        this.scrollHeight = 12;//this.scrollCanvas.clientHeight;
+        this.scrollHeight = 8;//this.scrollCanvas.clientHeight;
 
         //create offline canvas for minimap
         this.sTmpCanvas = document.createElement("canvas");
@@ -364,7 +364,7 @@ EmuLabeller.Drawer = {
         this.scrollcc.drawImage(this.sTmpCanvas, 0, 0, this.scrollWidth, cH);
 
 
-        var circCtl = 5;
+        var circCtl = 3;
         var curDiam = (((vP.eS-vP.sS)/bufferLength) * this.scrollWidth)/2 + 2*circCtl;
 
         var curCenter = (vP.sS/bufferLength*this.scrollWidth)+curDiam;
@@ -520,9 +520,9 @@ EmuLabeller.Drawer = {
 
     drawSSFF: function (ssffInfos, vP){
 
-        if (ssffInfos.data[0].Columns[0].name !="F0") {
-            alert("not F0 column->not supported");
-        }
+        // if (ssffInfos.data[0].Columns[0].name !="F0") {
+        //     alert("not F0 column->not supported");
+        // }
 
         var curContext = ssffInfos.canvases[0].getContext("2d");
 

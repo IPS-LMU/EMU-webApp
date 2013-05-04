@@ -74,7 +74,7 @@ EmuLabeller.SSFFparser = {
 
                     curBinIdx += curLen;
 
-                }else if (this.ssffData.Columns[i].type == "FLOAT"){ // REFACTOR or maybe not... damn
+                }else if (this.ssffData.Columns[i].type == "FLOAT"){
 
                     curLen = 4*this.ssffData.Columns[i].length;
                     curBuffer = buf.subarray(curBinIdx, curLen);

@@ -5,7 +5,7 @@ EmuLabeller.TextGridParser = {
         var ssr = 44100; // stream sample rate SIC... do on init!!!
 
         var lines = string.split("\n");
-        console.log(lines);
+        // console.log(lines);
         var l1 ="File type= \"ooTextFile\"";
         var l2 ="Object class = \"TextGrid\"";
 
@@ -45,7 +45,7 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            console.log(tiers);
+            // console.log(tiers);
             return tiers;
 
         }else{
