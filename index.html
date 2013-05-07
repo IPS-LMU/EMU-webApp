@@ -11,7 +11,7 @@
 
  </head>
  <body>
-         
+
 
  <div class="container">
  <!-- Navbar
@@ -19,55 +19,32 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- <a class="brand">emulabellerjs</a> -->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="">
-                <input type="file" id="fileGetterBtn" name="file"/>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.addTier();">Add Tier (seg)</button>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.sendTierinfosToServer()">Send to R</button>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
-              </li>
-              <li class="">
-                <button class="btn" onclick="emulabeller.prepDownload();">Prep. Download</button>
-              </li>
-              <output></output>
-              <div class="timeline">
-                <canvas id="wave" width="1024" height="128"></canvas>
-              </div>
-            </ul>
+          <input type="file" id="fileGetterBtn" name="file"/>
+          <div class="btn-group">
+            <button class="btn" onclick="emulabeller.addTier();">Add Tier (seg)</button>
+            <button class="btn" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
+            <button class="btn" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
+            <button class="btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
+            <button class="btn" onclick="emulabeller.prepDownload();">Prep. Download</button>
           </div>
+          <output></output>
+
+          <div id="alwaystherecans">
+            <div class="timeline">
+              <canvas id="wave" width="1024" height="128"></canvas>
+            </div>
+
+            <div class="spectrogram">
+              <canvas id="spectrogram" width="1024" height="128"></canvas>
+            </div>
+      </div>
+
         </div>
       </div>
     </div>
 
 
-<div class="hero-unit">
-        <div id="alwaystherecans">
-          
-          <div class="spectrogram">
-            <canvas id="spectrogram" width="1024" height="128"></canvas>
-          </div>
-          
-      </div>
-
+<div class="hero">
       <div id="signalcans">
       </div>
       <div id="cans">
@@ -75,26 +52,6 @@
       
 </div>
 
-
-
- 
-<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playPause();">
-      Play/Pause in view
-</a>
- -->
-<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('sel');">
-      Play selected
-</a>
- -->
-<!-- <a class="btn btn-primary btn-large" onclick="emulabeller.playInMode('all');">
-      Play entire file
-</a>
- -->
-<!--  
-<a class="btn btn-primary btn-large" onclick="emulabeller.editLabel();">
-      Change Segment Label
-</a>
- -->
 
  </div><!-- .container -->
 
