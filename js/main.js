@@ -94,11 +94,11 @@ var emulabeller = (function () {
 
     // });
 
-    // var isiPad = navigator.userAgent.match(/iPad/i) != null;
-    // if(isiPad){
+    var isiPad = navigator.userAgent.match(/iPad/i) != null;
+    if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
-    // }
+    }
     // for testing preload lab
     // labeller.labParser.load('data/msajc003.lab');
     // labeller.labParser.load('data/msajc003.tone');
