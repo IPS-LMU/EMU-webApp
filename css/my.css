@@ -1,7 +1,7 @@
 canvas
 {
 	border: 1px solid gray;
-		/*box-shadow: 3px 3px 7px #777;*/
+        /*box-shadow: 3px 3px 7px #777;*/
         background-color: rgb(230,230,230);
         -moz-user-select: none;
         -ms-user-select: none;
@@ -11,12 +11,13 @@ canvas
 }
 
 
-#fileGetterBtn {
-  /* Note: display:none on the input won't trigger the click event in WebKit.
-    Setting visibility: hidden and height/width:0 works great. */
-  visibility: hidden;
-  width: 0;
-  height: 0;
+#fileGetterBtn
+{
+        /* Note: display:none on the input won't trigger the click event in WebKit.
+        Setting visibility: hidden and height/width:0 works great. */
+        visibility: hidden;
+        width: 0;
+        height: 0;
 }
 
 
@@ -24,27 +25,4 @@ html, body
 {
         height: 100%;
         padding-top: 160px; /*stupid way of doing it but for now ok...*/
-}
-/*
-#wrap
-{
-        min-height: 100%;
-
-}
-*/
-#main
-{
-        overflow: auto;
-        padding-bottom: 150px; /*this needs to be bigger than footer height*/
-
-}
-
-.footer
-{
-        position: relative;
-        margin-top: -150px;
-        height: 150px;
-        clear: both;
-        padding-top: 20px;
-        color: #fff;
 }

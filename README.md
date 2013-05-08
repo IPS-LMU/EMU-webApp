@@ -1,7 +1,7 @@
 
 # [Emulabellerjs v1.0.0](http://twitter.github.com/bootstrap) 
 
-Emulabellerjs is an online and offline Web-App for labelling audio data specifically speech data. It is created and maintained by [Raphael Winkelmann](http://github.com/raphywink) and  Georg Raess
+Emulabellerjs is an online and offline Web-App for labelling speech data. It is created and maintained by [Raphael Winkelmann](http://github.com/raphywink) and  Georg Raess
 
 To see it in action visit [http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html](http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html)!
 
