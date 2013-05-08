@@ -1,5 +1,3 @@
-'use strict';
-
 EmuLabeller.WebAudio = {
     Defaults: {
         fftSize: 512,
@@ -7,8 +5,8 @@ EmuLabeller.WebAudio = {
     },
 
 
-    ac: new (window.AudioContext || window.webkitAudioContext),
-    //ac: new window.webkitAudioContext(),
+    // ac: new (window.AudioContext || window.webkitAudioContext),
+    ac: new window.webkitAudioContext(),
 
 
     /**
@@ -53,7 +51,7 @@ EmuLabeller.WebAudio = {
     },
 
     setSource: function (source) {
-        this.source && this.source.disconnect();
+        // this.source && this.source.disconnect();
         this.source = source;
         this.source.connect(this.analyser);
         this.source.connect(this.proc);
@@ -104,7 +102,7 @@ EmuLabeller.WebAudio = {
      * relative to the beginning of the track.
      */
     play: function (start, end, delay) {
-        
+
         if (!this.currentBuffer) {
             return;
         }

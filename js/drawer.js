@@ -1,5 +1,3 @@
-'use strict';
-
 EmuLabeller.Drawer = {
     defaultParams: {
         waveColor: '#333',

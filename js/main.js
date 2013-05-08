@@ -3,9 +3,8 @@ var emulabeller = (function () {
 
     var tierInfos = {"tiers": [],  "canvases": []};
 
+
     var canvas = document.querySelector('#wave');
-
-
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
 

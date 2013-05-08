@@ -1,6 +1,3 @@
-'use strict';
-
-
 var EmuLabeller = {
 
     init: function (params) {
