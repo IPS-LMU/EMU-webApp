@@ -113,11 +113,16 @@ var emulabeller = (function () {
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
-    //hack for hiding inputs of dialogs..
+    // hack for hiding inputs of dialogs..
     $("#dialog-messageSh").hide();
     $("#dialog-messageSetLabel").hide();
-    
-    //emulabeller.bindDragNDrop();
+
+    // event redirect for Open File Button
+    document.querySelector('#fileSelect').addEventListener('click', function(e) {
+            // Use the native click() of the file input.
+            document.querySelector('#fileGetterBtn').click();
+        }, 
+    false);
 
     document.addEventListener('keypress', function (e) {
         // spacebar
