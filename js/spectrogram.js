@@ -261,7 +261,7 @@ function FFT(fftSize){
 		        }
 		        
 		        // height between two interpolation points
-		        pixel_height = c_height/paint[0].length;
+		        pixel_height = c_height/c;
 		        
 		        // generate png image
 	    	    p = new PNGlib(c_width, c_height, 256);
@@ -324,7 +324,7 @@ function FFT(fftSize){
 	    
 	    // calculate FFT over real and save to result
 	    myFFT.fft(real,imag);	
-		for(var low=0;low<c;low++) {
+		for(var low=0;low<=c;low++) {
 			result[low] = magnitude(real[low],imag[low]);
 			if(totalMax<result[low]) totalMax = result[low];
 		}
@@ -376,19 +376,23 @@ function FFT(fftSize){
 			// !!!! set y1 to this scaled value
 			var y1 = scaledVal;
 			
+			if(pixel_height>=1) {
+				// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
+				for(var b=0; b<pixel_height; b++) {
+					y2 = y0 + (y1-y0) / (x1-x0) * (b-x0);
+					
+					// calculate corresponding color value for interpolation point [0...255]
+					rgb = 255-Math.round(255*y2);
+				
+					// calculate hex value of corresponding color value
+					rgb = '0x'+d2h(rgb);
+				
+					// set internal image buffer to calculated & interpolated value
+					p.buffer[p.index(Math.floor(line), Math.floor(c_height-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+				}
+			}
+			else {
 			
-			// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
-			for(var b=0; b<pixel_height; b++) {
-				y2 = y0 + (y1-y0) / (x1-x0) * (b-x0);
-				
-				// calculate corresponding color value for interpolation point [0...255]
-				rgb = 255-Math.round(255*y2);
-				
-				// calculate hex value of corresponding color value
-				rgb = '0x'+d2h(rgb);
-				
-				// set internal image buffer to calculated & interpolated value
-				p.buffer[p.index(Math.floor(line), Math.floor(c_height-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 			}
         }
     } 
