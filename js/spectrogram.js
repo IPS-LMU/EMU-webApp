@@ -1,0 +1,517 @@
+
+	// load configuration files
+  	importScripts('vars.js'); 
+  	
+  	// load png library
+  	importScripts('pnglib.js'); 
+
+			
+function FFT(fftSize){
+
+	// FFT Class from 
+	// http://stackoverflow.com/questions/9272232/fft-library-in-android-sdk
+	// translated to javascsript
+	//
+	// [parameters]
+	//
+	// fftSize -> Size of FFT	
+
+	var n,m,sin,cos,alpha,func;
+	n = fftSize;
+    m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
+    if (n != (1 << m))										// Make sure n is a power of 2
+        console.log("ERROR : FFT length must be power of 2");
+    
+	cos = new Float32Array(n/2);							// precompute cos table
+	sin = new Float32Array(n/2);							// precompute sin table
+    for (var x = 0; x < n / 2; x++) {
+        cos[x] = Math.cos(-2 * PI * x / n);
+        sin[x] = Math.sin(-2 * PI * x / n);
+    }	
+    
+    /*   
+    // choose window function set alpha and execute it on the buffer 
+    //
+	// [parameters]
+	//
+	// type 		-> chosen Window Function
+	// alpha		-> alpha for Window Functions (default 0.16)
+	// buffer		-> current fft window data
+	//
+	// [return]
+	//	
+	// calculated FFT Window
+	*/
+    this.wFunction = function (type, alpha, buffer) {
+    	var length = buffer.length;
+		this.alpha = alpha;
+ 		switch(type) {
+    		case myWindow.BARTLETT:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionBartlett(length, i);
+  				}
+      		break;
+    		case myWindow.BARTLETTHANN:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionBartlettHann(length, i);
+  				}
+      		break;
+    		case myWindow.BLACKMAN:
+    			this.alpha = this.alpha || 0.16;
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionBlackman(length, i, alpha);
+  				}
+      		break;
+    		case myWindow.COSINE:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionCosine(length, i);
+  				}
+      		break;
+    		case myWindow.GAUSS:
+    			this.alpha = this.alpha || 0.25;
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionGauss(length, i, alpha);
+  				}
+      		break;
+    		case myWindow.HAMMING:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionHamming(length, i);
+  				}
+      		break;
+    		case myWindow.HANN:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionHann(length, i);
+  				}
+      		break;
+    		case myWindow.LANCZOS:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionLanczos(length, i);
+  				}
+      		break;
+    		case myWindow.RECTANGULAR:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionRectangular(length, i);
+  				}
+      		break;
+    		case myWindow.TRIANGULAR:
+    		  	for ( var i = 0; i < length; i++ ) {
+    				buffer[i] *= this.wFunctionTriangular(length, i);
+  				}
+      		break;
+  		}
+      	return buffer;  		
+	}
+	
+	// the Window Functions
+	
+	this.wFunctionBartlett = function(length, index) {
+  		return 2 / (length - 1) * ((length - 1) / 2 - Math.abs(index - (length - 1) / 2));
+	}
+
+	this.wFunctionBartlettHann = function(length, index) {
+  		return 0.62 - 0.48 * Math.abs(index / (length - 1) - 0.5) - 0.38 * Math.cos(TWO_PI * index / (length - 1));
+	}
+
+	this.wFunctionBlackman = function(length, index, alpha) {
+  		var a0 = (1 - alpha) / 2;
+  		var a1 = 0.5;
+  		var a2 = alpha / 2;
+		return a0 - a1 * Math.cos(TWO_PI * index / (length - 1)) + a2 * Math.cos(4 * PI * index / (length - 1));
+	}
+
+	this.wFunctionCosine = function(length, index) {
+		return Math.cos(PI * index / (length - 1) - PI / 2);
+	}
+
+	this.wFunctionGauss = function(length, index, alpha) {
+  		return Math.pow(Math.E, -0.5 * Math.pow((index - (length - 1) / 2) / (alpha * (length - 1) / 2), 2));
+	}
+
+	this.wFunctionHamming = function(length, index) {
+  		return 0.54 - 0.46 * Math.cos(TWO_PI * index / (length - 1));
+	}
+
+	this.wFunctionHann = function(length, index) {
+		return 0.5 * (1 - Math.cos(TWO_PI * index / (length - 1)));
+	}
+
+	this.wFunctionLanczos = function(length, index) {
+		var x = 2 * index / (length - 1) - 1;
+		return Math.sin(PI * x) / (PI * x);
+	}
+
+	this.wFunctionRectangular = function(length, index) {
+		return 1;
+	}
+
+	this.wFunctionTriangular = function(length, index) {
+		return 2 / length * (length / 2 - Math.abs(index - (length - 1) / 2));
+	}
+     
+    // the FFT calculation
+    this.fft = function (x,y) {
+		// Bit-reverse
+      var  i, j, k, n1, n2, a, c, s, t1, t2;
+		// Bit-reverse
+      j = 0;
+      n2 = n / 2;
+      for (i = 1; i < n - 1; i++) {
+          n1 = n2;
+          while (j >= n1) {
+              j = j - n1;
+              n1 = n1 / 2;
+          }
+          j = j + n1;
+
+          if (i < j) {
+              t1 = x[i];
+              x[i] = x[j];
+              x[j] = t1;
+              t1 = y[i];
+              y[i] = y[j];
+              y[j] = t1;
+          }
+      }
+
+    // FFT
+      n1 = 0;
+      n2 = 1;
+
+      for (i = 0; i < m; i++) {
+          n1 = n2;
+          n2 = n2 + n2;
+          a = 0;
+
+          for (j = 0; j < n1; j++) {
+              c = cos[a];
+              s = sin[a];
+              a += 1 << (m - i - 1);
+
+              for (k = j; k < n; k = k + n2) {
+                  t1 = c * x[k + n1] - s * y[k + n1];
+                  t2 = s * x[k + n1] + c * y[k + n1];
+                  x[k + n1] = x[k] - t1;
+                  y[k + n1] = y[k] - t2;
+                  x[k] = x[k] + t1;
+                  y[k] = y[k] + t2;
+              }
+          }
+      }
+  }    
+}
+  
+	
+	
+	/* 
+	// initial function call for calculating and drawing Spectrogram
+	// input PCM data is coming from the buffer "localSoundBuffer"
+	// which has to be filled before.
+	// - first loop calculates magnitudes to draw (getMagnitude())
+	// - second loop draws values on canvas  (drawOfflineSpectogram())
+	//
+	// [parameters]
+	//
+	// N 			-> window Size
+	// upperFreq 	-> upper boundry in Hz
+	// start		-> start time
+	// end			-> end time
+	// c_width		-> width of canvas element
+	// c_height 	-> height of canvas element
+	// octx			-> Context of Canvas Element used for drawing 
+	*/
+
+	var parseData = (function(N,upperFreq,start,end,c_width,c_height) {
+    	return function (N,upperFreq,start,end,c_width,c_height) {
+        	if (!executed) {
+        		// start execution once
+            	executed = true;
+            	
+            	// instance of FFT with windowSize N
+            	myFFT = new FFT(N);
+            	
+            	// array holding FFT results paint[canvas width][canvas height]
+	            paint = new Array(c_width);
+	            
+	            // length of pcm data to calculate
+				completeLength = threadSoundBuffer.length;
+				
+				// where to start calculation
+	    		sampleStart = getPacketInPercent(completeLength,start);
+	    		
+	    		// where to stop calculation
+		    	sampleEnd = getPacketInPercent(completeLength,end);
+		    	
+		    	// sum of packets between sampleStart and sampleEnd
+    			packetCountStartEnd = completeLength-sampleStart-(completeLength-sampleEnd);
+    			
+    			// number of packets per 1 pixel width in canvas (minimum 1)
+    			myStep = Math.floor(packetCountStartEnd/c_width);
+	    		if(myStep<1)myStep=1;
+	    		
+	    		// Hz per pixel height
+				HzStep = (sampleRate/2)/c_height;
+				
+				// uper Hz boundry to display
+				c = Math.floor(upperFreq/HzStep);
+				
+				// calculate i FFT runs, save result into paint and set maxPsd while doing so
+	        	for(var i=0;i<c_width;i++) {
+					paint[i] = getMagnitude(0,i*myStep+sampleStart,N,c);
+					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
+		        }
+		        
+		        // height between two interpolation points
+		        pixel_height = c_height/paint[0].length;
+		        
+		        // generate png image
+	    	    p = new PNGlib(c_width, c_height, 256);
+	    	    var background = p.color(background_color, background_color, background_color, 0);
+	    	    
+	    	    // draw spectrogram on png image with canvas width
+	    	    // (one column is drawn in drawOfflineSpectogram)
+	        	for(var i=0;i<c_width;i++) 
+		        	drawOfflineSpectogram(i,p); 
+		        
+		        // post generated image back
+		        self.postMessage('data:image/png;base64,'+p.getBase64());
+		        
+		        // free vars
+		        myFFT = null;
+		        p = null;
+		        
+		        // stop execution
+	    	    executed = false; 
+	        }
+    	};
+	})();
+	
+	/*
+	// calculates Magnitude by 
+	// - reading the current (defined with offset) data from localSoundBuffer
+	// - applying the current Window Function to the selected data
+	// - calculating the actual FFT
+	// - (and saving the biggest value in totalMax)
+	//
+	// [parameters]
+	//
+	// channel			-> Number of Channels
+	// offset			-> Calculated offset in PCM Stream
+	// windowSize		-> Size of Window used for calculation
+	// c				-> Upper Boundry (c = Math.floor(upperFreq/HzStep);)
+	//
+	// [return]
+	//
+	// calculated FFT data as Float32Array
+	*/
+	
+	function getMagnitude(channel,offset,windowSize,c) {
+		// imaginary array of length N
+		imag = new Float32Array(N);
+		
+		// real array of length N
+		real = new Float32Array(N); 
+		
+		// result array of length N
+		result = new Float32Array(c);
+		
+		// set real values by reading local sound buffer
+		for(var j=0;j<windowSize;j++) {
+			real[j] = threadSoundBuffer[offset+j];
+		}
+		
+		// calculate FFT window function over real 
+	    myFFT.wFunction(wFunction,alpha,real);
+	    
+	    // calculate FFT over real and save to result
+	    myFFT.fft(real,imag);	
+		for(var low=0;low<c;low++) {
+			result[low] = magnitude(real[low],imag[low]);
+			if(totalMax<result[low]) totalMax = result[low];
+		}
+		return result;
+	}
+    
+	/*
+	// draws a single Line on the Canvas Element
+	// by calculating the RGB value of the current pixel with:
+	// 255-(255*scaled)
+	// function has to be called in an outer loop (according to canvas_width)
+	// the inner loop draws a single line on the canvas (according to canvas_height)
+	//
+	// [parameters]
+	//
+	// line			-> calculated FFT Data
+	//
+	*/
+	
+	function drawOfflineSpectogram(line,p) {
+	
+		// set upper boundry for linear interpolation
+		var x1 = pixel_height;
+		
+		// value for first interpolation at lower boundry (height=0)
+		scaledVal = 1;
+		
+		
+        for (var i = 0; i < paint[line].length; i++) {
+
+			var y0 = scaledVal;	 // !!!! set y0 to previous scaled value
+			
+			// for each value in paint[] calculate pixel_height interpolation points
+			// x0=0
+			// x1=pixel_height
+			// if(paint[i-1]<0) paint[i-1] = 1
+			// y0=paint[i-1]    
+			// y1=paint[i]
+					
+
+			// !!!! calculate next scaledValue [0...1] 
+        	psd = (2 * Math.pow(paint[line][i], 2))/N;
+        	psdLog = 10*log10(psd / maxPsd);
+			scaledVal=((psdLog+dynRangeInDB)/dynRangeInDB);
+			if(scaledVal>1) scaledVal=1;
+			if(scaledVal<0) scaledVal=0;
+			
+			
+			// !!!! set y1 to this scaled value
+			var y1 = scaledVal;
+			
+			
+			// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
+			for(var b=0; b<pixel_height; b++) {
+				y2 = y0 + (y1-y0) / (x1-x0) * (b-x0);
+				
+				// calculate corresponding color value for interpolation point [0...255]
+				rgb = 255-Math.round(255*y2);
+				
+				// calculate hex value of corresponding color value
+				rgb = '0x'+d2h(rgb);
+				
+				// set internal image buffer to calculated & interpolated value
+				p.buffer[p.index(Math.floor(line), Math.floor(c_height-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+			}
+        }
+    } 
+    
+    
+    
+
+	/* 		
+	// various helper functions for calculation
+	//
+	*/
+	
+	// decimal color [0...255] to hex color
+	function d2h(d) { return (+d).toString(16); }
+	
+	// used by FFT
+    function toLevelInDB(linearLevel){
+        if(linearLevel<0) alert("Linear level argument must be positive.");
+        return 10*log10(linearLevel);
+    }
+    
+    // used by FFT
+    function getLevelInDB(linearLevel){
+    	return toLevelInDB(linearLevel);
+    }
+    
+    // used by FFT
+    function toLinearLevel(dbLevel){
+        return Math.pow(10, (dbLevel/10));
+    }  
+	
+	// used by FFT
+	function log10(arg) {
+  		return Math.log(arg) / 2.302585092994046; 			// Math.log(x) / Math.LN10
+	} 
+	
+	// used by FFT
+	function magnitude(real,imag) {
+		return Math.sqrt((real * real) + (imag * imag))
+	}
+    
+    // used to calculate current packet
+    function getPacketInPercent(packets,percent) {
+    	return Math.floor(packets/100*percent);
+    }
+    
+    // used to calculate current time
+    function getTime(packets,sampleRate) {
+    	return Math.floor(100*packets/sampleRate)/100+ " sec";
+    } 
+    
+    
+    /*
+    // Web Worker Communication
+    //
+    // Steps:
+    // ------
+    //
+    // (1)	Setup Web Worker by calling "config" and corresponding parameter
+    //		N 		--> window Size
+    //		freq	--> upper Frequency Boundry
+    //		start	--> start Value in
+    //		end		--> end Value in 
+    //		window	-->	window Function (please use myWindow enum)
+    //		width	--> height of canvas used to display
+    //		height	--> width of canvas used to display
+    //
+    //		- example: primeWorker.postMessage({'cmd': 'config', 'N': N});
+    //
+    //
+    // (2)	Send PCM Configuration Data (ie header of pcm data) to Web Worker by calling "pcm","config"
+    //
+    //		- example: 	var data = JSON.stringify(sourceBuffer);
+    //					primeWorker.postMessage({'cmd': 'pcm', 'config': data});		
+    //
+    //
+    // (3)	Send PCM Data by calling "pcm","stream"
+    //
+    //		- example:	primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
+    //
+    //
+    // (4)	Start complete calculation by calling "render"
+    //
+    //		- example 	primeWorker.postMessage({'cmd': 'render'});
+    //
+    //
+    //	--> Wait for callback of Web Worker sending you Base64 encoded spectrogram image
+    */
+    
+	self.addEventListener('message', function(e) {
+	  var data = e.data;
+	  switch (data.cmd) {
+    	case 'config':
+    		if (data.N != undefined)
+    			N = data.N;
+    		if (data.freq != undefined)
+    			upperFreq = data.freq;
+    		if (data.start != undefined)
+    			start = data.start;
+    		if (data.end != undefined)
+    			end = data.end;
+    		if (data.width != undefined)
+    			c_width = data.width;
+    		if (data.height != undefined)
+    			c_height = data.height;
+    		if (data.window != undefined)
+    			wFunction = data.window;
+    	  break;
+    	case 'pcm':
+    		if (data.stream != undefined)
+    			threadSoundBuffer = data.stream;
+    		if (data.config != undefined) {
+    			var newPCMconfig = JSON.parse(data.config);
+    			sampleRate = newPCMconfig.sampleRate;
+    			streamChannels = newPCMconfig.numberOfChannels;
+    		}
+    		break;     	  
+    	case 'render':
+	      parseData(N,upperFreq,start,end,c_width,c_height);
+    	  break; 
+    	default:
+      	//self.postMessage('Unknown command: ' + data.msg);
+  	};
+	}, false);       
+	
+	      
