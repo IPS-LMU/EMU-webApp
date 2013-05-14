@@ -680,3 +680,67 @@ onAudioProcess: function () {
           };
     }
 };
+
+
+/// Spectrogramm stuff
+
+    // other vars
+    var offlineContext = new webkitOfflineAudioContext(channels,sampleRate,sampleRate);
+    var offline = document.getElementById("spectrogram");
+    var c_width = offline.width;
+    var c_height = offline.height;   
+    var context = offline.getContext("2d");
+    var myImage = new Image();
+    var primeWorker = new Worker('js/spectrogram.js');
+    var isSourceBufferLoaded = false;
+
+    primeWorker.addEventListener('message', function(event){
+    	context.clearRect(0, 0, c_width, c_height);
+		myImage.src = event.data;
+		myImage.onload = function() {
+        	context.drawImage(myImage, 0, 0);
+		}
+	});
+    
+    
+    // load Sound decode and send buffer to renderLine(buffer)
+    function loadSpectrogramSound(url) {
+    	// Load asynchronously
+		ocontext = new webkitAudioContext();
+	    var request = new XMLHttpRequest();
+	    request.open("GET", url, true);
+	    request.responseType = "arraybuffer";
+    	request.onload = function() { 
+        	sourceBuffer = ocontext.createBuffer(request.response, true);
+	        isSourceBufferLoaded = true;
+    	    finishLoad();
+	    }
+    	request.send();
+    } 
+    
+
+	function finishLoad() {
+    	if (!isSourceBufferLoaded)
+        	return; 
+	    startOfflineProcessing();
+	}
+   
+	function startOfflineProcessing() {
+    	offlineContext = new webkitOfflineAudioContext(1, sourceBuffer.duration * sampleRate, sampleRate);
+	    var source = offlineContext.createBufferSource();
+    	source.buffer = sourceBuffer;    
+	    primeWorker.postMessage({'cmd': 'config', 'N': N});
+    	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
+	    primeWorker.postMessage({'cmd': 'config', 'start': start});
+    	primeWorker.postMessage({'cmd': 'config', 'end': end});
+	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
+    	primeWorker.postMessage({'cmd': 'config', 'width': c_width});
+	    primeWorker.postMessage({'cmd': 'config', 'height': c_height});    
+    	offlineContext.startRendering();    
+        offlineContext.oncomplete = function(event) {
+	    	var data = JSON.stringify(sourceBuffer);
+			primeWorker.postMessage({'cmd': 'pcm', 'config': data});		
+			primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
+			primeWorker.postMessage({'cmd': 'render'});
+		};    
+	}
