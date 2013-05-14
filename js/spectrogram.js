@@ -236,10 +236,10 @@ function FFT(fftSize){
 				completeLength = threadSoundBuffer.length;
 				
 				// where to start calculation
-	    		sampleStart = getPacketInPercent(completeLength,start);
+	    		sampleStart = start;//getPacketInPercent(completeLength,start);
 	    		
 	    		// where to stop calculation
-		    	sampleEnd = getPacketInPercent(completeLength,end);
+		    	sampleEnd = end;//getPacketInPercent(completeLength,end);
 		    	
 		    	// sum of packets between sampleStart and sampleEnd
     			packetCountStartEnd = completeLength-sampleStart-(completeLength-sampleEnd);

@@ -271,6 +271,7 @@ onAudioProcess: function () {
         }
 
         this.drawBuffer();
+        this.startOfflineProcessing();
 
     },
 
@@ -696,18 +697,10 @@ onAudioProcess: function () {
 	    }
     	request.send();
     },
-    
 
-	finishLoad: function() {
-    	if (!this.isSourceBufferLoaded)
-        	return; 
-	    this.startOfflineProcessing();
-	},
 	
 
 	startOfflineProcessing: function() {
-		console.log(this.viewPort.eS);
-		console.log(this.viewPort.sS);
 		
     	var offlineContext = new webkitOfflineAudioContext(channels, sourceBuffer.duration * sampleRate, sampleRate);
 	    var source = offlineContext.createBufferSource();
@@ -715,10 +708,17 @@ onAudioProcess: function () {
     	
     	var c_width = offline.width;
     	var c_height = offline.height;    
+    	var sStart,sEnd;
+    	
+    	if (this.viewPort.sS != undefined) sStart = this.viewPort.sS;
+    	else sStart = 0;
+    	if (this.viewPort.eS != undefined) sEnd = this.viewPort.eS;
+    	else sEnd = sourceBuffer.length;
+
 	    primeWorker.postMessage({'cmd': 'config', 'N': N});
     	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
-	    primeWorker.postMessage({'cmd': 'config', 'start': start});
-    	primeWorker.postMessage({'cmd': 'config', 'end': end});
+	    primeWorker.postMessage({'cmd': 'config', 'start': sStart});
+    	primeWorker.postMessage({'cmd': 'config', 'end': sEnd});
 	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
     	primeWorker.postMessage({'cmd': 'config', 'width': c_width});
 	    primeWorker.postMessage({'cmd': 'config', 'height': c_height});    
@@ -744,7 +744,7 @@ onAudioProcess: function () {
     var isSourceBufferLoaded = false;
 
     primeWorker.addEventListener('message', function(event){
-    	context.clearRect(0, 0, c_width, c_height);
+    	//context.clearRect(0, 0, c_width, c_height);
 		myImage.src = event.data;
 		myImage.onload = function() {
         	context.drawImage(myImage, 0, 0);
