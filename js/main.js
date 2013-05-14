@@ -26,11 +26,12 @@ var emulabeller = (function () {
     // if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
+        labeller.loadSpectrogramSound("data/msajc003.wav");
     // }
     
     
 	// initial  launch
-    loadSpectrogramSound("data/msajc003.wav");
+    
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 

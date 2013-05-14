@@ -678,57 +678,43 @@ onAudioProcess: function () {
             a.dataset.disabled = true;
             // cleanUp(this);
           };
-    }
-};
-
-
-/// Spectrogramm stuff
-
-    // other vars
-    var offlineContext = new webkitOfflineAudioContext(channels,sampleRate,sampleRate);
-    var offline = document.getElementById("spectrogram");
-    var c_width = offline.width;
-    var c_height = offline.height;   
-    var context = offline.getContext("2d");
-    var myImage = new Image();
-    var primeWorker = new Worker('js/spectrogram.js');
-    var isSourceBufferLoaded = false;
-
-    primeWorker.addEventListener('message', function(event){
-    	context.clearRect(0, 0, c_width, c_height);
-		myImage.src = event.data;
-		myImage.onload = function() {
-        	context.drawImage(myImage, 0, 0);
-		}
-	});
+    },
+    
     
     
     // load Sound decode and send buffer to renderLine(buffer)
-    function loadSpectrogramSound(url) {
+    loadSpectrogramSound: function(url) {
     	// Load asynchronously
-		ocontext = new webkitAudioContext();
+		var ocontext = new webkitAudioContext();
 	    var request = new XMLHttpRequest();
 	    request.open("GET", url, true);
 	    request.responseType = "arraybuffer";
     	request.onload = function() { 
         	sourceBuffer = ocontext.createBuffer(request.response, true);
 	        isSourceBufferLoaded = true;
-    	    finishLoad();
+    	    emulabeller.startOfflineProcessing();
 	    }
     	request.send();
-    } 
+    },
     
 
-	function finishLoad() {
-    	if (!isSourceBufferLoaded)
+	finishLoad: function() {
+    	if (!this.isSourceBufferLoaded)
         	return; 
-	    startOfflineProcessing();
-	}
-   
-	function startOfflineProcessing() {
-    	offlineContext = new webkitOfflineAudioContext(1, sourceBuffer.duration * sampleRate, sampleRate);
+	    this.startOfflineProcessing();
+	},
+	
+
+	startOfflineProcessing: function() {
+		console.log(this.viewPort.eS);
+		console.log(this.viewPort.sS);
+		
+    	var offlineContext = new webkitOfflineAudioContext(channels, sourceBuffer.duration * sampleRate, sampleRate);
 	    var source = offlineContext.createBufferSource();
-    	source.buffer = sourceBuffer;    
+    	source.buffer = sourceBuffer;   
+    	
+    	var c_width = offline.width;
+    	var c_height = offline.height;    
 	    primeWorker.postMessage({'cmd': 'config', 'N': N});
     	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
 	    primeWorker.postMessage({'cmd': 'config', 'start': start});
@@ -743,4 +729,29 @@ onAudioProcess: function () {
 			primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
 			primeWorker.postMessage({'cmd': 'render'});
 		};    
-	}
+	}	
+    
+    
+};
+
+
+/// Spectrogramm stuff
+
+	var offline = document.getElementById("spectrogram");
+    var context = offline.getContext("2d");
+    var myImage = new Image();
+    var primeWorker = new Worker('js/spectrogram.js');
+    var isSourceBufferLoaded = false;
+
+    primeWorker.addEventListener('message', function(event){
+    	context.clearRect(0, 0, c_width, c_height);
+		myImage.src = event.data;
+		myImage.onload = function() {
+        	context.drawImage(myImage, 0, 0);
+		}
+	});
+    
+    
+    
+
+   
