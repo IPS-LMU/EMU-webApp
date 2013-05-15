@@ -11,7 +11,15 @@
     	stack: false,
     	buttons: {
     		OK: function() {
-    	        $("#dialog > form").submit();
+    	        
+    	        var nN = $("#windowLength").val();
+    	        if(isNaN(nN)) {
+    	        	alert("Please enter numbers");
+    	        	//$("#windowLength").val() = "";
+    	        }
+    	        else N = nN;
+    	        
+    		  	emulabeller.startOfflineProcessing();
     		  	$(this).dialog('close');
     		  	isOpen = false;
     		},
