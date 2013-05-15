@@ -1,3 +1,9 @@
+	var renderingCanvas = false;
+    var primeWorker = new Worker(js_spectro_filename);
+	var offline = document.getElementById(canvas_spectro_name);
+    var context = offline.getContext("2d");
+
+
 var EmuLabeller = {
 
     init: function (params) {
@@ -203,6 +209,15 @@ onAudioProcess: function () {
             // console.log(this);
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
+        
+        primeWorker.terminate();
+        primeWorker = null;
+		context.fillStyle = "rgb(255,255,255)";
+		context.fillRect(0,0,offline.width,offline.height);
+
+        this.startOfflineProcessing();
+
+        
     },
 
     newlyLoadedBufferReady: function(){
@@ -269,9 +284,7 @@ onAudioProcess: function () {
             this.viewPort.sS = oldStart;
             this.viewPort.eS = oldEnd;
         }
-
         this.drawBuffer();
-        this.startOfflineProcessing();
 
     },
 
@@ -701,10 +714,20 @@ onAudioProcess: function () {
 	
 
 	startOfflineProcessing: function() {
-		
-    	var offlineContext = new webkitOfflineAudioContext(channels, sourceBuffer.duration * sampleRate, sampleRate);
-	    var source = offlineContext.createBufferSource();
-    	source.buffer = sourceBuffer;   
+	
+		var offlineContext = new webkitOfflineAudioContext(channels,  sampleRate, sampleRate);
+		primeWorker = new Worker(js_spectro_filename);
+	    var myImage = new Image();
+    	var isSourceBufferLoaded = false;
+
+	    primeWorker.addEventListener('message', function(event){
+    		//context.clearRect(0, 0, c_width, c_height);
+			myImage.src = event.data;
+			myImage.onload = function() {
+    	    	context.drawImage(myImage, 0, 0);
+			}
+		});
+    	
     	
     	var c_width = offline.width;
     	var c_height = offline.height;    
@@ -731,27 +754,11 @@ onAudioProcess: function () {
 		};    
 	}	
     
-    
 };
 
 
-/// Spectrogramm stuff
 
-	var offline = document.getElementById("spectrogram");
-    var context = offline.getContext("2d");
-    var myImage = new Image();
-    var primeWorker = new Worker('js/spectrogram.js');
-    var isSourceBufferLoaded = false;
 
-    primeWorker.addEventListener('message', function(event){
-    	//context.clearRect(0, 0, c_width, c_height);
-		myImage.src = event.data;
-		myImage.onload = function() {
-        	context.drawImage(myImage, 0, 0);
-		}
-	});
-    
-    
     
 
    

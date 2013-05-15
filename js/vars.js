@@ -54,5 +54,8 @@
     
     // interpolation var
     var x0 = 0;
+    
+    var js_spectro_filename = 'js/spectrogram.js';
+    var canvas_spectro_name = 'spectrogram';
    
 
