@@ -47,6 +47,11 @@ var EmuLabeller = {
         this.isModalShowing = false;
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
+        
+        
+         $("#spec-dialog").dialog();
+        
+        
 
         //bindings
         this.backend.bindUpdate(function () {
@@ -704,8 +709,7 @@ onAudioProcess: function () {
 	    request.open("GET", url, true);
 	    request.responseType = "arraybuffer";
     	request.onload = function() { 
-        	sourceBuffer = ocontext.createBuffer(request.response, true);
-	        isSourceBufferLoaded = true;
+        	sourceBuffer = ocontext.createBuffer(request.response, false);
     	    emulabeller.startOfflineProcessing();
 	    }
     	request.send();
@@ -719,6 +723,8 @@ onAudioProcess: function () {
 		primeWorker = new Worker(js_spectro_filename);
 	    var myImage = new Image();
     	var isSourceBufferLoaded = false;
+    	var sStart,sEnd;
+
 
 	    primeWorker.addEventListener('message', function(event){
     		//context.clearRect(0, 0, c_width, c_height);
@@ -727,24 +733,20 @@ onAudioProcess: function () {
     	    	context.drawImage(myImage, 0, 0);
 			}
 		});
-    	
-    	
-    	var c_width = offline.width;
-    	var c_height = offline.height;    
-    	var sStart,sEnd;
-    	
-    	if (this.viewPort.sS != undefined) sStart = this.viewPort.sS;
-    	else sStart = 0;
-    	if (this.viewPort.eS != undefined) sEnd = this.viewPort.eS;
-    	else sEnd = sourceBuffer.length;
+        	
+    	sStart = Math.floor(this.viewPort.sS);
+    	sEnd = Math.floor(this.viewPort.eS);
 
-	    primeWorker.postMessage({'cmd': 'config', 'N': N});
+		if(sStart != undefined && sEnd != undefined ) {
+		
+    	//console.log("start:"+sStart+" ende:"+sEnd+" dauer:"+(sEnd-sStart));
+    	primeWorker.postMessage({'cmd': 'config', 'N': N});
     	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
 	    primeWorker.postMessage({'cmd': 'config', 'start': sStart});
     	primeWorker.postMessage({'cmd': 'config', 'end': sEnd});
 	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
-    	primeWorker.postMessage({'cmd': 'config', 'width': c_width});
-	    primeWorker.postMessage({'cmd': 'config', 'height': c_height});    
+    	primeWorker.postMessage({'cmd': 'config', 'width': offline.width});
+	    primeWorker.postMessage({'cmd': 'config', 'height': offline.height});    
     	offlineContext.startRendering();    
         offlineContext.oncomplete = function(event) {
 	    	var data = JSON.stringify(sourceBuffer);
@@ -752,6 +754,7 @@ onAudioProcess: function () {
 			primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
 			primeWorker.postMessage({'cmd': 'render'});
 		};    
+		}
 	}	
     
 };
