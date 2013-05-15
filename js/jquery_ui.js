@@ -1,7 +1,5 @@
   $(document).ready(function() {
   
-  	var isOpen = false;
-  
     $("#specDialog").dialog({
     	bgiframe: true,
     	autoOpen: false,
@@ -24,6 +22,7 @@
     	}
     });
     $('#specSettings').click(function() {
+    	isOpen = $('#specDialog').dialog('isOpen');
     	if(!isOpen) {
     		$('#specDialog').dialog('open');
     		$("#specDialog").dialog('moveToTop'); 
