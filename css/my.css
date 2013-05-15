@@ -10,7 +10,6 @@ canvas
         user-select: none;
 }
 
-
 #fileGetterBtn
 {
         /* Note: display:none on the input won't trigger the click event in WebKit.
@@ -18,6 +17,10 @@ canvas
         visibility: hidden;
         width: 0;
         height: 0;
+}
+
+.ui-front {
+    z-index:1000000 !important; /* The default is 100. !important overrides the default. */
 }
 
 

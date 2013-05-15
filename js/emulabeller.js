@@ -715,8 +715,6 @@ onAudioProcess: function () {
     	request.send();
     },
 
-	
-
 	startOfflineProcessing: function() {
 	
 		var offlineContext = new webkitOfflineAudioContext(channels,  sampleRate, sampleRate);
@@ -746,7 +744,7 @@ onAudioProcess: function () {
     	primeWorker.postMessage({'cmd': 'config', 'end': sEnd});
 	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
     	primeWorker.postMessage({'cmd': 'config', 'width': offline.width});
-	    primeWorker.postMessage({'cmd': 'config', 'height': offline.height});    
+	    primeWorker.postMessage({'cmd': 'config', 'height': offline.height});     
     	offlineContext.startRendering();    
         offlineContext.oncomplete = function(event) {
 	    	var data = JSON.stringify(sourceBuffer);
