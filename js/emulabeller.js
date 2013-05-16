@@ -328,7 +328,6 @@ onAudioProcess: function () {
     },
 
 
-    
     bindTierClick: function (element, callback) {
         var my = this;
         element.addEventListener('click', function (e) {
@@ -344,7 +343,7 @@ onAudioProcess: function () {
         var my = this;
         element.addEventListener('mousedown', function (e) {
             var relX = e.offsetX;
-            if (null == relX) { relX = e.layerX; }
+            if (null === relX) { relX = e.layerX; }
             callback(relX / this.clientWidth);
         }, false);
     },
@@ -353,7 +352,7 @@ onAudioProcess: function () {
         var my = this;
         element.addEventListener('mouseup', function (e) {
             var relX = e.offsetX;
-            if (null == relX) { relX = e.layerX; }
+            if (null === relX) { relX = e.layerX; }
             callback(relX / this.clientWidth);
         }, false);
     },
@@ -362,7 +361,7 @@ onAudioProcess: function () {
         var my = this;
         element.addEventListener('mousemove', function (e) {
             var relX = e.offsetX;
-            if (null == relX) { relX = e.layerX; }
+            if (null === relX) { relX = e.layerX; }
             callback(relX / this.clientWidth);
         }, false);
     },
@@ -371,7 +370,7 @@ onAudioProcess: function () {
     parseNewFile: function (readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
-        if(ft==0){
+        if(ft===0){
             console.log(readerRes);
             my.backend.loadData(
                 readerRes,

@@ -28,10 +28,10 @@ var emulabeller = (function () {
         labeller.tgParser.load('data/msajc003.TextGrid');
         labeller.loadSpectrogramSound("data/msajc003.wav");
     // }
-    
-    
+
+
 	// initial  launch
-    
+
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
