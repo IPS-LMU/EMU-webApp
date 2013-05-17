@@ -26,7 +26,6 @@ var emulabeller = (function () {
     // if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
-        labeller.loadSpectrogramSound("data/msajc003.wav");
     // }
     
     

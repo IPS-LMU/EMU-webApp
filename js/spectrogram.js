@@ -1,11 +1,32 @@
 
-	// load configuration files
-  	importScripts('vars.js'); 
-  	
   	// load png library
   	importScripts('pnglib.js'); 
 
-			
+	var executed = false;
+	var PI = 3.141592653589793;                        // value : Math.PI
+	var TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
+	var OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)	
+	var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
+	var internalalpha = 0.16;
+	var totalMax = 0;
+	var background_color = 0x00;
+	var dynRangeInDB = 50;
+	var x0 = 0;
+	
+	var myWindow = {
+                BARTLETT:       1,
+                BARTLETTHANN:   2,
+                BLACKMAN:       3,
+                COSINE:         4,
+                GAUSS:          5,
+                HAMMING:        6,
+                HANN:           7,
+                LANCZOS:        8,
+                RECTANGULAR:    9,
+                TRIANGULAR:     10
+        } 
+	
+	
 function FFT(fftSize){
 
 	// FFT Class from 
@@ -320,7 +341,7 @@ function FFT(fftSize){
 		}
 		
 		// calculate FFT window function over real 
-	    myFFT.wFunction(wFunction,alpha,real);
+	    myFFT.wFunction(wFunction,internalalpha,real);
 	    
 	    // calculate FFT over real and save to result
 	    myFFT.fft(real,imag);	
@@ -500,6 +521,11 @@ function FFT(fftSize){
     			c_height = data.height;
     		if (data.window != undefined)
     			wFunction = data.window;
+    		if (data.alpha != undefined)
+    			internalalpha = data.alpha;    		
+    		if (data.dynRangeInDB != undefined)
+    			dynRangeInDB = data.dynRangeInDB;    				
+    			
     	  break;
     	case 'pcm':
     		if (data.stream != undefined)

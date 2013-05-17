@@ -1,7 +1,4 @@
-	var renderingCanvas = false;
-    var primeWorker = new Worker(js_spectro_filename);
-	var offline = document.getElementById(canvas_spectro_name);
-    var context = offline.getContext("2d");
+
 
 
 var EmuLabeller = {
@@ -48,10 +45,51 @@ var EmuLabeller = {
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
         
-        
-         $("#spec-dialog").dialog();
-        
-        
+        //
+        // Main Configuration File 
+        //
+
+        my.myWindow = {
+                BARTLETT:       1,
+                BARTLETTHANN:   2,
+                BLACKMAN:       3,
+                COSINE:         4,
+                GAUSS:          5,
+                HAMMING:        6,
+                HANN:           7,
+                LANCZOS:        8,
+                RECTANGULAR:    9,
+                TRIANGULAR:     10
+        } 
+  	
+        // various mathematical vars
+        my.PI = 3.141592653589793;                        // value : Math.PI
+        my.TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
+        my.OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)	
+        my.emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
+        my.dynamicRange=5000;                             // value : toLinearLevel(50);
+        my.dynRangeInDB=50;                               // value : toLevelInDB(dynamicRange);    
+
+        // FFT default vars
+        my.N = 512;                                       // default FFT Window Size
+        my.alpha = 0.16;                                  // default alpha for Window Function
+        my.windowFunction = my.myWindow.BARTLETTHANN;     // default Window Function
+        my.sampleRate = 44100;                            // default sample rate
+        my.channels = 1;                                  // default number of channels
+        my.freq = 8000;                                   // default upper Frequency
+		my.sampleRate = 44100;                            // default sample Rate
+		
+    
+        my.pixel_height = 1;                             // default pixel height per value
+    
+    
+        my.renderingCanvas = false;
+        my.primeWorkerFile = 'js/spectrogram.js';
+        my.primeWorker = new Worker(my.primeWorkerFile);
+        my.offline = document.getElementById('spectrogram');
+        my.context = my.offline.getContext("2d");    
+
+        $("#spec-dialog").dialog();
 
         //bindings
         this.backend.bindUpdate(function () {
@@ -209,20 +247,16 @@ onAudioProcess: function () {
     },
 
     drawBuffer: function (isNewlyLoaded) {
+        var my = this;
         //console.log(this);
         if (this.backend.currentBuffer) {
-            // console.log(this);
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
+            my.primeWorker.terminate();
+        	my.primeWorker = null;
+        	my.context.fillStyle = "rgb(255,255,255)";
+        	my.context.fillRect(0,0,my.offline.width,my.offline.height);
+			this.startSpectroRendering();
         }
-        
-        primeWorker.terminate();
-        primeWorker = null;
-		context.fillStyle = "rgb(255,255,255)";
-		context.fillRect(0,0,offline.width,offline.height);
-
-        this.startOfflineProcessing();
-
-        
     },
 
     newlyLoadedBufferReady: function(){
@@ -700,58 +734,45 @@ onAudioProcess: function () {
     },
     
     
-    
-    // load Sound decode and send buffer to renderLine(buffer)
-    loadSpectrogramSound: function(url) {
-    	// Load asynchronously
-		var ocontext = new webkitAudioContext();
-	    var request = new XMLHttpRequest();
-	    request.open("GET", url, true);
-	    request.responseType = "arraybuffer";
-    	request.onload = function() { 
-        	sourceBuffer = ocontext.createBuffer(request.response, false);
-    	    emulabeller.startOfflineProcessing();
-	    }
-    	request.send();
-    },
+ 
 
-	startOfflineProcessing: function() {
+	startSpectroRendering: function(pcm_data) {
 	
-		var offlineContext = new webkitOfflineAudioContext(channels,  sampleRate, sampleRate);
-		primeWorker = new Worker(js_spectro_filename);
-	    var myImage = new Image();
-    	var isSourceBufferLoaded = false;
-    	var sStart,sEnd;
+		var my = this;
+		//my.offlineContext = new webkitOfflineAudioContext(my.channels, my.sampleRate, my.sampleRate);
+		my.primeWorker = new Worker(my.primeWorkerFile);
+	    my.myImage = new Image();
 
-
-	    primeWorker.addEventListener('message', function(event){
+	    my.primeWorker.addEventListener('message', function(event){
     		//context.clearRect(0, 0, c_width, c_height);
-			myImage.src = event.data;
-			myImage.onload = function() {
-    	    	context.drawImage(myImage, 0, 0);
+			my.myImage.src = event.data;
+			my.myImage.onload = function() {
+    	    	my.context.drawImage(my.myImage, 0, 0);
 			}
 		});
-        	
-    	sStart = Math.floor(this.viewPort.sS);
-    	sEnd = Math.floor(this.viewPort.eS);
-
-		if(sStart != undefined && sEnd != undefined ) {
 		
-    	//console.log("start:"+sStart+" ende:"+sEnd+" dauer:"+(sEnd-sStart));
-    	primeWorker.postMessage({'cmd': 'config', 'N': N});
-    	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
-	    primeWorker.postMessage({'cmd': 'config', 'start': sStart});
-    	primeWorker.postMessage({'cmd': 'config', 'end': sEnd});
-	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
-    	primeWorker.postMessage({'cmd': 'config', 'width': offline.width});
-	    primeWorker.postMessage({'cmd': 'config', 'height': offline.height});     
-    	offlineContext.startRendering();    
-        offlineContext.oncomplete = function(event) {
-	    	var data = JSON.stringify(sourceBuffer);
-			primeWorker.postMessage({'cmd': 'pcm', 'config': data});		
-			primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
-			primeWorker.postMessage({'cmd': 'render'});
-		};    
+		var data = my.backend.currentBuffer.getChannelData(0);
+		var data_conf = JSON.stringify(this.backend.currentBuffer);
+        	
+    	my.sStart = Math.round(my.viewPort.sS);		
+    	my.sEnd = Math.round(my.viewPort.eS);		
+
+		if(my.sStart != undefined && my.sEnd != undefined ) {
+		
+    		my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
+	    	my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
+    		my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
+	    	my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
+	    	my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
+		    my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
+    		my.primeWorker.postMessage({'cmd': 'config', 'width': my.offline.width});
+		    my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
+		    my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
+	    	my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
+			my.primeWorker.postMessage({'cmd': 'pcm', 'stream': data});		
+			my.primeWorker.postMessage({'cmd': 'render'});
+
+		
 		}
 	}	
     
