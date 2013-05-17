@@ -19,7 +19,7 @@
     	        }
     	        else N = nN;
     	        
-    		  	emulabeller.startOfflineProcessing();
+    		  	emulabeller.startSpectroRendering();
     		  	$(this).dialog('close');
     		  	isOpen = false;
     		},

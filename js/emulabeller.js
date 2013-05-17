@@ -736,24 +736,20 @@ onAudioProcess: function () {
     
  
 
-	startSpectroRendering: function(pcm_data) {
+	startSpectroRendering: function() {
 	
 		var my = this;
-		//my.offlineContext = new webkitOfflineAudioContext(my.channels, my.sampleRate, my.sampleRate);
 		my.primeWorker = new Worker(my.primeWorkerFile);
 	    my.myImage = new Image();
 
 	    my.primeWorker.addEventListener('message', function(event){
-    		//context.clearRect(0, 0, c_width, c_height);
 			my.myImage.src = event.data;
 			my.myImage.onload = function() {
     	    	my.context.drawImage(my.myImage, 0, 0);
 			}
 		});
 		
-		var data = my.backend.currentBuffer.getChannelData(0);
 		var data_conf = JSON.stringify(this.backend.currentBuffer);
-        	
     	my.sStart = Math.round(my.viewPort.sS);		
     	my.sEnd = Math.round(my.viewPort.eS);		
 
@@ -769,7 +765,7 @@ onAudioProcess: function () {
 		    my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
 		    my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
 	    	my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
-			my.primeWorker.postMessage({'cmd': 'pcm', 'stream': data});		
+			my.primeWorker.postMessage({'cmd': 'pcm', 'stream': my.backend.currentBuffer.getChannelData(0)});		
 			my.primeWorker.postMessage({'cmd': 'render'});
 
 		
