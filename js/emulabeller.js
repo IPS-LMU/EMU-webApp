@@ -1,7 +1,7 @@
-	var renderingCanvas = false;
-    var primeWorker = new Worker(js_spectro_filename);
-	var offline = document.getElementById(canvas_spectro_name);
-    var context = offline.getContext("2d");
+var renderingCanvas = false;
+var primeWorker = new Worker(js_spectro_filename);
+var offline = document.getElementById(canvas_spectro_name);
+var context = offline.getContext("2d");
 
 
 var EmuLabeller = {
@@ -32,6 +32,8 @@ var EmuLabeller = {
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
+
+        this.JSONval = Object.create(EmuLabeller.JSONvalidator);
 
         // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;
@@ -641,6 +643,9 @@ onAudioProcess: function () {
         console.log(sT.events);
 
         emulabeller.drawBuffer();
+    },
+    validateTierInfos: function () {
+        this.JSONval.validateTierInfos(this.tierInfos);
     },
     // saveTiers: function () {
     //     var myObject = {one: "weee", two: "woooo"};
