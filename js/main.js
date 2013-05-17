@@ -30,7 +30,7 @@ var emulabeller = (function () {
     // }
 
     //validation testing
-    labeller.validateTierInfos();
+    // labeller.validateTierInfos();
 
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);

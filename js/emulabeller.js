@@ -34,6 +34,7 @@ var EmuLabeller = {
         this.ssffParser.init();
 
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
+        this.JSONval.init()
 
         // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;

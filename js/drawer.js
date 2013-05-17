@@ -89,6 +89,7 @@ EmuLabeller.Drawer = {
         this.maxPeak = -Infinity;
 
         var chan = buffer.getChannelData(c);
+        // console.log(chan);
         var relData = chan.subarray(vP.sS, vP.eS);
 
         if(k<=1){
