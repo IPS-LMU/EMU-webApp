@@ -37,7 +37,8 @@ var spectogramDrawer = {
         my.primeWorker = new Worker(my.primeWorkerFile);
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
-        my.pcm_per_pixel = 0;    
+        my.pcm_per_pixel = 0; 
+        my.myImage = new Image();
         },
         
         killSpectroRenderingThread: function () {
@@ -72,13 +73,18 @@ var spectogramDrawer = {
                 // our canvas element
                 context.scale(ratio, ratio);
             }
-        },        
+        },     
+        
+        drawImageCache: function () {
+            var my = this;
+            my.context.drawImage(my.myImage, 0, 0);
+    	    my.toRetinaRatio(my.offline,my.context);
+        },   
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
             var my = this;
             var data_conf = JSON.stringify(current_buffer);
             my.primeWorker = new Worker(my.primeWorkerFile);
-            my.myImage = new Image();
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
             my.primeWorker.addEventListener('message', function(event){
