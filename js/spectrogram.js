@@ -1,54 +1,40 @@
+importScripts('pnglib.js'); 
+var executed = false;
+var PI = 3.141592653589793;                        // value : Math.PI
+var TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
+var OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)	
+var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
+var internalalpha = 0.16;
+var totalMax = 0;
+var background_color = 0x00;
+var dynRangeInDB = 50;
+var x0 = 0;
+var myWindow = {
+  BARTLETT:       1,
+  BARTLETTHANN:   2,
+  BLACKMAN:       3,
+  COSINE:         4,
+  GAUSS:          5,
+  HAMMING:        6,
+  HANN:           7,
+  LANCZOS:        8,
+  RECTANGULAR:    9,
+  TRIANGULAR:     10
+} 
 
-  	// load png library
-  	importScripts('pnglib.js'); 
-
-	var executed = false;
-	var PI = 3.141592653589793;                        // value : Math.PI
-	var TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
-	var OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)	
-	var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
-	var internalalpha = 0.16;
-	var totalMax = 0;
-	var background_color = 0x00;
-	var dynRangeInDB = 50;
-	var x0 = 0;
-	
-	var myWindow = {
-                BARTLETT:       1,
-                BARTLETTHANN:   2,
-                BLACKMAN:       3,
-                COSINE:         4,
-                GAUSS:          5,
-                HAMMING:        6,
-                HANN:           7,
-                LANCZOS:        8,
-                RECTANGULAR:    9,
-                TRIANGULAR:     10
-        } 
-	
-	
 function FFT(fftSize){
+  var n,m,sin,cos,alpha,func;
+  n = fftSize;
+  m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
+  if (n != (1 << m))										// Make sure n is a power of 2
+    self.postMessage('ERROR : FFT length must be power of 2');
 
-	// FFT Class from 
-	// http://stackoverflow.com/questions/9272232/fft-library-in-android-sdk
-	// translated to javascsript
-	//
-	// [parameters]
-	//
-	// fftSize -> Size of FFT	
-
-	var n,m,sin,cos,alpha,func;
-	n = fftSize;
-    m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
-    if (n != (1 << m))										// Make sure n is a power of 2
-        console.log('ERROR : FFT length must be power of 2');
-    
-	cos = new Float32Array(n/2);							// precompute cos table
-	sin = new Float32Array(n/2);							// precompute sin table
-    for (var x = 0; x < n / 2; x++) {
-        cos[x] = Math.cos(-2 * PI * x / n);
-        sin[x] = Math.sin(-2 * PI * x / n);
-    }	
+  cos = new Float32Array(n/2);							// precompute cos table
+  sin = new Float32Array(n/2);							// precompute sin table
+  for (var x = 0; x < n / 2; x++) {
+    cos[x] = Math.cos(-2 * PI * x / n);
+    sin[x] = Math.sin(-2 * PI * x / n);
+  }	
     
     /*   
     // choose window function set alpha and execute it on the buffer 

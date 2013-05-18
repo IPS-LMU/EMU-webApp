@@ -36,9 +36,7 @@ var spectogramDrawer = {
         my.primeWorkerFile = 'js/spectrogram.js';
         my.primeWorker = new Worker(my.primeWorkerFile);
         my.offline = params.specCanvas;
-        my.context = my.offline.getContext("2d");      
-              
-            
+        my.context = my.offline.getContext("2d");         
         },
         
         killSpectroRenderingThread: function () {
@@ -47,45 +45,33 @@ var spectogramDrawer = {
         	my.context.fillRect(0,0,my.offline.width,my.offline.height);        
             my.primeWorker.terminate();
         	my.primeWorker = null;
-		},
-        
+        },
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
             var my = this;
+            var data_conf = JSON.stringify(current_buffer);
             my.primeWorker = new Worker(my.primeWorkerFile);
             my.myImage = new Image();
+            my.sStart = Math.round(pcm_start);		
+            my.sEnd = Math.round(pcm_end);	
+
             my.primeWorker.addEventListener('message', function(event){
                 my.myImage.src = event.data;
                 my.myImage.onload = function() {
-    	    	my.context.drawImage(my.myImage, 0, 0);
-			}
-		});
-		
-		var data_conf = JSON.stringify(current_buffer);
-    	my.sStart = Math.round(pcm_start);		
-    	my.sEnd = Math.round(pcm_end);	
-
-		if(my.sStart != undefined && my.sEnd != undefined ) {
-		
-    		my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
-	    	my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
-    		my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
-	    	my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
-	    	my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
-		    my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
-    		my.primeWorker.postMessage({'cmd': 'config', 'width': my.offline.width});
-		    my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
-		    my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
-	    	my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
-			my.primeWorker.postMessage({'cmd': 'pcm', 'stream': current_buffer.getChannelData(0)});		
-			my.primeWorker.postMessage({'cmd': 'render'});
-
-		
-		}
-	}        
-   
-       
+    	    	    my.context.drawImage(my.myImage, 0, 0);
+                }
+            });
+            my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
+            my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
+            my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
+            my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
+            my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
+            my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
+            my.primeWorker.postMessage({'cmd': 'config', 'width': my.offline.width});
+            my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
+            my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
+            my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
+            my.primeWorker.postMessage({'cmd': 'pcm', 'stream': current_buffer.getChannelData(0)});		
+            my.primeWorker.postMessage({'cmd': 'render'});
+        }    
 };
-
-
-       

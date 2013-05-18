@@ -41,60 +41,53 @@ var emulabeller = (function () {
     // hack for hiding inputs of dialogs..
     $("#dialog-messageSh").hide();
     $("#dialog-messageSetLabel").hide();
-    
-    
-
     $('#specSettings').click(function() {
-    	var isOpen = $('#specDialog').dialog('isOpen');
-    	if(!isOpen) {
-    		$('#specDialog').dialog('open');
-    		$("#specDialog").dialog('moveToTop'); 
-    		isOpen = true;
-    	}
-    	else {
-    		$('#specDialog').dialog('close');
-    		isOpen = false;
-    	}
+        var isOpen = $('#specDialog').dialog('isOpen');
+        if(!isOpen) {
+            $('#specDialog').dialog('open');
+            $("#specDialog").dialog('moveToTop'); 
+            isOpen = true;
+        }
+        else {
+            $('#specDialog').dialog('close');
+            isOpen = false;
+        }
     });
-
- $("#specDialog").dialog({
-            bgiframe: true,
-            autoOpen: false,
-            width: 500,
-            closeOnEscape: true,
-            show: 'fade',
-            hide: 'fade',
-            position: 'center',
-            stack: false,
-            buttons: {
-                OK: function() {
-                    var nN = $("#windowLength").val();
-                    var nvrf = $("#viewrange_from").val();
-                    var nvrt = $("#viewrange_to").val();
-                    var ndr = $("#dynamicRange").val();
-                    var nwf = $("#windowFunction").val();
-                    if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
-                        alert("Please enter valid numbers !");
-                    }
-                    else {
-                    	labeller.spectogramDrawer.N = parseInt(nN,10);
-                    	labeller.spectogramDrawer.freq = parseInt(nvrt,10);
-                    	labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
-                    	labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
-                    	labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
-                    	labeller.spectogramDrawer.killSpectroRenderingThread();
-                    	labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS);
-                    	
-    		  		}
+    $("#specDialog").dialog({
+        bgiframe: true,
+        autoOpen: false,
+        width: 500,
+        closeOnEscape: true,
+        show: 'fade',
+        hide: 'fade',
+        position: 'center',
+        stack: false,
+        buttons: {
+            OK: function() {
+                var nN = $("#windowLength").val();
+                var nvrf = $("#viewrange_from").val();
+                var nvrt = $("#viewrange_to").val();
+                var ndr = $("#dynamicRange").val();
+                var nwf = $("#windowFunction").val();
+                if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
+                    alert("Please enter valid numbers !");
+                }
+                else {
+                    labeller.spectogramDrawer.N = parseInt(nN,10);
+                    labeller.spectogramDrawer.freq = parseInt(nvrt,10);
+                    labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
+                    labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
+                    labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
+                    labeller.spectogramDrawer.killSpectroRenderingThread();
+                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS);
+                }
     		  	$(this).dialog('close');
-    		},
-    		Abbrechen: function() {
-    			$(this).dialog('close');
-    		}
-    	}
+            },
+            Abbrechen: function() {
+                $(this).dialog('close');
+            }
+         }
     });       
-    
-    
 
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {
