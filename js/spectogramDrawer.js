@@ -52,6 +52,28 @@ var spectogramDrawer = {
         	my.primeWorker = null;
         },
         
+        toRetinaRatio: function (canvas, context) {
+            var backingStoreRatio, ratio;
+            var devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
+
+            if (devicePixelRatio !== backingStoreRatio) {
+                //waveCanvas
+                var oldWidth = canvas.clientWidth;
+                var oldHeight = canvas.clientHeight;
+
+                canvas.width = oldWidth * ratio;
+                canvas.height = oldHeight * ratio;
+
+                canvas.style.width = oldWidth + 'px';
+                canvas.style.height = oldHeight + 'px';
+
+                // now scale the context to counter
+                // the fact that we've manually scaled
+                // our canvas element
+                context.scale(ratio, ratio);
+            }
+        },        
+        
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
             var my = this;
             var data_conf = JSON.stringify(current_buffer);
@@ -63,6 +85,7 @@ var spectogramDrawer = {
                 my.myImage.src = event.data;
                 my.myImage.onload = function() {
     	    	    my.context.drawImage(my.myImage, 0, 0);
+    	    	    my.toRetinaRatio(my.offline,my.context);
                 }
             });
             my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
