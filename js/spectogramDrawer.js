@@ -28,6 +28,7 @@ var spectogramDrawer = {
         my.windowFunction = my.myWindow.BARTLETTHANN;     // default Window Function
         my.sampleRate = 44100;                            // default sample rate
         my.channels = 1;                                  // default number of channels
+        my.freq_lower = 0;                                // default upper Frequency
         my.freq = 8000;                                   // default upper Frequency
 		my.sampleRate = 44100;                            // default sample Rate
         my.pixel_height = 1;                             // default pixel height per value
@@ -35,7 +36,9 @@ var spectogramDrawer = {
         my.primeWorkerFile = 'js/spectrogram.js';
         my.primeWorker = new Worker(my.primeWorkerFile);
         my.offline = params.specCanvas;
-        my.context = my.offline.getContext("2d");          
+        my.context = my.offline.getContext("2d");      
+              
+            
         },
         
         killSpectroRenderingThread: function () {
@@ -60,7 +63,7 @@ var spectogramDrawer = {
 		
 		var data_conf = JSON.stringify(current_buffer);
     	my.sStart = Math.round(pcm_start);		
-    	my.sEnd = Math.round(pcm_end);		
+    	my.sEnd = Math.round(pcm_end);	
 
 		if(my.sStart != undefined && my.sEnd != undefined ) {
 		
@@ -85,42 +88,4 @@ var spectogramDrawer = {
 };
 
 
-        $("#specDialog").dialog({
-            bgiframe: true,
-            autoOpen: false,
-            width: 500,
-            closeOnEscape: true,
-            show: 'fade',
-            hide: 'fade',
-            position: 'center',
-            stack: false,
-            buttons: {
-                OK: function() {
-                    var nN = $("#windowLength").val();
-                    if(isNaN(nN)) {
-                        alert("Please enter numbers");
-    	        	    //$("#windowLength").val() = "";
-                    }
-                    else N = nN;
-    		  	emulabeller.startSpectroRendering();
-    		  	$(this).dialog('close');
-    		  	isOpen = false;
-    		},
-    		Abbrechen: function() {
-    			$(this).dialog('close');
-    			isOpen = false;
-    		}
-    	}
-    });
-    $('#specSettings').click(function() {
-    	isOpen = $('#specDialog').dialog('isOpen');
-    	if(!isOpen) {
-    		$('#specDialog').dialog('open');
-    		$("#specDialog").dialog('moveToTop'); 
-    		isOpen = true;
-    	}
-    	else {
-    		$('#specDialog').dialog('close');
-    		isOpen = false;
-    	}
-    }); 
+       

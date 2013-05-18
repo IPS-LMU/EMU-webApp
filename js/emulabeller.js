@@ -26,8 +26,8 @@ var EmuLabeller = {
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
         
-        this.specDrawer = Object.create(spectogramDrawer);
-        this.specDrawer.init({specCanvas: params.specCanvas});
+        this.spectogramDrawer = Object.create(spectogramDrawer);
+        this.spectogramDrawer.init({specCanvas: params.specCanvas});
 		
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
@@ -47,6 +47,7 @@ var EmuLabeller = {
         this.isModalShowing = false;
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
+       
         
 
         //bindings
@@ -209,8 +210,8 @@ onAudioProcess: function () {
         //console.log(this);
         if (this.backend.currentBuffer) {
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
-        	my.specDrawer.killSpectroRenderingThread();
-			my.specDrawer.startSpectroRenderingThread(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);
+        	this.spectogramDrawer.killSpectroRenderingThread();
+			this.spectogramDrawer.startSpectroRenderingThread(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);
         }
     },
 

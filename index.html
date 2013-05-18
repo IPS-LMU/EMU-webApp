@@ -40,27 +40,27 @@
 
              <div id="specDialog" title="Spectogram Settings" style="display:none;">
             		<p>View Range (Hz)</p>
-	            		<input type="text" name="viewrange_from" id="viewrange_from" placeholder="0" />
-	            		<input type="text" name="viewrange_to" id="viewrange_to" placeholder="8000" />
+	            		<input type="text" name="viewrange_from" id="viewrange_from" value="0" />
+	            		<input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
 	            	
             		<p>Window Length (samples)</p>
-	            		<input type="text" name="windowLength" id="windowLength" placeholder="512" />
+	            		<input type="text" name="windowLength" id="windowLength" value="512" />
             		
             		<p>Dynamic Range (dB)</p>  
-            			<input type="text" name="dynamicRange" placeholder="50" /> 
+            			<input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
             		
             		<p>Window Function</p>      
-            			<select name="windowFunction">
-            				<option>BARTLETT</option>
-            				<option selected>BARTLETTHANN</option>
-            				<option>BLACKMAN</option>
-            				<option>COSINE</option>
-            				<option>GAUSS</option>
-            				<option>HAMMING</option>
-            				<option>HANN</option>
-            				<option>LANCZOS</option>
-            				<option>RECTANGULAR</option>
-            				<option>TRIANGULAR</option>
+            			<select name="windowFunction" id="windowFunction">
+            				<option value="1">BARTLETT</option>
+            				<option value="2" selected>BARTLETTHANN</option>
+            				<option value="3">BLACKMAN</option>
+            				<option value="4">COSINE</option>
+            				<option value="5">GAUSS</option>
+            				<option value="6">HAMMING</option>
+            				<option value="7">HANN</option>
+            				<option value="8">LANCZOS</option>
+            				<option value="9">RECTANGULAR</option>
+            				<option value="10">TRIANGULAR</option>
             				
             			</select>     		
             </div>
