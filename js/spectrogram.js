@@ -41,7 +41,7 @@ function FFT(fftSize){
 	n = fftSize;
     m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
     if (n != (1 << m))										// Make sure n is a power of 2
-        console.log("ERROR : FFT length must be power of 2");
+        console.log('ERROR : FFT length must be power of 2');
     
 	cos = new Float32Array(n/2);							// precompute cos table
 	sin = new Float32Array(n/2);							// precompute sin table
@@ -431,7 +431,7 @@ function FFT(fftSize){
 	
 	// used by FFT
     function toLevelInDB(linearLevel){
-        if(linearLevel<0) alert("Linear level argument must be positive.");
+        if(linearLevel<0) alert('Linear level argument must be positive.');
         return 10*log10(linearLevel);
     }
     
@@ -458,13 +458,7 @@ function FFT(fftSize){
     // used to calculate current packet
     function getPacketInPercent(packets,percent) {
     	return Math.floor(packets/100*percent);
-    }
-    
-    // used to calculate current time
-    function getTime(packets,sampleRate) {
-    	return Math.floor(100*packets/sampleRate)/100+ " sec";
-    } 
-    
+    }    
     
     /*
     // Web Worker Communication
