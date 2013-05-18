@@ -38,17 +38,21 @@ var spectogramDrawer = {
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
         my.pcm_per_pixel = 0; 
+        my.imageCache = "";   
         my.myImage = new Image();
+        my.font = "8px Verdana";
+        my.fontColor = "#000";
+        my.loadingText = "calculating...";
         },
         
         killSpectroRenderingThread: function () {
             var my = this;
             my.context.fillStyle = "rgb(255,255,255)";
         	my.context.fillRect(0,0,my.offline.width,my.offline.height);    
-        	my.context.fillStyle = "#000";
+        	my.context.fillStyle = my.fontColor;
         	my.context.strokeStyle = "#F00";
-        	my.context.font = "italic 10pt Arial";
-        	my.context.fillText("calculating...", 2, 10);    
+        	my.context.font = my.font;
+        	my.context.fillText(my.loadingText, 2, 10);    
             my.primeWorker.terminate();
         	my.primeWorker = null;
         },

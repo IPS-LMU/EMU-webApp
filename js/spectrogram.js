@@ -206,6 +206,13 @@
 
 })();
 
+/**
+* A handy class to calculate a fft
+*
+* @version 1.0
+*
+*/
+
 var executed = false;
 var PI = 3.141592653589793;                        // value : Math.PI
 var TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
