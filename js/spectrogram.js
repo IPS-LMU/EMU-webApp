@@ -227,8 +227,8 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,start,end,c_width,c_height) {
-    	return function (N,upperFreq,start,end,c_width,c_height) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height) {
+    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height) {
         	if (!executed) {
         		// start execution once
             	executed = true;
@@ -252,7 +252,8 @@ function FFT(fftSize){
     			packetCountStartEnd = completeLength-sampleStart-(completeLength-sampleEnd);
     			
     			// number of packets per 1 pixel width in canvas (minimum 1)
-    			myStep = Math.floor(packetCountStartEnd/c_width);
+    			myStep = Math.round(packetCountStartEnd/c_width);
+    			
 	    		if(myStep<1)myStep=1;
 	    		
 	    		// Hz per pixel height
@@ -261,14 +262,16 @@ function FFT(fftSize){
 				// uper Hz boundry to display
 				c = Math.floor(upperFreq/HzStep);
 				
+				// lower Hz boundry to display
+				d = Math.floor(lowerFreq/HzStep); // -1 for value below display when lower>0
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
 	        	for(var i=0;i<c_width;i++) {
-					paint[i] = getMagnitude(0,i*myStep+sampleStart,N,c);
+					paint[i] = getMagnitude(0,i*myStep+sampleStart,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
 		        
 		        // height between two interpolation points
-		        pixel_height = c_height/c;
+		        pixel_height = c_height/(c-d);
 		        
 		        // generate png image
 	    	    p = new PNGlib(c_width, c_height, 256);
@@ -277,7 +280,7 @@ function FFT(fftSize){
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
 	        	for(var i=0;i<c_width;i++) 
-		        	drawOfflineSpectogram(i,p); 
+		        	drawOfflineSpectogram(i,p,c,d); 
 		        
 		        // post generated image back
 		        self.postMessage('data:image/png;base64,'+p.getBase64());
@@ -311,7 +314,7 @@ function FFT(fftSize){
 	// calculated FFT data as Float32Array
 	*/
 	
-	function getMagnitude(channel,offset,windowSize,c) {
+	function getMagnitude(channel,offset,windowSize,c,d) {
 		// imaginary array of length N
 		imag = new Float32Array(N);
 		
@@ -319,7 +322,7 @@ function FFT(fftSize){
 		real = new Float32Array(N); 
 		
 		// result array of length N
-		result = new Float32Array(c);
+		result = new Float32Array(c-d);
 		
 		// set real values by reading local sound buffer
 		for(var j=0;j<windowSize;j++) {
@@ -331,8 +334,8 @@ function FFT(fftSize){
 	    
 	    // calculate FFT over real and save to result
 	    myFFT.fft(real,imag);	
-		for(var low=0;low<=c;low++) {
-			result[low] = magnitude(real[low],imag[low]);
+		for(var low=0;low<=c-d;low++) {
+			result[low] = magnitude(real[low+d],imag[low+d]);
 			if(totalMax<result[low]) totalMax = result[low];
 		}
 		return result;
@@ -351,13 +354,17 @@ function FFT(fftSize){
 	//
 	*/
 	
-	function drawOfflineSpectogram(line,p) {
+	function drawOfflineSpectogram(line,p,c,d) {
 	
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
 		
 		// value for first interpolation at lower boundry (height=0)
-		scaledVal = 1;
+        psd = (2 * Math.pow(paint[line][0], 2))/N;
+        psdLog = 10*log10(psd / maxPsd);
+		scaledVal=((psdLog+dynRangeInDB)/dynRangeInDB);
+		if(scaledVal>1) scaledVal=1;
+		if(scaledVal<0) scaledVal=0;
 		
 		
         for (var i = 0; i < paint[line].length; i++) {
@@ -491,6 +498,8 @@ function FFT(fftSize){
     			N = data.N;
     		if (data.freq != undefined)
     			upperFreq = data.freq;
+    		if (data.freq_low != undefined)
+    			lowerFreq = data.freq_low;    			
     		if (data.start != undefined)
     			start = data.start;
     		if (data.end != undefined)
@@ -517,7 +526,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,start,end,c_width,c_height);
+	      parseData(N,upperFreq,lowerFreq,start,end,c_width,c_height);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);

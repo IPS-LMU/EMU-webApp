@@ -64,6 +64,7 @@ var spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
             my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
             my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
+            my.primeWorker.postMessage({'cmd': 'config', 'freq_low': my.freq_lower});
             my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
             my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
