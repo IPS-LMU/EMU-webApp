@@ -213,7 +213,6 @@ var OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)
 var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
 var internalalpha = 0.16;
 var totalMax = 0;
-var background_color = 0x00;
 var dynRangeInDB = 50;
 var x0 = 0;
 var myWindow = {
@@ -228,6 +227,7 @@ var myWindow = {
   RECTANGULAR:    9,
   TRIANGULAR:     10
 } 
+    	    
 
 function FFT(fftSize){
   var n,m,sin,cos,alpha,func;
@@ -460,8 +460,11 @@ function FFT(fftSize){
     			
     			// number of packets per 1 pixel width in canvas (minimum 1)
     			myStep = Math.round(packetCountStartEnd/c_width);
-    			
 	    		if(myStep<1)myStep=1;
+	    		
+	    		p = new PNGlib(c_width, c_height, 256);
+				var background = p.color(0x00, 0x00, 0x00, 0);
+	
 	    		
 	    		// Hz per pixel height
 				HzStep = (sampleRate/2)/c_height;
@@ -479,11 +482,7 @@ function FFT(fftSize){
 		        
 		        // height between two interpolation points
 		        pixel_height = c_height/(c-d);
-		        
-		        // generate png image
-	    	    p = new PNGlib(c_width, c_height, 256);
-	    	    var background = p.color(background_color, background_color, background_color, 0);
-	    	    
+
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
 	        	for(var i=0;i<c_width;i++) 
@@ -494,7 +493,6 @@ function FFT(fftSize){
 		        
 		        // free vars
 		        myFFT = null;
-		        p = null;
 		        
 		        // stop execution
 	    	    executed = false; 
