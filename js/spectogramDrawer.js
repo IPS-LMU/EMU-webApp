@@ -66,10 +66,8 @@ var spectogramDrawer = {
                 //waveCanvas
                 var oldWidth = canvas.clientWidth;
                 var oldHeight = canvas.clientHeight;
-
                 canvas.width = oldWidth * ratio;
                 canvas.height = oldHeight * ratio;
-
                 canvas.style.width = oldWidth + 'px';
                 canvas.style.height = oldHeight + 'px';
 
@@ -78,7 +76,16 @@ var spectogramDrawer = {
                 // our canvas element
                 context.scale(ratio, ratio);
             }
-        },     
+        }, 
+        
+        drawImage: function(mybuf,mystart,myend) {
+        	var my = this;
+			if(my.sStart!=mystart && my.sEnd!=myend) {
+        	    my.killSpectroRenderingThread();
+			    my.startSpectroRenderingThread(mybuf,mystart,myend);
+			}
+			else my.drawImageCache();          
+        },    
         
         drawImageCache: function () {
             var my = this;
@@ -96,7 +103,6 @@ var spectogramDrawer = {
             my.sEnd = Math.round(pcm_end);
             my.pcmperpixel_noround = (my.sEnd-my.sStart)/my.offline.width;
             my.pcmperpixel = Math.round((my.sEnd-my.sStart)/my.offline.width);
-			
             my.primeWorker.addEventListener('message', function(event){
                 my.myImage.src = event.data;
                 my.myImage.onload = function() {
