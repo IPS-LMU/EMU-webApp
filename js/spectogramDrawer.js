@@ -80,11 +80,19 @@ var spectogramDrawer = {
         
         drawImage: function(mybuf,mystart,myend) {
         	var my = this;
-			if(my.sStart!=mystart && my.sEnd!=myend) {
+        	var newppx = Math.round((myend-mystart)/my.offline.width);
+			if(my.pcmperpixel!=newppx) {
         	    my.killSpectroRenderingThread();
 			    my.startSpectroRenderingThread(mybuf,mystart,myend);
 			}
-			else my.drawImageCache();          
+			else {
+				if(my.sStart!=mystart && my.sEnd!=myend) {
+    	    	    my.killSpectroRenderingThread();
+				    my.startSpectroRenderingThread(mybuf,mystart,myend);				
+				}
+				else
+					my.drawImageCache();          
+			}
         },    
         
         drawImageCache: function () {
@@ -101,7 +109,6 @@ var spectogramDrawer = {
             my.primeWorker = new Worker(my.primeWorkerFile);
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
-            my.pcmperpixel_noround = (my.sEnd-my.sStart)/my.offline.width;
             my.pcmperpixel = Math.round((my.sEnd-my.sStart)/my.offline.width);
             my.primeWorker.addEventListener('message', function(event){
                 my.myImage.src = event.data;
