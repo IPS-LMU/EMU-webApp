@@ -209,12 +209,15 @@ onAudioProcess: function () {
         var my = this;
         //console.log(this);
         if (this.backend.currentBuffer) {
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
+
         	if(this.spectogramDrawer.sStart!=this.viewPort.sS && this.spectogramDrawer.sEnd!=this.viewPort.eS) {
-        	this.spectogramDrawer.killSpectroRenderingThread();
-			this.spectogramDrawer.startSpectroRenderingThread(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);
+        	    this.spectogramDrawer.killSpectroRenderingThread();
+			    this.spectogramDrawer.startSpectroRenderingThread(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);
 			}
-			else this.spectogramDrawer.drawImageCache();
+			else this.spectogramDrawer.drawImageCache();     
+			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);   
+            
+
         }
     },
 

@@ -453,26 +453,9 @@ function FFT(fftSize){
             	// array holding FFT results paint[canvas width][canvas height]
 	            paint = new Array(c_width);
 	            
-	            // length of pcm data to calculate
-				completeLength = threadSoundBuffer.length;
-				
-				// where to start calculation
-	    		sampleStart = start;//getPacketInPercent(completeLength,start);
-	    		
-	    		// where to stop calculation
-		    	sampleEnd = end;//getPacketInPercent(completeLength,end);
-		    	
-		    	// sum of packets between sampleStart and sampleEnd
-    			packetCountStartEnd = completeLength-sampleStart-(completeLength-sampleEnd);
-    			
-    			// number of packets per 1 pixel width in canvas (minimum 1)
-    			myStep = Math.round(packetCountStartEnd/c_width);
-	    		if(myStep<1)myStep=1;
 	    		
 	    		p = new PNGlib(c_width, c_height, 256);
-				var background = p.color(0x00, 0x00, 0x00, 0);
 	
-	    		
 	    		// Hz per pixel height
 				HzStep = (sampleRate/2)/c_height;
 				
@@ -483,7 +466,7 @@ function FFT(fftSize){
 				d = Math.floor(lowerFreq/HzStep); // -1 for value below display when lower>0
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
 	        	for(var i=0;i<c_width;i++) {
-					paint[i] = getMagnitude(0,i*myStep+sampleStart,N,c,d);
+					paint[i] = getMagnitude(0,i*myStep,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
 		        
@@ -723,7 +706,9 @@ function FFT(fftSize){
     		if (data.alpha != undefined)
     			internalalpha = data.alpha;    		
     		if (data.dynRangeInDB != undefined)
-    			dynRangeInDB = data.dynRangeInDB;    				
+    			dynRangeInDB = data.dynRangeInDB;  
+    		if (data.myStep != undefined)
+    			myStep = data.myStep;      			  				
     			
     	  break;
     	case 'pcm':

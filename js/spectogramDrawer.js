@@ -37,7 +37,7 @@ var spectogramDrawer = {
         my.primeWorker = new Worker(my.primeWorkerFile);
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
-        my.pcm_per_pixel = 0; 
+        my.pcmperpixel = 0; 
         my.imageCache = "";   
         my.myImage = new Image();
         my.font = "8px Verdana";
@@ -52,7 +52,8 @@ var spectogramDrawer = {
         	my.context.fillStyle = my.fontColor;
         	my.context.strokeStyle = "#F00";
         	my.context.font = my.font;
-        	my.context.fillText(my.loadingText, 2, 10);    
+        	my.context.fillText(my.loadingText, 2, 10); 
+        	my.toRetinaRatio(my.offline,my.context);   
             my.primeWorker.terminate();
         	my.primeWorker = null;
         },
@@ -87,10 +88,15 @@ var spectogramDrawer = {
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
             var my = this;
+            my.imageCache = new Array();
+            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
             var data_conf = JSON.stringify(current_buffer);
             my.primeWorker = new Worker(my.primeWorkerFile);
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
+            my.pcmperpixel_noround = (my.sEnd-my.sStart)/my.offline.width;
+            my.pcmperpixel = Math.round((my.sEnd-my.sStart)/my.offline.width);
+			
             my.primeWorker.addEventListener('message', function(event){
                 my.myImage.src = event.data;
                 my.myImage.onload = function() {
@@ -104,12 +110,13 @@ var spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'freq_low': my.freq_lower});
             my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
             my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
+            my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
             my.primeWorker.postMessage({'cmd': 'config', 'width': my.offline.width});
             my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
-            my.primeWorker.postMessage({'cmd': 'pcm', 'stream': current_buffer.getChannelData(0)});		
+            my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
             my.primeWorker.postMessage({'cmd': 'render'});
         }    
 };
