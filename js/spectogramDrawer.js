@@ -82,11 +82,14 @@ var spectogramDrawer = {
         	var my = this;
         	var newppx = Math.round((myend-mystart)/my.offline.width);
 			if(my.pcmperpixel!=newppx) {
+				console.log(my.pcmperpixel+":"+newppx);
         	    my.killSpectroRenderingThread();
 			    my.startSpectroRenderingThread(mybuf,mystart,myend);
 			}
 			else {
 				if(my.sStart!=mystart && my.sEnd!=myend) {
+					console.log(my.pcmperpixel+"::"+newppx);
+					my.drawImageCachePart(mybuf,mystart,myend,my.sStart,my.sEnd);
     	    	    my.killSpectroRenderingThread();
 				    my.startSpectroRenderingThread(mybuf,mystart,myend);				
 				}
@@ -99,7 +102,13 @@ var spectogramDrawer = {
             var my = this;
             my.context.drawImage(my.myImage, 0, 0);
     	    my.toRetinaRatio(my.offline,my.context);
-        },   
+        },  
+        
+        drawImageCachePart: function (mybuf,start,end,oldstart,oldend) {
+            var my = this;
+            my.context.drawImage(my.myImage, 0, 0);
+    	    my.toRetinaRatio(my.offline,my.context);
+        },          
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
             var my = this;
