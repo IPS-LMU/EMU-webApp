@@ -595,7 +595,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line), Math.floor(c_height-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
@@ -698,9 +698,9 @@ function FFT(fftSize){
     		if (data.end != undefined)
     			end = data.end;
     		if (data.width != undefined)
-    			c_width = data.width;
+    			mywidth = data.width;
     		if (data.height != undefined)
-    			c_height = data.height;
+    			myheight = data.height;
     		if (data.window != undefined)
     			wFunction = data.window;
     		if (data.alpha != undefined)
@@ -721,7 +721,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,c_width,c_height);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);

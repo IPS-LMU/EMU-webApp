@@ -79,7 +79,7 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
                     labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
                     labeller.spectogramDrawer.killSpectroRenderingThread();
-                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS);
+                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height);
                 }
     		  	$(this).dialog('close');
             },
