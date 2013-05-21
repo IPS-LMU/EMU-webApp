@@ -209,13 +209,8 @@ onAudioProcess: function () {
         var my = this;
         //console.log(this);
         if (this.backend.currentBuffer) {
-        
         	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);  
-
-        	   
-			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);   
-            
-
+			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
         }
     },
 

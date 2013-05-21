@@ -82,23 +82,23 @@ var spectogramDrawer = {
         	var my = this;
         	var newppx = Math.round((myend-mystart)/my.offline.width);
 			if(my.pcmperpixel!=newppx) {
+				my.imageCache = new Array();
 				console.log(my.pcmperpixel+":"+newppx);
         	    my.killSpectroRenderingThread();
-			    my.startSpectroRenderingThread(mybuf,mystart,myend);
+			    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);
 			}
 			else {
 				if(my.sStart!=mystart && my.sEnd!=myend) {
 					console.log(my.pcmperpixel+"::"+newppx);
-					my.drawImageCachePart(mybuf,mystart,myend,my.sStart,my.sEnd);
     	    	    my.killSpectroRenderingThread();
-				    my.startSpectroRenderingThread(mybuf,mystart,myend);				
+				    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
 				}
 				else
-					my.drawImageCache();          
+					my.drawImageCache(mystart,myend);          
 			}
         },    
         
-        drawImageCache: function () {
+        drawImageCache: function (mystart,myend) {
             var my = this;
             my.context.drawImage(my.myImage, 0, 0);
     	    my.toRetinaRatio(my.offline,my.context);
@@ -110,9 +110,8 @@ var spectogramDrawer = {
     	    my.toRetinaRatio(my.offline,my.context);
         },          
         
-        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end) {
+        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height) {
             var my = this;
-            my.imageCache = new Array();
             var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
             var data_conf = JSON.stringify(current_buffer);
             my.primeWorker = new Worker(my.primeWorkerFile);
@@ -134,8 +133,8 @@ var spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
             my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
-            my.primeWorker.postMessage({'cmd': 'config', 'width': my.offline.width});
-            my.primeWorker.postMessage({'cmd': 'config', 'height': my.offline.height});     
+            my.primeWorker.postMessage({'cmd': 'config', 'width': part_width});
+            my.primeWorker.postMessage({'cmd': 'config', 'height': part_height});     
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
