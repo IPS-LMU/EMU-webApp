@@ -34,7 +34,9 @@ var spectogramDrawer = {
         my.pixel_height = 1;                             // default pixel height per value
         my.renderingCanvas = false;
         my.primeWorkerFile = 'js/spectrogram.js';
-        my.primeWorker = new Worker(my.primeWorkerFile);
+        //my.primeWorker = new Worker(my.primeWorkerFile);
+        my.primeWorker= new Worker(URL.createObjectURL(blob));
+        
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
         my.pcmperpixel = 0; 
@@ -103,18 +105,13 @@ var spectogramDrawer = {
             my.context.drawImage(my.myImage, 0, 0);
     	    my.toRetinaRatio(my.offline,my.context);
         },  
-        
-        drawImageCachePart: function (mybuf,start,end,oldstart,oldend) {
-            var my = this;
-            my.context.drawImage(my.myImage, 0, 0);
-    	    my.toRetinaRatio(my.offline,my.context);
-        },          
+         
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height) {
             var my = this;
             var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
             var data_conf = JSON.stringify(current_buffer);
-            my.primeWorker = new Worker(my.primeWorkerFile);
+            my.primeWorker = new Worker(URL.createObjectURL(blob));
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
             my.pcmperpixel = Math.round((my.sEnd-my.sStart)/my.offline.width);
