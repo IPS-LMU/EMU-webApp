@@ -27,10 +27,10 @@ var emulabeller = (function () {
 
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
-    // if(isiPad){
+     if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
-    // }
+     }
     
     
 	// initial  launch

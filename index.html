@@ -149,8 +149,8 @@
     
   <noscript>No javascript enabled...</noscript>
   
-  <script id="spectroworker" type="javascript/worker">
-  
+  <script id="spectroworker" type="text/javascript">
+  <!--
   /**
 * A handy class to calculate color values.
 *
@@ -363,6 +363,8 @@
 * A handy class to calculate a fft
 *
 * @version 1.0
+* @author Georg raess <graess@phonetik.uni-muenchen.de>
+* @link http://www.phonetik.uni-muenchen.de/
 *
 */
 
@@ -606,7 +608,7 @@ function FFT(fftSize){
             	// array holding FFT results paint[canvas width][canvas height]
 	            paint = new Array(c_width);
 	            
-	    		
+	    		// create new png picture from pnglib witth color depth=256
 	    		p = new PNGlib(c_width, c_height, 256);
 	
 	    		// Hz per pixel height
@@ -882,7 +884,7 @@ function FFT(fftSize){
 	}, false);       
 	
 	      
-	      
+	-->    
 	</script>
   
   
