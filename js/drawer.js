@@ -57,7 +57,7 @@ EmuLabeller.Drawer = {
         //console.log(this.tierInfos);
 
         this.toRetinaRatio(this.osciCanvas, this.cc);
-        this.toRetinaRatio(this.specCanvas, this.scc);
+        // this.toRetinaRatio(this.specCanvas, this.scc);
         this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
 
         if (params.image) {
