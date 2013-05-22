@@ -21,12 +21,15 @@ var emulabeller = (function () {
         tierInfos: tierInfos
     });
 
+
+
+
+
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
     // if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
-        labeller.loadSpectrogramSound("data/msajc003.wav");
     // }
 
     //validation testing
@@ -38,6 +41,53 @@ var emulabeller = (function () {
     // hack for hiding inputs of dialogs.. SIC!!!
     $("#dialog-messageSh").hide();
     $("#dialog-messageSetLabel").hide();
+    $('#specSettings').click(function() {
+        var isOpen = $('#specDialog').dialog('isOpen');
+        if(!isOpen) {
+            $('#specDialog').dialog('open');
+            $("#specDialog").dialog('moveToTop'); 
+            isOpen = true;
+        }
+        else {
+            $('#specDialog').dialog('close');
+            isOpen = false;
+        }
+    });
+    $("#specDialog").dialog({
+        bgiframe: true,
+        autoOpen: false,
+        width: 500,
+        closeOnEscape: true,
+        show: 'fade',
+        hide: 'fade',
+        position: 'center',
+        stack: false,
+        buttons: {
+            OK: function() {
+                var nN = $("#windowLength").val();
+                var nvrf = $("#viewrange_from").val();
+                var nvrt = $("#viewrange_to").val();
+                var ndr = $("#dynamicRange").val();
+                var nwf = $("#windowFunction").val();
+                if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
+                    alert("Please enter valid numbers !");
+                }
+                else {
+                    labeller.spectogramDrawer.N = parseInt(nN,10);
+                    labeller.spectogramDrawer.freq = parseInt(nvrt,10);
+                    labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
+                    labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
+                    labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
+                    labeller.spectogramDrawer.killSpectroRenderingThread();
+                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height);
+                }
+    		  	$(this).dialog('close');
+            },
+            Abbrechen: function() {
+                $(this).dialog('close');
+            }
+         }
+    });       
 
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {
@@ -150,3 +200,6 @@ var emulabeller = (function () {
 //     $('#scrollbar').css('width', (w*scale));
 
 // }).resize();
+
+
+

@@ -1,33 +1,254 @@
+/**
+* A handy class to calculate color values.
+*
+* @version 1.0
+* @author Robert Eisele <robert@xarg.org>
+* @copyright Copyright (c) 2010, Robert Eisele
+* @link http://www.xarg.org/2010/03/generate-client-side-png-files-using-javascript/
+* @license http://www.opensource.org/licenses/bsd-license.php BSD License
+*
+*/
 
-	// load configuration files
-  	importScripts('vars.js'); 
-  	
-  	// load png library
-  	importScripts('pnglib.js'); 
+(function() {
 
-			
+	// helper functions for that ctx
+	function write(buffer, offs) {
+		for (var i = 2; i < arguments.length; i++) {
+			for (var j = 0; j < arguments[i].length; j++) {
+				buffer[offs++] = arguments[i].charAt(j);
+			}
+		}
+	}
+
+	function byte2(w) {
+		return String.fromCharCode((w >> 8) & 255, w & 255);
+	}
+
+	function byte4(w) {
+		return String.fromCharCode((w >> 24) & 255, (w >> 16) & 255, (w >> 8) & 255, w & 255);
+	}
+
+	function byte2lsb(w) {
+		return String.fromCharCode(w & 255, (w >> 8) & 255);
+	}
+
+	PNGlib = function(width,height,depth) {
+
+		this.width   = width;
+		this.height  = height;
+		this.depth   = depth;
+
+		// pixel data and row filter identifier size
+		this.pix_size = height * (width + 1);
+
+		// deflate header, pix_size, block headers, adler32 checksum
+		this.data_size = 2 + this.pix_size + 5 * Math.floor((0xfffe + this.pix_size) / 0xffff) + 4;
+
+		// offsets and sizes of Png chunks
+		this.ihdr_offs = 0;									// IHDR offset and size
+		this.ihdr_size = 4 + 4 + 13 + 4;
+		this.plte_offs = this.ihdr_offs + this.ihdr_size;	// PLTE offset and size
+		this.plte_size = 4 + 4 + 3 * depth + 4;
+		this.trns_offs = this.plte_offs + this.plte_size;	// tRNS offset and size
+		this.trns_size = 4 + 4 + depth + 4;
+		this.idat_offs = this.trns_offs + this.trns_size;	// IDAT offset and size
+		this.idat_size = 4 + 4 + this.data_size + 4;
+		this.iend_offs = this.idat_offs + this.idat_size;	// IEND offset and size
+		this.iend_size = 4 + 4 + 4;
+		this.buffer_size  = this.iend_offs + this.iend_size;	// total PNG size
+
+		this.buffer  = new Array();
+		this.palette = new Object();
+		this.pindex  = 0;
+
+		var _crc32 = new Array();
+
+		// initialize buffer with zero bytes
+		for (var i = 0; i < this.buffer_size; i++) {
+			this.buffer[i] = "\x00";
+		}
+
+		// initialize non-zero elements
+		write(this.buffer, this.ihdr_offs, byte4(this.ihdr_size - 12), 'IHDR', byte4(width), byte4(height), "\x08\x03");
+		write(this.buffer, this.plte_offs, byte4(this.plte_size - 12), 'PLTE');
+		write(this.buffer, this.trns_offs, byte4(this.trns_size - 12), 'tRNS');
+		write(this.buffer, this.idat_offs, byte4(this.idat_size - 12), 'IDAT');
+		write(this.buffer, this.iend_offs, byte4(this.iend_size - 12), 'IEND');
+
+		// initialize deflate header
+		var header = ((8 + (7 << 4)) << 8) | (3 << 6);
+		header+= 31 - (header % 31);
+
+		write(this.buffer, this.idat_offs + 8, byte2(header));
+
+		// initialize deflate block headers
+		for (var i = 0; (i << 16) - 1 < this.pix_size; i++) {
+			var size, bits;
+			if (i + 0xffff < this.pix_size) {
+				size = 0xffff;
+				bits = "\x00";
+			} else {
+				size = this.pix_size - (i << 16) - i;
+				bits = "\x01";
+			}
+			write(this.buffer, this.idat_offs + 8 + 2 + (i << 16) + (i << 2), bits, byte2lsb(size), byte2lsb(~size));
+		}
+
+		/* Create crc32 lookup table */
+		for (var i = 0; i < 256; i++) {
+			var c = i;
+			for (var j = 0; j < 8; j++) {
+				if (c & 1) {
+					c = -306674912 ^ ((c >> 1) & 0x7fffffff);
+				} else {
+					c = (c >> 1) & 0x7fffffff;
+				}
+			}
+			_crc32[i] = c;
+		}
+
+		// compute the index into a png for a given pixel
+		this.index = function(x,y) {
+			var i = y * (this.width + 1) + x + 1;
+			var j = this.idat_offs + 8 + 2 + 5 * Math.floor((i / 0xffff) + 1) + i;
+			return j;
+		}
+
+		// convert a color and build up the palette
+		this.color = function(red, green, blue, alpha) {
+
+			alpha = alpha >= 0 ? alpha : 255;
+			var color = (((((alpha << 8) | red) << 8) | green) << 8) | blue;
+
+			if (typeof this.palette[color] == "undefined") {
+				if (this.pindex == this.depth) return "\x00";
+
+				var ndx = this.plte_offs + 8 + 3 * this.pindex;
+
+				this.buffer[ndx + 0] = String.fromCharCode(red);
+				this.buffer[ndx + 1] = String.fromCharCode(green);
+				this.buffer[ndx + 2] = String.fromCharCode(blue);
+				this.buffer[this.trns_offs+8+this.pindex] = String.fromCharCode(alpha);
+
+				this.palette[color] = String.fromCharCode(this.pindex++);
+			}
+			return this.palette[color];
+		}
+
+		// output a PNG string, Base64 encoded
+		this.getBase64 = function() {
+
+			var s = this.getDump();
+
+			var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+			var c1, c2, c3, e1, e2, e3, e4;
+			var l = s.length;
+			var i = 0;
+			var r = "";
+
+			do {
+				c1 = s.charCodeAt(i);
+				e1 = c1 >> 2;
+				c2 = s.charCodeAt(i+1);
+				e2 = ((c1 & 3) << 4) | (c2 >> 4);
+				c3 = s.charCodeAt(i+2);
+				if (l < i+2) { e3 = 64; } else { e3 = ((c2 & 0xf) << 2) | (c3 >> 6); }
+				if (l < i+3) { e4 = 64; } else { e4 = c3 & 0x3f; }
+				r+= ch.charAt(e1) + ch.charAt(e2) + ch.charAt(e3) + ch.charAt(e4);
+			} while ((i+= 3) < l);
+			return r;
+		}
+
+		// output a PNG string
+		this.getDump = function() {
+
+			// compute adler32 of output pixels + row filter bytes
+			var BASE = 65521; /* largest prime smaller than 65536 */
+			var NMAX = 5552;  /* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
+			var s1 = 1;
+			var s2 = 0;
+			var n = NMAX;
+
+			for (var y = 0; y < this.height; y++) {
+				for (var x = -1; x < this.width; x++) {
+					s1+= this.buffer[this.index(x, y)].charCodeAt(0);
+					s2+= s1;
+					if ((n-= 1) == 0) {
+						s1%= BASE;
+						s2%= BASE;
+						n = NMAX;
+					}
+				}
+			}
+			s1%= BASE;
+			s2%= BASE;
+			write(this.buffer, this.idat_offs + this.idat_size - 8, byte4((s2 << 16) | s1));
+
+			// compute crc32 of the PNG chunks
+			function crc32(png, offs, size) {
+				var crc = -1;
+				for (var i = 4; i < size-4; i += 1) {
+					crc = _crc32[(crc ^ png[offs+i].charCodeAt(0)) & 0xff] ^ ((crc >> 8) & 0x00ffffff);
+				}
+				write(png, offs+size-4, byte4(crc ^ -1));
+			}
+
+			crc32(this.buffer, this.ihdr_offs, this.ihdr_size);
+			crc32(this.buffer, this.plte_offs, this.plte_size);
+			crc32(this.buffer, this.trns_offs, this.trns_size);
+			crc32(this.buffer, this.idat_offs, this.idat_size);
+			crc32(this.buffer, this.iend_offs, this.iend_size);
+
+			// convert PNG to string
+			return "\211PNG\r\n\032\n"+this.buffer.join('');
+		}
+	}
+
+})();
+
+/**
+* A handy class to calculate a fft
+*
+* @version 1.0
+*
+*/
+
+var executed = false;
+var PI = 3.141592653589793;                        // value : Math.PI
+var TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
+var OCTAVE_FACTOR=3.321928094887363;               // value : 1.0/log10(2)	
+var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
+var internalalpha = 0.16;
+var totalMax = 0;
+var dynRangeInDB = 50;
+var x0 = 0;
+var myWindow = {
+  BARTLETT:       1,
+  BARTLETTHANN:   2,
+  BLACKMAN:       3,
+  COSINE:         4,
+  GAUSS:          5,
+  HAMMING:        6,
+  HANN:           7,
+  LANCZOS:        8,
+  RECTANGULAR:    9,
+  TRIANGULAR:     10
+} 
+    	    
+
 function FFT(fftSize){
+  var n,m,sin,cos,alpha,func;
+  n = fftSize;
+  m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
+  if (n != (1 << m))										// Make sure n is a power of 2
+    self.postMessage('ERROR : FFT length must be power of 2');
 
-	// FFT Class from 
-	// http://stackoverflow.com/questions/9272232/fft-library-in-android-sdk
-	// translated to javascsript
-	//
-	// [parameters]
-	//
-	// fftSize -> Size of FFT	
-
-	var n,m,sin,cos,alpha,func;
-	n = fftSize;
-    m =  parseInt((Math.log(n) / 0.6931471805599453 ));		// Math.log(n) / Math.log(2) 
-    if (n != (1 << m))										// Make sure n is a power of 2
-        console.log("ERROR : FFT length must be power of 2");
-    
-	cos = new Float32Array(n/2);							// precompute cos table
-	sin = new Float32Array(n/2);							// precompute sin table
-    for (var x = 0; x < n / 2; x++) {
-        cos[x] = Math.cos(-2 * PI * x / n);
-        sin[x] = Math.sin(-2 * PI * x / n);
-    }	
+  cos = new Float32Array(n/2);							// precompute cos table
+  sin = new Float32Array(n/2);							// precompute sin table
+  for (var x = 0; x < n / 2; x++) {
+    cos[x] = Math.cos(-2 * PI * x / n);
+    sin[x] = Math.sin(-2 * PI * x / n);
+  }	
     
     /*   
     // choose window function set alpha and execute it on the buffer 
@@ -220,8 +441,8 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,start,end,c_width,c_height) {
-    	return function (N,upperFreq,start,end,c_width,c_height) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height) {
+    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height) {
         	if (!executed) {
         		// start execution once
             	executed = true;
@@ -232,52 +453,36 @@ function FFT(fftSize){
             	// array holding FFT results paint[canvas width][canvas height]
 	            paint = new Array(c_width);
 	            
-	            // length of pcm data to calculate
-				completeLength = threadSoundBuffer.length;
-				
-				// where to start calculation
-	    		sampleStart = start;//getPacketInPercent(completeLength,start);
 	    		
-	    		// where to stop calculation
-		    	sampleEnd = end;//getPacketInPercent(completeLength,end);
-		    	
-		    	// sum of packets between sampleStart and sampleEnd
-    			packetCountStartEnd = completeLength-sampleStart-(completeLength-sampleEnd);
-    			
-    			// number of packets per 1 pixel width in canvas (minimum 1)
-    			myStep = Math.floor(packetCountStartEnd/c_width);
-	    		if(myStep<1)myStep=1;
-	    		
+	    		p = new PNGlib(c_width, c_height, 256);
+	
 	    		// Hz per pixel height
 				HzStep = (sampleRate/2)/c_height;
 				
 				// uper Hz boundry to display
 				c = Math.floor(upperFreq/HzStep);
 				
+				// lower Hz boundry to display
+				d = Math.floor(lowerFreq/HzStep); // -1 for value below display when lower>0
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
 	        	for(var i=0;i<c_width;i++) {
-					paint[i] = getMagnitude(0,i*myStep+sampleStart,N,c);
+					paint[i] = getMagnitude(0,i*myStep,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
 		        
 		        // height between two interpolation points
-		        pixel_height = c_height/c;
-		        
-		        // generate png image
-	    	    p = new PNGlib(c_width, c_height, 256);
-	    	    var background = p.color(background_color, background_color, background_color, 0);
-	    	    
+		        pixel_height = c_height/(c-d);
+
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
 	        	for(var i=0;i<c_width;i++) 
-		        	drawOfflineSpectogram(i,p); 
+		        	drawOfflineSpectogram(i,p,c,d); 
 		        
 		        // post generated image back
 		        self.postMessage('data:image/png;base64,'+p.getBase64());
 		        
 		        // free vars
 		        myFFT = null;
-		        p = null;
 		        
 		        // stop execution
 	    	    executed = false; 
@@ -304,7 +509,7 @@ function FFT(fftSize){
 	// calculated FFT data as Float32Array
 	*/
 	
-	function getMagnitude(channel,offset,windowSize,c) {
+	function getMagnitude(channel,offset,windowSize,c,d) {
 		// imaginary array of length N
 		imag = new Float32Array(N);
 		
@@ -312,7 +517,7 @@ function FFT(fftSize){
 		real = new Float32Array(N); 
 		
 		// result array of length N
-		result = new Float32Array(c);
+		result = new Float32Array(c-d);
 		
 		// set real values by reading local sound buffer
 		for(var j=0;j<windowSize;j++) {
@@ -320,12 +525,12 @@ function FFT(fftSize){
 		}
 		
 		// calculate FFT window function over real 
-	    myFFT.wFunction(wFunction,alpha,real);
+	    myFFT.wFunction(wFunction,internalalpha,real);
 	    
 	    // calculate FFT over real and save to result
 	    myFFT.fft(real,imag);	
-		for(var low=0;low<=c;low++) {
-			result[low] = magnitude(real[low],imag[low]);
+		for(var low=0;low<=c-d;low++) {
+			result[low] = magnitude(real[low+d],imag[low+d]);
 			if(totalMax<result[low]) totalMax = result[low];
 		}
 		return result;
@@ -344,14 +549,16 @@ function FFT(fftSize){
 	//
 	*/
 	
-	function drawOfflineSpectogram(line,p) {
+	function drawOfflineSpectogram(line,p,c,d) {
 	
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
-		
 		// value for first interpolation at lower boundry (height=0)
-		scaledVal = 1;
-		
+        psd = (2 * Math.pow(paint[line][0], 2))/N;
+        psdLog = 10*log10(psd / maxPsd);
+		scaledVal=((psdLog+dynRangeInDB)/dynRangeInDB);
+		if(scaledVal>1) scaledVal=1;
+		if(scaledVal<0) scaledVal=0;
 		
         for (var i = 0; i < paint[line].length; i++) {
 
@@ -388,7 +595,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line), Math.floor(c_height-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
@@ -410,7 +617,7 @@ function FFT(fftSize){
 	
 	// used by FFT
     function toLevelInDB(linearLevel){
-        if(linearLevel<0) alert("Linear level argument must be positive.");
+        if(linearLevel<0) alert('Linear level argument must be positive.');
         return 10*log10(linearLevel);
     }
     
@@ -437,13 +644,7 @@ function FFT(fftSize){
     // used to calculate current packet
     function getPacketInPercent(packets,percent) {
     	return Math.floor(packets/100*percent);
-    }
-    
-    // used to calculate current time
-    function getTime(packets,sampleRate) {
-    	return Math.floor(100*packets/sampleRate)/100+ " sec";
-    } 
-    
+    }    
     
     /*
     // Web Worker Communication
@@ -490,16 +691,25 @@ function FFT(fftSize){
     			N = data.N;
     		if (data.freq != undefined)
     			upperFreq = data.freq;
+    		if (data.freq_low != undefined)
+    			lowerFreq = data.freq_low;    			
     		if (data.start != undefined)
     			start = data.start;
     		if (data.end != undefined)
     			end = data.end;
     		if (data.width != undefined)
-    			c_width = data.width;
+    			mywidth = data.width;
     		if (data.height != undefined)
-    			c_height = data.height;
+    			myheight = data.height;
     		if (data.window != undefined)
     			wFunction = data.window;
+    		if (data.alpha != undefined)
+    			internalalpha = data.alpha;    		
+    		if (data.dynRangeInDB != undefined)
+    			dynRangeInDB = data.dynRangeInDB;  
+    		if (data.myStep != undefined)
+    			myStep = data.myStep;      			  				
+    			
     	  break;
     	case 'pcm':
     		if (data.stream != undefined)
@@ -511,7 +721,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,start,end,c_width,c_height);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);

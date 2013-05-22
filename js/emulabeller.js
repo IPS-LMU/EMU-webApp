@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 var renderingCanvas = false;
 var primeWorker = new Worker(js_spectro_filename);
 var offline = document.getElementById(canvas_spectro_name);
 var context = offline.getContext("2d");
+=======
+
+>>>>>>> spectrogram
 
 
 var EmuLabeller = {
@@ -28,7 +32,10 @@ var EmuLabeller = {
 
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
-
+        
+        this.spectogramDrawer = Object.create(spectogramDrawer);
+        this.spectogramDrawer.init({specCanvas: params.specCanvas});
+		
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
@@ -50,10 +57,7 @@ var EmuLabeller = {
         this.isModalShowing = false;
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
-        
-        
-         $("#spec-dialog").dialog();
-        
+       
         
 
         //bindings
@@ -212,20 +216,12 @@ onAudioProcess: function () {
     },
 
     drawBuffer: function (isNewlyLoaded) {
+        var my = this;
         //console.log(this);
         if (this.backend.currentBuffer) {
-            // console.log(this);
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
+        	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);  
+			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
         }
-        
-        primeWorker.terminate();
-        primeWorker = null;
-		context.fillStyle = "rgb(255,255,255)";
-		context.fillRect(0,0,offline.width,offline.height);
-
-        this.startOfflineProcessing();
-
-        
     },
 
     newlyLoadedBufferReady: function(){
@@ -705,60 +701,9 @@ onAudioProcess: function () {
     },
     
     
-    
-    // load Sound decode and send buffer to renderLine(buffer)
-    loadSpectrogramSound: function(url) {
-    	// Load asynchronously
-		var ocontext = new webkitAudioContext();
-	    var request = new XMLHttpRequest();
-	    request.open("GET", url, true);
-	    request.responseType = "arraybuffer";
-    	request.onload = function() { 
-        	sourceBuffer = ocontext.createBuffer(request.response, false);
-    	    emulabeller.startOfflineProcessing();
-	    }
-    	request.send();
-    },
-
-	startOfflineProcessing: function() {
-	
-		var offlineContext = new webkitOfflineAudioContext(channels,  sampleRate, sampleRate);
-		primeWorker = new Worker(js_spectro_filename);
-	    var myImage = new Image();
-    	var isSourceBufferLoaded = false;
-    	var sStart,sEnd;
+ 
 
 
-	    primeWorker.addEventListener('message', function(event){
-    		//context.clearRect(0, 0, c_width, c_height);
-			myImage.src = event.data;
-			myImage.onload = function() {
-    	    	context.drawImage(myImage, 0, 0);
-			}
-		});
-        	
-    	sStart = Math.floor(this.viewPort.sS);
-    	sEnd = Math.floor(this.viewPort.eS);
-
-		if(sStart != undefined && sEnd != undefined ) {
-		
-    	//console.log("start:"+sStart+" ende:"+sEnd+" dauer:"+(sEnd-sStart));
-    	primeWorker.postMessage({'cmd': 'config', 'N': N});
-    	primeWorker.postMessage({'cmd': 'config', 'freq': freq});
-	    primeWorker.postMessage({'cmd': 'config', 'start': sStart});
-    	primeWorker.postMessage({'cmd': 'config', 'end': sEnd});
-	    primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
-    	primeWorker.postMessage({'cmd': 'config', 'width': offline.width});
-	    primeWorker.postMessage({'cmd': 'config', 'height': offline.height});     
-    	offlineContext.startRendering();    
-        offlineContext.oncomplete = function(event) {
-	    	var data = JSON.stringify(sourceBuffer);
-			primeWorker.postMessage({'cmd': 'pcm', 'config': data});		
-			primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
-			primeWorker.postMessage({'cmd': 'render'});
-		};    
-		}
-	}	
     
 };
 
