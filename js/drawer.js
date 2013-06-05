@@ -51,14 +51,14 @@ EmuLabeller.Drawer = {
 
         for (var i =0; i<=this.tierInfos.canvases.length - 1 ; i++) {
             this.tierInfos.contexts.push(this.tierInfos.canvases[i].getContext('2d'));
-            this.toRetinaRatio(this.tierInfos.canvases[i], this.tierInfos.contexts[i]);
+            // this.toRetinaRatio(this.tierInfos.canvases[i], this.tierInfos.contexts[i]);
         }
 
         //console.log(this.tierInfos);
 
-        this.toRetinaRatio(this.osciCanvas, this.cc);
-        this.toRetinaRatio(this.specCanvas, this.scc);
-        this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
+        // this.toRetinaRatio(this.osciCanvas, this.cc);
+        // this.toRetinaRatio(this.specCanvas, this.scc);
+        // this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
 
         if (params.image) {
             this.loadImage(params.image, this.drawImage.bind(this));
@@ -72,7 +72,7 @@ EmuLabeller.Drawer = {
     addTier: function (canv) {
         var newContext = canv.getContext('2d');
         this.tierInfos.contexts.push(newContext);
-        this.toRetinaRatio(canv, newContext);
+        // this.toRetinaRatio(canv, newContext);
     },
 
 
@@ -89,6 +89,7 @@ EmuLabeller.Drawer = {
         this.maxPeak = -Infinity;
 
         var chan = buffer.getChannelData(c);
+        // console.log(chan);
         var relData = chan.subarray(vP.sS, vP.eS);
 
         if(k<=1){
@@ -525,7 +526,7 @@ EmuLabeller.Drawer = {
         var curContext = ssffInfos.canvases[0].getContext("2d");
 
         if(!ssffInfos.data[0].maxF0){
-            this.toRetinaRatio(ssffInfos.canvases[0], curContext);
+            // this.toRetinaRatio(ssffInfos.canvases[0], curContext);
             console.log("calculating max f0");
             ssffInfos.data[0].maxF0 = -Infinity;
             for (var i = 0; i < ssffInfos.data[0].Columns[0].values.length; i++) {

@@ -111,7 +111,7 @@ var spectogramDrawer = {
             var newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
             if(my.imageCache[newpcmperpixel]!=null) {
             	if(my.imageCache[newpcmperpixel][mystart]!=null) {
-                	killSpectroRenderingThread();
+                	my.killSpectroRenderingThread();
             		my.context.drawImage(my.imageCache[newpcmperpixel][mystart], 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
     	    	    console.log("cache hit!");

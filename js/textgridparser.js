@@ -13,7 +13,6 @@ EmuLabeller.TextGridParser = {
         var tT, tN, eT, lab;
 
         if (lines[0] == l1 && lines[1] == l2){
-            console.log("fiel");
             for (var i = 8; i < lines.length; i++) {
                 var curLineEl1 = lines[i].split(/\s+/)[1];
                 if(!curLineEl1) continue;
