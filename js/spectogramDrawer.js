@@ -37,16 +37,17 @@ var spectogramDrawer = {
 		my.sampleRate = 44100;                            // default sample Rate
         my.pixel_height = 1;                             // default pixel height per value
         my.renderingCanvas = false;
-        my.primeWorkerFile = 'js/spectrogram.js';
+        // plain old version load from script file
+        //my.primeWorkerFile = 'js/spectrogram.js';
         //my.primeWorker = new Worker(my.primeWorkerFile);
-        my.primeWorker= new Worker(URL.createObjectURL(blob));
+        //my.primeWorker= new Worker(URL.createObjectURL(blob));
         
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
         my.pcmperpixel = 0; 
         my.imageCache = "";   
         my.myImage = new Image();
-        my.font = "8px Verdana";
+        my.font = "6px Verdana";
         my.fontColor = "#000";
         my.loadingText = "calculating...";
         },
@@ -60,8 +61,10 @@ var spectogramDrawer = {
         	my.context.font = my.font;
         	my.context.fillText(my.loadingText, 2, 10); 
         	my.toRetinaRatio(my.offline,my.context);   
-            my.primeWorker.terminate();
-        	my.primeWorker = null;
+            if(my.primeWorker!=null) {
+            	my.primeWorker.terminate();
+        		my.primeWorker = null;
+        	}
         },
         
         toRetinaRatio: function (canvas, context) {
@@ -95,7 +98,7 @@ var spectogramDrawer = {
 			}
 			else {
 				if(my.sStart!=mystart && my.sEnd!=myend) {
-					console.log(my.pcmperpixel+"::"+newppx);
+					console.log("same"+my.pcmperpixel+"::"+newppx);
     	    	    my.killSpectroRenderingThread();
 				    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
 				}
