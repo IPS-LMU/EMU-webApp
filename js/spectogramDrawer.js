@@ -42,15 +42,15 @@ var spectogramDrawer = {
         //my.primeWorker = new Worker(my.primeWorkerFile);
         my.primeWorker= new Worker(URL.createObjectURL(blob));
 		my.setupEvent();
+		my.clearImageCache();
         
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
         my.pcmperpixel = 0; 
-        my.imageCache = new Array();   
         my.myImage = new Image();
-        my.font = "6px Verdana";
-        my.fontColor = "#F00";
-        my.loadingText = "calculating...";
+        my.font = "12px Helvetica Neue";
+        my.fontColor = "#000";
+        my.loadingText = "calculating ...";
         },
         
         setupEvent: function () {
@@ -61,15 +61,17 @@ var spectogramDrawer = {
     	    	    my.context.drawImage(my.myImage, 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
     	    	    
-    	    	    if(my.imageCache!=null) {
-    	                if(my.imageCache[my.pcmperpixel]==null) 
-    	    	            my.imageCache[my.pcmperpixel] = new Array();
-    	            
-    	                if(my.imageCache[my.pcmperpixel][my.sStart]==null) 
-    	    	            my.imageCache[my.pcmperpixel][my.sStart] = my.myImage.src;
-    	    	    }
-    	    	    else
-    	    	    	my.imageCache = new Array();
+    	    	    if(my.imageCacheCounter[my.pcmperpixel]==null)
+						my.imageCacheCounter[my.pcmperpixel] = 0;
+					else 
+					    ++my.imageCacheCounter[my.pcmperpixel];
+
+    	            if(my.imageCache[my.pcmperpixel]==null) 
+    	    	        my.imageCache[my.pcmperpixel] = new Array();
+    	    	        
+    	            if(my.imageCache[my.pcmperpixel][my.sStart]==null) 
+    	    	        my.imageCache[my.pcmperpixel][my.sStart] = my.myImage.src;
+    	    	        
                 }
             });        
         },
@@ -91,6 +93,9 @@ var spectogramDrawer = {
         clearImageCache: function () {
             var my = this;
             my.imageCache = null;
+            my.imageCacheCounter = null;
+            my.imageCache = new Array();            
+            my.imageCacheCounter = new Array();            
         },        
         
         toRetinaRatio: function (canvas, context) {
@@ -116,23 +121,34 @@ var spectogramDrawer = {
         drawImage: function(mybuf,mystart,myend) {
             var my = this;
             var newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
-            if(my.imageCache[newpcmperpixel]!=null) {
-            	if(my.imageCache[newpcmperpixel][mystart]!=null) {
+            if(null!=my.imageCache) {
+                
+                if(my.imageCache[newpcmperpixel]!=null) {
+                    console.log(my.imageCache[newpcmperpixel].length);
+            	    if(my.imageCache[newpcmperpixel][mystart]!=null) {				// image at start mystart exists
+                        my.killSpectroRenderingThread();
+                        my.myImage.src = my.imageCache[newpcmperpixel][mystart];
+                        my.myImage.onload = function() {
+    	    	            my.context.drawImage(my.myImage, 0, 0);
+    	    	            my.toRetinaRatio(my.offline,my.context);
+    	    	        };
+            	    }
+            	    else {	
+            	        
+            	    														// image might exist partly
+            	        if(my.imageCache[newpcmperpixel][mystart]!=null) {
+            	        
+            	        }
+            	        else {														// image has to be rendered
+            	            my.killSpectroRenderingThread();
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);	            	
+                        }
+            	    }
+                }
+                else {                                                              // image has to be rendered
                     my.killSpectroRenderingThread();
-                    my.myImage.src = my.imageCache[newpcmperpixel][mystart];
-                    my.myImage.onload = function() {
-    	    	        my.context.drawImage(my.myImage, 0, 0);
-    	    	        my.toRetinaRatio(my.offline,my.context);
-    	    	    };
-            	}
-            	else {
-                    my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);	            	
-            	}
-            }
-            else {
-                my.killSpectroRenderingThread();
-                my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
+                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
+                }
             }
       			
         },    
