@@ -155,7 +155,7 @@ var spectogramDrawer = {
                     	}
                     	if(my.imageCache[newpcmperpixel][i][0] > mystart && 
                     	   my.imageCache[newpcmperpixel][i][1] <= myend) {
-                    		var pixel_cover = ;
+                    		var pixel_cover = 0;
                     		if(pixel_cover > pixel_covering ) {
                     			pixel_covering = pixel_cover;
                     		    pixel_cache_selected = i;
