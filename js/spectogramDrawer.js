@@ -61,16 +61,21 @@ var spectogramDrawer = {
     	    	    my.context.drawImage(my.myImage, 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
     	    	    
-    	    	    if(my.imageCacheCounter[my.pcmperpixel]==null)
-						my.imageCacheCounter[my.pcmperpixel] = 0;
-					else 
-					    ++my.imageCacheCounter[my.pcmperpixel];
+
+					    
 
     	            if(my.imageCache[my.pcmperpixel]==null) 
     	    	        my.imageCache[my.pcmperpixel] = new Array();
     	    	        
-    	            if(my.imageCache[my.pcmperpixel][my.sStart]==null) 
-    	    	        my.imageCache[my.pcmperpixel][my.sStart] = my.myImage.src;
+    	            if(my.imageCacheCounter[my.pcmperpixel]==null)
+    	            	my.imageCacheCounter[my.pcmperpixel] = 0;
+    	            
+    	            if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
+    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
+    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = my.sStart;
+    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = my.myImage.src;
+    	    	        ++my.imageCacheCounter[my.pcmperpixel];
+    	    	    }
     	    	        
                 }
             });        
@@ -121,31 +126,28 @@ var spectogramDrawer = {
         drawImage: function(mybuf,mystart,myend) {
             var my = this;
             var newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
-            if(null!=my.imageCache) {
+            if(my.imageCache!=null) {
                 
                 if(my.imageCache[newpcmperpixel]!=null) {
-                    console.log(my.imageCache[newpcmperpixel].length);
-            	    if(my.imageCache[newpcmperpixel][mystart]!=null) {				// image at start mystart exists
-                        my.killSpectroRenderingThread();
-                        my.myImage.src = my.imageCache[newpcmperpixel][mystart];
-                        my.myImage.onload = function() {
-    	    	            my.context.drawImage(my.myImage, 0, 0);
-    	    	            my.toRetinaRatio(my.offline,my.context);
-    	    	        };
-            	    }
-            	    else {	
-            	        
-            	    														// image might exist partly
-            	        if(my.imageCache[newpcmperpixel][mystart]!=null) {
-            	        
-            	        }
-            	        else {														// image has to be rendered
-            	            my.killSpectroRenderingThread();
-                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);	            	
-                        }
-            	    }
+					var found = false;
+                    for (var i = 0; i < my.imageCache[newpcmperpixel].length; ++i) {
+                    	if(my.imageCache[newpcmperpixel][i][0]==mystart) {
+                            my.killSpectroRenderingThread();
+                            my.myImage.src = my.imageCache[newpcmperpixel][i][1];
+                            my.myImage.onload = function() {
+    	    	                my.context.drawImage(my.myImage, 0, 0);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+    	    	            };
+    	    	            found = true;
+    	    	            break;
+                    	}
+                    }
+                    if(!found) {    // image has to be rendered completely
+            	        my.killSpectroRenderingThread();
+                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);	            	
+                    }
                 }
-                else {                                                              // image has to be rendered
+                else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
                     my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
                 }
