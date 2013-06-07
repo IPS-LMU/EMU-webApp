@@ -48,7 +48,8 @@ var spectogramDrawer = {
         my.context = my.offline.getContext("2d");     
         my.pcmperpixel = 0; 
         my.myImage = new Image();
-        my.font = "12px Helvetica Neue";
+        my.tempDraw = new Image();
+        my.font = "10px Helvetica";
         my.fontColor = "#000";
         my.loadingText = "calculating ...";
         },
@@ -56,13 +57,18 @@ var spectogramDrawer = {
         setupEvent: function () {
             var my = this;
             my.primeWorker.addEventListener('message', function(event){
-                my.myImage.src = event.data;
+            
+            	var imgsrc = event.data.img;
+            	var cstart = event.data.start;
+            	var cend = event.data.end;
+            	var cwidth = event.data.width;
+            	var cheight = event.data.height;
+            
+                my.myImage.src = imgsrc;
+                
                 my.myImage.onload = function() {
     	    	    my.context.drawImage(my.myImage, 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
-    	    	    
-
-					    
 
     	            if(my.imageCache[my.pcmperpixel]==null) 
     	    	        my.imageCache[my.pcmperpixel] = new Array();
@@ -73,7 +79,8 @@ var spectogramDrawer = {
     	            if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
     	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
     	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = my.sStart;
-    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = my.myImage.src;
+    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = my.sEnd;
+    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = my.myImage.src;
     	    	        ++my.imageCacheCounter[my.pcmperpixel];
     	    	    }
     	    	        
@@ -129,34 +136,56 @@ var spectogramDrawer = {
             if(my.imageCache!=null) {
                 
                 if(my.imageCache[newpcmperpixel]!=null) {
-					var found = false;
+					var found_complete = false;
+					var found_parts = false;
+					var pixel_covering = 0;
+					var pixel_cache_selected = 0;
+					
                     for (var i = 0; i < my.imageCache[newpcmperpixel].length; ++i) {
+                        
                     	if(my.imageCache[newpcmperpixel][i][0]==mystart) {
                             my.killSpectroRenderingThread();
-                            my.myImage.src = my.imageCache[newpcmperpixel][i][1];
+                            my.myImage.src = my.imageCache[newpcmperpixel][i][2];
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
     	    	                my.toRetinaRatio(my.offline,my.context);
     	    	            };
-    	    	            found = true;
+    	    	            found_complete = true;
     	    	            break;
                     	}
+                    	if(my.imageCache[newpcmperpixel][i][0] > mystart && 
+                    	   my.imageCache[newpcmperpixel][i][1] <= myend) {
+                    		var pixel_cover = ;
+                    		if(pixel_cover > pixel_covering ) {
+                    			pixel_covering = pixel_cover;
+                    		    pixel_cache_selected = i;
+                    		    found_parts = true;	
+                    		}
+                    	}
                     }
-                    if(!found) {    // image has to be rendered completely
-            	        my.killSpectroRenderingThread();
-                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);	            	
+                    if(!found_complete) {    // image has to be rendered completely
+                    	if(found_parts) {
+                    	    console.log(pixel_cache_selected+" is covering "+pixel_covering+ " pixels");
+            	            my.killSpectroRenderingThread();
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
+                    	
+                    	}
+                    	else {    // image has to be rendered completely
+            	            my.killSpectroRenderingThread();
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
+                        }
                     }
                 }
                 else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
+                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);				
                 }
             }
       			
         },    
          
         
-        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height) {
+        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height,part_offset,part_length) {
             var my = this;
             var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
             var data_conf = JSON.stringify(current_buffer);
@@ -175,7 +204,9 @@ var spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
             my.primeWorker.postMessage({'cmd': 'config', 'width': part_width});
-            my.primeWorker.postMessage({'cmd': 'config', 'height': part_height});     
+            my.primeWorker.postMessage({'cmd': 'config', 'height': part_height});
+            my.primeWorker.postMessage({'cmd': 'config', 'offset': part_offset}); 
+            my.primeWorker.postMessage({'cmd': 'config', 'length': part_length});     
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
