@@ -78,6 +78,7 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
                     labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
                     labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
+                    labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
                     labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height);
                 }

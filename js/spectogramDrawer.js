@@ -61,13 +61,15 @@ var spectogramDrawer = {
     	    	    my.context.drawImage(my.myImage, 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
     	    	    
-    	            if(my.imageCache[my.pcmperpixel]==null) {
-    	    	        my.imageCache[my.pcmperpixel] = new Array();
-    	            }
-    	            if(my.imageCache[my.pcmperpixel][my.sStart]==null) {
-    	    	        my.imageCache[my.pcmperpixel][my.sStart] = my.myImage;
-    	    	    }  
-
+    	    	    if(my.imageCache!=null) {
+    	                if(my.imageCache[my.pcmperpixel]==null) 
+    	    	            my.imageCache[my.pcmperpixel] = new Array();
+    	            
+    	                if(my.imageCache[my.pcmperpixel][my.sStart]==null) 
+    	    	            my.imageCache[my.pcmperpixel][my.sStart] = my.myImage.src;
+    	    	    }
+    	    	    else
+    	    	    	my.imageCache = new Array();
                 }
             });        
         },
@@ -85,6 +87,11 @@ var spectogramDrawer = {
         		my.primeWorker = null;
         	}
         },
+        
+        clearImageCache: function () {
+            var my = this;
+            my.imageCache = null;
+        },        
         
         toRetinaRatio: function (canvas, context) {
             var backingStoreRatio, ratio;
@@ -111,11 +118,12 @@ var spectogramDrawer = {
             var newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
             if(my.imageCache[newpcmperpixel]!=null) {
             	if(my.imageCache[newpcmperpixel][mystart]!=null) {
-                	my.killSpectroRenderingThread();
-            		my.context.drawImage(my.imageCache[newpcmperpixel][mystart], 0, 0);
-    	    	    my.toRetinaRatio(my.offline,my.context);
-    	    	    console.log("cache hit!");
-    	    	    
+                    my.killSpectroRenderingThread();
+                    my.myImage.src = my.imageCache[newpcmperpixel][mystart];
+                    my.myImage.onload = function() {
+    	    	        my.context.drawImage(my.myImage, 0, 0);
+    	    	        my.toRetinaRatio(my.offline,my.context);
+    	    	    };
             	}
             	else {
                     my.killSpectroRenderingThread();
