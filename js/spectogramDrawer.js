@@ -132,40 +132,42 @@ var spectogramDrawer = {
         
         drawImage: function(mybuf,mystart,myend) {
             var my = this;
-            var newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
+            my.newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
             if(my.imageCache!=null) {
                 
-                if(my.imageCache[newpcmperpixel]!=null) {
-					var found_complete = false;
-					var found_parts = false;
-					var pixel_covering = 0;
-					var pixel_cache_selected = 0;
+                if(my.imageCache[my.newpcmperpixel]!=null) {
+					my.found_complete = false;
+					my.found_parts = false;
+					my.pixel_covering = 0;
+					my.pixel_cache_selected = 0;
 					
-                    for (var i = 0; i < my.imageCache[newpcmperpixel].length; ++i) {
+                    for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
                         
-                    	if(my.imageCache[newpcmperpixel][i][0]==mystart) {
+                    	if(my.imageCache[my.newpcmperpixel][i][0]==mystart) {
                             my.killSpectroRenderingThread();
-                            my.myImage.src = my.imageCache[newpcmperpixel][i][2];
+                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
     	    	                my.toRetinaRatio(my.offline,my.context);
     	    	            };
-    	    	            found_complete = true;
+    	    	            my.found_complete = true;
     	    	            break;
                     	}
-                    	if(my.imageCache[newpcmperpixel][i][0] > mystart && 
-                    	   my.imageCache[newpcmperpixel][i][1] <= myend) {
-                    		var pixel_cover = 0;
-                    		if(pixel_cover > pixel_covering ) {
-                    			pixel_covering = pixel_cover;
-                    		    pixel_cache_selected = i;
-                    		    found_parts = true;	
+                    	if(my.imageCache[my.newpcmperpixel][i][0] < mystart && 
+                    	   my.imageCache[my.newpcmperpixel][i][1] > mystart) {
+                    		my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1] - mystart)/my.newpcmperpixel);
+                    		if(my.pixel_cover > my.pixel_covering ) {
+                    			my.pixel_covering = my.pixel_cover;
+                    		    my.pixel_cache_selected = i;
+                    		    my.found_parts = true;	
                     		}
                     	}
                     }
-                    if(!found_complete) {    // image has to be rendered completely
-                    	if(found_parts) {
-                    	    console.log(pixel_cache_selected+" is covering "+pixel_covering+ " pixels");
+                    if(!my.found_complete) {    // image has to be rendered completely
+                    	if(my.found_parts) {
+                    	    console.log(my.pixel_cache_selected+" is covering "+my.pixel_covering+ " pixels");
+            	            
+            	            
             	            my.killSpectroRenderingThread();
                             my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
                     	
