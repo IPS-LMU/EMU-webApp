@@ -69,24 +69,28 @@ var spectogramDrawer = {
                 my.myImage.onload = function() {
     	    	    my.context.drawImage(my.myImage, 0, 0);
     	    	    my.toRetinaRatio(my.offline,my.context);
-
-    	            if(my.imageCache[my.pcmperpixel]==null) 
-    	    	        my.imageCache[my.pcmperpixel] = new Array();
-    	    	        
-    	            if(my.imageCacheCounter[my.pcmperpixel]==null)
-    	            	my.imageCacheCounter[my.pcmperpixel] = 0;
-    	            
-    	            if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
-    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
-    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = my.sStart;
-    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = my.sEnd;
-    	    	        my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = my.myImage.src;
-    	    	        ++my.imageCacheCounter[my.pcmperpixel];
-    	    	    }
-    	    	        
+    	    	    my.buildImageCache(my.sStart,my.sEnd,my.myImage.src);
                 }
             });        
         },
+        
+        buildImageCache: function (start,end,imgData) {
+            var my = this;
+    	    if(my.imageCache[my.pcmperpixel]==null) 
+    	    	my.imageCache[my.pcmperpixel] = new Array();
+    	    	        
+    	    if(my.imageCacheCounter[my.pcmperpixel]==null)
+    	        my.imageCacheCounter[my.pcmperpixel] = 0;
+    	            
+    	    if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = start;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = end;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = imgData;
+    	    	++my.imageCacheCounter[my.pcmperpixel];
+    	    }
+        },
+        
         
         killSpectroRenderingThread: function () {
             var my = this;
@@ -155,6 +159,7 @@ var spectogramDrawer = {
     	    	            my.found_complete = true;
     	    	            break;
                     	}
+                    	
                     	// check for image on left side
                     	if(my.imageCache[my.newpcmperpixel][i][0] > mystart && 
                     	   my.imageCache[my.newpcmperpixel][i][0] < myend) {
@@ -183,13 +188,31 @@ var spectogramDrawer = {
                     	if(my.found_parts) {
                     	    console.log(my.pixel_cache_selected+" is covering "+my.pixel_covering+ " pixels");
             	            
+            	            my.cache_offset = 0;
+            	            my.renderWidth = my.offline.width;
+            	            
+            	            if(my.pixel_side==1) {	// cache on the right
+            	                my.cache_offset = my.pixel_covering;
+            	                my.renderWidth = my.offline.width-my.pixel_covering;
+            	                
+            	            }
+            	            if(my.pixel_side==2) {	// cache on the right
+            	                my.cache_offset = 0;
+            	                my.renderWidth = my.offline.width-my.pixel_covering;
+            	            }
+                            my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                            my.myImage.onload = function() {
+    	    	                my.context.drawImage(my.myImage, 0, 0);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+    	    	            };
+            	            
             	            my.killSpectroRenderingThread();
-                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.renderWidth,my.offline.height,my.cache_offset,my.renderWidth);	            	
                     	
                     	}
                     	else {    // image has to be rendered completely
             	            my.killSpectroRenderingThread();
-                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.height,my.offline.height,0,my.offline.width);	            	
                         }
                     }
                 }
