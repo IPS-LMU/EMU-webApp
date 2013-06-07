@@ -137,12 +137,14 @@ var spectogramDrawer = {
                 
                 if(my.imageCache[my.newpcmperpixel]!=null) {
 					my.found_complete = false;
-					my.found_parts = false;
+					my.found_parts_left = false;
+					my.found_parts_rigth = false;
+					my.pixel_side = 0; 				// 0 -> default, 1 -> left, 2 -> right
 					my.pixel_covering = 0;
 					my.pixel_cache_selected = 0;
 					
                     for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
-                        
+                        // check for complete image
                     	if(my.imageCache[my.newpcmperpixel][i][0]==mystart) {
                             my.killSpectroRenderingThread();
                             my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
@@ -153,12 +155,26 @@ var spectogramDrawer = {
     	    	            my.found_complete = true;
     	    	            break;
                     	}
-                    	if(my.imageCache[my.newpcmperpixel][i][0] < mystart && 
-                    	   my.imageCache[my.newpcmperpixel][i][1] > mystart) {
-                    		my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1] - mystart)/my.newpcmperpixel);
+                    	// check for image on left side
+                    	if(my.imageCache[my.newpcmperpixel][i][0] > mystart && 
+                    	   my.imageCache[my.newpcmperpixel][i][0] < myend) {
+                    		my.pixel_cover = Math.floor((myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
                     		if(my.pixel_cover > my.pixel_covering ) {
                     			my.pixel_covering = my.pixel_cover;
                     		    my.pixel_cache_selected = i;
+                    		    my.pixel_side = 1;
+                    		    my.found_parts = true;	
+                    		}
+                    	}
+                    	
+                    	// check for image on right side
+                    	if(my.imageCache[my.newpcmperpixel][i][1] > mystart && 
+                    	   my.imageCache[my.newpcmperpixel][i][1] < myend) {
+                    		my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-mystart)/my.newpcmperpixel);
+                    		if(my.pixel_cover > my.pixel_covering ) {
+                    			my.pixel_covering = my.pixel_cover;
+                    		    my.pixel_cache_selected = i;
+                    		    my.pixel_side = 2;
                     		    my.found_parts = true;	
                     		}
                     	}
@@ -166,7 +182,6 @@ var spectogramDrawer = {
                     if(!my.found_complete) {    // image has to be rendered completely
                     	if(my.found_parts) {
                     	    console.log(my.pixel_cache_selected+" is covering "+my.pixel_covering+ " pixels");
-            	            
             	            
             	            my.killSpectroRenderingThread();
                             my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);	            	
