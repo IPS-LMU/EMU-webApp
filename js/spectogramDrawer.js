@@ -67,12 +67,12 @@ var spectogramDrawer = {
                     // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
     	    	    my.context.drawImage(my.myImage, 0, 0,cwidth,cheight,0,coffset,cwidth,cheight);
     	    	    my.toRetinaRatio(my.offline,my.context);
-    	    	    my.buildImageCache(cstart,cend,cwidth,cheight,my.myImage.src);
+    	    	    my.buildImageCache(cstart,cend,my.myImage.src);
                 }
             });        
         },
         
-        buildImageCache: function (cstart,cend,cwidth,cheight,imgData) {
+        buildImageCache: function (cstart,cend,imgData) {
             var my = this;
     	    if(my.imageCache[my.pcmperpixel]==null) 
     	    	my.imageCache[my.pcmperpixel] = new Array();
@@ -84,9 +84,7 @@ var spectogramDrawer = {
     	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
     	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = cstart;
     	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = cend;
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = cwidth;
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][3] = cheight;
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][4] = imgData;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = imgData;
     	    	++my.imageCacheCounter[my.pcmperpixel];
     	    }
         },
@@ -148,7 +146,7 @@ var spectogramDrawer = {
                     	if(my.imageCache[my.newpcmperpixel][i][0]==mystart &&
                     	   my.imageCache[my.newpcmperpixel][i][1]==myend) {
                             my.killSpectroRenderingThread();
-                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][4];
+                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
     	    	                my.toRetinaRatio(my.offline,my.context);
@@ -178,31 +176,29 @@ var spectogramDrawer = {
                     		    }
                     	    }
                     }
-                    if(my.found_parts) {
+                    if(my.found_parts && my.pixel_covering > 0) {
                         if(my.pixel_side==1) {
                     	    console.log("found cache on left side covering "+my.pixel_covering+" pixel.");
-                    	    my.killSpectroRenderingThread();
-                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][4];
-                
+                    	    //my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                    	    console.log("left");
                             my.myImage.onload = function() {
-                                // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-    	    	                my.context.drawImage(my.myImage, 0, 0,my.pixel_covering,my.offline.height,0,(my.offline.width-my.pixel_covering),my.pixel_covering,my.offline.height);
+    	    	                my.context.drawImage(my.myImage, 0, 0,my.pixel_covering,my.offline.height,(my.offline.width-my.pixel_covering),0,my.pixel_covering,my.offline.height);
     	    	                my.toRetinaRatio(my.offline,my.context);
                             }
-                            my.startSpectroRenderingThread(mybuf,mystart,(myend-(my.newpcmperpixel*my.pixel_covering)),(my.offline.width-my.pixel_covering),my.offline.height,0,(my.offline.width-my.pixel_covering));
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,(my.offline.width-my.pixel_covering),my.offline.height,0,(my.offline.width-my.pixel_covering));
                     	}
                         
                         if(my.pixel_side==2) {
                     	    console.log("found cache on right side covering "+my.pixel_covering+" pixel.");
-                    	    my.killSpectroRenderingThread();
-                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][4];
-                
+                    	    //my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                            console.log("right");
                             my.myImage.onload = function() {
-                                // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-    	    	                my.context.drawImage(my.myImage, 0, (my.offline.width-my.pixel_covering),my.pixel_covering,my.offline.height,0,0,my.pixel_covering,my.offline.height);
+    	    	                my.context.drawImage(my.myImage, my.offline.width-my.pixel_covering, 0,my.pixel_covering,my.offline.height,0,0,my.pixel_covering,my.offline.height);
     	    	                my.toRetinaRatio(my.offline,my.context);
                             }
-                            my.startSpectroRenderingThread(mybuf,(mystart+(my.pixel_covering*my.newpcmperpixel)),myend,(my.offline.width-my.pixel_covering),my.offline.height,my.pixel_covering,(my.offline.width-my.pixel_covering));
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,(my.offline.width-my.pixel_covering),my.offline.height,my.pixel_covering,(my.offline.width-my.pixel_covering));
                     	}
                              
                     }
@@ -222,7 +218,8 @@ var spectogramDrawer = {
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height,part_offset,part_length) {
             var my = this;
-            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+(2*my.N));			
+            var newend = pcm_end+(2*my.N);
+            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, newend);			
             var data_conf = JSON.stringify(current_buffer);
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
