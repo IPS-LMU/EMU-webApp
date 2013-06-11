@@ -1,7 +1,3 @@
-
-
-
-
 var spectogramDrawer = {
 
     init: function (params) {
@@ -63,18 +59,20 @@ var spectogramDrawer = {
             	var cend = event.data.end;
             	var cwidth = event.data.width;
             	var cheight = event.data.height;
+            	var coffset = event.data.offset;
             
                 my.myImage.src = imgsrc;
                 
                 my.myImage.onload = function() {
-    	    	    my.context.drawImage(my.myImage, 0, 0);
+                    // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    	    	    my.context.drawImage(my.myImage, 0, 0,cwidth,cheight,0,coffset,cwidth,cheight);
     	    	    my.toRetinaRatio(my.offline,my.context);
-    	    	    my.buildImageCache(my.sStart,my.sEnd,my.myImage.src);
+    	    	    my.buildImageCache(cstart,cend,cwidth,cheight,my.myImage.src);
                 }
             });        
         },
         
-        buildImageCache: function (start,end,imgData) {
+        buildImageCache: function (cstart,cend,cwidth,cheight,imgData) {
             var my = this;
     	    if(my.imageCache[my.pcmperpixel]==null) 
     	    	my.imageCache[my.pcmperpixel] = new Array();
@@ -84,9 +82,11 @@ var spectogramDrawer = {
     	            
     	    if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
     	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = start;
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = end;
-    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = imgData;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = cstart;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = cend;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = cwidth;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][3] = cheight;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][4] = imgData;
     	    	++my.imageCacheCounter[my.pcmperpixel];
     	    }
         },
@@ -138,96 +138,91 @@ var spectogramDrawer = {
             var my = this;
             my.newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
             if(my.imageCache!=null) {
-                
                 if(my.imageCache[my.newpcmperpixel]!=null) {
-					my.found_complete = false;
-					my.found_parts_left = false;
-					my.found_parts_rigth = false;
-					my.pixel_side = 0; 				// 0 -> default, 1 -> left, 2 -> right
+					my.found_parts = false;
 					my.pixel_covering = 0;
 					my.pixel_cache_selected = 0;
 					
                     for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
                         // check for complete image
-                    	if(my.imageCache[my.newpcmperpixel][i][0]==mystart) {
+                    	if(my.imageCache[my.newpcmperpixel][i][0]==mystart &&
+                    	   my.imageCache[my.newpcmperpixel][i][1]==myend) {
                             my.killSpectroRenderingThread();
-                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
+                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][4];
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
     	    	                my.toRetinaRatio(my.offline,my.context);
     	    	            };
-    	    	            my.found_complete = true;
     	    	            break;
                     	}
+                    	    if(my.imageCache[my.newpcmperpixel][i][0] > mystart && 
+                    	        my.imageCache[my.newpcmperpixel][i][0] < myend) {
+                    		    my.pixel_cover = Math.floor((myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
+                    		    if(my.pixel_cover > my.pixel_covering ) {
+                    			    my.pixel_covering = my.pixel_cover;
+                    		        my.pixel_cache_selected = i;
+                    		        my.pixel_side = 1;
+                    		        my.found_parts = true;	
+                    		    }
+                    	    }
                     	
-                    	// check for image on left side
-                    	if(my.imageCache[my.newpcmperpixel][i][0] > mystart && 
-                    	   my.imageCache[my.newpcmperpixel][i][0] < myend) {
-                    		my.pixel_cover = Math.floor((myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
-                    		if(my.pixel_cover > my.pixel_covering ) {
-                    			my.pixel_covering = my.pixel_cover;
-                    		    my.pixel_cache_selected = i;
-                    		    my.pixel_side = 1;
-                    		    my.found_parts = true;	
-                    		}
-                    	}
-                    	
-                    	// check for image on right side
-                    	if(my.imageCache[my.newpcmperpixel][i][1] > mystart && 
-                    	   my.imageCache[my.newpcmperpixel][i][1] < myend) {
-                    		my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-mystart)/my.newpcmperpixel);
-                    		if(my.pixel_cover > my.pixel_covering ) {
-                    			my.pixel_covering = my.pixel_cover;
-                    		    my.pixel_cache_selected = i;
-                    		    my.pixel_side = 2;
-                    		    my.found_parts = true;	
-                    		}
-                    	}
+                    	    // check for image on right side
+                    	    if(my.imageCache[my.newpcmperpixel][i][1] > mystart && 
+                    	        my.imageCache[my.newpcmperpixel][i][1] < myend) {
+                    		    my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-mystart)/my.newpcmperpixel);
+                    		    if(my.pixel_cover > my.pixel_covering ) {
+                    			    my.pixel_covering = my.pixel_cover;
+                    		        my.pixel_cache_selected = i;
+                    		        my.pixel_side = 2;
+                    		        my.found_parts = true;
+                    		    }
+                    	    }
                     }
-                    if(!my.found_complete) {    // image has to be rendered completely
-                    	if(my.found_parts) {
-                    	    console.log(my.pixel_cache_selected+" is covering "+my.pixel_covering+ " pixels");
-            	            
-            	            my.cache_offset = 0;
-            	            my.renderWidth = my.offline.width;
-            	            
-            	            if(my.pixel_side==1) {	// cache on the right
-            	                my.cache_offset = my.pixel_covering;
-            	                my.renderWidth = my.offline.width-my.pixel_covering;
-            	                
-            	            }
-            	            if(my.pixel_side==2) {	// cache on the right
-            	                my.cache_offset = 0;
-            	                my.renderWidth = my.offline.width-my.pixel_covering;
-            	            }
-                            my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                    if(my.found_parts) {
+                        if(my.pixel_side==1) {
+                    	    console.log("found cache on left side covering "+my.pixel_covering+" pixel.");
+                    	    my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][4];
+                
                             my.myImage.onload = function() {
-    	    	                my.context.drawImage(my.myImage, 0, 0);
+                                // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    	    	                my.context.drawImage(my.myImage, 0, 0,my.pixel_covering,my.offline.height,0,(my.offline.width-my.pixel_covering),my.pixel_covering,my.offline.height);
     	    	                my.toRetinaRatio(my.offline,my.context);
-    	    	            };
-            	            
-            	            my.killSpectroRenderingThread();
-                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.renderWidth,my.offline.height,my.cache_offset,my.renderWidth);	            	
-                    	
+                            }
+                            my.startSpectroRenderingThread(mybuf,mystart,(myend-(my.newpcmperpixel*my.pixel_covering)),(my.offline.width-my.pixel_covering),my.offline.height,0,(my.offline.width-my.pixel_covering));
                     	}
-                    	else {    // image has to be rendered completely
-            	            my.killSpectroRenderingThread();
-                            my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.height,my.offline.height,0,my.offline.width);	            	
-                        }
+                        
+                        if(my.pixel_side==2) {
+                    	    console.log("found cache on right side covering "+my.pixel_covering+" pixel.");
+                    	    my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][4];
+                
+                            my.myImage.onload = function() {
+                                // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    	    	                my.context.drawImage(my.myImage, 0, (my.offline.width-my.pixel_covering),my.pixel_covering,my.offline.height,0,0,my.pixel_covering,my.offline.height);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+                            }
+                            my.startSpectroRenderingThread(mybuf,(mystart+(my.pixel_covering*my.newpcmperpixel)),myend,(my.offline.width-my.pixel_covering),my.offline.height,my.pixel_covering,(my.offline.width-my.pixel_covering));
+                    	}
+                             
+                    }
+                    
+                    else {    // image has to be rendered completely
+            	        my.killSpectroRenderingThread();
+                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);				
                     }
                 }
                 else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
                     my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);				
                 }
-            }
-      			
+            }	
         },    
          
         
         startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height,part_offset,part_length) {
             var my = this;
-            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
+            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+(2*my.N));			
             var data_conf = JSON.stringify(current_buffer);
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);

@@ -638,7 +638,7 @@ function FFT(fftSize){
 		        
 
 		        // post generated image block with settings back
-		        self.postMessage({'start':start,'end':end,'width':c_width,'height':c_height,'img':'data:image/png;base64,'+p.getBase64()});
+		        self.postMessage({'offset':myOffset,'start':start,'end':end,'width':c_width,'height':c_height,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -754,7 +754,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line+mo), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line)+mo, Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
