@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-var renderingCanvas = false;
-var primeWorker = new Worker(js_spectro_filename);
-var offline = document.getElementById(canvas_spectro_name);
-var context = offline.getContext("2d");
-=======
-
->>>>>>> spectrogram
 
 
 var EmuLabeller = {
@@ -33,7 +25,7 @@ var EmuLabeller = {
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
         
-        this.spectogramDrawer = Object.create(spectogramDrawer);
+        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
         this.spectogramDrawer.init({specCanvas: params.specCanvas});
 		
 
@@ -384,7 +376,7 @@ onAudioProcess: function () {
             var tName = newTiers[0].TierName;
             console.log(tName);
             $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
-            emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
+           this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
      
             emulabeller.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {

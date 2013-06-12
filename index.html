@@ -144,8 +144,8 @@
     
   <noscript>No javascript enabled...</noscript>
   
-  <script id="spectroworker" type="javascript/worker">
-  
+  <script id="spectroworker" type="text/javascript">
+  <!--
   /**
 * A handy class to calculate color values.
 *
@@ -355,9 +355,12 @@
 })();
 
 /**
-* A handy class to calculate a fft
+* A handy class to draw a spectrom (calculate a fft)
+* 
 *
 * @version 1.0
+* @author Georg raess <graess@phonetik.uni-muenchen.de>
+* @link http://www.phonetik.uni-muenchen.de/
 *
 */
 
@@ -370,6 +373,9 @@ var internalalpha = 0.16;
 var totalMax = 0;
 var dynRangeInDB = 50;
 var x0 = 0;
+var myOffset = 0;
+var mywidth = 0;
+var myDrawOffset = 0;
 var myWindow = {
   BARTLETT:       1,
   BARTLETTHANN:   2,
@@ -589,8 +595,8 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height) {
-    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
+    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
         	if (!executed) {
         		// start execution once
             	executed = true;
@@ -598,10 +604,13 @@ function FFT(fftSize){
             	// instance of FFT with windowSize N
             	myFFT = new FFT(N);
             	
+            	renderWidth = c_width-cacheWidth;
+            	if(renderWidth<0) renderWidth = 0;
+            	
             	// array holding FFT results paint[canvas width][canvas height]
-	            paint = new Array(c_width);
+	            paint = new Array(renderWidth);
 	            
-	    		
+	    		// create new png picture from pnglib witth color depth=256
 	    		p = new PNGlib(c_width, c_height, 256);
 	
 	    		// Hz per pixel height
@@ -612,22 +621,32 @@ function FFT(fftSize){
 				
 				// lower Hz boundry to display
 				d = Math.floor(lowerFreq/HzStep); // -1 for value below display when lower>0
+				
+				// offset in pcm stream if cache is on right side
+				if(cacheSide==2) {
+				    myOffset = cacheWidth*myStep;
+				}
+				
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
-	        	for(var i=0;i<c_width;i++) {
-					paint[i] = getMagnitude(0,i*myStep,N,c,d);
+	        	for(var i=0;i<renderWidth;i++) {
+					paint[i] = getMagnitude(0,(i*myStep)+myOffset,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
 		        
 		        // height between two interpolation points
 		        pixel_height = c_height/(c-d);
+		        
+				// offset if cache is on right side
+				if(cacheSide==2)
+				    myDrawOffset = cacheWidth;		        
 
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
-	        	for(var i=0;i<c_width;i++) 
-		        	drawOfflineSpectogram(i,p,c,d); 
+	        	for(var j=0;j<renderWidth;j++) 
+		        	drawOfflineSpectogram(j,p,c,d,myDrawOffset); 
 		        
-		        // post generated image back
-		        self.postMessage('data:image/png;base64,'+p.getBase64());
+		        // post generated image block with settings back
+		        self.postMessage({'start':start,'end':end,'cacheWidth':cacheWidth,'cacheSide':cacheSide,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -697,7 +716,7 @@ function FFT(fftSize){
 	//
 	*/
 	
-	function drawOfflineSpectogram(line,p,c,d) {
+	function drawOfflineSpectogram(line,p,c,d,cache_offet) {
 	
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
@@ -743,7 +762,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line+cache_offet), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
@@ -837,6 +856,8 @@ function FFT(fftSize){
     	case 'config':
     		if (data.N != undefined)
     			N = data.N;
+    		if (data.alpha != undefined)
+    			internalalpha = data.alpha;    		    			
     		if (data.freq != undefined)
     			upperFreq = data.freq;
     		if (data.freq_low != undefined)
@@ -845,18 +866,20 @@ function FFT(fftSize){
     			start = data.start;
     		if (data.end != undefined)
     			end = data.end;
+    		if (data.myStep != undefined)
+    			myStep = data.myStep;  
+    		if (data.window != undefined)
+    			wFunction = data.window;
+    		if (data.cacheSide != undefined)
+    			cacheSide = data.cacheSide;      			
     		if (data.width != undefined)
     			mywidth = data.width;
     		if (data.height != undefined)
     			myheight = data.height;
-    		if (data.window != undefined)
-    			wFunction = data.window;
-    		if (data.alpha != undefined)
-    			internalalpha = data.alpha;    		
+    		if (data.cacheWidth != undefined)
+    			cacheWidth = data.cacheWidth;  
     		if (data.dynRangeInDB != undefined)
     			dynRangeInDB = data.dynRangeInDB;  
-    		if (data.myStep != undefined)
-    			myStep = data.myStep;      			  				
     			
     	  break;
     	case 'pcm':
@@ -869,7 +892,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);
@@ -877,7 +900,7 @@ function FFT(fftSize){
 	}, false);       
 	
 	      
-	      
+	-->    
 	</script>
   
   
@@ -899,6 +922,7 @@ function FFT(fftSize){
   <script src="js/labfileparser.js"></script>
   <script src="js/textgridparser.js"></script>
   <script src="js/ssffparser.js"></script>
+  <script src="js/JSONvalidator.js"></script>
   <script src="js/spectogramDrawer.js"></script>
 
   <script src="js/main.js"></script>
