@@ -210,9 +210,9 @@ EmuLabeller.spectogramDrawer = {
                             my.tempImage.onload = function() {
     	    	                my.context.drawImage(my.tempImage,                          // image
     	    	                                     (my.canvas.width-my.pixel_covering), 0,    // sx,sy
-    	    	                                     my.canvas.width,my.canvas.height,        // swidth, sheight
+    	    	                                     my.pixel_covering,my.canvas.height,        // swidth, sheight
     	    	                                     0,0,                                       // x,y
-    	    	                                     my.canvas.width,my.canvas.height);       // width, height
+    	    	                                     my.pixel_covering,my.canvas.height);       // width, height
                             }
                             my.startSpectroRenderingThread(mybuf,
                                                            mystart,myend,
