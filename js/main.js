@@ -27,18 +27,18 @@ var emulabeller = (function () {
 
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
-    // if(isiPad){
+     if(isiPad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
-    // }
+     }
     
     
 	// initial  launch
-    
+
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
-    // hack for hiding inputs of dialogs..
+    // hack for hiding inputs of dialogs.. SIC!!!
     $("#dialog-messageSh").hide();
     $("#dialog-messageSetLabel").hide();
     $('#specSettings').click(function() {
@@ -78,8 +78,9 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
                     labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
                     labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
+                    labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
-                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height);
+                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height,0,specCanvas.width);
                 }
     		  	$(this).dialog('close');
             },

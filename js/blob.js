@@ -6,7 +6,7 @@ var response = document.querySelector('#spectroworker').textContent;
 
 var blob;
 try {
-    blob = new Blob([response]);
+    blob = new Blob([response], { "type" : "text\/javascript" });
 } catch (e) { // Backwards-compatibility
     window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
     blob = new BlobBuilder();

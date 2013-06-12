@@ -144,8 +144,8 @@
     
   <noscript>No javascript enabled...</noscript>
   
-  <script id="spectroworker" type="javascript/worker">
-  
+  <script id="spectroworker" type="text/javascript">
+  <!--
   /**
 * A handy class to calculate color values.
 *
@@ -355,9 +355,12 @@
 })();
 
 /**
-* A handy class to calculate a fft
+* A handy class to draw a spectrom (calculate a fft)
+* 
 *
 * @version 1.0
+* @author Georg raess <graess@phonetik.uni-muenchen.de>
+* @link http://www.phonetik.uni-muenchen.de/
 *
 */
 
@@ -370,6 +373,8 @@ var internalalpha = 0.16;
 var totalMax = 0;
 var dynRangeInDB = 50;
 var x0 = 0;
+var myOffset = 0;
+var myLength = 0;
 var myWindow = {
   BARTLETT:       1,
   BARTLETTHANN:   2,
@@ -589,8 +594,8 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height) {
-    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,myOffset,myLength) {
+    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height,myOffset,myLength) {
         	if (!executed) {
         		// start execution once
             	executed = true;
@@ -601,7 +606,7 @@ function FFT(fftSize){
             	// array holding FFT results paint[canvas width][canvas height]
 	            paint = new Array(c_width);
 	            
-	    		
+	    		// create new png picture from pnglib witth color depth=256
 	    		p = new PNGlib(c_width, c_height, 256);
 	
 	    		// Hz per pixel height
@@ -623,11 +628,12 @@ function FFT(fftSize){
 
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
-	        	for(var i=0;i<c_width;i++) 
-		        	drawOfflineSpectogram(i,p,c,d); 
+	        	for(var i=0;i<myLength;i++) 
+		        	drawOfflineSpectogram(i,p,c,d,myOffset); 
 		        
-		        // post generated image back
-		        self.postMessage('data:image/png;base64,'+p.getBase64());
+
+		        // post generated image block with settings back
+		        self.postMessage({'offset':myOffset,'start':start,'end':end,'width':c_width,'height':c_height,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -697,7 +703,7 @@ function FFT(fftSize){
 	//
 	*/
 	
-	function drawOfflineSpectogram(line,p,c,d) {
+	function drawOfflineSpectogram(line,p,c,d,mo) {
 	
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
@@ -743,7 +749,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line)+mo, Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
@@ -856,7 +862,11 @@ function FFT(fftSize){
     		if (data.dynRangeInDB != undefined)
     			dynRangeInDB = data.dynRangeInDB;  
     		if (data.myStep != undefined)
-    			myStep = data.myStep;      			  				
+    			myStep = data.myStep;  
+    		if (data.offset != undefined)
+    			myOffset = data.offset;  
+    		if (data.length != undefined)
+    			myLength = data.length;      			    			    			  				
     			
     	  break;
     	case 'pcm':
@@ -869,7 +879,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,myOffset,myLength);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);
@@ -877,7 +887,7 @@ function FFT(fftSize){
 	}, false);       
 	
 	      
-	      
+	-->    
 	</script>
   
   
@@ -899,6 +909,7 @@ function FFT(fftSize){
   <script src="js/labfileparser.js"></script>
   <script src="js/textgridparser.js"></script>
   <script src="js/ssffparser.js"></script>
+  <script src="js/JSONvalidator.js"></script>
   <script src="js/spectogramDrawer.js"></script>
 
   <script src="js/main.js"></script>

@@ -33,32 +33,84 @@ var spectogramDrawer = {
 		my.sampleRate = 44100;                            // default sample Rate
         my.pixel_height = 1;                             // default pixel height per value
         my.renderingCanvas = false;
-        my.primeWorkerFile = 'js/spectrogram.js';
+        // plain old version load from script file
+        //my.primeWorkerFile = 'js/spectrogram.js';
         //my.primeWorker = new Worker(my.primeWorkerFile);
         my.primeWorker= new Worker(URL.createObjectURL(blob));
+		my.setupEvent();
+		my.clearImageCache();
         
         my.offline = params.specCanvas;
         my.context = my.offline.getContext("2d");     
         my.pcmperpixel = 0; 
-        my.imageCache = "";   
         my.myImage = new Image();
-        my.font = "8px Verdana";
+        my.tempDraw = new Image();
+        my.font = "10px Helvetica";
         my.fontColor = "#000";
-        my.loadingText = "calculating...";
+        my.loadingText = "calculating ...";
         },
+        
+        setupEvent: function () {
+            var my = this;
+            my.primeWorker.addEventListener('message', function(event){
+            
+            	var imgsrc = event.data.img;
+            	var cstart = event.data.start;
+            	var cend = event.data.end;
+            	var cwidth = event.data.width;
+            	var cheight = event.data.height;
+            	var coffset = event.data.offset;
+            
+                my.myImage.src = imgsrc;
+                
+                my.myImage.onload = function() {
+                    // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    	    	    my.context.drawImage(my.myImage, 0, 0,cwidth,cheight,0,coffset,cwidth,cheight);
+    	    	    my.toRetinaRatio(my.offline,my.context);
+    	    	    my.buildImageCache(cstart,cend,my.myImage.src);
+                }
+            });        
+        },
+        
+        buildImageCache: function (cstart,cend,imgData) {
+            var my = this;
+    	    if(my.imageCache[my.pcmperpixel]==null) 
+    	    	my.imageCache[my.pcmperpixel] = new Array();
+    	    	        
+    	    if(my.imageCacheCounter[my.pcmperpixel]==null)
+    	        my.imageCacheCounter[my.pcmperpixel] = 0;
+    	            
+    	    if(my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]]==null) { 
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]] = new Array();
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][0] = cstart;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][1] = cend;
+    	    	my.imageCache[my.pcmperpixel][my.imageCacheCounter[my.pcmperpixel]][2] = imgData;
+    	    	++my.imageCacheCounter[my.pcmperpixel];
+    	    }
+        },
+        
         
         killSpectroRenderingThread: function () {
             var my = this;
             my.context.fillStyle = "rgb(255,255,255)";
         	my.context.fillRect(0,0,my.offline.width,my.offline.height);    
         	my.context.fillStyle = my.fontColor;
-        	my.context.strokeStyle = "#F00";
         	my.context.font = my.font;
         	my.context.fillText(my.loadingText, 2, 10); 
         	my.toRetinaRatio(my.offline,my.context);   
-            my.primeWorker.terminate();
-        	my.primeWorker = null;
+            if(my.primeWorker!=null) {
+            	my.primeWorker.terminate();
+        		my.primeWorker = null;
+        	}
         },
+        
+        clearImageCache: function () {
+            var my = this;
+            my.imageCache = null;
+            my.imageCacheCounter = null;
+            my.imageCache = new Array();            
+            my.imageCacheCounter = new Array();            
+        },        
         
         toRetinaRatio: function (canvas, context) {
             var backingStoreRatio, ratio;
@@ -81,47 +133,100 @@ var spectogramDrawer = {
         }, 
         
         drawImage: function(mybuf,mystart,myend) {
-        	var my = this;
-        	var newppx = Math.round((myend-mystart)/my.offline.width);
-			if(my.pcmperpixel!=newppx) {
-				my.imageCache = new Array();
-				console.log(my.pcmperpixel+":"+newppx);
-        	    my.killSpectroRenderingThread();
-			    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);
-			}
-			else {
-				if(my.sStart!=mystart && my.sEnd!=myend) {
-					console.log(my.pcmperpixel+"::"+newppx);
-    	    	    my.killSpectroRenderingThread();
-				    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height);				
-				}
-				else
-					my.drawImageCache(mystart,myend);          
-			}
-        },    
-        
-        drawImageCache: function (mystart,myend) {
             var my = this;
-            my.context.drawImage(my.myImage, 0, 0);
-    	    my.toRetinaRatio(my.offline,my.context);
-        },  
+            my.newpcmperpixel = Math.round((myend-mystart)/my.offline.width);
+            if(my.imageCache!=null) {
+                if(my.imageCache[my.newpcmperpixel]!=null) {
+					my.found_parts = false;
+					my.pixel_covering = 0;
+					my.pixel_cache_selected = 0;
+					
+                    for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
+                        // check for complete image
+                    	if(my.imageCache[my.newpcmperpixel][i][0]==mystart &&
+                    	   my.imageCache[my.newpcmperpixel][i][1]==myend) {
+                            my.killSpectroRenderingThread();
+                            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
+                            my.myImage.onload = function() {
+    	    	                my.context.drawImage(my.myImage, 0, 0);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+    	    	            };
+    	    	            break;
+                    	}
+                    	    if(my.imageCache[my.newpcmperpixel][i][0] > mystart && 
+                    	        my.imageCache[my.newpcmperpixel][i][0] < myend) {
+                    		    my.pixel_cover = Math.floor((myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
+                    		    if(my.pixel_cover > my.pixel_covering ) {
+                    			    my.pixel_covering = my.pixel_cover;
+                    		        my.pixel_cache_selected = i;
+                    		        my.pixel_side = 1;
+                    		        my.found_parts = true;	
+                    		    }
+                    	    }
+                    	
+                    	    // check for image on right side
+                    	    if(my.imageCache[my.newpcmperpixel][i][1] > mystart && 
+                    	        my.imageCache[my.newpcmperpixel][i][1] < myend) {
+                    		    my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-mystart)/my.newpcmperpixel);
+                    		    if(my.pixel_cover > my.pixel_covering ) {
+                    			    my.pixel_covering = my.pixel_cover;
+                    		        my.pixel_cache_selected = i;
+                    		        my.pixel_side = 2;
+                    		        my.found_parts = true;
+                    		    }
+                    	    }
+                    }
+                    if(my.found_parts && my.pixel_covering > 0) {
+                        if(my.pixel_side==1) {
+                    	    console.log("found cache on left side covering "+my.pixel_covering+" pixel.");
+                    	    //my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                    	    console.log("left");
+                            my.myImage.onload = function() {
+    	    	                my.context.drawImage(my.myImage, 0, 0,my.pixel_covering,my.offline.height,(my.offline.width-my.pixel_covering),0,my.pixel_covering,my.offline.height);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+                            }
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,(my.offline.width-my.pixel_covering),my.offline.height,0,(my.offline.width-my.pixel_covering));
+                    	}
+                        
+                        if(my.pixel_side==2) {
+                    	    console.log("found cache on right side covering "+my.pixel_covering+" pixel.");
+                    	    //my.killSpectroRenderingThread();
+                    	    my.myImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
+                            console.log("right");
+                            my.myImage.onload = function() {
+    	    	                my.context.drawImage(my.myImage, my.offline.width-my.pixel_covering, 0,my.pixel_covering,my.offline.height,0,0,my.pixel_covering,my.offline.height);
+    	    	                my.toRetinaRatio(my.offline,my.context);
+                            }
+                            my.startSpectroRenderingThread(mybuf,mystart,myend,(my.offline.width-my.pixel_covering),my.offline.height,my.pixel_covering,(my.offline.width-my.pixel_covering));
+                    	}
+                             
+                    }
+                    
+                    else {    // image has to be rendered completely
+            	        my.killSpectroRenderingThread();
+                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);				
+                    }
+                }
+                else {    // image has to be rendered completely
+                    my.killSpectroRenderingThread();
+                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.offline.width,my.offline.height,0,my.offline.width);				
+                }
+            }	
+        },    
          
         
-        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height) {
+        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,part_width,part_height,part_offset,part_length) {
             var my = this;
-            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, pcm_end+2*my.N);			
+            var newend = pcm_end+(2*my.N);
+            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, newend);			
             var data_conf = JSON.stringify(current_buffer);
-            my.primeWorker = new Worker(URL.createObjectURL(blob));
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
             my.pcmperpixel = Math.round((my.sEnd-my.sStart)/my.offline.width);
-            my.primeWorker.addEventListener('message', function(event){
-                my.myImage.src = event.data;
-                my.myImage.onload = function() {
-    	    	    my.context.drawImage(my.myImage, 0, 0);
-    	    	    my.toRetinaRatio(my.offline,my.context);
-                }
-            });
+            my.primeWorker = new Worker(URL.createObjectURL(blob));
+            my.setupEvent();
+            
             my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
             my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
             my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
@@ -131,10 +236,30 @@ var spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
             my.primeWorker.postMessage({'cmd': 'config', 'width': part_width});
-            my.primeWorker.postMessage({'cmd': 'config', 'height': part_height});     
+            my.primeWorker.postMessage({'cmd': 'config', 'height': part_height});
+            my.primeWorker.postMessage({'cmd': 'config', 'offset': part_offset}); 
+            my.primeWorker.postMessage({'cmd': 'config', 'length': part_length});     
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB});     
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
             my.primeWorker.postMessage({'cmd': 'render'});
         }    
 };
+
+
+// URL.createObjectURL
+window.URL = window.URL || window.webkitURL;
+
+// "Server response", used in all examples
+var response = document.querySelector('#spectroworker').textContent;
+
+var blob;
+try {
+    blob = new Blob([response], { "type" : "text\/javascript" });
+} catch (e) { // Backwards-compatibility
+    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+    blob = new BlobBuilder();
+    blob.append(response);
+    blob = blob.getBlob();
+}
+
