@@ -80,7 +80,7 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
                     labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
-                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height,0,0,'');
+                    labeller.spectogramDrawer.startSpectroRenderingThread(labeller.backend.currentBuffer,labeller.viewPort.sS,labeller.viewPort.eS,specCanvas.width,specCanvas.height,0,0);
                 }
     		  	$(this).dialog('close');
             },

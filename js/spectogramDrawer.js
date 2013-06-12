@@ -52,16 +52,30 @@ EmuLabeller.spectogramDrawer = {
             var my = this;
             my.primeWorker.addEventListener('message', function(event){
             
-            	var imgsrc = event.data.img;
-            	var cstart = event.data.start;
-            	var cend = event.data.end;
-                my.myImage.src = imgsrc;
+            	my.worker_img = event.data.img;
+            	my.worker_start = event.data.start;
+            	my.worker_end = event.data.end;
+            	my.worker_cache_width = event.data.cacheWidth;
+            	my.worker_cache_side = event.data.cacheSide;
+                my.myImage.src = my.worker_img;
+                
+                my.render_width = my.canvas.width - my.worker_cache_width;
                 
                 my.myImage.onload = function() {
                     // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-    	    	    my.context.drawImage(my.myImage, 0, 0,my.canvas.width,my.canvas.height,0,0,my.canvas.width,my.canvas.height);
+                    if(my.worker_cache_side==0)
+    	    	        my.context.drawImage(my.myImage, 0, 0, my.canvas.width, my.canvas.height, 0, 0, my.canvas.width, my.canvas.height);
+    	    	    if(my.worker_cache_side==1)
+    	    	        my.context.drawImage(my.myImage, 0, 0, my.render_width, my.canvas.height, 0, 0, my.render_width, my.canvas.height);
+    	    	    if(my.worker_cache_side==2)
+    	    	        my.context.drawImage(my.myImage, my.worker_cache_width, 0, my.render_width, my.canvas.height, my.worker_cache_width, 0, my.render_width, my.canvas.height);
+    	    	        
     	    	    my.toRetinaRatio(my.canvas,my.context);
-    	    	    my.buildImageCache(cstart,cend,my.myImage.src);
+    	    	    
+    	    	    my.tempImage = my.canvas.toDataURL("image/png");
+    	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempImage);
+    	    	    
+    	    	    
                 }
             });        
         },
@@ -172,59 +186,55 @@ EmuLabeller.spectogramDrawer = {
                         }
                     }
                     if(my.found_parts && my.pixel_covering > 0) {
-
                     	my.killSpectroRenderingThread();
-                        my.tempcanvas = document.createElement("canvas");
-                	    my.tempcontext = my.tempcanvas.getContext("2d");
                 	    my.tempImage = new Image(my.pixel_covering,my.canvas.height);
                 	    my.tempImage.src = my.imageCache[my.newpcmperpixel][my.pixel_cache_selected][2];
 
                         if(my.pixel_side==1) {
-                    	    console.log("found cache on left side covering "+my.pixel_covering+" pixel.");
+                            console.log("left");
                             my.tempImage.onload = function() {
-    	    	                my.tempcontext.drawImage(my.tempImage,                         // image
+    	    	                my.context.drawImage(my.tempImage,                         // image
     	    	                                     0, 0,                                     // sx,sy
-    	    	                                     my.pixel_covering,my.canvas.height,       // swidth, sheight
+    	    	                                     my.canvas.width,my.canvas.height,       // swidth, sheight
     	    	                                     (my.canvas.width-my.pixel_covering),0,    // x,y
-    	    	                                     my.pixel_covering,my.canvas.height);      // width, height
+    	    	                                     my.canvas.width,my.canvas.height);      // width, height
                             }
                             my.startSpectroRenderingThread(mybuf,
                                                            mystart,myend,
                                                            my.canvas.width,my.canvas.height,
-                                                           my.pixel_covering,1,my.tempcanvas.toDataURL("image/png"));
+                                                           my.pixel_covering,1);
                     	}
                         
                         if(my.pixel_side==2) {
-                    	    console.log("found cache on right side covering "+my.pixel_covering+" pixel.");
+                            console.log("right");
                             my.tempImage.onload = function() {
-    	    	                my.tempcontext.drawImage(my.tempImage,                          // image
+    	    	                my.context.drawImage(my.tempImage,                          // image
     	    	                                     (my.canvas.width-my.pixel_covering), 0,    // sx,sy
-    	    	                                     my.pixel_covering,my.canvas.height,        // swidth, sheight
+    	    	                                     my.canvas.width,my.canvas.height,        // swidth, sheight
     	    	                                     0,0,                                       // x,y
-    	    	                                     my.pixel_covering,my.canvas.height);       // width, height
+    	    	                                     my.canvas.width,my.canvas.height);       // width, height
                             }
                             my.startSpectroRenderingThread(mybuf,
                                                            mystart,myend,
                                                            my.canvas.width,my.canvas.height,
-                                                           my.pixel_covering,2,my.tempcanvas.toDataURL("image/png"));
+                                                           my.pixel_covering,2);
                     	}
                              
                     }
                     
                     else {    // image has to be rendered completely
             	        my.killSpectroRenderingThread();
-                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.canvas.width,my.canvas.height,0,0,'');				
+                        my.startSpectroRenderingThread(mybuf,mystart,myend,my.canvas.width,my.canvas.height,0,0);				
                     }
                 }
                 else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.canvas.width,my.canvas.height,0,0,'');				
+                    my.startSpectroRenderingThread(mybuf,mystart,myend,my.canvas.width,my.canvas.height,0,0);				
                 }
             }	
         },    
-         
         
-        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,complete_width,complete_height,cache_width,cache_side,buffered_image) {
+        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,complete_width,complete_height,cache_width,cache_side) {
             var my = this;
             var newend = pcm_end+(2*my.N);
             var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, newend);			
@@ -234,7 +244,7 @@ EmuLabeller.spectogramDrawer = {
             my.pcmperpixel = Math.round((pcm_end-pcm_start)/my.canvas.width);
             my.primeWorker = new Worker(URL.createObjectURL(blob));
             my.setupEvent();
-            
+                        
             my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
             my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
             my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
@@ -248,7 +258,6 @@ EmuLabeller.spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'height': complete_height});
             my.primeWorker.postMessage({'cmd': 'config', 'cacheWidth': cache_width});    
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB}); 
-            my.primeWorker.postMessage({'cmd': 'config', 'imageBuffer': buffered_image}); 
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
             my.primeWorker.postMessage({'cmd': 'render'});

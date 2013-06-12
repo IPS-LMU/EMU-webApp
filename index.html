@@ -600,8 +600,8 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,imageBuffer) {
-    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,imageBuffer) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
+    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
         	if (!executed) {
         		// start execution once
             	executed = true;
@@ -609,8 +609,11 @@ function FFT(fftSize){
             	// instance of FFT with windowSize N
             	myFFT = new FFT(N);
             	
+            	renderWidth = c_width-cacheWidth;
+            	if(renderWidth<0) renderWidth = 0;
+            	
             	// array holding FFT results paint[canvas width][canvas height]
-	            paint = new Array(c_width-cacheWidth);
+	            paint = new Array(renderWidth);
 	            
 	    		// create new png picture from pnglib witth color depth=256
 	    		p = new PNGlib(c_width, c_height, 256);
@@ -630,7 +633,7 @@ function FFT(fftSize){
 				}
 				
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
-	        	for(var i=0;i<c_width-cacheWidth;i++) {
+	        	for(var i=0;i<renderWidth;i++) {
 					paint[i] = getMagnitude(0,(i*myStep)+myOffset,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
@@ -644,16 +647,11 @@ function FFT(fftSize){
 
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
-	        	for(var j=0;j<c_width-cacheWidth;j++) 
+	        	for(var j=0;j<renderWidth;j++) 
 		        	drawOfflineSpectogram(j,p,c,d,myDrawOffset); 
 		        
-				if(cacheSide==1) {
-				
-				}
-				
-
 		        // post generated image block with settings back
-		        self.postMessage({'start':start,'end':end,'img':'data:image/png;base64,'+p.getBase64()});
+		        self.postMessage({'start':start,'end':end,'cacheWidth':cacheWidth,'cacheSide':cacheSide,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -887,8 +885,6 @@ function FFT(fftSize){
     			cacheWidth = data.cacheWidth;  
     		if (data.dynRangeInDB != undefined)
     			dynRangeInDB = data.dynRangeInDB;  
-    		if (data.imageBuffer != undefined)
-    			imageBuffer = data.imageBuffer;  
     			
     	  break;
     	case 'pcm':
@@ -901,7 +897,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide,imageBuffer);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);
