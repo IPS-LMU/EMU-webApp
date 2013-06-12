@@ -1,9 +1,9 @@
 
-# [Emulabellerjs v1.0.0](http://twitter.github.com/bootstrap) 
+# emuLVC (Label Visualize Correct) 
 
-Emulabellerjs is an online and offline Web-App for labelling speech data. It is created and maintained by [Raphael Winkelmann](http://github.com/raphywink) and  Georg Raess
+emuLVC is an online and offline Web-App for labeling, visualizing and correcting  speech and derived speech data. 
 
-To see it in action visit [http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html](http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html)!
+To see it in action visit the live [DEMO](http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html)!
 
 
 
@@ -17,34 +17,13 @@ quick start to get you up and labelling:
 * `open index.html` with Google Chrome
 * or `node server.js` to start server
 
-## Versioning
-
-For transparency and insight into our release cycle, and for striving to maintain backward compatibility, Emulabellerjs will be maintained under the Semantic Versioning guidelines as much as possible.
-
-Releases will be numbered with the following format:
-
-`<major>.<minor>.<patch>`
-
-And constructed with the following guidelines:
-
-* Breaking backward compatibility bumps the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bumps the minor (and resets the patch)
-* Bug fixes and misc changes bumps the patch
-
-For more information on SemVer, please visit [http://semver.org/](http://semver.org/).
-
-
 
 ## Authors
 
 **Raphael Winkelmann**
 
-+ [http://github.com/raphywink](http://github.com/raphywink)
++ [github](http://github.com/raphywink)
 
+**Georg Raess**
 
-
-## Copyright and license
-
-What license to use???
-
-MIT / FREE BSD / GPL v 1/2/3 /...???
++ [github](http://github.com/georgraess)
