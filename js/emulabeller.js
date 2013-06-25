@@ -54,7 +54,7 @@ var EmuLabeller = {
 
         //bindings
         this.backend.bindUpdate(function () {
-            my.onAudioProcess();
+            if (!my.backend.isPaused()) my.onAudioProcess();
         });
 
 
@@ -66,14 +66,14 @@ var EmuLabeller = {
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage(), my.ssffInfos);
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage());
             }
         });
 
@@ -86,14 +86,14 @@ var EmuLabeller = {
         this.bindOnButtonUp(params.specCanvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage());
         });
 
         this.bindOnMouseMoved(params.specCanvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage());
             }
         });
 

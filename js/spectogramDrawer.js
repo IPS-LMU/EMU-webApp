@@ -14,6 +14,18 @@ EmuLabeller.spectogramDrawer = {
                 RECTANGULAR:    9,
                 TRIANGULAR:     10
         } 
+        window.URL = window.URL || window.webkitURL;
+        my.response = document.querySelector('#spectroworker').textContent;
+        my.blob;
+        try {
+                my.blob = new Blob([my.response], { "type" : "text\/javascript" });
+        } 
+        catch (e) { // Backwards-compatibility
+                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                my.blob.append(my.response);
+                my.blob = my.blob.getBlob();
+        }
+        
         // various mathematical vars
         my.PI = 3.141592653589793;                        // value : Math.PI
         my.TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
@@ -111,6 +123,10 @@ EmuLabeller.spectogramDrawer = {
         		my.primeWorker = null;
         	}
         },
+        
+        getlastCacheImage: function () {
+            return this.myImage.src;           
+        },          
         
         clearImageCache: function () {
             var my = this;
@@ -265,19 +281,4 @@ EmuLabeller.spectogramDrawer = {
 };
 
 
-// URL.createObjectURL
-window.URL = window.URL || window.webkitURL;
-
-// "Server response", used in all examples
-var response = document.querySelector('#spectroworker').textContent;
-
-var blob;
-try {
-    blob = new Blob([response], { "type" : "text\/javascript" });
-} catch (e) { // Backwards-compatibility
-    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-    blob = new BlobBuilder();
-    blob.append(response);
-    blob = blob.getBlob();
-}
 

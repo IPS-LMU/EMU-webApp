@@ -127,7 +127,7 @@ EmuLabeller.Drawer = {
     }//else
     },
 
-    progress: function (percents, vP, bufferLength, ssffInfos) {
+    progress: function (percents, vP, bufferLength, imgData, ssffInfos) {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
@@ -135,7 +135,7 @@ EmuLabeller.Drawer = {
 
 
         this.redraw(vP);
-        this.drawTimeLine(vP);
+        this.drawTimeLine(vP,imgData);
          console.log("progress called");
          console.log(vP);
         if(ssffInfos){
@@ -196,7 +196,8 @@ EmuLabeller.Drawer = {
     },
 
 
-    drawTimeLine: function (vP){
+    drawTimeLine: function (vP,imgData){
+        var my = this;
         //console.log(vP);
         this.cc.strokeStyle = this.params.waveColor;
 
@@ -252,20 +253,32 @@ EmuLabeller.Drawer = {
             }
 
             // same thing on spec
-            this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
-            this.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
-            this.scc.fillRect(posS, 0, posE-posS, this.osciHeight);
-            this.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            
+        var image = new Image();
+        image.onload = function() {
+            my.scc.drawImage(image, 0, 0);
+            my.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
+            my.scc.fillRect(posS, 0, posE-posS, my.osciHeight);
+            my.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
 
 
 
-            this.scc.beginPath();
-            this.scc.moveTo(posS,0);
-            this.scc.lineTo(posS,this.osciHeight);
-            this.scc.moveTo(posE,0);
-            this.scc.lineTo(posE,this.osciHeight);
-            this.scc.closePath();
-            this.scc.stroke();
+            my.scc.beginPath();
+            my.scc.moveTo(posS,0);
+            my.scc.lineTo(posS,my.osciHeight);
+            my.scc.moveTo(posE,0);
+            my.scc.lineTo(posE,my.osciHeight);
+            my.scc.closePath();
+            my.scc.stroke();                
+        };
+        //console.log("daten:"+img.data.length);
+        if(imgData.length>0) image.src = imgData;
+
+
+
+
+
+
 
 
 
@@ -306,7 +319,9 @@ EmuLabeller.Drawer = {
     },
 
     clear: function () {
+        var my = this;
         this.cc.clearRect(0, 0, this.osciWidth, this.osciHeight);
+        //this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
     },
 
     drawFrame: function (index, value, max, prevPeak) {
