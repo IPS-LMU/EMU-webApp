@@ -26,7 +26,7 @@ var EmuLabeller = {
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
         
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
-        this.spectogramDrawer.init({specCanvas: params.specCanvas});
+        this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
 		
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
@@ -211,7 +211,7 @@ onAudioProcess: function () {
         var my = this;
         //console.log(this);
         if (this.backend.currentBuffer) {
-        	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort.sS,this.viewPort.eS);  
+        	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
 			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
         }
     },

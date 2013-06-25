@@ -254,34 +254,22 @@ EmuLabeller.Drawer = {
 
             // same thing on spec
             
-        var image = new Image();
-        image.onload = function() {
-            my.scc.drawImage(image, 0, 0);
-            my.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
-            my.scc.fillRect(posS, 0, posE-posS, my.osciHeight);
-            my.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            var image = new Image();
+            image.onload = function() {
+                my.scc.drawImage(image, 0, 0);
+                my.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
+                my.scc.fillRect(posS, 0, posE-posS, my.specHeight);
+                my.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
 
-
-
-            my.scc.beginPath();
-            my.scc.moveTo(posS,0);
-            my.scc.lineTo(posS,my.osciHeight);
-            my.scc.moveTo(posE,0);
-            my.scc.lineTo(posE,my.osciHeight);
-            my.scc.closePath();
-            my.scc.stroke();                
-        };
-        //console.log("daten:"+img.data.length);
-        if(imgData.length>0) image.src = imgData;
-
-
-
-
-
-
-
-
-
+                my.scc.beginPath();
+                my.scc.moveTo(posS,0);
+                my.scc.lineTo(posS,my.specHeight);
+                my.scc.moveTo(posE,0);
+                my.scc.lineTo(posE,my.specHeight);
+                my.scc.closePath();
+                my.scc.stroke();                
+            };
+            if(imgData.length>0) image.src = imgData;
         }
         //
         this.drawTiers(vP);
