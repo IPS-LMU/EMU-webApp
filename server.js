@@ -76,6 +76,6 @@ var server = http.createServer(function (req, res) {
 });
 listen = function (port, host) {
   server.listen(port, host);
-  sys.puts("Server at http://" + (host || "127.0.0.1") + ":" + port.toString() + "/");
+  sys.puts("Server at http://" + (host || "127.0.0.1") + ":" + port.toString() + "/index.html");
 };
 listen(Number(PORT), HOST);
