@@ -61,6 +61,8 @@ EmuLabeller.spectogramDrawer = {
         my.loadingText = "calculating ...";
         my.vP = null;
         my.tempData = "";
+        my.percent = 0;
+        my.bufferLength = 0;
         },
         
         setupEvent: function () {
@@ -88,41 +90,16 @@ EmuLabeller.spectogramDrawer = {
     	    	    my.toRetinaRatio(my.canvas,my.context); 	
     	    	    my.tempData =  my.canvas.toDataURL("image/png");
     	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
-    	    	    
+    	    	    my.drawTimeLineContext();
 
-                    if (my.vP.selectS != 0 && my.vP.selectE != 0){
-                        var all = my.vP.eS-my.vP.sS;
-                        var fracS = my.vP.selectS-my.vP.sS;
-                        var procS = fracS/all;
-                        var posS = my.canvas.width*procS;
 
-                        var fracE = my.vP.selectE-my.vP.sS;
-                        var procE = fracE/all;
-                        var posE = my.canvas.width*procE;
-
-                        my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
-                        my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
-                        my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
-
-                        my.context.beginPath();
-                        my.context.moveTo(posS,0);
-                        my.context.lineTo(posS,my.canvas.height);
-                        my.context.moveTo(posE,0);
-                        my.context.lineTo(posE,my.canvas.height);
-                        my.context.closePath();
-                        my.context.stroke();   
-                        if(my.cursorPos!=0) {
-                            my.context.fillStyle ="#FF0000";
-                            my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
-                        } 
-                    }
                 }
                 my.myImage.src = my.worker_img;
                 
             });        
         },
         
-   
+        
         
         buildImageCache: function (cstart,cend,imgData) {
             var my = this;
@@ -143,64 +120,57 @@ EmuLabeller.spectogramDrawer = {
         
     progress: function (percents, vP, bufferLength, ssffInfos) {
         var my = this;
-        //map percents to viewPort
-        var sInB = percents*bufferLength;
-        my.cursorPos = ~~(my.canvas.width*(sInB-vP.sS)/(vP.eS-vP.sS));
-        my.drawTimeLine(vP);
-         //console.log("progress called");
-         /*console.log(vP);
-        if(ssffInfos){
+        my.vP = vP;
+        my.percent = percents;
+        my.bufferLength = bufferLength;
+        my.drawTimeLine();
+        /*if(ssffInfos){
             if(ssffInfos.data.length > 0){
                 this.drawSSFF(ssffInfos, vP);
             }
         }*/
-    },        
-        
-        drawTimeLine: function (vP){ 
+    },    
+
+        drawTimeLineContext: function () {
             var my = this;
-            my.vP = vP; 
-            if (vP.selectS != 0 && vP.selectE != 0){
+            var sInB = my.percent*my.bufferLength;
+            my.cursorPos = ~~(my.canvas.width*(sInB-my.vP.sS)/(my.vP.eS-my.vP.sS));
+            if (my.vP.selectS != 0 && my.vP.selectE != 0){
                 var all = my.vP.eS-my.vP.sS;
                 var fracS = my.vP.selectS-my.vP.sS;
                 var procS = fracS/all;
                 var posS = my.canvas.width*procS;
-
                 var fracE = my.vP.selectE-my.vP.sS;
                 var procE = fracE/all;
                 var posE = my.canvas.width*procE;
-                
-                var image = new Image();
-                image.onload = function() {
-                    my.context.drawImage(image, 0, 0);
-                    my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
-                    my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
-                    my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
 
-                    my.context.beginPath();
-                    my.context.moveTo(posS,0);
-                    my.context.lineTo(posS,my.canvas.height);
-                    my.context.moveTo(posE,0);
-                    my.context.lineTo(posE,my.canvas.height);
-                    my.context.closePath();
-                    my.context.stroke();   
-                    if(my.cursorPos!=0) {
-                        my.context.fillStyle ="#FF0000";
-                        my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
-                    }           
-                };
-                image.src = this.myImage.src;
-            }
-            else {
-                var image = new Image();
-                image.onload = function() {
-                    my.context.drawImage(image, 0, 0);
-                    if(my.cursorPos!=0) {
-                        my.context.fillStyle ="#FF0000";
-                        my.context.fillRect(my.cursorPos , 0, 1, my.canvas.height);
-                    }           
-                };
-                image.src = this.myImage.src;  
-             }
+                my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
+                my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
+                my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
+
+                my.context.beginPath();
+                my.context.moveTo(posS,0);
+                my.context.lineTo(posS,my.canvas.height);
+                my.context.moveTo(posE,0);
+                my.context.lineTo(posE,my.canvas.height);
+                my.context.closePath();
+                my.context.stroke();   
+                if(my.cursorPos!=0) {
+                    my.context.fillStyle ="#FF0000";
+                    my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
+                } 
+            }        
+        },
+           
+        
+        drawTimeLine: function (){ 
+            var my = this;
+            var image = new Image();
+            image.onload = function() {
+                my.context.drawImage(image, 0, 0);
+                my.drawTimeLineContext();           
+            };
+            image.src = this.myImage.src;
         },
         
         
