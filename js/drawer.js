@@ -46,6 +46,8 @@ EmuLabeller.Drawer = {
         this.scrollcc =  this.scrollCanvas.getContext('2d');
 
         this.tierInfos = params.tierInfos;
+        
+        this.cacheImage = new Image();
 
         this.tierInfos.contexts = [];
 
@@ -127,36 +129,20 @@ EmuLabeller.Drawer = {
     }//else
     },
 
-    progress: function (percents, vP, bufferLength, imgData, ssffInfos) {
+    progress: function (percents, vP, bufferLength, imgData, isPlaying, ssffInfos) {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
         this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
 
-
         this.redraw(vP);
-        this.drawTimeLine(vP,imgData);
-         console.log("progress called");
-         console.log(vP);
+        this.drawTimeLine(vP,imgData,isPlaying);
+         //console.log("progress called");
+         //console.log(vP);
         if(ssffInfos){
             if(ssffInfos.data.length > 0){
                 this.drawSSFF(ssffInfos, vP);
             }
-        }
-    },
-
-    drawSpec: function(fftData){
-        //console.log(percents);
-        this.scc.fillStyle = this.params.progressColor;
-        this.scc.clearRect(0, 0, this.specWidth, this.specHeight);
-
-        var max = Math.max.apply(Math, fftData);
-        var curVal;
-        for (var i = 0; i < this.specHeight; i++) {
-            //curVal = this.specHeight-fftData[i]/max*this.specHeight;
-            curVal = Math.floor(255*fftData[i]/max);
-            this.scc.fillStyle = 'rgb(' + curVal + ',' + curVal +',' + curVal + ')';
-            this.scc.fillRect(this.cursorPos, i, 10, 1);
         }
     },
 
@@ -196,7 +182,7 @@ EmuLabeller.Drawer = {
     },
 
 
-    drawTimeLine: function (vP,imgData){
+    drawTimeLine: function (vP,imgData,isPlaying){
         var my = this;
         //console.log(vP);
         this.cc.strokeStyle = this.params.waveColor;
@@ -251,9 +237,6 @@ EmuLabeller.Drawer = {
                 this.cc.strokeText(Math.floor(vP.selectE), posE+5, 10);
 
             }
-
-            // same thing on spec
-            
             var image = new Image();
             image.onload = function() {
                 my.scc.drawImage(image, 0, 0);
@@ -267,9 +250,29 @@ EmuLabeller.Drawer = {
                 my.scc.moveTo(posE,0);
                 my.scc.lineTo(posE,my.specHeight);
                 my.scc.closePath();
-                my.scc.stroke();                
+                my.scc.stroke();   
+                
+                if(isPlaying) {
+                    my.scc.fillStyle ="#FF0000";;
+                    my.scc.fillRect(my.cursorPos + 10, 0, 1, my.specHeight);
+                }
+                
+                             
             };
-            if(imgData.length>0) image.src = imgData;
+            if(imgData!=null) image.src = imgData;
+        }
+        else {
+            var image = new Image();
+            image.onload = function() {
+                my.scc.drawImage(image, 0, 0);
+                if(isPlaying) {
+                    my.scc.fillStyle ="#FF0000";;
+                    my.scc.fillRect(my.cursorPos + 10, 0, 1, my.specHeight);
+                }           
+            };
+            console.log(imgData);
+            if(imgData.length>0) image.src = imgData;        
+        
         }
         //
         this.drawTiers(vP);
