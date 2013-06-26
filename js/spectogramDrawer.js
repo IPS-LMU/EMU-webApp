@@ -74,10 +74,7 @@ EmuLabeller.spectogramDrawer = {
             	my.worker_end = event.data.end;
             	my.worker_cache_width = event.data.cacheWidth;
             	my.worker_cache_side = event.data.cacheSide;
-                
-                
                 my.render_width = my.canvas.width - my.worker_cache_width;
-                
                 my.myImage.onload = function() {
                     // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
                     if(my.worker_cache_side==0)
@@ -91,8 +88,6 @@ EmuLabeller.spectogramDrawer = {
     	    	    my.tempData =  my.canvas.toDataURL("image/png");
     	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
     	    	    my.drawTimeLineContext();
-
-
                 }
                 my.myImage.src = my.worker_img;
                 
@@ -118,18 +113,18 @@ EmuLabeller.spectogramDrawer = {
     	    }
         },
         
-    progress: function (percents, vP, bufferLength, ssffInfos) {
-        var my = this;
-        my.vP = vP;
-        my.percent = percents;
-        my.bufferLength = bufferLength;
-        my.drawTimeLine();
+        progress: function (percents, vP, bufferLength, ssffInfos) {
+            var my = this;
+            my.vP = vP;
+            my.percent = percents;
+            my.bufferLength = bufferLength;
+            my.drawTimeLine();
         /*if(ssffInfos){
             if(ssffInfos.data.length > 0){
                 this.drawSSFF(ssffInfos, vP);
             }
         }*/
-    },    
+        },    
 
         drawTimeLineContext: function () {
             var my = this;
@@ -143,11 +138,9 @@ EmuLabeller.spectogramDrawer = {
                 var fracE = my.vP.selectE-my.vP.sS;
                 var procE = fracE/all;
                 var posE = my.canvas.width*procE;
-
                 my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
-
                 my.context.beginPath();
                 my.context.moveTo(posS,0);
                 my.context.lineTo(posS,my.canvas.height);
@@ -235,6 +228,7 @@ EmuLabeller.spectogramDrawer = {
                             my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
+    	    	                my.drawTimeLine();
     	    	                my.toRetinaRatio(my.canvas,my.context);
     	    	            };
     	    	            break;
