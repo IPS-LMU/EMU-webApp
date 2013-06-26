@@ -254,7 +254,7 @@ EmuLabeller.Drawer = {
                 
                 if(isPlaying) {
                     my.scc.fillStyle ="#FF0000";;
-                    my.scc.fillRect(my.cursorPos + 10, 0, 1, my.specHeight);
+                    my.scc.fillRect(my.cursorPos, 0, 1, my.specHeight);
                 }
                 
                              
