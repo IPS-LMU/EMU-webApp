@@ -66,14 +66,16 @@ var EmuLabeller = {
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage(), false, my.ssffInfos);
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
+            my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage(),false);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+                my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
 
@@ -86,14 +88,16 @@ var EmuLabeller = {
         this.bindOnButtonUp(params.specCanvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage(),false);
+            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+            my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
         });
 
         this.bindOnMouseMoved(params.specCanvas, function (percents) {
             if(my.isDraging){
                 //console.log(percents);
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.spectogramDrawer.getlastCacheImage(),false);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+                my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
 
@@ -144,10 +148,12 @@ onAudioProcess: function () {
     }
 
     if (!this.backend.isPaused()) {
-        this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length, this.spectogramDrawer.getlastCacheImage(), true);
+        this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+        this.spectogramDrawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
     }
     if (percPlayed>percRel) {
-        this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length, this.spectogramDrawer.getlastCacheImage(), true);
+        this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
+        this.spectogramDrawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
         this.pause();
         // console.log(this);
         // this.playPause();

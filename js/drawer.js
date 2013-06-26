@@ -129,14 +129,14 @@ EmuLabeller.Drawer = {
     }//else
     },
 
-    progress: function (percents, vP, bufferLength, imgData, isPlaying, ssffInfos) {
+    progress: function (percents, vP, bufferLength, ssffInfos) {
 
         //map percents to viewPort
         var sInB = percents*bufferLength;
         this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
 
         this.redraw(vP);
-        this.drawTimeLine(vP,imgData,isPlaying);
+        this.drawTimeLine(vP);
          //console.log("progress called");
          //console.log(vP);
         if(ssffInfos){
@@ -182,7 +182,7 @@ EmuLabeller.Drawer = {
     },
 
 
-    drawTimeLine: function (vP,imgData,isPlaying){
+    drawTimeLine: function (vP){
         var my = this;
         //console.log(vP);
         this.cc.strokeStyle = this.params.waveColor;
@@ -237,42 +237,9 @@ EmuLabeller.Drawer = {
                 this.cc.strokeText(Math.floor(vP.selectE), posE+5, 10);
 
             }
-            var image = new Image();
-            image.onload = function() {
-                my.scc.drawImage(image, 0, 0);
-                my.scc.fillStyle = "rgba(0, 0, 255, 0.2)";
-                my.scc.fillRect(posS, 0, posE-posS, my.specHeight);
-                my.scc.strokeStyle = "rgba(0, 255, 0, 0.5)";
-
-                my.scc.beginPath();
-                my.scc.moveTo(posS,0);
-                my.scc.lineTo(posS,my.specHeight);
-                my.scc.moveTo(posE,0);
-                my.scc.lineTo(posE,my.specHeight);
-                my.scc.closePath();
-                my.scc.stroke();   
-                
-                if(my.cursorPos!=0) {
-                    my.scc.fillStyle ="#FF0000";;
-                    my.scc.fillRect(my.cursorPos, 0, 1, my.specHeight);
-                }
-                
-                             
-            };
-            if(imgData!=null) image.src = imgData;
         }
         else {
-            var image = new Image();
-            image.onload = function() {
-                my.scc.drawImage(image, 0, 0);
-                if(isPlaying) {
-                    my.scc.fillStyle ="#FF0000";;
-                    my.scc.fillRect(my.cursorPos , 0, 1, my.specHeight);
-                }           
-            };
-            console.log(imgData);
-            if(imgData.length>0) image.src = imgData;        
-        
+              
         }
         //
         this.drawTiers(vP);

@@ -60,6 +60,7 @@ EmuLabeller.spectogramDrawer = {
         my.fontColor = "#000";
         my.loadingText = "calculating ...";
         my.vP = null;
+        my.tempData = "";
         },
         
         setupEvent: function () {
@@ -87,7 +88,34 @@ EmuLabeller.spectogramDrawer = {
     	    	    my.toRetinaRatio(my.canvas,my.context); 	
     	    	    my.tempData =  my.canvas.toDataURL("image/png");
     	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
-                    my.drawer.drawTimeLine(my.vP,my.tempData);
+    	    	    
+
+                    if (my.vP.selectS != 0 && my.vP.selectE != 0){
+                        var all = my.vP.eS-my.vP.sS;
+                        var fracS = my.vP.selectS-my.vP.sS;
+                        var procS = fracS/all;
+                        var posS = my.canvas.width*procS;
+
+                        var fracE = my.vP.selectE-my.vP.sS;
+                        var procE = fracE/all;
+                        var posE = my.canvas.width*procE;
+
+                        my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
+                        my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
+                        my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
+
+                        my.context.beginPath();
+                        my.context.moveTo(posS,0);
+                        my.context.lineTo(posS,my.canvas.height);
+                        my.context.moveTo(posE,0);
+                        my.context.lineTo(posE,my.canvas.height);
+                        my.context.closePath();
+                        my.context.stroke();   
+                        if(my.cursorPos!=0) {
+                            my.context.fillStyle ="#FF0000";
+                            my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
+                        } 
+                    }
                 }
                 my.myImage.src = my.worker_img;
                 
@@ -113,6 +141,68 @@ EmuLabeller.spectogramDrawer = {
     	    }
         },
         
+    progress: function (percents, vP, bufferLength, ssffInfos) {
+        var my = this;
+        //map percents to viewPort
+        var sInB = percents*bufferLength;
+        my.cursorPos = ~~(my.canvas.width*(sInB-vP.sS)/(vP.eS-vP.sS));
+        my.drawTimeLine(vP);
+         //console.log("progress called");
+         /*console.log(vP);
+        if(ssffInfos){
+            if(ssffInfos.data.length > 0){
+                this.drawSSFF(ssffInfos, vP);
+            }
+        }*/
+    },        
+        
+        drawTimeLine: function (vP){ 
+            var my = this;
+            my.vP = vP; 
+            if (vP.selectS != 0 && vP.selectE != 0){
+                var all = my.vP.eS-my.vP.sS;
+                var fracS = my.vP.selectS-my.vP.sS;
+                var procS = fracS/all;
+                var posS = my.canvas.width*procS;
+
+                var fracE = my.vP.selectE-my.vP.sS;
+                var procE = fracE/all;
+                var posE = my.canvas.width*procE;
+                
+                var image = new Image();
+                image.onload = function() {
+                    my.context.drawImage(image, 0, 0);
+                    my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
+                    my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
+                    my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
+
+                    my.context.beginPath();
+                    my.context.moveTo(posS,0);
+                    my.context.lineTo(posS,my.canvas.height);
+                    my.context.moveTo(posE,0);
+                    my.context.lineTo(posE,my.canvas.height);
+                    my.context.closePath();
+                    my.context.stroke();   
+                    if(my.cursorPos!=0) {
+                        my.context.fillStyle ="#FF0000";
+                        my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
+                    }           
+                };
+                image.src = this.myImage.src;
+            }
+            else {
+                var image = new Image();
+                image.onload = function() {
+                    my.context.drawImage(image, 0, 0);
+                    if(my.cursorPos!=0) {
+                        my.context.fillStyle ="#FF0000";
+                        my.context.fillRect(my.cursorPos , 0, 1, my.canvas.height);
+                    }           
+                };
+                image.src = this.myImage.src;  
+             }
+        },
+        
         
         killSpectroRenderingThread: function () {
             var my = this;
@@ -127,10 +217,7 @@ EmuLabeller.spectogramDrawer = {
         		my.primeWorker = null;
         	}
         },
-        
-        getlastCacheImage: function () {
-            return this.myImage.src;           
-        },          
+                
         
         clearImageCache: function () {
             var my = this;
@@ -162,13 +249,8 @@ EmuLabeller.spectogramDrawer = {
         
         drawImage: function(mybuf,vP) {
             var my = this;
-            my.vP = vP;
-            my.mystart = my.vP.sS;
-            my.myend = my.vP.eS;
-            my.selectS = my.vP.selectS;
-            my.selectE = my.vP.selectE;
-            
-            my.newpcmperpixel = Math.round((my.myend-my.mystart)/my.canvas.width);
+            my.vP = vP;            
+            my.newpcmperpixel = Math.round((my.vP.eS-my.vP.sS)/my.canvas.width);
             if(my.imageCache!=null) {
                 if(my.imageCache[my.newpcmperpixel]!=null) {
 					my.found_parts = false;
@@ -177,8 +259,8 @@ EmuLabeller.spectogramDrawer = {
 					
                     for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
                         // check for complete image
-                    	if(my.imageCache[my.newpcmperpixel][i][0]==my.mystart &&
-                    	   my.imageCache[my.newpcmperpixel][i][1]==my.myend) {
+                    	if(my.imageCache[my.newpcmperpixel][i][0]==my.vP.sS &&
+                    	   my.imageCache[my.newpcmperpixel][i][1]==my.vP.eS) {
                             my.killSpectroRenderingThread();
                             my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
                             my.myImage.onload = function() {
@@ -187,9 +269,9 @@ EmuLabeller.spectogramDrawer = {
     	    	            };
     	    	            break;
                     	}
-                    	// check for cache on left side
-                        if(my.imageCache[my.newpcmperpixel][i][0] > my.mystart && 
-                    	    my.imageCache[my.newpcmperpixel][i][0] < my.myend) {
+                    	/* check for cache on left side
+                        if(my.imageCache[my.newpcmperpixel][i][0] > my.vP.sS && 
+                    	    my.imageCache[my.newpcmperpixel][i][0] < my.vP.eS) {
                     	    my.pixel_cover = Math.floor((my.myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
                     	    if(my.pixel_cover > my.pixel_covering ) {
                 			    my.pixel_covering = my.pixel_cover;
@@ -200,8 +282,8 @@ EmuLabeller.spectogramDrawer = {
                     	}
                     	
                     	// check for image on right side
-                        if(my.imageCache[my.newpcmperpixel][i][1] > my.mystart && 
-                	        my.imageCache[my.newpcmperpixel][i][1] < my.myend) {
+                        if(my.imageCache[my.newpcmperpixel][i][1] > my.vP.sS && 
+                	        my.imageCache[my.newpcmperpixel][i][1] < my.vP.eS) {
                 		    my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-my.mystart)/my.newpcmperpixel);
                 		    if(my.pixel_cover > my.pixel_covering ) {
                 			    my.pixel_covering = my.pixel_cover;
@@ -209,7 +291,7 @@ EmuLabeller.spectogramDrawer = {
                     		    my.pixel_side = 2;
                     		    my.found_parts = true;
                     	    }
-                        }
+                        }*/
                     }
                     /*if(my.found_parts && my.pixel_covering > 0) {
                     	my.killSpectroRenderingThread();
@@ -250,12 +332,12 @@ EmuLabeller.spectogramDrawer = {
                     
                     else {    // image has to be rendered completely*/
             	        my.killSpectroRenderingThread();
-                        my.startSpectroRenderingThread(mybuf,my.mystart,my.myend,my.canvas.width,my.canvas.height,0,0);				
+                        my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);				
                     //}
                 }
                 else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,my.mystart,my.myend,my.canvas.width,my.canvas.height,0,0);				
+                    my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);				
                 }
             }	
             my.context.fillStyle = "rgb(255,255,255)";
