@@ -32,6 +32,7 @@
             <button class="mini-btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
             <button class="mini-btn" onclick="emulabeller.prepDownload();">Prep. Download</button>
             <button class="mini-btn" id="specSettings">Spec. Settings</button> 
+            <button class="mini-btn" onclick='emulabeller.sendToSocket("hi from the labeller");'>SAY HI TO R</button>
 
              <div id="specDialog" title="Spectogram Settings" style="display:none;">
             		<p>View Range (Hz)</p>
@@ -924,7 +925,7 @@ function FFT(fftSize){
   <script src="js/ssffparser.js"></script>
   <script src="js/JSONvalidator.js"></script>
   <script src="js/spectogramDrawer.js"></script>
-
+  <script src="js/socketIOhandler.js"></script>
   <script src="js/main.js"></script>
 
 

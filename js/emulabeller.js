@@ -33,7 +33,10 @@ var EmuLabeller = {
         this.ssffParser.init();
 
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
-        this.JSONval.init()
+        this.JSONval.init();
+
+        this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
+        this.socketIOhandler.init();
 
         // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;
@@ -695,17 +698,12 @@ onAudioProcess: function () {
             // cleanUp(this);
           };
     },
-    
-    
- 
 
+    sendToSocket: function(message){
 
-    
+        console.log(message);
+        this.socketIOhandler.doSend(message);
+    }
+
 };
 
-
-
-
-    
-
-   

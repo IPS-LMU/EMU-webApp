@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "manifest_version": 2,
     "minimum_chrome_version": "23",
-    "description": "emu Labele Visualize and correct",
+    "description": "emu: (L)abel (V)isualize and (C)orrect audio and derived speech audio signals",
     "icons": {
         "128": "assets/icon.png"
     },
