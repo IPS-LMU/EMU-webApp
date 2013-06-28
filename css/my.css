@@ -1,6 +1,6 @@
 canvas
 {
-	border: 1px solid gray;
+    border: 1px solid gray;
         /*box-shadow: 3px 3px 7px #777;*/
         background-color: rgb(230,230,230);
         -moz-user-select: none;
@@ -29,3 +29,5 @@ html, body
         height: 100%;
         padding-top: 160px; /*stupid way of doing it but for now ok...*/
 }
+
+
