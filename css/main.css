@@ -69,15 +69,19 @@ html, body
     margin: 0px;
     padding: 0px;
 }
+.btn-group {
+	width: 100%;
+	overflow: hidden;
+}
 .menu button, .menu-bottom button {
     margin: 0px;
     padding: 8px;
-    width: 9%;
     height: 40px;
     line-height: 12px;
     float:left;
-    vertical-align: middle;
     text-align:center;
+    display: block
+    width:auto;
 }
 .menu button {
     margin-top: 5px;
