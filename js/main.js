@@ -86,6 +86,7 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
                     labeller.spectogramDrawer.drawImage(labeller.backend.currentBuffer,labeller.viewPort);  
+                    labeller.spectogramDrawer.progress(labeller.backend.getPlayedPercents(), labeller.viewPort, labeller.backend.currentBuffer.length);
                     $(this).dialog('close');
                 }
     		  	
