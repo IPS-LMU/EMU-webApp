@@ -84,7 +84,7 @@ EmuLabeller.spectogramDrawer = {
     	    	    if(my.worker_cache_side==2)
     	    	        my.context.drawImage(my.myImage, my.worker_cache_width, 0, my.render_width, my.canvas.height, my.worker_cache_width, 0, my.render_width, my.canvas.height);
     	    	        
-    	    	    my.toRetinaRatio(my.canvas,my.context); 	
+    	    	    //my.toRetinaRatio(my.canvas,my.context); 	
     	    	    my.tempData =  my.canvas.toDataURL("image/png");
     	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
     	    	    my.drawTimeLineContext();
@@ -174,7 +174,7 @@ EmuLabeller.spectogramDrawer = {
         	my.context.fillStyle = my.fontColor;
         	my.context.font = my.font;
         	my.context.fillText(my.loadingText, 2, 10); 
-        	my.toRetinaRatio(my.canvas,my.context);   
+        	//my.toRetinaRatio(my.canvas,my.context);   
             if(my.primeWorker!=null) {
             	my.primeWorker.terminate();
         		my.primeWorker = null;
@@ -229,7 +229,7 @@ EmuLabeller.spectogramDrawer = {
                             my.myImage.onload = function() {
     	    	                my.context.drawImage(my.myImage, 0, 0);
     	    	                my.drawTimeLine();
-    	    	                my.toRetinaRatio(my.canvas,my.context);
+    	    	                //my.toRetinaRatio(my.canvas,my.context);
     	    	            };
     	    	            break;
                     	}
