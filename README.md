@@ -11,12 +11,12 @@ To see it in action visit the live [DEMO](http://www.phonetik.uni-muenchen.de/~r
 
 quick start to get you up and labelling:
 
-* [Download the latest release](https://github.com/twitter/bootstrap/zipball/master).
+* [Download the latest release](https://github.com/raphywink/emuLVC/zipball/master).
 * or Clone the repo: `git clone git://github.com/raphywink/emulabellerjs`
 * navigate to folder
 * `open index.html` with Google Chrome
 * or `node server.js` to start server
-* or in Google Chrome navigate to `chrome://extensions/` and turn on `Developer mode` and then load emuLVC with `Load unpacked extension...` and navigating to the root folder of `emuLVC` 
+* or in Google Chrome navigate to `chrome://extensions/` and turn on `Developer mode`. Then load emuLVC with `Load unpacked extension...` and navigate to the root folder of `emuLVC`
 
 ## Authors
 
