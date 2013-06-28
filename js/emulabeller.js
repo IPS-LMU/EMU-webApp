@@ -701,8 +701,15 @@ onAudioProcess: function () {
 
     sendToSocket: function(message){
 
-        console.log(message);
+
+        console.log("sending message: ", message);
         this.socketIOhandler.doSend(message);
+
+        if(message=="stopServer"){
+            console.log("sdfsdfasdf")
+            window.close();
+        }
+
     }
 
 };
