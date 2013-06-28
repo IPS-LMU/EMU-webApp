@@ -69,10 +69,15 @@ var emulabeller = (function () {
                 var nvrt = $("#viewrange_to").val();
                 var ndr = $("#dynamicRange").val();
                 var nwf = $("#windowFunction").val();
+                var newSpectroHeight = $("#spectroHeight").val();
                 if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
                     alert("Please enter valid numbers !");
                 }
                 else {
+                	
+                    canvas.style.height = newSpectroHeight+"px";
+                    specCanvas.style.height = newSpectroHeight+"px";
+                    
                     labeller.spectogramDrawer.N = parseInt(nN,10);
                     labeller.spectogramDrawer.freq = parseInt(nvrt,10);
                     labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
@@ -81,8 +86,9 @@ var emulabeller = (function () {
                     labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
                     labeller.spectogramDrawer.drawImage(labeller.backend.currentBuffer,labeller.viewPort);  
+                    $(this).dialog('close');
                 }
-    		  	$(this).dialog('close');
+    		  	
             },
             Abbrechen: function() {
                 $(this).dialog('close');
