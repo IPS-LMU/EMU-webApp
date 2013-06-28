@@ -379,6 +379,7 @@ var x0 = 0;
 var myOffset = 0;
 var mywidth = 0;
 var myDrawOffset = 0;
+var pixelRatio = 1;
 var myWindow = {
   BARTLETT:       1,
   BARTLETTHANN:   2,
@@ -598,9 +599,12 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
-    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
+    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
         	if (!executed) {
+        		c_width *= pixelRatio;
+        		c_height *= pixelRatio;
+        		
         		// start execution once
             	executed = true;
             	
@@ -882,8 +886,9 @@ function FFT(fftSize){
     		if (data.cacheWidth != undefined)
     			cacheWidth = data.cacheWidth;  
     		if (data.dynRangeInDB != undefined)
-    			dynRangeInDB = data.dynRangeInDB;  
-    			
+    			dynRangeInDB = data.dynRangeInDB;
+    		if (data.pixelRatio != undefined)
+    			pixelRatio = data.pixelRatio;    			  	
     	  break;
     	case 'pcm':
     		if (data.stream != undefined)
@@ -895,7 +900,7 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide,pixelRatio);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);

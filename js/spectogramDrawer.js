@@ -15,6 +15,7 @@ EmuLabeller.spectogramDrawer = {
                 TRIANGULAR:     10
         } 
         window.URL = window.URL || window.webkitURL;
+        my.devicePixelRatio = window.devicePixelRatio || 1;
         my.response = document.querySelector('#spectroworker').textContent;
         my.blob;
         try {
@@ -332,6 +333,7 @@ EmuLabeller.spectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'height': complete_height});
             my.primeWorker.postMessage({'cmd': 'config', 'cacheWidth': cache_width});    
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB}); 
+            my.primeWorker.postMessage({'cmd': 'config', 'pixelRatio': my.devicePixelRatio}); 
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
             my.primeWorker.postMessage({'cmd': 'render'});
