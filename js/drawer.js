@@ -21,15 +21,15 @@ EmuLabeller.Drawer = {
         this.scrollCanvas = params.scrollCanvas;
 
 
-        this.osciWidth = this.osciCanvas.clientWidth;
-        this.osciHeight = this.osciCanvas.clientHeight;
+        this.osciWidth = this.osciCanvas.width;
+        this.osciHeight = this.osciCanvas.height;
         this.start = 0;
         this.end = this.osciWidth;
 
-        this.specWidth = this.specCanvas.clientWidth;
-        this.specHeight = this.specCanvas.clientHeight;
+        this.specWidth = this.specCanvas.width;
+        this.specHeight = this.specCanvas.height;
 
-        this.scrollWidth = this.scrollCanvas.clientWidth;
+        this.scrollWidth = this.scrollCanvas.width;
         this.scrollHeight = 8;//this.scrollCanvas.clientHeight;
 
         //create offline canvas for minimap

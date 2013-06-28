@@ -33,11 +33,16 @@ html, body
         padding: 0px;
         margin: 0px;
 }
-
-.canvasSettings {
-	height: 100px;
-	width: 1024px;
+#wave, #spectrogram  {
+    height: 100px;
+    width: 98%;
 }
+
+#scrollbar {
+    height: 35px;
+    width: 98%;
+}
+
 .canvasSettingsBottom {
     padding: 0px;
     margin: 0px;

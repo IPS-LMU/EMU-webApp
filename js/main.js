@@ -7,7 +7,7 @@ var emulabeller = (function () {
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
-
+    
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
