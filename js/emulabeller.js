@@ -152,11 +152,11 @@ onAudioProcess: function () {
 
     if (!this.backend.isPaused()) {
         this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
-        this.spectogramDrawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+        this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
     }
     if (percPlayed>percRel) {
         this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
-        this.spectogramDrawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+        this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
         this.pause();
         // console.log(this);
         // this.playPause();

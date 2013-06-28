@@ -131,7 +131,7 @@ EmuLabeller.spectogramDrawer = {
             var my = this;
             var sInB = my.percent*my.bufferLength;
             my.cursorPos = ~~(my.canvas.width*(sInB-my.vP.sS)/(my.vP.eS-my.vP.sS));
-            if (my.vP.selectS != 0 && my.vP.selectE != 0){
+            //if (my.vP.selectS != 0 && my.vP.selectE != 0){
                 var all = my.vP.eS-my.vP.sS;
                 var fracS = my.vP.selectS-my.vP.sS;
                 var procS = fracS/all;
@@ -153,7 +153,7 @@ EmuLabeller.spectogramDrawer = {
                     my.context.fillStyle ="#FF0000";
                     my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
                 } 
-            }        
+            //}        
         },
            
         
