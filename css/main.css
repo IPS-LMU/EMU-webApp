@@ -80,8 +80,7 @@ html, body
     line-height: 12px;
     float:left;
     text-align:center;
-    display: block
-    width:auto;
+    width: 9%;
 }
 .menu button {
     margin-top: 5px;
