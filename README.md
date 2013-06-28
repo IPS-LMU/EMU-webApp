@@ -3,7 +3,7 @@
 
 emuLVC is an online and offline Web-App for labeling, visualizing and correcting  speech and derived speech data. 
 
-To see it in action visit the live [DEMO](http://www.phonetik.uni-muenchen.de/~raphael/emulabellerjs/index.html)!
+To see it in action visit the live [DEMO](http://www.phonetik.uni-muenchen.de/~raphael/emuLVC/index.html)!
 
 
 
@@ -16,7 +16,7 @@ quick start to get you up and labelling:
 * navigate to folder
 * `open index.html` with Google Chrome
 * or `node server.js` to start server
-
+* or in Google Chrome navigate to `chrome://extensions/` and turn on `Developer mode` and then load emuLVC with `Load unpacked extension...` and navigating to the root folder of `emuLVC` 
 
 ## Authors
 

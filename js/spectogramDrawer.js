@@ -87,7 +87,7 @@ EmuLabeller.spectogramDrawer = {
     	    	    //my.toRetinaRatio(my.canvas,my.context); 	
     	    	    my.tempData =  my.canvas.toDataURL("image/png");
     	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
-    	    	    my.drawTimeLineContext();
+    	    	    // my.drawTimeLineContext();
                 }
                 my.myImage.src = my.worker_img;
                 
