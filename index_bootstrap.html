@@ -5,13 +5,25 @@
          <meta name="apple-mobile-web-app-capable" content="yes">
          <meta charset="utf-8">
          <title>emuLVC</title>
-         <link rel="stylesheet" href="css/main.css">
-         <link rel="stylesheet" href="css/jquery-ui.css" />
+         <link rel="stylesheet" href="css/bootstrap.min.css">
+         <link rel="stylesheet" href="css/my.css">
+           <link rel="stylesheet" href="css/jquery-ui.css" />
+
  </head>
  <body>
 
- <div class="menu" id="menu">
-            <input type="file" id="fileGetterBtn" name="file"/>
+
+ <div class="container">
+ 
+ 
+
+ 
+ <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+            <input type="file" id="fileGetterBtn" name="file"/> <!-- hidden by css -->
             <div class="btn-group">
             <button class="mini-btn" id="fileSelect">Open File</button>
             <button class="mini-btn" onclick="emulabeller.addTier();">Add Tier (seg)</button>
@@ -22,21 +34,42 @@
             <button class="mini-btn" id="specSettings">Spec. Settings</button> 
             <button class="mini-btn" onclick='emulabeller.sendToSocket("hi from the labeller");'>SAY HI TO R</button>
             <button class="mini-btn" onclick='emulabeller.sendToSocket("stopServer");'>STOP emuLVC</button>
+
+
+            <!-- <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                EDIT
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+            </ul> -->
+          </div>
+          <output></output>
+
+          <div id="alwaystherecans">
+            <div class="timeline">
+              <canvas id="wave" height="100" width="1024"></canvas>
             </div>
- </div>
 
-<div class="timeline">
-    <canvas id="wave" class="canvasSettings" width="1480" height="100"></canvas>
-    <canvas id="spectrogram" class="canvasSettings" width="1000" height="100"></canvas>
-</div>
+            <div class="spectro">
+              <canvas id="spectrogram" height="100" width="1024"></canvas>
+            </div>
+      </div>
 
-<div class="hero" id="hero">
+        </div>
+      </div>
+    </div>
+
+
+<div class="hero">
       <div id="signalcans">
       </div>
       <div id="cans">
       </div>
       
 </div>
+
+
+ </div><!-- .container -->
 
 <div id="dialog-messageSh" title="Show/Hide Tier with Name">
   <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
@@ -46,9 +79,23 @@
   <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
 </div>
 
- <div class="menu-bottom">
-    <canvas id="scrollbar" class="canvasSettingsBottom" width="1280" height="32"></canvas>
-    <div class="btn-group">
+ <div class="navbar navbar-inverse navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="brand">emulabellerjs</a> -->
+          <div class="nav-collapse collapse">
+          
+
+          <div class="scrollbar">
+            <canvas id="scrollbar" width="1024" height="32"></canvas>
+          </div>
+          <!-- .row -->
+          <div class="btn-group">
             <button class="mini-btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
             <button class="mini-btn" onclick="emulabeller.zoomViewPort(1);">In</button>
             <button class="mini-btn" onclick="emulabeller.zoomViewPort(0);">Out</button>
@@ -60,6 +107,10 @@
             <button class="mini-btn" onclick="emulabeller.playInMode('all');">Play Entire File</button>
             <button class="mini-btn" onclick="emulabeller.editLabel();">Change Segment Label</button>            
           </div>
+
+          </div>
+        </div>
+      </div>
     </div>
 
 
@@ -858,16 +909,17 @@ function FFT(fftSize){
             				<option value="9">RECTANGULAR</option>
             				<option value="10">TRIANGULAR</option>
             				
-            			</select>     
+            			</select>    
             			
             		<p>Spectrogram Height (pixel)</p>
-	            		<input type="text" name="spectroHeight" id="spectroHeight" value="100" />            					
+	            		<input type="text" name="spectroHeight" id="spectroHeight" value="100" />  		
             </div>
 
   <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
 
   <!-- external scripts -->
   <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
   <script src="js/jquery-ui.js"></script>
 
   <!-- our scripts -->

@@ -385,7 +385,7 @@ onAudioProcess: function () {
             $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
            this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
-     
+            $("#"+tName)[0].style.width = "98%";
             emulabeller.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
                 // console.log(percents);
                 // console.log("whaaaaaaaaaat",elID);
@@ -396,7 +396,7 @@ onAudioProcess: function () {
             this.drawBuffer();
         } else if(ft==2){
             var sCanName = "F0";
-            $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\"1024\" height=\"128\"></canvas>");
+            $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\"1480\" height=\"128\"></canvas>");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
@@ -413,8 +413,9 @@ onAudioProcess: function () {
             // console.log(newTiers);
             for (var i = 0; i < newTiers.length; i++) {
                 var tName = newTiers[i].TierName;
-                $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
-                // console.log(tName);
+                $("#cans").append("<canvas id=\""+tName+"\" width=\"1480\" height=\"64\" class=\"canvasSettings\"></canvas>");
+                $("#"+tName)[0].style.height = "64px";
+                $("#"+tName)[0].style.width = "100%";
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
                 // sic only last tier viewable

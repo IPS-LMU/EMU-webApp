@@ -403,8 +403,8 @@ EmuLabeller.Drawer = {
             //console.log("here");
             curCanv = this.tierInfos.canvases[i];
             curcc = this.tierInfos.contexts[i];
-            var curCanHeight = curCanv.clientHeight;
-            var curCanWidth = curCanv.clientWidth;
+            var curCanHeight = curCanv.height;
+            var curCanWidth = curCanv.width;
             curcc.clearRect(0, 0, curCanWidth, curCanHeight);
 
             //highlight selected tier if no segment is selected

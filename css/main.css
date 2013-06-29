@@ -41,11 +41,14 @@ html {
     height: 100px;
     width: 98%;
 }
+#cans, #signalcans {
+    height: 64px;
+    width: 98%;
+}
 
 .hero  {
     z-index: 1;
-    margin-top:270px;
-    width:100%;    
+    margin-top:270px;   
     background: #fff;  
 }
 
