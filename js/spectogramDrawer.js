@@ -215,6 +215,7 @@ EmuLabeller.spectogramDrawer = {
             var my = this;
             my.vP = vP;   
             my.newpcmperpixel = Math.round((my.vP.eS-my.vP.sS)/my.canvas.width);
+            console.log("start:"+my.vP.sS);
             if(my.imageCache!=null) {
                 if(my.imageCache[my.newpcmperpixel]!=null) {
 					//my.found_parts = false;
@@ -226,10 +227,13 @@ EmuLabeller.spectogramDrawer = {
                     	if(my.imageCache[my.newpcmperpixel][i][0]==my.vP.sS &&
                     	   my.imageCache[my.newpcmperpixel][i][1]==my.vP.eS) {
     	    	            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
+    	    	            
     	    	            my.drawTimeLine();
     	    	            return;
                     	}
                     }
+            	    my.killSpectroRenderingThread();
+                    my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);                    
                 }
                 else {
             	    my.killSpectroRenderingThread();
