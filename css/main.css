@@ -26,14 +26,16 @@ canvas
 }
 
 
-html, body
-{
-        height: 100%;
-        width:100%;
-        padding: 0px;
-        margin: 0px;
+html, body{
+    height: 100%;
+    width:100%;
+    padding: 0px;
+    margin: 0px;
 }
-
+html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+}
 
 #wave, #spectrogram {
     height: 100px;
