@@ -7,7 +7,6 @@ var emulabeller = (function () {
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
-    
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
@@ -64,6 +63,7 @@ var emulabeller = (function () {
         stack: false,
         buttons: {
             OK: function() {
+                var signalline = document.querySelector('#hero');
                 var nN = $("#windowLength").val();
                 var nvrf = $("#viewrange_from").val();
                 var nvrt = $("#viewrange_to").val();
@@ -77,6 +77,7 @@ var emulabeller = (function () {
                 	
                     canvas.style.height = newSpectroHeight+"px";
                     specCanvas.style.height = newSpectroHeight+"px";
+                    signalline.style.marginTop = ((2*newSpectroHeight)+70)+"px";
                     
                     labeller.spectogramDrawer.N = parseInt(nN,10);
                     labeller.spectogramDrawer.freq = parseInt(nvrt,10);

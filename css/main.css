@@ -35,9 +35,16 @@ html, body
 }
 
 
-#wave, #spectrogram  {
+#wave, #spectrogram {
     height: 100px;
     width: 98%;
+}
+
+.hero  {
+    z-index: 1;
+    margin-top:270px;
+    width:100%;    
+    background: #fff;  
 }
 
 #scrollbar {
@@ -57,6 +64,7 @@ html, body
     visibility:hidden;
 }
 .menu {
+    z-index: 2;
     position:fixed;
     top:0px;
     left:0px;
@@ -86,6 +94,7 @@ html, body
     margin-top: 5px;
 }
 .menu-bottom {
+    z-index: 2;
     position:fixed;
     bottom:0px;
     left:0px;
@@ -95,6 +104,7 @@ html, body
     padding-left:10px;    
 }
 .timeline {
+    z-index: 2;
     position:fixed;
     top:50px;
     left:0px;
@@ -108,7 +118,5 @@ html, body
     width:100%;    
     background: #000;    
 }
-.hero {
-    margin-top: 250px;
-}
+
 
