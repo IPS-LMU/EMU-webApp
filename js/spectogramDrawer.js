@@ -130,15 +130,19 @@ EmuLabeller.spectogramDrawer = {
         drawTimeLineContext: function () {
             var my = this;
             var sInB = my.percent*my.bufferLength;
+            var all = my.vP.eS-my.vP.sS;
+            var fracS = my.vP.selectS-my.vP.sS;
+            var procS = fracS/all;
+            var posS = my.canvas.width*procS;
+            var fracE = my.vP.selectE-my.vP.sS;
+            var procE = fracE/all;
+            var posE = my.canvas.width*procE;
             my.cursorPos = ~~(my.canvas.width*(sInB-my.vP.sS)/(my.vP.eS-my.vP.sS));
-            //if (my.vP.selectS != 0 && my.vP.selectE != 0){
-                var all = my.vP.eS-my.vP.sS;
-                var fracS = my.vP.selectS-my.vP.sS;
-                var procS = fracS/all;
-                var posS = my.canvas.width*procS;
-                var fracE = my.vP.selectE-my.vP.sS;
-                var procE = fracE/all;
-                var posE = my.canvas.width*procE;
+            if(my.cursorPos!=0) {
+                my.context.fillStyle ="#FF0000";
+                my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
+            }            
+            if (my.vP.selectS != 0 && my.vP.selectE != 0){
                 my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
@@ -149,11 +153,7 @@ EmuLabeller.spectogramDrawer = {
                 my.context.lineTo(posE,my.canvas.height);
                 my.context.closePath();
                 my.context.stroke();   
-                if(my.cursorPos!=0) {
-                    my.context.fillStyle ="#FF0000";
-                    my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
-                } 
-            //}        
+            }     
         },
            
         
