@@ -77,7 +77,7 @@ var emulabeller = (function () {
                 	
                     canvas.style.height = newSpectroHeight+"px";
                     specCanvas.style.height = newSpectroHeight+"px";
-                    signalline.style.marginTop = ((2*newSpectroHeight)+70)+"px";
+                    signalline.style.marginTop = ((2*newSpectroHeight)+20)+"px";
                     
                     labeller.spectogramDrawer.N = parseInt(nN,10);
                     labeller.spectogramDrawer.freq = parseInt(nvrt,10);
