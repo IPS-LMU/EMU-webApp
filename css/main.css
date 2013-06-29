@@ -137,13 +137,13 @@ html {
 
 
 .menu button, .menu-bottom button {
-    margin: 0px;
-    padding: 4px;
+    margin: 2px;
+    padding: 1px;
     height: 30px;
     line-height: 12px;
     float:left;
     text-align:center;
-    width: 9.5%;
+    width: 9%;
 }
 .menu button {
     margin-top: 5px;
