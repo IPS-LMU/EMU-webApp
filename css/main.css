@@ -88,30 +88,27 @@ html {
 .mini-btn {
     margin: 3px;
     padding: 3px;
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
-	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(0.7, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 70% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
 	background-color:#ededed;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
-	border:1px solid #dcdcdc;
+	border:1px solid #fff;
 	display:inline-block;
-	color:#777777;
+	color:#333;
 	font-family:Verdana;
 	font-size:10px;
 	font-weight:bold;
 	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
 }.mini-btn:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffdddd), color-stop(1, #ee1111) );
-	background:-moz-linear-gradient( center top, #ffdddd 5%, #ee1111 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddd', endColorstr='#ee1111');
-	background-color:#ffdddd;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(0.7, #3f3f3f) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #3f3f3f 70% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#3f3f3f');
+	background-color:#fff;
+	color:#eee;
 }.mini-btn:active {
 	position:relative;
 	top:1px;
