@@ -7,6 +7,7 @@ var emulabeller = (function () {
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
+    var draggable = document.querySelector('#menu');
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
@@ -17,7 +18,8 @@ var emulabeller = (function () {
         progressColor: 'black',
         loadingColor: 'purple',
         cursorColor: 'red',
-        tierInfos: tierInfos
+        tierInfos: tierInfos,
+        draggable : draggable
     });
 
 
@@ -69,15 +71,15 @@ var emulabeller = (function () {
                 var nvrt = $("#viewrange_to").val();
                 var ndr = $("#dynamicRange").val();
                 var nwf = $("#windowFunction").val();
-                var newSpectroHeight = $("#spectroHeight").val();
+                //var newSpectroHeight = $("#spectroHeight").val();
                 if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
                     alert("Please enter valid numbers !");
                 }
                 else {
                 	
-                    canvas.style.height = newSpectroHeight+"px";
-                    specCanvas.style.height = newSpectroHeight+"px";
-                    signalline.style.marginTop = ((2*newSpectroHeight)+20)+"px";
+                    //canvas.style.height = newSpectroHeight+"px";
+                    //specCanvas.style.height = newSpectroHeight+"px";
+                    //signalline.style.marginTop = ((2*newSpectroHeight)+20)+"px";
                     
                     labeller.spectogramDrawer.N = parseInt(nN,10);
                     labeller.spectogramDrawer.freq = parseInt(nvrt,10);

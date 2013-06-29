@@ -17,6 +17,8 @@ var EmuLabeller = {
 
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
+        
+        this.draggable = params.draggable;
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
 
@@ -59,8 +61,7 @@ var EmuLabeller = {
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
-
-
+        
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.isDraging = true;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
@@ -129,11 +130,11 @@ var EmuLabeller = {
                 my.setView(posInB-len/2, posInB+len/2);
             }
         });
+    },
 
-
-
-
-},
+    resizeMenu: function () {
+        console.log("RESIZE!!!");
+    },
 
 onAudioProcess: function () {
     var percRel = 0;
