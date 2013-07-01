@@ -120,7 +120,7 @@ var EmuLabeller = {
             if(my.isDragingBar ){
                 my.diffY = event.clientY - my.dragingStartY; 
                 my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
-                my.tiers.style.top = (my.offsetTimeline+my.diffY-40)+"px";
+                my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
             }
         });
         
