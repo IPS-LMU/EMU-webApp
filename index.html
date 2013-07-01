@@ -9,6 +9,14 @@
          <link rel="stylesheet" href="css/jquery-ui.css" />
  </head>
  <body>
+ 
+ <div id="dialog-messageSh" title="Show/Hide Tier with Name">
+  <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
+</div>
+
+<div id="dialog-messageSetLabel" title="Set label">
+  <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
+</div>
 
  <div class="menu" id="menu">
   <input type="file" id="fileGetterBtn" name="file"/>
@@ -28,22 +36,14 @@
 <div class="timeline" onresize="emulabeller.resizeMenu();">
     <canvas id="wave" class="canvasSettings" width="1480" height="120"></canvas>
     <canvas id="spectrogram" class="canvasSettings" width="1000" height="100"></canvas>
-    <div id="dragBar" class="dragBar">
+    <div id="dragBar" class="dragBar"> </div>
 </div>
 
-<div class="hero" id="hero">
+<div class="tiers" id="tiers">
     <div id="signalcans">
     </div>
     <div id="cans">
     </div>
-</div>
-
-<div id="dialog-messageSh" title="Show/Hide Tier with Name">
-  <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
-</div>
-
-<div id="dialog-messageSetLabel" title="Set label">
-  <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
 </div>
 
  <div class="menu-bottom">
@@ -61,10 +61,6 @@
             <button class="mini-btn" onclick="emulabeller.editLabel();">Change Segment Label</button>            
           </div>
     </div>
-
-
-
-
     
   <noscript>No javascript enabled...</noscript>
   
