@@ -22,6 +22,7 @@ var EmuLabeller = {
         console.log("running in", this.mode, "mode");
 
         this.draggableBar = params.draggableBar;
+        this.timeline = params.timeline;
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
@@ -100,7 +101,6 @@ var EmuLabeller = {
         this.bindOnButtonDown(params.draggableBar, function (percents) {
             my.isDragingBar = true;
             my.isDraging = false;
-            my.relativeY = event.clientY;
         });
 
         this.bindOnButtonUp(window, function () {
@@ -110,10 +110,11 @@ var EmuLabeller = {
         });
                 
 
-        this.bindOnMouseMoved(window.document, function (percents) {
+        this.bindOnMouseMoved(window, function (percents) {
             if(my.isDragingBar){
-                my.mouseDiffY = my.relativeY - event.clientY;
-                console.log(my.mouseDiffY);
+                console.log(event.clientY);
+                my.timeline.style.height = event.clientY+"px";
+                //my.timeline.height = event.clientY+"px";
             }
         });
         
