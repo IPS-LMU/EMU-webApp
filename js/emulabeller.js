@@ -54,6 +54,7 @@ var EmuLabeller = {
 
         this.isDraging = false;
         this.isDragingMiniMap = false;
+        this.isDragingBar = false;
 
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
 
@@ -88,6 +89,24 @@ var EmuLabeller = {
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
+        
+
+
+        // same bindings for draggableBar
+        this.bindOnButtonDown(params.draggableBar, function (percents) {
+            my.isDragingBar = true;
+        });
+
+        this.bindOnButtonUp(params.draggableBar, function (percents) {
+            my.isDragingBar = false;
+        });
+
+        this.bindOnMouseMoved(params.draggableBar, function (percents) {
+            if(my.isDragingBar){
+                console.log(percents);
+            }
+        });
+        
 
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
