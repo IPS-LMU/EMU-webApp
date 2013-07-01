@@ -9,6 +9,7 @@ var emulabeller = (function () {
     var scrollCanvas = document.querySelector('#scrollbar');
     var draggableBar = document.querySelector('#dragBar');
     var timeline = document.querySelector('#timeline');
+    var tiers = document.querySelector('#tiers');
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
@@ -22,6 +23,7 @@ var emulabeller = (function () {
         tierInfos: tierInfos,
         draggableBar : draggableBar,
         timeline : timeline,
+        tiers : tiers,
         internalCanvasWidth : '1480',     // in pixel
         internalCanvasHeightSmall : '64', // in pixel -> Cans
         internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro

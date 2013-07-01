@@ -28,7 +28,7 @@ canvas {
     bottom: 0;
     z-index: 2;
     width:100%;
-    height: 12px;
+    height: 11px;
     background: #555;
     /* Safari 4-5, Chrome 1-9 */
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666), to(#444));
@@ -60,9 +60,9 @@ html, body{
     padding: 0px;
     margin-left: 10px;
     padding-bottom: 0px;
-    height: 45%;
     z-index: 2;
     width: 98%;
+    height: 45%;
 }
 
 .timeline {
@@ -79,15 +79,15 @@ html, body{
 }
 
 #cans, #signalcans {
-    height: 64px;
+    height: 120px;
     width: 98%;
 }
 
 #tiers  {
     overflow: scroll;
     position: absolute;
-    top: 220px;
-    padding-bottom: 120px;
+    top: 160px;
+    background: #aaa;
     left: 0px;
     height: 100%; 
     z-index: 1; 
