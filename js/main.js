@@ -27,7 +27,8 @@ var emulabeller = (function () {
         // Spectro -> Second Row, Display of spectrogram
         internalCanvasWidth : '1480',     // in pixel
         internalCanvasHeightSmall : '64', // in pixel -> Cans
-        internalCanvasHeightBig : '128'   // in pixel -> Wave & Spectro
+        internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
+        mode: 'standalone'
     });
 
 

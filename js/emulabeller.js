@@ -17,7 +17,10 @@ var EmuLabeller = {
 
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
-        
+
+        this.mode = params.mode;
+        console.log("running in", this.mode, "mode");
+
         this.draggable = params.draggable;
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
