@@ -1,28 +1,49 @@
-canvas
-{
+canvas {
     margin: 0px;
     margin-left: 10px;
     border: 1px solid gray;
-        /*box-shadow: 3px 3px 7px #777;*/
-        background-color: rgb(230,230,230);
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
+    /*box-shadow: 3px 3px 7px #777;*/
+    background-color: rgb(230,230,230);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-#fileGetterBtn
-{
-        /* Note: display:none on the input won't trigger the click event in WebKit.
-        Setting visibility: hidden and height/width:0 works great. */
-        visibility: hidden;
-        width: 0;
-        height: 0;
+#fileGetterBtn {
+    /* Note: display:none on the input won't trigger the click event in WebKit.
+    Setting visibility: hidden and height/width:0 works great. */
+    visibility: hidden;
+    width: 0;
+    height: 0;
 }
 
 .ui-front {
     z-index:1000000 !important; /* The default is 100. !important overrides the default. */
+}
+.dragBar {
+    position: absolute;
+    left: 0;
+    bottom: -2;
+    z-index:2;
+    width:100%;
+    height: 12px;
+    background: #555;
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666), to(#444));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(top, #666, #444);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(top, #666, #444);
+    /* IE 10 */
+    background: -ms-linear-gradient(top, #666, #444);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(top, #666, #444);
+    -moz-box-shadow: 0px 3px 5px #888;
+    -webkit-box-shadow: 0px 3px 5px #888;
+    box-shadow: 0px 3px 5px #888;
+    cursor: move;
 }
 
 
@@ -32,17 +53,13 @@ html, body{
     padding: 0px;
     margin: 0px;
 }
-html {
-    overflow: -moz-scrollbars-vertical; 
-    overflow-y: scroll;
-}
 
 #wave, #spectrogram {
     margin: 0px;
     padding: 0px;
     margin-left: 10px;
     padding-bottom: 0px;
-    height: 47%;
+    height: 45%;
     width: 98%;
 }
 
@@ -54,12 +71,11 @@ html {
     padding: 0px;
     z-index: 2;
     width:100%;
-    height:200px;  
+    height:210px;  
     min-height: 10px;
     max-height: 600px;  
     background: #000;    
-    overflow: hidden;
-    resize: vertical; 
+
 }
 
 #cans, #signalcans {
@@ -69,7 +85,7 @@ html {
 
 .hero  {
     z-index: 1;
-    margin-top:180px;   
+    margin-top:200px;   
     background: #fff;  
 }
 
