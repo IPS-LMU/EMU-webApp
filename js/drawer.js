@@ -410,7 +410,7 @@ EmuLabeller.Drawer = {
             //highlight selected tier if no segment is selected
             if(vP.selSegment == -1 && vP.selTier == i){
                 curcc.fillStyle = markColor;
-                curcc.fillRect(0, 0, curCanv.clientWidth, curCanv.clientHeight);
+                curcc.fillRect(0, 0, curCanv.width, curCanv.height);
                 curcc.fillStyle = "rgb(0, 0, 0)";
             }
             // console.log("------------");

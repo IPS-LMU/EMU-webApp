@@ -522,8 +522,8 @@ function FFT(fftSize){
 	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
     	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
         	if (!executed) {
-        		c_width *= pixelRatio;
-        		c_height *= pixelRatio;
+        		//c_width *= pixelRatio;
+        		//c_height *= pixelRatio;
         		
         		// start execution once
             	executed = true;

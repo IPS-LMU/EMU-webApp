@@ -19,7 +19,15 @@ var emulabeller = (function () {
         loadingColor: 'purple',
         cursorColor: 'red',
         tierInfos: tierInfos,
-        draggable : draggable
+        draggable : draggable,
+        
+        // Width (relative) an Height (absolute) of displayed canvases
+        // Tier -> All Tiers
+        // Wave -> First Row, Display of wave
+        // Spectro -> Second Row, Display of spectrogram
+        internalCanvasWidth : '1480',     // in pixel
+        internalCanvasHeightSmall : '64', // in pixel -> Cans
+        internalCanvasHeightBig : '128'   // in pixel -> Wave & Spectro
     });
 
 

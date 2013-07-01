@@ -19,6 +19,9 @@ var EmuLabeller = {
         this.drawer.init(params);
         
         this.draggable = params.draggable;
+        this.internalCanvasWidth = params.internalCanvasWidth;
+        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
+        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
 
@@ -383,8 +386,9 @@ onAudioProcess: function () {
 
             var tName = newTiers[0].TierName;
             console.log(tName);
-            $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
-           this.tierInfos.canvases.push($("#"+tName)[0]);
+            $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\"></canvas>");
+            $("#"+tName)[0].style.width = "100%";
+            this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
             $("#"+tName)[0].style.width = "98%";
             emulabeller.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
@@ -397,7 +401,8 @@ onAudioProcess: function () {
             this.drawBuffer();
         } else if(ft==2){
             var sCanName = "F0";
-            $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\"1480\" height=\"128\"></canvas>");
+            $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightBig+"\"></canvas>");
+            $("#"+sCanName)[0].style.width = "100%";
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
@@ -414,8 +419,7 @@ onAudioProcess: function () {
             // console.log(newTiers);
             for (var i = 0; i < newTiers.length; i++) {
                 var tName = newTiers[i].TierName;
-                $("#cans").append("<canvas id=\""+tName+"\" width=\"1480\" height=\"64\" class=\"canvasSettings\"></canvas>");
-                $("#"+tName)[0].style.height = "64px";
+                $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
                 $("#"+tName)[0].style.width = "100%";
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
@@ -472,8 +476,6 @@ onAudioProcess: function () {
     },
     addTier: function (addPointTier) {
         var my = this;
-        console.log("addding tier");
-        console.log(this.tierInfos);
         var tName;
         if(this.tierInfos.tiers.length > 0){
             tName = "Tier" + this.tierInfos.tiers.length;
@@ -489,9 +491,8 @@ onAudioProcess: function () {
 
         this.viewPort.selTier = this.tierInfos.tiers.length-1;
         this.viewPort.selSegment = -1;
-
-        console.log(tName);
-        $("#cans").append("<canvas id=\""+tName+"\" width=\"1024\" height=\"64\"></canvas>");
+        $("#cans").append("<canvas id=\""+tName+"\"  width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
+        $("#"+tName)[0].style.width = "100%";
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
