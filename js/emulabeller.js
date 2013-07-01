@@ -21,7 +21,7 @@ var EmuLabeller = {
         this.mode = params.mode;
         console.log("running in", this.mode, "mode");
 
-        this.draggable = params.draggable;
+        this.draggableBar = params.draggableBar;
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;

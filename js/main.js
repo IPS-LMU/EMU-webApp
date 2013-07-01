@@ -7,7 +7,7 @@ var emulabeller = (function () {
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
-    var draggable = document.querySelector('#menu');
+    var draggableBar = document.querySelector('#dragBar');
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
@@ -19,7 +19,7 @@ var emulabeller = (function () {
         loadingColor: 'purple',
         cursorColor: 'red',
         tierInfos: tierInfos,
-        draggable : draggable,
+        draggableBar : draggableBar,
         internalCanvasWidth : '1480',     // in pixel
         internalCanvasHeightSmall : '64', // in pixel -> Cans
         internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
