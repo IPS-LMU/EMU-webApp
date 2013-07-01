@@ -55,6 +55,8 @@ var EmuLabeller = {
         this.isDraging = false;
         this.isDragingMiniMap = false;
         this.isDragingBar = false;
+        
+        this.relativeY = 0;
 
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
 
@@ -71,12 +73,14 @@ var EmuLabeller = {
         
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.isDraging = true;
+            my.isDragingBar = false;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
+            my.isDragingBar = false;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
         });
@@ -95,15 +99,21 @@ var EmuLabeller = {
         // same bindings for draggableBar
         this.bindOnButtonDown(params.draggableBar, function (percents) {
             my.isDragingBar = true;
+            my.isDraging = false;
+            my.relativeY = event.clientY;
         });
 
-        this.bindOnButtonUp(params.draggableBar, function (percents) {
+        this.bindOnButtonUp(window, function () {
+            my.isDraging = false;
+            my.isDragingMiniMap = false;
             my.isDragingBar = false;
         });
+                
 
-        this.bindOnMouseMoved(params.draggableBar, function (percents) {
+        this.bindOnMouseMoved(window.document, function (percents) {
             if(my.isDragingBar){
-                console.log(percents);
+                my.mouseDiffY = my.relativeY - event.clientY;
+                console.log(my.mouseDiffY);
             }
         });
         
@@ -111,12 +121,14 @@ var EmuLabeller = {
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
             my.isDraging = true;
+            my.isDragingBar = false;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.specCanvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
             my.isDraging = false;
+            my.isDragingBar = false;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
         });
