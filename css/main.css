@@ -44,6 +44,11 @@ canvas {
     -webkit-box-shadow: 0px 3px 5px #888;
     box-shadow: 0px 3px 5px #888;
     cursor: move;
+    /*font stuff*/
+    text-align: center;
+    font-size:50%;
+    color: rgb(230,230,230);
+    vertical-align: top;
 }
 
 
