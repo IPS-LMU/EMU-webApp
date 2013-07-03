@@ -99,7 +99,7 @@ var emulabeller = (function () {
                 }
     		  	
             },
-            Abbrechen: function() {
+            Cancel: function() {
                 $(this).dialog('close');
             }
          }
