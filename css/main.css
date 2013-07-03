@@ -93,9 +93,11 @@ html, body{
     position: absolute;
     top: 160px;
     background: #eee;
+    margin:0px;
+    padding-bottom:150px;
     left: 0px;
     height: 100%; 
-    z-index: 1; 
+    z-index: 0; 
 }
 
 #scrollbar {

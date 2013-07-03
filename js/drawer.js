@@ -444,7 +444,7 @@ EmuLabeller.Drawer = {
 
             // draw name
             curcc.strokeStyle = this.params.waveColor;
-            curcc.font="8px Arial";
+            curcc.font="12px Verdana";
             curcc.strokeText(this.tierInfos.tiers[i].TierName + "(" + this.tierInfos.tiers[i].type +")", 5, 5+8);
 
             var cI = this.tierInfos.tiers[i];
@@ -536,7 +536,7 @@ EmuLabeller.Drawer = {
         var zoomRatio = (f0eS-f0sS)/this.osciWidth; // SIC not osci width
 
         curContext.strokeStyle = this.params.waveColor;
-        curContext.font="8px Arial";
+        curContext.font="12px Verdana";
         curContext.strokeText(ssffInfos.data[0].Columns[0].name, 5, 5+8);
 
         curContext.strokeStyle = "rgba(0,0,255,0.5)";

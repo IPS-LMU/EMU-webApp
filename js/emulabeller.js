@@ -548,6 +548,7 @@ var EmuLabeller = {
         this.viewPort.selSegment = -1;
         $("#cans").append("<canvas id=\""+tName+"\"  width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
         $("#"+tName)[0].style.width = "100%";
+
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
