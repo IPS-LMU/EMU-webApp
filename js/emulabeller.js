@@ -1,7 +1,15 @@
-
-
+/**
+Main Object of emuLVC
+it acts as the controller of the web app
+and primarily delegates methods to the drawer and
+several other components 
+*/
 var EmuLabeller = {
-
+    /**
+    init function has to be called on object 
+    to instantiate all its needed objects
+    @param params is a 
+    */
     init: function (params) {
         var my = this;
 
@@ -12,7 +20,7 @@ var EmuLabeller = {
         this.drawer.init(params);
 
         this.mode = params.mode;
-        console.log("running in", this.mode, "mode");
+        console.log("emuLVC running in", this.mode, "mode");
 
         this.draggableBar = params.draggableBar;
         this.timeline = params.timeline;
@@ -23,14 +31,12 @@ var EmuLabeller = {
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
 
-        // this.fileReader = Object.create(EmuLabeller.FileReader);
-
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
-        
+
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
         this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
-		
+
 
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
@@ -173,34 +179,34 @@ var EmuLabeller = {
         console.log("RESIZE!!!");
     },
 
-onAudioProcess: function () {
-    var percRel = 0;
-    var percPlayed = this.backend.getPlayedPercents();
-    if (this.playMode == "sel") {
-        percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
-    }
-    if(this.playMode == "vP"){
-        if(this.backend.currentBuffer){
-            percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+    onAudioProcess: function () {
+        var percRel = 0;
+        var percPlayed = this.backend.getPlayedPercents();
+        if (this.playMode == "sel") {
+            percRel = this.viewPort.selectE/this.backend.currentBuffer.length;
         }
-    }
-    if(this.playMode == "all"){
-        percRel = 1.0;
-    }
+        if(this.playMode == "vP"){
+            if(this.backend.currentBuffer){
+                percRel = this.viewPort.eS/this.backend.currentBuffer.length;
+            }
+        }
+        if(this.playMode == "all"){
+            percRel = 1.0;
+        }
 
-    if (!this.backend.isPaused()) {
-        this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
-        this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
-    }
-    if (percPlayed>percRel) {
-        this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
-        this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
-        this.pause();
-        // console.log(this);
-        // this.playPause();
-    }
+        if (!this.backend.isPaused()) {
+            this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+            this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+        }
+        if (percPlayed>percRel) {
+            this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
+            this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            this.pause();
+            // console.log(this);
+            // this.playPause();
+        }
 
-},
+    },
 
     /**
     * play audio in certain mode
@@ -375,6 +381,17 @@ onAudioProcess: function () {
         }, false);
     },
 
+    bindTierMouseMove: function (element, callback) {
+        var my = this;
+        element.addEventListener('mousemove', function (e) {
+            var relX = e.offsetX;
+            var relY = e.offsetY;
+            if (null === relX) { relX = e.layerX; }
+            if (null === relY) { relY = e.layerY; }
+            callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+        }, false);
+    },
+
     bindOnButtonDown: function (element, callback) {
         var my = this;
         element.addEventListener('mousedown', function (e) {
@@ -461,6 +478,10 @@ onAudioProcess: function () {
                 this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
                     my.setMarkedEvent(percX, percY, elID);
                 });
+                this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
+                    my.trackMouseInTiers(percX, elID);
+                });
+
             }
             this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
@@ -531,9 +552,12 @@ onAudioProcess: function () {
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
         this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
-            // console.log(percents);
             console.log(elID);
             my.setMarkedEvent(percX, percY, elID);
+        });
+
+        this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
+            my.trackMouseInTiers(percX, elID);
         });
 
 
@@ -736,14 +760,34 @@ onAudioProcess: function () {
           };
     },
 
-    sendToSocket: function(message){
+    trackMouseInTiers: function(percX, elID){
+        my = this;
+        //console.log(percX);
+        //console.log(elID);
+        this.viewPort.curMouseTierID = elID;
+
+        //SIC
+        var clickedTier;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            if(this.tierInfos.tiers[i].TierName == elID){
+                clickedTier = this.tierInfos.tiers[i];
+                break;
+            }
+        }
+
+
+        // find closes segment
+
+
+    },
+
+    requestFromServer: function(message){
 
 
         console.log("sending message: ", message);
         this.socketIOhandler.doSend(message);
 
         if(message=="stopServer"){
-            console.log("sdfsdfasdf")
             window.close();
         }
 

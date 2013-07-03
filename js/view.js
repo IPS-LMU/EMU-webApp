@@ -13,5 +13,8 @@ EmuLabeller.ViewPort = {
 
         this.selTier = -1; // -1 == no segment selected
         this.selSegment = -1; // -1 == no segment selected
+
+        this.curMouseTierID = "";
+        this.curMouseBoundary = -1;
     }
 };
