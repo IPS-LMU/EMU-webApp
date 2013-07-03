@@ -33,7 +33,7 @@
 
  <div class="timeline" id="timeline">
   <canvas id="wave" class="canvasSettings" width="1560" height="120"></canvas>
-  <canvas id="spectrogram" class="canvasSettings" width="1280" height="196"></canvas>
+  <canvas id="spectrogram" class="canvasSettings" width="950" height="175"></canvas>
   <div id="dragBar" class="dragBar">☰</div>
  </div>
  <div class="tiers" id="tiers">
@@ -553,7 +553,7 @@ function FFT(fftSize){
 		        }
 		        
 		        // height between two interpolation points
-		        pixel_height = c_height/(c-d);
+		        pixel_height = c_height/(c-d-2);
 		        
 				// offset if cache is on right side
 				if(cacheSide==2)
@@ -640,13 +640,14 @@ function FFT(fftSize){
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
 		// value for first interpolation at lower boundry (height=0)
-        psd = (2 * Math.pow(paint[line][0], 2))/N;
+        psd = (2 * Math.pow(paint[line][1], 2))/N;
         psdLog = 10*log10(psd / maxPsd);
 		scaledVal=((psdLog+dynRangeInDB)/dynRangeInDB);
 		if(scaledVal>1) scaledVal=1;
 		if(scaledVal<0) scaledVal=0;
 		
-        for (var i = 0; i < paint[line].length; i++) {
+		
+        for (var i = 1; i < paint[line].length; i++) {
 
 			var y0 = scaledVal;	 // !!!! set y0 to previous scaled value
 			
@@ -680,7 +681,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line+cache_offet), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line+cache_offet), Math.floor(myheight-((pixel_height*(i-2))+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
