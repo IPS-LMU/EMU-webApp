@@ -96,6 +96,7 @@ EmuLabeller.Drawer = {
 
         if(k<=1){
             // console.log("over sample exact!!!");
+            relData = chan.subarray(vP.sS, vP.eS+1);
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
             this.peaks = Array.prototype.slice.call(relData);
@@ -200,7 +201,7 @@ EmuLabeller.Drawer = {
         this.cc.stroke();
 
         if(vP){
-            this.cc.font="8px Arial";
+            this.cc.font="12px Verdana";
             var metrics = this.cc.measureText(Math.floor(vP.eS));
             this.cc.strokeText(Math.floor(vP.sS), 5, 5+8);
             this.cc.strokeText(Math.floor(vP.eS), this.osciWidth-metrics.width-5, 5+8);
