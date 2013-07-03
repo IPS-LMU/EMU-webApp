@@ -1,8 +1,11 @@
 var emulabeller = (function () {
     'use strict';
 
-    var tierInfos = {"tiers": [],  "canvases": []};
+    // autoload wav file and TextGrid for testing
+    // will only work if running on server...
+    var autoLoad = true;
 
+    var tierInfos = {"tiers": [],  "canvases": []};
 
     var canvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
@@ -33,7 +36,7 @@ var emulabeller = (function () {
 
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
-     if(isiPad){
+     if(isiPad || autoLoad){
         labeller.load('data/msajc003.wav');
         labeller.tgParser.load('data/msajc003.TextGrid');
      }
