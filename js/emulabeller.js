@@ -4,15 +4,8 @@ var EmuLabeller = {
 
     init: function (params) {
         var my = this;
-        var backend;
-        if (params.audio) {
-            backend = EmuLabeller.Audio;
-            //console.log("here audio");
-        }else {
-            backend = EmuLabeller.WebAudio;
-            //console.log("web audio");
-        }
-        this.backend = Object.create(backend);
+
+        this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
 
         this.drawer = Object.create(EmuLabeller.Drawer);
