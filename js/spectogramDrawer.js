@@ -49,7 +49,7 @@ EmuLabeller.spectogramDrawer = {
         // plain old version load from script file
         //my.primeWorkerFile = 'js/spectrogram.js';
         //my.primeWorker = new Worker(my.primeWorkerFile);
-        my.primeWorker = new Worker(URL.createObjectURL(blob));
+        my.primeWorker = new Worker(URL.createObjectURL(my.blob));
 		my.setupEvent();
 		my.clearImageCache();
         my.canvas = params.specCanvas;
@@ -318,7 +318,7 @@ EmuLabeller.spectogramDrawer = {
             my.sStart = Math.round(pcm_start);		
             my.sEnd = Math.round(pcm_end);
             my.pcmperpixel = Math.round((pcm_end-pcm_start)/my.canvas.width);
-            my.primeWorker = new Worker(URL.createObjectURL(blob));
+            my.primeWorker = new Worker(URL.createObjectURL(my.blob));
             my.setupEvent();
                         
             my.primeWorker.postMessage({'cmd': 'config', 'N': my.N});
