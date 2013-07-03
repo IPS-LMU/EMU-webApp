@@ -94,10 +94,18 @@ html, body{
     top: 160px;
     background: #eee;
     margin:0px;
-    padding-bottom:150px;
     left: 0px;
     height: 100%; 
     z-index: 0; 
+}
+
+#invisible {
+    height: 150px;
+    margin: 50px;
+    min-height: 100%;
+    height: 150px; /* As required */
+    display:inline-block;    
+    z-index: 0;
 }
 
 #scrollbar {
