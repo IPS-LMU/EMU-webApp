@@ -288,7 +288,7 @@ var EmuLabeller = {
                 my.newlyLoadedBufferReady.bind(my)
             );//webaudio.js loadData function called
         }, false);
-
+        console.log(src);
         xhr.open('GET', src, true);
         xhr.send();
     },
