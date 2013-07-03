@@ -445,7 +445,8 @@ EmuLabeller.Drawer = {
             // draw name
             curcc.strokeStyle = this.params.waveColor;
             curcc.font="12px Verdana";
-            curcc.strokeText(this.tierInfos.tiers[i].TierName + "(" + this.tierInfos.tiers[i].type +")", 5, 5+8);
+            curcc.strokeText(this.tierInfos.tiers[i].TierName, 5, 5+8);
+            curcc.strokeText("(" + this.tierInfos.tiers[i].type +")", 5, 20+8);
 
             var cI = this.tierInfos.tiers[i];
 
