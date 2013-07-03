@@ -31,9 +31,6 @@ var emulabeller = (function () {
     });
 
 
-
-
-
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
      if(isiPad){
@@ -181,44 +178,5 @@ var emulabeller = (function () {
         }
     });
 
-    // document.body.addEventListener('dragstart', function(e) {
-    //   var a = e.target;
-    //   if (a.classList.contains('dragout')) {
-    //     e.dataTransfer.setData('DownloadURL', a.dataset.downloadurl);
-    //   }
-    // }, false);
-
-    // document.body.addEventListener('dragend', function(e) {
-    //   var a = e.target;
-    //   if (a.classList.contains('dragout')) {
-    //     // cleanUp(a);
-    //   }
-    // }, false);
-
-    // document.addEventListener('keydown', function(e) {
-    //   if (e.keyCode == 27) {  // Esc
-    //     document.querySelector('details').open = false;
-    //   } else if (e.shiftKey && e.keyCode == 191) { // shift + ?
-    //     document.querySelector('details').open = true;
-    //   }
-    // }, false);
-
-
     return labeller;
 }());
-
-
-// $(window).resize(function () {
-//     var w = $(window).width(),
-//         scale = 0.8; // TODO: calculate offset left and right
-
-//     $('#wave').css('width', (w*scale));
-//     $('#spectrogram').css('width', (w*scale));
-//     $('#tier1').css('width', (w*scale));
-//     $('#tier2').css('width', (w*scale));
-//     $('#scrollbar').css('width', (w*scale));
-
-// }).resize();
-
-
-
