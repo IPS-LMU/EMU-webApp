@@ -27,7 +27,7 @@ var emulabeller = (function () {
         draggableBar : draggableBar,
         timeline : timeline,
         tiers : tiers,
-        internalCanvasWidth : '1480',     // in pixel
+        internalCanvasWidth : '1560',     // in pixel
         internalCanvasHeightSmall : '64', // in pixel -> Cans
         internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
         mode: 'standalone'

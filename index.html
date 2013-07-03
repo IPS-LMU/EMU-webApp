@@ -32,8 +32,8 @@
  </div>
 
  <div class="timeline" id="timeline">
-  <canvas id="wave" class="canvasSettings" width="1480" height="120"></canvas>
-  <canvas id="spectrogram" class="canvasSettings" width="1000" height="100"></canvas>
+  <canvas id="wave" class="canvasSettings" width="1560" height="120"></canvas>
+  <canvas id="spectrogram" class="canvasSettings" width="1280" height="196"></canvas>
   <div id="dragBar" class="dragBar">☰</div>
  </div>
  <div class="tiers" id="tiers">
@@ -288,7 +288,6 @@ var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);
 var internalalpha = 0.16;
 var totalMax = 0;
 var dynRangeInDB = 50;
-var x0 = 0;
 var myOffset = 0;
 var mywidth = 0;
 var myDrawOffset = 0;
@@ -666,14 +665,13 @@ function FFT(fftSize){
 			if(scaledVal>1) scaledVal=1;
 			if(scaledVal<0) scaledVal=0;
 			
-			
 			// !!!! set y1 to this scaled value
 			var y1 = scaledVal;
 			
 			if(pixel_height>=1) {
 				// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
 				for(var b=0; b<pixel_height; b++) {
-					y2 = y0 + (y1-y0) / (x1-x0) * (b-x0);
+					y2 = y0 + (y1-y0)/x1*b;
 					
 					// calculate corresponding color value for interpolation point [0...255]
 					rgb = 255-Math.round(255*y2);
