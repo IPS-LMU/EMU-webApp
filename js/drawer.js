@@ -454,7 +454,7 @@ EmuLabeller.Drawer = {
             if (cI.type == "seg"){
                 //draw seg
                 for (ev = 0; ev < cI.events.length; ev++) {
-                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
+                    if(cI.events[ev].time > vP.sS ) { //&& cI.events[ev].time < vP.eS){
                         perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
                         if(ev == vP.selSegment && vP.selTier == i){
