@@ -117,6 +117,12 @@ canvas {
     height: 45px;
 }
 
+.saveText {
+    position:absolute;
+    top: -2px;
+    right: -36px;
+}
+
 #cans, #signalcans {
     height: 120px;
     width: 98%;

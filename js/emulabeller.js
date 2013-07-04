@@ -518,11 +518,9 @@ var EmuLabeller = {
                 var tName = newTiers[i].TierName;
                 $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings "+tName+"\"></canvas>");
                 $("#"+tName)[0].style.width = "100%";
-                $("#"+tName)[0].addEventListener('dblclick', function(e, percX, percY, elID){
+                $("#"+tName)[0].addEventListener('dblclick', function(e){
                     my.canvasDoubleClick(e);
                 });
-                
-                
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
                 // sic only last tier viewable
@@ -559,16 +557,20 @@ var EmuLabeller = {
 		    var editHeight = Math.floor(e.srcElement.attributes.clientHeight);
 		    if(event!=null) {
 		        var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:"+TextY+"px;left:"+TextX+"px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:"+mouseX2+"px;height:"+editHeight+"px;'>"+event.label+"</textarea>";
-	            var saveButton = "<input type='button' value='save' id='saveText' onclick='TODO("+TextY+","+TextX+");'></div>";
+	            var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
 		        var appendString = textArea + saveButton;
 		        $("#tiers").append(appendString);
 		        my.textEditMode = true;
+                $("#saveText")[0].addEventListener('click', function(e){
+                    alert("hier");
+                });		        
 		    }
 	    } 
 	    else {
 	        my.removeCanvasDoubleClick();
 	    }
     },
+    
     
     
     removeCanvasDoubleClick: function () {
