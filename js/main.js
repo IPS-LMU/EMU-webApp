@@ -19,7 +19,7 @@ var emulabeller = (function () {
         canvas: canvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
-        waveColor: 'grey',
+        waveColor: 'white',
         progressColor: 'black',
         loadingColor: 'purple',
         cursorColor: 'red',

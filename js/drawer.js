@@ -359,14 +359,16 @@ EmuLabeller.Drawer = {
         this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-this.scrollHeight+1, 
              curCenter-curDiam, cH-this.scrollHeight+1);
 
-        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.5)";
+        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.6)";
+        this.scrollcc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
+
+        this.scrollcc.fillStyle = "rgba(120, 120, 120, 1)";
         this.scrollcc.fill();
 
-        this.scrollcc.strokeStyle = "rgba(100, 100, 100, 0.9)";
+        this.scrollcc.strokeStyle = "rgba(120, 120, 120, 1)";
         this.scrollcc.stroke();
 
-        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.2)";
-        this.scrollcc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
+
 
     },
 
@@ -452,6 +454,7 @@ EmuLabeller.Drawer = {
 
             var ev, perc, tW, prevPerc;
             if (cI.type == "seg"){
+                curcc.fillStyle = this.params.waveColor;
                 //draw seg
                 for (ev = 0; ev < cI.events.length; ev++) {
                     if(cI.events[ev].time > vP.sS ) { //&& cI.events[ev].time < vP.eS){
@@ -461,7 +464,7 @@ EmuLabeller.Drawer = {
                             prevPerc = (cI.events[ev-1].time-vP.sS)/(vP.eS-vP.sS);
                             curcc.fillStyle = markColor;
                             curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
-                            curcc.fillStyle = "rgb(0,0,0)";
+                            curcc.fillStyle = this.params.waveColor;
                         }
 
                         if(cI.events[ev].label != 'H#'){
@@ -476,6 +479,7 @@ EmuLabeller.Drawer = {
                 }
 
             }else if(cI.type =="point"){
+                curcc.fillStyle = this.params.waveColor;
                 for (ev = 0; ev < cI.events.length; ev++) {
                     if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
 
