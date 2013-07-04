@@ -559,8 +559,10 @@ var EmuLabeller = {
         if ($('#textAreaPopUp').length == 0) {
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
         var event = tier.events[my.viewPort.selSegment];
-		var mouseY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop;
-		
+		var mouseY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+4;
+		console.log(e);
+		console.log(e.srcElement.attributes.height.value);		
+		//var tierHeight = e.srcElement
         var all = my.viewPort.eS-my.viewPort.sS;
         var fracS = my.viewPort.selectS-my.viewPort.sS;
         var procS = fracS/all;
@@ -569,11 +571,14 @@ var EmuLabeller = {
         var procE = fracE/all;
         var posE = Math.floor(my.timeline.clientWidth*procE);		
 		var mouseX = posS;
-		var mouseX2 = Math.floor(posE-posS);
-		
+		var mouseX2_pre = posE-posS;
+		var mouseX2 = Math.floor(0.75*(posE-posS));
+		var diff = Math.round((mouseX2_pre-mouseX2)/2);
+		var editHeight = Math.round(0.6*e.srcElement.attributes.height.value);
+		mouseX += diff;
 		if(event!=null) {
-		    var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:"+mouseX2+"px;height:50px;'>"+event.label+"</textarea>";
-	        var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
+		    var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:"+mouseX2+"px;height:"+editHeight+"px;'>"+event.label+"</textarea>";
+	        var saveButton = "<input type='button' value='save' id='saveText' onclick='TODO("+mouseY+","+mouseX+");'></div>";
 		    var appendString = textArea + saveButton;
 		    $("#tiers").append(appendString);
 		}
