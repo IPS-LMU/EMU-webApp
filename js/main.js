@@ -18,6 +18,9 @@ var emulabeller = (function () {
     var showLeftPush = document.getElementById('serverSelect');
     var labeller = Object.create(EmuLabeller);
 
+
+    var mode = "server";	// PLEASE SET TO "server" OR "standalone"
+
     labeller.init({
         canvas: canvas,
         specCanvas: specCanvas,
@@ -35,7 +38,7 @@ var emulabeller = (function () {
         internalCanvasWidth : '1560',      // in pixel
         internalCanvasHeightSmall : '64',  // in pixel -> Cans
         internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
-        mode: 'server'                 // or standalone
+        mode: mode
     });
 
 
@@ -164,7 +167,10 @@ var emulabeller = (function () {
             }
             if (111 == e.keyCode){
                 // O key
-                $('#fileGetterBtn').click();
+                if(mode=="standalone")
+                 $('#fileGetterBtn').click();
+                if(mode=="server")
+                 emulabeller.openSubmenu();
             }
             if (104 == e.keyCode){
                 // H key
