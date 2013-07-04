@@ -49,8 +49,8 @@
  <div class="menu" id="menu">
   <input type="file" id="fileGetterBtn" name="file"/>
   <div class="btn-group">
-   <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: X">Open File</button>
-   <button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: X">Open Menu</button>
+   <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: O">Open File</button>
+   <button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: O">Open Menu</button>
    <button class="mini-btn tooltip" onclick="emulabeller.addTier();" data-tooltip="Shortcut: X">Add Tier (seg)</button>
    <button class="mini-btn tooltip" onclick="emulabeller.addTier(true);" data-tooltip="Shortcut: X">Add Tier (point)</button>
    <button class="mini-btn tooltip" onclick="emulabeller.showHideTierDial();" data-tooltip="Shortcut: X">Remove Tier</button>
@@ -78,16 +78,16 @@
  <div class="menu-bottom" id="menu-bottom">
     <canvas id="scrollbar" class="canvasSettingsBottom" width="1280" height="32"></canvas>
     <div class="btn-group">
-            <button class="mini-btn tooltipabove" onclick="emulabeller.setView(-Infinity, Infinity);"  data-tooltip="Shortcut: X">all</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(1);" data-tooltip="Shortcut: X">In</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(0);" data-tooltip="Shortcut: X">Out</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(0);;" data-tooltip="Shortcut: X">Lft</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(1);;" data-tooltip="Shortcut: X">Rght</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomSel();" data-tooltip="Shortcut: X">Sel</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playPause();" data-tooltip="Shortcut: X">Play/Pause In View</button>            
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('sel');" data-tooltip="Shortcut: X">Play Selected</button>            
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('all');" data-tooltip="Shortcut: X">Play Entire File</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.editLabel();" data-tooltip="Shortcut: X">Change Segment Label</button>            
+            <button class="mini-btn tooltipabove" onclick="emulabeller.setView(-Infinity, Infinity);"  data-tooltip="Shortcut: Q">all</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(1);" data-tooltip="Shortcut: W">In</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(0);" data-tooltip="Shortcut: S">Out</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(0);;" data-tooltip="Shortcut: A">Lft</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(1);;" data-tooltip="Shortcut: D">Rght</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomSel();" data-tooltip="Shortcut: E">Sel</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.playPause();" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
+            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('sel');" data-tooltip="Shortcut: R">Play Selected</button>            
+            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('all');" data-tooltip="Shortcut: F">Play Entire File</button>
+            <button class="mini-btn tooltipabove" onclick="emulabeller.editLabel();" data-tooltip="Shortcut: ?">Change Segment Label</button>            
           </div>
     </div>
     
