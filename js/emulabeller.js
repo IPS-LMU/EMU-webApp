@@ -559,26 +559,27 @@ var EmuLabeller = {
         if ($('#textAreaPopUp').length == 0) {
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
         var event = tier.events[my.viewPort.selSegment];
-		var mouseY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+4;
-		console.log(e);
-		console.log(e.srcElement.attributes.height.value);		
-		//var tierHeight = e.srcElement
-        var all = my.viewPort.eS-my.viewPort.sS;
-        var fracS = my.viewPort.selectS-my.viewPort.sS;
-        var procS = fracS/all;
-        var posS = Math.floor(my.timeline.clientWidth*procS);
-        var fracE = my.viewPort.selectE-my.viewPort.sS;
-        var procE = fracE/all;
-        var posE = Math.floor(my.timeline.clientWidth*procE);		
-		var mouseX = posS;
-		var mouseX2_pre = posE-posS;
-		var mouseX2 = Math.floor(0.75*(posE-posS));
-		var diff = Math.round((mouseX2_pre-mouseX2)/2);
-		var editHeight = Math.round(0.6*e.srcElement.attributes.height.value);
-		mouseX += diff;
+		var TextY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+2;
+
+
+            var all = my.viewPort.eS-my.viewPort.sS;
+            var fracS = my.viewPort.selectS-my.viewPort.sS;
+            var procS = fracS/all;
+            var posS = my.tierInfos.canvases[my.viewPort.selTier].clientWidth*procS;
+
+            var fracE = my.viewPort.selectE-my.viewPort.sS;
+            var procE = fracE/all;
+            var posE = my.tierInfos.canvases[my.viewPort.selTier].clientWidth*procE;
+
+
+
+		
+		var mouseX2 = Math.floor(posE-posS)-3;
+		var TextX = Math.round(posS)+12;
+		var editHeight = Math.floor(e.srcElement.attributes.clientHeight);
 		if(event!=null) {
-		    var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:"+mouseX2+"px;height:"+editHeight+"px;'>"+event.label+"</textarea>";
-	        var saveButton = "<input type='button' value='save' id='saveText' onclick='TODO("+mouseY+","+mouseX+");'></div>";
+		    var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:"+TextY+"px;left:"+TextX+"px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:"+mouseX2+"px;height:"+editHeight+"px;'>"+event.label+"</textarea>";
+	        var saveButton = "<input type='button' value='save' id='saveText' onclick='TODO("+TextY+","+TextX+");'></div>";
 		    var appendString = textArea + saveButton;
 		    $("#tiers").append(appendString);
 		}
@@ -588,7 +589,7 @@ var EmuLabeller = {
     
     
     removeCanvasDoubleClick: function () {
-		$('textarea#textareaTest').remove();
+		$('textarea#editArea').remove();
 		$('#saveText').remove();
 	    $('#textAreaPopUp').remove();    
     },

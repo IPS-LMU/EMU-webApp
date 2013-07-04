@@ -16,5 +16,8 @@ EmuLabeller.ViewPort = {
 
         this.curMouseTierID = "";
         this.curMouseBoundary = -1;
+        
+        this.selectSPixel = 0;
+        this.selectEPixel = 0;
     }
 };

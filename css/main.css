@@ -104,6 +104,17 @@ canvas {
 	height:100%;
 }
 
+.textAreaPopUp {
+    z-index:30;
+    position:absolute;
+}
+
+.editArea {
+    border: 0px;
+    outline: none;
+    resize: none;
+}
+
 #cans, #signalcans {
     height: 120px;
     width: 98%;
