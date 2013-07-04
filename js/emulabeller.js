@@ -93,6 +93,9 @@ var EmuLabeller = {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
         
+        $(window).resize(function() {
+            my.removeCanvasDoubleClick();
+        });
 
         this.bindOnButtonDown(params.showLeftPush, function () {
             if(this.subMenuOpen) {
@@ -556,7 +559,7 @@ var EmuLabeller = {
         if ($('#textAreaPopUp').length == 0) {
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
         var event = tier.events[my.viewPort.selSegment];
-		var mouseX = e.pageX;
+		var mouseX = e.screenX;
 		var mouseY = e.pageY-my.timeline.clientHeight;
 		
 		var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:100px;height:50px;'>"+event.label+"</textarea>";
