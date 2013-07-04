@@ -7,6 +7,7 @@
          <title>emuLVC</title>
          <link rel="stylesheet" href="css/main.css">
          <link rel="stylesheet" href="css/menu.css">
+         <link rel="stylesheet" href="css/tooltip.css">
          <link rel="stylesheet" href="css/jquery-ui.css" />
  </head>
  <body>
@@ -40,8 +41,8 @@
  <div class="menu" id="menu">
   <input type="file" id="fileGetterBtn" name="file"/>
   <div class="btn-group">
-   <button class="mini-btn tooltip" id="fileSelect">Open File</button>
-   <button class="mini-btn tooltip" id="serverSelect">Open Menu</button>
+   <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Come on, you browsers! Get with the plan!">Open File</button>
+   <button class="mini-btn tooltip" id="serverSelect"  data-tooltip="Come on, you browsers! Get with the plan!">Open Menu</button>
    <button class="mini-btn tooltip" onclick="emulabeller.addTier();">Add Tier (seg)</button>
    <button class="mini-btn tooltip" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
    <button class="mini-btn tooltip" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
