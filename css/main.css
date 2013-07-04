@@ -117,6 +117,7 @@ canvas {
     box-shadow: 0px 0px 25px #eeee00;
     font-size:14px;
     text-align:right;
+    height: 45px;
 }
 
 #cans, #signalcans {
