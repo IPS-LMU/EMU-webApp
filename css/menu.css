@@ -68,12 +68,12 @@
 
 .menu,
 .tierPush,
-.canvasSettings,
+.timeline,
 .menu-bottom,
 .cbp-spmenu,
 .cbp-spmenu-push {
-    -webkit-transition: all 0.4s ease;
-    -moz-transition: all 0.4s ease;
-    transition: all 0.4s ease;
+    -webkit-transition: all 0.02s ease;
+    -moz-transition: all 0.02s ease;
+    transition: all 0.02s ease;
 }
  
