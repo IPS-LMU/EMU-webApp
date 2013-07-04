@@ -4,10 +4,7 @@ var emulabeller = (function () {
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
     var autoLoad = true;
-    
-    // true when in Tier Label Edit Mode 
-    // so the shortcuts dont interfere with shortcuts
-    var textEditMode = false;
+
 
     var tierInfos = {"tiers": [],  "canvases": []};
 
@@ -126,7 +123,8 @@ var emulabeller = (function () {
     // keypress bindings
     document.addEventListener('keypress', function (e) {
         // spacebar
-        if(!emulabeller.isModalShowing && !textEditMode){
+        console.log(labeller.textEditMode);
+        if(!emulabeller.isModalShowing && !labeller.textEditMode){
 
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view

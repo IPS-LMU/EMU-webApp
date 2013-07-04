@@ -85,7 +85,10 @@ var EmuLabeller = {
 
         this.playMode = "vP"; // can be "vP", "sel" or "all"
        
-        
+    
+        // true when in Tier Label Edit Mode 
+        // so the shortcuts dont interfere with shortcuts
+        this.textEditMode = false;        
         
 
         //bindings
@@ -557,6 +560,7 @@ var EmuLabeller = {
     
     canvasDoubleClick: function (e) {
         if ($('#textAreaPopUp').length == 0) {
+            
             var tier = my.tierInfos.tiers[my.viewPort.selTier];
             var event = tier.events[my.viewPort.selSegment];
 		    var TextY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+2;
@@ -575,14 +579,17 @@ var EmuLabeller = {
 	            var saveButton = "<input type='button' value='save' id='saveText' onclick='TODO("+TextY+","+TextX+");'></div>";
 		        var appendString = textArea + saveButton;
 		        $("#tiers").append(appendString);
+		        my.textEditMode = true;
 		    }
 	    } 
-	    else    
+	    else {
 	        my.removeCanvasDoubleClick();
+	    }
     },
     
     
     removeCanvasDoubleClick: function () {
+        my.textEditMode = false; 
 		$('textarea#editArea').remove();
 		$('#saveText').remove();
 	    $('#textAreaPopUp').remove();    
