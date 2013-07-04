@@ -18,9 +18,24 @@ var EmuLabeller = {
 
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
-
+        
         this.mode = params.mode;
-        console.log("emuLVC running in", this.mode, "mode");
+        this.serverSelect = params.serverSelect;
+        this.fileSelect = params.fileSelect;
+
+        switch(this.mode) {
+        	case "standalone":
+        		this.serverSelect.style.display = "none";
+        		break;
+        	case "server":
+        		this.fileSelect.style.display = "none";
+        		break;
+        	default:
+        		this.fileSelect.style.display = "none";
+        		this.serverSelect.style.display = "none";
+        		break;        	        	
+        }
+        
 
         this.draggableBar = params.draggableBar;
         this.timeline = params.timeline;

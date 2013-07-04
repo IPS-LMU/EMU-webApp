@@ -13,6 +13,8 @@ var emulabeller = (function () {
     var draggableBar = document.querySelector('#dragBar');
     var timeline = document.querySelector('#timeline');
     var tiers = document.querySelector('#tiers');
+    var fileSelect = document.querySelector('#fileSelect');
+    var serverSelect = document.querySelector('#serverSelect');
     var labeller = Object.create(EmuLabeller);
 
     labeller.init({
@@ -27,10 +29,12 @@ var emulabeller = (function () {
         draggableBar : draggableBar,
         timeline : timeline,
         tiers : tiers,
-        internalCanvasWidth : '1560',     // in pixel
-        internalCanvasHeightSmall : '64', // in pixel -> Cans
+        fileSelect : fileSelect,
+        serverSelect : serverSelect,
+        internalCanvasWidth : '1560',      // in pixel
+        internalCanvasHeightSmall : '64',  // in pixel -> Cans
         internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
-        mode: 'standalone'
+        mode: 'standalone'                 // or server
     });
 
 
