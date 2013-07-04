@@ -562,7 +562,7 @@ var EmuLabeller = {
 		        $("#tiers").append(appendString);
 		        my.textEditMode = true;
                 $("#saveText")[0].addEventListener('click', function(e){
-                    alert("hier");
+                    my.saveCanvasDoubleClick();
                 });		        
 		    }
 	    } 
@@ -571,7 +571,13 @@ var EmuLabeller = {
 	    }
     },
     
-    
+    saveCanvasDoubleClick: function () {
+        var tier = my.tierInfos.tiers[my.viewPort.selTier];
+        var event = tier.events[my.viewPort.selSegment];   
+        var content = $("#editArea").val();
+        event.label = content;
+        my.drawBuffer();
+    },   
     
     removeCanvasDoubleClick: function () {
         my.textEditMode = false; 
