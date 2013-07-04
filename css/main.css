@@ -113,6 +113,8 @@ canvas {
     border: 0px;
     outline: none;
     resize: none;
+    background-color:rgba(255,255,0,1);
+    box-shadow: 0px 0px 25px #eeee00;
 }
 
 #cans, #signalcans {

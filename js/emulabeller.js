@@ -574,7 +574,7 @@ var EmuLabeller = {
 
 
 		
-		var mouseX2 = Math.floor(posE-posS)-3;
+		var mouseX2 = Math.floor(posE-posS-5);
 		var TextX = Math.round(posS)+12;
 		var editHeight = Math.floor(e.srcElement.attributes.clientHeight);
 		if(event!=null) {
