@@ -559,13 +559,24 @@ var EmuLabeller = {
         if ($('#textAreaPopUp').length == 0) {
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
         var event = tier.events[my.viewPort.selSegment];
-		var mouseX = e.screenX;
-		var mouseY = e.pageY-my.timeline.clientHeight;
+		var mouseY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop;
 		
-		var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:100px;height:50px;'>"+event.label+"</textarea>";
-	    var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
-		var appendString = textArea + saveButton;
-		$("#tiers").append(appendString);
+        var all = my.viewPort.eS-my.viewPort.sS;
+        var fracS = my.viewPort.selectS-my.viewPort.sS;
+        var procS = fracS/all;
+        var posS = Math.floor(my.timeline.clientWidth*procS);
+        var fracE = my.viewPort.selectE-my.viewPort.sS;
+        var procE = fracE/all;
+        var posE = Math.floor(my.timeline.clientWidth*procE);		
+		var mouseX = posS;
+		var mouseX2 = Math.floor(posE-posS);
+		
+		if(event!=null) {
+		    var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:"+mouseX2+"px;height:50px;'>"+event.label+"</textarea>";
+	        var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
+		    var appendString = textArea + saveButton;
+		    $("#tiers").append(appendString);
+		}
 	} else    
 	    my.removeCanvasDoubleClick();
     },
