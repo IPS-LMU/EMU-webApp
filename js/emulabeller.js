@@ -309,6 +309,7 @@ var EmuLabeller = {
     drawBuffer: function (isNewlyLoaded) {
         var my = this;
         //console.log(this);
+        my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
         	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
 			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
