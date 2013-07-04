@@ -45,6 +45,7 @@ var EmuLabeller = {
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+        
 
         this.viewPort = Object.create(EmuLabeller.ViewPort);
 
@@ -482,7 +483,7 @@ var EmuLabeller = {
             $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\"></canvas>");
             $("#"+tName)[0].style.width = "100%";
             $("#"+tName)[0].addEventListener('dblclick', function(e){ 
-                console.log(e.srcElement.attributes.id);
+                my.canvasDoubleClick(e);
             });              
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
@@ -500,7 +501,7 @@ var EmuLabeller = {
             $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightBig+"\"></canvas>");
             $("#"+sCanName)[0].style.width = "100%";
             $("#"+sCanName)[0].addEventListener('dblclick', function(e){ 
-                console.log(e.srcElement.attributes.id);
+                my.canvasDoubleClick(e);
             });            
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
@@ -521,7 +522,7 @@ var EmuLabeller = {
                 $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings "+tName+"\"></canvas>");
                 $("#"+tName)[0].style.width = "100%";
                 $("#"+tName)[0].addEventListener('dblclick', function(e){ 
-                    console.log(e.srcElement.attributes.id);
+                    my.canvasDoubleClick(e);
                 });
                 
                 
@@ -541,6 +542,21 @@ var EmuLabeller = {
             this.drawBuffer();
 
         }
+    },
+    
+    canvasDoubleClick: function (e) {
+        if ($('#textAreaPopUp').length == 0) {
+		var mouseX = e.pageX;
+		var mouseY = e.pageY-my.timeline.clientHeight;
+		var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:100px;height:50px;'>"+e.srcElement.attributes.id.value+"</textarea>";
+	    var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
+		var appendString = textArea + saveButton;
+		$("#tiers").append(appendString);
+	} else {
+		$('textarea#textareaTest').remove();
+		$('#saveText').remove();
+	    $('#textAreaPopUp').remove();
+		}    
     },
 
     fileAPIread: function (evt) {
@@ -602,7 +618,7 @@ var EmuLabeller = {
         $("#cans").append("<canvas id=\""+tName+"\"  width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
         $("#"+tName)[0].style.width = "100%";
         $("#"+tName)[0].addEventListener('dblclick', function(e){ 
-            console.log(e.srcElement.attributes.id);
+            my.canvasDoubleClick(e);
         });  
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
