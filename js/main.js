@@ -123,7 +123,6 @@ var emulabeller = (function () {
     // keypress bindings
     document.addEventListener('keypress', function (e) {
         // spacebar
-        console.log(labeller.textEditMode);
         if(!emulabeller.isModalShowing && !labeller.textEditMode){
 
             if (32 == e.keyCode) {
