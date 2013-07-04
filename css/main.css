@@ -172,13 +172,15 @@ canvas {
 	font-size:10px;
 	font-weight:bold;
 	text-decoration:none;
-}.mini-btn:hover {
+}
+.mini-btn:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(0.7, #3f3f3f) );
 	background:-moz-linear-gradient( center top, #ededed 5%, #3f3f3f 70% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#3f3f3f');
 	background-color:#fff;
 	color:#eee;
-}.mini-btn:active {
+}
+.mini-btn:active {
 	position:relative;
 	top:1px;
 }
@@ -216,4 +218,33 @@ canvas {
     background: #000;    
 }
 
+/*tooltips to show keyboard short cuts*/
+.tooltip{
+    display: inline;
+    position: relative;
+}
 
+.tooltip:hover:after{
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(shortcut);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+
+.tooltip:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+}

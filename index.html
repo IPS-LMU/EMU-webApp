@@ -28,14 +28,14 @@
  <div class="menu" id="menu">
   <input type="file" id="fileGetterBtn" name="file"/>
   <div class="btn-group">
-   <button class="mini-btn" id="fileSelect">Open File</button>
-   <button class="mini-btn" id="serverSelect">Open Menu</button>
-   <button class="mini-btn" onclick="emulabeller.addTier();">Add Tier (seg)</button>
-   <button class="mini-btn" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
-   <button class="mini-btn" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
-   <button class="mini-btn" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
-   <button class="mini-btn" onclick="emulabeller.prepDownload();">Prep. Download</button>
-   <button class="mini-btn" id="specSettings">Spec. Settings</button> 
+   <button class="mini-btn tooltip" id="fileSelect">Open File</button>
+   <button class="mini-btn tooltip" id="serverSelect">Open Menu</button>
+   <button class="mini-btn tooltip" onclick="emulabeller.addTier();">Add Tier (seg)</button>
+   <button class="mini-btn tooltip" onclick="emulabeller.addTier(true);">Add Tier (point)</button>
+   <button class="mini-btn tooltip" onclick="emulabeller.showHideTierDial();">Remove Tier</button>
+   <button class="mini-btn tooltip" onclick="emulabeller.showHideTierDial();">Show/Hide Tier</button>
+   <button class="mini-btn tooltip" onclick="emulabeller.prepDownload();">Prep. Download</button>
+   <button class="mini-btn tooltip" id="specSettings">Spec. Settings</button> 
   </div>
  </div>
 
@@ -57,16 +57,16 @@
  <div class="menu-bottom" id="menu-bottom">
     <canvas id="scrollbar" class="canvasSettingsBottom" width="1280" height="32"></canvas>
     <div class="btn-group">
-            <button class="mini-btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
-            <button class="mini-btn" onclick="emulabeller.zoomViewPort(1);">In</button>
-            <button class="mini-btn" onclick="emulabeller.zoomViewPort(0);">Out</button>
-            <button class="mini-btn" onclick="emulabeller.incrViewP(0);;">Lft</button>
-            <button class="mini-btn" onclick="emulabeller.incrViewP(1);;">Rght</button>
-            <button class="mini-btn" onclick="emulabeller.zoomSel();">Sel</button>
-            <button class="mini-btn" onclick="emulabeller.playPause();">Play/Pause In View</button>            
-            <button class="mini-btn" onclick="emulabeller.playInMode('sel');">Play Selected</button>            
-            <button class="mini-btn" onclick="emulabeller.playInMode('all');">Play Entire File</button>
-            <button class="mini-btn" onclick="emulabeller.editLabel();">Change Segment Label</button>            
+            <button class="mini-btn tooltip" onclick="emulabeller.setView(-Infinity, Infinity);" shortcut="D">all</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.zoomViewPort(1);">In</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.zoomViewPort(0);">Out</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.incrViewP(0);;">Lft</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.incrViewP(1);;">Rght</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.zoomSel();">Sel</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.playPause();">Play/Pause In View</button>            
+            <button class="mini-btn tooltip" onclick="emulabeller.playInMode('sel');">Play Selected</button>            
+            <button class="mini-btn tooltip" onclick="emulabeller.playInMode('all');">Play Entire File</button>
+            <button class="mini-btn tooltip" onclick="emulabeller.editLabel();">Change Segment Label</button>            
           </div>
     </div>
     
