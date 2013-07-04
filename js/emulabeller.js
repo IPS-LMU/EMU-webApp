@@ -117,6 +117,7 @@ var EmuLabeller = {
 
 
         this.bindOnButtonDown(params.canvas, function (percents) {
+            my.removeCanvasDoubleClick();
             my.isDraging = true;
             my.isDragingBar = false;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
@@ -156,6 +157,8 @@ var EmuLabeller = {
             my.isDragingMiniMap = false;
             my.isDragingBar = false;
         });
+        
+    
                 
 
         this.bindOnMouseMoved(window, function (percents) {
@@ -169,6 +172,7 @@ var EmuLabeller = {
 
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
+            my.removeCanvasDoubleClick();
             my.isDraging = true;
             my.isDragingBar = false;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
@@ -193,6 +197,7 @@ var EmuLabeller = {
 
         // minimap bindings
         this.bindOnButtonDown(params.scrollCanvas, function (percents) {
+            my.removeCanvasDoubleClick();
             var bL = my.backend.currentBuffer.length;
             var posInB = percents*bL;
             var len = (my.viewPort.eS-my.viewPort.sS);
@@ -380,6 +385,7 @@ var EmuLabeller = {
 
 
     zoomViewPort: function(zoomInBool){
+        my.removeCanvasDoubleClick();
         var newStartS, newEndS;
         if(zoomInBool){
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
@@ -394,6 +400,7 @@ var EmuLabeller = {
     },
 
     incrViewP: function  (inc) {
+        my.removeCanvasDoubleClick();
         var newStartS, newEndS;
         if(inc){
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
