@@ -11,9 +11,9 @@
     font-size:11px;
     color:#fff;
     z-index: 9999;
-    width: 8.3%;
+    width: 6%;
     text-align:center;
-    padding:5px;
+    padding:10px;
     margin-top: 25px;
     margin-left: -2px;
     border:1px solid rgba(255,255,255,0.9);
@@ -66,10 +66,10 @@
     font-size:11px;
     color:#fff;
     z-index: 9999;
-    width: 8.3%;
     text-align:center;
-    padding:5px;
-    margin-top: -38px;
+    padding:10px;
+    width:7%;
+    margin-top: -45px;
     margin-left: -2px;
     border:1px solid rgba(255,255,255,0.9);
     -webkit-border-radius:5px;
