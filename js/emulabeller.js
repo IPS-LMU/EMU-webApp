@@ -481,6 +481,9 @@ var EmuLabeller = {
             console.log(tName);
             $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\"></canvas>");
             $("#"+tName)[0].style.width = "100%";
+            $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+                console.log(e.srcElement.attributes.id);
+            });              
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
             $("#"+tName)[0].style.width = "98%";
@@ -496,6 +499,9 @@ var EmuLabeller = {
             var sCanName = "F0";
             $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightBig+"\"></canvas>");
             $("#"+sCanName)[0].style.width = "100%";
+            $("#"+sCanName)[0].addEventListener('dblclick', function(e){ 
+                console.log(e.srcElement.attributes.id);
+            });            
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
@@ -595,7 +601,9 @@ var EmuLabeller = {
         this.viewPort.selSegment = -1;
         $("#cans").append("<canvas id=\""+tName+"\"  width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
         $("#"+tName)[0].style.width = "100%";
-
+        $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+            console.log(e.srcElement.attributes.id);
+        });  
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
