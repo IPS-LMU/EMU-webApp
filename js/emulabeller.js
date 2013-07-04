@@ -669,6 +669,8 @@ var EmuLabeller = {
         $("#"+tName)[0].addEventListener('dblclick', function(e){ 
             my.canvasDoubleClick(e);
         });  
+        $("#tiers")[0].style.height = "100%";
+        $("#tierPush")[0].style.height = "100%";
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
