@@ -20,19 +20,21 @@ var EmuLabeller = {
         this.drawer.init(params);
         
         this.mode = params.mode;
-        this.serverSelect = params.serverSelect;
+        this.showLeftPush = params.showLeftPush;
         this.fileSelect = params.fileSelect;
+        this.menuLeft = params.menuLeft;
+        this.menuMain = params.menuMain;
 
         switch(this.mode) {
         	case "standalone":
-        		this.serverSelect.style.display = "none";
+        		this.showLeftPush.style.display = "none";
         		break;
         	case "server":
         		this.fileSelect.style.display = "none";
         		break;
         	default:
         		this.fileSelect.style.display = "none";
-        		this.serverSelect.style.display = "none";
+        		this.showLeftPush.style.display = "none";
         		break;        	        	
         }
         
@@ -72,6 +74,7 @@ var EmuLabeller = {
         this.isDragingMiniMap = false;
         this.isDragingBar = false;
         this.dragingStart = 0;
+        this.subMenuOpen = false;
         
         this.relativeY = 0;
 
@@ -82,12 +85,36 @@ var EmuLabeller = {
         this.playMode = "vP"; // can be "vP", "sel" or "all"
        
         
+        
 
         //bindings
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
         
+
+        this.bindOnButtonDown(params.showLeftPush, function () {
+            if(this.subMenuOpen) {
+                this.subMenuOpen = false;
+                $("#serverSelect").html("Open Menu");
+                $("#menuLeft").removeClass("cbp-spmenu-open");
+                $("#menu").removeClass("cbp-spmenu-push-toright");
+                $("#timeline").removeClass("cbp-spmenu-push-toright");
+                $("#tierPush").removeClass("cbp-spmenu-push-toright");
+                $("#menu-bottom").removeClass("cbp-spmenu-push-toright");                
+            }
+            else {
+                this.subMenuOpen = true;
+                $("#serverSelect").html("Close Menu");
+                $("#menuLeft").addClass("cbp-spmenu-open");
+                $("#menu").addClass("cbp-spmenu-push-toright");
+                $("#timeline").addClass("cbp-spmenu-push-toright");
+                $("#tierPush").addClass("cbp-spmenu-push-toright");
+                $("#menu-bottom").addClass("cbp-spmenu-push-toright");
+            }
+        });
+
+
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.isDraging = true;
             my.isDragingBar = false;

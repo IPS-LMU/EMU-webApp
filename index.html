@@ -6,9 +6,16 @@
          <meta charset="utf-8">
          <title>emuLVC</title>
          <link rel="stylesheet" href="css/main.css">
+         <link rel="stylesheet" href="css/menu.css">
          <link rel="stylesheet" href="css/jquery-ui.css" />
  </head>
  <body>
+ <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft">
+  <h3>Server</h3>
+    <a href="#">Menu 1</a>
+    <a href="#">Menu 2</a>
+ </nav>
+ 
  
  <div id="dialog-messageSh" title="Show/Hide Tier with Name">
   <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
@@ -37,6 +44,8 @@
   <canvas id="spectrogram" class="canvasSettings" width="950" height="175"></canvas>
   <div id="dragBar" class="dragBar">☰</div>
  </div>
+ <div class="tierPush" id="tierPush">
+ 
  <div class="tiers" id="tiers">
   <div id="signalcans">
   </div>
@@ -44,8 +53,8 @@
   </div>
   <div id="invisible" id="class">&nbsp;</div>
  </div>
- 
- <div class="menu-bottom">
+ </div>
+ <div class="menu-bottom" id="menu-bottom">
     <canvas id="scrollbar" class="canvasSettingsBottom" width="1280" height="32"></canvas>
     <div class="btn-group">
             <button class="mini-btn" onclick="emulabeller.setView(-Infinity, Infinity);">all</button>
@@ -860,6 +869,7 @@ function FFT(fftSize){
   <!-- external scripts -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery-ui.js"></script>
+  
 
   <!-- our scripts -->
   <script src="js/emulabeller.js"></script>
