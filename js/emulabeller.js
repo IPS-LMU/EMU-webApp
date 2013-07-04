@@ -552,11 +552,15 @@ var EmuLabeller = {
 	    var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
 		var appendString = textArea + saveButton;
 		$("#tiers").append(appendString);
-	} else {
+	} else    
+	    my.removeCanvasDoubleClick();
+    },
+    
+    
+    removeCanvasDoubleClick: function () {
 		$('textarea#textareaTest').remove();
 		$('#saveText').remove();
-	    $('#textAreaPopUp').remove();
-		}    
+	    $('#textAreaPopUp').remove();    
     },
 
     fileAPIread: function (evt) {
