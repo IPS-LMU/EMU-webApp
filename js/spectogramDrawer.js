@@ -64,6 +64,7 @@ EmuLabeller.spectogramDrawer = {
         my.tempData = "";
         my.percent = 0;
         my.bufferLength = 0;
+        my.optimizeHeight = false;
         },
         
         setupEvent: function () {
@@ -215,7 +216,6 @@ EmuLabeller.spectogramDrawer = {
             var my = this;
             my.vP = vP;   
             my.newpcmperpixel = Math.round((my.vP.eS-my.vP.sS)/my.canvas.width);
-            console.log("start:"+my.vP.sS);
             if(my.imageCache!=null) {
                 if(my.imageCache[my.newpcmperpixel]!=null) {
 					//my.found_parts = false;

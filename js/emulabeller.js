@@ -512,8 +512,13 @@ var EmuLabeller = {
             // console.log(newTiers);
             for (var i = 0; i < newTiers.length; i++) {
                 var tName = newTiers[i].TierName;
-                $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
+                $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings "+tName+"\"></canvas>");
                 $("#"+tName)[0].style.width = "100%";
+                $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+                    console.log(e.srcElement.attributes.id);
+                });
+                
+                
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
                 // sic only last tier viewable
