@@ -529,7 +529,7 @@ var EmuLabeller = {
                 var tName = newTiers[i].TierName;
                 $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings "+tName+"\"></canvas>");
                 $("#"+tName)[0].style.width = "100%";
-                $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+                $("#"+tName)[0].addEventListener('dblclick', function(e, percX, percY, elID){
                     my.canvasDoubleClick(e);
                 });
                 
@@ -554,9 +554,12 @@ var EmuLabeller = {
     
     canvasDoubleClick: function (e) {
         if ($('#textAreaPopUp').length == 0) {
+        var tier = my.tierInfos.tiers[my.viewPort.selTier];
+        var event = tier.events[my.viewPort.selSegment];
 		var mouseX = e.pageX;
 		var mouseY = e.pageY-my.timeline.clientHeight;
-		var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:100px;height:50px;'>"+e.srcElement.attributes.id.value+"</textarea>";
+		
+		var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:100px;height:50px;'>"+event.label+"</textarea>";
 	    var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+");'></div>";
 		var appendString = textArea + saveButton;
 		$("#tiers").append(appendString);
