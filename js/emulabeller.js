@@ -410,9 +410,9 @@ var EmuLabeller = {
     },
 
 
-    bindTierClick: function (element, callback) {
+    bindTierMouseUp: function (element, callback) {
         var my = this;
-        element.addEventListener('click', function (e) {
+        element.addEventListener('mouseup', function (e) {
             var relX = e.offsetX;
             var relY = e.offsetY;
             if (null === relX) { relX = e.layerX; }
@@ -490,7 +490,7 @@ var EmuLabeller = {
             this.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
             $("#"+tName)[0].style.width = "98%";
-            emulabeller.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+            emulabeller.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
                 // console.log(percents);
                 // console.log("whaaaaaaaaaat",elID);
                 my.setMarkedEvent(percX, percY, elID);
@@ -529,7 +529,7 @@ var EmuLabeller = {
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
                 // sic only last tier viewable
-                this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+                this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
                     my.setMarkedEvent(percX, percY, elID);
                 });
                 this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
@@ -681,7 +681,7 @@ var EmuLabeller = {
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
-        this.bindTierClick($('#'+tName)[0], function (percX, percY, elID) {
+        this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
             console.log(elID);
             my.setMarkedEvent(percX, percY, elID);
         });
@@ -893,7 +893,7 @@ var EmuLabeller = {
 
     trackMouseInTiers: function(percX, elID){
         my = this;
-        
+
         this.viewPort.curMouseTierID = elID;
 
         //SIC once again duplicate code!!! REFACTOR!!!
