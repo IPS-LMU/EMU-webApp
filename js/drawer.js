@@ -242,7 +242,7 @@ EmuLabeller.Drawer = {
         else {
               
         }
-        //
+        // bad place to do it! REFACTOR...
         this.drawTiers(vP);
     },
 
@@ -444,7 +444,7 @@ EmuLabeller.Drawer = {
                 curcc.stroke();
             }
 
-            // draw name
+            // draw name of tier
             curcc.strokeStyle = this.params.waveColor;
             curcc.font="12px Verdana";
             curcc.strokeText(this.tierInfos.tiers[i].TierName, 5, 5+8);
@@ -456,24 +456,31 @@ EmuLabeller.Drawer = {
             if (cI.type == "seg"){
                 curcc.fillStyle = this.params.waveColor;
                 //draw seg
-                for (ev = 0; ev < cI.events.length; ev++) {
-                    if(cI.events[ev].time > vP.sS ) { //&& cI.events[ev].time < vP.eS){
-                        perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
+                for (curEv = 0; curEv < cI.events.length; curEv++) {
+                    if(cI.events[curEv].time > vP.sS ) { //&& cI.events[curEv].time < vP.eS){
+                        perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
-                        if(ev == vP.selSegment && vP.selTier == i){
-                            prevPerc = (cI.events[ev-1].time-vP.sS)/(vP.eS-vP.sS);
+                        // mark selected segment with markColor == yellow
+                        if(curEv == vP.selSegment && vP.selTier == i){
+                            prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);
                             curcc.fillStyle = markColor;
                             curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
                             curcc.fillStyle = this.params.waveColor;
                         }
-
-                        if(cI.events[ev].label != 'H#'){
-                            tW = curcc.measureText(cI.events[ev].label).width;
-                            curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW-10, curCanHeight/2);
+                        // mark boundary closest to mouse red (only checks first element in selBoundries for now)
+                        if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID){
+                            curcc.fillStyle = "red";
+                            curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+                            curcc.fillStyle = this.params.waveColor;
+                        }
+                        // draw label 
+                        if(cI.events[curEv].label != 'H#'){
+                            tW = curcc.measureText(cI.events[curEv].label).width;
+                            curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW-10, curCanHeight/2);
                         }
                     }
-                    if(cI.events[ev].end > vP.sS && cI.events[ev].end < vP.eS){
-                        perc = (cI.events[ev].end-vP.sS)/(vP.eS-vP.sS);
+                    if(cI.events[curEv].end > vP.sS && cI.events[curEv].end < vP.eS){
+                        perc = (cI.events[curEv].end-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
                     }
                 }

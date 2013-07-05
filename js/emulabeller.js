@@ -300,7 +300,7 @@ var EmuLabeller = {
         //console.log(this);
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
-        	this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
+            this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
 			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
         }
     },
@@ -425,12 +425,15 @@ var EmuLabeller = {
         var my = this;
         element.addEventListener('mousemove', function (e) {
             if(e.shiftKey){
-            var relX = e.offsetX;
-            var relY = e.offsetY;
-            if (null === relX) { relX = e.layerX; }
-            if (null === relY) { relY = e.layerY; }
-            callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
-        }
+                var relX = e.offsetX;
+                var relY = e.offsetY;
+                if (null === relX) { relX = e.layerX; }
+                if (null === relY) { relY = e.layerY; }
+                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+            }else{
+                my.viewPort.curMouseTierID = "";
+                my.viewPort.selBoundaries = [];
+            }
         }, false);
     },
 
@@ -912,10 +915,12 @@ var EmuLabeller = {
         }
         // console.log(dists);
         var closest = dists.indexOf(Math.min.apply(Math, dists));
-        console.log(closest);
+        // console.log(closest);
 
         this.viewPort.curMouseTierID = elID;
-        this.viewPort.curClosestMouseBoundary = closest;
+        this.viewPort.selBoundaries[0] = closest;
+
+        this.drawBuffer();
 
     },
 

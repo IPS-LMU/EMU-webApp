@@ -187,7 +187,6 @@ var emulabeller = (function () {
                 emulabeller.addSegmentAtSelection();
             }
             console.log(e.keyCode);
-            console.log(e.shiftKey);
         }
     });
 
