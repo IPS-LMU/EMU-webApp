@@ -229,7 +229,7 @@ EmuLabeller.Drawer = {
             this.cc.closePath();
             this.cc.stroke();
 
-            this.cc.strokeStyle = "rgba(0, 0, 255, 0.7)";
+            this.cc.strokeStyle = this.params.waveColor;
             if(vP.selectS == vP.selectE){
                 this.cc.strokeText(Math.floor(vP.selectS), posS+5, 10);
             }else{

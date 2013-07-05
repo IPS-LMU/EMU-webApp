@@ -424,11 +424,13 @@ var EmuLabeller = {
     bindTierMouseMove: function (element, callback) {
         var my = this;
         element.addEventListener('mousemove', function (e) {
+            if(e.shiftKey){
             var relX = e.offsetX;
             var relY = e.offsetY;
             if (null === relX) { relX = e.layerX; }
             if (null === relY) { relY = e.layerY; }
             callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+        }
         }, false);
     },
 
@@ -824,6 +826,7 @@ var EmuLabeller = {
 
         emulabeller.drawBuffer();
     },
+
     validateTierInfos: function () {
         this.JSONval.validateTierInfos(this.tierInfos);
     },
@@ -886,10 +889,10 @@ var EmuLabeller = {
     trackMouseInTiers: function(percX, elID){
         my = this;
         //console.log(percX);
-        //console.log(elID);
+        // console.log(elID);
         this.viewPort.curMouseTierID = elID;
 
-        //SIC
+        //SIC once again duplicate code!!! REFACTOR!!!
         var clickedTier;
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             if(this.tierInfos.tiers[i].TierName == elID){
@@ -897,10 +900,20 @@ var EmuLabeller = {
                 break;
             }
         }
-
-
         // find closes segment
+        var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
+        // console.log(curSample);
 
+        var dists = new Array(clickedTier.events.length);
+        for (var i = 0; i < clickedTier.events.length; i++) {
+            dists[i] = Math.abs(clickedTier.events[i].time - curSample);
+        }
+        // console.log(dists);
+        var closest = dists.indexOf(Math.min.apply(Math, dists));
+        console.log(closest);
+
+        this.viewPort.curMouseTierID = elID;
+        this.viewPort.curClosestMouseBoundary = closest;
 
     },
 
