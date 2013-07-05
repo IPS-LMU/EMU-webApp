@@ -418,9 +418,10 @@ var EmuLabeller = {
                 var relY = e.offsetY;
                 if (null === relX) { relX = e.layerX; }
                 if (null === relY) { relY = e.layerY; }
-                // if(my.isDragingTier){
-                //     my.tierInfos.tiers[3].events[my.viewPort.selBoundaries[0]] = relX / this.clientWidth;
-                // }
+                if(my.isDragingTier){
+                    var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(relX / this.clientWidth);
+                    my.tierInfos.tiers[3].events[my.viewPort.selBoundaries[0]].time = curSample;
+                }
                 callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
             }else{
                 my.viewPort.curMouseTierID = "";
