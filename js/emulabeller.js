@@ -413,11 +413,13 @@ var EmuLabeller = {
     bindTierMouseUp: function (element, callback) {
         var my = this;
         element.addEventListener('mouseup', function (e) {
-            var relX = e.offsetX;
-            var relY = e.offsetY;
-            if (null === relX) { relX = e.layerX; }
-            if (null === relY) { relY = e.layerY; }
-            callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+            if(!e.shiftKey){
+                var relX = e.offsetX;
+                var relY = e.offsetY;
+                if (null === relX) { relX = e.layerX; }
+                if (null === relY) { relY = e.layerY; }
+                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+            }
         }, false);
     },
 
