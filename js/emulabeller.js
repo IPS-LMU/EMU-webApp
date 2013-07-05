@@ -75,8 +75,10 @@ var EmuLabeller = {
         this.isDragingMiniMap = false;
         this.isDragingBar = false;
         this.dragingStart = 0;
+        this.isDragingTier = false;
+
         this.subMenuOpen = false;
-        
+
         this.relativeY = 0;
 
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
@@ -128,8 +130,6 @@ var EmuLabeller = {
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
         });
-        
-
 
         // same bindings for draggableBar
         this.bindOnButtonDown(params.draggableBar, function (percents) {
@@ -409,10 +409,46 @@ var EmuLabeller = {
         this.setView(this.viewPort.selectS, this.viewPort.selectE);
     },
 
+    //tier mouse bindings... call when new tiers are added
+    bindTierMouseMove: function (element, callback) {
+        var my = this;
+        element.addEventListener('mousemove', function (e) {
+            if(e.shiftKey){
+                var relX = e.offsetX;
+                var relY = e.offsetY;
+                if (null === relX) { relX = e.layerX; }
+                if (null === relY) { relY = e.layerY; }
+                // if(my.isDragingTier){
+                //     my.tierInfos.tiers[3].events[my.viewPort.selBoundaries[0]] = relX / this.clientWidth;
+                // }
+                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+            }else{
+                my.viewPort.curMouseTierID = "";
+                my.viewPort.selBoundaries = [];
+            }
+        }, false);
+    },
+
+    bindTierMouseDown: function (element, callback) {
+        var my = this;
+        element.addEventListener('mousedown', function (e) {
+            if(e.shiftKey){
+                my.isDragingTier = true;
+                console.log("now isDragingTier is true");
+                // var relX = e.offsetX;
+                // var relY = e.offsetY;
+                // if (null === relX) { relX = e.layerX; }
+                // if (null === relY) { relY = e.layerY; }
+                // callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
+            }
+        }, false);
+    },
+
 
     bindTierMouseUp: function (element, callback) {
         var my = this;
         element.addEventListener('mouseup', function (e) {
+            my.isDragingTier = false;
             if(!e.shiftKey){
                 var relX = e.offsetX;
                 var relY = e.offsetY;
@@ -423,22 +459,7 @@ var EmuLabeller = {
         }, false);
     },
 
-    bindTierMouseMove: function (element, callback) {
-        var my = this;
-        element.addEventListener('mousemove', function (e) {
-            if(e.shiftKey){
-                var relX = e.offsetX;
-                var relY = e.offsetY;
-                if (null === relX) { relX = e.layerX; }
-                if (null === relY) { relY = e.layerY; }
-                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
-            }else{
-                my.viewPort.curMouseTierID = "";
-                my.viewPort.selBoundaries = [];
-            }
-        }, false);
-    },
-
+    //?? mouse bindings
     bindOnButtonDown: function (element, callback) {
         var my = this;
         element.addEventListener('mousedown', function (e) {
@@ -530,13 +551,18 @@ var EmuLabeller = {
                 });
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
+                
                 // sic only last tier viewable
-                this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
-                    my.setMarkedEvent(percX, percY, elID);
-                });
                 this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
                     my.trackMouseInTiers(percX, elID);
                 });
+
+                this.bindTierMouseDown($('#'+tName)[0]);
+
+                this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
+                    my.setMarkedEvent(percX, percY, elID);
+                });
+
 
             }
             this.viewPort.selTier = this.tierInfos.tiers.length-1;
@@ -683,15 +709,19 @@ var EmuLabeller = {
         this.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
 
-        this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
-            console.log(elID);
-            my.setMarkedEvent(percX, percY, elID);
-        });
-
         this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
             my.trackMouseInTiers(percX, elID);
         });
 
+        this.bindTierMouseDown($('#'+tName)[0], function (percX, percY, elID) {
+            console.log(elID);
+            my.setMarkedEvent(percX, percY, elID);
+        });
+
+        this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
+            console.log(elID);
+            my.setMarkedEvent(percX, percY, elID);
+        });
 
         this.drawBuffer();
     },
@@ -925,8 +955,12 @@ var EmuLabeller = {
 
     },
 
+    /**
+    use socketIOhandler to request something from server
+    @param message sting containing request statement from
+    server "getUtts" and "stopServer" work for now
+    */
     requestFromServer: function(message){
-
 
         console.log("sending message: ", message);
         this.socketIOhandler.doSend(message);
