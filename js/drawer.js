@@ -487,19 +487,25 @@ EmuLabeller.Drawer = {
 
             }else if(cI.type =="point"){
                 curcc.fillStyle = this.params.waveColor;
-                for (ev = 0; ev < cI.events.length; ev++) {
-                    if(cI.events[ev].time > vP.sS && cI.events[ev].time < vP.eS){
-
-                        perc = (cI.events[ev].time-vP.sS)/(vP.eS-vP.sS);
+                for (curEv = 0; curEv < cI.events.length; curEv++) {
+                    if(cI.events[curEv].time > vP.sS && cI.events[curEv].time < vP.eS){
+                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
+                        if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID){
+                            curcc.fillStyle = "red";
+                        }else{
+                            curcc.fillStyle = this.params.waveColor;
+                        }
+                        perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
 
-                        tW = curcc.measureText(cI.events[ev].label).width;
-                        curcc.strokeText(cI.events[ev].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
+                        tW = curcc.measureText(cI.events[curEv].label).width;
+                        curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
 
                         curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
                     }
                 }
             }
+
         }
     },
 

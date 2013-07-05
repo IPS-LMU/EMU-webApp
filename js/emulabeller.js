@@ -893,8 +893,7 @@ var EmuLabeller = {
 
     trackMouseInTiers: function(percX, elID){
         my = this;
-        //console.log(percX);
-        // console.log(elID);
+        
         this.viewPort.curMouseTierID = elID;
 
         //SIC once again duplicate code!!! REFACTOR!!!
