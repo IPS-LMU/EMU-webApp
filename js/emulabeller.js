@@ -542,8 +542,8 @@ var EmuLabeller = {
     },
     
     canvasDoubleClick: function (e) {
+        var my = this;
         if ($('#textAreaPopUp').length == 0) {
-            
             var tier = my.tierInfos.tiers[my.viewPort.selTier];
             var event = tier.events[my.viewPort.selSegment];
 		    var TextY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+2;
