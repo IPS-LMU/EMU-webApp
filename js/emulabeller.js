@@ -574,6 +574,7 @@ var EmuLabeller = {
     },
     
     saveCanvasDoubleClick: function () {
+        var my = this;
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
         var event = tier.events[my.viewPort.selSegment];   
         var content = $("#editArea").val();
@@ -582,6 +583,7 @@ var EmuLabeller = {
     },   
     
     removeCanvasDoubleClick: function () {
+        var my = this;
         my.textEditMode = false; 
 		$('textarea#editArea').remove();
 		$('#saveText').remove();
