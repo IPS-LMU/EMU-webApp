@@ -165,9 +165,9 @@ var emulabeller = (function () {
             }
             if (111 == e.keyCode){
                 // O key
-                if(emulabeller.mode=="standalone")
+                if(emulabeller.usageMode==labeller.MODE.STANDALONE)
                  $('#fileGetterBtn').click();
-                if(emulabeller.mode=="server")
+                if(emulabeller.usageMode==labeller.MODE.SERVER)
                  emulabeller.openSubmenu();
             }
             if (104 == e.keyCode){
