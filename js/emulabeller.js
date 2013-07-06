@@ -18,13 +18,19 @@ var EmuLabeller = {
     init: function (params) {
         var my = this;
         
-        // internal Applications modes
+        // internal Applications modes that may not interfere
         var MODE = {
-            STANDARD : {value: 0, name: "StandardMode"}, 
-            TIER_RENAME: {value: 1, name: "TierRenameMode"}, 
-            TIER_RESIZE : {value: 2, name: "TierResizeMode"},
-            TIER_SELECT: {value: 3, name: "TierSelectMode"}
+            // mode at the beginning
+            STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
+            
+            // modes when editing tiers
+            LABEL_RENAME: {value: 1, name: "TierRenameMode"},       // no keybindings exept enter -> save
+            LABEL_SELECT: {value: 2, name: "TierSelectMode"}        // when selecting one or multiple labels
+
         };
+        
+        // standard at the beginning
+        this.internalMode = MODE.STANDARD;
 
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
