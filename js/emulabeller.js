@@ -110,16 +110,16 @@ var EmuLabeller = {
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+        this.tierInfos = params.tierInfos;
 
         // other used variables
-        this.tierInfos = params.tierInfos;
         this.ssffInfos = {data: [], canvases: []};
+        this.subMenuOpen = false;
+        this.isModalShowing = false;
         this.dragingStart = 0;
         this.resizeTierStart = 0;
-        this.subMenuOpen = false;
         this.relativeY = 0;
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
-        this.isModalShowing = false;
         this.playMode = "vP"; // can be "vP", "sel" or "all"
 
         // Initial Usage Mode Configuration
@@ -148,9 +148,9 @@ var EmuLabeller = {
             }
             else { // any other -> open submenu
                 if(my.usageMode==my.MODE.STANDALONE)
-                 $('#fileGetterBtn').click();
+                    $('#fileGetterBtn').click();
                 if(my.usageMode==my.MODE.SERVER)
-                 my.openSubmenu();
+                    my.openSubmenu();
             }
             return false;
         });
@@ -166,7 +166,6 @@ var EmuLabeller = {
         this.bindOnButtonDown(params.showLeftPush, function () {
             my.openSubmenu();
         });
-
 
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.removeCanvasDoubleClick();
@@ -201,7 +200,6 @@ var EmuLabeller = {
         this.bindOnButtonUp(window, function () {
             if(this.internalMode == my.EDITMODE.DRAGING_BAR) this.internalMode = my.EDITMODE.STANDARD;
         });
-        
     
         this.bindOnMouseMoved(window, function (percents) {
             if(this.internalMode == my.EDITMODE.DRAGING_BAR){
@@ -210,7 +208,6 @@ var EmuLabeller = {
                 my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
             }
         });
-        
 
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
