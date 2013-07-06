@@ -763,7 +763,7 @@ var EmuLabeller = {
             my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
         });                
         $("#"+tName)[0].addEventListener('mousemove', function(e){
-            my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+            my.trackMouseInTiers(my.getX(e));
         });                 
 
         emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
@@ -953,17 +953,18 @@ var EmuLabeller = {
           };
     },
 
-    trackMouseInTiers: function(percX, elID){
+    trackMouseInTiers: function(percX){
         my = this;
-        var clickedTier = this.tierInfos.tiers[elID];        
+        if(this.viewPort.selTier != -1 ) { 
+        var clickedTier = this.tierInfos.tiers[this.viewPort.selTier];   
         var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
         var dists = new Array(clickedTier.events.length);
         for (var i = 0; i < clickedTier.events.length; i++) {
             dists[i] = Math.abs(clickedTier.events[i].time - curSample);
         }
         var closest = dists.indexOf(Math.min.apply(Math, dists));
-        this.viewPort.curMouseTierID = elID;
         this.viewPort.selBoundaries[0] = closest;
+        }
     },
 
     /**
