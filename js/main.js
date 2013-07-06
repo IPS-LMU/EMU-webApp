@@ -124,7 +124,7 @@ var emulabeller = (function () {
     // keypress bindings
     document.addEventListener('keypress', function (e) {
         // spacebar
-        if(!emulabeller.isModalShowing && !labeller.textEditMode){
+        if(!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME){
 
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view

@@ -7,7 +7,7 @@ several other components
 var EmuLabeller = {
 
 
-    // internal Applications modes
+    // internal Applications EDITMODEs
 
 
     /**
@@ -18,12 +18,18 @@ var EmuLabeller = {
     init: function (params) {
         var my = this;
         
-        // internal Applications modes that may not interfere
         my.MODE = {
-            // mode at the beginning
+            SERVER : {value: 0, name: "Server"},
+            STANDALONE : {value: 1, name: "Standalone"},
+            NOT_CONFIGURED : {value: 2, name: "NotConfigured"}            
+        };
+        
+        // internal Applications EDITMODEs that may not interfere
+        my.EDITMODE = {
+            // EDITMODE at the beginning
             STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
             
-            // mode when editing tiers
+            // EDITMODE when editing tiers
             LABEL_RENAME: {value: 1, name: "LabelRenameMode"},       // no keybindings exept enter -> save
             
             // when draging in the timeline (wave & spectro)
@@ -36,17 +42,21 @@ var EmuLabeller = {
             DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"},        // when selecting one or multiple labels
 
             // when draging the timeline resize bar
-            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        // when selecting one or multiple labels
-
-            
+            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        // when selecting one or multiple labels 
         };
         
         // internal standard at the beginning
-        this.internalMode = my.MODE.STANDARD;
+        this.internalMode = my.EDITMODE.STANDARD;
         
         // external mode "standard" or "server"
-        this.mode = params.mode;					
-
+        this.usageMode = my.MODE.NOT_CONFIGURED;
+        
+        if (params.mode="server")
+            this.usageMode = my.MODE.SERVER;
+            					
+        if (params.mode="standalone")
+            this.usageMode = my.MODE.STANDALONE;
+            
         // Object Classes
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
@@ -86,19 +96,17 @@ var EmuLabeller = {
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
         this.isModalShowing = false;
         this.playMode = "vP"; // can be "vP", "sel" or "all"
-       
-        // true when in Tier Label Edit Mode 
-        // so the shortcuts dont interfere with shortcuts
-        this.textEditMode = false; 
+
         
-        switch(this.mode) {
-        	case "standalone":
+        switch(this.usageMode) {
+        	case my.MODE.STANDALONE:
         		this.showLeftPush.style.display = "none";
         		break;
-        	case "server":
+        	case my.MODE.SERVER:
         		this.fileSelect.style.display = "none";
         		break;
         	default:
+        	    alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
         		this.fileSelect.style.display = "none";
         		this.showLeftPush.style.display = "none";
         		break;        	        	
@@ -108,17 +116,14 @@ var EmuLabeller = {
         
         // right mouse button in whole document
         $(document).bind("contextmenu",function(e){
-            if(e.shiftkey) { // do sth in resize lable mode
-               
-            }
-            else if(my.viewPort.selTier!=-1    //multiple select if ANY lable is selected
+            if(my.viewPort.selTier!=-1    //multiple select if ANY lable is selected
                      ) { //  and other lable on same tier is selected
                 console.log(e);
             }
             else { // any other -> open submenu
-                if(my.mode=="standalone")
+                if(my.usageMode==my.MODE.STANDALONE)
                  $('#fileGetterBtn').click();
-                if(my.mode=="server")
+                if(my.usageMode==my.MODE.SERVER)
                  my.openSubmenu();
             }
             return false;
@@ -139,19 +144,19 @@ var EmuLabeller = {
 
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.removeCanvasDoubleClick();
-            this.internalMode = my.MODE.DRAGING_TIMELINE;
+            this.internalMode = my.EDITMODE.DRAGING_TIMELINE;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            this.internalMode = my.MODE.STANDARD;
+            this.internalMode = my.EDITMODE.STANDARD;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
-            if(this.internalMode == my.MODE.DRAGING_TIMELINE){
+            if(this.internalMode == my.EDITMODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
@@ -160,7 +165,7 @@ var EmuLabeller = {
 
         // same bindings for draggableBar
         this.bindOnButtonDown(params.draggableBar, function (percents) {
-            this.internalMode = my.MODE.DRAGING_BAR;
+            this.internalMode = my.EDITMODE.DRAGING_BAR;
             my.dragingStartY = event.clientY;
             my.offsetTimeline = this.timeline.offsetHeight;
             my.offsetTiers = this.tiers.offsetHeight;
@@ -168,12 +173,12 @@ var EmuLabeller = {
         });
 
         this.bindOnButtonUp(window, function () {
-            if(this.internalMode == my.MODE.DRAGING_BAR) this.internalMode = my.MODE.STANDARD;
+            if(this.internalMode == my.EDITMODE.DRAGING_BAR) this.internalMode = my.EDITMODE.STANDARD;
         });
         
     
         this.bindOnMouseMoved(window, function (percents) {
-            if(this.internalMode == my.MODE.DRAGING_BAR){
+            if(this.internalMode == my.EDITMODE.DRAGING_BAR){
                 my.diffY = event.clientY - my.dragingStartY; 
                 my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
                 my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
@@ -184,19 +189,19 @@ var EmuLabeller = {
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
             my.removeCanvasDoubleClick();
-            this.internalMode = my.MODE.DRAGING_TIMELINE;
+            this.internalMode = my.EDITMODE.DRAGING_TIMELINE;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.specCanvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            this.internalMode = my.MODE.STANDARD;
+            this.internalMode = my.EDITMODE.STANDARD;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
         });
 
         this.bindOnMouseMoved(params.specCanvas, function (percents) {
-            if(this.internalMode == my.MODE.DRAGING_TIMELINE){
+            if(this.internalMode == my.EDITMODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
@@ -210,7 +215,7 @@ var EmuLabeller = {
             var posInB = percents*bL;
             var len = (my.viewPort.eS-my.viewPort.sS);
             my.setView(posInB-len/2, posInB+len/2);
-            this.internalMode = my.MODE.DRAGING_MINIMAP;
+            this.internalMode = my.EDITMODE.DRAGING_MINIMAP;
         });
 
         this.bindOnButtonUp(params.scrollCanvas, function (percents) {
@@ -218,11 +223,11 @@ var EmuLabeller = {
             var posInB = percents*bL;
             var len = (my.viewPort.eS-my.viewPort.sS);
             my.setView(posInB-len/2, posInB+len/2);
-            this.internalMode = my.MODE.STANDARD;
+            this.internalMode = my.EDITMODE.STANDARD;
         });
 
         this.bindOnMouseMoved(params.scrollCanvas, function (percents) {
-            if(this.internalMode == my.MODE.DRAGING_MINIMAP){
+            if(this.internalMode == my.EDITMODE.DRAGING_MINIMAP){
                 var bL = my.backend.currentBuffer.length;
                 var posInB = percents*bL;
                 var len = (my.viewPort.eS-my.viewPort.sS);
@@ -265,34 +270,34 @@ var EmuLabeller = {
     },
 
     /**
-    * play audio in certain mode
-    * playmode can be vP, sel, all
+    * play audio in certain EDITMODE
+    * playMode can be vP, sel, all
     */
 
-    playInMode: function (playmode) {
+    playInMode: function (playMode) {
         var percS, percE;
 
-        if(playmode == "vP" || playmode===null){
-            //this.boolPlaySelectedMode = false;
+        if(playMode == "vP" || playMode===null){
+            //this.boolPlaySelectedEDITMODE = false;
             this.playMode = "vP";
             //console.log("play vP");
             percS = this.viewPort.sS/this.backend.currentBuffer.length;
             percE = this.viewPort.eS/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
         }
-        if(playmode == "sel" || playmode===null){
+        if(playMode == "sel" || playMode===null){
             this.playMode = "sel";
-            //this.boolPlaySelectedMode = true;
+            //this.boolPlaySelectedEDITMODE = true;
             //console.log("play selected");
             percS = this.viewPort.selectS/this.backend.currentBuffer.length;
             percE = this.viewPort.selectE/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
 
         }
-        if(playmode == "all" || playmode===null){
+        if(playMode == "all" || playMode===null){
             this.playMode = "all";
             //console.log("play all");
-            //this.boolPlaySelectedMode = true;
+            //this.boolPlaySelectedEDITMODE = true;
             this.backend.play(0, this.backend.getDuration());
 
         }
@@ -438,7 +443,7 @@ var EmuLabeller = {
                 var relY = e.offsetY;
                 if (null === relX) { relX = e.layerX; }
                 if (null === relY) { relY = e.layerY; }
-                if(my.internalMode == my.MODE.DRAGING_TIERS){
+                if(my.internalMode == my.EDITMODE.DRAGING_TIERS){
                     var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(relX / this.clientWidth);
                     my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
                 }
@@ -460,7 +465,7 @@ var EmuLabeller = {
         var my = this;
         element.addEventListener('mousedown', function (e) {
             if(e.shiftKey){
-                my.internalMode = my.MODE.DRAGING_TIERS;
+                my.internalMode = my.EDITMODE.DRAGING_TIERS;
                 my.resizeTierStart = emulabeller.viewPort.curMouseTierID;
                 // var relX = e.offsetX;
                 // var relY = e.offsetY;
@@ -475,7 +480,7 @@ var EmuLabeller = {
     bindTierMouseUp: function (element, callback) {
         var my = this;
         element.addEventListener('mouseup', function (e) {
-            my.internalMode = my.MODE.STANDARD;
+            my.internalMode = my.EDITMODE.STANDARD;
             if(!e.shiftKey){
                 var relX = e.offsetX;
                 var relY = e.offsetY;
@@ -620,7 +625,7 @@ var EmuLabeller = {
 	            var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
 		        var appendString = textArea + saveButton;
 		        $("#tiers").append(appendString);
-		        my.textEditMode = true;
+		        my.internalMode = my.EDITMODE.LABEL_RENAME;
                 $("#saveText")[0].addEventListener('click', function(e){
                     my.saveCanvasDoubleClick();
                 });	
@@ -666,7 +671,7 @@ var EmuLabeller = {
     
     removeCanvasDoubleClick: function () {
         var my = this;
-        my.textEditMode = false; 
+        my.internalMode = my.EDITMODE.STANDARD;
 		$('textarea#editArea').remove();
 		$('#saveText').remove();
 	    $('#textAreaPopUp').remove();    
