@@ -55,14 +55,14 @@ var EmuLabeller = {
         // internal standard at the beginning
         this.internalMode = my.EDITMODE.STANDARD;
         
-        // external mode "standard" or "server"
+        // default is not configured
         this.usageMode = my.MODE.NOT_CONFIGURED;
         
-        // if parameter server is set mode is server
+        // if parameter in main.js is set to server
         if (params.mode="server")
             this.usageMode = my.MODE.SERVER;
             					
-        // if parameter standalone is set mode is standalone            					
+        // if parameter in main.js is set to standalone           					
         if (params.mode="standalone")
             this.usageMode = my.MODE.STANDALONE;
             
