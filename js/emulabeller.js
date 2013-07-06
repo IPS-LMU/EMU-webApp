@@ -4,27 +4,32 @@ it acts as the controller of the web app
 and primarily delegates methods to the drawer and
 several other components 
 */
+
 var EmuLabeller = {
-
-
-    // internal Applications EDITMODEs
-
 
     /**
     init function has to be called on object 
     to instantiate all its needed objects
     @param params is a 
     */
+    
     init: function (params) {
         var my = this;
         
+        // define external Application mode Server or Standalone
         my.MODE = {
+            
+            // show server menu, load external ressources
             SERVER : {value: 0, name: "Server"},
+            
+            // show file menu, load local ressources
             STANDALONE : {value: 1, name: "Standalone"},
+            
+            // alert an error if not configures in main.js
             NOT_CONFIGURED : {value: 2, name: "NotConfigured"}            
         };
         
-        // internal Applications EDITMODEs that may not interfere
+        // define internal Applications Modes that may not interfere
         my.EDITMODE = {
             // EDITMODE at the beginning
             STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
@@ -45,36 +50,56 @@ var EmuLabeller = {
             DRAGING_BAR: {value: 5, name: "DragingBarMode"}        // when selecting one or multiple labels 
         };
         
+        // set internal & external Modes
+        
         // internal standard at the beginning
         this.internalMode = my.EDITMODE.STANDARD;
         
         // external mode "standard" or "server"
         this.usageMode = my.MODE.NOT_CONFIGURED;
         
+        // if parameter server is set mode is server
         if (params.mode="server")
             this.usageMode = my.MODE.SERVER;
             					
+        // if parameter standalone is set mode is standalone            					
         if (params.mode="standalone")
             this.usageMode = my.MODE.STANDALONE;
             
         // Object Classes
+        
+        // Backed
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
+        
+        // Drawer
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
+        
+        // Viewport
         this.viewPort = Object.create(EmuLabeller.ViewPort);
+        
+        // Parser
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
+        
+        // Spectrogram
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
         this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
+        
+        // ssff Parser
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
+        
+        // json validator
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
         this.JSONval.init();
+        
+        // socket class
         this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
         this.socketIOhandler.init();
 
-        // parameters
+        // set main.js parameters
         this.showLeftPush = params.showLeftPush;
         this.fileSelect = params.fileSelect;
         this.menuLeft = params.menuLeft;
