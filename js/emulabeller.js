@@ -44,10 +44,10 @@ var EmuLabeller = {
             DRAGING_TIERS: {value: 3, name: "DragingTierMode"},     
             
             // when draging in the minimap
-            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"},        // when selecting one or multiple labels
+            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"},  
 
             // when draging the timeline resize bar
-            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        // when selecting one or multiple labels 
+            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        
         };
         
         // set internal & external Modes
@@ -122,6 +122,7 @@ var EmuLabeller = {
         this.isModalShowing = false;
         this.playMode = "vP"; // can be "vP", "sel" or "all"
 
+        // Initial Usage Mode Configuration
         
         switch(this.usageMode) {
         	case my.MODE.STANDALONE:
@@ -137,7 +138,7 @@ var EmuLabeller = {
         		break;        	        	
         }
         
-        //bindings
+        // Initial Bindings
         
         // right mouse button in whole document
         $(document).bind("contextmenu",function(e){
