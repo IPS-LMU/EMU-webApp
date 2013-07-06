@@ -17,7 +17,7 @@ var EmuLabeller = {
         var my = this;
         
         // define external Application mode Server or Standalone
-        my.MODE = {
+        my.USAGEMODE = {
             
             // show server menu, load external ressources
             SERVER : {value: 0, name: "Server"},
@@ -56,15 +56,17 @@ var EmuLabeller = {
         this.internalMode = my.EDITMODE.STANDARD;
         
         // default is not configured
-        this.usageMode = my.MODE.NOT_CONFIGURED;
+        this.externalMode = my.USAGEMODE.NOT_CONFIGURED;
         
         // if parameter in main.js is set to server
-        if (params.mode="server")
-            this.usageMode = my.MODE.SERVER;
+        if (params.mode=="server") {
+            this.externalMode = my.USAGEMODE.SERVER;
+        }
             					
         // if parameter in main.js is set to standalone           					
-        if (params.mode="standalone")
-            this.usageMode = my.MODE.STANDALONE;
+        if (params.mode=="standalone") {
+            this.externalMode = my.USAGEMODE.STANDALONE;
+        }
             
         // Object Classes
         
@@ -100,7 +102,6 @@ var EmuLabeller = {
         this.socketIOhandler.init();
 
         // set main.js parameters
-        this.showLeftPush = params.showLeftPush;
         this.fileSelect = params.fileSelect;
         this.menuLeft = params.menuLeft;
         this.menuMain = params.menuMain;
@@ -121,14 +122,16 @@ var EmuLabeller = {
         this.relativeY = 0;
         this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
         this.playMode = "vP"; // can be "vP", "sel" or "all"
+        this.clickedOn = 0;
+        this.tierCounter = 0;
 
         // Initial Usage Mode Configuration
         
-        switch(this.usageMode) {
-        	case my.MODE.STANDALONE:
+        switch(this.externalMode) {
+        	case this.USAGEMODE.STANDALONE:
         		this.showLeftPush.style.display = "none";
         		break;
-        	case my.MODE.SERVER:
+        	case this.USAGEMODE.SERVER:
         		this.fileSelect.style.display = "none";
         		break;
         	default:
@@ -140,7 +143,7 @@ var EmuLabeller = {
         
         // Initial Bindings
         
-        // right mouse button in whole document
+        /* right mouse button in whole document
         $(document).bind("contextmenu",function(e){
             if(my.viewPort.selTier!=-1    //multiple select if ANY lable is selected
                      ) { //  and other lable on same tier is selected
@@ -153,114 +156,140 @@ var EmuLabeller = {
                     my.openSubmenu();
             }
             return false;
-        });
+        });*/
         
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
-        
-        $(window).resize(function() {
-            my.removeCanvasDoubleClick();
-        });
 
-        this.bindOnButtonDown(params.showLeftPush, function () {
-            my.openSubmenu();
-        });
+        // All left Mouse Click Functions  
+        document.addEventListener('mousedown', function(e){
+            my.clickedOn = my.getElement(e).id;
+            switch(my.clickedOn) {
+                case params.showLeftPush.id:
+                    my.openSubmenu();
+                break;
+                
+                case "cmd_addTierSeg":
+                    my.addTier();
+                break;
+                                
+                case "cmd_addTierPoint":
+                    my.addTier(true);
+                break;
+                                
+                case "cmd_removeTier":
+                case "cmd_showHideTier":
+                    my.showHideTierDial();
+                break;
+                                
+                case "cmd_download":
+                    my.prepDownload();
+                break;
+                                
+                case "cmd_download":
+                    my.prepDownload();
+                break;
+                
+                
+                
+                    
+                case params.canvas.id:
+                case params.specCanvas.id:
+                    my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
+                    my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                    my.viewPort.selectE = my.viewPort.selectS;
+                    my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
+                    my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
+                break;
+                    
+                case params.draggableBar.id:
+                    my.internalMode = my.EDITMODE.DRAGING_BAR;
+                    my.dragingStartY = event.clientY;
+                    my.offsetTimeline = my.timeline.offsetHeight;
+                    my.offsetTiers = my.tiers.offsetHeight;
+                break;
+                
+                case params.scrollCanvas.id:
+                    my.removeCanvasDoubleClick();
+                    my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
+                    var bL = my.backend.currentBuffer.length;
+                    var posInB = percents*bL;
+                    var len = (my.viewPort.eS-my.viewPort.sS);
+                    my.setView(posInB-len/2, posInB+len/2);
+                break;
+            }
 
-        this.bindOnButtonDown(params.canvas, function (percents) {
-            my.removeCanvasDoubleClick();
-            this.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-            my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-        });
-
-        this.bindOnButtonUp(params.canvas, function (percents) {
-            my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            this.internalMode = my.EDITMODE.STANDARD;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
-            my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
-        });
-
-        this.bindOnMouseMoved(params.canvas, function (percents) {
-            if(this.internalMode == my.EDITMODE.DRAGING_TIMELINE){
-                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
+        }); 
+ 
+        // All Mouse Up Functions  
+        document.addEventListener('mouseup', function(e){
+            if(my.internalMode == my.EDITMODE.DRAGING_TIMELINE){
+                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
+                my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
+                my.internalMode = my.EDITMODE.STANDARD;
+            }
+                    
+            if(my.internalMode == my.EDITMODE.DRAGING_BAR){
+                my.dragingStartY = event.clientY;
+                my.offsetTimeline = my.timeline.offsetHeight;
+                my.offsetTiers = my.tiers.offsetHeight;
+                my.internalMode = my.EDITMODE.STANDARD;
+            }
+                
+            if(my.internalMode == my.EDITMODE.DRAGING_MINIMAP){
+                var bL = my.backend.currentBuffer.length;
+                var posInB = percents*bL;
+                var len = (my.viewPort.eS-my.viewPort.sS);
+                my.setView(posInB-len/2, posInB+len/2);
+                my.internalMode = my.EDITMODE.STANDARD;
+            }
+            
+        });  
+ 
+        // All Mouse Click Functions  
+        document.addEventListener('mousemove', function(e){
+            if(my.internalMode == my.EDITMODE.DRAGING_TIMELINE){
+                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
-        });
 
-        // same bindings for draggableBar
-        this.bindOnButtonDown(params.draggableBar, function (percents) {
-            this.internalMode = my.EDITMODE.DRAGING_BAR;
-            my.dragingStartY = event.clientY;
-            my.offsetTimeline = this.timeline.offsetHeight;
-            my.offsetTiers = this.tiers.offsetHeight;
-
-        });
-
-        this.bindOnButtonUp(window, function () {
-            if(this.internalMode == my.EDITMODE.DRAGING_BAR) this.internalMode = my.EDITMODE.STANDARD;
-        });
-    
-        this.bindOnMouseMoved(window, function (percents) {
-            if(this.internalMode == my.EDITMODE.DRAGING_BAR){
-                my.diffY = event.clientY - my.dragingStartY; 
-                my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
-                my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
-            }
-        });
-
-        // same bindings for spec canvas
-        this.bindOnButtonDown(params.specCanvas, function (percents) {
-            my.removeCanvasDoubleClick();
-            this.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-            my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-        });
-
-        this.bindOnButtonUp(params.specCanvas, function (percents) {
-            my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            this.internalMode = my.EDITMODE.STANDARD;
-            my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-            my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-        });
-
-        this.bindOnMouseMoved(params.specCanvas, function (percents) {
-            if(this.internalMode == my.EDITMODE.DRAGING_TIMELINE){
-                my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-                my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-            }
-        });
-
-        // minimap bindings
-        this.bindOnButtonDown(params.scrollCanvas, function (percents) {
-            my.removeCanvasDoubleClick();
-            var bL = my.backend.currentBuffer.length;
-            var posInB = percents*bL;
-            var len = (my.viewPort.eS-my.viewPort.sS);
-            my.setView(posInB-len/2, posInB+len/2);
-            this.internalMode = my.EDITMODE.DRAGING_MINIMAP;
-        });
-
-        this.bindOnButtonUp(params.scrollCanvas, function (percents) {
-            var bL = my.backend.currentBuffer.length;
-            var posInB = percents*bL;
-            var len = (my.viewPort.eS-my.viewPort.sS);
-            my.setView(posInB-len/2, posInB+len/2);
-            this.internalMode = my.EDITMODE.STANDARD;
-        });
-
-        this.bindOnMouseMoved(params.scrollCanvas, function (percents) {
-            if(this.internalMode == my.EDITMODE.DRAGING_MINIMAP){
+            if(my.internalMode == my.EDITMODE.DRAGING_MINIMAP){
                 var bL = my.backend.currentBuffer.length;
                 var posInB = percents*bL;
                 var len = (my.viewPort.eS-my.viewPort.sS);
                 my.setView(posInB-len/2, posInB+len/2);
             }
+            
+            if(my.internalMode == my.EDITMODE.DRAGING_BAR){
+                my.diffY = event.clientY - my.dragingStartY; 
+                my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
+                my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
+            }
+            
+            if(e.shiftKey){
+                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
+                my.viewPort.selectE = curSample;
+                my.drawBuffer();
+            }
+              
+        });  
+        
+        // All Mouse Up Functions  
+        document.addEventListener('contextmenu', function(e){   
+            
+            alert("hier");
+            e.preventDefault();
+        
+        });   
+        
+        $(window).resize(function() {
+            my.removeCanvasDoubleClick();
         });
-    },
 
-    resizeMenu: function () {
-        console.log("RESIZE!!!");
     },
 
     onAudioProcess: function () {
@@ -344,7 +373,6 @@ var EmuLabeller = {
 
     drawBuffer: function (isNewlyLoaded) {
         var my = this;
-        //console.log(this);
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
             this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
@@ -457,90 +485,28 @@ var EmuLabeller = {
         this.setView(this.viewPort.selectS, this.viewPort.selectE);
     },
 
-    //tier mouse bindings... call when new tiers are added
-    bindTierMouseMove: function (element, callback) {
-        var my = this;
-        element.addEventListener('mousemove', function (e) {
-            if(e.shiftKey){
-                var relX = e.offsetX;
-                var relY = e.offsetY;
-                if (null === relX) { relX = e.layerX; }
-                if (null === relY) { relY = e.layerY; }
-                if(my.internalMode == my.EDITMODE.DRAGING_TIERS){
-                    var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(relX / this.clientWidth);
-                    my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                }
-                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
-            }else{
-                my.viewPort.curMouseTierID = "";
-                my.viewPort.selBoundaries = [];
-            }
-        }, false);
+    
+    getX: function(e) {
+        var relX = e.offsetX;
+        if (null === relX) { relX = e.layerX; }
+        return relX/e.srcElement.clientWidth;
     },
     
-    mouseIsInTier: function (curTier) {
-        if(emulabeller.viewPort.resizeTierStart==curTier)
-            return true;
-        return false;
-    },
+    getY: function(e) {
+        var relY = e.offsetY;
+        if (null === relY) { relX = e.layerY; }
+        return relY/e.srcElement.clientHeight;
+    },    
 
-    bindTierMouseDown: function (element, callback) {
-        var my = this;
-        element.addEventListener('mousedown', function (e) {
-            if(e.shiftKey){
-                my.internalMode = my.EDITMODE.DRAGING_TIERS;
-                my.resizeTierStart = emulabeller.viewPort.curMouseTierID;
-                // var relX = e.offsetX;
-                // var relY = e.offsetY;
-                // if (null === relX) { relX = e.layerX; }
-                // if (null === relY) { relY = e.layerY; }
-                // callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
-            }
-        }, false);
-    },
+    getTierID: function(e) {
+        return document.getElementById(e.srcElement.id).getAttribute("tier-id");
+    }, 
+    
+    getElement: function(e) {
+        return document.getElementById(e.srcElement.id);
+    },     
+    
 
-
-    bindTierMouseUp: function (element, callback) {
-        var my = this;
-        element.addEventListener('mouseup', function (e) {
-            my.internalMode = my.EDITMODE.STANDARD;
-            if(!e.shiftKey){
-                var relX = e.offsetX;
-                var relY = e.offsetY;
-                if (null === relX) { relX = e.layerX; }
-                if (null === relY) { relY = e.layerY; }
-                callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
-            }
-        }, false);
-    },
-
-    //?? mouse bindings
-    bindOnButtonDown: function (element, callback) {
-        var my = this;
-        element.addEventListener('mousedown', function (e) {
-            var relX = e.offsetX;
-            if (null === relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth);
-        }, false);
-    },
-
-    bindOnButtonUp: function (element, callback) {
-        var my = this;
-        element.addEventListener('mouseup', function (e) {
-            var relX = e.offsetX;
-            if (null === relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth);
-        }, false);
-    },
-
-    bindOnMouseMoved: function (element, callback) {
-        var my = this;
-        element.addEventListener('mousemove', function (e) {
-            var relX = e.offsetX;
-            if (null === relX) { relX = e.layerX; }
-            callback(relX / this.clientWidth);
-        }, false);
-    },
 
 
     parseNewFile: function (readerRes) {
@@ -555,19 +521,31 @@ var EmuLabeller = {
         } else if(ft==1){
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
             emulabeller.tierInfos.tiers.push(newTiers[0]);
-            
-            console.log(this.tierInfos.tiers);
 
             var tName = newTiers[0].TierName;
-            console.log(tName);
-            $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\"></canvas>");
-            $("#"+tName)[0].style.width = "100%";
-            $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+            $('<canvas>').attr({
+                id: tName,
+                width: my.internalCanvasWidth + 'px',
+                height: my.internalCanvasHeightSmall + 'px',
+                'tier-id': tName
+            }).css({
+                class: 'canvasSettings '+tName,
+                width: '98%',
+                height: my.internalCanvasHeightSmall + 'px'
+            }).appendTo('#cans');
+                
+            $("#"+tName)[0].addEventListener('dblclick', function(e){
                 my.canvasDoubleClick(e);
-            });              
-            this.tierInfos.canvases.push($("#"+tName)[0]);
+            });
+            $("#"+tName)[0].addEventListener('click', function(e){
+                my.setMarkedEvent(my.getX(e), my.getY(e), $("#"+tName)[0].id);
+            });                
+            $("#"+tName)[0].addEventListener('mousemove', function(e){
+                my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+            });                 
+
+            emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
             emulabeller.drawer.addTier($("#"+tName)[0]);
-            $("#"+tName)[0].style.width = "98%";
             emulabeller.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
                 // console.log(percents);
                 // console.log("whaaaaaaaaaat",elID);
@@ -580,45 +558,38 @@ var EmuLabeller = {
             var sCanName = "F0";
             $("#signalcans").append("<canvas id=\""+sCanName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightBig+"\"></canvas>");
             $("#"+sCanName)[0].style.width = "100%";
-            $("#"+sCanName)[0].addEventListener('dblclick', function(e){ 
-                my.canvasDoubleClick(e);
-            });            
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#"+sCanName)[0]);
             this.drawBuffer();
             // console.log(emulabeller.ssffInfos);
         }else if(ft==3){
-            console.log("textgrid");
-            var newTiers = emulabeller.tgParser.parseFile(readerRes);
-            for (var i = 0; i < newTiers.length; i++) {
-                emulabeller.tierInfos.tiers.push(newTiers[i]); // why doesn't concat work
-            };
-            // emulabeller.tierInfos.tiers.concat(newTiers);
-            // console.log(emulabeller.tierInfos.tiers);
-            // console.log(newTiers);
-            for (var i = 0; i < newTiers.length; i++) {
-                var tName = newTiers[i].TierName;
-                $("#cans").append("<canvas id=\""+tName+"\" width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings "+tName+"\"></canvas>");
-                $("#"+tName)[0].style.width = "100%";
+            emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.tgParser.parseFile(readerRes));
+            for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
+                var tName = emulabeller.tierInfos.tiers[my.tierCounter].TierName;
+                $('<canvas>').attr({
+                    id: tName,
+                    width: my.internalCanvasWidth + 'px',
+                    height: my.internalCanvasHeightSmall + 'px',
+                    'tier-id': my.tierCounter
+                }).css({
+                    class: 'canvasSettings',
+                    width: '98%',
+                    height: my.internalCanvasHeightSmall + 'px'
+                }).appendTo('#cans');
+                
                 $("#"+tName)[0].addEventListener('dblclick', function(e){
                     my.canvasDoubleClick(e);
                 });
+                $("#"+tName)[0].addEventListener('click', function(e){
+                    my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
+                });                
+                $("#"+tName)[0].addEventListener('mousemove', function(e){
+                    my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+                });                 
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
-                
-                // sic only last tier viewable
-                this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
-                    my.trackMouseInTiers(percX, elID);
-                });
-
-                this.bindTierMouseDown($('#'+tName)[0]);
-
-                this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
-                    my.setMarkedEvent(percX, percY, elID);
-                });
-
-
+                ++my.tierCounter;  
             }
             this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
@@ -763,13 +734,8 @@ var EmuLabeller = {
     
     addTier: function (addPointTier) {
         var my = this;
-        var tName;
-        if(this.tierInfos.tiers.length > 0){
-            tName = "Tier" + this.tierInfos.tiers.length;
-        }else{
-            tName = "Tier0";
-        }
         
+        var tName = "Tier"+my.tierCounter;
         if(!addPointTier){
             this.tierInfos.tiers.push({TierName: tName, type: "seg", events: []});
         }else{
@@ -778,68 +744,53 @@ var EmuLabeller = {
 
         this.viewPort.selTier = this.tierInfos.tiers.length-1;
         this.viewPort.selSegment = -1;
-        $("#cans").append("<canvas id=\""+tName+"\"  width=\""+my.internalCanvasWidth+"\" height=\""+my.internalCanvasHeightSmall+"\" class=\"canvasSettings\"></canvas>");
-        $("#"+tName)[0].style.width = "100%";
-        $("#"+tName)[0].addEventListener('dblclick', function(e){ 
+
+        $('<canvas>').attr({
+            id: tName,
+            width: my.internalCanvasWidth + 'px',
+            height: my.internalCanvasHeightSmall + 'px',
+            'tier-id': my.tierCounter
+        }).css({
+            class: 'canvasSettings',
+            width: '98%',
+            height: my.internalCanvasHeightSmall + 'px'
+        }).appendTo('#cans');
+                
+        $("#"+tName)[0].addEventListener('dblclick', function(e){
             my.canvasDoubleClick(e);
-        });  
-        $("#tiers")[0].style.height = "100%";
-        $("#tierPush")[0].style.height = "100%";
-        this.tierInfos.canvases.push($("#"+tName)[0]);
+        });
+        $("#"+tName)[0].addEventListener('click', function(e){
+            my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
+        });                
+        $("#"+tName)[0].addEventListener('mousemove', function(e){
+            my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+        });                 
+
+        emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
-
-        this.bindTierMouseMove($('#'+tName)[0], function (percX, percY, elID) {
-            my.trackMouseInTiers(percX, elID);
-        });
-
-        this.bindTierMouseDown($('#'+tName)[0], function (percX, percY, elID) {
-            console.log(elID);
-            my.setMarkedEvent(percX, percY, elID);
-        });
-
-        this.bindTierMouseUp($('#'+tName)[0], function (percX, percY, elID) {
-            console.log(elID);
-            my.setMarkedEvent(percX, percY, elID);
-        });
-
+        ++my.tierCounter;
         this.drawBuffer();
     },
 
     setMarkedEvent: function (percX, percY, elID){ // SIC bad function name!! also adds labels if click is in circle
-        // console.log("###############");
-        console.log(percX, elID);
-        var clickedTier;
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            if(this.tierInfos.tiers[i].TierName == elID){
-                clickedTier = this.tierInfos.tiers[i];
-                break;
-            }
-        }
-        this.viewPort.selTier = i;
-        console.log(this,i);
-        var rXp = this.tierInfos.canvases[i].width*percX;
-        var rYp = this.tierInfos.canvases[i].height*percY;
-        var sXp = this.tierInfos.canvases[i].width*(this.viewPort.selectS / (this.viewPort.eS-this.viewPort.sS));
-        console.log("----------------");
-        console.log(rXp);
-        console.log(rYp);
-        console.log(sXp);
-        //see if close enough to circle
+
+        var clickedTier = this.tierInfos.tiers[elID];
+        this.viewPort.selTier = elID;
+        var rXp = this.tierInfos.canvases[elID].width*percX;
+        var rYp = this.tierInfos.canvases[elID].height*percY;
+        var sXp = this.tierInfos.canvases[elID].width*(this.viewPort.selectS / (this.viewPort.eS-this.viewPort.sS));
+
         if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
             console.log("hit the circle")
             this.addSegmentAtSelection();
         } else if(clickedTier.type=="seg"){
-
             var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
             for (var i = 0; i < clickedTier.events.length; i++) {
-                // console.log("##########");
-                // console.log(clickedTier.events[i].time);
                 if (curSample < clickedTier.events[i].time) {
                     var clickedEvtNr = i;
                     break;
                 }
             }
-            // console.log(clickedTier.events[clickedEvtNr]);
 
             if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
                 this.viewPort.selSegment = clickedEvtNr;
@@ -1004,34 +955,15 @@ var EmuLabeller = {
 
     trackMouseInTiers: function(percX, elID){
         my = this;
-
-        this.viewPort.curMouseTierID = elID;
-
-        //SIC once again duplicate code!!! REFACTOR!!!
-        var clickedTier;
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            if(this.tierInfos.tiers[i].TierName == elID){
-                clickedTier = this.tierInfos.tiers[i];
-                break;
-            }
-        }
-        // find closes segment
+        var clickedTier = this.tierInfos.tiers[elID];        
         var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
-        // console.log(curSample);
-
         var dists = new Array(clickedTier.events.length);
         for (var i = 0; i < clickedTier.events.length; i++) {
             dists[i] = Math.abs(clickedTier.events[i].time - curSample);
         }
-        // console.log(dists);
         var closest = dists.indexOf(Math.min.apply(Math, dists));
-        // console.log(closest);
-
         this.viewPort.curMouseTierID = elID;
         this.viewPort.selBoundaries[0] = closest;
-
-        this.drawBuffer();
-
     },
 
     /**

@@ -144,10 +144,6 @@ background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMA
     right: -36px;
 }
 
-#cans, #signalcans {
-    height: 120px;
-    width: 98%;
-}
 
 #tiers  {
     overflow-y: auto;

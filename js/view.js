@@ -15,6 +15,7 @@ EmuLabeller.ViewPort = {
         this.selSegment = -1; // -1 == no segment selected
 
         this.curMouseTierID = "";
+        this.curMouseSegmentID = "";
         this.selBoundaries = [];
 
         this.selectSPixel = 0;
