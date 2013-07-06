@@ -19,7 +19,7 @@ var EmuLabeller = {
         var my = this;
         
         // internal Applications modes that may not interfere
-        var MODE = {
+        my.MODE = {
             // mode at the beginning
             STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
             
@@ -29,16 +29,20 @@ var EmuLabeller = {
             // when draging in the timeline (wave & spectro)
             DRAGING_TIMELINE: {value: 2, name: "DragingTimelineMode"},     
             
-            // when draging in a tier
-            DRAGING_TIER: {value: 3, name: "DragingTIerMode"},     
+            // when draging in a tier / multiple tiers
+            DRAGING_TIERS: {value: 3, name: "DragingTierMode"},     
             
             // when draging in the minimap
-            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"}        // when selecting one or multiple labels
+            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"},        // when selecting one or multiple labels
+
+            // when draging the timeline resize bar
+            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        // when selecting one or multiple labels
+
             
         };
         
         // standard at the beginning
-        this.internalMode = MODE.STANDARD;
+        this.internalMode = my.MODE.STANDARD;
 
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
@@ -69,9 +73,6 @@ var EmuLabeller = {
         // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;
         this.ssffInfos = {data: [], canvases: []};
-        this.isDraging = false; // timeline
-        this.isDragingMiniMap = false;
-        this.isDragingBar = false;
         this.dragingStart = 0;
         this.isDragingTier = false;
         this.resizeTierStart = 0;
@@ -138,22 +139,19 @@ var EmuLabeller = {
 
         this.bindOnButtonDown(params.canvas, function (percents) {
             my.removeCanvasDoubleClick();
-            my.isDraging = true;
-            my.isDragingBar = false;
+            this.internalMode = my.MODE.DRAGING_TIMELINE;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.canvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            my.isDraging = false;
-            my.isDragingBar = false;
+            this.internalMode = my.MODE.STANDARD;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
         });
 
         this.bindOnMouseMoved(params.canvas, function (percents) {
-            if(my.isDraging){
-                //console.log(percents);
+            if(this.internalMode == my.MODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
@@ -162,8 +160,7 @@ var EmuLabeller = {
 
         // same bindings for draggableBar
         this.bindOnButtonDown(params.draggableBar, function (percents) {
-            my.isDragingBar = true;
-            my.isDraging = false;
+            this.internalMode = my.MODE.DRAGING_BAR;
             my.dragingStartY = event.clientY;
             my.offsetTimeline = this.timeline.offsetHeight;
             my.offsetTiers = this.tiers.offsetHeight;
@@ -171,14 +168,12 @@ var EmuLabeller = {
         });
 
         this.bindOnButtonUp(window, function () {
-            my.isDraging = false;
-            my.isDragingMiniMap = false;
-            my.isDragingBar = false;
+            if(this.internalMode == my.MODE.DRAGING_BAR) this.internalMode = my.MODE.STANDARD;
         });
         
     
         this.bindOnMouseMoved(window, function (percents) {
-            if(my.isDragingBar ){
+            if(this.internalMode == my.MODE.DRAGING_BAR){
                 my.diffY = event.clientY - my.dragingStartY; 
                 my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
                 my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
@@ -189,22 +184,19 @@ var EmuLabeller = {
         // same bindings for spec canvas
         this.bindOnButtonDown(params.specCanvas, function (percents) {
             my.removeCanvasDoubleClick();
-            my.isDraging = true;
-            my.isDragingBar = false;
+            this.internalMode = my.MODE.DRAGING_TIMELINE;
             my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
         });
 
         this.bindOnButtonUp(params.specCanvas, function (percents) {
             my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
-            my.isDraging = false;
-            my.isDragingBar = false;
+            this.internalMode = my.MODE.STANDARD;
             my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
         });
 
         this.bindOnMouseMoved(params.specCanvas, function (percents) {
-            if(my.isDraging){
-                //console.log(percents);
+            if(this.internalMode == my.MODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*(percents);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
@@ -218,7 +210,7 @@ var EmuLabeller = {
             var posInB = percents*bL;
             var len = (my.viewPort.eS-my.viewPort.sS);
             my.setView(posInB-len/2, posInB+len/2);
-            my.isDragingMiniMap = true;
+            this.internalMode = my.MODE.DRAGING_MINIMAP;
         });
 
         this.bindOnButtonUp(params.scrollCanvas, function (percents) {
@@ -226,11 +218,11 @@ var EmuLabeller = {
             var posInB = percents*bL;
             var len = (my.viewPort.eS-my.viewPort.sS);
             my.setView(posInB-len/2, posInB+len/2);
-            my.isDragingMiniMap = false;
+            this.internalMode = my.MODE.STANDARD;
         });
 
         this.bindOnMouseMoved(params.scrollCanvas, function (percents) {
-            if(my.isDragingMiniMap){
+            if(this.internalMode == my.MODE.DRAGING_MINIMAP){
                 var bL = my.backend.currentBuffer.length;
                 var posInB = percents*bL;
                 var len = (my.viewPort.eS-my.viewPort.sS);
@@ -402,7 +394,8 @@ var EmuLabeller = {
 
 
     zoomViewPort: function(zoomInBool){
-        my.removeCanvasDoubleClick();
+        
+        this.removeCanvasDoubleClick();
         var newStartS, newEndS;
         if(zoomInBool){
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
@@ -445,7 +438,7 @@ var EmuLabeller = {
                 var relY = e.offsetY;
                 if (null === relX) { relX = e.layerX; }
                 if (null === relY) { relY = e.layerY; }
-                if(my.isDragingTier){
+                if(my.internalMode == my.MODE.DRAGING_TIERS){
                     var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(relX / this.clientWidth);
                     my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
                 }
@@ -467,7 +460,7 @@ var EmuLabeller = {
         var my = this;
         element.addEventListener('mousedown', function (e) {
             if(e.shiftKey){
-                my.isDragingTier = true;
+                my.internalMode = my.MODE.DRAGING_TIERS;
                 my.resizeTierStart = emulabeller.viewPort.curMouseTierID;
                 // var relX = e.offsetX;
                 // var relY = e.offsetY;
@@ -482,7 +475,7 @@ var EmuLabeller = {
     bindTierMouseUp: function (element, callback) {
         var my = this;
         element.addEventListener('mouseup', function (e) {
-            my.isDragingTier = false;
+            my.internalMode = my.MODE.STANDARD;
             if(!e.shiftKey){
                 var relX = e.offsetX;
                 var relY = e.offsetY;
