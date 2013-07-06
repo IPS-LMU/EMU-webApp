@@ -418,7 +418,7 @@ var EmuLabeller = {
                 if (null === relY) { relY = e.layerY; }
                 if(my.isDragingTier){
                     var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(relX / this.clientWidth);
-                    my.tierInfos.tiers[3].events[my.viewPort.selBoundaries[0]].time = curSample;
+                    my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
                 }
                 callback(relX / this.clientWidth, relY/this.clientHeight, element.id);
             }else{
@@ -611,22 +611,21 @@ var EmuLabeller = {
 	    }
     },
     
-    
- createSelection: function(field, start, end) {
-    if( field.createTextRange ) {
-        var selRange = field.createTextRange();
-        selRange.collapse(true);
-        selRange.moveStart('character', start);
-        selRange.moveEnd('character', end);
-        selRange.select();
-    } else if( field.setSelectionRange ) {
-        field.setSelectionRange(start, end);
-    } else if( field.selectionStart ) {
-        field.selectionStart = start;
-        field.selectionEnd = end;
-    }
-    field.focus();
-}     ,      
+    createSelection: function(field, start, end) {
+        if( field.createTextRange ) {
+            var selRange = field.createTextRange();
+            selRange.collapse(true);
+            selRange.moveStart('character', start);
+            selRange.moveEnd('character', end);
+            selRange.select();
+        } else if( field.setSelectionRange ) {
+            field.setSelectionRange(start, end);
+        } else if( field.selectionStart ) {
+            field.selectionStart = start;
+            field.selectionEnd = end;
+        }
+        field.focus();
+    },      
     
     saveCanvasDoubleClick: function () {
         var my = this;
