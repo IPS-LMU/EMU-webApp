@@ -148,8 +148,6 @@ var EmuLabeller = {
         });
         
     
-                
-
         this.bindOnMouseMoved(window, function (percents) {
             if(my.isDragingBar ){
                 my.diffY = event.clientY - my.dragingStartY; 
@@ -597,13 +595,31 @@ var EmuLabeller = {
 		        my.textEditMode = true;
                 $("#saveText")[0].addEventListener('click', function(e){
                     my.saveCanvasDoubleClick();
-                });		        
+                });		
+                my.createSelection(document.getElementById('editArea'),0,event.label.length);       // select textarea text 
 		    }
 	    } 
 	    else {
 	        my.removeCanvasDoubleClick();
 	    }
     },
+    
+    
+ createSelection: function(field, start, end) {
+    if( field.createTextRange ) {
+        var selRange = field.createTextRange();
+        selRange.collapse(true);
+        selRange.moveStart('character', start);
+        selRange.moveEnd('character', end);
+        selRange.select();
+    } else if( field.setSelectionRange ) {
+        field.setSelectionRange(start, end);
+    } else if( field.selectionStart ) {
+        field.selectionStart = start;
+        field.selectionEnd = end;
+    }
+    field.focus();
+}     ,      
     
     saveCanvasDoubleClick: function () {
         var my = this;
