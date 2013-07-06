@@ -23,10 +23,18 @@ var EmuLabeller = {
             // mode at the beginning
             STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
             
-            // modes when editing tiers
-            LABEL_RENAME: {value: 1, name: "TierRenameMode"},       // no keybindings exept enter -> save
-            LABEL_SELECT: {value: 2, name: "TierSelectMode"}        // when selecting one or multiple labels
-
+            // mode when editing tiers
+            LABEL_RENAME: {value: 1, name: "LabelRenameMode"},       // no keybindings exept enter -> save
+            
+            // when draging in the timeline (wave & spectro)
+            DRAGING_TIMELINE: {value: 2, name: "DragingTimelineMode"},     
+            
+            // when draging in a tier
+            DRAGING_TIER: {value: 3, name: "DragingTIerMode"},     
+            
+            // when draging in the minimap
+            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"}        // when selecting one or multiple labels
+            
         };
         
         // standard at the beginning
@@ -61,7 +69,7 @@ var EmuLabeller = {
         // init tierInfos and ssffInfos
         this.tierInfos = params.tierInfos;
         this.ssffInfos = {data: [], canvases: []};
-        this.isDraging = false;
+        this.isDraging = false; // timeline
         this.isDragingMiniMap = false;
         this.isDragingBar = false;
         this.dragingStart = 0;
