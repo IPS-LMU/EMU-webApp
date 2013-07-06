@@ -595,7 +595,14 @@ var EmuLabeller = {
 		        my.textEditMode = true;
                 $("#saveText")[0].addEventListener('click', function(e){
                     my.saveCanvasDoubleClick();
-                });		
+                });	
+                $("#editArea")[0].onkeyup = function(evt) {
+                    evt = evt || window.event;
+                    if (evt.keyCode == 13) {
+                        my.saveCanvasDoubleClick();
+                        my.removeCanvasDoubleClick();
+                    }
+                };
                 my.createSelection(document.getElementById('editArea'),0,event.label.length);       // select textarea text 
 		    }
 	    } 
