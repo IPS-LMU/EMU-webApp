@@ -41,23 +41,17 @@ var EmuLabeller = {
             
         };
         
-        // standard at the beginning
+        // internal standard at the beginning
         this.internalMode = my.MODE.STANDARD;
+        
+        // external mode "standard" or "server"
+        this.mode = params.mode;					
 
+        // Object Classes
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
-        this.showLeftPush = params.showLeftPush;
-        this.fileSelect = params.fileSelect;
-        this.menuLeft = params.menuLeft;
-        this.menuMain = params.menuMain;
-        this.draggableBar = params.draggableBar;
-        this.timeline = params.timeline;
-        this.tiers = params.tiers;
-        this.internalCanvasWidth = params.internalCanvasWidth;
-        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
-        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
         this.viewPort = Object.create(EmuLabeller.ViewPort);
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
@@ -70,7 +64,19 @@ var EmuLabeller = {
         this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
         this.socketIOhandler.init();
 
-        // init tierInfos and ssffInfos
+        // parameters
+        this.showLeftPush = params.showLeftPush;
+        this.fileSelect = params.fileSelect;
+        this.menuLeft = params.menuLeft;
+        this.menuMain = params.menuMain;
+        this.draggableBar = params.draggableBar;
+        this.timeline = params.timeline;
+        this.tiers = params.tiers;
+        this.internalCanvasWidth = params.internalCanvasWidth;
+        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
+        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+
+        // other used variables
         this.tierInfos = params.tierInfos;
         this.ssffInfos = {data: [], canvases: []};
         this.dragingStart = 0;
@@ -85,7 +91,6 @@ var EmuLabeller = {
         // so the shortcuts dont interfere with shortcuts
         this.textEditMode = false; 
         
-        this.mode = params.mode;					// external mode "standard" or "server"
         switch(this.mode) {
         	case "standalone":
         		this.showLeftPush.style.display = "none";
@@ -99,10 +104,6 @@ var EmuLabeller = {
         		break;        	        	
         }
         
-
-               
-        
-
         //bindings
         
         // right mouse button in whole document
