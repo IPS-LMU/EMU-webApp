@@ -74,7 +74,6 @@ var EmuLabeller = {
         this.tierInfos = params.tierInfos;
         this.ssffInfos = {data: [], canvases: []};
         this.dragingStart = 0;
-        this.isDragingTier = false;
         this.resizeTierStart = 0;
         this.subMenuOpen = false;
         this.relativeY = 0;
