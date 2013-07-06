@@ -5,6 +5,11 @@ and primarily delegates methods to the drawer and
 several other components 
 */
 var EmuLabeller = {
+
+
+    // internal Applications modes
+
+
     /**
     init function has to be called on object 
     to instantiate all its needed objects
@@ -12,19 +17,61 @@ var EmuLabeller = {
     */
     init: function (params) {
         var my = this;
+        
+        // internal Applications modes
+        var MODE = {
+            STANDARD : {value: 0, name: "StandardMode"}, 
+            TIER_RENAME: {value: 1, name: "TierRenameMode"}, 
+            TIER_RESIZE : {value: 2, name: "TierResizeMode"},
+            TIER_SELECT: {value: 3, name: "TierSelectMode"}
+        };
 
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
-
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
-        
-        this.mode = params.mode;
         this.showLeftPush = params.showLeftPush;
         this.fileSelect = params.fileSelect;
         this.menuLeft = params.menuLeft;
         this.menuMain = params.menuMain;
+        this.draggableBar = params.draggableBar;
+        this.timeline = params.timeline;
+        this.tiers = params.tiers;
+        this.internalCanvasWidth = params.internalCanvasWidth;
+        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
+        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+        this.viewPort = Object.create(EmuLabeller.ViewPort);
+        this.labParser = Object.create(EmuLabeller.LabFileParser);
+        this.tgParser = Object.create(EmuLabeller.TextGridParser);
+        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
+        this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
+        this.ssffParser = Object.create(EmuLabeller.SSFFparser);
+        this.ssffParser.init();
+        this.JSONval = Object.create(EmuLabeller.JSONvalidator);
+        this.JSONval.init();
+        this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
+        this.socketIOhandler.init();
 
+        // init tierInfos and ssffInfos
+        this.tierInfos = params.tierInfos;
+        this.ssffInfos = {data: [], canvases: []};
+        this.isDraging = false;
+        this.isDragingMiniMap = false;
+        this.isDragingBar = false;
+        this.dragingStart = 0;
+        this.isDragingTier = false;
+        this.resizeTierStart = 0;
+        this.subMenuOpen = false;
+        this.relativeY = 0;
+        this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
+        this.isModalShowing = false;
+        this.playMode = "vP"; // can be "vP", "sel" or "all"
+       
+        // true when in Tier Label Edit Mode 
+        // so the shortcuts dont interfere with shortcuts
+        this.textEditMode = false; 
+        
+        this.mode = params.mode;					// external mode "standard" or "server"
         switch(this.mode) {
         	case "standalone":
         		this.showLeftPush.style.display = "none";
@@ -39,61 +86,29 @@ var EmuLabeller = {
         }
         
 
-        this.draggableBar = params.draggableBar;
-        this.timeline = params.timeline;
-        this.tiers = params.tiers;
-        this.internalCanvasWidth = params.internalCanvasWidth;
-        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
-        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
-        
-
-        this.viewPort = Object.create(EmuLabeller.ViewPort);
-
-        this.labParser = Object.create(EmuLabeller.LabFileParser);
-        this.tgParser = Object.create(EmuLabeller.TextGridParser);
-
-        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
-        this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
-
-
-        this.ssffParser = Object.create(EmuLabeller.SSFFparser);
-        this.ssffParser.init();
-
-        this.JSONval = Object.create(EmuLabeller.JSONvalidator);
-        this.JSONval.init();
-
-        this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
-        this.socketIOhandler.init();
-
-        // init tierInfos and ssffInfos
-        this.tierInfos = params.tierInfos;
-
-        this.ssffInfos = {data: [], canvases: []};
-
-
-        this.isDraging = false;
-        this.isDragingMiniMap = false;
-        this.isDragingBar = false;
-        this.dragingStart = 0;
-        this.isDragingTier = false;
-
-        this.subMenuOpen = false;
-
-        this.relativeY = 0;
-
-        this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
-
-        this.isModalShowing = false;
-
-        this.playMode = "vP"; // can be "vP", "sel" or "all"
-       
-    
-        // true when in Tier Label Edit Mode 
-        // so the shortcuts dont interfere with shortcuts
-        this.textEditMode = false;        
+               
         
 
         //bindings
+        
+        // right mouse button in whole document
+        $(document).bind("contextmenu",function(e){
+            if(e.shiftkey) { // do sth in resize lable mode
+               
+            }
+            else if(my.viewPort.selTier!=-1    //multiple select if ANY lable is selected
+                     ) { //  and other lable on same tier is selected
+                console.log(e);
+            }
+            else { // any other -> open submenu
+                if(my.mode=="standalone")
+                 $('#fileGetterBtn').click();
+                if(my.mode=="server")
+                 my.openSubmenu();
+            }
+            return false;
+        });
+        
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
@@ -427,13 +442,19 @@ var EmuLabeller = {
             }
         }, false);
     },
+    
+    mouseIsInTier: function (curTier) {
+        if(emulabeller.viewPort.resizeTierStart==curTier)
+            return true;
+        return false;
+    },
 
     bindTierMouseDown: function (element, callback) {
         var my = this;
         element.addEventListener('mousedown', function (e) {
             if(e.shiftKey){
                 my.isDragingTier = true;
-                console.log("now isDragingTier is true");
+                my.resizeTierStart = emulabeller.viewPort.curMouseTierID;
                 // var relX = e.offsetX;
                 // var relY = e.offsetY;
                 // if (null === relX) { relX = e.layerX; }
