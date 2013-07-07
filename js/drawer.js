@@ -477,7 +477,7 @@ EmuLabeller.Drawer = {
                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
                         
                         if(curEv == vP.selBoundaries[0] && i == vP.selTier ){
-                            if(vP.segmentsLoaded) {
+                            if(vP.segmentsLoaded && emulabeller.internalMode !=  emulabeller.EDITMODE.LABEL_MOVE) {
                                 if( vP.selectedSegments[i][curEv] != vP.selectedSegments[i][curEv+1]  ) {
                                     curcc.fillStyle = "rgba(255, 0, 0, 1)";
                                     curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);

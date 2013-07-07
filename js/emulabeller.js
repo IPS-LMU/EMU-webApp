@@ -36,18 +36,21 @@ var EmuLabeller = {
             
             // EDITMODE when editing tiers
             LABEL_RENAME: {value: 1, name: "LabelRenameMode"},       // no keybindings exept enter -> save
-            
-            // when draging in the timeline (wave & spectro)
-            DRAGING_TIMELINE: {value: 2, name: "DragingTimelineMode"},     
+
+            // EDITMODE when editing tiers
+            LABEL_MOVE: {value: 2, name: "LabelRenameMode"},       // no keybindings exept enter -> save
             
             // when draging in a tier / multiple tiers
-            DRAGING_TIERS: {value: 3, name: "DragingTierMode"},     
+            LABEL_RESIZE: {value: 3, name: "DragingTierMode"},     
+
+            // when draging in the timeline (wave & spectro)
+            DRAGING_TIMELINE: {value: 4, name: "DragingTimelineMode"},     
             
             // when draging in the minimap
-            DRAGING_MINIMAP: {value: 4, name: "DragingMinimapMode"},  
+            DRAGING_MINIMAP: {value: 5, name: "DragingMinimapMode"},  
 
             // when draging the timeline resize bar
-            DRAGING_BAR: {value: 5, name: "DragingBarMode"}        
+            DRAGING_BAR: {value: 6, name: "DragingBarMode"}        
         };
         
         // set internal & external Modes
@@ -126,6 +129,7 @@ var EmuLabeller = {
         this.clickedOn = 0;
         this.tierCounter = 0;
         this.selectedSegments = [];
+        this.lastX = 0;
 
         // Initial Usage Mode Configuration
         
@@ -252,19 +256,28 @@ var EmuLabeller = {
                 my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
             }
             
-            if(e.shiftKey){
+            if(e.shiftKey && my.countSelected(my.viewPort.selTier)>0){
+                my.internalMode = my.EDITMODE.LABEL_RESIZE;
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
-                
                 if( my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]+1]  ) {
-                
-                my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                var leftSide = true;
-                if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample)) leftSide = false;
-                if(leftSide)
-                    my.viewPort.selectS = curSample;
-                else
-                    my.viewPort.selectE = curSample;
+                    my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
+                    var leftSide = true;
+                    if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample)) 
+                        leftSide = false;
+                    if(leftSide)
+                        my.viewPort.selectS = curSample;
+                    else
+                        my.viewPort.selectE = curSample;
                 }
+            }
+            else if(e.altKey && my.countSelected(my.viewPort.selTier)>0) {
+                my.internalMode = my.EDITMODE.LABEL_MOVE;
+                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+            }
+            else {
+                if(my.internalMode == my.EDITMODE.LABEL_MOVE) 
+                    my.internalMode = my.EDITMODE.STANDARD;
+                my.lastX = my.getX(e);
             }
               
         });  
