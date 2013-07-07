@@ -672,7 +672,7 @@ var EmuLabeller = {
     saveCanvasDoubleClick: function () {
         var my = this;
         var tier = my.tierInfos.tiers[my.viewPort.selTier];
-        var event = tier.events[my.viewPort.selSegment];   
+        var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];   
         var content = $("#editArea").val();
         event.label = content;
         my.drawBuffer();
