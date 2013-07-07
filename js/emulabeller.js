@@ -826,8 +826,9 @@ var EmuLabeller = {
         this.drawBuffer();
     },
     
-    countSelected: function () {
+    countSelected: function (row) {
         var count = 0;
+        if(null==row)
         for(var i=0; i<this.viewPort.selectedSegments.length;i++) {
             for(var j=0; j<this.viewPort.selectedSegments[i].length;j++){ 
                 if(this.viewPort.selectedSegments[i][j]) {
@@ -835,6 +836,13 @@ var EmuLabeller = {
                 }
             }
         }
+        else
+            for(var j=0; j<this.viewPort.selectedSegments[row].length;j++){ 
+                if(this.viewPort.selectedSegments[row][j]) {
+                    ++count;
+                }
+            }
+        
         return count;
     },
 
@@ -995,6 +1003,7 @@ var EmuLabeller = {
          var closest = dists.indexOf(Math.min.apply(Math, dists));
          this.viewPort.selBoundaries[0] = closest;
          this.viewPort.curMouseTierName = tierID;
+         this.drawBuffer();
         }
     },
 
