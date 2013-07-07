@@ -468,7 +468,7 @@ EmuLabeller.Drawer = {
                             curcc.fillStyle = this.params.waveColor;
                         }
                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
-                        if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID){
+                        if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierName){
                             curcc.fillStyle = "red";
                             curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
                             curcc.fillStyle = this.params.waveColor;

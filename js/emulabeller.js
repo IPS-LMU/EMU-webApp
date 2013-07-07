@@ -254,8 +254,6 @@ var EmuLabeller = {
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                //my.viewPort.selectS = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time;
-                //my.viewPort.selectE = curSample;
                 my.drawBuffer();
             }
               
@@ -482,6 +480,10 @@ var EmuLabeller = {
         return document.getElementById(e.srcElement.id).getAttribute("tier-id");
     }, 
     
+    getTierName: function(e) {
+        return e.srcElement.id;
+    },     
+    
     getElement: function(e) {
         return document.getElementById(e.srcElement.id);
     },     
@@ -522,7 +524,7 @@ var EmuLabeller = {
                 my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
             });                            
             $("#"+tName)[0].addEventListener('mousemove', function(e){
-                my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+                my.trackMouseInTiers(my.getX(e), tName);
             });                 
 
             emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
@@ -569,7 +571,7 @@ var EmuLabeller = {
                     my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
                 });            
                 $("#"+tName)[0].addEventListener('mousemove', function(e){
-                    my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+                    my.trackMouseInTiers(my.getX(e), tName);
                 });                 
                 emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
@@ -757,7 +759,7 @@ var EmuLabeller = {
             my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
         });                         
         $("#"+tName)[0].addEventListener('mousemove', function(e){
-            my.trackMouseInTiers(my.getX(e), my.getTierID(e));
+            my.trackMouseInTiers(my.getX(e), tName);
         });                 
 
         emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
@@ -991,7 +993,7 @@ var EmuLabeller = {
          }
          var closest = dists.indexOf(Math.min.apply(Math, dists));
          this.viewPort.selBoundaries[0] = closest;
-         this.viewPort.curMouseTierID = tierID;
+         this.viewPort.curMouseTierName = tierID;
         }
     },
 
