@@ -779,6 +779,8 @@ var EmuLabeller = {
     setMarkedEvent: function (percX, percY, elID){ 
         var my = this;
         var clickedTier = this.tierInfos.tiers[elID];
+        var lastTier = this.viewPort.selTier;
+        if(lastTier!=elID) my.rebuildSelect();
         this.viewPort.selTier = elID;
         var rXp = this.tierInfos.canvases[elID].width*percX;
         var rYp = this.tierInfos.canvases[elID].height*percY;
