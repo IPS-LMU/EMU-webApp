@@ -254,6 +254,9 @@ var EmuLabeller = {
             
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                
+                if( my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]+1]  ) {
+                
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
                 var leftSide = true;
                 if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample)) leftSide = false;
@@ -261,6 +264,7 @@ var EmuLabeller = {
                     my.viewPort.selectS = curSample;
                 else
                     my.viewPort.selectE = curSample;
+                }
             }
               
         });  
