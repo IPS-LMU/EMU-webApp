@@ -35,7 +35,7 @@ var emulabeller = (function () {
         showLeftPush : showLeftPush,
         internalCanvasWidth : '1560',      // in pixel
         internalCanvasHeightSmall : '64',  // in pixel -> Cans
-        internalCanvasHeightBig : '128',   // in pixel -> Wave & Spectro
+        internalCanvasHeightBig : '96',   // in pixel -> Wave & Spectro
         mode: 'server'                     // or standalone
     });
 

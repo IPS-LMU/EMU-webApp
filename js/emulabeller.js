@@ -255,7 +255,6 @@ var EmuLabeller = {
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                my.drawBuffer();
             }
               
         });  
@@ -554,7 +553,7 @@ var EmuLabeller = {
                 $('<canvas>').attr({
                     id: tName,
                     width: my.internalCanvasWidth + 'px',
-                    height: my.internalCanvasHeightSmall + 'px',
+                    height: my.internalCanvasHeightBig + 'px',
                     'tier-id': my.tierCounter
                 }).css({
                     class: 'canvasSettings',
@@ -585,13 +584,32 @@ var EmuLabeller = {
     
     rebuildSelect: function() {
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            this.selectedSegments[i];
             this.selectedSegments[i] = [];
             for (var k = 0; k < this.tierInfos.tiers[i].events.length; k++) 
                 this.selectedSegments[i][k] = false;
         }       
         this.viewPort.selectedSegments = this.selectedSegments;    
         this.viewPort.segmentsLoaded = true;
+    },
+    
+
+    isSelectNeighbour: function(row,newId) {
+        return (this.isRightSelectNeighbour(row,newId) || this.isLeftSelectNeighbour(row,newId));
+    },
+
+
+    isRightSelectNeighbour: function(row,newId) {
+        if(newId==this.viewPort.selectedSegments[row].length)
+            return false; 
+        else
+            return this.viewPort.selectedSegments[row][newId+1];
+    },
+    
+    isLeftSelectNeighbour: function(row,newId) {
+        if(newId==0)
+            return false; 
+        else
+            return this.viewPort.selectedSegments[row][newId-1];
     },
     
     
@@ -781,6 +799,7 @@ var EmuLabeller = {
         var clickedTier = this.tierInfos.tiers[elID];
         var lastTier = this.viewPort.selTier;
         if(lastTier!=elID) my.rebuildSelect();
+        
         this.viewPort.selTier = elID;
         var rXp = this.tierInfos.canvases[elID].width*percX;
         var rYp = this.tierInfos.canvases[elID].height*percY;
