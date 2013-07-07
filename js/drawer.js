@@ -475,10 +475,16 @@ EmuLabeller.Drawer = {
                         }
                         //console.log(cI.TierName+":"+vP.curMouseTierName);
                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
-                        if(curEv == vP.selBoundaries[0] && i == vP.selTier){
-                            curcc.fillStyle = "rgba(255, 0, 0, 1)";
-                            curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);
-                            curcc.fillStyle = this.params.waveColor;
+                        
+                        if(curEv == vP.selBoundaries[0] && i == vP.selTier ){
+                            if(vP.segmentsLoaded) {
+                                if(vP.selectedSegments[i][curEv] 
+                                   || emulabeller.isSelectNeighbour(i,curEv)) {
+                                    curcc.fillStyle = "rgba(255, 0, 0, 1)";
+                                    curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);
+                                    curcc.fillStyle = this.params.waveColor;
+                                }
+                            }
                         }
                         // draw label 
                         if(cI.events[curEv].label != 'H#'){

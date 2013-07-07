@@ -255,6 +255,12 @@ var EmuLabeller = {
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
+                var leftSide = true;
+                if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample)) leftSide = false;
+                if(leftSide)
+                    my.viewPort.selectS = curSample;
+                else
+                    my.viewPort.selectE = curSample;
             }
               
         });  
@@ -1016,9 +1022,9 @@ var EmuLabeller = {
          var closest = this.getNearestSegmentBoundry(clickedTier,curSample);
          this.viewPort.selBoundaries[0] = closest;
          this.viewPort.curMouseTierName = tierID;
-         this.drawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
          this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
-
+         this.drawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+         
         }
     },
     
