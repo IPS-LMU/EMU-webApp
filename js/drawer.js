@@ -478,8 +478,7 @@ EmuLabeller.Drawer = {
                         
                         if(curEv == vP.selBoundaries[0] && i == vP.selTier ){
                             if(vP.segmentsLoaded) {
-                                if(vP.selectedSegments[i][curEv] 
-                                   || emulabeller.isSelectNeighbour(i,curEv)) {
+                                if( vP.selectedSegments[i][curEv] != vP.selectedSegments[i][curEv+1]  ) {
                                     curcc.fillStyle = "rgba(255, 0, 0, 1)";
                                     curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);
                                     curcc.fillStyle = this.params.waveColor;
