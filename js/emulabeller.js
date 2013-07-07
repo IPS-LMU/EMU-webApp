@@ -800,12 +800,13 @@ var EmuLabeller = {
                 my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
                 var timeS = clickedTier.events[clickedEvtNr-1].time;
                 var timeE = clickedTier.events[clickedEvtNr].time;
-                if(this.viewPort.selectS!=0) {
+                var clicked = this.countSelected();
+                if(this.viewPort.selectS!=0 && clicked>1) {
                 	if(timeS<this.viewPort.selectS)
                 	    this.viewPort.selectS = timeS;
                 }
                 else this.viewPort.selectS = timeS;
-                if(this.viewPort.selectE!=0) {
+                if(this.viewPort.selectE!=0 && clicked>1) {
                     if(timeE>this.viewPort.selectE)
                 	    this.viewPort.selectE = timeE;
                 
@@ -820,6 +821,18 @@ var EmuLabeller = {
         }
 
         this.drawBuffer();
+    },
+    
+    countSelected: function () {
+        var count = 0;
+        for(var i=0; i<this.viewPort.selectedSegments.length;i++) {
+            for(var j=0; j<this.viewPort.selectedSegments[i].length;j++){ 
+                if(this.viewPort.selectedSegments[i][j]) {
+                    ++count;
+                }
+            }
+        }
+        return count;
     },
 
     showHideTierDial: function () {
