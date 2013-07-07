@@ -128,17 +128,17 @@ var EmuLabeller = {
 
         // Initial Usage Mode Configuration
         
-        switch(this.externalMode) {
-        	case this.USAGEMODE.STANDALONE:
-        		this.showLeftPush.style.display = "none";
+        switch(my.externalMode) {
+        	case my.USAGEMODE.STANDALONE:
+        		my.showLeftPush.style.display = "none";
         		break;
-        	case this.USAGEMODE.SERVER:
-        		this.fileSelect.style.display = "none";
+        	case my.USAGEMODE.SERVER:
+        		my.fileSelect.style.display = "none";
         		break;
         	default:
         	    alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
-        		this.fileSelect.style.display = "none";
-        		this.showLeftPush.style.display = "none";
+        		my.fileSelect.style.display = "none";
+        		my.showLeftPush.style.display = "none";
         		break;        	        	
         }
         
@@ -196,7 +196,7 @@ var EmuLabeller = {
                     my.removeCanvasDoubleClick();
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
                     var bL = my.backend.currentBuffer.length;
-                    var posInB = percents*bL;
+                    var posInB = my.getX(e)*bL;
                     var len = (my.viewPort.eS-my.viewPort.sS);
                     my.setView(posInB-len/2, posInB+len/2);
                 break;
