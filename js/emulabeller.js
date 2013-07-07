@@ -786,8 +786,7 @@ var EmuLabeller = {
         ++my.tierCounter;
         this.drawBuffer();
         this.rebuildSelect();
-    },
-
+    }, 
 
     setMarkedEventNew: function (percX, percY, elID){
         my.rebuildSelect();
@@ -811,52 +810,36 @@ var EmuLabeller = {
         
         if(clickedTier.type=="seg"){
             var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
-            for (var i = 0; i < clickedTier.events.length; i++) {
-                if (curSample < clickedTier.events[i].time) {
-                    var clickedEvtNr = i;
-                    break;
+            var clickedEvtNr = my.getSegmentIDbySample(clickedTier,curSample);
+            var clicked = this.countSelected(elID);
+            var timeS = clickedTier.events[clickedEvtNr-1].time;
+            var timeE = clickedTier.events[clickedEvtNr].time;
+            if(clicked>0) {
+                if(this.isSelectNeighbour(elID,clickedEvtNr)) {
+                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;                    
+                    if(this.viewPort.selectS!=0 && clicked>0) {
+            	        if(timeS<this.viewPort.selectS)
+                	        this.viewPort.selectS = timeS;
+                    }
+                    else this.viewPort.selectS = timeS;
+                    if(this.viewPort.selectE!=0 && clicked>0) {
+                        if(timeE>this.viewPort.selectE)
+            	            this.viewPort.selectE = timeE; 
+                    }
                 }
-            }
-            
-
-
-            //if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
-                //this.viewPort.selSegment = clickedEvtNr;
-                
-                
-                var clicked = this.countSelected(elID);
-                
-                var timeS = clickedTier.events[clickedEvtNr-1].time;
-                var timeE = clickedTier.events[clickedEvtNr].time;
-                console.log("c"+clicked);
-                if(clicked>0) {
-                    if(this.isSelectNeighbour(elID,clickedEvtNr)) {
-                        my.viewPort.selectedSegments[elID][clickedEvtNr] = true;                    
-                        if(this.viewPort.selectS!=0 && clicked>0) {
-                	        if(timeS<this.viewPort.selectS)
-                	            this.viewPort.selectS = timeS;
-                        }
-                        else this.viewPort.selectS = timeS;
-                        if(this.viewPort.selectE!=0 && clicked>0) {
-                            if(timeE>this.viewPort.selectE)
-                	            this.viewPort.selectE = timeE; 
-                        }
-                    }
-                    else {
-                        my.rebuildSelect();
-                        my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-                        this.viewPort.selectS = timeS;
-                        this.viewPort.selectE = timeE;
-                    }
-                } 
                 else {
+                    my.rebuildSelect();
                     my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
                     this.viewPort.selectS = timeS;
                     this.viewPort.selectE = timeE;
-                }   
-            }
-
-
+                }
+            } 
+            else {
+                my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+                this.viewPort.selectS = timeS;
+                this.viewPort.selectE = timeE;
+            }   
+        }
         this.drawBuffer();
     },
     
@@ -1030,16 +1013,42 @@ var EmuLabeller = {
         if(this.viewPort.selTier != -1 ) { 
          var clickedTier = this.tierInfos.tiers[this.viewPort.selTier];   
          var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
-         var dists = new Array(clickedTier.events.length);
-         for (var i = 0; i < clickedTier.events.length; i++) {
-            dists[i] = Math.abs(clickedTier.events[i].time - curSample);
-         }
-         var closest = dists.indexOf(Math.min.apply(Math, dists));
+         var closest = this.getNearestSegmentBoundry(clickedTier,curSample);
          this.viewPort.selBoundaries[0] = closest;
          this.viewPort.curMouseTierName = tierID;
          this.drawBuffer();
         }
     },
+    
+    getNearestSegmentBoundry: function (clickedTier,curSample){
+        var closest = null;
+        $.each(clickedTier.events, function(){
+            if (closest == null || Math.abs(this.time - curSample) < Math.abs(closest - curSample)) {
+                closest = this.time;
+            }
+        });  
+       return this.getSegmentIDbySample(clickedTier,closest)-1;      
+    },
+
+    getSegmentbySample: function (clickedTier,curSample){
+        var c = 0;
+        $.each(clickedTier.events, function(){
+            if (c==0 & curSample<this.time) {
+                c = this;
+            }
+       });      
+       return c;      
+    },
+    
+    getSegmentIDbySample: function (clickedTier,curSample){
+        var c = clickedTier.events.length;
+        $.each(clickedTier.events, function(){
+            if (curSample<this.time) {
+                --c;
+            }
+       });      
+       return c;      
+    },       
 
     /**
     use socketIOhandler to request something from server
