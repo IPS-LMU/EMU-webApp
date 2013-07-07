@@ -254,15 +254,8 @@ var EmuLabeller = {
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                if(my.viewPort.selTier==my.viewPort.selBoundaries[0]) {
-                    my.viewPort.selectS = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]-1].time;
-                    my.viewPort.selectE = curSample;
-                }
-                else {
-                    my.viewPort.selectS = curSample;
-                    my.viewPort.selectE = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]+1].time;
-                
-                }
+                //my.viewPort.selectS = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time;
+                //my.viewPort.selectE = curSample;
                 my.drawBuffer();
             }
               
@@ -803,12 +796,21 @@ var EmuLabeller = {
             }
 
             if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
-                this.viewPort.selSegment = clickedEvtNr;
-                console.log(my.viewPort.selectedSegments[elID][clickedEvtNr]);
+                //this.viewPort.selSegment = clickedEvtNr;
                 my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-                // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
-                this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
-                this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
+                var timeS = clickedTier.events[clickedEvtNr-1].time;
+                var timeE = clickedTier.events[clickedEvtNr].time;
+                if(this.viewPort.selectS!=0) {
+                	if(timeS<this.viewPort.selectS)
+                	    this.viewPort.selectS = timeS;
+                }
+                else this.viewPort.selectS = timeS;
+                if(this.viewPort.selectE!=0) {
+                    if(timeE>this.viewPort.selectE)
+                	    this.viewPort.selectE = timeE;
+                
+                }
+                else this.viewPort.selectE = timeE;
             }else{
                 this.viewPort.selSegment = -1;
             }

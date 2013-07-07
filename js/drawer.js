@@ -411,7 +411,7 @@ EmuLabeller.Drawer = {
 
             //highlight selected tier if no segment is selected
             if(vP.selSegment == -1 && vP.selTier == i){
-                curcc.fillStyle = markColor;
+                curcc.fillStyle = "rgba(255, 255, 0, 0.1)";
                 curcc.fillRect(0, 0, curCanv.width, curCanv.height);
                 curcc.fillStyle = "rgb(0, 0, 0)";
             }
