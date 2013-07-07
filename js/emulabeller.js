@@ -108,6 +108,7 @@ var EmuLabeller = {
         this.draggableBar = params.draggableBar;
         this.timeline = params.timeline;
         this.tiers = params.tiers;
+        this.showLeftPush = params.showLeftPush;
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
