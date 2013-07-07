@@ -799,7 +799,6 @@ var EmuLabeller = {
         var clickedTier = this.tierInfos.tiers[elID];
         var lastTier = this.viewPort.selTier;
         if(lastTier!=elID) my.rebuildSelect();
-        
         this.viewPort.selTier = elID;
         var rXp = this.tierInfos.canvases[elID].width*percX;
         var rYp = this.tierInfos.canvases[elID].height*percY;
@@ -818,31 +817,45 @@ var EmuLabeller = {
                     break;
                 }
             }
+            
 
-            if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
+
+            //if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
                 //this.viewPort.selSegment = clickedEvtNr;
-                my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+                
+                
+                var clicked = this.countSelected(elID);
+                
                 var timeS = clickedTier.events[clickedEvtNr-1].time;
                 var timeE = clickedTier.events[clickedEvtNr].time;
-                var clicked = this.countSelected();
-                if(this.viewPort.selectS!=0 && clicked>1) {
-                	if(timeS<this.viewPort.selectS)
-                	    this.viewPort.selectS = timeS;
-                }
-                else this.viewPort.selectS = timeS;
-                if(this.viewPort.selectE!=0 && clicked>1) {
-                    if(timeE>this.viewPort.selectE)
-                	    this.viewPort.selectE = timeE;
-                
-                }
-                else this.viewPort.selectE = timeE;
-            }else{
-                this.viewPort.selSegment = -1;
+                console.log("c"+clicked);
+                if(clicked>0) {
+                    if(this.isSelectNeighbour(elID,clickedEvtNr)) {
+                        my.viewPort.selectedSegments[elID][clickedEvtNr] = true;                    
+                        if(this.viewPort.selectS!=0 && clicked>0) {
+                	        if(timeS<this.viewPort.selectS)
+                	            this.viewPort.selectS = timeS;
+                        }
+                        else this.viewPort.selectS = timeS;
+                        if(this.viewPort.selectE!=0 && clicked>0) {
+                            if(timeE>this.viewPort.selectE)
+                	            this.viewPort.selectE = timeE; 
+                        }
+                    }
+                    else {
+                        my.rebuildSelect();
+                        my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+                        this.viewPort.selectS = timeS;
+                        this.viewPort.selectE = timeE;
+                    }
+                } 
+                else {
+                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+                    this.viewPort.selectS = timeS;
+                    this.viewPort.selectE = timeE;
+                }   
             }
 
-        }else{
-            this.viewPort.selSegment = -1;
-        }
 
         this.drawBuffer();
     },
