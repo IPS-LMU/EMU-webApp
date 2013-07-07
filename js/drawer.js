@@ -138,6 +138,7 @@ EmuLabeller.Drawer = {
 
         this.redraw(vP);
         this.drawTimeLine(vP);
+        this.drawTiers(vP);
          //console.log("progress called");
          //console.log(vP);
         if(ssffInfos){
@@ -242,8 +243,6 @@ EmuLabeller.Drawer = {
         else {
               
         }
-        // bad place to do it! REFACTOR...
-        this.drawTiers(vP);
     },
 
     /**
@@ -446,7 +445,7 @@ EmuLabeller.Drawer = {
 
             // draw name of tier
             curcc.strokeStyle = this.params.waveColor;
-            curcc.font="12px Verdana";
+            curcc.font="10px Verdana";
             curcc.strokeText(this.tierInfos.tiers[i].TierName, 5, 5+8);
             curcc.strokeText("(" + this.tierInfos.tiers[i].type +")", 5, 20+8);
 
@@ -461,7 +460,8 @@ EmuLabeller.Drawer = {
                         perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
                         curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
                         // mark selected segment with markColor == yellow
-                        if(curEv == vP.selSegment && vP.selTier == i){
+                        
+                        if(vP.segmentsLoaded && vP.selectedSegments[i][curEv]){
                             prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);
                             curcc.fillStyle = markColor;
                             curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);

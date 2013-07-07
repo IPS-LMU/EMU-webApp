@@ -69,6 +69,8 @@ var EmuLabeller = {
         }
             
         // Object Classes
+        // Viewport
+        this.viewPort = Object.create(EmuLabeller.ViewPort);        
         
         // Backed
         this.backend = Object.create(EmuLabeller.WebAudio);
@@ -78,8 +80,6 @@ var EmuLabeller = {
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
         
-        // Viewport
-        this.viewPort = Object.create(EmuLabeller.ViewPort);
         
         // Parser
         this.labParser = Object.create(EmuLabeller.LabFileParser);
@@ -124,6 +124,7 @@ var EmuLabeller = {
         this.playMode = "vP"; // can be "vP", "sel" or "all"
         this.clickedOn = 0;
         this.tierCounter = 0;
+        this.selectedSegments = [];
 
         // Initial Usage Mode Configuration
         
@@ -141,22 +142,6 @@ var EmuLabeller = {
         		break;        	        	
         }
         
-        // Initial Bindings
-        
-        /* right mouse button in whole document
-        $(document).bind("contextmenu",function(e){
-            if(my.viewPort.selTier!=-1    //multiple select if ANY lable is selected
-                     ) { //  and other lable on same tier is selected
-                console.log(e);
-            }
-            else { // any other -> open submenu
-                if(my.usageMode==my.MODE.STANDALONE)
-                    $('#fileGetterBtn').click();
-                if(my.usageMode==my.MODE.SERVER)
-                    my.openSubmenu();
-            }
-            return false;
-        });*/
         
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
@@ -191,9 +176,6 @@ var EmuLabeller = {
                     my.prepDownload();
                 break;
                 
-                
-                
-                    
                 case params.canvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
@@ -272,18 +254,23 @@ var EmuLabeller = {
             if(e.shiftKey){
                 var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                my.viewPort.selectE = curSample;
+                if(my.viewPort.selTier==my.viewPort.selBoundaries[0]) {
+                    my.viewPort.selectS = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]-1].time;
+                    my.viewPort.selectE = curSample;
+                }
+                else {
+                    my.viewPort.selectS = curSample;
+                    my.viewPort.selectE = my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]+1].time;
+                
+                }
                 my.drawBuffer();
             }
               
         });  
         
-        // All Mouse Up Functions  
+        // All Right Mouse Button Functions  
         document.addEventListener('contextmenu', function(e){   
-            
-            alert("hier");
             e.preventDefault();
-        
         });   
         
         $(window).resize(function() {
@@ -507,8 +494,6 @@ var EmuLabeller = {
     },     
     
 
-
-
     parseNewFile: function (readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
@@ -538,8 +523,11 @@ var EmuLabeller = {
                 my.canvasDoubleClick(e);
             });
             $("#"+tName)[0].addEventListener('click', function(e){
-                my.setMarkedEvent(my.getX(e), my.getY(e), $("#"+tName)[0].id);
-            });                
+                my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
+            }); 
+            $("#"+tName)[0].addEventListener('contextmenu', function(e){
+                my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
+            });                            
             $("#"+tName)[0].addEventListener('mousemove', function(e){
                 my.trackMouseInTiers(my.getX(e), my.getTierID(e));
             });                 
@@ -551,7 +539,6 @@ var EmuLabeller = {
                 // console.log("whaaaaaaaaaat",elID);
                 my.setMarkedEvent(percX, percY, elID);
             });
-            this.viewPort.selTier = this.tierInfos.tiers.length-1;
 
             this.drawBuffer();
         } else if(ft==2){
@@ -566,7 +553,8 @@ var EmuLabeller = {
         }else if(ft==3){
             emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.tgParser.parseFile(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
-                var tName = emulabeller.tierInfos.tiers[my.tierCounter].TierName;
+                
+                var tName = emulabeller.tierInfos.tiers[i].TierName;
                 $('<canvas>').attr({
                     id: tName,
                     width: my.internalCanvasWidth + 'px',
@@ -582,8 +570,11 @@ var EmuLabeller = {
                     my.canvasDoubleClick(e);
                 });
                 $("#"+tName)[0].addEventListener('click', function(e){
+                    my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
+                });        
+                $("#"+tName)[0].addEventListener('contextmenu', function(e){
                     my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
-                });                
+                });            
                 $("#"+tName)[0].addEventListener('mousemove', function(e){
                     my.trackMouseInTiers(my.getX(e), my.getTierID(e));
                 });                 
@@ -591,12 +582,22 @@ var EmuLabeller = {
                 emulabeller.drawer.addTier($("#"+tName)[0]); // SIC why is the drawer adding a tier???
                 ++my.tierCounter;  
             }
-            this.viewPort.selTier = this.tierInfos.tiers.length-1;
-
             this.drawBuffer();
-
+            this.rebuildSelect();
         }
     },
+    
+    rebuildSelect: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            this.selectedSegments[i];
+            this.selectedSegments[i] = [];
+            for (var k = 0; k < this.tierInfos.tiers[i].events.length; k++) 
+                this.selectedSegments[i][k] = false;
+        }       
+        this.viewPort.selectedSegments = this.selectedSegments;    
+        this.viewPort.segmentsLoaded = true;
+    },
+    
     
     canvasDoubleClick: function (e) {
         var my = this;
@@ -742,9 +743,6 @@ var EmuLabeller = {
             this.tierInfos.tiers.push({TierName: tName, type: "point", events: []});
         }
 
-        this.viewPort.selTier = this.tierInfos.tiers.length-1;
-        this.viewPort.selSegment = -1;
-
         $('<canvas>').attr({
             id: tName,
             width: my.internalCanvasWidth + 'px',
@@ -760,30 +758,42 @@ var EmuLabeller = {
             my.canvasDoubleClick(e);
         });
         $("#"+tName)[0].addEventListener('click', function(e){
+            my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
+        });   
+        $("#"+tName)[0].addEventListener('contextmenu', function(e){
             my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
-        });                
+        });                         
         $("#"+tName)[0].addEventListener('mousemove', function(e){
-            my.trackMouseInTiers(my.getX(e));
+            my.trackMouseInTiers(my.getX(e), my.getTierID(e));
         });                 
 
         emulabeller.tierInfos.canvases.push($("#"+tName)[0]);
         emulabeller.drawer.addTier($("#"+tName)[0]);
         ++my.tierCounter;
         this.drawBuffer();
+        this.rebuildSelect();
     },
 
-    setMarkedEvent: function (percX, percY, elID){ // SIC bad function name!! also adds labels if click is in circle
 
+    setMarkedEventNew: function (percX, percY, elID){
+        my.rebuildSelect();
+        my.setMarkedEvent(percX, percY, elID);
+    },
+
+    setMarkedEvent: function (percX, percY, elID){ 
+        var my = this;
         var clickedTier = this.tierInfos.tiers[elID];
         this.viewPort.selTier = elID;
         var rXp = this.tierInfos.canvases[elID].width*percX;
         var rYp = this.tierInfos.canvases[elID].height*percY;
         var sXp = this.tierInfos.canvases[elID].width*(this.viewPort.selectS / (this.viewPort.eS-this.viewPort.sS));
 
-        if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
+        /*if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
             console.log("hit the circle")
             this.addSegmentAtSelection();
-        } else if(clickedTier.type=="seg"){
+        }*/ 
+        
+        if(clickedTier.type=="seg"){
             var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
             for (var i = 0; i < clickedTier.events.length; i++) {
                 if (curSample < clickedTier.events[i].time) {
@@ -794,6 +804,8 @@ var EmuLabeller = {
 
             if(clickedTier.events.length > 0 && clickedTier.events[clickedEvtNr-1] && clickedTier.events[clickedEvtNr]){
                 this.viewPort.selSegment = clickedEvtNr;
+                console.log(my.viewPort.selectedSegments[elID][clickedEvtNr]);
+                my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
                 // this.setView(clickedTier.events[clickedEvtNr-1].time, clickedTier.events[clickedEvtNr].time);
                 this.viewPort.selectS = clickedTier.events[clickedEvtNr-1].time;
                 this.viewPort.selectE = clickedTier.events[clickedEvtNr].time;
@@ -953,17 +965,18 @@ var EmuLabeller = {
           };
     },
 
-    trackMouseInTiers: function(percX){
+    trackMouseInTiers: function(percX, tierID){
         my = this;
         if(this.viewPort.selTier != -1 ) { 
-        var clickedTier = this.tierInfos.tiers[this.viewPort.selTier];   
-        var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
-        var dists = new Array(clickedTier.events.length);
-        for (var i = 0; i < clickedTier.events.length; i++) {
+         var clickedTier = this.tierInfos.tiers[this.viewPort.selTier];   
+         var curSample = this.viewPort.sS + (this.viewPort.eS-this.viewPort.sS)*percX;
+         var dists = new Array(clickedTier.events.length);
+         for (var i = 0; i < clickedTier.events.length; i++) {
             dists[i] = Math.abs(clickedTier.events[i].time - curSample);
-        }
-        var closest = dists.indexOf(Math.min.apply(Math, dists));
-        this.viewPort.selBoundaries[0] = closest;
+         }
+         var closest = dists.indexOf(Math.min.apply(Math, dists));
+         this.viewPort.selBoundaries[0] = closest;
+         this.viewPort.curMouseTierID = tierID;
         }
     },
 

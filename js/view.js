@@ -11,6 +11,9 @@ EmuLabeller.ViewPort = {
 
         this.maxLength = bufferLength; // on init
 
+        this.segmentsLoaded = false;
+        this.selectedSegments = [];   // [Tiers][Segments]
+
         this.selTier = -1; // -1 == no segment selected
         this.selSegment = -1; // -1 == no segment selected
 
