@@ -845,21 +845,16 @@ var EmuLabeller = {
     
     countSelected: function (row) {
         var count = 0;
-        if(null==row)
-        for(var i=0; i<this.viewPort.selectedSegments.length;i++) {
-            for(var j=0; j<this.viewPort.selectedSegments[i].length;j++){ 
-                if(this.viewPort.selectedSegments[i][j]) {
-                    ++count;
-                }
-            }
+        if(null==row) { 
+            var row = 0;
+            $.each(this.viewPort.selectedSegments, function(){
+                ++$row;
+                $.each(this.viewPort.selectedSegments[row], function(){ ++count; });      
+            });      
         }
-        else
-            for(var j=0; j<this.viewPort.selectedSegments[row].length;j++){ 
-                if(this.viewPort.selectedSegments[row][j]) {
-                    ++count;
-                }
-            }
-        
+        else {
+            $.each(this.viewPort.selectedSegments[row], function(){ ++count; });      
+        }
         return count;
     },
 
