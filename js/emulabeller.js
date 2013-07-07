@@ -271,14 +271,18 @@ var EmuLabeller = {
                 }
             }
             else if(e.altKey && my.countSelected(my.viewPort.selTier)>0) {
+                
                 my.internalMode = my.EDITMODE.LABEL_MOVE;
-                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(my.getX(e)-my.lastX);
+                my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier],curSample);
+                
             }
             else {
-                if(my.internalMode == my.EDITMODE.LABEL_MOVE) 
-                    my.internalMode = my.EDITMODE.STANDARD;
-                my.lastX = my.getX(e);
+                if(my.internalMode == my.EDITMODE.LABEL_MOVE || my.EDITMODE.LABEL_RESIZE) 
+                    my.internalMode = my.EDITMODE.STANDARD;    
             }
+            my.lastX = my.getX(e);
+            
               
         });  
         
@@ -839,7 +843,7 @@ var EmuLabeller = {
             var timeE = clickedTier.events[clickedEvtNr].time;
             if(clicked>0) {
                 if(this.isSelectNeighbour(elID,clickedEvtNr)) {
-                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;                    
+                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
                     if(this.viewPort.selectS!=0 && clicked>0) {
             	        if(timeS<this.viewPort.selectS)
                 	        this.viewPort.selectS = timeS;
@@ -1073,6 +1077,21 @@ var EmuLabeller = {
             }
        });      
        return c;      
+    },    
+    
+    moveMultipleSegments: function (clickedTier,newTime){
+        var c = 0;
+        $.each(clickedTier.events, function(){
+            var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c+1];
+            var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
+            if(check1) 
+                this.time += newTime;
+            if(check1!=check2) 
+                if(check2)
+                    this.time += newTime;
+            ++c;
+            
+       });  
     },    
        
 
