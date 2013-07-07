@@ -351,6 +351,7 @@ var EmuLabeller = {
 
     drawBuffer: function (isNewlyLoaded) {
         var my = this;
+        //my.saveCanvasDoubleClick();
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
             this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
@@ -670,9 +671,8 @@ var EmuLabeller = {
     },      
     
     saveCanvasDoubleClick: function () {
-        var my = this;
-        var tier = my.tierInfos.tiers[my.viewPort.selTier];
-        var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];   
+        //var my = this;
+        var event = this.tierInfos.tiers[this.viewPort.selTier].events[this.getSelectedSegmentDoubleClick(this.viewPort.selTier)];   
         var content = $("#editArea").val();
         event.label = content;
         my.drawBuffer();
@@ -1016,7 +1016,9 @@ var EmuLabeller = {
          var closest = this.getNearestSegmentBoundry(clickedTier,curSample);
          this.viewPort.selBoundaries[0] = closest;
          this.viewPort.curMouseTierName = tierID;
-         this.drawBuffer();
+         this.drawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+         this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+
         }
     },
     
