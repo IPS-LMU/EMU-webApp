@@ -617,7 +617,7 @@ var EmuLabeller = {
         var my = this;
         if ($('#textAreaPopUp').length == 0) {
             var tier = my.tierInfos.tiers[my.viewPort.selTier];
-            var event = tier.events[my.viewPort.selSegment];
+            var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];
 		    var TextY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop+2;
             var all = my.viewPort.eS-my.viewPort.sS;
             var fracS = my.viewPort.selectS-my.viewPort.sS;
@@ -858,6 +858,11 @@ var EmuLabeller = {
         return count;
     },
 
+
+    getSelectedSegmentDoubleClick: function (row){   
+       return this.viewPort.selectedSegments[row].indexOf(true);      
+    },   
+
     showHideTierDial: function () {
         emulabeller.isModalShowing = true;
         $( "#dialog-messageSh" ).dialog({
@@ -1043,7 +1048,8 @@ var EmuLabeller = {
             }
        });      
        return c;      
-    },       
+    },    
+       
 
     /**
     use socketIOhandler to request something from server
