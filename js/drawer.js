@@ -16,7 +16,7 @@ EmuLabeller.Drawer = {
             if (!(key in params)) { params[key] = my.defaultParams[key]; }
         });
 
-        this.osciCanvas = params.canvas;
+        this.osciCanvas = params.osciCanvas;
         this.specCanvas = params.specCanvas;
         this.scrollCanvas = params.scrollCanvas;
 
@@ -46,7 +46,7 @@ EmuLabeller.Drawer = {
         this.scrollcc =  this.scrollCanvas.getContext('2d');
 
         this.tierInfos = params.tierInfos;
-        
+
         this.cacheImage = new Image();
 
         this.tierInfos.contexts = [];

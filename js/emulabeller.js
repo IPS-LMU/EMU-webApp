@@ -1,7 +1,7 @@
 /**
 Main Object of emuLVC
 it acts as the controller of the web app
-and primarily delegates methods to the drawer and
+and primarily delegates methods to the drawer/audio-backend and
 several other components 
 */
 
@@ -10,96 +10,97 @@ var EmuLabeller = {
     /**
     init function has to be called on object 
     to instantiate all its needed objects
-    @param params is a 
+    @param params is an object containing multiple
+    init vars (see main.js for details)
     */
-    
+
     init: function (params) {
         var my = this;
-        
+
         // define external Application mode Server or Standalone
         my.USAGEMODE = {
-            
+
             // show server menu, load external ressources
             SERVER : {value: 0, name: "Server"},
-            
+
             // show file menu, load local ressources
             STANDALONE : {value: 1, name: "Standalone"},
-            
+
             // alert an error if not configures in main.js
-            NOT_CONFIGURED : {value: 2, name: "NotConfigured"}            
+            NOT_CONFIGURED : {value: 2, name: "NotConfigured"}
         };
-        
+
         // define internal Applications Modes that may not interfere
         my.EDITMODE = {
             // EDITMODE at the beginning
             STANDARD : {value: 0, name: "StandardMode"},           // standard key bindings form main.js
-            
+
             // EDITMODE when editing tiers
             LABEL_RENAME: {value: 1, name: "LabelRenameMode"},       // no keybindings exept enter -> save
 
             // EDITMODE when editing tiers
             LABEL_MOVE: {value: 2, name: "LabelRenameMode"},       // no keybindings exept enter -> save
-            
+
             // when draging in a tier / multiple tiers
-            LABEL_RESIZE: {value: 3, name: "DragingTierMode"},     
+            LABEL_RESIZE: {value: 3, name: "DragingTierMode"},
 
             // when draging in the timeline (wave & spectro)
-            DRAGING_TIMELINE: {value: 4, name: "DragingTimelineMode"},     
-            
+            DRAGING_TIMELINE: {value: 4, name: "DragingTimelineMode"},
+
             // when draging in the minimap
-            DRAGING_MINIMAP: {value: 5, name: "DragingMinimapMode"},  
+            DRAGING_MINIMAP: {value: 5, name: "DragingMinimapMode"},
 
             // when draging the timeline resize bar
-            DRAGING_BAR: {value: 6, name: "DragingBarMode"}        
+            DRAGING_BAR: {value: 6, name: "DragingBarMode"}
         };
-        
+
         // set internal & external Modes
-        
+
         // internal standard at the beginning
         this.internalMode = my.EDITMODE.STANDARD;
-        
+
         // default is not configured
         this.externalMode = my.USAGEMODE.NOT_CONFIGURED;
-        
+
         // if parameter in main.js is set to server
-        if (params.mode=="server") {
+        if (params.mode == "server") {
             this.externalMode = my.USAGEMODE.SERVER;
         }
-            					
-        // if parameter in main.js is set to standalone           					
+
+        // if parameter in main.js is set to standalone		
         if (params.mode=="standalone") {
             this.externalMode = my.USAGEMODE.STANDALONE;
         }
-            
+
         // Object Classes
         // Viewport
-        this.viewPort = Object.create(EmuLabeller.ViewPort);        
-        
+        this.viewPort = Object.create(EmuLabeller.ViewPort);
+
         // Backed
         this.backend = Object.create(EmuLabeller.WebAudio);
         this.backend.init(params);
-        
+
         // Drawer
         this.drawer = Object.create(EmuLabeller.Drawer);
         this.drawer.init(params);
-        
-        
+
+
         // Parser
         this.labParser = Object.create(EmuLabeller.LabFileParser);
         this.tgParser = Object.create(EmuLabeller.TextGridParser);
-        
+
         // Spectrogram
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
         this.spectogramDrawer.init({specCanvas: params.specCanvas, drawer:this.drawer});
-        
+
         // ssff Parser
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
         this.ssffParser.init();
-        
+
         // json validator
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
         this.JSONval.init();
-        
+
         // socket class
         this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
         this.socketIOhandler.init();
@@ -115,10 +116,8 @@ var EmuLabeller = {
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
-        this.tierInfos = params.tierInfos;
 
         // other used variables
-        this.ssffInfos = {data: [], canvases: []};
         this.subMenuOpen = false;
         this.isModalShowing = false;
         this.dragingStart = 0;
@@ -131,57 +130,62 @@ var EmuLabeller = {
         this.selectedSegments = [];
         this.lastX = 0;
 
+        // infos filled by ssff/lab/textgrid parsers
+        this.ssffInfos = {data: [], canvases: []};
+        this.tierInfos = params.tierInfos;
+
+
         // Initial Usage Mode Configuration
-        
+
         switch(my.externalMode) {
-        	case my.USAGEMODE.STANDALONE:
-        		my.showLeftPush.style.display = "none";
-        		break;
-        	case my.USAGEMODE.SERVER:
-        		my.fileSelect.style.display = "none";
-        		break;
-        	default:
-        	    alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
-        		my.fileSelect.style.display = "none";
-        		my.showLeftPush.style.display = "none";
-        		break;        	        	
+            case my.USAGEMODE.STANDALONE:
+                my.showLeftPush.style.display = "none";
+                break;
+            case my.USAGEMODE.SERVER:
+                my.fileSelect.style.display = "none";
+                break;
+            default:
+                alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
+                my.fileSelect.style.display = "none";
+                my.showLeftPush.style.display = "none";
+                break;
         }
-        
-        
+
+        // bind progress callback of audio-backend
         this.backend.bindUpdate(function () {
             if (!my.backend.isPaused()) my.onAudioProcess();
         });
 
-        // All left Mouse Click Functions  
+        // All left mouse down Functions  
         document.addEventListener('mousedown', function(e){
             my.clickedOn = my.getElement(e).id;
             switch(my.clickedOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
                 break;
-                
+
                 case "cmd_addTierSeg":
                     my.addTier();
                 break;
-                                
+
                 case "cmd_addTierPoint":
                     my.addTier(true);
                 break;
-                                
+
                 case "cmd_removeTier":
                 case "cmd_showHideTier":
                     my.showHideTierDial();
                 break;
-                                
+
                 case "cmd_download":
                     my.prepDownload();
                 break;
-                                
+
                 case "cmd_download":
                     my.prepDownload();
                 break;
-                
-                case params.canvas.id:
+
+                case params.osciCanvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
@@ -189,14 +193,14 @@ var EmuLabeller = {
                     my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
                     my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
                 break;
-                    
+
                 case params.draggableBar.id:
                     my.internalMode = my.EDITMODE.DRAGING_BAR;
                     my.dragingStartY = event.clientY;
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetTiers = my.tiers.offsetHeight;
                 break;
-                
+
                 case params.scrollCanvas.id:
                     my.removeCanvasDoubleClick();
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
@@ -207,9 +211,9 @@ var EmuLabeller = {
                 break;
             }
 
-        }); 
- 
-        // All Mouse Up Functions  
+        });
+
+        // All mouse up Functions  
         document.addEventListener('mouseup', function(e){
             if(my.internalMode == my.EDITMODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
@@ -217,14 +221,14 @@ var EmuLabeller = {
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length,my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
-                    
+
             if(my.internalMode == my.EDITMODE.DRAGING_BAR){
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
                 my.internalMode = my.EDITMODE.STANDARD;
             }
-                
+
             if(my.internalMode == my.EDITMODE.DRAGING_MINIMAP){
                 var bL = my.backend.currentBuffer.length;
                 var posInB = percents*bL;
@@ -232,10 +236,10 @@ var EmuLabeller = {
                 my.setView(posInB-len/2, posInB+len/2);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
-            
-        });  
- 
-        // All Mouse Click Functions  
+
+        });
+
+        // All mouse move Functions  
         document.addEventListener('mousemove', function(e){
             if(my.internalMode == my.EDITMODE.DRAGING_TIMELINE){
                 my.viewPort.selectE = my.viewPort.sS+(my.viewPort.eS-my.viewPort.sS)*my.getX(e);
@@ -249,20 +253,22 @@ var EmuLabeller = {
                 var len = (my.viewPort.eS-my.viewPort.sS);
                 my.setView(posInB-len/2, posInB+len/2);
             }
-            
+
             if(my.internalMode == my.EDITMODE.DRAGING_BAR){
-                my.diffY = event.clientY - my.dragingStartY; 
+                my.diffY = event.clientY - my.dragingStartY;
                 my.timeline.style.height = (my.offsetTimeline+my.diffY)+"px";
                 my.tiers.style.top = (my.offsetTimeline+my.diffY-50)+"px";
             }
-            
+
+            var curSample;
+
             if(e.shiftKey && my.countSelected(my.viewPort.selTier)>0){
                 my.internalMode = my.EDITMODE.LABEL_RESIZE;
-                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
+                curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*my.getX(e);
                 if( my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]+1]  ) {
                     my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
                     var leftSide = true;
-                    if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample)) 
+                    if(Math.abs(my.viewPort.selectS-curSample) > Math.abs(my.viewPort.selectE-curSample))
                         leftSide = false;
                     if(leftSide)
                         my.viewPort.selectS = curSample;
@@ -271,32 +277,35 @@ var EmuLabeller = {
                 }
             }
             else if(e.altKey && my.countSelected(my.viewPort.selTier)>0) {
-                
+
                 my.internalMode = my.EDITMODE.LABEL_MOVE;
-                var curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(my.getX(e)-my.lastX);
+                curSample = my.viewPort.sS + (my.viewPort.eS-my.viewPort.sS)*(my.getX(e)-my.lastX);
                 my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier],curSample);
-                
+
             }
             else {
-                if(my.internalMode == my.EDITMODE.LABEL_MOVE || my.EDITMODE.LABEL_RESIZE) 
-                    my.internalMode = my.EDITMODE.STANDARD;    
+                if(my.internalMode == my.EDITMODE.LABEL_MOVE || my.EDITMODE.LABEL_RESIZE)
+                    my.internalMode = my.EDITMODE.STANDARD;
             }
             my.lastX = my.getX(e);
-            
-              
-        });  
-        
+
+        });
+
         // All Right Mouse Button Functions  
-        document.addEventListener('contextmenu', function(e){   
+        document.addEventListener('contextmenu', function(e){
             e.preventDefault();
-        });   
-        
+        });
+
         $(window).resize(function() {
             my.removeCanvasDoubleClick();
         });
 
     },
-
+    /**
+    callback for audio-backend
+    it is used to delegate an update event
+    to the drawer objects
+    */
     onAudioProcess: function () {
         var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
@@ -320,8 +329,6 @@ var EmuLabeller = {
             this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
             this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();
-            // console.log(this);
-            // this.playPause();
         }
 
     },
@@ -330,22 +337,21 @@ var EmuLabeller = {
     * play audio in certain EDITMODE
     * playMode can be vP, sel, all
     */
-
     playInMode: function (playMode) {
         var percS, percE;
 
         if(playMode == "vP" || playMode===null){
-            //this.boolPlaySelectedEDITMODE = false;
             this.playMode = "vP";
             //console.log("play vP");
+            //this.boolPlaySelectedEDITMODE = false;
             percS = this.viewPort.sS/this.backend.currentBuffer.length;
             percE = this.viewPort.eS/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
         }
         if(playMode == "sel" || playMode===null){
             this.playMode = "sel";
-            //this.boolPlaySelectedEDITMODE = true;
             //console.log("play selected");
+            //this.boolPlaySelectedEDITMODE = true;
             percS = this.viewPort.selectS/this.backend.currentBuffer.length;
             percE = this.viewPort.selectE/this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
@@ -358,16 +364,21 @@ var EmuLabeller = {
             this.backend.play(0, this.backend.getDuration());
 
         }
-
-        //this.backend.play(this.backend.getDuration() * percents);
-
     },
 
+    /**
+    delegate pause to backend 
+    */
     pause: function () {
         this.backend.pause();
     },
 
-    playPause: function () {
+    /**
+    toggles play in view mode
+    is called by play in view button
+    binding (default = space)
+    */
+    playPauseInView: function () {
         if (this.backend.paused) {
             //console.log("set to 0");
             this.playInMode("vP");
@@ -381,8 +392,8 @@ var EmuLabeller = {
         //my.saveCanvasDoubleClick();
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
-            this.spectogramDrawer.drawImage(this.backend.currentBuffer,this.viewPort);  
-			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos); 
+            this.spectogramDrawer.drawImage(this.backend.currentBuffer, this.viewPort);
+			this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
 

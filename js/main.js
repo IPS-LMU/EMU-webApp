@@ -8,7 +8,7 @@ var emulabeller = (function () {
 
     var tierInfos = {"tiers": [],  "canvases": []};
 
-    var canvas = document.querySelector('#wave');
+    var osciCanvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
     var draggableBar = document.querySelector('#dragBar');
@@ -20,7 +20,7 @@ var emulabeller = (function () {
 
 
     labeller.init({
-        canvas: canvas,
+        osciCanvas: osciCanvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
         waveColor: 'white',
@@ -60,7 +60,7 @@ var emulabeller = (function () {
         var isOpen = $('#specDialog').dialog('isOpen');
         if(!isOpen) {
             $('#specDialog').dialog('open');
-            $("#specDialog").dialog('moveToTop'); 
+            $("#specDialog").dialog('moveToTop');
             isOpen = true;
         }
         else {
@@ -129,7 +129,7 @@ var emulabeller = (function () {
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view
                 e.preventDefault();
-                emulabeller.playPause();
+                emulabeller.playPauseInView();
             }
             if (114 == e.keyCode) {
                 // R key -> play sel
