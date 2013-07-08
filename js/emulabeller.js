@@ -445,7 +445,7 @@ var EmuLabeller = {
      * that was loaded via fileAPI/websocket/xhr
      */
     newlyLoadedBufferReady: function() {
-        this.viewPort.init(1, this.backend.currentBuffer.length);
+        this.viewPort.init(0, this.backend.currentBuffer.length-1);
         this.drawBuffer(true);
 
     },

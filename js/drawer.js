@@ -16,6 +16,11 @@ EmuLabeller.Drawer = {
             if (!(key in params)) { params[key] = my.defaultParams[key]; }
         });
 
+        //OsciDrawer
+        this.osciDrawer = Object.create(EmuLabeller.Drawer.OsciDrawer);
+        this.osciDrawer.init();
+
+
         this.osciCanvas = params.osciCanvas;
         this.specCanvas = params.specCanvas;
         this.scrollCanvas = params.scrollCanvas;
@@ -151,12 +156,13 @@ EmuLabeller.Drawer = {
     drawBuffer: function (buffer, vP, isInitDraw, ssffInfos) {
 
         this.getPeaks(buffer, vP);
-        this.progress(0, vP, buffer.length, ssffInfos);
+        this.progress(0, vP, buffer.length-1, ssffInfos); // check length!!
         if(isInitDraw){
             console.log("initDraw");
-            this.drawMiniMap(vP);
+            // this.drawMiniMap(vP);
+            this.osciDrawer.redrawOsciOnCanvas(buffer, this.scrollCanvas, vP);
         }
-        this.drawScroll(vP, buffer.length);
+        // this.drawScroll(vP, buffer.length); //check length
         // this.drawTimeLine(vP);
     },
 
@@ -179,7 +185,7 @@ EmuLabeller.Drawer = {
 
             my.sTmpCtx.fillStyle = my.params.waveColor;
             my.sTmpCtx.fillRect(x, y, w, h);
-        })
+        });
 
     },
 
@@ -208,7 +214,7 @@ EmuLabeller.Drawer = {
             this.cc.strokeText(Math.floor(vP.eS), this.osciWidth-metrics.width-5, 5+8);
         }
         //draw vPselected
-        if (vP.selectS != 0 && vP.selectE != 0){
+        if (vP.selectS !== 0 && vP.selectE !== 0){
             var all = vP.eS-vP.sS;
             var fracS = vP.selectS-vP.sS;
             var procS = fracS/all;
