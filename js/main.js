@@ -11,7 +11,7 @@ var emulabeller = (function () {
     var osciCanvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
     var scrollCanvas = document.querySelector('#scrollbar');
-    var draggableBar = document.querySelector('#dragBar');
+    var draggableBar = document.querySelector('#resizer');
     var timeline = document.querySelector('#timeline');
     var tiers = document.querySelector('#tiers');
     var fileSelect = document.querySelector('#fileSelect');
@@ -33,9 +33,10 @@ var emulabeller = (function () {
         tiers : tiers,
         fileSelect : fileSelect,
         showLeftPush : showLeftPush,
-        internalCanvasWidth : '1560',      // in pixel
-        internalCanvasHeightSmall : '64',  // in pixel -> Cans
-        internalCanvasHeightBig : '96',   // in pixel -> Wave & Spectro
+        mainFont : '12px Verdana',
+        internalCanvasWidth : '2048',      // in pixel
+        internalCanvasHeightSmall : '128',  // in pixel -> Cans
+        internalCanvasHeightBig : '64',   // in pixel -> Wave & Spectro
         mode: 'standalone'                     // or standalone
     });
 

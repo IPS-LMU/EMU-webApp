@@ -101,6 +101,21 @@ var EmuLabeller = {
         if (params.mode === "standalone") {
             this.externalMode = my.USAGEMODE.STANDALONE;
         }
+        
+
+        // set main.js parameters
+        this.fileSelect = params.fileSelect;
+        this.menuLeft = params.menuLeft;
+        this.menuMain = params.menuMain;
+        this.draggableBar = params.draggableBar;
+        this.timeline = params.timeline;
+        this.tiers = params.tiers;
+        this.showLeftPush = params.showLeftPush;
+        this.internalCanvasWidth = params.internalCanvasWidth;
+        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
+        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+        this.mainFont = params.mainFont;
+        
 
         // Object Classes
         // Viewport
@@ -141,18 +156,6 @@ var EmuLabeller = {
         // socket class
         this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
         this.socketIOhandler.init();
-
-        // set main.js parameters
-        this.fileSelect = params.fileSelect;
-        this.menuLeft = params.menuLeft;
-        this.menuMain = params.menuMain;
-        this.draggableBar = params.draggableBar;
-        this.timeline = params.timeline;
-        this.tiers = params.tiers;
-        this.showLeftPush = params.showLeftPush;
-        this.internalCanvasWidth = params.internalCanvasWidth;
-        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
-        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
 
         // other used variables
         this.subMenuOpen = false;
@@ -295,9 +298,10 @@ var EmuLabeller = {
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                my.diffY = event.clientY - my.dragingStartY;
-                my.timeline.style.height = (my.offsetTimeline + my.diffY) + "px";
-                my.tiers.style.top = (my.offsetTimeline + my.diffY - 50) + "px";
+                var diff_Y = "+="+(event.clientY - my.dragingStartY)/2+"px";
+                $('#wave').css( "height", diff_Y );
+                $('#spectrogram').css( "height", diff_Y );                
+                my.dragingStartY = event.clientY;
             }
 
             var curSample;
@@ -339,6 +343,11 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.removeCanvasDoubleClick();
         });
+        
+        $('#wave').css( "height", "80px" );
+        $('#spectrogram').css( "height", "80px" );                
+        
+        
     },
 
     /**
@@ -706,14 +715,10 @@ var EmuLabeller = {
                 tName = emulabeller.tierInfos.tiers[i].TierName;
                 $('<canvas>').attr({
                     id: tName,
-                    width: my.internalCanvasWidth + 'px',
-                    height: my.internalCanvasHeightBig + 'px',
+                    width: my.internalCanvasWidth,
+                    height: my.internalCanvasHeightSmall,
                     'tier-id': my.tierCounter
-                }).css({
-                    class: 'canvasSettings',
-                    width: '98%',
-                    height: my.internalCanvasHeightSmall + 'px'
-                }).appendTo('#cans');
+                }).addClass("tierSettings").appendTo('#cans');
 
                 $("#" + tName)[0].addEventListener('dblclick', function(e) {
                     my.canvasDoubleClick(e);
@@ -1006,10 +1011,11 @@ var EmuLabeller = {
 
     countSelected: function(row) {
         var count = 0;
+        if(this.viewPort.selectedSegments.length==0) return 0;
         if (null == row) {
             var row = 0;
             $.each(this.viewPort.selectedSegments, function() {
-                ++$row;
+                ++row;
                 $.each(this.viewPort.selectedSegments[row], function() {
                     ++count;
                 });
