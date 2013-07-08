@@ -148,12 +148,12 @@ var emulabeller = (function () {
                 emulabeller.zoomViewPort(0);
             }
             if (100 == e.keyCode){
-                // D key -> move right
-                emulabeller.incrViewP(1);
+                // D key -> shift right
+                emulabeller.shiftViewP(1);
             }
             if (97 == e.keyCode){
-                // A key -> move left
-                emulabeller.incrViewP(0);
+                // A key -> shift left
+                emulabeller.shiftViewP(0);
             }
             if (113 == e.keyCode){
                 // Q key -> view all

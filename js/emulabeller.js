@@ -1,17 +1,17 @@
 /**
-Main Object of emuLVC
-it acts as the controller of the web app
-and primarily delegates methods to the drawer/audio-backend and
-several other components 
+* Main Object of emuLVC
+* it acts as the controller of the web app
+* and primarily delegates methods to the drawer/audio-backend and
+* several other components 
 */
 
 var EmuLabeller = {
 
     /**
-    init function has to be called on object 
-    to instantiate all its needed objects
-    @param params is an object containing multiple
-    init vars (see main.js for details)
+    * init function has to be called on object 
+    * to instantiate all its needed objects
+    * @param params is an object containing multiple
+    * init vars (see main.js for details)
     */
 
     init: function (params) {
@@ -299,12 +299,12 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.removeCanvasDoubleClick();
         });
-
     },
+
     /**
-    callback for audio-backend
-    it is used to delegate an update event
-    to the drawer objects
+    * callback for audio-backend
+    * it is used to delegate an update event
+    * to the drawer objects
     */
     onAudioProcess: function () {
         var percRel = 0;
@@ -330,7 +330,6 @@ var EmuLabeller = {
             this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();
         }
-
     },
 
     /**
@@ -367,16 +366,16 @@ var EmuLabeller = {
     },
 
     /**
-    delegate pause to backend 
+    * delegate pause to backend 
     */
     pause: function () {
         this.backend.pause();
     },
 
     /**
-    toggles play in view mode
-    is called by play in view button
-    binding (default = space)
+    * toggles play in view mode
+    * is called by play in view button
+    * binding (default = space)
     */
     playPauseInView: function () {
         if (this.backend.paused) {
@@ -387,6 +386,13 @@ var EmuLabeller = {
         }
     },
 
+    /**
+    * delegates draw buffer event
+    * to drawer objects
+    * 
+    * @param isNewlyLoaded bool to say if first time 
+    * buffer is displayed (see newlyLoadedBufferReady) 
+    */
     drawBuffer: function (isNewlyLoaded) {
         var my = this;
         //my.saveCanvasDoubleClick();
@@ -397,16 +403,20 @@ var EmuLabeller = {
         }
     },
 
+    /**
+    * method called after backend 
+    * has loaded+decoded audio file
+    * that was loaded via fileAPI/websocket/xhr
+    */
     newlyLoadedBufferReady: function(){
         this.viewPort.init(1, this.backend.currentBuffer.length);
-        //console.log(this.backend.currentBuffer.length);
         this.drawBuffer(true);
 
     },
 
     /**
-     * Loads an audio file via XHR.
-     */
+    * Loads an audio file via XHR.
+    */
      load: function (src) {
         var my = this;
         var xhr = new XMLHttpRequest();
@@ -423,6 +433,13 @@ var EmuLabeller = {
         xhr.send();
     },
 
+    /**
+    * set view port to start and end sample 
+    * (with several out-of-bounds like checks)
+    * 
+    * @param sSample start sample of view
+    * @param sSample end sample of view
+    */
     setView: function(sSample, eSample){
 
         var oldStart = this.viewPort.sS;
@@ -462,15 +479,21 @@ var EmuLabeller = {
             this.viewPort.eS = oldEnd;
         }
         this.drawBuffer();
-
     },
 
+    /**
+    * set view port to start and end sample 
+    * (with several out-of-bounds like checks)
+    * 
+    * @param zoomIn bool to specify zooming direction
+    * if set to true -> zoom in
+    * if set to false -> zoom out
+    */
+    zoomViewPort: function(zoomIn){
 
-    zoomViewPort: function(zoomInBool){
-        
         this.removeCanvasDoubleClick();
         var newStartS, newEndS;
-        if(zoomInBool){
+        if(zoomIn){
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
             newEndS = this.viewPort.eS - ~~((this.viewPort.eS-this.viewPort.sS)/4);
         }else{
@@ -479,13 +502,20 @@ var EmuLabeller = {
 
         }
         this.setView(newStartS, newEndS);
-
     },
 
-    incrViewP: function  (inc) {
+    /**
+    * moves view port to the right or to the left
+    * without changing the zoom
+    * 
+    * @param shiftRight bool to specify direction
+    * if set to true -> shift right
+    * if set to falce -> shift left 
+    */
+    shiftViewP: function  (shiftRight) {
         my.removeCanvasDoubleClick();
         var newStartS, newEndS;
-        if(inc){
+        if(shiftRight){
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
             newEndS = this.viewPort.eS + ~~((this.viewPort.eS-this.viewPort.sS)/4);
         }else{
@@ -494,40 +524,77 @@ var EmuLabeller = {
 
         }
         this.setView(newStartS, newEndS);
-
-
     },
 
+    /**
+    * zoom into selected part of signal
+    */
     zoomSel: function () {
         this.setView(this.viewPort.selectS, this.viewPort.selectE);
     },
 
-    
+    /**
+    * get x position in according element 
+    * that creates the event 
+    * 
+    * @param e is event that initiated the get
+    * @return x position in element
+    */
     getX: function(e) {
         var relX = e.offsetX;
         if (null === relX) { relX = e.layerX; }
         return relX/e.srcElement.clientWidth;
     },
-    
+
+    /**
+    * get y position in according element 
+    * that creates the event 
+    * 
+    * @param e is event that initiated the get
+    * @return y position in element
+    */
     getY: function(e) {
         var relY = e.offsetY;
         if (null === relY) { relX = e.layerY; }
         return relY/e.srcElement.clientHeight;
-    },    
+    },
 
+    /**
+    * get tier ID of the according (tier) element 
+    * that created the event 
+    * 
+    * @param e is event that initiated the get
+    * @return tier ID
+    */
     getTierID: function(e) {
         return document.getElementById(e.srcElement.id).getAttribute("tier-id");
-    }, 
-    
+    },
+
+    /**
+    * get tier name of the according (tier) element 
+    * that created the event 
+    * 
+    * @param e is event that initiated the get
+    * @return tier name
+    */
     getTierName: function(e) {
         return e.srcElement.id;
-    },     
-    
+    },
+
+    /**
+    * get element of the according element 
+    * that created the event 
+    *
+    * @param e is event that initiated the get
+    * @return element
+    */
     getElement: function(e) {
         return document.getElementById(e.srcElement.id);
-    },     
-    
+    },
 
+    /*
+    * delegates the parsing of diff
+    **/
     parseNewFile: function (readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
@@ -552,7 +619,7 @@ var EmuLabeller = {
                 width: '98%',
                 height: my.internalCanvasHeightSmall + 'px'
             }).appendTo('#cans');
-                
+
             $("#"+tName)[0].addEventListener('dblclick', function(e){
                 my.canvasDoubleClick(e);
             });
@@ -1107,8 +1174,9 @@ var EmuLabeller = {
        
 
     /**
-    use socketIOhandler to request something from server
-    @param message sting containing request statement from
+    * use socketIOhandler to request something from server
+    *
+    * @param message sting containing request statement from
     server "getUtts" and "stopServer" work for now
     */
     requestFromServer: function(message){
