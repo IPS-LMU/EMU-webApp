@@ -13,8 +13,8 @@ var EmuLabeller = {
      * @param params is an object containing multiple
      * init vars (see main.js for details)
      */
-
-    init: function(params) {
+    init: function (params) {
+        'use strict';
         var my = this;
 
         // define external Application mode Server or Standalone
@@ -93,12 +93,12 @@ var EmuLabeller = {
         this.externalMode = my.USAGEMODE.NOT_CONFIGURED;
 
         // if parameter in main.js is set to server
-        if (params.mode == "server") {
+        if (params.mode === "server") {
             this.externalMode = my.USAGEMODE.SERVER;
         }
 
         // if parameter in main.js is set to standalone     
-        if (params.mode == "standalone") {
+        if (params.mode === "standalone") {
             this.externalMode = my.USAGEMODE.STANDALONE;
         }
 
@@ -117,7 +117,11 @@ var EmuLabeller = {
 
         // Parser
         this.labParser = Object.create(EmuLabeller.LabFileParser);
-        this.tgParser = Object.create(EmuLabeller.TextGridParser);
+        // this.tgParser = Object.create(EmuLabeller.TextGridParser);
+
+        // IOhandler
+        this.iohandler = Object.create(EmuLabeller.IOhandler);
+        this.iohandler.init();
 
         // Spectrogram
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
@@ -696,7 +700,7 @@ var EmuLabeller = {
             this.drawBuffer();
             // console.log(emulabeller.ssffInfos);
         } else if (ft == 3) {
-            emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.tgParser.parseFile(readerRes));
+            emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
 
                 tName = emulabeller.tierInfos.tiers[i].TierName;

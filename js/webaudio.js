@@ -5,7 +5,7 @@ EmuLabeller.WebAudio = {
     },
 
 
-    // ac: new (window.AudioContext || window.webkitAudioContext),
+    // ac: new (window.AudioContext || window.webkitAudioContext)
     ac: new window.webkitAudioContext(),
 
 

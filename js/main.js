@@ -24,7 +24,7 @@ var emulabeller = (function () {
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
         waveColor: 'white',
-        progressColor: 'black',
+        progressColor: 'grey',
         loadingColor: 'purple',
         cursorColor: 'red',
         tierInfos: tierInfos,
@@ -44,12 +44,11 @@ var emulabeller = (function () {
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
      if(isiPad || autoLoad){
         labeller.load('data/msajc003.wav');
-        labeller.tgParser.load('data/msajc003.TextGrid');
+        labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 3);
      }
     
     
 	// initial  launch
-
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
