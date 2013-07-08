@@ -276,7 +276,7 @@ var EmuLabeller = {
         });
 
         // All mouse move Functions  
-        document.addEventListener('mousemove', function(e) {
+        window.addEventListener('mousemove', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
@@ -298,28 +298,30 @@ var EmuLabeller = {
 
             var curSample;
 
-            if (e.shiftKey && my.countSelected(my.viewPort.selTier) > 0) {
-                my.internalMode = my.EDITMODE.LABEL_RESIZE;
-                curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                if (my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0] + 1]) {
-                    my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                    var leftSide = true;
-                    if (Math.abs(my.viewPort.selectS - curSample) > Math.abs(my.viewPort.selectE - curSample))
-                        leftSide = false;
-                    if (leftSide)
-                        my.viewPort.selectS = curSample;
-                    else
-                        my.viewPort.selectE = curSample;
+            if (my.countSelected(my.viewPort.selTier) > 0 ) {
+
+                if (e.shiftKey) {
+                    my.internalMode = my.EDITMODE.LABEL_RESIZE;
+                    curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    if (my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0] + 1]) {
+                        my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
+                        var leftSide = true;
+                        if (Math.abs(my.viewPort.selectS - curSample) > Math.abs(my.viewPort.selectE - curSample))
+                            leftSide = false;
+                        if (leftSide)
+                            my.viewPort.selectS = curSample;
+                        else
+                            my.viewPort.selectE = curSample;
+                    }
+                } else if (e.altKey) {
+   
+                    my.internalMode = my.EDITMODE.LABEL_MOVE;
+                    curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e) - my.lastX);
+                    my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier], curSample);
+                } else {
+                    if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
+                        my.internalMode = my.EDITMODE.STANDARD; }
                 }
-            } else if (e.altKey && my.countSelected(my.viewPort.selTier) > 0) {
-
-                my.internalMode = my.EDITMODE.LABEL_MOVE;
-                curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e) - my.lastX);
-                my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier], curSample);
-
-            } else {
-                if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.EDITMODE.LABEL_RESIZE)
-                    my.internalMode = my.EDITMODE.STANDARD;
             }
             my.lastX = my.getX(e);
 
