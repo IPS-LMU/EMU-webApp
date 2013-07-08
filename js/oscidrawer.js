@@ -2,16 +2,16 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     init: function(params) {
         this.waveColor = 'white';
-
+        this.progressColor = 'grey';
         //
         this.peaks = [];
         this.maxPeak = -Infinity;
 
     },
 
-    getPeaks: function(buffer, vP, canvasWidth, canvasHeight) {
+    getPeaks: function(buffer, vP, canvas) {
 
-        var k = (vP.eS - vP.sS) / canvasWidth; // PCM Samples per new pixel
+        var k = (vP.eS - vP.sS) / canvas.width; // PCM Samples per new pixel
 
         this.peaks = [];
         // this.minPeak = Infinity;
@@ -22,7 +22,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         var relData = chan.subarray(vP.sS, vP.eS);
 
         if (k <= 1) {
-            // console.log("over sample exact!!!");
+            console.log("over sample exact!!!");
             relData = chan.subarray(vP.sS, vP.eS + 1);
             // this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
@@ -30,7 +30,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         } else {
 
 
-            for (var i = 0; i < canvasHeight; i++) {
+            for (var i = 0; i < canvas.width; i++) {
                 var sum = 0;
                 for (var c = 0; c < buffer.numberOfChannels; c++) {
 
@@ -58,6 +58,37 @@ EmuLabeller.Drawer.OsciDrawer = {
     },
 
     drawOsciOnCanvas: function(buffer, vP, canvas) {
+        //this.resizeCanvases();
+        var my = this;
+        var cc = canvas.getContext("2d");
+
+        // this.clear();
+
+        var k = (vP.eS - vP.sS) / canvas.width; // PCM Samples per new pixel
+        // Draw WebAudio buffer peaks using draw frame
+        if (this.peaks && k >= 1) {
+            this.peaks.forEach(function(peak, index) {
+                if (index !== 0) {
+                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], canvas);
+                }
+            });
+            // over sample exact
+        }
+        // else if (k < 1) {
+        //     this.cc.strokeStyle = this.params.waveColor;
+        //     this.cc.beginPath();
+        //     this.cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight);
+        //     for (var i = 1; i < this.peaks.length; i++) {
+        //         this.cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight);
+        //     }
+        //     this.cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight); // SIC SIC SIC tail
+        //     this.cc.stroke();
+        // }
+
+        // this.drawCursor();
+    },
+
+    drawVpOsciMarkup: function(buffer, vP, canvas) {
         var my = this;
         var cc = canvas.getContext("2d");
         //console.log(vP);
@@ -111,20 +142,53 @@ EmuLabeller.Drawer.OsciDrawer = {
             } else {
                 var tW = cc.measureText(Math.floor(vP.selectS)).width;
                 cc.strokeText(Math.floor(vP.selectS), posS - tW - 4, 10);
-                this.cc.strokeText(Math.floor(vP.selectE), posE + 5, 10);
+                cc.strokeText(Math.floor(vP.selectE), posE + 5, 10);
 
             }
         }
     },
 
+    drawFrame: function(index, value, max, prevPeak, canvas) {
+        var cc = canvas.getContext('2d');
+        //cur
+        var w = 1;
+        var h = Math.round(value * (canvas.height / max)); //rel to max
+        var x = index * w;
+        var y = Math.round((canvas.height - h) / 2);
+
+        //prev
+        var prevW = 1;
+        var prevH = Math.round(prevPeak * (canvas.height / max));
+        var prevX = (index - 1) * w;
+        var prevY = Math.round((canvas.height - prevH) / 2);
+
+
+        if (this.cursorPos >= x) {
+            cc.fillStyle = this.progressColor;
+            cc.strokeStyle = this.progressColor;
+        } else {
+            cc.fillStyle = this.waveColor;
+            cc.strokeStyle = this.waveColor;
+        }
+
+        cc.beginPath();
+        cc.moveTo(prevX, prevY);
+        cc.lineTo(x, y);
+        //this.cc.closePath();
+        cc.stroke();
+
+
+    },
 
     redrawOsciOnCanvas: function(buffer, canvas, vP) {
-        console.log("about to draw");
+        console.log("###########");
+        console.log("redrawing osci");
         osciWidth = canvas.width;
         osciHeight = canvas.height;
 
-        this.getPeaks(buffer, vP, canvas.width, canvas.height);
+        this.getPeaks(buffer, vP, canvas);
         console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
+        this.drawVpOsciMarkup(buffer, vP, canvas);
     }
 };

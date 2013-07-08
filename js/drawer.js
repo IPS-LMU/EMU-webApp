@@ -38,10 +38,15 @@ EmuLabeller.Drawer = {
         this.scrollHeight = 8;//this.scrollCanvas.clientHeight;
 
         //create offline canvas for minimap
-        this.sTmpCanvas = document.createElement("canvas");
-        this.sTmpCtx = this.sTmpCanvas.getContext("2d");
-        this.sTmpCanvas.width = this.scrollWidth;
-        this.sTmpCanvas.height = this.scrollCanvas.clientHeight;
+        // this.sTmpCanvas = document.createElement("canvas");
+        // this.sTmpCtx = this.sTmpCanvas.getContext("2d");
+        // this.sTmpCanvas.width = this.scrollWidth;
+        // this.sTmpCanvas.height = this.scrollCanvas.clientHeight;
+
+        this.inMemoryMiniMapCanvas = document.createElement("canvas");
+        // this.sTmpCtx = this.sTmpCanvas.getContext("2d");
+        this.inMemoryMiniMapCanvas.width = this.scrollWidth;
+        this.inMemoryMiniMapCanvas.height = this.scrollCanvas.clientHeight;
 
         // this.toRetinaRatio(this.sTmpCanvas, this.sTmpCtx);
 
@@ -159,34 +164,11 @@ EmuLabeller.Drawer = {
         this.progress(0, vP, buffer.length-1, ssffInfos); // check length!!
         if(isInitDraw){
             console.log("initDraw");
-            // this.drawMiniMap(vP);
-            this.osciDrawer.redrawOsciOnCanvas(buffer, this.scrollCanvas, vP);
+
+            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
         }
-        // this.drawScroll(vP, buffer.length); //check length
+        this.drawScrollMarkup(vP, buffer.length-1); //check length
         // this.drawTimeLine(vP);
-    },
-
-    drawMiniMap: function (vP) {
-        //this.resizeCanvases();
-        var my = this;
-        // this.clear();
-
-        var k = (vP.eS-vP.sS)/ this.osciWidth; // PCM Samples per new pixel
-        my.sTmpCtx.strokeStyle = this.params.waveColor;
-        my.sTmpCtx.font="8px Arial";
-
-
-        my.peaks.forEach(function (peak, index) {
-            // console.log("hack");
-            var w = 1;
-            var h = Math.round(peak * (my.scrollCanvas.clientHeight / my.maxPeak)); //rel to max
-            var x = index * w;
-            var y = Math.round((my.scrollCanvas.clientHeight - h)/2);
-
-            my.sTmpCtx.fillStyle = my.params.waveColor;
-            my.sTmpCtx.fillRect(x, y, w, h);
-        });
-
     },
 
 
@@ -334,12 +316,12 @@ EmuLabeller.Drawer = {
 
 
 
-    drawScroll: function (vP, bufferLength) {
+    drawScrollMarkup: function (vP, bufferLength) {
 
         var cH = this.scrollCanvas.clientHeight;
         this.scrollcc.clearRect(0, 0, this.scrollWidth, cH);
         //draw osci minimap
-        this.scrollcc.drawImage(this.sTmpCanvas, 0, 0, this.scrollWidth, cH);
+        this.scrollcc.drawImage(this.inMemoryMiniMapCanvas, 0, 0, this.scrollWidth, cH);
 
 
         var circCtl = 3;
@@ -358,10 +340,10 @@ EmuLabeller.Drawer = {
 
         this.scrollcc.lineTo(curCenter-curDiam, cH-1);
 
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1, 
+        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1,
             curCenter-curDiam-circCtl, cH-this.scrollHeight/2);
 
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-this.scrollHeight+1, 
+        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-this.scrollHeight+1,
              curCenter-curDiam, cH-this.scrollHeight+1);
 
         this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.6)";
@@ -372,9 +354,6 @@ EmuLabeller.Drawer = {
 
         this.scrollcc.strokeStyle = "rgba(120, 120, 120, 1)";
         this.scrollcc.stroke();
-
-
-
     },
 
     toRetinaRatio: function (canvas, context) {
