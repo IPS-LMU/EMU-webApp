@@ -163,8 +163,6 @@ EmuLabeller.Drawer = {
         this.getPeaks(buffer, vP);
         this.progress(0, vP, buffer.length-1, ssffInfos); // check length!!
         if(isInitDraw){
-            console.log("initDraw");
-
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
         }
         this.drawScrollMarkup(vP, buffer.length-1); //check length

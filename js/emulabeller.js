@@ -489,25 +489,25 @@ var EmuLabeller = {
         // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
         if (oldStart > this.viewPort.sS && oldEnd > this.viewPort.eS) {
             //moved left
-            if (this.viewPort.sS < 1) {
-                this.viewPort.sS = 1;
-                this.viewPort.eS = oldEnd + Math.abs(this.viewPort.sS) - 1;
+            if (this.viewPort.sS < 0) {
+                this.viewPort.sS = 0;
+                this.viewPort.eS = oldEnd + Math.abs(this.viewPort.sS);
             }
         }
         if (oldStart < this.viewPort.sS && oldEnd < this.viewPort.eS) {
             //moved right
-            if (this.viewPort.eS > this.backend.currentBuffer.length) {
+            if (this.viewPort.eS > this.backend.currentBuffer.length-1) {
                 this.viewPort.sS = oldStart;
-                this.viewPort.eS = this.backend.currentBuffer.length;
+                this.viewPort.eS = this.backend.currentBuffer.length-1;
             }
         }
 
         // check if viewPort in range
-        if (this.viewPort.sS < 1) {
-            this.viewPort.sS = 1;
+        if (this.viewPort.sS < 0) {
+            this.viewPort.sS = 0;
         }
-        if (this.viewPort.eS > this.backend.currentBuffer.length) {
-            this.viewPort.eS = this.backend.currentBuffer.length;
+        if (this.viewPort.eS > this.backend.currentBuffer.length-1) {
+            this.viewPort.eS = this.backend.currentBuffer.length-1;
         }
         if (this.viewPort.eS - this.viewPort.sS < 4) {
             this.viewPort.sS = oldStart;
@@ -548,7 +548,7 @@ var EmuLabeller = {
      * if set to falce -> shift left
      */
     shiftViewP: function(shiftRight) {
-        my.removeCanvasDoubleClick();
+        // my.removeCanvasDoubleClick();
         var newStartS, newEndS;
         if (shiftRight) {
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);
@@ -558,6 +558,7 @@ var EmuLabeller = {
             newEndS = this.viewPort.eS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
 
         }
+        console.log(this.viewPort.eS);
         this.setView(newStartS, newEndS);
     },
 
