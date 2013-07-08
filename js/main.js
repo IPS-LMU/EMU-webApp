@@ -170,10 +170,6 @@ var emulabeller = (function () {
                 if(emulabeller.externalMode==labeller.USAGEMODE.SERVER)
                  emulabeller.openSubmenu();
             }
-            if (104 == e.keyCode){
-                // H key
-                emulabeller.showHideTierDial();
-            }
             if (99 == e.keyCode){
                 // C key
                 emulabeller.editLabel();

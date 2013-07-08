@@ -592,9 +592,10 @@ var EmuLabeller = {
         return document.getElementById(e.srcElement.id);
     },
 
-    /*
-    * delegates the parsing of diff
-    **/
+    /**
+    * delegates the parsing of different file types
+    * after they have been loaded
+    */
     parseNewFile: function (readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
