@@ -48,7 +48,7 @@ EmuLabeller.TextGridParser = {
 
             }
             // labelJSO.push(tiers);
-            console.log(JSON.stringify(labelJSO, undefined, 2));
+            // console.log(JSON.stringify(labelJSO, undefined, 2));
             return labelJSO.tiers; // SIC! Return entire object!
 
         }else{

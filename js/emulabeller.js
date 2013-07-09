@@ -13,7 +13,7 @@ var EmuLabeller = {
      * @param params is an object containing multiple
      * init vars (see main.js for details)
      */
-    init: function (params) {
+    init: function(params) {
         'use strict';
         var my = this;
 
@@ -101,7 +101,7 @@ var EmuLabeller = {
         if (params.mode === "standalone") {
             this.externalMode = my.USAGEMODE.STANDALONE;
         }
-        
+
 
         // set main.js parameters
         this.fileSelect = params.fileSelect;
@@ -115,7 +115,7 @@ var EmuLabeller = {
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
         this.mainFont = params.mainFont;
-        
+
 
         // Object Classes
         // Viewport
@@ -298,15 +298,15 @@ var EmuLabeller = {
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                var diff_Y = "+="+(event.clientY - my.dragingStartY)/2+"px";
-                $('#wave').css( "height", diff_Y );
-                $('#spectrogram').css( "height", diff_Y );                
+                var diff_Y = "+=" + (event.clientY - my.dragingStartY) / 2 + "px";
+                $('#wave').css("height", diff_Y);
+                $('#spectrogram').css("height", diff_Y);
                 my.dragingStartY = event.clientY;
             }
 
             var curSample;
 
-            if (my.countSelected(my.viewPort.selTier) > 0 ) {
+            if (my.countSelected(my.viewPort.selTier) > 0) {
 
                 if (e.shiftKey) {
                     my.internalMode = my.EDITMODE.LABEL_RESIZE;
@@ -322,13 +322,14 @@ var EmuLabeller = {
                             my.viewPort.selectE = curSample;
                     }
                 } else if (e.altKey) {
-   
+
                     my.internalMode = my.EDITMODE.LABEL_MOVE;
                     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e) - my.lastX);
                     my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier], curSample);
                 } else {
                     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
-                        my.internalMode = my.EDITMODE.STANDARD; }
+                        my.internalMode = my.EDITMODE.STANDARD;
+                    }
                 }
             }
             my.lastX = my.getX(e);
@@ -343,11 +344,11 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.removeCanvasDoubleClick();
         });
-        
-        $('#wave').css( "height", "80px" );
-        $('#spectrogram').css( "height", "80px" );                
-        
-        
+
+        $('#wave').css("height", "80px");
+        $('#spectrogram').css("height", "80px");
+
+
     },
 
     /**
@@ -458,7 +459,7 @@ var EmuLabeller = {
      * that was loaded via fileAPI/websocket/xhr
      */
     newlyLoadedBufferReady: function() {
-        this.viewPort.init(0, this.backend.currentBuffer.length-1);
+        this.viewPort.init(0, this.backend.currentBuffer.length - 1);
         this.drawBuffer(true);
 
     },
@@ -509,9 +510,9 @@ var EmuLabeller = {
         }
         if (oldStart < this.viewPort.sS && oldEnd < this.viewPort.eS) {
             //moved right
-            if (this.viewPort.eS > this.backend.currentBuffer.length-1) {
+            if (this.viewPort.eS > this.backend.currentBuffer.length - 1) {
                 this.viewPort.sS = oldStart;
-                this.viewPort.eS = this.backend.currentBuffer.length-1;
+                this.viewPort.eS = this.backend.currentBuffer.length - 1;
             }
         }
 
@@ -519,8 +520,8 @@ var EmuLabeller = {
         if (this.viewPort.sS < 0) {
             this.viewPort.sS = 0;
         }
-        if (this.viewPort.eS > this.backend.currentBuffer.length-1) {
-            this.viewPort.eS = this.backend.currentBuffer.length-1;
+        if (this.viewPort.eS > this.backend.currentBuffer.length - 1) {
+            this.viewPort.eS = this.backend.currentBuffer.length - 1;
         }
         if (this.viewPort.eS - this.viewPort.sS < 4) {
             this.viewPort.sS = oldStart;
@@ -713,6 +714,14 @@ var EmuLabeller = {
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
 
                 tName = emulabeller.tierInfos.tiers[i].TierName;
+                // $('<button>↑</button>').attr({
+                //     id: "howdy"
+                // }).css({
+                //     class: 'canvasControlBar',
+                //     height: 64,
+                //     width: 48
+                // }).appendTo('#cans');
+
                 $('<canvas>').attr({
                     id: tName,
                     width: my.internalCanvasWidth,
@@ -1011,7 +1020,7 @@ var EmuLabeller = {
 
     countSelected: function(row) {
         var count = 0;
-        if(this.viewPort.selectedSegments.length==0) return 0;
+        if (this.viewPort.selectedSegments.length == 0) return 0;
         if (null == row) {
             var row = 0;
             $.each(this.viewPort.selectedSegments, function() {
@@ -1157,10 +1166,10 @@ var EmuLabeller = {
     // },
 
     /**
-    * generates dataURI to download the current 
-    * tierInfos as a JSON formated text file. This dataURI
-    * will then be presented as a link 
-    */
+     * generates dataURI to download the current
+     * tierInfos as a JSON formated text file. This dataURI
+     * will then be presented as a link
+     */
     prepDownload: function() {
         var MIME_TYPE = 'text/plain';
 
@@ -1170,10 +1179,9 @@ var EmuLabeller = {
 
         console.log(window.URL);
         var prevLink;
-        try{
+        try {
             prevLink = output.querySelector('a');
-        }
-        catch(err){
+        } catch (err) {
             console.log("no link");
         }
 
