@@ -710,37 +710,20 @@ var EmuLabeller = {
             emulabeller.tierInfos.tiers.push(newTiers[0]);
 
             tName = newTiers[0].TierName;
-            $('<canvas>').attr({
-                id: tName,
-                width: my.internalCanvasWidth + 'px',
-                height: my.internalCanvasHeightSmall + 'px',
-                'tier-id': tName
-            }).css({
-                class: 'canvasSettings ' + tName,
-                width: '98%',
-                height: my.internalCanvasHeightSmall + 'px'
-            }).appendTo('#cans');
 
-            $("#" + tName)[0].addEventListener('dblclick', function(e) {
-                my.canvasDoubleClick(e);
-            });
-            $("#" + tName)[0].addEventListener('click', function(e) {
-                my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
-            });
-            $("#" + tName)[0].addEventListener('contextmenu', function(e) {
-                my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
-            });
-            $("#" + tName)[0].addEventListener('mousemove', function(e) {
-                my.trackMouseInTiers(my.getX(e), tName);
-            });
-
+            my.addTiertoHtml(tName,tName,"tierSettings", "#cans");
+            $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e);});
+            $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));});
+            $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));});
+            $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName);});
             emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
             emulabeller.drawer.addTier($("#" + tName)[0]);
-            emulabeller.bindTierMouseUp($('#' + tName)[0], function(percX, percY, elID) {
-                // console.log(percents);
-                // console.log("whaaaaaaaaaat",elID);
-                my.setMarkedEvent(percX, percY, elID);
-            });
+            
+            //emulabeller.bindTierMouseUp($('#' + tName)[0], function(percX, percY, elID) {
+            //    // console.log(percents);
+            //     console.log("whaaaaaaaaaat"+elID);
+            //    my.setMarkedEvent(percX, percY, elID);
+            //});
 
             this.drawBuffer();
         } else if (ft == 2) {
@@ -755,6 +738,7 @@ var EmuLabeller = {
             emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
+                console.log(emulabeller.tierInfos.tiers[i]);
                 my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
                 $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e); });
                 $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));});
@@ -867,7 +851,7 @@ var EmuLabeller = {
             var procE = fracE / all;
             var posE = my.tierInfos.canvases[my.viewPort.selTier].clientWidth * procE;
             var mouseX2 = Math.floor(posE - posS - 5);
-            var TextX = Math.round(posS) + 12;
+            var TextX = Math.round(posS) + 30;
             var editHeight = Math.floor(e.srcElement.attributes.clientHeight);
             if (event !== null) {
                 var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + TextY + "px;left:" + TextX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + mouseX2 + "px;height:" + editHeight + "px;'>" + event.label + "</textarea>";
@@ -960,31 +944,13 @@ var EmuLabeller = {
                 events: []
             });
         }
+        
+        my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
 
-        $('<canvas>').attr({
-            id: tName,
-            width: my.internalCanvasWidth + 'px',
-            height: my.internalCanvasHeightSmall + 'px',
-            'tier-id': my.tierCounter
-        }).css({
-            class: 'canvasSettings',
-            width: '98%',
-            height: my.internalCanvasHeightSmall + 'px'
-        }).appendTo('#cans');
-
-        $("#" + tName)[0].addEventListener('dblclick', function(e) {
-            my.canvasDoubleClick(e);
-        });
-        $("#" + tName)[0].addEventListener('click', function(e) {
-            my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
-        });
-        $("#" + tName)[0].addEventListener('contextmenu', function(e) {
-            my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
-        });
-        $("#" + tName)[0].addEventListener('mousemove', function(e) {
-            my.trackMouseInTiers(my.getX(e), tName);
-        });
-
+        $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e);});
+        $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e)); });
+        $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e)); });
+        $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName); });
         emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
         emulabeller.drawer.addTier($("#" + tName)[0]);
         ++my.tierCounter;
