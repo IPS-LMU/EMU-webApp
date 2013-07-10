@@ -339,9 +339,10 @@ var EmuLabeller = {
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 var diff_Y = event.clientY - my.dragingStartY;
                 var cssDiff = "+=" + diff_Y / 2 + "px";
-                
                 $('#wave').css("height", cssDiff);
                 $('#spectrogram').css("height", cssDiff);
+                var offset = $('#tiers').offset();
+                $('#tiers').offset({ top: offset.top+ diff_Y, left: offset.left})
                 my.dragingStartY = event.clientY;
             }
 
