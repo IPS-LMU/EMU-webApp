@@ -115,7 +115,7 @@ EmuLabeller.spectogramDrawer = {
     	    }
         },
         
-        progress: function (percents, vP, bufferLength, ssffInfos) {
+        uiDrawUpdate: function (percents, vP, bufferLength, ssffInfos) {
             var my = this;
             my.vP = vP;
             my.percent = percents;
@@ -212,7 +212,7 @@ EmuLabeller.spectogramDrawer = {
             }
         }, 
         
-        drawImage: function(mybuf,vP) {
+        uiDraw: function(mybuf,vP) {
             var my = this;
             my.vP = vP;   
             my.newpcmperpixel = Math.round((my.vP.eS-my.vP.sS)/my.canvas.width);

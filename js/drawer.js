@@ -6,7 +6,8 @@ EmuLabeller.Drawer = {
         loadingColor: '#333',
         loadingBars: 20,
         barHeight: 1,
-        barMargin: 10
+        barMargin: 10,
+        mainFont : '12px Verdana'        
     },
 
     init: function(params) {
@@ -155,6 +156,7 @@ EmuLabeller.Drawer = {
     uiDrawUpdate: function(vP, bufferLength, ssffInfos) {
 
         console.log("uiDrawUpdate called");
+        my.vP = vP;
         // this.osciDrawer.drawCursor();
 
         //map percents to viewPort
@@ -218,7 +220,7 @@ EmuLabeller.Drawer = {
         this.cc.stroke();
 
         if (vP) {
-            this.cc.font = "12px Verdana";
+            this.cc.font = defaultParams.mainFont;
             var metrics = this.cc.measureText(Math.floor(vP.eS));
             this.cc.strokeText(Math.floor(vP.sS), 5, 5 + 8);
             this.cc.strokeText(Math.floor(vP.eS), this.osciWidth - metrics.width - 5, 5 + 8);

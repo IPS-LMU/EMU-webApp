@@ -33,7 +33,6 @@ var emulabeller = (function () {
         tiers : tiers,
         fileSelect : fileSelect,
         showLeftPush : showLeftPush,
-        mainFont : '12px Verdana',
         internalCanvasWidth : '2048',      // in pixel
         internalCanvasHeightSmall : '128',  // in pixel -> Cans
         internalCanvasHeightBig : '64',   // in pixel -> Wave & Spectro
