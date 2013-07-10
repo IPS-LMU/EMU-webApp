@@ -257,7 +257,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
+                my.drawer.uiDrawUpdate(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }

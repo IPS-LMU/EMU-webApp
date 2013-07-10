@@ -334,7 +334,7 @@ EmuLabeller.Drawer = {
         if(x > 0){
             this.cc.fillRect(x, y, w, h);
         }
-    },
+    }
 
     // toRetinaRatio: function (canvas, context) {
     //     var backingStoreRatio, ratio;
