@@ -238,11 +238,11 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_viewMoveLeft":
-                    my.incrViewP(0);
+                    my.shiftViewP(0);
                     break;
 
                 case "cmd_viewMoveRight":
-                    my.incrViewP(1);
+                    my.shiftViewP(1);
                     break;
 
                 case "cmd_viewZoomSelect":
