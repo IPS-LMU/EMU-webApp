@@ -337,9 +337,11 @@ var EmuLabeller = {
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                var diff_Y = "+=" + (event.clientY - my.dragingStartY) / 2 + "px";
-                $('#wave').css("height", diff_Y);
-                $('#spectrogram').css("height", diff_Y);
+                var diff_Y = event.clientY - my.dragingStartY;
+                var cssDiff = "+=" + diff_Y / 2 + "px";
+                
+                $('#wave').css("height", cssDiff);
+                $('#spectrogram').css("height", cssDiff);
                 my.dragingStartY = event.clientY;
             }
 
