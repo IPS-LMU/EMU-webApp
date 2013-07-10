@@ -945,7 +945,6 @@ var EmuLabeller = {
             this.subMenuOpen = false;
             $("#serverSelect").html("Open Menu");
             $("#menuLeft").removeClass("cbp-spmenu-open");
-            $("#menu").removeClass("cbp-spmenu-push-toright");
             $("#timeline").removeClass("cbp-spmenu-push-toright");
             $("#tierPush").removeClass("cbp-spmenu-push-toright");
             $("#menu-bottom").removeClass("cbp-spmenu-push-toright");
@@ -953,7 +952,6 @@ var EmuLabeller = {
             this.subMenuOpen = true;
             $("#serverSelect").html("Close Menu");
             $("#menuLeft").addClass("cbp-spmenu-open");
-            $("#menu").addClass("cbp-spmenu-push-toright");
             $("#timeline").addClass("cbp-spmenu-push-toright");
             $("#tierPush").addClass("cbp-spmenu-push-toright");
             $("#menu-bottom").addClass("cbp-spmenu-push-toright");

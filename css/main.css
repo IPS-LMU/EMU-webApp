@@ -118,6 +118,7 @@ canvas {
 }
 
 .tierPush{
+    position:absolute;
     overflow: none;
     z-index: 0;
     margin-top: 253px;
