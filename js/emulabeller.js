@@ -1001,7 +1001,11 @@ var EmuLabeller = {
             console.log("hit the circle")
             this.addSegmentAtSelection();
         }*/
+        if (clickedTier.type == "point") {
+            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+            var clickedEvtNr = my.getNearestSegmentBoundry(clickedTier, curSample);
 
+        }
         if (clickedTier.type == "seg") {
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
             var clickedEvtNr = my.getSegmentIDbySample(clickedTier, curSample);
