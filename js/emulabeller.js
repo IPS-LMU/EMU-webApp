@@ -153,9 +153,6 @@ var EmuLabeller = {
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
         this.JSONval.init();
 
-        // socket class
-        this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
-        this.socketIOhandler.init();
 
         // other used variables
         this.subMenuOpen = false;

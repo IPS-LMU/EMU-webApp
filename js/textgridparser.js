@@ -55,6 +55,18 @@ EmuLabeller.TextGridParser = {
             alert("bad header in textgrid file!!!");
         }
 
+    },
+
+    /**
+    * converts the internal labelJSO 
+    * to a string containing a textgrid file
+    * with the according segments
+    * @param labelJSO
+    */
+    toTextGrid: function(labelJSO){
+
+        console.log("not implemented yet");
+
     }
 
 };
