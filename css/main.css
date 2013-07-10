@@ -1,5 +1,6 @@
 html, body{
     overflow: auto;
+    overflow-x:hidden;
     height: 100%;
     width:100%;
     padding: 0px;
@@ -93,7 +94,7 @@ canvas {
 }
 
 #timeline {
-    position:relative;
+    position:fixed;
     overflow: none;
     top:40px;
     left:0px;
@@ -119,7 +120,7 @@ canvas {
 .tierPush{
     overflow: none;
     z-index: 0;
-    margin-top: 60px;
+    margin-top: 253px;
 }
 
 #tiers  {
@@ -242,8 +243,8 @@ canvas {
     margin-top: 5px;
 }
 .menu-bottom {
-    z-index: 2;
-    position:fixed;
+    z-index: 1;
+    position:absolute;
     bottom:0px;
     left:0px;
     width:100%;
