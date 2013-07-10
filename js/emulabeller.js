@@ -338,7 +338,7 @@ var EmuLabeller = {
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 var diff_Y = event.clientY - my.dragingStartY;
-                var now = ($('#spacer').height()+ diff_Y)+"px";
+                var now = ($('#spacer').height()+ Math.floor(diff_Y)*1.2)+"px";
                 $('#wave').css("height", "+=" + diff_Y / 2 + "px");
                 $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
                 $('#spacer').height(now);
