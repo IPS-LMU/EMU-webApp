@@ -708,14 +708,8 @@ var EmuLabeller = {
         } else if (ft == 1) {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
             emulabeller.tierInfos.tiers.push(newTiers[0]);
-
             tName = newTiers[0].TierName;
-
             my.addTiertoHtml(tName,tName,"tierSettings", "#cans");
-            $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e);});
-            $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));});
-            $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));});
-            $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName);});
             emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
             emulabeller.drawer.addTier($("#" + tName)[0]);
             
@@ -738,12 +732,7 @@ var EmuLabeller = {
             emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
-                console.log(emulabeller.tierInfos.tiers[i]);
                 my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
-                $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e); });
-                $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));});
-                $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));});
-                $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName);});
                 emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
                 emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
                 ++my.tierCounter;
@@ -753,13 +742,33 @@ var EmuLabeller = {
         }
     },
 
-    addTiertoHtml: function(myName, myID, myCssClass, appendTo) {
+    addTiertoHtml: function(myName, myID, myCssClass, myAppendTo) {
         $('<canvas>').attr({
             id: myName,
             width: this.internalCanvasWidth,
             height: this.internalCanvasHeightSmall,
             'tier-id': myID
-        }).addClass(myCssClass).appendTo(appendTo);    
+        }).addClass(myCssClass).appendTo(myAppendTo);
+        
+        $("#" + myName).bind("click",function(event){
+            emulabeller.setMarkedEventNew(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
+        });    
+        $("#" + myName).bind("dblclick",function(event){
+            emulabeller.canvasDoubleClick(event.originalEvent);
+        });    
+        $("#" + myName).bind("contextmenu",function(event){
+            emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
+        });     
+        $("#" + myName).bind("mousemove",function(event){
+            emulabeller.trackMouseInTiers(emulabeller.getX(event.originalEvent), myName);
+        });     
+        $("#" + myName).bind("mouseup",function(event){
+            //myMouseUp(e);
+        });     
+        $("#" + myName).bind("mousedown",function(event){
+            //myMouseDown(e);
+        });    
+
     },
 
     /**
@@ -944,13 +953,7 @@ var EmuLabeller = {
                 events: []
             });
         }
-        
         my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
-
-        $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e);});
-        $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e)); });
-        $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e)); });
-        $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName); });
         emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
         emulabeller.drawer.addTier($("#" + tName)[0]);
         ++my.tierCounter;
@@ -1022,6 +1025,7 @@ var EmuLabeller = {
                 });
             });
         } else {
+            if (this.viewPort.selectedSegments[row].length == 0) return 0;
             $.each(this.viewPort.selectedSegments[row], function() {
                 ++count;
             });
