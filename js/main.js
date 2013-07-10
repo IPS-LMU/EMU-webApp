@@ -120,9 +120,22 @@ var emulabeller = (function () {
         },
     false);
 
+
+    document.addEventListener('keyup', function (e) {
+        // spacebar
+        if(!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (27 == code) {
+                emulabeller.saveCanvasDoubleClick();
+                emulabeller.removeCanvasDoubleClick();
+            }
+        }
+    });
+    
     // keypress bindings
     document.addEventListener('keypress', function (e) {
         // spacebar
+        
         if(!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME){
 
             if (32 == e.keyCode) {
