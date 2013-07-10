@@ -5,6 +5,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
 
+        this.cursorColor = 'red';
+
         //
         this.peaks = [];
         this.maxPeak = -Infinity;
@@ -90,7 +92,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         // this.drawCursor();
     },
 
-    drawVpOsciMarkup: function(buffer, vP, canvas) {
+    drawVpOsciMarkup: function(buffer, canvas, vP) {
         var my = this;
         var cc = canvas.getContext("2d");
         //console.log(vP);
@@ -183,6 +185,12 @@ EmuLabeller.Drawer.OsciDrawer = {
     },
 
     redrawOsciOnCanvas: function(buffer, canvas, vP) {
+        var cH = canvas.height;
+        var cW = canvas.width;
+
+        canvascc = canvas.getContext('2d');
+        canvascc.clearRect(0, 0, cW, cH);
+
         console.log("###########");
         console.log("redrawing osci");
         osciWidth = canvas.width;
@@ -191,7 +199,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.getPeaks(buffer, vP, canvas);
         // console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
-        this.drawVpOsciMarkup(buffer, vP, canvas);
     },
 
     /**
@@ -204,11 +211,11 @@ EmuLabeller.Drawer.OsciDrawer = {
     */
     drawScrollMarkup: function(vP, canvas, inMemoryCanvas, bufferLength){
 
-        var cH = canvas.clientHeight;
-        var cW = canvas.clientWidth;
+        var cH = canvas.height;
+        var cW = canvas.width;
         canvascc = canvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
-        
+
         //draw osci minimap
         canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
 

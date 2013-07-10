@@ -21,5 +21,7 @@ EmuLabeller.ViewPort = {
 
         this.selectSPixel = 0;
         this.selectEPixel = 0;
+
+        this.curCursorPosInPercent = 0.5;
     }
 };

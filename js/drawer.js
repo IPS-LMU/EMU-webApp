@@ -16,10 +16,19 @@ EmuLabeller.Drawer = {
             if (!(key in params)) { params[key] = my.defaultParams[key]; }
         });
 
-        //OsciDrawer
+        // osci drawer
         this.osciDrawer = Object.create(EmuLabeller.Drawer.OsciDrawer);
         this.osciDrawer.init();
 
+        // TODO spectrogram drawer
+
+        // SSFF drawer
+        this.SSFFDrawer = Object.create(EmuLabeller.Drawer.SSFFDrawer);
+        this.SSFFDrawer.init();
+
+        // tier drawer
+        this.tierDrawer = Object.create(EmuLabeller.Drawer.TierDrawer);
+        this.tierDrawer.init();
 
         this.osciCanvas = params.osciCanvas;
         this.specCanvas = params.specCanvas;
@@ -141,32 +150,47 @@ EmuLabeller.Drawer = {
     }//else
     },
 
-    progress: function (percents, vP, bufferLength, ssffInfos) {
+    uiDrawUpdate: function (percents, vP, bufferLength, ssffInfos) {
 
         //map percents to viewPort
-        var sInB = percents*bufferLength;
-        this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
+        // var sInB = percents*bufferLength;
+        // this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
 
-        this.redraw(vP);
-        this.drawTimeLine(vP);
-        this.drawTiers(vP);
-         // console.log("progress called");
+        // console.log(percents)
+        // this.redraw(vP);
+        // this.drawTimeLine(vP);
+
+        // this.drawTiers(vP);
+        
+        console.log("uiDrawUpdate called");
          //console.log(vP);
-        if(ssffInfos){
-            if(ssffInfos.data.length > 0){
-                this.drawSSFF(ssffInfos, vP);
-            }
-        }
+        // if(ssffInfos){
+        //     if(ssffInfos.data.length > 0){
+        //         this.drawSSFF(ssffInfos, vP);
+        //     }
+        // }
     },
 
     drawBuffer: function (buffer, vP, isInitDraw, ssffInfos) {
 
-        this.getPeaks(buffer, vP);
-        this.progress(0, vP, buffer.length-1, ssffInfos);
+        // draw osci canvas with vP markup
+        this.osciDrawer.redrawOsciOnCanvas(buffer, this.osciCanvas, vP);
+        this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
+
+        // TODO draw spectrogram
+
+        // draw SSFF canvases
+
+
+        // draw tiers
+        this.tierDrawer.drawTiers(this.tierInfos, vP);
+
+        // this.progress(0, vP, buffer.length-1, ssffInfos);
         if(isInitDraw){
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
+            // this.osciDrawer.drawVpOsciMarkup(buffer, vP, this.inMemoryMiniMapCanvas);
         }
-        // this.drawScrollMarkup(vP, buffer.length-1);
+
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length-1);
         // this.drawTimeLine(vP);
     },
@@ -312,217 +336,217 @@ EmuLabeller.Drawer = {
         }
     },
 
-    toRetinaRatio: function (canvas, context) {
-        var backingStoreRatio, ratio;
-        var devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
+    // toRetinaRatio: function (canvas, context) {
+    //     var backingStoreRatio, ratio;
+    //     var devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
 
-        if (devicePixelRatio !== backingStoreRatio) {
+    //     if (devicePixelRatio !== backingStoreRatio) {
 
-            //waveCanvas
-            var oldWidth = canvas.clientWidth;
-            var oldHeight = canvas.clientHeight;
+    //         //waveCanvas
+    //         var oldWidth = canvas.clientWidth;
+    //         var oldHeight = canvas.clientHeight;
 
-            canvas.width = oldWidth * ratio;
-            canvas.height = oldHeight * ratio;
+    //         canvas.width = oldWidth * ratio;
+    //         canvas.height = oldHeight * ratio;
 
-            canvas.style.width = oldWidth + 'px';
-            canvas.style.height = oldHeight + 'px';
+    //         canvas.style.width = oldWidth + 'px';
+    //         canvas.style.height = oldHeight + 'px';
 
-            // now scale the context to counter
-            // the fact that we've manually scaled
-            // our canvas element
-            context.scale(ratio, ratio);
-        }
-    },
+    //         // now scale the context to counter
+    //         // the fact that we've manually scaled
+    //         // our canvas element
+    //         context.scale(ratio, ratio);
+    //     }
+    // }
 
-    drawTiers: function(vP) {
-        // console.log(this.tierInfos.contexts.length);
-        //console.log(vP);
-        var markColor = "rgba(255, 255, 0, 0.7)";
+    // drawTiers: function(vP) {
+    //     // console.log(this.tierInfos.contexts.length);
+    //     //console.log(vP);
+    //     var markColor = "rgba(255, 255, 0, 0.7)";
 
-        var curcc;
-        var curCanv;
-        for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
-            //console.log("here");
-            curCanv = this.tierInfos.canvases[i];
-            curcc = this.tierInfos.contexts[i];
-            var curCanHeight = curCanv.height;
-            var curCanWidth = curCanv.width;
-            curcc.clearRect(0, 0, curCanWidth, curCanHeight);
+    //     var curcc;
+    //     var curCanv;
+    //     for (var i =0; i<=this.tierInfos.contexts.length - 1 ; i++) {
+    //         //console.log("here");
+    //         curCanv = this.tierInfos.canvases[i];
+    //         curcc = this.tierInfos.contexts[i];
+    //         var curCanHeight = curCanv.height;
+    //         var curCanWidth = curCanv.width;
+    //         curcc.clearRect(0, 0, curCanWidth, curCanHeight);
 
-            //highlight selected tier 
-            if(vP.selTier == i){
-                curcc.fillStyle = "rgba(255, 255, 255, 0.07)";
-                curcc.fillRect(0, 0, curCanv.width, curCanv.height);
-                curcc.fillStyle = "rgb(0, 0, 0)";
-            }
-            // console.log("------------");
-            // console.log(vP.selTier);
-            // console.log(vP.selSegment);
+    //         //highlight selected tier 
+    //         if(vP.selTier == i){
+    //             curcc.fillStyle = "rgba(255, 255, 255, 0.07)";
+    //             curcc.fillRect(0, 0, curCanv.width, curCanv.height);
+    //             curcc.fillStyle = "rgb(0, 0, 0)";
+    //         }
+    //         // console.log("------------");
+    //         // console.log(vP.selTier);
+    //         // console.log(vP.selSegment);
 
-            var all = vP.eS-vP.sS;
-            var fracS = vP.selectS-vP.sS;
-            var procS = fracS/all;
-            var posS = this.osciWidth*procS;
+    //         var all = vP.eS-vP.sS;
+    //         var fracS = vP.selectS-vP.sS;
+    //         var procS = fracS/all;
+    //         var posS = this.osciWidth*procS;
 
-            var fracE = vP.selectE-vP.sS;
-            var procE = fracE/all;
-            var posE = this.osciWidth*procE;
+    //         var fracE = vP.selectE-vP.sS;
+    //         var procE = fracE/all;
+    //         var posE = this.osciWidth*procE;
 
-            curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
-            curcc.beginPath();
-            curcc.moveTo(posS,0);
-            curcc.lineTo(posS,curCanHeight);
-            curcc.moveTo(posE,0);
-            curcc.lineTo(posE,curCanHeight);
-            curcc.stroke();
+    //         curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+    //         curcc.beginPath();
+    //         curcc.moveTo(posS,0);
+    //         curcc.lineTo(posS,curCanHeight);
+    //         curcc.moveTo(posE,0);
+    //         curcc.lineTo(posE,curCanHeight);
+    //         curcc.stroke();
 
-            //cirle with diam 5 for clicking range
-            if(vP.selectS == vP.selectE){
-                curcc.beginPath();
-                curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
-                curcc.stroke();
-            }
+    //         //cirle with diam 5 for clicking range
+    //         if(vP.selectS == vP.selectE){
+    //             curcc.beginPath();
+    //             curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
+    //             curcc.stroke();
+    //         }
 
-            // draw name of tier
-            curcc.strokeStyle = this.params.waveColor;
-            curcc.font="12px Verdana";
-            curcc.strokeText(this.tierInfos.tiers[i].TierName, 5, 5+8);
-            curcc.strokeText("(" + this.tierInfos.tiers[i].type +")", 5, 20+8);
+    //         // draw name of tier
+    //         curcc.strokeStyle = this.params.waveColor;
+    //         curcc.font="12px Verdana";
+    //         curcc.strokeText(this.tierInfos.tiers[i].TierName, 5, 5+8);
+    //         curcc.strokeText("(" + this.tierInfos.tiers[i].type +")", 5, 20+8);
 
-            var cI = this.tierInfos.tiers[i];
+    //         var cI = this.tierInfos.tiers[i];
 
-            var ev, perc, tW, prevPerc;
-            if (cI.type == "seg"){
-                curcc.fillStyle = this.params.waveColor;
-                //draw seg
-                for (curEv = 0; curEv < cI.events.length; curEv++) {
-                    if(cI.events[curEv].time > vP.sS ) { //&& cI.events[curEv].time < vP.eS){
-                        perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
-                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
-                        // mark selected segment with markColor == yellow
-                        if(vP.segmentsLoaded && vP.selectedSegments[i][curEv]){
-                            prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);                        
-                            curcc.fillStyle = markColor;
-                            curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
-                            curcc.fillStyle = this.params.waveColor;
-                        }
-                        else if(vP.segmentsLoaded && curEv>0 && emulabeller.isSelectNeighbour(i,curEv)) {
-                            prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);                        
-                            curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
-                            curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
-                            curcc.fillStyle = this.params.waveColor;
+    //         var ev, perc, tW, prevPerc;
+    //         if (cI.type == "seg"){
+    //             curcc.fillStyle = this.params.waveColor;
+    //             //draw seg
+    //             for (curEv = 0; curEv < cI.events.length; curEv++) {
+    //                 if(cI.events[curEv].time > vP.sS ) { //&& cI.events[curEv].time < vP.eS){
+    //                     perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
+    //                     curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+    //                     // mark selected segment with markColor == yellow
+    //                     if(vP.segmentsLoaded && vP.selectedSegments[i][curEv]){
+    //                         prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);                        
+    //                         curcc.fillStyle = markColor;
+    //                         curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
+    //                         curcc.fillStyle = this.params.waveColor;
+    //                     }
+    //                     else if(vP.segmentsLoaded && curEv>0 && emulabeller.isSelectNeighbour(i,curEv)) {
+    //                         prevPerc = (cI.events[curEv-1].time-vP.sS)/(vP.eS-vP.sS);                        
+    //                         curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
+    //                         curcc.fillRect(curCanWidth*prevPerc+1, 0, curCanWidth*perc-curCanWidth*prevPerc-1, curCanHeight);
+    //                         curcc.fillStyle = this.params.waveColor;
                         
-                        }
-                        //console.log(cI.TierName+":"+vP.curMouseTierName);
-                        // mark boundary closest to mouse red (only checks first element in selBoundries for now)
+    //                     }
+    //                     //console.log(cI.TierName+":"+vP.curMouseTierName);
+    //                     // mark boundary closest to mouse red (only checks first element in selBoundries for now)
                         
-                        if(curEv == vP.selBoundaries[0] && i == vP.selTier ){
-                            if(vP.segmentsLoaded && emulabeller.internalMode !=  emulabeller.EDITMODE.LABEL_MOVE) {
-                                if( vP.selectedSegments[i][curEv] != vP.selectedSegments[i][curEv+1]  ) {
-                                    curcc.fillStyle = "rgba(255, 0, 0, 1)";
-                                    curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);
-                                    curcc.fillStyle = this.params.waveColor;
-                                }
-                            }
-                        }
-                        // draw label 
-                        if(cI.events[curEv].label != 'H#'){
-                            tW = curcc.measureText(cI.events[curEv].label).width;
-                            curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW-10, curCanHeight/2);
-                        }
-                    }
-                    if(cI.events[curEv].end > vP.sS && cI.events[curEv].end < vP.eS){
-                        perc = (cI.events[curEv].end-vP.sS)/(vP.eS-vP.sS);
-                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
-                    }
-                }
+    //                     if(curEv == vP.selBoundaries[0] && i == vP.selTier ){
+    //                         if(vP.segmentsLoaded && emulabeller.internalMode !=  emulabeller.EDITMODE.LABEL_MOVE) {
+    //                             if( vP.selectedSegments[i][curEv] != vP.selectedSegments[i][curEv+1]  ) {
+    //                                 curcc.fillStyle = "rgba(255, 0, 0, 1)";
+    //                                 curcc.fillRect(Math.ceil(curCanWidth*perc)-1, 0, 2, curCanHeight);
+    //                                 curcc.fillStyle = this.params.waveColor;
+    //                             }
+    //                         }
+    //                     }
+    //                     // draw label 
+    //                     if(cI.events[curEv].label != 'H#'){
+    //                         tW = curcc.measureText(cI.events[curEv].label).width;
+    //                         curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW-10, curCanHeight/2);
+    //                     }
+    //                 }
+    //                 if(cI.events[curEv].end > vP.sS && cI.events[curEv].end < vP.eS){
+    //                     perc = (cI.events[curEv].end-vP.sS)/(vP.eS-vP.sS);
+    //                     curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight);
+    //                 }
+    //             }
 
-            }else if(cI.type =="point"){
-                curcc.fillStyle = this.params.waveColor;
-                for (curEv = 0; curEv < cI.events.length; curEv++) {
-                    if(cI.events[curEv].time > vP.sS && cI.events[curEv].time < vP.eS){
-                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
-                        if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID){
-                            curcc.fillStyle = "red";
-                        }else{
-                            curcc.fillStyle = this.params.waveColor;
-                        }
-                        perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
-                        curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
+    //         }else if(cI.type =="point"){
+    //             curcc.fillStyle = this.params.waveColor;
+    //             for (curEv = 0; curEv < cI.events.length; curEv++) {
+    //                 if(cI.events[curEv].time > vP.sS && cI.events[curEv].time < vP.eS){
+    //                      // mark boundary closest to mouse red (only checks first element in selBoundries for now)
+    //                     if(curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID){
+    //                         curcc.fillStyle = "red";
+    //                     }else{
+    //                         curcc.fillStyle = this.params.waveColor;
+    //                     }
+    //                     perc = (cI.events[curEv].time-vP.sS)/(vP.eS-vP.sS);
+    //                     curcc.fillRect(curCanWidth*perc, 0, 1, curCanHeight/2-curCanHeight/10);
 
-                        tW = curcc.measureText(cI.events[curEv].label).width;
-                        curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
+    //                     tW = curcc.measureText(cI.events[curEv].label).width;
+    //                     curcc.strokeText(cI.events[curEv].label, curCanWidth*perc-tW/2+1, curCanHeight/2);
 
-                        curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
-                    }
-                }
-            }
+    //                     curcc.fillRect(curCanWidth*perc, curCanHeight/2+curCanHeight/10, 1, curCanHeight/2-curCanHeight/10);
+    //                 }
+    //             }
+    //         }
 
-        }
-    },
+    //     }
+    // },
 
-    drawSSFF: function (ssffInfos, vP){
+    // drawSSFF: function (ssffInfos, vP){
 
-        // if (ssffInfos.data[0].Columns[0].name !="F0") {
-        //     alert("not F0 column->not supported");
-        // }
+    //     // if (ssffInfos.data[0].Columns[0].name !="F0") {
+    //     //     alert("not F0 column->not supported");
+    //     // }
 
-        var curContext = ssffInfos.canvases[0].getContext("2d");
+    //     var curContext = ssffInfos.canvases[0].getContext("2d");
 
-        if(!ssffInfos.data[0].maxF0){
-            // this.toRetinaRatio(ssffInfos.canvases[0], curContext);
-            console.log("calculating max f0");
-            ssffInfos.data[0].maxF0 = -Infinity;
-            for (var i = 0; i < ssffInfos.data[0].Columns[0].values.length; i++) {
-                // console.log(ssffInfos.data[0].Columns[0].values[i][0]);
-                // f0array.push(ssffInfos.data[0].Columns[0].values[i][0]);
+    //     if(!ssffInfos.data[0].maxF0){
+    //         // this.toRetinaRatio(ssffInfos.canvases[0], curContext);
+    //         console.log("calculating max f0");
+    //         ssffInfos.data[0].maxF0 = -Infinity;
+    //         for (var i = 0; i < ssffInfos.data[0].Columns[0].values.length; i++) {
+    //             // console.log(ssffInfos.data[0].Columns[0].values[i][0]);
+    //             // f0array.push(ssffInfos.data[0].Columns[0].values[i][0]);
 
-                if(ssffInfos.data[0].Columns[0].values[i][0] > ssffInfos.data[0].maxF0){
-                    ssffInfos.data[0].maxF0 = ssffInfos.data[0].Columns[0].values[i][0];
-                }
-            }
-        }
+    //             if(ssffInfos.data[0].Columns[0].values[i][0] > ssffInfos.data[0].maxF0){
+    //                 ssffInfos.data[0].maxF0 = ssffInfos.data[0].Columns[0].values[i][0];
+    //             }
+    //         }
+    //     }
 
-        var origFreq = 1/ssffInfos.data[0].Record_Freq; //time between samples not hz
+    //     var origFreq = 1/ssffInfos.data[0].Record_Freq; //time between samples not hz
 
-        var start_time = ssffInfos.data[0].Start_Time;
-        var maxF0 = ssffInfos.data[0].maxF0;
-        // maxF0 = 300;
+    //     var start_time = ssffInfos.data[0].Start_Time;
+    //     var maxF0 = ssffInfos.data[0].maxF0;
+    //     // maxF0 = 300;
 
-        var h = ssffInfos.canvases[0].clientHeight;
-        var w = ssffInfos.canvases[0].clientWidth;
+    //     var h = ssffInfos.canvases[0].clientHeight;
+    //     var w = ssffInfos.canvases[0].clientWidth;
 
-        // console.log(w);
-        curContext.clearRect(0, 0, w, h);
+    //     // console.log(w);
+    //     curContext.clearRect(0, 0, w, h);
 
-        // samples per pixel has to be greater than 1 (for now...)
-        var ratio1 = (vP.eS-vP.sS)/this.osciWidth;
+    //     // samples per pixel has to be greater than 1 (for now...)
+    //     var ratio1 = (vP.eS-vP.sS)/this.osciWidth;
 
-        // start_time + (? * origFreq);
-        var f0sS = Math.floor((vP.sS/44100)/origFreq)+1; //SIC SIC SIC check Sample + one to avoid drawing problems... bä
+    //     // start_time + (? * origFreq);
+    //     var f0sS = Math.floor((vP.sS/44100)/origFreq)+1; //SIC SIC SIC check Sample + one to avoid drawing problems... bä
 
-        var f0eS = Math.ceil((vP.eS/44100)/origFreq); // SIC check Sample
+    //     var f0eS = Math.ceil((vP.eS/44100)/origFreq); // SIC check Sample
 
-        var zoomRatio = (f0eS-f0sS)/this.osciWidth; // SIC not osci width
+    //     var zoomRatio = (f0eS-f0sS)/this.osciWidth; // SIC not osci width
 
-        curContext.strokeStyle = this.params.waveColor;
-        curContext.font="12px Verdana";
-        curContext.strokeText(ssffInfos.data[0].Columns[0].name, 5, 5+8);
+    //     curContext.strokeStyle = this.params.waveColor;
+    //     curContext.font="12px Verdana";
+    //     curContext.strokeText(ssffInfos.data[0].Columns[0].name, 5, 5+8);
 
-        curContext.strokeStyle = "rgba(0,0,255,0.5)";
-        curContext.fillStyle = "rgba(0,0,255,0.5)";
-        // console.log(i/f0sS);
-        for (var i = 1; i < f0eS-f0sS; i++) {
-            curContext.beginPath();
-            curContext.moveTo((i-1)/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i-1][0]/maxF0*h);
-            curContext.lineTo(i/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i][0]/maxF0*h);
-            curContext.stroke();
-            //draw a circle
-            curContext.beginPath();
-            curContext.arc(i/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i][0]/maxF0*h, 1, 0, Math.PI*2, true); 
-            curContext.closePath();
-            curContext.fill();
-        }
-    }
+    //     curContext.strokeStyle = "rgba(0,0,255,0.5)";
+    //     curContext.fillStyle = "rgba(0,0,255,0.5)";
+    //     // console.log(i/f0sS);
+    //     for (var i = 1; i < f0eS-f0sS; i++) {
+    //         curContext.beginPath();
+    //         curContext.moveTo((i-1)/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i-1][0]/maxF0*h);
+    //         curContext.lineTo(i/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i][0]/maxF0*h);
+    //         curContext.stroke();
+    //         //draw a circle
+    //         curContext.beginPath();
+    //         curContext.arc(i/zoomRatio, h-ssffInfos.data[0].Columns[0].values[f0sS+i][0]/maxF0*h, 1, 0, Math.PI*2, true);
+    //         curContext.closePath();
+    //         curContext.fill();
+    //     }
+    // }
 };
