@@ -272,7 +272,7 @@ var EmuLabeller = {
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.viewPort.selectE = my.viewPort.selectS;
-                    my.drawer.uiDrawUpdate(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                     my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                     break;
 
@@ -299,7 +299,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length, my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
@@ -325,7 +325,7 @@ var EmuLabeller = {
         window.addEventListener('mousemove', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(percents, vP, bufferLength, ssffInfos)(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer.length);
                 my.spectogramDrawer.progress(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
             }
 
@@ -398,6 +398,8 @@ var EmuLabeller = {
     onAudioProcess: function() {
         var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
+        this.viewPort.curCursorPosInPercent = percPlayed;
+
         if (this.playMode == "sel") {
             percRel = this.viewPort.selectE / this.backend.currentBuffer.length;
         }
@@ -415,7 +417,7 @@ var EmuLabeller = {
             this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
         }
         if (percPlayed > percRel) {
-            this.drawer.progress(percRel, this.viewPort, this.backend.currentBuffer.length);
+            this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
             this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();
         }
@@ -1263,7 +1265,7 @@ var EmuLabeller = {
             this.viewPort.selBoundaries[0] = closest;
             this.viewPort.curMouseTierName = tierID;
             this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
-            this.drawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
 
         }
     },

@@ -77,12 +77,12 @@ EmuLabeller.Drawer.TierDrawer = {
                             prevPerc = (cI.events[curEv - 1].time - vP.sS) / (vP.eS - vP.sS);
                             curcc.fillStyle = markColor;
                             curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
-                            curcc.fillStyle = this.params.waveColor;
+                            curcc.fillStyle = this.boundaryColor;
                         } else if (vP.segmentsLoaded && curEv > 0 && emulabeller.isSelectNeighbour(i, curEv)) {
                             prevPerc = (cI.events[curEv - 1].time - vP.sS) / (vP.eS - vP.sS);
                             curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
                             curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
-                            curcc.fillStyle = this.params.waveColor;
+                            curcc.fillStyle = this.boundaryColor;
 
                         }
                         //console.log(cI.TierName+":"+vP.curMouseTierName);
@@ -93,7 +93,7 @@ EmuLabeller.Drawer.TierDrawer = {
                                 if (vP.selectedSegments[i][curEv] != vP.selectedSegments[i][curEv + 1]) {
                                     curcc.fillStyle = "rgba(255, 0, 0, 1)";
                                     curcc.fillRect(Math.ceil(curCanWidth * perc) - 1, 0, 2, curCanHeight);
-                                    curcc.fillStyle = this.params.waveColor;
+                                    curcc.fillStyle = this.boundaryColor;
                                 }
                             }
                         }

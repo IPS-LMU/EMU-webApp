@@ -6,10 +6,12 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
 
         this.cursorColor = 'red';
+        this.cursorWidth = 1;
 
-        //
+        // calculated positions of samples in view
         this.peaks = [];
         this.maxPeak = -Infinity;
+        this.minPeak = Infinity;
 
     },
 
@@ -28,7 +30,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         if (k <= 1) {
             console.log("over sample exact!!!");
             relData = chan.subarray(vP.sS, vP.eS + 1);
-            // this.minPeak = Math.min.apply(Math, relData);
+            this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
             this.peaks = Array.prototype.slice.call(relData);
         } else {
@@ -76,18 +78,17 @@ EmuLabeller.Drawer.OsciDrawer = {
                     my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], canvas);
                 }
             });
-            // over sample exact
+        // over sample exact
+        }else if (k < 1) {
+            cc.strokeStyle = this.waveColor;
+            cc.beginPath();
+            cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height);
+            for (var i = 1; i < this.peaks.length; i++) {
+                cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height);
+            }
+            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height); // SIC SIC SIC tail
+            cc.stroke();
         }
-        // else if (k < 1) {
-        //     this.cc.strokeStyle = this.params.waveColor;
-        //     this.cc.beginPath();
-        //     this.cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight);
-        //     for (var i = 1; i < this.peaks.length; i++) {
-        //         this.cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight);
-        //     }
-        //     this.cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * this.osciHeight); // SIC SIC SIC tail
-        //     this.cc.stroke();
-        // }
 
         // this.drawCursor();
     },
@@ -184,6 +185,15 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
+    /**
+     * redraws buffer onto canvas given vP. It recalculates
+     * the peaks that are to be displayed to get the maximum
+     * dynamic range visualization 
+     *
+     * @params buffer
+     * @params canvas to draw on
+     * @params bufferLength current view port 
+     */
     redrawOsciOnCanvas: function(buffer, canvas, vP) {
         var cH = canvas.height;
         var cW = canvas.width;
@@ -202,14 +212,14 @@ EmuLabeller.Drawer.OsciDrawer = {
     },
 
     /**
-    * draws scroll markup (selected view part + scroll bar) 
-    * according to current view port
-    * on the canvas given
-    * @params vP current view port
-    * @params canvas canvas to draw markup on
-    * @params bufferLength length of buffer in canvas
-    */
-    drawScrollMarkup: function(vP, canvas, inMemoryCanvas, bufferLength){
+     * draws scroll markup (selected view part + scroll bar)
+     * according to current view port
+     * on the canvas given
+     * @params vP current view port
+     * @params canvas canvas to draw markup on
+     * @params bufferLength length of buffer in canvas
+     */
+    drawScrollMarkup: function(vP, canvas, inMemoryCanvas, bufferLength) {
 
         var cH = canvas.height;
         var cW = canvas.width;
@@ -221,9 +231,9 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         var circCtl = 3;
-        var curDiam = (((vP.eS-vP.sS)/bufferLength) * cW)/2 + 2*circCtl;
+        var curDiam = (((vP.eS - vP.sS) / bufferLength) * cW) / 2 + 2 * circCtl;
 
-        var curCenter = (vP.sS/bufferLength*cW)+curDiam;
+        var curCenter = (vP.sS / bufferLength * cW) + curDiam;
 
         // SIC no more scroll 
         // canvascc.beginPath();
@@ -245,13 +255,26 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         canvascc.fillStyle = this.scrollSegMarkerColor;
-        canvascc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
+        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
 
         // canvascc.fillStyle = "rgba(120, 120, 120, 0.5)";
         // canvascc.fill();
 
         // canvascc.strokeStyle = "rgba(120, 120, 120, 1)";
         // canvascc.stroke();
+    },
+
+    drawCursor: function() {
+        var w = this.cursorWidth;
+        var h = 100; //this.osciHeight; //SIC
+
+        var x = Math.min(this.cursorPos, 100 - w);
+        var y = 0;
+
+        cc.fillStyle = this.cursorColor;
+        if (x > 0) {
+            this.cc.fillRect(x, y, w, h);
+        }
     }
 
 };
