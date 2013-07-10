@@ -757,21 +757,9 @@ var EmuLabeller = {
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
 
                 tName = emulabeller.tierInfos.tiers[i].TierName;
-                // $('<button>↑</button>').attr({
-                //     id: "howdy"
-                // }).css({
-                //     class: 'canvasControlBar',
-                //     height: 64,
-                //     width: 48
-                // }).appendTo('#cans');
-
-                $('<canvas>').attr({
-                    id: tName,
-                    width: my.internalCanvasWidth,
-                    height: my.internalCanvasHeightSmall,
-                    'tier-id': my.tierCounter
-                }).addClass("tierSettings").appendTo('#cans');
-
+                
+                my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
+                
                 $("#" + tName)[0].addEventListener('dblclick', function(e) {
                     my.canvasDoubleClick(e);
                 });
@@ -791,6 +779,15 @@ var EmuLabeller = {
             this.drawBuffer();
             this.rebuildSelect();
         }
+    },
+
+    addTiertoHtml: function(myName, myID, myCssClass, appendTo) {
+        $('<canvas>').attr({
+            id: myName,
+            width: this.internalCanvasWidth,
+            height: this.internalCanvasHeightSmall,
+            'tier-id': myID
+        }).addClass(myCssClass).appendTo(appendTo);    
     },
 
     /**
