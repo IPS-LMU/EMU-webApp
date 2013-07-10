@@ -128,6 +128,12 @@ canvas {
     min-height: 235px;
     max-height: 235px;
 }
+.spacerbottom {
+    width: 10px;
+    height: 93px;
+    min-height: 93px;
+    max-height: 93px;
+}
 
 #tiers  {
     overflow: none;
