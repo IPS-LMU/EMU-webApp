@@ -225,6 +225,48 @@ var EmuLabeller = {
                     my.prepDownload();
                     break;
 
+                case "cmd_viewZoomAll":
+                    my.setView(-Infinity, Infinity);
+                    break;
+
+                case "cmd_viewZoomIn":
+                    my.zoomViewPort(1);
+                    break;
+
+                case "cmd_viewZoomOut":
+                    my.zoomViewPort(0);
+                    break;
+
+                case "cmd_viewMoveLeft":
+                    my.incrViewP(0);
+                    break;
+
+                case "cmd_viewMoveRight":
+                    my.incrViewP(1);
+                    break;
+
+                case "cmd_viewZoomSelect":
+                    my.zoomSel();
+                    break;
+
+                case "cmd_playPause":
+                    my.playPause();
+                    break;
+
+                case "cmd_playSelected":
+                    my.playInMode('sel');
+                    break;
+
+                case "cmd_playAll":
+                    my.playInMode('all');
+                    break;
+
+                case "cmd_changeLabel":
+                    my.editLabel();
+                    break;
+
+
+
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;

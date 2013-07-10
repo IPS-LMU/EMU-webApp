@@ -65,6 +65,7 @@
  <div class="timeline" id="timeline" height="100%">
    <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
    <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
+   <div id="signalcans" class="signalcans"></div>
    <div id="resizer" class="resizer"><span id="resizer"></span></div>
  </div>
  
@@ -78,16 +79,16 @@
  <div class="menu-bottom" id="menu-bottom">
     <canvas id="scrollbar" class="canvasSettingsBottom" width="1280" height="32"></canvas>
     <div class="btn-group">
-            <button class="mini-btn tooltipabove" onclick="emulabeller.setView(-Infinity, Infinity);"  data-tooltip="Shortcut: Q">all</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(1);" data-tooltip="Shortcut: W">In</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomViewPort(0);" data-tooltip="Shortcut: S">Out</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(0);;" data-tooltip="Shortcut: A">Lft</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.incrViewP(1);;" data-tooltip="Shortcut: D">Rght</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.zoomSel();" data-tooltip="Shortcut: E">Sel</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playPause();" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('sel');" data-tooltip="Shortcut: R">Play Selected</button>            
-            <button class="mini-btn tooltipabove" onclick="emulabeller.playInMode('all');" data-tooltip="Shortcut: F">Play Entire File</button>
-            <button class="mini-btn tooltipabove" onclick="emulabeller.editLabel();" data-tooltip="Shortcut: C">Change Segment Label</button>            
+            <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
+            <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
+            <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
+            <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
+            <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
+            <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
+            <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
+            <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>            
+            <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
+            <button class="mini-btn tooltipabove" id="cmd_changeLabel" data-tooltip="Shortcut: C">Change Segment Label</button>            
           </div>
     </div>
     
