@@ -162,11 +162,12 @@ EmuLabeller.Drawer = {
     drawBuffer: function (buffer, vP, isInitDraw, ssffInfos) {
 
         this.getPeaks(buffer, vP);
-        this.progress(0, vP, buffer.length-1, ssffInfos); // check length!!
+        this.progress(0, vP, buffer.length-1, ssffInfos);
         if(isInitDraw){
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
         }
-        this.drawScrollMarkup(vP, buffer.length-1); //check length
+        // this.drawScrollMarkup(vP, buffer.length-1);
+        this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length-1);
         // this.drawTimeLine(vP);
     },
 
@@ -309,48 +310,6 @@ EmuLabeller.Drawer = {
         if(x > 0){
             this.cc.fillRect(x, y, w, h);
         }
-    },
-
-
-
-    drawScrollMarkup: function (vP, bufferLength) {
-
-        var cH = this.scrollCanvas.clientHeight;
-        this.scrollcc.clearRect(0, 0, this.scrollWidth, cH);
-        //draw osci minimap
-        this.scrollcc.drawImage(this.inMemoryMiniMapCanvas, 0, 0, this.scrollWidth, cH);
-
-
-        var circCtl = 3;
-        var curDiam = (((vP.eS-vP.sS)/bufferLength) * this.scrollWidth)/2 + 2*circCtl;
-
-        var curCenter = (vP.sS/bufferLength*this.scrollWidth)+curDiam;
-
-        this.scrollcc.beginPath();
-        this.scrollcc.moveTo(curCenter-curDiam, cH-this.scrollHeight+1);
-        this.scrollcc.lineTo(curCenter+curDiam, cH-this.scrollHeight+1);
-        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-this.scrollHeight+1,
-                    curCenter+curDiam+circCtl, cH-this.scrollHeight/2);
-
-        this.scrollcc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-1,
-            curCenter+curDiam, cH-1);
-
-        this.scrollcc.lineTo(curCenter-curDiam, cH-1);
-
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1,
-            curCenter-curDiam-circCtl, cH-this.scrollHeight/2);
-
-        this.scrollcc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-this.scrollHeight+1,
-             curCenter-curDiam, cH-this.scrollHeight+1);
-
-        this.scrollcc.fillStyle = "rgba(100, 100, 100, 0.6)";
-        this.scrollcc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
-
-        this.scrollcc.fillStyle = "rgba(120, 120, 120, 1)";
-        this.scrollcc.fill();
-
-        this.scrollcc.strokeStyle = "rgba(120, 120, 120, 1)";
-        this.scrollcc.stroke();
     },
 
     toRetinaRatio: function (canvas, context) {

@@ -3,6 +3,8 @@ EmuLabeller.Drawer.OsciDrawer = {
     init: function(params) {
         this.waveColor = 'white';
         this.progressColor = 'grey';
+        this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
+
         //
         this.peaks = [];
         this.maxPeak = -Infinity;
@@ -187,8 +189,62 @@ EmuLabeller.Drawer.OsciDrawer = {
         osciHeight = canvas.height;
 
         this.getPeaks(buffer, vP, canvas);
-        console.log(this.peaks);
+        // console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
         this.drawVpOsciMarkup(buffer, vP, canvas);
+    },
+
+    /**
+    * draws scroll markup (selected view part + scroll bar) 
+    * according to current view port
+    * on the canvas given
+    * @params vP current view port
+    * @params canvas canvas to draw markup on
+    * @params bufferLength length of buffer in canvas
+    */
+    drawScrollMarkup: function(vP, canvas, inMemoryCanvas, bufferLength){
+
+        var cH = canvas.clientHeight;
+        var cW = canvas.clientWidth;
+        canvascc = canvas.getContext('2d');
+        canvascc.clearRect(0, 0, cW, cH);
+        
+        //draw osci minimap
+        canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
+
+
+        var circCtl = 3;
+        var curDiam = (((vP.eS-vP.sS)/bufferLength) * cW)/2 + 2*circCtl;
+
+        var curCenter = (vP.sS/bufferLength*cW)+curDiam;
+
+        // SIC no more scroll 
+        // canvascc.beginPath();
+        // canvascc.moveTo(curCenter-curDiam, cH-cW+1);
+        // canvascc.lineTo(curCenter+curDiam, cH-cW+1);
+        // canvascc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-cW+1,
+        //             curCenter+curDiam+circCtl, cH-cW/2);
+
+        // canvascc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-1,
+        //     curCenter+curDiam, cH-1);
+
+        // canvascc.lineTo(curCenter-curDiam, cH-1);
+
+        // canvascc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1,
+        //     curCenter-curDiam-circCtl, cH-cW/2);
+
+        // canvascc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-cW+1,
+        //      curCenter-curDiam, cH-cW+1);
+
+
+        canvascc.fillStyle = this.scrollSegMarkerColor;
+        canvascc.fillRect(curCenter-curDiam, 0, 2*curDiam, cH);
+
+        // canvascc.fillStyle = "rgba(120, 120, 120, 0.5)";
+        // canvascc.fill();
+
+        // canvascc.strokeStyle = "rgba(120, 120, 120, 1)";
+        // canvascc.stroke();
     }
+
 };

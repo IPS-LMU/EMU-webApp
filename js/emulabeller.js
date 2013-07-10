@@ -136,7 +136,7 @@ var EmuLabeller = {
 
         // IOhandler
         this.iohandler = Object.create(EmuLabeller.IOhandler);
-        this.iohandler.init();
+        this.iohandler.init(44100, this.externalMode);
 
         // Spectrogram
         this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);

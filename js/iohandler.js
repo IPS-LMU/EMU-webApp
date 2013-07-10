@@ -4,10 +4,16 @@ EmuLabeller.IOhandler = {
      * @param backendSR sample rate of audio back-end
      * needed for correct conversion of different file types
      */
-    init: function(backendSR) {
+    init: function(backendSR, externalMode) {
 
+        // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
 
+        // if in server mode init socket handler
+        if(externalMode.value==0){
+            this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
+            this.socketIOhandler.init();
+        }
     },
 
     websocketLoad: function(uttName) {
