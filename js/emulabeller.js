@@ -745,8 +745,7 @@ var EmuLabeller = {
             this.drawBuffer();
         } else if (ft == 2) {
             var sCanName = "F0";
-            $("#signalcans").append("<canvas id=\"" + sCanName + "\" width=\"" + my.internalCanvasWidth + "\" height=\"" + my.internalCanvasHeightBig + "\"></canvas>");
-            $("#" + sCanName)[0].style.width = "100%";
+            my.addTiertoHtml(sCanName,"-1","tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
@@ -755,23 +754,12 @@ var EmuLabeller = {
         } else if (ft == 3) {
             emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
-
-                tName = emulabeller.tierInfos.tiers[i].TierName;
-                
+                var tName = emulabeller.tierInfos.tiers[i].TierName;
                 my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
-                
-                $("#" + tName)[0].addEventListener('dblclick', function(e) {
-                    my.canvasDoubleClick(e);
-                });
-                $("#" + tName)[0].addEventListener('click', function(e) {
-                    my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));
-                });
-                $("#" + tName)[0].addEventListener('contextmenu', function(e) {
-                    my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));
-                });
-                $("#" + tName)[0].addEventListener('mousemove', function(e) {
-                    my.trackMouseInTiers(my.getX(e), tName);
-                });
+                $("#" + tName)[0].addEventListener('dblclick',    function(e) { my.canvasDoubleClick(e); });
+                $("#" + tName)[0].addEventListener('click',       function(e) { my.setMarkedEventNew(my.getX(e), my.getY(e), my.getTierID(e));});
+                $("#" + tName)[0].addEventListener('contextmenu', function(e) { my.setMarkedEvent(my.getX(e), my.getY(e), my.getTierID(e));});
+                $("#" + tName)[0].addEventListener('mousemove',   function(e) { my.trackMouseInTiers(my.getX(e), tName);});
                 emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
                 emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
                 ++my.tierCounter;
