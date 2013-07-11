@@ -1,4 +1,5 @@
-/**
+
+  /**
 * A handy class to calculate color values.
 *
 * @version 1.0
@@ -207,9 +208,12 @@
 })();
 
 /**
-* A handy class to calculate a fft
+* A handy class to draw a spectrom (calculate a fft)
+* 
 *
 * @version 1.0
+* @author Georg raess <graess@phonetik.uni-muenchen.de>
+* @link http://www.phonetik.uni-muenchen.de/
 *
 */
 
@@ -221,7 +225,10 @@ var emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);
 var internalalpha = 0.16;
 var totalMax = 0;
 var dynRangeInDB = 50;
-var x0 = 0;
+var myOffset = 0;
+var mywidth = 0;
+var myDrawOffset = 0;
+var pixelRatio = 1;
 var myWindow = {
   BARTLETT:       1,
   BARTLETTHANN:   2,
@@ -441,19 +448,25 @@ function FFT(fftSize){
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height) {
-    	return function (N,upperFreq,lowerFreq,start,end,c_width,c_height) {
+	var parseData = (function(N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
+    	return function      (N,upperFreq,lowerFreq,start,end,c_width,c_height,cacheWidth,cacheSide,pixelRatio) {
         	if (!executed) {
+        		//c_width *= pixelRatio;
+        		//c_height *= pixelRatio;
+        		
         		// start execution once
             	executed = true;
             	
             	// instance of FFT with windowSize N
             	myFFT = new FFT(N);
             	
+            	renderWidth = c_width-cacheWidth;
+            	if(renderWidth<0) renderWidth = 0;
+            	
             	// array holding FFT results paint[canvas width][canvas height]
-	            paint = new Array(c_width);
+	            paint = new Array(renderWidth);
 	            
-	    		
+	    		// create new png picture from pnglib witth color depth=256
 	    		p = new PNGlib(c_width, c_height, 256);
 	
 	    		// Hz per pixel height
@@ -464,22 +477,32 @@ function FFT(fftSize){
 				
 				// lower Hz boundry to display
 				d = Math.floor(lowerFreq/HzStep); // -1 for value below display when lower>0
+				
+				// offset in pcm stream if cache is on right side
+				if(cacheSide==2) {
+				    myOffset = cacheWidth*myStep;
+				}
+				
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
-	        	for(var i=0;i<c_width;i++) {
-					paint[i] = getMagnitude(0,i*myStep,N,c,d);
+	        	for(var i=0;i<renderWidth;i++) {
+					paint[i] = getMagnitude(0,(i*myStep)+myOffset,N,c,d);
 					maxPsd=(2 * Math.pow(totalMax, 2))/N;	
 		        }
 		        
 		        // height between two interpolation points
-		        pixel_height = c_height/(c-d);
+		        pixel_height = c_height/(c-d-2);
+		        
+				// offset if cache is on right side
+				if(cacheSide==2)
+				    myDrawOffset = cacheWidth;		        
 
 	    	    // draw spectrogram on png image with canvas width
 	    	    // (one column is drawn in drawOfflineSpectogram)
-	        	for(var i=0;i<c_width;i++) 
-		        	drawOfflineSpectogram(i,p,c,d); 
+	        	for(var j=0;j<renderWidth;j++) 
+		        	drawOfflineSpectogram(j,p,c,d,myDrawOffset); 
 		        
-		        // post generated image back
-		        self.postMessage('data:image/png;base64,'+p.getBase64());
+		        // post generated image block with settings back
+		        self.postMessage({'start':start,'end':end,'cacheWidth':cacheWidth,'cacheSide':cacheSide,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -549,18 +572,19 @@ function FFT(fftSize){
 	//
 	*/
 	
-	function drawOfflineSpectogram(line,p,c,d) {
+	function drawOfflineSpectogram(line,p,c,d,cache_offet) {
 	
 		// set upper boundry for linear interpolation
 		var x1 = pixel_height;
 		// value for first interpolation at lower boundry (height=0)
-        psd = (2 * Math.pow(paint[line][0], 2))/N;
+        psd = (2 * Math.pow(paint[line][1], 2))/N;
         psdLog = 10*log10(psd / maxPsd);
 		scaledVal=((psdLog+dynRangeInDB)/dynRangeInDB);
 		if(scaledVal>1) scaledVal=1;
 		if(scaledVal<0) scaledVal=0;
 		
-        for (var i = 0; i < paint[line].length; i++) {
+		
+        for (var i = 1; i < paint[line].length; i++) {
 
 			var y0 = scaledVal;	 // !!!! set y0 to previous scaled value
 			
@@ -579,14 +603,13 @@ function FFT(fftSize){
 			if(scaledVal>1) scaledVal=1;
 			if(scaledVal<0) scaledVal=0;
 			
-			
 			// !!!! set y1 to this scaled value
 			var y1 = scaledVal;
 			
 			if(pixel_height>=1) {
 				// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
 				for(var b=0; b<pixel_height; b++) {
-					y2 = y0 + (y1-y0) / (x1-x0) * (b-x0);
+					y2 = y0 + (y1-y0)/x1*b;
 					
 					// calculate corresponding color value for interpolation point [0...255]
 					rgb = 255-Math.round(255*y2);
@@ -595,7 +618,7 @@ function FFT(fftSize){
 					rgb = '0x'+d2h(rgb);
 				
 					// set internal image buffer to calculated & interpolated value
-					p.buffer[p.index(Math.floor(line), Math.floor(myheight-((pixel_height*i)+b)))] = p.color(rgb, rgb, rgb);
+					p.buffer[p.index(Math.floor(line+cache_offet), Math.floor(myheight-((pixel_height*(i-2))+b)))] = p.color(rgb, rgb, rgb);
 				}
 			}
 			else {
@@ -689,6 +712,8 @@ function FFT(fftSize){
     	case 'config':
     		if (data.N != undefined)
     			N = data.N;
+    		if (data.alpha != undefined)
+    			internalalpha = data.alpha;    		    			
     		if (data.freq != undefined)
     			upperFreq = data.freq;
     		if (data.freq_low != undefined)
@@ -697,19 +722,22 @@ function FFT(fftSize){
     			start = data.start;
     		if (data.end != undefined)
     			end = data.end;
+    		if (data.myStep != undefined)
+    			myStep = data.myStep;  
+    		if (data.window != undefined)
+    			wFunction = data.window;
+    		if (data.cacheSide != undefined)
+    			cacheSide = data.cacheSide;      			
     		if (data.width != undefined)
     			mywidth = data.width;
     		if (data.height != undefined)
     			myheight = data.height;
-    		if (data.window != undefined)
-    			wFunction = data.window;
-    		if (data.alpha != undefined)
-    			internalalpha = data.alpha;    		
+    		if (data.cacheWidth != undefined)
+    			cacheWidth = data.cacheWidth;  
     		if (data.dynRangeInDB != undefined)
-    			dynRangeInDB = data.dynRangeInDB;  
-    		if (data.myStep != undefined)
-    			myStep = data.myStep;      			  				
-    			
+    			dynRangeInDB = data.dynRangeInDB;
+    		if (data.pixelRatio != undefined)
+    			pixelRatio = data.pixelRatio;    			  	
     	  break;
     	case 'pcm':
     		if (data.stream != undefined)
@@ -721,11 +749,10 @@ function FFT(fftSize){
     		}
     		break;     	  
     	case 'render':
-	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight);
+	      parseData(N,upperFreq,lowerFreq,start,end,mywidth,myheight,cacheWidth,cacheSide,pixelRatio);
     	  break; 
     	default:
       	//self.postMessage('Unknown command: ' + data.msg);
   	};
 	}, false);       
 	
-	      

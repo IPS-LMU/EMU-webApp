@@ -126,7 +126,6 @@ var emulabeller = (function () {
         if(!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (27 == code) {
-                emulabeller.saveCanvasDoubleClick();
                 emulabeller.removeCanvasDoubleClick();
             }
         }

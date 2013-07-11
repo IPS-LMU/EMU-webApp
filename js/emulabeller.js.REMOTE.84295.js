@@ -410,7 +410,7 @@ var EmuLabeller = {
      */
     onAudioProcess: function() {
         var my = this;
-
+        
         var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
         this.viewPort.curCursorPosInPercent = percPlayed;
