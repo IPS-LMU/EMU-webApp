@@ -165,8 +165,10 @@ EmuLabeller.Drawer = {
         // my.vP = vP;
         this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
+        
+        // you HAVE to update spectro & tiers here
+        // or it will not be shown on tiers if you remove/resize tier
         this.spectogramDrawer.uiDrawUpdate(emulabeller.backend.getPlayedPercents(), vP, emulabeller.backend.currentBuffer.length);
-
         this.tierDrawer.drawTiers(this.tierInfos, vP);
         // this.osciDrawer.drawCursor();
 
