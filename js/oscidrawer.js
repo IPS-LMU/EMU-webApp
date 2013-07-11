@@ -207,7 +207,7 @@ EmuLabeller.Drawer.OsciDrawer = {
             //draw cursor
             cc.fillStyle = this.cursorColor;
             cc.fillRect(posC, 0, this.cursorWidth, canvas.height);
-            console.log(all)
+            // console.log(all)
 
         }
     },
