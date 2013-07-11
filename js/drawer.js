@@ -100,7 +100,7 @@ EmuLabeller.Drawer = {
     },
 
 
-    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos, fresh) {
+    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos, isInitDraw) {
 
         // console.log("uiDrawUpdate called");
         
