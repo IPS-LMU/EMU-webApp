@@ -406,7 +406,7 @@ var EmuLabeller = {
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
             this.spectogramDrawer.uiDraw(this.backend.currentBuffer, this.viewPort);
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
+            this.drawer.freshUiDrawUpdate(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
 
@@ -435,7 +435,7 @@ var EmuLabeller = {
      */
     onAudioProcess: function() {
         var my = this;
-        
+
         var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
         this.viewPort.curCursorPosInPercent = percPlayed;

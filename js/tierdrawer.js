@@ -5,11 +5,23 @@ EmuLabeller.Drawer.TierDrawer = {
         this.boundaryColor = 'white';
         this.selBoundColor = 'red';
 
+        this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
+        this.selBoundColor = "rgba(0, 255, 0, 0.5)";
+
+        this.cursorColor = "red";
+        this.cursorWidth = 1;
+
     },
 
+    drawTier: function(tierDetails, canvas) {
+
+
+    },
+
+
     drawTiers: function(tierInfos, vP) {
-        console.log(tierInfos.contexts.length);
-        //console.log(vP);
+        // console.log(tierInfos.contexts.length);
+        // console.log(vP);
         var markColor = this.markColor;
 
         var curcc;
@@ -131,6 +143,69 @@ EmuLabeller.Drawer.TierDrawer = {
             }
 
         }
+    },
+
+    /**
+    * draw view port markup of  
+    */
+    drawVpSingleTierMarkup: function(vP, canvas) {
+        var my = this;
+        //console.log(vP);
+        cc = canvas.getContext('2d');
+        cc.strokeStyle = "white";
+        console.log(vP.bufferLength);
+        //this.cc.fillRect(x, y, w, h);
+        cc.beginPath();
+        cc.moveTo(0, 0);
+        cc.lineTo(5, 5);
+        cc.moveTo(canvas.width, 0);
+        cc.lineTo(canvas.width - 5, 5);
+        cc.moveTo(0, canvas.height / 2);
+        cc.lineTo(canvas.width, canvas.height / 2);
+
+        cc.closePath();
+        cc.stroke();
+
+        if (vP) {
+            this.cc.font = defaultParams.mainFont;
+            var metrics = this.cc.measureText(Math.floor(vP.eS));
+            this.cc.strokeText(Math.floor(vP.sS), 5, 5 + 8);
+            this.cc.strokeText(Math.floor(vP.eS), this.osciWidth - metrics.width - 5, 5 + 8);
+        }
+        //draw vPselected
+        if (vP.selectS !== 0 && vP.selectE !== 0) {
+            var all = vP.eS - vP.sS;
+            var fracS = vP.selectS - vP.sS;
+            var procS = fracS / all;
+            var posS = this.osciWidth * procS;
+
+            var fracE = vP.selectE - vP.sS;
+            var procE = fracE / all;
+            var posE = this.osciWidth * procE;
+
+            this.cc.fillStyle = "rgba(0, 0, 255, 0.2)";
+            this.cc.fillRect(posS, 0, posE - posS, this.osciHeight);
+
+            this.cc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            this.cc.beginPath();
+            this.cc.moveTo(posS, 0);
+            this.cc.lineTo(posS, this.osciHeight);
+            this.cc.moveTo(posE, 0);
+            this.cc.lineTo(posE, this.osciHeight);
+            this.cc.closePath();
+            this.cc.stroke();
+
+            this.cc.strokeStyle = this.params.waveColor;
+            if (vP.selectS == vP.selectE) {
+                this.cc.strokeText(Math.floor(vP.selectS), posS + 5, 10);
+            } else {
+                var tW = this.cc.measureText(Math.floor(vP.selectS)).width;
+                this.cc.strokeText(Math.floor(vP.selectS), posS - tW - 4, 10);
+                this.cc.strokeText(Math.floor(vP.selectE), posE + 5, 10);
+
+            }
+        }
+
     }
 
 };
