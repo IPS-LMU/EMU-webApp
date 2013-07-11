@@ -4,7 +4,6 @@
  * and primarily delegates methods to the drawer/audio-backend and
  * several other components
  */
-
 var EmuLabeller = {
 
     /**
@@ -272,7 +271,7 @@ var EmuLabeller = {
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.viewPort.selectE = my.viewPort.selectS;
-                    my.uiDrawUpdate(true,true);
+                    my.uiDrawUpdate(true, true);
                     break;
 
                 case params.draggableBar.id:
@@ -298,7 +297,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.uiDrawUpdate(true,true,my.ssffInfos);
+                my.uiDrawUpdate(true, true, my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
 
@@ -323,7 +322,7 @@ var EmuLabeller = {
         window.addEventListener('mousemove', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.uiDrawUpdate(true,true);
+                my.uiDrawUpdate(true, true);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
@@ -331,12 +330,12 @@ var EmuLabeller = {
                 var posInB = percents * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
-                my.uiDrawUpdate(true,true);
+                my.uiDrawUpdate(true, true);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 var diff_Y = event.clientY - my.dragingStartY;
-                var now = ($('#spacer').height()+ Math.floor(Math.floor(diff_Y)*1.12))+"px";
+                var now = ($('#spacer').height() + Math.floor(Math.floor(diff_Y) * 1.12)) + "px";
                 $('#wave').css("height", "+=" + diff_Y / 2 + "px");
                 $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
                 $('#spacer').height(now);
@@ -359,15 +358,15 @@ var EmuLabeller = {
                             my.viewPort.selectS = curSample;
                         else
                             my.viewPort.selectE = curSample;
-                            
-                        my.uiDrawUpdate(true,true);
+
+                        my.uiDrawUpdate(true, true);
                     }
                 } else if (e.altKey) {
                     my.internalMode = my.EDITMODE.LABEL_MOVE;
                     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e) - my.lastX);
                     my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier], curSample);
-                    my.uiDrawUpdate(true,true);
-                    
+                    my.uiDrawUpdate(true, true);
+
                 } else {
                     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
                         my.internalMode = my.EDITMODE.STANDARD;
@@ -410,24 +409,24 @@ var EmuLabeller = {
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
-    
-     /**
-     * combines draw Update on 
+
+    /**
+     * combines draw Update on
      * Drawer & SpectroDrawer
-     * 
+     *
      * @param updateDrawer bool to update Wave Drawer
      * @param updateSpectro bool to update Spectro Drawer
      * @param ssffInfos extra info
-     */   
-    uiDrawUpdate: function(updateDrawer,updateSpectro, ssffInfos) {
+     */
+    uiDrawUpdate: function(updateDrawer, updateSpectro, ssffInfos) {
         var my = this;
-        if(updateDrawer)
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer.length, ssffInfos);
-        if(updateSpectro)
+        if (updateDrawer)
+            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
+        if (updateSpectro)
             my.spectogramDrawer.uiDrawUpdate(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
     },
-    
-    
+
+
 
     /**
      * callback for audio-backend
@@ -435,6 +434,8 @@ var EmuLabeller = {
      * to the drawer objects
      */
     onAudioProcess: function() {
+        var my = this;
+        
         var percRel = 0;
         var percPlayed = this.backend.getPlayedPercents();
         this.viewPort.curCursorPosInPercent = percPlayed;
@@ -452,12 +453,14 @@ var EmuLabeller = {
         }
 
         if (!this.backend.isPaused()) {
-            this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
-            this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            // this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
+            // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            my.uiDrawUpdate(true, true);
         }
         if (percPlayed > percRel) {
-            this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
-            this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
+            my.uiDrawUpdate(true, true);
+            // this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
+            // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();
         }
     },
@@ -730,10 +733,10 @@ var EmuLabeller = {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
             emulabeller.tierInfos.tiers.push(newTiers[0]);
             tName = newTiers[0].TierName;
-            my.addTiertoHtml(tName,tName,"tierSettings", "#cans");
+            my.addTiertoHtml(tName, tName, "tierSettings", "#cans");
             emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
             emulabeller.drawer.addTier($("#" + tName)[0]);
-            
+
             //emulabeller.bindTierMouseUp($('#' + tName)[0], function(percX, percY, elID) {
             //    // console.log(percents);
             //     console.log("whaaaaaaaaaat"+elID);
@@ -743,7 +746,7 @@ var EmuLabeller = {
             this.drawBuffer();
         } else if (ft == 2) {
             var sCanName = "F0";
-            my.addTiertoHtml(sCanName,"-1","tierSettings", "#signalcans");
+            my.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
@@ -753,7 +756,7 @@ var EmuLabeller = {
             emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
-                my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
+                my.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
                 emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
                 emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
                 ++my.tierCounter;
@@ -770,25 +773,25 @@ var EmuLabeller = {
             height: this.internalCanvasHeightSmall,
             'tier-id': myID
         }).addClass(myCssClass).appendTo(myAppendTo);
-        
-        $("#" + myName).bind("click",function(event){
+
+        $("#" + myName).bind("click", function(event) {
             emulabeller.setMarkedEventNew(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
-        });    
-        $("#" + myName).bind("dblclick",function(event){
+        });
+        $("#" + myName).bind("dblclick", function(event) {
             emulabeller.canvasDoubleClick(event.originalEvent);
-        });    
-        $("#" + myName).bind("contextmenu",function(event){
+        });
+        $("#" + myName).bind("contextmenu", function(event) {
             emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
-        });     
-        $("#" + myName).bind("mousemove",function(event){
+        });
+        $("#" + myName).bind("mousemove", function(event) {
             emulabeller.trackMouseInTiers(emulabeller.getX(event.originalEvent), myName);
-        });     
-        $("#" + myName).bind("mouseup",function(event){
+        });
+        $("#" + myName).bind("mouseup", function(event) {
             //myMouseUp(e);
-        });     
-        $("#" + myName).bind("mousedown",function(event){
+        });
+        $("#" + myName).bind("mousedown", function(event) {
             //myMouseDown(e);
-        });    
+        });
 
     },
 
@@ -974,7 +977,7 @@ var EmuLabeller = {
                 events: []
             });
         }
-        my.addTiertoHtml(tName,my.tierCounter,"tierSettings", "#cans");
+        my.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
         emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
         emulabeller.drawer.addTier($("#" + tName)[0]);
         ++my.tierCounter;
