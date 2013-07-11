@@ -150,21 +150,21 @@ EmuLabeller.Drawer.TierDrawer = {
     */
     drawVpSingleTierMarkup: function(vP, canvas) {
         var my = this;
-        //console.log(vP);
-        cc = canvas.getContext('2d');
-        cc.strokeStyle = "white";
-        console.log(vP.bufferLength);
-        //this.cc.fillRect(x, y, w, h);
-        cc.beginPath();
-        cc.moveTo(0, 0);
-        cc.lineTo(5, 5);
-        cc.moveTo(canvas.width, 0);
-        cc.lineTo(canvas.width - 5, 5);
-        cc.moveTo(0, canvas.height / 2);
-        cc.lineTo(canvas.width, canvas.height / 2);
 
-        cc.closePath();
-        cc.stroke();
+        cc = canvas.getContext('2d');
+        cc.strokeStyle = this.cursorColor;
+
+        var w = this.cursorWidth;
+        var h = canvas.height;
+
+        var x = Math.min(canvas.width * vP.curCursorPosInPercent);
+        var y = 0;
+
+        cc.fillStyle = this.cursorColor;
+        if (x > 0) {
+            cc.fillRect(x, y, w, h);
+        }
+
 
     //     if (vP) {
     //         this.cc.font = defaultParams.mainFont;

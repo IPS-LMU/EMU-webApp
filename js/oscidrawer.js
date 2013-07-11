@@ -226,13 +226,10 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc = canvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
 
-        console.log("###########");
-        console.log("redrawing osci");
         osciWidth = canvas.width;
         osciHeight = canvas.height;
 
         this.getPeaks(buffer, vP, canvas);
-        console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
     },
 
