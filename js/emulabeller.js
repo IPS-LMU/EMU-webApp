@@ -113,7 +113,6 @@ var EmuLabeller = {
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
-        this.mainFont = params.mainFont;
 
 
         // Object Classes

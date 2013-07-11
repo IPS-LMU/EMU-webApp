@@ -16,11 +16,9 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         } 
         window.URL = window.URL || window.webkitURL;
         my.devicePixelRatio = window.devicePixelRatio || 1;
-        my.response = document.querySelector('#spectroworker').textContent;
+        my.response = spectroworker.textContent;
         my.blob;
-        try {
-                my.blob = new Blob([my.response], { "type" : "text\/javascript" });
-        } 
+        try { my.blob = new Blob([my.response], { "type" : "text\/javascript" }); }
         catch (e) { // Backwards-compatibility
                 window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
                 my.blob.append(my.response);
@@ -57,7 +55,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.drawer = params.drawer; 
         my.pcmperpixel = 0; 
         my.myImage = new Image();
-        my.font = "10px Helvetica";
+        my.font = params.font;
         my.fontColor = "#000";
         my.loadingText = "calculating ...";
         my.vP = null;

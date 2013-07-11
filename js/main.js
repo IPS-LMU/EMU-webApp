@@ -16,6 +16,7 @@ var emulabeller = (function () {
     var tiers = document.querySelector('#tiers');
     var fileSelect = document.querySelector('#fileSelect');
     var showLeftPush = document.getElementById('serverSelect');
+    var spectroworker = document.querySelector('#spectroworker');
     var labeller = Object.create(EmuLabeller);
 
 
@@ -33,6 +34,8 @@ var emulabeller = (function () {
         tiers : tiers,
         fileSelect : fileSelect,
         showLeftPush : showLeftPush,
+        spectroworker : spectroworker,
+        font: '12px Verdana',
         internalCanvasWidth : '2048',      // in pixel
         internalCanvasHeightSmall : '128',  // in pixel -> Cans
         internalCanvasHeightBig : '64',   // in pixel -> Wave & Spectro

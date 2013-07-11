@@ -28,6 +28,8 @@ EmuLabeller.Drawer = {
         this.spectogramDrawer = Object.create(EmuLabeller.Drawer.SpectogramDrawer);
         this.spectogramDrawer.init({
             specCanvas: params.specCanvas,
+            spectroworker : params.spectroworker,
+            font: params.font,
             drawer: this
         });
 
