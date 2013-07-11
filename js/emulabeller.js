@@ -398,7 +398,7 @@ var EmuLabeller = {
         var my = this;
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
-            this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
+            this.drawer.freshUiDrawUpdate(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
 

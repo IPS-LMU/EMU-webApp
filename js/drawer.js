@@ -109,29 +109,22 @@ EmuLabeller.Drawer = {
         this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
 
-        
-        // you HAVE to update spectro & tiers here
-        // or it will not be shown on tiers if you remove/resize tier
-        this.spectogramDrawer.uiDrawUpdate(emulabeller.backend.getPlayedPercents(), vP, emulabeller.backend.currentBuffer.length);
-        this.tierDrawer.drawTiers(this.tierInfos, vP);
-        // this.osciDrawer.drawCursor();
-
-        //map percents to viewPort
-        // var sInB = percents*bufferLength;
-        // this.cursorPos = ~~(this.osciWidth*(sInB-vP.sS)/(vP.eS-vP.sS));
-
-        // console.log(percents)
-        // this.redraw(vP);
-        // this.drawTimeLine(vP);
-
-        // this.drawTiers(vP);
-
         // TODO draw SSFF canvases here
-        // if(ssffInfos){
-        //     if(ssffInfos.data.length > 0){
-        //         this.drawSSFF(ssffInfos, vP);
-        //     }
-        // }
+
+
+        // draw tiers
+        this.tierDrawer.drawTiers(this.tierInfos, vP);
+        this.tierDrawer.drawVpSingleTierMarkup(vP, emulabeller.tierInfos.canvases[0]);
+
+        // draw minimap
+        if (isInitDraw) {
+            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
+        }
+
+        this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
+
+        //draw spectrogram
+        this.spectogramDrawer.uiDraw(buffer, vP);
     },
 
     freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) {
@@ -155,7 +148,7 @@ EmuLabeller.Drawer = {
 
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
+        //draw spectrogram
         this.spectogramDrawer.uiDraw(buffer, vP);
-        // this.drawTimeLine(vP);
     }
 };
