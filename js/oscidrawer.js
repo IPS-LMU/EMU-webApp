@@ -5,13 +5,20 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
 
+        this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
+        this.selBoundColor = "rgba(0, 255, 0, 0.5)";
+
         this.cursorColor = 'red';
         this.cursorWidth = 1;
+
 
         // calculated positions of samples in view
         this.peaks = [];
         this.maxPeak = -Infinity;
         this.minPeak = Infinity;
+
+
+        this.forTesting = 1;
 
     },
 
@@ -20,7 +27,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         var k = (vP.eS - vP.sS) / canvas.width; // PCM Samples per new pixel
 
         this.peaks = [];
-        // this.minPeak = Infinity;
+        this.minPeak = Infinity;
         this.maxPeak = -Infinity;
 
         var chan = buffer.getChannelData(c);
@@ -68,18 +75,17 @@ EmuLabeller.Drawer.OsciDrawer = {
         var my = this;
         var cc = canvas.getContext("2d");
 
-        // this.clear();
 
         var k = (vP.eS - vP.sS) / canvas.width; // PCM Samples per new pixel
         // Draw WebAudio buffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function(peak, index) {
                 if (index !== 0) {
-                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], canvas);
+                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], canvas, buffer, vP);
                 }
             });
-        // over sample exact
-        }else if (k < 1) {
+            // over sample exact
+        } else if (k < 1) {
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
             cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height);
@@ -90,7 +96,41 @@ EmuLabeller.Drawer.OsciDrawer = {
             cc.stroke();
         }
 
-        // this.drawCursor();
+    },
+
+    drawFrame: function(index, value, max, prevPeak, canvas, buffer, vP) {
+        var cc = canvas.getContext('2d');
+        //calculate sample of cur cursor position
+        cursorPos = (canvas.width)*vP.curCursorPosInPercent;
+
+        //cur
+        var w = 1;
+        var h = Math.round(value * (canvas.height / max)); //rel to max
+        var x = index * w;
+        var y = Math.round((canvas.height - h) / 2);
+
+        //prev
+        var prevW = 1;
+        var prevH = Math.round(prevPeak * (canvas.height / max));
+        var prevX = (index - 1) * w;
+        var prevY = Math.round((canvas.height - prevH) / 2);
+
+
+        if (cursorPos >= x) {
+            cc.fillStyle = this.progressColor;
+            cc.strokeStyle = this.progressColor;
+        } else {
+            cc.fillStyle = this.waveColor;
+            cc.strokeStyle = this.waveColor;
+        }
+
+        cc.beginPath();
+        cc.moveTo(prevX, prevY);
+        cc.lineTo(x, y);
+        //this.cc.closePath();
+        cc.stroke();
+
+
     },
 
     drawVpOsciMarkup: function(buffer, canvas, vP) {
@@ -129,10 +169,10 @@ EmuLabeller.Drawer.OsciDrawer = {
             var procE = fracE / all;
             var posE = canvas.width * procE;
 
-            cc.fillStyle = "rgba(0, 0, 255, 0.2)";
+            cc.fillStyle = this.selMarkerColor;
             cc.fillRect(posS, 0, posE - posS, canvas.height);
 
-            cc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            cc.strokeStyle = this.selBoundColor;
             cc.beginPath();
             cc.moveTo(posS, 0);
             cc.lineTo(posS, canvas.height);
@@ -151,48 +191,33 @@ EmuLabeller.Drawer.OsciDrawer = {
 
             }
         }
-    },
+        // draw cursor
+        if (vP.curCursorPosInPercent > 0) {
+            console.log("curs");
+            var w = this.cursorWidth;
+            var h = canvas.height;
 
-    drawFrame: function(index, value, max, prevPeak, canvas) {
-        var cc = canvas.getContext('2d');
-        //cur
-        var w = 1;
-        var h = Math.round(value * (canvas.height / max)); //rel to max
-        var x = index * w;
-        var y = Math.round((canvas.height - h) / 2);
+            var x = Math.min(canvas.width*vP.curCursorPosInPercent);
+            var y = 0;
 
-        //prev
-        var prevW = 1;
-        var prevH = Math.round(prevPeak * (canvas.height / max));
-        var prevX = (index - 1) * w;
-        var prevY = Math.round((canvas.height - prevH) / 2);
+            cc.fillStyle = this.cursorColor;
+            if (x > 0) {
+                cc.fillRect(x, y, w, h);
+            }
 
-
-        if (this.cursorPos >= x) {
-            cc.fillStyle = this.progressColor;
-            cc.strokeStyle = this.progressColor;
-        } else {
-            cc.fillStyle = this.waveColor;
-            cc.strokeStyle = this.waveColor;
         }
 
-        cc.beginPath();
-        cc.moveTo(prevX, prevY);
-        cc.lineTo(x, y);
-        //this.cc.closePath();
-        cc.stroke();
-
-
     },
+
 
     /**
      * redraws buffer onto canvas given vP. It recalculates
      * the peaks that are to be displayed to get the maximum
-     * dynamic range visualization 
+     * dynamic range visualization
      *
      * @params buffer
      * @params canvas to draw on
-     * @params bufferLength current view port 
+     * @params bufferLength current view port
      */
     redrawOsciOnCanvas: function(buffer, canvas, vP) {
         var cH = canvas.height;
@@ -207,9 +232,37 @@ EmuLabeller.Drawer.OsciDrawer = {
         osciHeight = canvas.height;
 
         this.getPeaks(buffer, vP, canvas);
-        // console.log(this.peaks);
+        console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
     },
+
+    /**
+     * draws the current osci defined by the peaks array
+     * to the canvas given. It should be used when no 
+     * recalculation of the view port is needed 
+     * (e.g. progress update or mouse event updates)
+     *
+     * @params buffer
+     * @params canvas to draw on
+     * @params bufferLength current view port
+     */
+    drawCurOsciOnCanvas: function(buffer, canvas, vP) {
+        var cH = canvas.height;
+        var cW = canvas.width;
+
+        canvascc = canvas.getContext('2d');
+        canvascc.clearRect(0, 0, cW, cH);
+
+        console.log("###########");
+        console.log("drawing current osci");
+        osciWidth = canvas.width;
+        osciHeight = canvas.height;
+
+        // this.getPeaks(buffer, vP, canvas);
+        console.log(this.peaks);
+        this.drawOsciOnCanvas(buffer, vP, canvas);
+    },
+
 
     /**
      * draws scroll markup (selected view part + scroll bar)
@@ -235,7 +288,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         var curCenter = (vP.sS / bufferLength * cW) + curDiam;
 
-        // SIC no more scroll 
+        // SIC no more scroll bar
         // canvascc.beginPath();
         // canvascc.moveTo(curCenter-curDiam, cH-cW+1);
         // canvascc.lineTo(curCenter+curDiam, cH-cW+1);
@@ -262,19 +315,5 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         // canvascc.strokeStyle = "rgba(120, 120, 120, 1)";
         // canvascc.stroke();
-    },
-
-    drawCursor: function() {
-        var w = this.cursorWidth;
-        var h = 100; //this.osciHeight; //SIC
-
-        var x = Math.min(this.cursorPos, 100 - w);
-        var y = 0;
-
-        cc.fillStyle = this.cursorColor;
-        if (x > 0) {
-            this.cc.fillRect(x, y, w, h);
-        }
     }
-
 };

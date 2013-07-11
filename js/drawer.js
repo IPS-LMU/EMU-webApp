@@ -7,7 +7,7 @@ EmuLabeller.Drawer = {
         loadingBars: 20,
         barHeight: 1,
         barMargin: 10,
-        mainFont : '12px Verdana'        
+        mainFont : '12px Verdana'
     },
 
     init: function(params) {
@@ -153,10 +153,14 @@ EmuLabeller.Drawer = {
     // }//else
     // },
 
-    uiDrawUpdate: function(vP, bufferLength, ssffInfos) {
+    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos) {
 
         console.log("uiDrawUpdate called");
-        my.vP = vP;
+        // my.vP = vP;
+        this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
+        this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
+
+
         // this.osciDrawer.drawCursor();
 
         //map percents to viewPort
@@ -183,9 +187,9 @@ EmuLabeller.Drawer = {
         this.osciDrawer.redrawOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
 
-        // TODO draw spectrogram
+        // TODO draw spectrogram here
 
-        // TODO draw SSFF canvases
+        // TODO draw SSFF canvases here
 
 
         // draw tiers
