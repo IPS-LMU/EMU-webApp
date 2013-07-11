@@ -148,7 +148,7 @@ EmuLabeller.Drawer.TierDrawer = {
     /**
      * draw view port markup of single tier
      */
-    drawVpSingleTierMarkup: function(vP, canvas) {
+    drawVpMarkupSingleTier: function(vP, canvas) {
         var my = this;
         cc = canvas.getContext('2d');
 
@@ -177,7 +177,7 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.stroke();
         } else {
             cc.fillStyle = this.selMarkerColor;
-            cc.fillRect(posS, 0, posE-posS, canvas.height);
+            cc.fillRect(posS, 0, posE - posS, canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);
             cc.lineTo(posS, canvas.height);
@@ -202,5 +202,22 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.fillRect(x, y, w, h);
         }
 
+    },
+
+    /**
+    * iterate over all tiers in tierInfos and
+    * apply the according markup to them 
+    * dependent on the iformation specified in 
+    * the current vP
+    *
+    * @param vP current view port
+    * @param tierInfos current tierInfos object
+    */
+    drawVpMarkupAllTiers: function(vP, tierInfos) {
+
+        for (var i = 0; i <= tierInfos.tiers.length - 1; i++) {
+            this.drawVpMarkupSingleTier(vP, tierInfos.canvases[i]);
+        }
     }
+
 };

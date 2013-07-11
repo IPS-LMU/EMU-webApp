@@ -113,7 +113,7 @@ EmuLabeller.Drawer = {
 
         // draw tiers
         this.tierDrawer.drawTiers(this.tierInfos, vP);
-        this.tierDrawer.drawVpSingleTierMarkup(vP, emulabeller.tierInfos.canvases[0]);
+        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos); //SIC
 
         // draw minimap
         if (isInitDraw) {
@@ -138,7 +138,7 @@ EmuLabeller.Drawer = {
 
         // draw tiers
         this.tierDrawer.drawTiers(this.tierInfos, vP);
-        this.tierDrawer.drawVpSingleTierMarkup(vP, emulabeller.tierInfos.canvases[0]);
+        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos); //SIC
 
         // draw minimap
         if (isInitDraw) {
