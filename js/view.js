@@ -16,15 +16,15 @@ EmuLabeller.ViewPort = {
     * @param eSample of view to init view with
     * @param bufferLength of currently loaded buffer
     */
-    init: function (sSample, eSample) {
+    init: function (sSample, eSample, bufferLength) {
 
         this.sS = sSample;
         this.eS = eSample;
 
         this.selectS = 0;
         this.selectE = 0;
-
-        this.bufferLength = 0; // on init
+        console.log(bufferLength)
+        this.bufferLength = bufferLength; // on init
 
         this.segmentsLoaded = false;
         this.selectedSegments = [];   // [Tiers][Segments]

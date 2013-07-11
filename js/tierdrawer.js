@@ -186,7 +186,10 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.stroke();
 
         }
-
+        //calc cursor pos
+        var fracC = vP.curCursorPosInPercent*vP.bufferLength - vP.sS;
+        var procC = fracC / all;
+        var posC = canvas.width * procC;
 
         // draw cursor
         cc.strokeStyle = this.cursorColor;
@@ -194,14 +197,10 @@ EmuLabeller.Drawer.TierDrawer = {
         var w = this.cursorWidth;
         var h = canvas.height;
 
-        var x = Math.min(canvas.width * vP.curCursorPosInPercent);
-        var y = 0;
-
         cc.fillStyle = this.cursorColor;
-        if (x > 0) {
-            cc.fillRect(x, y, w, h);
+        if (posC > 0) {
+            cc.fillRect(posC,0, w, h);
         }
-
     },
 
     /**

@@ -17,7 +17,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.maxPeak = -Infinity;
         this.minPeak = Infinity;
 
-
         this.forTesting = 1;
 
     },
@@ -101,7 +100,12 @@ EmuLabeller.Drawer.OsciDrawer = {
     drawFrame: function(index, value, max, prevPeak, canvas, buffer, vP) {
         var cc = canvas.getContext('2d');
         //calculate sample of cur cursor position
-        cursorPos = (canvas.width)*vP.curCursorPosInPercent;
+
+        //calc cursor pos
+        var all = vP.eS - vP.sS;
+        var fracC = vP.curCursorPosInPercent * vP.bufferLength - vP.sS;
+        var procC = fracC / all;
+        var posC = canvas.width * procC;
 
         //cur
         var w = 1;
@@ -116,7 +120,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         var prevY = Math.round((canvas.height - prevH) / 2);
 
 
-        if (cursorPos >= x) {
+        if (posC >= x) {
             cc.fillStyle = this.progressColor;
             cc.strokeStyle = this.progressColor;
         } else {
@@ -158,6 +162,7 @@ EmuLabeller.Drawer.OsciDrawer = {
             cc.strokeText(Math.floor(vP.eS), canvas.width - metrics.width - 5, 5 + 8);
         }
 
+        
         //draw vPselected
         if (vP.selectS !== 0 && vP.selectE !== 0) {
             var all = vP.eS - vP.sS;
@@ -191,21 +196,20 @@ EmuLabeller.Drawer.OsciDrawer = {
 
             }
         }
-        // draw cursor
+        // cursor
         if (vP.curCursorPosInPercent > 0) {
-            var w = this.cursorWidth;
-            var h = canvas.height;
+            //calc cursor pos
+            var all2 = vP.eS - vP.sS;
+            var fracC = vP.curCursorPosInPercent * vP.bufferLength - vP.sS;
+            var procC = fracC / all2;
+            var posC = canvas.width * procC;
 
-            var x = Math.min(canvas.width*vP.curCursorPosInPercent);
-            var y = 0;
-
+            //draw cursor
             cc.fillStyle = this.cursorColor;
-            if (x > 0) {
-                cc.fillRect(x, y, w, h);
-            }
+            cc.fillRect(posC, 0, this.cursorWidth, canvas.height);
+            console.log(all)
 
         }
-
     },
 
 
@@ -234,8 +238,8 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     /**
      * draws the current osci defined by the peaks array
-     * to the canvas given. It should be used when no 
-     * recalculation of the view port is needed 
+     * to the canvas given. It should be used when no
+     * recalculation of the view port is needed
      * (e.g. progress update or mouse event updates)
      *
      * @params buffer
