@@ -53,20 +53,20 @@ EmuLabeller.Drawer.TierDrawer = {
             var procE = fracE / all;
             var posE = this.osciWidth * procE;
 
-            curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
-            curcc.beginPath();
-            curcc.moveTo(posS, 0);
-            curcc.lineTo(posS, curCanHeight);
-            curcc.moveTo(posE, 0);
-            curcc.lineTo(posE, curCanHeight);
-            curcc.stroke();
+            // curcc.strokeStyle = "rgba(0, 255, 0, 0.5)";
+            // curcc.beginPath();
+            // curcc.moveTo(posS, 0);
+            // curcc.lineTo(posS, curCanHeight);
+            // curcc.moveTo(posE, 0);
+            // curcc.lineTo(posE, curCanHeight);
+            // curcc.stroke();
 
             //cirle with diam 5 for clicking range
-            if (vP.selectS == vP.selectE) {
-                curcc.beginPath();
-                curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
-                curcc.stroke();
-            }
+            // if (vP.selectS == vP.selectE) {
+            //     curcc.beginPath();
+            //     curcc.arc(posS, 5, 5, 0, 2 * Math.PI, false);
+            //     curcc.stroke();
+            // }
 
             // draw name of tier
             curcc.strokeStyle = this.boundaryColor;
@@ -146,12 +146,49 @@ EmuLabeller.Drawer.TierDrawer = {
     },
 
     /**
-    * draw view port markup of  
-    */
+     * draw view port markup of single tier
+     */
     drawVpSingleTierMarkup: function(vP, canvas) {
         var my = this;
-
         cc = canvas.getContext('2d');
+
+        //calculate positions in view (refactor)
+        var all = vP.eS - vP.sS;
+        var fracS = vP.selectS - vP.sS;
+        var procS = fracS / all;
+        var posS = canvas.width * procS;
+
+        var fracE = vP.selectE - vP.sS;
+        var procE = fracE / all;
+        var posE = canvas.width * procE;
+
+        cc.strokeStyle = this.selBoundColor;
+        cc.fillStyle = this.selBoundColor;
+
+        //draw sel boundaries if not separate then single line with circle
+        if (vP.selectS == vP.selectE) {
+            cc.beginPath();
+            cc.arc(posS, 5, 5, 0, 2 * Math.PI, false); // fixed 10 px circle
+            cc.stroke();
+            cc.fill();
+            cc.beginPath();
+            cc.moveTo(posS, 10);
+            cc.lineTo(posS, canvas.height);
+            cc.stroke();
+        } else {
+            cc.fillStyle = this.selMarkerColor;
+            cc.fillRect(posS, 0, posE-posS, canvas.height);
+            cc.beginPath();
+            cc.moveTo(posS, 0);
+            cc.lineTo(posS, canvas.height);
+            cc.moveTo(posE, 0);
+            cc.lineTo(posE, canvas.height);
+            cc.stroke();
+
+        }
+
+
+        // draw cursor
         cc.strokeStyle = this.cursorColor;
 
         var w = this.cursorWidth;
@@ -165,47 +202,5 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.fillRect(x, y, w, h);
         }
 
-
-    //     if (vP) {
-    //         this.cc.font = defaultParams.mainFont;
-    //         var metrics = this.cc.measureText(Math.floor(vP.eS));
-    //         this.cc.strokeText(Math.floor(vP.sS), 5, 5 + 8);
-    //         this.cc.strokeText(Math.floor(vP.eS), this.osciWidth - metrics.width - 5, 5 + 8);
-    //     }
-    //     //draw vPselected
-    //     if (vP.selectS !== 0 && vP.selectE !== 0) {
-    //         var all = vP.eS - vP.sS;
-    //         var fracS = vP.selectS - vP.sS;
-    //         var procS = fracS / all;
-    //         var posS = this.osciWidth * procS;
-
-    //         var fracE = vP.selectE - vP.sS;
-    //         var procE = fracE / all;
-    //         var posE = this.osciWidth * procE;
-
-    //         this.cc.fillStyle = "rgba(0, 0, 255, 0.2)";
-    //         this.cc.fillRect(posS, 0, posE - posS, this.osciHeight);
-
-    //         this.cc.strokeStyle = "rgba(0, 255, 0, 0.5)";
-    //         this.cc.beginPath();
-    //         this.cc.moveTo(posS, 0);
-    //         this.cc.lineTo(posS, this.osciHeight);
-    //         this.cc.moveTo(posE, 0);
-    //         this.cc.lineTo(posE, this.osciHeight);
-    //         this.cc.closePath();
-    //         this.cc.stroke();
-
-    //         this.cc.strokeStyle = this.params.waveColor;
-    //         if (vP.selectS == vP.selectE) {
-    //             this.cc.strokeText(Math.floor(vP.selectS), posS + 5, 10);
-    //         } else {
-    //             var tW = this.cc.measureText(Math.floor(vP.selectS)).width;
-    //             this.cc.strokeText(Math.floor(vP.selectS), posS - tW - 4, 10);
-    //             this.cc.strokeText(Math.floor(vP.selectE), posE + 5, 10);
-
-    //         }
-    //     }
-
     }
-
 };

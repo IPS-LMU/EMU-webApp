@@ -193,7 +193,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         }
         // draw cursor
         if (vP.curCursorPosInPercent > 0) {
-            console.log("curs");
             var w = this.cursorWidth;
             var h = canvas.height;
 
@@ -250,13 +249,11 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc = canvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
 
-        console.log("###########");
-        console.log("drawing current osci");
         osciWidth = canvas.width;
         osciHeight = canvas.height;
 
         // this.getPeaks(buffer, vP, canvas);
-        console.log(this.peaks);
+        // console.log(this.peaks);
         this.drawOsciOnCanvas(buffer, vP, canvas);
     },
 
