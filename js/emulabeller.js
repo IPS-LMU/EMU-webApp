@@ -428,14 +428,10 @@ var EmuLabeller = {
         }
 
         if (!this.backend.isPaused()) {
-            // this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
-            // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
         }
         if (percPlayed > percRel) {
             my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
-            // this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
-            // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();
         }
     },
@@ -449,16 +445,12 @@ var EmuLabeller = {
 
         if (playMode == "vP" || playMode === null) {
             this.playMode = "vP";
-            //console.log("play vP");
-            //this.boolPlaySelectedEDITMODE = false;
             percS = this.viewPort.sS / this.backend.currentBuffer.length;
             percE = this.viewPort.eS / this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
         }
         if (playMode == "sel" || playMode === null) {
             this.playMode = "sel";
-            //console.log("play selected");
-            //this.boolPlaySelectedEDITMODE = true;
             percS = this.viewPort.selectS / this.backend.currentBuffer.length;
             percE = this.viewPort.selectE / this.backend.currentBuffer.length;
             this.backend.play(this.backend.getDuration() * percS, this.backend.getDuration() * percE);
@@ -466,8 +458,6 @@ var EmuLabeller = {
         }
         if (playMode == "all" || playMode === null) {
             this.playMode = "all";
-            //console.log("play all");
-            //this.boolPlaySelectedEDITMODE = true;
             this.backend.play(0, this.backend.getDuration());
 
         }
