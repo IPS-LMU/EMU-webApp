@@ -25,7 +25,7 @@ EmuLabeller.Drawer = {
 
 
         // spectrogram drawer
-        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
+        this.spectogramDrawer = Object.create(EmuLabeller.Drawer.SpectogramDrawer);
         this.spectogramDrawer.init({
             specCanvas: params.specCanvas,
             drawer: this

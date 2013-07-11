@@ -1,4 +1,4 @@
-EmuLabeller.spectogramDrawer = {
+EmuLabeller.Drawer.SpectogramDrawer = {
 
     init: function (params) {
         var my = this;
