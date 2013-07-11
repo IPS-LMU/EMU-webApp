@@ -190,6 +190,7 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
+            if(null!=my.getElement(e))
             my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
                 case params.showLeftPush.id:
@@ -1018,6 +1019,7 @@ var EmuLabeller = {
                 });
             });
         } else {
+            if (this.viewPort.selectedSegments.length == 0) return 0;
             if (this.viewPort.selectedSegments[row].length == 0) return 0;
             $.each(this.viewPort.selectedSegments[row], function() {
                 ++count;
