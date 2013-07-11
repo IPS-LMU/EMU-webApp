@@ -137,12 +137,6 @@ var EmuLabeller = {
         this.iohandler = Object.create(EmuLabeller.IOhandler);
         this.iohandler.init(44100, this.externalMode);
 
-        // Spectrogram
-        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
-        this.spectogramDrawer.init({
-            specCanvas: params.specCanvas,
-            drawer: this.drawer
-        });
 
         // ssff Parser
         this.ssffParser = Object.create(EmuLabeller.SSFFparser);
@@ -271,7 +265,7 @@ var EmuLabeller = {
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.viewPort.selectE = my.viewPort.selectS;
-                    my.uiDrawUpdate(true, true);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
                     break;
 
                 case params.draggableBar.id:
@@ -297,7 +291,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.uiDrawUpdate(true, true, my.ssffInfos);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos, my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
 
@@ -322,7 +316,7 @@ var EmuLabeller = {
         window.addEventListener('mousemove', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.uiDrawUpdate(true, true);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
@@ -330,7 +324,7 @@ var EmuLabeller = {
                 var posInB = percents * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
-                my.uiDrawUpdate(true, true);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
@@ -359,13 +353,13 @@ var EmuLabeller = {
                         else
                             my.viewPort.selectE = curSample;
 
-                        my.uiDrawUpdate(true, true);
+                        my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
                     }
                 } else if (e.altKey) {
                     my.internalMode = my.EDITMODE.LABEL_MOVE;
                     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e) - my.lastX);
                     my.moveMultipleSegments(my.tierInfos.tiers[my.viewPort.selTier], curSample);
-                    my.uiDrawUpdate(true, true);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
 
                 } else {
                     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
@@ -402,30 +396,11 @@ var EmuLabeller = {
      */
     drawBuffer: function(isNewlyLoaded) {
         var my = this;
-        //my.saveCanvasDoubleClick();
         my.removeCanvasDoubleClick();
         if (this.backend.currentBuffer) {
-            this.spectogramDrawer.uiDraw(this.backend.currentBuffer, this.viewPort);
             this.drawer.drawBuffer(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
         }
     },
-
-    /**
-     * combines draw Update on
-     * Drawer & SpectroDrawer
-     *
-     * @param updateDrawer bool to update Wave Drawer
-     * @param updateSpectro bool to update Spectro Drawer
-     * @param ssffInfos extra info
-     */
-    uiDrawUpdate: function(updateDrawer, updateSpectro, ssffInfos) {
-        var my = this;
-        if (updateDrawer)
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
-        if (updateSpectro)
-            my.spectogramDrawer.uiDrawUpdate(my.backend.getPlayedPercents(), my.viewPort, my.backend.currentBuffer.length);
-    },
-
 
 
     /**
@@ -455,10 +430,10 @@ var EmuLabeller = {
         if (!this.backend.isPaused()) {
             // this.drawer.progress(percPlayed, this.viewPort, this.backend.currentBuffer.length);
             // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
-            my.uiDrawUpdate(true, true);
+            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
         }
         if (percPlayed > percRel) {
-            my.uiDrawUpdate(true, true);
+            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
             // this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer.length);
             // this.spectogramDrawer.progress(this.backend.getPlayedPercents(), this.viewPort, this.backend.currentBuffer.length);
             this.pause();

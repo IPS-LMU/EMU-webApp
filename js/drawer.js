@@ -24,6 +24,12 @@ EmuLabeller.Drawer = {
         this.osciDrawer.init();
 
         // TODO spectrogram drawer
+        // Spectrogram
+        this.spectogramDrawer = Object.create(EmuLabeller.spectogramDrawer);
+        this.spectogramDrawer.init({
+            specCanvas: params.specCanvas,
+            drawer: this
+        });
 
         // SSFF drawer
         this.SSFFDrawer = Object.create(EmuLabeller.Drawer.SSFFDrawer);
@@ -159,7 +165,7 @@ EmuLabeller.Drawer = {
         // my.vP = vP;
         this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
-
+        this.spectogramDrawer.uiDrawUpdate(emulabeller.backend.getPlayedPercents(), vP, emulabeller.backend.currentBuffer.length);
 
         // this.osciDrawer.drawCursor();
 
@@ -202,6 +208,7 @@ EmuLabeller.Drawer = {
         }
 
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
+        this.spectogramDrawer.uiDraw(buffer, vP);
         // this.drawTimeLine(vP);
     },
 
