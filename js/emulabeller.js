@@ -265,7 +265,7 @@ var EmuLabeller = {
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.viewPort.selectE = my.viewPort.selectS;
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
                     break;
 
                 case params.draggableBar.id:
@@ -291,7 +291,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos, my.ssffInfos);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
                 my.internalMode = my.EDITMODE.STANDARD;
             }
 
@@ -316,7 +316,7 @@ var EmuLabeller = {
         window.addEventListener('mousemove', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, ssffInfos);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
@@ -1018,6 +1018,7 @@ var EmuLabeller = {
 
     countSelected: function(row) {
         var count = 0;
+        if (this.viewPort.length == 0) return 0;
         if (this.viewPort.selectedSegments.length == 0) return 0;
         if (null == row) {
             var row = 0;
