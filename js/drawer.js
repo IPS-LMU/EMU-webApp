@@ -167,6 +167,7 @@ EmuLabeller.Drawer = {
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
         this.spectogramDrawer.uiDrawUpdate(emulabeller.backend.getPlayedPercents(), vP, emulabeller.backend.currentBuffer.length);
 
+        this.tierDrawer.drawTiers(this.tierInfos, vP);
         // this.osciDrawer.drawCursor();
 
         //map percents to viewPort
@@ -193,7 +194,7 @@ EmuLabeller.Drawer = {
         this.osciDrawer.redrawOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
 
-        // TODO draw spectrogram here
+        
 
         // TODO draw SSFF canvases here
 
