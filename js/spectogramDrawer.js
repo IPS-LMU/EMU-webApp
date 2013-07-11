@@ -44,12 +44,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
 		my.sampleRate = 44100;                            // default sample Rate
         my.pixel_height = 1;                             // default pixel height per value
         my.renderingCanvas = false;
-        // plain old version load from script file
-        //my.primeWorkerFile = 'js/spectrogram.js';
-        //my.primeWorker = new Worker(my.primeWorkerFile);
         my.primeWorker = new Worker(URL.createObjectURL(my.blob));
-		my.setupEvent();
-		my.clearImageCache();
         my.canvas = params.specCanvas;
         my.context = params.specCanvas.getContext("2d");    
         my.drawer = params.drawer; 
@@ -63,6 +58,9 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.percent = 0;
         my.bufferLength = 0;
         my.optimizeHeight = false;
+		my.setupEvent();
+		my.clearImageCache();
+        
         },
         
         setupEvent: function () {

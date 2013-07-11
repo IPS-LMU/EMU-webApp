@@ -7,7 +7,6 @@ EmuLabeller.Drawer = {
         loadingBars: 20,
         barHeight: 1,
         barMargin: 10,
-        mainFont : '12px Verdana'
     },
 
     init: function(params) {
@@ -29,8 +28,7 @@ EmuLabeller.Drawer = {
         this.spectogramDrawer.init({
             specCanvas: params.specCanvas,
             spectroworker : params.spectroworker,
-            font: params.font,
-            drawer: this
+            font: params.font
         });
 
         // SSFF drawer
@@ -50,7 +48,6 @@ EmuLabeller.Drawer = {
         this.osciHeight = this.osciCanvas.height;
         this.start = 0;
         this.end = this.osciWidth;
-        this.mainFont = params.mainFont;
 
         this.specWidth = this.specCanvas.width;
         this.specHeight = this.specCanvas.height;
