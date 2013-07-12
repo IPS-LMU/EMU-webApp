@@ -93,11 +93,11 @@ EmuLabeller.Drawer = {
         }
     },
 
-    addTier: function(canv) {
-        var newContext = canv.getContext('2d');
-        this.tierInfos.contexts.push(newContext);
-        // this.toRetinaRatio(canv, newContext);
-    },
+    // addTier: function(canv) {
+    //     var newContext = canv.getContext('2d');
+    //     this.tierInfos.contexts.push(newContext);
+    //     // this.toRetinaRatio(canv, newContext);
+    // },
 
 
     uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos, isInitDraw) {
@@ -126,7 +126,7 @@ EmuLabeller.Drawer = {
         this.spectogramDrawer.uiDraw(buffer, vP);
     },
 
-    freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) {
+    freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) { // SIC give tier infos!
 
         // draw osci canvas with vP markup
         this.osciDrawer.redrawOsciOnCanvas(buffer, this.osciCanvas, vP); // only difference to uiDrawUpdate maybe change to using flag
@@ -135,9 +135,8 @@ EmuLabeller.Drawer = {
 
         // TODO draw SSFF canvases here
 
-
         // draw tiers
-        this.tierDrawer.drawTiers(this.tierInfos, vP);
+        this.tierDrawer.drawAllTiers(vP, emulabeller.tierInfos); //SIC
         this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos); //SIC
 
         // draw minimap

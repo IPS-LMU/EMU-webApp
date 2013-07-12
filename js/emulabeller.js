@@ -686,7 +686,7 @@ var EmuLabeller = {
      * loaded file from fileAPI/websocket/xhr load
      */
     parseNewFile: function(readerRes) {
-        var my = this;
+        var mymy = this; //long live javascript nested scopes go only one level up
         var ft = emulabeller.newFileType;
         var tName;
         if (ft === 0) {
@@ -718,19 +718,27 @@ var EmuLabeller = {
             this.drawBuffer();
             // console.log(emulabeller.ssffInfos);
         } else if (ft == 3) {
-            emulabeller.tierInfos.tiers = emulabeller.tierInfos.tiers.concat(emulabeller.iohandler.textGridHandler.toJSO(readerRes));
+            emulabeller.tierInfos = emulabeller.iohandler.parseTextGrid(readerRes);
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
-                my.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
-                emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
-                emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
-                ++my.tierCounter;
+                mymy.addTiertoHtml(tName, mymy.tierCounter, "tierSettings", "#cans");
+                mymy.tierInfos.tiers[i].uiInfos.canvas = $("#" + tName)[0];
+            //     emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
+                ++mymy.tierCounter; // don't really need this any more
             }
             this.drawBuffer();
-            this.rebuildSelect();
+            // this.rebuildSelect();
         }
     },
 
+    /**
+    * append a tier 
+    * 
+    * @param myName is used ad id of canvas
+    * @param myID is used in custom attr. tier-id
+    * @param myCssClass is used to spec. css class
+    * @param 
+    */
     addTiertoHtml: function(myName, myID, myCssClass, myAppendTo) {
         $('<canvas>').attr({
             id: myName,

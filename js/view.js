@@ -28,10 +28,10 @@ EmuLabeller.ViewPort = {
         this.segmentsLoaded = false;
         this.selectedSegments = [];   // [Tiers][Segments]
 
-        this.selTier = -1; // -1 == no segment selected
+        // this.selTier = -1; // -1 == no segment selected
         this.curMouseTierName = "";
         this.curMouseSegmentID = "";
-        this.selBoundaries = [];
+        // this.selBoundaries = [];
 
         this.selectSPixel = 0;
         this.selectEPixel = 0;

@@ -49,7 +49,7 @@ EmuLabeller.TextGridParser = {
 
             }
             console.log(JSON.stringify(labelJSO, undefined, 2));
-            return labelJSO.tiers; // SIC! Return entire object!
+            return labelJSO; // SIC! All durations are null
 
         }else{
             alert("bad header in textgrid file!!!");

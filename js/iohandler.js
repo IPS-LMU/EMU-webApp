@@ -10,7 +10,7 @@ EmuLabeller.IOhandler = {
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
 
         // if in server mode init socket handler
-        if(externalMode.value==0){
+        if (externalMode.value == 0) {
             this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
             this.socketIOhandler.init();
         }
@@ -37,5 +37,17 @@ EmuLabeller.IOhandler = {
         xhr.open('GET', src, true);
         xhr.send();
     },
+    /**
+     * delegate parseTextGrid to textGridHandler
+     * and return JSO
+     * @param string TextGrid as a sting
+     * @return object used as tierInfo by emulabeller obj
+     */
+
+    parseTextGrid: function(string) {
+
+        res = this.textGridHandler.toJSO(string);
+        return res;
+    }
 
 };
