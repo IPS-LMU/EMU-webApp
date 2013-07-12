@@ -1332,30 +1332,26 @@ var EmuLabeller = {
 
         }
 
-        // for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-        //     for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-        //         if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart == true) {
-        //             // set to new time
-        //             var oldTime = this.tierInfos.tiers[i].events[j].startSample;
-        //             this.tierInfos.tiers[i].events[j].startSample = Math.round(newTime);
-
-        //             // correct for locking mode (sampleDur changes of current segment) will change in future
-        //             if (oldTime < newTime) {
-        //                 this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur + (oldTime - newTime);
-        //             } else {
-        //                 this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur - (newTime - oldTime);
-        //             }
-
-        //             // correct for locking mode (sampleDur changes of perv segment) will change in future
-
-        //             this.tierInfos.tiers[i].events[j - 1].sampleDur = this.tierInfos.tiers[i].events[j].startSample - this.tierInfos.tiers[i].events[j-1].startSample;
-
-        //         }
-        //     }
-        // }
     },
 
+    snapSelectedSegmentToNearestTop: function(){
+        evts = this.getSelBoundarieEventsWithSurroundingEvt();
+        if(evts.length != 1){
+            alert("more then one or no segment selected! Move near segment to select");
+        }
 
+        //find nearest evt in tier obove
+
+    },
+
+    snapSelectedSegmentToNearestBottom: function(){
+        evts = this.getSelBoundarieEventsWithSurroundingEvt();
+        if(evts.length != 1){
+            alert("more then one or no segment selected! Move near segment to select -> don't multiselect");
+        }
+
+        //find nearest evt in tier obove
+    },
 
     /**
     * use socketIOhandler to request something from server

@@ -178,6 +178,14 @@ var emulabeller = (function() {
                 // E key -> zoom in to selected segment
                 emulabeller.zoomSel();
             }
+            if (116 == e.keyCode) {
+                // T key -> snap to top for selected segment
+                emulabeller.snapSelectedSegmentToNearestTop();
+            }
+            if (98 == e.keyCode) {
+                // T key -> snap to bottom for selected segment
+                emulabeller.snapSelectedSegmentToNearestBottom();
+            }
             if (111 == e.keyCode) {
                 // O key
                 if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
