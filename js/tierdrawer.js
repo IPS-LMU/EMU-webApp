@@ -2,7 +2,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
     init: function(params) {
         this.markColor = "rgba(255, 255, 0, 0.7)";
-        this.startBoundaryColor = "white";
+        this.startBoundaryColor = "green";
         this.endBoundaryColor = "red";
         
         this.curSelBoundColor = 'red';
