@@ -5,7 +5,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.startBoundaryColor = "green";
         this.endBoundaryColor = "red";
         
-        this.curSelBoundColor = 'red';
+        this.curSelBoundColor = "rgba(100, 100, 255, 255)";
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
         this.selBoundColor = "rgba(0, 255, 0, 0.5)";
@@ -46,7 +46,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     } else{
                         // console.log(curEvt);
                         cc.fillStyle = this.startBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height);
+                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height/2);
                     }
                     
                     //draw segment end

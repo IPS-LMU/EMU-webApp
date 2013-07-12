@@ -190,8 +190,8 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
-            if(null!=my.getElement(e))
-            my.clickedOn = my.getElement(e).id;
+            if (null != my.getElement(e))
+                my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
@@ -340,34 +340,34 @@ var EmuLabeller = {
 
             // if (my.countSelected(my.viewPort.selTier) > 0) {
 
-                // if (e.shiftKey) {
-                //     my.internalMode = my.EDITMODE.LABEL_MOVE;
-                //     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                //     if (my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0] + 1]) {
-                //         my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-                //         var leftSide = true;
-                //         if (Math.abs(my.viewPort.selectS - curSample) > Math.abs(my.viewPort.selectE - curSample))
-                //             leftSide = false;
-                //         if (leftSide)
-                //             my.viewPort.selectS = curSample;
-                //         else
-                //             my.viewPort.selectE = curSample;
+            // if (e.shiftKey) {
+            //     my.internalMode = my.EDITMODE.LABEL_MOVE;
+            //     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+            //     if (my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0] + 1]) {
+            //         my.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
+            //         var leftSide = true;
+            //         if (Math.abs(my.viewPort.selectS - curSample) > Math.abs(my.viewPort.selectE - curSample))
+            //             leftSide = false;
+            //         if (leftSide)
+            //             my.viewPort.selectS = curSample;
+            //         else
+            //             my.viewPort.selectE = curSample;
 
-                //         my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
-                //     }
-                // }
-                // } else 
-                if (e.shiftKey) {
-                    my.internalMode = my.EDITMODE.LABEL_MOVE;
-                    curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
-                    my.moveBoundary(curSample);
-                    my.drawer.uiAllTierDrawUpdate(vP, tierInfos);
-                }
-                // } else {
-                //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
-                //         my.internalMode = my.EDITMODE.STANDARD;
-                //     }
-                // }
+            //         my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+            //     }
+            // }
+            // } else 
+            if (e.shiftKey) {
+                my.internalMode = my.EDITMODE.LABEL_MOVE;
+                curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
+                my.moveBoundary(curSample);
+                my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierInfos);
+            }
+            // } else {
+            //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
+            //         my.internalMode = my.EDITMODE.STANDARD;
+            //     }
+            // }
             // }
             my.lastX = my.getX(e);
 
@@ -725,7 +725,7 @@ var EmuLabeller = {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
                 mymy.addTiertoHtml(tName, mymy.tierCounter, "tierSettings", "#cans");
                 mymy.tierInfos.tiers[i].uiInfos.canvas = $("#" + tName)[0];
-            //     emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
+                //     emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
                 ++mymy.tierCounter; // don't really need this any more
             }
             this.drawBuffer();
@@ -734,13 +734,13 @@ var EmuLabeller = {
     },
 
     /**
-    * append a tier 
-    * 
-    * @param myName is used ad id of canvas
-    * @param myID is used in custom attr. tier-id
-    * @param myCssClass is used to spec. css class
-    * @param 
-    */
+     * append a tier
+     *
+     * @param myName is used ad id of canvas
+     * @param myID is used in custom attr. tier-id
+     * @param myCssClass is used to spec. css class
+     * @param
+     */
     addTiertoHtml: function(myName, myID, myCssClass, myAppendTo) {
         $('<canvas>').attr({
             id: myName,
@@ -1212,12 +1212,12 @@ var EmuLabeller = {
     },
 
     /**
-    * function called on mouse move in tiers
-    *
-    * @param percX x position percentage of 
-    * canvas calling this function
-    * @param tierID id of canvas calling this function  
-    */
+     * function called on mouse move in tiers
+     *
+     * @param percX x position percentage of
+     * canvas calling this function
+     * @param tierID id of canvas calling this function
+     */
     trackMouseInTiers: function(percX, tierID) {
         this.resetAllSelBoundariesInTierInfos();
         var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
@@ -1231,7 +1231,7 @@ var EmuLabeller = {
     getTierDetailsFromTierWithID: function(tierID) {
 
         for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
-            if(this.tierInfos.tiers[tierNr].TierName == tierID){
+            if (this.tierInfos.tiers[tierNr].TierName == tierID) {
                 return this.tierInfos.tiers[tierNr];
             }
         }
@@ -1253,7 +1253,7 @@ var EmuLabeller = {
         return closestStartEvt;
     },
 
-    resetAllSelBoundariesInTierInfos: function(){
+    resetAllSelBoundariesInTierInfos: function() {
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
                 this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
@@ -1300,10 +1300,22 @@ var EmuLabeller = {
     moveBoundary: function(newTime) {
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                if(this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart == true){
-                    console.log(newTime);
-                    console.log(this.tierInfos.tiers[i].events[j].startSample)
-                    this.tierInfos.tiers[i].events[j].startSample = newTime;
+                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart == true) {
+                    // set to new time
+                    var oldTime = this.tierInfos.tiers[i].events[j].startSample;
+                    this.tierInfos.tiers[i].events[j].startSample = Math.round(newTime);
+
+                    // correct for locking mode (sampleDur changes of current segment) will change in future
+                    if (oldTime < newTime) {
+                        this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur + (oldTime - newTime);
+                    } else {
+                        this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur - (newTime - oldTime);
+                    }
+
+                    // correct for locking mode (sampleDur changes of perv segment) will change in future
+
+                    this.tierInfos.tiers[i].events[j - 1].sampleDur = this.tierInfos.tiers[i].events[j].startSample - this.tierInfos.tiers[i].events[j-1].startSample;
+
                 }
             }
         }
