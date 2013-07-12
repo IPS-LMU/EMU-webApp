@@ -1215,28 +1215,51 @@ var EmuLabeller = {
         };
     },
 
+    /**
+    * function called on mouse move in tiers
+    *
+    * @param percX x position percentage of 
+    * canvas calling this function
+    * @param tierID id of canvas calling this function  
+    */
     trackMouseInTiers: function(percX, tierID) {
         my = this;
-        if (this.viewPort.selTier != -1) {
-            var clickedTier = this.tierInfos.tiers[this.viewPort.selTier];
-            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
-            var closest = this.getNearestSegmentBoundry(clickedTier, curSample);
-            this.viewPort.selBoundaries[0] = closest;
-            this.viewPort.curMouseTierName = tierID;
-        }
+        var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
+        var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+
+        var nearest = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
+
+        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
     },
 
-    getNearestSegmentBoundry: function(clickedTier, curSample) {
-        var closest = null;
-        $.each(clickedTier.events, function() {
-            if (closest === null || Math.abs(this.time - curSample) < Math.abs(closest - curSample)) {
-                closest = this.time;
+    getTierDetailsFromTierWithID: function(tierID) {
+
+        for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
+            if(this.tierInfos.tiers[tierNr].TierName == tierID){
+                return this.tierInfos.tiers[tierNr];
             }
-        });
-        return this.getSegmentIDbySample(clickedTier, closest) - 1;
+        }
+        alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
     },
 
-    getSegmentbySample: function(clickedTier, curSample) {
+    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample) {
+        var closestStartSample = null;
+        var closestStartEvt = null;
+
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+            if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                closestStartSample = curEvt.startSample;
+                closestStartEvt = curEvt;
+            }else{
+
+            }
+        }
+        closestStartEvt.uiInfos.selBoundryStart = true;
+        return closestStartEvt;
+    },
+
+    getSegmentbySample: function(clickedTwier, curSample) {
         var c = 0;
         $.each(clickedTier.events, function() {
             if (c === 0 & curSample < this.time) {
@@ -1246,15 +1269,15 @@ var EmuLabeller = {
         return c;
     },
 
-    getSegmentIDbySample: function(clickedTier, curSample) {
-        var c = clickedTier.events.length;
-        $.each(clickedTier.events, function() {
-            if (curSample < this.time) {
-                --c;
-            }
-        });
-        return c;
-    },
+    // getSegmentIDbySample: function(clickedTier, curSample) {
+    //     var c = clickedTier.events.length;
+    //     $.each(clickedTier.events, function() {
+    //         if (curSample < this.time) {
+    //             --c;
+    //         }
+    //     });
+    //     return c;
+    // },
 
     moveMultipleSegments: function(clickedTier, newTime) {
         var c = 0;

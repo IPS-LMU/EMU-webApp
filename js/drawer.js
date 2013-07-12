@@ -112,8 +112,8 @@ EmuLabeller.Drawer = {
 
 
         // draw tiers
-        this.tierDrawer.drawTiers(this.tierInfos, vP);
-        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos); //SIC
+        this.tierDrawer.drawAllTiers(vP, emulabeller.tierInfos);
+        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos);
 
         // draw minimap
         if (isInitDraw) {
@@ -148,5 +148,18 @@ EmuLabeller.Drawer = {
 
         //draw spectrogram
         this.spectogramDrawer.uiDraw(buffer, vP);
+    },
+
+    /**
+    * update all tiers 
+    * 
+    * @param vP current viewPort
+    * @param tierInfos current tierInfos
+    */
+    uiAllTierDrawUpdate: function(vP, tierInfos) {
+        // draw tiers
+        this.tierDrawer.drawAllTiers(vP, tierInfos);
+        this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
+
     }
 };
