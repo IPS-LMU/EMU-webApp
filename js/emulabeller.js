@@ -1088,12 +1088,6 @@ var EmuLabeller = {
 
     },
 
-    moveSelTierToTop: function() {
-        var stN = this.tierInfos.tiers[this.viewPort.selTier].TierName;
-        $('#' + stN).prependTo('#cans');
-
-    },
-
     sendTierinfosToServer: function() {
         var sT = this.tierInfos.tiers[this.viewPort.selTier];
         console.log(sT);
@@ -1223,7 +1217,7 @@ var EmuLabeller = {
     * @param tierID id of canvas calling this function  
     */
     trackMouseInTiers: function(percX, tierID) {
-        my = this;
+        this.resetAllSelBoundariesInTierInfos();
         var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
         var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
@@ -1251,23 +1245,30 @@ var EmuLabeller = {
             if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
                 closestStartSample = curEvt.startSample;
                 closestStartEvt = curEvt;
-            }else{
-
             }
         }
         closestStartEvt.uiInfos.selBoundryStart = true;
         return closestStartEvt;
     },
 
-    getSegmentbySample: function(clickedTwier, curSample) {
-        var c = 0;
-        $.each(clickedTier.events, function() {
-            if (c === 0 & curSample < this.time) {
-                c = this;
+    resetAllSelBoundariesInTierInfos: function(){
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
+                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
             }
-        });
-        return c;
+        }
     },
+
+    // getSegmentbySample: function(clickedTwier, curSample) {
+    //     var c = 0;
+    //     $.each(clickedTier.events, function() {
+    //         if (c === 0 & curSample < this.time) {
+    //             c = this;
+    //         }
+    //     });
+    //     return c;
+    // },
 
     // getSegmentIDbySample: function(clickedTier, curSample) {
     //     var c = clickedTier.events.length;

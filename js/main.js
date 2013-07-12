@@ -1,4 +1,4 @@
-var emulabeller = (function () {
+var emulabeller = (function() {
     'use strict';
 
     // autoload wav file and TextGrid for testing
@@ -6,7 +6,10 @@ var emulabeller = (function () {
     var autoLoad = true;
 
 
-    var tierInfos = {"tiers": [],  "canvases": []};
+    var tierInfos = {
+        "tiers": [],
+        "canvases": []
+    };
 
     var osciCanvas = document.querySelector('#wave');
     var specCanvas = document.querySelector('#spectrogram');
@@ -29,29 +32,29 @@ var emulabeller = (function () {
         loadingColor: 'purple',
         cursorColor: 'red',
         tierInfos: tierInfos,
-        draggableBar : draggableBar,
-        timeline : timeline,
-        tiers : tiers,
-        fileSelect : fileSelect,
-        showLeftPush : showLeftPush,
-        spectroworker : spectroworker,
+        draggableBar: draggableBar,
+        timeline: timeline,
+        tiers: tiers,
+        fileSelect: fileSelect,
+        showLeftPush: showLeftPush,
+        spectroworker: spectroworker,
         font: '12px Verdana',
-        internalCanvasWidth : '2048',      // in pixel
-        internalCanvasHeightSmall : '128',  // in pixel -> Cans
-        internalCanvasHeightBig : '64',   // in pixel -> Wave & Spectro
-        mode: 'standalone'                     // or standalone
+        internalCanvasWidth: '2048', // in pixel
+        internalCanvasHeightSmall: '128', // in pixel -> Cans
+        internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro
+        mode: 'standalone' // or standalone
     });
 
 
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
-     if(isiPad || autoLoad){
+    if (isiPad || autoLoad) {
         labeller.load('data/msajc003.wav');
         labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 3);
-     }
-    
-    
-	// initial  launch
+    }
+
+
+    // initial  launch
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
@@ -60,12 +63,11 @@ var emulabeller = (function () {
     $("#dialog-messageSetLabel").hide();
     $('#specSettings').click(function() {
         var isOpen = $('#specDialog').dialog('isOpen');
-        if(!isOpen) {
+        if (!isOpen) {
             $('#specDialog').dialog('open');
             $("#specDialog").dialog('moveToTop');
             isOpen = true;
-        }
-        else {
+        } else {
             $('#specDialog').dialog('close');
             isOpen = false;
         }
@@ -88,57 +90,56 @@ var emulabeller = (function () {
                 var ndr = $("#dynamicRange").val();
                 var nwf = $("#windowFunction").val();
                 //var newSpectroHeight = $("#spectroHeight").val();
-                if(isNaN(nN) || isNaN(nvrf) || isNaN(nvrt)|| isNaN(ndr)) {
+                if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
                     alert("Please enter valid numbers !");
-                }
-                else {
-                	
+                } else {
+
                     //canvas.style.height = newSpectroHeight+"px";
                     //specCanvas.style.height = newSpectroHeight+"px";
                     //signalline.style.marginTop = ((2*newSpectroHeight)+20)+"px";
-                    
-                    labeller.spectogramDrawer.N = parseInt(nN,10);
-                    labeller.spectogramDrawer.freq = parseInt(nvrt,10);
-                    labeller.spectogramDrawer.freq_lower = parseInt(nvrf,10);
-                    labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr,10);
-                    labeller.spectogramDrawer.windowFunction = parseInt(nwf,10);
+
+                    labeller.spectogramDrawer.N = parseInt(nN, 10);
+                    labeller.spectogramDrawer.freq = parseInt(nvrt, 10);
+                    labeller.spectogramDrawer.freq_lower = parseInt(nvrf, 10);
+                    labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr, 10);
+                    labeller.spectogramDrawer.windowFunction = parseInt(nwf, 10);
                     labeller.spectogramDrawer.clearImageCache();
                     labeller.spectogramDrawer.killSpectroRenderingThread();
-                    labeller.spectogramDrawer.drawImage(labeller.backend.currentBuffer,labeller.viewPort);  
+                    labeller.spectogramDrawer.drawImage(labeller.backend.currentBuffer, labeller.viewPort);
                     labeller.spectogramDrawer.progress(labeller.backend.getPlayedPercents(), labeller.viewPort, labeller.backend.currentBuffer.length);
                     $(this).dialog('close');
                 }
-    		  	
+
             },
             Cancel: function() {
                 $(this).dialog('close');
             }
-         }
-    });       
+        }
+    });
 
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {
             // Use the native click() of the file input.
             document.querySelector('#fileGetterBtn').click();
         },
-    false);
+        false);
 
 
-    document.addEventListener('keyup', function (e) {
+    document.addEventListener('keyup', function(e) {
         // spacebar
-        if(!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
+        if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (27 == code) {
                 emulabeller.removeCanvasDoubleClick();
             }
         }
     });
-    
+
     // keypress bindings
-    document.addEventListener('keypress', function (e) {
+    document.addEventListener('keypress', function(e) {
         // spacebar
-        
-        if(!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME){
+
+        if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
 
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view
@@ -153,46 +154,42 @@ var emulabeller = (function () {
                 // F key -> play entire file
                 emulabeller.playInMode("all");
             }
-            if (119 == e.keyCode){
+            if (119 == e.keyCode) {
                 // W key -> zoom in
                 emulabeller.zoomViewPort(1);
             }
-            if (115 == e.keyCode){
+            if (115 == e.keyCode) {
                 // S key -> zoom out 
                 emulabeller.zoomViewPort(0);
             }
-            if (100 == e.keyCode){
+            if (100 == e.keyCode) {
                 // D key -> shift right
                 emulabeller.shiftViewP(1);
             }
-            if (97 == e.keyCode){
+            if (97 == e.keyCode) {
                 // A key -> shift left
                 emulabeller.shiftViewP(0);
             }
-            if (113 == e.keyCode){
+            if (113 == e.keyCode) {
                 // Q key -> view all
                 emulabeller.setView(-Infinity, Infinity);
             }
-            if (101 == e.keyCode){
+            if (101 == e.keyCode) {
                 // E key -> zoom in to selected segment
                 emulabeller.zoomSel();
             }
-            if (111 == e.keyCode){
+            if (111 == e.keyCode) {
                 // O key
-                if(emulabeller.externalMode==labeller.USAGEMODE.STANDALONE)
-                 $('#fileGetterBtn').click();
-                if(emulabeller.externalMode==labeller.USAGEMODE.SERVER)
-                 emulabeller.openSubmenu();
+                if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
+                    $('#fileGetterBtn').click();
+                if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
+                    emulabeller.openSubmenu();
             }
-            if (99 == e.keyCode){
+            if (99 == e.keyCode) {
                 // C key
                 emulabeller.editLabel();
             }
-            if (116 == e.keyCode){
-                // T key
-                emulabeller.moveSelTierToTop();
-            }
-            if (13 == e.keyCode){
+            if (13 == e.keyCode) {
                 // ENTER key
                 emulabeller.addSegmentAtSelection();
             }

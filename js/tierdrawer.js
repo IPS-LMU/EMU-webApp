@@ -2,10 +2,10 @@ EmuLabeller.Drawer.TierDrawer = {
 
     init: function(params) {
         this.markColor = "rgba(255, 255, 0, 0.7)";
-        this.startBoundaryColor = "rgba(0, 255, 0, 0.7)";
-        this.endBoundaryColor = "rgba(255, 0, 0, 0.7)";
+        this.startBoundaryColor = "white";
+        this.endBoundaryColor = "red";
         
-        this.curSelBoundColor = 'white';
+        this.curSelBoundColor = 'red';
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
         this.selBoundColor = "rgba(0, 255, 0, 0.5)";
@@ -54,10 +54,10 @@ EmuLabeller.Drawer.TierDrawer = {
                     // check if selected -> if draw as marked
                     if(curEvt.uiInfos.selBoundryEnd){
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height);
+                        cc.fillRect(canvas.width * perc, canvas.height/2, 1, canvas.height);
                     } else{
                         cc.fillStyle = this.endBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height);
+                        cc.fillRect(canvas.width * perc, canvas.height/2, 1, canvas.height);
                     }
 
                     // mark selected segment with markColor == yellow
