@@ -1297,28 +1297,62 @@ var EmuLabeller = {
         });
     },
 
-    moveBoundary: function(newTime) {
+    getSelBoundarieEventsWithSurroundingEvt: function() {
+        var res = [];
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart == true) {
-                    // set to new time
-                    var oldTime = this.tierInfos.tiers[i].events[j].startSample;
-                    this.tierInfos.tiers[i].events[j].startSample = Math.round(newTime);
-
-                    // correct for locking mode (sampleDur changes of current segment) will change in future
-                    if (oldTime < newTime) {
-                        this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur + (oldTime - newTime);
-                    } else {
-                        this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur - (newTime - oldTime);
-                    }
-
-                    // correct for locking mode (sampleDur changes of perv segment) will change in future
-
-                    this.tierInfos.tiers[i].events[j - 1].sampleDur = this.tierInfos.tiers[i].events[j].startSample - this.tierInfos.tiers[i].events[j-1].startSample;
+                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
+                    res.push([this.tierInfos.tiers[i].events[j-1], this.tierInfos.tiers[i].events[j]]);
 
                 }
             }
         }
+        return res;
+    },
+
+
+    moveBoundary: function(newTime) {
+        evts = this.getSelBoundarieEventsWithSurroundingEvt();
+        newTime = Math.round(newTime);
+
+        for (var i = 0; i < evts.length; i++) {
+            // set to new time
+            var oldTime = evts[i][1].startSample;
+            evts[i][1].startSample = Math.round(newTime);
+            // correct for locking mode (sampleDur changes of current segment) will change in future
+            if (oldTime < newTime) {
+                evts[i][1].sampleDur = evts[i][1].sampleDur + (oldTime - newTime);
+            } else {
+                evts[i][1].sampleDur = evts[i][1].sampleDur - (newTime - oldTime);
+            }
+
+            // correct for locking mode (sampleDur changes of perv segment) will change in future
+
+            evts[i][0].sampleDur = evts[i][1].startSample - evts[i][0].startSample;
+
+        }
+
+        // for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+        //     for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+        //         if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart == true) {
+        //             // set to new time
+        //             var oldTime = this.tierInfos.tiers[i].events[j].startSample;
+        //             this.tierInfos.tiers[i].events[j].startSample = Math.round(newTime);
+
+        //             // correct for locking mode (sampleDur changes of current segment) will change in future
+        //             if (oldTime < newTime) {
+        //                 this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur + (oldTime - newTime);
+        //             } else {
+        //                 this.tierInfos.tiers[i].events[j].sampleDur = this.tierInfos.tiers[i].events[j].sampleDur - (newTime - oldTime);
+        //             }
+
+        //             // correct for locking mode (sampleDur changes of perv segment) will change in future
+
+        //             this.tierInfos.tiers[i].events[j - 1].sampleDur = this.tierInfos.tiers[i].events[j].startSample - this.tierInfos.tiers[i].events[j-1].startSample;
+
+        //         }
+        //     }
+        // }
     },
 
 
