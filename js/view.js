@@ -23,7 +23,6 @@ EmuLabeller.ViewPort = {
 
         this.selectS = 0;
         this.selectE = 0;
-        console.log(bufferLength)
         this.bufferLength = bufferLength; // on init
 
         this.segmentsLoaded = false;
@@ -37,6 +36,6 @@ EmuLabeller.ViewPort = {
         this.selectSPixel = 0;
         this.selectEPixel = 0;
 
-        this.curCursorPosInPercent = 0.5;
+        this.curCursorPosInPercent = 0.0;
     }
 };

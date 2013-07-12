@@ -898,7 +898,7 @@ var EmuLabeller = {
         my.drawBuffer();
     },
 
-    removeCanvasDoubleClick: function() {
+    removeCanvasDoubleClick: function() { //maybe rename to removeLabelBox or something
         var my = this;
         my.internalMode = my.EDITMODE.STANDARD;
         $('textarea#editArea').remove();
@@ -978,8 +978,9 @@ var EmuLabeller = {
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
             var clickedEvtNr = my.getSegmentIDbySample(clickedTier, curSample);
             var clicked = this.countSelected(elID);
-            var timeS = clickedTier.events[clickedEvtNr - 1].time;
-            var timeE = clickedTier.events[clickedEvtNr].time;
+            var timeS = clickedTier.events[clickedEvtNr - 1].startSample;
+            console.log(clickedTier.events)
+            var timeE = clickedTier.events[clickedEvtNr].startSample;
             if (clicked > 0) {
                 if (this.isSelectNeighbour(elID, clickedEvtNr)) {
                     my.viewPort.selectedSegments[elID][clickedEvtNr] = true;

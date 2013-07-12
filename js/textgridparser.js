@@ -30,24 +30,25 @@ EmuLabeller.TextGridParser = {
                     tN = lines[i+2].split(/\s+/)[3].replace(/"/g, '');
 
                     // adding new tier
-                    labelJSO.tiers.push({TierName: tN, type: tT, events: []});
+                    labelJSO.tiers.push({TierName: tN, type: tT, events: [],
+                        uiInfos:{sel: false, canvas: null}});
                 }
                 if(labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length-1].type == "seg" && curLineEl1.indexOf("intervals[") === 0){
                     // parse seg tiers event
                     eT = lines[i+2].split(/\s+/)[3]*ssr; // SIC hard coded interval tier 
                     // console.log(eT);
                     lab = lines[i+3].split(/\s+/)[3].replace(/"/g, '');
-                    labelJSO.tiers[labelJSO.tiers.length-1].events.push({label: lab, time: eT});
+                    labelJSO.tiers[labelJSO.tiers.length-1].events.push({label: lab, startSample: Math.round(eT), sampleDur: null, uiInfos: {sel: false, lastValues:[]}}); // round event time
                 }else if(labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length-1].type == "point" && curLineEl1.indexOf("points[") === 0){
                     // parse point tier event
                     eT = lines[i+1].split(/\s+/)[3]*ssr; // SIC hard coded interval tier 
                     // console.log(i, lines[i+3]);
                     lab = lines[i+2].split(/\s+/)[3].replace(/"/g, '');
-                    labelJSO.tiers[labelJSO.tiers.length-1].events.push({label: lab, time: eT});
+                    labelJSO.tiers[labelJSO.tiers.length-1].events.push({label: lab, startSample: Math.round(eT), sampleDur: null, lastValues:[]}); // round event time
                 }
 
             }
-
+            console.log(JSON.stringify(labelJSO, undefined, 2));
             return labelJSO.tiers; // SIC! Return entire object!
 
         }else{

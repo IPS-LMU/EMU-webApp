@@ -81,17 +81,17 @@ EmuLabeller.Drawer.TierDrawer = {
                 curcc.fillStyle = this.boundaryColor;
                 //draw seg
                 for (curEv = 0; curEv < cI.events.length; curEv++) {
-                    if (cI.events[curEv].time > vP.sS) { //&& cI.events[curEv].time < vP.eS){
-                        perc = (cI.events[curEv].time - vP.sS) / (vP.eS - vP.sS);
+                    if (cI.events[curEv].startSample > vP.sS) { //&& cI.events[curEv].time < vP.eS){
+                        perc = (cI.events[curEv].startSample - vP.sS) / (vP.eS - vP.sS);
                         curcc.fillRect(curCanWidth * perc, 0, 1, curCanHeight);
                         // mark selected segment with markColor == yellow
                         if (vP.segmentsLoaded && vP.selectedSegments[i][curEv]) {
-                            prevPerc = (cI.events[curEv - 1].time - vP.sS) / (vP.eS - vP.sS);
+                            prevPerc = (cI.events[curEv - 1].startSample - vP.sS) / (vP.eS - vP.sS);
                             curcc.fillStyle = markColor;
                             curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
                             curcc.fillStyle = this.boundaryColor;
                         } else if (vP.segmentsLoaded && curEv > 0 && emulabeller.isSelectNeighbour(i, curEv)) {
-                            prevPerc = (cI.events[curEv - 1].time - vP.sS) / (vP.eS - vP.sS);
+                            prevPerc = (cI.events[curEv - 1].startSample - vP.sS) / (vP.eS - vP.sS);
                             curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
                             curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
                             curcc.fillStyle = this.boundaryColor;
@@ -124,14 +124,14 @@ EmuLabeller.Drawer.TierDrawer = {
             } else if (cI.type == "point") {
                 curcc.fillStyle = this.boundaryColor;
                 for (curEv = 0; curEv < cI.events.length; curEv++) {
-                    if (cI.events[curEv].time > vP.sS && cI.events[curEv].time < vP.eS) {
+                    if (cI.events[curEv].startSample > vP.sS && cI.events[curEv].startSample < vP.eS) {
                         // mark boundary closest to mouse red (only checks first element in selBoundries for now)
                         if (curEv == vP.selBoundaries[0] && cI.TierName == vP.curMouseTierID) {
                             curcc.fillStyle = this.selBoundColor;
                         } else {
                             curcc.fillStyle = this.boundaryColor;
                         }
-                        perc = (cI.events[curEv].time - vP.sS) / (vP.eS - vP.sS);
+                        perc = (cI.events[curEv].startSample - vP.sS) / (vP.eS - vP.sS);
                         curcc.fillRect(curCanWidth * perc, 0, 1, curCanHeight / 2 - curCanHeight / 10);
 
                         tW = curcc.measureText(cI.events[curEv].label).width;
