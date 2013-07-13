@@ -24,12 +24,16 @@ EmuLabeller.ViewPort = {
         this.selectS = 0;
         this.selectE = 0;
         this.bufferLength = bufferLength; // on init
+        
+        // red line on wave & spectro
+        this.percent = -1;
 
         this.segmentsLoaded = false;
         this.selectedSegments = [];   // [Tiers][Segments]
 
         // this.selTier = -1; // -1 == no segment selected
         this.curMouseTierName = "";
+        this.curMouseTierID = -1;
         this.curMouseSegmentID = "";
         // this.selBoundaries = [];
 

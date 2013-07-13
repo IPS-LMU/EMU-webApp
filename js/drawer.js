@@ -123,7 +123,7 @@ EmuLabeller.Drawer = {
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
-        this.spectogramDrawer.uiDraw(buffer, vP);
+        this.spectogramDrawer.uiDraw();
     },
 
     freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) { // SIC give tier infos!
@@ -147,7 +147,7 @@ EmuLabeller.Drawer = {
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
-        this.spectogramDrawer.uiDraw(buffer, vP);
+        this.spectogramDrawer.uiDraw();
     },
 
     /**

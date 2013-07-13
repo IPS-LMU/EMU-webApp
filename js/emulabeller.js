@@ -961,6 +961,7 @@ var EmuLabeller = {
     },
 
     setMarkedEventNew: function(percX, percY, elID) {
+        var my = this;
         my.rebuildSelect();
         my.setMarkedEvent(percX, percY, elID);
     },

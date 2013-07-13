@@ -53,7 +53,6 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.font = params.font;
         my.fontColor = "#000";
         my.loadingText = "calculating ...";
-        my.vP = null;
         my.tempData = "";
         my.percent = 0;
         my.bufferLength = 0;
@@ -113,7 +112,6 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         uiDrawUpdate: function (percents, vP, bufferLength, ssffInfos) {
             var my = this;
-            my.vP = vP;
             my.percent = percents;
             my.bufferLength = bufferLength;
             my.drawTimeLine();
@@ -127,19 +125,19 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         drawTimeLineContext: function () {
             var my = this;
             var sInB = my.percent*my.bufferLength;
-            var all = my.vP.eS-my.vP.sS;
-            var fracS = my.vP.selectS-my.vP.sS;
+            var all = emulabeller.viewPort.eS-emulabeller.viewPort.sS;
+            var fracS = emulabeller.viewPort.selectS-emulabeller.viewPort.sS;
             var procS = fracS/all;
             var posS = my.canvas.width*procS;
-            var fracE = my.vP.selectE-my.vP.sS;
+            var fracE = emulabeller.viewPort.selectE-emulabeller.viewPort.sS;
             var procE = fracE/all;
             var posE = my.canvas.width*procE;
-            my.cursorPos = ~~(my.canvas.width*(sInB-my.vP.sS)/(my.vP.eS-my.vP.sS));
+            my.cursorPos = ~~(my.canvas.width*(sInB-emulabeller.viewPort.sS)/(emulabeller.viewPort.eS-emulabeller.viewPort.sS));
             if(my.cursorPos!=0) {
                 my.context.fillStyle ="#FF0000";
                 my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
             }            
-            if (my.vP.selectS != 0 && my.vP.selectE != 0){
+            if (emulabeller.viewPort.selectS != 0 && emulabeller.viewPort.selectE != 0){
                 my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
@@ -186,32 +184,11 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             my.imageCacheCounter = null;
             my.imageCache = new Array();            
             my.imageCacheCounter = new Array();            
-        },        
+        },         
         
-        toRetinaRatio: function (canvas, context) {
-            var backingStoreRatio, ratio;
-            var devicePixelRatio = window.devicePixelRatio || 1, backingStoreRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1, ratio = devicePixelRatio / backingStoreRatio;
-
-            if (devicePixelRatio !== backingStoreRatio) {
-                //waveCanvas
-                var oldWidth = canvas.clientWidth;
-                var oldHeight = canvas.clientHeight;
-                canvas.width = oldWidth * ratio;
-                canvas.height = oldHeight * ratio;
-                canvas.style.width = oldWidth + 'px';
-                canvas.style.height = oldHeight + 'px';
-
-                // now scale the context to counter
-                // the fact that we've manually scaled
-                // our canvas element
-                context.scale(ratio, ratio);
-            }
-        }, 
-        
-        uiDraw: function(mybuf,vP) {
+        uiDraw: function() {
             var my = this;
-            my.vP = vP;   
-            my.newpcmperpixel = Math.round((my.vP.eS-my.vP.sS)/my.canvas.width);
+            my.newpcmperpixel = Math.round((emulabeller.viewPort.eS-emulabeller.viewPort.sS)/my.canvas.width);
             if(my.imageCache!=null) {
                 if(my.imageCache[my.newpcmperpixel]!=null) {
 					//my.found_parts = false;
@@ -220,25 +197,24 @@ EmuLabeller.Drawer.SpectogramDrawer = {
 					
                     for (var i = 0; i < my.imageCache[my.newpcmperpixel].length; ++i) {
                         // check for complete image
-                    	if(my.imageCache[my.newpcmperpixel][i][0]==my.vP.sS &&
-                    	   my.imageCache[my.newpcmperpixel][i][1]==my.vP.eS) {
+                    	if(my.imageCache[my.newpcmperpixel][i][0]==emulabeller.viewPort.sS &&
+                    	   my.imageCache[my.newpcmperpixel][i][1]==emulabeller.viewPort.eS) {
     	    	            my.myImage.src = my.imageCache[my.newpcmperpixel][i][2];
-    	    	            
     	    	            my.drawTimeLine();
     	    	            return;
                     	}
                     }
             	    my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);                    
+                    my.startSpectroRenderingThread();                    
                 }
                 else {
             	    my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);				
+                    my.startSpectroRenderingThread();				
                 }
             } 
                     	/* check for cache on left side
-                        if(my.imageCache[my.newpcmperpixel][i][0] > my.vP.sS && 
-                    	    my.imageCache[my.newpcmperpixel][i][0] < my.vP.eS) {
+                        if(my.imageCache[my.newpcmperpixel][i][0] > emulabeller.viewPort.sS && 
+                    	    my.imageCache[my.newpcmperpixel][i][0] < emulabeller.viewPort.eS) {
                     	    my.pixel_cover = Math.floor((my.myend-my.imageCache[my.newpcmperpixel][i][0])/my.newpcmperpixel);
                     	    if(my.pixel_cover > my.pixel_covering ) {
                 			    my.pixel_covering = my.pixel_cover;
@@ -249,8 +225,8 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                     	}
                     	
                     	// check for image on right side
-                        if(my.imageCache[my.newpcmperpixel][i][1] > my.vP.sS && 
-                	        my.imageCache[my.newpcmperpixel][i][1] < my.vP.eS) {
+                        if(my.imageCache[my.newpcmperpixel][i][1] > emulabeller.viewPort.sS && 
+                	        my.imageCache[my.newpcmperpixel][i][1] < emulabeller.viewPort.eS) {
                 		    my.pixel_cover = Math.floor((my.imageCache[my.newpcmperpixel][i][1]-my.mystart)/my.newpcmperpixel);
                 		    if(my.pixel_cover > my.pixel_covering ) {
                 			    my.pixel_covering = my.pixel_cover;
@@ -302,18 +278,21 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                 }*/
                 else {    // image has to be rendered completely
                     my.killSpectroRenderingThread();
-                    my.startSpectroRenderingThread(mybuf,my.vP.sS,my.vP.eS,my.canvas.width,my.canvas.height,0,0);				
+                    my.startSpectroRenderingThread();				
                 }
         },    
         
-        startSpectroRenderingThread: function (current_buffer,pcm_start,pcm_end,complete_width,complete_height,cache_width,cache_side) {
+        
+
+        
+        startSpectroRenderingThread: function () {
             var my = this;
-            var newend = pcm_end+(2*my.N);
-            var newFloat32Array = current_buffer.getChannelData(0).subarray(pcm_start, newend);			
-            var data_conf = JSON.stringify(current_buffer);
-            my.sStart = Math.round(pcm_start);		
-            my.sEnd = Math.round(pcm_end);
-            my.pcmperpixel = Math.round((pcm_end-pcm_start)/my.canvas.width);
+            var newend = emulabeller.viewPort.eS+(2*my.N);
+            var newFloat32Array = emulabeller.backend.currentBuffer.getChannelData(0).subarray(emulabeller.viewPort.sS, newend);			
+
+            my.sStart = Math.round(emulabeller.viewPort.sS);		
+            my.sEnd = Math.round(emulabeller.viewPort.eS);
+            my.pcmperpixel = Math.round((emulabeller.viewPort.eS-emulabeller.viewPort.sS)/my.canvas.width);
             my.primeWorker = new Worker(URL.createObjectURL(my.blob));
             my.setupEvent();
                         
@@ -325,13 +304,13 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
             my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
-            my.primeWorker.postMessage({'cmd': 'config', 'cacheSide': cache_side});
-            my.primeWorker.postMessage({'cmd': 'config', 'width': complete_width});
-            my.primeWorker.postMessage({'cmd': 'config', 'height': complete_height});
-            my.primeWorker.postMessage({'cmd': 'config', 'cacheWidth': cache_width});    
+            my.primeWorker.postMessage({'cmd': 'config', 'cacheSide': 0});
+            my.primeWorker.postMessage({'cmd': 'config', 'width': my.canvas.width});
+            my.primeWorker.postMessage({'cmd': 'config', 'height': my.canvas.height});
+            my.primeWorker.postMessage({'cmd': 'config', 'cacheWidth': 0});    
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB}); 
             my.primeWorker.postMessage({'cmd': 'config', 'pixelRatio': my.devicePixelRatio}); 
-            my.primeWorker.postMessage({'cmd': 'pcm', 'config': data_conf});		
+            my.primeWorker.postMessage({'cmd': 'pcm', 'config': JSON.stringify(emulabeller.backend.currentBuffer)});		
             my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
             my.primeWorker.postMessage({'cmd': 'render'});
         }    
