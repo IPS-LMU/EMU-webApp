@@ -31,14 +31,11 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.channels = 1;                                  // default number of channels
         my.freq_lower = 0;                                // default upper Frequency
         my.freq = 8000;                                   // default upper Frequency
-        my.pixel_height = 1;                             // default pixel height per value
-        my.renderingCanvas = false;
         my.canvas = params.specCanvas;
         my.context = params.specCanvas.getContext("2d");    
         my.pcmperpixel = 0; 
         my.myImage = new Image();
         my.font = params.font;
-        my.optimizeHeight = false;
         my.params = params.defaultParams;
         window.URL = window.URL || window.webkitURL;
         my.devicePixelRatio = window.devicePixelRatio || 1;
@@ -70,7 +67,6 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                 var nvrt = $("#viewrange_to").val();
                 var ndr = $("#dynamicRange").val();
                 var nwf = $("#windowFunction").val();
-
                 if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
                     alert("Please enter valid numbers !");
                 } else {
@@ -85,18 +81,13 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                     my.drawTimeLine();
                     $(this).dialog('close');
                 }
-
             },
             Cancel: function() {
                 $(this).dialog('close');
             }
-        }
-    });		
+         }
+        });		
 		
-		
-		
-		
-        
         },
         
         setupEvent: function () {
