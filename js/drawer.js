@@ -4,9 +4,13 @@ EmuLabeller.Drawer = {
         progressColor: '#777',
         cursorWidth: 1,
         loadingColor: '#333',
+        loadingBackground: '#fff',
+        loadingText: 'calculating fft ...',
         loadingBars: 20,
         barHeight: 1,
         barMargin: 10,
+        selectedArea: "rgba(0, 0, 255, 0.2)",
+        selectedBorder: "rgba(0, 255, 0, 0.5)"        
     },
 
     init: function(params) {
@@ -28,7 +32,8 @@ EmuLabeller.Drawer = {
         this.spectogramDrawer.init({
             specCanvas: params.specCanvas,
             spectroworker : params.spectroworker,
-            font: params.font
+            font: params.font,
+            defaultParams: this.defaultParams
         });
 
         // SSFF drawer

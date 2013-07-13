@@ -72,50 +72,7 @@ var emulabeller = (function() {
             isOpen = false;
         }
     });
-    $("#specDialog").dialog({
-        bgiframe: true,
-        autoOpen: false,
-        width: 500,
-        closeOnEscape: true,
-        show: 'fade',
-        hide: 'fade',
-        position: 'center',
-        stack: false,
-        buttons: {
-            OK: function() {
-                var signalline = document.querySelector('#hero');
-                var nN = $("#windowLength").val();
-                var nvrf = $("#viewrange_from").val();
-                var nvrt = $("#viewrange_to").val();
-                var ndr = $("#dynamicRange").val();
-                var nwf = $("#windowFunction").val();
-                //var newSpectroHeight = $("#spectroHeight").val();
-                if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
-                    alert("Please enter valid numbers !");
-                } else {
-
-                    //canvas.style.height = newSpectroHeight+"px";
-                    //specCanvas.style.height = newSpectroHeight+"px";
-                    //signalline.style.marginTop = ((2*newSpectroHeight)+20)+"px";
-
-                    labeller.spectogramDrawer.N = parseInt(nN, 10);
-                    labeller.spectogramDrawer.freq = parseInt(nvrt, 10);
-                    labeller.spectogramDrawer.freq_lower = parseInt(nvrf, 10);
-                    labeller.spectogramDrawer.dynRangeInDB = parseInt(ndr, 10);
-                    labeller.spectogramDrawer.windowFunction = parseInt(nwf, 10);
-                    labeller.spectogramDrawer.clearImageCache();
-                    labeller.spectogramDrawer.killSpectroRenderingThread();
-                    labeller.spectogramDrawer.drawImage(labeller.backend.currentBuffer, labeller.viewPort);
-                    labeller.spectogramDrawer.progress(labeller.backend.getPlayedPercents(), labeller.viewPort, labeller.backend.currentBuffer.length);
-                    $(this).dialog('close');
-                }
-
-            },
-            Cancel: function() {
-                $(this).dialog('close');
-            }
-        }
-    });
+    
 
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {

@@ -14,17 +14,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                 RECTANGULAR:    9,
                 TRIANGULAR:     10
         } 
-        window.URL = window.URL || window.webkitURL;
-        my.devicePixelRatio = window.devicePixelRatio || 1;
-        my.response = spectroworker.textContent;
-        my.blob;
-        try { my.blob = new Blob([my.response], { "type" : "text\/javascript" }); }
-        catch (e) { // Backwards-compatibility
-                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-                my.blob.append(my.response);
-                my.blob = my.blob.getBlob();
-        }
-        
+       
         // various mathematical vars
         my.PI = 3.141592653589793;                        // value : Math.PI
         my.TWO_PI = 6.283185307179586;                    // value : 2 * Math.PI
@@ -41,31 +31,77 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.channels = 1;                                  // default number of channels
         my.freq_lower = 0;                                // default upper Frequency
         my.freq = 8000;                                   // default upper Frequency
-		my.sampleRate = 44100;                            // default sample Rate
         my.pixel_height = 1;                             // default pixel height per value
         my.renderingCanvas = false;
-        my.primeWorker = new Worker(URL.createObjectURL(my.blob));
         my.canvas = params.specCanvas;
         my.context = params.specCanvas.getContext("2d");    
-        my.drawer = params.drawer; 
         my.pcmperpixel = 0; 
         my.myImage = new Image();
         my.font = params.font;
-        my.fontColor = "#000";
-        my.loadingText = "calculating ...";
-        my.tempData = "";
-        my.percent = 0;
-        my.bufferLength = 0;
         my.optimizeHeight = false;
+        my.params = params.defaultParams;
+        window.URL = window.URL || window.webkitURL;
+        my.devicePixelRatio = window.devicePixelRatio || 1;
+        my.response = spectroworker.textContent;
+        my.blob;
+        try { my.blob = new Blob([my.response], { "type" : "text\/javascript" }); }
+        catch (e) { // Backwards-compatibility
+                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                my.blob.append(my.response);
+                my.blob = my.blob.getBlob();
+        }
+        my.primeWorker = new Worker(URL.createObjectURL(my.blob));
 		my.setupEvent();
 		my.clearImageCache();
+		
+		$("#specDialog").dialog({
+         bgiframe: true,
+         autoOpen: false,
+         width: 500,
+         closeOnEscape: true,
+         show: 'fade',
+         hide: 'fade',
+         position: 'center',
+         stack: false,
+         buttons: {
+            OK: function() {
+                var nN = $("#windowLength").val();
+                var nvrf = $("#viewrange_from").val();
+                var nvrt = $("#viewrange_to").val();
+                var ndr = $("#dynamicRange").val();
+                var nwf = $("#windowFunction").val();
+
+                if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
+                    alert("Please enter valid numbers !");
+                } else {
+                    my.N = parseInt(nN, 10);
+                    my.freq = parseInt(nvrt, 10);
+                    my.freq_lower = parseInt(nvrf, 10);
+                    my.dynRangeInDB = parseInt(ndr, 10);
+                    my.windowFunction = parseInt(nwf, 10);
+                    my.clearImageCache();
+                    my.killSpectroRenderingThread();
+                    my.uiDraw();
+                    my.drawTimeLine();
+                    $(this).dialog('close');
+                }
+
+            },
+            Cancel: function() {
+                $(this).dialog('close');
+            }
+        }
+    });		
+		
+		
+		
+		
         
         },
         
         setupEvent: function () {
             var my = this;
             my.primeWorker.addEventListener('message', function(event){
-            
             	my.worker_img = event.data.img;
             	my.worker_start = event.data.start;
             	my.worker_end = event.data.end;
@@ -73,7 +109,6 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             	my.worker_cache_side = event.data.cacheSide;
                 my.render_width = my.canvas.width - my.worker_cache_width;
                 my.myImage.onload = function() {
-                    // context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
                     if(my.worker_cache_side==0)
     	    	        my.context.drawImage(my.myImage, 0, 0, my.canvas.width, my.canvas.height, 0, 0, my.canvas.width, my.canvas.height);
     	    	    if(my.worker_cache_side==1)
@@ -81,9 +116,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
     	    	    if(my.worker_cache_side==2)
     	    	        my.context.drawImage(my.myImage, my.worker_cache_width, 0, my.render_width, my.canvas.height, my.worker_cache_width, 0, my.render_width, my.canvas.height);
     	    	        
-    	    	    //my.toRetinaRatio(my.canvas,my.context); 	
-    	    	    my.tempData =  my.canvas.toDataURL("image/png");
-    	    	    my.buildImageCache(my.worker_start,my.worker_end,my.tempData);
+    	    	    my.buildImageCache(my.worker_start,my.worker_end,my.canvas.toDataURL("image/png"));
     	    	    my.drawTimeLineContext();
                 }
                 my.myImage.src = my.worker_img;
@@ -110,21 +143,9 @@ EmuLabeller.Drawer.SpectogramDrawer = {
     	    }
         },
         
-        uiDrawUpdate: function (percents, vP, bufferLength, ssffInfos) {
-            var my = this;
-            my.percent = percents;
-            my.bufferLength = bufferLength;
-            my.drawTimeLine();
-        /*if(ssffInfos){
-            if(ssffInfos.data.length > 0){
-                this.drawSSFF(ssffInfos, vP);
-            }
-        }*/
-        },    
-
         drawTimeLineContext: function () {
             var my = this;
-            var sInB = my.percent*my.bufferLength;
+            var sInB = emulabeller.viewPort.percent*emulabeller.backend.currentBuffer.length;
             var all = emulabeller.viewPort.eS-emulabeller.viewPort.sS;
             var fracS = emulabeller.viewPort.selectS-emulabeller.viewPort.sS;
             var procS = fracS/all;
@@ -134,13 +155,13 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             var posE = my.canvas.width*procE;
             my.cursorPos = ~~(my.canvas.width*(sInB-emulabeller.viewPort.sS)/(emulabeller.viewPort.eS-emulabeller.viewPort.sS));
             if(my.cursorPos!=0) {
-                my.context.fillStyle ="#FF0000";
+                my.context.fillStyle = my.params.progressColor;
                 my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
             }            
             if (emulabeller.viewPort.selectS != 0 && emulabeller.viewPort.selectE != 0){
-                my.context.fillStyle = "rgba(0, 0, 255, 0.2)";
+                my.context.fillStyle = my.params.selectedArea;
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
-                my.context.strokeStyle = "rgba(0, 255, 0, 0.5)";
+                my.context.strokeStyle = my.params.selectedBorder;
                 my.context.beginPath();
                 my.context.moveTo(posS,0);
                 my.context.lineTo(posS,my.canvas.height);
@@ -165,12 +186,11 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         killSpectroRenderingThread: function () {
             var my = this;
-            my.context.fillStyle = "rgb(255,255,255)";
+            my.context.fillStyle = my.params.loadingBackground;
         	my.context.fillRect(0,0,my.canvas.width,my.canvas.height);    
-        	my.context.fillStyle = my.fontColor;
         	my.context.font = my.font;
-        	my.context.fillText(my.loadingText, 2, 10); 
-        	//my.toRetinaRatio(my.canvas,my.context);   
+        	my.context.fillStyle = my.params.loadingColor;
+        	my.context.fillText(my.params.loadingText, 10, 25);   
             if(my.primeWorker!=null) {
             	my.primeWorker.terminate();
         		my.primeWorker = null;
@@ -287,11 +307,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         startSpectroRenderingThread: function () {
             var my = this;
-            var newend = emulabeller.viewPort.eS+(2*my.N);
-            var newFloat32Array = emulabeller.backend.currentBuffer.getChannelData(0).subarray(emulabeller.viewPort.sS, newend);			
 
-            my.sStart = Math.round(emulabeller.viewPort.sS);		
-            my.sEnd = Math.round(emulabeller.viewPort.eS);
             my.pcmperpixel = Math.round((emulabeller.viewPort.eS-emulabeller.viewPort.sS)/my.canvas.width);
             my.primeWorker = new Worker(URL.createObjectURL(my.blob));
             my.setupEvent();
@@ -300,8 +316,8 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'alpha': my.alpha});
             my.primeWorker.postMessage({'cmd': 'config', 'freq': my.freq});
             my.primeWorker.postMessage({'cmd': 'config', 'freq_low': my.freq_lower});
-            my.primeWorker.postMessage({'cmd': 'config', 'start': my.sStart});
-            my.primeWorker.postMessage({'cmd': 'config', 'end': my.sEnd});
+            my.primeWorker.postMessage({'cmd': 'config', 'start': Math.round(emulabeller.viewPort.sS)});
+            my.primeWorker.postMessage({'cmd': 'config', 'end': Math.round(emulabeller.viewPort.eS)});
             my.primeWorker.postMessage({'cmd': 'config', 'myStep': my.pcmperpixel});
             my.primeWorker.postMessage({'cmd': 'config', 'window': my.windowFunction});
             my.primeWorker.postMessage({'cmd': 'config', 'cacheSide': 0});
@@ -311,7 +327,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             my.primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': my.dynRangeInDB}); 
             my.primeWorker.postMessage({'cmd': 'config', 'pixelRatio': my.devicePixelRatio}); 
             my.primeWorker.postMessage({'cmd': 'pcm', 'config': JSON.stringify(emulabeller.backend.currentBuffer)});		
-            my.primeWorker.postMessage({'cmd': 'pcm', 'stream': newFloat32Array});		
+            my.primeWorker.postMessage({'cmd': 'pcm', 'stream': emulabeller.backend.currentBuffer.getChannelData(0).subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS+(2*my.N))});		
             my.primeWorker.postMessage({'cmd': 'render'});
         }    
 };
