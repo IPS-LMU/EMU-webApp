@@ -1,6 +1,6 @@
 EmuLabeller.Drawer.OsciDrawer = {
 
-    init: function(params) {
+    init: function() {
         this.waveColor = 'black';
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
@@ -18,6 +18,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.minPeak = Infinity;
 
         this.forTesting = 1;
+
+        this.sR = 44100; // SIC not good hardcoded
 
     },
 
@@ -157,9 +159,9 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         if (vP) {
             cc.font = "12px Verdana";
-            var metrics = cc.measureText(Math.floor(vP.eS));
-            cc.strokeText(Math.floor(vP.sS), 5, 5 + 8);
-            cc.strokeText(Math.floor(vP.eS), canvas.width - metrics.width - 5, 5 + 8);
+            var metrics = cc.measureText(vP.eS/this.sR);
+            cc.strokeText(vP.sS/this.sR, 5, 5 + 8);
+            cc.strokeText(vP.eS/this.sR, canvas.width - metrics.width - 5, 5 + 8);
         }
 
         
@@ -188,11 +190,14 @@ EmuLabeller.Drawer.OsciDrawer = {
 
             cc.strokeStyle = this.waveColor;
             if (vP.selectS == vP.selectE) {
-                cc.strokeText(Math.floor(vP.selectS), posS + 5, 10);
+                cc.strokeText(vP.selectS/this.sR, posS + 5, 13);
             } else {
-                var tW = cc.measureText(Math.floor(vP.selectS)).width;
-                cc.strokeText(Math.floor(vP.selectS), posS - tW - 4, 10);
-                cc.strokeText(Math.floor(vP.selectE), posE + 5, 10);
+                var tW = cc.measureText(vP.selectS/this.sR).width;
+                cc.strokeText(vP.selectS/this.sR, posS - tW - 4, 13);
+                cc.strokeText(vP.selectE/this.sR, posE + 5, 13);
+
+                tW = cc.measureText((vP.selectE-vP.selectS)/this.sR).width;
+                cc.strokeText((vP.selectE-vP.selectS)/this.sR, posS+(posE-posS)/2 -tW/2, 13);
 
             }
         }
