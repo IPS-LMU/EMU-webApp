@@ -13,7 +13,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.cursorColor = "red";
         this.cursorWidth = 1;
 
-        this.selTierColor = "grey";
+        this.selTierColor = "#C8C8C8";
 
     },
 

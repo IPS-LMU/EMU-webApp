@@ -753,7 +753,7 @@ var EmuLabeller = {
         }).addClass(myCssClass).appendTo(myAppendTo);
 
         $("#" + myName).bind("click", function(event) {
-            emulabeller.setMarkedEventNew(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierDetailsFromTierWithName(myName));
+            emulabeller.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
             emulabeller.canvasDoubleClick(event.originalEvent);
@@ -969,15 +969,13 @@ var EmuLabeller = {
         this.rebuildSelect();
     },
 
-    setMarkedEventNew: function(percX, percY, elID) {
-        var my = this;
-        my.rebuildSelect();
-        my.setMarkedEvent(percX, percY, elID);
-    },
+    // setMarkedEventNew: function(percX, percY, elID) {
+    //     var my = this;
+    //     my.rebuildSelect();
+    //     my.setMarkedEvent(percX, percY, elID);
+    // },
 
-    setMarkedEvent: function(percX, percY, tierDetails) {
-
-        console.log(tierDetails);
+    handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
         this.resetAllSelTiers();
 
@@ -1006,6 +1004,9 @@ var EmuLabeller = {
             var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
             this.resetAllSelSegments();
             nearest.uiInfos.selSeg = true;
+
+            this.viewPort.selectS = nearest.startSample;
+            this.viewPort.selectE = nearest.startSample + nearest.sampleDur;
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
             //     var clicked = this.countSelected(elID);
