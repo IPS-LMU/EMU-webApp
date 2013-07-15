@@ -360,8 +360,12 @@ var EmuLabeller = {
             if (e.shiftKey) {
                 my.internalMode = my.EDITMODE.LABEL_MOVE;
                 curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
+                console.log(curSample);
                 my.moveBoundary(curSample);
-                my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierInfos);
+                my.viewPort.selectS = curSample;
+                my.viewPort.selectE = curSample;
+                // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierInfos);
+                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierInfos);
             }
             // } else {
             //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
@@ -759,7 +763,7 @@ var EmuLabeller = {
             emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
         });
         $("#" + myName).bind("mousemove", function(event) {
-            emulabeller.trackMouseInTiers(emulabeller.getX(event.originalEvent), myName);
+            emulabeller.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
         });
         $("#" + myName).bind("mouseup", function(event) {
             //myMouseUp(e);
@@ -1219,16 +1223,17 @@ var EmuLabeller = {
      * canvas calling this function
      * @param tierID id of canvas calling this function
      */
-    trackMouseInTiers: function(percX, tierID) {
-        this.resetAllSelBoundariesInTierInfos();
-        var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
-        var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+    trackMouseInTiers: function(event, percX, tierID) {
+        if (!event.shiftKey) {
+            this.resetAllSelBoundariesInTierInfos();
+            var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
+            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
-        var nearest = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
+            var nearest = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
 
-        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+        }
     },
-
     getTierDetailsFromTierWithID: function(tierID) {
 
         for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
@@ -1298,13 +1303,17 @@ var EmuLabeller = {
         });
     },
 
-    getSelBoundarieEventsWithSurroundingEvt: function() {
-        var res = [];
+    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
+        var res;
         for (var i = 0; i < this.tierInfos.tiers.length; i++) {
             for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
                 if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
-                    res.push([this.tierInfos.tiers[i].events[j-1], this.tierInfos.tiers[i].events[j]]);
-
+                    res = {'tiers': [this.tierInfos.tiers[i-1],
+                        this.tierInfos.tiers[i],
+                        this.tierInfos.tiers[i+1]],
+                        'evts': [this.tierInfos.tiers[i].events[j-1],
+                        this.tierInfos.tiers[i].events[j],
+                        this.tierInfos.tiers[i].events[j+1]]};
                 }
             }
         }
@@ -1313,40 +1322,65 @@ var EmuLabeller = {
 
 
     moveBoundary: function(newTime) {
-        evts = this.getSelBoundarieEventsWithSurroundingEvt();
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        evts = evtsNtiers.evts;
+
         newTime = Math.round(newTime);
 
-        for (var i = 0; i < evts.length; i++) {
-            // set to new time
-            var oldTime = evts[i][1].startSample;
-            evts[i][1].startSample = Math.round(newTime);
-            // correct for locking mode (sampleDur changes of current segment) will change in future
-            if (oldTime < newTime) {
-                evts[i][1].sampleDur = evts[i][1].sampleDur + (oldTime - newTime);
-            } else {
-                evts[i][1].sampleDur = evts[i][1].sampleDur - (newTime - oldTime);
-            }
+        // set to new time
+        console.log("newTime:", newTime);
+        var oldTime = evts[1].startSample;
 
-            // correct for locking mode (sampleDur changes of perv segment) will change in future
+        var leftEdge =  evts[0].startSample;
 
-            evts[i][0].sampleDur = evts[i][1].startSample - evts[i][0].startSample;
+        console.log("left edge:", leftEdge);
 
+        if(newTime > leftEdge){
+            evts[1].startSample = newTime;
+        }else{
+            console.log("2 far left")
+            
         }
+
+        // correct for locking mode (sampleDur changes of current segment) will change in future
+        if (oldTime < newTime) {
+            evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+        } else {
+            evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+        }
+
+
+        // correct for locking mode (sampleDur changes of perv segment) will change in future
+
+        evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+
+        // console.log(evtsNtiers.evts[1]);
 
     },
 
     snapSelectedSegmentToNearestTop: function(){
-        evts = this.getSelBoundarieEventsWithSurroundingEvt();
-        if(evts.length != 1){
-            alert("more then one or no segment selected! Move near segment to select");
-        }
 
         //find nearest evt in tier obove
-
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        var selEvt = evtsNtiers.evts[1];
+        console.log(selEvt)
+        var bestIdx;
+        var dist = Infinity;
+        for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
+            var curEvt = evtsNtiers.tiers[0].events[i];
+            if (Math.abs(curEvt.startSample - selEvt.startSample) < dist){
+                dist = curEvt.startSample - selEvt.startSample;
+                bestIdx = i;
+            }
+        }
+        console.log(selEvt);
+        console.log(evtsNtiers.tiers[0].events[bestIdx]);
+        selEvt.startSample = evtsNtiers.tiers[0].events[bestIdx].startSample;
+        console.log(selEvt);
     },
 
     snapSelectedSegmentToNearestBottom: function(){
-        evts = this.getSelBoundarieEventsWithSurroundingEvt();
+        evts = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
         if(evts.length != 1){
             alert("more then one or no segment selected! Move near segment to select -> don't multiselect");
         }
