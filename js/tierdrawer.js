@@ -13,6 +13,8 @@ EmuLabeller.Drawer.TierDrawer = {
         this.cursorColor = "red";
         this.cursorWidth = 1;
 
+        this.selTierColor = "grey";
+
     },
 
     /**
@@ -21,7 +23,12 @@ EmuLabeller.Drawer.TierDrawer = {
     drawSingleTier: function(vP, tierDetails) {
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
-        cc.clearRect(0, 0, canvas.width, canvas.height);
+        if(tierDetails.uiInfos.sel){
+            cc.fillStyle = this.selTierColor;
+            cc.fillRect(0, 0, canvas.width, canvas.height);
+        }else{
+            cc.clearRect(0, 0, canvas.width, canvas.height);
+        }
 
         // draw name of tier
         cc.strokeStyle = "black";
@@ -38,40 +45,32 @@ EmuLabeller.Drawer.TierDrawer = {
                 if (curEvt.startSample > vP.sS && curEvt.startSample < vP.eS) {
 
                     // draw segment start
-                    perc = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);
+                    var percS = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);
                     // check if selected -> if draw as marked
                     if (curEvt.uiInfos.selBoundryStart) {
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height);
+                        cc.fillRect(canvas.width * percS, 0, 1, canvas.height);
                     } else {
                         // console.log(curEvt);
                         cc.fillStyle = this.startBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2);
+                        cc.fillRect(canvas.width * percS, 0, 1, canvas.height / 2);
                     }
 
                     //draw segment end
-                    perc = (curEvt.startSample + curEvt.sampleDur - vP.sS) / (vP.eS - vP.sS);
+                    var percE = (curEvt.startSample + curEvt.sampleDur - vP.sS) / (vP.eS - vP.sS);
                     // check if selected -> if draw as marked
                     if (curEvt.uiInfos.selBoundryEnd) {
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * perc, canvas.height / 2, 1, canvas.height);
+                        cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
                     } else {
                         cc.fillStyle = this.endBoundaryColor;
-                        cc.fillRect(canvas.width * perc, canvas.height / 2, 1, canvas.height);
+                        cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
                     }
 
                     // mark selected segment with markColor == yellow
-                    if (curEvt.uiInfos.selBoundaryEnd) {
-                        prevPerc = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);
-                        curcc.fillStyle = markColor;
-                        curcc.fillRect(canvas.width * prevPerc + 1, 0, canvas.width * perc - canvas.width * prevPerc - 1, canvas.height);
-                        curcc.fillStyle = this.boundaryColor;
-                        // } else if (vP.segmentsLoaded && curEv > 0 && emulabeller.isSelectNeighbour(i, curEv)) {
-                        //     prevPerc = (tierDetails.events[curEv - 1].startSample - vP.sS) / (vP.eS - vP.sS);
-                        //     curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
-                        //     curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
-                        //     curcc.fillStyle = this.boundaryColor;
-
+                    if (curEvt.uiInfos.selSeg) {
+                        cc.fillStyle = this.markColor;
+                        cc.fillRect(canvas.width * percS, 0, percE*canvas.width-percS*canvas.width, canvas.height);
                     }
 
                     // draw label 
@@ -79,7 +78,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     cc.strokeStyle = "black";
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
-                    cc.strokeText(curEvt.label, canvas.width * perc - tW - 10, canvas.height / 2);
+                    cc.strokeText(curEvt.label, canvas.width * percE - tW - 10, canvas.height / 2);
 
 
                     // }

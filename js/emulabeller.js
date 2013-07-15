@@ -753,20 +753,20 @@ var EmuLabeller = {
         }).addClass(myCssClass).appendTo(myAppendTo);
 
         $("#" + myName).bind("click", function(event) {
-            emulabeller.setMarkedEventNew(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
+            emulabeller.setMarkedEventNew(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
             emulabeller.canvasDoubleClick(event.originalEvent);
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierID(event.originalEvent));
+            emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
         });
         $("#" + myName).bind("mousemove", function(event) {
             emulabeller.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
         });
         $("#" + myName).bind("mouseout", function(event) {
             emulabeller.resetAllSelBoundariesInTierInfos();
-            var curTierDetails = emulabeller.getTierDetailsFromTierWithID(myName);
+            var curTierDetails = emulabeller.getTierDetailsFromTierWithName(myName);
             emulabeller.drawer.updateSingleTier(emulabeller.viewPort, curTierDetails);
 
         });
@@ -975,54 +975,65 @@ var EmuLabeller = {
         my.setMarkedEvent(percX, percY, elID);
     },
 
-    setMarkedEvent: function(percX, percY, elID) {
-        var my = this;
-        var clickedTier = this.tierInfos.tiers[elID];
-        var lastTier = this.viewPort.selTier;
-        if (lastTier != elID) my.rebuildSelect();
-        this.viewPort.selTier = elID;
-        var rXp = this.tierInfos.canvases[elID].width * percX;
-        var rYp = this.tierInfos.canvases[elID].height * percY;
-        var sXp = this.tierInfos.canvases[elID].width * (this.viewPort.selectS / (this.viewPort.eS - this.viewPort.sS));
+    setMarkedEvent: function(percX, percY, tierDetails) {
+
+        console.log(tierDetails);
+        //deselect everything
+        this.resetAllSelTiers();
+
+        tierDetails.uiInfos.sel = true;
+        // var lastTier = this.viewPort.selTier;
+        // if (lastTier != elID) my.rebuildSelect();
+        // this.viewPort.selTier = elID;
+
+
+        var rXp = tierDetails.uiInfos.canvas.width * percX;
+        var rYp = tierDetails.uiInfos.canvas.height * percY;
+        var sXp = tierDetails.uiInfos.canvas.width * (this.viewPort.selectS / (this.viewPort.eS - this.viewPort.sS));
 
         /*if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
             console.log("hit the circle")
             this.addSegmentAtSelection();
         }*/
-        if (clickedTier.type == "point") {
-            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
-            var clickedEvtNr = my.getNearestSegmentBoundry(clickedTier, curSample);
+        // if (clickedTier.type == "point") {
+        //     var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+        //     var clickedEvtNr = my.getNearestSegmentBoundry(clickedTier, curSample);
 
-        }
-        if (clickedTier.type == "seg") {
+        // }
+        if (tierDetails.type == "seg") {
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
-            var clickedEvtNr = my.getSegmentIDbySample(clickedTier, curSample);
-            var clicked = this.countSelected(elID);
-            var timeS = clickedTier.events[clickedEvtNr - 1].startSample;
-            console.log(clickedTier.events)
-            var timeE = clickedTier.events[clickedEvtNr].startSample;
-            if (clicked > 0) {
-                if (this.isSelectNeighbour(elID, clickedEvtNr)) {
-                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-                    if (this.viewPort.selectS != 0 && clicked > 0) {
-                        if (timeS < this.viewPort.selectS)
-                            this.viewPort.selectS = timeS;
-                    } else this.viewPort.selectS = timeS;
-                    if (this.viewPort.selectE != 0 && clicked > 0) {
-                        if (timeE > this.viewPort.selectE)
-                            this.viewPort.selectE = timeE;
-                    }
-                } else {
-                    my.rebuildSelect();
-                    my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-                    this.viewPort.selectS = timeS;
-                    this.viewPort.selectE = timeE;
-                }
-            } else {
-                my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-                this.viewPort.selectS = timeS;
-                this.viewPort.selectE = timeE;
-            }
+
+            var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
+            this.resetAllSelSegments();
+            nearest.uiInfos.selSeg = true;
+
+            // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
+            //     var clicked = this.countSelected(elID);
+            //     var timeS = clickedTier.events[clickedEvtNr - 1].startSample;
+            //     console.log(clickedTier.events)
+            //     var timeE = clickedTier.events[clickedEvtNr].startSample;
+            //     if (clicked > 0) {
+            //         if (this.isSelectNeighbour(elID, clickedEvtNr)) {
+            //             my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //             if (this.viewPort.selectS != 0 && clicked > 0) {
+            //                 if (timeS < this.viewPort.selectS)
+            //                     this.viewPort.selectS = timeS;
+            //             } else this.viewPort.selectS = timeS;
+            //             if (this.viewPort.selectE != 0 && clicked > 0) {
+            //                 if (timeE > this.viewPort.selectE)
+            //                     this.viewPort.selectE = timeE;
+            //             }
+            //         } else {
+            //             my.rebuildSelect();
+            //             my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //             this.viewPort.selectS = timeS;
+            //             this.viewPort.selectE = timeE;
+            //         }
+            //     } else {
+            //         my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //         this.viewPort.selectS = timeS;
+            //         this.viewPort.selectE = timeE;
+            //     }
         }
         this.drawBuffer();
     },
@@ -1228,18 +1239,17 @@ var EmuLabeller = {
      * canvas calling this function
      * @param tierID id of canvas calling this function
      */
-    trackMouseInTiers: function(event, percX, tierID) {
+    trackMouseInTiers: function(event, percX, tierName) {
         if (!event.shiftKey) {
             this.resetAllSelBoundariesInTierInfos();
-            var curTierDetails = this.getTierDetailsFromTierWithID(tierID);
+            var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
-            var nearest = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
 
             this.drawer.updateSingleTier(this.viewPort, curTierDetails);
         }
     },
-    getTierDetailsFromTierWithID: function(tierID) {
+    getTierDetailsFromTierWithName: function(tierID) {
 
         for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
             if (this.tierInfos.tiers[tierNr].TierName == tierID) {
@@ -1249,7 +1259,7 @@ var EmuLabeller = {
         alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
     },
 
-    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample) {
+    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
         var closestStartSample = null;
         var closestStartEvt = null;
 
@@ -1260,7 +1270,9 @@ var EmuLabeller = {
                 closestStartEvt = curEvt;
             }
         }
-        closestStartEvt.uiInfos.selBoundryStart = true;
+        if (markAsSel) {
+            closestStartEvt.uiInfos.selBoundryStart = true;
+        }
         return closestStartEvt;
     },
 
@@ -1269,6 +1281,20 @@ var EmuLabeller = {
             for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
                 this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
                 this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
+            }
+        }
+    },
+
+    resetAllSelTiers: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            this.tierInfos.tiers[i].uiInfos.sel = false;
+        }
+    },
+
+    resetAllSelSegments: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                this.tierInfos.tiers[i].events[j].uiInfos.selSeg = false;
             }
         }
     },
