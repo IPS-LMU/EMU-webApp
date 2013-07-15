@@ -156,7 +156,7 @@ EmuLabeller.Drawer = {
     },
 
     /**
-    * update all tiers 
+    * update all tiers
     * 
     * @param vP current viewPort
     * @param tierInfos current tierInfos
@@ -165,6 +165,18 @@ EmuLabeller.Drawer = {
         // draw tiers
         this.tierDrawer.drawAllTiers(vP, tierInfos);
         this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
+
+    },
+
+    /**
+    * update single tier 
+    * 
+    * @param vP current viewPort
+    * @param tierDetail of Single tier
+    */
+    updateSingleTier: function(vP, tierDetails) {
+        this.tierDrawer.drawSingleTier(vP, tierDetails);
+        this.tierDrawer.drawVpMarkupSingleTier(vP, tierDetails);
 
     }
 };

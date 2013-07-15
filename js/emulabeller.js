@@ -764,6 +764,12 @@ var EmuLabeller = {
         $("#" + myName).bind("mousemove", function(event) {
             emulabeller.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
         });
+        $("#" + myName).bind("mouseout", function(event) {
+            emulabeller.resetAllSelBoundariesInTierInfos();
+            var curTierDetails = emulabeller.getTierDetailsFromTierWithID(myName);
+            emulabeller.drawer.updateSingleTier(emulabeller.viewPort, curTierDetails);
+
+        });
         $("#" + myName).bind("mouseup", function(event) {
             //myMouseUp(e);
         });
@@ -1230,7 +1236,7 @@ var EmuLabeller = {
 
             var nearest = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
 
-            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+            this.drawer.updateSingleTier(this.viewPort, curTierDetails);
         }
     },
     getTierDetailsFromTierWithID: function(tierID) {
@@ -1421,7 +1427,7 @@ var EmuLabeller = {
             // correct for locking mode (sampleDur changes of perv segment) will change in future
             evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
         }
-        
+
         this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
     },
 
