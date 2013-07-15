@@ -1,7 +1,7 @@
 EmuLabeller.Drawer.OsciDrawer = {
 
     init: function(params) {
-        this.waveColor = 'white';
+        this.waveColor = 'black';
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
 

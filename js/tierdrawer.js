@@ -5,7 +5,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.startBoundaryColor = "green";
         this.endBoundaryColor = "red";
 
-        this.curSelBoundColor = "rgba(0, 0, 255, 255)";
+        this.curSelBoundColor = "#0DC5FF";//rgba(0, 0, 255, 255)";
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
         this.selBoundColor = "rgba(0, 255, 0, 0.5)";
@@ -24,7 +24,7 @@ EmuLabeller.Drawer.TierDrawer = {
         cc.clearRect(0, 0, canvas.width, canvas.height);
 
         // draw name of tier
-        cc.strokeStyle = "white";
+        cc.strokeStyle = "black";
         cc.font = "12px Verdana";
         cc.strokeText(tierDetails.TierName, 5, 5 + 8);
         cc.strokeText("(" + tierDetails.type + ")", 5, 20 + 8);
@@ -76,7 +76,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
                     // draw label 
                     // console.log(curEvt.label)
-                    cc.strokeStyle = "white";
+                    cc.strokeStyle = "black";
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
                     cc.strokeText(curEvt.label, canvas.width * perc - tW - 10, canvas.height / 2);
