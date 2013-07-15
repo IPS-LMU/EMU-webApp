@@ -4,8 +4,8 @@ EmuLabeller.Drawer.TierDrawer = {
         this.markColor = "rgba(255, 255, 0, 0.7)";
         this.startBoundaryColor = "green";
         this.endBoundaryColor = "red";
-        
-        this.curSelBoundColor = "rgba(100, 100, 255, 255)";
+
+        this.curSelBoundColor = "rgba(0, 0, 255, 255)";
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
         this.selBoundColor = "rgba(0, 255, 0, 0.5)";
@@ -16,8 +16,8 @@ EmuLabeller.Drawer.TierDrawer = {
     },
 
     /**
-    * draw single tier 
-    */
+     * draw single tier
+     */
     drawSingleTier: function(vP, tierDetails) {
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
@@ -36,28 +36,28 @@ EmuLabeller.Drawer.TierDrawer = {
                 var curEvt = tierDetails.events[curEvtNr];
                 // check if in view
                 if (curEvt.startSample > vP.sS && curEvt.startSample < vP.eS) {
-                    
+
                     // draw segment start
                     perc = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);
                     // check if selected -> if draw as marked
-                    if(curEvt.uiInfos.selBoundryStart){
+                    if (curEvt.uiInfos.selBoundryStart) {
                         cc.fillStyle = this.curSelBoundColor;
                         cc.fillRect(canvas.width * perc, 0, 1, canvas.height);
-                    } else{
+                    } else {
                         // console.log(curEvt);
                         cc.fillStyle = this.startBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height/2);
+                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2);
                     }
-                    
+
                     //draw segment end
-                    perc = (curEvt.startSample+curEvt.sampleDur - vP.sS) / (vP.eS - vP.sS);
+                    perc = (curEvt.startSample + curEvt.sampleDur - vP.sS) / (vP.eS - vP.sS);
                     // check if selected -> if draw as marked
-                    if(curEvt.uiInfos.selBoundryEnd){
+                    if (curEvt.uiInfos.selBoundryEnd) {
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * perc, canvas.height/2, 1, canvas.height);
-                    } else{
+                        cc.fillRect(canvas.width * perc, canvas.height / 2, 1, canvas.height);
+                    } else {
                         cc.fillStyle = this.endBoundaryColor;
-                        cc.fillRect(canvas.width * perc, canvas.height/2, 1, canvas.height);
+                        cc.fillRect(canvas.width * perc, canvas.height / 2, 1, canvas.height);
                     }
 
                     // mark selected segment with markColor == yellow
@@ -66,11 +66,11 @@ EmuLabeller.Drawer.TierDrawer = {
                         curcc.fillStyle = markColor;
                         curcc.fillRect(canvas.width * prevPerc + 1, 0, canvas.width * perc - canvas.width * prevPerc - 1, canvas.height);
                         curcc.fillStyle = this.boundaryColor;
-                    // } else if (vP.segmentsLoaded && curEv > 0 && emulabeller.isSelectNeighbour(i, curEv)) {
-                    //     prevPerc = (tierDetails.events[curEv - 1].startSample - vP.sS) / (vP.eS - vP.sS);
-                    //     curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
-                    //     curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
-                    //     curcc.fillStyle = this.boundaryColor;
+                        // } else if (vP.segmentsLoaded && curEv > 0 && emulabeller.isSelectNeighbour(i, curEv)) {
+                        //     prevPerc = (tierDetails.events[curEv - 1].startSample - vP.sS) / (vP.eS - vP.sS);
+                        //     curcc.fillStyle = "rgba(255, 0, 0, 0.1)";
+                        //     curcc.fillRect(curCanWidth * prevPerc + 1, 0, curCanWidth * perc - curCanWidth * prevPerc - 1, curCanHeight);
+                        //     curcc.fillStyle = this.boundaryColor;
 
                     }
 
@@ -82,15 +82,36 @@ EmuLabeller.Drawer.TierDrawer = {
                     cc.strokeText(curEvt.label, canvas.width * perc - tW - 10, canvas.height / 2);
 
 
-                // }
-                // if (tierDetails.events[curEv].end > vP.sS && tierDetails.events[curEv].end < vP.eS) {
-                //     perc = (tierDetails.events[curEv].end - vP.sS) / (vP.eS - vP.sS);
-                //     curcc.fillRect(curCanWidth * perc, 0, 1, curCanHeight);
-                // }
-            }
+                    // }
+                    // if (tierDetails.events[curEv].end > vP.sS && tierDetails.events[curEv].end < vP.eS) {
+                    //     perc = (tierDetails.events[curEv].end - vP.sS) / (vP.eS - vP.sS);
+                    //     curcc.fillRect(curCanWidth * perc, 0, 1, curCanHeight);
+                    // }
+                }
 
+            }
+        } else if (tierDetails.type == "point") {
+            cc.fillStyle = this.startBoundaryColor;
+            for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
+                var curEvt = tierDetails.events[curEvtNr];
+
+                if (tierDetails.events[curEvtNr].startSample > vP.sS && tierDetails.events[curEvtNr].startSample < vP.eS) {
+                    perc = (tierDetails.events[curEvtNr].startSample - vP.sS) / (vP.eS - vP.sS);
+                    
+                    if (curEvt.uiInfos.selBoundryStart) {
+                        cc.fillStyle = this.curSelBoundColor;
+                    }else{
+                        cc.fillStyle = this.startBoundaryColor;
+                    }
+                    cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
+
+                    tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
+                    cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+
+                    cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10);
+                }
+            }
         }
-    }
 
     },
 
