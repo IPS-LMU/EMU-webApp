@@ -1249,10 +1249,12 @@ var EmuLabeller = {
             var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
+            this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true)
 
             this.drawer.updateSingleTier(this.viewPort, curTierDetails);
         }
     },
+
     getTierDetailsFromTierWithName: function(tierID) {
 
         for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
@@ -1293,10 +1295,6 @@ var EmuLabeller = {
         }
 
         resEvt.uiInfos.selSeg = true;
-
-        console.log(resEvt.uiInfos.selSeg);
-        console.log(resEvt.uiInfos);
-        console.log(resEvt.uiInfos.selSeg);
 
         return resEvt;
     },
