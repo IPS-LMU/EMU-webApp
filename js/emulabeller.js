@@ -876,7 +876,7 @@ var EmuLabeller = {
                 var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
 
                 var textAreaWidth = Math.floor(posE - posS - 5);
-                var textAreaHeight = Math.floor(tier.uiInfos.canvas.clientHeigh);
+                var textAreaHeight = Math.floor(tier.uiInfos.canvas.height/2 -5);
                 if (event !== null) {
                     var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
                     var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
