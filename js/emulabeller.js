@@ -1001,9 +1001,10 @@ var EmuLabeller = {
         if (tierDetails.type == "seg") {
             var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
-            var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
+            // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
+            var nearest = this.findAndMarkNearestSegmentAsSel(tierDetails, curSample);
             this.resetAllSelSegments();
-            nearest.uiInfos.selSeg = true;
+            // nearest.uiInfos.selSeg = true;
 
             this.viewPort.selectS = nearest.startSample;
             this.viewPort.selectE = nearest.startSample + nearest.sampleDur;
@@ -1274,6 +1275,22 @@ var EmuLabeller = {
         if (markAsSel) {
             closestStartEvt.uiInfos.selBoundryStart = true;
         }
+        return closestStartEvt;
+    },
+
+    findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
+        var closestStartEvt = null;
+
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+
+            if (Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                closestStartSample = curEvt.startSample;
+                closestStartEvt = curEvt;
+        }
+        
+        closestStartEvt.uiInfos.sel = true;
+        
         return closestStartEvt;
     },
 
