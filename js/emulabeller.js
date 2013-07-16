@@ -896,7 +896,7 @@ var EmuLabeller = {
                     my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
                 }
             } else if (tier.type == "point") {
-                console.log("no point editing yet!");
+                alert("no point editing yet! Sorry...");
             }
         } else {
             my.removeCanvasDoubleClick();
