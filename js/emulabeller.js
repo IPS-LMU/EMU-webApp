@@ -886,7 +886,7 @@ var EmuLabeller = {
                     $("#saveText")[0].addEventListener('click', function(e) {
                         my.saveCanvasDoubleClick();
                     });
-                    $("#editArea")[0].onkeyup = function(evt) {
+                    $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
                         evt = evt || window.event;
                         if (evt.keyCode == 13) {
                             my.saveCanvasDoubleClick();
@@ -920,11 +920,11 @@ var EmuLabeller = {
     },
 
     saveCanvasDoubleClick: function() {
-        //var my = this;
-        var event = this.tierInfos.tiers[this.viewPort.selTier].events[this.getSelectedSegmentDoubleClick(this.viewPort.selTier)];
+        var tierDetails = this.getSelectedTier();
+        var event = this.getSelectedSegmentInTier(tierDetails);
         var content = $("#editArea").val();
         event.label = content;
-        my.drawBuffer();
+        this.drawBuffer();
     },
 
     removeCanvasDoubleClick: function() { //maybe rename to removeLabelBox or something
