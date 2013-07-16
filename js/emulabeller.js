@@ -978,6 +978,7 @@ var EmuLabeller = {
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
         this.resetAllSelTiers();
+        this.resetAllSelSegments();
 
         tierDetails.uiInfos.sel = true;
         // var lastTier = this.viewPort.selTier;
@@ -1003,7 +1004,8 @@ var EmuLabeller = {
 
             // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
             var nearest = this.findAndMarkNearestSegmentAsSel(tierDetails, curSample);
-            this.resetAllSelSegments();
+            
+
             // nearest.uiInfos.selSeg = true;
 
             this.viewPort.selectS = nearest.startSample;
@@ -1279,19 +1281,24 @@ var EmuLabeller = {
     },
 
     findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
-        var closestStartEvt = null;
+        var resEvt = null;
 
         for (var i = 0; i < tierDetails.events.length; i++) {
             var curEvt = tierDetails.events[i];
 
-            if (Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
-                closestStartSample = curEvt.startSample;
-                closestStartEvt = curEvt;
+            if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
+                resEvt = curEvt;
+                break;
+            }
         }
-        
-        closestStartEvt.uiInfos.sel = true;
-        
-        return closestStartEvt;
+
+        resEvt.uiInfos.selSeg = true;
+
+        console.log(resEvt.uiInfos.selSeg);
+        console.log(resEvt.uiInfos);
+        console.log(resEvt.uiInfos.selSeg);
+
+        return resEvt;
     },
 
     resetAllSelBoundariesInTierInfos: function() {
