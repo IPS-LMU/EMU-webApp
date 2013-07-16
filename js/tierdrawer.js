@@ -42,7 +42,8 @@ EmuLabeller.Drawer.TierDrawer = {
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
                 // check if in view
-                if (curEvt.startSample > vP.sS && curEvt.startSample < vP.eS) {
+                if (curEvt.startSample > vP.sS && curEvt.startSample < vP.eS
+                    || curEvt.startSample+curEvt.sampleDur > vP.sS && curEvt.startSample+curEvt.sampleDur < vP.eS) {
 
                     // draw segment start
                     var percS = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);

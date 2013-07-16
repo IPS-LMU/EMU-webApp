@@ -79,7 +79,7 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            console.log(JSON.stringify(labelJSO, undefined, 2));
+            // console.log(JSON.stringify(labelJSO, undefined, 2));
             return labelJSO; // SIC! All durations are null
 
         } else {

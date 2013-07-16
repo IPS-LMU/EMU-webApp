@@ -756,7 +756,7 @@ var EmuLabeller = {
             emulabeller.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.canvasDoubleClick(event.originalEvent);
+            emulabeller.handleTierDoubleClick(event.originalEvent);
         });
         $("#" + myName).bind("contextmenu", function(event) {
             emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
@@ -854,39 +854,49 @@ var EmuLabeller = {
     },
 
 
-    canvasDoubleClick: function(e) {
+    handleTierDoubleClick: function(e) {
         var my = this;
         if ($('#textAreaPopUp').length === 0) {
-            var tier = my.tierInfos.tiers[my.viewPort.selTier];
-            var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];
-            var TextY = my.tierInfos.canvases[my.viewPort.selTier].offsetTop + 2;
-            var all = my.viewPort.eS - my.viewPort.sS;
-            var fracS = my.viewPort.selectS - my.viewPort.sS;
-            var procS = fracS / all;
-            var posS = my.tierInfos.canvases[my.viewPort.selTier].clientWidth * procS;
-            var fracE = my.viewPort.selectE - my.viewPort.sS;
-            var procE = fracE / all;
-            var posE = my.tierInfos.canvases[my.viewPort.selTier].clientWidth * procE;
-            var mouseX2 = Math.floor(posE - posS - 5);
-            var TextX = Math.round(posS) + 30;
-            var editHeight = Math.floor(e.srcElement.attributes.clientHeight);
-            if (event !== null) {
-                var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + TextY + "px;left:" + TextX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + mouseX2 + "px;height:" + editHeight + "px;'>" + event.label + "</textarea>";
-                var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
-                var appendString = textArea + saveButton;
-                $("#tiers").append(appendString);
-                my.internalMode = my.EDITMODE.LABEL_RENAME;
-                $("#saveText")[0].addEventListener('click', function(e) {
-                    my.saveCanvasDoubleClick();
-                });
-                $("#editArea")[0].onkeyup = function(evt) {
-                    evt = evt || window.event;
-                    if (evt.keyCode == 13) {
+            var tier = this.getSelectedTier();
+            if (tier.type == "seg") {
+                // var tier = my.tierInfos.tiers[my.viewPort.selTier];
+                // var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];
+                var event = this.getSelectedSegmentInTier(tier);
+
+                var all = my.viewPort.eS - my.viewPort.sS;
+                var fracS = my.viewPort.selectS - my.viewPort.sS;
+                var procS = fracS / all;
+                var posS = tier.uiInfos.canvas.clientWidth * procS;
+
+                var fracE = my.viewPort.selectE - my.viewPort.sS;
+                var procE = fracE / all;
+                var posE = tier.uiInfos.canvas.clientWidth * procE;
+
+                var textAreaX = Math.round(posS) + tier.uiInfos.canvas.offsetLeft + 2;
+                var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
+
+                var textAreaWidth = Math.floor(posE - posS - 5);
+                var textAreaHeight = Math.floor(tier.uiInfos.canvas.clientHeigh);
+                if (event !== null) {
+                    var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
+                    var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
+                    var appendString = textArea + saveButton;
+                    $("#tiers").append(appendString);
+                    my.internalMode = my.EDITMODE.LABEL_RENAME;
+                    $("#saveText")[0].addEventListener('click', function(e) {
                         my.saveCanvasDoubleClick();
-                        my.removeCanvasDoubleClick();
-                    }
-                };
-                my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
+                    });
+                    $("#editArea")[0].onkeyup = function(evt) {
+                        evt = evt || window.event;
+                        if (evt.keyCode == 13) {
+                            my.saveCanvasDoubleClick();
+                            my.removeCanvasDoubleClick();
+                        }
+                    };
+                    my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
+                }
+            } else if (tier.type == "point") {
+                console.log("no point editing yet!");
             }
         } else {
             my.removeCanvasDoubleClick();
@@ -1004,7 +1014,7 @@ var EmuLabeller = {
 
             // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
             var nearest = this.findAndMarkNearestSegmentAsSel(tierDetails, curSample);
-            
+
 
             // nearest.uiInfos.selSeg = true;
 
@@ -1297,6 +1307,24 @@ var EmuLabeller = {
         resEvt.uiInfos.selSeg = true;
 
         return resEvt;
+    },
+
+    getSelectedTier: function() {
+        var selTier;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            var curTier = this.tierInfos.tiers[i];
+            if (curTier.uiInfos.sel) selTier = curTier;
+        }
+        return selTier;
+    },
+
+    getSelectedSegmentInTier: function(tierDetails) {
+        var selEvt;
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+            if (curEvt.uiInfos.selSeg) selEvt = curEvt;
+        }
+        return selEvt;
     },
 
     resetAllSelBoundariesInTierInfos: function() {
