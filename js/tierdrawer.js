@@ -78,20 +78,19 @@ EmuLabeller.Drawer.TierDrawer = {
                     cc.strokeStyle = "black";
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
-                    tH = cc.measureText(curEvt.label).height;
                     tX = canvas.width * (percS+(percE-percS)/2)-tW/2;
-                    // cc.strokeStyle = this.startBoundaryColor;
-                    // cc.fillStyle = this.startBoundaryColor;
-                    cc.strokeText(curEvt.label, tX, canvas.height/2);
+                    cc.strokeText(curEvt.label, tX, canvas.height/2+3);
 
                     //draw helper lines
-                    cc.strokeStyle = this.startBoundaryColor;
+                    cc.strokeStyle = "rgba(0,255,0,0.5)";
+                    cc.beginPath();
                     cc.moveTo(percS*canvas.width, canvas.height/4);
                     cc.lineTo(tX+tW/2, canvas.height/4);
                     cc.lineTo(tX+tW/2, canvas.height/4+10);
                     cc.stroke();
 
-                    cc.strokeStyle = this.endBoundaryColor;
+                    cc.strokeStyle = "rgba(255,0,0,0.2)";
+                    cc.beginPath();
                     cc.moveTo(percE*canvas.width, canvas.height/4*3);
                     cc.lineTo(tX+tW/2, canvas.height/4*3);
                     cc.lineTo(tX+tW/2, canvas.height/4*3-10);
