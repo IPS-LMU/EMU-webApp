@@ -75,18 +75,27 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
 
                     // draw label 
-                    // console.log(curEvt.label)
                     cc.strokeStyle = "black";
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
-                    cc.strokeText(curEvt.label, canvas.width * percE - tW - 10, canvas.height / 2);
+                    tH = cc.measureText(curEvt.label).height;
+                    tX = canvas.width * (percS+(percE-percS)/2)-tW/2;
+                    // cc.strokeStyle = this.startBoundaryColor;
+                    // cc.fillStyle = this.startBoundaryColor;
+                    cc.strokeText(curEvt.label, tX, canvas.height/2);
 
+                    //draw helper lines
+                    cc.strokeStyle = this.startBoundaryColor;
+                    cc.moveTo(percS*canvas.width, canvas.height/4);
+                    cc.lineTo(tX+tW/2, canvas.height/4);
+                    cc.lineTo(tX+tW/2, canvas.height/4+10);
+                    cc.stroke();
 
-                    // }
-                    // if (tierDetails.events[curEv].end > vP.sS && tierDetails.events[curEv].end < vP.eS) {
-                    //     perc = (tierDetails.events[curEv].end - vP.sS) / (vP.eS - vP.sS);
-                    //     curcc.fillRect(curCanWidth * perc, 0, 1, curCanHeight);
-                    // }
+                    cc.strokeStyle = this.endBoundaryColor;
+                    cc.moveTo(percE*canvas.width, canvas.height/4*3);
+                    cc.lineTo(tX+tW/2, canvas.height/4*3);
+                    cc.lineTo(tX+tW/2, canvas.height/4*3-10);
+                    cc.stroke();
                 }
 
             }

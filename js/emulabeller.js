@@ -876,7 +876,7 @@ var EmuLabeller = {
                 var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
 
                 var textAreaWidth = Math.floor(posE - posS - 5);
-                var textAreaHeight = Math.floor(tier.uiInfos.canvas.height/2 -5);
+                var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
                 if (event !== null) {
                     var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
                     var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
@@ -1143,384 +1143,389 @@ var EmuLabeller = {
 
     addSegmentAtSelection: function() {
 
-        var sT = emulabeller.tierInfos.tiers[emulabeller.viewPort.selTier];
+        var sT = this.getSelectedTier();
 
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
             console.log("adding segments");
             sT.events.push({
-                label: "",
-                time: emulabeller.viewPort.selectS
+                    "label": "newSegment",
+                    "startSample": this.viewPort.selectS,
+                    "sampleDur": 200,
+                    "uiInfos": {
+                        "selSeg": false,
+                        "selBoundryStart": false,
+                        "selBoundryEnd": false,
+                        "lastValues": []
+                    }});
+            } else {
+                sT.events.push({
+                    label: "",
+                    time: emulabeller.viewPort.selectS
+                });
+                sT.events.push({
+                    label: "",
+                    time: emulabeller.viewPort.selectE
+                });
+            }
+
+            //resort events here!
+            var bla = sT.events.sort(function(a, b) {
+                return parseFloat(a.startSample) - parseFloat(b.startSample);
             });
+
             console.log(sT.events);
-        } else {
-            sT.events.push({
-                label: "",
-                time: emulabeller.viewPort.selectS
+
+            emulabeller.drawBuffer();
+        },
+
+        validateTierInfos: function() {
+            this.JSONval.validateTierInfos(this.tierInfos);
+        },
+
+        // saveTiers: function () {
+        //     var myObject = {one: "weee", two: "woooo"};
+        //     console.log(this.tierInfos.tiers);
+        //     var data = JSON.stringify(this.tierInfos.tiers);
+        //     // console.log(data);
+
+        //     var url = "data:application/octet-stream;base64," + window.btoa(data);
+        //     var iframe;
+        //     iframe = document.getElementById("hiddenDownloader");
+        //     if (iframe === null)
+        //     {
+        //         iframe = document.createElement('iframe');
+        //         iframe.id = "hiddenDownloader";
+        //         iframe.style.display = "none";
+        //         document.body.appendChild(iframe);
+        //     }
+        //     iframe.src = url;
+        // },
+
+        /**
+         * generates dataURI to download the current
+         * tierInfos as a JSON formated text file. This dataURI
+         * will then be presented as a link
+         */
+        prepDownload: function() {
+            var MIME_TYPE = 'text/plain';
+
+            var output = document.querySelector('#downLinkDiv');
+
+            window.URL = window.webkitURL || window.URL;
+
+            console.log(window.URL);
+            var prevLink;
+            try {
+                prevLink = output.querySelector('a');
+            } catch (err) {
+                console.log("no link");
+            }
+
+            if (prevLink) {
+                window.URL.revokeObjectURL(prevLink.href);
+                output.innerHTML = '';
+            }
+
+            var bb = new Blob([JSON.stringify(this.tierInfos.tiers, undefined, 2)], {
+                type: MIME_TYPE
             });
-            sT.events.push({
-                label: "",
-                time: emulabeller.viewPort.selectE
-            });
-        }
 
-        //resort events here!
-        var bla = sT.events.sort(function(a, b) {
-            return parseFloat(a.time) - parseFloat(b.time);
-        });
-        console.log(bla);
-        console.log(sT.events);
+            var a = document.createElement('a');
+            a.download = "emulabellerjsOutput.txt";
+            a.href = window.URL.createObjectURL(bb);
+            a.textContent = 'Download ready';
 
-        emulabeller.drawBuffer();
-    },
+            a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+            a.draggable = true; // Don't really need, but good practice.
+            a.classList.add('dragout');
 
-    validateTierInfos: function() {
-        this.JSONval.validateTierInfos(this.tierInfos);
-    },
+            output.appendChild(a);
 
-    // saveTiers: function () {
-    //     var myObject = {one: "weee", two: "woooo"};
-    //     console.log(this.tierInfos.tiers);
-    //     var data = JSON.stringify(this.tierInfos.tiers);
-    //     // console.log(data);
+            a.onclick = function(e) {
+                if ('disabled' in this.dataset) {
+                    return false;
+                }
+                a.textContent = 'Downloaded';
+                a.dataset.disabled = true;
+                // cleanUp(this);
+            };
+        },
 
-    //     var url = "data:application/octet-stream;base64," + window.btoa(data);
-    //     var iframe;
-    //     iframe = document.getElementById("hiddenDownloader");
-    //     if (iframe === null)
-    //     {
-    //         iframe = document.createElement('iframe');
-    //         iframe.id = "hiddenDownloader";
-    //         iframe.style.display = "none";
-    //         document.body.appendChild(iframe);
-    //     }
-    //     iframe.src = url;
-    // },
+        /**
+         * function called on mouse move in tiers
+         *
+         * @param percX x position percentage of
+         * canvas calling this function
+         * @param tierID id of canvas calling this function
+         */
+        trackMouseInTiers: function(event, percX, tierName) {
+            if (!event.shiftKey) {
+                this.resetAllSelBoundariesInTierInfos();
+                var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
+                var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
-    /**
-     * generates dataURI to download the current
-     * tierInfos as a JSON formated text file. This dataURI
-     * will then be presented as a link
-     */
-    prepDownload: function() {
-        var MIME_TYPE = 'text/plain';
+                this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true)
 
-        var output = document.querySelector('#downLinkDiv');
-
-        window.URL = window.webkitURL || window.URL;
-
-        console.log(window.URL);
-        var prevLink;
-        try {
-            prevLink = output.querySelector('a');
-        } catch (err) {
-            console.log("no link");
-        }
-
-        if (prevLink) {
-            window.URL.revokeObjectURL(prevLink.href);
-            output.innerHTML = '';
-        }
-
-        var bb = new Blob([JSON.stringify(this.tierInfos.tiers, undefined, 2)], {
-            type: MIME_TYPE
-        });
-
-        var a = document.createElement('a');
-        a.download = "emulabellerjsOutput.txt";
-        a.href = window.URL.createObjectURL(bb);
-        a.textContent = 'Download ready';
-
-        a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
-        a.draggable = true; // Don't really need, but good practice.
-        a.classList.add('dragout');
-
-        output.appendChild(a);
-
-        a.onclick = function(e) {
-            if ('disabled' in this.dataset) {
-                return false;
+                this.drawer.updateSingleTier(this.viewPort, curTierDetails);
             }
-            a.textContent = 'Downloaded';
-            a.dataset.disabled = true;
-            // cleanUp(this);
-        };
-    },
+        },
 
-    /**
-     * function called on mouse move in tiers
-     *
-     * @param percX x position percentage of
-     * canvas calling this function
-     * @param tierID id of canvas calling this function
-     */
-    trackMouseInTiers: function(event, percX, tierName) {
-        if (!event.shiftKey) {
-            this.resetAllSelBoundariesInTierInfos();
-            var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
-            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+        getTierDetailsFromTierWithName: function(tierID) {
 
-            this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true)
-
-            this.drawer.updateSingleTier(this.viewPort, curTierDetails);
-        }
-    },
-
-    getTierDetailsFromTierWithName: function(tierID) {
-
-        for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
-            if (this.tierInfos.tiers[tierNr].TierName == tierID) {
-                return this.tierInfos.tiers[tierNr];
-            }
-        }
-        alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
-    },
-
-    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
-        var closestStartSample = null;
-        var closestStartEvt = null;
-
-        for (var i = 0; i < tierDetails.events.length; i++) {
-            var curEvt = tierDetails.events[i];
-            if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
-                closestStartSample = curEvt.startSample;
-                closestStartEvt = curEvt;
-            }
-        }
-        if (markAsSel) {
-            closestStartEvt.uiInfos.selBoundryStart = true;
-        }
-        return closestStartEvt;
-    },
-
-    findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
-        var resEvt = null;
-
-        for (var i = 0; i < tierDetails.events.length; i++) {
-            var curEvt = tierDetails.events[i];
-
-            if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
-                resEvt = curEvt;
-                break;
-            }
-        }
-
-        resEvt.uiInfos.selSeg = true;
-
-        return resEvt;
-    },
-
-    getSelectedTier: function() {
-        var selTier;
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            var curTier = this.tierInfos.tiers[i];
-            if (curTier.uiInfos.sel) selTier = curTier;
-        }
-        return selTier;
-    },
-
-    getSelectedSegmentInTier: function(tierDetails) {
-        var selEvt;
-        for (var i = 0; i < tierDetails.events.length; i++) {
-            var curEvt = tierDetails.events[i];
-            if (curEvt.uiInfos.selSeg) selEvt = curEvt;
-        }
-        return selEvt;
-    },
-
-    resetAllSelBoundariesInTierInfos: function() {
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
-                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
-            }
-        }
-    },
-
-    resetAllSelTiers: function() {
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            this.tierInfos.tiers[i].uiInfos.sel = false;
-        }
-    },
-
-    resetAllSelSegments: function() {
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                this.tierInfos.tiers[i].events[j].uiInfos.selSeg = false;
-            }
-        }
-    },
-
-    // getSegmentbySample: function(clickedTwier, curSample) {
-    //     var c = 0;
-    //     $.each(clickedTier.events, function() {
-    //         if (c === 0 & curSample < this.time) {
-    //             c = this;
-    //         }
-    //     });
-    //     return c;
-    // },
-
-    // getSegmentIDbySample: function(clickedTier, curSample) {
-    //     var c = clickedTier.events.length;
-    //     $.each(clickedTier.events, function() {
-    //         if (curSample < this.time) {
-    //             --c;
-    //         }
-    //     });
-    //     return c;
-    // },
-
-    moveMultipleSegments: function(clickedTier, newTime) {
-        var c = 0;
-        $.each(clickedTier.events, function() {
-            var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
-            var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
-            if (check1)
-                this.time += newTime;
-            if (check1 != check2)
-                if (check2)
-                    this.time += newTime;
-                ++c;
-
-        });
-    },
-
-    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
-        var res;
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
-                    res = {
-                        'tiers': [this.tierInfos.tiers[i - 1],
-                            this.tierInfos.tiers[i],
-                            this.tierInfos.tiers[i + 1]
-                        ],
-                        'evts': [this.tierInfos.tiers[i].events[j - 1],
-                            this.tierInfos.tiers[i].events[j],
-                            this.tierInfos.tiers[i].events[j + 1]
-                        ]
-                    };
+            for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
+                if (this.tierInfos.tiers[tierNr].TierName == tierID) {
+                    return this.tierInfos.tiers[tierNr];
                 }
             }
-        }
-        return res;
-    },
+            alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
+        },
 
+        findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
+            var closestStartSample = null;
+            var closestStartEvt = null;
 
-    moveBoundary: function(newTime) {
-        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        evts = evtsNtiers.evts;
+            for (var i = 0; i < tierDetails.events.length; i++) {
+                var curEvt = tierDetails.events[i];
+                if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                    closestStartSample = curEvt.startSample;
+                    closestStartEvt = curEvt;
+                }
+            }
+            if (markAsSel) {
+                closestStartEvt.uiInfos.selBoundryStart = true;
+            }
+            return closestStartEvt;
+        },
 
-        newTime = Math.round(newTime);
+        findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
+            var resEvt = null;
 
-        var oldTime = evts[1].startSample;
+            for (var i = 0; i < tierDetails.events.length; i++) {
+                var curEvt = tierDetails.events[i];
 
-        var leftEdge = evts[0].startSample;
-        var rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-        if (newTime > leftEdge && newTime < rightEdge) {
-            evts[1].startSample = newTime;
-            // correct for locking mode (sampleDur changes of current segment) will change in future
-            if (oldTime < newTime) {
-                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-            } else {
-                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
+                    resEvt = curEvt;
+                    break;
+                }
             }
 
-            // correct for locking mode (sampleDur changes of perv segment) will change in future
-            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+            resEvt.uiInfos.selSeg = true;
 
-        }
-    },
+            return resEvt;
+        },
 
-    snapSelectedSegmentToNearestTop: function() {
-        //find nearest evt in tier obove
-        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        var selEvt = evtsNtiers.evts[1];
-        var bestIdx;
-        var dist = Infinity;
-        for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
-            var curEvt = evtsNtiers.tiers[0].events[i];
-            if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-                dist = Math.abs(curEvt.startSample - selEvt.startSample);
-                bestIdx = i;
+        getSelectedTier: function() {
+            var selTier;
+            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+                var curTier = this.tierInfos.tiers[i];
+                if (curTier.uiInfos.sel) selTier = curTier;
             }
-        }
-        var oldTime = selEvt.startSample;
-        var newTime = evtsNtiers.tiers[0].events[bestIdx].startSample;
+            return selTier;
+        },
 
-        var leftEdge = evts[0].startSample;
-        var rightEdge = evts[1].startSample + evts[1].sampleDur;
+        getSelectedSegmentInTier: function(tierDetails) {
+            var selEvt;
+            for (var i = 0; i < tierDetails.events.length; i++) {
+                var curEvt = tierDetails.events[i];
+                if (curEvt.uiInfos.selSeg) selEvt = curEvt;
+            }
+            return selEvt;
+        },
 
-        selEvt.startSample = newTime;
+        resetAllSelBoundariesInTierInfos: function() {
+            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                    this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
+                    this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
+                }
+            }
+        },
 
-        if (newTime > leftEdge && newTime < rightEdge) {
-            evts[1].startSample = newTime;
-            // correct for locking mode (sampleDur changes of current segment) will change in future
-            if (oldTime < newTime) {
-                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-            } else {
-                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+        resetAllSelTiers: function() {
+            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+                this.tierInfos.tiers[i].uiInfos.sel = false;
+            }
+        },
+
+        resetAllSelSegments: function() {
+            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                    this.tierInfos.tiers[i].events[j].uiInfos.selSeg = false;
+                }
+            }
+        },
+
+        // getSegmentbySample: function(clickedTwier, curSample) {
+        //     var c = 0;
+        //     $.each(clickedTier.events, function() {
+        //         if (c === 0 & curSample < this.time) {
+        //             c = this;
+        //         }
+        //     });
+        //     return c;
+        // },
+
+        // getSegmentIDbySample: function(clickedTier, curSample) {
+        //     var c = clickedTier.events.length;
+        //     $.each(clickedTier.events, function() {
+        //         if (curSample < this.time) {
+        //             --c;
+        //         }
+        //     });
+        //     return c;
+        // },
+
+        moveMultipleSegments: function(clickedTier, newTime) {
+            var c = 0;
+            $.each(clickedTier.events, function() {
+                var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
+                var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
+                if (check1)
+                    this.time += newTime;
+                if (check1 != check2)
+                    if (check2)
+                        this.time += newTime;
+                    ++c;
+
+            });
+        },
+
+        getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
+            var res;
+            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                    if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
+                        res = {
+                            'tiers': [this.tierInfos.tiers[i - 1],
+                                this.tierInfos.tiers[i],
+                                this.tierInfos.tiers[i + 1]
+                            ],
+                            'evts': [this.tierInfos.tiers[i].events[j - 1],
+                                this.tierInfos.tiers[i].events[j],
+                                this.tierInfos.tiers[i].events[j + 1]
+                            ]
+                        };
+                    }
+                }
+            }
+            return res;
+        },
+
+
+        moveBoundary: function(newTime) {
+            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+            evts = evtsNtiers.evts;
+
+            newTime = Math.round(newTime);
+
+            var oldTime = evts[1].startSample;
+
+            var leftEdge = evts[0].startSample;
+            var rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+                // correct for locking mode (sampleDur changes of current segment) will change in future
+                if (oldTime < newTime) {
+                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+                } else {
+                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                }
+
+                // correct for locking mode (sampleDur changes of perv segment) will change in future
+                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+
+            }
+        },
+
+        snapSelectedSegmentToNearestTop: function() {
+            //find nearest evt in tier obove
+            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+            var selEvt = evtsNtiers.evts[1];
+            var bestIdx;
+            var dist = Infinity;
+            for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
+                var curEvt = evtsNtiers.tiers[0].events[i];
+                if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
+                    dist = Math.abs(curEvt.startSample - selEvt.startSample);
+                    bestIdx = i;
+                }
+            }
+            var oldTime = selEvt.startSample;
+            var newTime = evtsNtiers.tiers[0].events[bestIdx].startSample;
+
+            var leftEdge = evts[0].startSample;
+            var rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+            selEvt.startSample = newTime;
+
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+                // correct for locking mode (sampleDur changes of current segment) will change in future
+                if (oldTime < newTime) {
+                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+                } else {
+                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                }
+
+                // correct for locking mode (sampleDur changes of perv segment) will change in future
+                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
             }
 
-            // correct for locking mode (sampleDur changes of perv segment) will change in future
-            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-        }
+            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+        },
 
-        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
-    },
-
-    snapSelectedSegmentToNearestBottom: function() {
-        //find nearest evt in tier obove
-        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        var selEvt = evtsNtiers.evts[1];
-        var bestIdx;
-        var dist = Infinity;
-        for (var i = 0; i < evtsNtiers.tiers[2].events.length; i++) {
-            var curEvt = evtsNtiers.tiers[2].events[i];
-            if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-                dist = Math.abs(curEvt.startSample - selEvt.startSample);
-                bestIdx = i;
-            }
-        }
-
-        var oldTime = selEvt.startSample;
-        var newTime = evtsNtiers.tiers[2].events[bestIdx].startSample;
-
-        var leftEdge = evts[0].startSample;
-        var rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-        selEvt.startSample = newTime;
-
-        if (newTime > leftEdge && newTime < rightEdge) {
-            evts[1].startSample = newTime;
-            // correct for locking mode (sampleDur changes of current segment) will change in future
-            if (oldTime < newTime) {
-                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-            } else {
-                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+        snapSelectedSegmentToNearestBottom: function() {
+            //find nearest evt in tier obove
+            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+            var selEvt = evtsNtiers.evts[1];
+            var bestIdx;
+            var dist = Infinity;
+            for (var i = 0; i < evtsNtiers.tiers[2].events.length; i++) {
+                var curEvt = evtsNtiers.tiers[2].events[i];
+                if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
+                    dist = Math.abs(curEvt.startSample - selEvt.startSample);
+                    bestIdx = i;
+                }
             }
 
-            // correct for locking mode (sampleDur changes of perv segment) will change in future
-            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-        }
+            var oldTime = selEvt.startSample;
+            var newTime = evtsNtiers.tiers[2].events[bestIdx].startSample;
 
-        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
-    },
+            var leftEdge = evts[0].startSample;
+            var rightEdge = evts[1].startSample + evts[1].sampleDur;
 
-    /**
+            selEvt.startSample = newTime;
+
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+                // correct for locking mode (sampleDur changes of current segment) will change in future
+                if (oldTime < newTime) {
+                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+                } else {
+                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                }
+
+                // correct for locking mode (sampleDur changes of perv segment) will change in future
+                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+            }
+
+            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+        },
+
+        /**
     * use socketIOhandler to request something from server
     *
     * @param message sting containing request statement from
     server "getUtts" and "stopServer" work for now
     */
-    requestFromServer: function(message) {
+        requestFromServer: function(message) {
 
-        console.log("sending message: ", message);
-        this.socketIOhandler.doSend(message);
+            console.log("sending message: ", message);
+            this.socketIOhandler.doSend(message);
 
-        if (message == "stopServer") {
-            window.close();
+            if (message == "stopServer") {
+                window.close();
+            }
         }
-    }
-};
+    };
