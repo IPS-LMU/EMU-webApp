@@ -1143,389 +1143,404 @@ var EmuLabeller = {
 
     addSegmentAtSelection: function() {
 
+        this.resetAllSelSegments();
+        this.resetAllSelBoundariesInTierInfos();
+
         var sT = this.getSelectedTier();
 
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
             console.log("adding segments");
             sT.events.push({
-                    "label": "newSegment",
-                    "startSample": this.viewPort.selectS,
-                    "sampleDur": 200,
-                    "uiInfos": {
-                        "selSeg": false,
-                        "selBoundryStart": false,
-                        "selBoundryEnd": false,
-                        "lastValues": []
-                    }});
-            } else {
-                sT.events.push({
-                    label: "",
-                    time: emulabeller.viewPort.selectS
-                });
-                sT.events.push({
-                    label: "",
-                    time: emulabeller.viewPort.selectE
-                });
-            }
-
-            //resort events here!
-            var bla = sT.events.sort(function(a, b) {
-                return parseFloat(a.startSample) - parseFloat(b.startSample);
+                "label": "newSegment",
+                "startSample": this.viewPort.selectS,
+                "sampleDur": 0,
+                "uiInfos": {
+                    "selSeg": false,
+                    "selBoundryStart": true,
+                    "selBoundryEnd": false,
+                    "lastValues": []
+                }
             });
-
-            console.log(sT.events);
-
-            emulabeller.drawBuffer();
-        },
-
-        validateTierInfos: function() {
-            this.JSONval.validateTierInfos(this.tierInfos);
-        },
-
-        // saveTiers: function () {
-        //     var myObject = {one: "weee", two: "woooo"};
-        //     console.log(this.tierInfos.tiers);
-        //     var data = JSON.stringify(this.tierInfos.tiers);
-        //     // console.log(data);
-
-        //     var url = "data:application/octet-stream;base64," + window.btoa(data);
-        //     var iframe;
-        //     iframe = document.getElementById("hiddenDownloader");
-        //     if (iframe === null)
-        //     {
-        //         iframe = document.createElement('iframe');
-        //         iframe.id = "hiddenDownloader";
-        //         iframe.style.display = "none";
-        //         document.body.appendChild(iframe);
-        //     }
-        //     iframe.src = url;
-        // },
-
-        /**
-         * generates dataURI to download the current
-         * tierInfos as a JSON formated text file. This dataURI
-         * will then be presented as a link
-         */
-        prepDownload: function() {
-            var MIME_TYPE = 'text/plain';
-
-            var output = document.querySelector('#downLinkDiv');
-
-            window.URL = window.webkitURL || window.URL;
-
-            console.log(window.URL);
-            var prevLink;
-            try {
-                prevLink = output.querySelector('a');
-            } catch (err) {
-                console.log("no link");
-            }
-
-            if (prevLink) {
-                window.URL.revokeObjectURL(prevLink.href);
-                output.innerHTML = '';
-            }
-
-            var bb = new Blob([JSON.stringify(this.tierInfos.tiers, undefined, 2)], {
-                type: MIME_TYPE
+        } else {
+            sT.events.push({
+                "label": "newSegment",
+                "startSample": this.viewPort.selectS,
+                "sampleDur": this.viewPort.selectE - this.viewPort.selectS,
+                "uiInfos": {
+                    "selSeg": false,
+                    "selBoundryStart": true,
+                    "selBoundryEnd": false,
+                    "lastValues": []
+                }
             });
+        }
 
-            var a = document.createElement('a');
-            a.download = "emulabellerjsOutput.txt";
-            a.href = window.URL.createObjectURL(bb);
-            a.textContent = 'Download ready';
+        //resort events by their startSample values
+        var bla = sT.events.sort(function(a, b) {
+            return parseFloat(a.startSample) - parseFloat(b.startSample);
+        });
+        // fix surrounding boundaries
+        var sel = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+            sel.evts[0].sampleDur = sel.evts[1].startSample - sel.evts[0].startSample;
+            sel.evts[1].sampleDur = sel.evts[2].startSample - sel.evts[1].startSample;
+        } else {
+            sel.evts[2].startSample = sel.evts[1].startSample + sel.evts[1].sampleDur;
+            sel.evts[2].sampleDur = sel.evts[0].sampleDur - ((sel.evts[1].startSample - sel.evts[0].startSample) + sel.evts[1].sampleDur);
 
-            a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
-            a.draggable = true; // Don't really need, but good practice.
-            a.classList.add('dragout');
+            sel.evts[0].sampleDur = sel.evts[1].startSample - sel.evts[0].startSample;
+        }
+        emulabeller.drawBuffer();
+    },
 
-            output.appendChild(a);
+    validateTierInfos: function() {
+        this.JSONval.validateTierInfos(this.tierInfos);
+    },
 
-            a.onclick = function(e) {
-                if ('disabled' in this.dataset) {
-                    return false;
-                }
-                a.textContent = 'Downloaded';
-                a.dataset.disabled = true;
-                // cleanUp(this);
-            };
-        },
+    // saveTiers: function () {
+    //     var myObject = {one: "weee", two: "woooo"};
+    //     console.log(this.tierInfos.tiers);
+    //     var data = JSON.stringify(this.tierInfos.tiers);
+    //     // console.log(data);
 
-        /**
-         * function called on mouse move in tiers
-         *
-         * @param percX x position percentage of
-         * canvas calling this function
-         * @param tierID id of canvas calling this function
-         */
-        trackMouseInTiers: function(event, percX, tierName) {
-            if (!event.shiftKey) {
-                this.resetAllSelBoundariesInTierInfos();
-                var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
-                var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
+    //     var url = "data:application/octet-stream;base64," + window.btoa(data);
+    //     var iframe;
+    //     iframe = document.getElementById("hiddenDownloader");
+    //     if (iframe === null)
+    //     {
+    //         iframe = document.createElement('iframe');
+    //         iframe.id = "hiddenDownloader";
+    //         iframe.style.display = "none";
+    //         document.body.appendChild(iframe);
+    //     }
+    //     iframe.src = url;
+    // },
 
-                this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true)
+    /**
+     * generates dataURI to download the current
+     * tierInfos as a JSON formated text file. This dataURI
+     * will then be presented as a link
+     */
+    prepDownload: function() {
+        var MIME_TYPE = 'text/plain';
 
-                this.drawer.updateSingleTier(this.viewPort, curTierDetails);
+        var output = document.querySelector('#downLinkDiv');
+
+        window.URL = window.webkitURL || window.URL;
+
+        console.log(window.URL);
+        var prevLink;
+        try {
+            prevLink = output.querySelector('a');
+        } catch (err) {
+            console.log("no link");
+        }
+
+        if (prevLink) {
+            window.URL.revokeObjectURL(prevLink.href);
+            output.innerHTML = '';
+        }
+
+        var bb = new Blob([JSON.stringify(this.tierInfos.tiers, undefined, 2)], {
+            type: MIME_TYPE
+        });
+
+        var a = document.createElement('a');
+        a.download = "emulabellerjsOutput.txt";
+        a.href = window.URL.createObjectURL(bb);
+        a.textContent = 'Download ready';
+
+        a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+        a.draggable = true; // Don't really need, but good practice.
+        a.classList.add('dragout');
+
+        output.appendChild(a);
+
+        a.onclick = function(e) {
+            if ('disabled' in this.dataset) {
+                return false;
             }
-        },
+            a.textContent = 'Downloaded';
+            a.dataset.disabled = true;
+            // cleanUp(this);
+        };
+    },
 
-        getTierDetailsFromTierWithName: function(tierID) {
+    /**
+     * function called on mouse move in tiers
+     *
+     * @param percX x position percentage of
+     * canvas calling this function
+     * @param tierID id of canvas calling this function
+     */
+    trackMouseInTiers: function(event, percX, tierName) {
+        if (!event.shiftKey) {
+            this.resetAllSelBoundariesInTierInfos();
+            var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
+            var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
 
-            for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
-                if (this.tierInfos.tiers[tierNr].TierName == tierID) {
-                    return this.tierInfos.tiers[tierNr];
-                }
+            this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true)
+
+            this.drawer.updateSingleTier(this.viewPort, curTierDetails);
+        }
+    },
+
+    getTierDetailsFromTierWithName: function(tierID) {
+
+        for (tierNr = 0; tierNr < this.tierInfos.tiers.length; tierNr++) {
+            if (this.tierInfos.tiers[tierNr].TierName == tierID) {
+                return this.tierInfos.tiers[tierNr];
             }
-            alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
-        },
+        }
+        alert("getTierDetailsFromTierWithID did not find tier with id", tierID);
+    },
 
-        findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
-            var closestStartSample = null;
-            var closestStartEvt = null;
+    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
+        var closestStartSample = null;
+        var closestStartEvt = null;
 
-            for (var i = 0; i < tierDetails.events.length; i++) {
-                var curEvt = tierDetails.events[i];
-                if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
-                    closestStartSample = curEvt.startSample;
-                    closestStartEvt = curEvt;
-                }
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+            if (closestStartSample === null || Math.abs(curEvt.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                closestStartSample = curEvt.startSample;
+                closestStartEvt = curEvt;
             }
-            if (markAsSel) {
-                closestStartEvt.uiInfos.selBoundryStart = true;
+        }
+        if (markAsSel) {
+            closestStartEvt.uiInfos.selBoundryStart = true;
+        }
+        return closestStartEvt;
+    },
+
+    findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
+        var resEvt = null;
+
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+
+            if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
+                resEvt = curEvt;
+                break;
             }
-            return closestStartEvt;
-        },
+        }
 
-        findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
-            var resEvt = null;
+        resEvt.uiInfos.selSeg = true;
 
-            for (var i = 0; i < tierDetails.events.length; i++) {
-                var curEvt = tierDetails.events[i];
+        return resEvt;
+    },
 
-                if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
-                    resEvt = curEvt;
-                    break;
-                }
+    getSelectedTier: function() {
+        var selTier;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            var curTier = this.tierInfos.tiers[i];
+            if (curTier.uiInfos.sel) selTier = curTier;
+        }
+        return selTier;
+    },
+
+    getSelectedSegmentInTier: function(tierDetails) {
+        var selEvt;
+        for (var i = 0; i < tierDetails.events.length; i++) {
+            var curEvt = tierDetails.events[i];
+            if (curEvt.uiInfos.selSeg) selEvt = curEvt;
+        }
+        return selEvt;
+    },
+
+    resetAllSelBoundariesInTierInfos: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
+                this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
             }
+        }
+    },
 
-            resEvt.uiInfos.selSeg = true;
+    resetAllSelTiers: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            this.tierInfos.tiers[i].uiInfos.sel = false;
+        }
+    },
 
-            return resEvt;
-        },
-
-        getSelectedTier: function() {
-            var selTier;
-            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-                var curTier = this.tierInfos.tiers[i];
-                if (curTier.uiInfos.sel) selTier = curTier;
+    resetAllSelSegments: function() {
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                this.tierInfos.tiers[i].events[j].uiInfos.selSeg = false;
             }
-            return selTier;
-        },
+        }
+    },
 
-        getSelectedSegmentInTier: function(tierDetails) {
-            var selEvt;
-            for (var i = 0; i < tierDetails.events.length; i++) {
-                var curEvt = tierDetails.events[i];
-                if (curEvt.uiInfos.selSeg) selEvt = curEvt;
-            }
-            return selEvt;
-        },
+    // getSegmentbySample: function(clickedTwier, curSample) {
+    //     var c = 0;
+    //     $.each(clickedTier.events, function() {
+    //         if (c === 0 & curSample < this.time) {
+    //             c = this;
+    //         }
+    //     });
+    //     return c;
+    // },
 
-        resetAllSelBoundariesInTierInfos: function() {
-            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                    this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart = false;
-                    this.tierInfos.tiers[i].events[j].uiInfos.selBoundryEnd = false;
-                }
-            }
-        },
+    // getSegmentIDbySample: function(clickedTier, curSample) {
+    //     var c = clickedTier.events.length;
+    //     $.each(clickedTier.events, function() {
+    //         if (curSample < this.time) {
+    //             --c;
+    //         }
+    //     });
+    //     return c;
+    // },
 
-        resetAllSelTiers: function() {
-            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-                this.tierInfos.tiers[i].uiInfos.sel = false;
-            }
-        },
-
-        resetAllSelSegments: function() {
-            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                    this.tierInfos.tiers[i].events[j].uiInfos.selSeg = false;
-                }
-            }
-        },
-
-        // getSegmentbySample: function(clickedTwier, curSample) {
-        //     var c = 0;
-        //     $.each(clickedTier.events, function() {
-        //         if (c === 0 & curSample < this.time) {
-        //             c = this;
-        //         }
-        //     });
-        //     return c;
-        // },
-
-        // getSegmentIDbySample: function(clickedTier, curSample) {
-        //     var c = clickedTier.events.length;
-        //     $.each(clickedTier.events, function() {
-        //         if (curSample < this.time) {
-        //             --c;
-        //         }
-        //     });
-        //     return c;
-        // },
-
-        moveMultipleSegments: function(clickedTier, newTime) {
-            var c = 0;
-            $.each(clickedTier.events, function() {
-                var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
-                var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
-                if (check1)
+    moveMultipleSegments: function(clickedTier, newTime) {
+        var c = 0;
+        $.each(clickedTier.events, function() {
+            var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
+            var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
+            if (check1)
+                this.time += newTime;
+            if (check1 != check2)
+                if (check2)
                     this.time += newTime;
-                if (check1 != check2)
-                    if (check2)
-                        this.time += newTime;
-                    ++c;
+                ++c;
 
-            });
-        },
+        });
+    },
 
-        getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
-            var res;
-            for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-                for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                    if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
-                        res = {
-                            'tiers': [this.tierInfos.tiers[i - 1],
-                                this.tierInfos.tiers[i],
-                                this.tierInfos.tiers[i + 1]
-                            ],
-                            'evts': [this.tierInfos.tiers[i].events[j - 1],
-                                this.tierInfos.tiers[i].events[j],
-                                this.tierInfos.tiers[i].events[j + 1]
-                            ]
-                        };
-                    }
+    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
+        var res;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
+                    res = {
+                        'tiers': [this.tierInfos.tiers[i - 1],
+                            this.tierInfos.tiers[i],
+                            this.tierInfos.tiers[i + 1]
+                        ],
+                        'evts': [this.tierInfos.tiers[i].events[j - 1],
+                            this.tierInfos.tiers[i].events[j],
+                            this.tierInfos.tiers[i].events[j + 1]
+                        ]
+                    };
                 }
             }
-            return res;
-        },
+        }
+        return res;
+    },
 
 
-        moveBoundary: function(newTime) {
-            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-            evts = evtsNtiers.evts;
+    moveBoundary: function(newTime) {
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        evts = evtsNtiers.evts;
 
-            newTime = Math.round(newTime);
+        newTime = Math.round(newTime);
 
-            var oldTime = evts[1].startSample;
+        var oldTime = evts[1].startSample;
 
-            var leftEdge = evts[0].startSample;
-            var rightEdge = evts[1].startSample + evts[1].sampleDur;
+        var leftEdge = evts[0].startSample;
+        var rightEdge = evts[1].startSample + evts[1].sampleDur;
 
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-                // correct for locking mode (sampleDur changes of current segment) will change in future
-                if (oldTime < newTime) {
-                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-                } else {
-                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-                }
-
-                // correct for locking mode (sampleDur changes of perv segment) will change in future
-                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-
-            }
-        },
-
-        snapSelectedSegmentToNearestTop: function() {
-            //find nearest evt in tier obove
-            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-            var selEvt = evtsNtiers.evts[1];
-            var bestIdx;
-            var dist = Infinity;
-            for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
-                var curEvt = evtsNtiers.tiers[0].events[i];
-                if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-                    dist = Math.abs(curEvt.startSample - selEvt.startSample);
-                    bestIdx = i;
-                }
-            }
-            var oldTime = selEvt.startSample;
-            var newTime = evtsNtiers.tiers[0].events[bestIdx].startSample;
-
-            var leftEdge = evts[0].startSample;
-            var rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-            selEvt.startSample = newTime;
-
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-                // correct for locking mode (sampleDur changes of current segment) will change in future
-                if (oldTime < newTime) {
-                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-                } else {
-                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-                }
-
-                // correct for locking mode (sampleDur changes of perv segment) will change in future
-                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+        if (newTime > leftEdge && newTime < rightEdge) {
+            evts[1].startSample = newTime;
+            // correct for locking mode (sampleDur changes of current segment) will change in future
+            if (oldTime < newTime) {
+                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+            } else {
+                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
             }
 
-            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
-        },
+            // correct for locking mode (sampleDur changes of perv segment) will change in future
+            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
 
-        snapSelectedSegmentToNearestBottom: function() {
-            //find nearest evt in tier obove
-            var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-            var selEvt = evtsNtiers.evts[1];
-            var bestIdx;
-            var dist = Infinity;
-            for (var i = 0; i < evtsNtiers.tiers[2].events.length; i++) {
-                var curEvt = evtsNtiers.tiers[2].events[i];
-                if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-                    dist = Math.abs(curEvt.startSample - selEvt.startSample);
-                    bestIdx = i;
-                }
+        }
+    },
+
+    snapSelectedSegmentToNearestTop: function() {
+        //find nearest evt in tier obove
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        var selEvt = evtsNtiers.evts[1];
+        var bestIdx;
+        var dist = Infinity;
+        for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
+            var curEvt = evtsNtiers.tiers[0].events[i];
+            if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
+                dist = Math.abs(curEvt.startSample - selEvt.startSample);
+                bestIdx = i;
+            }
+        }
+        var oldTime = selEvt.startSample;
+        var newTime = evtsNtiers.tiers[0].events[bestIdx].startSample;
+
+        var leftEdge = evts[0].startSample;
+        var rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+        selEvt.startSample = newTime;
+
+        if (newTime > leftEdge && newTime < rightEdge) {
+            evts[1].startSample = newTime;
+            // correct for locking mode (sampleDur changes of current segment) will change in future
+            if (oldTime < newTime) {
+                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+            } else {
+                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
             }
 
-            var oldTime = selEvt.startSample;
-            var newTime = evtsNtiers.tiers[2].events[bestIdx].startSample;
+            // correct for locking mode (sampleDur changes of perv segment) will change in future
+            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+        }
 
-            var leftEdge = evts[0].startSample;
-            var rightEdge = evts[1].startSample + evts[1].sampleDur;
+        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+    },
 
-            selEvt.startSample = newTime;
+    snapSelectedSegmentToNearestBottom: function() {
+        //find nearest evt in tier obove
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        var selEvt = evtsNtiers.evts[1];
+        var bestIdx;
+        var dist = Infinity;
+        for (var i = 0; i < evtsNtiers.tiers[2].events.length; i++) {
+            var curEvt = evtsNtiers.tiers[2].events[i];
+            if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
+                dist = Math.abs(curEvt.startSample - selEvt.startSample);
+                bestIdx = i;
+            }
+        }
 
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-                // correct for locking mode (sampleDur changes of current segment) will change in future
-                if (oldTime < newTime) {
-                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-                } else {
-                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-                }
+        var oldTime = selEvt.startSample;
+        var newTime = evtsNtiers.tiers[2].events[bestIdx].startSample;
 
-                // correct for locking mode (sampleDur changes of perv segment) will change in future
-                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+        var leftEdge = evts[0].startSample;
+        var rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+        selEvt.startSample = newTime;
+
+        if (newTime > leftEdge && newTime < rightEdge) {
+            evts[1].startSample = newTime;
+            // correct for locking mode (sampleDur changes of current segment) will change in future
+            if (oldTime < newTime) {
+                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+            } else {
+                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
             }
 
-            this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
-        },
+            // correct for locking mode (sampleDur changes of perv segment) will change in future
+            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+        }
 
-        /**
+        this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierInfos);
+    },
+
+    /**
     * use socketIOhandler to request something from server
     *
     * @param message sting containing request statement from
     server "getUtts" and "stopServer" work for now
     */
-        requestFromServer: function(message) {
+    requestFromServer: function(message) {
 
-            console.log("sending message: ", message);
-            this.socketIOhandler.doSend(message);
+        console.log("sending message: ", message);
+        this.socketIOhandler.doSend(message);
 
-            if (message == "stopServer") {
-                window.close();
-            }
+        if (message == "stopServer") {
+            window.close();
         }
-    };
+    }
+};

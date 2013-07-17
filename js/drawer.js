@@ -10,7 +10,7 @@ EmuLabeller.Drawer = {
         barHeight: 1,
         barMargin: 10,
         selectedArea: "rgba(0, 0, 255, 0.2)",
-        selectedBorder: "rgba(0, 255, 0, 0.5)"        
+        selectedBorder: "rgba(0, 255, 0, 0.5)"
     },
 
     init: function(params) {
