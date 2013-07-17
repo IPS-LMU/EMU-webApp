@@ -1173,6 +1173,17 @@ var EmuLabeller = {
                     "lastValues": []
                 }
             });
+            sT.events.push({
+                "label": "emptyAfterNew",
+                "startSample": this.viewPort.selectS+1,
+                "sampleDur": 0,
+                "uiInfos": {
+                    "selSeg": false,
+                    "selBoundryStart": false,
+                    "selBoundryEnd": false,
+                    "lastValues": []
+                }
+            });
         }
 
         //resort events by their startSample values
