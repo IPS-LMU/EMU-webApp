@@ -156,12 +156,15 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         cc.closePath();
         cc.stroke();
-
+        var sTime;
+        var eTime;
         if (vP) {
             cc.font = "12px Verdana";
-            var metrics = cc.measureText(vP.eS/this.sR);
-            cc.strokeText(vP.sS/this.sR, 5, 5 + 8);
-            cc.strokeText(vP.eS/this.sR, canvas.width - metrics.width - 5, 5 + 8);
+            sTime = vP.round(vP.sS/this.sR, 6);
+            eTime = vP.round(vP.eS/this.sR, 6);
+            var metrics = cc.measureText(sTime);
+            cc.strokeText(eTime, 5, 5 + 8);
+            cc.strokeText(eTime, canvas.width - metrics.width - 5, 5 + 8);
         }
 
         
@@ -192,12 +195,12 @@ EmuLabeller.Drawer.OsciDrawer = {
             if (vP.selectS == vP.selectE) {
                 cc.strokeText(vP.selectS/this.sR, posS + 5, 13);
             } else {
-                var tW = cc.measureText(vP.selectS/this.sR).width;
-                cc.strokeText(vP.selectS/this.sR, posS - tW - 4, 13);
-                cc.strokeText(vP.selectE/this.sR, posE + 5, 13);
+                var tW = cc.measureText(vP.round(vP.selectS/this.sR, 6)).width;
+                cc.strokeText(vP.round(vP.selectS/this.sR, 6), posS - tW - 4, 13);
+                cc.strokeText(vP.round(vP.selectE/this.sR, 6), posE + 5, 13);
 
-                tW = cc.measureText((vP.selectE-vP.selectS)/this.sR).width;
-                cc.strokeText((vP.selectE-vP.selectS)/this.sR, posS+(posE-posS)/2 -tW/2, 13);
+                tW = cc.measureText(vP.round((vP.selectE-vP.selectS)/this.sR,6)).width;
+                cc.strokeText(vP.round(((vP.selectE-vP.selectS)/this.sR),6), posS+(posE-posS)/2 -tW/2, 13);
 
             }
         }
