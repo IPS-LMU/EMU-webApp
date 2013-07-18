@@ -110,6 +110,7 @@ var EmuLabeller = {
         this.timeline = params.timeline;
         this.tiers = params.tiers;
         this.showLeftPush = params.showLeftPush;
+        this.tierInfos = params.tierInfos;        
 
 
         // Object Classes
@@ -149,7 +150,7 @@ var EmuLabeller = {
 
         // other used variables
         this.subMenuOpen = false;
-        this.isModalShowing = false;
+
         this.dragingStart = 0;
         this.resizeTierStart = 0;
         this.relativeY = 0;
@@ -165,8 +166,6 @@ var EmuLabeller = {
             data: [],
             canvases: []
         };
-        this.tierInfos = params.tierInfos;
-
 
         // Initial Usage Mode Configuration
 
@@ -199,16 +198,16 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_addTierSeg":
-                    my.addTier();
+                    my.tierHandler.addTier();
                     break;
 
                 case "cmd_addTierPoint":
-                    my.addTier(true);
+                    my.tierHandler.addTier(true);
                     break;
 
                 case "cmd_removeTier":
                 case "cmd_showHideTier":
-                    my.showHideTierDial();
+                    my.tierHandler.showHideTierDial();
                     break;
 
                 case "cmd_download":
@@ -701,7 +700,7 @@ var EmuLabeller = {
                 readerRes,
                 my.newlyLoadedBufferReady.bind(my));
         } else if (ft == 1) {
-            var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
+            var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
             emulabeller.tierInfos.tiers.push(newTiers[0]);
             tName = newTiers[0].TierName;
             my.tierHandler.addTiertoHtml(tName, tName, "tierSettings", "#cans");
@@ -783,9 +782,9 @@ var EmuLabeller = {
     },
 
     rebuildSelect: function() {
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+        for (var i = 0; i < this.tierHandler.getLength(); i++) {
             this.selectedSegments[i] = [];
-            for (var k = 0; k < this.tierInfos.tiers[i].events.length; k++)
+            for (var k = 0; k < this.tierHandler.getLength(i); k++)
                 this.selectedSegments[i][k] = false;
         }
         this.viewPort.selectedSegments = this.selectedSegments;
@@ -913,31 +912,6 @@ var EmuLabeller = {
         }
     },
 
-    addTier: function(addPointTier) {
-        var my = this;
-
-        var tName = "Tier" + my.tierCounter;
-        if (!addPointTier) {
-            this.tierInfos.tiers.push({
-                TierName: tName,
-                type: "seg",
-                events: []
-            });
-        } else {
-            this.tierInfos.tiers.push({
-                TierName: tName,
-                type: "point",
-                events: []
-            });
-        }
-        my.tierHandler.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
-        emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
-        emulabeller.drawer.addTier($("#" + tName)[0]);
-        ++my.tierCounter;
-        this.drawBuffer();
-        this.rebuildSelect();
-    },
-
     // setMarkedEventNew: function(percX, percY, elID) {
     //     var my = this;
     //     my.rebuildSelect();
@@ -1036,27 +1010,6 @@ var EmuLabeller = {
 
     getSelectedSegmentDoubleClick: function(row) {
         return this.viewPort.selectedSegments[row].indexOf(true);
-    },
-
-    showHideTierDial: function() {
-        emulabeller.isModalShowing = true;
-        $("#dialog-messageSh").dialog({
-            modal: true,
-            close: function() {
-                console.log("closing");
-                emulabeller.isModalShowing = false;
-            },
-            buttons: {
-                Ok: function() {
-                    $(this).dialog("close");
-                    var usrTxt = $("#dialShInput")[0].value;
-                    // emulabeller.tierInfos.tiers[0] = {};
-                    // emulabeller.tierInfos.canvases[0] = {};
-                    $("#" + usrTxt).slideToggle();
-                    emulabeller.isModalShowing = false;
-                }
-            }
-        });
     },
 
     editLabel: function() {

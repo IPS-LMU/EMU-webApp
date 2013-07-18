@@ -1,16 +1,58 @@
 EmuLabeller.tierHandler = {
     init: function(params){
-        console.log("i am the tier Handler");
         this.internalCanvasWidth = params.internalCanvasWidth;
         this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
+        this.isModalShowing = false;        
+    },
 
+    addTier: function(addPointTier) {
+        var my = this;
+
+        var tName = "Tier" + my.tierCounter;
+        if (!addPointTier) {
+            this.tierInfos.tiers.push({
+                TierName: tName,
+                type: "seg",
+                events: []
+            });
+        } else {
+            this.tierInfos.tiers.push({
+                TierName: tName,
+                type: "point",
+                events: []
+            });
+        }
+        this.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
+        emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
+        emulabeller.drawer.addTier($("#" + tName)[0]);
+        ++my.tierCounter;
+        this.drawBuffer();
+        this.rebuildSelect();
+    },
+
+
+    showHideTierDial: function() {
+        emulabeller.isModalShowing = true;
+        $("#dialog-messageSh").dialog({
+            modal: true,
+            close: function() {
+                console.log("closing");
+                emulabeller.isModalShowing = false;
+            },
+            buttons: {
+                Ok: function() {
+                    $(this).dialog("close");
+                    var usrTxt = $("#dialShInput")[0].value;
+                    // emulabeller.tierInfos.tiers[0] = {};
+                    // emulabeller.tierInfos.canvases[0] = {};
+                    $("#" + usrTxt).slideToggle();
+                    emulabeller.isModalShowing = false;
+                }
+            }
+        });
     },
     
-    
-    
-    
-
     /**
      * append a tier
      *
