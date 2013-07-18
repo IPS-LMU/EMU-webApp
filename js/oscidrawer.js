@@ -17,6 +17,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.maxPeak = -Infinity;
         this.minPeak = Infinity;
         this.osciCanvas = params.osciCanvas;
+        this.scrollCanvas = params.scrollCanvas;
 
         this.forTesting = 1;
 
@@ -24,9 +25,9 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
-    getPeaks: function(buffer, canvas) {
+    getPeaks: function(buffer) {
 
-        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / canvas.width; // PCM Samples per new pixel
+        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / this.osciCanvas.width; // PCM Samples per new pixel
 
         this.peaks = [];
         this.minPeak = Infinity;
@@ -45,7 +46,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         } else {
 
 
-            for (var i = 0; i < canvas.width; i++) {
+            for (var i = 0; i < this.osciCanvas.width; i++) {
                 var sum = 0;
                 for (var c = 0; c < buffer.numberOfChannels; c++) {
 
@@ -232,15 +233,10 @@ EmuLabeller.Drawer.OsciDrawer = {
     redrawOsciOnCanvas: function(buffer, canvas) {
         var cH = canvas.height;
         var cW = canvas.width;
-
+        this.getPeaks(buffer, canvas);
         canvascc = canvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
-
-        osciWidth = canvas.width;
-        osciHeight = canvas.height;
-
-        this.getPeaks(buffer, canvas);
-        this.drawOsciOnCanvas(buffer, canvas);
+        canvascc.drawImage(this.osciCanvas,0,0);
     },
 
     /**
@@ -277,11 +273,11 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @params canvas canvas to draw markup on
      * @params bufferLength length of buffer in canvas
      */
-    drawScrollMarkup: function(canvas, inMemoryCanvas, bufferLength) {
+    drawScrollMarkup: function(inMemoryCanvas, bufferLength) {
 
-        var cH = canvas.height;
-        var cW = canvas.width;
-        canvascc = canvas.getContext('2d');
+        var cH = this.scrollCanvas.height;
+        var cW = this.scrollCanvas.width;
+        canvascc = this.scrollCanvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
 
         //draw osci minimap

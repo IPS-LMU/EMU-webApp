@@ -20,8 +20,8 @@ EmuLabeller.Drawer.TierDrawer = {
     /**
      * draw single tier
      */
-    drawSingleTier: function(vP, tierDetails) {
-
+    drawSingleTier: function(tierDetails) {
+            console.log(tierDetails);
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
         if(tierDetails.uiInfos.sel){
@@ -43,11 +43,11 @@ EmuLabeller.Drawer.TierDrawer = {
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
                 // check if in view
-                if (curEvt.startSample > vP.sS && curEvt.startSample < vP.eS
-                    || curEvt.startSample+curEvt.sampleDur > vP.sS && curEvt.startSample+curEvt.sampleDur < vP.eS) {
+                if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS
+                    || curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
 
                     // draw segment start
-                    var percS = (curEvt.startSample - vP.sS) / (vP.eS - vP.sS);
+                    var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     // check if selected -> if draw as marked
                     if (curEvt.uiInfos.selBoundryStart) {
                         cc.fillStyle = this.curSelBoundColor;
@@ -59,7 +59,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
 
                     //draw segment end
-                    var percE = (curEvt.startSample + curEvt.sampleDur - vP.sS) / (vP.eS - vP.sS);
+                    var percE = (curEvt.startSample + curEvt.sampleDur - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     // check if selected -> if draw as marked
                     if (curEvt.uiInfos.selBoundryEnd) {
                         cc.fillStyle = this.curSelBoundColor;
@@ -104,8 +104,8 @@ EmuLabeller.Drawer.TierDrawer = {
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
 
-                if (tierDetails.events[curEvtNr].startSample > vP.sS && tierDetails.events[curEvtNr].startSample < vP.eS) {
-                    perc = (tierDetails.events[curEvtNr].startSample - vP.sS) / (vP.eS - vP.sS);
+                if (tierDetails.events[curEvtNr].startSample > emulabeller.viewPort.sS && tierDetails.events[curEvtNr].startSample < emulabeller.viewPort.eS) {
+                    perc = (tierDetails.events[curEvtNr].startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     
                     if (curEvt.uiInfos.selBoundryStart) {
                         cc.fillStyle = this.curSelBoundColor;
@@ -128,18 +128,19 @@ EmuLabeller.Drawer.TierDrawer = {
     /**
      * draw view port markup of single tier
      */
-    drawVpMarkupSingleTier: function(vP, tierDetails) {
+    drawVpMarkupSingleTier: function(tierDetails) {
         var my = this;
+
         var canvas = tierDetails.uiInfos.canvas;
         cc = canvas.getContext('2d');
 
         //calculate positions in view (refactor)
-        var all = vP.eS - vP.sS;
-        var fracS = vP.selectS - vP.sS;
+        var all = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
+        var fracS = emulabeller.viewPort.selectS - emulabeller.viewPort.sS;
         var procS = fracS / all;
         var posS = canvas.width * procS;
 
-        var fracE = vP.selectE - vP.sS;
+        var fracE = emulabeller.viewPort.selectE - emulabeller.viewPort.sS;
         var procE = fracE / all;
         var posE = canvas.width * procE;
 
@@ -147,7 +148,7 @@ EmuLabeller.Drawer.TierDrawer = {
         cc.fillStyle = this.selBoundColor;
 
         //draw sel boundaries if not separate then single line with circle
-        if (vP.selectS == vP.selectE) {
+        if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
             cc.beginPath();
             cc.arc(posS, 5, 5, 0, 2 * Math.PI, false); // fixed 10 px circle
             cc.stroke();
@@ -168,7 +169,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
         }
         //calc cursor pos
-        var fracC = vP.curCursorPosInPercent * vP.bufferLength - vP.sS;
+        var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.viewPort.bufferLength - emulabeller.viewPort.sS;
         var procC = fracC / all;
         var posC = canvas.width * procC;
 
@@ -193,10 +194,10 @@ EmuLabeller.Drawer.TierDrawer = {
      * @param vP current view port
      * @param tierInfos current tierInfos object
      */
-    drawVpMarkupAllTiers: function(vP, tierInfos) {
+    drawVpMarkupAllTiers: function(tierInfos) {
         var my = this;
         $.each(tierInfos.tiers, function() {
-             my.drawVpMarkupSingleTier(vP, this);
+             my.drawVpMarkupSingleTier(this);
         });
     },
 
@@ -207,11 +208,10 @@ EmuLabeller.Drawer.TierDrawer = {
      * @param vP current view port
      * @param tierInfos current tierInfos object
      */
-    drawAllTiers: function(vP, tierInfos) {
+    drawAllTiers: function(tierInfos) {
         var my = this;
         $.each(tierInfos.tiers, function() {
-             my.drawSingleTier(vP, this);
-             console.log("info:");
+             my.drawSingleTier(this);
         });
     },
 

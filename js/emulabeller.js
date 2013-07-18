@@ -401,7 +401,7 @@ var EmuLabeller = {
      * buffer is displayed (see newlyLoadedBufferReady)
      */
     drawBuffer: function() {
-        this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer, this.tierHandler.tierInfos ,this.ssffInfos);
+        this.drawer.uiDrawUpdate(this.backend.currentBuffer, this.tierHandler.tierInfos ,this.ssffInfos);
     },
 
 

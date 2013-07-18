@@ -79,7 +79,7 @@ EmuLabeller.Drawer = {
         }
     },
 
-    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos) {
+    uiDrawUpdate: function(buffer, tierInfos, ssffInfos) {
 
         console.log(this.osciCanvas);
         // draw osci
@@ -90,8 +90,8 @@ EmuLabeller.Drawer = {
 
         if(emulabeller.tierHandler.getLength()>0) {
             // draw tiers
-            this.tierDrawer.drawAllTiers(vP,tierInfos);
-            this.tierDrawer.drawVpMarkupAllTiers(vP);
+            this.tierDrawer.drawAllTiers(tierInfos);
+            this.tierDrawer.drawVpMarkupAllTiers();
         }
 
         // draw minimap
@@ -99,8 +99,7 @@ EmuLabeller.Drawer = {
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas);
             this.isInitDraw = false;
         }
-
-        this.osciDrawer.drawScrollMarkup(this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
+        this.osciDrawer.drawScrollMarkup(this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
         this.spectogramDrawer.uiDraw();
@@ -126,9 +125,8 @@ EmuLabeller.Drawer = {
     * @param vP current viewPort
     * @param tierDetail of Single tier
     */
-    updateSingleTier: function(vP, tierDetails) {
-        this.tierDrawer.drawSingleTier(vP, tierDetails);
-        this.tierDrawer.drawVpMarkupSingleTier(vP, tierDetails);
-
+    updateSingleTier: function(tierDetails) {
+        this.tierDrawer.drawSingleTier(tierDetails);
+        this.tierDrawer.drawVpMarkupSingleTier(tierDetails);
     }
 };

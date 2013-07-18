@@ -120,7 +120,7 @@ EmuLabeller.tierHandler = {
             var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true);
-            emulabeller.drawer.updateSingleTier(emulabeller.viewPort, curTierDetails);
+            emulabeller.drawer.updateSingleTier(curTierDetails);
         }
     },
 
