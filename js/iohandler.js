@@ -50,9 +50,17 @@ EmuLabeller.IOhandler = {
         return res;
     },
 
-    addUiInfosToTierInfosObj: function(JSO) {
-    },
+    addUiInfosToTierInfosObj: function(JSO) {},
 
-    removeUiInfosToTierInfosObj: function(JSO) {
+    removeUiInfosToTierInfosObj: function(JSO) {},
+
+    dropBoxOpen: function() {
+        console.log("open from dropbox");
+        Dropbox.choose({
+            // Required. Called when a user selects an item in the Chooser.
+            success: function(files) {
+                alert("Here's the file link:" + files[0].link);
+            }
+        });
     }
 };

@@ -258,6 +258,9 @@ var EmuLabeller = {
                     my.editLabel();
                     break;
 
+                case "cmd_dropBoxOpen":
+                    my.iohandler.dropBoxOpen();
+                    break;
 
 
                 case params.osciCanvas.id:
