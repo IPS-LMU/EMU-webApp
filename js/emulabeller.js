@@ -110,9 +110,6 @@ var EmuLabeller = {
         this.timeline = params.timeline;
         this.tiers = params.tiers;
         this.showLeftPush = params.showLeftPush;
-        this.internalCanvasWidth = params.internalCanvasWidth;
-        this.internalCanvasHeightSmall = params.internalCanvasHeightSmall;
-        this.internalCanvasHeightBig = params.internalCanvasHeightBig;
 
 
         // Object Classes
@@ -144,6 +141,10 @@ var EmuLabeller = {
         // json validator
         this.JSONval = Object.create(EmuLabeller.JSONvalidator);
         this.JSONval.init();
+
+        // json validator
+        this.tierHandler = Object.create(EmuLabeller.tierHandler);
+        this.tierHandler.init(params);        
 
 
         // other used variables
@@ -703,7 +704,7 @@ var EmuLabeller = {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierInfos.tiers.length);
             emulabeller.tierInfos.tiers.push(newTiers[0]);
             tName = newTiers[0].TierName;
-            my.addTiertoHtml(tName, tName, "tierSettings", "#cans");
+            my.tierHandler.addTiertoHtml(tName, tName, "tierSettings", "#cans");
             emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
             emulabeller.drawer.addTier($("#" + tName)[0]);
 
@@ -716,7 +717,7 @@ var EmuLabeller = {
             this.drawBuffer();
         } else if (ft == 2) {
             var sCanName = "F0";
-            my.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
+            my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
@@ -726,7 +727,7 @@ var EmuLabeller = {
             emulabeller.tierInfos = emulabeller.iohandler.parseTextGrid(readerRes);
             for (var i = 0; i < emulabeller.tierInfos.tiers.length; i++) {
                 var tName = emulabeller.tierInfos.tiers[i].TierName;
-                mymy.addTiertoHtml(tName, mymy.tierCounter, "tierSettings", "#cans");
+                this.tierHandler.addTiertoHtml(tName, mymy.tierCounter, "tierSettings", "#cans");
                 mymy.tierInfos.tiers[i].uiInfos.canvas = $("#" + tName)[0];
                 //     emulabeller.drawer.addTier($("#" + tName)[0]); // SIC why is the drawer adding a tier???
                 ++mymy.tierCounter; // don't really need this any more
@@ -736,48 +737,6 @@ var EmuLabeller = {
         }
     },
 
-    /**
-     * append a tier
-     *
-     * @param myName is used ad id of canvas
-     * @param myID is used in custom attr. tier-id
-     * @param myCssClass is used to spec. css class
-     * @param
-     */
-    addTiertoHtml: function(myName, myID, myCssClass, myAppendTo) {
-        $('<canvas>').attr({
-            id: myName,
-            width: this.internalCanvasWidth,
-            height: this.internalCanvasHeightSmall,
-            'tier-id': myID
-        }).addClass(myCssClass).appendTo(myAppendTo);
-
-        $("#" + myName).bind("click", function(event) {
-            emulabeller.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.getTierDetailsFromTierWithName(myName));
-        });
-        $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.handleTierDoubleClick(event.originalEvent);
-        });
-        $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
-        });
-        $("#" + myName).bind("mousemove", function(event) {
-            emulabeller.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
-        });
-        $("#" + myName).bind("mouseout", function(event) {
-            emulabeller.resetAllSelBoundariesInTierInfos();
-            var curTierDetails = emulabeller.getTierDetailsFromTierWithName(myName);
-            emulabeller.drawer.updateSingleTier(emulabeller.viewPort, curTierDetails);
-
-        });
-        $("#" + myName).bind("mouseup", function(event) {
-            //myMouseUp(e);
-        });
-        $("#" + myName).bind("mousedown", function(event) {
-            //myMouseDown(e);
-        });
-
-    },
 
     /**
      * called from hidden input type="file" element
@@ -971,7 +930,7 @@ var EmuLabeller = {
                 events: []
             });
         }
-        my.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
+        my.tierHandler.addTiertoHtml(tName, my.tierCounter, "tierSettings", "#cans");
         emulabeller.tierInfos.canvases.push($("#" + tName)[0]);
         emulabeller.drawer.addTier($("#" + tName)[0]);
         ++my.tierCounter;
