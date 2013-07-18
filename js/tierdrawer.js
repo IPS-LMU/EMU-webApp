@@ -8,7 +8,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.curSelBoundColor = "#0DC5FF";//rgba(0, 0, 255, 255)";
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
-        this.selBoundColor = "rgba(0, 255, 0, 0.5)";
+        this.selBoundColor = "black";
 
         this.cursorColor = "red";
         this.cursorWidth = 1;
