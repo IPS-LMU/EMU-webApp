@@ -68,6 +68,7 @@ EmuLabeller.Drawer = {
         this.scc = this.specCanvas.getContext('2d');
         this.scrollcc = this.scrollCanvas.getContext('2d');
         this.cacheImage = new Image();
+        this.isInitDraw = true;
 
         if (params.image) {
             this.loadImage(params.image, this.drawImage.bind(this));
@@ -85,8 +86,8 @@ EmuLabeller.Drawer = {
     // },
 
 
-    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos, isInitDraw) {
-
+    uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos) {
+        console.log("ui");
         // console.log("uiDrawUpdate called");
         
         // draw osci
@@ -101,38 +102,16 @@ EmuLabeller.Drawer = {
         this.tierDrawer.drawVpMarkupAllTiers(vP);
 
         // draw minimap
-        if (isInitDraw) {
+        if (this.isInitDraw) {
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
+            this.isInitDraw = false;
         }
 
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
         this.spectogramDrawer.uiDraw();
-        console.log("ui");
-    },
 
-    freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) { // SIC give tier infos!
-
-        // draw osci canvas with vP markup
-        this.osciDrawer.redrawOsciOnCanvas(buffer, this.osciCanvas, vP); // only difference to uiDrawUpdate maybe change to using flag
-        this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
-
-
-        // TODO draw SSFF canvases here
-
-        // draw tiers
-        this.tierDrawer.drawAllTiers(vP); //SIC
-        this.tierDrawer.drawVpMarkupAllTiers(vP); //SIC
-
-        // draw minimap
-        if (isInitDraw) {
-            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
-        }
-        this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
-
-        //draw spectrogram
-        this.spectogramDrawer.uiDraw();       
     },
 
     /**

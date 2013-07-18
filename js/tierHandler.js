@@ -196,7 +196,7 @@ EmuLabeller.tierHandler = {
             //     var timeE = clickedTier.events[clickedEvtNr].startSample;
             //     if (clicked > 0) {
             //         if (this.isSelectNeighbour(elID, clickedEvtNr)) {
-            //             my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //             emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
             //             if (this.viewPort.selectS != 0 && clicked > 0) {
             //                 if (timeS < this.viewPort.selectS)
             //                     this.viewPort.selectS = timeS;
@@ -207,12 +207,12 @@ EmuLabeller.tierHandler = {
             //             }
             //         } else {
             //             my.rebuildSelect();
-            //             my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //             emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
             //             this.viewPort.selectS = timeS;
             //             this.viewPort.selectE = timeE;
             //         }
             //     } else {
-            //         my.viewPort.selectedSegments[elID][clickedEvtNr] = true;
+            //         emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
             //         this.viewPort.selectS = timeS;
             //         this.viewPort.selectE = timeE;
             //     }
@@ -270,18 +270,18 @@ EmuLabeller.tierHandler = {
     handleTierDoubleClick: function(e) {
         var my = this;
         if ($('#textAreaPopUp').length === 0) {
-            var tier = this.tierHandler.getSelectedTier();
+            var tier = this.getSelectedTier();
             if (tier.type == "seg") {
-                // var tier = my.tierHandler.tierInfos.tiers[my.viewPort.selTier];
-                // var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];
+                // var tier = my.tierHandler.tierInfos.tiers[emulabeller.viewPort.selTier];
+                // var event = tier.events[my.getSelectedSegmentDoubleClick(emulabeller.viewPort.selTier)];
                 var event = this.getSelectedSegmentInTier(tier);
 
-                var all = my.viewPort.eS - my.viewPort.sS;
-                var fracS = my.viewPort.selectS - my.viewPort.sS;
+                var all = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
+                var fracS = emulabeller.viewPort.selectS - emulabeller.viewPort.sS;
                 var procS = fracS / all;
                 var posS = tier.uiInfos.canvas.clientWidth * procS;
 
-                var fracE = my.viewPort.selectE - my.viewPort.sS;
+                var fracE = emulabeller.viewPort.selectE - emulabeller.viewPort.sS;
                 var procE = fracE / all;
                 var posE = tier.uiInfos.canvas.clientWidth * procE;
 
@@ -315,7 +315,56 @@ EmuLabeller.tierHandler = {
             my.removeCanvasDoubleClick();
         }
     },    
-    
+
+    isSelectNeighbour: function(row, newId) {
+        return (this.isRightSelectNeighbour(row, newId) || this.isLeftSelectNeighbour(row, newId));
+    },
+
+
+    isRightSelectNeighbour: function(row, newId) {
+        if (newId == this.viewPort.selectedSegments[row].length)
+            return false;
+        else
+            return this.viewPort.selectedSegments[row][newId + 1];
+    },
+
+    isLeftSelectNeighbour: function(row, newId) {
+        if (newId === 0)
+            return false;
+        else
+            return this.viewPort.selectedSegments[row][newId - 1];
+    },
+
+    createSelection: function(field, start, end) {
+        if (field.createTextRange) {
+            var selRange = field.createTextRange();
+            selRange.collapse(true);
+            selRange.moveStart('character', start);
+            selRange.moveEnd('character', end);
+            selRange.select();
+        } else if (field.setSelectionRange) {
+            field.setSelectionRange(start, end);
+        } else if (field.selectionStart) {
+            field.selectionStart = start;
+            field.selectionEnd = end;
+        }
+        field.focus();
+    },
+
+    saveCanvasDoubleClick: function() {
+        var tierDetails = this.tierHandler.getSelectedTier();
+        var event = this.getSelectedSegmentInTier(tierDetails);
+        var content = $("#editArea").val();
+        event.label = content;
+        this.drawBuffer();
+    },
+
+    removeLabelDoubleClick: function() { //maybe rename to removeLabelBox or something
+        var my = this;
+        $('textarea#editArea').remove();
+        $('#saveText').remove();
+        $('#textAreaPopUp').remove();
+    },    
     
 
 };

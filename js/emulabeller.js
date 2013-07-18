@@ -263,7 +263,7 @@ var EmuLabeller = {
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
                     console.log(my.internalMode);
-                    my.removeCanvasDoubleClick();
+                    my.removeLabelDoubleClick();
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
                     var len = (my.viewPort.eS - my.viewPort.sS);
@@ -382,7 +382,7 @@ var EmuLabeller = {
         });
 
         $(window).resize(function() {
-            my.removeCanvasDoubleClick();
+            my.removeLabelDoubleClick();
         });
 
         $('#wave').css("height", "80px");
@@ -399,12 +399,8 @@ var EmuLabeller = {
      * @param isNewlyLoaded bool to say if first time
      * buffer is displayed (see newlyLoadedBufferReady)
      */
-    drawBuffer: function(isNewlyLoaded) {
-        var my = this;
-        my.removeCanvasDoubleClick();
-        if (this.backend.currentBuffer) {
-            this.drawer.freshUiDrawUpdate(this.backend.currentBuffer, this.viewPort, isNewlyLoaded, this.ssffInfos);
-        }
+    drawBuffer: function() {
+        this.drawer.uiDrawUpdate(this.viewPort, this.backend.currentBuffer, this.tierHandler.tierInfos ,this.ssffInfos);
     },
 
 
@@ -497,8 +493,7 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
-        this.drawBuffer(true);
-
+        this.drawBuffer();
     },
 
     /**
@@ -577,7 +572,7 @@ var EmuLabeller = {
      */
     zoomViewPort: function(zoomIn) {
 
-        this.removeCanvasDoubleClick();
+        this.removeLabelDoubleClick();
         var newStartS, newEndS;
         if (zoomIn) {
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);
@@ -599,7 +594,7 @@ var EmuLabeller = {
      * if set to falce -> shift left
      */
     shiftViewP: function(shiftRight) {
-        // my.removeCanvasDoubleClick();
+        // my.removeLabelDoubleClick();
         var newStartS, newEndS;
         if (shiftRight) {
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);
@@ -691,14 +686,12 @@ var EmuLabeller = {
      * loaded file from fileAPI/websocket/xhr load
      */
     parseNewFile: function(readerRes) {
-        var mymy = this; //long live javascript nested scopes go only one level up
         var ft = emulabeller.newFileType;
-        var tName;
         if (ft === 0) {
-            // console.log(readerRes);
             my.backend.loadData(
                 readerRes,
-                my.newlyLoadedBufferReady.bind(my));
+                my.newlyLoadedBufferReady.bind(my)
+            );
         } else if (ft == 1) {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
             this.tierHandler.addLoadedTiers(newTiers[0]);            
@@ -713,6 +706,7 @@ var EmuLabeller = {
         } else if (ft == 3) {
             this.tierHandler.addLoadedTiers(emulabeller.iohandler.parseTextGrid(readerRes));
         }
+        
     },
 
 
@@ -757,59 +751,6 @@ var EmuLabeller = {
         } else {
             alert('File type not supported.... sorry!');
         }
-        emulabeller.drawBuffer();
-        emulabeller.rebuildSelect();        
-    },
-
-
-    isSelectNeighbour: function(row, newId) {
-        return (this.isRightSelectNeighbour(row, newId) || this.isLeftSelectNeighbour(row, newId));
-    },
-
-
-    isRightSelectNeighbour: function(row, newId) {
-        if (newId == this.viewPort.selectedSegments[row].length)
-            return false;
-        else
-            return this.viewPort.selectedSegments[row][newId + 1];
-    },
-
-    isLeftSelectNeighbour: function(row, newId) {
-        if (newId === 0)
-            return false;
-        else
-            return this.viewPort.selectedSegments[row][newId - 1];
-    },
-
-    createSelection: function(field, start, end) {
-        if (field.createTextRange) {
-            var selRange = field.createTextRange();
-            selRange.collapse(true);
-            selRange.moveStart('character', start);
-            selRange.moveEnd('character', end);
-            selRange.select();
-        } else if (field.setSelectionRange) {
-            field.setSelectionRange(start, end);
-        } else if (field.selectionStart) {
-            field.selectionStart = start;
-            field.selectionEnd = end;
-        }
-        field.focus();
-    },
-
-    saveCanvasDoubleClick: function() {
-        var tierDetails = this.tierHandler.getSelectedTier();
-        var event = this.getSelectedSegmentInTier(tierDetails);
-        var content = $("#editArea").val();
-        event.label = content;
-        this.drawBuffer();
-    },
-
-    removeCanvasDoubleClick: function() { //maybe rename to removeLabelBox or something
-        var my = this;
-        $('textarea#editArea').remove();
-        $('#saveText').remove();
-        $('#textAreaPopUp').remove();
     },
 
 
