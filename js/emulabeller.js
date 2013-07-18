@@ -262,6 +262,15 @@ var EmuLabeller = {
                     my.iohandler.dropBoxOpen();
                     break;
 
+                case params.scrollCanvas.id:
+                    my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
+                    console.log(my.internalMode);
+                    my.removeCanvasDoubleClick();
+                    var bL = my.backend.currentBuffer.length;
+                    var posInB = my.getX(e) * bL;
+                    var len = (my.viewPort.eS - my.viewPort.sS);
+                    my.setView(posInB - len / 2, posInB + len / 2);
+                    break;
 
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
@@ -277,18 +286,9 @@ var EmuLabeller = {
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetTiers = my.tiers.offsetHeight;
                     break;
-
-                case params.scrollCanvas.id:
-                    my.removeCanvasDoubleClick();
-                    my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
-                    var bL = my.backend.currentBuffer.length;
-                    var posInB = my.getX(e) * bL;
-                    var len = (my.viewPort.eS - my.viewPort.sS);
-                    my.setView(posInB - len / 2, posInB + len / 2);
-                    break;
             }
+            console.log(emulabeller.internalMode);
             
-            console.log(my.internalMode);
 
         });
 
@@ -312,38 +312,36 @@ var EmuLabeller = {
                 my.setView(posInB - len / 2, posInB + len / 2);
                 console.log(my.getX(e));
             }
-            
-            //my.internalMode = my.EDITMODE.STANDARD;            
+                     
 
         });
 
         // All mouse move Functions  
         document.addEventListener('mousemove', function(e) {
             if(e.which == 1) {
-            if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
+                if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
+                    my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
+                }
+                if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+                    var bL = my.backend.currentBuffer.length;
+                    var posInB = my.getX(e) * bL;
+                    var len = (my.viewPort.eS - my.viewPort.sS);
+                    my.setView(posInB - len / 2, posInB + len / 2);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+                }
+                if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
+                    var diff_Y = event.clientY - my.dragingStartY;
+                    var now = ($('#spacer').height() + Math.floor(Math.floor(diff_Y) * 1.12)) + "px";
+                    $('#wave').css("height", "+=" + diff_Y / 2 + "px");
+                    $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
+                    $('#spacer').height(now);
+                    my.dragingStartY = event.clientY;
+                }
             }
-
-            if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
-                console.log(my.getX(e));
-                var bL = my.backend.currentBuffer.length;
-                var posInB = my.getX(e) * bL;
-                var len = (my.viewPort.eS - my.viewPort.sS);
-                my.setView(posInB - len / 2, posInB + len / 2);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
-                
-            }
-
-            if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                var diff_Y = event.clientY - my.dragingStartY;
-                var now = ($('#spacer').height() + Math.floor(Math.floor(diff_Y) * 1.12)) + "px";
-                $('#wave').css("height", "+=" + diff_Y / 2 + "px");
-                $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
-                $('#spacer').height(now);
-                my.dragingStartY = event.clientY;
-            }
-            }
+            else 
+                my.internalMode == my.EDITMODE.STANDARD;
+            
             var curSample;
 
             // if (my.countSelected(my.viewPort.selTier) > 0) {
@@ -895,7 +893,6 @@ var EmuLabeller = {
 
     removeCanvasDoubleClick: function() { //maybe rename to removeLabelBox or something
         var my = this;
-        my.internalMode = my.EDITMODE.STANDARD;
         $('textarea#editArea').remove();
         $('#saveText').remove();
         $('#textAreaPopUp').remove();
