@@ -1134,7 +1134,7 @@ var EmuLabeller = {
             });
             sT.events.push({
                 "label": "emptyAfterNew",
-                "startSample": this.viewPort.selectS+1,
+                "startSample": this.viewPort.selectS + 1,
                 "sampleDur": 0,
                 "uiInfos": {
                     "selSeg": false,
@@ -1400,25 +1400,45 @@ var EmuLabeller = {
     moveBoundary: function(newTime) {
         var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
         evts = evtsNtiers.evts;
+        var tier = evtsNtiers.tiers[1];
+        console.log(tier)
 
         newTime = Math.round(newTime);
 
-        var oldTime = evts[1].startSample;
+        var oldTime;
+        var leftEdge;
+        var rightEdge;
 
-        var leftEdge = evts[0].startSample;
-        var rightEdge = evts[1].startSample + evts[1].sampleDur;
 
-        if (newTime > leftEdge && newTime < rightEdge) {
-            evts[1].startSample = newTime;
-            // correct for locking mode (sampleDur changes of current segment) will change in future
-            if (oldTime < newTime) {
-                evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-            } else {
-                evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+        if (tier.type == "seg") {
+            oldTime = evts[1].startSample;
+            leftEdge = evts[0].startSample;
+            rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+                // correct for locking mode (sampleDur changes of current segment) will change in future
+                if (oldTime < newTime) {
+                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+                } else {
+                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                }
+
+                // correct for locking mode (sampleDur changes of perv segment) will change in future
+                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+
             }
+        } else {
 
-            // correct for locking mode (sampleDur changes of perv segment) will change in future
-            evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+            oldTime = evts[1].startSample;
+            leftEdge = evts[0].startSample;
+            rightEdge = evts[2].startSample;
+            console.log(newTime, oldTime, leftEdge, rightEdge)
+            console.log(evts)
+            if (newTime > leftEdge && newTime < rightEdge) {
+                console.log("here...2")
+                evts[1].startSample = newTime;
+            }
 
         }
     },
