@@ -287,6 +287,8 @@ var EmuLabeller = {
                     my.setView(posInB - len / 2, posInB + len / 2);
                     break;
             }
+            
+            console.log(my.internalMode);
 
         });
 
@@ -295,39 +297,42 @@ var EmuLabeller = {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
-                my.internalMode = my.EDITMODE.STANDARD;
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
-                my.internalMode = my.EDITMODE.STANDARD;
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
                 var bL = my.backend.currentBuffer.length;
-                var posInB = percents * bL;
+                var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
-                my.internalMode = my.EDITMODE.STANDARD;
+                console.log(my.getX(e));
             }
+            
+            //my.internalMode = my.EDITMODE.STANDARD;            
 
         });
 
         // All mouse move Functions  
-        window.addEventListener('mousemove', function(e) {
+        document.addEventListener('mousemove', function(e) {
+            if(e.which == 1) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+                console.log(my.getX(e));
                 var bL = my.backend.currentBuffer.length;
-                var posInB = percents * bL;
+                var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
                 my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+                
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
@@ -338,7 +343,7 @@ var EmuLabeller = {
                 $('#spacer').height(now);
                 my.dragingStartY = event.clientY;
             }
-
+            }
             var curSample;
 
             // if (my.countSelected(my.viewPort.selTier) > 0) {
