@@ -195,7 +195,7 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawVpMarkupAllTiers: function(vP, tierInfos) {
         var my = this;
-        $.each(emulabeller.tierHandler.tierInfos.tiers, function() {
+        $.each(tierInfos.tiers, function() {
              my.drawVpMarkupSingleTier(vP, this);
         });
     },
@@ -207,11 +207,11 @@ EmuLabeller.Drawer.TierDrawer = {
      * @param vP current view port
      * @param tierInfos current tierInfos object
      */
-    drawAllTiers: function(vP) {
+    drawAllTiers: function(vP, tierInfos) {
         var my = this;
-        $.each(emulabeller.tierHandler.tierInfos.tiers, function() {
+        $.each(tierInfos.tiers, function() {
              my.drawSingleTier(vP, this);
-             console.log("info:"+this);
+             console.log("info:");
         });
     },
 

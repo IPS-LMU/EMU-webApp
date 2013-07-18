@@ -79,27 +79,19 @@ EmuLabeller.Drawer = {
         }
     },
 
-    // addTier: function(canv) {
-    //     var newContext = canv.getContext('2d');
-    //     this.tierInfos.contexts.push(newContext);
-    //     // this.toRetinaRatio(canv, newContext);
-    // },
-
-
     uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos) {
-        console.log("ui");
-        // console.log("uiDrawUpdate called");
-        
+
         // draw osci
         this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
         this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
 
         // TODO draw SSFF canvases here
 
-
-        // draw tiers
-        this.tierDrawer.drawAllTiers(vP);
-        this.tierDrawer.drawVpMarkupAllTiers(vP);
+        if(emulabeller.tierHandler.getLength()>0) {
+            // draw tiers
+            this.tierDrawer.drawAllTiers(vP,tierInfos);
+            this.tierDrawer.drawVpMarkupAllTiers(vP);
+        }
 
         // draw minimap
         if (this.isInitDraw) {

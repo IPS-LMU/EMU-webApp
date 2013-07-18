@@ -315,14 +315,14 @@ var EmuLabeller = {
             if(e.which == 1) {  // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                     my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos, my.ssffInfos);
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
                     var len = (my.viewPort.eS - my.viewPort.sS);
                     my.setView(posInB - len / 2, posInB + len / 2);
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                     var diff_Y = event.clientY - my.dragingStartY;
@@ -429,10 +429,10 @@ var EmuLabeller = {
         }
 
         if (!this.backend.isPaused()) {
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
         }
         if (percPlayed > percRel) {
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
             this.pause();
         }
     },
@@ -572,7 +572,7 @@ var EmuLabeller = {
      */
     zoomViewPort: function(zoomIn) {
 
-        this.removeLabelDoubleClick();
+        this.tierHandler.removeLabelDoubleClick();
         var newStartS, newEndS;
         if (zoomIn) {
             newStartS = this.viewPort.sS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);

@@ -49,8 +49,8 @@ var emulabeller = (function() {
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
     if (isiPad || autoLoad) {
-        labeller.load('data/msajc003.wav');
         labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 3);
+        labeller.load('data/msajc003.wav');
     }
 
 
