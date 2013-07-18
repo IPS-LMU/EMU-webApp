@@ -64,30 +64,10 @@ EmuLabeller.Drawer = {
         this.inMemoryMiniMapCanvas = document.createElement("canvas");
         this.inMemoryMiniMapCanvas.width = this.scrollWidth;
         this.inMemoryMiniMapCanvas.height = this.scrollCanvas.clientHeight;
-
-        // this.toRetinaRatio(this.sTmpCanvas, this.sTmpCtx);
-
-
         this.cc = this.osciCanvas.getContext('2d');
         this.scc = this.specCanvas.getContext('2d');
         this.scrollcc = this.scrollCanvas.getContext('2d');
-
-        this.tierInfos = params.tierInfos;
-
         this.cacheImage = new Image();
-
-        this.tierInfos.contexts = [];
-
-        for (var i = 0; i <= this.tierInfos.canvases.length - 1; i++) {
-            this.tierInfos.contexts.push(this.tierInfos.canvases[i].getContext('2d'));
-            // this.toRetinaRatio(this.tierInfos.canvases[i], this.tierInfos.contexts[i]);
-        }
-
-        //console.log(this.tierInfos);
-
-        // this.toRetinaRatio(this.osciCanvas, this.cc);
-        // this.toRetinaRatio(this.specCanvas, this.scc);
-        // this.toRetinaRatio(this.scrollCanvas, this.scrollcc);
 
         if (params.image) {
             this.loadImage(params.image, this.drawImage.bind(this));
@@ -117,8 +97,8 @@ EmuLabeller.Drawer = {
 
 
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP, emulabeller.tierInfos);
-        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos);
+        this.tierDrawer.drawAllTiers(vP, tierInfos);
+        this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
 
         // draw minimap
         if (isInitDraw) {
@@ -141,14 +121,13 @@ EmuLabeller.Drawer = {
         // TODO draw SSFF canvases here
 
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP, emulabeller.tierInfos); //SIC
-        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierInfos); //SIC
+        this.tierDrawer.drawAllTiers(vP, emulabeller.tierHandler.tierInfos); //SIC
+        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierHandler.tierInfos); //SIC
 
         // draw minimap
         if (isInitDraw) {
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
         }
-
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
@@ -161,7 +140,7 @@ EmuLabeller.Drawer = {
     * @param vP current viewPort
     * @param tierInfos current tierInfos
     */
-    uiAllTierDrawUpdate: function(vP, tierInfos) {
+    uiAllTierDrawUpdate: function(vP) {
         // draw tiers
         this.tierDrawer.drawAllTiers(vP, tierInfos);
         this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
