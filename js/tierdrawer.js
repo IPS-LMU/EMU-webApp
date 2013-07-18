@@ -211,6 +211,7 @@ EmuLabeller.Drawer.TierDrawer = {
         var my = this;
         $.each(emulabeller.tierHandler.tierInfos.tiers, function() {
              my.drawSingleTier(vP, this);
+             console.log("info:"+this);
         });
     },
 

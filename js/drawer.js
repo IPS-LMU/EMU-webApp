@@ -97,8 +97,8 @@ EmuLabeller.Drawer = {
 
 
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP, tierInfos);
-        this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
+        this.tierDrawer.drawAllTiers(vP);
+        this.tierDrawer.drawVpMarkupAllTiers(vP);
 
         // draw minimap
         if (isInitDraw) {
@@ -109,6 +109,7 @@ EmuLabeller.Drawer = {
 
         //draw spectrogram
         this.spectogramDrawer.uiDraw();
+        console.log("ui");
     },
 
     freshUiDrawUpdate: function(buffer, vP, isInitDraw, ssffInfos) { // SIC give tier infos!
@@ -121,8 +122,8 @@ EmuLabeller.Drawer = {
         // TODO draw SSFF canvases here
 
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP, emulabeller.tierHandler.tierInfos); //SIC
-        this.tierDrawer.drawVpMarkupAllTiers(vP, emulabeller.tierHandler.tierInfos); //SIC
+        this.tierDrawer.drawAllTiers(vP); //SIC
+        this.tierDrawer.drawVpMarkupAllTiers(vP); //SIC
 
         // draw minimap
         if (isInitDraw) {
@@ -131,7 +132,7 @@ EmuLabeller.Drawer = {
         this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
-        this.spectogramDrawer.uiDraw();
+        this.spectogramDrawer.uiDraw();       
     },
 
     /**
@@ -142,8 +143,8 @@ EmuLabeller.Drawer = {
     */
     uiAllTierDrawUpdate: function(vP) {
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP, tierInfos);
-        this.tierDrawer.drawVpMarkupAllTiers(vP, tierInfos);
+        this.tierDrawer.drawAllTiers(vP);
+        this.tierDrawer.drawVpMarkupAllTiers(vP);
 
     },
 

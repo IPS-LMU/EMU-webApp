@@ -84,10 +84,10 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.handleTierDoubleClick(event.originalEvent);
+            emulabeller.tierHandler.handleTierDoubleClick(event.originalEvent);
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
+            emulabeller.tierHandler.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
         });
         $("#" + myName).bind("mousemove", function(event) {
             emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
@@ -265,6 +265,56 @@ EmuLabeller.tierHandler = {
             if(this.uiInfos.sel) return this;
         });        
     },
+    
+
+    handleTierDoubleClick: function(e) {
+        var my = this;
+        if ($('#textAreaPopUp').length === 0) {
+            var tier = this.tierHandler.getSelectedTier();
+            if (tier.type == "seg") {
+                // var tier = my.tierHandler.tierInfos.tiers[my.viewPort.selTier];
+                // var event = tier.events[my.getSelectedSegmentDoubleClick(my.viewPort.selTier)];
+                var event = this.getSelectedSegmentInTier(tier);
+
+                var all = my.viewPort.eS - my.viewPort.sS;
+                var fracS = my.viewPort.selectS - my.viewPort.sS;
+                var procS = fracS / all;
+                var posS = tier.uiInfos.canvas.clientWidth * procS;
+
+                var fracE = my.viewPort.selectE - my.viewPort.sS;
+                var procE = fracE / all;
+                var posE = tier.uiInfos.canvas.clientWidth * procE;
+
+                var textAreaX = Math.round(posS) + tier.uiInfos.canvas.offsetLeft + 2;
+                var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
+
+                var textAreaWidth = Math.floor(posE - posS - 5);
+                var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
+                if (event !== null) {
+                    var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
+                    var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
+                    var appendString = textArea + saveButton;
+                    $("#tiers").append(appendString);
+                    my.internalMode = my.EDITMODE.LABEL_RENAME;
+                    $("#saveText")[0].addEventListener('click', function(e) {
+                        my.saveCanvasDoubleClick();
+                    });
+                    $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
+                        evt = evt || window.event;
+                        if (evt.keyCode == 13) {
+                            my.saveCanvasDoubleClick();
+                            my.removeCanvasDoubleClick();
+                        }
+                    };
+                    my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
+                }
+            } else if (tier.type == "point") {
+                alert("no point editing yet! Sorry...");
+            }
+        } else {
+            my.removeCanvasDoubleClick();
+        }
+    },    
     
     
 
