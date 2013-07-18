@@ -287,9 +287,6 @@ var EmuLabeller = {
                     my.offsetTiers = my.tiers.offsetHeight;
                     break;
             }
-            console.log(emulabeller.internalMode);
-            
-
         });
 
         // All mouse up Functions  
@@ -310,7 +307,6 @@ var EmuLabeller = {
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
-                console.log(my.getX(e));
             }
                      
 
@@ -318,7 +314,7 @@ var EmuLabeller = {
 
         // All mouse move Functions  
         document.addEventListener('mousemove', function(e) {
-            if(e.which == 1) {
+            if(e.which == 1) {  // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                     my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
