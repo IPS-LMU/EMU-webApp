@@ -24,7 +24,7 @@ EmuLabeller.Drawer = {
 
         // osci drawer
         this.osciDrawer = Object.create(EmuLabeller.Drawer.OsciDrawer);
-        this.osciDrawer.init();
+        this.osciDrawer.init(params);
 
 
         // spectrogram drawer
@@ -81,9 +81,10 @@ EmuLabeller.Drawer = {
 
     uiDrawUpdate: function(vP, buffer, tierInfos, ssffInfos) {
 
+        console.log(this.osciCanvas);
         // draw osci
-        this.osciDrawer.drawCurOsciOnCanvas(buffer, this.osciCanvas, vP);
-        this.osciDrawer.drawVpOsciMarkup(buffer, this.osciCanvas, vP);
+        this.osciDrawer.drawCurOsciOnCanvas(buffer);
+        this.osciDrawer.drawVpOsciMarkup(buffer);
 
         // TODO draw SSFF canvases here
 
@@ -95,11 +96,11 @@ EmuLabeller.Drawer = {
 
         // draw minimap
         if (this.isInitDraw) {
-            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas, vP);
+            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas);
             this.isInitDraw = false;
         }
 
-        this.osciDrawer.drawScrollMarkup(vP, this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
+        this.osciDrawer.drawScrollMarkup(this.scrollCanvas, this.inMemoryMiniMapCanvas, buffer.length - 1);
 
         //draw spectrogram
         this.spectogramDrawer.uiDraw();

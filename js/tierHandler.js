@@ -222,21 +222,12 @@ EmuLabeller.tierHandler = {
     
 
     findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
-
-        var resEvt = null;
-
-        for (var i = 0; i < tierDetails.events.length; i++) {
-            var curEvt = tierDetails.events[i];
-
-            if (curSample > curEvt.startSample && curSample < (curEvt.startSample + curEvt.sampleDur)) {
-                resEvt = curEvt;
-                break;
+        $.each(tierDetails.events, function() {
+            if (curSample > this.startSample && curSample < (this.startSample + this.sampleDur)) {
+                this.uiInfos.selSeg = true;
+                return this;
             }
-        }
-
-        resEvt.uiInfos.selSeg = true;
-
-        return resEvt;
+        }); 
     },
 
     resetAllSelTiers: function() {
@@ -253,7 +244,6 @@ EmuLabeller.tierHandler = {
         });     
     },
     
-
     getSelectedTier: function() {
         $.each(this.tierInfos.tiers, function() {
             if(this.uiInfos.sel) return this;

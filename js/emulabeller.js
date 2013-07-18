@@ -109,7 +109,8 @@ var EmuLabeller = {
         this.draggableBar = params.draggableBar;
         this.timeline = params.timeline;
         this.tiers = params.tiers;
-        this.showLeftPush = params.showLeftPush;       
+        this.showLeftPush = params.showLeftPush;
+        this.osciCanvas = params.osciCanvas;       
 
 
         // Object Classes
