@@ -43,6 +43,10 @@ EmuLabeller.ViewPort = {
         this.curCursorPosInPercent = 0.0;
     },
 
+    getPos: function(w,s) {
+        return (w * (s - this.sS) / (this.eS - this.sS));
+    },
+
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");
         var e = Math.pow(10, n);

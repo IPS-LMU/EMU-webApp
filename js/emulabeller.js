@@ -80,6 +80,12 @@ var EmuLabeller = {
             DRAGING_BAR: {
                 value: 6,
                 name: "DragingBarMode"
+            },
+
+            // when draging the timeline resize bar
+            DRAGING_TIER: {
+                value: 7,
+                name: "DragingTierMode"
             }
         };
 
@@ -390,12 +396,17 @@ var EmuLabeller = {
         $('#cans').sortable({
             tolerance: 'pointer',
             cursor: 'move',
-            delay: 150,
+            delay: 10,
             dropOnEmpty: true,
             connectWith: 'ul.sortable',
             start: function(event, ui) {
+                my.internalMode = my.EDITMODE.DRAGING_TIER;
                 my.tierHandler.removeLabelDoubleClick();
             },
+            stop: function(event, ui) {
+                my.internalMode = my.EDITMODE.STANDARD;
+            },
+
             update: function(event, ui) {
                 if(this.id == 'sortable-delete') {
                 // Remove the element dropped on #sortable-delete
