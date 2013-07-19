@@ -12,7 +12,8 @@ EmuLabeller.Drawer.TierDrawer = {
 
         this.cursorColor = "red";
         this.cursorWidth = 1;
-
+        
+        this.deleteImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAn1BMVEX////4YmT/dnnyTE//dnn9bnH6am34YmT3XWD2WVv2VVjsOj3oMDLlJyrjICL2VVjzUVTwR0ruPT/iHB72WVvwR0rzUVT/h4r/gob/foH/eXv/dnn/cnT9bnH/bG76am3/Zmb6ZGf4YmT3XWD/WFv2WVv/VFf2VVj0TVDyTE/2SkzwR0rvREfuQUPuPT/sOj3rNDboMDLnLTDlJyrjICIhCpwnAAAANXRSTlMAESIiMzMzMzMzMzMzMzNERERERHd3qv///////////////////////////////////////0mgXpwAAAAJcEhZcwAAHngAAB54AcurAx8AAAAYdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3Jrc0+zH04AAACVSURBVBiVbczXFoIwDAbguHGi4mqbWugQZInj/Z9NSuXAhblJvuTkB+jV4NeHY9e9g+/M2KSxFKdRY0JwWltxoo72gvRMxcxTgqrM/Qp2QWmdt+kRJ5SyzgCGao09zw3TN8yWnSNEfo3LVWdTPJIwqdbWCyN5XABUeZi+NvViG0trgHeRPgM77O6l+/04A+zb9AD+1Bf6lg3jQQJJTgAAAABJRU5ErkJggg==";
         this.selTierColor = "#C8C8C8";
 
     },
@@ -20,7 +21,8 @@ EmuLabeller.Drawer.TierDrawer = {
     /**
      * draw single tier
      */
-    drawSingleTier: function(tierDetails) {
+    drawSingleTier: function(tierDetails,perx) {
+        var my = this;
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
         if(tierDetails.uiInfos.sel){
@@ -35,6 +37,14 @@ EmuLabeller.Drawer.TierDrawer = {
         cc.font = "12px Verdana";
         cc.strokeText(tierDetails.TierName, 5, 5 + 8);
         cc.strokeText("(" + tierDetails.type + ")", 5, 20 + 8);
+        
+        /*if(perx>0.9) {
+            var icon = new Image();
+            icon.onload = function() {
+                cc.drawImage(icon, 0, 0, 16, 16, (canvas.width-40), 10, 32, 32);
+            };        
+            icon.src = my.deleteImage;
+        }*/
 
         if (tierDetails.type == "seg") {
             cc.fillStyle = this.boundaryColor;

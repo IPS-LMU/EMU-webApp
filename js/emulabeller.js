@@ -387,7 +387,9 @@ var EmuLabeller = {
 
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
-
+        
+        $('#cans').sortable();
+        $("#cans").disableSelection();
 
     },
 

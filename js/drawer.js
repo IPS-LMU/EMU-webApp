@@ -138,10 +138,10 @@ EmuLabeller.Drawer = {
     * 
     * @param tierDetail of Single tier
     */
-    updateSingleTier: function(t) {
+    updateSingleTier: function(t,perx) {
         if(null!=t) {
-            this.tierDrawer.drawSingleTier(t);
-            this.tierDrawer.drawVpMarkupSingleTier(t);
+            this.tierDrawer.drawSingleTier(t,perx);
+            this.tierDrawer.drawVpMarkupSingleTier(t,perx);
        } 
     }
 };
