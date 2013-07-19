@@ -1,6 +1,5 @@
 html, body{
     overflow: auto;
-    overflow-x:hidden;
     height: 100%;
     width:100%;
     padding: 0px;
@@ -126,7 +125,6 @@ canvas {
 
 .tierPush{
     position:absolute;
-    overflow: none;
     z-index: 0;
 }
 .spacer {
@@ -143,7 +141,7 @@ canvas {
 }
 
 #tiers  {
-    overflow: none;
+    overflow: auto;
     z-index: 0;
     margin:0px auto;
     text-align: center;
@@ -220,6 +218,10 @@ canvas {
 	width: 100%;
 	overflow: hidden;
 	padding-left:10px;
+}
+
+textarea {
+    vertical-align: middle;
 }
 
 .mini-btn {

@@ -388,7 +388,18 @@ var EmuLabeller = {
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         
-        $('#cans').sortable();
+        $('#cans').sortable({
+            tolerance: 'pointer',
+            cursor: 'pointer',
+            dropOnEmpty: true,
+            connectWith: 'ul.sortable',
+            update: function(event, ui) {
+                if(this.id == 'sortable-delete') {
+                // Remove the element dropped on #sortable-delete
+                jQuery('#'+ui.item.attr('id')).remove();
+                }
+            }           
+        });
         $("#cans").disableSelection();
 
     },
