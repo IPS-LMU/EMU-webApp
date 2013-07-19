@@ -42,12 +42,8 @@ EmuLabeller.Drawer.TierDrawer = {
             var e = tierDetails.events;
             for (var k in e) {
                 var curEvt = e[k];
-                console.log(emulabeller.viewPort.sS);
-                if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS ) {
-                    //|| curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
-
-                    
-                    
+                if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS 
+                    || curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
                     // draw segment start
                     var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     // check if selected -> if draw as marked

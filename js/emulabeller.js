@@ -263,7 +263,6 @@ var EmuLabeller = {
 
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
-                    console.log(my.internalMode);
                     my.removeLabelDoubleClick();
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
@@ -479,7 +478,6 @@ var EmuLabeller = {
      */
     playPauseInView: function() {
         if (this.backend.paused) {
-            //console.log("set to 0");
             this.playInMode("vP");
         } else {
             this.pause();
@@ -513,7 +511,6 @@ var EmuLabeller = {
                 e.target.response,
                 my.newlyLoadedBufferReady.bind(my)); //webaudio.js loadData function called
         }, false);
-        console.log(src);
         xhr.open('GET', src, true);
         xhr.send();
     },
@@ -608,7 +605,6 @@ var EmuLabeller = {
             newEndS = this.viewPort.eS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
 
         }
-        console.log(this.viewPort.eS);
         this.setView(newStartS, newEndS);
     },
 
@@ -705,7 +701,6 @@ var EmuLabeller = {
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);     
-            // console.log(emulabeller.ssffInfos);
         } else if (ft == 3) {
             this.tierHandler.addLoadedTiers(emulabeller.iohandler.parseTextGrid(readerRes));
             
@@ -731,7 +726,6 @@ var EmuLabeller = {
         // Set an onload handler because we load files into it asynchronously
         reader.onload = function(e) {
             // The response contains the Data-Uri, which we can then load into the canvas
-            // console.log(file.type);
             emulabeller.parseNewFile(reader.result); // my and this does not work?!
         };
 
@@ -810,7 +804,6 @@ var EmuLabeller = {
 
     editLabel: function() {
         var my = this;
-        console.log(this.tierHandler.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label);
         this.isModalShowing = true;
         $("#dialLabelInput")[0].value = this.tierHandler.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label;
         $("#dialog-messageSetLabel").dialog({
@@ -824,7 +817,6 @@ var EmuLabeller = {
                     $(this).dialog("close");
                     var usrTxt = $("#dialLabelInput")[0].value;
                     // this.tierHandler.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label = usrTxt;
-                    console.log(my.tierHandler.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selSegment].label);
                     my.tierHandler.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selSegment].label = usrTxt;
                     my.drawBuffer();
                 }
@@ -835,7 +827,6 @@ var EmuLabeller = {
 
     sendTierinfosToServer: function() {
         var sT = this.tierHandler.tierInfos.tiers[this.viewPort.selTier];
-        console.log(sT);
         var data = {
             'bob': 'foo',
             'paul': 'dog'
@@ -857,7 +848,6 @@ var EmuLabeller = {
         var sT = this.tierHandler.getSelectedTier();
 
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            console.log("adding segments");
             sT.events.push({
                 "label": "newSegment",
                 "startSample": this.viewPort.selectS,
@@ -942,12 +932,8 @@ var EmuLabeller = {
      */
     prepDownload: function() {
         var MIME_TYPE = 'text/plain';
-
         var output = document.querySelector('#downLinkDiv');
-
         window.URL = window.webkitURL || window.URL;
-
-        console.log(window.URL);
         var prevLink;
         try {
             prevLink = output.querySelector('a');
@@ -1050,7 +1036,6 @@ var EmuLabeller = {
         var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
         evts = evtsNtiers.evts;
         var tier = evtsNtiers.tiers[1];
-        console.log(tier)
 
         newTime = Math.round(newTime);
 
@@ -1082,10 +1067,7 @@ var EmuLabeller = {
             oldTime = evts[1].startSample;
             leftEdge = evts[0].startSample;
             rightEdge = evts[2].startSample;
-            console.log(newTime, oldTime, leftEdge, rightEdge)
-            console.log(evts)
             if (newTime > leftEdge && newTime < rightEdge) {
-                console.log("here...2")
                 evts[1].startSample = newTime;
             }
 
