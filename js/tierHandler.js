@@ -93,7 +93,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierDoubleClick(event.originalEvent);
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.tierHandler.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
+           // emulabeller.tierHandler.setMarkedEvent(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
         });
         $("#" + myName).bind("mousemove", function(event) {
             emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
@@ -140,7 +140,7 @@ EmuLabeller.tierHandler = {
                 closestStartEvt = e[k];
             }
         }
-        if (markAsSel) {
+        if (markAsSel && null != closestStartEvt) {
             closestStartEvt.uiInfos.selBoundryStart = true;
         }
         return closestStartEvt;
@@ -148,6 +148,15 @@ EmuLabeller.tierHandler = {
     
     getTierDetailsFromTierWithName: function(tierName) {
         return this.tierInfos.tiers[tierName];
+    },
+    
+    resetAllSelSegments: function() {
+        var t = emulabeller.tierHandler.getTiers();
+        for (var k in t) {
+            for (var j in t[k].events) {
+                t[k].events[j].uiInfos.selSeg = false;   
+            }
+        }
     },
     
     resetAllSelBoundariesInTierInfos: function() {
@@ -163,13 +172,13 @@ EmuLabeller.tierHandler = {
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
-        this.resetAllSelTiers();
+        
         this.resetAllSelSegments();
-        tierDetails.uiInfos.sel = true;
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-
+        
+        tierDetails.uiInfos.sel = true;
        
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
@@ -225,23 +234,10 @@ EmuLabeller.tierHandler = {
         }
     },
 
-    resetAllSelTiers: function() {
-        var t = this.tierInfos.tiers;
-        for (var k in t)
-            t[k].uiInfos.sel = false;
-    },
-
-    resetAllSelSegments: function() {
-        var t = this.tierInfos.tiers;
-        for (var k in t)
-            for (var j in t[k].events)
-                t[k].events[j].uiInfos.sel = false;         
-    },
     
     getSelectedTier: function() {
-        var t = this.tierInfos.tiers;
-        for (var k in t)
-            if(t[k].uiInfos.sel) return t[k];      
+        for (var k in this.tierInfos.tiers)
+            if(this.tierInfos.tiers[k].uiInfos.sel) return this.tierInfos.tiers[k];      
     },
     
     getTiers: function() {
@@ -249,8 +245,8 @@ EmuLabeller.tierHandler = {
     },
     
 
-    getSelectedSegmentInTier: function(tierDetails) {
-        var e = tierDetails.events;
+    getSelectedSegmentInTier: function(t) {
+        var e = t.events;
         for (var k in e)
             if(e[k].uiInfos.sel) return e[k];        
     },
@@ -280,6 +276,7 @@ EmuLabeller.tierHandler = {
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
                 if (event !== null) {
+                    console.log(event);
                     var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
                     var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
                     var appendString = textArea + saveButton;
@@ -354,6 +351,28 @@ EmuLabeller.tierHandler = {
         $('#saveText').remove();
         $('#textAreaPopUp').remove();
     },    
+    
+    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
+        var res;
+        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
+            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
+                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
+                    res = {
+                        'tiers': [this.tierInfos.tiers[i - 1],
+                            this.tierInfos.tiers[i],
+                            this.tierInfos.tiers[i + 1]
+                        ],
+                        'evts': [this.tierInfos.tiers[i].events[j - 1],
+                            this.tierInfos.tiers[i].events[j],
+                            this.tierInfos.tiers[i].events[j + 1]
+                        ]
+                    };
+                }
+            }
+        }
+        return res;
+    },
+    
     
 
 };

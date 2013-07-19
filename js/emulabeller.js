@@ -769,11 +769,6 @@ var EmuLabeller = {
         }
     },
 
-    // setMarkedEventNew: function(percX, percY, elID) {
-    //     var my = this;
-    //     my.rebuildSelect();
-    //     my.setMarkedEvent(percX, percY, elID);
-    // },
 
     countSelected: function(row) {
         var count = 0;
@@ -1010,31 +1005,11 @@ var EmuLabeller = {
         });
     },
 
-    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
-        var res;
-        for (var i = 0; i < this.tierHandler.tierInfos.tiers.length; i++) {
-            for (var j = 0; j < this.tierHandler.tierInfos.tiers[i].events.length; j++) {
-                if (this.tierHandler.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
-                    res = {
-                        'tiers': [this.tierHandler.tierInfos.tiers[i - 1],
-                            this.tierHandler.tierInfos.tiers[i],
-                            this.tierHandler.tierInfos.tiers[i + 1]
-                        ],
-                        'evts': [this.tierHandler.tierInfos.tiers[i].events[j - 1],
-                            this.tierHandler.tierInfos.tiers[i].events[j],
-                            this.tierHandler.tierInfos.tiers[i].events[j + 1]
-                        ]
-                    };
-                }
-            }
-        }
-        return res;
-    },
-
+   
 
     moveBoundary: function(newTime) {
         var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        evts = evtsNtiers.evts;
+        evts = evtsNtiers.events;
         var tier = evtsNtiers.tiers[1];
 
         newTime = Math.round(newTime);
