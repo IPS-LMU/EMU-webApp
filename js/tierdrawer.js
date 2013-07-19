@@ -39,9 +39,12 @@ EmuLabeller.Drawer.TierDrawer = {
         if (tierDetails.type == "seg") {
             cc.fillStyle = this.boundaryColor;
             // draw segments
+            
+            
+            
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
-                // check if in view
+                
                 if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS
                     || curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
 
@@ -129,7 +132,6 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawVpMarkupSingleTier: function(tierDetails) {
         var my = this;
-
         var canvas = tierDetails.uiInfos.canvas;
         cc = canvas.getContext('2d');
 

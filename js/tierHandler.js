@@ -128,15 +128,16 @@ EmuLabeller.tierHandler = {
         }
     },
 
-    findAndMarkNearestSegmentBoundry: function(tierDetails, curSample, markAsSel) {
+    findAndMarkNearestSegmentBoundry: function(t, curSample, markAsSel) {
         var closestStartSample = null;
         var closestStartEvt = null;
-        $.each(tierDetails.events, function() {
-            if (closestStartSample === null || Math.abs(this.startSample - curSample) < Math.abs(closestStartSample - curSample)) {
-                closestStartSample = this.startSample;
-                closestStartEvt = this;
+        var e = t.events;
+        for (var k in e) {
+            if (closestStartSample === null || Math.abs(e[k].startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                closestStartSample = e[k].startSample;
+                closestStartEvt = e[k];
             }
-        });  
+        }
         if (markAsSel) {
             closestStartEvt.uiInfos.selBoundryStart = true;
         }
@@ -148,12 +149,13 @@ EmuLabeller.tierHandler = {
     },
     
     resetAllSelBoundariesInTierInfos: function() {
-        $.each(this.tierInfos.tiers, function() {
-            $.each(this.events, function() {
-                this.uiInfos.selBoundryStart = false;
-                this.uiInfos.selBoundryEnd = false;
-            }); 
-        });    
+        var t = emulabeller.tierHandler.getTiers();
+        for (var k in t) {
+            for (var j in t[k].events) {
+                t[k].events[j].uiInfos.selBoundryStart = false;
+                t[k].events[j].uiInfos.selBoundryEnd = false;
+            }    
+        }       
     },
     
 
