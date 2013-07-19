@@ -173,7 +173,7 @@ EmuLabeller.tierHandler = {
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
-        
+        this.removeLabelDoubleClick();
         this.resetAllSelSegments();
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
@@ -248,8 +248,9 @@ EmuLabeller.tierHandler = {
 
     getSelectedSegmentInTier: function(t) {
         var e = t.events;
-        for (var k in e)
-            if(e[k].uiInfos.sel) return e[k];        
+        for (var k in e) {
+            if(e[k].uiInfos.selSeg) return e[k];        
+        }
     },
     
 
@@ -261,7 +262,6 @@ EmuLabeller.tierHandler = {
                 // var tier = my.tierHandler.tierInfos.tiers[emulabeller.viewPort.selTier];
                 // var event = tier.events[my.getSelectedSegmentDoubleClick(emulabeller.viewPort.selTier)];
                 var event = this.getSelectedSegmentInTier(tier);
-
                 var all = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
                 var fracS = emulabeller.viewPort.selectS - emulabeller.viewPort.sS;
                 var procS = fracS / all;
@@ -276,29 +276,31 @@ EmuLabeller.tierHandler = {
 
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
-                if (event !== null) {
-                    var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
-                    var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
-                    var appendString = textArea + saveButton;
-                    $("#tiers").append(appendString);
-                    my.internalMode = my.EDITMODE.LABEL_RENAME;
-                    $("#saveText")[0].addEventListener('click', function(e) {
-                        my.saveCanvasDoubleClick();
-                    });
-                    $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
-                        evt = evt || window.event;
-                        if (evt.keyCode == 13) {
-                            my.saveCanvasDoubleClick();
-                            my.removeCanvasDoubleClick();
-                        }
-                    };
-                    my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
-                }
+
+
+
+                var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
+                var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
+                var appendString = textArea + saveButton;
+                $("#tiers").append(appendString);
+                emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+                $("#saveText")[0].addEventListener('click', function(e) {
+                    my.saveLabelDoubleClick();
+                });
+                $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
+                    evt = evt || window.event;
+                    if (evt.keyCode == 13) {
+                        my.saveLabelDoubleClick();
+                        my.removeLabelDoubleClick();
+                    }
+                };
+                my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
+                
             } else if (tier.type == "point") {
                 alert("no point editing yet! Sorry...");
             }
         } else {
-            my.removeCanvasDoubleClick();
+            my.removeLabelDoubleClick();
         }
     },    
 
@@ -337,7 +339,7 @@ EmuLabeller.tierHandler = {
         field.focus();
     },
 
-    saveCanvasDoubleClick: function() {
+    saveLabelDoubleClick: function() {
         var tierDetails = this.tierHandler.getSelectedTier();
         var event = this.getSelectedSegmentInTier(tierDetails);
         var content = $("#editArea").val();
