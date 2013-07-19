@@ -153,6 +153,7 @@ EmuLabeller.tierHandler = {
     resetAllSelSegments: function() {
         var t = emulabeller.tierHandler.getTiers();
         for (var k in t) {
+            t[k].uiInfos.sel = false;
             for (var j in t[k].events) {
                 t[k].events[j].uiInfos.selSeg = false;   
             }
