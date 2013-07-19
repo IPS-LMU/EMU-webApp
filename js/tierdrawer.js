@@ -21,7 +21,6 @@ EmuLabeller.Drawer.TierDrawer = {
      * draw single tier
      */
     drawSingleTier: function(tierDetails) {
-            console.log(tierDetails);
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
         if(tierDetails.uiInfos.sel){
@@ -196,7 +195,7 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawVpMarkupAllTiers: function(tierInfos) {
         var my = this;
-        $.each(tierInfos.tiers, function() {
+        $.each(emulabeller.tierHandler.getTiers(), function() {
              my.drawVpMarkupSingleTier(this);
         });
     },
@@ -208,10 +207,12 @@ EmuLabeller.Drawer.TierDrawer = {
      * @param vP current view port
      * @param tierInfos current tierInfos object
      */
-    drawAllTiers: function(tierInfos) {
+    drawAllTiers: function() {
         var my = this;
-        $.each(tierInfos.tiers, function() {
-             my.drawSingleTier(this);
+        
+        $.each(emulabeller.tierHandler.getTiers(), function() {
+            console.log(this);
+            my.drawSingleTier(this);
         });
     },
 

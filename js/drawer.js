@@ -90,10 +90,10 @@ EmuLabeller.Drawer = {
     uiMiniMapDraw: function() {
         // draw minimap
         if (this.isInitDraw) {
-            this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas);
+            this.osciDrawer.redrawOsciOnCanvas(this.inMemoryMiniMapCanvas);
             this.isInitDraw = false;
         }
-        this.osciDrawer.drawScrollMarkup(this.inMemoryMiniMapCanvas, buffer.length - 1);
+        this.osciDrawer.drawScrollMarkup(this.inMemoryMiniMapCanvas);
     },
 
 

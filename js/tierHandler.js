@@ -249,6 +249,11 @@ EmuLabeller.tierHandler = {
             if(this.uiInfos.sel) return this;
         });    
     },
+    
+    getTiers: function() {
+        return this.tierInfos.tiers;    
+    },
+    
 
     getSelectedSegmentInTier: function(tierDetails) {
         $.each(tierDetails.events, function() {

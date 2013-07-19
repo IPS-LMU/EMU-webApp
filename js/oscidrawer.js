@@ -236,8 +236,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         var tH = this.scrollCanvas.height;
         var tW = this.scrollCanvas.width;
         
-        canvascc = canvas.getContext('2d');
-        canvascc.clearRect(0, 0, cW, cH);
+        canvascc = this.scrollCanvas.getContext('2d');
+        canvascc.clearRect(0, 0, tW, tH);
         canvascc.drawImage(this.osciCanvas,0,0);
     },
 
