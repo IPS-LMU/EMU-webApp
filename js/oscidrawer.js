@@ -25,7 +25,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
-    getPeaks: function(buffer) {
+    getPeaks: function() {
 
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / this.osciCanvas.width; // PCM Samples per new pixel
 
@@ -33,7 +33,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.minPeak = Infinity;
         this.maxPeak = -Infinity;
 
-        var chan = buffer.getChannelData(c);
+        var chan = emulabeller.backend.currentBuffer.getChannelData(c);
         // console.log(chan);
         var relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS);
 
@@ -48,7 +48,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
             for (var i = 0; i < this.osciCanvas.width; i++) {
                 var sum = 0;
-                for (var c = 0; c < buffer.numberOfChannels; c++) {
+                for (var c = 0; c < emulabeller.backend.currentBuffer.numberOfChannels; c++) {
 
                     var vals = relData.subarray(i * k, (i + 1) * k);
                     var peak = -Infinity;
@@ -73,16 +73,16 @@ EmuLabeller.Drawer.OsciDrawer = {
         } //else
     },
 
-    drawOsciOnCanvas: function(buffer) {
+    drawOsciOnCanvas: function() {
         //this.resizeCanvases();
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / this.osciCanvas.width; // PCM Samples per new pixel
-        // Draw WebAudio buffer peaks using draw frame
+        // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function(peak, index) {
                 if (index !== 0) {
-                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], my.osciCanvas, buffer);
+                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], my.osciCanvas, emulabeller.backend.currentBuffer);
                 }
             });
             // over sample exact
@@ -99,7 +99,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
-    drawFrame: function(index, value, max, prevPeak, canvas, buffer) {
+    drawFrame: function(index, value, max, prevPeak, canvas) {
         var cc = canvas.getContext('2d');
         //calculate sample of cur cursor position
 
@@ -139,7 +139,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
-    drawVpOsciMarkup: function(buffer) {
+    drawVpOsciMarkup: function() {
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
         //console.log(emulabeller.viewPort);
@@ -208,7 +208,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
             var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.viewPort.bufferLength - emulabeller.viewPort.sS;
+            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.viewPort.emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
             var procC = fracC / all2;
             var posC = canvas.width * procC;
 
@@ -222,18 +222,20 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
     /**
-     * redraws buffer onto canvas given emulabeller.viewPort. It recalculates
+     * redraws emulabeller.backend.currentBuffer onto canvas given emulabeller.viewPort. It recalculates
      * the peaks that are to be displayed to get the maximum
      * dynamic range visualization
      *
-     * @params buffer
+     * @params emulabeller.backend.currentBuffer
      * @params canvas to draw on
-     * @params bufferLength current view port
+     * @params emulabeller.backend.currentBufferLength current view port
      */
-    redrawOsciOnCanvas: function(buffer, canvas) {
-        var cH = canvas.height;
-        var cW = canvas.width;
-        this.getPeaks(buffer, canvas);
+    redrawOsciOnCanvas: function() {
+        var sH = this.osciCanvas.height;
+        var sW = this.osciCanvas.width;
+        var tH = this.scrollCanvas.height;
+        var tW = this.scrollCanvas.width;
+        
         canvascc = canvas.getContext('2d');
         canvascc.clearRect(0, 0, cW, cH);
         canvascc.drawImage(this.osciCanvas,0,0);
@@ -245,11 +247,11 @@ EmuLabeller.Drawer.OsciDrawer = {
      * recalculation of the view port is needed
      * (e.g. progress update or mouse event updates)
      *
-     * @params buffer
+     * @params emulabeller.backend.currentBuffer
      * @params canvas to draw on
-     * @params bufferLength current view port
+     * @params emulabeller.backend.currentBufferLength current view port
      */
-    drawCurOsciOnCanvas: function(buffer) {
+    drawCurOsciOnCanvas: function() {
         var cH = this.osciCanvas.height;
         var cW = this.osciCanvas.width;
 
@@ -258,10 +260,12 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         osciWidth = this.osciCanvas.width;
         osciHeight = this.osciCanvas.height;
+        
+        this.getPeaks();
 
-        // this.getPeaks(buffer, emulabeller.viewPort, canvas);
+        // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
         // console.log(this.peaks);
-        this.drawOsciOnCanvas(buffer);
+        this.drawOsciOnCanvas();
     },
 
 
@@ -271,9 +275,9 @@ EmuLabeller.Drawer.OsciDrawer = {
      * on the canvas given
      * @params emulabeller.viewPort current view port
      * @params canvas canvas to draw markup on
-     * @params bufferLength length of buffer in canvas
+     * @params emulabeller.backend.currentBufferLength length of emulabeller.backend.currentBuffer in canvas
      */
-    drawScrollMarkup: function(inMemoryCanvas, bufferLength) {
+    drawScrollMarkup: function(inMemoryCanvas) {
 
         var cH = this.scrollCanvas.height;
         var cW = this.scrollCanvas.width;
@@ -285,9 +289,9 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         var circCtl = 3;
-        var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / bufferLength) * cW) / 2 + 2 * circCtl;
+        var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.backend.currentBufferLength) * cW) / 2 + 2 * circCtl;
 
-        var curCenter = (emulabeller.viewPort.sS / bufferLength * cW) + curDiam;
+        var curCenter = (emulabeller.viewPort.sS / emulabeller.backend.currentBufferLength * cW) + curDiam;
 
         // SIC no more scroll bar
         // canvascc.beginPath();

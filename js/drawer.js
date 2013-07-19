@@ -79,54 +79,63 @@ EmuLabeller.Drawer = {
         }
     },
 
-    uiDrawUpdate: function(buffer, tierInfos, ssffInfos) {
+    uiDrawUpdate: function() {       
 
-        console.log(this.osciCanvas);
-        // draw osci
-        this.osciDrawer.drawCurOsciOnCanvas(buffer);
-        this.osciDrawer.drawVpOsciMarkup(buffer);
+    },
 
-        // TODO draw SSFF canvases here
-
-        if(emulabeller.tierHandler.getLength()>0) {
-            // draw tiers
-            this.tierDrawer.drawAllTiers(tierInfos);
-            this.tierDrawer.drawVpMarkupAllTiers();
-        }
-
+    /**
+    * update wave
+    * 
+    */
+    uiMiniMapDraw: function() {
         // draw minimap
         if (this.isInitDraw) {
             this.osciDrawer.redrawOsciOnCanvas(buffer, this.inMemoryMiniMapCanvas);
             this.isInitDraw = false;
         }
         this.osciDrawer.drawScrollMarkup(this.inMemoryMiniMapCanvas, buffer.length - 1);
-
-        //draw spectrogram
-        this.spectogramDrawer.uiDraw();
-
     },
+
+
+    /**
+    * update wave
+    * 
+    */
+    uiWaveDrawUpdate: function() {
+         //draw wave
+        this.osciDrawer.drawCurOsciOnCanvas();
+        this.osciDrawer.drawVpOsciMarkup();
+    },
+
+
+    /**
+    * update spectrogram
+    * 
+    */
+    uiSpectroDrawUpdate: function() {
+         //draw spectrogram
+        this.spectogramDrawer.uiDraw();
+    },
+
 
     /**
     * update all tiers
     * 
-    * @param vP current viewPort
-    * @param tierInfos current tierInfos
     */
-    uiAllTierDrawUpdate: function(vP) {
+    uiAllTierDrawUpdate: function() {
         // draw tiers
-        this.tierDrawer.drawAllTiers(vP);
-        this.tierDrawer.drawVpMarkupAllTiers(vP);
+        this.tierDrawer.drawAllTiers();
+        this.tierDrawer.drawVpMarkupAllTiers();
 
     },
 
     /**
     * update single tier 
     * 
-    * @param vP current viewPort
     * @param tierDetail of Single tier
     */
-    updateSingleTier: function(tierDetails) {
-        this.tierDrawer.drawSingleTier(tierDetails);
-        this.tierDrawer.drawVpMarkupSingleTier(tierDetails);
+    updateSingleTier: function() {
+        this.tierDrawer.drawSingleTier();
+        this.tierDrawer.drawVpMarkupSingleTier();
     }
 };

@@ -383,7 +383,7 @@ var EmuLabeller = {
         });
 
         $(window).resize(function() {
-            my.removeLabelDoubleClick();
+            my.tierHandler.removeLabelDoubleClick();
         });
 
         $('#wave').css("height", "80px");
@@ -401,7 +401,7 @@ var EmuLabeller = {
      * buffer is displayed (see newlyLoadedBufferReady)
      */
     drawBuffer: function() {
-        this.drawer.uiDrawUpdate(this.backend.currentBuffer, this.tierHandler.tierInfos ,this.ssffInfos);
+        this.drawer.uiDrawUpdate();
     },
 
 
@@ -494,7 +494,7 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
-        this.drawBuffer();
+        this.drawer.uiWaveDrawUpdate();
     },
 
     /**
