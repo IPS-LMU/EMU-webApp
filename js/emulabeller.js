@@ -276,7 +276,7 @@ var EmuLabeller = {
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.viewPort.selectE = my.viewPort.selectS;
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
+                    my.drawer.uiDrawUpdate();
                     break;
 
                 case params.draggableBar.id:
@@ -292,7 +292,7 @@ var EmuLabeller = {
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.ssffInfos);
+                my.drawer.uiDrawUpdate();
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
@@ -316,14 +316,14 @@ var EmuLabeller = {
             if(e.which == 1) {  // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                     my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos, my.ssffInfos);
+                    my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
                     var len = (my.viewPort.eS - my.viewPort.sS);
                     my.setView(posInB - len / 2, posInB + len / 2);
-                    my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
+                    my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                     var diff_Y = event.clientY - my.dragingStartY;
@@ -365,7 +365,7 @@ var EmuLabeller = {
                 my.viewPort.selectS = curSample;
                 my.viewPort.selectE = curSample;
                 // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
-                my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
+                my.drawer.uiDrawUpdate();
             }
             // } else {
             //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
@@ -430,10 +430,10 @@ var EmuLabeller = {
         }
 
         if (!this.backend.isPaused()) {
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
+            my.drawer.uiDrawUpdate();
         }
         if (percPlayed > percRel) {
-            my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer, my.tierHandler.tierInfos);
+            my.drawer.uiDrawUpdate();
             this.pause();
         }
     },
@@ -496,7 +496,6 @@ var EmuLabeller = {
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
-        this.drawer.uiAllTierDrawUpdate();
         this.drawer.uiMiniMapDraw();
     },
 
@@ -698,19 +697,19 @@ var EmuLabeller = {
             );
         } else if (ft == 1) {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
-            this.tierHandler.addLoadedTiers(newTiers[0]);            
+            this.tierHandler.addLoadedTiers(newTiers[0]);                  
         } else if (ft == 2) {
             var sCanName = "F0";
             my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
-            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
-            this.drawBuffer();
+            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);     
             // console.log(emulabeller.ssffInfos);
         } else if (ft == 3) {
             this.tierHandler.addLoadedTiers(emulabeller.iohandler.parseTextGrid(readerRes));
+            
         }
-        
+        this.drawer.uiAllTierDrawUpdate();
     },
 
 

@@ -80,7 +80,10 @@ EmuLabeller.Drawer = {
     },
 
     uiDrawUpdate: function() {       
-
+        this.uiWaveDrawUpdate();
+        this.uiSpectroDrawUpdate();
+        this.uiMiniMapDraw();
+        this.uiAllTierDrawUpdate();
     },
 
     /**
@@ -123,10 +126,11 @@ EmuLabeller.Drawer = {
     * 
     */
     uiAllTierDrawUpdate: function() {
-        // draw tiers
-        this.tierDrawer.drawAllTiers();
-        this.tierDrawer.drawVpMarkupAllTiers();
-
+        var t = emulabeller.tierHandler.getTiers();
+        for (var k in t) {
+            this.tierDrawer.drawSingleTier(t[k]);
+            this.tierDrawer.drawVpMarkupSingleTier(t[k]);
+        }
     },
 
     /**
@@ -134,8 +138,10 @@ EmuLabeller.Drawer = {
     * 
     * @param tierDetail of Single tier
     */
-    updateSingleTier: function() {
-        this.tierDrawer.drawSingleTier();
-        this.tierDrawer.drawVpMarkupSingleTier();
+    updateSingleTier: function(t) {
+        if(null!=t) {
+            this.tierDrawer.drawSingleTier(t);
+            this.tierDrawer.drawVpMarkupSingleTier(t);
+       } 
     }
 };

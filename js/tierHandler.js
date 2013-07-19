@@ -40,7 +40,11 @@ EmuLabeller.tierHandler = {
     },
 
     getLength: function() {
-        return this.tierInfos.length;
+        var r = 0;
+        var t = this.tierInfos.tiers;
+        for (var k in t) 
+            r++;
+        return r;
     },
 
 
@@ -95,7 +99,7 @@ EmuLabeller.tierHandler = {
         $("#" + myName).bind("mouseout", function(event) {
             emulabeller.tierHandler.resetAllSelBoundariesInTierInfos();
             var curTierDetails = emulabeller.tierHandler.getTierDetailsFromTierWithName(myName);
-            emulabeller.drawer.updateSingleTier(emulabeller.viewPort, curTierDetails);
+            emulabeller.drawer.updateSingleTier(curTierDetails);
 
         });
         $("#" + myName).bind("mouseup", function(event) {

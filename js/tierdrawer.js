@@ -184,37 +184,7 @@ EmuLabeller.Drawer.TierDrawer = {
         }
     },
 
-    /**
-     * iterate over all tiers in tierInfos and
-     * apply the according markup to them
-     * dependent on the iformation specified in
-     * the current vP
-     *
-     * @param vP current view port
-     * @param tierInfos current tierInfos object
-     */
-    drawVpMarkupAllTiers: function(tierInfos) {
-        var my = this;
-        $.each(emulabeller.tierHandler.getTiers(), function() {
-             my.drawVpMarkupSingleTier(this);
-        });
-    },
-
-    /**
-     * iterate over all tiers in tierInfos and
-     * draw the current viewable segments/points
-     *
-     * @param vP current view port
-     * @param tierInfos current tierInfos object
-     */
-    drawAllTiers: function() {
-        var my = this;
-        var tiers = emulabeller.tierHandler.getTiers();
-        $.each(tiers, function() {
-            console.log(this);
-            my.drawSingleTier(this);
-        });
-    },
+  
 
     // drawTiers: function(tierInfos, vP) {
     //     // console.log(tierInfos.contexts.length);
