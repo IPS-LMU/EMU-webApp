@@ -9,24 +9,27 @@ EmuLabeller.tierHandler = {
 
     addTier: function(addPointTier) {
         var my = this;
-        var tName = "Tier" + this.getLength()+1;
+        var tName = "Tier" + (this.getLength()+1);
+        
         if (!addPointTier) {
-            this.tierInfos.tiers.push([tName, {
+            var newTier = {
                 TierName: tName,
                 type: "seg",
-                events: []
-            }]);
+                events: [],
+                uiInfos: []
+            };
         } else {
-            this.tierInfos.tiers.push([tName, {
+            var newTier = {
                 TierName: tName,
                 type: "point",
-                events: []
-            }]);
+                events: [],
+                uiInfos: []
+            };
         }
         this.addTiertoHtml(tName, "tierSettings", "#cans");
+        this.tierInfos.tiers[tName] = newTier;
         this.tierInfos.tiers[tName].uiInfos.canvas = $("#" + tName)[0];
-        this.drawBuffer();
-        this.rebuildSelect();
+        emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
     },
 
     addLoadedTiers: function(loadedTiers) {
@@ -42,8 +45,7 @@ EmuLabeller.tierHandler = {
     getLength: function() {
         var r = 0;
         var t = this.tierInfos.tiers;
-        for (var k in t) 
-            r++;
+        for (var k in t) r++;
         return r;
     },
 
