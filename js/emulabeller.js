@@ -387,12 +387,15 @@ var EmuLabeller = {
 
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
-        
         $('#cans').sortable({
             tolerance: 'pointer',
-            cursor: 'pointer',
+            cursor: 'move',
+            delay: 150,
             dropOnEmpty: true,
             connectWith: 'ul.sortable',
+            start: function(event, ui) {
+                my.tierHandler.removeLabelDoubleClick();
+            },
             update: function(event, ui) {
                 if(this.id == 'sortable-delete') {
                 // Remove the element dropped on #sortable-delete
