@@ -360,7 +360,7 @@ var EmuLabeller = {
             if (e.shiftKey) {
                 my.internalMode = my.EDITMODE.LABEL_MOVE;
                 curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
-                my.moveBoundary(curSample);
+                my.tierHandler.moveBoundary(curSample);
                 my.viewPort.selectS = curSample;
                 my.viewPort.selectE = curSample;
                 // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
@@ -1006,48 +1006,6 @@ var EmuLabeller = {
     },
 
    
-
-    moveBoundary: function(newTime) {
-        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        evts = evtsNtiers.events;
-        var tier = evtsNtiers.tiers[1];
-
-        newTime = Math.round(newTime);
-
-        var oldTime;
-        var leftEdge;
-        var rightEdge;
-
-
-        if (tier.type == "seg") {
-            oldTime = evts[1].startSample;
-            leftEdge = evts[0].startSample;
-            rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-                // correct for locking mode (sampleDur changes of current segment) will change in future
-                if (oldTime < newTime) {
-                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-                } else {
-                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-                }
-
-                // correct for locking mode (sampleDur changes of perv segment) will change in future
-                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-
-            }
-        } else {
-
-            oldTime = evts[1].startSample;
-            leftEdge = evts[0].startSample;
-            rightEdge = evts[2].startSample;
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-            }
-
-        }
-    },
 
     snapSelectedSegmentToNearestTop: function() {
         //find nearest evt in tier obove

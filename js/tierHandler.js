@@ -276,7 +276,6 @@ EmuLabeller.tierHandler = {
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
                 if (event !== null) {
-                    console.log(event);
                     var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
                     var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
                     var appendString = textArea + saveButton;
@@ -354,9 +353,10 @@ EmuLabeller.tierHandler = {
     
     getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
         var res;
-        for (var i = 0; i < this.tierInfos.tiers.length; i++) {
-            for (var j = 0; j < this.tierInfos.tiers[i].events.length; j++) {
-                if (this.tierInfos.tiers[i].events[j].uiInfos.selBoundryStart === true) {
+        var t = this.tierInfos.tiers;
+        for (var k in t)
+            for (var j in t[k].events)
+                if (t[k].events[j].uiInfos.selBoundryStart === true) {
                     res = {
                         'tiers': [this.tierInfos.tiers[i - 1],
                             this.tierInfos.tiers[i],
@@ -368,11 +368,51 @@ EmuLabeller.tierHandler = {
                         ]
                     };
                 }
-            }
-        }
         return res;
     },
     
     
 
+
+    moveBoundary: function(newTime) {
+        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
+        evts = evtsNtiers.events;
+        var tier = evtsNtiers.tiers[1];
+
+        newTime = Math.round(newTime);
+
+        var oldTime;
+        var leftEdge;
+        var rightEdge;
+
+
+        if (tier.type == "seg") {
+            oldTime = evts[1].startSample;
+            leftEdge = evts[0].startSample;
+            rightEdge = evts[1].startSample + evts[1].sampleDur;
+
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+                // correct for locking mode (sampleDur changes of current segment) will change in future
+                if (oldTime < newTime) {
+                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
+                } else {
+                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+                }
+
+                // correct for locking mode (sampleDur changes of perv segment) will change in future
+                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
+
+            }
+        } else {
+
+            oldTime = evts[1].startSample;
+            leftEdge = evts[0].startSample;
+            rightEdge = evts[2].startSample;
+            if (newTime > leftEdge && newTime < rightEdge) {
+                evts[1].startSample = newTime;
+            }
+
+        }
+    }
 };
