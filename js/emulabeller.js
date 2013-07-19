@@ -497,6 +497,7 @@ var EmuLabeller = {
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
+        this.drawer.uiAllTierDrawUpdate();
     },
 
     /**
@@ -709,7 +710,6 @@ var EmuLabeller = {
             this.tierHandler.addLoadedTiers(emulabeller.iohandler.parseTextGrid(readerRes));
             
         }
-        this.drawer.uiAllTierDrawUpdate();
     },
 
 

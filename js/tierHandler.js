@@ -163,26 +163,12 @@ EmuLabeller.tierHandler = {
         //deselect everything
         this.resetAllSelTiers();
         this.resetAllSelSegments();
-
         tierDetails.uiInfos.sel = true;
-        // var lastTier = this.viewPort.selTier;
-        // if (lastTier != elID) my.rebuildSelect();
-        // this.viewPort.selTier = elID;
-
-
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
 
-        /*if(this.viewPort.selectS == this.viewPort.selectE && Math.abs(rXp-sXp) <= 5 && rYp < 10){
-            console.log("hit the circle")
-            this.addSegmentAtSelection();
-        }*/
-        // if (clickedTier.type == "point") {
-        //     var curSample = this.viewPort.sS + (this.viewPort.eS - this.viewPort.sS) * percX;
-        //     var clickedEvtNr = my.getNearestSegmentBoundry(clickedTier, curSample);
-
-        // }
+       
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
 
@@ -227,33 +213,33 @@ EmuLabeller.tierHandler = {
     },
     
 
-    findAndMarkNearestSegmentAsSel: function(tierDetails, curSample) {
-        $.each(tierDetails.events, function() {
-            if (curSample > this.startSample && curSample < (this.startSample + this.sampleDur)) {
-                this.uiInfos.selSeg = true;
-                return this;
-            }
-        }); 
+    findAndMarkNearestSegmentAsSel: function(t, curSample) {
+        var e = t.events;
+        for (var k in e) {
+            if (curSample > e[k].startSample && curSample < (e[k].startSample + e[k].sampleDur)) {
+                e[k].uiInfos.selSeg = true;
+                return e[k];
+            }        
+        }
     },
 
     resetAllSelTiers: function() {
-        $.each(this.tierInfos.tiers, function() {
-            this.uiInfos.sel = false;
-        });     
+        var t = this.tierInfos.tiers;
+        for (var k in t)
+            t[k].uiInfos.sel = false;
     },
 
     resetAllSelSegments: function() {
-        $.each(this.tierInfos.tiers, function() {
-            $.each(this.events, function() {
-                this.uiInfos.sel = false;
-            });     
-        });     
+        var t = this.tierInfos.tiers;
+        for (var k in t)
+            for (var j in t[k].events)
+                t[k].events[j].uiInfos.sel = false;         
     },
     
     getSelectedTier: function() {
-        $.each(this.tierInfos.tiers, function() {
-            if(this.uiInfos.sel) return this;
-        });    
+        var t = this.tierInfos.tiers;
+        for (var k in t)
+            if(t[k].uiInfos.sel) return t[k];      
     },
     
     getTiers: function() {
@@ -262,9 +248,9 @@ EmuLabeller.tierHandler = {
     
 
     getSelectedSegmentInTier: function(tierDetails) {
-        $.each(tierDetails.events, function() {
-            if(this.uiInfos.sel) return this;
-        });        
+        var e = tierDetails.events;
+        for (var k in e)
+            if(e[k].uiInfos.sel) return e[k];        
     },
     
 
