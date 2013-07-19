@@ -170,14 +170,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         
         //draw emulabeller.viewPortselected
         if (emulabeller.viewPort.selectS !== 0 && emulabeller.viewPort.selectE !== 0) {
-            var all = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            var fracS = emulabeller.viewPort.selectS - emulabeller.viewPort.sS;
-            var procS = fracS / all;
-            var posS = this.osciCanvas.width * procS;
-
-            var fracE = emulabeller.viewPort.selectE - emulabeller.viewPort.sS;
-            var procE = fracE / all;
-            var posE = this.osciCanvas.width * procE;
+            var posS = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
+            var posE = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectE);
 
             cc.fillStyle = this.selMarkerColor;
             cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);

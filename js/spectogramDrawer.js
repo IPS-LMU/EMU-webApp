@@ -137,13 +137,8 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         drawTimeLineContext: function () {
             var my = this;
             var sInB = emulabeller.viewPort.percent*emulabeller.backend.currentBuffer.length;
-            var all = emulabeller.viewPort.eS-emulabeller.viewPort.sS;
-            var fracS = emulabeller.viewPort.selectS-emulabeller.viewPort.sS;
-            var procS = fracS/all;
-            var posS = my.canvas.width*procS;
-            var fracE = emulabeller.viewPort.selectE-emulabeller.viewPort.sS;
-            var procE = fracE/all;
-            var posE = my.canvas.width*procE;
+            var posS = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectS);
+            var posE = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectE);
             my.cursorPos = ~~(my.canvas.width*(sInB-emulabeller.viewPort.sS)/(emulabeller.viewPort.eS-emulabeller.viewPort.sS));
             if(my.cursorPos!=0) {
                 my.context.fillStyle = my.params.progressColor;
