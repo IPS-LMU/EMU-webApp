@@ -209,8 +209,8 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawAllTiers: function() {
         var my = this;
-        
-        $.each(emulabeller.tierHandler.getTiers(), function() {
+        var tiers = emulabeller.tierHandler.getTiers();
+        $.each(tiers, function() {
             console.log(this);
             my.drawSingleTier(this);
         });

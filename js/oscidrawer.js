@@ -230,15 +230,15 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @params canvas to draw on
      * @params emulabeller.backend.currentBufferLength current view port
      */
-    redrawOsciOnCanvas: function() {
+    redrawOsciOnCanvas: function(inMemoryCanvas) {
         var sH = this.osciCanvas.height;
         var sW = this.osciCanvas.width;
-        var tH = this.scrollCanvas.height;
-        var tW = this.scrollCanvas.width;
+        var tH = inMemoryCanvas.height;
+        var tW = inMemoryCanvas.width;
         
-        canvascc = this.scrollCanvas.getContext('2d');
+        canvascc = inMemoryCanvas.getContext('2d');
         canvascc.clearRect(0, 0, tW, tH);
-        canvascc.drawImage(this.osciCanvas,0,0);
+        canvascc.drawImage(this.osciCanvas,0 ,0 ,sW ,sH, 0, 0, tW, tH );
     },
 
     /**
