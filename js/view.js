@@ -28,14 +28,13 @@ EmuLabeller.ViewPort = {
         // red line on wave & spectro
         this.percent = -1;
 
+        // list of selected tiers & segments
         this.segmentsLoaded = false;
         this.selectedSegments = []; // [Tiers][Segments]
 
-        // this.selTier = -1; // -1 == no segment selected
+        // id of tier and segment mouse is on
         this.curMouseTierName = "";
-        this.curMouseTierID = -1;
-        this.curMouseSegmentID = "";
-        // this.selBoundaries = [];
+        this.curMouseSegmentName = "";
 
         this.selectSPixel = 0;
         this.selectEPixel = 0;
