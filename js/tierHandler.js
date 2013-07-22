@@ -395,7 +395,7 @@ EmuLabeller.tierHandler = {
         var tierDetails = this.getSelectedTier();
         var event = this.getSelectedSegmentInTier(tierDetails);
         var content = $("#editArea").val();
-        event.label = content;
+        event.label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
     },
 
