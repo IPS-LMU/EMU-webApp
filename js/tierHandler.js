@@ -124,10 +124,12 @@ EmuLabeller.tierHandler = {
             var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
-            emulabeller.viewPort.curMouseSegmentName = event.label;
-            emulabeller.viewPort.curMouseSegmentStart = event.startSample;
-            emulabeller.viewPort.curMouseSegmentDuration = event.sampleDur;
-            emulabeller.viewPort.curMouseTierName = curTierDetails.TierName;
+            if(null != event) {
+                emulabeller.viewPort.curMouseSegmentName = event.label;
+                emulabeller.viewPort.curMouseSegmentStart = event.startSample;
+                emulabeller.viewPort.curMouseSegmentDuration = event.sampleDur;
+                emulabeller.viewPort.curMouseTierName = curTierDetails.TierName;
+            }
             emulabeller.drawer.updateSingleTier(curTierDetails, percX);
         }
     },
@@ -190,10 +192,13 @@ EmuLabeller.tierHandler = {
 
             emulabeller.viewPort.selectS = nearest.startSample;
             emulabeller.viewPort.selectE = nearest.startSample + nearest.sampleDur;
-            emulabeller.viewPort.curMouseSegmentName = nearest.lalel;
-            emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
-            emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-            emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.label,true);
+            
+            if(null!=nearest) {
+                emulabeller.viewPort.curMouseSegmentName = nearest.label;
+                emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
+                emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
+                emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.label,true);
+            }
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
             //     var clicked = this.countSelected(elID);
