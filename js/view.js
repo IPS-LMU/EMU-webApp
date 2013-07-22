@@ -35,6 +35,8 @@ EmuLabeller.ViewPort = {
         // id of tier and segment mouse is on
         this.curMouseTierName = "";
         this.curMouseSegmentName = "";
+        this.curMouseSegmentStart = "";
+        this.curMouseSegmentDuration = "";
 
         this.selectSPixel = 0;
         this.selectEPixel = 0;

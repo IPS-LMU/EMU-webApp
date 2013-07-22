@@ -130,9 +130,12 @@ EmuLabeller.tierHandler = {
             var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample, true);
-            emulabeller.viewPort.curMouseTierName = event.LabelName;
+            emulabeller.viewPort.curMouseSegmentName = event.label;
+            emulabeller.viewPort.curMouseSegmentStart = event.startSample;
+            emulabeller.viewPort.curMouseSegmentDuration = event.sampleDur;
             emulabeller.viewPort.curMouseTierName = curTierDetails.TierName;
             emulabeller.drawer.updateSingleTier(curTierDetails, percX);
+            console.log(emulabeller.viewPort.curMouseSegmentName);
         }
     },
 
