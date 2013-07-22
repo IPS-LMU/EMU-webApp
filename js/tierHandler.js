@@ -173,10 +173,8 @@ EmuLabeller.tierHandler = {
             }
         }
         else {
-        
-        
-        this.removeLabelDoubleClick();
-        this.resetAllSelSegments();
+            this.removeLabelDoubleClick();
+            this.resetAllSelSegments();
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
@@ -197,7 +195,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.label,true);
+                emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.startSample,true);
             }
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);

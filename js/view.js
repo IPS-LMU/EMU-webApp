@@ -50,12 +50,12 @@ EmuLabeller.ViewPort = {
         return (w * (s - this.sS) / (this.eS - this.sS));
     },
 
-    setSelected: function(tierName,segName, isSelected) {
-        this.uiInfo[tierName][segName] = isSelected;
+    setSelected: function(tierName,startSample, isSelected) {
+        this.uiInfo[tierName][startSample] = isSelected;
     },
     
-    isSelected: function(tierName,segName) {
-        return this.uiInfo[tierName][segName];
+    isSelected: function(tierName,startSample) {
+        return this.uiInfo[tierName][startSample];
     },  
     
     addTiertoSelection: function(tierName) {
@@ -67,7 +67,7 @@ EmuLabeller.ViewPort = {
             var t = emulabeller.tierHandler.getTier(k);
             this.addTiertoSelection(t.TierName);
             for (var y in t.events) {
-                this.uiInfo[t.TierName][t.events[y].label] = false;
+                this.uiInfo[t.TierName][t.events[y].startSample] = false;
             }
         }
     },
