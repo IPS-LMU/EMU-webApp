@@ -27,3 +27,7 @@ Thumbs.db
 # Rstudio stuff     #
 ###############
 .Rhistory
+
+# Node stuff #
+###########
+node_modules

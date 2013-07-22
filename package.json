@@ -14,5 +14,9 @@
   "author": "Raphael Winkelmann, Georg Raess",
   "license": "BSD",
   "gitHead": "e13ca0f2fdb78e2903c6573f1f0074f9abec7ddc",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2"
+  }
 }
