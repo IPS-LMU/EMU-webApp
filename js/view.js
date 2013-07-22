@@ -31,6 +31,7 @@ EmuLabeller.ViewPort = {
         // list of selected tiers & segments
         this.uiInfo = []; // [Tiers][Segments]
         
+        // set everything to deselect when tiers are loaded and view is init()
         for (var k in emulabeller.tierHandler.getTiers()) {
             var t = emulabeller.tierHandler.getTier(k);
             this.uiInfo[t.TierName] = [];
