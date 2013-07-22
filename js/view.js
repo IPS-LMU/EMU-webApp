@@ -34,7 +34,10 @@ EmuLabeller.ViewPort = {
         // set everything to deselect when tiers are loaded and view is init()
         this.resetSelection();
         
-        // id of tier and segment mouse is on
+        // id of tier and segment CLICKED on
+        this.MouseTierName = "";
+        
+        // id of tier and segment MOVED on
         this.curMouseTierName = "";
         this.curMouseSegmentName = "";
         this.curMouseSegmentStart = "";

@@ -175,11 +175,11 @@ EmuLabeller.tierHandler = {
         else {
             this.removeLabelDoubleClick();
             this.resetAllSelSegments();
-        var rXp = tierDetails.uiInfos.canvas.width * percX;
-        var rYp = tierDetails.uiInfos.canvas.height * percY;
-        var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-        
-        emulabeller.viewPort.curMouseTierName = tierDetails.TierName;
+            var rXp = tierDetails.uiInfos.canvas.width * percX;
+            var rYp = tierDetails.uiInfos.canvas.height * percY;
+            var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
+            
+            emulabeller.viewPort.MouseTierName = tierDetails.TierName;
        
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;

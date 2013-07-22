@@ -36,7 +36,7 @@ EmuLabeller.Drawer.TierDrawer = {
         }
         else {        
             $('body').css('cursor', 'auto'); 
-            if(tierDetails.uiInfos.sel){
+            if(tierDetails.TierName==emulabeller.viewPort.MouseTierName){
                 cc.fillStyle = this.selTierColor;
                 cc.fillRect(0, 0, canvas.width, canvas.height);
             }else{
