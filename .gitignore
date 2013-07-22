@@ -31,3 +31,5 @@ Thumbs.db
 # Node stuff #
 ###########
 node_modules
+npm-debug.log
+build
