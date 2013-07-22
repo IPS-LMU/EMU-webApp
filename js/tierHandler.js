@@ -29,6 +29,7 @@ EmuLabeller.tierHandler = {
         this.addTiertoHtml(tName, "tierSettings", "#cans");
         this.tierInfos.tiers[tName] = newTier;
         this.tierInfos.tiers[tName].uiInfos.canvas = $("#" + tName)[0];
+        emulabeller.viewPort.addTiertoSelection(tName);
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
         
     },

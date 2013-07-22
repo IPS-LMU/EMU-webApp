@@ -56,12 +56,16 @@ EmuLabeller.ViewPort = {
     
     getSelected: function(tierName,segName) {
         return this.uiInfo[tierName][segName];
-    },    
+    },  
+    
+    addTiertoSelection: function(tierName) {
+        this.uiInfo[tierName] = [];
+    },        
 
     resetSelection: function() {
         for (var k in emulabeller.tierHandler.getTiers()) {
             var t = emulabeller.tierHandler.getTier(k);
-            this.uiInfo[t.TierName] = [];
+            this.addTiertoSelection(t.TierName);
             for (var y in t.events) {
                 this.uiInfo[t.TierName][t.events[y].label] = false;
             }
