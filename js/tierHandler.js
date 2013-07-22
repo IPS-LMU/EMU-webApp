@@ -153,9 +153,26 @@ EmuLabeller.tierHandler = {
         emulabeller.viewPort.resetSelection();
     },
     
+    removeTier: function(tierName) {
+        $("#"+tierName).remove();
+        delete this.tierInfos.tiers[tierName];
+    },
+        
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
+        
+        var canvas = tierDetails.uiInfos.canvas;
+        var cc = canvas.getContext('2d');
+        var mpx = canvas.width * percX;
+        if(mpx>canvas.width-32) {
+            if(confirm("Wollen Sie '"+tierDetails.TierName+"' wirklich löschen ?")) {
+                this.removeTier(tierDetails.TierName);
+            }
+        }
+        else {
+        
+        
         this.removeLabelDoubleClick();
         this.resetAllSelSegments();
         var rXp = tierDetails.uiInfos.canvas.width * percX;
@@ -205,6 +222,7 @@ EmuLabeller.tierHandler = {
             //         this.viewPort.selectS = timeS;
             //         this.viewPort.selectE = timeE;
             //     }
+        }
         }
         emulabeller.drawBuffer();
     },
