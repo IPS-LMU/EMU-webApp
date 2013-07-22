@@ -297,8 +297,7 @@ EmuLabeller.tierHandler = {
 
     
     getSelectedTier: function() {
-        for (var k in this.tierInfos.tiers)
-            if(this.tierInfos.tiers[k].uiInfos.sel) return this.tierInfos.tiers[k];      
+        return this.tierInfos.tiers[emulabeller.viewPort.MouseTierName];      
     },
     
     getTiers: function() {
