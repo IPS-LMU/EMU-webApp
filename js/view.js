@@ -29,8 +29,7 @@ EmuLabeller.ViewPort = {
         this.percent = -1;
 
         // list of selected tiers & segments
-        this.segmentsLoaded = false;
-        this.selectedSegments = []; // [Tiers][Segments]
+        this.uiInfos = []; // [Tiers][Segments]
 
         // id of tier and segment mouse is on
         this.curMouseTierName = "";
