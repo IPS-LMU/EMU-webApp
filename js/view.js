@@ -29,7 +29,15 @@ EmuLabeller.ViewPort = {
         this.percent = -1;
 
         // list of selected tiers & segments
-        this.uiInfos = []; // [Tiers][Segments]
+        this.uiInfo = []; // [Tiers][Segments]
+        
+        for (var k in emulabeller.tierHandler.getTiers()) {
+            var t = emulabeller.tierHandler.getTier(k);
+            this.uiInfo[t.TierName] = [];
+            for (var y in t.events) {
+                this.uiInfo[t.TierName][t.events[y].label] = false;
+            }
+        }
 
         // id of tier and segment mouse is on
         this.curMouseTierName = "";
@@ -46,6 +54,8 @@ EmuLabeller.ViewPort = {
     getPos: function(w,s) {
         return (w * (s - this.sS) / (this.eS - this.sS));
     },
+
+
 
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");

@@ -29,7 +29,6 @@ EmuLabeller.tierHandler = {
         this.addTiertoHtml(tName, "tierSettings", "#cans");
         this.tierInfos.tiers[tName] = newTier;
         this.tierInfos.tiers[tName].uiInfos.canvas = $("#" + tName)[0];
-        emulabeller.viewPort.selectedSegments[tName] = [];
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
         
     },
@@ -40,13 +39,6 @@ EmuLabeller.tierHandler = {
              my.addTiertoHtml(this.TierName, "tierSettings", "#cans");
              my.tierInfos.tiers[this.TierName] = this;
              my.tierInfos.tiers[this.TierName].uiInfos.canvas = $("#" + this.TierName)[0];
-             emulabeller.viewPort.selectedSegments[this.TierName] = [];
-             for (var k in this.events) {
-                 emulabeller.viewPort.selectedSegments[tName][this.events[k]] = false;
-             }
-             
-             
-    
         });
     },
 
@@ -311,6 +303,10 @@ EmuLabeller.tierHandler = {
         return this.tierInfos.tiers;    
     },
     
+    getTier: function(t) {
+        return this.tierInfos.tiers[t];    
+    },
+        
 
     getSelectedSegmentInTier: function(t) {
         var e = t.events;
