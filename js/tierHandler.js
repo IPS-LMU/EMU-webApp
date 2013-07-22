@@ -145,9 +145,6 @@ EmuLabeller.tierHandler = {
                 closestStartEvt = e[k];
             }
         }
-        if (markAsSel && null != closestStartEvt) {
-            closestStartEvt.uiInfos.selBoundryStart = true;
-        }
         return closestStartEvt;
     },    
     

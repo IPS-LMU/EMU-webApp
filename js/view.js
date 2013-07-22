@@ -54,7 +54,7 @@ EmuLabeller.ViewPort = {
         this.uiInfo[tierName][segName] = isSelected;
     },
     
-    getSelected: function(tierName,segName) {
+    isSelected: function(tierName,segName) {
         return this.uiInfo[tierName][segName];
     },  
     
