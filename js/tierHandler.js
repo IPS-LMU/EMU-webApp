@@ -176,6 +176,7 @@ EmuLabeller.tierHandler = {
             emulabeller.viewPort.curMouseSegmentName = nearest.lalel;
             emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
             emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
+            emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.label,true);
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
             //     var clicked = this.countSelected(elID);

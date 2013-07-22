@@ -59,6 +59,9 @@ EmuLabeller.Drawer.TierDrawer = {
                         // draw segment start
                         var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                         // check if selected -> if draw as marked
+                        
+                        
+                       
                         if (curEvt.uiInfos.selBoundryStart) {
                             cc.fillStyle = this.curSelBoundColor;
                             cc.fillRect(canvas.width * percS, 0, 1, canvas.height);
@@ -80,7 +83,8 @@ EmuLabeller.Drawer.TierDrawer = {
                         }
 
                         // mark selected segment with markColor == yellow
-                        if (curEvt.uiInfos.selSeg) {
+                        //if (curEvt.uiInfos.selSeg) {
+                         if(emulabeller.viewPort.isSelected(tierDetails.TierName,curEvt.label)) {
                             cc.fillStyle = this.markColor;
                             cc.fillRect(canvas.width * percS, 0, percE*canvas.width-percS*canvas.width, canvas.height);
                         }
