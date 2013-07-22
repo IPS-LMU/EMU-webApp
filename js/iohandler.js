@@ -9,6 +9,10 @@ EmuLabeller.IOhandler = {
         // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
 
+        // textgrid handler
+        this.DropBoxHandler = Object.create(EmuLabeller.DropBoxHandler);
+
+
         // if in server mode init socket handler
         if (externalMode.value == 0) {
             this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
@@ -55,12 +59,6 @@ EmuLabeller.IOhandler = {
     removeUiInfosToTierInfosObj: function(JSO) {},
 
     dropBoxOpen: function() {
-        console.log("open from dropbox");
-        Dropbox.choose({
-            // Required. Called when a user selects an item in the Chooser.
-            success: function(files) {
-                alert("Here's the file link:" + files[0].link);
-            }
-        });
+        this.DropBoxHandler.openDropBox();
     }
 };

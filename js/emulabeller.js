@@ -713,6 +713,7 @@ var EmuLabeller = {
      * loaded file from fileAPI/websocket/xhr load
      */
     parseNewFile: function(readerRes) {
+        var my = this;
         var ft = emulabeller.newFileType;
         if (ft === 0) {
             my.backend.loadData(
