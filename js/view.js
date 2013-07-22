@@ -32,14 +32,8 @@ EmuLabeller.ViewPort = {
         this.uiInfo = []; // [Tiers][Segments]
         
         // set everything to deselect when tiers are loaded and view is init()
-        for (var k in emulabeller.tierHandler.getTiers()) {
-            var t = emulabeller.tierHandler.getTier(k);
-            this.uiInfo[t.TierName] = [];
-            for (var y in t.events) {
-                this.uiInfo[t.TierName][t.events[y].label] = false;
-            }
-        }
-
+        this.resetSelection();
+        
         // id of tier and segment mouse is on
         this.curMouseTierName = "";
         this.curMouseSegmentName = "";
@@ -56,7 +50,24 @@ EmuLabeller.ViewPort = {
         return (w * (s - this.sS) / (this.eS - this.sS));
     },
 
+    setSelected: function(tierName,segName, isSelected) {
+        this.uiInfo[tierName][segName] = isSelected;
+    },
+    
+    getSelected: function(tierName,segName) {
+        return this.uiInfo[tierName][segName];
+    },    
 
+    resetSelection: function() {
+        for (var k in emulabeller.tierHandler.getTiers()) {
+            var t = emulabeller.tierHandler.getTier(k);
+            this.uiInfo[t.TierName] = [];
+            for (var y in t.events) {
+                this.uiInfo[t.TierName][t.events[y].label] = false;
+            }
+        }
+    },
+    
 
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");
