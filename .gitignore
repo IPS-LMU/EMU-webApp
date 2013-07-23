@@ -37,3 +37,8 @@ build
 # Bower #
 ########
 bower_components
+
+# Minified code+maps #
+###################
+emuLVC.min.js
+emuLVC.min.map
