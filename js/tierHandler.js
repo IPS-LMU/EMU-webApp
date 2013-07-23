@@ -128,7 +128,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = event.label;
                 emulabeller.viewPort.curMouseSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = event.sampleDur;
-                emulabeller.viewPort.curMouseTierName = curTierDetails.TierName;
+                //emulabeller.viewPort.selectTier(curTierDetails.TierName);
             }
             emulabeller.drawer.updateSingleTier(curTierDetails, percX);
         }
@@ -179,12 +179,12 @@ EmuLabeller.tierHandler = {
             var rYp = tierDetails.uiInfos.canvas.height * percY;
             var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
             
-            emulabeller.viewPort.MouseTierName = tierDetails.TierName;
+            emulabeller.viewPort.selectTier(tierDetails.TierName);
        
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
-            var nearest = this.findAndMarkNearestSegmentAsSel(tierDetails, curSample);
+            var nearest = this.findNearestSegment(tierDetails, curSample);
 
             // nearest.uiInfos.selSeg = true;
 
@@ -195,7 +195,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelected(tierDetails.TierName,nearest.startSample,true);
+                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.startSample,true);
             }
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
@@ -235,23 +235,33 @@ EmuLabeller.tierHandler = {
     handleTierClickMulti: function(percX, percY, tierDetails) {
         //deselect everything
         this.removeLabelDoubleClick();
+        if(tierDetails.TierName != emulabeller.viewPort.getTier())
+            emulabeller.viewPort.resetSelection();
+            
+        console.log(tierDetails.TierName+":"+emulabeller.viewPort.MouseTierName);
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
         
-        tierDetails.uiInfos.sel = true;
-       
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
 
             // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
-            var nearest = this.findAndMarkNearestSegmentAsSel(tierDetails, curSample);
+            var nearest = this.findNearestSegment(tierDetails, curSample);
 
 
             // nearest.uiInfos.selSeg = true;
 
             emulabeller.viewPort.selectS = nearest.startSample;
             emulabeller.viewPort.selectE = nearest.startSample + nearest.sampleDur;
+            
+            if(null!=nearest) {
+                emulabeller.viewPort.curMouseSegmentName = nearest.label;
+                emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
+                emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
+                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.startSample,true);
+            }
+            
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
             //     var clicked = this.countSelected(elID);
@@ -285,14 +295,15 @@ EmuLabeller.tierHandler = {
     },
     
 
-    findAndMarkNearestSegmentAsSel: function(t, curSample) {
+    findNearestSegment: function(t, curSample) {
         var e = t.events;
+        var r = null;
         for (var k in e) {
             if (curSample > e[k].startSample && curSample < (e[k].startSample + e[k].sampleDur)) {
-                e[k].uiInfos.selSeg = true;
-                return e[k];
+                r = e[k];
             }        
         }
+        return r;
     },
 
     
