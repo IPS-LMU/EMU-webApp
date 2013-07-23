@@ -159,71 +159,10 @@ EmuLabeller.tierHandler = {
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
-        
         this.removeLabelDoubleClick();
-        var canvas = tierDetails.uiInfos.canvas;
-        var cc = canvas.getContext('2d');
-        var mpx = canvas.width * percX;
-        if(mpx>canvas.width-32) {
-            if(confirm("Wollen Sie '"+tierDetails.TierName+"' wirklich löschen ?")) {
-                this.removeTier(tierDetails.TierName);
-            }
-        }
-        else {
-            this.removeLabelDoubleClick();
-            emulabeller.viewPort.setSelectTier(tierDetails.TierName);
-            emulabeller.viewPort.resetSelection(tierDetails.events.length);
-            var rXp = tierDetails.uiInfos.canvas.width * percX;
-            var rYp = tierDetails.uiInfos.canvas.height * percY;
-            var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-       
-        if (tierDetails.type == "seg") {
-            var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
-            // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
-            var nearest = this.findNearestSegment(tierDetails, curSample);
-
-            // nearest.uiInfos.selSeg = true;
-
-            emulabeller.viewPort.selectS = nearest.startSample;
-            emulabeller.viewPort.selectE = nearest.startSample + nearest.sampleDur;
-            
-            if(null!=nearest) {
-                emulabeller.viewPort.curMouseSegmentName = nearest.label;
-                emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
-                emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,true);
-            }
-
-            // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
-            //     var clicked = this.countSelected(elID);
-            //     var timeS = clickedTier.events[clickedEvtNr - 1].startSample;
-            //     console.log(clickedTier.events)
-            //     var timeE = clickedTier.events[clickedEvtNr].startSample;
-            //     if (clicked > 0) {
-            //         if (this.isSelectNeighbour(elID, clickedEvtNr)) {
-            //             emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-            //             if (this.viewPort.selectS != 0 && clicked > 0) {
-            //                 if (timeS < this.viewPort.selectS)
-            //                     this.viewPort.selectS = timeS;
-            //             } else this.viewPort.selectS = timeS;
-            //             if (this.viewPort.selectE != 0 && clicked > 0) {
-            //                 if (timeE > this.viewPort.selectE)
-            //                     this.viewPort.selectE = timeE;
-            //             }
-            //         } else {
-            //             my.rebuildSelect();
-            //             emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-            //             this.viewPort.selectS = timeS;
-            //             this.viewPort.selectE = timeE;
-            //         }
-            //     } else {
-            //         emulabeller.viewPort.selectedSegments[elID][clickedEvtNr] = true;
-            //         this.viewPort.selectS = timeS;
-            //         this.viewPort.selectE = timeE;
-            //     }
-        }
-        }
-        emulabeller.drawBuffer();
+        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+        emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        this.handleTierClickMulti(percX, percY, tierDetails);
     },
     
     
@@ -236,9 +175,10 @@ EmuLabeller.tierHandler = {
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
 
-        
+        if(emulabeller.viewPort.getSelectTier() != tierDetails.TierName) {
             emulabeller.viewPort.setSelectTier(tierDetails.TierName);
             emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        }
         
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
