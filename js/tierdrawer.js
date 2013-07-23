@@ -63,10 +63,10 @@ EmuLabeller.Drawer.TierDrawer = {
                         var tierId = emulabeller.viewPort.curMouseMoveTierName;
                         var segId = emulabeller.viewPort.curMouseMoveSegmentName;
                         var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
-                       
-                        if (tierId==tierDetails.TierName && segId == nowid) {
+                        console.log(tierId);
+                        if (tierDetails.TierName == tierId && segId == nowid) {
                             cc.fillStyle = this.curSelBoundColor;
-                            cc.fillRect(canvas.width * percS, 0, 1, canvas.height);
+                            cc.fillRect(canvas.width * percS, 0, 5, canvas.height);
                         } else {
                             // console.log(curEvt);
                             cc.fillStyle = this.startBoundaryColor;
