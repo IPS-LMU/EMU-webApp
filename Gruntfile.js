@@ -1,5 +1,24 @@
 module.exports = function(grunt) {
 
+    var allJsFiles = ["js/emulabeller.js",
+        "js/webaudio.js",
+        "js/drawer.js",
+        "js/oscidrawer.js",
+        "js/spectogramDrawer.js",
+        "js/tierdrawer.js",
+        "js/ssffdrawer.js",
+        "js/view.js",
+        "js/labfileparser.js",
+        "js/textgridparser.js",
+        "js/ssffparser.js",
+        "js/JSONvalidator.js",
+        "js/socketIOhandler.js",
+        "js/iohandler.js",
+        "js/tierHandler.js",
+        "js/dropBoxHandler.js",
+        "js/main.js"
+    ];
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -12,32 +31,15 @@ module.exports = function(grunt) {
                 },
 
                 files: {
-                    'emuLVC.min.js': ["js/emulabeller.js",
-                        "js/webaudio.js",
-                        "js/drawer.js",
-                        "js/oscidrawer.js",
-                        "js/spectogramDrawer.js",
-                        "js/tierdrawer.js",
-                        "js/ssffdrawer.js",
-                        "js/view.js",
-                        "js/labfileparser.js",
-                        "js/textgridparser.js",
-                        "js/ssffparser.js",
-                        "js/JSONvalidator.js",
-                        "js/socketIOhandler.js",
-                        "js/iohandler.js",
-                        "js/tierHandler.js",
-                        "js/dropBoxHandler.js",
-                        "js/main.js"
-                    ]
+                    'emuLVC.min.js': allJsFiles
                 }
             }
         },
 
         watch: {
             all: {
-                files: 'index.html',
-                tasks: [],
+                files: allJsFiles.concat(['index.html']),
+                tasks: ['uglify'],
                 options: {
                     livereload: true
                 }
