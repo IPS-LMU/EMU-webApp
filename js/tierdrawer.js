@@ -269,7 +269,7 @@ EmuLabeller.Drawer.TierDrawer = {
     //                         curcc.fillStyle = this.boundaryColor;
 
     //                     }
-    //                     //console.log(cI.TierName+":"+vP.curMouseTierName);
+    //                     //console.log(cI.TierName+":"+vP.curMouseClickTierName);
     //                     // mark boundary closest to mouse red (only checks first element in selBoundries for now)
 
     //                     if (curEv == vP.selBoundaries[0] && i == vP.selTier) {

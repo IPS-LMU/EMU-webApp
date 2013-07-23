@@ -38,10 +38,11 @@ EmuLabeller.ViewPort = {
         this.MouseTierName = "";
         
         // id of tier and segment MOVED on
-        this.curMouseTierName = "";
-        this.curMouseSegmentName = "";
-        this.curMouseSegmentStart = "";
-        this.curMouseSegmentDuration = "";
+        this.curMouseClickTierName = "";
+        this.curMouseMoveTierName = "";
+        this.curMouseMoveSegmentName = "";
+        this.curMouseMoveSegmentStart = "";
+        this.curMouseMoveSegmentDuration = "";
 
         this.selectSPixel = 0;
         this.selectEPixel = 0;
