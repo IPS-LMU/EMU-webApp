@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                 files: 'index.html',
                 tasks: [],
                 options: {
-                    livereload: 1337
+                    livereload: true
                 }
             }
         }
