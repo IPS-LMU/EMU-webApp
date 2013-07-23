@@ -57,7 +57,7 @@ EmuLabeller.ViewPort = {
         this.MouseTierName = n;
     },
     
-    getSelectTier: function(n) {
+    getSelectTier: function() {
         return this.MouseTierName;
     },
 
@@ -66,14 +66,16 @@ EmuLabeller.ViewPort = {
     },
     
     isSelected: function(tier, name, start) {
-        return this.uiInfo[this.getId(tier, name, start)];
+        if(tier.TierName==this.getSelectTier())
+            return this.uiInfo[this.getId(tier, name, start)];
+        else 
+            return false;
     },         
     
     getId: function(tier, name, start) {
-        var t = emulabeller.tierHandler.getTier(tier);
         var j = 0;
-        for (var y in t.events) {
-            if(t.events[y].label == name && t.events[y].startSample == start)
+        for (var y in tier.events) {
+            if(tier.events[y].label == name && tier.events[y].startSample == start)
                 return j;
             j++;
         }

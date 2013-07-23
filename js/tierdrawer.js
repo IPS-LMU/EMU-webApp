@@ -84,7 +84,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
                         // mark selected segment with markColor == yellow
                         //if (curEvt.uiInfos.selSeg) {
-                         if(emulabeller.viewPort.isSelected(tierDetails.TierName,curEvt.label,curEvt.startSample)) {
+                         if(emulabeller.viewPort.isSelected(tierDetails,curEvt.label,curEvt.startSample)) {
                             cc.fillStyle = this.markColor;
                             cc.fillRect(canvas.width * percS, 0, percE*canvas.width-percS*canvas.width, canvas.height);
                         }

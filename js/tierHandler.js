@@ -151,10 +151,6 @@ EmuLabeller.tierHandler = {
         return this.tierInfos.tiers[tierName];
     },
     
-    resetAllSelSegments: function(length) {
-        emulabeller.viewPort.resetSelection(length);
-    },
-    
     removeTier: function(tierName) {
         $("#"+tierName).remove();
         delete this.tierInfos.tiers[tierName];
@@ -174,12 +170,11 @@ EmuLabeller.tierHandler = {
         }
         else {
             this.removeLabelDoubleClick();
-            this.resetAllSelSegments(tierDetails.events.length);
+            emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+            emulabeller.viewPort.resetSelection(tierDetails.events.length);
             var rXp = tierDetails.uiInfos.canvas.width * percX;
             var rYp = tierDetails.uiInfos.canvas.height * percY;
             var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-            
-            emulabeller.viewPort.setSelectTier(tierDetails.TierName);
        
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
@@ -195,7 +190,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.label,nearest.startSample,true);
+                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,true);
             }
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
@@ -233,7 +228,9 @@ EmuLabeller.tierHandler = {
     
     
     handleTierClickMulti: function(percX, percY, tierDetails) {
+        
         this.removeLabelDoubleClick();
+
         if(tierDetails.TierName != emulabeller.viewPort.getSelectTier()) {
             emulabeller.viewPort.resetSelection();
             emulabeller.viewPort.setSelectTier(tierDetails.TierName);
@@ -258,7 +255,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.label,nearest.startSample,true);
+                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,true);
             }
             
 
