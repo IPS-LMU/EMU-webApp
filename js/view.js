@@ -53,7 +53,7 @@ EmuLabeller.ViewPort = {
         return (w * (s - this.sS) / (this.eS - this.sS));
     },
     
-    selectTier: function(n) {
+    setSelectTier: function(n) {
         this.MouseTierName = n;
     },
     

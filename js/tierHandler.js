@@ -128,7 +128,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = event.label;
                 emulabeller.viewPort.curMouseSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = event.sampleDur;
-                //emulabeller.viewPort.selectTier(curTierDetails.TierName);
+                //emulabeller.viewPort.setSelectTier(curTierDetails.TierName);
             }
             emulabeller.drawer.updateSingleTier(curTierDetails, percX);
         }
@@ -179,7 +179,7 @@ EmuLabeller.tierHandler = {
             var rYp = tierDetails.uiInfos.canvas.height * percY;
             var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
             
-            emulabeller.viewPort.selectTier(tierDetails.TierName);
+            emulabeller.viewPort.setSelectTier(tierDetails.TierName);
        
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
@@ -233,12 +233,11 @@ EmuLabeller.tierHandler = {
     
     
     handleTierClickMulti: function(percX, percY, tierDetails) {
-        //deselect everything
         this.removeLabelDoubleClick();
-        if(tierDetails.TierName != emulabeller.viewPort.getTier())
+        if(tierDetails.TierName != emulabeller.viewPort.getTier()) {
             emulabeller.viewPort.resetSelection();
-            
-        console.log(tierDetails.TierName+":"+emulabeller.viewPort.MouseTierName);
+            emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+        }
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
