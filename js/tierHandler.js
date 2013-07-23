@@ -91,7 +91,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.tierHandler.handleTierDoubleClick(event.originalEvent);
+            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("contextmenu", function(event) {
             emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
@@ -246,19 +246,18 @@ EmuLabeller.tierHandler = {
     },
     
 
-    handleTierDoubleClick: function(e) {
+    handleTierDoubleClick: function(percX, percY, tierDetails) {
         var my = this;
         if ($('#textAreaPopUp').length === 0) {
-            var tier = this.getSelectedTier();
-            if (tier.type == "seg") {
-                var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(perX));
+            if (tierDetails.type == "seg") {
+                var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
 
-                var posS = emulabeller.viewPort.getPos(tier.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectS);
-                var posE = emulabeller.viewPort.getPos(tier.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectE);
-                var textAreaX = Math.round(posS) + tier.uiInfos.canvas.offsetLeft + 2;
-                var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
+                var posS = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectS);
+                var posE = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectE);
+                var textAreaX = Math.round(posS) + tierDetails.uiInfos.canvas.offsetLeft + 2;
+                var textAreaY = tierDetails.uiInfos.canvas.offsetTop + 2;
                 var textAreaWidth = Math.floor(posE - posS - 5);
-                var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
+                var textAreaHeight = Math.floor(tierDetails.uiInfos.canvas.height / 2 - 5);
                 var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + nearest.label + "</textarea>";
                 var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
                 var appendString = textArea + saveButton;
