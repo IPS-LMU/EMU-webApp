@@ -68,8 +68,11 @@ EmuLabeller.ViewPort = {
     
     setSelectMultiSegment: function(tier, name, start, isSelected) {
         var id = this.getId(tier, name, start);
-        if(this.uiInfo[id-1] || this.uiInfo[id+1])
+        if(this.uiInfo[id-1] || this.uiInfo[id+1]) {
             this.uiInfo[id] = isSelected;
+            return true;
+        }
+        else return false;
     },
     
     isSelected: function(tier, name, start) {

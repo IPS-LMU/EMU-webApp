@@ -212,7 +212,9 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectMultiSegment(tierDetails,nearest.label,nearest.startSample,true);
+                if(emulabeller.viewPort.setSelectMultiSegment(tierDetails,nearest.label,nearest.startSample,true) == false) {
+                    this.handleTierClick(percX, percY, tierDetails);
+                }
             }
         }
         emulabeller.drawBuffer();
