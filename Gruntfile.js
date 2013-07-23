@@ -19,6 +19,8 @@ module.exports = function(grunt) {
         "js/main.js"
     ];
 
+    var allCssFiles = ['css/main.css','css/menu.css','css/tooltip.css'];
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -38,7 +40,7 @@ module.exports = function(grunt) {
 
         watch: {
             all: {
-                files: allJsFiles.concat(['index.html']),
+                files: allJsFiles.concat(['index.html']).concat(allCssFiles),
                 tasks: ['uglify'],
                 options: {
                     livereload: true
