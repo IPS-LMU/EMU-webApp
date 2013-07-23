@@ -1,15 +1,15 @@
 EmuLabeller.layoutHandler = {
-    init: function(){
+    init: function() {
         console.log("i am the layoutHandler");
 
     },
 
-    createTopMenu: function(mode){
+    createTopMenu: function(mode) {
 
     },
 
-    createBottomMenu: function(mode){
+    createBottomMenu: function(mode) {
 
-    };
+    }
 
 };

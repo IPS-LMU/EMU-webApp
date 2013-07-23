@@ -1,23 +1,24 @@
 {
-  "name": "emuLVC",
-  "version": "0.0.0",
-  "description": "emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
-  "main": "js/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/raphywink/emuLVC.git"
-  },
-  "author": "Raphael Winkelmann, Georg Raess",
-  "license": "BSD",
-  "gitHead": "e13ca0f2fdb78e2903c6573f1f0074f9abec7ddc",
-  "readmeFilename": "README.md",
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-concat": "~0.3.0"
-  }
+    "name": "emulvc",
+    "version": "0.0.0",
+    "description": "emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
+    "main": "js/main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/raphywink/emuLVC.git"
+    },
+    "author": "Raphael Winkelmann, Georg Raess",
+    "license": "BSD",
+    "gitHead": "e13ca0f2fdb78e2903c6573f1f0074f9abec7ddc",
+    "readmeFilename": "README.md",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-watch": "~0.5.1"
+    }
 }

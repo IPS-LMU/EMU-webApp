@@ -33,3 +33,7 @@ Thumbs.db
 node_modules
 npm-debug.log
 build
+
+# Bower #
+########
+bower_components
