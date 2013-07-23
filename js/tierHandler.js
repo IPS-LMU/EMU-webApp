@@ -125,8 +125,8 @@ EmuLabeller.tierHandler = {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
             if(null != event) {
-                emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = event.label;
+                emulabeller.viewPort.curMouseMoveTierName = curTierDetails.TierName;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 //emulabeller.viewPort.setSelectTier(curTierDetails.TierName);
@@ -174,7 +174,7 @@ EmuLabeller.tierHandler = {
             var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = event.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,true);
@@ -204,7 +204,7 @@ EmuLabeller.tierHandler = {
             var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = event.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 if(emulabeller.viewPort.setSelectMultiSegment(tierDetails,nearest.label,nearest.startSample,true) == false) {

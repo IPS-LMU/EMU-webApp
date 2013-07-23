@@ -60,9 +60,11 @@ EmuLabeller.Drawer.TierDrawer = {
                         var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                         // check if selected -> if draw as marked
                         
-                        
+                        var tierId = emulabeller.viewPort.curMouseMoveTierName;
+                        var segId = emulabeller.viewPort.curMouseMoveSegmentName;
+                        var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
                        
-                        if (curEvt.uiInfos.selBoundryStart) {
+                        if (tierId==tierDetails.TierName && segId == nowid) {
                             cc.fillStyle = this.curSelBoundColor;
                             cc.fillRect(canvas.width * percS, 0, 1, canvas.height);
                         } else {
