@@ -3,21 +3,6 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        // concat: {
-        //     all: {
-        //         options: {
-        //             // separator: ';'
-        //         },
-        //         src: ['js/main.js', 'js/emulabeller.js', 'js/drawer.js',
-        //             'js/dropBoxHandler.js', 'js/iohandler.js', 'js/labfileparser.js',
-        //             'js/layoutHandler.js', 'js/oscidrawer.js', 'js/socketIOhandler.js',
-        //             'js/spectogramDrawer.js', 'js/ssffdrawer.js', 'js/ssffparser.js',
-        //             'js/textgridparser.js', 'js/tierHandler.js', 'js/tierdrawer.js',
-        //             'js/view.js', 'js/webaudio.js'
-        //         ],
-        //         dest: 'build/emuLVC.js'
-        //     }
-        // },
         uglify: {
             all: {
                 options: {
@@ -45,6 +30,16 @@ module.exports = function(grunt) {
                         "js/dropBoxHandler.js",
                         "js/main.js"
                     ]
+                }
+            }
+        },
+
+        watch: {
+            all: {
+                files: 'index.html',
+                tasks: [],
+                options: {
+                    livereload: 1337
                 }
             }
         }

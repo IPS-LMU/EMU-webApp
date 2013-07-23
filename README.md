@@ -18,6 +18,14 @@ quick start to get you up and labelling:
 * or `node server.js` to start server
 * or in Google Chrome navigate to `chrome://extensions/` and turn on `Developer mode`. Then load emuLVC with `Load unpacked extension...` and navigate to the root folder of `emuLVC`
 
+## Tools for development
+
+* install [nodejs and npm](http://nodejs.org/) w
+* install `bower` with `npm install -g bower`
+* install `grunt` with `npm install.-g grunt`
+* install dependencies with the command `bower install`
+* build `emuLVC.min.js` with the command `grunt`
+
 ## Authors
 
 **Raphael Winkelmann**
