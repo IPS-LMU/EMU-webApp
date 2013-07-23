@@ -160,6 +160,7 @@ EmuLabeller.tierHandler = {
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
         
+        this.removeLabelDoubleClick();
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
         var mpx = canvas.width * percX;
@@ -229,22 +230,24 @@ EmuLabeller.tierHandler = {
     
     handleTierClickMulti: function(percX, percY, tierDetails) {
         
+        //deselect everything
+        
         this.removeLabelDoubleClick();
+        var canvas = tierDetails.uiInfos.canvas;
+        var cc = canvas.getContext('2d');
 
-        if(tierDetails.TierName != emulabeller.viewPort.getSelectTier()) {
-            emulabeller.viewPort.resetSelection();
+        
             emulabeller.viewPort.setSelectTier(tierDetails.TierName);
-        }
+            emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        
         var rXp = tierDetails.uiInfos.canvas.width * percX;
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-        
+       
         if (tierDetails.type == "seg") {
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
-
             // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
             var nearest = this.findNearestSegment(tierDetails, curSample);
-
 
             // nearest.uiInfos.selSeg = true;
 
@@ -257,7 +260,6 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,true);
             }
-            
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
             //     var clicked = this.countSelected(elID);
