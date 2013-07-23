@@ -20,7 +20,8 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+                sourceMap: 'build/emuLVC.min.map'
             },
             all: {
 
@@ -34,11 +35,8 @@ module.exports = function(grunt) {
 
     // Load plugins
     grunt.loadNpmTasks('grunt-contrib-watch');
-
     grunt.loadNpmTasks('grunt-contrib-concat');
-
     grunt.loadNpmTasks('grunt-contrib-uglify');
-
 
     // Default task(s).
     grunt.registerTask('default', ['concat', 'uglify']);
