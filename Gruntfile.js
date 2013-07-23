@@ -19,16 +19,15 @@ module.exports = function(grunt) {
         //     }
         // },
         uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
-                sourceMap: 'emuLVC.min.map',
-                sourceMapRoot: 'http://localhost:8001/js/'
-
-            },
             all: {
+                options: {
+                    // banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
+                    // sourceMapRoot: 'http://localhost:8001/js/',
+                    sourceMap: 'emuLVC.min.map'
+                },
 
                 files: {
-                    'build/emuLVC.min.js': ["js/emulabeller.js",
+                    'emuLVC.min.js': ["js/emulabeller.js",
                         "js/webaudio.js",
                         "js/drawer.js",
                         "js/oscidrawer.js",
