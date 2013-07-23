@@ -170,11 +170,7 @@ EmuLabeller.tierHandler = {
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
         if (tierDetails.type == "seg") {
-            var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
-            // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
-            var nearest = this.findNearestSegment(tierDetails, curSample);
-            //emulabeller.viewPort.selectS = nearest.startSample;
-            //emulabeller.viewPort.selectE = nearest.startSample + nearest.sampleDur;
+            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
@@ -203,11 +199,7 @@ EmuLabeller.tierHandler = {
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
         if (tierDetails.type == "seg") {
-            var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
-            // var nearest = this.findAndMarkNearestSegmentBoundry(tierDetails, curSample, false);
-            var nearest = this.findNearestSegment(tierDetails, curSample);
-            //emulabeller.viewPort.selectS = nearest.startSample;
-            //emulabeller.viewPort.selectE = nearest.startSample + nearest.sampleDur;
+            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
@@ -259,16 +251,15 @@ EmuLabeller.tierHandler = {
         if ($('#textAreaPopUp').length === 0) {
             var tier = this.getSelectedTier();
             if (tier.type == "seg") {
-                // var tier = my.tierHandler.tierInfos.tiers[emulabeller.viewPort.selTier];
-                // var event = tier.events[my.getSelectedSegmentDoubleClick(emulabeller.viewPort.selTier)];
-                var event = this.getSelectedSegmentInTier(tier);
+                var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(perX));
+
                 var posS = emulabeller.viewPort.getPos(tier.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(tier.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectE);
                 var textAreaX = Math.round(posS) + tier.uiInfos.canvas.offsetLeft + 2;
                 var textAreaY = tier.uiInfos.canvas.offsetTop + 2;
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(tier.uiInfos.canvas.height / 2 - 5);
-                var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + event.label + "</textarea>";
+                var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + nearest.label + "</textarea>";
                 var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
                 var appendString = textArea + saveButton;
                 $("#tiers").append(appendString);
@@ -283,7 +274,7 @@ EmuLabeller.tierHandler = {
                         my.removeLabelDoubleClick();
                     }
                 };
-                my.createSelection(document.getElementById('editArea'), 0, event.label.length); // select textarea text 
+                my.createSelection(document.getElementById('editArea'), 0, nearest.label.length); // select textarea text 
                 
             } else if (tier.type == "point") {
                 alert("no point editing yet! Sorry...");

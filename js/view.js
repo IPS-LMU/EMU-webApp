@@ -82,6 +82,19 @@ EmuLabeller.ViewPort = {
             return false;
     },         
     
+        
+    countSelected: function() {
+        var x = 0;
+        for(var i=0;i<this.uiInfo.length; i++)
+            if(this.uiInfo[i]) x++;
+        return x;
+    },         
+    
+    
+    getCurrentSample: function(perc) {
+        return this.sS + (this.eS - this.sS) * perc;
+    },
+    
     getId: function(tier, name, start) {
         var j = 0;
         for (var y in tier.events) {
