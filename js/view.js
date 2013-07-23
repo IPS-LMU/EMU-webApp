@@ -57,28 +57,39 @@ EmuLabeller.ViewPort = {
         this.MouseTierName = n;
     },
     
-    getTier: function(n) {
+    getSelectTier: function(n) {
         return this.MouseTierName;
     },
 
-    setSelectSegment: function(tierName,startSample, isSelected) {
-        this.uiInfo[tierName][startSample] = isSelected;
+    setSelectSegment: function(tier, name, start, isSelected) {
+        this.uiInfo[tier][this.getId(tier,name,start)] = isSelected;
     },
     
-    isSelected: function(tierName,startSample) {
-        return this.uiInfo[tierName][startSample];
+    isSelected: function(tier, name, start) {
+        return this.uiInfo[tier][this.getId(tier,name,start)];
     },  
     
-    addTiertoSelection: function(tierName) {
-        this.uiInfo[tierName] = [];
+    addTiertoSelection: function(tier) {
+        this.uiInfo[tier] = [];
     },        
-
+    
+    getId: function(tier, name, start) {
+        var t = emulabeller.tierHandler.getTier(tier);
+        var j = 0;
+        for (var y in t.events) {
+            if(t.events[y].label == name && t.events[y].startSample == start)
+                return j;
+            j++;
+        }
+    },
+    
     resetSelection: function() {
         for (var k in emulabeller.tierHandler.getTiers()) {
             var t = emulabeller.tierHandler.getTier(k);
+            var j = 0;
             this.addTiertoSelection(t.TierName);
             for (var y in t.events) {
-                this.uiInfo[t.TierName][t.events[y].startSample] = false;
+                this.uiInfo[t.TierName][j++] = false;
             }
         }
     },

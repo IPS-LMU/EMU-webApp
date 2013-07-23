@@ -88,19 +88,19 @@ EmuLabeller.tierHandler = {
         }).addClass(myCssClass).appendTo(myAppendTo);
 
         $("#" + myName).bind("click", function(event) {
-            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTierDetailsFromTierWithName(myName));
+            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("dblclick", function(event) {
             emulabeller.tierHandler.handleTierDoubleClick(event.originalEvent);
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTierDetailsFromTierWithName(myName));
+            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("mousemove", function(event) {
             emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
         });
         $("#" + myName).bind("mouseout", function(event) {
-            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getTierDetailsFromTierWithName(myName));
+            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
 
         });
         $("#" + myName).bind("mouseup", function(event) {
@@ -121,7 +121,7 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, tierName) {
         if (!event.shiftKey) {
-            var curTierDetails = this.getTierDetailsFromTierWithName(tierName);
+            var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
             if(null != event) {
@@ -147,7 +147,7 @@ EmuLabeller.tierHandler = {
         return closestStartEvt;
     },    
     
-    getTierDetailsFromTierWithName: function(tierName) {
+    getSelectTierDetailsFromTierWithName: function(tierName) {
         return this.tierInfos.tiers[tierName];
     },
     
@@ -195,7 +195,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.startSample,true);
+                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.label,nearest.startSample,true);
             }
 
             // var clickedEvtNr = this.getSegmentIDbySample(clickedTier, curSample);
@@ -234,7 +234,7 @@ EmuLabeller.tierHandler = {
     
     handleTierClickMulti: function(percX, percY, tierDetails) {
         this.removeLabelDoubleClick();
-        if(tierDetails.TierName != emulabeller.viewPort.getTier()) {
+        if(tierDetails.TierName != emulabeller.viewPort.getSelectTier()) {
             emulabeller.viewPort.resetSelection();
             emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         }
@@ -258,7 +258,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseSegmentName = nearest.label;
                 emulabeller.viewPort.curMouseSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.startSample,true);
+                emulabeller.viewPort.setSelectSegment(tierDetails.TierName,nearest.label,nearest.startSample,true);
             }
             
 
@@ -307,7 +307,7 @@ EmuLabeller.tierHandler = {
 
     
     getSelectedTier: function() {
-        return this.tierInfos.tiers[emulabeller.viewPort.MouseTierName];      
+        return this.tierInfos.tiers[emulabeller.viewPort.getSelectTier()];      
     },
     
     getTiers: function() {
