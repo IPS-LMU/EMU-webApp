@@ -151,8 +151,8 @@ EmuLabeller.tierHandler = {
         return this.tierInfos.tiers[tierName];
     },
     
-    resetAllSelSegments: function() {
-        emulabeller.viewPort.resetSelection();
+    resetAllSelSegments: function(length) {
+        emulabeller.viewPort.resetSelection(length);
     },
     
     removeTier: function(tierName) {
@@ -174,7 +174,7 @@ EmuLabeller.tierHandler = {
         }
         else {
             this.removeLabelDoubleClick();
-            this.resetAllSelSegments();
+            this.resetAllSelSegments(tierDetails.events.length);
             var rXp = tierDetails.uiInfos.canvas.width * percX;
             var rYp = tierDetails.uiInfos.canvas.height * percY;
             var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));

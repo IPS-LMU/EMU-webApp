@@ -29,7 +29,7 @@ EmuLabeller.ViewPort = {
         this.percent = -1;
 
         // list of selected tiers & segments
-        this.uiInfo = []; // [Tiers][Segments]
+        this.uiInfo = []; // [Segments]
         
         // set everything to deselect when tiers are loaded and view is init()
         this.resetSelection();
@@ -62,16 +62,12 @@ EmuLabeller.ViewPort = {
     },
 
     setSelectSegment: function(tier, name, start, isSelected) {
-        this.uiInfo[tier][this.getId(tier,name,start)] = isSelected;
+        this.uiInfo[this.getId(tier, name, start)] = isSelected;
     },
     
     isSelected: function(tier, name, start) {
-        return this.uiInfo[tier][this.getId(tier,name,start)];
-    },  
-    
-    addTiertoSelection: function(tier) {
-        this.uiInfo[tier] = [];
-    },        
+        return this.uiInfo[this.getId(tier, name, start)];
+    },         
     
     getId: function(tier, name, start) {
         var t = emulabeller.tierHandler.getTier(tier);
@@ -83,14 +79,9 @@ EmuLabeller.ViewPort = {
         }
     },
     
-    resetSelection: function() {
-        for (var k in emulabeller.tierHandler.getTiers()) {
-            var t = emulabeller.tierHandler.getTier(k);
-            var j = 0;
-            this.addTiertoSelection(t.TierName);
-            for (var y in t.events) {
-                this.uiInfo[t.TierName][j++] = false;
-            }
+    resetSelection: function(length) {
+        for (var i=0;i<length;i++) {
+            this.uiInfo[i] = false;
         }
     },
     
