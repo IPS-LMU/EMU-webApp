@@ -5,6 +5,10 @@ EmuLabeller.tierHandler = {
         this.internalCanvasHeightBig = params.internalCanvasHeightBig;
         this.isModalShowing = false;    
         this.tierInfos = params.tierInfos;  
+        this.deleteImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAn1BMVEX////4YmT/dnnyTE//dnn9bnH6am34YmT3XWD2WVv2VVjsOj3oMDLlJyrjICL2VVjzUVTwR0ruPT/iHB72WVvwR0rzUVT/h4r/gob/foH/eXv/dnn/cnT9bnH/bG76am3/Zmb6ZGf4YmT3XWD/WFv2WVv/VFf2VVj0TVDyTE/2SkzwR0rvREfuQUPuPT/sOj3rNDboMDLnLTDlJyrjICIhCpwnAAAANXRSTlMAESIiMzMzMzMzMzMzMzNERERERHd3qv///////////////////////////////////////0mgXpwAAAAJcEhZcwAAHngAAB54AcurAx8AAAAYdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3Jrc0+zH04AAACVSURBVBiVbczXFoIwDAbguHGi4mqbWugQZInj/Z9NSuXAhblJvuTkB+jV4NeHY9e9g+/M2KSxFKdRY0JwWltxoo72gvRMxcxTgqrM/Qp2QWmdt+kRJ5SyzgCGao09zw3TN8yWnSNEfo3LVWdTPJIwqdbWCyN5XABUeZi+NvViG0trgHeRPgM77O6l+/04A+zb9AD+1Bf6lg3jQQJJTgAAAABJRU5ErkJggg==";
+        this.resizeImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAgdJREFUeNqcUzFrFUEQ3t2727vknSLBGCxUtHlgESFgkTRvC0HhFRY2ljb+ALGxS2FhEWwtrAQbG0GLFAGLFySkCAnEIvJAEgKCmBASc3t3e3t7u87evZzvJZ6FA8POzs58M/PtLn784sAgEIzxslKKCSGQUjk6La7roSAIYHV7xpiO9b1+NoHdLBNlspQZKwqNmsSCcp4jxyGMUr8GIWmaLoMyKeUDrYttUPMP3bZxNt7mlZ0Zo1kUcWsvPH10zbnVDtcB/Uwr0CXZ7PPJl292F2D7PgxDVgJEUYTiOLb29el2ay3J1FHTGHCuOee3rQ1FKm729/f+zFmYXGlTNPIA50lSFkMnq5umog7IC62l0iUAIEmeqSgWKs7AVoVWl84HUxA/N3I7UqrhCjY6PeT5IYdEPcoF1gbh4fgBibjeHKd58v0g2SuqMZyB1mKQGYkvAQih9QYIFMCNQzB2/sYBwcgbji8BWq1JJOWAEIdQQrDXRKI997zx0qa0Vfl8/5wdz9o7X/vixs124A5GGO7VQFvOVl9cpTTcsQ7fDysAeB+9/HiLSfFr/tXbsefQ/b2mDowpdvnPz/N+MIGCqdkeuJhL6Xjn4pU7vS9LD7vfVp58OlX5jFy4PBdN330Hf0F3qk/mjtm1M9P9sHj0Y5VtLN5vTJ7pfgSA2fojlXd78iT/V34LMADUHCqqlDzjjQAAAABJRU5ErkJggg==";
+        this.iconImageSize = 16;
+        
     },
 
     addTier: function(addPointTier) {
@@ -81,15 +85,27 @@ EmuLabeller.tierHandler = {
      * @param
      */
     addTiertoHtml: function(myName, myCssClass, myAppendTo) {
+        
+
+        var action  = "<a href='#' id='"+myName+"_del' class='deleteButton'><img src='"+this.deleteImage+"' /></a>";
+        var resize = " <a href='#' id='"+myName+"_res' class='resizeButton'><img src='"+this.resizeImage+"' /></a>";
         $('<canvas>').attr({
             id: myName,
             width: this.internalCanvasWidth,
             height: this.internalCanvasHeightSmall
-        }).addClass(myCssClass).appendTo(myAppendTo);
+        }).addClass(myCssClass).add(action+resize).appendTo(myAppendTo);
 
         $("#" + myName).bind("click", function(event) {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
+        $("#" + myName+"_del").bind("click", function(event) {
+            if(confirm("Wollen Sie '"+myName+"' wirklich loeschen?")) 
+                emulabeller.tierHandler.removeTier(myName);
+        });        
+          $("#" + myName+"_res").bind("click", function(event) {
+            alert("resize coming soon");
+        });        
+        
         $("#" + myName).bind("dblclick", function(event) {
             emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
@@ -156,6 +172,8 @@ EmuLabeller.tierHandler = {
     
     removeTier: function(tierName) {
         $("#"+tierName).remove();
+        $("#"+tierName+"_del").remove();
+        $("#"+tierName+"_res").remove();
         delete this.tierInfos.tiers[tierName];
     },
         

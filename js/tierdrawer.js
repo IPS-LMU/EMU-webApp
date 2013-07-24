@@ -13,10 +13,6 @@ EmuLabeller.Drawer.TierDrawer = {
         this.cursorColor = "red";
         this.cursorWidth = 1;
         
-        this.deleteImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAn1BMVEX////4YmT/dnnyTE//dnn9bnH6am34YmT3XWD2WVv2VVjsOj3oMDLlJyrjICL2VVjzUVTwR0ruPT/iHB72WVvwR0rzUVT/h4r/gob/foH/eXv/dnn/cnT9bnH/bG76am3/Zmb6ZGf4YmT3XWD/WFv2WVv/VFf2VVj0TVDyTE/2SkzwR0rvREfuQUPuPT/sOj3rNDboMDLnLTDlJyrjICIhCpwnAAAANXRSTlMAESIiMzMzMzMzMzMzMzNERERERHd3qv///////////////////////////////////////0mgXpwAAAAJcEhZcwAAHngAAB54AcurAx8AAAAYdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3Jrc0+zH04AAACVSURBVBiVbczXFoIwDAbguHGi4mqbWugQZInj/Z9NSuXAhblJvuTkB+jV4NeHY9e9g+/M2KSxFKdRY0JwWltxoo72gvRMxcxTgqrM/Qp2QWmdt+kRJ5SyzgCGao09zw3TN8yWnSNEfo3LVWdTPJIwqdbWCyN5XABUeZi+NvViG0trgHeRPgM77O6l+/04A+zb9AD+1Bf6lg3jQQJJTgAAAABJRU5ErkJggg==";
-        this.deleteImageSize = 16;
-        this.resizeImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAgdJREFUeNqcUzFrFUEQ3t2727vknSLBGCxUtHlgESFgkTRvC0HhFRY2ljb+ALGxS2FhEWwtrAQbG0GLFAGLFySkCAnEIvJAEgKCmBASc3t3e3t7u87evZzvJZ6FA8POzs58M/PtLn784sAgEIzxslKKCSGQUjk6La7roSAIYHV7xpiO9b1+NoHdLBNlspQZKwqNmsSCcp4jxyGMUr8GIWmaLoMyKeUDrYttUPMP3bZxNt7mlZ0Zo1kUcWsvPH10zbnVDtcB/Uwr0CXZ7PPJl292F2D7PgxDVgJEUYTiOLb29el2ay3J1FHTGHCuOee3rQ1FKm729/f+zFmYXGlTNPIA50lSFkMnq5umog7IC62l0iUAIEmeqSgWKs7AVoVWl84HUxA/N3I7UqrhCjY6PeT5IYdEPcoF1gbh4fgBibjeHKd58v0g2SuqMZyB1mKQGYkvAQih9QYIFMCNQzB2/sYBwcgbji8BWq1JJOWAEIdQQrDXRKI997zx0qa0Vfl8/5wdz9o7X/vixs124A5GGO7VQFvOVl9cpTTcsQ7fDysAeB+9/HiLSfFr/tXbsefQ/b2mDowpdvnPz/N+MIGCqdkeuJhL6Xjn4pU7vS9LD7vfVp58OlX5jFy4PBdN330Hf0F3qk/mjtm1M9P9sHj0Y5VtLN5vTJ7pfgSA2fojlXd78iT/V34LMADUHCqqlDzjjQAAAABJRU5ErkJggg==";
-        this.resizeImageSize = 16;
         this.selTierColor = "#C8C8C8";
 
     },
@@ -30,32 +26,6 @@ EmuLabeller.Drawer.TierDrawer = {
         var cc = canvas.getContext('2d');
         var mpx = canvas.width * perx;
         var mpy = canvas.height * pery;
-
-        // change mous cursor if hovering over action button
-        if(mpx>canvas.width-(2*this.resizeImageSize)) {
-            if(mpy<(2*this.resizeImageSize)) {
-                $('body').css('cursor', 'ns-resize'); 
-            }
-            else if(mpy>(2*this.deleteImageSize) && mpy<(4*this.deleteImageSize)) {
-                $('body').css('cursor', 'pointer'); 
-            }
-        }        
-        else {        
-            $('body').css('cursor', 'auto'); 
-        }
-        
-        // draw action buttons
-        var icon = new Image();
-        icon.onload = function() {
-            cc.drawImage(icon, 0, 0, my.resizeImageSize, my.resizeImageSize, (canvas.width-(2*my.resizeImageSize+5)), (2*my.resizeImageSize+5), my.resizeImageSize*2, my.resizeImageSize*2);
-        };        
-        icon.src = my.deleteImage;
-
-        var icon2 = new Image();
-        icon2.onload = function() {
-            cc.drawImage(icon2, 0, 0, my.deleteImageSize, my.deleteImageSize, (canvas.width-(2*my.deleteImageSize+5)), 5, my.deleteImageSize*2, my.deleteImageSize*2);
-        };        
-        icon2.src = my.resizeImage;
 
         if(tierDetails.TierName==emulabeller.viewPort.getSelectTier()){
             cc.fillStyle = this.selTierColor;

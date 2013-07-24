@@ -87,6 +87,8 @@ canvas {
 .tierSettings {
     width: 95%;
     height: 64px;
+    z-index: 1;
+    position:relative;
 }
 
 #wave, #spectrogram {
@@ -167,6 +169,23 @@ canvas {
     position:absolute;
     top: -2px;
     right: -36px;
+}
+
+.deleteButton {
+    z-index:2;
+    position: absolute;
+    right: 50px;
+    margin: 2px;
+    padding: 0px;
+}
+
+
+.resizeButton {
+    z-index:2;
+    position: absolute;
+    right: 30px;
+    margin: 2px;
+    padding: 0px;
 }
 
 
