@@ -62,15 +62,29 @@ EmuLabeller.ViewPort = {
         return this.MouseTierName;
     },
 
-    setSelectSegment: function(tier, name, start, isSelected) {
+    setSelectSegment: function(tier, name, start, duration, isSelected) {
         var id = this.getId(tier, name, start);
         this.uiInfo[id] = isSelected;
+        this.resizeSelectArea(start, start+duration);
     },
     
-    setSelectMultiSegment: function(tier, name, start, isSelected) {
+    resizeSelectArea: function(start,end) {
+        this.selectS = start;
+        this.selectE = end;
+    },    
+    
+    resizeSelectAreaMulti: function(start,end) {
+        if(start < this.selectS) 
+            this.selectS = start;
+        if(end > this.selectE) 
+            this.selectE = end;
+    },    
+    
+    setSelectMultiSegment: function(tier, name, start, duration, isSelected) {
         var id = this.getId(tier, name, start);
         if(this.uiInfo[id-1] || this.uiInfo[id+1]) {
             this.uiInfo[id] = isSelected;
+            this.resizeSelectAreaMulti(start,start+duration);
             return true;
         }
         else return false;
