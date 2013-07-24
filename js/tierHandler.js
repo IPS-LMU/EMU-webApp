@@ -100,6 +100,10 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
         });
         $("#" + myName).bind("mouseout", function(event) {
+            emulabeller.viewPort.curMouseMoveTierName = "";
+            emulabeller.viewPort.curMouseMoveSegmentName =  "";
+            emulabeller.viewPort.curMouseMoveSegmentStart = "";
+            emulabeller.viewPort.curMouseMoveSegmentDuration = "";
             //emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
             emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
@@ -130,13 +134,6 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 //emulabeller.viewPort.setSelectTier(curTierDetails.TierName);
-            }
-            else {
-                emulabeller.viewPort.curMouseMoveTierName = "";
-                emulabeller.viewPort.curMouseMoveSegmentName =  "";
-                emulabeller.viewPort.curMouseMoveSegmentStart = "";
-                emulabeller.viewPort.curMouseMoveSegmentDuration = "";
-            
             }
             emulabeller.drawer.updateSingleTier(curTierDetails, percX);
         }
