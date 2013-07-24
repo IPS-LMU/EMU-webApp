@@ -97,7 +97,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("mousemove", function(event) {
-            emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), myName);
+            emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
         });
         $("#" + myName).bind("mouseout", function(event) {
             emulabeller.viewPort.curMouseMoveTierName = "";
@@ -122,7 +122,7 @@ EmuLabeller.tierHandler = {
      * canvas calling this function
      * @param tierID id of canvas calling this function
      */
-    trackMouseInTiers: function(event, percX, tierName) {
+    trackMouseInTiers: function(event, percX, percY, tierName) {
         if (!event.shiftKey) {
             var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
@@ -132,9 +132,8 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
-                //emulabeller.viewPort.setSelectTier(curTierDetails.TierName);
             }
-            emulabeller.drawer.updateSingleTier(curTierDetails, percX);
+            emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
         }
     },
 

@@ -14,6 +14,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.cursorWidth = 1;
         
         this.deleteImage = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAn1BMVEX////4YmT/dnnyTE//dnn9bnH6am34YmT3XWD2WVv2VVjsOj3oMDLlJyrjICL2VVjzUVTwR0ruPT/iHB72WVvwR0rzUVT/h4r/gob/foH/eXv/dnn/cnT9bnH/bG76am3/Zmb6ZGf4YmT3XWD/WFv2WVv/VFf2VVj0TVDyTE/2SkzwR0rvREfuQUPuPT/sOj3rNDboMDLnLTDlJyrjICIhCpwnAAAANXRSTlMAESIiMzMzMzMzMzMzMzNERERERHd3qv///////////////////////////////////////0mgXpwAAAAJcEhZcwAAHngAAB54AcurAx8AAAAYdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3Jrc0+zH04AAACVSURBVBiVbczXFoIwDAbguHGi4mqbWugQZInj/Z9NSuXAhblJvuTkB+jV4NeHY9e9g+/M2KSxFKdRY0JwWltxoo72gvRMxcxTgqrM/Qp2QWmdt+kRJ5SyzgCGao09zw3TN8yWnSNEfo3LVWdTPJIwqdbWCyN5XABUeZi+NvViG0trgHeRPgM77O6l+/04A+zb9AD+1Bf6lg3jQQJJTgAAAABJRU5ErkJggg==";
+        this.deleteImageSize = 16;
         this.selTierColor = "#C8C8C8";
 
     },
@@ -21,21 +22,24 @@ EmuLabeller.Drawer.TierDrawer = {
     /**
      * draw single tier
      */
-    drawSingleTier: function(tierDetails,perx) {
+    drawSingleTier: function(tierDetails,perx,pery) {
         var my = this;
         var canvas = tierDetails.uiInfos.canvas;
         var cc = canvas.getContext('2d');
         var mpx = canvas.width * perx;
-        if(mpx>canvas.width-32) {
+        var mpy = canvas.height * pery;
+        if(mpx>canvas.width-(2*this.deleteImageSize) && mpy<(2*this.deleteImageSize)) {
             var icon = new Image();
             icon.onload = function() {
-                cc.drawImage(icon, 0, 0, 16, 16, (canvas.width-40), 10, 32, 32);
+                cc.drawImage(icon, 0, 0, my.deleteImageSize, my.deleteImageSize, (canvas.width-(2*my.deleteImageSize+5)), 5, my.deleteImageSize*2, my.deleteImageSize*2);
             };        
             icon.src = my.deleteImage;
             $('body').css('cursor', 'pointer'); 
+            console.log(mpy);
         }
         else {        
             $('body').css('cursor', 'auto'); 
+        }
             if(tierDetails.TierName==emulabeller.viewPort.getSelectTier()){
                 cc.fillStyle = this.selTierColor;
                 cc.fillRect(0, 0, canvas.width, canvas.height);
@@ -63,7 +67,6 @@ EmuLabeller.Drawer.TierDrawer = {
                         var tierId = emulabeller.viewPort.curMouseMoveTierName;
                         var segId = emulabeller.viewPort.curMouseMoveSegmentName;
                         var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
-                        console.log(tierId);
                         if (tierDetails.TierName == tierId && segId == nowid) {
                             cc.fillStyle = this.curSelBoundColor;
                             cc.fillRect(canvas.width * percS, 0, 5, canvas.height);
@@ -136,7 +139,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
                 }
             }
-        }
+        
     },
 
 
