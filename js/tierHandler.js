@@ -174,11 +174,14 @@ EmuLabeller.tierHandler = {
        
         if(rXp>tierDetails.uiInfos.canvas.width-(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
             if(rYp<(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
-                alert("resize !"); 
+
                 return false;
             }
             else if(rYp>(2*emulabeller.drawer.tierDrawer.deleteImageSize) && rYp<(4*emulabeller.drawer.tierDrawer.deleteImageSize)) {
-                alert("delete !");
+                if(confirm("Wollen Sie '"+tierDetails.TierName+"' wirklich loeschen?")) {
+                    this.removeTier(tierDetails.TierName);
+                }
+                
                 return false;
             }
         } 
