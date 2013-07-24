@@ -729,10 +729,9 @@ var EmuLabeller = {
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
         } else if (ft == 3) {
-            var parserRes=emulabeller.iohandler.parseTextGrid(readerRes);
-            emulabeller.iohandler.toTextGrid(parserRes);
+            var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
+            // emulabeller.iohandler.toTextGrid(parserRes); // for testing toTextGrid
             this.tierHandler.addLoadedTiers(parserRes);
-
         }
     },
 

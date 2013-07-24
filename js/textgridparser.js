@@ -97,6 +97,7 @@ EmuLabeller.TextGridParser = {
     toTextGrid: function(labelJSO) {
         var tG = "";
         var nl = "\n";
+        var t = "\t";
 
         // writing header infos
         tG = tG + this.l1 + nl + this.l2 + nl + nl;
@@ -106,7 +107,43 @@ EmuLabeller.TextGridParser = {
         tG = tG + "size = " + labelJSO.tiers.length + nl;
         tG = tG + "item []:" + nl;
 
-        console.log(tG);
+        for (var i = 0; i < labelJSO.tiers.length; i++) {
+            //write tier items
+            var tierNr = i + 1;
+            tG = tG + t + "item [" + tierNr + "]:" + nl;
+            if (labelJSO.tiers[i].type == "seg") {
+                tG = tG + t + t + 'class = "IntervalTier"' + nl;
+            } else if (labelJSO.tiers[i].type == "point") {
+                tG = tG + t + t + 'class = "TextTier"' + nl;
+            }
+            tG = tG + t + t + 'name = "' + labelJSO.tiers[i].TierName + '"' + nl;
+            tG = tG + t + t + "xmin = " + this.findTimeOfMinSample(labelJSO) + nl;
+            tG = tG + t + t + "xmax = " + this.findTimeOfMaxSample(labelJSO) + nl;
+            if (labelJSO.tiers[i].type == "seg") {
+                tG = tG + t + t + "intervals: size = " + labelJSO.tiers[i].events.length + nl;
+            } else if (labelJSO.tiers[i].type == "point") {
+                tG = tG + t + t + "points: size = " + labelJSO.tiers[i].events.length + nl;
+            }
+            for (var j = 0; j < labelJSO.tiers[i].events.length; j++) {
+                var evtNr = j + 1;
+                if (labelJSO.tiers[i].type == "seg") {
+                    tG = tG + t + t + t + "intervals[" + evtNr + "]:" + nl;
+                    tG = tG + t + t + t + t + "xmin = " + labelJSO.tiers[i].events[j].startSample / 44100 + nl;
+                    tG = tG + t + t + t + t + "xmax = " + (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur) / 44100 + nl;
+                    tG = tG + t + t + t + t + 'text = "' + labelJSO.tiers[i].events[j].label + '"' + nl;
+                } else if (labelJSO.tiers[i].type == "point") {
+                    tG = tG + t + t + t + "points[" + evtNr + "]:" + nl;
+                    tG = tG + t + t + t + t + "time = " + labelJSO.tiers[i].events[j].startSample / 44100 + nl;
+                    tG = tG + t + t + t + t + 'mark = "' + labelJSO.tiers[i].events[j].label + '"' + nl;
+
+                }
+
+            }
+        }
+
+        // console.log(labelJSO);
+        // console.log(tG);
+        return(tG);
 
     },
 
