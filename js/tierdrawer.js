@@ -31,6 +31,7 @@ EmuLabeller.Drawer.TierDrawer = {
         var mpx = canvas.width * perx;
         var mpy = canvas.height * pery;
 
+        // change mous cursor if hovering over action button
         if(mpx>canvas.width-(2*this.resizeImageSize)) {
             if(mpy<(2*this.resizeImageSize)) {
                 $('body').css('cursor', 'ns-resize'); 
@@ -43,6 +44,7 @@ EmuLabeller.Drawer.TierDrawer = {
             $('body').css('cursor', 'auto'); 
         }
         
+        // draw action buttons
         var icon = new Image();
         icon.onload = function() {
             cc.drawImage(icon, 0, 0, my.resizeImageSize, my.resizeImageSize, (canvas.width-(2*my.resizeImageSize+5)), (2*my.resizeImageSize+5), my.resizeImageSize*2, my.resizeImageSize*2);
@@ -54,7 +56,6 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.drawImage(icon2, 0, 0, my.deleteImageSize, my.deleteImageSize, (canvas.width-(2*my.deleteImageSize+5)), 5, my.deleteImageSize*2, my.deleteImageSize*2);
         };        
         icon2.src = my.resizeImage;
-
 
         if(tierDetails.TierName==emulabeller.viewPort.getSelectTier()){
             cc.fillStyle = this.selTierColor;
@@ -86,7 +87,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
                     if (tierDetails.TierName == tierId && segId == nowid) {
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * percS, 0, 5, canvas.height);
+                        cc.fillRect(canvas.width * percS-4, 0, 8, canvas.height);
                     } else {
                         // console.log(curEvt);
                         cc.fillStyle = this.startBoundaryColor;

@@ -172,6 +172,17 @@ EmuLabeller.tierHandler = {
         var rYp = tierDetails.uiInfos.canvas.height * percY;
         var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
+        if(rXp>tierDetails.uiInfos.canvas.width-(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
+            if(rYp<(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
+                alert("resize !"); 
+                return false;
+            }
+            else if(rYp>(2*emulabeller.drawer.tierDrawer.deleteImageSize) && rYp<(4*emulabeller.drawer.tierDrawer.deleteImageSize)) {
+                alert("delete !");
+                return false;
+            }
+        } 
+        else {
         if (tierDetails.type == "seg") {
             var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
             if(null!=nearest) {
@@ -182,6 +193,10 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
             }
         }
+        
+        }               
+        
+        
         emulabeller.drawBuffer();
     },
     
