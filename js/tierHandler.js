@@ -103,7 +103,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.tierHandler.removeTier(myName);
         });        
           $("#" + myName+"_res").bind("click", function(event) {
-            alert("resize coming soon");
+            emulabeller.tierHandler.resizeTier(myName);
         });        
         
         $("#" + myName).bind("dblclick", function(event) {
@@ -176,7 +176,13 @@ EmuLabeller.tierHandler = {
         $("#"+tierName+"_res").remove();
         delete this.tierInfos.tiers[tierName];
     },
-        
+    
+    resizeTier: function(tierName) {
+        if($("#"+tierName).height()>=63)
+            $("#"+tierName).height(24);
+        else
+            $("#"+tierName).height(64);
+    },      
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
