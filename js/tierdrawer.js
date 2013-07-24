@@ -43,119 +43,117 @@ EmuLabeller.Drawer.TierDrawer = {
             $('body').css('cursor', 'auto'); 
         }
         
-                var icon = new Image();
-                icon.onload = function() {
-                    cc.drawImage(icon, 0, 0, my.resizeImageSize, my.resizeImageSize, (canvas.width-(2*my.resizeImageSize+5)), (2*my.resizeImageSize+5), my.resizeImageSize*2, my.resizeImageSize*2);
-                };        
-                icon.src = my.deleteImage;
+        var icon = new Image();
+        icon.onload = function() {
+            cc.drawImage(icon, 0, 0, my.resizeImageSize, my.resizeImageSize, (canvas.width-(2*my.resizeImageSize+5)), (2*my.resizeImageSize+5), my.resizeImageSize*2, my.resizeImageSize*2);
+        };        
+        icon.src = my.deleteImage;
 
-                var icon2 = new Image();
-                icon2.onload = function() {
-                    cc.drawImage(icon2, 0, 0, my.deleteImageSize, my.deleteImageSize, (canvas.width-(2*my.deleteImageSize+5)), 5, my.deleteImageSize*2, my.deleteImageSize*2);
-                };        
-                icon2.src = my.resizeImage;
+        var icon2 = new Image();
+        icon2.onload = function() {
+            cc.drawImage(icon2, 0, 0, my.deleteImageSize, my.deleteImageSize, (canvas.width-(2*my.deleteImageSize+5)), 5, my.deleteImageSize*2, my.deleteImageSize*2);
+        };        
+        icon2.src = my.resizeImage;
 
 
-            if(tierDetails.TierName==emulabeller.viewPort.getSelectTier()){
-                cc.fillStyle = this.selTierColor;
-                cc.fillRect(0, 0, canvas.width, canvas.height);
-            }else{
-                cc.clearRect(0, 0, canvas.width, canvas.height);
-            }
-            // draw name of tier
-            cc.strokeStyle = "black";
-            cc.font = "12px Verdana";
-            cc.strokeText(tierDetails.TierName, 5, 5 + 8);
-            cc.strokeText("(" + tierDetails.type + ")", 5, 20 + 8);
+        if(tierDetails.TierName==emulabeller.viewPort.getSelectTier()){
+            cc.fillStyle = this.selTierColor;
+            cc.fillRect(0, 0, canvas.width, canvas.height);
+        }else{
+            cc.clearRect(0, 0, canvas.width, canvas.height);
+        }
             
-            if (tierDetails.type == "seg") {
-                cc.fillStyle = this.boundaryColor;
-                // draw segments
-                var e = tierDetails.events;
-                for (var k in e) {
-                    var curEvt = e[k];
-                    if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS 
-                        || curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
-                        // draw segment start
-                        var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
-                        // check if selected -> if draw as marked
+        // draw name of tier
+        cc.strokeStyle = "black";
+        cc.font = "12px Verdana";
+        cc.strokeText(tierDetails.TierName, 5, 5 + 8);
+        cc.strokeText("(" + tierDetails.type + ")", 5, 20 + 8);
+        
+        if (tierDetails.type == "seg") {
+            cc.fillStyle = this.boundaryColor;
+            // draw segments
+            var e = tierDetails.events;
+            for (var k in e) {
+                var curEvt = e[k];
+                if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS 
+                    || curEvt.startSample+curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample+curEvt.sampleDur < emulabeller.viewPort.eS) {
+                    // draw segment start
+                    var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                    // check if selected -> if draw as marked
                         
-                        var tierId = emulabeller.viewPort.curMouseMoveTierName;
-                        var segId = emulabeller.viewPort.curMouseMoveSegmentName;
-                        var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
-                        if (tierDetails.TierName == tierId && segId == nowid) {
-                            cc.fillStyle = this.curSelBoundColor;
-                            cc.fillRect(canvas.width * percS, 0, 5, canvas.height);
-                        } else {
-                            // console.log(curEvt);
-                            cc.fillStyle = this.startBoundaryColor;
-                            cc.fillRect(canvas.width * percS, 0, 1, canvas.height / 2);
-                        }
-
-                        //draw segment end
-                        var percE = (curEvt.startSample + curEvt.sampleDur - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
-                        // check if selected -> if draw as marked
-                        if (curEvt.uiInfos.selBoundryEnd) {
-                            cc.fillStyle = this.curSelBoundColor;
-                            cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
-                        } else {
-                            cc.fillStyle = this.endBoundaryColor;
-                            cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
-                        }
-
-                        // mark selected segment with markColor == yellow
-                        //if (curEvt.uiInfos.selSeg) {
-                         if(emulabeller.viewPort.isSelected(tierDetails,curEvt.label,curEvt.startSample)) {
-                            cc.fillStyle = this.markColor;
-                            cc.fillRect(canvas.width * percS, 0, percE*canvas.width-percS*canvas.width, canvas.height);
-                        }
-
-                        // draw label 
-                        cc.strokeStyle = "black";
-                        cc.fillStyle = "white";
-                        tW = cc.measureText(curEvt.label).width;
-                        tX = canvas.width * (percS+(percE-percS)/2)-tW/2;
-                        cc.strokeText(curEvt.label, tX, canvas.height/2+3);
-
-                        //draw helper lines
-                        cc.strokeStyle = "rgba(0,255,0,0.5)";
-                        cc.beginPath();
-                        cc.moveTo(percS*canvas.width, canvas.height/4);
-                        cc.lineTo(tX+tW/2, canvas.height/4);
-                        cc.lineTo(tX+tW/2, canvas.height/4+10);
-                        cc.stroke();
-
-                        cc.strokeStyle = "rgba(255,0,0,0.2)";
-                        cc.beginPath();
-                        cc.moveTo(percE*canvas.width, canvas.height/4*3);
-                        cc.lineTo(tX+tW/2, canvas.height/4*3);
-                        cc.lineTo(tX+tW/2, canvas.height/4*3-10);
-                        cc.stroke();
+                    var tierId = emulabeller.viewPort.curMouseMoveTierName;
+                    var segId = emulabeller.viewPort.curMouseMoveSegmentName;
+                    var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
+                    if (tierDetails.TierName == tierId && segId == nowid) {
+                        cc.fillStyle = this.curSelBoundColor;
+                        cc.fillRect(canvas.width * percS, 0, 5, canvas.height);
+                    } else {
+                        // console.log(curEvt);
+                        cc.fillStyle = this.startBoundaryColor;
+                        cc.fillRect(canvas.width * percS, 0, 1, canvas.height / 2);
                     }
-                }
-            } else if (tierDetails.type == "point") {
-                cc.fillStyle = this.startBoundaryColor;
-                for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
-                    var curEvt = tierDetails.events[curEvtNr];
 
-                    if (tierDetails.events[curEvtNr].startSample > emulabeller.viewPort.sS && tierDetails.events[curEvtNr].startSample < emulabeller.viewPort.eS) {
-                        perc = (tierDetails.events[curEvtNr].startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
-                    
-                        if (curEvt.uiInfos.selBoundryStart) {
-                            cc.fillStyle = this.curSelBoundColor;
-                        }else{
-                            cc.fillStyle = this.startBoundaryColor;
-                        }
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
-
-                        tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
-                        cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
-
-                        cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10);
+                    //draw segment end
+                    var percE = (curEvt.startSample + curEvt.sampleDur - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                    // check if selected -> if draw as marked
+                    if (curEvt.uiInfos.selBoundryEnd) {
+                        cc.fillStyle = this.curSelBoundColor;
+                        cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
+                    } else {
+                        cc.fillStyle = this.endBoundaryColor;
+                        cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
                     }
+
+                    // mark selected segment with markColor == yellow
+                    //if (curEvt.uiInfos.selSeg) {
+                     if(emulabeller.viewPort.isSelected(tierDetails,curEvt.label,curEvt.startSample)) {
+                        cc.fillStyle = this.markColor;
+                        cc.fillRect(canvas.width * percS, 0, percE*canvas.width-percS*canvas.width, canvas.height);
+                    }
+
+                    // draw label 
+                    cc.strokeStyle = "black";
+                    cc.fillStyle = "white";
+                    tW = cc.measureText(curEvt.label).width;
+                    tX = canvas.width * (percS+(percE-percS)/2)-tW/2;
+                    cc.strokeText(curEvt.label, tX, canvas.height/2+3);
+
+                    //draw helper lines
+                    cc.strokeStyle = "rgba(0,255,0,0.5)";
+                    cc.beginPath();
+                    cc.moveTo(percS*canvas.width, canvas.height/4);
+                    cc.lineTo(tX+tW/2, canvas.height/4);
+                    cc.lineTo(tX+tW/2, canvas.height/4+10);
+                    cc.stroke();
+
+                    cc.strokeStyle = "rgba(255,0,0,0.2)";
+                    cc.beginPath();
+                    cc.moveTo(percE*canvas.width, canvas.height/4*3);
+                    cc.lineTo(tX+tW/2, canvas.height/4*3);
+                    cc.lineTo(tX+tW/2, canvas.height/4*3-10);
+                    cc.stroke();
                 }
             }
-        
+        } else if (tierDetails.type == "point") {
+            cc.fillStyle = this.startBoundaryColor;
+            for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
+                var curEvt = tierDetails.events[curEvtNr];
+
+                if (tierDetails.events[curEvtNr].startSample > emulabeller.viewPort.sS && tierDetails.events[curEvtNr].startSample < emulabeller.viewPort.eS) {
+                    perc = (tierDetails.events[curEvtNr].startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                
+                    if (curEvt.uiInfos.selBoundryStart) {
+                        cc.fillStyle = this.curSelBoundColor;
+                    }else{
+                        cc.fillStyle = this.startBoundaryColor;
+                    }
+                    cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
+                    tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
+                    cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                    cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10);
+                }
+            }
+        }
     },
 
 
