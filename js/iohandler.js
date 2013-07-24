@@ -8,7 +8,7 @@ EmuLabeller.IOhandler = {
 
         // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
-
+        this.textGridHandler.init();
         // textgrid handler
         this.DropBoxHandler = Object.create(EmuLabeller.DropBoxHandler);
 
@@ -51,6 +51,14 @@ EmuLabeller.IOhandler = {
     parseTextGrid: function(string) {
 
         res = this.textGridHandler.toJSO(string);
+        return res;
+    },
+    /**
+     *
+     */
+    toTextGrid: function(string) {
+
+        res = this.textGridHandler.toTextGrid(string);
         return res;
     },
 

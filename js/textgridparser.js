@@ -1,13 +1,15 @@
 EmuLabeller.TextGridParser = {
+    init: function() {
+        this.l1 = "File type= \"ooTextFile\"";
+        this.l2 = "Object class = \"TextGrid\"";
+    },
+
 
     toJSO: function(string) {
 
         var ssr = 44100; // stream sample rate SIC... do on init!!!
 
         var lines = string.split("\n");
-        // console.log(lines);
-        var l1 = "File type= \"ooTextFile\"";
-        var l2 = "Object class = \"TextGrid\"";
 
         var tiers = [];
         var tT, tN, eT, lab;
@@ -19,7 +21,7 @@ EmuLabeller.TextGridParser = {
             tiers: []
         };
 
-        if (lines[0] == l1 && lines[1] == l2) {
+        if (lines[0] == this.l1 && lines[1] == this.l2) {
             for (var i = 8; i < lines.length; i++) {
                 var curLineEl1 = lines[i].split(/\s+/)[1];
                 if (!curLineEl1) continue;
@@ -88,14 +90,38 @@ EmuLabeller.TextGridParser = {
 
     /**
      * converts the internal labelJSO
-     * to a string containing a textgrid file
+     * to a string containing a TextGrid file
      * with the according segments
      * @param labelJSO
      */
     toTextGrid: function(labelJSO) {
+        var tG = "";
+        var nl = "\n";
 
-        console.log("not implemented yet");
+        // writing header infos
+        tG = tG + this.l1 + nl + this.l2 + nl + nl;
+        tG = tG + "xmin = " + this.findTimeOfMinSample(labelJSO) + nl;
+        tG = tG + "xmax = " + this.findTimeOfMaxSample(labelJSO) + nl + nl;
+        tG = tG + "tiers? <exists>" + nl + nl;
+        tG = tG + "size = " + labelJSO.tiers.length + nl;
+        tG = tG + "item []:" + nl;
 
+        console.log(tG);
+
+    },
+
+    /**
+     *
+     */
+    findTimeOfMinSample: function(labelJSO) {
+        return 0.000000; // SIC!!! Find length in obj
+    },
+
+    /**
+     *
+     */
+    findTimeOfMaxSample: function(labelJSO) {
+        return 2.904450; // SIC!!! Find length in obj
     }
 
 };

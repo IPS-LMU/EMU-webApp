@@ -116,7 +116,7 @@ var EmuLabeller = {
         this.timeline = params.timeline;
         this.tiers = params.tiers;
         this.showLeftPush = params.showLeftPush;
-        this.osciCanvas = params.osciCanvas;       
+        this.osciCanvas = params.osciCanvas;
 
 
         // Object Classes
@@ -151,7 +151,7 @@ var EmuLabeller = {
 
         // json validator
         this.tierHandler = Object.create(EmuLabeller.tierHandler);
-        this.tierHandler.init(params);        
+        this.tierHandler.init(params);
 
 
         // other used variables
@@ -312,13 +312,13 @@ var EmuLabeller = {
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
             }
-                     
+
 
         });
 
         // All mouse move Functions  
         document.addEventListener('mousemove', function(e) {
-            if(e.which == 1) {  // if left mouse button is pressed
+            if (e.which == 1) { // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                     my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                     my.drawer.uiDrawUpdate();
@@ -338,10 +338,9 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            }
-            else 
+            } else
                 my.internalMode == my.EDITMODE.STANDARD;
-            
+
             var curSample;
 
             // if (my.countSelected(my.viewPort.selTier) > 0) {
@@ -408,11 +407,11 @@ var EmuLabeller = {
             },
 
             update: function(event, ui) {
-                if(this.id == 'sortable-delete') {
-                // Remove the element dropped on #sortable-delete
-                jQuery('#'+ui.item.attr('id')).remove();
+                if (this.id == 'sortable-delete') {
+                    // Remove the element dropped on #sortable-delete
+                    jQuery('#' + ui.item.attr('id')).remove();
                 }
-            }           
+            }
         });
         $("#cans").disableSelection();
 
@@ -722,16 +721,18 @@ var EmuLabeller = {
             );
         } else if (ft == 1) {
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
-            this.tierHandler.addLoadedTiers(newTiers[0]);                  
+            this.tierHandler.addLoadedTiers(newTiers[0]);
         } else if (ft == 2) {
             var sCanName = "F0";
             my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
-            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);     
+            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
         } else if (ft == 3) {
-            this.tierHandler.addLoadedTiers(emulabeller.iohandler.parseTextGrid(readerRes));
-            
+            var parserRes=emulabeller.iohandler.parseTextGrid(readerRes);
+            emulabeller.iohandler.toTextGrid(parserRes);
+            this.tierHandler.addLoadedTiers(parserRes);
+
         }
     },
 
@@ -972,6 +973,7 @@ var EmuLabeller = {
         var bb = new Blob([JSON.stringify(this.tierHandler.tierInfos.tiers, undefined, 2)], {
             type: MIME_TYPE
         });
+        console.log(this.tierHandler.tierInfos.tiers)
 
         var a = document.createElement('a');
         a.download = "emulabellerjsOutput.txt";
@@ -993,8 +995,6 @@ var EmuLabeller = {
             // cleanUp(this);
         };
     },
-
-
 
 
 
@@ -1033,7 +1033,7 @@ var EmuLabeller = {
         });
     },
 
-   
+
 
     snapSelectedSegmentToNearestTop: function() {
         //find nearest evt in tier obove
