@@ -398,7 +398,7 @@ var EmuLabeller = {
             cursor: 'move',
             delay: 10,
             dropOnEmpty: true,
-            connectWith: 'ul.sortable',
+            //connectWith: '.myTest',
             start: function(event, ui) {
                 my.internalMode = my.EDITMODE.DRAGING_TIER;
                 my.tierHandler.removeLabelDoubleClick();

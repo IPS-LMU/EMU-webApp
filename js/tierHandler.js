@@ -89,11 +89,17 @@ EmuLabeller.tierHandler = {
 
         var action  = "<a href='#' id='"+myName+"_del' class='deleteButton'><img src='"+this.deleteImage+"' /></a>";
         var resize = " <a href='#' id='"+myName+"_res' class='resizeButton'><img src='"+this.resizeImage+"' /></a>";
-        $('<canvas>').attr({
+        var myCan = $('<canvas>').attr({
             id: myName,
             width: this.internalCanvasWidth,
             height: this.internalCanvasHeightSmall
-        }).addClass(myCssClass).add(action+resize).appendTo(myAppendTo);
+        }).addClass(myCssClass).add(action+resize);
+        
+        
+        var res = $('<div class="myTest">').attr({id: "myTest"}).html(myCan);
+        
+        res.appendTo(myAppendTo);
+        
 
         $("#" + myName).bind("click", function(event) {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
