@@ -338,7 +338,18 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            } else
+            } else if (e.shiftKey) {
+                if(e.srcElement.className == "tierSettings") {
+                my.internalMode = my.EDITMODE.LABEL_MOVE;
+                curSample = emulabeller.viewPort.getCurrentSample(my.getX(e));
+                my.tierHandler.moveBoundary(curSample);
+                //my.viewPort.selectS = curSample;
+                //my.viewPort.selectE = curSample;
+                // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
+                my.drawer.uiDrawUpdate();
+                }
+            }
+            else
                 my.internalMode == my.EDITMODE.STANDARD;
 
             var curSample;
@@ -362,16 +373,7 @@ var EmuLabeller = {
             //     }
             // }
             // } else 
-            if (e.shiftKey) {
-                my.internalMode = my.EDITMODE.LABEL_MOVE;
-                curSample = emulabeller.viewPort.getCurrentSample(my.getX(e));
-                //my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
-                my.tierHandler.moveBoundary(curSample);
-                //my.viewPort.selectS = curSample;
-                //my.viewPort.selectE = curSample;
-                // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
-                my.drawer.uiDrawUpdate();
-            }
+            
             // } else {
             //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
             //         my.internalMode = my.EDITMODE.STANDARD;

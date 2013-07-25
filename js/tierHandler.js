@@ -371,7 +371,6 @@ EmuLabeller.tierHandler = {
     saveLabelDoubleClick: function() {
         var tierDetails = this.getSelectedTier();
         var event = this.getSelectedSegmentInTier(tierDetails);
-        console.log(event);
         var content = $("#editArea").val();
         event[0].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
@@ -383,48 +382,45 @@ EmuLabeller.tierHandler = {
         $('#saveText').remove();
         $('#textAreaPopUp').remove();
     },    
-    
-    getSelBoundaryEventsWithSurroundingEvtsAndTiers: function() {
-        var res;
-        var t = this.tierInfos.tiers;
-        for (var k in t)
-            for (var j in t[k].events)
-                if (t[k].events[j].uiInfos.selBoundryStart === true) {
-                    res = {
-                        'tiers': [this.tierInfos.tiers[i - 1],
-                            this.tierInfos.tiers[i],
-                            this.tierInfos.tiers[i + 1]
-                        ],
-                        'evts': [this.tierInfos.tiers[i].events[j - 1],
-                            this.tierInfos.tiers[i].events[j],
-                            this.tierInfos.tiers[i].events[j + 1]
-                        ]
-                    };
-                }
-        return res;
-    },
-    
-    
-
 
     moveBoundary: function(newTime) {
     
         newTime = Math.round(newTime);
-
-        var oldTime;
+        var left = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName-1];
+        var me = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
+        var right = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName+1];
         
-        var rightEdge;
+        if (this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].type == "seg") {
         
-        var t = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName];
-        var s = this.getSelectedSegmentInTier(t);
-
-        if (t.type == "seg") {
-        
-            for(var i=0;i<s.length; i++) {
-                var edge = s[i].startSample;
-                var dur = s[i].sampleDur;
-                
+            var old = me.startSample;
+            
+            // moving at the center
+            if(null!=left && null!=right) {
+                if (newTime > left.startSample && newTime < right.startSample) {
+                    me.startSample = newTime;
+                    me.sampleDur -= (newTime-old);
+                    left.sampleDur += (newTime-old);                    
+                }
             }
+            // moving the last element
+            else if (null!=left) {
+                if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
+                    left.sampleDur += (newTime-old);                    
+                    me.startSample = newTime;
+                    me.sampleDur -= (newTime-old);
+                }
+            
+            }
+            // moving the fist element
+            else if (null!=right) {
+                if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
+                    me.startSample = newTime;
+                    me.sampleDur -= (newTime-old);
+                }
+            
+            }
+            
+            
             
         
             /*oldTime = evts[1].startSample;
