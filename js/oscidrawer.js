@@ -85,8 +85,8 @@ EmuLabeller.Drawer.OsciDrawer = {
                     my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], my.osciCanvas, emulabeller.backend.currentBuffer);
                 }
             });
-            // over sample exact
         } else if (k < 1) {
+            // over sample exact
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
             cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
@@ -95,6 +95,13 @@ EmuLabeller.Drawer.OsciDrawer = {
             }
             cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height); // SIC SIC SIC tail
             cc.stroke();
+            // draw sample dots
+            for (var i = 1; i < this.peaks.length; i++) {
+                cc.beginPath();
+                cc.arc(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height, 2, 0, 2 * Math.PI, false);
+                cc.stroke();
+                cc.fill();
+            }
         }
 
     },
@@ -160,14 +167,14 @@ EmuLabeller.Drawer.OsciDrawer = {
         var eTime;
         if (emulabeller.viewPort) {
             cc.font = "12px Verdana";
-            sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS/this.sR, 6);
-            eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS/this.sR, 6);
+            sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS / this.sR, 6);
+            eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS / this.sR, 6);
             var metrics = cc.measureText(sTime);
             cc.strokeText(eTime, 5, 5 + 8);
             cc.strokeText(eTime, this.osciCanvas.width - metrics.width - 5, 5 + 8);
         }
 
-        
+
         //draw emulabeller.viewPortselected
         if (emulabeller.viewPort.selectS !== 0 && emulabeller.viewPort.selectE !== 0) {
             var posS = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
@@ -187,14 +194,14 @@ EmuLabeller.Drawer.OsciDrawer = {
 
             cc.strokeStyle = this.waveColor;
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-                cc.strokeText(emulabeller.viewPort.selectS/this.sR, posS + 5, 13);
+                cc.strokeText(emulabeller.viewPort.selectS / this.sR, posS + 5, 13);
             } else {
-                var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS/this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS/this.sR, 6), posS - tW - 4, 13);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE/this.sR, 6), posE + 5, 13);
+                var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS - tW - 4, 13);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR, 6), posE + 5, 13);
 
-                tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE-emulabeller.viewPort.selectS)/this.sR,6)).width;
-                cc.strokeText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE-emulabeller.viewPort.selectS)/this.sR),6), posS+(posE-posS)/2 -tW/2, 13);
+                tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
+                cc.strokeText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, 13);
 
             }
         }
@@ -229,10 +236,10 @@ EmuLabeller.Drawer.OsciDrawer = {
         var sW = this.osciCanvas.width;
         var tH = inMemoryCanvas.height;
         var tW = inMemoryCanvas.width;
-        
+
         canvascc = inMemoryCanvas.getContext('2d');
         canvascc.clearRect(0, 0, tW, tH);
-        canvascc.drawImage(this.osciCanvas,0 ,0 ,sW ,sH, 0, 0, tW, tH );
+        canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
     },
 
     /**
@@ -254,7 +261,7 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         osciWidth = this.osciCanvas.width;
         osciHeight = this.osciCanvas.height;
-        
+
         this.getPeaks();
 
         // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
