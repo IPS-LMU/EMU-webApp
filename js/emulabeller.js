@@ -338,17 +338,7 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            } else if (e.shiftKey) {
-                if(e.srcElement.className == "tierSettings") {
-                my.internalMode = my.EDITMODE.LABEL_MOVE;
-                curSample = emulabeller.viewPort.getCurrentSample(my.getX(e));
-                my.tierHandler.moveBoundary(curSample);
-                //my.viewPort.selectS = curSample;
-                //my.viewPort.selectE = curSample;
-                // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
-                my.drawer.uiDrawUpdate();
-                }
-            }
+            } 
             else
                 my.internalMode == my.EDITMODE.STANDARD;
 
