@@ -181,11 +181,13 @@ canvas {
 .deleteButton img {
     width: 10px;
     height: 10px;
+    opacity: 0.75;
 
 }
 .resizeButton img {
     width: 10px;
     height: 10px;
+    opacity: 0.75;
 }
 
 .resizeButton {
