@@ -209,13 +209,13 @@ EmuLabeller.Drawer.OsciDrawer = {
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
             var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.viewPort.emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
+            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
             var procC = fracC / all2;
-            var posC = canvas.width * procC;
+            var posC = this.osciCanvas.width * procC;
 
             //draw cursor
             cc.fillStyle = this.cursorColor;
-            cc.fillRect(posC, 0, this.cursorWidth, canvas.height);
+            cc.fillRect(posC, 0, this.cursorWidth, this.osciCanvas.height);
             // console.log(all)
 
         }
