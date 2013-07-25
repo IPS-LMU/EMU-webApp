@@ -3,7 +3,7 @@ EmuLabeller.Drawer.OsciDrawer = {
     init: function(params) {
         this.waveColor = 'black';
         this.progressColor = 'grey';
-        this.scrollSegMarkerColor = "rgba(100, 100, 100, 0.6)";
+        this.scrollSegMarkerColor = "rgba(0, 0, 0, 0.3)";
 
         this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
         this.selBoundColor = "black";
@@ -283,19 +283,24 @@ EmuLabeller.Drawer.OsciDrawer = {
         var cH = this.scrollCanvas.height;
         var cW = this.scrollCanvas.width;
         canvascc = this.scrollCanvas.getContext('2d');
+        canvascc.globalCompositeOperation = "lighter";
         canvascc.clearRect(0, 0, cW, cH);
-
-        //draw osci minimap
-        canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
-
 
         var circCtl = 3;
         var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.viewPort.bufferLength) * cW) / 2 + 2 * circCtl;
-
         var curCenter = (emulabeller.viewPort.sS / emulabeller.viewPort.bufferLength * cW) + curDiam;
 
+        canvascc.globalAlpha=0.7; 
+        canvascc.drawImage(inMemoryCanvas,0, 0, cW, cH);
+        
+        canvascc.globalAlpha=1; 
         canvascc.fillStyle = this.scrollSegMarkerColor;
-        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
+           canvascc.beginPath();
+    
+         
+                    canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
+        canvascc.fill();
+         
 
 
         // SIC no more scroll bar
