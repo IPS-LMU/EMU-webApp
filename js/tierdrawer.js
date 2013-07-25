@@ -104,7 +104,7 @@ EmuLabeller.Drawer.TierDrawer = {
                 
                 if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS) {
                     perc = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
-                    if (id == emulabeller.viewPort.curMouseMoveSegmentName) {
+                    if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
                         cc.fillStyle = this.curSelBoundColor;
                         cc.fillRect(canvas.width * perc, 0, 8, canvas.height / 2 - canvas.height / 10);
                         tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
