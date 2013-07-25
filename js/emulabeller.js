@@ -923,8 +923,8 @@ var EmuLabeller = {
             window.URL.revokeObjectURL(prevLink.href);
             output.innerHTML = '';
         }
-
-        var bb = new Blob([JSON.stringify(this.tierHandler.tierInfos.tiers, undefined, 2)], {
+ 
+        var bb = new Blob([JSON.stringify(emulabeller.tierHandler.tierInfos.tiers, undefined, 2)], {
             type: MIME_TYPE
         });
         console.log(this.tierHandler.tierInfos.tiers)

@@ -51,7 +51,6 @@ EmuLabeller.tierHandler = {
         }
         this.addTiertoHtml(tName, "tierSettings", "#cans");
         this.tierInfos.tiers[tName] = newTier;
-        //emulabeller.viewPort.addTiertoSelection(tName);
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
 
         // save history state
