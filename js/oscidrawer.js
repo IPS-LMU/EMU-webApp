@@ -290,9 +290,13 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         var circCtl = 3;
-        var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.backend.currentBufferLength) * cW) / 2 + 2 * circCtl;
+        var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.viewPort.bufferLength) * cW) / 2 + 2 * circCtl;
 
-        var curCenter = (emulabeller.viewPort.sS / emulabeller.backend.currentBufferLength * cW) + curDiam;
+        var curCenter = (emulabeller.viewPort.sS / emulabeller.viewPort.bufferLength * cW) + curDiam;
+
+        canvascc.fillStyle = this.scrollSegMarkerColor;
+        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
+
 
         // SIC no more scroll bar
         // canvascc.beginPath();
@@ -313,8 +317,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         //      curCenter-curDiam, cH-cW+1);
 
 
-        canvascc.fillStyle = this.scrollSegMarkerColor;
-        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
 
         // canvascc.fillStyle = "rgba(120, 120, 120, 0.5)";
         // canvascc.fill();

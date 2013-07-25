@@ -24,12 +24,12 @@ EmuLabeller.tierHandler = {
         if((this.myHistoryCounter-1)>=0) {
             delete this.tierInfos;
             this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-1]);
+            this.rebuildTiers();
         }
         else {
             alert("Cannot go back, no more history saved.... =(");
         }
         --this.myHistoryCounter;
-        this.rebuildTiers();
         emulabeller.drawBuffer();
     },    
 
