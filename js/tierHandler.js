@@ -466,13 +466,20 @@ EmuLabeller.tierHandler = {
         changeTime = Math.round(newTime-this.lastSample);
         var t = this.tierInfos.tiers[myName];
         var distance = 0;
+        var first = null;
+        var last = null;
         if(null!=t) {
             var selected = emulabeller.viewPort.getAllSelected(t);
             for(var i=0;i<selected.length;i++) {
                 if(null!=selected[i]) {
                     this.tierInfos.tiers[myName].events[i].startSample += changeTime;
+                    if(first==null) first = i-1;
+                    last = i+1;
                 }
             }
+            this.tierInfos.tiers[myName].events[first].sampleDur += changeTime;
+            this.tierInfos.tiers[myName].events[last].startSample += changeTime;
+            this.tierInfos.tiers[myName].events[last].sampleDur -= changeTime;
         }
         
     }
