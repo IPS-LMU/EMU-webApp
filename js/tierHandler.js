@@ -221,9 +221,8 @@ EmuLabeller.tierHandler = {
     
     resizeTier: function(tierName) {
         var s = this.internalCanvasHeightBig-1;
-        console.log($("#"+tierName).height());
         if($("#"+tierName).height() >= s)
-            $("#"+tierName).height(this.internalCanvasHeightBig/3);
+            $("#"+tierName).height(this.internalCanvasHeightBig/2.9);
         else
             $("#"+tierName).height(this.internalCanvasHeightBig);
     },      
