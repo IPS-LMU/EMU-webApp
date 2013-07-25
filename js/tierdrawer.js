@@ -98,27 +98,28 @@ EmuLabeller.Drawer.TierDrawer = {
             }
         } else if (tierDetails.type == "point") {
             cc.fillStyle = this.startBoundaryColor;
-            var tierId = emulabeller.viewPort.curMouseMoveTierName;
-            var segId = emulabeller.viewPort.curMouseMoveSegmentName;
-            console.log(tierId +" "+segId );
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
-                
+                var id = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
                 
                 if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS) {
                     perc = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
-                    var nowid = emulabeller.viewPort.getId(tierDetails,curEvt.label,curEvt.startSample);
-                    if (tierDetails.TierName == tierId && segId == nowid) {
+                    if (id == emulabeller.viewPort.curMouseMoveSegmentName) {
                         cc.fillStyle = this.curSelBoundColor;
+                        cc.fillRect(canvas.width * perc, 0, 8, canvas.height / 2 - canvas.height / 10);
+                        tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
+                        cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 8, canvas.height / 2 - canvas.height / 10);
                     }else{
                         cc.fillStyle = this.startBoundaryColor;
+                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
+                        tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
+                        cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10)
                     }
                     
                     
-                    cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
-                    tW = cc.measureText(tierDetails.events[curEvtNr].label).width;
-                    cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
-                    cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10);
+                    
                 }
             }
         }

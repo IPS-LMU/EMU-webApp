@@ -120,7 +120,6 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("mousemove", function(event) {
-
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
                 curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
@@ -163,7 +162,7 @@ EmuLabeller.tierHandler = {
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         }
         else if (curTierDetails.type=="point") {
-        
+            var event = this.findAndMarkNearestPointBoundry(curTierDetails, curSample);
         }
         if(null != event) {
             emulabeller.viewPort.curMouseMoveTierName = curTierDetails.TierName;
@@ -175,7 +174,20 @@ EmuLabeller.tierHandler = {
         emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
     },
 
-    findAndMarkNearestSegmentBoundry: function(t, curSample, markAsSel) {
+    findAndMarkNearestSegmentBoundry: function(t, curSample) {
+        var closestStartSample = null;
+        var closestStartEvt = null;
+        var e = t.events;
+        for (var k in e) {
+            if (closestStartSample === null || Math.abs(e[k].startSample - curSample) < Math.abs(closestStartSample - curSample)) {
+                closestStartSample = e[k].startSample;
+                closestStartEvt = e[k];
+            }
+        }
+        return closestStartEvt;
+    },   
+
+    findAndMarkNearestPointBoundry: function(t, curSample) {
         var closestStartSample = null;
         var closestStartEvt = null;
         var e = t.events;
@@ -436,9 +448,6 @@ EmuLabeller.tierHandler = {
             
             }
             
-            
-            
-        
             /*oldTime = evts[1].startSample;
             leftEdge = evts[0].startSample;
             rightEdge = evts[1].startSample + evts[1].sampleDur;
@@ -458,13 +467,30 @@ EmuLabeller.tierHandler = {
             }*/
         } else {
 
-            oldTime = evts[1].startSample;
-            leftEdge = evts[0].startSample;
-            rightEdge = evts[2].startSample;
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
+            oldTime = me.startSample;
+            if(null!=left && null!=right) {
+                if (newTime > left.startSample && newTime < right.startSample) {
+                    me.startSample = newTime;
+                }
             }
-
+            // moving the last element
+            else if (null!=left) {
+                if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
+                    left.sampleDur += (newTime-old);                    
+                    me.startSample = newTime;
+                    me.sampleDur -= (newTime-old);
+                }
+            
+            }
+            // moving the fist element
+            else if (null!=right) {
+                if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
+                    me.startSample = newTime;
+                    me.sampleDur -= (newTime-old);
+                }
+            
+            }
+            
         }
     }
 };
