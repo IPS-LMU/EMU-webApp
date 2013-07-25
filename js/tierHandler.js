@@ -15,8 +15,8 @@ EmuLabeller.tierHandler = {
         
     },
     
-    history: function(tierInfos) {
-        this.myHistory[this.myHistoryCounter] = jQuery.extend(true, {}, tierInfos);
+    history: function() {
+        this.myHistory[this.myHistoryCounter] = jQuery.extend(true, {}, this.tierInfos);
         ++this.myHistoryCounter;
     },
     
@@ -57,7 +57,7 @@ EmuLabeller.tierHandler = {
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
 
         // save history state
-        this.history(this.tierInfos);
+        this.history();
     },
 
     addLoadedTiers: function(loadedTiers) {
@@ -67,7 +67,7 @@ EmuLabeller.tierHandler = {
              my.tierInfos.tiers[this.TierName] = this;
         });
         // save history state
-        this.history(this.tierInfos); 
+        this.history(); 
     },
 
     getLength: function() {
@@ -205,7 +205,7 @@ EmuLabeller.tierHandler = {
         delete this.tierInfos.tiers[tierName];
         
         // save history state
-        this.history(this.tierInfos);
+        this.history();
     },
     
     resizeTier: function(tierName) {
@@ -401,7 +401,7 @@ EmuLabeller.tierHandler = {
         emulabeller.drawer.updateSingleTier(tierDetails);
 
         // save history state
-        this.history(this.tierInfos);
+        this.history();
         
     },
 
@@ -470,10 +470,6 @@ EmuLabeller.tierHandler = {
                 }
             }
         }
-
-        // save history state
-        this.history(this.tierInfos);
-        
     }, 
       
 
@@ -507,9 +503,5 @@ EmuLabeller.tierHandler = {
                 t.events[last].sampleDur -= changeTime;
             }
         }
-        
-        // save history state
-        this.history(this.tierInfos);
-        
     }
 };

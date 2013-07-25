@@ -345,6 +345,8 @@ var EmuLabeller = {
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
+        
+                       
 
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();

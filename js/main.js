@@ -84,12 +84,16 @@ var emulabeller = (function() {
 
     document.addEventListener('keyup', function(e) {
         // spacebar
+        var code = (e.keyCode ? e.keyCode : e.which);
         if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
-            var code = (e.keyCode ? e.keyCode : e.which);
             if (27 == code) {
                 emulabeller.tierHandler.removeLabelDoubleClick();
             }
         }
+        if (16 == code) 
+            emulabeller.tierHandler.history();
+        if (18 == code) 
+            emulabeller.tierHandler.history();
     });
 
     // keypress bindings
