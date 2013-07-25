@@ -12,6 +12,8 @@ EmuLabeller.tierHandler = {
         this.lastSample = 0;
         this.myHistoryCounter = 0;
         this.myHistory = new Object();
+        this.editAreaName = "textAreaPopUp";
+        this.editAreaTextfieldName = "editArea";
         
     },
     
@@ -324,10 +326,7 @@ EmuLabeller.tierHandler = {
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);        
-        
-        var edit = $('#textAreaPopUp');
-        
-        
+        var edit = $('#'+this.editAreaName);
         if (edit.length === 0) {
             if (tierDetails.type == "seg") {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
@@ -337,32 +336,29 @@ EmuLabeller.tierHandler = {
                 var textAreaY = canvas.offsetTop + 2;
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(canvas.height / 2 - 5);
-                
-                
-                var edit = $("<textarea class='editArea'>").attr({
-                     id:'editArea'
+                var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
+                     id:this.editAreaTextfieldName
                  }).css({
                      "width": textAreaWidth+"px",
                      "height": textAreaHeight+"px"
                  }).text(nearest.label);
                 
-                
-                var area = $("<div class='textAreaPopUp'>").attr({
-                    id: 'textAreaPopUp'
+                var area = $("<div class='"+this.editAreaName+"'>").attr({
+                    id: this.editAreaName
                 }).css({
                     "top": textAreaY+"px",
                     "left":textAreaX+"px"
                 }).prepend(edit);
                 $("#tiers").append(area);
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-                $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
+                $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) { //TODO remove \n
                     evt = evt || window.event;
                     if (evt.keyCode == 13) {
                         my.saveLabelDoubleClick();
                         my.removeLabelDoubleClick();
                     }
                 };
-                my.createSelection(document.getElementById('editArea'), 0, nearest.label.length); // select textarea text 
+                my.createSelection(document.getElementById(this.editAreaTextfieldName), 0, nearest.label.length); // select textarea text 
                 
             } else if (tierDetails.type == "point") {
                 alert("no point editing yet! Sorry...");
@@ -409,7 +405,7 @@ EmuLabeller.tierHandler = {
 
     saveLabelDoubleClick: function() {
         var tierDetails = this.getSelectedTier();
-        var content = $("#editArea").val();
+        var content = $("#"+this.editAreaTextfieldName).val();
         console.log(emulabeller.viewPort.getSelectName());
         tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
@@ -421,9 +417,8 @@ EmuLabeller.tierHandler = {
 
     removeLabelDoubleClick: function() { //maybe rename to removeLabelBox or something
         var my = this;
-        $('textarea#editArea').remove();
-        $('#saveText').remove();
-        $('#textAreaPopUp').remove();
+        $('textarea#'+this.editAreaTextfieldName).remove();
+        $('#'+this.editAreaName).remove();
     },    
 
     moveBoundary: function(newTime, myName) {
