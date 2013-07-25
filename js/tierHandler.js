@@ -145,7 +145,7 @@ EmuLabeller.tierHandler = {
      * @param tierID id of canvas calling this function
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
-        if (!event.shiftKey) {
+        //if (!event.shiftKey) {
             var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
             var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
@@ -156,7 +156,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
             }
             emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
-        }
+        //}
     },
 
     findAndMarkNearestSegmentBoundry: function(t, curSample, markAsSel) {
