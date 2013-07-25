@@ -414,6 +414,7 @@ EmuLabeller.tierHandler = {
     moveBoundary: function(newTime) {
     
         newTime = Math.round(newTime);
+        if(null!=this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName]) {
         var left = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName-1];
         var me = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
         var right = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName+1];
@@ -490,7 +491,7 @@ EmuLabeller.tierHandler = {
                 }
             
             }
-            
+        }
         }
     }
 };
