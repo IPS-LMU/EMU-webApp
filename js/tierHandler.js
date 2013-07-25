@@ -460,26 +460,38 @@ EmuLabeller.tierHandler = {
                 }
             }
         }
-    },    
+    }, 
+      
 
     moveSegment: function(newTime, myName) {
         changeTime = Math.round(newTime-this.lastSample);
         var t = this.tierInfos.tiers[myName];
-        var distance = 0;
-        var first = null;
-        var last = null;
+        var doMove = false;
+        var first = true;
+        var last = 0;
+        var l = emulabeller.viewPort.countSelected();
         if(null!=t) {
             var selected = emulabeller.viewPort.getAllSelected(t);
             for(var i=0;i<selected.length;i++) {
                 if(null!=selected[i]) {
-                    this.tierInfos.tiers[myName].events[i].startSample += changeTime;
-                    if(first==null) first = i-1;
+                    if(first) {
+                        if( ( t.events[i].startSample + changeTime>=t.events[i-1].startSample ) && 
+                            ( t.events[i+l-1].startSample + t.events[i+l-1].sampleDur + changeTime<=t.events[i+l+1].startSample ) ) {
+                            doMove = true;
+                            t.events[i-1].sampleDur += changeTime;
+                        }
+                        first = false;
+                    }
+                    if(doMove) {
+                        t.events[i].startSample += changeTime;
+                    }
                     last = i+1;
                 }
             }
-            this.tierInfos.tiers[myName].events[first].sampleDur += changeTime;
-            this.tierInfos.tiers[myName].events[last].startSample += changeTime;
-            this.tierInfos.tiers[myName].events[last].sampleDur -= changeTime;
+            if(doMove) {
+                t.events[last].startSample += changeTime;
+                t.events[last].sampleDur -= changeTime;
+            }
         }
         
     }
