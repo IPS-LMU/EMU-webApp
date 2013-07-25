@@ -295,38 +295,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         
         canvascc.globalAlpha=1; 
         canvascc.fillStyle = this.scrollSegMarkerColor;
-           canvascc.beginPath();
-    
-         
-                    canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
-        canvascc.fill();
-         
-
-
-        // SIC no more scroll bar
-        // canvascc.beginPath();
-        // canvascc.moveTo(curCenter-curDiam, cH-cW+1);
-        // canvascc.lineTo(curCenter+curDiam, cH-cW+1);
-        // canvascc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-cW+1,
-        //             curCenter+curDiam+circCtl, cH-cW/2);
-
-        // canvascc.quadraticCurveTo(curCenter+curDiam+circCtl, cH-1,
-        //     curCenter+curDiam, cH-1);
-
-        // canvascc.lineTo(curCenter-curDiam, cH-1);
-
-        // canvascc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-1,
-        //     curCenter-curDiam-circCtl, cH-cW/2);
-
-        // canvascc.quadraticCurveTo(curCenter-curDiam-circCtl, cH-cW+1,
-        //      curCenter-curDiam, cH-cW+1);
-
-
-
-        // canvascc.fillStyle = "rgba(120, 120, 120, 0.5)";
-        // canvascc.fill();
-
-        // canvascc.strokeStyle = "rgba(120, 120, 120, 1)";
-        // canvascc.stroke();
+        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
     }
 };
