@@ -36,6 +36,7 @@ EmuLabeller.ViewPort = {
         
         // id of tier and segment CLICKED on
         this.MouseTierName = "";
+        this.MouseSegmentName = "";
         
         // id of tier and segment MOVED on
         this.curMouseClickTierName = "";
@@ -61,9 +62,14 @@ EmuLabeller.ViewPort = {
     getSelectTier: function() {
         return this.MouseTierName;
     },
+    
+    getSelectName: function() {
+        return this.MouseSegmentName;
+    },    
 
     setSelectSegment: function(tier, name, start, duration, isSelected) {
         var id = this.getId(tier, name, start);
+        this.MouseSegmentName = id;
         this.uiInfo[id] = isSelected;
         this.resizeSelectArea(start, start+duration);
     },
@@ -109,8 +115,7 @@ EmuLabeller.ViewPort = {
         }
         else 
             return false;
-    },   
-                
+    },               
     
         
     countSelected: function() {

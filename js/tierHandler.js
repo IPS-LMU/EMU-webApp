@@ -240,6 +240,7 @@ EmuLabeller.tierHandler = {
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
+                emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
@@ -247,7 +248,6 @@ EmuLabeller.tierHandler = {
         }
         
         }               
-        
         
         emulabeller.drawBuffer();
     },
@@ -274,6 +274,7 @@ EmuLabeller.tierHandler = {
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
+                emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 if(emulabeller.viewPort.setSelectMultiSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true) == false) {
@@ -310,17 +311,14 @@ EmuLabeller.tierHandler = {
     },
         
 
-    getSelectedSegmentInTier: function(t) {
-        return emulabeller.viewPort.getAllSelected(t);
-    },
-    
-
     handleTierDoubleClick: function(percX, percY, tierDetails) {
         var my = this;
+        var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+        emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
         if ($('#textAreaPopUp').length === 0) {
             if (tierDetails.type == "seg") {
-                var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
-
                 var posS = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectE);
                 var textAreaX = Math.round(posS) + tierDetails.uiInfos.canvas.offsetLeft + 2;
@@ -389,9 +387,9 @@ EmuLabeller.tierHandler = {
 
     saveLabelDoubleClick: function() {
         var tierDetails = this.getSelectedTier();
-        var event = this.getSelectedSegmentInTier(tierDetails);
         var content = $("#editArea").val();
-        event[0].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
+        console.log(emulabeller.viewPort.getSelectName());
+        tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
     },
 
