@@ -16,6 +16,7 @@ EmuLabeller.tierHandler = {
         this.editAreaTextfieldName = "editArea";
         this.tierCssName = "tierSettings";
         this.cans = params.cans;
+        this.historyEndError = "Cannot go back, no more history saved.... =(";
         
     },
     
@@ -32,9 +33,7 @@ EmuLabeller.tierHandler = {
             this.rebuildTiers();
             emulabeller.drawBuffer();
         }
-        else {
-            alert("Cannot go back, no more history saved.... =(");
-        }
+        else alert(this.historyEndError);
     },    
 
     addTier: function(addPointTier) {
@@ -56,10 +55,12 @@ EmuLabeller.tierHandler = {
         }
         this.addTiertoHtml(tName, this.tierCssName, "#"+this.cans.id);
         this.tierInfos.tiers[tName] = newTier;
-        emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
 
         // save history state
         this.history();
+        
+        emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
+        
     },
 
     addLoadedTiers: function(loadedTiers) {
@@ -219,10 +220,12 @@ EmuLabeller.tierHandler = {
     },
     
     resizeTier: function(tierName) {
-        if($("#"+tierName).height()>=63)
-            $("#"+tierName).height(24);
+        var s = this.internalCanvasHeightBig-1;
+        console.log($("#"+tierName).height());
+        if($("#"+tierName).height() >= s)
+            $("#"+tierName).height(this.internalCanvasHeightBig/3);
         else
-            $("#"+tierName).height(64);
+            $("#"+tierName).height(this.internalCanvasHeightBig);
     },      
 
     handleTierClick: function(percX, percY, tierDetails) {
