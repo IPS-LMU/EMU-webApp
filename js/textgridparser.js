@@ -55,13 +55,7 @@ EmuLabeller.TextGridParser = {
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
                         startSample: Math.round(eSt),
-                        sampleDur: Math.round(eEt - eSt),
-                        uiInfos: {
-                            selSeg: false,
-                            selBoundryStart: false,
-                            selBoundryEnd: false,
-                            lastValues: []
-                        }
+                        sampleDur: Math.round(eEt - eSt)
                     });
                 } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points[") === 0) {
                     // parse point tier event
@@ -70,11 +64,7 @@ EmuLabeller.TextGridParser = {
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
-                        startSample: Math.round(eT),
-                        uiInfos: {
-                            selBoundryStart: false,
-                            lastValues: []
-                        }
+                        startSample: Math.round(eT)
                     });
                 }
 

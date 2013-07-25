@@ -157,17 +157,22 @@ EmuLabeller.tierHandler = {
      * @param tierID id of canvas calling this function
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
-            var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
-            var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
+        var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
+        var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
+        if(curTierDetails.type=="seg") {
             var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
-            if(null != event) {
-                emulabeller.viewPort.curMouseMoveTierName = curTierDetails.TierName;
-                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
-                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
-                
-            }
-            emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
+        }
+        else if (curTierDetails.type=="point") {
+        
+        }
+        if(null != event) {
+            emulabeller.viewPort.curMouseMoveTierName = curTierDetails.TierName;
+            emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
+            emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+            emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;    
+        }
+
+        emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
     },
 
     findAndMarkNearestSegmentBoundry: function(t, curSample, markAsSel) {
