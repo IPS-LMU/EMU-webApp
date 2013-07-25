@@ -21,7 +21,8 @@ EmuLabeller.tierHandler = {
     },
     
     goBackHistory: function() {
-        if(this.myHistoryCounter-1>0) {;
+        if((this.myHistoryCounter-1)>=0) {
+            delete this.tierInfos;
             this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-1]);
         }
         else {
