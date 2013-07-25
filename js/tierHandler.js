@@ -322,10 +322,13 @@ EmuLabeller.tierHandler = {
         var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
-        
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);        
-        if ($('#textAreaPopUp').length === 0) {
+        
+        var edit = $('#textAreaPopUp');
+        
+        
+        if (edit.length === 0) {
             if (tierDetails.type == "seg") {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
@@ -334,14 +337,24 @@ EmuLabeller.tierHandler = {
                 var textAreaY = canvas.offsetTop + 2;
                 var textAreaWidth = Math.floor(posE - posS - 5);
                 var textAreaHeight = Math.floor(canvas.height / 2 - 5);
-                var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + nearest.label + "</textarea>";
-                var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
-                var appendString = textArea + saveButton;
-                $("#tiers").append(appendString);
+                
+                
+                var edit = $("<textarea class='editArea'>").attr({
+                     id:'editArea'
+                 }).css({
+                     "width": textAreaWidth+"px",
+                     "height": textAreaHeight+"px"
+                 }).text(nearest.label);
+                
+                
+                var area = $("<div class='textAreaPopUp'>").attr({
+                    id: 'textAreaPopUp'
+                }).css({
+                    "top": textAreaY+"px",
+                    "left":textAreaX+"px"
+                }).prepend(edit);
+                $("#tiers").append(area);
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-                $("#saveText")[0].addEventListener('click', function(e) {
-                    my.saveLabelDoubleClick();
-                });
                 $("#editArea")[0].onkeyup = function(evt) { //TODO remove \n
                     evt = evt || window.event;
                     if (evt.keyCode == 13) {
