@@ -364,10 +364,11 @@ var EmuLabeller = {
             // } else 
             if (e.shiftKey) {
                 my.internalMode = my.EDITMODE.LABEL_MOVE;
-                curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
+                curSample = emulabeller.viewPort.getCurrentSample(my.getX(e));
+                //my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * (my.getX(e));
                 my.tierHandler.moveBoundary(curSample);
-                my.viewPort.selectS = curSample;
-                my.viewPort.selectE = curSample;
+                //my.viewPort.selectS = curSample;
+                //my.viewPort.selectE = curSample;
                 // my.drawer.uiAllTierDrawUpdate(my.viewPort, my.tierHandler.tierInfos);
                 my.drawer.uiDrawUpdate();
             }

@@ -95,7 +95,21 @@ EmuLabeller.ViewPort = {
             return this.uiInfo[this.getId(tier, name, start)];
         else 
             return false;
-    },         
+    }, 
+    
+    getAllSelected: function(tier) {
+        var ret = [];
+        var j = 0;
+        if(tier.TierName==this.getSelectTier()) {
+            for(e in tier.events) {
+                if(this.uiInfo[j]) ret.push(tier.events[e]); 
+                j++;
+            }
+            return ret;
+        }
+        else 
+            return false;
+    },             
     
         
     countSelected: function() {

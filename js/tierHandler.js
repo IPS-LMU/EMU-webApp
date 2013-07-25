@@ -292,10 +292,7 @@ EmuLabeller.tierHandler = {
         
 
     getSelectedSegmentInTier: function(t) {
-        var e = t.events;
-        for (var k in e) {
-            if(e[k].uiInfos.selSeg) return e[k];        
-        }
+        return emulabeller.viewPort.getAllSelected(t);
     },
     
 
@@ -374,8 +371,9 @@ EmuLabeller.tierHandler = {
     saveLabelDoubleClick: function() {
         var tierDetails = this.getSelectedTier();
         var event = this.getSelectedSegmentInTier(tierDetails);
+        console.log(event);
         var content = $("#editArea").val();
-        event.label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
+        event[0].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
     },
 
@@ -410,19 +408,26 @@ EmuLabeller.tierHandler = {
 
 
     moveBoundary: function(newTime) {
-        var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        evts = evtsNtiers.events;
-        var tier = evtsNtiers.tiers[1];
-
+    
         newTime = Math.round(newTime);
 
         var oldTime;
-        var leftEdge;
+        
         var rightEdge;
+        
+        var t = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName];
+        var s = this.getSelectedSegmentInTier(t);
 
-
-        if (tier.type == "seg") {
-            oldTime = evts[1].startSample;
+        if (t.type == "seg") {
+        
+            for(var i=0;i<s.length; i++) {
+                var edge = s[i].startSample;
+                var dur = s[i].sampleDur;
+                
+            }
+            
+        
+            /*oldTime = evts[1].startSample;
             leftEdge = evts[0].startSample;
             rightEdge = evts[1].startSample + evts[1].sampleDur;
 
@@ -438,7 +443,7 @@ EmuLabeller.tierHandler = {
                 // correct for locking mode (sampleDur changes of perv segment) will change in future
                 evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
 
-            }
+            }*/
         } else {
 
             oldTime = evts[1].startSample;
