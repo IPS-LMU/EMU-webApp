@@ -121,14 +121,19 @@ EmuLabeller.tierHandler = {
         });
         $("#" + myName).bind("mousemove", function(event) {
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
+                emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
+                curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
+                emulabeller.tierHandler.moveBoundary(curSample, myName);
+                emulabeller.drawer.uiDrawUpdate();
+            }
+            else if (emulabeller.tierHandler.isSelected && event.altKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
                 curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
-                emulabeller.tierHandler.moveBoundary(curSample);
+                emulabeller.tierHandler.moveSegment(curSample, myName);
                 emulabeller.drawer.uiDrawUpdate();
             }
             else {
                 emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
-                emulabeller.tierHandler.isSelected = true;
             }
         });
         $("#" + myName).bind("mouseout", function(event) {
@@ -158,17 +163,13 @@ EmuLabeller.tierHandler = {
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
-        if(curTierDetails.type=="seg") {
-            var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
-        }
-        else if (curTierDetails.type=="point") {
-            var event = this.findAndMarkNearestPointBoundry(curTierDetails, curSample);
-        }
+        var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {
             emulabeller.viewPort.curMouseMoveTierName = curTierDetails.TierName;
             emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(curTierDetails,event.label,event.startSample);
             emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-            emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;    
+            emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
+            emulabeller.tierHandler.isSelected = true;    
         }
 
         emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
@@ -186,19 +187,7 @@ EmuLabeller.tierHandler = {
         }
         return closestStartEvt;
     },   
-
-    findAndMarkNearestPointBoundry: function(t, curSample) {
-        var closestStartSample = null;
-        var closestStartEvt = null;
-        var e = t.events;
-        for (var k in e) {
-            if (closestStartSample === null || Math.abs(e[k].startSample - curSample) < Math.abs(closestStartSample - curSample)) {
-                closestStartSample = e[k].startSample;
-                closestStartEvt = e[k];
-            }
-        }
-        return closestStartEvt;
-    },    
+  
     
     getSelectTierDetailsFromTierWithName: function(tierName) {
         return this.tierInfos.tiers[tierName];
@@ -411,87 +400,90 @@ EmuLabeller.tierHandler = {
         $('#textAreaPopUp').remove();
     },    
 
-    moveBoundary: function(newTime) {
-    
+    moveBoundary: function(newTime, myName) {
         newTime = Math.round(newTime);
-        if(null!=this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName]) {
-        var left = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName-1];
-        var me = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
-        var right = this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].events[emulabeller.viewPort.curMouseMoveSegmentName+1];
+        if(null!=this.tierInfos.tiers[myName]) {
+            var left = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName-1];
+            var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
+            var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName+1];
         
-        if (this.tierInfos.tiers[emulabeller.viewPort.curMouseMoveTierName].type == "seg") {
-        
-            var old = me.startSample;
+            if (this.tierInfos.tiers[myName].type == "seg") {
+                var old = me.startSample;
             
-            // moving at the center
-            if(null!=left && null!=right) {
-                if (newTime > left.startSample && newTime < right.startSample) {
-                    me.startSample = newTime;
-                    me.sampleDur -= (newTime-old);
-                    left.sampleDur += (newTime-old);                    
+                // moving at the center
+                if(null!=left && null!=right) {
+                    if (newTime > left.startSample && newTime < right.startSample) {
+                        me.startSample = newTime;
+                        me.sampleDur -= (newTime-old);
+                        left.sampleDur += (newTime-old);                    
+                    }
                 }
-            }
-            // moving the last element
-            else if (null!=left) {
-                if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
-                    left.sampleDur += (newTime-old);                    
-                    me.startSample = newTime;
-                    me.sampleDur -= (newTime-old);
+                // moving the last element
+                else if (null!=left) {
+                    if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
+                        left.sampleDur += (newTime-old);                    
+                        me.startSample = newTime;
+                        me.sampleDur -= (newTime-old);
+                    }
+                
                 }
-            
-            }
-            // moving the fist element
-            else if (null!=right) {
-                if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
-                    me.startSample = newTime;
-                    me.sampleDur -= (newTime-old);
+                // moving the fist element
+                else if (null!=right) {
+                    if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
+                        me.startSample = newTime;
+                        me.sampleDur -= (newTime-old);
+                    }
                 }
-            
-            }
-            
-            /*oldTime = evts[1].startSample;
-            leftEdge = evts[0].startSample;
-            rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-            if (newTime > leftEdge && newTime < rightEdge) {
-                evts[1].startSample = newTime;
-                // correct for locking mode (sampleDur changes of current segment) will change in future
-                if (oldTime < newTime) {
-                    evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-                } else {
-                    evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
+            } else {
+                oldTime = me.startSample;
+                if(null!=left && null!=right) {
+                    if (newTime > left.startSample && newTime < right.startSample) {
+                        me.startSample = newTime;
+                    }
                 }
-
-                // correct for locking mode (sampleDur changes of perv segment) will change in future
-                evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-
-            }*/
-        } else {
-
-            oldTime = me.startSample;
-            if(null!=left && null!=right) {
-                if (newTime > left.startSample && newTime < right.startSample) {
-                    me.startSample = newTime;
+                // moving the last element
+                else if (null!=left) {
+                    if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
+                        left.sampleDur += (newTime-old);                    
+                        me.startSample = newTime;
+                        me.sampleDur -= (newTime-old);
+                    }   
+                 }
+                // moving the fist element
+                else if (null!=right) {
+                    if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
+                        me.startSample = newTime;
+                        me.sampleDur -= (newTime-old);
+                    }
                 }
-            }
-            // moving the last element
-            else if (null!=left) {
-                if (newTime > left.startSample && newTime < (emulabeller.viewPort.eS-20)) {
-                    left.sampleDur += (newTime-old);                    
-                    me.startSample = newTime;
-                    me.sampleDur -= (newTime-old);
-                }
-            
-            }
-            // moving the fist element
-            else if (null!=right) {
-                if (newTime > (emulabeller.viewPort.sS+20) && newTime < right.startSample) {
-                    me.startSample = newTime;
-                    me.sampleDur -= (newTime-old);
-                }
-            
             }
         }
+    },    
+
+    moveSegment: function(newTime,myName) {
+        newTime = Math.round(newTime);
+        var t = this.tierInfos.tiers[myName];
+        var distance = 0;
+        if(null!=t) {
+            var selected = emulabeller.viewPort.getAllSelected(t);
+            for(var i=0;i<selected.length;i++) {
+                if(null!=selected[i]) {
+                    var me = this.tierInfos.tiers[myName].events[i];
+                    var old = me.startSample;
+                    me.startSample += newTime+distance;
+                    distance += me.sampleDur;
+                    //me.sampleDur -= (newTime-old);
+                }
+            }
+            /*var me = this.tierInfos.tiers[myName].events[first];
+            var old = me.startSample;
+            me.startSample = newTime;
+            //me.sampleDur -= (newTime-old);
+            var me = this.tierInfos.tiers[myName].events[last];
+            var old = me.startSample;
+            me.startSample = newTime;
+            //me.sampleDur -= (newTime-old);*/
+            
         }
     }
 };

@@ -56,7 +56,7 @@ var EmuLabeller = {
             LABEL_MOVE: {
                 value: 2,
                 name: "LabelRenameMode"
-            }, // no keybindings exept enter -> save
+            }, 
 
             // when draging in a tier / multiple tiers
             LABEL_RESIZE: {
@@ -342,34 +342,6 @@ var EmuLabeller = {
             else
                 my.internalMode == my.EDITMODE.STANDARD;
 
-            var curSample;
-
-            // if (my.countSelected(my.viewPort.selTier) > 0) {
-
-            // if (e.shiftKey) {
-            //     my.internalMode = my.EDITMODE.LABEL_MOVE;
-            //     curSample = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-            //     if (my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0]] != my.viewPort.selectedSegments[my.viewPort.selTier][my.viewPort.selBoundaries[0] + 1]) {
-            //         my.tierHandler.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selBoundaries[0]].time = curSample;
-            //         var leftSide = true;
-            //         if (Math.abs(my.viewPort.selectS - curSample) > Math.abs(my.viewPort.selectE - curSample))
-            //             leftSide = false;
-            //         if (leftSide)
-            //             my.viewPort.selectS = curSample;
-            //         else
-            //             my.viewPort.selectE = curSample;
-
-            //         my.drawer.uiDrawUpdate(my.viewPort, my.backend.currentBuffer);
-            //     }
-            // }
-            // } else 
-            
-            // } else {
-            //     if (my.internalMode == my.EDITMODE.LABEL_MOVE || my.internalMode == my.EDITMODE.LABEL_RESIZE) {
-            //         my.internalMode = my.EDITMODE.STANDARD;
-            //     }
-            // }
-            // }
             my.lastX = my.getX(e);
 
         });

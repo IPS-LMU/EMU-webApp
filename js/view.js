@@ -102,7 +102,7 @@ EmuLabeller.ViewPort = {
         var j = 0;
         if(tier.TierName==this.getSelectTier()) {
             for(e in tier.events) {
-                if(this.uiInfo[j]) ret.push(tier.events[e]); 
+                if(this.uiInfo[j]) ret[j] = tier.events[e]; 
                 j++;
             }
             return ret;
