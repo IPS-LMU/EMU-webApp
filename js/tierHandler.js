@@ -322,11 +322,12 @@ EmuLabeller.tierHandler = {
         var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
-        emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
+        
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);        
         if ($('#textAreaPopUp').length === 0) {
             if (tierDetails.type == "seg") {
+                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
                 var textAreaX = Math.round(posS) + canvas.offsetLeft + 2;
@@ -350,7 +351,7 @@ EmuLabeller.tierHandler = {
                 };
                 my.createSelection(document.getElementById('editArea'), 0, nearest.label.length); // select textarea text 
                 
-            } else if (tier.type == "point") {
+            } else if (tierDetails.type == "point") {
                 alert("no point editing yet! Sorry...");
             }
         } else {
