@@ -29,6 +29,7 @@ EmuLabeller.tierHandler = {
             alert("Cannot go back, no more history saved.... =(");
         }
         --this.myHistoryCounter;
+        this.rebuildTiers();
         emulabeller.drawBuffer();
     },    
 
@@ -194,6 +195,14 @@ EmuLabeller.tierHandler = {
     getSelectTierDetailsFromTierWithName: function(tierName) {
         return this.tierInfos.tiers[tierName];
     },
+    
+    rebuildTiers: function() {
+        for(t in this.tierInfos.tiers) {
+            if(null==document.getElementById(this.tierInfos.tiers[t].TierName)) {
+                this.addTiertoHtml(this.tierInfos.tiers[t].TierName, "tierSettings", "#cans");
+            }
+        }
+    },    
     
     removeTier: function(tierName) {
         $("#"+tierName).remove();
