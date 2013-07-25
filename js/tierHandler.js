@@ -53,7 +53,6 @@ EmuLabeller.tierHandler = {
         }
         this.addTiertoHtml(tName, "tierSettings", "#cans");
         this.tierInfos.tiers[tName] = newTier;
-        this.tierInfos.tiers[tName].uiInfos.canvas = $("#" + tName)[0];
         emulabeller.viewPort.addTiertoSelection(tName);
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
 
@@ -66,7 +65,6 @@ EmuLabeller.tierHandler = {
         $.each(loadedTiers.tiers, function() {
              my.addTiertoHtml(this.TierName, "tierSettings", "#cans");
              my.tierInfos.tiers[this.TierName] = this;
-             my.tierInfos.tiers[this.TierName].uiInfos.canvas = $("#" + this.TierName)[0];
         });
         // save history state
         this.history(this.tierInfos); 
@@ -79,26 +77,12 @@ EmuLabeller.tierHandler = {
         return r;
     },
 
+    getCanvas: function(name) {
+        return $("#" + name)[0];
+    },
 
-    showHideTierDial: function() {
-        emulabeller.isModalShowing = true;
-        $("#dialog-messageSh").dialog({
-            modal: true,
-            close: function() {
-                console.log("closing");
-                emulabeller.isModalShowing = false;
-            },
-            buttons: {
-                Ok: function() {
-                    $(this).dialog("close");
-                    var usrTxt = $("#dialShInput")[0].value;
-                    // emulabeller.tierInfos.tiers[0] = {};
-                    // emulabeller.tierInfos.canvases[0] = {};
-                    $("#" + usrTxt).slideToggle();
-                    emulabeller.isModalShowing = false;
-                }
-            }
-        });
+    getCanvasContext: function(name) {
+        return this.getCanvas(name).getContext('2d');
     },
     
     /**
@@ -240,14 +224,14 @@ EmuLabeller.tierHandler = {
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         this.removeLabelDoubleClick();
-        var canvas = tierDetails.uiInfos.canvas;
-        var cc = canvas.getContext('2d');
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         
-        var rXp = tierDetails.uiInfos.canvas.width * percX;
-        var rYp = tierDetails.uiInfos.canvas.height * percY;
-        var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
+        var rXp = canvas.width * percX;
+        var rYp = canvas.height * percY;
+        var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
-        if(rXp>tierDetails.uiInfos.canvas.width-(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
+        if(rXp>canvas.width-(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
             if(rYp<(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
 
                 return false;
@@ -288,12 +272,12 @@ EmuLabeller.tierHandler = {
             emulabeller.viewPort.resetSelection(tierDetails.events.length);
         }        
         this.removeLabelDoubleClick();
-        var canvas = tierDetails.uiInfos.canvas;
-        var cc = canvas.getContext('2d');
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         
-        var rXp = tierDetails.uiInfos.canvas.width * percX;
-        var rYp = tierDetails.uiInfos.canvas.height * percY;
-        var sXp = tierDetails.uiInfos.canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
+        var rXp = canvas.width * percX;
+        var rYp = canvas.height * percY;
+        var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
         if (tierDetails.type == "seg") {
             var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -343,14 +327,16 @@ EmuLabeller.tierHandler = {
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);        
         if ($('#textAreaPopUp').length === 0) {
             if (tierDetails.type == "seg") {
-                var posS = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectS);
-                var posE = emulabeller.viewPort.getPos(tierDetails.uiInfos.canvas.clientWidth, emulabeller.viewPort.selectE);
-                var textAreaX = Math.round(posS) + tierDetails.uiInfos.canvas.offsetLeft + 2;
-                var textAreaY = tierDetails.uiInfos.canvas.offsetTop + 2;
+                var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
+                var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
+                var textAreaX = Math.round(posS) + canvas.offsetLeft + 2;
+                var textAreaY = canvas.offsetTop + 2;
                 var textAreaWidth = Math.floor(posE - posS - 5);
-                var textAreaHeight = Math.floor(tierDetails.uiInfos.canvas.height / 2 - 5);
+                var textAreaHeight = Math.floor(canvas.height / 2 - 5);
                 var textArea = "<div id='textAreaPopUp' class='textAreaPopUp' style='top:" + textAreaY + "px;left:" + textAreaX + "px;'><textarea id='editArea' class='editArea'  wrap='off' style='width:" + textAreaWidth + "px;height:" + textAreaHeight + "px;'>" + nearest.label + "</textarea>";
                 var saveButton = "<input type='button' value='save' id='saveText' class='mini-btn saveText'></div>";
                 var appendString = textArea + saveButton;

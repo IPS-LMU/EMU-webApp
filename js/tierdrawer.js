@@ -22,8 +22,10 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawSingleTier: function(tierDetails,perx,pery) {
         var my = this;
-        var canvas = tierDetails.uiInfos.canvas;
-        var cc = canvas.getContext('2d');
+        //var canvas = tierDetails.uiInfos.canvas;
+        //var cc = canvas.getContext('2d');
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         var mpx = canvas.width * perx;
         var mpy = canvas.height * pery;
 
@@ -131,8 +133,8 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawVpMarkupSingleTier: function(tierDetails) {
         var my = this;
-        var canvas = tierDetails.uiInfos.canvas;
-        cc = canvas.getContext('2d');
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         var posS = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
 
