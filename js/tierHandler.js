@@ -25,16 +25,16 @@ EmuLabeller.tierHandler = {
     },
     
     goBackHistory: function() {
-        if((this.myHistoryCounter-1)>=0) {
+        if((this.myHistoryCounter-1)>0) {
             delete this.tierInfos;
-            this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-1]);
+            this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-2]);
+            --this.myHistoryCounter;
             this.rebuildTiers();
+            emulabeller.drawBuffer();
         }
         else {
             alert("Cannot go back, no more history saved.... =(");
         }
-        --this.myHistoryCounter;
-        emulabeller.drawBuffer();
     },    
 
     addTier: function(addPointTier) {

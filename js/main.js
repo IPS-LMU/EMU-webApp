@@ -84,7 +84,7 @@ var emulabeller = (function() {
         false);
 
 
-    document.addEventListener('keyup', function(e) {
+    window.addEventListener('keyup', function(e) {
         // spacebar
         var code = (e.keyCode ? e.keyCode : e.which);
         if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
