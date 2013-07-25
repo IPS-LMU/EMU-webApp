@@ -243,7 +243,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_playPause":
-                    my.playPause();
+                    my.playPauseInView();
                     break;
 
                 case "cmd_playSelected":
