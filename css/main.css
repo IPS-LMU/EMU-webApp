@@ -174,16 +174,24 @@ canvas {
 .deleteButton {
     z-index:2;
     position: absolute;
-    right: 50px;
+    right: 30px;
     margin: 2px;
     padding: 0px;
 }
+.deleteButton img {
+    width: 10px;
+    height: 10px;
 
+}
+.resizeButton img {
+    width: 10px;
+    height: 10px;
+}
 
 .resizeButton {
     z-index:2;
     position: absolute;
-    right: 30px;
+    right: 45px;
     margin: 2px;
     padding: 0px;
 }
