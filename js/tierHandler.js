@@ -94,7 +94,6 @@ EmuLabeller.tierHandler = {
      * @param
      */
     addTiertoHtml: function(myName, myCssClass, myAppendTo) {
-        
 
         var action  = "<a href='#' id='"+myName+"_del' class='deleteButton'><img src='"+this.deleteImage+"' /></a>";
         var resize = " <a href='#' id='"+myName+"_res' class='resizeButton'><img src='"+this.resizeImage+"' /></a>";
@@ -104,10 +103,7 @@ EmuLabeller.tierHandler = {
             height: this.internalCanvasHeightSmall
         }).addClass(myCssClass).add(action+resize);
         
-        
-        var res = $('<div class="myTest">').attr({id: "myTest"}).html(myCan);
-        
-        res.appendTo(myAppendTo);
+        $('<div class="myHull">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);
         
 
         $("#" + myName).bind("click", function(event) {

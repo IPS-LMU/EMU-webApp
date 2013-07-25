@@ -364,13 +364,6 @@ var EmuLabeller = {
             },
             stop: function(event, ui) {
                 my.internalMode = my.EDITMODE.STANDARD;
-            },
-
-            update: function(event, ui) {
-                if (this.id == 'sortable-delete') {
-                    // Remove the element dropped on #sortable-delete
-                    jQuery('#' + ui.item.attr('id')).remove();
-                }
             }
         });
         $("#cans").disableSelection();
