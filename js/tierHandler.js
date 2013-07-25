@@ -26,7 +26,7 @@ EmuLabeller.tierHandler = {
             this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-1]);
         }
         else {
-            alert("no more hisory saved....");
+            alert("Cannot go back, no more hisory saved.... =(");
         }
         --this.myHistoryCounter;
         emulabeller.drawBuffer();
