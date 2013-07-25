@@ -210,11 +210,6 @@ var EmuLabeller = {
                     my.tierHandler.addTier(true);
                     break;
 
-                case "cmd_removeTier":
-                case "cmd_showHideTier":
-                    my.tierHandler.showHideTierDial();
-                    break;
-
                 case "cmd_download":
                     my.prepDownload();
                     break;
