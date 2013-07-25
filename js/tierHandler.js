@@ -15,6 +15,7 @@ EmuLabeller.tierHandler = {
         this.editAreaName = "textAreaPopUp";
         this.editAreaTextfieldName = "editArea";
         this.tierCssName = "tierSettings";
+        this.cans = params.cans;
         
     },
     
@@ -53,7 +54,7 @@ EmuLabeller.tierHandler = {
                 events: []
             };
         }
-        this.addTiertoHtml(tName, this.tierCssName, "#cans");
+        this.addTiertoHtml(tName, this.tierCssName, "#"+this.cans.id);
         this.tierInfos.tiers[tName] = newTier;
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
 
@@ -64,7 +65,7 @@ EmuLabeller.tierHandler = {
     addLoadedTiers: function(loadedTiers) {
         var my = this;
         $.each(loadedTiers.tiers, function() {
-             my.addTiertoHtml(this.TierName, my.tierCssName, "#cans");
+             my.addTiertoHtml(this.TierName, my.tierCssName, "#"+my.cans.id);
              my.tierInfos.tiers[this.TierName] = this;
         });
         // save history state
@@ -202,7 +203,7 @@ EmuLabeller.tierHandler = {
     rebuildTiers: function() {
         for(t in this.tierInfos.tiers) {
             if(null==document.getElementById(this.tierInfos.tiers[t].TierName)) {
-                this.addTiertoHtml(this.tierInfos.tiers[t].TierName, this.tierCssName, "#cans");
+                this.addTiertoHtml(this.tierInfos.tiers[t].TierName, this.tierCssName, "#"+this.cans.id);
             }
         }
     },    

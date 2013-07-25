@@ -17,6 +17,7 @@ var emulabeller = (function() {
     var draggableBar = document.querySelector('#resizer');
     var timeline = document.querySelector('#timeline');
     var tiers = document.querySelector('#tiers');
+    var cans = document.getElementById('cans');
     var fileSelect = document.querySelector('#fileSelect');
     var showLeftPush = document.getElementById('serverSelect');
     var spectroworker = document.querySelector('#spectroworker');
@@ -35,6 +36,7 @@ var emulabeller = (function() {
         draggableBar: draggableBar,
         timeline: timeline,
         tiers: tiers,
+        cans: cans,
         fileSelect: fileSelect,
         showLeftPush: showLeftPush,
         spectroworker: spectroworker,
