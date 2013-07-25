@@ -89,11 +89,11 @@ EmuLabeller.Drawer.OsciDrawer = {
         } else if (k < 1) {
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
-            cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height);
+            cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
             for (var i = 1; i < this.peaks.length; i++) {
-                cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height);
+                cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
             }
-            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * canvas.height); // SIC SIC SIC tail
+            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height); // SIC SIC SIC tail
             cc.stroke();
         }
 
