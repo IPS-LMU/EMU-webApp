@@ -158,6 +158,11 @@ var emulabeller = (function() {
                 // ENTER key
                 emulabeller.addSegmentAtSelection();
             }
+            
+            if( 26 == e.keyCode ){
+                emulabeller.tierHandler.goBackHistory();
+            }    
+            
             console.log(e.keyCode);
         }
     });

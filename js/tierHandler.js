@@ -10,8 +10,26 @@ EmuLabeller.tierHandler = {
         this.iconImageSize = 16;
         this.isSelected = false;
         this.lastSample = 0;
+        this.myHistoryCounter = 0;
+        this.myHistory = new Object();
         
     },
+    
+    history: function(tierInfos) {
+        this.myHistory[this.myHistoryCounter] = jQuery.extend(true, {}, tierInfos);
+        ++this.myHistoryCounter;
+    },
+    
+    goBackHistory: function() {
+        if(this.myHistoryCounter-1>0) {;
+            this.tierInfos = jQuery.extend(true, {}, this.myHistory[this.myHistoryCounter-1]);
+        }
+        else {
+            alert("no more hisory saved....");
+        }
+        --this.myHistoryCounter;
+        emulabeller.drawBuffer();
+    },    
 
     addTier: function(addPointTier) {
         var my = this;
@@ -37,7 +55,9 @@ EmuLabeller.tierHandler = {
         this.tierInfos.tiers[tName].uiInfos.canvas = $("#" + tName)[0];
         emulabeller.viewPort.addTiertoSelection(tName);
         emulabeller.drawer.updateSingleTier(this.tierInfos.tiers[tName]);
-        
+
+        // save history state
+        this.history(this.tierInfos);
     },
 
     addLoadedTiers: function(loadedTiers) {
@@ -47,6 +67,8 @@ EmuLabeller.tierHandler = {
              my.tierInfos.tiers[this.TierName] = this;
              my.tierInfos.tiers[this.TierName].uiInfos.canvas = $("#" + this.TierName)[0];
         });
+        // save history state
+        this.history(this.tierInfos); 
     },
 
     getLength: function() {
@@ -200,6 +222,9 @@ EmuLabeller.tierHandler = {
         $("#"+tierName+"_del").remove();
         $("#"+tierName+"_res").remove();
         delete this.tierInfos.tiers[tierName];
+        
+        // save history state
+        this.history(this.tierInfos);
     },
     
     resizeTier: function(tierName) {
@@ -391,6 +416,10 @@ EmuLabeller.tierHandler = {
         console.log(emulabeller.viewPort.getSelectName());
         tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
+
+        // save history state
+        this.history(this.tierInfos);
+        
     },
 
     removeLabelDoubleClick: function() { //maybe rename to removeLabelBox or something
@@ -458,6 +487,10 @@ EmuLabeller.tierHandler = {
                 }
             }
         }
+
+        // save history state
+        this.history(this.tierInfos);
+        
     }, 
       
 
@@ -491,6 +524,9 @@ EmuLabeller.tierHandler = {
                 t.events[last].sampleDur -= changeTime;
             }
         }
+        
+        // save history state
+        this.history(this.tierInfos);
         
     }
 };
