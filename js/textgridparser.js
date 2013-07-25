@@ -40,10 +40,6 @@ EmuLabeller.TextGridParser = {
                         TierName: tN,
                         type: tT,
                         events: [],
-                        uiInfos: {
-                            sel: false,
-                            canvas: null
-                        }
                     });
                 }
                 if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && curLineEl1.indexOf("intervals[") === 0) {

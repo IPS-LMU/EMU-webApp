@@ -40,15 +40,13 @@ EmuLabeller.tierHandler = {
             var newTier = {
                 TierName: tName,
                 type: "seg",
-                events: [],
-                uiInfos: []
+                events: []
             };
         } else {
             var newTier = {
                 TierName: tName,
                 type: "point",
-                events: [],
-                uiInfos: []
+                events: []
             };
         }
         this.addTiertoHtml(tName, "tierSettings", "#cans");
@@ -227,33 +225,27 @@ EmuLabeller.tierHandler = {
         var rYp = canvas.height * percY;
         var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
        
-        if(rXp>canvas.width-(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
-            if(rYp<(2*emulabeller.drawer.tierDrawer.resizeImageSize)) {
-
-                return false;
-            }
-            else if(rYp>(2*emulabeller.drawer.tierDrawer.deleteImageSize) && rYp<(4*emulabeller.drawer.tierDrawer.deleteImageSize)) {
-                if(confirm("Wollen Sie '"+tierDetails.TierName+"' wirklich loeschen?")) {
-                    this.removeTier(tierDetails.TierName);
-                }
-                
-                return false;
+        if (tierDetails.type == "seg") {
+            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
+            if(null!=nearest) {
+                emulabeller.viewPort.curMouseMoveTierName = event.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
+                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
+                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
             }
         } 
-        else {
-        if (tierDetails.type == "seg") {
+        
+        if (tierDetails.type == "point") {
             var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
                 emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
             }
-        }
-        
-        }               
+        }         
         
         emulabeller.drawBuffer();
     },

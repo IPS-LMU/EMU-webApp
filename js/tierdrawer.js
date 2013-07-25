@@ -22,8 +22,6 @@ EmuLabeller.Drawer.TierDrawer = {
      */
     drawSingleTier: function(tierDetails,perx,pery) {
         var my = this;
-        //var canvas = tierDetails.uiInfos.canvas;
-        //var cc = canvas.getContext('2d');
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         var mpx = canvas.width * perx;
