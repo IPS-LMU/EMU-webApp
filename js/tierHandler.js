@@ -127,24 +127,21 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
         });
         $("#" + myName).bind("mousemove", function(event) {
+           curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
-                curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
-                emulabeller.viewPort.select(curSample,curSample);
                 emulabeller.tierHandler.moveBoundary(curSample, myName);
                 emulabeller.drawer.uiDrawUpdate();
             }
             else if (emulabeller.tierHandler.isSelected && event.altKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
-                curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
                 var border = emulabeller.tierHandler.moveSegment(curSample, myName);
-                emulabeller.viewPort.select(border[0],border[1]);
                 emulabeller.drawer.uiDrawUpdate();
             }
             else {
                 emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
             }
-            emulabeller.tierHandler.lastSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
+            emulabeller.tierHandler.lastSample = curSample;
         });
         $("#" + myName).bind("mouseout", function(event) {
             emulabeller.tierHandler.isSelected = false;
@@ -433,7 +430,7 @@ EmuLabeller.tierHandler = {
             var left = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName-1];
             var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
             var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName+1];
-        
+            emulabeller.viewPort.select(newTime,newTime);
             if (this.tierInfos.tiers[myName].type == "seg") {
                 var old = me.startSample;
             
@@ -494,7 +491,7 @@ EmuLabeller.tierHandler = {
         var doMove = false;
         var first = true;
         var last = 0;
-        var retTime = [];
+        var startS = 0;
         var l = emulabeller.viewPort.countSelected();
         if(null!=t) {
             var selected = emulabeller.viewPort.getAllSelected(t);
@@ -505,7 +502,7 @@ EmuLabeller.tierHandler = {
                             ( t.events[i+l-1].startSample + t.events[i+l-1].sampleDur + changeTime<=t.events[i+l+1].startSample ) ) {
                             doMove = true;
                             t.events[i-1].sampleDur += changeTime;
-                            retTime[0] = t.events[i].startSample;
+                            startS = t.events[i].startSample;
                         }
                         first = false;
                     }
@@ -518,9 +515,8 @@ EmuLabeller.tierHandler = {
             if(doMove) {
                 t.events[last].startSample += changeTime;
                 t.events[last].sampleDur -= changeTime;
-                retTime[1] = t.events[last].startSample;
+                emulabeller.viewPort.select(startS,t.events[last].startSample);
             }
         }
-        return retTime;
     }
 };
