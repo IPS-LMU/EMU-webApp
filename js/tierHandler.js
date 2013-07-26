@@ -250,7 +250,7 @@ EmuLabeller.tierHandler = {
         } 
         
         if (tierDetails.type == "point") {
-            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
+            var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));           
             if(null!=nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails,event.label,event.startSample);
@@ -307,6 +307,21 @@ EmuLabeller.tierHandler = {
         }
         return r;
     },
+    
+
+    findNearestPoint: function(t, curSample) {
+        var e = t.events;
+        var r = null;
+        var temp = emulabeller.viewPort.eS;
+        for (var k in e) {
+            var diff = Math.abs(curSample-e[k].startSample);
+            if (diff<temp) {
+                temp = diff;
+                r = e[k];
+            }        
+        }
+        return r;
+    },
 
     
     getSelectedTier: function() {
@@ -324,7 +339,7 @@ EmuLabeller.tierHandler = {
 
     handleTierDoubleClick: function(percX, percY, tierDetails) {
         var my = this;
-        var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+        
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
@@ -332,6 +347,7 @@ EmuLabeller.tierHandler = {
         var edit = $('#'+this.editAreaName);
         if (edit.length === 0) {
             if (tierDetails.type == "seg") {
+                var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
@@ -364,11 +380,15 @@ EmuLabeller.tierHandler = {
                 my.createSelection(document.getElementById(this.editAreaTextfieldName), 0, nearest.label.length); // select textarea text 
                 
             } else if (tierDetails.type == "point") {
+                var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
+                emulabeller.viewPort.select(nearest.startSample,nearest.startSample);
                 alert("no point editing yet! Sorry...");
             }
         } else {
             my.removeLabelDoubleClick();
         }
+        emulabeller.drawBuffer();
     },    
 
     isSelectNeighbour: function(row, newId) {
