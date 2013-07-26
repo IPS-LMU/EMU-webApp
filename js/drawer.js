@@ -29,12 +29,7 @@ EmuLabeller.Drawer = {
 
         // spectrogram drawer
         this.spectogramDrawer = Object.create(EmuLabeller.Drawer.SpectogramDrawer);
-        this.spectogramDrawer.init({
-            specCanvas: params.specCanvas,
-            spectroworker : params.spectroworker,
-            font: params.font,
-            defaultParams: this.defaultParams
-        });
+        this.spectogramDrawer.init(params);
 
         // SSFF drawer
         this.SSFFDrawer = Object.create(EmuLabeller.Drawer.SSFFDrawer);

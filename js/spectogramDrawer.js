@@ -22,7 +22,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.emphasisPerOctave=3.9810717055349722;          // value : toLinearLevel(6);		
         my.dynamicRange=5000;                             // value : toLinearLevel(50);
         my.dynRangeInDB=50;                               // value : toLevelInDB(dynamicRange);    
-
+        my.params = params;
         // FFT default vars
         my.N = 512;                                       // default FFT Window Size
         my.alpha = 0.16;                                  // default alpha for Window Function
@@ -36,7 +36,6 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.pcmperpixel = 0; 
         my.myImage = new Image();
         my.font = params.font;
-        my.params = params.defaultParams;
         window.URL = window.URL || window.webkitURL;
         my.devicePixelRatio = window.devicePixelRatio || 1;
         my.response = spectroworker.textContent;
@@ -141,13 +140,13 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             var posE = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectE);
             my.cursorPos = ~~(my.canvas.width*(sInB-emulabeller.viewPort.sS)/(emulabeller.viewPort.eS-emulabeller.viewPort.sS));
             if(my.cursorPos!=0) {
-                my.context.fillStyle = my.params.progressColor;
+                my.context.fillStyle = my.params.selectLineColor;
                 my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
             }            
             if (emulabeller.viewPort.selectS != 0 && emulabeller.viewPort.selectE != 0){
                 my.context.fillStyle = my.params.selectedArea;
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
-                my.context.strokeStyle = my.params.selectedBorder;
+                my.context.strokeStyle = my.params.selectLineColor;
                 my.context.beginPath();
                 my.context.moveTo(posS,0);
                 my.context.lineTo(posS,my.canvas.height);
@@ -172,7 +171,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         killSpectroRenderingThread: function () {
             var my = this;
-            my.context.fillStyle = my.params.loadingBackground;
+            my.context.fillStyle = my.params.waveColor;
         	my.context.fillRect(0,0,my.canvas.width,my.canvas.height);    
         	my.context.font = my.font;
         	my.context.fillStyle = my.params.loadingColor;
