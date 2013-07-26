@@ -685,7 +685,7 @@ var EmuLabeller = {
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
         } else if (ft == 3) {
             var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
-            // emulabeller.iohandler.toTextGrid(parserRes); // for testing toTextGrid
+            emulabeller.iohandler.toTextGrid(parserRes); // for testing toTextGrid
             this.tierHandler.addLoadedTiers(parserRes);
         }
     },
@@ -883,25 +883,6 @@ var EmuLabeller = {
     validateTierInfos: function() {
         this.JSONval.validateTierInfos(this.tierHandler.tierInfos);
     },
-
-    // saveTiers: function () {
-    //     var myObject = {one: "weee", two: "woooo"};
-    //     console.log(this.tierHandler.tierInfos.tiers);
-    //     var data = JSON.stringify(this.tierHandler.tierInfos.tiers);
-    //     // console.log(data);
-
-    //     var url = "data:application/octet-stream;base64," + window.btoa(data);
-    //     var iframe;
-    //     iframe = document.getElementById("hiddenDownloader");
-    //     if (iframe === null)
-    //     {
-    //         iframe = document.createElement('iframe');
-    //         iframe.id = "hiddenDownloader";
-    //         iframe.style.display = "none";
-    //         document.body.appendChild(iframe);
-    //     }
-    //     iframe.src = url;
-    // },
 
     /**
      * generates dataURI to download the current

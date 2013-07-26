@@ -2,12 +2,11 @@ EmuLabeller.TextGridParser = {
     init: function() {
         this.l1 = "File type= \"ooTextFile\"";
         this.l2 = "Object class = \"TextGrid\"";
+        this.ssr = 44100; // SIC! Do on init...
     },
 
 
     toJSO: function(string) {
-
-        var ssr = 44100; // stream sample rate SIC... do on init!!!
 
         var lines = string.split("\n");
 
@@ -39,23 +38,28 @@ EmuLabeller.TextGridParser = {
                     labelJSO.tiers.push({
                         TierName: tN,
                         type: tT,
-                        events: [],
+                        events: []
                     });
                 }
                 if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && curLineEl1.indexOf("intervals[") === 0) {
                     // parse seg tiers event
-                    eSt = lines[i + 1].split(/\s+/)[3] * ssr;
-                    eEt = lines[i + 2].split(/\s+/)[3] * ssr;
+                    eSt = lines[i + 1].split(/\s+/)[3] * this.ssr;
+                    eEt = lines[i + 2].split(/\s+/)[3] * this.ssr;
                     lab = lines[i + 3].split(/\s+/)[3].replace(/"/g, '');
+
+                    //check for first segment and adapt for length
+                    if(Math.ceil(eSt)==0){
+                        eEt = eEt + 1;
+                    }
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
-                        startSample: Math.round(eSt),
-                        sampleDur: Math.round(eEt - eSt)
+                        startSample: Math.ceil(eSt), //take ceil of startime
+                        sampleDur: Math.floor(eEt - eSt) - 1 // and floor of dur - 1 to ensure that every sample belongs to a segment
                     });
                 } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points[") === 0) {
                     // parse point tier event
-                    eT = lines[i + 1].split(/\s+/)[3] * ssr;
+                    eT = lines[i + 1].split(/\s+/)[3] * this.ssr;
                     lab = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
@@ -65,8 +69,8 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            //console.log(JSON.stringify(labelJSO, undefined, 2));
-            return labelJSO; // SIC! All durations are null
+            console.log(JSON.stringify(labelJSO, undefined, 2));
+            return labelJSO;
 
         } else {
             alert("bad header in textgrid file!!!");
@@ -129,7 +133,7 @@ EmuLabeller.TextGridParser = {
 
         // console.log(labelJSO);
         // console.log(tG);
-        return(tG);
+        return (tG);
 
     },
 

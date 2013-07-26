@@ -170,8 +170,11 @@ EmuLabeller.Drawer.OsciDrawer = {
             sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS / this.sR, 6);
             eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS / this.sR, 6);
             var metrics = cc.measureText(sTime);
-            cc.strokeText(eTime, 5, 5 + 8);
+            cc.strokeText(sTime, 5, 5 + 8);
             cc.strokeText(eTime, this.osciCanvas.width - metrics.width - 5, 5 + 8);
+            cc.strokeText(emulabeller.viewPort.sS, 5, 25);
+            cc.strokeText(emulabeller.viewPort.eS, this.osciCanvas.width - cc.measureText(emulabeller.viewPort.eS).width - 5, 25);
+
         }
 
 
