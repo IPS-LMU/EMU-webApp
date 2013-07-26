@@ -50,6 +50,11 @@ EmuLabeller.ViewPort = {
 
         this.curCursorPosInPercent = 0.0;
     },
+    
+    select: function(start,end) {
+        this.selectS = start;
+        this.selectE = end;
+    },
 
     getPos: function(w,s) {
         return (w * (s - this.sS) / (this.eS - this.sS));

@@ -130,13 +130,15 @@ EmuLabeller.tierHandler = {
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
                 curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
+                emulabeller.viewPort.select(curSample,curSample);
                 emulabeller.tierHandler.moveBoundary(curSample, myName);
                 emulabeller.drawer.uiDrawUpdate();
             }
             else if (emulabeller.tierHandler.isSelected && event.altKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
-                curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
-                emulabeller.tierHandler.moveSegment(curSample, myName);
+                curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
+                var border = emulabeller.tierHandler.moveSegment(curSample, myName);
+                emulabeller.viewPort.select(border[0],border[1]);
                 emulabeller.drawer.uiDrawUpdate();
             }
             else {
@@ -492,6 +494,7 @@ EmuLabeller.tierHandler = {
         var doMove = false;
         var first = true;
         var last = 0;
+        var retTime = [];
         var l = emulabeller.viewPort.countSelected();
         if(null!=t) {
             var selected = emulabeller.viewPort.getAllSelected(t);
@@ -502,6 +505,7 @@ EmuLabeller.tierHandler = {
                             ( t.events[i+l-1].startSample + t.events[i+l-1].sampleDur + changeTime<=t.events[i+l+1].startSample ) ) {
                             doMove = true;
                             t.events[i-1].sampleDur += changeTime;
+                            retTime[0] = t.events[i].startSample;
                         }
                         first = false;
                     }
@@ -514,7 +518,9 @@ EmuLabeller.tierHandler = {
             if(doMove) {
                 t.events[last].startSample += changeTime;
                 t.events[last].sampleDur -= changeTime;
+                retTime[1] = t.events[last].startSample;
             }
         }
+        return retTime;
     }
 };
