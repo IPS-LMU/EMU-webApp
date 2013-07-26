@@ -99,7 +99,6 @@ canvas {
     max-height: calc(38%); /* IE9+ and future browsers */
     max-height: -moz-calc(38%); /* Firefox */
     max-height: -webkit-calc(38%); /* Chrome, Safari */
-            
 }
 
 #timeline {
