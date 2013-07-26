@@ -30,6 +30,7 @@ var emulabeller = (function() {
         scrollCanvas: scrollCanvas,
         waveColor: 'white',
         progressColor: 'grey',
+        selectLineColor: 'black',
         loadingColor: 'purple',
         cursorColor: 'red',
         tierInfos: tierInfos,
