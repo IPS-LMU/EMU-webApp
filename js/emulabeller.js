@@ -165,6 +165,7 @@ var EmuLabeller = {
         this.clickedOn = 0;
         this.selectedSegments = [];
         this.lastX = 0;
+        this.dragStart = -1;
 
         // infos filled by ssff/lab/textgrid parsers
         this.ssffInfos = {
@@ -274,8 +275,9 @@ var EmuLabeller = {
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-                    my.viewPort.selectS = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
-                    my.viewPort.selectE = my.viewPort.selectS;
+                    my.dragStart = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    my.viewPort.selectS = my.dragStart;
+                    my.viewPort.selectE = my.dragStart;
                     my.drawer.uiDrawUpdate();
                     break;
 
@@ -291,14 +293,17 @@ var EmuLabeller = {
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                my.dragStart = -1;
                 my.drawer.uiDrawUpdate();
+                my.internalMode == my.EDITMODE.STANDARD;
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
+                my.internalMode == my.EDITMODE.STANDARD;
             }
 
             if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
@@ -306,6 +311,7 @@ var EmuLabeller = {
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
+                my.internalMode == my.EDITMODE.STANDARD;
             }
 
 
@@ -315,7 +321,15 @@ var EmuLabeller = {
         document.addEventListener('mousemove', function(e) {
             if (e.which == 1) { // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                    my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    var newSamp = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    if(newSamp >= my.dragStart) {
+                        my.viewPort.selectE = newSamp;
+                        my.viewPort.selectS = my.dragStart;
+                    }
+                    else {
+                        my.viewPort.selectS = newSamp;
+                        my.viewPort.selectE = my.dragStart;
+                    }
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
@@ -335,7 +349,7 @@ var EmuLabeller = {
                 }
             } 
             else
-                my.internalMode == my.EDITMODE.STANDARD;
+                //my.internalMode == my.EDITMODE.STANDARD;
 
             my.lastX = my.getX(e);
 
