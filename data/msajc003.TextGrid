@@ -555,39 +555,21 @@ item []:
 			time = 0.418082
 			mark = "H*"
 		points[2]:
-			time = 0.418082
-			mark = "*"
+			time = 0.930588
+			mark = "H*"
 		points[3]:
-			time = 0.930588
-			mark = "H*"
+			time = 1.105992
+			mark = "L-"
 		points[4]:
-			time = 0.930588
-			mark = "*"
+			time = 1.911750
+			mark = "H*"
 		points[5]:
-			time = 1.105992
-			mark = "L-"
+			time = 2.229668
+			mark = "H*"
 		points[6]:
-			time = 1.105992
-			mark = "*"
-		points[7]:
-			time = 1.911750
-			mark = "H*"
-		points[8]:
-			time = 1.911750
-			mark = "*"
-		points[9]:
-			time = 2.229668
-			mark = "H*"
-		points[10]:
-			time = 2.229668
-			mark = "*"
-		points[11]:
 			time = 2.542105
 			mark = "L-"
-		points[12]:
-			time = 2.542105
-			mark = "*"
-		points[13]:
+		points[7]:
 			time = 2.576642
 			mark = "L%"
 	item [11]:
