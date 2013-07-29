@@ -280,7 +280,7 @@ var EmuLabeller = {
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     $("body").css("cursor","ew-resize");
-                    my.dragStart = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
                     my.viewPort.selectE = my.dragStart;
                     my.drawer.uiDrawUpdate();
@@ -327,7 +327,7 @@ var EmuLabeller = {
         document.addEventListener('mousemove', function(e) {
             if (e.which == 1) { // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                    var newSamp = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+                    var newSamp = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     if(newSamp >= my.dragStart) {
                         my.viewPort.selectE = newSamp;
                         my.viewPort.selectS = my.dragStart;
