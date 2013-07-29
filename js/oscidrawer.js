@@ -222,100 +222,111 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.strokeText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS, posS + (posE - posS) / 2 - tW / 2, yOffsetSample);
 
 
+            }
         }
+        // cursor
+        if (emulabeller.viewPort.curCursorPosInPercent > 0) {
+            //calc cursor pos
+            var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
+            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
+            var procC = fracC / all2;
+            var posC = this.osciCanvas.width * procC;
+
+            //draw cursor
+            cc.fillStyle = this.cursorColor;
+            cc.fillRect(posC, 0, this.cursorWidth, this.osciCanvas.height);
+            // console.log(all)
+
+        }
+    },
+
+
+    /**
+     * redraws emulabeller.backend.currentBuffer onto canvas given emulabeller.viewPort. It recalculates
+     * the peaks that are to be displayed to get the maximum
+     * dynamic range visualization
+     *
+     * @params emulabeller.backend.currentBuffer
+     * @params canvas to draw on
+     * @params emulabeller.backend.currentBufferLength current view port
+     */
+    redrawOsciOnCanvas: function(inMemoryCanvas) {
+        var sH = this.osciCanvas.height;
+        var sW = this.osciCanvas.width;
+        var tH = inMemoryCanvas.height;
+        var tW = inMemoryCanvas.width;
+
+        canvascc = inMemoryCanvas.getContext('2d');
+        canvascc.clearRect(0, 0, tW, tH);
+        canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
+    },
+
+    /**
+     * draws the current osci defined by the peaks array
+     * to the canvas given. It should be used when no
+     * recalculation of the view port is needed
+     * (e.g. progress update or mouse event updates)
+     *
+     * @params emulabeller.backend.currentBuffer
+     * @params canvas to draw on
+     * @params emulabeller.backend.currentBufferLength current view port
+     */
+    drawCurOsciOnCanvas: function() {
+        var cH = this.osciCanvas.height;
+        var cW = this.osciCanvas.width;
+
+        canvascc = this.osciCanvas.getContext('2d');
+        canvascc.clearRect(0, 0, cW, cH);
+
+        osciWidth = this.osciCanvas.width;
+        osciHeight = this.osciCanvas.height;
+
+        this.getPeaks();
+
+        // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
+        // console.log(this.peaks);
+        this.drawOsciOnCanvas();
+    },
+
+
+    /**
+     * draws scroll markup (selected view part + scroll bar)
+     * according to current view port
+     * on the canvas given
+     * @params emulabeller.viewPort current view port
+     * @params canvas canvas to draw markup on
+     * @params emulabeller.backend.currentBufferLength length of emulabeller.backend.currentBuffer in canvas
+     */
+    drawScrollMarkup: function(inMemoryCanvas) {
+
+        var cH = this.scrollCanvas.height;
+        var cW = this.scrollCanvas.width;
+        canvascc = this.scrollCanvas.getContext('2d');
+        canvascc.globalCompositeOperation = "lighter";
+        canvascc.clearRect(0, 0, cW, cH);
+
+        var circCtl = 3;
+        var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.viewPort.bufferLength) * cW) / 2 + 2 * circCtl;
+        var curCenter = (emulabeller.viewPort.sS / emulabeller.viewPort.bufferLength * cW) + curDiam;
+
+        canvascc.globalAlpha = 0.7;
+        canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
+
+        canvascc.globalAlpha = 1;
+        canvascc.fillStyle = this.scrollSegMarkerColor;
+        canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
+        // draw scroll bar itself
+        canvascc.fillRect(curCenter - curDiam, cH / 8 * 7, 2 * curDiam, cH / 8);
+        canvascc.beginPath();
+        canvascc.arc(curCenter + curDiam, cH / 8*7+(cH / 8)/2, (cH / 8)/2, 1.5*Math.PI, 2.5*Math.PI, false);
+        canvascc.closePath();
+        canvascc.fill();
+        canvascc.fill();// fill twice for color correction
+
+        canvascc.beginPath();
+        canvascc.arc(curCenter - curDiam, cH / 8*7+(cH / 8)/2, (cH / 8)/2, 0.5*Math.PI, 1.5*Math.PI, false);
+        canvascc.closePath();
+        canvascc.fill();
+        canvascc.fill(); // fill twice for color correction
     }
-    // cursor
-    if (emulabeller.viewPort.curCursorPosInPercent > 0) {
-        //calc cursor pos
-        var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-        var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
-        var procC = fracC / all2;
-        var posC = this.osciCanvas.width * procC;
-
-        //draw cursor
-        cc.fillStyle = this.cursorColor;
-        cc.fillRect(posC, 0, this.cursorWidth, this.osciCanvas.height);
-        // console.log(all)
-
-    }
-},
-
-
-/**
- * redraws emulabeller.backend.currentBuffer onto canvas given emulabeller.viewPort. It recalculates
- * the peaks that are to be displayed to get the maximum
- * dynamic range visualization
- *
- * @params emulabeller.backend.currentBuffer
- * @params canvas to draw on
- * @params emulabeller.backend.currentBufferLength current view port
- */
-redrawOsciOnCanvas: function(inMemoryCanvas) {
-    var sH = this.osciCanvas.height;
-    var sW = this.osciCanvas.width;
-    var tH = inMemoryCanvas.height;
-    var tW = inMemoryCanvas.width;
-
-    canvascc = inMemoryCanvas.getContext('2d');
-    canvascc.clearRect(0, 0, tW, tH);
-    canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
-},
-
-/**
- * draws the current osci defined by the peaks array
- * to the canvas given. It should be used when no
- * recalculation of the view port is needed
- * (e.g. progress update or mouse event updates)
- *
- * @params emulabeller.backend.currentBuffer
- * @params canvas to draw on
- * @params emulabeller.backend.currentBufferLength current view port
- */
-drawCurOsciOnCanvas: function() {
-    var cH = this.osciCanvas.height;
-    var cW = this.osciCanvas.width;
-
-    canvascc = this.osciCanvas.getContext('2d');
-    canvascc.clearRect(0, 0, cW, cH);
-
-    osciWidth = this.osciCanvas.width;
-    osciHeight = this.osciCanvas.height;
-
-    this.getPeaks();
-
-    // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
-    // console.log(this.peaks);
-    this.drawOsciOnCanvas();
-},
-
-
-/**
- * draws scroll markup (selected view part + scroll bar)
- * according to current view port
- * on the canvas given
- * @params emulabeller.viewPort current view port
- * @params canvas canvas to draw markup on
- * @params emulabeller.backend.currentBufferLength length of emulabeller.backend.currentBuffer in canvas
- */
-drawScrollMarkup: function(inMemoryCanvas) {
-
-    var cH = this.scrollCanvas.height;
-    var cW = this.scrollCanvas.width;
-    canvascc = this.scrollCanvas.getContext('2d');
-    canvascc.globalCompositeOperation = "lighter";
-    canvascc.clearRect(0, 0, cW, cH);
-
-    var circCtl = 3;
-    var curDiam = (((emulabeller.viewPort.eS - emulabeller.viewPort.sS) / emulabeller.viewPort.bufferLength) * cW) / 2 + 2 * circCtl;
-    var curCenter = (emulabeller.viewPort.sS / emulabeller.viewPort.bufferLength * cW) + curDiam;
-
-    canvascc.globalAlpha = 0.7;
-    canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
-
-    canvascc.globalAlpha = 1;
-    canvascc.fillStyle = this.scrollSegMarkerColor;
-    canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
-    // draw scroll bar itself
-    canvascc.fillRect(curCenter - curDiam, cH/8*7, 2 * curDiam, cH/8);
-}
 };
