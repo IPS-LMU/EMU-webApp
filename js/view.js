@@ -71,6 +71,10 @@ EmuLabeller.ViewPort = {
     
     getSelectName: function() {
         return this.MouseSegmentName;
+    }, 
+    
+    setSelectName: function(n) {
+        this.MouseSegmentName = n;
     },    
 
     setSelectSegment: function(tier, name, start, duration, isSelected) {
@@ -122,7 +126,6 @@ EmuLabeller.ViewPort = {
         else 
             return false;
     },               
-    
         
     countSelected: function() {
         var x = 0;

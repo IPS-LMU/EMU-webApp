@@ -110,36 +110,36 @@ EmuLabeller.tierHandler = {
         
 
         $("#" + myName).bind("click", function(event) {
-            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
+            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
         });
         $("#" + myName+"_del").bind("click", function(event) {
             if(confirm("Wollen Sie '"+myName+"' wirklich loeschen?")) 
-                emulabeller.tierHandler.removeTier(myName);
+                emulabeller.tierHandler.removeTier(emulabeller.getTierName(event.originalEvent));
         });        
           $("#" + myName+"_res").bind("click", function(event) {
-            emulabeller.tierHandler.resizeTier(myName);
+            emulabeller.tierHandler.resizeTier(emulabeller.getTierName(event.originalEvent));
         });        
         
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
+            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
+            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
         });
         $("#" + myName).bind("mousemove", function(event) {
            curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
-                emulabeller.tierHandler.moveBoundary(curSample, myName);
+                emulabeller.tierHandler.moveBoundary(curSample, emulabeller.getTierName(event.originalEvent));
                 emulabeller.drawer.uiDrawUpdate();
             }
             else if (emulabeller.tierHandler.isSelected && event.altKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
-                var border = emulabeller.tierHandler.moveSegment(curSample, myName);
+                var border = emulabeller.tierHandler.moveSegment(curSample, emulabeller.getTierName(event.originalEvent));
                 emulabeller.drawer.uiDrawUpdate();
             }
             else {
-                emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), myName);
+                emulabeller.tierHandler.trackMouseInTiers(event, emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent),emulabeller.getTierName(event.originalEvent));
             }
             emulabeller.tierHandler.lastSample = curSample;
         });
@@ -149,7 +149,7 @@ EmuLabeller.tierHandler = {
             emulabeller.viewPort.curMouseMoveSegmentName =  "";
             emulabeller.viewPort.curMouseMoveSegmentStart = "";
             emulabeller.viewPort.curMouseMoveSegmentDuration = "";
-            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName));
+            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
         });
         $("#" + myName).bind("mouseup", function(event) {
             //myMouseUp(e);
@@ -169,6 +169,7 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
+        console.log(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {
@@ -436,17 +437,21 @@ EmuLabeller.tierHandler = {
     saveTierName: function() {
         var my = this;
         var tierDetails = this.getSelectedTier();
-        var content = $("#"+this.editAreaTextfieldName).val().replace(/[\n\r]/g, '');
-        $("#"+tierDetails.TierName).attr("id",content);
-        tierDetails.TierName = content;
+        var backup = jQuery.extend(true, {}, tierDetails);
+        var old_key = tierDetails.TierName;
+        var new_key = $("#"+this.editAreaTextfieldName).val().replace(/[\n\r]/g, '');
         
-        //my.addTiertoHtml(tierDetails.TierName, my.tierCssName, "#"+my.cans.id);
-        
-        //this.rebuildTiers();
+        delete this.tierInfos.tiers[old_key];
+        $("#"+old_key).attr("id",new_key);
+        my.tierInfos.tiers[new_key] = backup;
+        my.tierInfos.tiers[new_key].TierName = new_key;
+
+        //emulabeller.viewPort.setSelectName(new_key);
         emulabeller.drawBuffer();
-        // save history state
-        this.history();
         
+        // save history state
+        this.history();     
+        console.log(my.tierInfos.tiers);   
     },
 
     renameTier: function() { //maybe rename to removeLabelBox or something
@@ -459,6 +464,7 @@ EmuLabeller.tierHandler = {
         }
         else {
             alert("Bitte waehlen Sie zuerst ein Tier aus!");
+            console.log(this.tierInfos);
         }
         
     },   
