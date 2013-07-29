@@ -7,6 +7,7 @@
          <title>emuLVC</title>
          <link rel="stylesheet" href="css/main.css">
          <link rel="stylesheet" href="css/menu.css">
+         <link rel="stylesheet" href="css/modal.css">
          <link rel="stylesheet" href="css/tooltip.css">
          <link rel="stylesheet" href="css/jquery-ui.css" />
  </head>
@@ -84,6 +85,9 @@
    <button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
    <button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Prep. Download</button>
    <button class="mini-btn tooltip" id="specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
+
+    <a href="#login_form" id="login_pop"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAFzUkdC%0AAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE%0AAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAABPBJREFUWMPFl89rXUUUxz9n5t73M69p%0A07zWtGlrpbbij26stlgVdSn4B7gSERfuFQRx4Y%2BFYBdu24Ib1yIoggvBbgQRBX9QS1VKU5s0r435%0A9fJ%2B3Xtnjou5Ly9JY1oxaQ9ceMybmfM533PumTuoaqSq3GlTVVQ1uuOO15os/zqnsACVUawFsxXO%0AHPj2DI5h4BlZAfCNUiuCFx4S5Q1RdgObnRdRoaHCh0Y530wCRARQLUDiMbHhdVFe2oroAwEAmnhe%0Aqcb4FgQAAxQES4h8S02U3QXBAr7vG2Xz9VbAyK33NQAH6fBI1KVsVhTl/zCvyrFSwkf7Ep4a8rcG%0AONJt8KzckHrkZTMIfJrwdO8qo7NXWGhMbRiVAfBL87QXF0VV1339/jOUd5i0y5fZCD/F9Q3TEAA6%0ALRrNtjhVI%2BvkrWzCs55VLZTMYI0H9hfhyX2jaKVGsVjcECAC%2BK08Rs/Evu1MJkDNQssNNl27gQI%2B%0AH3QKmQ5UqpuMd8YcByoxv8%2BG/McS5vt/A3BRgS4RkQg%2Bj6q9BqBf1bHAkIH7S56xOMy4ngkCjMee%0AF2pdTpZTTl/pcbE7hFgYttDxATTxAURWAnRsgRSLVVQJzo2A6iBaBfbEyosjGc9VEw7GGUVRFOhp%0AAC%2BJUhbl6%2BkOp/8uk1VjyBUyQD2GqQS8BysrAJq1XbQ9OiwoGmQtm7Cwl%2Bt2tJjy1ljCo6UEo4on%0AAApQWZGb%2BUz5eK6EH9pBUUJRpHnIHZ9HniXYvC1GANvmJnE%2BkuquXeJNaFNWwGgoMNfr8uroEsfL%0AhtSDW6cmRAQDfHW9xy9%2BBKzgNaRM8tQ5hbJmhYMTP9iKT9Jv%2BwA2S7DqMah4FRAo5IWTAZX2PEci%0Ah9fKckkaEYwIThVRZWGpxfc3Wpxt7iQrFclyJQsS5N8RwVwGHi%2BlpCVFnwwUmKsfpO3R2OOthEMj%0AzRenCnPNJj//Mc2eo4eplAokScrE3CLn/5rm2H3j/HijxZmLM1zefi/d%2BgiGvNgUxEBPYbIXgjEY%0An9ZG1Lh0AEBelf1qzxTaHkaisElnxx7eu3CJUmmC4VqNT85PcZEq84nhzVqHs606k4cegNgyYiFx%0A0HFB%2BiiXvuVDGooiWiyVNXLRaoDMQxQFkDQvrrksz3G5ysPHn2DGX%2BPtCcu1sROM1qpUZ66wvZDw%0AfMmw2J6CpSWObbPM1vfzQaNE24UA3Io%2BEVvj7fZR9c6tBiCfFAmksrrRHIoTTpgFzszVaNTvITJC%0A08NiZnn3u0uUatuYjaospJ4vZi7z%2BN7rVMYfY4kiImBXvjFWfGtop3YcqwFiGyJ3%2BdPPy%2BGi5%2BXq%0AEp9NRzRquzAaerVTYHQvEyNj1CLBi5B5uH7gQT7vtjEuwtjgtK%2BAAxYymMUuBxj18%2B80NJ/%2BB4JX%0A5aRt8trQEp82Ui7EeykYQ9etPpyMMRRNgFcFiWJsbRjy5lXIFQ17wuKa9csK%2BBUp6AHGZSxO/sn7%0Al%2BHi6GFsHIG/%2BWTst2jRNYO5lQ10fd4ruHl91J8fmRyiP8NYft15BAoljB1IttYkl9Wz/rE9mw2K%0Aej1bVsDkIHYZwGDKVW7H0g3O287GH0QDgGLe%2B%2Bez2/K5aRY%2BSIAEnAqNrXaoQiNRXF%2BYCKCVQq2A%0A98IpQLb4YnKqYPDNJB9c/vucQgMq41grmM13D07x7as4drN8Nbv7drev5/8Aw8pTjBzWr38AAAAl%0AdEVYdGRhdGU6Y3JlYXRlADIwMTMtMDctMjRUMTQ6NDc6NTgrMDI6MDDXh84XAAAAJXRFWHRkYXRl%0AOm1vZGlmeQAyMDEzLTA3LTI0VDE0OjQ3OjU4KzAyOjAwptp2qwAAAABJRU5ErkJggg%3D%3D%0A
+"/></a>
   <div id="downLinkDiv"></div>
   </div>
  </div>
@@ -121,6 +125,16 @@
  </div>
  
  
+<a href="#x" class="overlay" id="login_form"></a>
+<div class="popup">
+
+    <h2>This is the About text</h2>
+    <p>Very cool prog!!!</p>
+
+    <a class="close" href="#close"></a>
+</div>
+
+
     
   <noscript>No javascript enabled...</noscript>
   
