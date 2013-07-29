@@ -77,8 +77,10 @@ EmuLabeller.Drawer.TierDrawer = {
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
                     tX = canvas.width * (percS + (percE - percS) / 2) - tW / 2;
-                    cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
-
+                    //check for enough space to stroke text
+                    if (percE * canvas.width - percS * canvas.width > tW) {
+                        cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
+                    }
                     //draw helper lines
                     cc.strokeStyle = "rgba(0,255,0,0.5)";
                     cc.beginPath();
@@ -87,12 +89,24 @@ EmuLabeller.Drawer.TierDrawer = {
                     cc.lineTo(tX + tW / 2, canvas.height / 4 + 10);
                     cc.stroke();
 
+                    tW = cc.measureText(curEvt.startSample).width;
+                    //check for enough space to stroke text
+                    if (percE * canvas.width - percS * canvas.width > tW) {
+                        cc.strokeText(curEvt.startSample, percS * canvas.width + 5, canvas.height / 8);
+                    }
+
                     cc.strokeStyle = "rgba(255,0,0,0.2)";
                     cc.beginPath();
                     cc.moveTo(percE * canvas.width, canvas.height / 4 * 3);
                     cc.lineTo(tX + tW / 2, canvas.height / 4 * 3);
                     cc.lineTo(tX + tW / 2, canvas.height / 4 * 3 - 10);
                     cc.stroke();
+
+                    tW = cc.measureText("dur: " + curEvt.sampleDur).width;
+                    //check for enough space to stroke text
+                    if (percE * canvas.width - percS * canvas.width > tW) {
+                        cc.strokeText("dur: " + curEvt.sampleDur, percE * canvas.width - tW - 5, canvas.height - canvas.height / 8);
+                    }
                 }
             }
         } else if (tierDetails.type == "point") {
