@@ -22,6 +22,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
+        this.showSampleNrs = true; // probably only good for debugging
 
     },
 
@@ -106,8 +107,10 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height, 4, 0, 2 * Math.PI, false);
                 cc.stroke();
                 cc.fill();
-                cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height - 10);
-                sNr = sNr+1;
+                if (this.showSampleNrs) {
+                    cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height - 10);
+                    sNr = sNr + 1;
+                }
             }
         }
 
@@ -234,10 +237,11 @@ EmuLabeller.Drawer.OsciDrawer = {
         // cursor
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
-            var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
-            var procC = fracC / all2;
-            var posC = this.osciCanvas.width * procC;
+            var posC = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
+            // var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
+            // var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
+            // var procC = fracC / all2;
+            // var posC = this.osciCanvas.width * procC;
 
             //draw cursor
             cc.fillStyle = this.cursorColor;

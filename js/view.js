@@ -30,16 +30,16 @@ EmuLabeller.ViewPort = {
 
         // list of selected Segments 
         this.uiInfo = []; // [Segments]
-        
+
         this.selectInfo = []; // [Segments]
-        
+
         // set everything to deselect when tiers are loaded and view is init()
         this.resetSelection();
-        
+
         // id of tier and segment CLICKED on
         this.MouseTierName = "";
         this.MouseSegmentName = "";
-        
+
         // id of tier and segment MOVED on
         this.curMouseMoveTierName = "";
         this.curMouseMoveSegmentName = "";
@@ -51,109 +51,111 @@ EmuLabeller.ViewPort = {
 
         this.curCursorPosInPercent = 0.0;
     },
-    
-    select: function(start,end) {
+
+    select: function(start, end) {
         this.selectS = start;
         this.selectE = end;
     },
-
-    getPos: function(w,s) {
-        return (w * (s - this.sS) / (this.eS - this.sS));
+    /**
+    * get pixel position in current viewport given the canvas width 
+    * @param w is width of canvas 
+    * @param s is current sample to convert to pixel value
+    */
+    getPos: function(w, s) {
+        return (w * (s - this.sS) / (this.eS - this.sS + 1)); // + 1 because of view (displays all samples in view)
     },
-    
+
     setSelectTier: function(n) {
         this.MouseTierName = n;
     },
-    
+
     getSelectTier: function() {
         return this.MouseTierName;
     },
-    
+
     getSelectName: function() {
         return this.MouseSegmentName;
-    }, 
-    
+    },
+
     setSelectName: function(n) {
         this.MouseSegmentName = n;
-    },    
+    },
 
     setSelectSegment: function(tier, name, start, duration, isSelected) {
         var id = this.getId(tier, name, start);
         this.MouseSegmentName = id;
         this.uiInfo[id] = isSelected;
-        this.resizeSelectArea(start, start+duration);
+        this.resizeSelectArea(start, start + duration);
     },
-    
-    resizeSelectArea: function(start,end) {
+
+    resizeSelectArea: function(start, end) {
         this.selectS = start;
         this.selectE = end;
-    },    
-    
-    resizeSelectAreaMulti: function(start,end) {
-        if(start < this.selectS) 
+    },
+
+    resizeSelectAreaMulti: function(start, end) {
+        if (start < this.selectS)
             this.selectS = start;
-        if(end > this.selectE) 
+        if (end > this.selectE)
             this.selectE = end;
-    },    
-    
+    },
+
     setSelectMultiSegment: function(tier, name, start, duration, isSelected) {
         var id = this.getId(tier, name, start);
-        if(this.uiInfo[id-1] || this.uiInfo[id+1]) {
+        if (this.uiInfo[id - 1] ||  this.uiInfo[id + 1]) {
             this.uiInfo[id] = isSelected;
-            this.resizeSelectAreaMulti(start,start+duration);
+            this.resizeSelectAreaMulti(start, start + duration);
             return true;
-        }
-        else return false;
+        } else return false;
     },
-    
+
     isSelected: function(tier, name, start) {
-        if(tier.TierName==this.getSelectTier())
+        if (tier.TierName == this.getSelectTier())
             return this.uiInfo[this.getId(tier, name, start)];
-        else 
+        else
             return false;
-    }, 
-    
+    },
+
     getAllSelected: function(tier) {
         var ret = [];
         var j = 0;
-        if(tier.TierName==this.getSelectTier()) {
-            for(e in tier.events) {
-                if(this.uiInfo[j]) ret[j] = tier.events[e]; 
+        if (tier.TierName == this.getSelectTier()) {
+            for (e in tier.events) {
+                if (this.uiInfo[j]) ret[j] = tier.events[e];
                 j++;
             }
             return ret;
-        }
-        else 
+        } else
             return false;
-    },               
-        
+    },
+
     countSelected: function() {
         var x = 0;
-        for(var i=0;i<this.uiInfo.length; i++)
-            if(this.uiInfo[i]) x++;
+        for (var i = 0; i < this.uiInfo.length; i++)
+            if (this.uiInfo[i]) x++;
         return x;
-    },         
-    
-    
+    },
+
+
     getCurrentSample: function(perc) {
         return this.sS + (this.eS - this.sS) * perc;
     },
-    
+
     getId: function(tier, name, start) {
         var j = 0;
         for (var y in tier.events) {
-            if(tier.events[y].label == name && tier.events[y].startSample == start)
+            if (tier.events[y].label == name && tier.events[y].startSample == start)
                 return j;
             j++;
         }
     },
-    
+
     resetSelection: function(length) {
-        for (var i=0;i<length;i++) {
+        for (var i = 0; i < length; i++) {
             this.uiInfo[i] = false;
         }
     },
-    
+
 
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");
