@@ -205,6 +205,23 @@ canvas {
     background-color:#0DC5FF;
 }
 
+.aboutLink {
+    /*width: 25px;*/
+    /*height:25px;*/
+    margin: 5px;
+    padding: 0px;
+    background-color:#ededed;
+    border-radius:0;
+    border:1px solid white;
+    /*display:inline-block;*/
+    float:left;
+}
+
+.aboutLink img {
+    width: 23px;
+    height:23px;
+}
+
 #isScrollable {
     z-index: 9999;
     height: 800px; /* Fix a height here */
@@ -268,8 +285,8 @@ textarea {
 	/*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');*/
     background: #353535;
 	background-color:#ededed;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
+	/*-moz-border-radius:6px;*/
+	/*-webkit-border-radius:6px;*/
 	border-radius:0px;
 	border:1px solid white;
 	display:inline-block;
@@ -291,7 +308,7 @@ textarea {
 	top:1px;
 }
 
-.menu button, .menu-bottom button {
+.menu button, .menu-bottom button{
     margin: 2px;
     padding: 1px;
     height: 30px;
@@ -300,7 +317,7 @@ textarea {
     text-align:center;
     width: 9%;
 }
-.menu button {
+.menu button{
     z-index: 9999;
     margin-top: 5px;
 }

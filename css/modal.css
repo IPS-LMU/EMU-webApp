@@ -8,7 +8,7 @@
     right: 0;
     top: 0;
     visibility: hidden;
-    z-index: 1;
+    z-index: 10000;
 
     -webkit-transition: opacity .5s;
     -moz-transition: opacity .5s;
@@ -31,7 +31,7 @@
     text-align: justify;
     top: 40%;
     visibility: hidden;
-    z-index: 10;
+    z-index: 10001;
 
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -96,18 +96,4 @@
     text-align: left;
     width: 120px;
 }
-.popup input[type="text"], .popup input[type="password"] {
-    border: 1px solid;
-    border-color: #999 #ccc #ccc;
-    margin: 0;
-    padding: 2px;
 
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
-    border-radius: 2px;
-}
-.popup input[type="text"]:hover, .popup input[type="password"]:hover {
-    border-color: #555 #888 #888;
-}
