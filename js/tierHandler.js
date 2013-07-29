@@ -169,7 +169,6 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
-        console.log(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {
@@ -459,6 +458,7 @@ EmuLabeller.tierHandler = {
             this.history();              
         }
         else {
+            if(tierDetails.TierName!=new_key)
             alert("Fehler : Ein Tier mit diesem Name ('"+new_key+"') existiert bereits!");
         }
         
