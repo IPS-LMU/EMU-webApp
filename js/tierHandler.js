@@ -371,7 +371,6 @@ EmuLabeller.tierHandler = {
 
     handleTierDoubleClick: function(percX, percY, tierDetails) {
         var my = this;
-        
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
@@ -397,26 +396,7 @@ EmuLabeller.tierHandler = {
             my.removeLabelDoubleClick();
         }
         emulabeller.drawBuffer();
-    },    
-
-    isSelectNeighbour: function(row, newId) {
-        return (this.isRightSelectNeighbour(row, newId) || this.isLeftSelectNeighbour(row, newId));
-    },
-
-
-    isRightSelectNeighbour: function(row, newId) {
-        if (newId == this.viewPort.selectedSegments[row].length)
-            return false;
-        else
-            return this.viewPort.selectedSegments[row][newId + 1];
-    },
-
-    isLeftSelectNeighbour: function(row, newId) {
-        if (newId === 0)
-            return false;
-        else
-            return this.viewPort.selectedSegments[row][newId - 1];
-    },
+    }, 
 
     createSelection: function(field, start, end) {
         if (field.createTextRange) {
