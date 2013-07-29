@@ -161,6 +161,10 @@ var emulabeller = (function() {
                 // C key
                 emulabeller.editLabel();
             }
+            if (110 == e.keyCode) {
+                // N key
+                emulabeller.tierHandler.renameTier();
+            }            
             if (13 == e.keyCode) {
                 // ENTER key
                 emulabeller.addSegmentAtSelection();

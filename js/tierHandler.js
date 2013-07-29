@@ -202,18 +202,23 @@ EmuLabeller.tierHandler = {
     
     rebuildTiers: function() {
         for(t in this.tierInfos.tiers) {
+            this.removeTierHtml(this.tierInfos.tiers[t].TierName);
             if(null==document.getElementById(this.tierInfos.tiers[t].TierName)) {
                 this.addTiertoHtml(this.tierInfos.tiers[t].TierName, this.tierCssName, "#"+this.cans.id);
             }
         }
     },    
     
-    removeTier: function(tierName) {
+    removeTierHtml: function(tierName) {
         $("#"+tierName).remove();
         $("#"+tierName+"_del").remove();
         $("#"+tierName+"_res").remove();
+    },
+      
+    
+    removeTier: function(tierName) {
+        this.removeTierHtml(tierName);
         delete this.tierInfos.tiers[tierName];
-        
         // save history state
         this.history();
     },
@@ -337,12 +342,12 @@ EmuLabeller.tierHandler = {
     },
     
     
-    createEditArea: function(x,width,height,label,canvas) {
+    createEditArea: function(x,width,height,label,canvas,saveTier) {
         var my = this;
         var textAreaX = Math.round(x) + canvas.offsetLeft + 2;
         var textAreaY = canvas.offsetTop + 2;
-        var textAreaWidth = Math.floor(width); //posE - posS - 5
-        var textAreaHeight = Math.floor(height); //canvas.height / 2 - 5
+        var textAreaWidth = Math.floor(width);
+        var textAreaHeight = Math.floor(height);
         var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
             id:this.editAreaTextfieldName
         }).css({
@@ -358,10 +363,13 @@ EmuLabeller.tierHandler = {
         }).prepend(edit);
         $("#tiers").append(area);
         emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-        $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) { //TODO remove \n
+        $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 13) {
-                my.saveLabelDoubleClick();
+                if(saveTier)
+                    my.saveLabelName();
+                else
+                    my.saveTierName();
                 my.removeLabelDoubleClick();
             }
         };
@@ -382,7 +390,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                this.createEditArea(posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas);
+                this.createEditArea(posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
                 
             } else if (tierDetails.type == "point") {
                 var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -390,7 +398,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.select(nearest.startSample,nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;
-                this.createEditArea(posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas);
+                this.createEditArea(posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas,true);
             }
         } else {
             my.removeLabelDoubleClick();
@@ -414,13 +422,28 @@ EmuLabeller.tierHandler = {
         field.focus();
     },
 
-    saveLabelDoubleClick: function() {
+    saveLabelName: function() {
         var tierDetails = this.getSelectedTier();
         var content = $("#"+this.editAreaTextfieldName).val();
-        console.log(emulabeller.viewPort.getSelectName());
         tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
 
+        // save history state
+        this.history();
+        
+    },
+
+    saveTierName: function() {
+        var my = this;
+        var tierDetails = this.getSelectedTier();
+        var content = $("#"+this.editAreaTextfieldName).val().replace(/[\n\r]/g, '');
+        $("#"+tierDetails.TierName).attr("id",content);
+        tierDetails.TierName = content;
+        
+        //my.addTiertoHtml(tierDetails.TierName, my.tierCssName, "#"+my.cans.id);
+        
+        //this.rebuildTiers();
+        emulabeller.drawBuffer();
         // save history state
         this.history();
         
@@ -432,7 +455,7 @@ EmuLabeller.tierHandler = {
         if(null!=tierDetails) {
             var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
             var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-            this.createEditArea(posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas);
+            this.createEditArea(posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas,false);
         }
         else {
             alert("Bitte waehlen Sie zuerst ein Tier aus!");
