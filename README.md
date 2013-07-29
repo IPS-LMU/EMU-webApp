@@ -20,11 +20,12 @@ quick start to get you up and labelling:
 
 ## Tools for development
 
-* install [nodejs and npm](http://nodejs.org/) w
+* install [nodejs and npm](http://nodejs.org/)
 * install `bower` with `npm install -g bower`
 * install `grunt` with `npm install.-g grunt`
 * install dependencies with the command `bower install`
 * build `emuLVC.min.js` with the command `grunt`
+* for livereload use `grunt watch` with the livereload plugin for chrome  
 
 ## Authors
 
