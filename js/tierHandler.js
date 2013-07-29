@@ -313,6 +313,14 @@ EmuLabeller.tierHandler = {
         }
         return r;
     },
+
+    tierExists: function(name) {
+        var t = this.tierInfos.tiers;
+        for (var k in t) {
+            if(t[k].TierName==name) return true; 
+        }
+        return false;
+    },
     
 
     findNearestPoint: function(t, curSample) {
@@ -437,21 +445,23 @@ EmuLabeller.tierHandler = {
     saveTierName: function() {
         var my = this;
         var tierDetails = this.getSelectedTier();
-        var backup = jQuery.extend(true, {}, tierDetails);
         var old_key = tierDetails.TierName;
         var new_key = $("#"+this.editAreaTextfieldName).val().replace(/[\n\r]/g, '');
-        
-        delete this.tierInfos.tiers[old_key];
-        $("#"+old_key).attr("id",new_key);
-        my.tierInfos.tiers[new_key] = backup;
-        my.tierInfos.tiers[new_key].TierName = new_key;
 
-        //emulabeller.viewPort.setSelectName(new_key);
-        emulabeller.drawBuffer();
+        if(!this.tierExists(new_key)) {
+            var backup = jQuery.extend(true, {}, tierDetails);
+            delete this.tierInfos.tiers[old_key];
+            $("#"+old_key).attr("id",new_key);
+            my.tierInfos.tiers[new_key] = backup;
+            my.tierInfos.tiers[new_key].TierName = new_key;
+            emulabeller.drawBuffer();
+            // save history state
+            this.history();              
+        }
+        else {
+            alert("Fehler : Ein Tier mit diesem Name ('"+new_key+"') existiert bereits!");
+        }
         
-        // save history state
-        this.history();     
-        console.log(my.tierInfos.tiers);   
     },
 
     renameTier: function() { //maybe rename to removeLabelBox or something
