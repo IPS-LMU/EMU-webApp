@@ -209,9 +209,9 @@ canvas {
 }
 
 .aboutLink {
-    width: 30px;
-    height:30px;
-    margin: 5px;
+    width: 38px;
+    height:38px;
+    /*margin: 5px;*/
     padding: 0px;
     background-color:#161616;
     border-radius:0;
@@ -221,8 +221,8 @@ canvas {
 }
 
 .aboutLink img {
-    width: 29px;
-    height:29px;
+    width: 37px;
+    height:37px;
 }
 
 #isScrollable {
