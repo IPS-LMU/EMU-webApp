@@ -122,10 +122,10 @@ EmuLabeller.tierHandler = {
         });        
         
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
+            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(this.id));
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
+            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(this.id));
         });
         $("#" + myName).bind("mousemove", function(event) {
            curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
@@ -170,7 +170,6 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
-        console.log(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {
@@ -361,17 +360,15 @@ EmuLabeller.tierHandler = {
         var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
             id:this.editAreaTextfieldName
         }).css({
+            "position":"relative",
             "width": textAreaWidth+"px",
-            "height": textAreaHeight+"px"
-        }).text(label);
-                
-        var area = $("<div class='"+this.editAreaName+"'>").attr({
-            id: this.editAreaName
-        }).css({
+            "height": textAreaHeight+"px",
             "top": textAreaY+"px",
             "left":textAreaX+"px"
-        }).prepend(edit);
-        $("#tiers").append(area);
+        }).text(label);
+                
+        $("#tiers").append(edit);
+        
         emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
         $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;

@@ -163,6 +163,7 @@ canvas {
     font-size:14px;
     text-align:left;
     height: 45px;
+    z-index:99;
 }
 
 .saveText {

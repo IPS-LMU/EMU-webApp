@@ -259,7 +259,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc = inMemoryCanvas.getContext('2d');
         canvascc.clearRect(0, 0, tW, tH);
         canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
-    },
+    }, 
 
     /**
      * draws the current osci defined by the peaks array
