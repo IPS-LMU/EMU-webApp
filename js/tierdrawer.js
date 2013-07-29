@@ -2,8 +2,6 @@ EmuLabeller.Drawer.TierDrawer = {
 
     init: function(params) {
         this.markColor = "rgba(255, 255, 0, 0.7)";
-        this.startBoundaryColor = "green";
-        this.endBoundaryColor = "red";
 
         this.curSelBoundColor = "#0DC5FF"; //rgba(0, 0, 255, 255)";
 
@@ -14,6 +12,12 @@ EmuLabeller.Drawer.TierDrawer = {
         this.cursorWidth = 1;
 
         this.selTierColor = "#C8C8C8";
+        
+        this.startBoundaryColor = "rgba(22, 22, 22, 0.75)";
+        this.endBoundaryColor = "rgba(22, 22, 22, 0.25)";
+
+        this.startHelperLineColor = "rgba(22, 22, 22, 0.75)";
+        this.endHelperLineColor = "rgba(22, 22, 22, 0.25)";
 
     },
 
@@ -82,20 +86,22 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
                     }
                     //draw helper lines
-                    cc.strokeStyle = "rgba(0,255,0,0.5)";
+                    cc.strokeStyle = this.startHelperLineColor;
                     cc.beginPath();
                     cc.moveTo(percS * canvas.width, canvas.height / 4);
                     cc.lineTo(tX + tW / 2, canvas.height / 4);
                     cc.lineTo(tX + tW / 2, canvas.height / 4 + 10);
                     cc.stroke();
 
+                    // draw sample numbers.
+                    cc.strokeStyle = this.startHelperLineColor;
                     tW = cc.measureText(curEvt.startSample).width;
                     //check for enough space to stroke text
                     if (percE * canvas.width - percS * canvas.width > tW) {
                         cc.strokeText(curEvt.startSample, percS * canvas.width + 5, canvas.height / 8);
                     }
 
-                    cc.strokeStyle = "rgba(255,0,0,0.2)";
+                    cc.strokeStyle = this.endHelperLineColor;
                     cc.beginPath();
                     cc.moveTo(percE * canvas.width, canvas.height / 4 * 3);
                     cc.lineTo(tX + tW / 2, canvas.height / 4 * 3);
@@ -114,7 +120,7 @@ EmuLabeller.Drawer.TierDrawer = {
             for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[curEvtNr];
                 var id = emulabeller.viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
-
+                cc.strokeStyle = "black";
                 if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS) {
                     perc = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
@@ -130,7 +136,9 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.strokeText(tierDetails.events[curEvtNr].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
                         cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10)
                     }
-
+                    cc.strokeStyle = this.startBoundaryColor;
+                    tW = cc.measureText(curEvt.startSample).width;
+                    cc.strokeText(curEvt.startSample, canvas.width * perc + 5, canvas.height / 8);
 
 
                 }

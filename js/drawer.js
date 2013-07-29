@@ -74,7 +74,7 @@ EmuLabeller.Drawer = {
         }
     },
 
-    uiDrawUpdate: function() {       
+    uiDrawUpdate: function() {
         this.uiWaveDrawUpdate();
         this.uiSpectroDrawUpdate();
         this.uiMiniMapDraw();
@@ -82,9 +82,9 @@ EmuLabeller.Drawer = {
     },
 
     /**
-    * update wave
-    * 
-    */
+     * update mini-map / scrolling area
+     *
+     */
     uiMiniMapDraw: function() {
         // draw minimap
         if (this.isInitDraw) {
@@ -96,30 +96,30 @@ EmuLabeller.Drawer = {
 
 
     /**
-    * update wave
-    * 
-    */
+     * update wave
+     *
+     */
     uiWaveDrawUpdate: function() {
-         //draw wave
+        //draw wave
         this.osciDrawer.drawCurOsciOnCanvas();
         this.osciDrawer.drawVpOsciMarkup();
     },
 
 
     /**
-    * update spectrogram
-    * 
-    */
+     * update spectrogram
+     *
+     */
     uiSpectroDrawUpdate: function() {
-         //draw spectrogram
+        //draw spectrogram
         this.spectogramDrawer.uiDraw();
     },
 
 
     /**
-    * update all tiers
-    * 
-    */
+     * update all tiers
+     *
+     */
     uiAllTierDrawUpdate: function() {
         var t = emulabeller.tierHandler.getTiers();
         for (var k in t) {
@@ -129,14 +129,14 @@ EmuLabeller.Drawer = {
     },
 
     /**
-    * update single tier 
-    * 
-    * @param tierDetail of Single tier
-    */
-    updateSingleTier: function(t,perx,pery) {
-        if(null!=t) {
-            this.tierDrawer.drawSingleTier(t,perx,pery);
+     * update single tier
+     *
+     * @param tierDetail of Single tier
+     */
+    updateSingleTier: function(t, perx, pery) {
+        if (null != t) {
+            this.tierDrawer.drawSingleTier(t, perx, pery);
             this.tierDrawer.drawVpMarkupSingleTier(t);
-       } 
+        }
     }
 };
