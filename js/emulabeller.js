@@ -263,6 +263,10 @@ var EmuLabeller = {
                     my.iohandler.dropBoxOpen();
                     break;
 
+                case "cmd_renameTierPoint":
+                    my.tierHandler.renameTier();
+                    break;
+                    
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
                     my.tierHandler.removeLabelDoubleClick();

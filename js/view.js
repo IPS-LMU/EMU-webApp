@@ -28,8 +28,10 @@ EmuLabeller.ViewPort = {
         // red line on wave & spectro
         this.percent = -1;
 
-        // list of selected tiers & segments
+        // list of selected Segments 
         this.uiInfo = []; // [Segments]
+        
+        this.selectInfo = []; // [Segments]
         
         // set everything to deselect when tiers are loaded and view is init()
         this.resetSelection();
@@ -39,7 +41,6 @@ EmuLabeller.ViewPort = {
         this.MouseSegmentName = "";
         
         // id of tier and segment MOVED on
-        this.curMouseClickTierName = "";
         this.curMouseMoveTierName = "";
         this.curMouseMoveSegmentName = "";
         this.curMouseMoveSegmentStart = "";

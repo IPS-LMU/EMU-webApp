@@ -426,6 +426,20 @@ EmuLabeller.tierHandler = {
         
     },
 
+    renameTier: function() { //maybe rename to removeLabelBox or something
+        var my = this;
+        var tierDetails = this.getSelectedTier();
+        if(null!=tierDetails) {
+            var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+            var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
+            this.createEditArea(posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas);
+        }
+        else {
+            alert("Bitte waehlen Sie zuerst ein Tier aus!");
+        }
+        
+    },   
+
     removeLabelDoubleClick: function() { //maybe rename to removeLabelBox or something
         var my = this;
         $('textarea#'+this.editAreaTextfieldName).remove();
