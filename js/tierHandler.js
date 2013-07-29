@@ -98,26 +98,27 @@ EmuLabeller.tierHandler = {
      */
     addTiertoHtml: function(myName, myCssClass, myAppendTo) {
 
-        var action  = "<a href='#' id='"+myName+"_del' class='deleteButton'><img src='"+this.deleteImage+"' /></a>";
-        var resize = " <a href='#' id='"+myName+"_res' class='resizeButton'><img src='"+this.resizeImage+"' /></a>";
+        var buttons = "<div class='buttons'><a href='#' id='"+myName+"_del' class='deleteButton'><img src='"+this.deleteImage+"' /></a><a href='#' id='"+myName+"_res' class='resizeButton'><img src='"+this.resizeImage+"' /></a></div>";
         var myCan = $('<canvas>').attr({
             id: myName,
             width: this.internalCanvasWidth,
             height: this.internalCanvasHeightSmall
-        }).addClass(myCssClass).add(action+resize);
+        }).addClass(myCssClass).add(buttons);
         
-        $('<div class="myHull">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);
-        
+        $('<div class="myHull">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);        
 
         $("#" + myName).bind("click", function(event) {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
         });
+        
         $("#" + myName+"_del").bind("click", function(event) {
-            if(confirm("Wollen Sie '"+myName+"' wirklich loeschen?")) 
-                emulabeller.tierHandler.removeTier(emulabeller.getTierName(event.originalEvent));
+            var n = $(this).parent().prev().get(0).id;
+            if(confirm("Wollen Sie '"+n+"' wirklich loeschen?")) 
+                emulabeller.tierHandler.removeTier(n);
         });        
           $("#" + myName+"_res").bind("click", function(event) {
-            emulabeller.tierHandler.resizeTier(emulabeller.getTierName(event.originalEvent));
+            var n = $(this).parent().prev().get(0).id;            
+            emulabeller.tierHandler.resizeTier(n);
         });        
         
         $("#" + myName).bind("dblclick", function(event) {
@@ -169,6 +170,7 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
+        console.log(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {
@@ -458,7 +460,6 @@ EmuLabeller.tierHandler = {
             this.history();              
         }
         else {
-            if(tierDetails.TierName!=new_key)
             alert("Fehler : Ein Tier mit diesem Name ('"+new_key+"') existiert bereits!");
         }
         
