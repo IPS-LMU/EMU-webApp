@@ -165,10 +165,10 @@ EmuLabeller.Drawer.TierDrawer = {
 
         //draw sel boundaries if not separate then single line with circle
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            // cc.beginPath();
-            // cc.arc(posS, 5, 5, 0, 2 * Math.PI, false); // fixed 10 px circle
-            // cc.stroke();
-            // cc.fill();
+            cc.beginPath();
+            cc.arc(posS, 5, 5, 0, 2 * Math.PI, false); // fixed 10 px circle
+            cc.stroke();
+            cc.fill();
             cc.beginPath();
             cc.moveTo(posS, 10);
             cc.lineTo(posS, canvas.height);
