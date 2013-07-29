@@ -174,30 +174,36 @@ canvas {
 .deleteButton {
     z-index:2;
     position: absolute;
-    right: 30px;
+    right: 20px;
     margin: 2px;
-    padding: 0px;
+    padding-top: 1  ;
 }
 .deleteButton img {
     width: 10px;
     height: 10px;
-    opacity: 0.75;
+    /*opacity: 0.75;*/
 
 }
+.deleteButton:hover{
+    background-color:#0DC5FF;
+}
+
 .resizeButton img {
     width: 10px;
     height: 10px;
-    opacity: 0.75;
+    /*opacity: 0.75;*/
 }
 
 .resizeButton {
     z-index:2;
     position: absolute;
-    right: 45px;
+    right: 30px;
     margin: 2px;
-    padding: 0px;
+    padding: 0;
 }
-
+.resizeButton:hover{
+    background-color:#0DC5FF;
+}
 
 #isScrollable {
     z-index: 9999;
