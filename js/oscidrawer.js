@@ -315,5 +315,7 @@ drawScrollMarkup: function(inMemoryCanvas) {
     canvascc.globalAlpha = 1;
     canvascc.fillStyle = this.scrollSegMarkerColor;
     canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
+    // draw scroll bar itself
+    canvascc.fillRect(curCenter - curDiam, cH/8*7, 2 * curDiam, cH/8);
 }
 };

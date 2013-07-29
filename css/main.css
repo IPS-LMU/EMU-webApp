@@ -176,7 +176,7 @@ canvas {
     position: absolute;
     right: 20px;
     margin: 2px;
-    padding-top: 1  ;
+    padding: 0  ;
 }
 .deleteButton img {
     width: 10px;
