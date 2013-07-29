@@ -24,7 +24,7 @@ var emulabeller = (function() {
     var labeller = Object.create(EmuLabeller);
 
 
-    labeller.init({
+    labeller.init({ 
         osciCanvas: osciCanvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,

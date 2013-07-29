@@ -335,6 +335,38 @@ EmuLabeller.tierHandler = {
     getTier: function(t) {
         return this.tierInfos.tiers[t];    
     },
+    
+    
+    createEditArea: function(x,width,height,label,canvas) {
+        var my = this;
+        var textAreaX = Math.round(x) + canvas.offsetLeft + 2;
+        var textAreaY = canvas.offsetTop + 2;
+        var textAreaWidth = Math.floor(width); //posE - posS - 5
+        var textAreaHeight = Math.floor(height); //canvas.height / 2 - 5
+        var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
+            id:this.editAreaTextfieldName
+        }).css({
+            "width": textAreaWidth+"px",
+            "height": textAreaHeight+"px"
+        }).text(label);
+                
+        var area = $("<div class='"+this.editAreaName+"'>").attr({
+            id: this.editAreaName
+        }).css({
+            "top": textAreaY+"px",
+            "left":textAreaX+"px"
+        }).prepend(edit);
+        $("#tiers").append(area);
+        emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+        $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) { //TODO remove \n
+            evt = evt || window.event;
+            if (evt.keyCode == 13) {
+                my.saveLabelDoubleClick();
+                my.removeLabelDoubleClick();
+            }
+        };
+        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     
+    },
         
 
     handleTierDoubleClick: function(percX, percY, tierDetails) {
@@ -351,39 +383,15 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                var textAreaX = Math.round(posS) + canvas.offsetLeft + 2;
-                var textAreaY = canvas.offsetTop + 2;
-                var textAreaWidth = Math.floor(posE - posS - 5);
-                var textAreaHeight = Math.floor(canvas.height / 2 - 5);
-                var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
-                     id:this.editAreaTextfieldName
-                 }).css({
-                     "width": textAreaWidth+"px",
-                     "height": textAreaHeight+"px"
-                 }).text(nearest.label);
-                
-                var area = $("<div class='"+this.editAreaName+"'>").attr({
-                    id: this.editAreaName
-                }).css({
-                    "top": textAreaY+"px",
-                    "left":textAreaX+"px"
-                }).prepend(edit);
-                $("#tiers").append(area);
-                emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-                $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) { //TODO remove \n
-                    evt = evt || window.event;
-                    if (evt.keyCode == 13) {
-                        my.saveLabelDoubleClick();
-                        my.removeLabelDoubleClick();
-                    }
-                };
-                my.createSelection(document.getElementById(this.editAreaTextfieldName), 0, nearest.label.length); // select textarea text 
+                this.createEditArea(posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas);
                 
             } else if (tierDetails.type == "point") {
                 var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 emulabeller.viewPort.select(nearest.startSample,nearest.startSample);
-                alert("no point editing yet! Sorry...");
+                var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
+                var editWidth = 45;
+                this.createEditArea(posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas);
             }
         } else {
             my.removeLabelDoubleClick();
