@@ -56,7 +56,7 @@ var EmuLabeller = {
             LABEL_MOVE: {
                 value: 2,
                 name: "LabelRenameMode"
-            }, 
+            },
 
             // when draging in a tier / multiple tiers
             LABEL_RESIZE: {
@@ -266,7 +266,7 @@ var EmuLabeller = {
                 case "cmd_renameTierPoint":
                     my.tierHandler.renameTier();
                     break;
-                    
+
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
                     my.tierHandler.removeLabelDoubleClick();
@@ -279,7 +279,7 @@ var EmuLabeller = {
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-                    $("body").css("cursor","ew-resize");
+                    $("body").css("cursor", "ew-resize");
                     my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
                     my.viewPort.selectE = my.dragStart;
@@ -300,7 +300,7 @@ var EmuLabeller = {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.dragStart = -1;
-                $("body").css("cursor","auto");
+                $("body").css("cursor", "auto");
                 my.drawer.uiDrawUpdate();
                 my.internalMode == my.EDITMODE.STANDARD;
             }
@@ -328,15 +328,14 @@ var EmuLabeller = {
             if (e.which == 1) { // if left mouse button is pressed
                 if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                     var newSamp = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
-                    if(newSamp >= my.dragStart) {
+                    if (newSamp >= my.dragStart) {
                         my.viewPort.selectE = newSamp;
                         my.viewPort.selectS = my.dragStart;
-                        $("body").css("cursor","w-resize");
-                    }
-                    else {
+                        $("body").css("cursor", "w-resize");
+                    } else {
                         my.viewPort.selectS = newSamp;
                         my.viewPort.selectE = my.dragStart;
-                        $("body").css("cursor","e-resize");
+                        $("body").css("cursor", "e-resize");
                     }
                     my.drawer.uiDrawUpdate();
                 }
@@ -355,11 +354,10 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            } 
-            else
-                //my.internalMode == my.EDITMODE.STANDARD;
+            } else
+            //my.internalMode == my.EDITMODE.STANDARD;
 
-            my.lastX = my.getX(e);
+                my.lastX = my.getX(e);
 
         });
 
@@ -367,8 +365,8 @@ var EmuLabeller = {
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
-        
-                       
+
+
 
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
@@ -926,7 +924,7 @@ var EmuLabeller = {
             window.URL.revokeObjectURL(prevLink.href);
             output.innerHTML = '';
         }
- 
+
         var bb = new Blob([JSON.stringify(emulabeller.tierHandler.tierInfos.tiers, undefined, 2)], {
             type: MIME_TYPE
         });
