@@ -504,13 +504,14 @@ EmuLabeller.tierHandler = {
                 });
            } 
             if(sT.type=="seg") {
-                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-                    sT.events.push({
-                        "label": "newPoint",
-                        "startSample": Math.round(emulabeller.viewPort.selectS),
-                        "sampleDur": 0
-                    });
-                } else {
+                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) { // split segments
+                    if(me) {
+                    
+                    }
+                    else {
+                    
+                    }
+                } else {                                                             // add new segment
                     sT.events.push({
                         "label": "newSegment",
                         "startSample": Math.round(emulabeller.viewPort.selectS),
