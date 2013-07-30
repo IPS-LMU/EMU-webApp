@@ -54,10 +54,10 @@ EmuLabeller.Drawer.TierDrawer = {
                 if (curEvt.startSample > emulabeller.viewPort.sS &&
                     curEvt.startSample < emulabeller.viewPort.eS || //within segment
                     curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.sS &&
-                    curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS ||//end in segment
+                    curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS || //end in segment
                     curEvt.startSample < emulabeller.viewPort.sS &&
                     curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.eS // within sample
-                    ) {
+                ) {
 
                     // draw segment start
                     var posS = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample));
@@ -93,7 +93,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     //check for enough space to stroke text
                     if (posE - posS > tW) {
                         cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
-                    } 
+                    }
 
                     //draw helper lines
                     if (posE - posS > cc.measureText("m").width * 3) {
@@ -108,7 +108,7 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.strokeStyle = this.startHelperLineColor;
                         tW = cc.measureText(curEvt.startSample).width;
                         //check for enough space to stroke text
-                        if (posE - posS  > tW) {
+                        if (posE - posS > tW) {
                             cc.strokeText(curEvt.startSample, posS + 5, canvas.height / 8);
                         }
 
