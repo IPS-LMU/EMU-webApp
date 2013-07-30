@@ -498,6 +498,9 @@ var EmuLabeller = {
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
         this.drawer.uiAllTierDrawUpdate();
+
+        emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
+
     },
 
     /**
@@ -706,7 +709,6 @@ var EmuLabeller = {
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
         } else if (ft == 3) {
             var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
-            emulabeller.iohandler.toTextGrid(parserRes); // for testing toTextGrid
             this.tierHandler.addLoadedTiers(parserRes);
         }
     },

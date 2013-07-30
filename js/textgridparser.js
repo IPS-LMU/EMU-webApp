@@ -54,7 +54,7 @@ EmuLabeller.TextGridParser = {
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
-                        startSample: eSt - 1 , // correct so starts at 0
+                        startSample: eSt - 1, // correct so starts at 0
                         sampleDur: eEt - eSt
                     });
                 } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points[") === 0) {
@@ -80,60 +80,62 @@ EmuLabeller.TextGridParser = {
     },
 
     /**
-     * converts the internal labelJSO
+     * converts the internal tiers format returned from tierHandler.getTiers
      * to a string containing a TextGrid file
-     * with the according segments
-     * @param labelJSO
      */
-    toTextGrid: function(labelJSO) {
+    toTextGrid: function(tiers) {
         var tG = "";
         var nl = "\n";
         var t = "\t";
 
         // writing header infos
         tG = tG + this.l1 + nl + this.l2 + nl + nl;
-        tG = tG + "xmin = " + this.findTimeOfMinSample(labelJSO) + nl;
-        tG = tG + "xmax = " + this.findTimeOfMaxSample(labelJSO) + nl + nl;
+        tG = tG + "xmin = " + this.findTimeOfMinSample() + nl;
+        tG = tG + "xmax = " + this.findTimeOfMaxSample() + nl + nl;
         tG = tG + "tiers? <exists>" + nl + nl;
-        tG = tG + "size = " + labelJSO.tiers.length + nl;
+        tG = tG + "size = " + emulabeller.tierHandler.getLength() + nl;
         tG = tG + "item []:" + nl;
-
-        for (var i = 0; i < labelJSO.tiers.length; i++) {
+        var tierNr = 1;
+        for (var tN in tiers) {
+            console.log(tN)
+            var curTier = emulabeller.tierHandler.getTier(tN)
             //write tier items
-            var tierNr = i + 1;
+            tierNr = tierNr + 1;
             tG = tG + t + "item [" + tierNr + "]:" + nl;
-            if (labelJSO.tiers[i].type == "seg") {
+            if (curTier.type == "seg") {
                 tG = tG + t + t + 'class = "IntervalTier"' + nl;
-            } else if (labelJSO.tiers[i].type == "point") {
+            } else if (curTier.type == "point") {
                 tG = tG + t + t + 'class = "TextTier"' + nl;
             }
-            tG = tG + t + t + 'name = "' + labelJSO.tiers[i].TierName + '"' + nl;
-            tG = tG + t + t + "xmin = " + this.findTimeOfMinSample(labelJSO) + nl;
-            tG = tG + t + t + "xmax = " + this.findTimeOfMaxSample(labelJSO) + nl;
-            if (labelJSO.tiers[i].type == "seg") {
-                tG = tG + t + t + "intervals: size = " + labelJSO.tiers[i].events.length + nl;
-            } else if (labelJSO.tiers[i].type == "point") {
-                tG = tG + t + t + "points: size = " + labelJSO.tiers[i].events.length + nl;
+            tG = tG + t + t + 'name = "' + curTier.TierName + '"' + nl;
+            tG = tG + t + t + "xmin = " + this.findTimeOfMinSample() + nl;
+            tG = tG + t + t + "xmax = " + this.findTimeOfMaxSample() + nl;
+            if (curTier.type == "seg") {
+                tG = tG + t + t + "intervals: size = " + curTier.events.length + nl;
+            } else if (curTier.type == "point") {
+                tG = tG + t + t + "points: size = " + curTier.events.length + nl;
             }
-            for (var j = 0; j < labelJSO.tiers[i].events.length; j++) {
+            for (var j = 0; j < curTier.events.length; j++) {
                 var evtNr = j + 1;
-                if (labelJSO.tiers[i].type == "seg") {
+                if (curTier.type == "seg") {
                     tG = tG + t + t + t + "intervals[" + evtNr + "]:" + nl;
-                    tG = tG + t + t + t + t + "xmin = " + labelJSO.tiers[i].events[j].startSample / 44100 + nl;
-                    tG = tG + t + t + t + t + "xmax = " + (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur) / 44100 + nl;
-                    tG = tG + t + t + t + t + 'text = "' + labelJSO.tiers[i].events[j].label + '"' + nl;
-                } else if (labelJSO.tiers[i].type == "point") {
+                    if (curTier.events[j].startSample !== 0) {
+                        tG = tG + t + t + t + t + "xmin = " + ((curTier.events[j].startSample + 1) / this.ssr + (1 / this.ssr) / 2) + nl;
+                    }else{
+                        tG = tG + t + t + t + t + "xmin = " + 0 + nl;
+                    }
+                    tG = tG + t + t + t + t + "xmax = " + (curTier.events[j].startSample + 1 + curTier.events[j].sampleDur + 1) / this.ssr + nl;
+                    tG = tG + t + t + t + t + 'text = "' + curTier.events[j].label + '"' + nl;
+                } else if (curTier.type == "point") {
                     tG = tG + t + t + t + "points[" + evtNr + "]:" + nl;
-                    tG = tG + t + t + t + t + "time = " + labelJSO.tiers[i].events[j].startSample / 44100 + nl;
-                    tG = tG + t + t + t + t + 'mark = "' + labelJSO.tiers[i].events[j].label + '"' + nl;
-
+                    tG = tG + t + t + t + t + "time = " + curTier.events[j].startSample / this.ssr + nl;
+                    tG = tG + t + t + t + t + 'mark = "' + curTier.events[j].label + '"' + nl;
                 }
-
             }
         }
 
         // console.log(labelJSO);
-        // console.log(tG);
+        console.log(tG);
         return (tG);
 
     },
@@ -141,19 +143,19 @@ EmuLabeller.TextGridParser = {
     /**
      *
      */
-    findTimeOfMinSample: function(labelJSO) {
-        return 0.000000; // SIC!!! Find length in obj
+    findTimeOfMinSample: function() {
+        return 0.000000; // maybe needed at some point...
     },
 
     /**
      *
      */
-    findTimeOfMaxSample: function(labelJSO) {
-        return 2.904450; // SIC!!! Find length in obj
+    findTimeOfMaxSample: function() {
+        return emulabeller.viewPort.bufferLength / this.ssr;
     },
 
     /**
-     * test to see if all the segments in seg tiers 
+     * test to see if all the segments in seg tiers
      * are "snapped" -> startSample+dur+1 = startSample of next Segment
      */
     testForGapsInLabelJSO: function(labelJSO) {
