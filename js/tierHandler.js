@@ -12,7 +12,6 @@ EmuLabeller.tierHandler = {
         this.lastSample = 0;
         this.myHistoryCounter = 0;
         this.myHistory = new Object();
-        this.editAreaName = "textAreaPopUp";
         this.editAreaTextfieldName = "editArea";
         this.tierCssName = "tierSettings";
         this.cans = params.cans;
@@ -105,7 +104,7 @@ EmuLabeller.tierHandler = {
             height: this.internalCanvasHeightSmall
         }).addClass(myCssClass).add(buttons);
         
-        $('<div class="myHull">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);        
+        $('<div class="hull'+myName+'">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);        
 
         $("#" + myName).bind("click", function(event) {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
@@ -122,7 +121,7 @@ EmuLabeller.tierHandler = {
         });        
         
         $("#" + myName).bind("dblclick", function(event) {
-            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(this.id));
+            emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), this.id);
         });
         $("#" + myName).bind("contextmenu", function(event) {
             emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(this.id));
@@ -351,25 +350,25 @@ EmuLabeller.tierHandler = {
     },
     
     
-    createEditArea: function(x,width,height,label,canvas,saveTier) {
+    createEditArea: function(myName,x,width,height,label,c,saveTier) {
         var my = this;
-        var textAreaX = Math.round(x) + canvas.offsetLeft + 2;
-        var textAreaY = canvas.offsetTop + 2;
-        var textAreaWidth = Math.floor(width);
-        var textAreaHeight = Math.floor(height);
-        var edit = $("<textarea class='"+this.editAreaTextfieldName+"'>").attr({
-            id:this.editAreaTextfieldName
-        }).css({
-            "position":"relative",
-            "width": textAreaWidth+"px",
-            "height": textAreaHeight+"px",
-            "top": textAreaY+"px",
-            "left":textAreaX+"px"
-        }).text(label);
+        var textAreaX = Math.round(x) + c.offsetLeft + 2;
+        var textAreaY = c.offsetTop + 2;
+        var textAreaWidth = Math.round(width);
+        var textAreaHeight = Math.round(height);
+        var content = $("<textarea>").attr({
+            id:this.editAreaTextfieldName,
+            width: textAreaWidth,
+            height: textAreaHeight
+        }).css({   
+            "top": textAreaY+ "px",
+            "left": textAreaX+"px"     
+        }).addClass(this.editAreaTextfieldName).text(label);
                 
-        $("#tiers").append(edit);
+        $("#cans").prepend(content);
+        console.log(content);
         
-        emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+        emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;/*
         $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 13) {
@@ -380,12 +379,13 @@ EmuLabeller.tierHandler = {
                 my.removeLabelDoubleClick();
             }
         };
-        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     
+        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     */
     },
         
 
-    handleTierDoubleClick: function(percX, percY, tierDetails) {
+    handleTierDoubleClick: function(percX, percY, myName) {
         var my = this;
+        tierDetails = emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName)
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
@@ -397,7 +397,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                this.createEditArea(posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                this.createEditArea(tierDetails.TierName,posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
                 
             } else if (tierDetails.type == "point") {
                 var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -405,7 +405,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.select(nearest.startSample,nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;
-                this.createEditArea(posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                this.createEditArea(tierDetails.TierName,posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas,true);
             }
         } else {
             my.removeLabelDoubleClick();
@@ -468,7 +468,7 @@ EmuLabeller.tierHandler = {
         if(null!=tierDetails) {
             var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
             var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-            this.createEditArea(posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas,false);
+            this.createEditArea(tierDetails.TierName, posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas,false);
         }
         else {
             alert("Bitte waehlen Sie zuerst ein Tier aus!");
