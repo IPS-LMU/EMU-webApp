@@ -89,7 +89,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     //check for enough space to stroke text
                     if (posE - posS > tW) {
                         cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
-                    }
+                    } 
 
                     //draw helper lines
                     if (posE - posS > tW * 3) {

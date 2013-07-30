@@ -135,15 +135,15 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         drawTimeLineContext: function () {
             var my = this;
-            var sInB = emulabeller.viewPort.percent*emulabeller.backend.currentBuffer.length;
             var posS = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectS);
             var posE = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectE);
-            my.cursorPos = ~~(my.canvas.width*(sInB-emulabeller.viewPort.sS)/(emulabeller.viewPort.eS-emulabeller.viewPort.sS));
-            if(my.cursorPos!=0) {
+            var sDist = emulabeller.viewPort.getSampleDist(my.canvas.width);
+            var curPos = posS + sDist / 2;
+            if(curPos!=0 &&  emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
                 my.context.fillStyle = my.params.selectLineColor;
-                my.context.fillRect(my.cursorPos, 0, 1, my.canvas.height);
+                my.context.fillRect(curPos, 0, 1, my.canvas.height);
             }            
-            if (emulabeller.viewPort.selectS != 0 && emulabeller.viewPort.selectE != 0){
+            if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
                 my.context.fillStyle = my.params.selectedArea;
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = my.params.selectLineColor;
