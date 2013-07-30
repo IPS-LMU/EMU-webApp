@@ -104,7 +104,7 @@ EmuLabeller.tierHandler = {
             height: this.internalCanvasHeightSmall
         }).addClass(myCssClass).add(buttons);
         
-        $('<div class="hull'+myName+'">').attr({id: "myHull"}).html(myCan).appendTo(myAppendTo);        
+        $('<div class="hull'+myName+'" style="position:relative;">').attr({id: "hull"+myName}).html(myCan).appendTo(myAppendTo);        
 
         $("#" + myName).bind("click", function(event) {
             emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
@@ -367,10 +367,7 @@ EmuLabeller.tierHandler = {
             "width": textAreaWidth+ "px",
             "height": textAreaHeight+"px"     
         }).addClass(this.editAreaTextfieldName).text(label);
-                
-        $("#cans").prepend(content);
-        console.log(content);
-        
+        $("#cans").prepend(content);        
         emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
         $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;
