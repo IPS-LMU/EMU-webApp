@@ -54,67 +54,72 @@ EmuLabeller.Drawer.TierDrawer = {
                     curEvt.startSample < emulabeller.viewPort.eS ||
                     curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.sS &&
                     curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS) {
-                    // draw segment start
-                    var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1);
-                    // check if selected -> if draw as marked
 
+                    // draw segment start
+                    var posS = emulabeller.viewPort.getPos(canvas.width, curEvt.startSample);
+                    // check if selected -> if draw as marked
                     var tierId = emulabeller.viewPort.curMouseMoveTierName;
                     var segId = emulabeller.viewPort.curMouseMoveSegmentName;
                     var nowid = emulabeller.viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
                     if (tierDetails.TierName == tierId && segId == nowid) {
                         cc.fillStyle = this.curSelBoundColor;
-                        cc.fillRect(canvas.width * percS - 4, 0, 8, canvas.height);
+                        cc.fillRect(posS - 4, 0, 8, canvas.height);
                     } else {
-                        // console.log(curEvt);
                         cc.fillStyle = this.startBoundaryColor;
-                        cc.fillRect(canvas.width * percS, 0, 1, canvas.height / 2);
+                        cc.fillRect(posS, 0, 1, canvas.height / 2);
                     }
 
                     //draw segment end
-                    var percE = (curEvt.startSample + curEvt.sampleDur - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                    var posE = emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1);
+                    // var posE=(curEvt.startSample + curEvt.sampleDur  - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     cc.fillStyle = this.endBoundaryColor;
-                    cc.fillRect(canvas.width * percE, canvas.height / 2, 1, canvas.height);
+                    // cc.fillRect(canvas.width * posE, canvas.height / 2, 1, canvas.height);
+                    cc.fillRect(posE, canvas.height / 2, 1, canvas.height);
+
                     if (emulabeller.viewPort.isSelected(tierDetails, curEvt.label, curEvt.startSample)) {
                         cc.fillStyle = this.markColor;
-                        cc.fillRect(canvas.width * percS, 0, percE * canvas.width - percS * canvas.width, canvas.height);
+                        cc.fillRect(posS, 0, posE - posS, canvas.height);
                     }
 
                     // draw label 
                     cc.strokeStyle = "black";
                     cc.fillStyle = "white";
                     tW = cc.measureText(curEvt.label).width;
-                    tX = canvas.width * (percS + (percE - percS) / 2) - tW / 2;
+                    tX = posS + (posE - posS) / 2 - tW / 2;
                     //check for enough space to stroke text
-                    if (percE * canvas.width - percS * canvas.width > tW) {
+                    if (posE - posS > tW) {
                         cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
                     }
+
                     //draw helper lines
-                    cc.strokeStyle = this.startHelperLineColor;
-                    cc.beginPath();
-                    cc.moveTo(percS * canvas.width, canvas.height / 4);
-                    cc.lineTo(tX + tW / 2, canvas.height / 4);
-                    cc.lineTo(tX + tW / 2, canvas.height / 4 + 10);
-                    cc.stroke();
+                    if (posE - posS > tW * 3) {
+                        cc.strokeStyle = this.startHelperLineColor;
+                        cc.beginPath();
+                        cc.moveTo(posS, canvas.height / 4);
+                        cc.lineTo(tX + tW / 2, canvas.height / 4);
+                        cc.lineTo(tX + tW / 2, canvas.height / 4 + 10);
+                        cc.stroke();
 
-                    // draw sample numbers.
-                    cc.strokeStyle = this.startHelperLineColor;
-                    tW = cc.measureText(curEvt.startSample).width;
-                    //check for enough space to stroke text
-                    if (percE * canvas.width - percS * canvas.width > tW) {
-                        cc.strokeText(curEvt.startSample, percS * canvas.width + 5, canvas.height / 8);
+                        // // draw sample numbers.
+                        cc.strokeStyle = this.startHelperLineColor;
+                        tW = cc.measureText(curEvt.startSample).width;
+                        //check for enough space to stroke text
+                        if (posE - posS * canvas.width > tW) {
+                            cc.strokeText(curEvt.startSample, posS + 5, canvas.height / 8);
+                        }
+
+                        cc.strokeStyle = this.endHelperLineColor;
+                        cc.beginPath();
+                        cc.moveTo(posE, canvas.height / 4 * 3);
+                        cc.lineTo(tX + tW / 2, canvas.height / 4 * 3);
+                        cc.lineTo(tX + tW / 2, canvas.height / 4 * 3 - 10);
+                        cc.stroke();
                     }
-
-                    cc.strokeStyle = this.endHelperLineColor;
-                    cc.beginPath();
-                    cc.moveTo(percE * canvas.width, canvas.height / 4 * 3);
-                    cc.lineTo(tX + tW / 2, canvas.height / 4 * 3);
-                    cc.lineTo(tX + tW / 2, canvas.height / 4 * 3 - 10);
-                    cc.stroke();
 
                     tW = cc.measureText("dur: " + curEvt.sampleDur).width;
                     //check for enough space to stroke text
-                    if (percE * canvas.width - percS * canvas.width > tW) {
-                        cc.strokeText("dur: " + curEvt.sampleDur, percE * canvas.width - tW - 5, canvas.height - canvas.height / 8);
+                    if (posE - posS > tW) {
+                        cc.strokeText("dur: " + curEvt.sampleDur, posE - tW - 5, canvas.height - canvas.height / 8);
                     }
                 }
             }
@@ -168,7 +173,7 @@ EmuLabeller.Drawer.TierDrawer = {
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
             // draw clickbox + pos line
             var curPos = posS + sDist / 2;
-            cc.fillRect(curPos-5, 0, 10, 10);
+            cc.fillRect(curPos - 5, 0, 10, 10);
             cc.beginPath();
             cc.moveTo(curPos, 10);
             cc.lineTo(curPos, canvas.height);
