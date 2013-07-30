@@ -168,13 +168,10 @@ canvas {
     right: -36px;
 }
 
-.myHull {
-    position: relative;
-}
 
 .buttons {
     position: absolute;
-    z-index:4;
+    z-index:999;
     margin: 0px;
     padding: 0px;
     width: 100%;

@@ -120,7 +120,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.resizeTier(n);
         });        
         
-        $("#" + myName).bind("dblclick", function(event) {
+        $("#" + myName).bind("dblclick", function(event) {s
             emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), this.id);
         });
         $("#" + myName).bind("contextmenu", function(event) {
@@ -358,16 +358,14 @@ EmuLabeller.tierHandler = {
         var textAreaWidth = Math.round(width);
         var textAreaHeight = Math.round(height);
         var content = $("<textarea>").attr({
-            id:this.editAreaTextfieldName,
-            width: textAreaWidth,
-            height: textAreaHeight
+            id:this.editAreaTextfieldName
         }).css({   
             "top": textAreaY+ "px",
             "left": textAreaX+"px",    
             "width": textAreaWidth+ "px",
             "height": textAreaHeight+"px"     
         }).addClass(this.editAreaTextfieldName).text(label);
-        $("#cans").prepend(content);        
+        $("#hull"+myName).prepend(content);        
         emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
         $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;
