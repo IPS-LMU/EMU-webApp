@@ -1,5 +1,5 @@
 EmuLabeller.Drawer.OsciDrawer = {
-    
+
     /**
      * init method
      * @param params
@@ -26,14 +26,14 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = true; // probably only good for debugging
+        this.showSampleNrs = false; // probably only good for debugging
 
     },
 
     /**
-     * get current peaks to be drawn 
+     * get current peaks to be drawn
      * if drawing over sample exact -> samples
-     * if multiple samples per pixel -> calculate envelope points 
+     * if multiple samples per pixel -> calculate envelope points
      */
     getPeaks: function() {
 
@@ -45,17 +45,21 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         var chan = emulabeller.backend.currentBuffer.getChannelData(c);
         // console.log(chan);
-        var relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS);
+        var relData;
 
         if (k <= 1) {
-            // console.log("over sample exact!!!");
-            relData = chan.subarray(emulabeller.viewPort.sS - 1, emulabeller.viewPort.eS + 2); // +2 to compensate for length
+            // check if view at start            
+            if (emulabeller.viewPort.sS === 0) {
+                relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS + 2); // +2 to compensate for length
+            } else {
+                relData = chan.subarray(emulabeller.viewPort.sS - 1, emulabeller.viewPort.eS + 2); // +2 to compensate for length
+            }
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
             this.peaks = Array.prototype.slice.call(relData);
             // console.log(this.peaks)
         } else {
-
+            relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS);
 
             for (var i = 0; i < this.osciCanvas.width; i++) {
                 var sum = 0;
@@ -85,19 +89,18 @@ EmuLabeller.Drawer.OsciDrawer = {
     },
 
     /**
-    * draws osci on canvas by drawing the this.peaks
-    * values to canvas.
-    */
+     * draws osci on canvas by drawing the this.peaks
+     * values to canvas.
+     */
 
     drawOsciOnCanvas: function(c) {
         //this.resizeCanvases();
         var my = this;
         var can;
-        if(null!=c) {
+        if (null != c) {
             var cc = c.getContext("2d");
             can = c;
-        }
-        else {
+        } else {
             var cc = this.osciCanvas.getContext("2d");
             can = my.osciCanvas;
         }
@@ -116,32 +119,55 @@ EmuLabeller.Drawer.OsciDrawer = {
             // over sample exact
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
-            cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
-            for (var i = 1; i < this.peaks.length; i++) {
-                cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
-            }
-            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height); // SIC SIC SIC tail
-            cc.stroke();
-            // draw sample dots
-            for (var i = 1; i < this.peaks.length; i++) {
-                cc.beginPath();
-                cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
-                cc.stroke();
-                cc.fill();
-                if (this.showSampleNrs) {
-                    cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
-                    sNr = sNr + 1;
+            if (emulabeller.viewPort.sS == 0) {
+                console.log("here")
+                cc.moveTo(hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
+                for (var i = 0; i < this.peaks.length; i++) {
+                    cc.lineTo(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
                 }
+                cc.stroke();
+                // draw sample dots
+                for (var i = 0; i < this.peaks.length; i++) {
+                    cc.beginPath();
+                    cc.arc(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
+                    cc.stroke();
+                    cc.fill();
+                    if (this.showSampleNrs) {
+                        cc.strokeText(sNr, i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
+                        sNr = sNr + 1;
+                    }
+                }
+            } else {
+                //draw lines
+                cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
+                for (var i = 1; i < this.peaks.length; i++) {
+                    cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
+                }
+                cc.stroke();
+                // draw sample dots
+                for (var i = 1; i < this.peaks.length; i++) {
+                    cc.beginPath();
+                    cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
+                    cc.stroke();
+                    cc.fill();
+                    if (this.showSampleNrs) {
+                        cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
+                        sNr = sNr + 1;
+                    }
+                }
+
             }
+
+
         }
 
     },
 
     /**
-    * drawing method to draw single line between two 
-    * envelope points. Is used by drawOsciOnCanvas if 
-    * envelope drawing is done
-    */
+     * drawing method to draw single line between two
+     * envelope points. Is used by drawOsciOnCanvas if
+     * envelope drawing is done
+     */
     drawFrame: function(index, value, max, prevPeak, canvas) {
         var cc = canvas.getContext('2d');
         //calculate sample of cur cursor position
@@ -231,7 +257,7 @@ EmuLabeller.Drawer.OsciDrawer = {
             cc.strokeStyle = this.waveColor;
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
                 cc.fillRect(posS + sDist / 2, 0, 1, this.osciCanvas.height);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS + 5, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR), 6), posS + 5, yOffsetTime);
                 cc.strokeText(emulabeller.viewPort.selectS, posS + 5, yOffsetSample);
             } else {
                 cc.fillStyle = this.selMarkerColor;
@@ -245,8 +271,8 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.closePath();
                 cc.stroke();
                 var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS - tW - 4, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR, 6), posE + 5, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR)/2, 6), posS - tW - 4, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR)/sequencesize_2(statements, compressor), 6), posE + 5, yOffsetTime);
 
                 cc.strokeText(emulabeller.viewPort.selectS, posS - tW - 4, yOffsetSample);
                 cc.strokeText(emulabeller.viewPort.selectE, posE + 5, yOffsetSample);
@@ -296,7 +322,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc = inMemoryCanvas.getContext('2d');
         canvascc.clearRect(0, 0, tW, tH);
         canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
-    }, 
+    },
 
     /**
      * draws the current osci defined by the peaks array
@@ -309,20 +335,19 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @params emulabeller.backend.currentBufferLength current view port
      */
     drawCurOsciOnCanvas: function(c) {
-        if(null!=c) {
+        if (null != c) {
             canvascc = c.getContext('2d');
             var cH = c.height;
             var cW = c.width;
-        osciWidth = c.width;
-        osciHeight = c.height;
+            osciWidth = c.width;
+            osciHeight = c.height;
 
-        }
-        else {
+        } else {
             canvascc = this.osciCanvas.getContext('2d');
             var cH = this.osciCanvas.height;
             var cW = this.osciCanvas.width;
-        osciWidth = this.osciCanvas.width;
-        osciHeight = this.osciCanvas.height;
+            osciWidth = this.osciCanvas.width;
+            osciHeight = this.osciCanvas.height;
 
 
         }
