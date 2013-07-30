@@ -1,5 +1,9 @@
 EmuLabeller.Drawer.OsciDrawer = {
-
+    
+    /**
+     * init method
+     * @param params
+     */
     init: function(params) {
         this.waveColor = 'black';
         this.progressColor = 'grey';
@@ -26,6 +30,11 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
+    /**
+     * get current peaks to be drawn 
+     * if drawing over sample exact -> samples
+     * if multiple samples per pixel -> calculate envelope points 
+     */
     getPeaks: function() {
 
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / this.osciCanvas.width; // PCM Samples per new pixel
@@ -39,7 +48,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         var relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS);
 
         if (k <= 1) {
-            console.log("over sample exact!!!");
+            // console.log("over sample exact!!!");
             relData = chan.subarray(emulabeller.viewPort.sS - 1, emulabeller.viewPort.eS + 2); // +2 to compensate for length
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
@@ -75,13 +84,16 @@ EmuLabeller.Drawer.OsciDrawer = {
         } //else
     },
 
+    /**
+    * draws osci on canvas by drawing the this.peaks
+    * values to canvas.
+    */
     drawOsciOnCanvas: function() {
         //this.resizeCanvases();
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
         cc.strokeStyle = "black";
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / this.osciCanvas.width; // PCM Samples per new pixel
-        console.log(this.peaks.length)
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function(peak, index) {
@@ -116,6 +128,11 @@ EmuLabeller.Drawer.OsciDrawer = {
 
     },
 
+    /**
+    * drawing method to draw single line between two 
+    * envelope points. Is used by drawOsciOnCanvas if 
+    * envelope drawing is done
+    */
     drawFrame: function(index, value, max, prevPeak, canvas) {
         var cc = canvas.getContext('2d');
         //calculate sample of cur cursor position
@@ -200,24 +217,24 @@ EmuLabeller.Drawer.OsciDrawer = {
         if (emulabeller.viewPort.selectS !== 0 && emulabeller.viewPort.selectE !== 0) {
             var posS = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
             var posE = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectE);
-
-            cc.fillStyle = this.selMarkerColor;
-            cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);
-
-            cc.strokeStyle = this.selBoundColor;
-            cc.beginPath();
-            cc.moveTo(posS, 0);
-            cc.lineTo(posS, this.osciCanvas.height);
-            cc.moveTo(posE, 0);
-            cc.lineTo(posE, this.osciCanvas.height);
-            cc.closePath();
-            cc.stroke();
+            var sDist = emulabeller.viewPort.getSampleDist(this.osciCanvas.width);
 
             cc.strokeStyle = this.waveColor;
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+                cc.fillRect(posS + sDist / 2, 0, 1, this.osciCanvas.height);
                 cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS + 5, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.eS, posS + 5, yOffsetSample);
+                cc.strokeText(emulabeller.viewPort.selectS, posS + 5, yOffsetSample);
             } else {
+                cc.fillStyle = this.selMarkerColor;
+                cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);
+                cc.strokeStyle = this.selBoundColor;
+                cc.beginPath();
+                cc.moveTo(posS, 0);
+                cc.lineTo(posS, this.osciCanvas.height);
+                cc.moveTo(posE, 0);
+                cc.lineTo(posE, this.osciCanvas.height);
+                cc.closePath();
+                cc.stroke();
                 var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
                 cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS - tW - 4, yOffsetTime);
                 cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR, 6), posE + 5, yOffsetTime);

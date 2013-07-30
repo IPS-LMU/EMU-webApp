@@ -43,19 +43,19 @@ EmuLabeller.TextGridParser = {
                 }
                 if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && curLineEl1.indexOf("intervals[") === 0) {
                     // parse seg tiers event
-                    eSt = lines[i + 1].split(/\s+/)[3] * this.ssr;
-                    eEt = lines[i + 2].split(/\s+/)[3] * this.ssr;
+                    eSt = Math.ceil(lines[i + 1].split(/\s+/)[3] * this.ssr);
+                    eEt = Math.floor(lines[i + 2].split(/\s+/)[3] * this.ssr);
                     lab = lines[i + 3].split(/\s+/)[3].replace(/"/g, '');
 
-                    //check for first segment and adapt for length
-                    if(Math.ceil(eSt)==0){
-                        eEt = eEt + 1;
+                    // var correctFact = 0;
+                    if (eSt === 0) {
+                        eSt = eSt + 1; // for start first sample is 1
                     }
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
-                        startSample: Math.ceil(eSt), //take ceil of startime
-                        sampleDur: Math.floor(eEt - eSt) - 1 // and floor of dur - 1 to ensure that every sample belongs to a segment
+                        startSample: eSt - 1 , // correct so starts at 0
+                        sampleDur: eEt - eSt
                     });
                 } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points[") === 0) {
                     // parse point tier event
@@ -69,7 +69,8 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            console.log(JSON.stringify(labelJSO, undefined, 2));
+            // console.log(JSON.stringify(labelJSO, undefined, 2));
+            this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
         } else {
@@ -149,6 +150,28 @@ EmuLabeller.TextGridParser = {
      */
     findTimeOfMaxSample: function(labelJSO) {
         return 2.904450; // SIC!!! Find length in obj
+    },
+
+    /**
+     * test to see if all the segments in seg tiers 
+     * are "snapped" -> startSample+dur+1 = startSample of next Segment
+     */
+    testForGapsInLabelJSO: function(labelJSO) {
+        var counter = 0;
+        for (var i = 0; i < labelJSO.tiers.length; i++) {
+            if (labelJSO.tiers[i].type == "seg") {
+                for (var j = 0; j < labelJSO.tiers[i].events.length - 1; j++) {
+                    if (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur + 1 != labelJSO.tiers[i].events[j + 1].startSample) {
+                        console.log("######################")
+                        console.log(labelJSO.tiers[i])
+                        console.log(labelJSO.tiers[i].events[j])
+                        console.log(labelJSO.tiers[i].events[j + 1])
+                        counter = counter + 1;
+                    }
+                }
+            }
+        }
+        console.log("TextGridParser had: ", counter, "alignment issues found in parsed textgrid");
     }
 
 };

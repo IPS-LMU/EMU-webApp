@@ -159,20 +159,21 @@ EmuLabeller.Drawer.TierDrawer = {
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         var posS = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
+        var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
 
         cc.strokeStyle = this.selBoundColor;
         cc.fillStyle = this.selBoundColor;
 
         //draw sel boundaries if not separate then single line with circle
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+            // draw clickbox + pos line
+            var curPos = posS + sDist / 2;
+            cc.fillRect(curPos-5, 0, 10, 10);
             cc.beginPath();
-            cc.arc(posS, 5, 5, 0, 2 * Math.PI, false); // fixed 10 px circle
+            cc.moveTo(curPos, 10);
+            cc.lineTo(curPos, canvas.height);
             cc.stroke();
-            cc.fill();
-            cc.beginPath();
-            cc.moveTo(posS, 10);
-            cc.lineTo(posS, canvas.height);
-            cc.stroke();
+
         } else {
             cc.fillStyle = this.selMarkerColor;
             cc.fillRect(posS, 0, posE - posS, canvas.height);

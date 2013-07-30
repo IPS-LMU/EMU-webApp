@@ -170,7 +170,7 @@ EmuLabeller.tierHandler = {
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
-        console.log(tierName);
+        // console.log(tierName);
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
         if(null != event) {

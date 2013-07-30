@@ -57,12 +57,20 @@ EmuLabeller.ViewPort = {
         this.selectE = end;
     },
     /**
-    * get pixel position in current viewport given the canvas width 
-    * @param w is width of canvas 
-    * @param s is current sample to convert to pixel value
-    */
+     * get pixel position in current viewport given the canvas width
+     * @param w is width of canvas
+     * @param s is current sample to convert to pixel value
+     */
     getPos: function(w, s) {
         return (w * (s - this.sS) / (this.eS - this.sS + 1)); // + 1 because of view (displays all samples in view)
+    },
+
+    /**
+     * calculate the pixel distance between two samples
+     * @param w is width of canvas
+     */
+    getSampleDist: function(w) {
+        return this.getPos(w, this.sS + 1) - this.getPos(w, this.sS);
     },
 
     setSelectTier: function(n) {
