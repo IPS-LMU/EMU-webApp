@@ -96,7 +96,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     } 
 
                     //draw helper lines
-                    if (posE - posS > tW * 3) {
+                    if (posE - posS > cc.measureText("m").width * 3) {
                         cc.strokeStyle = this.startHelperLineColor;
                         cc.beginPath();
                         cc.moveTo(posS, canvas.height / 4);
@@ -108,7 +108,7 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.strokeStyle = this.startHelperLineColor;
                         tW = cc.measureText(curEvt.startSample).width;
                         //check for enough space to stroke text
-                        if (posE - posS * canvas.width > tW) {
+                        if (posE - posS  > tW) {
                             cc.strokeText(curEvt.startSample, posS + 5, canvas.height / 8);
                         }
 
