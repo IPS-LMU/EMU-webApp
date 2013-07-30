@@ -56,7 +56,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS) {
 
                     // draw segment start
-                    var posS = emulabeller.viewPort.getPos(canvas.width, curEvt.startSample);
+                    var posS = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample));
                     // check if selected -> if draw as marked
                     var tierId = emulabeller.viewPort.curMouseMoveTierName;
                     var segId = emulabeller.viewPort.curMouseMoveSegmentName;
@@ -70,7 +70,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
 
                     //draw segment end
-                    var posE = emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1);
+                    var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1));
                     // var posE=(curEvt.startSample + curEvt.sampleDur  - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     cc.fillStyle = this.endBoundaryColor;
                     // cc.fillRect(canvas.width * posE, canvas.height / 2, 1, canvas.height);

@@ -497,33 +497,24 @@ EmuLabeller.tierHandler = {
             var me = this.nextSegment(sT,emulabeller.viewPort.selectS);
             
             if(sT.type=="point") {
-                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-
-                    sT.events.push({
-                        "label": "newPoint",
-                        "startSample": emulabeller.viewPort.selectS,
-                        "sampleDur": 0
-                    });
-                } else {
-                    sT.events.push({
-                        "label": "newPoint",
-                        "startSample": emulabeller.viewPort.selectS,
-                        "sampleDur": 0
-                    });
-                }
-            }
+                sT.events.push({
+                    "label": "newPoint",
+                    "startSample": Math.round(emulabeller.viewPort.selectS),
+                    "sampleDur": 0
+                });
+           } 
             if(sT.type=="seg") {
                 if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
                     sT.events.push({
                         "label": "newPoint",
-                        "startSample": emulabeller.viewPort.selectS,
+                        "startSample": Math.round(emulabeller.viewPort.selectS),
                         "sampleDur": 0
                     });
                 } else {
                     sT.events.push({
                         "label": "newSegment",
-                        "startSample": emulabeller.viewPort.selectS,
-                        "sampleDur": emulabeller.viewPort.selectE - emulabeller.viewPort.selectS
+                        "startSample": Math.round(emulabeller.viewPort.selectS),
+                        "sampleDur": Math.round(emulabeller.viewPort.selectE) - Math.round(emulabeller.viewPort.selectS)
                     });
                 }
             }
