@@ -841,45 +841,21 @@ var EmuLabeller = {
 
     addSegmentAtSelection: function() {
 
-        this.resetAllSelSegments();
-        this.resetAllSelBoundariesInTierInfos();
-
         var sT = this.tierHandler.getSelectedTier();
+        if(null!=sT) {
+        emulabeller.viewPort.resetSelection(sT.events.length);
 
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
             sT.events.push({
                 "label": "newSegment",
                 "startSample": this.viewPort.selectS,
-                "sampleDur": 0,
-                "uiInfos": {
-                    "selSeg": false,
-                    "selBoundryStart": true,
-                    "selBoundryEnd": false,
-                    "lastValues": []
-                }
+                "sampleDur": 0
             });
         } else {
             sT.events.push({
                 "label": "newSegment",
                 "startSample": this.viewPort.selectS,
-                "sampleDur": this.viewPort.selectE - this.viewPort.selectS,
-                "uiInfos": {
-                    "selSeg": false,
-                    "selBoundryStart": true,
-                    "selBoundryEnd": false,
-                    "lastValues": []
-                }
-            });
-            sT.events.push({
-                "label": "emptyAfterNew",
-                "startSample": this.viewPort.selectS + 1,
-                "sampleDur": 0,
-                "uiInfos": {
-                    "selSeg": false,
-                    "selBoundryStart": false,
-                    "selBoundryEnd": false,
-                    "lastValues": []
-                }
+                "sampleDur": this.viewPort.selectE - this.viewPort.selectS
             });
         }
 
@@ -887,18 +863,9 @@ var EmuLabeller = {
         var bla = sT.events.sort(function(a, b) {
             return parseFloat(a.startSample) - parseFloat(b.startSample);
         });
-        // fix surrounding boundaries
-        var sel = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            sel.evts[0].sampleDur = sel.evts[1].startSample - sel.evts[0].startSample;
-            sel.evts[1].sampleDur = sel.evts[2].startSample - sel.evts[1].startSample;
-        } else {
-            sel.evts[2].startSample = sel.evts[1].startSample + sel.evts[1].sampleDur;
-            sel.evts[2].sampleDur = sel.evts[0].sampleDur - ((sel.evts[1].startSample - sel.evts[0].startSample) + sel.evts[1].sampleDur);
-
-            sel.evts[0].sampleDur = sel.evts[1].startSample - sel.evts[0].startSample;
-        }
+        
         emulabeller.drawBuffer();
+        }
     },
 
     validateTierInfos: function() {
