@@ -350,10 +350,10 @@ EmuLabeller.tierHandler = {
     },
     
     
-    createEditArea: function(myName,x,width,height,label,c,saveTier) {
+    createEditArea: function(myName,x,y,width,height,label,c,saveTier) {
         var my = this;
         var textAreaX = Math.round(x) + c.offsetLeft + 2;
-        var textAreaY = c.offsetTop + 2;
+        var textAreaY = c.offsetTop + 2 + y;
         var textAreaWidth = Math.round(width);
         var textAreaHeight = Math.round(height);
         var content = $("<textarea>").attr({
@@ -362,13 +362,15 @@ EmuLabeller.tierHandler = {
             height: textAreaHeight
         }).css({   
             "top": textAreaY+ "px",
-            "left": textAreaX+"px"     
+            "left": textAreaX+"px",    
+            "width": textAreaWidth+ "px",
+            "height": textAreaHeight+"px"     
         }).addClass(this.editAreaTextfieldName).text(label);
                 
         $("#cans").prepend(content);
         console.log(content);
         
-        emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;/*
+        emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
         $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 13) {
@@ -379,7 +381,7 @@ EmuLabeller.tierHandler = {
                 my.removeLabelDoubleClick();
             }
         };
-        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     */
+        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     
     },
         
 
@@ -397,7 +399,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                this.createEditArea(tierDetails.TierName,posS,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                this.createEditArea(tierDetails.TierName,posS,0,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
                 
             } else if (tierDetails.type == "point") {
                 var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -405,7 +407,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.select(nearest.startSample,nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;
-                this.createEditArea(tierDetails.TierName,posS-((editWidth-5)/2),editWidth- 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                this.createEditArea(tierDetails.TierName,posS-((editWidth-5)/2),canvas.height / 8,editWidth- 5,canvas.height / 4 - 5,nearest.label,canvas,true);
             }
         } else {
             my.removeLabelDoubleClick();
@@ -468,7 +470,7 @@ EmuLabeller.tierHandler = {
         if(null!=tierDetails) {
             var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
             var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-            this.createEditArea(tierDetails.TierName, posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas,false);
+            this.createEditArea(tierDetails.TierName, 0, posS,canvas.clientWidth - 5,canvas.height / 2 - 5,tierDetails.TierName,canvas,false);
         }
         else {
             alert("Bitte waehlen Sie zuerst ein Tier aus!");
