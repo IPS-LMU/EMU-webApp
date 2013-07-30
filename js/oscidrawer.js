@@ -5,7 +5,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(0, 0, 0, 0.3)";
 
-        this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
+        this.selMarkerColor = "rgba(22, 22, 22, 0.2)";
         this.selBoundColor = "black";
 
         this.cursorColor = 'red';
@@ -22,6 +22,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
+        this.showSampleNrs = true; // probably only good for debugging
 
     },
 
@@ -39,10 +40,11 @@ EmuLabeller.Drawer.OsciDrawer = {
 
         if (k <= 1) {
             console.log("over sample exact!!!");
-            relData = chan.subarray(emulabeller.viewPort.sS, emulabeller.viewPort.eS + 1);
+            relData = chan.subarray(emulabeller.viewPort.sS - 1, emulabeller.viewPort.eS + 2); // +2 to compensate for length
             this.minPeak = Math.min.apply(Math, relData);
             this.maxPeak = Math.max.apply(Math, relData);
             this.peaks = Array.prototype.slice.call(relData);
+            // console.log(this.peaks)
         } else {
 
 
@@ -77,7 +79,9 @@ EmuLabeller.Drawer.OsciDrawer = {
         //this.resizeCanvases();
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
-        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS) / this.osciCanvas.width; // PCM Samples per new pixel
+        cc.strokeStyle = "black";
+        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / this.osciCanvas.width; // PCM Samples per new pixel
+        console.log(this.peaks.length)
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function(peak, index) {
@@ -86,21 +90,27 @@ EmuLabeller.Drawer.OsciDrawer = {
                 }
             });
         } else if (k < 1) {
+            var hDbS = (1 / k) / 2; // half distance between samples
+            var sNr = emulabeller.viewPort.sS;
             // over sample exact
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
-            cc.moveTo(0, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
+            cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
             for (var i = 1; i < this.peaks.length; i++) {
-                cc.lineTo(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
+                cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
             }
             cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height); // SIC SIC SIC tail
             cc.stroke();
             // draw sample dots
             for (var i = 1; i < this.peaks.length; i++) {
                 cc.beginPath();
-                cc.arc(i / k, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height, 2, 0, 2 * Math.PI, false);
+                cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height, 4, 0, 2 * Math.PI, false);
                 cc.stroke();
                 cc.fill();
+                if (this.showSampleNrs) {
+                    cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height - 10);
+                    sNr = sNr + 1;
+                }
             }
         }
 
@@ -227,10 +237,11 @@ EmuLabeller.Drawer.OsciDrawer = {
         // cursor
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
-            var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
-            var procC = fracC / all2;
-            var posC = this.osciCanvas.width * procC;
+            var posC = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
+            // var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
+            // var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
+            // var procC = fracC / all2;
+            // var posC = this.osciCanvas.width * procC;
 
             //draw cursor
             cc.fillStyle = this.cursorColor;
@@ -318,13 +329,13 @@ EmuLabeller.Drawer.OsciDrawer = {
         // draw scroll bar itself
         canvascc.fillRect(curCenter - curDiam, cH / 8 * 7, 2 * curDiam, cH / 8);
         canvascc.beginPath();
-        canvascc.arc(curCenter + curDiam, cH / 8*7+(cH / 8)/2, (cH / 8)/2, 1.5*Math.PI, 2.5*Math.PI, false);
+        canvascc.arc(curCenter + curDiam, cH / 8 * 7 + (cH / 8) / 2, (cH / 8) / 2, 1.5 * Math.PI, 2.5 * Math.PI, false);
         canvascc.closePath();
         canvascc.fill();
-        canvascc.fill();// fill twice for color correction
+        canvascc.fill(); // fill twice for color correction
 
         canvascc.beginPath();
-        canvascc.arc(curCenter - curDiam, cH / 8*7+(cH / 8)/2, (cH / 8)/2, 0.5*Math.PI, 1.5*Math.PI, false);
+        canvascc.arc(curCenter - curDiam, cH / 8 * 7 + (cH / 8) / 2, (cH / 8) / 2, 0.5 * Math.PI, 1.5 * Math.PI, false);
         canvascc.closePath();
         canvascc.fill();
         canvascc.fill(); // fill twice for color correction

@@ -5,14 +5,14 @@ EmuLabeller.Drawer.TierDrawer = {
 
         this.curSelBoundColor = "#0DC5FF"; //rgba(0, 0, 255, 255)";
 
-        this.selMarkerColor = "rgba(0, 0, 255, 0.2)";
+        this.selMarkerColor = "rgba(22, 22, 22, 0.2)";
         this.selBoundColor = "black";
 
         this.cursorColor = "red";
         this.cursorWidth = 1;
 
         this.selTierColor = "#C8C8C8";
-        
+
         this.startBoundaryColor = "rgba(22, 22, 22, 0.75)";
         this.endBoundaryColor = "rgba(22, 22, 22, 0.25)";
 
@@ -50,9 +50,12 @@ EmuLabeller.Drawer.TierDrawer = {
             var e = tierDetails.events;
             for (var k in e) {
                 var curEvt = e[k];
-                if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS || curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.sS && curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS) {
+                if (curEvt.startSample > emulabeller.viewPort.sS &&
+                    curEvt.startSample < emulabeller.viewPort.eS ||
+                    curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.sS &&
+                    curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS) {
                     // draw segment start
-                    var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                    var percS = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1);
                     // check if selected -> if draw as marked
 
                     var tierId = emulabeller.viewPort.curMouseMoveTierName;
@@ -183,7 +186,7 @@ EmuLabeller.Drawer.TierDrawer = {
         }
         //calc cursor pos
         var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.viewPort.bufferLength - emulabeller.viewPort.sS;
-        var procC = fracC / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+        var procC = fracC / (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1);
         var posC = canvas.width * procC;
 
         // draw cursor
