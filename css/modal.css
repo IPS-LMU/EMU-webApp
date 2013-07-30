@@ -32,6 +32,9 @@
     top: 40%;
     visibility: hidden;
     z-index: 10001;
+    height: 50%;
+    width: 75%;
+    overflow: auto;
 
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
