@@ -26,7 +26,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = false; // probably only good for debugging
+        this.showSampleNrs = true; // probably only good for debugging
 
     },
 
@@ -271,17 +271,17 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.closePath();
                 cc.stroke();
                 var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR)/2, 6), posS - tW - 4, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR)/2, 6), posE + 5, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR) / 2, 6), posS - tW - 4, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR) / 2, 6), posE + 5, yOffsetTime);
 
                 cc.strokeText(emulabeller.viewPort.selectS, posS - tW - 4, yOffsetSample);
                 cc.strokeText(emulabeller.viewPort.selectE, posE + 5, yOffsetSample);
 
                 tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR - 1 / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, yOffsetTime);
 
                 tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS, posS + (posE - posS) / 2 - tW / 2, yOffsetSample);
+                cc.strokeText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, yOffsetSample);
 
 
             }

@@ -25,6 +25,7 @@ EmuLabeller.Drawer.TierDrawer = {
      * draw single tier
      */
     drawSingleTier: function(tierDetails, perx, pery) {
+
         var my = this;
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
@@ -51,9 +52,12 @@ EmuLabeller.Drawer.TierDrawer = {
             for (var k in e) {
                 var curEvt = e[k];
                 if (curEvt.startSample > emulabeller.viewPort.sS &&
-                    curEvt.startSample < emulabeller.viewPort.eS ||
+                    curEvt.startSample < emulabeller.viewPort.eS || //within segment
                     curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.sS &&
-                    curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS) {
+                    curEvt.startSample + curEvt.sampleDur < emulabeller.viewPort.eS ||//end in segment
+                    curEvt.startSample < emulabeller.viewPort.sS &&
+                    curEvt.startSample + curEvt.sampleDur > emulabeller.viewPort.eS // within sample
+                    ) {
 
                     // draw segment start
                     var posS = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample));
