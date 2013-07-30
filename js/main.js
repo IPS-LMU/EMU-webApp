@@ -167,7 +167,7 @@ var emulabeller = (function() {
             }            
             if (13 == e.keyCode) {
                 // ENTER key
-                emulabeller.addSegmentAtSelection();
+                emulabeller.tierHandler.addSegmentAtSelection();
             }
             
             if( 26 == e.keyCode ){

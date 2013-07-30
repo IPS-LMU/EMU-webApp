@@ -839,34 +839,6 @@ var EmuLabeller = {
         });
     },
 
-    addSegmentAtSelection: function() {
-
-        var sT = this.tierHandler.getSelectedTier();
-        if(null!=sT) {
-        emulabeller.viewPort.resetSelection(sT.events.length);
-
-        if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            sT.events.push({
-                "label": "newSegment",
-                "startSample": this.viewPort.selectS,
-                "sampleDur": 0
-            });
-        } else {
-            sT.events.push({
-                "label": "newSegment",
-                "startSample": this.viewPort.selectS,
-                "sampleDur": this.viewPort.selectE - this.viewPort.selectS
-            });
-        }
-
-        //resort events by their startSample values
-        var bla = sT.events.sort(function(a, b) {
-            return parseFloat(a.startSample) - parseFloat(b.startSample);
-        });
-        
-        emulabeller.drawBuffer();
-        }
-    },
 
     validateTierInfos: function() {
         this.JSONval.validateTierInfos(this.tierHandler.tierInfos);

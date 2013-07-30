@@ -107,7 +107,7 @@ EmuLabeller.tierHandler = {
         $('<div class="hull'+myName+'" style="position:relative;">').attr({id: "hull"+myName}).html(myCan).appendTo(myAppendTo);        
 
         $("#" + myName).bind("click", function(event) {
-            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
+            emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTier(emulabeller.getTierName(event.originalEvent)));
         });
         
         $("#" + myName+"_del").bind("click", function(event) {
@@ -124,7 +124,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), this.id);
         });
         $("#" + myName).bind("contextmenu", function(event) {
-            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(this.id));
+            emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTier(this.id));
         });
         $("#" + myName).bind("mousemove", function(event) {
            curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
@@ -149,7 +149,7 @@ EmuLabeller.tierHandler = {
             emulabeller.viewPort.curMouseMoveSegmentName =  "";
             emulabeller.viewPort.curMouseMoveSegmentStart = "";
             emulabeller.viewPort.curMouseMoveSegmentDuration = "";
-            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(emulabeller.getTierName(event.originalEvent)));
+            emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getTier(emulabeller.getTierName(event.originalEvent)));
         });
         $("#" + myName).bind("mouseup", function(event) {
             //myMouseUp(e);
@@ -168,7 +168,7 @@ EmuLabeller.tierHandler = {
      * @param tierID id of canvas calling this function
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
-        var curTierDetails = this.getSelectTierDetailsFromTierWithName(tierName);
+        var curTierDetails = this.getTier(tierName);
 
         var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
         var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
@@ -196,11 +196,6 @@ EmuLabeller.tierHandler = {
         return closestStartEvt;
     },   
   
-    
-    getSelectTierDetailsFromTierWithName: function(tierName) {
-        return this.tierInfos.tiers[tierName];
-    },
-    
     rebuildTiers: function() {
         for(t in this.tierInfos.tiers) {
             this.removeTierHtml(this.tierInfos.tiers[t].TierName);
@@ -337,6 +332,20 @@ EmuLabeller.tierHandler = {
         return r;
     },
 
+    nextSegment: function(t, curSample) {
+        var e = t.events;
+        var r = null;
+        var temp = 0;
+        for (var k in e) {
+            var diff = curSample-e[k].startSample;
+            if (diff>temp && diff>0 && diff < e[k].sampleDur) {
+                temp = diff;
+                r = e[k];
+            }        
+        }
+        return r;
+    },
+
     
     getSelectedTier: function() {
         return this.tierInfos.tiers[emulabeller.viewPort.getSelectTier()];      
@@ -388,7 +397,7 @@ EmuLabeller.tierHandler = {
 
     handleTierDoubleClick: function(percX, percY, myName) {
         var my = this;
-        tierDetails = emulabeller.tierHandler.getSelectTierDetailsFromTierWithName(myName)
+        tierDetails = this.getSelectedTier();
         emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
@@ -480,6 +489,53 @@ EmuLabeller.tierHandler = {
         
     },   
 
+    addSegmentAtSelection: function() {
+
+        var sT = this.getSelectedTier();
+        if(null!=sT) {
+            emulabeller.viewPort.resetSelection(sT.events.length);
+            var me = this.nextSegment(sT,emulabeller.viewPort.selectS);
+            
+            if(sT.type=="point") {
+                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+
+                    sT.events.push({
+                        "label": "newPoint",
+                        "startSample": emulabeller.viewPort.selectS,
+                        "sampleDur": 0
+                    });
+                } else {
+                    sT.events.push({
+                        "label": "newPoint",
+                        "startSample": emulabeller.viewPort.selectS,
+                        "sampleDur": 0
+                    });
+                }
+            }
+            if(sT.type=="seg") {
+                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+                    sT.events.push({
+                        "label": "newPoint",
+                        "startSample": emulabeller.viewPort.selectS,
+                        "sampleDur": 0
+                    });
+                } else {
+                    sT.events.push({
+                        "label": "newSegment",
+                        "startSample": emulabeller.viewPort.selectS,
+                        "sampleDur": emulabeller.viewPort.selectE - emulabeller.viewPort.selectS
+                    });
+                }
+            }
+            //resort events by their startSample values
+            sT.events.sort(function(a, b) {
+                return parseFloat(a.startSample) - parseFloat(b.startSample);
+            });
+        
+        emulabeller.drawBuffer();
+        }
+    },
+    
     removeLabelDoubleClick: function() {
         var my = this;
         $('.'+this.editAreaTextfieldName).remove();
