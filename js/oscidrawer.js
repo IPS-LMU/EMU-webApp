@@ -88,17 +88,26 @@ EmuLabeller.Drawer.OsciDrawer = {
     * draws osci on canvas by drawing the this.peaks
     * values to canvas.
     */
-    drawOsciOnCanvas: function() {
+
+    drawOsciOnCanvas: function(c) {
         //this.resizeCanvases();
         var my = this;
-        var cc = this.osciCanvas.getContext("2d");
+        var can;
+        if(null!=c) {
+            var cc = c.getContext("2d");
+            can = c;
+        }
+        else {
+            var cc = this.osciCanvas.getContext("2d");
+            can = my.osciCanvas;
+        }
         cc.strokeStyle = "black";
-        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / this.osciCanvas.width; // PCM Samples per new pixel
+        var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / can.width; // PCM Samples per new pixel
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
             this.peaks.forEach(function(peak, index) {
                 if (index !== 0) {
-                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], my.osciCanvas, emulabeller.backend.currentBuffer);
+                    my.drawFrame(index, peak, my.maxPeak, my.peaks[index - 1], can, emulabeller.backend.currentBuffer);
                 }
             });
         } else if (k < 1) {
@@ -107,20 +116,20 @@ EmuLabeller.Drawer.OsciDrawer = {
             // over sample exact
             cc.strokeStyle = this.waveColor;
             cc.beginPath();
-            cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
+            cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
             for (var i = 1; i < this.peaks.length; i++) {
-                cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height);
+                cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
             }
-            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height); // SIC SIC SIC tail
+            cc.lineTo(this.osciWidth, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height); // SIC SIC SIC tail
             cc.stroke();
             // draw sample dots
             for (var i = 1; i < this.peaks.length; i++) {
                 cc.beginPath();
-                cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height, 4, 0, 2 * Math.PI, false);
+                cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
                 cc.stroke();
                 cc.fill();
                 if (this.showSampleNrs) {
-                    cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * my.osciCanvas.height - 10);
+                    cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
                     sNr = sNr + 1;
                 }
             }
@@ -287,7 +296,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc = inMemoryCanvas.getContext('2d');
         canvascc.clearRect(0, 0, tW, tH);
         canvascc.drawImage(this.osciCanvas, 0, 0, sW, sH, 0, 0, tW, tH);
-    },
+    }, 
 
     /**
      * draws the current osci defined by the peaks array
@@ -299,21 +308,32 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @params canvas to draw on
      * @params emulabeller.backend.currentBufferLength current view port
      */
-    drawCurOsciOnCanvas: function() {
-        var cH = this.osciCanvas.height;
-        var cW = this.osciCanvas.width;
+    drawCurOsciOnCanvas: function(c) {
+        if(null!=c) {
+            canvascc = c.getContext('2d');
+            var cH = c.height;
+            var cW = c.width;
+        osciWidth = c.width;
+        osciHeight = c.height;
 
-        canvascc = this.osciCanvas.getContext('2d');
-        canvascc.clearRect(0, 0, cW, cH);
-
+        }
+        else {
+            canvascc = this.osciCanvas.getContext('2d');
+            var cH = this.osciCanvas.height;
+            var cW = this.osciCanvas.width;
         osciWidth = this.osciCanvas.width;
         osciHeight = this.osciCanvas.height;
+
+
+        }
+        canvascc.clearRect(0, 0, cW, cH);
+
 
         this.getPeaks();
 
         // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
         // console.log(this.peaks);
-        this.drawOsciOnCanvas();
+        this.drawOsciOnCanvas(c);
     },
 
 
