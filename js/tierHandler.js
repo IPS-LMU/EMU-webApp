@@ -358,26 +358,31 @@ EmuLabeller.tierHandler = {
         var textAreaWidth = Math.round(width);
         var textAreaHeight = Math.round(height);
         var content = $("<textarea>").attr({
-            id:this.editAreaTextfieldName
+            id: "editing"
         }).css({   
             "top": textAreaY+ "px",
             "left": textAreaX+"px",    
             "width": textAreaWidth+ "px",
             "height": textAreaHeight+"px"     
         }).addClass(this.editAreaTextfieldName).text(label);
+        
         $("#hull"+myName).prepend(content);        
+        
         emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-        $("#"+this.editAreaTextfieldName)[0].onkeyup = function(evt) {
+        
+        $("#editing")[0].onkeyup = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 13) {
                 if(saveTier)
-                    my.saveLabelName();
+                    my.saveLabelName(this);
                 else
-                    my.saveTierName();
+                    my.saveTierName(this);
                 my.removeLabelDoubleClick();
             }
         };
-        this.createSelection(document.getElementById(this.editAreaTextfieldName), 0, label.length); // select textarea text     
+        
+       this.createSelection(document.getElementById("editing"), 0, label.length); // select textarea text     
+        
     },
         
 
@@ -427,9 +432,9 @@ EmuLabeller.tierHandler = {
         field.focus();
     },
 
-    saveLabelName: function() {
+    saveLabelName: function(a) {
         var tierDetails = this.getSelectedTier();
-        var content = $("#"+this.editAreaTextfieldName).val();
+        var content = $("#editing").val();
         tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, '');  // remove new line from content with regex
         emulabeller.drawer.updateSingleTier(tierDetails);
 
@@ -438,11 +443,11 @@ EmuLabeller.tierHandler = {
         
     },
 
-    saveTierName: function() {
+    saveTierName: function(a) {
         var my = this;
         var tierDetails = this.getSelectedTier();
         var old_key = tierDetails.TierName;
-        var new_key = $("#"+this.editAreaTextfieldName).val().replace(/[\n\r]/g, '');
+        var new_key = $("#editing").val().replace(/[\n\r]/g, '');
 
         if(!this.tierExists(new_key)) {
             var backup = jQuery.extend(true, {}, tierDetails);
@@ -475,10 +480,9 @@ EmuLabeller.tierHandler = {
         
     },   
 
-    removeLabelDoubleClick: function() { //maybe rename to removeLabelBox or something
+    removeLabelDoubleClick: function() {
         var my = this;
-        $('textarea#'+this.editAreaTextfieldName).remove();
-        $('#'+this.editAreaName).remove();
+        $('.'+this.editAreaTextfieldName).remove();
     },    
 
     moveBoundary: function(newTime, myName) {
