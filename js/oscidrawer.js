@@ -272,7 +272,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.stroke();
                 var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
                 cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR)/2, 6), posS - tW - 4, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR)/sequencesize_2(statements, compressor), 6), posE + 5, yOffsetTime);
+                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR)/2, 6), posE + 5, yOffsetTime);
 
                 cc.strokeText(emulabeller.viewPort.selectS, posS - tW - 4, yOffsetSample);
                 cc.strokeText(emulabeller.viewPort.selectE, posE + 5, yOffsetSample);

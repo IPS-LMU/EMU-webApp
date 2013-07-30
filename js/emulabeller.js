@@ -529,10 +529,10 @@ var EmuLabeller = {
         var oldStart = this.viewPort.sS;
         var oldEnd = this.viewPort.eS;
         if (sSample) {
-            this.viewPort.sS = sSample;
+            this.viewPort.sS = Math.round(sSample);
         }
         if (eSample) {
-            this.viewPort.eS = eSample;
+            this.viewPort.eS = Math.round(eSample);
         }
 
         // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
