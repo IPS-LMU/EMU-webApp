@@ -244,9 +244,11 @@ EmuLabeller.tierHandler = {
     },
       
     removeBorder: function(t,labelName,labelStart) {
-        this.tierInfos.tiers[t.TierName].events[labelName-1].sampleDur += this.tierInfos.tiers[t.TierName].events[labelName].sampleDur;
-        this.tierInfos.tiers[t.TierName].events[labelName-1].label += this.tierInfos.tiers[t.TierName].events[labelName].label;
-        delete this.tierInfos.tiers[t.TierName].events[labelName];
+        if(null!=this.tierInfos.tiers[t.TierName].events[labelName-1]) {
+            this.tierInfos.tiers[t.TierName].events[labelName-1].sampleDur += this.tierInfos.tiers[t.TierName].events[labelName].sampleDur;
+            this.tierInfos.tiers[t.TierName].events[labelName-1].label += this.tierInfos.tiers[t.TierName].events[labelName].label;
+            delete this.tierInfos.tiers[t.TierName].events[labelName];
+        }
     },
       
     
