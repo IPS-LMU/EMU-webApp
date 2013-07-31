@@ -593,15 +593,14 @@ EmuLabeller.tierHandler = {
                 if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
                     var me1 = this.findNearestPoint(sT,emulabeller.viewPort.selectS);
                     if(me1.startSample!=emulabeller.viewPort.selectS) {
-                    sT.events.push({
-                        "label": "newPoint",
-                        "startSample": Math.round(emulabeller.viewPort.selectS),
-                        "sampleDur": 0
-                    });      
-            sT.events.sort(function(a, b) {
-                return parseFloat(a.startSample) - parseFloat(b.startSample);
-            });
-                      
+                        sT.events.push({
+                            "label": "newPoint",
+                            "startSample": Math.round(emulabeller.viewPort.selectS),
+                            "sampleDur": 0
+                        });      
+                        sT.events.sort(function(a, b) {
+                            return parseFloat(a.startSample) - parseFloat(b.startSample);
+                        });
                     }
                     else {
                         alert("Fehler: Dieser Punkt existiert bereits!");
