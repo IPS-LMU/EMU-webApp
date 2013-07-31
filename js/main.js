@@ -88,21 +88,21 @@ var emulabeller = (function() {
 
     $(document).bind("keydown keypress", function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
-        if( e.which == 8 ){ // 8 == backspace
+        if( code== 8 ){ // 8 == backspace
             e.preventDefault();
-            alert("backspace");
+            emulabeller.tierHandler.deleteSelectedSegments();
         }
-        if( e.which == 27 ){ // 27 == escape
+        if( code == 27 ){ // 27 == escape
             if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
                 e.preventDefault();
                 emulabeller.tierHandler.removeLabelDoubleClick();
             }
         }
-        if( e.which == 16 ){ // 16 == ???
+        if( code == 16 ){ // 16 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
         }
-        if( e.which == 18 ){ // 18 == ???
+        if( code == 18 ){ // 18 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
         }                

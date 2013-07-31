@@ -219,6 +219,12 @@ EmuLabeller.tierHandler = {
         this.history();
     },
     
+    
+    deleteSelectedSegments: function() {
+        var my = this;
+        
+    },
+    
     resizeTier: function(tierName) {
         var s = this.internalCanvasHeightBig-1;
         if($("#"+tierName).height() >= s)
