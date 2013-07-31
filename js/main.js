@@ -109,15 +109,7 @@ var emulabeller = (function() {
             emulabeller.tierHandler.history();
             e.preventDefault();
         }                
-        
-    });
-
-
-    // keypress bindings
-    document.addEventListener('keypress', function(e) {
-        // spacebar
-
-        if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
+     if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
 
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view
@@ -189,8 +181,10 @@ var emulabeller = (function() {
             }
 
             console.log(e.keyCode);
-        }
+        }        
     });
+
+
     // touch events 
     var element = document.getElementById('timeline');
     var hammertime = Hammer(element).on("swipeleft", function(event) {
