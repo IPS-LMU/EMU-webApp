@@ -289,7 +289,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         // cursor
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
-            var posC = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
+            var posC = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
             // var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
             // var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
             // var procC = fracC / all2;
