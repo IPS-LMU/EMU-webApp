@@ -221,14 +221,15 @@ EmuLabeller.tierHandler = {
         this.history();
     },
       
-    addBorder: function(t, start) {
+    addBorder: function(t, label, start) {
         var my = this;
+        alert("TODO: Insert NEW border on '"+t.TierName+"' at '"+start+"' and split '"+label+"'");
         
     },
     
-    addSegment: function(t, start, end) {
+    addSegment: function(t, label,start, end) {
         var my = this;
-        
+        alert("TODO: Insert NEW label on '"+t.TierName+"' at '"+start+"' (end='"+end+"')");
     },
     
     removeSegment: function(t,labelName,labelStart) {
@@ -594,9 +595,9 @@ EmuLabeller.tierHandler = {
                 var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
                 if(me1==me2) {
                     if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) 
-                        this.addBorder(sT,emulabeller.viewPort.selectS);
+                        this.addBorder(sT,me1.label, emulabeller.viewPort.selectS);
                     else 
-                        this.addSegment(sT,emulabeller.viewPort.selectS,emulabeller.viewPort.selectE);
+                        this.addSegment(sT,"newLabel",emulabeller.viewPort.selectS,emulabeller.viewPort.selectE);
                 }
                 else {
                     alert("Fehler: Hier duerfen Sie kein neues Segment einfuegen!");
