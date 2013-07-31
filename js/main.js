@@ -86,7 +86,7 @@ var emulabeller = (function() {
         false);
 
 
-    $(document).bind("keydown keypress", function(e){
+    $(document).bind("keydown", function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
         if( code== 8 ){ // 8 == backspace
             e.preventDefault();
@@ -112,7 +112,13 @@ var emulabeller = (function() {
         if( code == 46 ){ // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
-        }                        
+        }            
+        if( code == 13 ){ // 13 == enter
+            alert("enter");
+            emulabeller.tierHandler.addSegmentAtSelection();
+            e.preventDefault();
+        }            
+                    
         if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
 
             if (32 == e.keyCode) {
@@ -174,10 +180,6 @@ var emulabeller = (function() {
             if (110 == e.keyCode) {
                 // N key
                 emulabeller.tierHandler.renameTier();
-            }
-            if (13 == e.keyCode) {
-                // ENTER key
-                emulabeller.tierHandler.addSegmentAtSelection();
             }
 
             if (26 == e.keyCode) {
