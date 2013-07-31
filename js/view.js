@@ -136,6 +136,7 @@ EmuLabeller.ViewPort = {
         } else
             return false;
     },
+    
 
     countSelected: function() {
         var x = 0;

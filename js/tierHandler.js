@@ -220,8 +220,7 @@ EmuLabeller.tierHandler = {
     },
       
     
-    removeSegment: function(tierName,labelName,labelStart) {
-        
+    removeSegmentOrPoint: function(tierName,labelName,labelStart) {
         for(s in this.tierInfos.tiers[tierName].events) {
             if(this.tierInfos.tiers[tierName].events[s].label == labelName &&
                this.tierInfos.tiers[tierName].events[s].startSample == labelStart) {
@@ -231,25 +230,23 @@ EmuLabeller.tierHandler = {
         }
     },
     
-    
-    deleteSelectedSegments: function() {
+    deleteSelected: function() {
         var my = this;
         var t = this.getSelectedTier();
         var selected = emulabeller.viewPort.getAllSelected(t);
+        console.log(selected);
         var warn = "Wollen Sie ";
         for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
             for(s in selected) {
-                this.removeSegment(t.TierName,selected[s].label,selected[s].startSample)
+                this.removeSegmentOrPoint(t.TierName,selected[s].label,selected[s].startSample)
             }
-            emulabeller.drawBuffer();
+            t.events.sort(function(a, b) {
+                return parseFloat(a.startSample) - parseFloat(b.startSample);
+            });
             this.history();
-        }
-    },
-    
-    deleteSelectedPoints: function() {
-        var my = this;
-        
+            emulabeller.drawBuffer();
+        }        
     },
     
     resizeTier: function(tierName) {

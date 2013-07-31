@@ -90,10 +90,8 @@ var emulabeller = (function() {
         var code = (e.keyCode ? e.keyCode : e.which);
         if( code== 8 ){ // 8 == backspace
             e.preventDefault();
-            if(emulabeller.tierHandler.getSelectedTierType()=="seg")
-                emulabeller.tierHandler.deleteSelectedSegments();
-            else if(emulabeller.tierHandler.getSelectedTierType()=="point")
-                emulabeller.tierHandler.deleteSelectedPoints();
+            if(emulabeller.tierHandler.getSelectedTierType()=="seg" || emulabeller.tierHandler.getSelectedTierType()=="point")
+                emulabeller.tierHandler.deleteSelected();
             else 
                 alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
         }
