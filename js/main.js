@@ -190,12 +190,12 @@ var emulabeller = (function() {
 
 
     // touch events 
-    var element = document.getElementById('timeline');
+    var element = document.getElementById('wave');
     var hammertime = Hammer(element).on("swipeleft", function(event) {
         alert('you swiped left!');
     });
 
-    var element = document.getElementById('timeline');
+    var element = document.getElementById('wave');
     var hammertime = Hammer(element).on("swiperight", function(event) {
         alert('you swiped right');
     });
