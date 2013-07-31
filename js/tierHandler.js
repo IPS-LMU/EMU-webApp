@@ -218,6 +218,10 @@ EmuLabeller.tierHandler = {
         // save history state
         this.history();
     },
+      
+    
+    removeSegment: function(tierName,labelName,labelStart) {
+    },
     
     
     deleteSelectedSegments: function() {
@@ -227,11 +231,13 @@ EmuLabeller.tierHandler = {
         var selected = emulabeller.viewPort.getAllSelected(t);
         var warn = "Wollen Sie ";
         var c =0;
-        for(s in selected) {
-            warn+=selected[s].label+", ";
-        }
+        for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
-        
+            for(s in selected) {
+                this.removeSegment(t.TierName,s.label,s.startSample)
+            }
+            emulabeller.drawBuffer();
+            this.history();
         }
         }
         else alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
