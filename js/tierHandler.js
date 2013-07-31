@@ -259,7 +259,6 @@ EmuLabeller.tierHandler = {
         var my = this;
         var t = this.getSelectedTier();
         var selected = emulabeller.viewPort.getAllSelected(t);
-        console.log(selected);
         var warn = "Wollen Sie ";
         for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
@@ -280,8 +279,17 @@ EmuLabeller.tierHandler = {
     
     deleteBorder: function() {
         var my = this;
-        var t = this.getSelectedTier();
-        alert("delete border");        
+        if(emulabeller.viewPort.curMouseMoveTierName!="") {
+            var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
+            if(confirm("Wollen Sie die Grenze bei '"+emulabeller.viewPort.curMouseMoveSegmentStart+"' auf dem Tier '"+emulabeller.viewPort.curMouseMoveTierName+"' wirklich loeschen?" )) {
+
+                t.events.sort(function(a, b) {
+                    return parseFloat(a.startSample) - parseFloat(b.startSample);
+                });
+                this.history();
+                emulabeller.drawBuffer();
+           }        
+        }
     },
     
     resizeTier: function(tierName) {
