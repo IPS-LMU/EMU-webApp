@@ -108,8 +108,12 @@ var emulabeller = (function() {
         if( code == 18 ){ // 18 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
-        }                
-     if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
+        }   
+        if( code == 46 ){ // 46 == entfernen
+            emulabeller.tierHandler.deleteBorder();
+            e.preventDefault();
+        }                        
+        if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
 
             if (32 == e.keyCode) {
                 // SPACEBAR -> play what is in view

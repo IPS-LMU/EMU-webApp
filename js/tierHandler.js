@@ -249,6 +249,12 @@ EmuLabeller.tierHandler = {
         }        
     },
     
+    
+    deleteborder: function() {
+        var my = this;
+        var t = this.getSelectedTier();        
+    },
+    
     resizeTier: function(tierName) {
         var s = this.internalCanvasHeightBig-1;
         if($("#"+tierName).height() >= s)
