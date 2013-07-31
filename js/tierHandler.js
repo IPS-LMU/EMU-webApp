@@ -221,13 +221,18 @@ EmuLabeller.tierHandler = {
       
     
     removeSegment: function(tierName,labelName,labelStart) {
-        for(s in this.tierInfos.tiers[tierName].events) {
-            if(this.tierInfos.tiers[tierName].events[s].label == labelName &&
-               this.tierInfos.tiers[tierName].events[s].startSample == labelStart) {
-                   console.log(this.tierInfos.tiers[tierName].events[s]);
-                   delete this.tierInfos.tiers[tierName].events[s];
-            }
-        }
+        var t = this.tierInfos.tiers[tierName];
+        var id = emulabeller.viewPort.getId(t,labelName,labelStart);
+        var halfSize = this.tierInfos.tiers[tierName].events[id].sampleDur/2;
+        delete this.tierInfos.tiers[tierName].events[id];
+        
+        this.tierInfos.tiers[tierName].events[id-1].sampleDur += halfSize;
+        this.tierInfos.tiers[tierName].events[id+1].sampleDur += halfSize;
+        this.tierInfos.tiers[tierName].events[id+1].startSample -= halfSize;
+            t.events.sort(function(a, b) {
+                return parseFloat(a.startSample) - parseFloat(b.startSample);
+            });
+        
     },
       
     
