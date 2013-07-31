@@ -226,12 +226,21 @@ EmuLabeller.tierHandler = {
         var halfSize = this.tierInfos.tiers[tierName].events[id].sampleDur/2;
         delete this.tierInfos.tiers[tierName].events[id];
         
-        this.tierInfos.tiers[tierName].events[id-1].sampleDur += halfSize;
-        this.tierInfos.tiers[tierName].events[id+1].sampleDur += halfSize;
-        this.tierInfos.tiers[tierName].events[id+1].startSample -= halfSize;
-            t.events.sort(function(a, b) {
-                return parseFloat(a.startSample) - parseFloat(b.startSample);
-            });
+        if(null==this.tierInfos.tiers[tierName].events[id-1]) {
+            this.tierInfos.tiers[tierName].events[id+1].sampleDur += 2*halfSize;
+            this.tierInfos.tiers[tierName].events[id+1].startSample -= 2*halfSize;        
+        }
+        else if(null==this.tierInfos.tiers[tierName].events[id+1]) {
+            this.tierInfos.tiers[tierName].events[id-1].sampleDur += 2*halfSize;
+        }
+        else {
+            this.tierInfos.tiers[tierName].events[id-1].sampleDur += halfSize;
+            this.tierInfos.tiers[tierName].events[id+1].sampleDur += halfSize;
+            this.tierInfos.tiers[tierName].events[id+1].startSample -= halfSize;
+        }
+        t.events.sort(function(a, b) {
+            return parseFloat(a.startSample) - parseFloat(b.startSample);
+        });
         
     },
       
