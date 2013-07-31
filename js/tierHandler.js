@@ -222,7 +222,19 @@ EmuLabeller.tierHandler = {
     
     deleteSelectedSegments: function() {
         var my = this;
+        var t = this.getSelectedTier();
+        if(null!=t) {
+        var selected = emulabeller.viewPort.getAllSelected(t);
+        var warn = "Wollen Sie ";
+        var c =0;
+        for(s in selected) {
+            warn+=selected[s].label+", ";
+        }
+        if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
         
+        }
+        }
+        else alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
     },
     
     resizeTier: function(tierName) {
