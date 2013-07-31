@@ -19,6 +19,7 @@ EmuLabeller.Drawer.TierDrawer = {
         this.startHelperLineColor = "rgba(22, 22, 22, 0.75)";
         this.endHelperLineColor = "rgba(22, 22, 22, 0.25)";
         this.params = params;
+        this.font = "20px Verdana";
     },
 
     /**
@@ -40,10 +41,10 @@ EmuLabeller.Drawer.TierDrawer = {
         }
 
         // draw name of tier
-        cc.strokeStyle = "black";
-        cc.font = "12px Verdana";
-        cc.strokeText(tierDetails.TierName, 5, 5 + 8);
-        cc.strokeText("(" + tierDetails.type + ")", 5, 20 + 8);
+        cc.fillStyle = "black";
+        cc.font = this.font;
+        cc.fillText(tierDetails.TierName, 5, 13);
+        cc.fillText("(" + tierDetails.type + ")", 5, 32);
 
         if (tierDetails.type == "seg") {
             cc.fillStyle = this.boundaryColor;
@@ -87,12 +88,12 @@ EmuLabeller.Drawer.TierDrawer = {
 
                     // draw label 
                     cc.strokeStyle = "black";
-                    cc.fillStyle = "white";
+                    cc.fillStyle = "black";
                     tW = cc.measureText(curEvt.label).width;
                     tX = posS + (posE - posS) / 2 - tW / 2;
                     //check for enough space to stroke text
                     if (posE - posS > tW) {
-                        cc.strokeText(curEvt.label, tX, canvas.height / 2 + 3);
+                        cc.fillText(curEvt.label, tX, canvas.height / 2 + 3);
                     }
 
                     //draw helper lines
@@ -110,7 +111,7 @@ EmuLabeller.Drawer.TierDrawer = {
                         var sStW = cc.measureText(curEvt.startSample).width;
                         //check for enough space to stroke text
                         if (posE - posS > sStW) {
-                            cc.strokeText(curEvt.startSample, posS + 5, canvas.height / 8);
+                            cc.fillText(curEvt.startSample, posS + 5, canvas.height / 8);
                         }
 
                         cc.strokeStyle = this.endHelperLineColor;
@@ -124,16 +125,16 @@ EmuLabeller.Drawer.TierDrawer = {
                     var sDtW = cc.measureText("dur: " + curEvt.sampleDur).width;
                     //check for enough space to stroke text
                     if (posE - posS > sDtW) {
-                        cc.strokeText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas.height - canvas.height / 8);
+                        cc.fillText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas.height - canvas.height / 8);
                     }
                 }
             }
         } else if (tierDetails.type == "point") {
             cc.fillStyle = this.startBoundaryColor;
-            
+
             for (k in tierDetails.events) {
-            
-            //for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
+
+                //for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
                 var curEvt = tierDetails.events[k];
                 var id = emulabeller.viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
                 cc.strokeStyle = "black";
@@ -143,18 +144,19 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.fillStyle = this.curSelBoundColor;
                         cc.fillRect(canvas.width * perc, 0, 8, canvas.height / 2 - canvas.height / 10);
                         tW = cc.measureText(tierDetails.events[k].label).width;
-                        cc.strokeText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
                         cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 8, canvas.height / 2 - canvas.height / 10);
                     } else {
                         cc.fillStyle = this.startBoundaryColor;
                         cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
                         tW = cc.measureText(tierDetails.events[k].label).width;
-                        cc.strokeText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillStyle = this.startBoundaryColor;
+                        cc.fillText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
                         cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10)
                     }
-                    cc.strokeStyle = this.startBoundaryColor;
+                    cc.fillStyle = this.startBoundaryColor;
                     tW = cc.measureText(curEvt.startSample).width;
-                    cc.strokeText(curEvt.startSample, canvas.width * perc + 5, canvas.height / 8);
+                    cc.fillText(curEvt.startSample, canvas.width * perc + 5, canvas.height / 8);
 
 
                 }

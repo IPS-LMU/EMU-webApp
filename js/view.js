@@ -159,16 +159,6 @@ EmuLabeller.ViewPort = {
         }
     },
 
-    getEvent: function(tier,id) {
-        var x = 0;
-        for (var y in tier.events) {
-            if(x==id) return tier.events[y];
-            x++;
-        }
-        return false;
-    },
-
-
     resetSelection: function(length) {
         for (var i = 0; i < length; i++) {
             this.uiInfo[i] = false;
