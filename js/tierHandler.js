@@ -221,6 +221,15 @@ EmuLabeller.tierHandler = {
         this.history();
     },
       
+    addBorder: function(t, start) {
+        var my = this;
+        
+    },
+    
+    addSegment: function(t, start, end) {
+        var my = this;
+        
+    },
     
     removeSegment: function(t,labelName,labelStart) {
         var id = emulabeller.viewPort.getId(t,labelName,labelStart);
@@ -584,7 +593,10 @@ EmuLabeller.tierHandler = {
                 var me1 = this.nextSegment(sT,emulabeller.viewPort.selectS);
                 var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
                 if(me1==me2) {
-                    alert("todo"); 
+                    if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) 
+                        this.addBorder(sT,emulabeller.viewPort.selectS);
+                    else 
+                        this.addSegment(sT,emulabeller.viewPort.selectS,emulabeller.viewPort.selectE);
                 }
                 else {
                     alert("Fehler: Hier duerfen Sie kein neues Segment einfuegen!");
