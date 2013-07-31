@@ -299,6 +299,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.drawBuffer();
            }        
         }
+        else alert("Fehler: Bitte markieren Sie zuerst eine Grenze!");
     },
     
     resizeTier: function(tierName) {
