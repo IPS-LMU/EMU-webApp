@@ -250,9 +250,10 @@ EmuLabeller.tierHandler = {
     },
     
     
-    deleteborder: function() {
+    deleteBorder: function() {
         var my = this;
-        var t = this.getSelectedTier();        
+        var t = this.getSelectedTier();
+        alert("delete border");        
     },
     
     resizeTier: function(tierName) {
