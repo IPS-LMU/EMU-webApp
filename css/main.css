@@ -149,11 +149,6 @@ canvas {
     text-align: center;
 }
 
-.textAreaPopUp {
-    z-index:30;
-    position:absolute;
-}
-
 .editArea {
     border: 0px;
     outline: none;
@@ -162,17 +157,14 @@ canvas {
     box-shadow: 0px 0px 25px #eeee00;
     font-size:14px;
     text-align:left;
-    height: 45px;
+    z-index: 998;
+    position:absolute;
 }
 
 .saveText {
     position:absolute;
     top: -2px;
     right: -36px;
-}
-
-.myHull {
-    position: relative;
 }
 
 .buttons {
