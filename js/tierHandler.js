@@ -571,7 +571,6 @@ EmuLabeller.tierHandler = {
         }
         else {
             alert("Bitte waehlen Sie zuerst ein Tier aus!");
-            console.log(this.tierInfos);
         }
         
     },   
@@ -587,19 +586,33 @@ EmuLabeller.tierHandler = {
                     alert("todo"); 
                 }
                 else {
-                    alert("Hier duerfen Sie kein neues Segment einfuegen!");
+                    alert("Fehler: Hier duerfen Sie kein neues Segment einfuegen!");
                 }
             }
             else if(sT.type="point") {
                 if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
-                
+                    var me1 = this.findNearestPoint(sT,emulabeller.viewPort.selectS);
+                    if(me1.startSample!=emulabeller.viewPort.selectS) {
+                    sT.events.push({
+                        "label": "newPoint",
+                        "startSample": Math.round(emulabeller.viewPort.selectS),
+                        "sampleDur": 0
+                    });      
+            sT.events.sort(function(a, b) {
+                return parseFloat(a.startSample) - parseFloat(b.startSample);
+            });
+                      
+                    }
+                    else {
+                        alert("Fehler: Dieser Punkt existiert bereits!");
+                    }
                 }
                 else {
-                    alert("Auf einem Punkte Tier koennen keine Segmente eingefügt werden!");
+                    alert("Fehler: Auf einem Punkte Tier koennen keine Segmente eingefügt werden!");
                 }
             }
             else {
-                alert("Unbekannter Tier Typ");
+                alert("Fehler: Unbekannter Tier Typ");
             }
         }
         emulabeller.drawBuffer();
