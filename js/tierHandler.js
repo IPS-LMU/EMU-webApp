@@ -613,8 +613,12 @@ EmuLabeller.tierHandler = {
             else {
                 alert("Fehler: Unbekannter Tier Typ");
             }
-        }
         emulabeller.drawBuffer();
+        }
+        else {
+            alert("Fehler: kein Tier ausgewaehlt !");
+        }
+        
     },
     
     removeLabelDoubleClick: function() {
