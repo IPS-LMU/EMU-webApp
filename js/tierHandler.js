@@ -130,11 +130,13 @@ EmuLabeller.tierHandler = {
            curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));                
            if (emulabeller.tierHandler.isSelected && event.shiftKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
+                emulabeller.tierHandler.removeLabelDoubleClick();
                 emulabeller.tierHandler.moveBoundary(curSample, emulabeller.getTierName(event.originalEvent));
                 emulabeller.drawer.uiDrawUpdate();
             }
             else if (emulabeller.tierHandler.isSelected && event.altKey) {
                 emulabeller.internalMode = emulabeller.EDITMODE.LABEL_MOVE;
+                emulabeller.tierHandler.removeLabelDoubleClick();
                 var border = emulabeller.tierHandler.moveSegment(curSample, emulabeller.getTierName(event.originalEvent));
                 emulabeller.drawer.uiDrawUpdate();
             }
