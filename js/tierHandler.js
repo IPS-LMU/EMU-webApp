@@ -580,9 +580,16 @@ EmuLabeller.tierHandler = {
 
         var sT = this.getSelectedTier();
         if(null!=sT) {
-            emulabeller.viewPort.resetSelection(sT.events.length);
-            var me = this.nextSegment(sT,emulabeller.viewPort.selectS);
+            //emulabeller.viewPort.resetSelection(sT.events.length);
+            var me1 = this.nextSegment(sT,emulabeller.viewPort.selectS);
+            var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
+            if(me1==me2) {
             
+            }
+            else {
+                alert("Hier duerfen Sie kein neues Segment einfuegen!");
+            }
+            /*
             if(sT.type=="point") {
                 sT.events.push({
                     "label": "newPoint",
@@ -610,7 +617,8 @@ EmuLabeller.tierHandler = {
             sT.events.sort(function(a, b) {
                 return parseFloat(a.startSample) - parseFloat(b.startSample);
             });
-        
+        */
+        console.log(me1,me2);
         emulabeller.drawBuffer();
         }
     },

@@ -114,7 +114,6 @@ var emulabeller = (function() {
             e.preventDefault();
         }            
         if( code == 13 ){ // 13 == enter
-            alert("enter");
             emulabeller.tierHandler.addSegmentAtSelection();
             e.preventDefault();
         }            
