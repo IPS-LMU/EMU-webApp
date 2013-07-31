@@ -37,7 +37,7 @@ EmuLabeller.Drawer = {
 
         // tier drawer
         this.tierDrawer = Object.create(EmuLabeller.Drawer.TierDrawer);
-        this.tierDrawer.init();
+        this.tierDrawer.init(params);
 
         this.osciCanvas = params.osciCanvas;
         this.specCanvas = params.specCanvas;

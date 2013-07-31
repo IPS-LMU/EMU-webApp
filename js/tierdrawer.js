@@ -18,7 +18,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
         this.startHelperLineColor = "rgba(22, 22, 22, 0.75)";
         this.endHelperLineColor = "rgba(22, 22, 22, 0.25)";
-
+        this.params = params;
     },
 
     /**
@@ -184,7 +184,7 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.stroke();
 
         } else {
-            cc.fillStyle = this.selMarkerColor;
+            cc.fillStyle = my.params.selectAreaColor;
             cc.fillRect(posS, 0, posE - posS, canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);

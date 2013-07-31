@@ -9,7 +9,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.progressColor = 'grey';
         this.scrollSegMarkerColor = "rgba(0, 0, 0, 0.3)";
 
-        this.selMarkerColor = "rgba(22, 22, 22, 0.2)";
+        this.selMarkerColor = params.selectAreaColor;
         this.selBoundColor = "black";
 
         this.cursorColor = 'red';

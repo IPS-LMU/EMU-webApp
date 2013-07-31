@@ -33,6 +33,7 @@ var emulabeller = (function() {
         selectLineColor: 'black',
         loadingColor: 'purple',
         cursorColor: 'red',
+        selectAreaColor: 'rgba(22, 22, 22, 0.25)',
         tierInfos: tierInfos,
         draggableBar: draggableBar,
         timeline: timeline,
