@@ -221,6 +221,14 @@ EmuLabeller.tierHandler = {
       
     
     removeSegment: function(tierName,labelName,labelStart) {
+        
+        for(s in this.tierInfos.tiers[tierName].events) {
+            if(this.tierInfos.tiers[tierName].events[s].label == labelName &&
+               this.tierInfos.tiers[tierName].events[s].startSample == labelStart) {
+                   console.log(this.tierInfos.tiers[tierName].events[s]);
+                   delete this.tierInfos.tiers[tierName].events[s];
+            }
+        }
     },
     
     
@@ -234,7 +242,7 @@ EmuLabeller.tierHandler = {
         for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
             for(s in selected) {
-                this.removeSegment(t.TierName,s.label,s.startSample)
+                this.removeSegment(t.TierName,selected[s].label,selected[s].startSample)
             }
             emulabeller.drawBuffer();
             this.history();
