@@ -89,7 +89,8 @@ var emulabeller = (function() {
     $(document).bind("keydown keypress", function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
         if( e.which == 8 ){ // 8 == backspace
-                e.preventDefault();
+            e.preventDefault();
+            alert("backspace");
         }
         if( e.which == 27 ){ // 27 == escape
             if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
@@ -107,7 +108,6 @@ var emulabeller = (function() {
         }                
         
     });
-
 
 
     // keypress bindings
