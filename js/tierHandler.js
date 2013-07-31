@@ -580,47 +580,29 @@ EmuLabeller.tierHandler = {
 
         var sT = this.getSelectedTier();
         if(null!=sT) {
-            //emulabeller.viewPort.resetSelection(sT.events.length);
-            var me1 = this.nextSegment(sT,emulabeller.viewPort.selectS);
-            var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
-            if(me1==me2) {
-            
-            }
-            else {
-                alert("Hier duerfen Sie kein neues Segment einfuegen!");
-            }
-            /*
-            if(sT.type=="point") {
-                sT.events.push({
-                    "label": "newPoint",
-                    "startSample": Math.round(emulabeller.viewPort.selectS),
-                    "sampleDur": 0
-                });
-           } 
-            if(sT.type=="seg") {
-                if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) { // split segments
-                    if(me) {
-                    
-                    }
-                    else {
-                    
-                    }
-                } else {                                                             // add new segment
-                    sT.events.push({
-                        "label": "newSegment",
-                        "startSample": Math.round(emulabeller.viewPort.selectS),
-                        "sampleDur": Math.round(emulabeller.viewPort.selectE) - Math.round(emulabeller.viewPort.selectS)
-                    });
+            if(sT.type=="seg"){ 
+                var me1 = this.nextSegment(sT,emulabeller.viewPort.selectS);
+                var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
+                if(me1==me2) {
+                    alert("todo"); 
+                }
+                else {
+                    alert("Hier duerfen Sie kein neues Segment einfuegen!");
                 }
             }
-            //resort events by their startSample values
-            sT.events.sort(function(a, b) {
-                return parseFloat(a.startSample) - parseFloat(b.startSample);
-            });
-        */
-        console.log(me1,me2);
-        emulabeller.drawBuffer();
+            else if(sT.type="point") {
+                if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
+                
+                }
+                else {
+                    alert("Auf einem Punkte Tier koennen keine Segmente eingefügt werden!");
+                }
+            }
+            else {
+                alert("Unbekannter Tier Typ");
+            }
         }
+        emulabeller.drawBuffer();
     },
     
     removeLabelDoubleClick: function() {
