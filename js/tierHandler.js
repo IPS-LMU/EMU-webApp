@@ -220,7 +220,18 @@ EmuLabeller.tierHandler = {
     },
       
     
-    removeSegmentOrPoint: function(tierName,labelName,labelStart) {
+    removeSegment: function(tierName,labelName,labelStart) {
+        for(s in this.tierInfos.tiers[tierName].events) {
+            if(this.tierInfos.tiers[tierName].events[s].label == labelName &&
+               this.tierInfos.tiers[tierName].events[s].startSample == labelStart) {
+                   console.log(this.tierInfos.tiers[tierName].events[s]);
+                   delete this.tierInfos.tiers[tierName].events[s];
+            }
+        }
+    },
+      
+    
+    removePoint: function(tierName,labelName,labelStart) {
         for(s in this.tierInfos.tiers[tierName].events) {
             if(this.tierInfos.tiers[tierName].events[s].label == labelName &&
                this.tierInfos.tiers[tierName].events[s].startSample == labelStart) {
@@ -239,7 +250,10 @@ EmuLabeller.tierHandler = {
         for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
             for(s in selected) {
-                this.removeSegmentOrPoint(t.TierName,selected[s].label,selected[s].startSample)
+                if(t.type=="seg")
+                    this.removeSegment(t.TierName,selected[s].label,selected[s].startSample)
+                if(t.type=="point") 
+                    this.removePoint(t.TierName,selected[s].label,selected[s].startSample)
             }
             t.events.sort(function(a, b) {
                 return parseFloat(a.startSample) - parseFloat(b.startSample);
