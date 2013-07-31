@@ -149,6 +149,10 @@ canvas {
     text-align: center;
 }
 
+.textAreaPopUp {
+    z-index:30;
+    position:absolute;
+}
 
 .editArea {
     border: 0px;
@@ -158,8 +162,7 @@ canvas {
     box-shadow: 0px 0px 25px #eeee00;
     font-size:14px;
     text-align:left;
-    z-index: 998;
-    position:absolute;
+    height: 45px;
 }
 
 .saveText {
@@ -168,10 +171,13 @@ canvas {
     right: -36px;
 }
 
+.myHull {
+    position: relative;
+}
 
 .buttons {
     position: absolute;
-    z-index:999;
+    z-index:4;
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -205,13 +211,13 @@ canvas {
 .aboutLink {
     width: 38px;
     height:38px;
-    margin-right: 19px;
+    /*margin: 5px;*/
     padding: 0px;
     background-color:#161616;
     border-radius:0;
     border:1px solid white;
-    display:inline-block;
-    float:right;
+    /*display:inline-block;*/
+    float:left;
 }
 
 .aboutLink img {
@@ -267,7 +273,6 @@ canvas {
 	width: 100%;
 	overflow: hidden;
 	padding-left:10px;
-	float:left;
 }
 
 textarea {

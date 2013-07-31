@@ -24,7 +24,7 @@ var emulabeller = (function() {
     var labeller = Object.create(EmuLabeller);
 
 
-    labeller.init({ 
+    labeller.init({
         osciCanvas: osciCanvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
@@ -76,7 +76,7 @@ var emulabeller = (function() {
             isOpen = false;
         }
     });
-    
+
 
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {
@@ -94,9 +94,9 @@ var emulabeller = (function() {
                 emulabeller.tierHandler.removeLabelDoubleClick();
             }
         }
-        if (16 == code) 
+        if (16 == code)
             emulabeller.tierHandler.history();
-        if (18 == code) 
+        if (18 == code)
             emulabeller.tierHandler.history();
     });
 
@@ -165,18 +165,28 @@ var emulabeller = (function() {
             if (110 == e.keyCode) {
                 // N key
                 emulabeller.tierHandler.renameTier();
-            }            
+            }
             if (13 == e.keyCode) {
                 // ENTER key
                 emulabeller.tierHandler.addSegmentAtSelection();
             }
-            
-            if( 26 == e.keyCode ){
+
+            if (26 == e.keyCode) {
                 emulabeller.tierHandler.goBackHistory();
-            }    
-            
+            }
+
             console.log(e.keyCode);
         }
+    });
+    // touch events 
+    var element = document.getElementById('timeline');
+    var hammertime = Hammer(element).on("swipeleft", function(event) {
+        alert('you swiped left!');
+    });
+
+    var element = document.getElementById('timeline');
+    var hammertime = Hammer(element).on("swiperight", function(event) {
+        alert('you swiped right');
     });
 
     return labeller;

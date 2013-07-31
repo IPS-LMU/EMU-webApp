@@ -70,17 +70,17 @@
     height: 30px;
     line-height: 30px;
     position: absolute;
-    right: 0;
+    right: 0px;
     text-align: center;
     text-decoration: none;
-    top: -15px;
+    top: 0px;
     width: 30px;
 
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-    border-radius: 15px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
 }
 .close:before {
     color: rgba(255, 255, 255, 0.9);

@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "dependencies": {
         "jquery": "~1.10.2",
-        "jquery-ui": "~1.10.3"
+        "jquery-ui": "~1.10.3",
+        "hammerjs": "~1.0.4"
     }
 }
