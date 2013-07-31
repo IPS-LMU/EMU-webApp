@@ -90,7 +90,12 @@ var emulabeller = (function() {
         var code = (e.keyCode ? e.keyCode : e.which);
         if( code== 8 ){ // 8 == backspace
             e.preventDefault();
-            emulabeller.tierHandler.deleteSelectedSegments();
+            if(emulabeller.tierHandler.getSelectedTierType()=="seg")
+                emulabeller.tierHandler.deleteSelectedSegments();
+            else if(emulabeller.tierHandler.getSelectedTierType()=="point")
+                emulabeller.tierHandler.deleteSelectedPoints();
+            else 
+                alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
         }
         if( code == 27 ){ // 27 == escape
             if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {

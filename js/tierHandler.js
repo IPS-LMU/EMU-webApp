@@ -235,10 +235,8 @@ EmuLabeller.tierHandler = {
     deleteSelectedSegments: function() {
         var my = this;
         var t = this.getSelectedTier();
-        if(null!=t) {
         var selected = emulabeller.viewPort.getAllSelected(t);
         var warn = "Wollen Sie ";
-        var c =0;
         for(s in selected) warn+=selected[s].label+", ";
         if(confirm(warn.substring(0,warn.length-2)+" wirklich loeschen?" )) {
             for(s in selected) {
@@ -247,8 +245,11 @@ EmuLabeller.tierHandler = {
             emulabeller.drawBuffer();
             this.history();
         }
-        }
-        else alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
+    },
+    
+    deleteSelectedPoints: function() {
+        var my = this;
+        
     },
     
     resizeTier: function(tierName) {
@@ -381,6 +382,11 @@ EmuLabeller.tierHandler = {
     
     getSelectedTier: function() {
         return this.tierInfos.tiers[emulabeller.viewPort.getSelectTier()];      
+    },
+    
+    getSelectedTierType: function() {
+        if(null==this.tierInfos.tiers[emulabeller.viewPort.getSelectTier()]) return false;
+        return this.tierInfos.tiers[emulabeller.viewPort.getSelectTier()].type;      
     },
     
     getTiers: function() {
