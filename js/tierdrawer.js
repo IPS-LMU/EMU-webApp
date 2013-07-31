@@ -97,6 +97,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
                     //draw helper lines
                     if (posE - posS > cc.measureText("m").width * 3) {
+                        // start helper
                         cc.strokeStyle = this.startHelperLineColor;
                         cc.beginPath();
                         cc.moveTo(posS, canvas.height / 4);
@@ -104,11 +105,11 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.lineTo(tX + tW / 2, canvas.height / 4 + 10);
                         cc.stroke();
 
-                        // // draw sample numbers.
+                        // // draw startSample numbers.
                         cc.strokeStyle = this.startHelperLineColor;
-                        tW = cc.measureText(curEvt.startSample).width;
+                        var sStW = cc.measureText(curEvt.startSample).width;
                         //check for enough space to stroke text
-                        if (posE - posS > tW) {
+                        if (posE - posS > sStW) {
                             cc.strokeText(curEvt.startSample, posS + 5, canvas.height / 8);
                         }
 
@@ -120,10 +121,10 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.stroke();
                     }
 
-                    tW = cc.measureText("dur: " + curEvt.sampleDur).width;
+                    var sDtW = cc.measureText("dur: " + curEvt.sampleDur).width;
                     //check for enough space to stroke text
-                    if (posE - posS > tW) {
-                        cc.strokeText("dur: " + curEvt.sampleDur, posE - tW - 5, canvas.height - canvas.height / 8);
+                    if (posE - posS > sDtW) {
+                        cc.strokeText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas.height - canvas.height / 8);
                     }
                 }
             }
