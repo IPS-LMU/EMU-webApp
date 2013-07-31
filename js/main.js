@@ -86,19 +86,29 @@ var emulabeller = (function() {
         false);
 
 
-    window.addEventListener('keyup', function(e) {
-        // spacebar
+    $(document).bind("keydown keypress", function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
-            if (27 == code) {
+        if( e.which == 8 ){ // 8 == backspace
+                e.preventDefault();
+        }
+        if( e.which == 27 ){ // 27 == escape
+            if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
+                e.preventDefault();
                 emulabeller.tierHandler.removeLabelDoubleClick();
             }
         }
-        if (16 == code)
+        if( e.which == 16 ){ // 16 == ???
             emulabeller.tierHandler.history();
-        if (18 == code)
+            e.preventDefault();
+        }
+        if( e.which == 18 ){ // 18 == ???
             emulabeller.tierHandler.history();
+            e.preventDefault();
+        }                
+        
     });
+
+
 
     // keypress bindings
     document.addEventListener('keypress', function(e) {
