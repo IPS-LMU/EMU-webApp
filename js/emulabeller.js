@@ -285,6 +285,7 @@ var EmuLabeller = {
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
+                    my.tierHandler.removeLabelDoubleClick();
                     $("body").css("cursor", "ew-resize");
                     my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
@@ -294,6 +295,7 @@ var EmuLabeller = {
 
                 case params.draggableBar.id:
                     my.internalMode = my.EDITMODE.DRAGING_BAR;
+                    my.tierHandler.removeLabelDoubleClick();
                     my.dragingStartY = event.clientY;
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetTiers = my.tiers.offsetHeight;
