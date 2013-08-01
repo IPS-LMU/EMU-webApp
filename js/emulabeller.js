@@ -325,6 +325,7 @@ var EmuLabeller = {
                 my.setView(posInB - len / 2, posInB + len / 2);
                 my.internalMode == my.EDITMODE.STANDARD;
             }
+            my.internalMode == my.EDITMODE.STANDARD;
 
 
         });
@@ -360,20 +361,15 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            } else
-            //my.internalMode == my.EDITMODE.STANDARD;
-
+            } 
+            else
                 my.lastX = my.getX(e);
-
         });
 
         // All Right Mouse Button Functions  
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
-
-
-
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });

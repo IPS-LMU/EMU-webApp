@@ -181,7 +181,7 @@ EmuLabeller.tierHandler = {
             emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
             emulabeller.tierHandler.isSelected = true;    
         }
-
+        emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
         emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
     },
 
@@ -473,7 +473,8 @@ EmuLabeller.tierHandler = {
                     my.saveLabelName(this);
                 else
                     my.saveTierName(this);
-                my.removeLabelDoubleClick();
+                    my.removeLabelDoubleClick();
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
             }
         };
         
