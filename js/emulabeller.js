@@ -840,8 +840,8 @@ var EmuLabeller = {
 
     /**
      * generates dataURI to download the current
-     * tierInfos as a JSON formated text file. This dataURI
-     * will then be presented as a link
+     * tierInfos as a TextGrid formated text file. This dataURI
+     * will then be presented as a link in the top menu
      */
     prepDownload: function() {
         var MIME_TYPE = 'text/plain';
@@ -907,99 +907,21 @@ var EmuLabeller = {
     //     return c;
     // },
 
-    moveMultipleSegments: function(clickedTier, newTime) {
-        var c = 0;
-        $.each(clickedTier.events, function() {
-            var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
-            var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
-            if (check1)
-                this.time += newTime;
-            if (check1 != check2)
-                if (check2)
-                    this.time += newTime;
-                ++c;
+    // moveMultipleSegments: function(clickedTier, newTime) {
+    //     var c = 0;
+    //     $.each(clickedTier.events, function() {
+    //         var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
+    //         var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
+    //         if (check1)
+    //             this.time += newTime;
+    //         if (check1 != check2)
+    //             if (check2)
+    //                 this.time += newTime;
+    //             ++c;
 
-        });
-    },
+    //     });
+    // },
 
-
-
-    snapSelectedSegmentToNearestTop: function() {
-        alert("snap to top not implemented")
-        //find nearest evt in tier obove
-        // var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        // var selEvt = evtsNtiers.evts[1];
-        // var bestIdx;
-        // var dist = Infinity;
-        // for (var i = 0; i < evtsNtiers.tiers[0].events.length; i++) {
-        //     var curEvt = evtsNtiers.tiers[0].events[i];
-        //     if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-        //         dist = Math.abs(curEvt.startSample - selEvt.startSample);
-        //         bestIdx = i;
-        //     }
-        // }
-        // var oldTime = selEvt.startSample;
-        // var newTime = evtsNtiers.tiers[0].events[bestIdx].startSample;
-
-        // var leftEdge = evts[0].startSample;
-        // var rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-        // selEvt.startSample = newTime;
-
-        // if (newTime > leftEdge && newTime < rightEdge) {
-        //     evts[1].startSample = newTime;
-        //     // correct for locking mode (sampleDur changes of current segment) will change in future
-        //     if (oldTime < newTime) {
-        //         evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-        //     } else {
-        //         evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-        //     }
-
-        //     // correct for locking mode (sampleDur changes of perv segment) will change in future
-        //     evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-        // }
-
-        // this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierHandler.tierInfos);
-    },
-
-    snapSelectedSegmentToNearestBottom: function() {
-        alert("snap to bottom not implemented")
-        //find nearest evt in tier obove
-        // var evtsNtiers = this.getSelBoundaryEventsWithSurroundingEvtsAndTiers();
-        // var selEvt = evtsNtiers.evts[1];
-        // var bestIdx;
-        // var dist = Infinity;
-        // for (var i = 0; i < evtsNtiers.tiers[2].events.length; i++) {
-        //     var curEvt = evtsNtiers.tiers[2].events[i];
-        //     if (Math.abs(curEvt.startSample - selEvt.startSample) < dist) {
-        //         dist = Math.abs(curEvt.startSample - selEvt.startSample);
-        //         bestIdx = i;
-        //     }
-        // }
-
-        // var oldTime = selEvt.startSample;
-        // var newTime = evtsNtiers.tiers[2].events[bestIdx].startSample;
-
-        // var leftEdge = evts[0].startSample;
-        // var rightEdge = evts[1].startSample + evts[1].sampleDur;
-
-        // selEvt.startSample = newTime;
-
-        // if (newTime > leftEdge && newTime < rightEdge) {
-        //     evts[1].startSample = newTime;
-        //     // correct for locking mode (sampleDur changes of current segment) will change in future
-        //     if (oldTime < newTime) {
-        //         evts[1].sampleDur = evts[1].sampleDur + (oldTime - newTime);
-        //     } else {
-        //         evts[1].sampleDur = evts[1].sampleDur - (newTime - oldTime);
-        //     }
-
-        //     // correct for locking mode (sampleDur changes of perv segment) will change in future
-        //     evts[0].sampleDur = evts[1].startSample - evts[0].startSample;
-        // }
-
-        // this.drawer.uiAllTierDrawUpdate(this.viewPort, this.tierHandler.tierInfos);
-    },
 
     /**
     * use socketIOhandler to request something from server

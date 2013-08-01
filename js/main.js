@@ -79,95 +79,96 @@ var emulabeller = (function() {
         false);
 
 
-    $(document).bind("keydown", function(e){
+    $(document).bind("keydown", function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if( code== 8 && emulabeller.keyBindingAllowed() ){ // 8 == backspace
+        if (code == 8 && emulabeller.keyBindingAllowed()) { // 8 == backspace
             e.preventDefault();
-            if(emulabeller.tierHandler.getSelectedTierType()=="seg" || emulabeller.tierHandler.getSelectedTierType()=="point")
+            if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
                 emulabeller.tierHandler.deleteSelected();
-            else 
-                alert("Please mark one of more segments first!"); 
-        }       
-        if( code == 13 && emulabeller.keyBindingAllowed()){ // 13 == enter
+            else
+                alert("Please mark one of more segments first!");
+        }
+        if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter
             emulabeller.tierHandler.addSegmentAtSelection();
             e.preventDefault();
-        }   
-        if( code == 16 && emulabeller.keyBindingAllowed()){ // 16 == ???
+        }
+        if (code == 16 && emulabeller.keyBindingAllowed()) { // 16 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
         }
-        if( code == 18 && emulabeller.keyBindingAllowed()){ // 18 == ???
+        if (code == 18 && emulabeller.keyBindingAllowed()) { // 18 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
-        }   
-        if( code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME ){ // 27 == escape
+        }
+        if (code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) { // 27 == escape
             emulabeller.tierHandler.removeLabelDoubleClick();
             e.preventDefault();
-        }  
-        if( code == 32 && emulabeller.keyBindingAllowed()) {  // 32 == SPACE
+        }
+        if (code == 32 && emulabeller.keyBindingAllowed()) { // 32 == SPACE
             emulabeller.playPauseInView();
             e.preventDefault();
         }
-        if( code == 46 && emulabeller.keyBindingAllowed()){ // 46 == entfernen
+        if (code == 46 && emulabeller.keyBindingAllowed()) { // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
-        }  
-        if( code == 65 && emulabeller.keyBindingAllowed()) {  // 65 == a
+        }
+        if (code == 65 && emulabeller.keyBindingAllowed()) { // 65 == a
             emulabeller.shiftViewP(0);
             e.preventDefault();
-        }  
-        if( code == 66 && emulabeller.keyBindingAllowed()) {  // 66 == b
-            emulabeller.snapSelectedSegmentToNearestBottom();
-            e.preventDefault();
-        }  
-        if( code == 68 && emulabeller.keyBindingAllowed()) {  // 68 == d
-            emulabeller.shiftViewP(1);
-            e.preventDefault();
-        } 
-        if( code == 69 && emulabeller.keyBindingAllowed()) {  // 69 == e
-            emulabeller.zoomSel(); 
+        }
+        if (code == 66 && emulabeller.keyBindingAllowed()) { // 66 == b
+            emulabeller.tierHandler.snapSelectedSegmentToNearestBottom();
             e.preventDefault();
         }
-        if( code == 70 && emulabeller.keyBindingAllowed()) {  // 70 == f
+        if (code == 68 && emulabeller.keyBindingAllowed()) { // 68 == d
+            emulabeller.shiftViewP(1);
+            e.preventDefault();
+        }
+        if (code == 69 && emulabeller.keyBindingAllowed()) { // 69 == e
+            emulabeller.zoomSel();
+            e.preventDefault();
+        }
+        if (code == 70 && emulabeller.keyBindingAllowed()) { // 70 == f
             emulabeller.playInMode("all");
             e.preventDefault();
-        }  
-        if( code == 78 && emulabeller.keyBindingAllowed()) {  // 78 == n
+        }
+        if (code == 78 && emulabeller.keyBindingAllowed()) { // 78 == n
             emulabeller.tierHandler.renameTier();
             e.preventDefault();
         }
-        if( code == 79 && emulabeller.keyBindingAllowed()) {  // 79 == o
+        if (code == 79 && emulabeller.keyBindingAllowed()) { // 79 == o
             if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
                 $('#fileGetterBtn').click();
             if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
                 emulabeller.openSubmenu();
             e.preventDefault();
         }
-        if( code == 81 && emulabeller.keyBindingAllowed()) {  // 81 == q
+        if (code == 81 && emulabeller.keyBindingAllowed()) { // 81 == q
             emulabeller.setView(-Infinity, Infinity);
             e.preventDefault();
         }
-        if( code == 82 && emulabeller.keyBindingAllowed()) {  // 82 == r
+        if (code == 82 && emulabeller.keyBindingAllowed()) { // 82 == r
             emulabeller.playInMode("sel");
-            e.preventDefault();
+            if (!e.metaKey) {
+                e.preventDefault();
+            }
         }
-        if( code == 83 && emulabeller.keyBindingAllowed()) {  // 83 == s
+        if (code == 83 && emulabeller.keyBindingAllowed()) { // 83 == s
             emulabeller.zoomViewPort(0);
             e.preventDefault();
-        }  
-        if( code == 84 && emulabeller.keyBindingAllowed()) {  // 84 == t
-            emulabeller.snapSelectedSegmentToNearestTop();
+        }
+        if (code == 84 && emulabeller.keyBindingAllowed()) { // 84 == t
+            emulabeller.tierHandler.snapSelectedSegmentToNearestTop();
             e.preventDefault();
-        }      
-        if( code == 87 && emulabeller.keyBindingAllowed()) {  // 87 == w
+        }
+        if (code == 87 && emulabeller.keyBindingAllowed()) { // 87 == w
             emulabeller.zoomViewPort(1);
             e.preventDefault();
-        }  
-        if( code == 90 && emulabeller.keyBindingAllowed()) {  // 90 == z
+        }
+        if (code == 90 && emulabeller.keyBindingAllowed()) { // 90 == z
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();
-        }      
-        
+        }
         console.log(code);
     });
 
