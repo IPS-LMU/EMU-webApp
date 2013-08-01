@@ -1,25 +1,19 @@
 EmuLabeller.Drawer.TierDrawer = {
 
+    defaultParams: {},
+
+    /**
+    * overwrite defaultParams
+    * that are passed in and init this.params 
+    */
     init: function(params) {
-        this.markColor = "rgba(255, 255, 0, 0.7)";
-
-        this.curSelBoundColor = "#0DC5FF"; //rgba(0, 0, 255, 255)";
-
-        this.selMarkerColor = "rgba(22, 22, 22, 0.2)";
-        this.selBoundColor = "black";
-
-        this.cursorColor = "red";
-        this.cursorWidth = 1;
-
-        this.selTierColor = "#C8C8C8";
-
-        this.startBoundaryColor = "rgba(22, 22, 22, 0.75)";
-        this.endBoundaryColor = "rgba(22, 22, 22, 0.25)";
-
-        this.startHelperLineColor = "rgba(22, 22, 22, 0.75)";
-        this.endHelperLineColor = "rgba(22, 22, 22, 0.25)";
-        this.params = params;
-        this.font = "20px Verdana";
+        var my = this;
+        this.params = Object.create(params);
+        Object.keys(this.defaultParams).forEach(function(key) {
+            if (!(key in params)) {
+                params[key] = my.defaultParams[key];
+            }
+        });
     },
 
     /**
@@ -34,15 +28,15 @@ EmuLabeller.Drawer.TierDrawer = {
         var mpy = canvas.height * pery;
 
         if (tierDetails.TierName == emulabeller.viewPort.getSelectTier()) {
-            cc.fillStyle = this.selTierColor;
+            cc.fillStyle = this.params.selTierColor;
             cc.fillRect(0, 0, canvas.width, canvas.height);
         } else {
             cc.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         // draw name of tier
-        cc.fillStyle = "black";
-        cc.font = this.font;
+        cc.fillStyle = this.params.labelColor;
+        cc.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
         cc.fillText(tierDetails.TierName, 5, 13);
         cc.fillText("(" + tierDetails.type + ")", 5, 32);
 
@@ -130,6 +124,7 @@ EmuLabeller.Drawer.TierDrawer = {
                 }
             }
         } else if (tierDetails.type == "point") {
+            console.log("hello")
             cc.fillStyle = this.startBoundaryColor;
 
             for (k in tierDetails.events) {
@@ -144,6 +139,7 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.fillStyle = this.curSelBoundColor;
                         cc.fillRect(canvas.width * perc, 0, 8, canvas.height / 2 - canvas.height / 10);
                         tW = cc.measureText(tierDetails.events[k].label).width;
+                        // cc.fillStyle = this.startBoundaryColor;
                         cc.fillText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
                         cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 8, canvas.height / 2 - canvas.height / 10);
                     } else {

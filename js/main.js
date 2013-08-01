@@ -28,12 +28,13 @@ var emulabeller = (function() {
         osciCanvas: osciCanvas,
         specCanvas: specCanvas,
         scrollCanvas: scrollCanvas,
-        waveColor: 'white',
-        progressColor: 'grey',
-        selectLineColor: 'black',
-        loadingColor: 'purple',
-        cursorColor: 'red',
-        selectAreaColor: 'rgba(22, 22, 22, 0.25)',
+        // waveColor: 'white',
+        // progressColor: 'grey',
+        // selectLineColor: 'black',
+        // loadingColor: 'purple',
+        // cursorColor: 'red',
+        // selectAreaColor: 'rgba(22, 22, 22, 0.25)',
+        // font: '12px Verdana',
         tierInfos: tierInfos,
         draggableBar: draggableBar,
         timeline: timeline,
@@ -42,7 +43,6 @@ var emulabeller = (function() {
         fileSelect: fileSelect,
         showLeftPush: showLeftPush,
         spectroworker: spectroworker,
-        font: '12px Verdana',
         internalCanvasWidth: '2048', // in pixel
         internalCanvasHeightSmall: '128', // in pixel -> Cans
         internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro

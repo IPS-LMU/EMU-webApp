@@ -1,6 +1,7 @@
 EmuLabeller.Drawer = {
     defaultParams: {
-        waveColor: '#333',
+        labelColor: '#000',
+        waveColor: '#f00',
         progressColor: '#777',
         cursorWidth: 1,
         loadingColor: '#333',
@@ -10,7 +11,9 @@ EmuLabeller.Drawer = {
         barHeight: 1,
         barMargin: 10,
         selectedArea: "rgba(0, 0, 255, 0.2)",
-        selectedBorder: "rgba(0, 255, 0, 0.5)"
+        selectedBorder: "rgba(0, 255, 0, 0.5)",
+        fontType: "Verdana",
+        fontPxSize: 20
     },
 
     init: function(params) {
@@ -33,7 +36,7 @@ EmuLabeller.Drawer = {
 
         // SSFF drawer
         this.SSFFDrawer = Object.create(EmuLabeller.Drawer.SSFFDrawer);
-        this.SSFFDrawer.init();
+        this.SSFFDrawer.init(params);
 
         // tier drawer
         this.tierDrawer = Object.create(EmuLabeller.Drawer.TierDrawer);
