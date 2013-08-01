@@ -220,17 +220,6 @@ EmuLabeller.tierHandler = {
         // save history state
         this.history();
     },
-      
-    addBorder: function(t, label, start) {
-        var my = this;
-        alert("TODO: Insert NEW border on '"+t.TierName+"' at '"+start+"' and split '"+label+"'");
-        
-    },
-    
-    addSegment: function(t, label,start, end) {
-        var my = this;
-        alert("TODO: Insert NEW label on '"+t.TierName+"' at '"+start+"' (end='"+end+"')");
-    },
     
     removeSegment: function(t,labelName,labelStart) {
         var id = emulabeller.viewPort.getId(t,labelName,labelStart);
@@ -585,19 +574,40 @@ EmuLabeller.tierHandler = {
         }
         
     },   
+    
+    addBorder: function(t, ev, border) {
+        var my = this;
+        var splitleft = (border- ev.startSample);
+        var splitright = (ev.sampleDur - splitleft);
+        ev.sampleDur = splitleft-1;
+        t.events.push({
+            "label": "newSegment",
+            "startSample": border,
+            "sampleDur": splitright
+        });      
+        t.events.sort(function(a, b) {
+            return parseFloat(a.startSample) - parseFloat(b.startSample);
+        });
+    },
+    
+    addSegment: function(t, event, start, end) {
+        var my = this;
+        alert("TODO: Insert NEW label on '"+event.label+"' at '"+start+"' (end='"+end+"')");
+    },    
+    
 
     addSegmentAtSelection: function() {
 
         var sT = this.getSelectedTier();
         if(null!=sT) {
             if(sT.type=="seg"){ 
-                var me1 = this.nextSegment(sT,emulabeller.viewPort.selectS);
-                var me2 = this.nextSegment(sT,emulabeller.viewPort.selectE);
-                if(me1==me2) {
+                var thisSegment = this.nextSegment(sT,emulabeller.viewPort.selectS);
+                var otherSegment = this.nextSegment(sT,emulabeller.viewPort.selectE);
+                if(thisSegment==otherSegment) {
                     if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) 
-                        this.addBorder(sT,me1.label, emulabeller.viewPort.selectS);
+                        this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
                     else 
-                        this.addSegment(sT,"newLabel",emulabeller.viewPort.selectS,emulabeller.viewPort.selectE);
+                        this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
                 }
                 else {
                     alert("Fehler: Hier duerfen Sie kein neues Segment einfuegen!");
