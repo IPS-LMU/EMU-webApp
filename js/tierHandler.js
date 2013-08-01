@@ -46,6 +46,11 @@ EmuLabeller.tierHandler = {
                 type: "seg",
                 events: []
             };
+             newTier.events.push({
+                label: "newSegment",
+                startSample: 1,
+                sampleDur: emulabeller.backend.currentBuffer.length-1        
+            });
         } else {
             var newTier = {
                 TierName: tName,
@@ -53,9 +58,10 @@ EmuLabeller.tierHandler = {
                 events: []
             };
         }
+        
         this.addTiertoHtml(tName, this.tierCssName, "#"+this.cans.id);
         this.tierInfos.tiers[tName] = newTier;
-
+        
         // save history state
         this.history();
         
@@ -641,11 +647,11 @@ EmuLabeller.tierHandler = {
             }
             else if(sT.type="point") {
                 if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
-                    var me1 = this.findNearestPoint(sT,emulabeller.viewPort.selectS);
-                    if(me1.startSample!=emulabeller.viewPort.selectS) {
+                    var thisPoint = this.findNearestPoint(sT,emulabeller.viewPort.selectS);
+                    if(thisPoint==null || thisPoint.startSample!=emulabeller.viewPort.selectS) {
                         sT.events.push({
                             "label": "newPoint",
-                            "startSample": Math.round(emulabeller.viewPort.selectS),
+                            "startSample": emulabeller.viewPort.selectS,
                             "sampleDur": 0
                         });      
                         sT.events.sort(function(a, b) {
