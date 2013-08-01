@@ -286,10 +286,11 @@ var EmuLabeller = {
                 case params.specCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
                     my.tierHandler.removeLabelDoubleClick();
-                    $("body").css("cursor", "ew-resize");
                     my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
                     my.viewPort.selectE = my.dragStart;
+                    $("*").css("cursor", "ew-resize");
+                    e.preventDefault();
                     my.drawer.uiDrawUpdate();
                     break;
 
@@ -308,7 +309,7 @@ var EmuLabeller = {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.dragStart = -1;
-                $("body").css("cursor", "auto");
+                $("*").css("cursor", "auto");
                 my.drawer.uiDrawUpdate();
                 my.internalMode == my.EDITMODE.STANDARD;
             }
@@ -340,11 +341,11 @@ var EmuLabeller = {
                     if (newSamp >= my.dragStart) {
                         my.viewPort.selectE = newSamp;
                         my.viewPort.selectS = my.dragStart;
-                        $("body").css("cursor", "w-resize");
+
                     } else {
                         my.viewPort.selectS = newSamp;
                         my.viewPort.selectE = my.dragStart;
-                        $("body").css("cursor", "e-resize");
+
                     }
                     my.drawer.uiDrawUpdate();
                 }
