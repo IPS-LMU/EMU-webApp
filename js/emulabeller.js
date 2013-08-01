@@ -86,6 +86,12 @@ var EmuLabeller = {
             DRAGING_TIER: {
                 value: 7,
                 name: "DragingTierMode"
+            },
+
+            // when showing modal
+            MODAL: {
+                value: 8,
+                name: "ModalMode"
             }
         };
 
@@ -682,6 +688,14 @@ var EmuLabeller = {
     getElement: function(e) {
         return document.getElementById(e.srcElement.id);
     },
+    
+    keyBindingAllowed: function() {
+        var my = this;
+        if(my.internalMode != my.EDITMODE.LABEL_RENAME)
+            if(my.internalMode != my.EDITMODE.MODAL)
+                return true;
+        return false;
+    },
 
     /**
      * delegates the parsing of different file types
@@ -803,28 +817,6 @@ var EmuLabeller = {
         return this.viewPort.selectedSegments[row].indexOf(true);
     },
 
-    editLabel: function() {
-        var my = this;
-        this.isModalShowing = true;
-        $("#dialLabelInput")[0].value = this.tierHandler.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label;
-        $("#dialog-messageSetLabel").dialog({
-            modal: true,
-            close: function() {
-                console.log("closing");
-                emulabeller.isModalShowing = false;
-            },
-            buttons: {
-                Ok: function() {
-                    $(this).dialog("close");
-                    var usrTxt = $("#dialLabelInput")[0].value;
-                    // this.tierHandler.tierInfos.tiers[this.viewPort.selTier].events[this.viewPort.selSegment].label = usrTxt;
-                    my.tierHandler.tierInfos.tiers[my.viewPort.selTier].events[my.viewPort.selSegment].label = usrTxt;
-                    my.drawBuffer();
-                }
-            }
-        });
-
-    },
 
     sendTierinfosToServer: function() {
         var sT = this.tierHandler.tierInfos.tiers[this.viewPort.selTier];
