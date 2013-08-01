@@ -502,10 +502,12 @@ EmuLabeller.tierHandler = {
             if (tierDetails.type == "seg") {
                 if(percX)
                 var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
-                emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
-                var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
-                var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                this.createEditArea(tierDetails.TierName,posS,0,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                if(null!=nearest) {
+                    emulabeller.viewPort.setSelectSegment(tierDetails,nearest.label,nearest.startSample,nearest.sampleDur,true);
+                    var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
+                    var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
+                    this.createEditArea(tierDetails.TierName,posS,0,posE - posS - 5,canvas.height / 2 - 5,nearest.label,canvas,true);
+                }
                 
             } else if (tierDetails.type == "point") {
                 var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
