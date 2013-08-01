@@ -266,6 +266,7 @@ EmuLabeller.Drawer.OsciDrawer = {
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
                 cc.fillStyle = this.params.selectedBorderColor;
                 cc.fillRect(posS + sDist / 2, 0, 1, this.osciCanvas.height);
+                cc.fillStyle = this.params.labelColor;
                 cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR), 6), posS + 5, this.params.fontPxSize);
                 cc.fillText(emulabeller.viewPort.selectS, posS + 5, this.params.fontPxSize * 2);
             } else {
