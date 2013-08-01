@@ -170,8 +170,8 @@ EmuLabeller.Drawer.TierDrawer = {
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
         var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
 
-        cc.strokeStyle = this.selBoundColor;
-        cc.fillStyle = this.selBoundColor;
+        cc.strokeStyle = this.params.selectedBorderColor;
+        cc.fillStyle = this.selectedBorderColor;
 
         //draw sel boundaries if not separate then single line with circle
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
@@ -184,7 +184,7 @@ EmuLabeller.Drawer.TierDrawer = {
             cc.stroke();
 
         } else {
-            cc.fillStyle = my.params.selectAreaColor;
+            cc.fillStyle = my.params.selectedAreaColor;
             cc.fillRect(posS, 0, posE - posS, canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);
