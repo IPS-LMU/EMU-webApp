@@ -16,7 +16,7 @@ EmuLabeller.tierHandler = {
         this.tierCssName = "tierSettings";
         this.cans = params.cans;
         this.historyEndError = "Cannot go back, no more history saved.... =(";
-        this.commonError = "Fehler: Hier duerfen Sie kein neues Segment einfuegen!";
+        this.commonError = "Error: It is not allowed to insert a segment here!";
         
     },
     
@@ -585,22 +585,40 @@ EmuLabeller.tierHandler = {
         ev.sampleDur = splitleft-1;
         t.events.push({
             "label": "newSegment",
-            "startSample": border,
-            "sampleDur": splitright
+            "startSample": Math.round(border),
+            "sampleDur": Math.round(splitright)
         });      
         t.events.sort(function(a, b) {
             return parseFloat(a.startSample) - parseFloat(b.startSample);
         });
+        // save history state
+        this.history();      
     },
     
-    addSegment: function(t, event, start, end) {
+    addSegment: function(t, ev, start, end) {
         var my = this;
-        alert("TODO: Insert NEW label on '"+event.label+"' at '"+start+"' (end='"+end+"')");
+        var splitleft = (start - ev.startSample);
+        var splitright = (ev.sampleDur - splitleft);
+        var splitsecond = (end - start);
+        ev.sampleDur = splitleft-1;
+        t.events.push({
+            "label": "newSegment",
+            "startSample": start,
+            "sampleDur":splitsecond-1
+        });  
+        t.events.push({
+            "label": "newSegment",
+            "startSample": end,
+            "sampleDur": splitright-splitsecond-1
+        });              
+        t.events.sort(function(a, b) {
+            return parseFloat(a.startSample) - parseFloat(b.startSample);
+        });
+        // save history state
+        this.history();      
     },    
     
-
     addSegmentAtSelection: function() {
-
         var sT = this.getSelectedTier();
         if(null!=sT) {
             if(sT.type=="seg"){ 
