@@ -309,26 +309,28 @@ var EmuLabeller = {
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.dragStart = -1;
-                $("*").css("cursor", "auto");
                 my.drawer.uiDrawUpdate();
                 my.internalMode == my.EDITMODE.STANDARD;
             }
 
-            if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
+            else if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
                 my.internalMode == my.EDITMODE.STANDARD;
             }
 
-            if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+            else if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
                 var bL = my.backend.currentBuffer.length;
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
                 my.internalMode == my.EDITMODE.STANDARD;
             }
-            my.internalMode == my.EDITMODE.STANDARD;
+            else {
+                my.internalMode == my.EDITMODE.STANDARD;
+                $("*").css("cursor", "auto");
+            }
 
 
         });
