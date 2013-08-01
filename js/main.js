@@ -174,6 +174,8 @@ var emulabeller = (function() {
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();
         }      
+        
+        console.log(code);
     });
 
 

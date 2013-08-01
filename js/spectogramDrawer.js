@@ -144,7 +144,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                 my.context.fillRect(curPos, 0, 1, my.canvas.height);
             }            
             if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
-                my.context.fillStyle = my.params.selectAreaColor;
+                my.context.fillStyle = my.params.selectedAreaColor;
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = my.params.selectLineColor;
                 my.context.beginPath();
@@ -171,10 +171,10 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         killSpectroRenderingThread: function () {
             var my = this;
-            my.context.fillStyle = my.params.waveColor;
+            my.context.fillStyle = my.params.selectedBorderColor; 
         	my.context.fillRect(0,0,my.canvas.width,my.canvas.height);    
         	my.context.font = my.font;
-        	my.context.fillStyle = my.params.loadingColor;
+        	my.context.fillStyle = my.params.loadingBackground;
         	my.context.fillText(my.params.loadingText, 10, 25);   
             if(my.primeWorker!=null) {
             	my.primeWorker.terminate();
