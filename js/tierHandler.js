@@ -189,6 +189,7 @@ EmuLabeller.tierHandler = {
             emulabeller.tierHandler.isSelected = true;    
         }
         emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+        $("*").css("cursor", "auto");
         emulabeller.drawer.updateSingleTier(curTierDetails, percX, percY);
     },
 

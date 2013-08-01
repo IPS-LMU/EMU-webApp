@@ -327,10 +327,10 @@ var EmuLabeller = {
                 my.setView(posInB - len / 2, posInB + len / 2);
                 my.internalMode == my.EDITMODE.STANDARD;
             }
-            else {
+
                 my.internalMode == my.EDITMODE.STANDARD;
                 $("*").css("cursor", "auto");
-            }
+
 
 
         });
