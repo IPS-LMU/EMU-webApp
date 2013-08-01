@@ -13,9 +13,9 @@ EmuLabeller.tierHandler = {
         this.myHistory = new Object();
         this.editAreaTextfieldName = "editArea";
         this.tierCssName = "tierSettings";
-        this.cans = params.cans;
         this.historyEndError = "Cannot go back, no more history saved.... =(";
         this.commonError = "Error: It is not allowed to insert a segment here!";
+        this.params = params;
         
     },
     
@@ -58,7 +58,7 @@ EmuLabeller.tierHandler = {
             };
         }
         
-        this.addTiertoHtml(tName, this.tierCssName, "#"+this.cans.id);
+        this.addTiertoHtml(tName, this.tierCssName, "#"+this.params.cans.id);
         this.tierInfos.tiers[tName] = newTier;
         
         // save history state
@@ -71,7 +71,7 @@ EmuLabeller.tierHandler = {
     addLoadedTiers: function(loadedTiers) {
         var my = this;
         $.each(loadedTiers.tiers, function() {
-             my.addTiertoHtml(this.TierName, my.tierCssName, "#"+my.cans.id);
+             my.addTiertoHtml(this.TierName, my.tierCssName, "#"+my.params.cans.id);
              my.tierInfos.tiers[this.TierName] = this;
         });
         // save history state
@@ -209,7 +209,7 @@ EmuLabeller.tierHandler = {
         for(t in this.tierInfos.tiers) {
             this.removeTierHtml(this.tierInfos.tiers[t].TierName);
             if(null==document.getElementById(this.tierInfos.tiers[t].TierName)) {
-                this.addTiertoHtml(this.tierInfos.tiers[t].TierName, this.tierCssName, "#"+this.cans.id);
+                this.addTiertoHtml(this.tierInfos.tiers[t].TierName, this.tierCssName, "#"+this.params.cans.id);
             }
         }
     },    
