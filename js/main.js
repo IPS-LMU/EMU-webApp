@@ -88,18 +88,16 @@ var emulabeller = (function() {
 
     $(document).bind("keydown", function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
-        if( code== 8 ){ // 8 == backspace
+        if( code== 8 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME ){ // 8 == backspace
             e.preventDefault();
             if(emulabeller.tierHandler.getSelectedTierType()=="seg" || emulabeller.tierHandler.getSelectedTierType()=="point")
                 emulabeller.tierHandler.deleteSelected();
             else 
                 alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
         }
-        if( code == 27 ){ // 27 == escape
-            if (!emulabeller.isModalShowing && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
-                e.preventDefault();
-                emulabeller.tierHandler.removeLabelDoubleClick();
-            }
+        if( code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME ){ // 27 == escape
+            e.preventDefault();
+            emulabeller.tierHandler.removeLabelDoubleClick();
         }
         if( code == 16 ){ // 16 == ???
             emulabeller.tierHandler.history();
@@ -109,83 +107,83 @@ var emulabeller = (function() {
             emulabeller.tierHandler.history();
             e.preventDefault();
         }   
-        if( code == 46 ){ // 46 == entfernen
+        if( code == 46 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME ){ // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
         }            
-        if( code == 13 ){ // 13 == enter
+        if( code == 13 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME ){ // 13 == enter
             emulabeller.tierHandler.addSegmentAtSelection();
             e.preventDefault();
-        }            
+        }     
+        if( code == 87 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {  // 87 == w
+            emulabeller.zoomViewPort(1);
+            e.preventDefault();
+        }    
+        if( code == 83 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {  // 83 == s
+            emulabeller.zoomViewPort(0);
+            e.preventDefault();
+        }   
+        if( code == 65 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {  // 65 == a
+            emulabeller.shiftViewP(0);
+            e.preventDefault();
+        }  
+        if( code == 68 && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {  // 68 == d
+            emulabeller.shiftViewP(1);
+            e.preventDefault();
+        }
                     
         if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
 
-            if (32 == e.keyCode) {
+            if (32 == code) {
                 // SPACEBAR -> play what is in view
                 e.preventDefault();
                 emulabeller.playPauseInView();
             }
-            if (114 == e.keyCode) {
+            if (114 == code) {
                 // R key -> play sel
                 emulabeller.playInMode("sel");
             }
-            if (102 == e.keyCode) {
+            if (102 == code) {
                 // F key -> play entire file
                 emulabeller.playInMode("all");
             }
-            if (119 == e.keyCode) {
-                // W key -> zoom in
-                emulabeller.zoomViewPort(1);
-            }
-            if (115 == e.keyCode) {
-                // S key -> zoom out 
-                emulabeller.zoomViewPort(0);
-            }
-            if (100 == e.keyCode) {
-                // D key -> shift right
-                emulabeller.shiftViewP(1);
-            }
-            if (97 == e.keyCode) {
-                // A key -> shift left
-                emulabeller.shiftViewP(0);
-            }
-            if (113 == e.keyCode) {
+            if (113 == code) {
                 // Q key -> view all
                 emulabeller.setView(-Infinity, Infinity);
             }
-            if (101 == e.keyCode) {
+            if (101 == code) {
                 // E key -> zoom in to selected segment
                 emulabeller.zoomSel();
             }
-            if (116 == e.keyCode) {
+            if (116 == code) {
                 // T key -> snap to top for selected segment
                 emulabeller.snapSelectedSegmentToNearestTop();
             }
-            if (98 == e.keyCode) {
+            if (98 == code) {
                 // T key -> snap to bottom for selected segment
                 emulabeller.snapSelectedSegmentToNearestBottom();
             }
-            if (111 == e.keyCode) {
+            if (111 == code) {
                 // O key
                 if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
                     $('#fileGetterBtn').click();
                 if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
                     emulabeller.openSubmenu();
             }
-            if (99 == e.keyCode) {
+            if (99 == code) {
                 // C key
                 emulabeller.editLabel();
             }
-            if (110 == e.keyCode) {
+            if (110 == code) {
                 // N key
                 emulabeller.tierHandler.renameTier();
             }
 
-            if (26 == e.keyCode) {
+            if (26 == code) {
                 emulabeller.tierHandler.goBackHistory();
             }
 
-            console.log(e.keyCode);
+            console.log(code);
         }        
     });
 
