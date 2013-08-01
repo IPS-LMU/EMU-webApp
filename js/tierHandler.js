@@ -170,9 +170,10 @@ EmuLabeller.tierHandler = {
     /**
      * function called on mouse move in tiers
      *
-     * @param percX x position percentage of
-     * canvas calling this function
-     * @param tierID id of canvas calling this function
+     * @param event
+     * @param percX
+     * @param percY
+     * @param tierName
      */
     trackMouseInTiers: function(event, percX, percY, tierName) {
         if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
@@ -271,9 +272,9 @@ EmuLabeller.tierHandler = {
         var my = this;
         var t = this.getSelectedTier();
         var selected = emulabeller.viewPort.getAllSelected(t);
-        var warn = "Wollen Sie ";
+        var warn = "Really delete ";
         for (s in selected) warn += selected[s].label + ", ";
-        if (confirm(warn.substring(0, warn.length - 2) + " wirklich loeschen?")) {
+        if (confirm(warn.substring(0, warn.length - 2))) {
             for (s in selected) {
                 if (t.type == "seg")
                     this.removeSegment(t, selected[s].label, selected[s].startSample)
@@ -301,7 +302,7 @@ EmuLabeller.tierHandler = {
                 this.history();
                 emulabeller.drawBuffer();
             }
-        } else alert("Fehler: Bitte markieren Sie zuerst eine Grenze!");
+        } else alert("Error: Please select a boundary first!");
     },
 
     resizeTier: function(tierName) {
@@ -562,7 +563,7 @@ EmuLabeller.tierHandler = {
             // save history state
             this.history();
         } else {
-            alert("Fehler : Ein Tier mit diesem Name ('" + new_key + "') existiert bereits!");
+            alert("Error : A tier with this name ('" + new_key + "') already exists!");
         }
 
     },
@@ -575,7 +576,7 @@ EmuLabeller.tierHandler = {
             var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
             this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, false);
         } else {
-            alert("Bitte waehlen Sie zuerst ein Tier aus!");
+            alert("Please mark a tier first...");
         }
 
     },
@@ -768,20 +769,52 @@ EmuLabeller.tierHandler = {
     },
 
     /**
-    * finds the closest boundary to the currently 
-    * selected boundary in the tier above it
-    * and snaps it to that sample position
+    * returns either the tier details of the tier above
+    * tName or below tName
+    *
+    * @param tName name of tier to look above or below
+    * @param getAbove boolian  if true it gets the tier above
+    * if false the tier below
     */
-    snapSelectedSegmentToNearestTop: function() {
-        alert("snap to top not implemented")
+    getNeighboringTier: function(tName, getAbove){
+        var hullID;
+        if(getAbove){
+            hullID = $("#hull" + tName).prev().attr('id');
+        }else{
+            hullID = $("#hull" + tName).next().attr('id');
+        }
+        var neighID = hullID.replace(/hull/g, '');
+        return(this.getTier(neighID));
+
     },
-    
+
     /**
-    * finds the closest boundary to the currently 
-    * selected boundary in the tier above it
-    * and snaps it to that sample position
-    */
-    snapSelectedSegmentToNearestBottom: function() {
-        alert("snap to bottom not implemented")
+     * finds the closest boundary to the currently
+     * selected boundary in the tier above it
+     * and snaps it to that sample position
+     *
+     * @param toTop boolian if set to true will snap to top
+     * otherwise to bottom 
+     */
+    snapSelectedSegmentToNearestTopOrBottom: function(toTop) {
+        if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
+            var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, true)
+            var closestSeg = this.findNearestPoint(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
+            
+            console.log("############")
+            console.log(emulabeller.viewPort.curMouseMoveSegmentStart);
+            console.log(neighTier);
+            console.log(closestSeg);
+
+            
+            // TODO check for boundary problems
+            if(closestSeg){
+                console.log(closestSeg);
+                this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
+            }else{
+                alert("closest segment is null?!?!?!?")
+            }
+        }
+        emulabeller.drawBuffer();
     }
 };

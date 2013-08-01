@@ -117,7 +117,7 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 66 && emulabeller.keyBindingAllowed()) { // 66 == b
-            emulabeller.tierHandler.snapSelectedSegmentToNearestBottom();
+            emulabeller.tierHandler.snapSelectedSegmentToNearestTopOrBottom(false);
             e.preventDefault();
         }
         if (code == 68 && emulabeller.keyBindingAllowed()) { // 68 == d
@@ -158,7 +158,7 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 84 && emulabeller.keyBindingAllowed()) { // 84 == t
-            emulabeller.tierHandler.snapSelectedSegmentToNearestTop();
+            emulabeller.tierHandler.snapSelectedSegmentToNearestTopOrBottom(true);
             e.preventDefault();
         }
         if (code == 87 && emulabeller.keyBindingAllowed()) { // 87 == w
@@ -169,20 +169,20 @@ var emulabeller = (function() {
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();
         }
-        console.log(code);
+        // console.log(code);
     });
 
 
     // touch events 
-    // var element = document.getElementById('timeline');
-    // var hammertime = Hammer(element).on("touch", function(event) {
-    //     console.log('stop touching me says the timeline');
-    // });
+    var element = document.getElementById('timeline');
+    var hammertime = Hammer(element).on("touch", function(event) {
+        console.log('stop touching me says the timeline');
+    });
 
-    // var hammertime = Hammer(element).on("doubletap", function(event) {
-    //     // alert('stop touching me says the timeline');
-    //     emulabeller.zoomSel();
-    // });
+    var hammertime = Hammer(element).on("doubletap", function(event) {
+        // alert('stop touching me says the timeline');
+        emulabeller.zoomSel();
+    });
 
     return labeller;
 }());

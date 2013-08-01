@@ -166,7 +166,11 @@ EmuLabeller.ViewPort = {
         }
     },
 
-
+    /**
+    * round to n decimal digits after the comma
+    * used to help display numbers with a given
+    * precision
+    */
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");
         var e = Math.pow(10, n);
