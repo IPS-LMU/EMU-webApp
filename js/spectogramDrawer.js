@@ -173,7 +173,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             var my = this;
             my.context.fillStyle = my.params.selectedBorderColor; 
         	my.context.fillRect(0,0,my.canvas.width,my.canvas.height);    
-        	my.context.font = my.font;
+        	my.context.font = my.params.fontPxSize+"px "+my.params.fontType;
         	my.context.fillStyle = my.params.loadingBackground;
         	my.context.fillText(my.params.loadingText, 10, 25);   
             if(my.primeWorker!=null) {

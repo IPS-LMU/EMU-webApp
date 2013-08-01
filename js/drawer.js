@@ -12,7 +12,7 @@ EmuLabeller.Drawer = {
         playCursorWidth: 4,
         loadingColor: '#333',
         loadingBackground: '#fff',
-        loadingText: 'calculating fft ...',
+        loadingText: ' calculating new image  ... ',
         loadingBars: 20,
         barHeight: 1,
         barMargin: 10,
