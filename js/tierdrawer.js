@@ -3,9 +3,9 @@ EmuLabeller.Drawer.TierDrawer = {
     defaultParams: {}, // use if wish to overwrite drawer colors
 
     /**
-    * overwrite defaultParams
-    * that are passed in and init this.params 
-    */
+     * overwrite defaultParams
+     * that are passed in and init this.params
+     */
     init: function(params) {
         var my = this;
         this.params = Object.create(params);
@@ -42,7 +42,7 @@ EmuLabeller.Drawer.TierDrawer = {
         cc.fillStyle = this.params.labelColor;
         cc.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
         cc.fillText(tierDetails.TierName, 5, this.params.fontPxSize);
-        cc.fillText("(" + tierDetails.type + ")", 5, this.params.fontPxSize*2);
+        cc.fillText("(" + tierDetails.type + ")", 5, this.params.fontPxSize * 2);
 
         if (tierDetails.type == "seg") {
             // cc.fillStyle = this.params.startBoundaryColor;
@@ -107,7 +107,7 @@ EmuLabeller.Drawer.TierDrawer = {
                         var sStW = cc.measureText(curEvt.startSample).width;
                         //check for enough space to stroke text
                         if (posE - posS > sStW) {
-                            cc.fillText(curEvt.startSample, posS + 5, canvas.height/8+this.params.fontPxSize/2);
+                            cc.fillText(curEvt.startSample, posS + 5, canvas.height / 8 + this.params.fontPxSize / 2);
                         }
                         // end helper line
                         cc.strokeStyle = this.params.endBoundaryColor;
@@ -178,13 +178,15 @@ EmuLabeller.Drawer.TierDrawer = {
 
         //draw sel boundaries if not separate then single line with circle
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            // draw clickbox + pos line
-            var curPos = posS + sDist / 2;
-            cc.fillRect(curPos - 5, 0, 10, 10);
-            cc.beginPath();
-            cc.moveTo(curPos, 10);
-            cc.lineTo(curPos, canvas.height);
-            cc.stroke();
+            if (emulabeller.viewPort.selectS !== 0) {
+                // draw clickbox + pos line
+                var curPos = posS + sDist / 2;
+                cc.fillRect(curPos - 5, 0, 10, 10);
+                cc.beginPath();
+                cc.moveTo(curPos, 10);
+                cc.lineTo(curPos, canvas.height);
+                cc.stroke();
+            }
 
         } else {
             cc.fillStyle = my.params.selectedAreaColor;
