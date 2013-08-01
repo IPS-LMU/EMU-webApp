@@ -86,7 +86,7 @@ var emulabeller = (function() {
             if(emulabeller.tierHandler.getSelectedTierType()=="seg" || emulabeller.tierHandler.getSelectedTierType()=="point")
                 emulabeller.tierHandler.deleteSelected();
             else 
-                alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
+                alert("Please mark one of more segments first!"); 
         }       
         if( code == 13 && emulabeller.keyBindingAllowed()){ // 13 == enter
             emulabeller.tierHandler.addSegmentAtSelection();
