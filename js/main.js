@@ -178,15 +178,15 @@ var emulabeller = (function() {
 
 
     // touch events 
-    var element = document.getElementById('timeline');
-    var hammertime = Hammer(element).on("touch", function(event) {
-        console.log('stop touching me says the timeline');
-    });
+    // var element = document.getElementById('timeline');
+    // var hammertime = Hammer(element).on("touch", function(event) {
+    //     console.log('stop touching me says the timeline');
+    // });
 
-    var hammertime = Hammer(element).on("doubletap", function(event) {
-        // alert('stop touching me says the timeline');
-        emulabeller.zoomSel();
-    });
+    // var hammertime = Hammer(element).on("doubletap", function(event) {
+    //     // alert('stop touching me says the timeline');
+    //     emulabeller.zoomSel();
+    // });
 
     return labeller;
 }());

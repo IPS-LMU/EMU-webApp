@@ -97,7 +97,7 @@ EmuLabeller.TextGridParser = {
         tG = tG + "item []:" + nl;
         var tierNr = 1;
         for (var tN in tiers) {
-            console.log(tN)
+            // console.log(tN)
             var curTier = emulabeller.tierHandler.getTier(tN)
             //write tier items
             tierNr = tierNr + 1;

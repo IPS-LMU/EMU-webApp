@@ -10,9 +10,14 @@ EmuLabeller.Drawer = {
         loadingBars: 20,
         barHeight: 1,
         barMargin: 10,
-        selectedArea: "rgba(0, 0, 255, 0.2)",
-        selectedBorder: "rgba(0, 255, 0, 0.5)",
-        fontType: "Verdana",
+        selectedAreaColor: 'rgba(0, 0, 255, 0.2)',
+        selectedBorderColor: 'rgba(0, 255, 0, 0.5)',
+        selectedBoundaryColor: '#0DC5FF',
+        selectedTierColor: 'rgba(22, 22, 22, 0.2)',
+        selectedSegmentColor: 'rgba(255, 255, 22, 0.5)',
+        startBoundaryColor: '#0f0',
+        endBoundaryColor: '#f00',
+        fontType: 'Verdana',
         fontPxSize: 20
     },
 
