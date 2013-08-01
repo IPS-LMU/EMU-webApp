@@ -16,6 +16,7 @@ EmuLabeller.tierHandler = {
         this.tierCssName = "tierSettings";
         this.cans = params.cans;
         this.historyEndError = "Cannot go back, no more history saved.... =(";
+        this.commonError = "Fehler: Hier duerfen Sie kein neues Segment einfuegen!";
         
     },
     
@@ -606,13 +607,18 @@ EmuLabeller.tierHandler = {
                 var thisSegment = this.nextSegment(sT,emulabeller.viewPort.selectS);
                 var otherSegment = this.nextSegment(sT,emulabeller.viewPort.selectE);
                 if(thisSegment==otherSegment) {
-                    if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) 
-                        this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
-                    else 
+                    if(emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
+                        if(null!=thisSegment)
+                            this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
+                        else
+                            alert(this.commonError);
+                    }
+                    else {
                         this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
+                    }
                 }
                 else {
-                    alert("Fehler: Hier duerfen Sie kein neues Segment einfuegen!");
+                    alert(this.commonError);
                 }
             }
             else if(sT.type="point") {

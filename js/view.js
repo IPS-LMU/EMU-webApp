@@ -157,6 +157,7 @@ EmuLabeller.ViewPort = {
                 return j;
             j++;
         }
+        return false;
     },
 
     resetSelection: function(length) {
