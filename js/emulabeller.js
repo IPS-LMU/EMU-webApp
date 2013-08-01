@@ -365,7 +365,7 @@ var EmuLabeller = {
             } 
             else {
                 my.lastX = my.getX(e);
-                this.internalMode = this.EDITMODE.STANDARD;
+                my.internalMode = my.EDITMODE.STANDARD;
                 $("*").css("cursor", "auto");            
             }
         });
