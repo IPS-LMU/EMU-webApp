@@ -98,9 +98,8 @@ EmuLabeller.tierHandler = {
      * append a tier
      *
      * @param myName is used ad id of canvas
-     * @param myID is used in custom attr. tier-id
      * @param myCssClass is used to spec. css class
-     * @param
+     * @param myAppendTo
      */
     addTiertoHtml: function(myName, myCssClass, myAppendTo) {
 

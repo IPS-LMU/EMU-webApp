@@ -1,9 +1,15 @@
+/**
+* Main drawer class to handle all the drawing
+* it mainly delegates draw updates to 
+* the different drawer subclasses
+*/
 EmuLabeller.Drawer = {
     defaultParams: {
         labelColor: '#000',
-        osciColor: '#f00',
-        progressColor: '#777',
-        cursorWidth: 1,
+        osciColor: '#000',
+        playProgressColor: '#777',
+        playCursorColor: "#fff",
+        playCursorWidth: 4,
         loadingColor: '#333',
         loadingBackground: '#fff',
         loadingText: 'calculating fft ...',
@@ -15,6 +21,7 @@ EmuLabeller.Drawer = {
         selectedBoundaryColor: '#0DC5FF',
         selectedTierColor: 'rgba(22, 22, 22, 0.2)',
         selectedSegmentColor: 'rgba(255, 255, 22, 0.5)',
+        selectedMinimapColor: 'rgba(0, 0, 0, 0.2)',
         startBoundaryColor: '#000',
         endBoundaryColor: '#888',
         fontType: 'Verdana',

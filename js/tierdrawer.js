@@ -18,6 +18,9 @@ EmuLabeller.Drawer.TierDrawer = {
 
     /**
      * draw single tier
+     * @param tierDetails
+     * @param perx
+     * @param pery
      */
     drawSingleTier: function(tierDetails, perx, pery) {
 

@@ -1,20 +1,25 @@
+/**
+ * Drawer to handle all different
+ * types of osci drawing
+ * also handles viewport markup drawing
+ * of main osci + markup of minimap
+ */
 EmuLabeller.Drawer.OsciDrawer = {
+
+    defaultParams: {}, // use if wish to overwrite drawer colors
 
     /**
      * init method
      * @param params
      */
     init: function(params) {
-        this.waveColor = 'black';
-        this.progressColor = 'grey';
-        this.scrollSegMarkerColor = "rgba(0, 0, 0, 0.3)";
-
-        this.selMarkerColor = params.selectAreaColor;
-        this.selBoundColor = "black";
-
-        this.cursorColor = 'red';
-        this.cursorWidth = 1;
-
+        var my = this;
+        this.params = Object.create(params);
+        Object.keys(this.defaultParams).forEach(function(key) {
+            if (!(key in params)) {
+                params[key] = my.defaultParams[key];
+            }
+        });
 
         // calculated positions of samples in view
         this.peaks = [];
@@ -26,7 +31,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = true; // probably only good for debugging
+        this.showSampleNrs = true; // probably only good for debugging / developing
 
     },
 
@@ -91,6 +96,7 @@ EmuLabeller.Drawer.OsciDrawer = {
     /**
      * draws osci on canvas by drawing the this.peaks
      * values to canvas.
+     * @param c
      */
 
     drawOsciOnCanvas: function(c) {
@@ -104,7 +110,6 @@ EmuLabeller.Drawer.OsciDrawer = {
             var cc = this.osciCanvas.getContext("2d");
             can = my.osciCanvas;
         }
-        cc.strokeStyle = "black";
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / can.width; // PCM Samples per new pixel
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
@@ -117,10 +122,10 @@ EmuLabeller.Drawer.OsciDrawer = {
             var hDbS = (1 / k) / 2; // half distance between samples
             var sNr = emulabeller.viewPort.sS;
             // over sample exact
-            cc.strokeStyle = this.waveColor;
+            cc.strokeStyle = this.params.osciColor;
+            cc.fillStyle = this.params.osciColor;
             cc.beginPath();
             if (emulabeller.viewPort.sS == 0) {
-                console.log("here")
                 cc.moveTo(hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
                 for (var i = 0; i < this.peaks.length; i++) {
                     cc.lineTo(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
@@ -151,7 +156,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                     cc.stroke();
                     cc.fill();
                     if (this.showSampleNrs) {
-                        cc.strokeText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
+                        cc.fillText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
                         sNr = sNr + 1;
                     }
                 }
@@ -167,6 +172,11 @@ EmuLabeller.Drawer.OsciDrawer = {
      * drawing method to draw single line between two
      * envelope points. Is used by drawOsciOnCanvas if
      * envelope drawing is done
+     * @param index
+     * @param value
+     * @param max
+     * @param prevPeak
+     * @param canvas 
      */
     drawFrame: function(index, value, max, prevPeak, canvas) {
         var cc = canvas.getContext('2d');
@@ -192,17 +202,16 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         if (posC >= x) {
-            cc.fillStyle = this.progressColor;
-            cc.strokeStyle = this.progressColor;
+            cc.fillStyle = this.params.playProgressColor;
+            cc.strokeStyle = this.params.playProgressColor;
         } else {
-            cc.fillStyle = this.waveColor;
-            cc.strokeStyle = this.waveColor;
+            cc.fillStyle = this.params.osciColor;
+            cc.strokeStyle = this.params.osciColor;
         }
 
         cc.beginPath();
         cc.moveTo(prevX, prevY);
         cc.lineTo(x, y);
-        //this.cc.closePath();
         cc.stroke();
 
 
@@ -216,11 +225,12 @@ EmuLabeller.Drawer.OsciDrawer = {
     drawVpOsciMarkup: function() {
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
-        var yOffsetTime = 13;
-        var yOffsetSample = 25;
+        // var yOffsetTime = 13;
+        // var yOffsetSample = 25;
 
-        //console.log(emulabeller.viewPort);
-        cc.strokeStyle = this.waveColor;
+        cc.strokeStyle = this.params.labelColor;
+        cc.fillStyle = this.params.labelColor;
+        cc.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
 
         //this.cc.fillRect(x, y, w, h);
         cc.beginPath();
@@ -236,14 +246,13 @@ EmuLabeller.Drawer.OsciDrawer = {
         var sTime;
         var eTime;
         if (emulabeller.viewPort) {
-            cc.font = "12px Verdana";
             sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS / this.sR, 6);
             eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS / this.sR, 6);
+            cc.fillText(emulabeller.viewPort.sS, 5, this.params.fontPxSize);
+            cc.fillText(sTime, 5, this.params.fontPxSize * 2);
             var metrics = cc.measureText(sTime);
-            cc.strokeText(sTime, 5, yOffsetTime);
-            cc.strokeText(eTime, this.osciCanvas.width - metrics.width - 5, yOffsetTime);
-            cc.strokeText(emulabeller.viewPort.sS, 5, yOffsetSample);
-            cc.strokeText(emulabeller.viewPort.eS, this.osciCanvas.width - cc.measureText(emulabeller.viewPort.eS).width - 5, yOffsetSample);
+            cc.fillText(emulabeller.viewPort.eS, this.osciCanvas.width - cc.measureText(emulabeller.viewPort.eS).width - 5, this.params.fontPxSize);
+            cc.fillText(eTime, this.osciCanvas.width - metrics.width - 5, this.params.fontPxSize * 2);
 
         }
 
@@ -254,13 +263,13 @@ EmuLabeller.Drawer.OsciDrawer = {
             var posE = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectE);
             var sDist = emulabeller.viewPort.getSampleDist(this.osciCanvas.width);
 
-            cc.strokeStyle = this.waveColor;
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+                cc.fillStyle = this.params.selectedBorderColor;
                 cc.fillRect(posS + sDist / 2, 0, 1, this.osciCanvas.height);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR), 6), posS + 5, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.selectS, posS + 5, yOffsetSample);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR), 6), posS + 5, this.params.fontPxSize);
+                cc.fillText(emulabeller.viewPort.selectS, posS + 5, this.params.fontPxSize * 2);
             } else {
-                cc.fillStyle = this.selMarkerColor;
+                cc.fillStyle = this.params.selectedAreaColor;
                 cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);
                 cc.strokeStyle = this.selBoundColor;
                 cc.beginPath();
@@ -270,48 +279,44 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.lineTo(posE, this.osciCanvas.height);
                 cc.closePath();
                 cc.stroke();
-                var tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR) / 2, 6), posS - tW - 4, yOffsetTime);
-                cc.strokeText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR) / 2, 6), posE + 5, yOffsetTime);
-
-                cc.strokeText(emulabeller.viewPort.selectS, posS - tW - 4, yOffsetSample);
-                cc.strokeText(emulabeller.viewPort.selectE, posE + 5, yOffsetSample);
-
-                tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR - 1 / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, yOffsetTime);
-
-                tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                cc.strokeText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, yOffsetSample);
-
+                cc.fillStyle = this.params.labelColor;
+                // start values
+                var tW = cc.measureText(emulabeller.viewPort.selectS).width;
+                cc.fillText(emulabeller.viewPort.selectS, posS - tW - 4, this.params.fontPxSize);
+                tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR) / 2, 6), posS - tW - 4, this.params.fontPxSize * 2);
+                // end values
+                cc.fillText(emulabeller.viewPort.selectE, posE + 5, this.params.fontPxSize);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR) / 2, 6), posE + 5, this.params.fontPxSize * 2);
+                // dur values
+                // check if space
+                if (posE - posS > cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width) {
+                    tW = cc.measureText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS).width;
+                    cc.fillText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize);
+                    tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
+                    cc.fillText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR - 1 / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize * 2);
+                }
 
             }
         }
         // cursor
         if (emulabeller.viewPort.curCursorPosInPercent > 0) {
             //calc cursor pos
-            var posC = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
-            // var all2 = emulabeller.viewPort.eS - emulabeller.viewPort.sS;
-            // var fracC = emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBufferLength - emulabeller.viewPort.sS;
-            // var procC = fracC / all2;
-            // var posC = this.osciCanvas.width * procC;
-
+            var posC = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBuffer.length);
             //draw cursor
-            cc.fillStyle = this.cursorColor;
-            cc.fillRect(posC, 0, this.cursorWidth, this.osciCanvas.height);
-            // console.log(all)
+            cc.fillStyle = this.params.playCursorColor;
+            cc.fillRect(posC - this.params.playCursorWidth / 2, 0, this.params.playCursorWidth, this.osciCanvas.height);
 
         }
     },
 
 
     /**
-     * redraws emulabeller.backend.currentBuffer onto canvas given emulabeller.viewPort. It recalculates
-     * the peaks that are to be displayed to get the maximum
+     * redraws emulabeller.backend.currentBuffer onto canvas given.
+     * It recalculates the peaks that are to be displayed to get the maximum
      * dynamic range visualization
      *
-     * @params emulabeller.backend.currentBuffer
-     * @params canvas to draw on
-     * @params emulabeller.backend.currentBufferLength current view port
+     * @params inMemoryCanvas canvas to draw on
      */
     redrawOsciOnCanvas: function(inMemoryCanvas) {
         var sH = this.osciCanvas.height;
@@ -330,9 +335,7 @@ EmuLabeller.Drawer.OsciDrawer = {
      * recalculation of the view port is needed
      * (e.g. progress update or mouse event updates)
      *
-     * @params emulabeller.backend.currentBuffer
-     * @params canvas to draw on
-     * @params emulabeller.backend.currentBufferLength current view port
+     * @params c canvas to draw on
      */
     drawCurOsciOnCanvas: function(c) {
         if (null != c) {
@@ -353,11 +356,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         }
         canvascc.clearRect(0, 0, cW, cH);
 
-
         this.getPeaks();
 
-        // this.getPeaks(emulabeller.backend.currentBuffer, emulabeller.viewPort, canvas);
-        // console.log(this.peaks);
         this.drawOsciOnCanvas(c);
     },
 
@@ -366,9 +366,7 @@ EmuLabeller.Drawer.OsciDrawer = {
      * draws scroll markup (selected view part + scroll bar)
      * according to current view port
      * on the canvas given
-     * @params emulabeller.viewPort current view port
-     * @params canvas canvas to draw markup on
-     * @params emulabeller.backend.currentBufferLength length of emulabeller.backend.currentBuffer in canvas
+     * @params inMemoryCanvas to draw on
      */
     drawScrollMarkup: function(inMemoryCanvas) {
 
@@ -386,7 +384,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         canvascc.drawImage(inMemoryCanvas, 0, 0, cW, cH);
 
         canvascc.globalAlpha = 1;
-        canvascc.fillStyle = this.scrollSegMarkerColor;
+        canvascc.fillStyle = this.params.selectedMinimapColor;
         canvascc.fillRect(curCenter - curDiam, 0, 2 * curDiam, cH);
         // draw scroll bar itself
         canvascc.fillRect(curCenter - curDiam, cH / 8 * 7, 2 * curDiam, cH / 8);
