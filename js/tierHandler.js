@@ -756,8 +756,8 @@ EmuLabeller.tierHandler = {
             for(var i=0;i<selected.length;i++) {
                 if(null!=selected[i]) {
                     if(first) {
-                        if( ( t.events[i].startSample + changeTime>=t.events[i-1].startSample ) && 
-                            ( t.events[i+l-1].startSample + t.events[i+l-1].sampleDur + changeTime<=t.events[i+l+1].startSample ) ) {
+                        if( ( t.events[i].startSample + changeTime > t.events[i-1].startSample ) && 
+                            ( t.events[i+l-1].startSample + t.events[i+l-1].sampleDur + changeTime < t.events[i+l+1].startSample - 1 ) ) {
                             doMove = true;
                             t.events[i-1].sampleDur += changeTime;
                             startS = t.events[i].startSample;
