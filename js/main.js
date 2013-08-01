@@ -94,11 +94,11 @@ var emulabeller = (function() {
                 emulabeller.tierHandler.deleteSelected();
             else 
                 alert("Bitte markieren Sie zuerst ein oder mehrere Segmente!"); 
-        }
-        if( code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME ){ // 27 == escape
+        }       
+        if( code == 13 && emulabeller.keyBindingAllowed()){ // 13 == enter
+            emulabeller.tierHandler.addSegmentAtSelection();
             e.preventDefault();
-            emulabeller.tierHandler.removeLabelDoubleClick();
-        }
+        }   
         if( code == 16 && emulabeller.keyBindingAllowed()){ // 16 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
@@ -107,79 +107,73 @@ var emulabeller = (function() {
             emulabeller.tierHandler.history();
             e.preventDefault();
         }   
+        if( code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME ){ // 27 == escape
+            emulabeller.tierHandler.removeLabelDoubleClick();
+            e.preventDefault();
+        }  
+        if( code == 32 && emulabeller.keyBindingAllowed()) {  // 32 == SPACE
+            emulabeller.playPauseInView();
+            e.preventDefault();
+        }
         if( code == 46 && emulabeller.keyBindingAllowed()){ // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
-        }            
-        if( code == 13 && emulabeller.keyBindingAllowed()){ // 13 == enter
-            emulabeller.tierHandler.addSegmentAtSelection();
-            e.preventDefault();
-        }     
-        if( code == 87 && emulabeller.keyBindingAllowed()) {  // 87 == w
-            emulabeller.zoomViewPort(1);
-            e.preventDefault();
-        }    
-        if( code == 83 && emulabeller.keyBindingAllowed()) {  // 83 == s
-            emulabeller.zoomViewPort(0);
-            e.preventDefault();
-        }   
+        }  
         if( code == 65 && emulabeller.keyBindingAllowed()) {  // 65 == a
             emulabeller.shiftViewP(0);
+            e.preventDefault();
+        }  
+        if( code == 66 && emulabeller.keyBindingAllowed()) {  // 66 == b
+            emulabeller.snapSelectedSegmentToNearestBottom();
             e.preventDefault();
         }  
         if( code == 68 && emulabeller.keyBindingAllowed()) {  // 68 == d
             emulabeller.shiftViewP(1);
             e.preventDefault();
         } 
-        if( code == 66 && emulabeller.keyBindingAllowed()) {  // 69 == e
-            emulabeller.zoomSel();
+        if( code == 69 && emulabeller.keyBindingAllowed()) {  // 69 == e
+            emulabeller.zoomSel(); 
             e.preventDefault();
         }
         if( code == 70 && emulabeller.keyBindingAllowed()) {  // 70 == f
             emulabeller.playInMode("all");
             e.preventDefault();
-        }
-        if( code == 90 && emulabeller.keyBindingAllowed()) {  // 90 == z
-            emulabeller.tierHandler.goBackHistory();
-            e.preventDefault();
-        }
+        }  
         if( code == 78 && emulabeller.keyBindingAllowed()) {  // 78 == n
             emulabeller.tierHandler.renameTier();
             e.preventDefault();
         }
-        if( code == 32 && emulabeller.keyBindingAllowed()) {  // 32 == SPACE
-            emulabeller.playPauseInView();
+        if( code == 79 && emulabeller.keyBindingAllowed()) {  // 79 == o
+            if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
+                $('#fileGetterBtn').click();
+            if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
+                emulabeller.openSubmenu();
+            e.preventDefault();
+        }
+        if( code == 81 && emulabeller.keyBindingAllowed()) {  // 81 == q
+            emulabeller.setView(-Infinity, Infinity);
             e.preventDefault();
         }
         if( code == 82 && emulabeller.keyBindingAllowed()) {  // 82 == r
             emulabeller.playInMode("sel");
             e.preventDefault();
         }
-        
-        console.log(code);
-                
-        if (!emulabeller.isModalShowing && emulabeller.internalMode != labeller.EDITMODE.LABEL_RENAME) {
-
-            if (113 == code) {
-                // Q key -> view all
-                emulabeller.setView(-Infinity, Infinity);
-            }
-            if (116 == code) {
-                // T key -> snap to top for selected segment
-                emulabeller.snapSelectedSegmentToNearestTop();
-            }
-            if (98 == code) {
-                // T key -> snap to bottom for selected segment
-                emulabeller.snapSelectedSegmentToNearestBottom();
-            }
-            if (111 == code) {
-                // O key
-                if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
-                    $('#fileGetterBtn').click();
-                if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
-                    emulabeller.openSubmenu();
-            }
-        }        
+        if( code == 83 && emulabeller.keyBindingAllowed()) {  // 83 == s
+            emulabeller.zoomViewPort(0);
+            e.preventDefault();
+        }  
+        if( code == 84 && emulabeller.keyBindingAllowed()) {  // 84 == t
+            emulabeller.snapSelectedSegmentToNearestTop();
+            e.preventDefault();
+        }      
+        if( code == 87 && emulabeller.keyBindingAllowed()) {  // 87 == w
+            emulabeller.zoomViewPort(1);
+            e.preventDefault();
+        }  
+        if( code == 90 && emulabeller.keyBindingAllowed()) {  // 90 == z
+            emulabeller.tierHandler.goBackHistory();
+            e.preventDefault();
+        }      
     });
 
 
