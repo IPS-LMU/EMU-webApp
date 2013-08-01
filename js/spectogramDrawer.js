@@ -144,7 +144,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
                 my.context.fillRect(curPos, 0, 1, my.canvas.height);
             }            
             if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
-                my.context.fillStyle = my.params.selectAreaColor;
+                my.context.fillStyle = my.params.selectedAreaColor;
                 my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = my.params.selectLineColor;
                 my.context.beginPath();
