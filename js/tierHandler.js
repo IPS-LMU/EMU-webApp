@@ -609,7 +609,7 @@ EmuLabeller.tierHandler = {
         t.events.push({
             "label": "newSegment",
             "startSample": end,
-            "sampleDur": splitright-splitsecond-1
+            "sampleDur": splitright-splitsecond
         });              
         t.events.sort(function(a, b) {
             return parseFloat(a.startSample) - parseFloat(b.startSample);
