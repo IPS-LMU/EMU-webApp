@@ -15,6 +15,9 @@ EmuLabeller.tierHandler = {
         this.tierCssName = "tierSettings";
         this.historyEndError = "Cannot go back, no more history saved.... =(";
         this.commonError = "Error: It is not allowed to insert a segment here!";
+        this.pointExistsError = "Error: This point already exists !";
+        this.noTierError = "Error: No Tier chosen !";
+        this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
         this.params = params;
 
     },
@@ -652,17 +655,15 @@ EmuLabeller.tierHandler = {
                             return parseFloat(a.startSample) - parseFloat(b.startSample);
                         });
                     } else {
-                        alert("Fehler: Dieser Punkt existiert bereits!");
+                        alert(this.pointExistsError);
                     }
                 } else {
-                    alert("Fehler: Auf einem Punkte Tier koennen keine Segmente eingefügt werden!");
+                    alert(this.pointSegmentError);
                 }
-            } else {
-                alert("Fehler: Unbekannter Tier Typ");
-            }
+            } 
             emulabeller.drawBuffer();
         } else {
-            alert("Fehler: kein Tier ausgewaehlt !");
+            alert(this.noTierError);
         }
 
     },
