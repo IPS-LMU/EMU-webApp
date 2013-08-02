@@ -498,8 +498,9 @@ var EmuLabeller = {
      * that was loaded via fileAPI/websocket/xhr
      */
     newlyLoadedBufferReady: function() {
-        // this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
-        this.viewPort.init(29730, 29740, this.backend.currentBuffer.length); // for development
+
+        //this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
+        this.viewPort.init(0, 10, this.backend.currentBuffer.length); // for development
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
@@ -693,9 +694,12 @@ var EmuLabeller = {
     */
     keyBindingAllowed: function() {
         var my = this;
-        if(my.internalMode != my.EDITMODE.LABEL_RENAME)
-            if(my.internalMode != my.EDITMODE.MODAL)
+        if(my.internalMode != my.EDITMODE.LABEL_RENAME) {
+            if(my.internalMode != my.EDITMODE.MODAL) {
                 return true;
+            }
+            return false;
+        }
         return false;
     },
 

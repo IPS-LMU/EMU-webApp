@@ -73,7 +73,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
 
                     //draw segment end
-                    var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1));
+                    var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1) );
                     cc.fillStyle = this.params.endBoundaryColor;
                     cc.fillRect(posE, canvas.height / 2, 1, canvas.height);
 
@@ -172,6 +172,7 @@ EmuLabeller.Drawer.TierDrawer = {
         var posS = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
         var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
+        
 
         cc.strokeStyle = this.params.selectedBorderColor;
         cc.fillStyle = this.params.selectedBorderColor;
@@ -190,7 +191,7 @@ EmuLabeller.Drawer.TierDrawer = {
 
         } else {
             cc.fillStyle = my.params.selectedAreaColor;
-            cc.fillRect(posS, 0, posE - posS, canvas.height);
+            cc.fillRect(posS, 0, posE - posS , canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);
             cc.lineTo(posS, canvas.height);

@@ -15,6 +15,9 @@ EmuLabeller.tierHandler = {
         this.tierCssName = "tierSettings";
         this.historyEndError = "Cannot go back, no more history saved.... =(";
         this.commonError = "Error: It is not allowed to insert a segment here!";
+        this.pointExistsError = "Error: This point already exists !";
+        this.noTierError = "Error: No Tier chosen !";
+        this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
         this.params = params;
 
     },
@@ -326,7 +329,7 @@ EmuLabeller.tierHandler = {
         var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
 
         if (tierDetails.type == "seg") {
-            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+            var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
@@ -337,7 +340,7 @@ EmuLabeller.tierHandler = {
         }
 
         if (tierDetails.type == "point") {
-            var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+            var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
@@ -368,7 +371,7 @@ EmuLabeller.tierHandler = {
         var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
 
         if (tierDetails.type == "seg") {
-            var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+            var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = event.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
@@ -384,7 +387,7 @@ EmuLabeller.tierHandler = {
     },
 
 
-    findNearestSegment: function(t, curSample) {
+    nearestSegment: function(t, curSample) {
         var e = t.events;
         var r = null;
         for (var k in e) {
@@ -404,7 +407,7 @@ EmuLabeller.tierHandler = {
     },
 
 
-    findNearestPoint: function(t, curSample) {
+    nearestEvent: function(t, curSample) {
         var e = t.events;
         var r = null;
         var temp = emulabeller.viewPort.eS;
@@ -418,13 +421,13 @@ EmuLabeller.tierHandler = {
         return r;
     },
 
-    nextSegment: function(t, curSample) {
+    nextEvent: function(t, curSample) {
         var e = t.events;
         var r = null;
         var temp = 0;
         for (var k in e) {
             var diff = curSample - e[k].startSample;
-            if (diff > temp && diff > 0 && diff < e[k].sampleDur) {
+            if (diff > temp && diff >= 0 && diff <= e[k].sampleDur) {
                 temp = diff;
                 r = e[k];
             }
@@ -455,8 +458,8 @@ EmuLabeller.tierHandler = {
         var my = this;
         var textAreaX = Math.round(x) + c.offsetLeft + 2;
         var textAreaY = c.offsetTop + 2 + y;
-        var textAreaWidth = Math.round(width);
-        var textAreaHeight = Math.round(height);
+        var textAreaWidth = width;
+        var textAreaHeight = height;
         var content = $("<textarea>").attr({
             id: "editing"
         }).css({
@@ -498,7 +501,7 @@ EmuLabeller.tierHandler = {
         if (edit.length === 0) {
             if (tierDetails.type == "seg") {
                 if (percX)
-                    var nearest = this.findNearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+                    var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 if (null != nearest) {
                     emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true);
                     var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
@@ -507,7 +510,7 @@ EmuLabeller.tierHandler = {
                 }
 
             } else if (tierDetails.type == "point") {
-                var nearest = this.findNearestPoint(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+                var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true);
                 emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
@@ -625,10 +628,11 @@ EmuLabeller.tierHandler = {
         var sT = this.getSelectedTier();
         if (null != sT) {
             if (sT.type == "seg") {
-                var thisSegment = this.nextSegment(sT, emulabeller.viewPort.selectS);
-                var otherSegment = this.nextSegment(sT, emulabeller.viewPort.selectE);
+                var thisSegment = this.nextEvent(sT, emulabeller.viewPort.selectS);
+                var otherSegment = this.nextEvent(sT, emulabeller.viewPort.selectE);
                 if (thisSegment == otherSegment) {
                     if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+                        console.log(thisSegment);
                         if (null != thisSegment)
                             this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
                         else
@@ -641,7 +645,7 @@ EmuLabeller.tierHandler = {
                 }
             } else if (sT.type = "point") {
                 if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-                    var thisPoint = this.findNearestPoint(sT, emulabeller.viewPort.selectS);
+                    var thisPoint = this.nearestEvent(sT, emulabeller.viewPort.selectS);
                     if (thisPoint == null || thisPoint.startSample != emulabeller.viewPort.selectS) {
                         sT.events.push({
                             "label": "newPoint",
@@ -652,17 +656,15 @@ EmuLabeller.tierHandler = {
                             return parseFloat(a.startSample) - parseFloat(b.startSample);
                         });
                     } else {
-                        alert("Fehler: Dieser Punkt existiert bereits!");
+                        alert(this.pointExistsError);
                     }
                 } else {
-                    alert("Fehler: Auf einem Punkte Tier koennen keine Segmente eingefügt werden!");
+                    alert(this.pointSegmentError);
                 }
-            } else {
-                alert("Fehler: Unbekannter Tier Typ");
-            }
+            } 
             emulabeller.drawBuffer();
         } else {
-            alert("Fehler: kein Tier ausgewaehlt !");
+            alert(this.noTierError);
         }
 
     },
@@ -799,9 +801,17 @@ EmuLabeller.tierHandler = {
     snapSelectedSegmentToNearestTopOrBottom: function(toTop) {
         if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
             var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, true)
-            var closestSeg = this.findNearestPoint(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
 
-            if (closestSeg) {
+            var closestSeg = this.nearestEvent(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
+            
+            console.log("############")
+            console.log(emulabeller.viewPort.curMouseMoveSegmentStart);
+            console.log(neighTier);
+            console.log(closestSeg);
+
+            
+            // TODO check for boundary problems
+            if(closestSeg){
                 console.log(closestSeg);
                 this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
             } else {
