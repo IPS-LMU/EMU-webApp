@@ -322,16 +322,16 @@ EmuLabeller.tierHandler = {
         this.removeLabelDoubleClick();
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-        
+
         if (tierDetails.type == "seg") {
-            var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));            
+            var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
 
                 emulabeller.viewPort.curMouseMoveTierName = nearest.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true ,canvas.width);
+                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
             }
         }
 
@@ -348,7 +348,6 @@ EmuLabeller.tierHandler = {
 
         emulabeller.drawBuffer();
     },
-
 
 
     handleTierClickMulti: function(percX, percY, tierDetails) {
@@ -411,7 +410,7 @@ EmuLabeller.tierHandler = {
         }
         emulabeller.drawBuffer();
     },
-    
+
     nearestSegment: function(t, curSample) {
         var e = t.events;
         var r = null;
@@ -673,7 +672,7 @@ EmuLabeller.tierHandler = {
             var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
             var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName + 1];
 
-            
+
             if (this.tierInfos.tiers[myName].type == "seg") {
                 var old = me.startSample;
 
@@ -757,7 +756,7 @@ EmuLabeller.tierHandler = {
             if (doMove) {
                 t.events[last].startSample += changeTime;
                 t.events[last].sampleDur -= changeTime;
-                emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample-1);
+                emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
             }
         }
     },
@@ -842,11 +841,11 @@ EmuLabeller.tierHandler = {
             }
         }
 
-        if(rightXoffset<leftXoffset){
+        if (rightXoffset < leftXoffset) {
             this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart + rightXoffset, emulabeller.viewPort.curMouseMoveTierName);
             console.log("snap x right");
-        }else{
-            this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart - leftXoffset, emulabeller.viewPort.curMouseMoveTierName);            
+        } else {
+            this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart - leftXoffset, emulabeller.viewPort.curMouseMoveTierName);
             console.log("snap x left")
         }
         emulabeller.drawBuffer();

@@ -202,7 +202,7 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
-            if (null != my.getElement(e))
+            if (null !== my.getElement(e))
                 my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
                 case params.showLeftPush.id:
@@ -306,29 +306,25 @@ var EmuLabeller = {
 
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
-            
+
             my.internalMode = my.EDITMODE.STANDARD;
             $("*").css("cursor", "auto");
-            
+
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.dragStart = -1;
                 my.drawer.uiDrawUpdate();
-            }
-
-           else if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
+            } else if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
-          }
-
-           else if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+            } else if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
                 var bL = my.backend.currentBuffer.length;
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
             }
-            
+
         });
 
         // All mouse move Functions  
@@ -362,11 +358,10 @@ var EmuLabeller = {
                     $('#spacer').height(now);
                     my.dragingStartY = event.clientY;
                 }
-            } 
-            else {
+            } else {
                 my.lastX = my.getX(e);
                 my.internalMode = my.EDITMODE.STANDARD;
-                $("*").css("cursor", "auto");            
+                $("*").css("cursor", "auto");
             }
         });
 
@@ -689,13 +684,13 @@ var EmuLabeller = {
     getElement: function(e) {
         return document.getElementById(e.srcElement.id);
     },
-    
+
     /**
-    */
+     */
     keyBindingAllowed: function() {
         var my = this;
-        if(my.internalMode != my.EDITMODE.LABEL_RENAME) {
-            if(my.internalMode != my.EDITMODE.MODAL) {
+        if (my.internalMode != my.EDITMODE.LABEL_RENAME) {
+            if (my.internalMode != my.EDITMODE.MODAL) {
                 return true;
             }
             return false;
@@ -777,9 +772,9 @@ var EmuLabeller = {
     },
 
     /**
-    * opens list of utterances on left side of window
-    * (done via css) 
-    */
+     * opens list of utterances on left side of window
+     * (done via css)
+     */
     openSubmenu: function() {
         if (this.subMenuOpen) {
             this.subMenuOpen = false;
@@ -799,13 +794,13 @@ var EmuLabeller = {
     },
 
     /**
-    */
+     */
     countSelected: function(row) {
         var count = 0;
-        if (this.viewPort.length == 0) return 0;
-        if (this.viewPort.selectedSegments.length == 0) return 0;
-        if (null == row) {
-            var row = 0;
+        if (this.viewPort.length === 0) return 0;
+        if (this.viewPort.selectedSegments.length === 0) return 0;
+        if (null === row) {
+            row = 0;
             $.each(this.viewPort.selectedSegments, function() {
                 ++row;
                 $.each(this.viewPort.selectedSegments[row], function() {
@@ -813,8 +808,8 @@ var EmuLabeller = {
                 });
             });
         } else {
-            if (this.viewPort.selectedSegments.length == 0) return 0;
-            if (this.viewPort.selectedSegments[row].length == 0) return 0;
+            if (this.viewPort.selectedSegments.length === 0) return 0;
+            if (this.viewPort.selectedSegments[row].length === 0) return 0;
             $.each(this.viewPort.selectedSegments[row], function() {
                 ++count;
             });
@@ -823,13 +818,13 @@ var EmuLabeller = {
     },
 
     /**
-    */
+     */
     getSelectedSegmentDoubleClick: function(row) {
         return this.viewPort.selectedSegments[row].indexOf(true);
     },
 
     /**
-    */
+     */
     sendTierinfosToServer: function() {
         var sT = this.tierHandler.tierInfos.tiers[this.viewPort.selTier];
         var data = {
@@ -846,8 +841,8 @@ var EmuLabeller = {
     },
 
     /**
-    * delegation method to validate tier infos (broken due to changes)
-    */
+     * delegation method to validate tier infos (broken due to changes)
+     */
     validateTierInfos: function() {
         this.JSONval.validateTierInfos(this.tierHandler.tierInfos);
     },
@@ -876,7 +871,7 @@ var EmuLabeller = {
         var bb = new Blob([JSON.stringify(emulabeller.tierHandler.tierInfos.tiers, undefined, 2)], {
             type: MIME_TYPE
         });
-        console.log(this.tierHandler.tierInfos.tiers)
+        console.log(this.tierHandler.tierInfos.tiers);
 
         var a = document.createElement('a');
         a.download = "emulabellerjsOutput.txt";
