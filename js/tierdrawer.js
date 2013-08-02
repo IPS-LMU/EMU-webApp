@@ -169,7 +169,7 @@ EmuLabeller.Drawer.TierDrawer = {
         var my = this;
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-        var posS = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
+        var posS = Math.round(emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS));
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
         var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
         

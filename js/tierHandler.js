@@ -130,7 +130,6 @@ EmuLabeller.tierHandler = {
         });
 
         $("#" + myName).bind("dblclick", function(event) {
-            s
             emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent));
         });
         $("#" + myName).bind("contextmenu", function(event) {
@@ -324,29 +323,26 @@ EmuLabeller.tierHandler = {
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 
-        var rXp = canvas.width * percX;
-        var rYp = canvas.height * percY;
-        var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
-
         if (tierDetails.type == "seg") {
-            var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+            var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
-                emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true ,canvas.width);
+
+                //emulabeller.viewPort.curMouseMoveTierName = event.label;
+                //emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
+                //emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+                //emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
+                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true ,canvas.width);
             }
         }
 
         if (tierDetails.type == "point") {
             var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
-                emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, 0);
+                //emulabeller.viewPort.curMouseMoveTierName = event.label;
+                //emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
+                //emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
+                //emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, 0);
             }
         }
 
@@ -391,7 +387,7 @@ EmuLabeller.tierHandler = {
         var e = t.events;
         var r = null;
         for (var k in e) {
-            if (curSample > e[k].startSample && curSample < (e[k].startSample + e[k].sampleDur)) {
+            if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
                 r = e[k];
             }
         }
@@ -427,7 +423,7 @@ EmuLabeller.tierHandler = {
         var temp = 0;
         for (var k in e) {
             var diff = curSample - e[k].startSample;
-            if (diff > temp && diff >= 0 && diff <= e[k].sampleDur) {
+            if (diff >= temp && diff >= 0 && diff <= e[k].sampleDur) {
                 temp = diff;
                 r = e[k];
             }
@@ -503,7 +499,7 @@ EmuLabeller.tierHandler = {
                 if (percX)
                     var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 if (null != nearest) {
-                    emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, canvas.width);
+                    emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
                     var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                     var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
                     this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, true);
@@ -511,7 +507,7 @@ EmuLabeller.tierHandler = {
 
             } else if (tierDetails.type == "point") {
                 var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, canvas.width);
+                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
                 emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;

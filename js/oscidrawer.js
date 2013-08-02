@@ -270,18 +270,18 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.fillText(emulabeller.viewPort.selectS, posS + 5, this.params.fontPxSize * 2);
             } else {
                 cc.fillStyle = this.params.selectedAreaColor;
-                cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);
+                cc.fillRect(posS, 0, posE - posS+sDist, this.osciCanvas.height);
                 cc.strokeStyle = this.selBoundColor;
                 cc.beginPath();
                 cc.moveTo(posS, 0);
                 cc.lineTo(posS, this.osciCanvas.height);
-                cc.moveTo(posE, 0);
-                cc.lineTo(posE, this.osciCanvas.height);
+                cc.moveTo(posE+sDist, 0);
+                cc.lineTo(posE+sDist, this.osciCanvas.height);
                 cc.closePath();
                 cc.stroke();
                 cc.fillStyle = this.params.labelColor;
                 // start values
-                var tW = cc.measureText(emulabeller.viewPort.selectS).width;
+                var tW = cc.measureText(emulabeller.viewPort.selectS).width + sDist;
                 cc.fillText(emulabeller.viewPort.selectS, posS - tW - 4, this.params.fontPxSize);
                 tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
                 cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR) / 2, 6), posS - tW - 4, this.params.fontPxSize * 2);
