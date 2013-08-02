@@ -165,6 +165,10 @@ var emulabeller = (function() {
             emulabeller.zoomViewPort(1);
             e.preventDefault();
         }
+        if (code == 88 && emulabeller.keyBindingAllowed()) { // 88 == x
+            emulabeller.tierHandler.snapToNearestZeroCrossing();
+            e.preventDefault();
+        }
         if (code == 90 && emulabeller.keyBindingAllowed()) { // 90 == z
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();

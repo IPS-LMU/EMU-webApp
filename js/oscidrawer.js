@@ -214,7 +214,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         cc.lineTo(x, y);
         cc.stroke();
 
-
     },
 
     /**

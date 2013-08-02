@@ -769,22 +769,22 @@ EmuLabeller.tierHandler = {
     },
 
     /**
-    * returns either the tier details of the tier above
-    * tName or below tName
-    *
-    * @param tName name of tier to look above or below
-    * @param getAbove boolian  if true it gets the tier above
-    * if false the tier below
-    */
-    getNeighboringTier: function(tName, getAbove){
+     * returns either the tier details of the tier above
+     * tName or below tName
+     *
+     * @param tName name of tier to look above or below
+     * @param getAbove boolian  if true it gets the tier above
+     * if false the tier below
+     */
+    getNeighboringTier: function(tName, getAbove) {
         var hullID;
-        if(getAbove){
+        if (getAbove) {
             hullID = $("#hull" + tName).prev().attr('id');
-        }else{
+        } else {
             hullID = $("#hull" + tName).next().attr('id');
         }
         var neighID = hullID.replace(/hull/g, '');
-        return(this.getTier(neighID));
+        return (this.getTier(neighID));
 
     },
 
@@ -794,27 +794,33 @@ EmuLabeller.tierHandler = {
      * and snaps it to that sample position
      *
      * @param toTop boolian if set to true will snap to top
-     * otherwise to bottom 
+     * otherwise to bottom
      */
     snapSelectedSegmentToNearestTopOrBottom: function(toTop) {
         if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
             var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, true)
             var closestSeg = this.findNearestPoint(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
-            
-            console.log("############")
-            console.log(emulabeller.viewPort.curMouseMoveSegmentStart);
-            console.log(neighTier);
-            console.log(closestSeg);
 
-            
-            // TODO check for boundary problems
-            if(closestSeg){
+            if (closestSeg) {
                 console.log(closestSeg);
                 this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
-            }else{
+            } else {
                 alert("closest segment is null?!?!?!?")
             }
         }
         emulabeller.drawBuffer();
-    }
+    },
+
+    /**
+     * finds nearest zero crossing to selected boundary
+     * and move that segment to that position
+     */
+    snapToNearestZeroCrossing: function() {
+        var windowSize = 100;
+
+        console.log("snapping to nearest zero crossing")
+        var chan = emulabeller.backend.currentBuffer.getChannelData(0);
+        var winData = chan.subarray(emulabeller.viewPort.curMouseMoveSegmentStart - windowSize / 2, emulabeller.viewPort.curMouseMoveSegmentStart + windowSize / 2);
+        console.log(winData)
+    }   
 };
