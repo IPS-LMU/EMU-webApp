@@ -52,10 +52,22 @@ EmuLabeller.ViewPort = {
         this.curCursorPosInPercent = 0.0;
     },
 
+    /**
+     * set selected Area 
+     * @param start of selected Area
+     * @param end of seleected Area
+     */
     select: function(start, end) {
         this.selectS = start;
         this.selectE = end;
     },
+    
+    selectMove: function(tier, evt) {
+        this.curMouseMoveTierName = tier.TierName;
+        this.curMouseMoveSegmentName = this.getId(tier, evt.label, evt.startSample);
+        this.curMouseMoveSegmentStart = evt.startSample;
+        this.curMouseMoveSegmentDuration = evt.sampleDur;
+    },    
     /**
      * get pixel position in current viewport given the canvas width
      * @param w is width of canvas

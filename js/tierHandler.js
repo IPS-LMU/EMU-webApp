@@ -362,11 +362,15 @@ EmuLabeller.tierHandler = {
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 
-
         if (tierDetails.type == "seg") {
             var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
-                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest, true, canvas.width) == false) {
+                emulabeller.viewPort.curMouseMoveTierName = event.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
+                emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
+                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
+                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, canvas.width) == false) {
                     this.handleTierClick(percX, percY, tierDetails);
                 }
             }
@@ -500,6 +504,7 @@ EmuLabeller.tierHandler = {
             } else if (tierDetails.type == "point") {
                 var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
+                emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;
                 this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
@@ -667,7 +672,9 @@ EmuLabeller.tierHandler = {
             var left = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName - 1];
             var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
             var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName + 1];
-            emulabeller.viewPort.select(newTime, newTime);
+
+            emulabeller.viewPort.selectMove(this.tierInfos.tiers[myName], me);
+            
             if (this.tierInfos.tiers[myName].type == "seg") {
                 var old = me.startSample;
 
@@ -719,6 +726,8 @@ EmuLabeller.tierHandler = {
                 }
             }
         }
+        
+        
     },
 
 
