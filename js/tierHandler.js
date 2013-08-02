@@ -317,14 +317,14 @@ EmuLabeller.tierHandler = {
 
     handleTierClick: function(percX, percY, tierDetails) {
         //deselect everything
-        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
         this.removeLabelDoubleClick();
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-        var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+        
         if (tierDetails.type == "seg") {
-            
+            var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));            
             if (null != nearest) {
 
                 emulabeller.viewPort.curMouseMoveTierName = nearest.label;
@@ -336,12 +336,13 @@ EmuLabeller.tierHandler = {
         }
 
         if (tierDetails.type == "point") {
+            var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
                 emulabeller.viewPort.curMouseMoveTierName = nearest.label;
                 emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, 0);
+                emulabeller.viewPort.setSelectPoint(tierDetails, nearest, true, canvas.width);
             }
         }
 
@@ -378,6 +379,39 @@ EmuLabeller.tierHandler = {
     },
 
 
+    handleTierDoubleClick: function(percX) {
+        var my = this;
+        tierDetails = this.getSelectedTier();
+        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+        emulabeller.viewPort.resetSelection(tierDetails.events.length);
+        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
+        var edit = $('#' + this.editAreaName);
+        if (edit.length === 0) {
+            if (tierDetails.type == "seg") {
+                if (percX)
+                    var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+                if (null != nearest) {
+                    emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
+                    var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
+                    var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
+                    this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, true);
+                }
+
+            } else if (tierDetails.type == "point") {
+                var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
+                emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
+                var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
+                var editWidth = 45;
+                this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
+            }
+        } else {
+            my.removeLabelDoubleClick();
+        }
+        emulabeller.drawBuffer();
+    },
+    
     nearestSegment: function(t, curSample) {
         var e = t.events;
         var r = null;
@@ -480,39 +514,6 @@ EmuLabeller.tierHandler = {
 
     },
 
-
-    handleTierDoubleClick: function(percX) {
-        var my = this;
-        tierDetails = this.getSelectedTier();
-        emulabeller.viewPort.setSelectTier(tierDetails.TierName);
-        emulabeller.viewPort.resetSelection(tierDetails.events.length);
-        var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
-        var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-        var edit = $('#' + this.editAreaName);
-        if (edit.length === 0) {
-            if (tierDetails.type == "seg") {
-                if (percX)
-                    var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
-                if (null != nearest) {
-                    emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
-                    var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
-                    var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-                    this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, true);
-                }
-
-            } else if (tierDetails.type == "point") {
-                var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
-                emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
-                emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
-                var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
-                var editWidth = 45;
-                this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
-            }
-        } else {
-            my.removeLabelDoubleClick();
-        }
-        emulabeller.drawBuffer();
-    },
 
     createSelection: function(field, start, end) {
         if (field.createTextRange) {

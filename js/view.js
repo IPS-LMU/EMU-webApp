@@ -107,6 +107,13 @@ EmuLabeller.ViewPort = {
         this.uiInfo[id] = isSelected;
         this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width)/2));
     },
+    
+    setSelectPoint: function(tier, evt, isSelected, width) {
+        var id = this.getId(tier, evt.label, evt.startSample);
+        this.MouseSegmentName = id;
+        this.uiInfo[id] = isSelected;
+        this.resizeSelectArea(evt.startSample, evt.startSample);
+    },    
 
     resizeSelectArea: function(start, end) {
         this.selectS = start;
