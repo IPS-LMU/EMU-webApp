@@ -362,19 +362,11 @@ EmuLabeller.tierHandler = {
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 
-        var rXp = canvas.width * percX;
-        var rYp = canvas.height * percY;
-        var sXp = canvas.width * (emulabeller.viewPort.selectS / (emulabeller.viewPort.eS - emulabeller.viewPort.sS));
 
         if (tierDetails.type == "seg") {
             var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
-                emulabeller.viewPort.curMouseMoveTierName = event.label;
-                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
-                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, canvas.width) == false) {
+                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest, true, canvas.width) == false) {
                     this.handleTierClick(percX, percY, tierDetails);
                 }
             }
@@ -508,7 +500,6 @@ EmuLabeller.tierHandler = {
             } else if (tierDetails.type == "point") {
                 var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
                 emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
-                emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
                 var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
                 var editWidth = 45;
                 this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
