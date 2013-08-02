@@ -661,7 +661,7 @@ EmuLabeller.tierHandler = {
                 } else {
                     alert(this.pointSegmentError);
                 }
-            } 
+            }
             emulabeller.drawBuffer();
         } else {
             alert(this.noTierError);
@@ -803,15 +803,15 @@ EmuLabeller.tierHandler = {
             var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, true)
 
             var closestSeg = this.nearestEvent(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
-            
+
             console.log("############")
             console.log(emulabeller.viewPort.curMouseMoveSegmentStart);
             console.log(neighTier);
             console.log(closestSeg);
 
-            
+
             // TODO check for boundary problems
-            if(closestSeg){
+            if (closestSeg) {
                 console.log(closestSeg);
                 this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
             } else {
@@ -826,11 +826,37 @@ EmuLabeller.tierHandler = {
      * and move that segment to that position
      */
     snapToNearestZeroCrossing: function() {
-        var windowSize = 100;
 
         console.log("snapping to nearest zero crossing")
         var chan = emulabeller.backend.currentBuffer.getChannelData(0);
-        var winData = chan.subarray(emulabeller.viewPort.curMouseMoveSegmentStart - windowSize / 2, emulabeller.viewPort.curMouseMoveSegmentStart + windowSize / 2);
-        console.log(winData)
-    }   
+        var leftWinData = chan.subarray(0, emulabeller.viewPort.curMouseMoveSegmentStart);
+        var rightWinData = chan.subarray(emulabeller.viewPort.curMouseMoveSegmentStart, emulabeller.backend.currentBuffer.length);
+        //look right
+        var rightXoffset = 0;
+        for (var i = 0; i < rightWinData.length; i++) {
+            if (rightWinData[i] < 0 && rightWinData[i + 1] > 0 ||
+                rightWinData[i] > 0 && rightWinData[i + 1] < 0) {
+                rightXoffset = i;
+                break;
+            }
+        };
+        // look left
+        var leftXoffset = 0;
+        for (var i = leftWinData.length; i > 0; i--) {
+            if (leftWinData[i] < 0 && leftWinData[i - 1] > 0 ||
+                leftWinData[i] > 0 && leftWinData[i - 1] < 0) {
+                leftXoffset = emulabeller.viewPort.curMouseMoveSegmentStart - i;
+                break;
+            }
+        }
+
+        if(rightXoffset<leftXoffset){
+            this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart + rightXoffset, emulabeller.viewPort.curMouseMoveTierName);
+            console.log("snap x right");
+        }else{
+            this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart - leftXoffset, emulabeller.viewPort.curMouseMoveTierName);            
+            console.log("snap x left")
+        }
+        emulabeller.drawBuffer();
+    }
 };
