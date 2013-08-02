@@ -1,9 +1,19 @@
 EmuLabeller.Drawer.SSFFDrawer = {
 
+    defaultParams: {}, // use if wish to overwrite drawer colors
+
     init: function(params) {
-        this.markColor = "rgba(255, 255, 0, 0.7)";
-        this.boundaryColor = 'white';
-        this.selBoundColor = 'red';
+        var my = this;
+        this.params = Object.create(params);
+        Object.keys(this.defaultParams).forEach(function(key) {
+            if (!(key in params)) {
+                params[key] = my.defaultParams[key];
+            }
+        });
+
+        this.markColor = "rgba(255, 255, 0, 0.7)"; // SIC
+        this.boundaryColor = 'white'; //SIC
+        this.selBoundColor = 'red'; //SIC
 
     },
 
