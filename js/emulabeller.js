@@ -689,6 +689,8 @@ var EmuLabeller = {
         return document.getElementById(e.srcElement.id);
     },
     
+    /**
+    */
     keyBindingAllowed: function() {
         var my = this;
         if(my.internalMode != my.EDITMODE.LABEL_RENAME)
@@ -770,7 +772,10 @@ var EmuLabeller = {
         }
     },
 
-
+    /**
+    * opens list of utterances on left side of window
+    * (done via css) 
+    */
     openSubmenu: function() {
         if (this.subMenuOpen) {
             this.subMenuOpen = false;
@@ -789,7 +794,8 @@ var EmuLabeller = {
         }
     },
 
-
+    /**
+    */
     countSelected: function(row) {
         var count = 0;
         if (this.viewPort.length == 0) return 0;
@@ -812,12 +818,14 @@ var EmuLabeller = {
         return count;
     },
 
-
+    /**
+    */
     getSelectedSegmentDoubleClick: function(row) {
         return this.viewPort.selectedSegments[row].indexOf(true);
     },
 
-
+    /**
+    */
     sendTierinfosToServer: function() {
         var sT = this.tierHandler.tierInfos.tiers[this.viewPort.selTier];
         var data = {
@@ -833,7 +841,9 @@ var EmuLabeller = {
         });
     },
 
-
+    /**
+    * delegation method to validate tier infos (broken due to changes)
+    */
     validateTierInfos: function() {
         this.JSONval.validateTierInfos(this.tierHandler.tierInfos);
     },
@@ -884,44 +894,6 @@ var EmuLabeller = {
             // cleanUp(this);
         };
     },
-
-
-
-    // getSegmentbySample: function(clickedTwier, curSample) {
-    //     var c = 0;
-    //     $.each(clickedTier.events, function() {
-    //         if (c === 0 & curSample < this.time) {
-    //             c = this;
-    //         }
-    //     });
-    //     return c;
-    // },
-
-    // getSegmentIDbySample: function(clickedTier, curSample) {
-    //     var c = clickedTier.events.length;
-    //     $.each(clickedTier.events, function() {
-    //         if (curSample < this.time) {
-    //             --c;
-    //         }
-    //     });
-    //     return c;
-    // },
-
-    // moveMultipleSegments: function(clickedTier, newTime) {
-    //     var c = 0;
-    //     $.each(clickedTier.events, function() {
-    //         var check1 = my.viewPort.selectedSegments[my.viewPort.selTier][c + 1];
-    //         var check2 = my.viewPort.selectedSegments[my.viewPort.selTier][c];
-    //         if (check1)
-    //             this.time += newTime;
-    //         if (check1 != check2)
-    //             if (check2)
-    //                 this.time += newTime;
-    //             ++c;
-
-    //     });
-    // },
-
 
     /**
     * use socketIOhandler to request something from server
