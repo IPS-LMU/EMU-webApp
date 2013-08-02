@@ -673,7 +673,7 @@ EmuLabeller.tierHandler = {
             var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
             var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName + 1];
 
-            emulabeller.viewPort.selectMove(this.tierInfos.tiers[myName], me);
+            
             
             if (this.tierInfos.tiers[myName].type == "seg") {
                 var old = me.startSample;
@@ -725,9 +725,8 @@ EmuLabeller.tierHandler = {
                     }
                 }
             }
+            emulabeller.viewPort.selectMove(this.tierInfos.tiers[myName], me);
         }
-        
-        
     },
 
 
@@ -737,7 +736,7 @@ EmuLabeller.tierHandler = {
         var doMove = false;
         var first = true;
         var last = 0;
-        var startS = 0;
+        var f = 0;
         var l = emulabeller.viewPort.countSelected();
         if (null != t) {
             var selected = emulabeller.viewPort.getAllSelected(t);
@@ -748,12 +747,10 @@ EmuLabeller.tierHandler = {
                             (t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
                             doMove = true;
                             t.events[i - 1].sampleDur += changeTime;
-                            startS = t.events[i].startSample;
+                            t.events[i].startSample += changeTime;
+                            f = i;
                         }
                         first = false;
-                    }
-                    if (doMove) {
-                        t.events[i].startSample += changeTime;
                     }
                     last = i + 1;
                 }
@@ -761,7 +758,7 @@ EmuLabeller.tierHandler = {
             if (doMove) {
                 t.events[last].startSample += changeTime;
                 t.events[last].sampleDur -= changeTime;
-                emulabeller.viewPort.select(startS, t.events[last].startSample);
+                emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample);
             }
         }
     },
