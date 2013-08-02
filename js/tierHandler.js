@@ -370,7 +370,7 @@ EmuLabeller.tierHandler = {
                 emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
                 emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
                 emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
-                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest.label, nearest.startSample, nearest.sampleDur, true, canvas.width) == false) {
+                if (emulabeller.viewPort.setSelectMultiSegment(tierDetails, nearest, true, canvas.width) == false) {
                     this.handleTierClick(percX, percY, tierDetails);
                 }
             }
