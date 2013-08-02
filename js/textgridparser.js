@@ -98,7 +98,7 @@ EmuLabeller.TextGridParser = {
         var tierNr = 1;
         for (var tN in tiers) {
             // console.log(tN)
-            var curTier = emulabeller.tierHandler.getTier(tN)
+            var curTier = emulabeller.tierHandler.getTier(tN);
             //write tier items
             tierNr = tierNr + 1;
             tG = tG + t + "item [" + tierNr + "]:" + nl;
@@ -164,10 +164,10 @@ EmuLabeller.TextGridParser = {
             if (labelJSO.tiers[i].type == "seg") {
                 for (var j = 0; j < labelJSO.tiers[i].events.length - 1; j++) {
                     if (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur + 1 != labelJSO.tiers[i].events[j + 1].startSample) {
-                        console.log("######################")
-                        console.log(labelJSO.tiers[i])
-                        console.log(labelJSO.tiers[i].events[j])
-                        console.log(labelJSO.tiers[i].events[j + 1])
+                        console.log("######################");
+                        console.log(labelJSO.tiers[i]);
+                        console.log(labelJSO.tiers[i].events[j]);
+                        console.log(labelJSO.tiers[i].events[j + 1]);
                         counter = counter + 1;
                     }
                 }

@@ -856,22 +856,22 @@ var EmuLabeller = {
         var MIME_TYPE = 'text/plain';
         var output = document.querySelector('#downLinkDiv');
         window.URL = window.webkitURL || window.URL;
-        var prevLink;
-        try {
-            prevLink = output.querySelector('a');
-        } catch (err) {
-            console.log("no link");
-        }
+        // var prevLink;
+        // try {
+        //     prevLink = output.querySelector('a');
+        // } catch (err) {
+        //     console.log("no link");
+        // }
 
-        if (prevLink) {
-            window.URL.revokeObjectURL(prevLink.href);
-            output.innerHTML = '';
-        }
+        // if (prevLink) {
+        //     window.URL.revokeObjectURL(prevLink.href);
+        //     output.innerHTML = '';
+        // }
 
-        var bb = new Blob([JSON.stringify(emulabeller.tierHandler.tierInfos.tiers, undefined, 2)], {
+        var bb = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], {
             type: MIME_TYPE
         });
-        console.log(this.tierHandler.tierInfos.tiers);
+        console.log(bb);
 
         var a = document.createElement('a');
         a.download = "emulabellerjsOutput.txt";
@@ -882,16 +882,17 @@ var EmuLabeller = {
         a.draggable = true; // Don't really need, but good practice.
         a.classList.add('dragout');
 
+        // output.innerHTML = '';
         output.appendChild(a);
 
-        a.onclick = function(e) {
-            if ('disabled' in this.dataset) {
-                return false;
-            }
-            a.textContent = 'Downloaded';
-            a.dataset.disabled = true;
-            // cleanUp(this);
-        };
+        // a.onclick = function(e) {
+        //     if ('disabled' in this.dataset) {
+        //         return false;
+        //     }
+        //     a.textContent = 'Downloaded';
+        //     a.dataset.disabled = true;
+        //     // cleanUp(this);
+        // };
     },
 
     /**
