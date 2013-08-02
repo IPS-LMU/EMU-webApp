@@ -757,7 +757,7 @@ EmuLabeller.tierHandler = {
             if (doMove) {
                 t.events[last].startSample += changeTime;
                 t.events[last].sampleDur -= changeTime;
-                emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample);
+                emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample-1);
             }
         }
     },
