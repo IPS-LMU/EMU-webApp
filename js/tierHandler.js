@@ -322,26 +322,25 @@ EmuLabeller.tierHandler = {
         this.removeLabelDoubleClick();
         var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-
+        var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
         if (tierDetails.type == "seg") {
-            var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+            
             if (null != nearest) {
 
-                //emulabeller.viewPort.curMouseMoveTierName = event.label;
-                //emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                //emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
-                //emulabeller.viewPort.curMouseMoveSegmentDuration = event.sampleDur;
+                emulabeller.viewPort.curMouseMoveTierName = nearest.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
+                emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
+                emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true ,canvas.width);
             }
         }
 
         if (tierDetails.type == "point") {
-            var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
             if (null != nearest) {
-                //emulabeller.viewPort.curMouseMoveTierName = event.label;
-                //emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                //emulabeller.viewPort.MouseSegmentName = emulabeller.viewPort.getId(tierDetails, event.label, event.startSample);
-                //emulabeller.viewPort.curMouseMoveSegmentStart = event.startSample;
+                emulabeller.viewPort.curMouseMoveTierName = nearest.label;
+                emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
+                emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
+                emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
                 emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, 0);
             }
         }
@@ -673,7 +672,6 @@ EmuLabeller.tierHandler = {
             var me = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName];
             var right = this.tierInfos.tiers[myName].events[emulabeller.viewPort.curMouseMoveSegmentName + 1];
 
-            
             
             if (this.tierInfos.tiers[myName].type == "seg") {
                 var old = me.startSample;
