@@ -176,7 +176,7 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @param value
      * @param max
      * @param prevPeak
-     * @param canvas 
+     * @param canvas
      */
     drawFrame: function(index, value, max, prevPeak, canvas) {
         var cc = canvas.getContext('2d');
@@ -270,13 +270,13 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.fillText(emulabeller.viewPort.selectS, posS + 5, this.params.fontPxSize * 2);
             } else {
                 cc.fillStyle = this.params.selectedAreaColor;
-                cc.fillRect(posS, 0, posE - posS+sDist, this.osciCanvas.height);
+                cc.fillRect(posS, 0, posE - posS + sDist, this.osciCanvas.height);
                 cc.strokeStyle = this.selBoundColor;
                 cc.beginPath();
                 cc.moveTo(posS, 0);
                 cc.lineTo(posS, this.osciCanvas.height);
-                cc.moveTo(posE+sDist, 0);
-                cc.lineTo(posE+sDist, this.osciCanvas.height);
+                cc.moveTo(posE + sDist, 0);
+                cc.lineTo(posE + sDist, this.osciCanvas.height);
                 cc.closePath();
                 cc.stroke();
                 cc.fillStyle = this.params.labelColor;
@@ -305,7 +305,9 @@ EmuLabeller.Drawer.OsciDrawer = {
             var posC = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.curCursorPosInPercent * emulabeller.backend.currentBuffer.length);
             //draw cursor
             cc.fillStyle = this.params.playCursorColor;
+            cc.strokeStyle = this.params.osciColor;
             cc.fillRect(posC - this.params.playCursorWidth / 2, 0, this.params.playCursorWidth, this.osciCanvas.height);
+            cc.strokeRect(posC - this.params.playCursorWidth / 2, 0, this.params.playCursorWidth, this.osciCanvas.height);
 
         }
     },

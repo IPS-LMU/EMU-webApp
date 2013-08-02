@@ -177,16 +177,18 @@ var emulabeller = (function() {
     });
 
 
-    // touch events 
-    var element = document.getElementById('timeline');
-    var hammertime = Hammer(element).on("touch", function(event) {
-        console.log('stop touching me says the timeline');
-    });
+    // touch events
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        alert("On mobile device!!!! Lots of things not working yet...");
+        var element = document.getElementById('timeline');
+        var hammertime = Hammer(element).on("touch", function(event) {
+            console.log('stop touching me says the timeline');
+        });
 
-    var hammertime = Hammer(element).on("doubletap", function(event) {
-        // alert('stop touching me says the timeline');
-        emulabeller.zoomSel();
-    });
-
+        var hammertime = Hammer(element).on("doubletap", function(event) {
+            // alert('stop touching me says the timeline');
+            emulabeller.zoomSel();
+        });
+    }
     return labeller;
 }());
