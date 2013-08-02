@@ -458,8 +458,8 @@ EmuLabeller.tierHandler = {
         var my = this;
         var textAreaX = Math.round(x) + c.offsetLeft + 2;
         var textAreaY = c.offsetTop + 2 + y;
-        var textAreaWidth = Math.round(width);
-        var textAreaHeight = Math.round(height);
+        var textAreaWidth = width;
+        var textAreaHeight = height;
         var content = $("<textarea>").attr({
             id: "editing"
         }).css({
