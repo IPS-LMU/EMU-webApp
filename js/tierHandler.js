@@ -427,7 +427,7 @@ EmuLabeller.tierHandler = {
         var temp = 0;
         for (var k in e) {
             var diff = curSample - e[k].startSample;
-            if (diff > temp && diff > 0 && diff < e[k].sampleDur) {
+            if (diff > temp && diff >= 0 && diff <= e[k].sampleDur) {
                 temp = diff;
                 r = e[k];
             }
