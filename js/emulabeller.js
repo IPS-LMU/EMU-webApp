@@ -693,9 +693,12 @@ var EmuLabeller = {
     */
     keyBindingAllowed: function() {
         var my = this;
-        if(my.internalMode != my.EDITMODE.LABEL_RENAME)
-            if(my.internalMode != my.EDITMODE.MODAL)
+        if(my.internalMode != my.EDITMODE.LABEL_RENAME) {
+            if(my.internalMode != my.EDITMODE.MODAL) {
                 return true;
+            }
+            return false;
+        }
         return false;
     },
 
