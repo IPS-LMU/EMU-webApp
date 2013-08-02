@@ -191,12 +191,12 @@ EmuLabeller.Drawer.TierDrawer = {
 
         } else {
             cc.fillStyle = my.params.selectedAreaColor;
-            cc.fillRect(posS, 0, posE - posS , canvas.height);
+            cc.fillRect(posS, 0, posE - posS + sDist , canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);
             cc.lineTo(posS, canvas.height);
-            cc.moveTo(posE, 0);
-            cc.lineTo(posE, canvas.height);
+            cc.moveTo(posE+sDist, 0);
+            cc.lineTo(posE+sDist, canvas.height);
             cc.stroke();
 
         }

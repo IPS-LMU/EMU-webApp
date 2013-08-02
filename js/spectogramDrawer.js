@@ -145,13 +145,13 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             }            
             if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
                 my.context.fillStyle = my.params.selectedAreaColor;
-                my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
+                my.context.fillRect(posS, 0, posE-posS+sDist, my.canvas.height);
                 my.context.strokeStyle = my.params.selectLineColor;
                 my.context.beginPath();
                 my.context.moveTo(posS,0);
                 my.context.lineTo(posS,my.canvas.height);
-                my.context.moveTo(posE,0);
-                my.context.lineTo(posE,my.canvas.height);
+                my.context.moveTo(posE+sDist,0);
+                my.context.lineTo(posE+sDist,my.canvas.height);
                 my.context.closePath();
                 my.context.stroke();   
             }     
