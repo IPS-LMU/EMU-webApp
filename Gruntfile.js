@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         "js/main.js"
     ];
 
-    var allCssFiles = ['css/main.css','css/menu.css','css/tooltip.css', 'css/modal.css'];
+    var allCssFiles = ['css/main.css', 'css/menu.css', 'css/tooltip.css', 'css/modal.css'];
 
     // Project configuration.
     grunt.initConfig({
@@ -38,10 +38,18 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            combine: {
+                files: {
+                    'emuLVC.min.css': allCssFiles
+                }
+            }
+        },
+
         watch: {
             all: {
                 files: allJsFiles.concat(['index.html']).concat(allCssFiles),
-                tasks: ['uglify'],
+                tasks: ['uglify', 'cssmin'],
                 options: {
                     livereload: true
                 }
@@ -51,11 +59,13 @@ module.exports = function(grunt) {
 
     // Load plugins
     grunt.loadNpmTasks('grunt-contrib-watch');
-    // grunt.loadNpmTasks('grunt-contrib-concat');
+
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+
     // Default task(s).
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', 'cssmin']);
 
 
 };
