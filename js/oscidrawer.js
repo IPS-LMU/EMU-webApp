@@ -103,11 +103,12 @@ EmuLabeller.Drawer.OsciDrawer = {
         //this.resizeCanvases();
         var my = this;
         var can;
-        if (null != c) {
-            var cc = c.getContext("2d");
+        var cc;
+        if (c != null) {
+            cc = c.getContext("2d");
             can = c;
         } else {
-            var cc = this.osciCanvas.getContext("2d");
+            cc = this.osciCanvas.getContext("2d");
             can = my.osciCanvas;
         }
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / can.width; // PCM Samples per new pixel
@@ -125,14 +126,15 @@ EmuLabeller.Drawer.OsciDrawer = {
             cc.strokeStyle = this.params.osciColor;
             cc.fillStyle = this.params.osciColor;
             cc.beginPath();
-            if (emulabeller.viewPort.sS == 0) {
+            var i;
+            if (emulabeller.viewPort.sS === 0) {
                 cc.moveTo(hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
-                for (var i = 0; i < this.peaks.length; i++) {
+                for (i = 0; i < this.peaks.length; i++) {
                     cc.lineTo(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
                 }
                 cc.stroke();
                 // draw sample dots
-                for (var i = 0; i < this.peaks.length; i++) {
+                for (i = 0; i < this.peaks.length; i++) {
                     cc.beginPath();
                     cc.arc(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
                     cc.stroke();
@@ -145,12 +147,12 @@ EmuLabeller.Drawer.OsciDrawer = {
             } else {
                 //draw lines
                 cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
-                for (var i = 1; i < this.peaks.length; i++) {
+                for (i = 1; i < this.peaks.length; i++) {
                     cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
                 }
                 cc.stroke();
                 // draw sample dots
-                for (var i = 1; i < this.peaks.length; i++) {
+                for (i = 1; i < this.peaks.length; i++) {
                     cc.beginPath();
                     cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
                     cc.stroke();
@@ -340,17 +342,19 @@ EmuLabeller.Drawer.OsciDrawer = {
      * @params c canvas to draw on
      */
     drawCurOsciOnCanvas: function(c) {
+        var cH;
+        var cW;
         if (null != c) {
             canvascc = c.getContext('2d');
-            var cH = c.height;
-            var cW = c.width;
+            cH = c.height;
+            cW = c.width;
             osciWidth = c.width;
             osciHeight = c.height;
 
         } else {
             canvascc = this.osciCanvas.getContext('2d');
-            var cH = this.osciCanvas.height;
-            var cW = this.osciCanvas.width;
+            cH = this.osciCanvas.height;
+            cW = this.osciCanvas.width;
             osciWidth = this.osciCanvas.width;
             osciHeight = this.osciCanvas.height;
 

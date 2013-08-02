@@ -179,15 +179,27 @@ var emulabeller = (function() {
 
     // touch events
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        alert("On mobile device!!!! Lots of things not working yet...");
+        // alert("On mobile device!!!! Lots of things not working yet...");
         var element = document.getElementById('timeline');
         var hammertime = Hammer(element).on("touch", function(event) {
             console.log('stop touching me says the timeline');
         });
-
-        var hammertime = Hammer(element).on("doubletap", function(event) {
+        hammertime = Hammer(element).on("doubletap", function(event) {
             // alert('stop touching me says the timeline');
             emulabeller.zoomSel();
+        });
+        hammertime = Hammer(element).on("dragleft", function(event) {
+            emulabeller.shiftViewP(1);
+        });
+        hammertime = Hammer(element).on("dragright", function(event) {
+            emulabeller.shiftViewP(0);
+        });
+        hammertime = Hammer(element).on("dragdown", function(event) {
+            emulabeller.zoomViewPort(1);
+            event.preventDefault();
+        });
+        hammertime = Hammer(element).on("dragup", function(event) {
+            emulabeller.zoomViewPort(0);
         });
     }
     return labeller;
