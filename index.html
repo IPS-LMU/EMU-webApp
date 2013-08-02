@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <!-- <html manifest="/emulabeller.manifest"> -->
- <html>
- <head>
-         <meta name="apple-mobile-web-app-capable" content="yes">
-         <meta charset="utf-8">
-         <title>emuLVC</title>
-         <!-- external css -->
-         <link rel="stylesheet" href="css/jquery-ui.css" />
-         <!-- our css -->
-         <link rel="stylesheet" href="emuLVC.min.css">
+<html>
+<head>
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta charset="utf-8">
+ <title>emuLVC</title>
+ <!-- external css -->
+ <link rel="stylesheet" href="css/jquery-ui.css" />
+ <!-- our css -->
+ <link rel="stylesheet" href="emuLVC.min.css">
          <!-- <link rel="stylesheet" href="css/main.css">
          <link rel="stylesheet" href="css/menu.css">
          <link rel="stylesheet" href="css/modal.css">
          <link rel="stylesheet" href="css/tooltip.css"> -->
- </head>
- <body id="body">
- <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft">
-  <h3>&nbsp;</h3>
-   <div id="isScrollable" class="isScrollable">
-    <a href="#">utterance 1</a>
-    <a href="#">utterance 2</a>
-    <a href="#">utterance 3</a>
-    <a href="#">utterance 4</a>
-    <a href="#">utterance 5</a>
-    <a href="#">utterance 6</a>
-    <a href="#">utterance 7</a>
-    <a href="#">utterance 8</a>
-    <a href="#">utterance 9</a>
-    <a href="#">utterance 10</a>
-    <a href="#">utterance 11</a>
-    <a href="#">utterance 12</a>
-    <a href="#">utterance 13</a>
-    <a href="#">utterance 14</a>
-    <a href="#">utterance 15</a>
-    <a href="#">utterance 16</a>
-    <a href="#">utterance 17</a>
-    <a href="#">utterance 18</a>
-    <a href="#">utterance 19</a>
-    <a href="#">utterance 20</a>
-  </div>
- </nav>
- 
-  <div id="specDialog" title="Spectogram Settings" style="display:none;">
-    <p>View Range (Hz)</p>
-	    <input type="text" name="viewrange_from" id="viewrange_from" value="0" />
-	    <input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
-	            	
-    <p>Window Length (samples)</p>
-	    <input type="text" name="windowLength" id="windowLength" value="512" />
-            		
-    <p>Dynamic Range (dB)</p>  
-        <input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
-            		
-    <p>Window Function</p>      
-        <select name="windowFunction" id="windowFunction">
+       </head>
+       <body id="body">
+         <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft">
+          <h3>&nbsp;</h3>
+          <div id="isScrollable" class="isScrollable">
+            <a href="#">utterance 1</a>
+            <a href="#">utterance 2</a>
+            <a href="#">utterance 3</a>
+            <a href="#">utterance 4</a>
+            <a href="#">utterance 5</a>
+            <a href="#">utterance 6</a>
+            <a href="#">utterance 7</a>
+            <a href="#">utterance 8</a>
+            <a href="#">utterance 9</a>
+            <a href="#">utterance 10</a>
+            <a href="#">utterance 11</a>
+            <a href="#">utterance 12</a>
+            <a href="#">utterance 13</a>
+            <a href="#">utterance 14</a>
+            <a href="#">utterance 15</a>
+            <a href="#">utterance 16</a>
+            <a href="#">utterance 17</a>
+            <a href="#">utterance 18</a>
+            <a href="#">utterance 19</a>
+            <a href="#">utterance 20</a>
+          </div>
+        </nav>
+        
+        <div id="specDialog" title="Spectogram Settings" style="display:none;">
+          <p>View Range (Hz)</p>
+          <input type="text" name="viewrange_from" id="viewrange_from" value="0" />
+          <input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
+          
+          <p>Window Length (samples)</p>
+          <input type="text" name="windowLength" id="windowLength" value="512" />
+          
+          <p>Dynamic Range (dB)</p>  
+          <input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
+          
+          <p>Window Function</p>      
+          <select name="windowFunction" id="windowFunction">
             <option value="1">BARTLETT</option>
-        	<option value="2" selected>BARTLETTHANN</option>
+            <option value="2" selected>BARTLETTHANN</option>
             <option value="3">BLACKMAN</option>
             <option value="4">COSINE</option>
             <option value="5">GAUSS</option>
@@ -64,125 +64,125 @@
             <option value="8">LANCZOS</option>
             <option value="9">RECTANGULAR</option>
             <option value="10">TRIANGULAR</option>	
-        </select>     
-  </div>
- 
- <div id="dialog-messageSh" title="Show/Hide Tier with Name">
-  <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
-</div>
+          </select>     
+        </div>
+        
+        <div id="dialog-messageSh" title="Show/Hide Tier with Name">
+          <p> <input type="text" id="dialShInput" class="text ui-widget-content ui-corner-all"></p>
+        </div>
 
-<div id="dialog-messageSetLabel" title="Set label">
-  <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
-</div>
+        <div id="dialog-messageSetLabel" title="Set label">
+          <p> <input type="text" id="dialLabelInput" class="ui-widget ui-state-default ui-corner-all"></p>
+        </div>
 
 
 
- <div class="menu" id="menu">
-  <input type="file" id="fileGetterBtn" name="file"/>
-  <div class="btn-group">
-   <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: O">Open File</button>
+        <div class="menu" id="menu">
+          <input type="file" id="fileGetterBtn" name="file"/>
+          <div class="btn-group">
+           <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: O">Open File</button>
 <!--    <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button>
- -->   
-   <button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: O">Open Menu</button>
-   <button class="mini-btn tooltip" id="cmd_addTierSeg" data-tooltip="Shortcut: none">Add Tier (seg)</button>
-   <button class="mini-btn tooltip" id="cmd_addTierPoint" data-tooltip="Shortcut: none">Add Tier (point)</button>
-   <button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
-   <button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Prep. Download</button>
-   <button class="mini-btn tooltip" id="specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
-   <div id="downLinkDiv"></div>
-   <a href="#about_form" id="about_pop" class="aboutLink"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC%0AAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE%0AAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAC%2BdJREFUeNrtm1uMXddZx3/f2nuf%2B9zv%0Aduw4aRwbuyiEJKrcOo0oCKgUAmrUJx6goPAWIbWKUkTpUwMI0QjUIl7yVhQhJIQsQEqF3BbFiuOW%0AkiYtsd0kjseOPb7MzTPnzLnsvdbHw9pnzpmZMzPneCzZbvyXtkazL2t93/%2B7rrX3QVXHVRVV5eOC%0Apr6qOn67ZbmHe7iHe7itkM0u5E8pLiAyDZ4M4Kjo5vfeiVBBrXLCZXndWOLqpzqL3/Fs/pRihUxk%0A%2BYooXxEY4W6rkgIKcyp8Mw74ZqA0OpFgOj5rIYg5KsqXRe9C5QEURBkR5ctBzFGxnW8zm50MhKMC%0Ao7dbj51CYDSAo2aT62HHh7T57C8AFEQ21yXsZay7FluEsOl%2BlF9M3JUeoIBNrRrIzmJ1gwdcunTJ%0AX7hDM4ACk6Hy3ITj98eUyQw7KlIbCDh%2B/DjVIdgbuSB/hwWIAvmkxp%2BNr/CNiQp/u6fBX9%2BvPFq8%0AeQo2qHj58mUGD8CuyAalYGfs3nICrGVwdprP5KqotZye/oifvHsGapWbTmYbcsC5c%2BfYZyCDEtxp%0AYWAtbuY81ItcbBj%2B9Ltv825ugvDBKVzxFhFQLpdZBkqJEt9J5gdASZKYRhzzc4qc2/9pNDeAjTI3%0APeIGz9m9ezdnAXE2FHrLsL3e37v6MNLfz2CpwI2wSG5ojGwhD0Fw6wgolUqoCFlNMnnTvUIC9Idw%0AM4mzP4RCNzrEDT57/xhD%2BSwNDLuykN8h4xvErVQqiCrTdXE17Y2AooGBsDcvCATGI0/cVhHnnOPJ%0AUsIfH5pARKg4YdnKjsN0Qw4QEYjhOtmasS2hmkptNp8ILKf3C91XjwC41oDGFmRb5ziSrfGX94fs%0AzSRUHVyoWmYTQW61B1SrVbgKToxr3ynfk4WxaHPFDK3mqVuhFAj9up1sW7gVjA8JBaxTHjZV/nxX%0AzEOZBFWYXrH8aDEhY4SMaRmoL/Dj7YiA/v5%2BUK9Mzvi/AvSFXsjN4ICGg2hda2rW3WPVH4FAVrzA%0AFki0dQxHMBRAQZTfGYz51ieUXy0q1ikWeHV6mffjCNtkET/efVkvY9MLu8GGEIjjGAogqtLeB1xt%0AtBTq5AWheLJqrnU9a3x8X6x7AfdEyicLyqGCsitScqLUVVi0wmwizDSEioO9WWUsVPZHCZ8pxhQ0%0AxjolDAz/eX6ef5mNCMbyOAUrLQJC8QoJnsSag8omGyGbElCr1SBlMUk1EYG68xOIQKeXSKqQtFmk%0A6d4jofJARnl6yPHpQsxkkJDHrhlEREgQYgwWwaBkUIxarPVWD4zhxzMLvHRmmcWJA4wYoWy9V4HP%0AJQ1HcyuMkRDK1h9becMGAs6ePUvhI4glSHDg1CsSiSdE2tzatT3n8BspudRFrFMO5RxfGrU8VYoZ%0AJMY6h1qIN9KXCmNXBXJt44tAObb83Xtlzg3uI8rk/HwCGYEGPqyuxH4kg88jdce22BDVr732GlEZ%0AVMyqjZre0Px/KPQu1u4IRlr/F7E8Nxbz7b11fre0QsnWia3D6dbVQduONVYyhuNXq7wRTlLsH6CY%0AJkinrZwTiifBpfll2W5dWTYloF2QjLSyaqMteQWyNtkFArmUgNDG/Mlwja9O1NlFjdi6nS1XBeYb%0Aju9csTRKg0xmYF8ORsOUqHTeQLwygg%2BHuQSqLq1M6iQuwjPPPNMdAU0EacxH6dFUfMXBUhpbWePL%0AY2QgjhOeMEv84ZglcvHqpsVOIGI4dmGJt7WfIIy4HsOFGiwkbdYCYvVHmMoZayuHRTbO1B6BgwcP%0Abk/As88%2By9IRKLp6VAx8LOUNlAKvfF%2BQhkDozw2H3jPKFvIri3wuWqLfeHffKUJj%2BNlsmX%2BbdeT7%0A%2BukPfTmuq8/u%2BbRfyBvoD7wxMgYGQ9%2BVFgMv72Bc7lMRqdfr2xOQJJ7ajEuCKA0BwSuZTSdyKfGZ%0AdMJYwajSV57lgbCxY%2BVFhCgIuFap8a0zc1wqjBOFASHevUOBIO1RnHrvy6UElAJ4MOevZcSfC5wV%0AQJaWljaSvP7EsWPHGDgJC2GxhoVK0mosmu61mHjm4jQvLFlIEkuhcoPJvilclx9biMiaDzMCY1BV%0AFisrvDV9hX%2B/VObUwC%2BxHJaQpPVczbVWnjXjy59TH5oohBkfIoJvsrJhvi6q7i%2B%2B/vXtCYBWFm44%0Ab%2B2s8WU7VigZWEyvN7suVRBVVhbmuTBj2D82SBwnHZOfiBAYg3WOWiMmG4Wryp/%2B6Ar/%2BuZP%2BO/p%0A65wv7WbikU8hQ2MErtUyu3WZPQTiNOad%2Buw/XffxbwAVkFSSlZWVLglIJW%2BkZSsAnEDi4ELdWyBr%0AYG8Grqa1V4xhKcjx7f/4HlN9efZNTRJFIeocIkIYGKx13KhU%2Bdn0Rxz/6VnOnr/Ic7/9FL/5%2BCP8%0A4Ow0X/v%2BT/kwO0r8y48jI5NcLRRJrJBJwzAQH/%2BrZOJDsGF9/xGnXjBd84aL0gB3QRQDNBqN7gjY%0ADErqZqkl%2BkK43GgSEBA%2BeJhTMx/wR//wKr%2ByZ5wXvvg0n9g1zkJ5hTdPv88b713gf2fm%2BVBKLJTG%0AqZuE31isML1U5W/eW%2Bbi4c8xMDTCkgYkCtW2rhL82mH98rcZCu3b46vdYVrF8uICgOHh4d4IaPb9%0A9dS92pEAH9Y8Ic2JZXCM4LO/x/T50xzprzE1Msi7l67x0nd/yOuzdaojuxk8/BjR6BTZKE/%2B4s/Z%0Af7/h%2BwuOMyMHMH1DJAaSxLtwRjzJfUErxtvlkGZrnhpkfcg1nCchMWEMaZvfLQFKWvvxrK8f3CrM%0Are9pRdC%2BYQ4fPMjzhzKcvXadF15/n7fHHiU4fB9htkAuG9AfwY1Kwrg22D8%2BRYUBHnMZciHsynqF%0AS8Y3Ow/nHFNBwo9WAv5%2BJmA%2B7vzOou42GslIWipFlPgmPEDS7iqk1VRsBQWKSZXn7wuoLM7z4g8v%0A8c6uR4mGxz056ZhOwVkLi9eZX8hzZCLi0FiVmeUVLl9bZGZ%2BkcVyhRv1KgvG8vnHPskX9uwmNHle%0APG%2BYTzO8U6imq71OO9iSkpBo4DgHo6MbX3ZvTQCtem%2B3WVYqYJIGfzCacCCs8eLJGd6dOEw4MLpm%0AvMUEbiS%2BGsxU6nzpH/%2BZ0eEhypKhHOZYCfMsSBYLaKOOzHzId35wiuef/jVKDx7iifwU/7UcrVk3%0AGOlMQNLsDANjH6rByZMneyOgOUE3mwtqLU%2BXanxxKOGlNy/xzuBDRIOja7J2Uyhvsgg5fIQLY3uY%0ARimU%2BiiU%2BghzBbImi8Ovu3V5nvdP/5ivvXEOMw0cLEJpZHW8jKQZv4OQiu9UHaIR8Morr3RPgJAu%0AJ9WXwM0cQPEblk/lqry4R3j1ncuciKbIDo/R6LS0W51AkMFRwsERQIgC390J%2BKanuRcxPEnmiV%2Bn%0AWi2DCZBsoZV0aeWDhts4leL7gprrTNC2HtBsOporwfWwChlRnirW%2BcZe4eyVOf6pXCI7sctvcHTV%0AEMrqXIlbu6xumTmHyeQ6kt9sgDoZyClcarAlti6DaRI0bCwzAcqT/cqzw5bP98P8jTIvf1BlYeAB%0AJgNDTvwCqVsk6t11pUM23%2B65KG3SOmG7rrzzR1JtFzOyMQeoKuHiNX4rucgX%2Bqr8z/%2Bd4YUTH/BO%0AdgKTyfoOTeh5H2Ak8qu4btHcTd6bZXV3uFds6wHNHrx9IanOsSdZwl29xlffeotjc8qNhx4nLA0C%0AMJ/0/ulJ86OHXhJvsxQOpxuvvewGb0lA03IuHdGx1pqSNLh4fY6/mr3C8tg%2BzKMPE%2BZLqy8EuukZ%0ANsyZ5plGj8/WHSwlNzfnpgQ0EavPoOtDWcKI2n0H0L2HvOJm519SKH5Ts%2BF6s6LD9xbNDdtbSgD4%0AF5cVuzYECEKkb%2BiWvglWfIPUK5q7wTfrAVuaToGBoLXuvxOhpOuAm3x%2B2z5gpuFD4U77WORWYdsQ%0AWOqhlt%2BNuCu/E%2BwZW7hv5zIobX/u1ODvQXlVNv21Q8ckmL7GPqEwe7vl3ykUZi2c2CxJdn41FoCN%0AOKHCyyrM3ZUZUECFORVethEnNNj0ts5Y/clMnSfT3w6kgXH7FOpq7lQjpbufzNzDPdzDPXy88XH/%0A%2Bfz/A5BjIHN2ii1%2BAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEzLTA3LTI0VDE0OjQ3OjU4KzAyOjAw%0A14fOFwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMy0wNy0yNFQxNDo0Nzo1OCswMjowMKbadqsAAAAA%0ASUVORK5CYII%3D%0A"/></a>
+-->   
+<button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: O">Open Menu</button>
+<button class="mini-btn tooltip" id="cmd_addTierSeg" data-tooltip="Shortcut: none">Add Tier (seg)</button>
+<button class="mini-btn tooltip" id="cmd_addTierPoint" data-tooltip="Shortcut: none">Add Tier (point)</button>
+<button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
+<button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Prep. Download</button>
+<button class="mini-btn tooltip" id="specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
+<div id="downLinkDiv"></div>
+<a href="#about_form" id="about_pop" class="aboutLink"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC%0AAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE%0AAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAC%2BdJREFUeNrtm1uMXddZx3/f2nuf%2B9zv%0Aduw4aRwbuyiEJKrcOo0oCKgUAmrUJx6goPAWIbWKUkTpUwMI0QjUIl7yVhQhJIQsQEqF3BbFiuOW%0AkiYtsd0kjseOPb7MzTPnzLnsvdbHw9pnzpmZMzPneCzZbvyXtkazL2t93/%2B7rrX3QVXHVRVV5eOC%0Apr6qOn67ZbmHe7iHe7itkM0u5E8pLiAyDZ4M4Kjo5vfeiVBBrXLCZXndWOLqpzqL3/Fs/pRihUxk%0A%2BYooXxEY4W6rkgIKcyp8Mw74ZqA0OpFgOj5rIYg5KsqXRe9C5QEURBkR5ctBzFGxnW8zm50MhKMC%0Ao7dbj51CYDSAo2aT62HHh7T57C8AFEQ21yXsZay7FluEsOl%2BlF9M3JUeoIBNrRrIzmJ1gwdcunTJ%0AX7hDM4ACk6Hy3ITj98eUyQw7KlIbCDh%2B/DjVIdgbuSB/hwWIAvmkxp%2BNr/CNiQp/u6fBX9%2BvPFq8%0AeQo2qHj58mUGD8CuyAalYGfs3nICrGVwdprP5KqotZye/oifvHsGapWbTmYbcsC5c%2BfYZyCDEtxp%0AYWAtbuY81ItcbBj%2B9Ltv825ugvDBKVzxFhFQLpdZBkqJEt9J5gdASZKYRhzzc4qc2/9pNDeAjTI3%0APeIGz9m9ezdnAXE2FHrLsL3e37v6MNLfz2CpwI2wSG5ojGwhD0Fw6wgolUqoCFlNMnnTvUIC9Idw%0AM4mzP4RCNzrEDT57/xhD%2BSwNDLuykN8h4xvErVQqiCrTdXE17Y2AooGBsDcvCATGI0/cVhHnnOPJ%0AUsIfH5pARKg4YdnKjsN0Qw4QEYjhOtmasS2hmkptNp8ILKf3C91XjwC41oDGFmRb5ziSrfGX94fs%0AzSRUHVyoWmYTQW61B1SrVbgKToxr3ynfk4WxaHPFDK3mqVuhFAj9up1sW7gVjA8JBaxTHjZV/nxX%0AzEOZBFWYXrH8aDEhY4SMaRmoL/Dj7YiA/v5%2BUK9Mzvi/AvSFXsjN4ICGg2hda2rW3WPVH4FAVrzA%0AFki0dQxHMBRAQZTfGYz51ieUXy0q1ikWeHV6mffjCNtkET/efVkvY9MLu8GGEIjjGAogqtLeB1xt%0AtBTq5AWheLJqrnU9a3x8X6x7AfdEyicLyqGCsitScqLUVVi0wmwizDSEioO9WWUsVPZHCZ8pxhQ0%0AxjolDAz/eX6ef5mNCMbyOAUrLQJC8QoJnsSag8omGyGbElCr1SBlMUk1EYG68xOIQKeXSKqQtFmk%0A6d4jofJARnl6yPHpQsxkkJDHrhlEREgQYgwWwaBkUIxarPVWD4zhxzMLvHRmmcWJA4wYoWy9V4HP%0AJQ1HcyuMkRDK1h9becMGAs6ePUvhI4glSHDg1CsSiSdE2tzatT3n8BspudRFrFMO5RxfGrU8VYoZ%0AJMY6h1qIN9KXCmNXBXJt44tAObb83Xtlzg3uI8rk/HwCGYEGPqyuxH4kg88jdce22BDVr732GlEZ%0AVMyqjZre0Px/KPQu1u4IRlr/F7E8Nxbz7b11fre0QsnWia3D6dbVQduONVYyhuNXq7wRTlLsH6CY%0AJkinrZwTiifBpfll2W5dWTYloF2QjLSyaqMteQWyNtkFArmUgNDG/Mlwja9O1NlFjdi6nS1XBeYb%0Aju9csTRKg0xmYF8ORsOUqHTeQLwygg%2BHuQSqLq1M6iQuwjPPPNMdAU0EacxH6dFUfMXBUhpbWePL%0AY2QgjhOeMEv84ZglcvHqpsVOIGI4dmGJt7WfIIy4HsOFGiwkbdYCYvVHmMoZayuHRTbO1B6BgwcP%0Abk/As88%2By9IRKLp6VAx8LOUNlAKvfF%2BQhkDozw2H3jPKFvIri3wuWqLfeHffKUJj%2BNlsmX%2BbdeT7%0A%2BukPfTmuq8/u%2BbRfyBvoD7wxMgYGQ9%2BVFgMv72Bc7lMRqdfr2xOQJJ7ajEuCKA0BwSuZTSdyKfGZ%0AdMJYwajSV57lgbCxY%2BVFhCgIuFap8a0zc1wqjBOFASHevUOBIO1RnHrvy6UElAJ4MOevZcSfC5wV%0AQJaWljaSvP7EsWPHGDgJC2GxhoVK0mosmu61mHjm4jQvLFlIEkuhcoPJvilclx9biMiaDzMCY1BV%0AFisrvDV9hX%2B/VObUwC%2BxHJaQpPVczbVWnjXjy59TH5oohBkfIoJvsrJhvi6q7i%2B%2B/vXtCYBWFm44%0Ab%2B2s8WU7VigZWEyvN7suVRBVVhbmuTBj2D82SBwnHZOfiBAYg3WOWiMmG4Wryp/%2B6Ar/%2BuZP%2BO/p%0A65wv7WbikU8hQ2MErtUyu3WZPQTiNOad%2Buw/XffxbwAVkFSSlZWVLglIJW%2BkZSsAnEDi4ELdWyBr%0AYG8Grqa1V4xhKcjx7f/4HlN9efZNTRJFIeocIkIYGKx13KhU%2Bdn0Rxz/6VnOnr/Ic7/9FL/5%2BCP8%0A4Ow0X/v%2BT/kwO0r8y48jI5NcLRRJrJBJwzAQH/%2BrZOJDsGF9/xGnXjBd84aL0gB3QRQDNBqN7gjY%0ADErqZqkl%2BkK43GgSEBA%2BeJhTMx/wR//wKr%2ByZ5wXvvg0n9g1zkJ5hTdPv88b713gf2fm%2BVBKLJTG%0AqZuE31isML1U5W/eW%2Bbi4c8xMDTCkgYkCtW2rhL82mH98rcZCu3b46vdYVrF8uICgOHh4d4IaPb9%0A9dS92pEAH9Y8Ic2JZXCM4LO/x/T50xzprzE1Msi7l67x0nd/yOuzdaojuxk8/BjR6BTZKE/%2B4s/Z%0Af7/h%2BwuOMyMHMH1DJAaSxLtwRjzJfUErxtvlkGZrnhpkfcg1nCchMWEMaZvfLQFKWvvxrK8f3CrM%0Are9pRdC%2BYQ4fPMjzhzKcvXadF15/n7fHHiU4fB9htkAuG9AfwY1Kwrg22D8%2BRYUBHnMZciHsynqF%0AS8Y3Ow/nHFNBwo9WAv5%2BJmA%2B7vzOou42GslIWipFlPgmPEDS7iqk1VRsBQWKSZXn7wuoLM7z4g8v%0A8c6uR4mGxz056ZhOwVkLi9eZX8hzZCLi0FiVmeUVLl9bZGZ%2BkcVyhRv1KgvG8vnHPskX9uwmNHle%0APG%2BYTzO8U6imq71OO9iSkpBo4DgHo6MbX3ZvTQCtem%2B3WVYqYJIGfzCacCCs8eLJGd6dOEw4MLpm%0AvMUEbiS%2BGsxU6nzpH/%2BZ0eEhypKhHOZYCfMsSBYLaKOOzHzId35wiuef/jVKDx7iifwU/7UcrVk3%0AGOlMQNLsDANjH6rByZMneyOgOUE3mwtqLU%2BXanxxKOGlNy/xzuBDRIOja7J2Uyhvsgg5fIQLY3uY%0ARimU%2BiiU%2BghzBbImi8Ovu3V5nvdP/5ivvXEOMw0cLEJpZHW8jKQZv4OQiu9UHaIR8Morr3RPgJAu%0AJ9WXwM0cQPEblk/lqry4R3j1ncuciKbIDo/R6LS0W51AkMFRwsERQIgC390J%2BKanuRcxPEnmiV%2Bn%0AWi2DCZBsoZV0aeWDhts4leL7gprrTNC2HtBsOporwfWwChlRnirW%2BcZe4eyVOf6pXCI7sctvcHTV%0AEMrqXIlbu6xumTmHyeQ6kt9sgDoZyClcarAlti6DaRI0bCwzAcqT/cqzw5bP98P8jTIvf1BlYeAB%0AJgNDTvwCqVsk6t11pUM23%2B65KG3SOmG7rrzzR1JtFzOyMQeoKuHiNX4rucgX%2Bqr8z/%2Bd4YUTH/BO%0AdgKTyfoOTeh5H2Ak8qu4btHcTd6bZXV3uFds6wHNHrx9IanOsSdZwl29xlffeotjc8qNhx4nLA0C%0AMJ/0/ulJ86OHXhJvsxQOpxuvvewGb0lA03IuHdGx1pqSNLh4fY6/mr3C8tg%2BzKMPE%2BZLqy8EuukZ%0ANsyZ5plGj8/WHSwlNzfnpgQ0EavPoOtDWcKI2n0H0L2HvOJm519SKH5Ts%2BF6s6LD9xbNDdtbSgD4%0AF5cVuzYECEKkb%2BiWvglWfIPUK5q7wTfrAVuaToGBoLXuvxOhpOuAm3x%2B2z5gpuFD4U77WORWYdsQ%0AWOqhlt%2BNuCu/E%2BwZW7hv5zIobX/u1ODvQXlVNv21Q8ckmL7GPqEwe7vl3ykUZi2c2CxJdn41FoCN%0AOKHCyyrM3ZUZUECFORVethEnNNj0ts5Y/clMnSfT3w6kgXH7FOpq7lQjpbufzNzDPdzDPXy88XH/%0A%2Bfz/A5BjIHN2ii1%2BAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEzLTA3LTI0VDE0OjQ3OjU4KzAyOjAw%0A14fOFwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMy0wNy0yNFQxNDo0Nzo1OCswMjowMKbadqsAAAAA%0ASUVORK5CYII%3D%0A"/></a>
 
+</div>
+
+</div>
+
+
+
+<div class="menu-bottom" id="menu-bottom">
+  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="64"></canvas>
+  <div class="btn-group">
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
+    <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
+    <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>            
+    <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button> 
   </div>
-  
- </div>
- 
- 
+</div> 
 
- <div class="menu-bottom" id="menu-bottom">
-    <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="64"></canvas>
-    <div class="btn-group">
-        <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
-        <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
-        <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
-        <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
-        <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
-        <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
-        <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
-        <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>            
-        <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button> 
-    </div>
- </div> 
+<div class="timeline" id="timeline">
+ <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
+ <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
+ <div id="signalcans" class="signalcans"></div>
+ <div id="resizer" class="resizer"><span id="resizer"></span></div>
+</div>
 
- <div class="timeline" id="timeline">
-   <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
-   <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
-   <div id="signalcans" class="signalcans"></div>
-   <div id="resizer" class="resizer"><span id="resizer"></span></div>
- </div>
- 
- <div class="tierPush" id="tierPush">
+<div class="tierPush" id="tierPush">
   <div class="spacer" id="spacer">&nbsp;</div>
   <div class="tiers" id="tiers">
    <div id="cans" class="cans"></div>
-  </div>
-  <div class="spacerbottom" id="spacerbottom">&nbsp;</div>
  </div>
- 
- 
-<a href="#x" class="overlay" id="about_form"></a>
-<div class="popup">
-
-    <h2>Emu LVC</h2>
-    emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
-    <h3>General usage:</h3>
-    Moving the mouse over tiers automatically tracks the mouse movement
-    and calculates the nearest boundary to the current mouse position and
-    selects it.
-    To move the currently selected boundary hold down the <b>shift</b> key and 
-    move the mouse to the desired position. The boundary will then track the
-    mouse movement. If a segment is selected (= marked yellow) then holding down 
-    alt will move the entire segment
-    <h3>Navigation shortcuts:</h3>
-    <table>
-      <tbody>
-        <tr><td><b>W:</b></td><td>Zoom in</td></tr>
-        <tr><td><b>S:</b></td><td>Zoom out</td></tr>
-        <tr><td><b>D:</b></td><td>Move view right</td></tr>
-        <tr><td><b>A:</b></td><td>Move view left</td></tr>
-        <tr><td><b>Q:</b></td><td>View all</td></tr>
-        <tr><td><b>E:</b></td><td>Zoom in to selected</td></tr>
-      </tbody>
-    </table>
-
-  <h3>Labeling shortcuts:</h3>
-  <table>
-      <tbody>
-        <tr><td><b>Enter:</b></td><td>Add segment / boundary at selected position</td></tr>
-        <tr><td><b>Delete:</b></td><td>Remove selected segment</td></tr>
-        <tr><td><b>Backspace:</b></td><td>Remove selected boundary</td></tr>
-        <tr><td><b>T:</b></td><td>Snap selected segment to closest segment in tier above</td></tr>
-        <tr><td><b>B:</b></td><td>Snap selected segment to closest segment in tier below</td></tr>
-        <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
-      </tbody>
-    </table>
-    
-  <h3>Playback shortcuts:</h3>
-    <table>
-      <tbody>
-        <tr><td><b>F:</b></td><td>Play entire file</td></tr>
-        <tr><td><b>R:</b></td><td>Play selected</td></tr>
-        <tr><td><b>Space:</b></td><td>Space: Play/Pause in view (also use as general stop for playback)</td></tr>
-      </tbody>
-    </table>
-    <a class="close" href="#close"></a>
+ <div class="spacerbottom" id="spacerbottom">&nbsp;</div>
 </div>
 
 
-    
-  <noscript>No javascript enabled...</noscript>
+<a href="#x" class="overlay" id="about_form"></a>
+<div class="popup">
+
+  <h2>Emu LVC</h2>
+  emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
+  <h3>General usage:</h3>
+  Moving the mouse over tiers automatically tracks the mouse movement
+  and calculates the nearest boundary to the current mouse position and
+  selects it.
+  To move the currently selected boundary hold down the <b>shift</b> key and 
+  move the mouse to the desired position. The boundary will then track the
+  mouse movement. If a segment is selected (= marked yellow) then holding down 
+  alt will move the entire segment
+  <h3>Navigation shortcuts:</h3>
+  <table>
+    <tbody>
+      <tr><td><b>W:</b></td><td>Zoom in</td></tr>
+      <tr><td><b>S:</b></td><td>Zoom out</td></tr>
+      <tr><td><b>D:</b></td><td>Move view right</td></tr>
+      <tr><td><b>A:</b></td><td>Move view left</td></tr>
+      <tr><td><b>Q:</b></td><td>View all</td></tr>
+      <tr><td><b>E:</b></td><td>Zoom in to selected</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Labeling shortcuts:</h3>
+  <table>
+    <tbody>
+      <tr><td><b>Enter:</b></td><td>Add segment / boundary at selected position</td></tr>
+      <tr><td><b>Delete:</b></td><td>Remove selected segment</td></tr>
+      <tr><td><b>Backspace:</b></td><td>Remove selected boundary</td></tr>
+      <tr><td><b>T:</b></td><td>Snap selected segment to closest segment in tier above</td></tr>
+      <tr><td><b>B:</b></td><td>Snap selected segment to closest segment in tier below</td></tr>
+      <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
+    </tbody>
+  </table>
   
-  <script id="spectroworker" type="text/javascript">
-  <!--
+  <h3>Playback shortcuts:</h3>
+  <table>
+    <tbody>
+      <tr><td><b>F:</b></td><td>Play entire file</td></tr>
+      <tr><td><b>R:</b></td><td>Play selected</td></tr>
+      <tr><td><b>Space:</b></td><td>Space: Play/Pause in view (also use as general stop for playback)</td></tr>
+    </tbody>
+  </table>
+  <a class="close" href="#close"></a>
+</div>
+
+
+
+<noscript>No javascript enabled...</noscript>
+
+<script id="spectroworker" type="text/javascript">
+<!--
   // compressed Spectrogram Thread
   // see js/spectrogram.js four uncompressed source code
   eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('L 1R(j){K f,l,h,b,g,k;f=j;l=3z(O.2S(f)/0.3a);M(f!=1<<l){29.2Q("33 : 1R 1d 2P 2O 3B 3C 2")}b=Y 1p(f/2);h=Y 1p(f/2);P(K a=0;a<f/2;a++){b[a]=O.1b(-2*14*a/f);h[a]=O.2I(-2*14*a/f)}J.1Q=L(s,o,u){K q=u.1d;J.19=o;2y(s){U X.2x:P(K m=0;m<q;m++){u[m]*=J.2w(q,m)}T;U X.2v:P(K m=0;m<q;m++){u[m]*=J.2t(q,m)}T;U X.2r:J.19=J.19||0.16;P(K m=0;m<q;m++){u[m]*=J.2m(q,m,o)}T;U X.2l:P(K m=0;m<q;m++){u[m]*=J.2f(q,m)}T;U X.2e:J.19=J.19||0.25;P(K m=0;m<q;m++){u[m]*=J.2c(q,m,o)}T;U X.2b:P(K m=0;m<q;m++){u[m]*=J.2R(q,m)}T;U X.2J:P(K m=0;m<q;m++){u[m]*=J.2E(q,m)}T;U X.2C:P(K m=0;m<q;m++){u[m]*=J.2B(q,m)}T;U X.2A:P(K m=0;m<q;m++){u[m]*=J.2p(q,m)}T;U X.2i:P(K m=0;m<q;m++){u[m]*=J.2d(q,m)}T}Q u};J.2w=L(m,i){Q 2/(m-1)*((m-1)/2-O.22(i-(m-1)/2))};J.2t=L(m,i){Q 0.3X-0.32*O.22(i/(m-1)-0.5)-0.38*O.1b(1y*i/(m-1))};J.2m=L(v,o,w){K u=(1-w)/2;K m=0.5;K q=w/2;Q u-m*O.1b(1y*o/(v-1))+q*O.1b(4*14*o/(v-1))};J.2f=L(m,i){Q O.1b(14*i/(m-1)-14/2)};J.2c=L(m,i,o){Q O.1f(O.E,-0.5*O.1f((i-(m-1)/2)/(o*(m-1)/2),2))};J.2R=L(m,i){Q 0.3S-0.3U*O.1b(1y*i/(m-1))};J.2E=L(m,i){Q 0.5*(1-O.1b(1y*i/(m-1)))};J.2B=L(m,i){K o=2*i/(m-1)-1;Q O.2I(14*o)/(14*o)};J.2p=L(m,i){Q 1};J.2d=L(m,i){Q 2/m*(m/2-O.22(i-(m-1)/2))};J.2L=L(t,B){K m,A,y,r,n,x,q,i,w,z;A=0;n=f/2;P(m=1;m<f-1;m++){r=n;2F(A>=r){A=A-r;r=r/2}A=A+r;M(m<A){w=t[m];t[m]=t[A];t[A]=w;w=B[m];B[m]=B[A];B[A]=w}}r=0;n=1;P(m=0;m<l;m++){r=n;n=n+n;x=0;P(A=0;A<r;A++){q=b[x];i=h[x];x+=1<<l-m-1;P(y=A;y<f;y=y+n){w=q*t[y+r]-i*B[y+r];z=i*t[y+r]+q*B[y+r];t[y+r]=t[y]-w;B[y+r]=B[y]-z;t[y]=t[y]+w;B[y]=B[y]+z}}}}}L 2k(h,b,k,g,a){1X=Y 1p(N);1w=Y 1p(N);1x=Y 1p(g-a);P(K f=0;f<k;f++){1w[f]=2g[b+f]}1D.1Q(1Q,1S,1w);1D.2L(1w,1X);P(K j=0;j<=g-a;j++){1x[j]=2N(1w[j+a],1X[j+a]);M(1N<1x[j]){1N=1x[j]}}Q 1x}L 2U(l,v,h,b,j){K w=1i;1K=2*O.1f(1z[l][1],2)/N;1E=10*1F(1K/1W);W=(1E+18)/18;M(W>1){W=1}M(W<0){W=0}P(K g=1;g<1z[l].1d;g++){K q=W;1K=2*O.1f(1z[l][g],2)/N;1E=10*1F(1K/1W);W=(1E+18)/18;M(W>1){W=1}M(W<0){W=0}K m=W;M(1i>=1){P(K k=0;k<1i;k++){2n=q+(m-q)/w*k;1c=V-O.3I(V*2n);1c="3K"+2M(1c);v.R[v.27(O.1a(l+j),O.1a(28-(1i*(g-2)+k)))]=v.2h(1c,1c,1c)}}1r{}}}L 2M(a){Q(+a).36(16)}L 2j(a){M(a<0){43("3b 3i 3j 2P 2O 3r.")}Q 10*1F(a)}L 3s(a){Q 2j(a)}L 3t(a){Q O.1f(10,a/10)}L 1F(a){Q O.2S(a)/2.3u}L 2N(b,a){Q O.3v(b*b+a*a)}L 3w(b,a){Q O.1a(b/3y*a)}(L(){L f(j,h){P(K k=2;k<1T.1d;k++){P(K i=0;i<1T[k].1d;i++){j[h++]=1T[k].1q(i)}}}L a(h){Q 17.11(h>>8&V,h&V)}L g(h){Q 17.11(h>>24&V,h>>16&V,h>>8&V,h&V)}L b(h){Q 17.11(h&V,h>>8&V)}2D=L(m,w,j){J.1n=m;J.1G=w;J.2H=j;J.1g=w*(m+1);J.2K=2+J.1g+5*O.1a((34+J.1g)/1H)+4;J.1I=0;J.1J=4+4+13+4;J.1l=J.1I+J.1J;J.1B=4+4+3*j+4;J.1j=J.1l+J.1B;J.1L=4+4+j+4;J.Z=J.1j+J.1L;J.1h=4+4+J.2K+4;J.1M=J.Z+J.1h;J.1C=4+4+4;J.2a=J.1M+J.1C;J.R=Y 1U;J.1O=Y 3A;J.1A=0;K v=Y 1U;P(K t=0;t<J.2a;t++){J.R[t]="\\0"}f(J.R,J.1I,g(J.1J-12),"3D",g(m),g(w),"\\b");f(J.R,J.1l,g(J.1B-12),"3E");f(J.R,J.1j,g(J.1L-12),"3F");f(J.R,J.Z,g(J.1h-12),"3G");f(J.R,J.1M,g(J.1C-12),"3H");K q=8+(7<<4)<<8|3<<6;q+=31-q%31;f(J.R,J.Z+8,a(q));P(K t=0;(t<<16)-1<J.1g;t++){K k,r;M(t+1H<J.1g){k=1H;r="\\0"}1r{k=J.1g-(t<<16)-t;r=""}f(J.R,J.Z+8+2+(t<<16)+(t<<2),r,b(k),b(~k))}P(K t=0;t<2o;t++){K n=t;P(K e=0;e<8;e++){M(n&1){n=-3T^n>>1&2q}1r{n=n>>1&2q}}v[t]=n}J.27=L(l,h){K o=h*(J.1n+1)+l+1;K i=J.Z+8+2+5*O.1a(o/1H+1)+o;Q i};J.2h=L(x,l,y,u){u=u>=0?u:V;K h=((u<<8|x)<<8|l)<<8|y;M(3V J.1O[h]=="S"){M(J.1A==J.2H){Q"\\0"}K o=J.1l+8+3*J.1A;J.R[o+0]=17.11(x);J.R[o+1]=17.11(l);J.R[o+2]=17.11(y);J.R[J.1j+8+J.1A]=17.11(u);J.1O[h]=17.11(J.1A++)}Q J.1O[h]};J.2s=L(){K C=J.2u();K G="35+/=";K y,h,A,H,x,F,E;K B=C.1d;K z=0;K D="";39{y=C.1o(z);H=y>>2;h=C.1o(z+1);x=(y&3)<<4|h>>4;A=C.1o(z+2);M(B<z+2){F=2z}1r{F=(h&15)<<2|A>>6}M(B<z+3){E=2z}1r{E=A&3c}D+=G.1q(H)+G.1q(x)+G.1q(F)+G.1q(E)}2F((z+=3)<B);Q D};J.2u=L(){L u(D,F,l){K E=-1;P(K G=4;G<l-4;G+=1){E=v[(E^D[F+G].1o(0))&V]^E>>8&3d}f(D,F+l-4,g(E^-1))}K y=3e;K A=3f;K x=1;K z=0;K C=A;P(K h=0;h<J.1G;h++){P(K B=-1;B<J.1n;B++){x+=J.R[J.27(B,h)].1o(0);z+=x;M((C-=1)==0){x%=y;z%=y;C=A}}}x%=y;z%=y;f(J.R,J.Z+J.1h-8,g(z<<16|x));u(J.R,J.1I,J.1J);u(J.R,J.1l,J.1B);u(J.R,J.1j,J.1L);u(J.R,J.Z,J.1h);u(J.R,J.1M,J.1C);Q"3g\\r\\n\\n"+J.R.3h("")}}})();K 1P=1Y;K 14=3.3k;K 1y=6.3l;K 3m=3.3n;K 3o=3.3p;K 1S=0.16;K 1N=0;K 18=3q;K 1Z=0;K 20=0;K 21=0;K 1m=1;K X={2x:1,2v:2,2r:3,2l:4,2e:5,2b:6,2J:7,2C:8,2A:9,2i:10};K 2G=L(l,v,h,b,j,w,g,q,m,k){Q L(E,H,z,x,B,I,y,G,F,D){M(!1P){1P=3x;1D=Y 1R(E);1e=I-G;M(1e<0){1e=0}1z=Y 1U(1e);p=Y 2D(I,y,2o);23=26/2/y;c=O.1a(H/23);d=O.1a(z/23);M(F==2){1Z=G*1v}P(K A=0;A<1e;A++){1z[A]=2k(0,A*1v+1Z,E,c,d);1W=2*O.1f(1N,2)/E}1i=y/(c-d-2);M(F==2){21=G}P(K C=0;C<1e;C++){2U(C,p,c,d,21)}29.2Q({1u:x,1s:B,1k:G,1t:F,3J:"2T:3L/3M;3N,"+p.2s()});1D=3O;1P=1Y}}}();29.3P("3Q",L(b){K a=b.2T;2y(a.3R){U"1V":M(a.N!=S){N=a.N}M(a.19!=S){1S=a.19}M(a.2V!=S){2W=a.2V}M(a.2X!=S){2Y=a.2X}M(a.1u!=S){1u=a.1u}M(a.1s!=S){1s=a.1s}M(a.1v!=S){1v=a.1v}M(a.2Z!=S){1Q=a.2Z}M(a.1t!=S){1t=a.1t}M(a.1n!=S){20=a.1n}M(a.1G!=S){28=a.1G}M(a.1k!=S){1k=a.1k}M(a.18!=S){18=a.18}M(a.1m!=S){1m=a.1m}T;U"3W":M(a.30!=S){2g=a.30}M(a.1V!=S){K f=3Y.3Z(a.1V);26=f.26;40=f.41}T;U"42":2G(N,2W,2Y,1u,1s,20,28,1k,1t,1m);T;37:}},1Y);',62,252,'|||||||||||||||||||||||||||||||||||||||||||||this|var|function|if||Math|for|return|buffer|undefined|break|case|255|scaledVal|myWindow|new|idat_offs||fromCharCode|||PI|||String|dynRangeInDB|alpha|floor|cos|rgb|length|renderWidth|pow|pix_size|idat_size|pixel_height|trns_offs|cacheWidth|plte_offs|pixelRatio|width|charCodeAt|Float32Array|charAt|else|end|cacheSide|start|myStep|real|result|TWO_PI|paint|pindex|plte_size|iend_size|myFFT|psdLog|log10|height|65535|ihdr_offs|ihdr_size|psd|trns_size|iend_offs|totalMax|palette|executed|wFunction|FFT|internalalpha|arguments|Array|config|maxPsd|imag|false|myOffset|mywidth|myDrawOffset|abs|HzStep|||sampleRate|index|myheight|self|buffer_size|HAMMING|wFunctionGauss|wFunctionTriangular|GAUSS|wFunctionCosine|threadSoundBuffer|color|TRIANGULAR|toLevelInDB|getMagnitude|COSINE|wFunctionBlackman|y2|256|wFunctionRectangular|2147483647|BLACKMAN|getBase64|wFunctionBartlettHann|getDump|BARTLETTHANN|wFunctionBartlett|BARTLETT|switch|64|RECTANGULAR|wFunctionLanczos|LANCZOS|PNGlib|wFunctionHann|while|parseData|depth|sin|HANN|data_size|fft|d2h|magnitude|be|must|postMessage|wFunctionHamming|log|data|drawOfflineSpectogram|freq|upperFreq|freq_low|lowerFreq|window|stream||48|ERROR|65534|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|toString|default||do|6931471805599453|Linear|63|16777215|65521|5552|PNG|join|level|argument|141592653589793|283185307179586|OCTAVE_FACTOR|321928094887363|emphasisPerOctave|9810717055349722|50|positive|getLevelInDB|toLinearLevel|302585092994046|sqrt|getPacketInPercent|true|100|parseInt|Object|power|of|IHDR|PLTE|tRNS|IDAT|IEND|round|img|0x|image|png|base64|null|addEventListener|message|cmd|54|306674912|46|typeof|pcm|62|JSON|parse|streamChannels|numberOfChannels|render|alert'.split('|'),0,{}))
@@ -222,8 +222,8 @@
   // <script src="js/tierHandler.js"></script>
   // <script src="js/dropBoxHandler.js"></script>
   // <script src="js/main.js"></script>
- -->
+-->
 
- </body>
+</body>
 
 </html>
