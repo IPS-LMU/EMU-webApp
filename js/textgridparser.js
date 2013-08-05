@@ -1,6 +1,6 @@
 EmuLabeller.TextGridParser = {
     init: function() {
-        this.l1 = "File type= \"ooTextFile\"";
+        this.l1 = "File type = \"ooTextFile\"";
         this.l2 = "Object class = \"TextGrid\"";
         this.ssr = 44100; // SIC! Do on init...
     },

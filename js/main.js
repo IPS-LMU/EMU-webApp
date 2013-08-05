@@ -46,8 +46,8 @@ var emulabeller = (function() {
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
     if (isiPad || autoLoad) {
-        labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 3);
-        labeller.load('data/msajc003.wav');
+        labeller.iohandler.xhrLoad('data/K67MR003.TextGrid', 3);
+        labeller.load('data/K67MR003.wav');
     }
 
 
@@ -182,7 +182,7 @@ var emulabeller = (function() {
         // alert("On mobile device!!!! Lots of things not working yet...");
         var element = document.getElementById('timeline');
         var hammertime = Hammer(element).on("touch", function(event) {
-            console.log('stop touching me says the timeline');
+            // console.log('stop touching me says the timeline');
         });
         hammertime = Hammer(element).on("doubletap", function(event) {
             // alert('stop touching me says the timeline');
