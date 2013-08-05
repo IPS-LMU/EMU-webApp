@@ -31,7 +31,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = true; // probably only good for debugging / developing
+        this.showSampleNrs = false; // probably only good for debugging / developing
 
     },
 
