@@ -5,7 +5,10 @@ EmuLabeller.TextGridParser = {
         this.ssr = 44100; // SIC! Do on init...
     },
 
-
+    /**
+    * parse a textgrid string to the specified json format
+    * 
+    */
     toJSO: function(string) {
 
         var lines = string.split("\n");
@@ -41,7 +44,7 @@ EmuLabeller.TextGridParser = {
                         events: []
                     });
                 }
-                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && curLineEl1.indexOf("intervals[") === 0) {
+                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (curLineEl1.indexOf("intervals") === 0) && (curLineEl1.indexOf("intervals:") !== 0)) {
                     // parse seg tiers event
                     eSt = Math.ceil(lines[i + 1].split(/\s+/)[3] * this.ssr);
                     eEt = Math.floor(lines[i + 2].split(/\s+/)[3] * this.ssr);
@@ -57,7 +60,7 @@ EmuLabeller.TextGridParser = {
                         startSample: eSt - 1, // correct so starts at 0
                         sampleDur: eEt - eSt
                     });
-                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points[") === 0) {
+                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points") === 0 && curLineEl1.indexOf("points:") !== 0) {
                     // parse point tier event
                     eT = lines[i + 1].split(/\s+/)[3] * this.ssr;
                     lab = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
@@ -69,12 +72,12 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            // console.log(JSON.stringify(labelJSO, undefined, 2));
+            console.log(JSON.stringify(labelJSO, undefined, 2));
             this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
         } else {
-            alert("bad header in textgrid file!!!");
+            alert("bad header in textgrid file!!! The header has to be: ", this.l1 , "\n", this.l2);
         }
 
     },
@@ -164,10 +167,10 @@ EmuLabeller.TextGridParser = {
             if (labelJSO.tiers[i].type == "seg") {
                 for (var j = 0; j < labelJSO.tiers[i].events.length - 1; j++) {
                     if (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur + 1 != labelJSO.tiers[i].events[j + 1].startSample) {
-                        console.log("######################");
-                        console.log(labelJSO.tiers[i]);
-                        console.log(labelJSO.tiers[i].events[j]);
-                        console.log(labelJSO.tiers[i].events[j + 1]);
+                        // console.log("######################");
+                        // console.log(labelJSO.tiers[i]);
+                        // console.log(labelJSO.tiers[i].events[j]);
+                        // console.log(labelJSO.tiers[i].events[j + 1]);
                         counter = counter + 1;
                     }
                 }

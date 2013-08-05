@@ -3,6 +3,7 @@ Object class = "TextGrid"
 
 xmin = 0 
 xmax = 2.582000
+
 tiers? <exists> 
 size = 3
 item []:
