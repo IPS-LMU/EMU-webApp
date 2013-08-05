@@ -148,11 +148,14 @@ EmuLabeller.Drawer.OsciDrawer = {
                 //draw lines
                 cc.moveTo(-hDbS, (this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
                 for (i = 1; i < this.peaks.length; i++) {
-                    cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height);
+                    cc.lineTo(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height+3);
                 }
                 cc.stroke();
                 // draw sample dots
                 for (i = 1; i < this.peaks.length; i++) {
+                    // if (this.peaks[i - 1] > 0 && this.peaks[i] < 0 || this.peaks[i - 1] < 0 && this.peaks[i] > 0) {
+                    //     cc.fillRect(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 50, 50);
+                    // }
                     cc.beginPath();
                     cc.arc(i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
                     cc.stroke();
