@@ -299,6 +299,10 @@ textarea {
 	background-color:#fff;
 	color:#eee;
 }
+.mini-btn:disabled {
+    background-color:#161616;
+}
+
 .mini-btn:active {
 	position:relative;
 	top:1px;
