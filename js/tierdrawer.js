@@ -69,13 +69,13 @@ EmuLabeller.Drawer.TierDrawer = {
                         cc.fillRect(posS - 4, 0, 8, canvas.height);
                     } else {
                         cc.fillStyle = this.params.startBoundaryColor;
-                        cc.fillRect(posS, 0, 1, canvas.height / 2);
+                        cc.fillRect(posS, 0, this.params.startBoundaryWidth, canvas.height / 2);
                     }
 
                     //draw segment end
                     var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1) );
                     cc.fillStyle = this.params.endBoundaryColor;
-                    cc.fillRect(posE, canvas.height / 2, 1, canvas.height);
+                    cc.fillRect(posE, canvas.height / 2, this.params.endBoundaryWidth, canvas.height);
 
                     if (emulabeller.viewPort.isSelected(tierDetails, curEvt.label, curEvt.startSample)) {
                         cc.fillStyle = this.params.selectedSegmentColor;

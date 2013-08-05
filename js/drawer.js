@@ -23,7 +23,9 @@ EmuLabeller.Drawer = {
         selectedSegmentColor: 'rgba(255, 255, 22, 0.5)',
         selectedMinimapColor: 'rgba(0, 0, 0, 0.2)',
         startBoundaryColor: '#000',
+        startBoundaryWidth: 2,
         endBoundaryColor: '#888',
+        endBoundaryWidth: 2,
         fontType: 'Verdana',
         fontPxSize: 20
     },
