@@ -724,6 +724,7 @@ EmuLabeller.tierHandler = {
                 }
             }
             emulabeller.viewPort.selectMove(this.tierInfos.tiers[myName], me);
+            emulabeller.viewPort.select(me.startSample, me.startSample);
         }
     },
 
