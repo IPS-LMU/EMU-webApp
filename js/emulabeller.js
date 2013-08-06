@@ -533,10 +533,10 @@ var EmuLabeller = {
 
         var oldStart = this.viewPort.sS;
         var oldEnd = this.viewPort.eS;
-        if (sSample) {
+        if (sSample !== undefined) {
             this.viewPort.sS = Math.round(sSample);
         }
-        if (eSample) {
+        if (eSample !== undefined) {
             this.viewPort.eS = Math.round(eSample);
         }
 
@@ -610,8 +610,8 @@ var EmuLabeller = {
         } else {
             newStartS = this.viewPort.sS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
             newEndS = this.viewPort.eS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
-
         }
+
         this.setView(newStartS, newEndS);
     },
 
