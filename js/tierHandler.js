@@ -822,10 +822,9 @@ EmuLabeller.tierHandler = {
 	 * and move that segment to that position
 	 */
 	snapToNearestZeroCrossing: function() {
-
-		console.log("snapping to nearest zero crossing")
 		var chan = emulabeller.backend.currentBuffer.getChannelData(0);
-		var leftWinData = chan.subarray(0, emulabeller.viewPort.curMouseMoveSegmentStart);
+
+		var leftWinData = chan.subarray(0, emulabeller.viewPort.curMouseMoveSegmentStart + 1);
 		var rightWinData = chan.subarray(emulabeller.viewPort.curMouseMoveSegmentStart, emulabeller.backend.currentBuffer.length);
 		//look right
 		var rightXoffset = 0;
@@ -845,13 +844,11 @@ EmuLabeller.tierHandler = {
 				break;
 			}
 		}
-
+		// see which is closer then move there
 		if (rightXoffset < leftXoffset) {
-			this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart + rightXoffset, emulabeller.viewPort.curMouseMoveTierName);
-			console.log("snap x right");
+			this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart + rightXoffset + 1, emulabeller.viewPort.curMouseMoveTierName);
 		} else {
 			this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart - leftXoffset, emulabeller.viewPort.curMouseMoveTierName);
-			console.log("snap x left")
 		}
 		emulabeller.drawBuffer();
 	}

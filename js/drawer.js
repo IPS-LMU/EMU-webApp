@@ -26,6 +26,7 @@ EmuLabeller.Drawer = {
         startBoundaryWidth: 2,
         endBoundaryColor: '#888',
         endBoundaryWidth: 2,
+        zeroLineColor: '#0DC5FF',
         fontType: 'Verdana',
         fontPxSize: 20
     },

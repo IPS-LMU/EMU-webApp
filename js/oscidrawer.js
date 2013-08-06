@@ -146,9 +146,9 @@ EmuLabeller.Drawer.OsciDrawer = {
                 }
             } else {
                 //draw lines
-                cc.moveTo(-hDbS, can.height -((this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height));
+                cc.moveTo(-hDbS, can.height - ((this.peaks[0] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height));
                 for (i = 1; i < this.peaks.length; i++) {
-                    cc.lineTo(i / k - hDbS, can.height -((this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height + 3));
+                    cc.lineTo(i / k - hDbS, can.height - ((this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height + 3));
                 }
                 cc.stroke();
                 // draw sample dots
@@ -162,15 +162,21 @@ EmuLabeller.Drawer.OsciDrawer = {
                         sNr = sNr + 1;
                     }
                 }
-                // draw zero line
-
-                cc.fillStyle = "red";
-                // cc.fillRect(0, ((my.maxPeak - my.minPeak) * Math.abs(my.minPeak) * can.height), can.width, 10);
 
             }
-
-
         }
+        // draw zero line
+        cc.strokeStyle = this.params.zeroLineColor;
+        cc.fillStyle = this.params.zeroLineColor;
+        cc.setLineDash([5]);
+        if (k >= 1) {
+            cc.strokeRect(0, can.height / 2, can.width, 2);
+            cc.fillText("0", 5, can.height / 2-5, can.width);
+        } else {
+            cc.strokeRect(0, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height), can.width, 1);
+            cc.fillText("0", 5, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height)-5, can.width);
+        }
+        cc.setLineDash(0);
 
     },
 
