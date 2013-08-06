@@ -815,6 +815,8 @@ EmuLabeller.tierHandler = {
 			}
 		}
 		emulabeller.drawBuffer();
+		// save history state
+		this.history();
 	},
 
 	/**
@@ -851,5 +853,7 @@ EmuLabeller.tierHandler = {
 			this.moveBoundary(emulabeller.viewPort.curMouseMoveSegmentStart - leftXoffset, emulabeller.viewPort.curMouseMoveTierName);
 		}
 		emulabeller.drawBuffer();
+		// save history state
+		this.history();
 	}
 };
