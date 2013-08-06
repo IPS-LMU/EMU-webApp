@@ -494,8 +494,8 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
 
-        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
-        // this.viewPort.init(62916, 65169, this.backend.currentBuffer.length); // for development
+        // this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
+        this.viewPort.init(64520, 64539, this.backend.currentBuffer.length); // for development
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
