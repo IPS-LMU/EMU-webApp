@@ -88,6 +88,14 @@ var emulabeller = (function() {
             else
                 alert("Please mark one of more segments first!");
         }
+        if (code == 9 && emulabeller.keyBindingAllowed()) { // 9 == tab
+            if (!e.shiftKey) {
+            emulabeller.tierHandler.selectNextEvent();
+            }else{
+                alert("moving backwards not implemented yet");
+            }
+            e.preventDefault();
+        }
         if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter
             emulabeller.tierHandler.addSegmentAtSelection();
             e.preventDefault();
@@ -117,7 +125,7 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 66 && emulabeller.keyBindingAllowed()) { // 66 == b
-            emulabeller.tierHandler.snapSelectedSegmentToNearestTopOrBottom(false);
+            emulabeller.tierHandler.snapSelectedBoundaryToNearestTopOrBottom(false);
             e.preventDefault();
         }
         if (code == 68 && emulabeller.keyBindingAllowed()) { // 68 == d
@@ -158,7 +166,7 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 84 && emulabeller.keyBindingAllowed()) { // 84 == t
-            emulabeller.tierHandler.snapSelectedSegmentToNearestTopOrBottom(true);
+            emulabeller.tierHandler.snapSelectedBoundaryToNearestTopOrBottom(true);
             e.preventDefault();
         }
         if (code == 87 && emulabeller.keyBindingAllowed()) { // 87 == w
