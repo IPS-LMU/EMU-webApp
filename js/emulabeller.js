@@ -393,6 +393,25 @@ var EmuLabeller = {
 
     },
     
+    start: function(){
+        var my=this;
+        switch (my.externalMode) {
+            case my.USAGEMODE.STANDALONE:
+                 // 
+                break;
+            case my.USAGEMODE.SERVER:
+               
+                    this.iohandler.onConnected(function(evt){my.connected(evt);});
+                    this.iohandler.onUtteranceList(function(utteranceList){my.availableUtterances(utteranceList);});        
+    
+                    this.iohandler.start();
+                break;
+            default:  
+                break;
+        }
+
+    },
+
     connected: function(evt){
     	//this.hideModalDialog();
         console.log("Connected to emuSX");
