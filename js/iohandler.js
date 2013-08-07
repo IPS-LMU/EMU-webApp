@@ -28,10 +28,10 @@ EmuLabeller.IOhandler = {
         console.log("supposed to save stuff to websocket! Websockets not implemented yet");
     },
 
-    xhrLoad: function(src, fileType) {
+    xhrLoad: function(src, responseType, fileType) {
         var my = this;
         var xhr = new XMLHttpRequest();
-        xhr.responseType = 'text';
+        xhr.responseType = responseType;
 
         xhr.addEventListener('load', function(e) {
             emulabeller.newFileType = fileType;

@@ -505,22 +505,6 @@ var EmuLabeller = {
 
     },
 
-    /**
-     * Loads an audio file via XHR.
-     */
-    load: function(src) {
-        var my = this;
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'arraybuffer';
-
-        xhr.addEventListener('load', function(e) {
-            my.backend.loadData(
-                e.target.response,
-                my.newlyLoadedBufferReady.bind(my)); //webaudio.js loadData function called
-        }, false);
-        xhr.open('GET', src, true);
-        xhr.send();
-    },
 
     /**
      * set view port to start and end sample

@@ -72,7 +72,7 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            console.log(JSON.stringify(labelJSO, undefined, 2));
+            // console.log(JSON.stringify(labelJSO, undefined, 2));
             this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
