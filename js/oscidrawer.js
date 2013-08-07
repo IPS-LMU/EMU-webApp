@@ -113,7 +113,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         }
         //set font
         cc.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
-        
+
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / can.width; // PCM Samples per new pixel
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
@@ -241,6 +241,11 @@ EmuLabeller.Drawer.OsciDrawer = {
     drawVpOsciMarkup: function() {
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
+        console.log("######################");
+        console.log("selectS ", emulabeller.viewPort.selectS);
+        console.log("selectE ", emulabeller.viewPort.selectE);
+        console.log(emulabeller.viewPort.curMouseMoveTierType);
+
 
         cc.strokeStyle = this.params.labelColor;
         cc.fillStyle = this.params.labelColor;
@@ -270,44 +275,50 @@ EmuLabeller.Drawer.OsciDrawer = {
 
 
         //draw emulabeller.viewPortselected
-        if (emulabeller.viewPort.selectS !== 0 && emulabeller.viewPort.selectE !== 0) {
+        if (emulabeller.viewPort.selectS !== -1 && emulabeller.viewPort.selectE !== -1) {
             var posS = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectS);
             var posE = emulabeller.viewPort.getPos(this.osciCanvas.width, emulabeller.viewPort.selectE);
             var sDist = emulabeller.viewPort.getSampleDist(this.osciCanvas.width);
-
+            var xOffset;
             if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
+                // calc. offset dependant on type of tier of mousemove  -> default is sample exact
+                if (emulabeller.viewPort.curMouseMoveTierType == "seg") {
+                    xOffset = 0;
+                } else {
+                    xOffset = (sDist / 2);
+                }
                 cc.fillStyle = this.params.selectedBorderColor;
-                cc.fillRect(posS + sDist / 2, 0, 1, this.osciCanvas.height);
+                cc.fillRect(posS + xOffset, 0, 1, this.osciCanvas.height);
                 cc.fillStyle = this.params.labelColor;
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR), 6), posS + 5, this.params.fontPxSize);
-                cc.fillText(emulabeller.viewPort.selectS, posS + 5, this.params.fontPxSize * 2);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR) / 2, 6), posS + xOffset + 5, this.params.fontPxSize);
+                cc.fillText(emulabeller.viewPort.selectS, posS + xOffset + 5, this.params.fontPxSize * 2);
             } else {
                 cc.fillStyle = this.params.selectedAreaColor;
-                cc.fillRect(posS, 0, posE - posS + sDist, this.osciCanvas.height);
+                cc.fillRect(posS, 0, posE - posS, this.osciCanvas.height);
                 cc.strokeStyle = this.selBoundColor;
                 cc.beginPath();
                 cc.moveTo(posS, 0);
                 cc.lineTo(posS, this.osciCanvas.height);
-                cc.moveTo(posE + sDist, 0);
-                cc.lineTo(posE + sDist, this.osciCanvas.height);
+                cc.moveTo(posE, 0);
+                cc.lineTo(posE, this.osciCanvas.height);
                 cc.closePath();
                 cc.stroke();
                 cc.fillStyle = this.params.labelColor;
                 // start values
-                var tW = cc.measureText(emulabeller.viewPort.selectS).width + sDist;
+                var tW = cc.measureText(emulabeller.viewPort.selectS).width;
                 cc.fillText(emulabeller.viewPort.selectS, posS - tW - 4, this.params.fontPxSize);
                 tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR - (1 / this.sR) / 2, 6), posS - tW - 4, this.params.fontPxSize * 2);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS - tW - 4, this.params.fontPxSize * 2);
                 // end values
                 cc.fillText(emulabeller.viewPort.selectE, posE + 5, this.params.fontPxSize);
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR + (1 / this.sR) / 2, 6), posE + 5, this.params.fontPxSize * 2);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR, 6), posE + 5, this.params.fontPxSize * 2);
                 // dur values
                 // check if space
                 if (posE - posS > cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width) {
                     tW = cc.measureText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS).width;
                     cc.fillText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize);
                     tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                    cc.fillText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR - 1 / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize * 2);
+                    cc.fillText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize * 2);
                 }
 
             }

@@ -21,8 +21,8 @@ EmuLabeller.ViewPort = {
         this.sS = sSample;
         this.eS = eSample;
 
-        this.selectS = 0;
-        this.selectE = 0;
+        this.selectS = -1;
+        this.selectE = -1;
         this.bufferLength = bufferLength; // on init
 
         // red line on wave & spectro
@@ -42,6 +42,7 @@ EmuLabeller.ViewPort = {
 
         // id of tier and segment MOVED on
         this.curMouseMoveTierName = "";
+        this.curMouseMoveTierType = "";
         this.curMouseMoveSegmentName = "";
         this.curMouseMoveSegmentStart = "";
         this.curMouseMoveSegmentDuration = "";
@@ -53,7 +54,7 @@ EmuLabeller.ViewPort = {
     },
 
     /**
-     * set selected Area 
+     * set selected Area
      * @param start of selected Area
      * @param end of seleected Area
      */
@@ -61,13 +62,14 @@ EmuLabeller.ViewPort = {
         this.selectS = start;
         this.selectE = end;
     },
-    
+
     selectMove: function(tier, evt) {
         this.curMouseMoveTierName = tier.TierName;
+        this.curMouseMoveTierType = tier.type;
         this.curMouseMoveSegmentName = this.getId(tier, evt.label, evt.startSample);
         this.curMouseMoveSegmentStart = evt.startSample;
         this.curMouseMoveSegmentDuration = evt.sampleDur;
-    },    
+    },
     /**
      * get pixel position in current viewport given the canvas width
      * @param w is width of canvas
@@ -105,15 +107,15 @@ EmuLabeller.ViewPort = {
         var id = this.getId(tier, evt.label, evt.startSample);
         this.MouseSegmentName = id;
         this.uiInfo[id] = isSelected;
-        this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width)/2));
+        this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width) / 2));
     },
-    
+
     setSelectPoint: function(tier, evt, isSelected, width) {
         var id = this.getId(tier, evt.label, evt.startSample);
         this.MouseSegmentName = id;
         this.uiInfo[id] = isSelected;
         this.resizeSelectArea(evt.startSample, evt.startSample);
-    },    
+    },
 
     resizeSelectArea: function(start, end) {
         this.selectS = start;
@@ -131,7 +133,7 @@ EmuLabeller.ViewPort = {
         var id = this.getId(tier, evt.label, evt.startSample);
         if (this.uiInfo[id - 1] ||  this.uiInfo[id + 1]) {
             this.uiInfo[id] = isSelected;
-            this.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width)/2));
+            this.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width) / 2));
             return true;
         } else return false;
     },
@@ -155,7 +157,7 @@ EmuLabeller.ViewPort = {
         } else
             return false;
     },
-    
+
 
     countSelected: function() {
         var x = 0;
@@ -186,10 +188,10 @@ EmuLabeller.ViewPort = {
     },
 
     /**
-    * round to n decimal digits after the comma
-    * used to help display numbers with a given
-    * precision
-    */
+     * round to n decimal digits after the comma
+     * used to help display numbers with a given
+     * precision
+     */
     round: function(x, n) {
         if (n < 1 || n > 14) alert("error in call of round function!!");
         var e = Math.pow(10, n);

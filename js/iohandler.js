@@ -5,9 +5,9 @@ EmuLabeller.IOhandler = {
      * needed for correct conversion of different file types
      */
     init: function(backendSR, externalMode) {
-    	var my=this;
-    	
-    	this.externalMode=externalMode;
+        var my = this;
+
+        this.externalMode = externalMode;
         // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
         this.textGridHandler.init();
@@ -20,42 +20,46 @@ EmuLabeller.IOhandler = {
             this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
             this.socketIOhandler.init();
             // register callbacks
-            this.socketIOhandler.onConnect(function(evt){my.websocketConnected(evt)});
-            this.socketIOhandler.onDisconnect(function(evt){my.websocketDisconnected(evt)});
+            this.socketIOhandler.onConnect(function(evt) {
+                my.websocketConnected(evt)
+            });
+            this.socketIOhandler.onDisconnect(function(evt) {
+                my.websocketDisconnected(evt)
+            });
         }
     },
-    
-    start: function(){
-    	if (this.externalMode.value == 0) {
+
+    start: function() {
+        if (this.externalMode.value == 0) {
             this.socketIOhandler.startTryConnect();
-        }else{
-            this.connectEventHandler(evt);	    
+        } else {
+            this.connectEventHandler(evt);
         }
     },
-    
-    websocketConnected: function(evt){
-        if(this.connectEventHandler){
-        	this.connectEventHandler(evt);	 
-    	}
+
+    websocketConnected: function(evt) {
+        if (this.connectEventHandler) {
+            this.connectEventHandler(evt);
+        }
     },
-    
-     /**
+
+    /**
      *  Register callback for server connection event
      */
-    onConnected: function(eventHandler){
-    	this.connectEventHandler=eventHandler;	    
+    onConnected: function(eventHandler) {
+        this.connectEventHandler = eventHandler;
     },
     /**
      *  Register callback for new utterance list
      */
-    onUtteranceList: function(eventHandler){
-    	this.socketIOhandler.onUtteranceList(eventHandler);	    
+    onUtteranceList: function(eventHandler) {
+        this.socketIOhandler.onUtteranceList(eventHandler);
     },
     /**
      *  Register callback for disconnect event
      */
-    onDisconnected: function(eventHandler){
-    	this.disconnectEventHandler=eventHandler;	    
+    onDisconnected: function(eventHandler) {
+        this.disconnectEventHandler = eventHandler;
     },
     
     websocketLoad: function(uttCode) {
@@ -66,18 +70,25 @@ EmuLabeller.IOhandler = {
     websocketSave: function() {
         console.log("supposed to save stuff to websocket! Websockets not implemented yet");
     },
-    
-    websocketDisconnected: function(evt){
-    	if(this.disconnectEventHandler){
-    	    this.disconnectEventHandler(evt);
-    	}
+
+
+    websocketDisconnected: function(evt) {
+        if (this.disconnectEventHandler) {
+            this.disconnectEventHandler(evt);
+        }
     },
-    disconnect: function(){
-    	if (this.externalMode.value == 0) {
+    disconnect: function() {
+        if (this.externalMode.value == 0) {
             this.socketIOhandler.requestDisconnect();
-        }	    
+        }
     },
-   
+    
+    /**
+    * load a file using xhr
+    * @param src path to file on server 
+    * @param responseType set on xhr object
+    * @param fileType accoring to filetype nr in emulabeller
+    */
     xhrLoad: function(src, responseType, fileType) {
         var my = this;
         var xhr = new XMLHttpRequest();
@@ -103,6 +114,7 @@ EmuLabeller.IOhandler = {
         res = this.textGridHandler.toJSO(string);
         return res;
     },
+
     /**
      *
      */
@@ -112,10 +124,9 @@ EmuLabeller.IOhandler = {
         return res;
     },
 
-    addUiInfosToTierInfosObj: function(JSO) {},
-
-    removeUiInfosToTierInfosObj: function(JSO) {},
-
+    /**
+     *
+     */
     dropBoxOpen: function() {
         this.DropBoxHandler.openDropBox();
     }
