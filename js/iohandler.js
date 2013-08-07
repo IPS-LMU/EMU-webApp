@@ -28,6 +28,12 @@ EmuLabeller.IOhandler = {
         console.log("supposed to save stuff to websocket! Websockets not implemented yet");
     },
 
+    /**
+    * load a file using xhr
+    * @param src path to file on server 
+    * @param responseType set on xhr object
+    * @param fileType accoring to filetype nr in emulabeller
+    */
     xhrLoad: function(src, responseType, fileType) {
         var my = this;
         var xhr = new XMLHttpRequest();
@@ -53,6 +59,7 @@ EmuLabeller.IOhandler = {
         res = this.textGridHandler.toJSO(string);
         return res;
     },
+
     /**
      *
      */
@@ -62,10 +69,9 @@ EmuLabeller.IOhandler = {
         return res;
     },
 
-    addUiInfosToTierInfosObj: function(JSO) {},
-
-    removeUiInfosToTierInfosObj: function(JSO) {},
-
+    /**
+     *
+     */
     dropBoxOpen: function() {
         this.DropBoxHandler.openDropBox();
     }

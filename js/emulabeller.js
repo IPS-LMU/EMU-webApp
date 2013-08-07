@@ -221,9 +221,9 @@ var EmuLabeller = {
                     my.prepDownload();
                     break;
 
-                case "cmd_download":
-                    my.prepDownload();
-                    break;
+                // case "cmd_download":
+                //     my.prepDownload();
+                //     break;
 
                 case "cmd_viewZoomAll":
                     my.setView(-Infinity, Infinity);
@@ -837,9 +837,10 @@ var EmuLabeller = {
      * will then be presented as a link in the top menu
      */
     prepDownload: function() {
+        console.log("prepDownload");
         var MIME_TYPE = 'text/plain';
         var output = document.querySelector('#downLinkDiv');
-        window.URL = window.webkitURL || window.URL;
+        // window.URL = window.webkitURL || window.URL;
         // var prevLink;
         // try {
         //     prevLink = output.querySelector('a');
@@ -862,21 +863,21 @@ var EmuLabeller = {
         a.href = window.URL.createObjectURL(bb);
         a.textContent = 'Download ready';
 
-        a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
-        a.draggable = true; // Don't really need, but good practice.
-        a.classList.add('dragout');
+        // a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+        // a.draggable = true; // Don't really need, but good practice.
+        // a.classList.add('dragout');
 
         // output.innerHTML = '';
         output.appendChild(a);
 
-        // a.onclick = function(e) {
+        a.onclick = function(e) {
         //     if ('disabled' in this.dataset) {
         //         return false;
         //     }
-        //     a.textContent = 'Downloaded';
-        //     a.dataset.disabled = true;
-        //     // cleanUp(this);
-        // };
+            a.textContent = 'Downloaded';
+            // a.dataset.disabled = true;
+            // cleanUp(this);
+        };
     },
 
     /**
