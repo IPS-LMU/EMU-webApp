@@ -5,7 +5,9 @@ EmuLabeller.IOhandler = {
      * needed for correct conversion of different file types
      */
     init: function(backendSR, externalMode) {
+        var my = this;
 
+        this.externalMode = externalMode;
         // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
         this.textGridHandler.init();
@@ -17,7 +19,47 @@ EmuLabeller.IOhandler = {
         if (externalMode.value == 0) {
             this.socketIOhandler = Object.create(EmuLabeller.socketIOhandler);
             this.socketIOhandler.init();
+            // register callbacks
+            this.socketIOhandler.onConnect(function(evt) {
+                my.websocketConnected(evt)
+            });
+            this.socketIOhandler.onDisconnect(function(evt) {
+                my.websocketDisconnected(evt)
+            });
         }
+    },
+
+    start: function() {
+        if (this.externalMode.value == 0) {
+            this.socketIOhandler.startTryConnect();
+        } else {
+            this.connectEventHandler(evt);
+        }
+    },
+
+    websocketConnected: function(evt) {
+        if (this.connectEventHandler) {
+            this.connectEventHandler(evt);
+        }
+    },
+
+    /**
+     *  Register callback for server connection event
+     */
+    onConnected: function(eventHandler) {
+        this.connectEventHandler = eventHandler;
+    },
+    /**
+     *  Register callback for new utterance list
+     */
+    onUtteranceList: function(eventHandler) {
+        this.socketIOhandler.onUtteranceList(eventHandler);
+    },
+    /**
+     *  Register callback for disconnect event
+     */
+    onDisconnected: function(eventHandler) {
+        this.disconnectEventHandler = eventHandler;
     },
 
     websocketLoad: function(uttName) {
@@ -28,6 +70,18 @@ EmuLabeller.IOhandler = {
         console.log("supposed to save stuff to websocket! Websockets not implemented yet");
     },
 
+
+    websocketDisconnected: function(evt) {
+        if (this.disconnectEventHandler) {
+            this.disconnectEventHandler(evt);
+        }
+    },
+    disconnect: function() {
+        if (this.externalMode.value == 0) {
+            this.socketIOhandler.requestDisconnect();
+        }
+    },
+    
     /**
     * load a file using xhr
     * @param src path to file on server 
