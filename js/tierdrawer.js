@@ -73,7 +73,7 @@ EmuLabeller.Drawer.TierDrawer = {
                     }
 
                     //draw segment end
-                    var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1) );
+                    var posE = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample + curEvt.sampleDur + 1));
                     cc.fillStyle = this.params.endBoundaryColor;
                     cc.fillRect(posE, canvas.height / 2, this.params.endBoundaryWidth, canvas.height);
 
@@ -172,31 +172,37 @@ EmuLabeller.Drawer.TierDrawer = {
         var posS = Math.round(emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS));
         var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
         var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
-        
+        var xOffset;
 
         cc.strokeStyle = this.params.selectedBorderColor;
         cc.fillStyle = this.params.selectedBorderColor;
 
         //draw sel boundaries if not separate then single line with circle
         if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-            if (emulabeller.viewPort.selectS !== 0) {
+            if (emulabeller.viewPort.selectS !== -1) {
+                // calc. offset dependant on type of tier of mousemove  -> default is sample exact
+                if (emulabeller.viewPort.curMouseMoveTierType == "seg") {
+                    xOffset = 0;
+                } else {
+                    xOffset = (sDist / 2);
+                }
                 // draw clickbox + pos line
-                var curPos = posS + sDist / 2;
-                cc.fillRect(curPos - 5, 0, 10, 10);
+                var curPos = posS;
+                cc.fillRect(curPos - 5 + xOffset, 0, 10, 10);
                 cc.beginPath();
-                cc.moveTo(curPos, 10);
-                cc.lineTo(curPos, canvas.height);
+                cc.moveTo(curPos + xOffset, 10);
+                cc.lineTo(curPos + xOffset, canvas.height);
                 cc.stroke();
             }
 
         } else {
             cc.fillStyle = my.params.selectedAreaColor;
-            cc.fillRect(posS, 0, posE - posS + sDist , canvas.height);
+            cc.fillRect(posS, 0, posE - posS, canvas.height);
             cc.beginPath();
             cc.moveTo(posS, 0);
             cc.lineTo(posS, canvas.height);
-            cc.moveTo(posE+sDist, 0);
-            cc.lineTo(posE+sDist, canvas.height);
+            cc.moveTo(posE, 0);
+            cc.lineTo(posE, canvas.height);
             cc.stroke();
 
         }
