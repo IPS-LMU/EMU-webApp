@@ -316,6 +316,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
+		console.log(tierDetails.type)
 		//deselect everything
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		emulabeller.viewPort.setSelectTier(tierDetails.TierName);
@@ -328,6 +329,7 @@ EmuLabeller.tierHandler = {
 			if (null != nearest) {
 
 				emulabeller.viewPort.curMouseMoveTierName = nearest.label;
+				emulabeller.viewPort.curMouseMoveTierType = tierDetails.type;
 				emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
 				emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
 				emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
@@ -339,6 +341,7 @@ EmuLabeller.tierHandler = {
 			var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
 			if (null != nearest) {
 				emulabeller.viewPort.curMouseMoveTierName = nearest.label;
+				emulabeller.viewPort.curMouseMoveTierType = tierDetails.type;
 				emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
 				emulabeller.viewPort.curMouseMoveSegmentStart = nearest.startSample;
 				emulabeller.viewPort.curMouseMoveSegmentDuration = nearest.sampleDur;
