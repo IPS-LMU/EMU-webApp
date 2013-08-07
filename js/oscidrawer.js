@@ -31,7 +31,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = false; // probably only good for debugging / developing
+        this.showSampleNrs = true; // probably only good for debugging / developing
 
     },
 
@@ -111,6 +111,9 @@ EmuLabeller.Drawer.OsciDrawer = {
             cc = this.osciCanvas.getContext("2d");
             can = my.osciCanvas;
         }
+        //set font
+        cc.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
+        
         var k = (emulabeller.viewPort.eS - emulabeller.viewPort.sS + 1) / can.width; // PCM Samples per new pixel
         // Draw WebAudio emulabeller.backend.currentBuffer peaks using draw frame
         if (this.peaks && k >= 1) {
@@ -158,7 +161,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                     cc.stroke();
                     cc.fill();
                     if (this.showSampleNrs) {
-                        cc.fillText(sNr, i / k - hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
+                        cc.fillText(sNr, i / k - hDbS, can.height - (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height - 10);
                         sNr = sNr + 1;
                     }
                 }

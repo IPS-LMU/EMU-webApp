@@ -76,11 +76,11 @@ EmuLabeller.IOhandler = {
             this.socketIOhandler.requestDisconnect();
         }	    
     },
-    
-    xhrLoad: function(src, fileType) {
+   
+    xhrLoad: function(src, responseType, fileType) {
         var my = this;
         var xhr = new XMLHttpRequest();
-        xhr.responseType = 'text';
+        xhr.responseType = responseType;
 
         xhr.addEventListener('load', function(e) {
             emulabeller.newFileType = fileType;
