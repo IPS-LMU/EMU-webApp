@@ -3,7 +3,7 @@ var emulabeller = (function() {
 
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
-    var autoLoad = false;
+    var autoLoad = true;
 
 
     var tierInfos = {
@@ -39,7 +39,7 @@ var emulabeller = (function() {
         internalCanvasWidth: '2048', // in pixel
         internalCanvasHeightSmall: '128', // in pixel -> Cans
         internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro
-        mode: 'server' // server or standalone
+        mode: 'standalone' // server or standalone
     });
 
 
