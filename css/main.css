@@ -218,7 +218,7 @@ canvas {
     height:37px;
 }
 
-#isScrollable {
+.isScrollable {
     z-index: 9999;
     height: 800px; /* Fix a height here */
     overflow-y: auto;
@@ -341,5 +341,10 @@ textarea {
     left:0px;
     width:100%;    
     background: #000;    
+}
+
+#cmd_disconnect{
+    display: none;
+    visibility: hidden;
 }
 

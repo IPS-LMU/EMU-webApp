@@ -273,6 +273,10 @@ var EmuLabeller = {
                     my.tierHandler.renameTier();
                     break;
 
+                case "cmd_disconnect":
+                    my.iohandler.disconnect();
+                    break;
+
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
                     my.tierHandler.removeLabelDoubleClick();
@@ -393,7 +397,62 @@ var EmuLabeller = {
 
     },
 
+    /**
+    * Starts labeller.
+    * In server mode: Tries to connect to emuSX server
+    */
+    start: function(){
+     	var my=this;
+    	switch (my.externalMode) {
+            case my.USAGEMODE.STANDALONE:
+                 // 
+                break;
+            case my.USAGEMODE.SERVER:
+               
+    		    this.iohandler.onConnected(function(evt){my.connected(evt);});
+    		    this.iohandler.onUtteranceList(function(utteranceList){my.availableUtterances(utteranceList);});	    
+    
+    		    this.iohandler.start();
+                break;
+            default:  
+                break;
+        }
 
+    },
+    
+    connected: function(evt){
+    	//this.hideModalDialog();
+        console.log("Connected to emuSX");
+    },
+    
+    /*
+    * Called on receive of utterance list from emuSX server
+    */
+    availableUtterances: function(ul){
+    	
+    	//if(ul.length==1){
+    		// one selected utterance
+    		// open directly
+    		// TODO
+    	//}else{
+    		var le=$('#utteranceList');
+    		var ulHtml='';
+    		for(var i=0;i<ul.length;i++){
+    			var u=ul[i];
+    			var uttCode=u['code'];
+    			ulHtml=ulHtml + "<a href=\""+u.code+"\">"+u.code+"</a>";
+    			//ulHtml=ulHtml + "<li>"+u.code+"</li>";
+    		}
+    		ulHtml =ulHtml +
+    		
+    		'';
+    		ulHtml =ulHtml + '<p>[Utterance selection not yet implemented]</p>';
+    		le.html(ulHtml);
+    		console.log('Update available utterances');
+    		this.openSubmenu();
+    	//}
+    },
+    
     /**
      * delegates draw buffer event
      * to drawer objects
@@ -909,5 +968,11 @@ var EmuLabeller = {
         if (message == "stopServer") {
             window.close();
         }
+    },
+
+    
+    disconnected: function(evt){
+         console.log("Disconnected from emuSX");
     }
+
 };
