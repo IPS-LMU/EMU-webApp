@@ -430,11 +430,14 @@ var EmuLabeller = {
     */
     availableUtterances: function(ul){
     	
-    	//if(ul.length==1){
+    	if(ul.length==1){
     		// one selected utterance
     		// open directly
-    		// TODO
-    	//}else{
+    		var utt=ul[0];
+    		var uttCode=utt.code;
+    		console.log("Request utterance ",uttCode," from emuSX server");
+    		this.iohandler.websocketLoad(uttCode);
+    	}else{
     		var le=$('#utteranceList');
     		var ulHtml='';
     		for(var i=0;i<ul.length;i++){
@@ -450,7 +453,7 @@ var EmuLabeller = {
     		le.html(ulHtml);
     		console.log('Update available utterances');
     		this.openSubmenu();
-    	//}
+    	}
     },
     
     /**
