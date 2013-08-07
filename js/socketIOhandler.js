@@ -11,7 +11,7 @@ EmuLabeller.socketIOhandler = {
         console.log("init sockets");
         this.DEFAULT_WS_URI="ws://localhost:7681/";
         this.wsUri = this.DEFAULT_WS_URI;
-        this.retryInterval=1000;
+        this.retryInterval=10000;
         var db=$('#cmd_disconnect');
         db.css("display","inline"),
         db.css("visibility","visible");
@@ -126,16 +126,23 @@ EmuLabeller.socketIOhandler = {
     },
 
     onMessage: function(evt){
-        console.log("ON MESSAGE with message: ", evt.data);
+    	    
+    	var dType=typeof evt.data;
+    	if(dType === 'string'){
+    	console.log("ON MESSAGE with message: ", evt.data);
+        
         var ul=JSON.parse(evt.data);
         if(this.utteranceListHandler){
          this.utteranceListHandler(ul);
+        }
+        }else{
+        	console.log("ON MESSAGE with binary message: ");
         }
     },
 
     onError: function(evt){
     	var my=this;
-        console.log("ON ERROR");
+        console.log("ON ERROR",evt);
     },
     doSend: function(message){
         websocket.send(message);
@@ -145,6 +152,15 @@ EmuLabeller.socketIOhandler = {
     	var reqJSON=JSON.stringify(request);
 	console.log("Sending: "+reqJSON);
 	this.doSend(reqJSON);
+    },
+    
+    loadUtterance: function(uttCode){
+    	    // TODO load audio for now
+    	 var r=new sIOrequest('req_audio');
+    	 r.code=uttCode;
+    	 this.sendRequest(r);
     }
+    
+    
 
 };

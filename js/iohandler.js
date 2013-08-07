@@ -58,8 +58,9 @@ EmuLabeller.IOhandler = {
     	this.disconnectEventHandler=eventHandler;	    
     },
     
-    websocketLoad: function(uttName) {
-        console.log(uttName, "requested! Websockets not implemented yet");
+    websocketLoad: function(uttCode) {
+        // delegate
+        this.socketIOhandler.loadUtterance(uttCode);
     },
 
     websocketSave: function() {
