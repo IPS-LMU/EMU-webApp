@@ -41,6 +41,22 @@
             <a href="#">utterance 20</a>
           </div>
         </nav>
+        <div id="startupDialog" class="popup">
+            <h2>Waiting for socketserver connection in R</h2>
+            <div>
+                <label for="websocketURI">URI</label>
+                <input type="text" id="websocketURI" value="ws://localhost:7681/" />
+                <div class="css_spinner">
+                    <div class="half left">
+                        <div class="band"></div>
+                    </div>
+                    <div class="half right">
+                        <div class="band"></div>
+                    </div>
+                </div>
+                <button class="mini-btn" id="cmd_cancelWebsocketWait">Cancel</button>
+            </div>
+        </div>
         
         <div id="specDialog" title="Spectogram Settings" style="display:none;">
           <p>View Range (Hz)</p>
