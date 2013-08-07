@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         "js/main.js"
     ];
 
-    var allCssFiles = ['css/main.css', 'css/menu.css', 'css/tooltip.css', 'css/modal.css'];
+    var allCssFiles = ['css/main.css', 'css/menu.css', 'css/tooltip.css', 'css/modal.css', 'css/spinner.css'];
 
     // Project configuration.
     grunt.initConfig({
