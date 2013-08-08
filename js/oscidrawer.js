@@ -31,7 +31,7 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.forTesting = 1;
 
         this.sR = 44100; // SIC not good hardcoded
-        this.showSampleNrs = true; // probably only good for debugging / developing
+        this.showSampleNrs = false; // probably only good for debugging / developing
 
     },
 
@@ -139,7 +139,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                 // draw sample dots
                 for (i = 0; i < this.peaks.length; i++) {
                     cc.beginPath();
-                    cc.arc(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height, 4, 0, 2 * Math.PI, false);
+                    cc.arc(i / k + hDbS, (this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height-3, 4, 0, 2 * Math.PI, false);
                     cc.stroke();
                     cc.fill();
                     if (this.showSampleNrs) {
@@ -157,7 +157,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                 // draw sample dots
                 for (i = 1; i < this.peaks.length; i++) {
                     cc.beginPath();
-                    cc.arc(i / k - hDbS, can.height - ((this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height), 4, 0, 2 * Math.PI, false);
+                    cc.arc(i / k - hDbS, can.height - ((this.peaks[i] - my.minPeak) / (my.maxPeak - my.minPeak) * can.height)-3, 4, 0, 2 * Math.PI, false);
                     cc.stroke();
                     cc.fill();
                     if (this.showSampleNrs) {
@@ -241,11 +241,6 @@ EmuLabeller.Drawer.OsciDrawer = {
     drawVpOsciMarkup: function() {
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
-        // console.log("######################");
-        // console.log("selectS ", emulabeller.viewPort.selectS);
-        // console.log("selectE ", emulabeller.viewPort.selectE);
-        // console.log(emulabeller.viewPort.curMouseMoveTierType);
-
 
         cc.strokeStyle = this.params.labelColor;
         cc.fillStyle = this.params.labelColor;
