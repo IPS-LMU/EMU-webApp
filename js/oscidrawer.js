@@ -241,10 +241,10 @@ EmuLabeller.Drawer.OsciDrawer = {
     drawVpOsciMarkup: function() {
         var my = this;
         var cc = this.osciCanvas.getContext("2d");
-        console.log("######################");
-        console.log("selectS ", emulabeller.viewPort.selectS);
-        console.log("selectE ", emulabeller.viewPort.selectE);
-        console.log(emulabeller.viewPort.curMouseMoveTierType);
+        // console.log("######################");
+        // console.log("selectS ", emulabeller.viewPort.selectS);
+        // console.log("selectE ", emulabeller.viewPort.selectE);
+        // console.log(emulabeller.viewPort.curMouseMoveTierType);
 
 
         cc.strokeStyle = this.params.labelColor;

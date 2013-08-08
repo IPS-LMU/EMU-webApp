@@ -221,9 +221,9 @@ var EmuLabeller = {
                     my.prepDownload();
                     break;
 
-                // case "cmd_download":
-                //     my.prepDownload();
-                //     break;
+                    // case "cmd_download":
+                    //     my.prepDownload();
+                    //     break;
 
                 case "cmd_viewZoomAll":
                     my.setView(-Infinity, Infinity);
@@ -392,60 +392,64 @@ var EmuLabeller = {
         $("#cans").disableSelection();
 
     },
-    
-    start: function(){
-        var my=this;
+
+    start: function() {
+        var my = this;
         switch (my.externalMode) {
             case my.USAGEMODE.STANDALONE:
-                 // 
+                // 
                 break;
             case my.USAGEMODE.SERVER:
-               
-                    this.iohandler.onConnected(function(evt){my.connected(evt);});
-                    this.iohandler.onUtteranceList(function(utteranceList){my.availableUtterances(utteranceList);});        
-    
-                    this.iohandler.start();
+
+                this.iohandler.onConnected(function(evt) {
+                    my.connected(evt);
+                });
+                this.iohandler.onUtteranceList(function(utteranceList) {
+                    my.availableUtterances(utteranceList);
+                });
+
+                this.iohandler.start();
                 break;
-            default:  
+            default:
                 break;
         }
 
     },
 
-    connected: function(evt){
-    	//this.hideModalDialog();
+    connected: function(evt) {
+        //this.hideModalDialog();
         console.log("Connected to emuSX");
     },
-    
+
     /*
-    * Called on receive of utterance list from emuSX server
-    */
-    availableUtterances: function(ul){
-    	
-    	if(ul.length==1){
-    		// one selected utterance
-    		// open directly
-    		var utt=ul[0];
-    		var uttCode=utt.code;
-    		console.log("Request utterance ",uttCode," from emuSX server");
-    		this.iohandler.websocketLoad(uttCode);
-    	}else{
-    		var le=$('#utteranceList');
-    		var ulHtml='';
-    		for(var i=0;i<ul.length;i++){
-    			var u=ul[i];
-    			var uttCode=u['code'];
-    			ulHtml=ulHtml + "<a href=\""+u.code+"\">"+u.code+"</a>";
-    			//ulHtml=ulHtml + "<li>"+u.code+"</li>";
-    		}
-    		ulHtml =ulHtml +
-    		
-    		'';
-    		ulHtml =ulHtml + '<p>[Utterance selection not yet implemented]</p>';
-    		le.html(ulHtml);
-    		console.log('Update available utterances');
-    		this.openSubmenu();
-    	}
+     * Called on receive of utterance list from emuSX server
+     */
+    availableUtterances: function(ul) {
+
+        if (ul.length == 1) {
+            // one selected utterance
+            // open directly
+            var utt = ul[0];
+            var uttCode = utt.code;
+            console.log("Request utterance ", uttCode, " from emuSX server");
+            this.iohandler.websocketLoad(uttCode);
+        } else {
+            var le = $('#utteranceList');
+            var ulHtml = '';
+            for (var i = 0; i < ul.length; i++) {
+                var u = ul[i];
+                var uttCode = u['code'];
+                ulHtml = ulHtml + "<a href=\"" + u.code + "\">" + u.code + "</a>";
+                //ulHtml=ulHtml + "<li>"+u.code+"</li>";
+            }
+            ulHtml = ulHtml +
+
+            '';
+            ulHtml = ulHtml + '<p>[Utterance selection not yet implemented]</p>';
+            le.html(ulHtml);
+            console.log('Update available utterances');
+            this.openSubmenu();
+        }
     },
 
     /**
@@ -548,8 +552,8 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
 
-        // this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
-        this.viewPort.init(0, 18, this.backend.currentBuffer.length); // for development
+        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
+        // this.viewPort.init(10365, 18660, this.backend.currentBuffer.length); // for development
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
@@ -620,13 +624,26 @@ var EmuLabeller = {
 
         this.tierHandler.removeLabelDoubleClick();
         var newStartS, newEndS;
-        if (zoomIn) {
-            newStartS = this.viewPort.sS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);
-            newEndS = this.viewPort.eS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
-        } else {
-            newStartS = this.viewPort.sS - ~~((this.viewPort.eS - this.viewPort.sS) / 4);
-            newEndS = this.viewPort.eS + ~~((this.viewPort.eS - this.viewPort.sS) / 4);
+        var d1 = this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
+        var d2 = this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
+        var d = this.viewPort.eS - this.viewPort.sS;
 
+        if (zoomIn) {
+            if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
+                newStartS = this.viewPort.sS + d1 * 0.5;
+                newEndS = this.viewPort.eS - d2 * 0.5;
+            } else {
+                newStartS = this.viewPort.sS + ~~(d / 4);
+                newEndS = this.viewPort.eS - ~~(d / 4);
+            }
+        } else {
+            if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
+                newStartS = this.viewPort.sS - d1 * 0.5;
+                newEndS = this.viewPort.eS + d2 * 0.5;
+            } else {
+                newStartS = this.viewPort.sS - ~~(d / 4);
+                newEndS = this.viewPort.eS + ~~(d / 4);
+            }
         }
         this.setView(newStartS, newEndS);
     },
@@ -925,9 +942,9 @@ var EmuLabeller = {
         output.appendChild(a);
 
         a.onclick = function(e) {
-        //     if ('disabled' in this.dataset) {
-        //         return false;
-        //     }
+            //     if ('disabled' in this.dataset) {
+            //         return false;
+            //     }
             a.textContent = 'Downloaded';
             // a.dataset.disabled = true;
             // cleanUp(this);
