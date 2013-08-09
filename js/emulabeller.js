@@ -272,6 +272,10 @@ var EmuLabeller = {
                 case "cmd_renameTierPoint":
                     my.tierHandler.renameTier();
                     break;
+                    
+                case "cmd_disconnect":
+                    my.iohandler.disconnect();
+                    break;
 
                 case params.scrollCanvas.id:
                     my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
