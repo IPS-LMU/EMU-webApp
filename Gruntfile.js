@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         "js/textgridparser.js",
         "js/ssffparser.js",
         "js/JSONvalidator.js",
+	"js/base64-binary/base64-binary.js",
         "js/socketIOhandler.js",
         "js/iohandler.js",
         "js/tierHandler.js",
