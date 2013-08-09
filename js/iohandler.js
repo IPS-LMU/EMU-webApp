@@ -23,6 +23,9 @@ EmuLabeller.IOhandler = {
             this.socketIOhandler.onConnect(function(evt) {
                 my.websocketConnected(evt)
             });
+            this.socketIOhandler.onDataLoad(function(fileType,data) {
+                my.dataLoaded(fileType,data)
+            });
             this.socketIOhandler.onDisconnect(function(evt) {
                 my.websocketDisconnected(evt)
             });
@@ -55,6 +58,14 @@ EmuLabeller.IOhandler = {
     onUtteranceList: function(eventHandler) {
         this.socketIOhandler.onUtteranceList(eventHandler);
     },
+    
+//     /**
+//     *  Register callback for data loaded
+//     */
+//    onDataLoaded: function(eventHandler) {
+//        this.dataLoadedHandler=eventHandler;
+//    },
+    
     /**
      *  Register callback for disconnect event
      */
@@ -65,6 +76,11 @@ EmuLabeller.IOhandler = {
     websocketLoad: function(uttCode) {
         // delegate
         this.socketIOhandler.loadUtterance(uttCode);
+    },
+    
+    dataLoaded: function(fileType,data) {
+         emulabeller.newFileType = fileType;
+         emulabeller.parseNewFile(data);
     },
 
     websocketSave: function() {

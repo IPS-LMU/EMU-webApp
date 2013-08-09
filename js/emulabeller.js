@@ -429,7 +429,7 @@ var EmuLabeller = {
      * Called on receive of utterance list from emuSX server
      */
     availableUtterances: function(ul) {
-
+    	var my=this;
         if (ul.length == 1) {
             // one selected utterance
             // open directly
@@ -438,20 +438,32 @@ var EmuLabeller = {
             console.log("Request utterance ", uttCode, " from emuSX server");
             this.iohandler.websocketLoad(uttCode);
         } else {
+        	// list utterances in sub menu
+            var CMD_PREFIX='cmd_load_utterance_';
             var le = $('#utteranceList');
             var ulHtml = '';
             for (var i = 0; i < ul.length; i++) {
                 var u = ul[i];
                 var uttCode = u['code'];
-                ulHtml = ulHtml + "<a href=\"" + u.code + "\">" + u.code + "</a>";
+                ulHtml = ulHtml + "<a id=\""+ CMD_PREFIX + uttCode + "\" href=\"#\">" + uttCode + "</a>";
+                // if wrapped with <li> elements the items do not show. check the CSS.
                 //ulHtml=ulHtml + "<li>"+u.code+"</li>";
             }
-            ulHtml = ulHtml +
-
-            '';
-            ulHtml = ulHtml + '<p>[Utterance selection not yet implemented]</p>';
+            // and add event listeners respectively
             le.html(ulHtml);
-            console.log('Update available utterances');
+            for (var i = 0; i < ul.length; i++) {
+                var u = ul[i];
+                var uttCode = u['code'];
+                 $('#'+CMD_PREFIX+uttCode).click(uttCode, function(evt) {
+                     var trgEl=evt.target;
+                     var trgId=trgEl.id;
+                     
+                     my.iohandler.websocketLoad(evt.data);
+                     my.openSubmenu();
+                  });
+            }
+            
+            console.log('Update of available utterances');
             this.openSubmenu();
         }
     },

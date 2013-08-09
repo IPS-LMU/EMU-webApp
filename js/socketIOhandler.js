@@ -41,6 +41,9 @@ EmuLabeller.socketIOhandler = {
     onUtteranceList: function(eventHandler){
     	this.utteranceListHandler=eventHandler;	    
     },
+    onDataLoad: function(eventHandler){
+    	this.dataLoadHandler=eventHandler;	    
+    },
     onDisconnect: function(dh){
     	this.disconnectHandler=dh;
     },
@@ -129,14 +132,26 @@ EmuLabeller.socketIOhandler = {
     	    
     	var dType=typeof evt.data;
     	if(dType === 'string'){
-    	console.log("ON MESSAGE with message: ", evt.data);
+    	console.log("ON MESSAGE");
         
-        var ul=JSON.parse(evt.data);
+        var response=JSON.parse(evt.data);
+        var responseContent=response.responseContent;
+        
+        if(responseContent === 'utterance_list'){
+        	
+        var ul=response.data;
+        console.log("Received utterance list:\n",ul);
         if(this.utteranceListHandler){
          this.utteranceListHandler(ul);
         }
+        }else if(responseContent === 'audio'){
+        	
+           // var audioData=window.atob(response.data);
+           var audioData=Base64Binary.decodeArrayBuffer(response.data);
+           this.dataLoadHandler(0,audioData);
+        }
         }else{
-        	console.log("ON MESSAGE with binary message: ");
+        	console.log("ON MESSAGE with binary message (ERROR we do not use binary wrbsocket mode)");
         }
     },
 
