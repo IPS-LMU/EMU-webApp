@@ -124,6 +124,7 @@ EmuLabeller.IOhandler = {
         if (fileType === 0) { // audio files
             this.fileNames.audio = []; // empty for now
             this.fileNames.audio.push(baseName);
+
         } else if (fileType == 3) { // textgrid files
             this.fileNames.label = []; // empty for now
             this.fileNames.label.push(baseName);
@@ -132,6 +133,9 @@ EmuLabeller.IOhandler = {
         xhr.addEventListener('load', function(e) {
             emulabeller.newFileType = fileType;
             emulabeller.parseNewFile(e.target.response);
+            if (fileType === 0) {
+               emulabeller.curLoadedBaseName = baseName.split(/\./)[0];
+           }
         }, false);
 
         xhr.open('GET', src, true);

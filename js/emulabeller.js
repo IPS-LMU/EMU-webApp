@@ -166,12 +166,13 @@ var EmuLabeller = {
         this.dragingStart = 0;
         this.resizeTierStart = 0;
         this.relativeY = 0;
-        this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0
+        this.newFileType = -1; // 0 = wav, 1 = lab, 2 = F0, 3 = TextGrid
         this.playMode = "vP"; // can be "vP", "sel" or "all"
         this.clickedOn = 0;
         this.selectedSegments = [];
         this.lastX = 0;
         this.dragStart = -1;
+        this.curLoadedBaseName = 'asdfasdf'; // set to base name of audio file
 
         // infos filled by ssff/lab/textgrid parsers
         this.ssffInfos = {
