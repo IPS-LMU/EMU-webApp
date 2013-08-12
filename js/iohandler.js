@@ -11,6 +11,11 @@ EmuLabeller.IOhandler = {
         // textgrid handler
         this.textGridHandler = Object.create(EmuLabeller.TextGridParser);
         this.textGridHandler.init();
+        
+        // labfile (old emu format) handler
+        this.labFileHandler = Object.create(EmuLabeller.LabFileParser);
+        this.labFileHandler.init();
+
         // textgrid handler
         this.DropBoxHandler = Object.create(EmuLabeller.DropBoxHandler);
 

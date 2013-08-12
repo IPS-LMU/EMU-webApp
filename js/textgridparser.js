@@ -10,6 +10,7 @@ EmuLabeller.TextGridParser = {
     *
     * @param string TextGrid file string to be parsed
     * @param fileName name of textGrid including ext.
+    * @returns a label java script object
     */
     toJSO: function(string, fileName) {
 

@@ -127,7 +127,8 @@ EmuLabeller.tierHandler = {
 			emulabeller.tierHandler.resizeTier(n);
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
-			alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
+			// alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
+			emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
