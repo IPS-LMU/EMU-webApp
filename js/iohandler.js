@@ -58,6 +58,7 @@ EmuLabeller.IOhandler = {
     onConnected: function(eventHandler) {
         this.connectEventHandler = eventHandler;
     },
+
     /**
      *  Register callback for new utterance list
      */
@@ -99,6 +100,7 @@ EmuLabeller.IOhandler = {
             this.disconnectEventHandler(evt);
         }
     },
+
     disconnect: function() {
         if (this.externalMode.value === 0) {
             this.socketIOhandler.requestDisconnect();
@@ -106,7 +108,9 @@ EmuLabeller.IOhandler = {
     },
 
     /**
-     * load a file using xhr
+     * load a file using xhr and save the file base name in
+     * this.fileNames according to fileType
+     *
      * @param src path to file on server
      * @param responseType set on xhr object
      * @param fileType accoring to filetype nr in emulabeller
@@ -117,9 +121,11 @@ EmuLabeller.IOhandler = {
         var baseName = src.split(/\//)[src.split(/\//).length - 1]; // unix paths only...
 
         xhr.responseType = responseType;
-        if (fileType === 0) {
+        if (fileType === 0) { // audio files
+            this.fileNames.audio = []; // empty for now
             this.fileNames.audio.push(baseName);
-        }else if(fileType == 3){
+        } else if (fileType == 3) { // textgrid files
+            this.fileNames.label = []; // empty for now
             this.fileNames.label.push(baseName);
         }
 
@@ -139,8 +145,7 @@ EmuLabeller.IOhandler = {
      * @return object used as tierInfo by emulabeller obj
      */
     parseTextGrid: function(string) {
-
-        res = this.textGridHandler.toJSO(string);
+        res = this.textGridHandler.toJSO(string, this.fileNames.label[this.fileNames.label.length - 1]);
         return res;
     },
 
@@ -148,7 +153,6 @@ EmuLabeller.IOhandler = {
      *
      */
     toTextGrid: function(string) {
-
         res = this.textGridHandler.toTextGrid(string);
         return res;
     },

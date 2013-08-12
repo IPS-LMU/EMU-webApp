@@ -7,9 +7,11 @@ EmuLabeller.TextGridParser = {
 
     /**
     * parse a textgrid string to the specified json format
-    * 
+    *
+    * @param string TextGrid file string to be parsed
+    * @param fileName name of textGrid including ext.
     */
-    toJSO: function(string) {
+    toJSO: function(string, fileName) {
 
         var lines = string.split("\n");
 
@@ -41,7 +43,8 @@ EmuLabeller.TextGridParser = {
                     labelJSO.tiers.push({
                         TierName: tN,
                         type: tT,
-                        events: []
+                        events: [],
+                        associatedFile: fileName
                     });
                 }
                 if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (curLineEl1.indexOf("intervals") === 0) && (curLineEl1.indexOf("intervals:") !== 0)) {
