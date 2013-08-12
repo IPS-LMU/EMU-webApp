@@ -119,7 +119,7 @@ EmuLabeller.tierHandler = {
 
 		$("#" + myName + "_del").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
-			if (confirm("Wollen Sie '" + n + "' wirklich loeschen?"))
+			if (confirm("Do you really wish to delete Tier: '" + n + "' ?"))
 				emulabeller.tierHandler.removeTier(n);
 		});
 		$("#" + myName + "_res").bind("click", function(event) {
