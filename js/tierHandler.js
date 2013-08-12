@@ -102,7 +102,7 @@ EmuLabeller.tierHandler = {
 	 */
 	addTiertoHtml: function(myName, myCssClass, myAppendTo) {
 
-		var buttons = "<div class='buttons'><a href='#' id='" + myName + "_save' class='saveSingleTierBtn'><img/></a><a href='#' id='" + myName + "_res' class='resizeButton'><img/></a><a href='#' id='" + myName + "_del' class='deleteButton'><img/></a></div>";
+		var buttons = "<div class='tierButtons'><a href='#' id='" + myName + "_del' class='deleteButton'><img/></a><a href='#' id='" + myName + "_res' class='resizeButton'><img/></a><a href='#' id='" + myName + "_save' class='saveSingleTierBtn'><img/></a></div>";
 		var myCan = $('<canvas>').attr({
 			id: myName,
 			width: this.internalCanvasWidth,
@@ -127,7 +127,7 @@ EmuLabeller.tierHandler = {
 			emulabeller.tierHandler.resizeTier(n);
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
-			alert("saving single tiers to ESPS file fomrat not implemented yet");
+			alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -866,16 +866,16 @@ EmuLabeller.tierHandler = {
 		this.history();
 	},
 	/**
-	* moves selection to next event if
-	* there is one to move to
-	*/
+	 * moves selection to next event if
+	 * there is one to move to
+	 */
 	selectNextEvent: function() {
 		var sT = this.getSelectedTier();
 		var nextEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
-		if(nextEvent !== null){
+		if (nextEvent !== null) {
 			emulabeller.viewPort.resetSelection(100); // SIC why 100??? why hardcode? why does fucntion need nr?
 			emulabeller.viewPort.setSelectSegment(sT, nextEvent, true, this.getCanvas(sT.TierName));
-			emulabeller.viewPort.select(nextEvent.startSample, nextEvent.startSample + nextEvent.sampleDur+1);
+			emulabeller.viewPort.select(nextEvent.startSample, nextEvent.startSample + nextEvent.sampleDur + 1);
 			emulabeller.drawBuffer();
 		}
 	}
