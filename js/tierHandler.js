@@ -166,6 +166,12 @@ EmuLabeller.tierHandler = {
 		$("#" + myName).bind("mousedown", function(event) {
 			//myMouseDown(e);
 		});
+		$("#" + myName).bind("mouseout", function(event) {
+			// maybe set flag to not drag over boundaries here...
+			// console.log("leaving tier canvas", event);
+
+		});
+
 
 	},
 
@@ -602,12 +608,12 @@ EmuLabeller.tierHandler = {
 		var splitsecond = (end - start);
 		ev.sampleDur = splitleft - 1;
 		t.events.push({
-			"label": "newSegment",
+			"label": "",
 			"startSample": start,
 			"sampleDur": splitsecond - 1
 		});
 		t.events.push({
-			"label": "newSegment",
+			"label": "",
 			"startSample": end,
 			"sampleDur": splitright - splitsecond
 		});

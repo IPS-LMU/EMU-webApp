@@ -156,8 +156,8 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 82 && emulabeller.keyBindingAllowed()) { // 82 == r
-            emulabeller.playInMode("sel");
             if (!e.metaKey) {
+                emulabeller.playInMode("sel");
                 e.preventDefault();
             }
         }
