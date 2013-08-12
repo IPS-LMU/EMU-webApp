@@ -38,7 +38,11 @@ EmuLabeller.LabFileParser = {
 	},
 
 	/**
+	 * generate lab file sting containing labels of
+	 * tierDetails given
 	 *
+	 * @param tierDetails of tier to write to sting
+	 * @return a sting containing the lab file
 	 */
 	toESPS: function(tierDetails) {
 
