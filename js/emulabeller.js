@@ -179,7 +179,9 @@ var EmuLabeller = {
             canvases: []
         };
         // key value list of file names loaded
-        this.fileNames = {'audioFile': ''};
+        this.fileNames = {
+            'audioFile': ''
+        };
 
         // Initial Usage Mode Configuration
 
@@ -274,7 +276,7 @@ var EmuLabeller = {
                 case "cmd_renameTierPoint":
                     my.tierHandler.renameTier();
                     break;
-                    
+
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
                     break;
@@ -398,10 +400,10 @@ var EmuLabeller = {
         $("#cans").disableSelection();
 
     },
-    
+
     /**
-    *
-    */
+     *
+     */
     start: function() {
         var my = this;
         switch (my.externalMode) {
@@ -426,8 +428,8 @@ var EmuLabeller = {
     },
 
     /**
-    *
-    */
+     *
+     */
     connected: function(evt) {
         //this.hideModalDialog();
         console.log("Connected to emuSX");
@@ -437,7 +439,7 @@ var EmuLabeller = {
      * Called on receive of utterance list from emuSX server
      */
     availableUtterances: function(ul) {
-    	var my=this;
+        var my = this;
         if (ul.length == 1) {
             // one selected utterance
             // open directly
@@ -446,14 +448,14 @@ var EmuLabeller = {
             console.log("Request utterance ", uttCode, " from emuSX server");
             this.iohandler.websocketLoad(uttCode);
         } else {
-        	// list utterances in sub menu
-            var CMD_PREFIX='cmd_load_utterance_';
+            // list utterances in sub menu
+            var CMD_PREFIX = 'cmd_load_utterance_';
             var le = $('#utteranceList');
             var ulHtml = '';
             for (var i = 0; i < ul.length; i++) {
                 var u = ul[i];
                 var uttCode = u['code'];
-                ulHtml = ulHtml + "<a id=\""+ CMD_PREFIX + uttCode + "\" href=\"#\">" + uttCode + "</a>";
+                ulHtml = ulHtml + "<a id=\"" + CMD_PREFIX + uttCode + "\" href=\"#\">" + uttCode + "</a>";
                 // if wrapped with <li> elements the items do not show. check the CSS.
                 //ulHtml=ulHtml + "<li>"+u.code+"</li>";
             }
@@ -462,15 +464,15 @@ var EmuLabeller = {
             for (var i = 0; i < ul.length; i++) {
                 var u = ul[i];
                 var uttCode = u['code'];
-                 $('#'+CMD_PREFIX+uttCode).click(uttCode, function(evt) {
-                     var trgEl=evt.target;
-                     var trgId=trgEl.id;
-                     
-                     my.iohandler.websocketLoad(evt.data);
-                     my.openSubmenu();
-                  });
+                $('#' + CMD_PREFIX + uttCode).click(uttCode, function(evt) {
+                    var trgEl = evt.target;
+                    var trgId = trgEl.id;
+
+                    my.iohandler.websocketLoad(evt.data);
+                    my.openSubmenu();
+                });
             }
-            
+
             console.log('Update of available utterances');
             this.openSubmenu();
         }
@@ -826,21 +828,21 @@ var EmuLabeller = {
         // Set an onload handler because we load files into it asynchronously
         reader.onload = function(e) {
             // The response contains the Data-Uri, which we can then load into the canvas
-            emulabeller.parseNewFile(reader.result); // my and this does not work?!
+            emulabeller.parseNewFile(reader.result);
         };
 
         if (file.type.match('audio.*')) {
             console.log("is audio");
             emulabeller.newFileType = 0;
             reader.readAsArrayBuffer(file);
-        // } else if (file.name.match(".*lab") || file.name.match(".*tone")) {
-        //     console.log("is lab file");
-        //     emulabeller.newFileType = 1;
-        //     reader.readAsText(file);
-        // } else if (file.name.match(".*f0") || file.name.match(".*fms")) {
-        //     console.log("is f0");
-        //     emulabeller.newFileType = 2;
-        //     reader.readAsArrayBuffer(file);
+            // } else if (file.name.match(".*lab") || file.name.match(".*tone")) {
+            //     console.log("is lab file");
+            //     emulabeller.newFileType = 1;
+            //     reader.readAsText(file);
+            // } else if (file.name.match(".*f0") || file.name.match(".*fms")) {
+            //     console.log("is f0");
+            //     emulabeller.newFileType = 2;
+            //     reader.readAsArrayBuffer(file);
         } else if (file.name.match(".*TextGrid")) {
             console.log("is TextGrid");
             emulabeller.newFileType = 3;
@@ -947,6 +949,7 @@ var EmuLabeller = {
         //     window.URL.revokeObjectURL(prevLink.href);
         //     output.innerHTML = '';
         // }
+        var textGridName = emulabeller.iohandler.fileNames.label[emulabeller.iohandler.fileNames.label.length - 1];
 
         var bb = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], {
             type: MIME_TYPE
@@ -954,7 +957,7 @@ var EmuLabeller = {
         console.log(bb);
 
         var a = document.createElement('a');
-        a.download = "emulabellerjsOutput.txt";
+        a.download = textGridName;
         a.href = window.URL.createObjectURL(bb);
         a.textContent = 'Download ready';
 
