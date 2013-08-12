@@ -50,9 +50,8 @@ EmuLabeller.LabFileParser = {
 		lF = lF + "signal " + emulabeller.curLoadedBaseName + "\n";
 		lF = lF + "nfields 1\n#\n";
 
-		for (i in tierDetails.events) {
+		for (var i in tierDetails.events) {
 			var c = tierDetails.events[i];
-			console.log(c.sampleDur)
 			var eT = (c.startSample + c.sampleDur) / this.ssr;
 			lF = lF + "\t" + eT + "\t125\t" + c.label + "\n";
 		}
