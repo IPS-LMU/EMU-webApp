@@ -180,7 +180,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.strokeRect(0, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height), can.width, 1);
                 cc.fillText("0", 5, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height) - 5, can.width);
             }
-            cc.setLineDash(0);
+            cc.setLineDash([0]);
         }
 
     },
