@@ -14,6 +14,12 @@ EmuLabeller.IOhandler = {
         // textgrid handler
         this.DropBoxHandler = Object.create(EmuLabeller.DropBoxHandler);
 
+        // key value list of file names loaded
+        this.fileNames = {
+            'audio': [],
+            'label': [],
+            'SSFF': []
+        };
 
         // if in server mode init socket handler
         if (externalMode.value == 0) {
@@ -21,13 +27,13 @@ EmuLabeller.IOhandler = {
             this.socketIOhandler.init();
             // register callbacks
             this.socketIOhandler.onConnect(function(evt) {
-                my.websocketConnected(evt)
+                my.websocketConnected(evt);
             });
-            this.socketIOhandler.onDataLoad(function(fileType,data) {
-                my.dataLoaded(fileType,data)
+            this.socketIOhandler.onDataLoad(function(fileType, data) {
+                my.dataLoaded(fileType, data);
             });
             this.socketIOhandler.onDisconnect(function(evt) {
-                my.websocketDisconnected(evt)
+                my.websocketDisconnected(evt);
             });
         }
     },
@@ -58,29 +64,29 @@ EmuLabeller.IOhandler = {
     onUtteranceList: function(eventHandler) {
         this.socketIOhandler.onUtteranceList(eventHandler);
     },
-    
-//     /**
-//     *  Register callback for data loaded
-//     */
-//    onDataLoaded: function(eventHandler) {
-//        this.dataLoadedHandler=eventHandler;
-//    },
-    
+
+    //     /**
+    //     *  Register callback for data loaded
+    //     */
+    //    onDataLoaded: function(eventHandler) {
+    //        this.dataLoadedHandler=eventHandler;
+    //    },
+
     /**
      *  Register callback for disconnect event
      */
     onDisconnected: function(eventHandler) {
         this.disconnectEventHandler = eventHandler;
     },
-    
+
     websocketLoad: function(uttCode) {
         // delegate
         this.socketIOhandler.loadUtterance(uttCode);
     },
-    
-    dataLoaded: function(fileType,data) {
-         emulabeller.newFileType = fileType;
-         emulabeller.parseNewFile(data);
+
+    dataLoaded: function(fileType, data) {
+        emulabeller.newFileType = fileType;
+        emulabeller.parseNewFile(data);
     },
 
     websocketSave: function() {
@@ -94,21 +100,28 @@ EmuLabeller.IOhandler = {
         }
     },
     disconnect: function() {
-        if (this.externalMode.value == 0) {
+        if (this.externalMode.value === 0) {
             this.socketIOhandler.requestDisconnect();
         }
     },
-    
+
     /**
-    * load a file using xhr
-    * @param src path to file on server 
-    * @param responseType set on xhr object
-    * @param fileType accoring to filetype nr in emulabeller
-    */
+     * load a file using xhr
+     * @param src path to file on server
+     * @param responseType set on xhr object
+     * @param fileType accoring to filetype nr in emulabeller
+     */
     xhrLoad: function(src, responseType, fileType) {
         var my = this;
         var xhr = new XMLHttpRequest();
+        var baseName = src.split(/\//)[src.split(/\//).length - 1]; // unix paths only...
+
         xhr.responseType = responseType;
+        if (fileType === 0) {
+            this.fileNames.audio.push(baseName);
+        }else if(fileType == 3){
+            this.fileNames.label.push(baseName);
+        }
 
         xhr.addEventListener('load', function(e) {
             emulabeller.newFileType = fileType;
