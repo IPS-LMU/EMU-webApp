@@ -178,6 +178,8 @@ var EmuLabeller = {
             data: [],
             canvases: []
         };
+        // key value list of file names loaded
+        this.fileNames = {'audioFile': ''};
 
         // Initial Usage Mode Configuration
 
@@ -396,7 +398,10 @@ var EmuLabeller = {
         $("#cans").disableSelection();
 
     },
-
+    
+    /**
+    *
+    */
     start: function() {
         var my = this;
         switch (my.externalMode) {
@@ -420,12 +425,15 @@ var EmuLabeller = {
 
     },
 
+    /**
+    *
+    */
     connected: function(evt) {
         //this.hideModalDialog();
         console.log("Connected to emuSX");
     },
 
-    /*
+    /**
      * Called on receive of utterance list from emuSX server
      */
     availableUtterances: function(ul) {
@@ -825,14 +833,14 @@ var EmuLabeller = {
             console.log("is audio");
             emulabeller.newFileType = 0;
             reader.readAsArrayBuffer(file);
-        } else if (file.name.match(".*lab") || file.name.match(".*tone")) {
-            console.log("is lab file");
-            emulabeller.newFileType = 1;
-            reader.readAsText(file);
-        } else if (file.name.match(".*f0") || file.name.match(".*fms")) {
-            console.log("is f0");
-            emulabeller.newFileType = 2;
-            reader.readAsArrayBuffer(file);
+        // } else if (file.name.match(".*lab") || file.name.match(".*tone")) {
+        //     console.log("is lab file");
+        //     emulabeller.newFileType = 1;
+        //     reader.readAsText(file);
+        // } else if (file.name.match(".*f0") || file.name.match(".*fms")) {
+        //     console.log("is f0");
+        //     emulabeller.newFileType = 2;
+        //     reader.readAsArrayBuffer(file);
         } else if (file.name.match(".*TextGrid")) {
             console.log("is TextGrid");
             emulabeller.newFileType = 3;

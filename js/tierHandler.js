@@ -322,7 +322,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
-		console.log(tierDetails.type)
+		// console.log(tierDetails.type)
 		//deselect everything
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		emulabeller.viewPort.setSelectTier(tierDetails.TierName);
@@ -632,7 +632,6 @@ EmuLabeller.tierHandler = {
 				var otherSegment = this.nextEvent(sT, emulabeller.viewPort.selectE);
 				if (thisSegment == otherSegment) {
 					if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
-						console.log(thisSegment);
 						if (null != thisSegment)
 							this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
 						else
@@ -817,7 +816,7 @@ EmuLabeller.tierHandler = {
 			// console.log(neighTier);
 			// console.log(closestSeg);
 			if (closestSeg) {
-				console.log(closestSeg);
+				// console.log(closestSeg);
 				this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
 			} else {
 				alert("closest segment is null?!?!?!?");
