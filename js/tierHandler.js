@@ -102,7 +102,7 @@ EmuLabeller.tierHandler = {
 	 */
 	addTiertoHtml: function(myName, myCssClass, myAppendTo) {
 
-		var buttons = "<div class='buttons'><a href='#' id='" + myName + "_res' class='saveSingleTierBtn'><img/></a><a href='#' id='" + myName + "_res' class='resizeButton'><img/></a><a href='#' id='" + myName + "_del' class='deleteButton'><img/></a></div>";
+		var buttons = "<div class='buttons'><a href='#' id='" + myName + "_save' class='saveSingleTierBtn'><img/></a><a href='#' id='" + myName + "_res' class='resizeButton'><img/></a><a href='#' id='" + myName + "_del' class='deleteButton'><img/></a></div>";
 		var myCan = $('<canvas>').attr({
 			id: myName,
 			width: this.internalCanvasWidth,
@@ -125,6 +125,9 @@ EmuLabeller.tierHandler = {
 		$("#" + myName + "_res").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.resizeTier(n);
+		});
+		$("#" + myName + "_save").bind("click", function(event) {
+			alert("saving single tiers to ESPS file fomrat not implemented yet");
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
