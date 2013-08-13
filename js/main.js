@@ -88,13 +88,13 @@ var emulabeller = (function() {
             else
                 alert("Please mark one of more segments first!");
         }
-        if (code == 9 && emulabeller.keyBindingAllowed()) { // 9 == tab
+        if (code == 9 ) { // 9 == tab
+            e.preventDefault();
             if (!e.shiftKey) {
-            emulabeller.tierHandler.selectNextEvent();
+                emulabeller.tierHandler.selectNextEvent();
             }else{
                 alert("moving backwards not implemented yet");
             }
-            e.preventDefault();
         }
        // if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter
        //     emulabeller.tierHandler.addSegmentAtSelection();

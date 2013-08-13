@@ -885,12 +885,14 @@ EmuLabeller.tierHandler = {
 	 */
 	selectNextEvent: function() {
 		var sT = this.getSelectedTier();
-		var nextEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
-		if (nextEvent !== null) {
-			emulabeller.viewPort.resetSelection(100); // SIC why 100??? why hardcode? why does fucntion need nr?
-			emulabeller.viewPort.setSelectSegment(sT, nextEvent, true, this.getCanvas(sT.TierName));
-			emulabeller.viewPort.select(nextEvent.startSample, nextEvent.startSample + nextEvent.sampleDur + 1);
-			emulabeller.drawBuffer();
+		if(null!=sT) {
+    		var nextEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
+	    	if (nextEvent !== null) {
+		    	emulabeller.viewPort.resetSelection(sT.events.length);
+			    emulabeller.viewPort.setSelectSegment(sT, nextEvent, true, this.getCanvas(sT.TierName));
+    			emulabeller.viewPort.select(nextEvent.startSample, nextEvent.startSample + nextEvent.sampleDur + 1);
+	    		emulabeller.drawBuffer();
+		    }
 		}
 	}
 
