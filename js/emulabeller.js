@@ -371,7 +371,7 @@ var EmuLabeller = {
                 }
             } else {
                 my.lastX = my.getX(e);
-                my.internalMode = my.EDITMODE.STANDARD;
+                if(! my.tierHandler.isEditing) my.internalMode = my.EDITMODE.STANDARD;
                 $("*").css("cursor", "auto");
             }
         });
