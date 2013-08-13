@@ -173,6 +173,7 @@ var EmuLabeller = {
         this.lastX = 0;
         this.dragStart = -1;
         this.curLoadedBaseName = 'asdfasdf'; // set to base name of audio file
+        this.exportData = null;
 
         // infos filled by ssff/lab/textgrid parsers
         this.ssffInfos = {
@@ -223,13 +224,8 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_download":
-                    // my.prepDownload();
-                    window.location.href = "#savingname_dial";
+                    my.tierHandler.saveTier();
                     break;
-
-                    // case "cmd_download":
-                    //     my.prepDownload();
-                    //     break;
 
                 case "cmd_viewZoomAll":
                     my.setView(-Infinity, Infinity);
@@ -937,10 +933,22 @@ var EmuLabeller = {
      * tierInfos as a TextGrid formated text file. This dataURI
      * will then be presented as a link in the top menu
      */
-    prepDownload: function() {
-        console.log("prepDownload");
+    prepDownload: function() { 
+        try { var blob = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], { "type" : "text\/plain" }); }
+        catch (e) { // Backwards-compatibility
+                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                blob.append(emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers));
+                blob = blob.getBlob();
+        }
+        var textGridName = emulabeller.iohandler.fileNames.label[emulabeller.iohandler.fileNames.label.length - 1];
+        $("#saveAsFileName").val(textGridName);
+        this.exportData = blob;
+    
+    
+    
+    /*
         var MIME_TYPE = 'text/plain';
-        var output = document.querySelector('#downLinkDiv');
+        //var output = document.querySelector('#downLinkDiv');
         // window.URL = window.webkitURL || window.URL;
         // var prevLink;
         // try {
@@ -958,6 +966,9 @@ var EmuLabeller = {
         var bb = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], {
             type: MIME_TYPE
         });
+        
+        return bb;
+       
         console.log(bb);
 
         var a = document.createElement('a');
@@ -979,7 +990,7 @@ var EmuLabeller = {
             a.textContent = 'Downloaded';
             // a.dataset.disabled = true;
             // cleanUp(this);
-        };
+        };*/
     },
 
     /**

@@ -129,8 +129,9 @@ EmuLabeller.tierHandler = {
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
 			// alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
-			emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
-			window.location.href = "#savingname_dial";
+			//emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
+			var n = $(this).parent().prev().get(0).id;
+			emulabeller.tierHandler.saveTier(n);
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -330,6 +331,13 @@ EmuLabeller.tierHandler = {
 		    $("#" + tierName + "_del").show();
 		    $("#" + tierName + "_save").show();
 		}
+	},
+	
+	saveTier: function(n) {
+	    console.log(n);
+	    console.log(window.location.href);
+	    
+	    window.location.href = "#savingname_dial";
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
