@@ -137,21 +137,21 @@ EmuLabeller.Drawer.SpectogramDrawer = {
             var my = this;
             var posS = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectS);
             var posE = emulabeller.viewPort.getPos(my.canvas.width, emulabeller.viewPort.selectE);
-            var sDist = emulabeller.viewPort.getSampleDist(my.canvas.width);
-            var curPos = posS + sDist / 2;
-            if(curPos!=0 &&  emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
+            var sDist = emulabeller.viewPort.getSampleDist(my.canvas.width)/2;
+            var curPos = posS + sDist;
+            if(posS!=0 &&  emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
                 my.context.fillStyle = my.params.selectLineColor;
-                my.context.fillRect(curPos, 0, 1, my.canvas.height);
+                my.context.fillRect(posS, 0, 1, my.canvas.height);
             }            
             if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
                 my.context.fillStyle = my.params.selectedAreaColor;
-                my.context.fillRect(posS, 0, posE-posS+sDist, my.canvas.height);
+                my.context.fillRect(posS, 0, posE-posS, my.canvas.height);
                 my.context.strokeStyle = my.params.selectLineColor;
                 my.context.beginPath();
                 my.context.moveTo(posS,0);
                 my.context.lineTo(posS,my.canvas.height);
-                my.context.moveTo(posE+sDist,0);
-                my.context.lineTo(posE+sDist,my.canvas.height);
+                my.context.moveTo(posE,0);
+                my.context.lineTo(posE,my.canvas.height);
                 my.context.closePath();
                 my.context.stroke();   
             }     
