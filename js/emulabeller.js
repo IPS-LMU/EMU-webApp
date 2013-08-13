@@ -361,13 +361,11 @@ var EmuLabeller = {
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                    var diff_Y = Math.round(event.clientY - my.dragingStartY);
-                    var now = ($('#spacer').height() + Math.floor(Math.floor(diff_Y) * 1.12)) + "px";
-                    $('#wave').css("height", "+=" + diff_Y / 2 + "px");
-                    $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
-                    $('#spacer').height(($('#timeline').height()+64)+"px");
-
-                    //$('#spacer').css("height", "+=" + diff_Y  + "px");
+                    var diff_Y = Math.round((event.clientY - my.dragingStartY)/2);
+                    $('#wave').css("height", "+=" + diff_Y + "px");
+                    $('#spectrogram').css("height", "+=" + diff_Y + "px");
+                    $('#timeline').css($('#wave').height()+$('#spectrogram').height()+"px");
+                    $('#spacer').height(($('#timeline').height()+64)+"px");            
                     my.dragingStartY = event.clientY;
                 }
             } else {
