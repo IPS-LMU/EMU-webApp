@@ -223,7 +223,8 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_download":
-                    my.prepDownload();
+                    // my.prepDownload();
+                    window.location.href = "#savingname_dial";
                     break;
 
                     // case "cmd_download":
