@@ -746,30 +746,38 @@ EmuLabeller.tierHandler = {
 			for (var i = 0; i < selected.length; i++) {
 				if (null != selected[i]) {
 					if (first) {
-					    if(null == t.events[i + l + 1]) {
-					        if(null == t.events[i + l]) {
+					    if(null == t.events[i + l + 1]) { 
+					        if(null == t.events[i + l]) {               // very LAST segment
+    						    if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+	    						    (t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime <  emulabeller.viewPort.eS - 1)) {
+        		    				doMove = true;
+		        		    		t.events[i - 1].sampleDur += changeTime;
+		        		    	}
 					        }
 					        else {
     						    if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
 	    						    (t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime <  emulabeller.viewPort.eS - 1)) {
     		    					doMove = true;
-	    		    				f = i;
 		    		    			t.events[i - 1].sampleDur += changeTime;
 			    		    	}
 			    		    }
 					    }
 					    else {
-					        if(null == t.events[i - 1]) {
+					        if(null == t.events[i - 1]) {                 // very FIRST segment
+        						if ((t.events[i].startSample + changeTime > emulabeller.viewPort.sS) &&
+	        						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
+		        				    doMove = true;
+			        			}
 					        }
 					        else {
         						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
 	        						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
 		        					doMove = true;
-			        				f = i;
 				        			t.events[i - 1].sampleDur += changeTime;
 					        	}	
 					        }
 						}
+						f = i;
 						first = false;
 					}
 					last = i + 1;
@@ -778,9 +786,12 @@ EmuLabeller.tierHandler = {
 				}
 			}
 			if (doMove) {
-				t.events[last].startSample += changeTime;
-				t.events[last].sampleDur -= changeTime;
-				emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
+				if(null!=t.events[last]) {
+				    t.events[last].startSample += changeTime;
+    				t.events[last].sampleDur -= changeTime;
+	    			emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
+	    			
+	    		}
 			}
 		}
 	},
