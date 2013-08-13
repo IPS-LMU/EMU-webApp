@@ -91,9 +91,9 @@ var emulabeller = (function() {
         if (code == 9 ) { // 9 == tab
             e.preventDefault();
             if (!e.shiftKey) {
-                emulabeller.tierHandler.selectNextEvent();
+                emulabeller.tierHandler.selectPrevNextEvent(false);
             }else{
-                alert("moving backwards not implemented yet");
+                emulabeller.tierHandler.selectPrevNextEvent(true);
             }
         }
        // if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter

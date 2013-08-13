@@ -135,7 +135,7 @@ EmuLabeller.tierHandler = {
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
-		    console.log(emulabeller.getX(event.originalEvent));
+			console.log(emulabeller.getX(event.originalEvent));
 			emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent));
 		});
 		$("#" + myName).bind("contextmenu", function(event) {
@@ -190,7 +190,7 @@ EmuLabeller.tierHandler = {
 	 * @param tierName
 	 */
 	trackMouseInTiers: function(event, percX, percY, tierName) {
-		if (! this.isEditing) {
+		if (!this.isEditing) {
 			var curTierDetails = this.getTier(tierName);
 			var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
 			var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
@@ -322,22 +322,21 @@ EmuLabeller.tierHandler = {
 	resizeTier: function(tierName) {
 		var s = this.internalCanvasHeightBig - 1;
 		if ($("#" + tierName).height() >= s) {
-		    $("#" + tierName + "_del").hide();
-		    $("#" + tierName + "_save").hide();
+			$("#" + tierName + "_del").hide();
+			$("#" + tierName + "_save").hide();
 			$("#" + tierName).height(this.internalCanvasHeightBig / 2.9);
-		}
-		else {
+		} else {
 			$("#" + tierName).height(this.internalCanvasHeightBig);
-		    $("#" + tierName + "_del").show();
-		    $("#" + tierName + "_save").show();
+			$("#" + tierName + "_del").show();
+			$("#" + tierName + "_save").show();
 		}
 	},
-	
+
 	saveTier: function(n) {
-	    console.log(n);
-	    console.log(window.location.href);
-	    
-	    window.location.href = "#savingname_dial";
+		console.log(n);
+		console.log(window.location.href);
+
+		window.location.href = "#savingname_dial";
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
@@ -411,7 +410,7 @@ EmuLabeller.tierHandler = {
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 		var edit = $('#' + this.editAreaTextfieldName);
 		if (edit.length === 0) {
-		    emulabeller.tierHandler.isEditing = true;
+			emulabeller.tierHandler.isEditing = true;
 			if (tierDetails.type == "seg") {
 				if (percX)
 					var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -521,7 +520,7 @@ EmuLabeller.tierHandler = {
 		$("#hull" + myName).prepend(content);
 
 		this.createSelection(document.getElementById("editing"), 0, label.length); // select textarea text     
-		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;		
+		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
 	},
 
 
@@ -643,7 +642,7 @@ EmuLabeller.tierHandler = {
 					}
 				} else {
 					var percx = emulabeller.viewPort.getCurrentPercent(emulabeller.viewPort.selectS);
-					this.handleTierDoubleClick(percx); 
+					this.handleTierDoubleClick(percx);
 				}
 			} else if (sT.type = "point") {
 				if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
@@ -754,52 +753,49 @@ EmuLabeller.tierHandler = {
 			for (var i = 0; i < selected.length; i++) {
 				if (null != selected[i]) {
 					if (first) {
-					    if(null == t.events[i + l + 1]) { 
-					        if(null == t.events[i + l]) {               // very LAST segment
-    						    if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
-	    						    (t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime <  emulabeller.viewPort.eS - 1)) {
-        		    				doMove = true;
-		        		    		t.events[i - 1].sampleDur += changeTime;
-		        		    	}
-					        }
-					        else {
-    						    if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
-	    						    (t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime <  emulabeller.viewPort.eS - 1)) {
-    		    					doMove = true;
-		    		    			t.events[i - 1].sampleDur += changeTime;
-			    		    	}
-			    		    }
-					    }
-					    else {
-					        if(null == t.events[i - 1]) {                 // very FIRST segment
-        						if ((t.events[i].startSample + changeTime > emulabeller.viewPort.sS) &&
-	        						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
-		        				    doMove = true;
-			        			}
-					        }
-					        else {
-        						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
-	        						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
-		        					doMove = true;
-				        			t.events[i - 1].sampleDur += changeTime;
-					        	}	
-					        }
+						if (null == t.events[i + l + 1]) {
+							if (null == t.events[i + l]) { // very LAST segment
+								if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+									(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < emulabeller.viewPort.eS - 1)) {
+									doMove = true;
+									t.events[i - 1].sampleDur += changeTime;
+								}
+							} else {
+								if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+									(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < emulabeller.viewPort.eS - 1)) {
+									doMove = true;
+									t.events[i - 1].sampleDur += changeTime;
+								}
+							}
+						} else {
+							if (null == t.events[i - 1]) { // very FIRST segment
+								if ((t.events[i].startSample + changeTime > emulabeller.viewPort.sS) &&
+									(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
+									doMove = true;
+								}
+							} else {
+								if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+									(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
+									doMove = true;
+									t.events[i - 1].sampleDur += changeTime;
+								}
+							}
 						}
 						f = i;
 						first = false;
 					}
 					last = i + 1;
-					if(doMove) t.events[i].startSample += changeTime;
+					if (doMove) t.events[i].startSample += changeTime;
 
 				}
 			}
 			if (doMove) {
-				if(null!=t.events[last]) {
-				    t.events[last].startSample += changeTime;
-    				t.events[last].sampleDur -= changeTime;
-	    			emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
-	    			
-	    		}
+				if (null != t.events[last]) {
+					t.events[last].startSample += changeTime;
+					t.events[last].sampleDur -= changeTime;
+					emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
+
+				}
 			}
 		}
 	},
@@ -898,21 +894,30 @@ EmuLabeller.tierHandler = {
 		// save history state
 		this.history();
 	},
+
 	/**
-	 * moves selection to next event if
+	 * moves selection to prev or next event if
 	 * there is one to move to
+	 * 
+	 * @param prev set to true to move left
 	 */
-	selectNextEvent: function() {
+	selectPrevNextEvent: function(prev) {
 		var sT = this.getSelectedTier();
-		if(null!=sT) {
-    		var nextEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
-	    	if (nextEvent !== null) {
-		    	emulabeller.viewPort.resetSelection(sT.events.length);
-			    emulabeller.viewPort.setSelectSegment(sT, nextEvent, true, this.getCanvas(sT.TierName));
-    			emulabeller.viewPort.select(nextEvent.startSample, nextEvent.startSample + nextEvent.sampleDur + 1);
-	    		emulabeller.drawBuffer();
-		    }
+		var adjEvent;
+		if (null != sT) {
+			if (!prev) {
+				adjEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
+			}else{
+				adjEvent = this.nextEvent(sT, emulabeller.viewPort.selectS - 1); // minus 1 to be in prev segment
+			}
+			if (adjEvent !== null) {
+				emulabeller.viewPort.resetSelection(sT.events.length);
+				emulabeller.viewPort.setSelectSegment(sT, adjEvent, true, this.getCanvas(sT.TierName));
+				emulabeller.viewPort.select(adjEvent.startSample, adjEvent.startSample + adjEvent.sampleDur + 1);
+				emulabeller.drawBuffer();
+			}
 		}
+
 	}
 
 };
