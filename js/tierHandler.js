@@ -333,18 +333,16 @@ EmuLabeller.tierHandler = {
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
-		// console.log(tierDetails.type)
+
 		//deselect everything
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		emulabeller.viewPort.setSelectTier(tierDetails.TierName);
 		this.removeLabelDoubleClick();
 		var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-
 		if (tierDetails.type == "seg") {
 			var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
 			if (null != nearest) {
-
 				emulabeller.viewPort.curMouseMoveTierName = nearest.label;
 				emulabeller.viewPort.curMouseMoveTierType = tierDetails.type;
 				emulabeller.viewPort.curMouseMoveSegmentName = emulabeller.viewPort.getId(tierDetails, nearest.label, nearest.startSample);
@@ -353,7 +351,6 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
 			}
 		}
-
 		if (tierDetails.type == "point") {
 			var nearest = this.nearestEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
 			if (null != nearest) {
@@ -365,7 +362,6 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.setSelectPoint(tierDetails, nearest, true, canvas.width);
 			}
 		}
-
 		emulabeller.drawBuffer();
 	},
 

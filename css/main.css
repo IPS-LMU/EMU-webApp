@@ -97,10 +97,6 @@ canvas {
 #wave, #spectrogram {
     padding: 0px;
     margin: 0px;
-    min-height: 15px; 
-    max-height: calc(48%); /* IE9+ and future browsers */
-    max-height: -moz-calc(48%); /* Firefox */
-    max-height: -webkit-calc(48%); /* Chrome, Safari */
 }
 
 #timeline {
@@ -133,8 +129,6 @@ canvas {
 .spacer {
     width: 10px;
     height: 235px;
-    min-height: 35px;
-    max-height: 800px;
 }
 .spacerbottom {
     width: 10px;
