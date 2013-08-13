@@ -365,7 +365,8 @@ var EmuLabeller = {
                     var now = ($('#spacer').height() + Math.floor(Math.floor(diff_Y) * 1.12)) + "px";
                     $('#wave').css("height", "+=" + diff_Y / 2 + "px");
                     $('#spectrogram').css("height", "+=" + diff_Y / 2 + "px");
-                    $('#spacer').height(now);
+                    //$('#spacer').height(now);
+                    $('#spacer').css("height", "+=" + diff_Y + "px");
                     my.dragingStartY = event.clientY;
                 }
             } else {
