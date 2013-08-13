@@ -752,8 +752,7 @@ EmuLabeller.tierHandler = {
 						first = false;
 					}
 					last = i + 1;
-					//t.events[i - 1].sampleDur += changeTime;
-					t.events[i].startSample += changeTime;
+					if(doMove) t.events[i].startSample += changeTime;
 
 				}
 			}
