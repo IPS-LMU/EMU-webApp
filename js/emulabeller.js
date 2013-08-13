@@ -309,7 +309,7 @@ var EmuLabeller = {
                     my.tierHandler.removeLabelDoubleClick();
                     my.dragingStartY = event.clientY;
                     my.offsetTimeline = my.timeline.offsetHeight;
-                    my.offsetTiers = my.tiers.offsetHeight;
+                    my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
             }
         });
@@ -362,11 +362,13 @@ var EmuLabeller = {
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                     var diff_Y = Math.round((event.clientY - my.dragingStartY)/2);
+                    if(diff_Y*2 <= $(body).height()-($("#menu-bottom").height()+2*$("#menu").height())){
                     $('#wave').css("height", "+=" + diff_Y + "px");
                     $('#spectrogram').css("height", "+=" + diff_Y + "px");
                     $('#timeline').css($('#wave').height()+$('#spectrogram').height()+"px");
                     $('#spacer').height(($('#timeline').height()+64)+"px");            
                     my.dragingStartY = event.clientY;
+                    }
                 }
             } else {
                 my.lastX = my.getX(e);
