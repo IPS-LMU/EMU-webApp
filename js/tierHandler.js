@@ -748,18 +748,19 @@ EmuLabeller.tierHandler = {
 							(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
 							doMove = true;
 							t.events[i - 1].sampleDur += changeTime;
-							t.events[i].startSample += changeTime;
-							f = i;
 						}
 						first = false;
 					}
 					last = i + 1;
+					//t.events[i - 1].sampleDur += changeTime;
+					t.events[i].startSample += changeTime;
+
 				}
 			}
 			if (doMove) {
 				t.events[last].startSample += changeTime;
 				t.events[last].sampleDur -= changeTime;
-				emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
+				//emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
 			}
 		}
 	},

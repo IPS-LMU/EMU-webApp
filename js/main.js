@@ -109,16 +109,6 @@ var emulabeller = (function() {
 	    	    emulabeller.tierHandler.addSegmentAtSelection();
 	    	}
 		    e.preventDefault();
-				//if (saveTier) {
-					//my.saveLabelName(this);
-				//}
-				//else {
-				//	my.saveTierName(this);
-				//}
-				//alert("hier");
-				//my.removeLabelDoubleClick();
-
-            
         }
         if (code == 16 && emulabeller.keyBindingAllowed()) { // 16 == ???
             emulabeller.tierHandler.history();
