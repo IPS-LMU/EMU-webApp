@@ -133,6 +133,7 @@ EmuLabeller.tierHandler = {
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
+		    console.log(emulabeller.getX(event.originalEvent));
 			emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent));
 		});
 		$("#" + myName).bind("contextmenu", function(event) {
@@ -643,7 +644,10 @@ EmuLabeller.tierHandler = {
 						this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
 					}
 				} else {
-					alert(this.commonError);
+					//alert(this.commonError);
+					var percx = emulabeller.viewPort.getCurrentPercent(emulabeller.viewPort.selectS);
+					console.log(percx);
+					this.handleTierDoubleClick(percx); 
 				}
 			} else if (sT.type = "point") {
 				if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {

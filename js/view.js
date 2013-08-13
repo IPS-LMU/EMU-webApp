@@ -170,6 +170,10 @@ EmuLabeller.ViewPort = {
     getCurrentSample: function(perc) {
         return this.sS + (this.eS - this.sS) * perc;
     },
+    
+    getCurrentPercent: function(sample) {
+        return (sample*(100/(this.eS - this.sS)/100));
+    },
 
     getId: function(tier, name, start) {
         var j = 0;
