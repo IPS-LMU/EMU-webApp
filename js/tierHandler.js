@@ -320,10 +320,16 @@ EmuLabeller.tierHandler = {
 
 	resizeTier: function(tierName) {
 		var s = this.internalCanvasHeightBig - 1;
-		if ($("#" + tierName).height() >= s)
+		if ($("#" + tierName).height() >= s) {
+		    $("#" + tierName + "_del").hide();
+		    $("#" + tierName + "_save").hide();
 			$("#" + tierName).height(this.internalCanvasHeightBig / 2.9);
-		else
+		}
+		else {
 			$("#" + tierName).height(this.internalCanvasHeightBig);
+		    $("#" + tierName + "_del").show();
+		    $("#" + tierName + "_save").show();
+		}
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
