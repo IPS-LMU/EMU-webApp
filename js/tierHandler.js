@@ -759,12 +759,16 @@ EmuLabeller.tierHandler = {
 			    		    }
 					    }
 					    else {
-    						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
-	    						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
-		    					doMove = true;
-			    				f = i;
-				    			t.events[i - 1].sampleDur += changeTime;
-					    	}
+					        if(null == t.events[i - 1]) {
+					        }
+					        else {
+        						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+	        						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
+		        					doMove = true;
+			        				f = i;
+				        			t.events[i - 1].sampleDur += changeTime;
+					        	}	
+					        }
 						}
 						first = false;
 					}
