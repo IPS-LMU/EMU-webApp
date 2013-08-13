@@ -172,7 +172,10 @@ EmuLabeller.Drawer.OsciDrawer = {
             // draw zero line
             cc.strokeStyle = this.params.zeroLineColor;
             cc.fillStyle = this.params.zeroLineColor;
-            cc.setLineDash([5]);
+            // see if Chrome ->dashed line
+            if (navigator.vendor == "Google Inc.") {
+                cc.setLineDash([5]);
+            }
             if (k >= 1) {
                 cc.strokeRect(0, can.height / 2, can.width, 2);
                 cc.fillText("0", 5, can.height / 2 - 5, can.width);
@@ -180,7 +183,10 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.strokeRect(0, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height), can.width, 1);
                 cc.fillText("0", 5, can.height - ((0 - my.minPeak) / (my.maxPeak - my.minPeak) * can.height) - 5, can.width);
             }
-            cc.setLineDash([0]);
+            // see if Chrome ->dashed line
+            if (navigator.vendor == "Google Inc.") {
+                cc.setLineDash([0]);
+            }
         }
 
     },
