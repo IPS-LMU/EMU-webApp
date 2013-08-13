@@ -178,10 +178,12 @@ canvas {
     width: 20px;
     height: 60px;
     top: 0px;
-    text-align:right;
+    right:0px;
 }
 
 .resizeButton, .deleteButton, .saveSingleTierBtn{
+    margin: 0px;
+    padding: 0px;
     background-color:#B9B9B9;
 }
 .deleteButton img {
