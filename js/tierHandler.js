@@ -744,11 +744,22 @@ EmuLabeller.tierHandler = {
 			for (var i = 0; i < selected.length; i++) {
 				if (null != selected[i]) {
 					if (first) {
-						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
-							(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
-							doMove = true;
-							f = i;
-							t.events[i - 1].sampleDur += changeTime;
+					    if(null == t.events[i + l + 1]) {
+    						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+	    						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime <  emulabeller.viewPort.eS - 1)) {
+		    					doMove = true;
+			    				f = i;
+				    			t.events[i - 1].sampleDur += changeTime;
+					    	}
+					    
+					    }
+					    else {
+    						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
+	    						(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
+		    					doMove = true;
+			    				f = i;
+				    			t.events[i - 1].sampleDur += changeTime;
+					    	}
 						}
 						first = false;
 					}
@@ -763,6 +774,7 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
 			}
 		}
+		console.log(doMove);
 	},
 
 	/**
