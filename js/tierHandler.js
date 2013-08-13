@@ -6,6 +6,7 @@ EmuLabeller.tierHandler = {
 		this.tierInfos = params.tierInfos;
 		this.iconImageSize = 12;
 		this.isSelected = false;
+		this.isEditing = false;
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
 		this.myHistory = new Object();
@@ -398,8 +399,9 @@ EmuLabeller.tierHandler = {
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
-		var edit = $('#' + this.editAreaName);
+		var edit = $('#' + this.editAreaTextfieldName);
 		if (edit.length === 0) {
+		    emulabeller.tierHandler.isEditing = true;
 			if (tierDetails.type == "seg") {
 				if (percX)
 					var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -508,22 +510,8 @@ EmuLabeller.tierHandler = {
 
 		$("#hull" + myName).prepend(content);
 
-		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-
-		$("#editing")[0].onkeyup = function(evt) {
-			evt = evt || window.event;
-			if (evt.keyCode == 13) {
-				if (saveTier)
-					my.saveLabelName(this);
-				else
-					my.saveTierName(this);
-				my.removeLabelDoubleClick();
-				emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
-			}
-		};
-
 		this.createSelection(document.getElementById("editing"), 0, label.length); // select textarea text     
-
+		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;		
 	},
 
 
@@ -644,9 +632,7 @@ EmuLabeller.tierHandler = {
 						this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
 					}
 				} else {
-					//alert(this.commonError);
 					var percx = emulabeller.viewPort.getCurrentPercent(emulabeller.viewPort.selectS);
-					console.log(percx);
 					this.handleTierDoubleClick(percx); 
 				}
 			} else if (sT.type = "point") {
@@ -678,6 +664,7 @@ EmuLabeller.tierHandler = {
 	removeLabelDoubleClick: function() {
 		var my = this;
 		$('.' + this.editAreaTextfieldName).remove();
+		emulabeller.tierHandler.isEditing = false;
 	},
 
 	moveBoundary: function(newTime, myName) {
