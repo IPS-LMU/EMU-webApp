@@ -129,6 +129,7 @@ EmuLabeller.tierHandler = {
 		$("#" + myName + "_save").bind("click", function(event) {
 			// alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
 			emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
+			window.location.href = "#savingname_dial";
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
