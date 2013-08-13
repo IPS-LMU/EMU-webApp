@@ -747,6 +747,7 @@ EmuLabeller.tierHandler = {
 						if ((t.events[i].startSample + changeTime > t.events[i - 1].startSample) &&
 							(t.events[i + l - 1].startSample + t.events[i + l - 1].sampleDur + changeTime < t.events[i + l + 1].startSample - 1)) {
 							doMove = true;
+							f = i;
 							t.events[i - 1].sampleDur += changeTime;
 						}
 						first = false;
@@ -759,7 +760,7 @@ EmuLabeller.tierHandler = {
 			if (doMove) {
 				t.events[last].startSample += changeTime;
 				t.events[last].sampleDur -= changeTime;
-				//emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
+				emulabeller.viewPort.select(t.events[f].startSample, t.events[last].startSample - 1);
 			}
 		}
 	},
