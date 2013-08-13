@@ -107,7 +107,7 @@ EmuLabeller.ViewPort = {
         var id = this.getId(tier, evt.label, evt.startSample);
         this.MouseSegmentName = id;
         this.uiInfo[id] = isSelected;
-        this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width) / 2));
+        this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + 1);
     },
 
     setSelectPoint: function(tier, evt, isSelected, width) {
@@ -133,7 +133,7 @@ EmuLabeller.ViewPort = {
         var id = this.getId(tier, evt.label, evt.startSample);
         if (this.uiInfo[id - 1] ||  this.uiInfo[id + 1]) {
             this.uiInfo[id] = isSelected;
-            this.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + (this.getSampleDist(width) / 2));
+            this.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + 1);
             return true;
         } else return false;
     },
