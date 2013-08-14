@@ -151,7 +151,7 @@ EmuLabeller.tierHandler = {
 			//emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
 			var n = $(this).parent().prev().get(0).id;
 			//emulabeller.tierHandler.saveTier(n);
-			emulabeller.tierHandler.downloadDialog(myName);
+			emulabeller.tierHandler.downloadDialog(n);
 			
 		});
 
@@ -327,18 +327,22 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(name) {
         var myName = "";
+        var myData = "";
+        var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
         if(null==name) {
           myName = emulabeller.curLoadedBaseName+".Textgrid";
+          myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers());
         }
         else {
          myName = name+"."+emulabeller.curLoadedBaseName;
+         myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(name)); 
         }
         if (!$('#downDialog').dialog('isOpen')) {
             $('#downDialog').dialog('option', 'title', 'Download '+myName);
             $('#downDialog').dialog('open');
             $("#downDialog").dialog('moveToTop');
             $('#saveAsFileName').val(myName);
-            $('#preview').html("Hier ist dann die Preview");
+            $('#preview').html("<pre>"+myData+"</pre>");
         } else {
             $('#downDialog').dialog('close');
         }	
