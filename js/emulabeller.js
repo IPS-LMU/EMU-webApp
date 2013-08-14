@@ -224,7 +224,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_download":
-                    emulabeller.tierHandler.downloadDialog("Textgrid");
+                    emulabeller.tierHandler.downloadDialog("");
                     break;
 
                 case "cmd_viewZoomAll":
@@ -398,7 +398,7 @@ var EmuLabeller = {
         $('#cans').sortable({
             tolerance: 'pointer',
             cursor: 'move',
-            delay: 10,
+            delay: 5,
             dropOnEmpty: true,
             //connectWith: '.myTest',
             start: function(event, ui) {

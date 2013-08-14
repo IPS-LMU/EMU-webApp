@@ -30,10 +30,11 @@ EmuLabeller.tierHandler = {
          stack: false,
          buttons: {
             OK: function() {
-
+                return false;
             },
             Cancel: function() {
                 $(this).dialog('close');
+                return false;
             }
          }
         });			
@@ -147,12 +148,8 @@ EmuLabeller.tierHandler = {
 			emulabeller.tierHandler.resizeTier(n);
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
-			// alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
-			//emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
 			var n = $(this).parent().prev().get(0).id;
-			//emulabeller.tierHandler.saveTier(n);
 			emulabeller.tierHandler.downloadDialog(n);
-			
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -325,27 +322,29 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	downloadDialog: function(name) {
-        var myName = "";
-        var myData = "";
-        var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
-        if(null==name) {
-          myName = emulabeller.curLoadedBaseName+".Textgrid";
-          myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers());
+	downloadDialog: function(TierName) {
+	    var myName, myData;
+        if(TierName.length==0) {
+            myName = emulabeller.curLoadedBaseName+".Textgrid";
+            myData = emulabeller.iohandler.toTextGrid();
+            alert("GRID");
         }
         else {
-         myName = name+"."+emulabeller.curLoadedBaseName;
-         myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(name)); 
+            myName = TierName+"."+emulabeller.curLoadedBaseName;
+            myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName)); 
+            alert("ALONE");
         }
         if (!$('#downDialog').dialog('isOpen')) {
-            $('#downDialog').dialog('option', 'title', 'Download '+myName);
-            $('#downDialog').dialog('open');
+            $('#downDialog').dialog('option', 'title', 'Download '+myName);            
             $("#downDialog").dialog('moveToTop');
             $('#saveAsFileName').val(myName);
             $('#preview').html("<pre>"+myData+"</pre>");
+            $('#downDialog').dialog('open');
+            return false;
         } else {
             $('#downDialog').dialog('close');
         }	
+        
 	},
 
 	deleteBorder: function() {
