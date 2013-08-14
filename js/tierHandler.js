@@ -372,13 +372,6 @@ EmuLabeller.tierHandler = {
 		}
 	},
 
-	saveTier: function(n) {
-		console.log(n);
-		console.log(window.location.href);
-
-		window.location.href = "#savingname_dial";
-	},
-
 	handleTierClick: function(percX, percY, tierDetails) {
 
 		//deselect everything
