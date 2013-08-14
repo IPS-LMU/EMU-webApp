@@ -29,6 +29,7 @@ EmuLabeller.Drawer.TierDrawer = {
         var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
         var mpx = canvas.width * perx;
         var mpy = canvas.height * pery;
+        var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
 
         if (tierDetails.TierName == emulabeller.viewPort.getSelectTier()) {
             cc.clearRect(0, 0, canvas.width, canvas.height);
@@ -135,25 +136,26 @@ EmuLabeller.Drawer.TierDrawer = {
                 var curEvt = tierDetails.events[k];
                 var id = emulabeller.viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
                 if (curEvt.startSample > emulabeller.viewPort.sS && curEvt.startSample < emulabeller.viewPort.eS) {
-                    perc = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
+                    perc = Math.round(emulabeller.viewPort.getPos(canvas.width, curEvt.startSample) +(sDist/2));
+                    //perc = (curEvt.startSample - emulabeller.viewPort.sS) / (emulabeller.viewPort.eS - emulabeller.viewPort.sS);
                     if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
                         cc.fillStyle = this.params.selectedBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 8, canvas.height / 2 - canvas.height / 10);
-                        cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 8, canvas.height / 2 - canvas.height / 10);
+                        cc.fillRect(perc, 0, 8, canvas.height / 2 - canvas.height / 10);
+                        cc.fillRect(perc, canvas.height / 2 + canvas.height / 10, 8, canvas.height / 2 - canvas.height / 10);
                         tW = cc.measureText(tierDetails.events[k].label).width;
                         cc.fillStyle = this.params.labelColor;
-                        cc.fillText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillText(tierDetails.events[k].label, perc - tW / 2 + 1 , canvas.height / 2);
                     } else {
                         cc.fillStyle = this.params.startBoundaryColor;
-                        cc.fillRect(canvas.width * perc, 0, 1, canvas.height / 2 - canvas.height / 10);
-                        cc.fillRect(canvas.width * perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10)
+                        cc.fillRect(perc, 0, 1, canvas.height / 2 - canvas.height / 10);
+                        cc.fillRect(perc, canvas.height / 2 + canvas.height / 10, 1, canvas.height / 2 - canvas.height / 10)
                         tW = cc.measureText(tierDetails.events[k].label).width;
                         cc.fillStyle = this.params.labelColor;
-                        cc.fillText(tierDetails.events[k].label, canvas.width * perc - tW / 2 + 1, canvas.height / 2);
+                        cc.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas.height / 2);
                     }
                     cc.fillStyle = this.startBoundaryColor;
                     tW = cc.measureText(curEvt.startSample).width;
-                    cc.fillText(curEvt.startSample, canvas.width * perc + 5, canvas.height / 8);
+                    cc.fillText(curEvt.startSample, perc + 5, canvas.height / 8);
 
 
                 }
@@ -190,8 +192,8 @@ EmuLabeller.Drawer.TierDrawer = {
                 var curPos = posS;
                 cc.fillRect(curPos - 5 + xOffset, 0, 10, 10);
                 cc.beginPath();
-                cc.moveTo(curPos + xOffset, 10);
-                cc.lineTo(curPos + xOffset, canvas.height);
+                cc.moveTo(curPos + xOffset , 10);
+                cc.lineTo(curPos + xOffset , canvas.height);
                 cc.stroke();
             }
 
