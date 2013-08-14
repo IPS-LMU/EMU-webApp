@@ -18,7 +18,6 @@ EmuLabeller.tierHandler = {
 		this.noTierError = "Error: No Tier chosen !";
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
-		this.downDialog = false;
 
 		$("#downDialog").dialog({
          bgiframe: true,
@@ -327,7 +326,6 @@ EmuLabeller.tierHandler = {
 
 
 	downloadDialog: function(name) {
-        this.downDialog = $('#downDialog').dialog('isOpen');
         var myName = "";
         if(null==name) {
           myName = emulabeller.curLoadedBaseName+".Textgrid";
@@ -335,16 +333,14 @@ EmuLabeller.tierHandler = {
         else {
          myName = name+"."+emulabeller.curLoadedBaseName;
         }
-        if (!this.downDialog) {
+        if (!$('#downDialog').dialog('isOpen')) {
             $('#downDialog').dialog('option', 'title', 'Download '+myName);
             $('#downDialog').dialog('open');
             $("#downDialog").dialog('moveToTop');
             $('#saveAsFileName').val(myName);
             $('#preview').html("Hier ist dann die Preview");
-            this.downDialog = true;
         } else {
             $('#downDialog').dialog('close');
-            this.downDialog = false;
         }	
 	},
 
