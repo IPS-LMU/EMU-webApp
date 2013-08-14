@@ -949,6 +949,9 @@ EmuLabeller.tierHandler = {
 
 		if (null != sT) {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
+			var nrOfSel = emulabeller.viewPort.countSelected();
+			console.log("###############");
+			console.log(nrOfSel);
 			var last = false;
 			var counter = 1;
 
@@ -978,7 +981,7 @@ EmuLabeller.tierHandler = {
 			if (add && !moveLeft && afterLastSel.sampleDur > stepSize || !add && !moveLeft && firstSel.sampleDur > stepSize || add && moveLeft && beforeFirstSel.sampleDur > stepSize || !add && moveLeft && firstSel.sampleDur > stepSize) {
 				for (s in selected) {
 					var evtIdx = parseInt(s);
-					// console.log(evtIdx);
+					console.log(selected.length);
 					if (evtIdx == selected.length - 1) last = true;
 					var prevEvt = sT.events[evtIdx - 1];
 					var curEvt = sT.events[evtIdx];
@@ -989,9 +992,9 @@ EmuLabeller.tierHandler = {
 							nextEvt.startSample = nextEvt.startSample + stepSize * counter;
 							if (last) nextEvt.sampleDur = nextEvt.sampleDur - stepSize * counter; // on last segment
 						} else {
-							curEvt.startSample = curEvt.startSample - stepSize;
-							curEvt.sampleDur = curEvt.sampleDur + stepSize;
-							prevEvt.sampleDur = prevEvt.sampleDur - stepSize;
+							curEvt.startSample = curEvt.startSample - stepSize * (nrOfSel - counter + 1);
+							curEvt.sampleDur = curEvt.sampleDur + stepSize * (nrOfSel - counter + 1);
+							prevEvt.sampleDur = prevEvt.sampleDur - stepSize * (nrOfSel - counter + 1);
 						}
 					} else {
 						if (!moveLeft) {
@@ -999,9 +1002,9 @@ EmuLabeller.tierHandler = {
 							nextEvt.startSample = nextEvt.startSample - stepSize * counter;
 							if (last) nextEvt.sampleDur = nextEvt.sampleDur + stepSize * counter; // on last segment
 						} else {
-							curEvt.startSample = curEvt.startSample + stepSize;
-							curEvt.sampleDur = curEvt.sampleDur - stepSize;
-							prevEvt.sampleDur = prevEvt.sampleDur + stepSize;
+							curEvt.startSample = curEvt.startSample + stepSize * (nrOfSel - counter + 1);
+							curEvt.sampleDur = curEvt.sampleDur - stepSize * (nrOfSel - counter + 1);
+							prevEvt.sampleDur = prevEvt.sampleDur + stepSize * (nrOfSel - counter + 1);
 						}
 					}
 					counter = counter + 1;
