@@ -951,7 +951,15 @@ EmuLabeller.tierHandler = {
 		if (null != sT) {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
 			var last = false;
-			console.log("##################")
+			// console.log("##################")
+			// var counter = 1;
+			
+			// pretest for segment squishing :-)
+			for (s in selected) {
+				var evtIdx = parseInt(s);
+				var curEvt = sT.events[evtIdx];
+			}
+
 			counter = 1;
 			// find first el:
 			var firstSelIdx;
@@ -963,8 +971,7 @@ EmuLabeller.tierHandler = {
 			var beforeFirstSel = sT.events[firstSelIdx - 1];
 			var lastSel = sT.events[selected.length - 1];
 			var afterLastSel = sT.events[selected.length];
-			console.log(lastSel)
-			console.log(afterLastSel)
+	
 			// test if last selected evt still within bounds
 			if (add && afterLastSel.sampleDur > stepSize || !add && firstSel.sampleDur > stepSize) {
 				for (s in selected) {
