@@ -172,7 +172,7 @@ var EmuLabeller = {
         this.selectedSegments = [];
         this.lastX = 0;
         this.dragStart = -1;
-        this.curLoadedBaseName = 'asdfasdf'; // set to base name of audio file
+        this.curLoadedBaseName = ''; // set to base name of audio file
         this.exportData = null;
 
         // infos filled by ssff/lab/textgrid parsers

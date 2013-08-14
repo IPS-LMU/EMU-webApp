@@ -964,22 +964,40 @@ EmuLabeller.tierHandler = {
 
 		if (null != sT) {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
+			var last = false;
 			console.log("##################")
-
+			counter = 1;
+			// find first el:
+			var firstSelIdx;
 			for (s in selected) {
-				var evtIdx = parseInt(s)
-				console.log(evtIdx)
-				var prevEvt = sT.events[evtIdx - 1];
-				var curEvt = sT.events[evtIdx];
-				var nextEvt = sT.events[evtIdx + 1];
-				if (add) {
-					curEvt.sampleDur = curEvt.sampleDur + stepSize;
-					nextEvt.startSample = nextEvt.startSample + stepSize;
-					nextEvt.sampleDur = nextEvt.sampleDur - stepSize; // on last segment
-				}else{
-					curEvt.sampleDur = curEvt.sampleDur - stepSize;
-					nextEvt.startSample = nextEvt.startSample - stepSize;
-					nextEvt.sampleDur = nextEvt.sampleDur + stepSize; // on last segment
+				firstSelIdx = parseInt(s);
+				break
+			}
+			var firstSel = sT.events[firstSelIdx];
+			var beforeFirstSel = sT.events[firstSelIdx - 1];
+			var lastSel = sT.events[selected.length - 1];
+			var afterLastSel = sT.events[selected.length];
+			console.log(lastSel)
+			console.log(afterLastSel)
+			// test if last selected evt still within bounds
+			if (add && afterLastSel.sampleDur > stepSize || !add && firstSel.sampleDur > stepSize) {
+				for (s in selected) {
+					var evtIdx = parseInt(s);
+					// console.log(evtIdx);
+					if (evtIdx == selected.length - 1) last = true;
+					var prevEvt = sT.events[evtIdx - 1];
+					var curEvt = sT.events[evtIdx];
+					var nextEvt = sT.events[evtIdx + 1];
+					if (add) {
+						curEvt.sampleDur = curEvt.sampleDur + stepSize;
+						nextEvt.startSample = nextEvt.startSample + stepSize * counter;
+						if (last) nextEvt.sampleDur = nextEvt.sampleDur - stepSize * counter; // on last segment
+					} else {
+						curEvt.sampleDur = curEvt.sampleDur - stepSize;
+						nextEvt.startSample = nextEvt.startSample - stepSize * counter;
+						if (last) nextEvt.sampleDur = nextEvt.sampleDur + stepSize * counter; // on last segment
+					}
+					counter = counter + 1;
 				}
 			}
 
