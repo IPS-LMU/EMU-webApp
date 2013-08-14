@@ -78,31 +78,30 @@ var emulabeller = (function() {
             else
                 alert("Please mark one of more segments first!");
         }
-        if (code == 9 ) { // 9 == tab
+        if (code == 9) { // 9 == tab
             e.preventDefault();
-            if(emulabeller.tierHandler.isEditing==true) {
-    			emulabeller.tierHandler.saveLabelName(this);
-	    		emulabeller.tierHandler.removeLabelDoubleClick();
-	    	}            
+            if (emulabeller.tierHandler.isEditing == true) {
+                emulabeller.tierHandler.saveLabelName(this);
+                emulabeller.tierHandler.removeLabelDoubleClick();
+            }
             if (!e.shiftKey) {
                 emulabeller.tierHandler.selectPrevNextEvent(false);
-            }else{
+            } else {
                 emulabeller.tierHandler.selectPrevNextEvent(true);
             }
         }
-       // if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter
-       //     emulabeller.tierHandler.addSegmentAtSelection();
-       //     e.preventDefault();
-       // }
-        if (code == 13 ) { // 13 == enter	
-            if(emulabeller.tierHandler.isEditing==true) {
-    			emulabeller.tierHandler.saveLabelName(this);
-	    		emulabeller.tierHandler.removeLabelDoubleClick();
-	    	}
-	    	else {
-	    	    emulabeller.tierHandler.addSegmentAtSelection();
-	    	}
-		    e.preventDefault();
+        // if (code == 13 && emulabeller.keyBindingAllowed()) { // 13 == enter
+        //     emulabeller.tierHandler.addSegmentAtSelection();
+        //     e.preventDefault();
+        // }
+        if (code == 13) { // 13 == enter	
+            if (emulabeller.tierHandler.isEditing == true) {
+                emulabeller.tierHandler.saveLabelName(this);
+                emulabeller.tierHandler.removeLabelDoubleClick();
+            } else {
+                emulabeller.tierHandler.addSegmentAtSelection();
+            }
+            e.preventDefault();
         }
         if (code == 16 && emulabeller.keyBindingAllowed()) { // 16 == ???
             emulabeller.tierHandler.history();
@@ -186,7 +185,11 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 187 && emulabeller.keyBindingAllowed()) { // 187 == +
-            emulabeller.tierHandler.addTimeToSelectedSegs(false);
+            emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, false);
+            e.preventDefault();
+        }
+        if (code == 189 && emulabeller.keyBindingAllowed()) { // 187 == -
+            emulabeller.tierHandler.addRemoveTimeToSelectedSegs(false, false);
             e.preventDefault();
         }
         console.log(code);
@@ -218,7 +221,7 @@ var emulabeller = (function() {
             emulabeller.zoomViewPort(0);
         });
     }
-    
+
     labeller.start();
     return labeller;
 }());

@@ -958,22 +958,29 @@ EmuLabeller.tierHandler = {
 	/**
 	 *
 	 */
-	addTimeToSelectedSegs: function(moveLeft) {
+	addRemoveTimeToSelectedSegs: function(add, moveLeft) {
 		var sT = this.getSelectedTier();
 		var stepSize = 100;
 
 		if (null != sT) {
-			var sS = emulabeller.viewPort.getAllSelected(sT);
+			var selected = emulabeller.viewPort.getAllSelected(sT);
+			console.log("##################")
 
-			for (s in sS) {
+			for (s in selected) {
 				var evtIdx = parseInt(s)
+				console.log(evtIdx)
 				var prevEvt = sT.events[evtIdx - 1];
 				var curEvt = sT.events[evtIdx];
 				var nextEvt = sT.events[evtIdx + 1];
-
-				curEvt.sampleDur = curEvt.sampleDur + stepSize;
-				nextEvt.startSample = nextEvt.startSample + stepSize;
-				nextEvt.sampeDur = nextEvt.sampleDur - stepSize; // on last segment
+				if (add) {
+					curEvt.sampleDur = curEvt.sampleDur + stepSize;
+					nextEvt.startSample = nextEvt.startSample + stepSize;
+					nextEvt.sampleDur = nextEvt.sampleDur - stepSize; // on last segment
+				}else{
+					curEvt.sampleDur = curEvt.sampleDur - stepSize;
+					nextEvt.startSample = nextEvt.startSample - stepSize;
+					nextEvt.sampleDur = nextEvt.sampleDur + stepSize; // on last segment
+				}
 			}
 
 			emulabeller.drawBuffer();
