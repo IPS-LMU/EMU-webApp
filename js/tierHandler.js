@@ -328,10 +328,19 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(name) {
         this.downDialog = $('#downDialog').dialog('isOpen');
-        $('#downDialog').dialog('option', 'title', 'Download '+name);
+        var myName = "";
+        if(null==name) {
+          myName = emulabeller.curLoadedBaseName+".Textgrid";
+        }
+        else {
+         myName = name+"."+emulabeller.curLoadedBaseName;
+        }
         if (!this.downDialog) {
+            $('#downDialog').dialog('option', 'title', 'Download '+myName);
             $('#downDialog').dialog('open');
             $("#downDialog").dialog('moveToTop');
+            $('#saveAsFileName').val(myName);
+            $('#preview').html("Hier ist dann die Preview");
             this.downDialog = true;
         } else {
             $('#downDialog').dialog('close');
