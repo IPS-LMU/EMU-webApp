@@ -55,9 +55,6 @@ var emulabeller = (function() {
 
     $('#fileGetterBtn')[0].addEventListener('change', labeller.fileAPIread, false);
 
-    // hack for hiding inputs of dialogs.. SIC!!!
-    $("#dialog-messageSh").hide();
-    $("#dialog-messageSetLabel").hide();
 
 
 

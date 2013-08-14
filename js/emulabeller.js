@@ -224,7 +224,18 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_download":
-                    emulabeller.tierHandler.downloadDialog("");
+                    var myName = emulabeller.curLoadedBaseName+".Textgrid";
+                    var myData = emulabeller.iohandler.toTextGrid();   
+                    if (!$('#downDialog').dialog('isOpen')) {
+                        $('#downDialog').dialog('option', 'title', 'Download '+myName);            
+                        $("#downDialog").dialog('moveToTop');
+                        $('#saveAsFileName').val(myName);
+                        $('#preview').html("<pre>"+myData+"</pre>");
+                        $('#downDialog').dialog('open');
+                        $("#downDialog").dialog('moveToTop');
+                    } else {
+                        $('#downDialog').dialog('close');
+                    }
                     break;
 
                 case "cmd_viewZoomAll":

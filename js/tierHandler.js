@@ -20,20 +20,18 @@ EmuLabeller.tierHandler = {
 		this.params = params;
 
 		$("#downDialog").dialog({
-         bgiframe: true,
          autoOpen: false,
          width: 500,
-         closeOnEscape: true,
          show: 'fade',
          hide: 'fade',
          position: 'center',
-         stack: false,
          buttons: {
             OK: function() {
+                $("#downDialog").dialog('close');
                 return false;
             },
             Cancel: function() {
-                $(this).dialog('close');
+                $("#downDialog").dialog('close');
                 return false;
             }
          }
@@ -147,7 +145,7 @@ EmuLabeller.tierHandler = {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.resizeTier(n);
 		});
-		$("#" + myName + "_save").bind("click", function(event) {
+		$("#" + myName + "_save").bind("mouseup", function(event) {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.downloadDialog(n);
 		});
@@ -324,27 +322,15 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(TierName) {
 	    var myName, myData;
-        if(TierName.length==0) {
-            myName = emulabeller.curLoadedBaseName+".Textgrid";
-            myData = emulabeller.iohandler.toTextGrid();
-            alert("GRID");
-        }
-        else {
-            myName = TierName+"."+emulabeller.curLoadedBaseName;
-            myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName)); 
-            alert("ALONE");
-        }
-        if (!$('#downDialog').dialog('isOpen')) {
-            $('#downDialog').dialog('option', 'title', 'Download '+myName);            
-            $("#downDialog").dialog('moveToTop');
-            $('#saveAsFileName').val(myName);
-            $('#preview').html("<pre>"+myData+"</pre>");
-            $('#downDialog').dialog('open');
-            return false;
-        } else {
-            $('#downDialog').dialog('close');
-        }	
-        
+        myName = TierName+"."+emulabeller.curLoadedBaseName;
+        myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName)); 
+
+        $('#downDialog').dialog('option', 'title', 'Download '+myName);            
+        $("#downDialog").dialog('moveToTop');
+        $('#saveAsFileName').val(myName);
+        $('#preview').html("<pre>"+myData+"</pre>");
+        $('#downDialog').dialog('open');
+        return false;        
 	},
 
 	deleteBorder: function() {
