@@ -898,7 +898,7 @@ EmuLabeller.tierHandler = {
 	/**
 	 * moves selection to prev or next event if
 	 * there is one to move to
-	 * 
+	 *
 	 * @param prev set to true to move left
 	 */
 	selectPrevNextEvent: function(prev) {
@@ -907,7 +907,7 @@ EmuLabeller.tierHandler = {
 		if (null != sT) {
 			if (!prev) {
 				adjEvent = this.nextEvent(sT, emulabeller.viewPort.selectE + 1); // plus 1 to be in next segment
-			}else{
+			} else {
 				adjEvent = this.nextEvent(sT, emulabeller.viewPort.selectS - 1); // minus 1 to be in prev segment
 			}
 			if (adjEvent !== null) {
@@ -917,7 +917,33 @@ EmuLabeller.tierHandler = {
 				emulabeller.drawBuffer();
 			}
 		}
+	},
 
+	/**
+	 *
+	 */
+	addTimeToSelectedSegs: function(moveLeft) {
+		var sT = this.getSelectedTier();
+		var stepSize = 100;
+
+		if (null != sT) {
+			var sS = emulabeller.viewPort.getAllSelected(sT);
+
+			for (s in sS) {
+				var evtIdx = parseInt(s)
+				var prevEvt = sT.events[evtIdx - 1];
+				var curEvt = sT.events[evtIdx];
+				var nextEvt = sT.events[evtIdx + 1];
+
+				curEvt.sampleDur = curEvt.sampleDur + stepSize;
+				nextEvt.startSample = nextEvt.startSample + stepSize;
+				nextEvt.sampeDur = nextEvt.sampleDur - stepSize; // on last segment
+			}
+
+			emulabeller.drawBuffer();
+			// save history state
+			this.history();
+		}
 	}
 
 };

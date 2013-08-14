@@ -195,7 +195,11 @@ var emulabeller = (function() {
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();
         }
-        // console.log(code);
+        if (code == 187 && emulabeller.keyBindingAllowed()) { // 187 == +
+            emulabeller.tierHandler.addTimeToSelectedSegs(false);
+            e.preventDefault();
+        }
+        console.log(code);
     });
 
 
