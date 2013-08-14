@@ -20,22 +20,22 @@ EmuLabeller.tierHandler = {
 		this.params = params;
 
 		$("#downDialog").dialog({
-         autoOpen: false,
-         width: 500,
-         show: 'fade',
-         hide: 'fade',
-         position: 'center',
-         buttons: {
-            OK: function() {
-                $("#downDialog").dialog('close');
-                return false;
-            },
-            Cancel: function() {
-                $("#downDialog").dialog('close');
-                return false;
-            }
-         }
-        });			
+			autoOpen: false,
+			width: 500,
+			show: 'fade',
+			hide: 'fade',
+			position: 'center',
+			buttons: {
+				OK: function() {
+					$("#downDialog").dialog('close');
+					return false;
+				},
+				Cancel: function() {
+					$("#downDialog").dialog('close');
+					return false;
+				}
+			}
+		});
 
 	},
 
@@ -321,16 +321,16 @@ EmuLabeller.tierHandler = {
 
 
 	downloadDialog: function(TierName) {
-	    var myName, myData;
-        myName = TierName+"."+emulabeller.curLoadedBaseName;
-        myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName)); 
+		var myName, myData;
+		myName = TierName + "." + emulabeller.curLoadedBaseName;
+		myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName));
 
-        $('#downDialog').dialog('option', 'title', 'Download '+myName);            
-        $("#downDialog").dialog('moveToTop');
-        $('#saveAsFileName').val(myName);
-        $('#preview').html("<pre>"+myData+"</pre>");
-        $('#downDialog').dialog('open');
-        return false;        
+		$('#downDialog').dialog('option', 'title', 'Download ' + myName);
+		$("#downDialog").dialog('moveToTop');
+		$('#saveAsFileName').val(myName);
+		$('#preview').html("<pre>" + myData + "</pre>");
+		$('#downDialog').dialog('open');
+		return false;
 	},
 
 	deleteBorder: function() {
@@ -834,7 +834,6 @@ EmuLabeller.tierHandler = {
 		var hullID;
 		if (getAbove) {
 			hullID = $("#hull" + tName).prev().attr('id');
-			console.log(hullID);
 			if (!hullID) {
 				alert("no tier above the selected boundary!");
 			}
@@ -952,14 +951,18 @@ EmuLabeller.tierHandler = {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
 			var last = false;
 			// console.log("##################")
-			// var counter = 1;
-			
-			// pretest for segment squishing :-)
-			for (s in selected) {
-				var evtIdx = parseInt(s);
-				var curEvt = sT.events[evtIdx];
-			}
+			var counter = 1;
 
+			// pretest for segment squishing :-)
+			if (!add) {
+				for (s in selected) {
+					var evtIdx = parseInt(s);
+					var curEvt = sT.events[evtIdx];
+					if (curEvt.sampleDur < stepSize) {
+						return; //exit function
+					}
+				}
+			}
 			counter = 1;
 			// find first el:
 			var firstSelIdx;
@@ -971,7 +974,7 @@ EmuLabeller.tierHandler = {
 			var beforeFirstSel = sT.events[firstSelIdx - 1];
 			var lastSel = sT.events[selected.length - 1];
 			var afterLastSel = sT.events[selected.length];
-	
+
 			// test if last selected evt still within bounds
 			if (add && afterLastSel.sampleDur > stepSize || !add && firstSel.sampleDur > stepSize) {
 				for (s in selected) {
@@ -992,11 +995,11 @@ EmuLabeller.tierHandler = {
 					}
 					counter = counter + 1;
 				}
+				emulabeller.drawBuffer();
+				// save history state
+				this.history();
 			}
 
-			emulabeller.drawBuffer();
-			// save history state
-			this.history();
 		}
 	}
 
