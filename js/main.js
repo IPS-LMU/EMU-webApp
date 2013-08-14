@@ -58,17 +58,7 @@ var emulabeller = (function() {
     // hack for hiding inputs of dialogs.. SIC!!!
     $("#dialog-messageSh").hide();
     $("#dialog-messageSetLabel").hide();
-    $('#specSettings').click(function() {
-        var isOpen = $('#specDialog').dialog('isOpen');
-        if (!isOpen) {
-            $('#specDialog').dialog('open');
-            $("#specDialog").dialog('moveToTop');
-            isOpen = true;
-        } else {
-            $('#specDialog').dialog('close');
-            isOpen = false;
-        }
-    });
+
 
 
     // event redirect for Open File Button

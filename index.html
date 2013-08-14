@@ -85,7 +85,7 @@
 <button class="mini-btn tooltip" id="cmd_addTierPoint" data-tooltip="Shortcut: none">Add Tier (point)</button>
 <button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
 <button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Download TextGrid</button>
-<button class="mini-btn tooltip" id="specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
+<button class="mini-btn tooltip" id="cmd_specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
 <button class="mini-btn tooltip" id="cmd_disconnect" disabled="disabled" >Disconnect</button> 
 <!-- <a href="#savingname_dial" id="about_pop">TEST DIALOG</a> -->
 <!-- <div id="downLinkDiv"></div> -->
@@ -182,13 +182,10 @@
 </div>
 
 <!-- Check name for saving modal dialog -->
-<a href="#" class="overlay" id="savingname_dial"></a>
-<div class="popup">
-  <h2>Please choose the name you wish to save the file under:</h2>
-  <input type="text" size="50" id="saveAsFileName" value="thisIsTheSuggestedFileName.TextGrid">
+<div id="downDialog" title="Download" style="display:none;">
+  <p>Please choose a name filename:</p>
+  <input type="text" id="saveAsFileName" value="thisIsTheSuggestedFileName.TextGrid">
   <button class="mini-btn">Prepare Download</button>
-  <div id="downLabLinkDiv"></div>
-  <a class="close" href="#close"></a>
 </div>
 
 

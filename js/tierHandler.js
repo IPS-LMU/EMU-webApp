@@ -18,6 +18,26 @@ EmuLabeller.tierHandler = {
 		this.noTierError = "Error: No Tier chosen !";
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
+		this.downDialog = false;
+
+		$("#downDialog").dialog({
+         bgiframe: true,
+         autoOpen: false,
+         width: 500,
+         closeOnEscape: true,
+         show: 'fade',
+         hide: 'fade',
+         position: 'center',
+         stack: false,
+         buttons: {
+            OK: function() {
+
+            },
+            Cancel: function() {
+                $(this).dialog('close');
+            }
+         }
+        });			
 
 	},
 
@@ -131,7 +151,9 @@ EmuLabeller.tierHandler = {
 			// alert("saving single tiers to ESPS file fomrat not implemented yet! Suggested name will be: " + emulabeller.curLoadedBaseName + "." + myName);
 			//emulabeller.iohandler.labFileHandler.toESPS(emulabeller.tierHandler.getTier(myName));
 			var n = $(this).parent().prev().get(0).id;
-			emulabeller.tierHandler.saveTier(n);
+			//emulabeller.tierHandler.saveTier(n);
+			emulabeller.tierHandler.downloadDialog(myName);
+			
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -303,6 +325,19 @@ EmuLabeller.tierHandler = {
 		}
 	},
 
+
+	downloadDialog: function(name) {
+        this.downDialog = $('#downDialog').dialog('isOpen');
+        $('#downDialog').dialog('option', 'title', 'Download '+name);
+        if (!this.downDialog) {
+            $('#downDialog').dialog('open');
+            $("#downDialog").dialog('moveToTop');
+            this.downDialog = true;
+        } else {
+            $('#downDialog').dialog('close');
+            this.downDialog = false;
+        }	
+	},
 
 	deleteBorder: function() {
 		var my = this;
