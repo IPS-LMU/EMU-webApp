@@ -950,8 +950,6 @@ EmuLabeller.tierHandler = {
 		if (null != sT) {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
 			var nrOfSel = emulabeller.viewPort.countSelected();
-			console.log("###############");
-			console.log(nrOfSel);
 			var last = false;
 			var counter = 1;
 
@@ -979,9 +977,13 @@ EmuLabeller.tierHandler = {
 
 			// test if last selected evt still within bounds
 			if (add && !moveLeft && afterLastSel.sampleDur > stepSize || !add && !moveLeft && firstSel.sampleDur > stepSize || add && moveLeft && beforeFirstSel.sampleDur > stepSize || !add && moveLeft && firstSel.sampleDur > stepSize) {
+				if (add) {
+					emulabeller.viewPort.select(firstSel.startSample - nrOfSel * stepSize, afterLastSel.startSample + nrOfSel * stepSize);
+				} else {
+					emulabeller.viewPort.select(firstSel.startSample + nrOfSel * stepSize, afterLastSel.startSample - nrOfSel * stepSize);
+				}
 				for (s in selected) {
 					var evtIdx = parseInt(s);
-					console.log(selected.length);
 					if (evtIdx == selected.length - 1) last = true;
 					var prevEvt = sT.events[evtIdx - 1];
 					var curEvt = sT.events[evtIdx];
