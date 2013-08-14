@@ -950,7 +950,6 @@ EmuLabeller.tierHandler = {
 		if (null != sT) {
 			var selected = emulabeller.viewPort.getAllSelected(sT);
 			var last = false;
-			// console.log("##################")
 			var counter = 1;
 
 			// pretest for segment squishing :-)
@@ -976,7 +975,7 @@ EmuLabeller.tierHandler = {
 			var afterLastSel = sT.events[selected.length];
 
 			// test if last selected evt still within bounds
-			if (add && afterLastSel.sampleDur > stepSize || !add && firstSel.sampleDur > stepSize) {
+			if (add && !moveLeft && afterLastSel.sampleDur > stepSize || !add && !moveLeft && firstSel.sampleDur > stepSize || add && moveLeft && beforeFirstSel.sampleDur > stepSize || !add && moveLeft && firstSel.sampleDur > stepSize) {
 				for (s in selected) {
 					var evtIdx = parseInt(s);
 					// console.log(evtIdx);
@@ -985,13 +984,25 @@ EmuLabeller.tierHandler = {
 					var curEvt = sT.events[evtIdx];
 					var nextEvt = sT.events[evtIdx + 1];
 					if (add) {
-						curEvt.sampleDur = curEvt.sampleDur + stepSize;
-						nextEvt.startSample = nextEvt.startSample + stepSize * counter;
-						if (last) nextEvt.sampleDur = nextEvt.sampleDur - stepSize * counter; // on last segment
+						if (!moveLeft) {
+							curEvt.sampleDur = curEvt.sampleDur + stepSize;
+							nextEvt.startSample = nextEvt.startSample + stepSize * counter;
+							if (last) nextEvt.sampleDur = nextEvt.sampleDur - stepSize * counter; // on last segment
+						} else {
+							curEvt.startSample = curEvt.startSample - stepSize;
+							curEvt.sampleDur = curEvt.sampleDur + stepSize;
+							prevEvt.sampleDur = prevEvt.sampleDur - stepSize;
+						}
 					} else {
-						curEvt.sampleDur = curEvt.sampleDur - stepSize;
-						nextEvt.startSample = nextEvt.startSample - stepSize * counter;
-						if (last) nextEvt.sampleDur = nextEvt.sampleDur + stepSize * counter; // on last segment
+						if (!moveLeft) {
+							curEvt.sampleDur = curEvt.sampleDur - stepSize;
+							nextEvt.startSample = nextEvt.startSample - stepSize * counter;
+							if (last) nextEvt.sampleDur = nextEvt.sampleDur + stepSize * counter; // on last segment
+						} else {
+							curEvt.startSample = curEvt.startSample + stepSize;
+							curEvt.sampleDur = curEvt.sampleDur - stepSize;
+							prevEvt.sampleDur = prevEvt.sampleDur + stepSize;
+						}
 					}
 					counter = counter + 1;
 				}

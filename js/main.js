@@ -57,7 +57,6 @@ var emulabeller = (function() {
 
 
 
-
     // event redirect for Open File Button
     document.querySelector('#fileSelect').addEventListener('click', function(e) {
             // Use the native click() of the file input.
@@ -186,7 +185,15 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 189 && emulabeller.keyBindingAllowed()) { // 187 == -
-            emulabeller.tierHandler.addRemoveTimeToSelectedSegs(false, false);
+            if (!e.shiftKey) {
+                emulabeller.tierHandler.addRemoveTimeToSelectedSegs(false, false);
+            } else {
+                emulabeller.tierHandler.addRemoveTimeToSelectedSegs(false, true);
+            }
+            e.preventDefault();
+        }
+        if (code == 221 && emulabeller.keyBindingAllowed()) { // 221 == * no idea why this has a separate id it is shift+187
+            emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
         console.log(code);

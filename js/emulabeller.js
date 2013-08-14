@@ -224,13 +224,13 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_download":
-                    var myName = emulabeller.curLoadedBaseName+".Textgrid";
-                    var myData = emulabeller.iohandler.toTextGrid();   
+                    var myName = emulabeller.curLoadedBaseName + ".Textgrid";
+                    var myData = emulabeller.iohandler.toTextGrid();
                     if (!$('#downDialog').dialog('isOpen')) {
-                        $('#downDialog').dialog('option', 'title', 'Download '+myName);            
+                        $('#downDialog').dialog('option', 'title', 'Download ' + myName);
                         $("#downDialog").dialog('moveToTop');
                         $('#saveAsFileName').val(myName);
-                        $('#preview').html("<pre>"+myData+"</pre>");
+                        $('#preview').html("<pre>" + myData + "</pre>");
                         $('#downDialog').dialog('open');
                         $("#downDialog").dialog('moveToTop');
                     } else {
@@ -380,18 +380,18 @@ var EmuLabeller = {
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                    var diff_Y = Math.round((event.clientY - my.dragingStartY)/2);
-                    if(diff_Y*2 <= $(body).height()-($("#menu-bottom").height()+2*$("#menu").height())){
-                    $('#wave').css("height", "+=" + diff_Y + "px");
-                    $('#spectrogram').css("height", "+=" + diff_Y + "px");
-                    $('#timeline').css($('#wave').height()+$('#spectrogram').height()+"px");
-                    $('#spacer').height(($('#timeline').height()+64)+"px");            
-                    my.dragingStartY = event.clientY;
+                    var diff_Y = Math.round((event.clientY - my.dragingStartY) / 2);
+                    if (diff_Y * 2 <= $(body).height() - ($("#menu-bottom").height() + 2 * $("#menu").height())) {
+                        $('#wave').css("height", "+=" + diff_Y + "px");
+                        $('#spectrogram').css("height", "+=" + diff_Y + "px");
+                        $('#timeline').css($('#wave').height() + $('#spectrogram').height() + "px");
+                        $('#spacer').height(($('#timeline').height() + 64) + "px");
+                        my.dragingStartY = event.clientY;
                     }
                 }
             } else {
                 my.lastX = my.getX(e);
-                if(! my.tierHandler.isEditing) my.internalMode = my.EDITMODE.STANDARD;
+                if (!my.tierHandler.isEditing) my.internalMode = my.EDITMODE.STANDARD;
                 $("*").css("cursor", "auto");
             }
         });
@@ -956,20 +956,23 @@ var EmuLabeller = {
      * tierInfos as a TextGrid formated text file. This dataURI
      * will then be presented as a link in the top menu
      */
-    prepDownload: function() { 
-        try { var blob = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], { "type" : "text\/plain" }); }
-        catch (e) { // Backwards-compatibility
-                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-                blob.append(emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers));
-                blob = blob.getBlob();
+    prepDownload: function() {
+        try { 
+            var blob = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], {
+                "type": "text\/plain"
+            });
+        } catch (e) { // Backwards-compatibility
+            window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+            blob.append(emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers));
+            blob = blob.getBlob();
         }
         var textGridName = emulabeller.iohandler.fileNames.label[emulabeller.iohandler.fileNames.label.length - 1];
         $("#saveAsFileName").val(textGridName);
         this.exportData = blob;
-    
-    
-    
-    /*
+
+
+
+        /*
         var MIME_TYPE = 'text/plain';
         //var output = document.querySelector('#downLinkDiv');
         // window.URL = window.webkitURL || window.URL;
