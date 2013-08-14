@@ -90,6 +90,10 @@ var emulabeller = (function() {
         }
         if (code == 9 ) { // 9 == tab
             e.preventDefault();
+            if(emulabeller.tierHandler.isEditing==true) {
+    			emulabeller.tierHandler.saveLabelName(this);
+	    		emulabeller.tierHandler.removeLabelDoubleClick();
+	    	}            
             if (!e.shiftKey) {
                 emulabeller.tierHandler.selectPrevNextEvent(false);
             }else{
