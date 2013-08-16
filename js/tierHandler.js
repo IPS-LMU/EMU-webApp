@@ -941,7 +941,12 @@ EmuLabeller.tierHandler = {
 	},
 
 	/**
+	 * Iterates over all selected segments and adds/subtracts a fixed
+	 * number of samples to each segment and compensates the
+	 * movement of the boundaries accordingly
 	 *
+	 * @param add boolian to toggle between addind and removing samples
+	 * @param moveLeft toggles between expansion directions (left/right)
 	 */
 	addRemoveTimeToSelectedSegs: function(add, moveLeft) {
 		var sT = this.getSelectedTier();
@@ -978,9 +983,18 @@ EmuLabeller.tierHandler = {
 			// test if last selected evt still within bounds
 			if (add && !moveLeft && afterLastSel.sampleDur > stepSize || !add && !moveLeft && firstSel.sampleDur > stepSize || add && moveLeft && beforeFirstSel.sampleDur > stepSize || !add && moveLeft && firstSel.sampleDur > stepSize) {
 				if (add) {
-					emulabeller.viewPort.select(firstSel.startSample - nrOfSel * stepSize, afterLastSel.startSample + nrOfSel * stepSize);
+					if (!moveLeft) {
+						emulabeller.viewPort.select(firstSel.startSample, afterLastSel.startSample + nrOfSel * stepSize);
+					} else {
+						emulabeller.viewPort.select(firstSel.startSample - nrOfSel * stepSize, afterLastSel.startSample + nrOfSel * stepSize);
+					}
+
 				} else {
-					emulabeller.viewPort.select(firstSel.startSample + nrOfSel * stepSize, afterLastSel.startSample - nrOfSel * stepSize);
+					if (!moveLeft) {
+						emulabeller.viewPort.select(firstSel.startSample, afterLastSel.startSample - nrOfSel * stepSize);
+					} else {
+						emulabeller.viewPort.select(firstSel.startSample + nrOfSel * stepSize, afterLastSel.startSample - nrOfSel * stepSize);
+					}
 				}
 				for (s in selected) {
 					var evtIdx = parseInt(s);
