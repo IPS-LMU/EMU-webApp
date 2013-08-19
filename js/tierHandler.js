@@ -19,20 +19,15 @@ EmuLabeller.tierHandler = {
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
 
-		$("#downDialog").dialog({
+		this.downDialog = $("#downDialog").dialog({
 			autoOpen: false,
 			width: 500,
 			show: 'fade',
 			hide: 'fade',
 			position: 'center',
 			buttons: {
-				OK: function() {
-					$("#downDialog").dialog('close');
-					return false;
-				},
 				Cancel: function() {
-					$("#downDialog").dialog('close');
-					return false;
+					$(this).dialog("close");
 				}
 			}
 		});
@@ -337,6 +332,8 @@ EmuLabeller.tierHandler = {
 	    var myname = $('#saveAsFileName').val();
 	    // for non-IE
 	    if (!window.ActiveXObject) {
+	         if(null!=save)
+    	        (window.URL || window.webkitURL).revokeObjectURL(save.href);
 	        try { var blob = new Blob([mydata], { "type" : "text\/plain" }); }
 	        catch (e) { // Backwards-compatibility
                 window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -353,8 +350,10 @@ EmuLabeller.tierHandler = {
 	        var event = document.createEvent('Event');
 	        event.initEvent('click', true, true);
 	        save.dispatchEvent(event);
-	        //(window.URL || window.webkitURL).revokeObjectURL(save.href);
+	        
+	        return false;
 	    }
+	    else alert ("please do not use iexplorer");
 	},
 
 	deleteBorder: function() {

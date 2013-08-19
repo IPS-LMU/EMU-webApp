@@ -226,15 +226,15 @@ var EmuLabeller = {
                 case "cmd_download":
                     var myName = emulabeller.curLoadedBaseName + ".Textgrid";
                     var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
-                    if (!$('#downDialog').dialog('isOpen')) {
+                    if ($('#downDialog').dialog('isOpen')) {
+                        $('#downDialog').dialog('close');
+                    } else {
                         $('#downDialog').dialog('option', 'title', 'Download ' + myName);
                         $("#downDialog").dialog('moveToTop');
                         $('#saveAsFileName').val(myName);
                         $('#preview').html(myData);
                         $('#downDialog').dialog('open');
-                        $("#downDialog").dialog('moveToTop');
-                    } else {
-                        $('#downDialog').dialog('close');
+                        $("#downDialog").dialog('moveToTop');                        
                     }
                     break;
 
