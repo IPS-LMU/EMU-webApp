@@ -624,7 +624,7 @@ EmuLabeller.tierHandler = {
 		var splitright = (ev.sampleDur - splitleft);
 		ev.sampleDur = splitleft - 1;
 		t.events.push({
-			"label": "newSegment",
+			"label": "",
 			"startSample": Math.round(border),
 			"sampleDur": Math.round(splitright)
 		});
