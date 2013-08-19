@@ -208,6 +208,7 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
+            
             if (null !== my.getElement(e))
                 my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
@@ -226,16 +227,21 @@ var EmuLabeller = {
                 case "cmd_download":
                     var myName = emulabeller.curLoadedBaseName + ".Textgrid";
                     var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
-                    if (!$('#downDialog').dialog('isOpen')) {
+                    if ($('#downDialog').dialog('isOpen')) {
+                        $('#downDialog').dialog('close');
+                    } else {
                         $('#downDialog').dialog('option', 'title', 'Download ' + myName);
-                        $("#downDialog").dialog('moveToTop');
+                        
                         $('#saveAsFileName').val(myName);
                         $('#preview').html(myData);
-                        $('#downDialog').dialog('open');
+                        //$("#downDialog").dialog('moveToTop');                        
                         $("#downDialog").dialog('moveToTop');
-                    } else {
-                        $('#downDialog').dialog('close');
+                        $('#downDialog').dialog('open');
                     }
+                    break;
+                    
+                case "cmd_doDownload":
+                    my.tierHandler.doDownload();
                     break;
 
                 case "cmd_viewZoomAll":
@@ -288,8 +294,8 @@ var EmuLabeller = {
 
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
-                    break;
-
+                    break;                 
+                    
                 case "cmd_specSettings":
                     var specOpen = $('#specDialog').dialog('isOpen');
                     if (!specOpen) {
@@ -330,7 +336,15 @@ var EmuLabeller = {
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
+                    
+                case "downDialog":
+                	break;
+                    
+                default:
+                    break;
             }
+            e.preventDefault();
+            return false;
         });
 
         // All mouse up Functions  
@@ -403,6 +417,26 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
+        
+
+		$("#popup").dialog({
+			modal: true,
+			autoOpen: false,
+			width: 500,
+			show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+			position: 'center',
+			buttons: {
+				 "Ok": function () { $(this).dialog('close'); },
+			},
+            close: function(ev, ui) { $(this).hide(); }
+		});        
 
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
