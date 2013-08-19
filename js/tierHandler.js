@@ -19,7 +19,8 @@ EmuLabeller.tierHandler = {
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
 
-		this.downDialog = $("#downDialog").dialog({
+		$("#downDialog").dialog({
+			modal: false,
 			autoOpen: false,
 			width: 500,
 			show: 'fade',
@@ -344,13 +345,14 @@ EmuLabeller.tierHandler = {
 	        var url = window.URL.createObjectURL(blob);	    
 	        var save = document.createElement('a');
 	        save.href = url;
+	        save.id = 'temporaryDownloadLink'
 	        save.target = '_blank';
 	        save.download = myname || 'unknown';
 
 	        var event = document.createEvent('Event');
 	        event.initEvent('click', true, true);
 	        save.dispatchEvent(event);
-	        
+	        document.getElementById("temporaryDownloadLink").remove();
 	        return false;
 	    }
 	    else alert ("please do not use iexplorer");

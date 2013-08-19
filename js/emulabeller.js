@@ -230,12 +230,17 @@ var EmuLabeller = {
                         $('#downDialog').dialog('close');
                     } else {
                         $('#downDialog').dialog('option', 'title', 'Download ' + myName);
-                        $("#downDialog").dialog('moveToTop');
+                        
                         $('#saveAsFileName').val(myName);
                         $('#preview').html(myData);
+                        //$("#downDialog").dialog('moveToTop');                        
+                        $("#downDialog").dialog('moveToTop');
                         $('#downDialog').dialog('open');
-                        $("#downDialog").dialog('moveToTop');                        
                     }
+                    break;
+                    
+                case "cmd_doDownload":
+                    my.tierHandler.doDownload();
                     break;
 
                 case "cmd_viewZoomAll":
@@ -289,11 +294,6 @@ var EmuLabeller = {
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
                     break;
-                    
-                case "cmd_doDownload":
-                    my.tierHandler.doDownload();
-                    break;
-
                 case "cmd_specSettings":
                     var specOpen = $('#specDialog').dialog('isOpen');
                     if (!specOpen) {
