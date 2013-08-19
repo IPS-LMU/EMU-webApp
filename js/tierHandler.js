@@ -986,14 +986,14 @@ EmuLabeller.tierHandler = {
 					if (!moveLeft) {
 						emulabeller.viewPort.select(firstSel.startSample, afterLastSel.startSample + nrOfSel * stepSize);
 					} else {
-						emulabeller.viewPort.select(firstSel.startSample - nrOfSel * stepSize, afterLastSel.startSample + nrOfSel * stepSize);
+						emulabeller.viewPort.select(firstSel.startSample - nrOfSel * stepSize, afterLastSel.startSample + (nrOfSel - 1) * stepSize);
 					}
 
 				} else {
 					if (!moveLeft) {
 						emulabeller.viewPort.select(firstSel.startSample, afterLastSel.startSample - nrOfSel * stepSize);
 					} else {
-						emulabeller.viewPort.select(firstSel.startSample + nrOfSel * stepSize, afterLastSel.startSample - nrOfSel * stepSize);
+						emulabeller.viewPort.select(firstSel.startSample + nrOfSel * stepSize, afterLastSel.startSample - (nrOfSel - 1) * stepSize);
 					}
 				}
 				for (s in selected) {
