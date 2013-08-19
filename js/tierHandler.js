@@ -305,10 +305,9 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(myName, myData) {
 		$("#downDialog").dialog({
-		    bgiframe: true,
 			modal: true,
 			autoOpen: false,
-			width: 500,
+			width: 600,
 			show: {
                 effect: "fade",
                 duration: 500
@@ -317,47 +316,67 @@ EmuLabeller.tierHandler = {
                 effect: "fade",
                 duration: 500
             },
-			position: 'center',
-			buttons: {
-				 "Ok": function () { alert('OK'); $(this).dialog('close'); },
-				 "Cancel": function () { alert('Not ok'); $(this).dialog('close'); }
-			},
-            close: function(ev, ui) { $(this).hide(); }
+			position: 'center',    
 		});	
+
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
 		return false;
 	},
+	
+	
+	
+	SaveToDisk: function(fileURL, fileName) {
+    // for non-IE
+    if (!window.ActiveXObject) {
+        var save = document.createElement('a');
+        save.href = fileURL;
+        save.target = '_blank';
+        save.download = fileName || 'unknown';
+
+        var event = document.createEvent('Event');
+        event.initEvent('click', true, true);
+        save.dispatchEvent(event);
+        //(window.URL || window.webkitURL).revokeObjectURL(save.href);
+    }
+},
+
+	
+	
+	
 
 	doDownload: function() {
 	    var mydata = $('#preview').html();
 	    var myname = $('#saveAsFileName').val();
-	    // for non-IE
-	    if (!window.ActiveXObject) {
-	         if(null!=save)
-    	        (window.URL || window.webkitURL).revokeObjectURL(save.href);
-	        try { var blob = new Blob([mydata], { "type" : "text\/plain" }); }
-	        catch (e) { // Backwards-compatibility
-                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-                blob.append(mydata);
-                blob = blob.getBlob();
-            }
-            window.URL = window.URL || window.webkitURL;
-	        var url = window.URL.createObjectURL(blob);	    
-	        var save = document.createElement('a');
-	        save.href = url;
-	        save.target = '_blank';
-	        save.download = myname || 'unknown';
-	        
-	        var evt = document.createEvent('MouseEvents');
-	        evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-	        save.dispatchEvent(evt);
-	        save.remove();
-	        url = null;
+	    var blob;
+	    if('Blob' in window){
+	        try{
+	        blob = new Blob([mydata],{ "type" : "text\/plain"});
+	        }
+	        catch(e){}	        
 	    }
-	    return false;
+	    if(!blob){
+	        try{
+	        var bb = new BlobBuilder();
+	        bb.append( mydata );
+	        blob = bb.getBlob("text\/plain");
+	        }
+	        catch(e){}
+	    }	    
+	    window.URL = window.URL || window.webkitURL;
+	    var load = window.URL.createObjectURL(blob);
+	    window.saveAs || (window.saveAs == window.navigator.msSaveBlob || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs /** || URL Download Hack **/ );
+	    if(window.saveAs){
+	  // Move the builder object content to a blob and
+	  window.saveAs(load, myname);
+	}
+	else{
+	  // Fallover, open as DataURL
+	  //window.open(url.toDataURL());
+	  this.SaveToDisk(load,myname);
+	}
 	},
 
 	deleteBorder: function() {

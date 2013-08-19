@@ -225,12 +225,21 @@ var EmuLabeller = {
                     break;
                     
                 case "cmd_about":
-                    $('#popup').dialog();
-                    if ($('#popup').dialog('isOpen')) {
-                        $('#popup').dialog('close');
-                    } else {
-                        $('#popup').dialog('open');
-                    }
+            		$("#popup").dialog({
+            			modal: true,
+            			autoOpen: false,
+			            width: 500,
+            			show: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "fade",
+                            duration: 500
+                        },
+		            	position: 'center',
+                        close: function(ev, ui) { $(this).hide(); }
+            		});   	     
                     break;
 
                 case "cmd_download":
@@ -336,13 +345,12 @@ var EmuLabeller = {
                     my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
                     
-                case "downDialog":
-                	break;
-                    
+
                 default:
                     break;
             }
             e.preventDefault();
+            e.stopPropagation();
             return false;
         });
 
@@ -417,26 +425,6 @@ var EmuLabeller = {
             my.tierHandler.removeLabelDoubleClick();
         });
         
-
-		$("#popup").dialog({
-			modal: true,
-			autoOpen: false,
-			width: 500,
-			show: {
-                effect: "fade",
-                duration: 500
-            },
-            hide: {
-                effect: "fade",
-                duration: 500
-            },
-			position: 'center',
-			buttons: {
-				 "Ok": function () { $(this).dialog('close'); },
-			},
-            close: function(ev, ui) { $(this).hide(); }
-		});   	     
-
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({
