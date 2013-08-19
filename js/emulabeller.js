@@ -223,21 +223,20 @@ var EmuLabeller = {
                 case "cmd_addTierPoint":
                     my.tierHandler.addTier(true);
                     break;
+                    
+                case "cmd_about":
+                    $('#popup').dialog();
+                    if ($('#popup').dialog('isOpen')) {
+                        $('#popup').dialog('close');
+                    } else {
+                        $('#popup').dialog('open');
+                    }
+                    break;
 
                 case "cmd_download":
                     var myName = emulabeller.curLoadedBaseName + ".Textgrid";
                     var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
-                    if ($('#downDialog').dialog('isOpen')) {
-                        $('#downDialog').dialog('close');
-                    } else {
-                        $('#downDialog').dialog('option', 'title', 'Download ' + myName);
-                        
-                        $('#saveAsFileName').val(myName);
-                        $('#preview').html(myData);
-                        //$("#downDialog").dialog('moveToTop');                        
-                        $("#downDialog").dialog('moveToTop');
-                        $('#downDialog').dialog('open');
-                    }
+                    my.tierHandler.downloadDialog(myName,myData);
                     break;
                     
                 case "cmd_doDownload":
@@ -436,7 +435,7 @@ var EmuLabeller = {
 				 "Ok": function () { $(this).dialog('close'); },
 			},
             close: function(ev, ui) { $(this).hide(); }
-		});        
+		});   	     
 
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
