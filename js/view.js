@@ -87,8 +87,11 @@ EmuLabeller.ViewPort = {
         return this.getPos(w, this.sS + 1) - this.getPos(w, this.sS);
     },
 
-    setSelectTier: function(n) {
-        this.MouseTierName = n;
+    /**
+    * param name name of tier
+    */
+    setSelectTier: function(name) {
+        this.MouseTierName = name;
     },
 
     getSelectTier: function() {
@@ -96,6 +99,7 @@ EmuLabeller.ViewPort = {
     },
 
     getSelectName: function() {
+        console.log(this.MouseSegmentName)
         return this.MouseSegmentName;
     },
 

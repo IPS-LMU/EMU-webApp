@@ -321,7 +321,7 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(TierName) {
 		var myName, myData;
-		myName =  emulabeller.curLoadedBaseName + "." + TierName;
+		myName = emulabeller.curLoadedBaseName + "." + TierName;
 		myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName));
 
 		$('#downDialog').dialog('option', 'title', 'Download ' + myName);
@@ -352,7 +352,7 @@ EmuLabeller.tierHandler = {
 		if ($("#" + tierName).height() >= s) {
 			$("#" + tierName + "_del").hide();
 			$("#" + tierName + "_save").hide();
-			$("#" + tierName).height($("#" + tierName+ "_del").height()-3+"px");
+			$("#" + tierName).height($("#" + tierName + "_del").height() - 3 + "px");
 		} else {
 			$("#" + tierName).height(this.internalCanvasHeightBig);
 			$("#" + tierName + "_del").show();
@@ -461,17 +461,16 @@ EmuLabeller.tierHandler = {
 		var r = null;
 		var curSample = Math.round(c);
 		for (var k in e) {
-		    if(e[k].sampleDur==0) {
-			    if (curSample == e[k].startSample) {
-				    r = e[k];
-    			}
+			if (e[k].sampleDur == 0) {
+				if (curSample == e[k].startSample) {
+					r = e[k];
+				}
+			} else {
+				if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
+					r = e[k];
+				}
 			}
-			else {
-	    		if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
-		    		r = e[k];
-			    }
-			}
-			
+
 		}
 		return r;
 	},
@@ -498,7 +497,7 @@ EmuLabeller.tierHandler = {
 		}
 		console.log(r.startSample);
 		console.log(diff);
-		
+
 		return r;
 	},
 
@@ -841,20 +840,22 @@ EmuLabeller.tierHandler = {
 	 * @param getAbove boolian  if true it gets the tier above
 	 * if false the tier below
 	 */
-	getNeighboringTier: function(tName, getAbove) {
+	getNeighboringTier: function(tName, getAbove, throwAlert) {
 		var hullID;
 		if (getAbove) {
 			hullID = $("#hull" + tName).prev().attr('id');
-			if (!hullID) {
+			if (!hullID && throwAlert) {
 				alert("no tier above the selected boundary!");
 			}
 		} else {
 			hullID = $("#hull" + tName).next().attr('id');
-			if (!hullID) {
+			if (!hullID && throwAlert) {
 				alert("no tier below the selected boundary!");
 			}
 		}
-		var neighID = hullID.replace(/hull/g, '');
+		if (hullID) {
+			var neighID = hullID.replace(/hull/g, '');
+		}
 		return (this.getTier(neighID));
 
 	},
@@ -869,16 +870,10 @@ EmuLabeller.tierHandler = {
 	 */
 	snapSelectedBoundaryToNearestTopOrBottom: function(toTop) {
 		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
-			var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, toTop);
+			var neighTier = this.getNeighboringTier(emulabeller.viewPort.curMouseMoveTierName, toTop, true);
 
 			var closestSeg = this.nearestEvent(neighTier, emulabeller.viewPort.curMouseMoveSegmentStart);
-
-			// console.log("############")
-			// console.log(emulabeller.viewPort.curMouseMoveSegmentStart);
-			// console.log(neighTier);
-			// console.log(closestSeg);
 			if (closestSeg) {
-				// console.log(closestSeg);
 				this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
 			} else {
 				alert("closest segment is null?!?!?!?");
@@ -1042,6 +1037,46 @@ EmuLabeller.tierHandler = {
 			}
 
 		}
-	}
+	},
+
+	/**
+	 *
+	 * @param down boolian to move up or down
+	 */
+	moveSelectedTierUpDown: function(up) {
+		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
+			var curTier = this.getSelectedTier();
+			var firstTierName = $("#cans div canvas").first().attr('id');
+			var lastTierName = $("#cans div canvas").last().attr('id');
+			if (!curTier) {
+				emulabeller.viewPort.setSelectTier(firstTierName);
+				curTier = this.getTier(firstTierName);
+				emulabeller.drawBuffer();
+			}
+
+			if (up && curTier.name == firstTierName || !up && curTier.name == lastTierName) return;
+			var neighTier = this.getNeighboringTier(emulabeller.viewPort.MouseTierName, up, false);
+			console.log(emulabeller.viewPort.MouseTierName);
+
+			if (neighTier) {
+				emulabeller.viewPort.resetSelection(curTier.events.length);
+				emulabeller.viewPort.setSelectTier(neighTier.TierName);
+				emulabeller.drawBuffer();
+			}
+		}
+
+	},
+
+	/**
+	 *
+	 */
+	moveSelctionToCurMouseBoundary: function() {
+		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
+			console.log("moveSelctionToCurMouseBoundary")
+		}
+
+	},
+
+
 
 };

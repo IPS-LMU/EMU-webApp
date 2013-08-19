@@ -115,6 +115,14 @@ var emulabeller = (function() {
             emulabeller.playPauseInView();
             e.preventDefault();
         }
+        if (code == 38 && emulabeller.keyBindingAllowed()) { // 38 == UP ARROW
+            emulabeller.tierHandler.moveSelectedTierUpDown(true);
+            e.preventDefault();
+        }
+        if (code == 40 && emulabeller.keyBindingAllowed()) { // 40 == DOWN ARROW
+            emulabeller.tierHandler.moveSelectedTierUpDown(false);
+            e.preventDefault();
+        }
         if (code == 46 && emulabeller.keyBindingAllowed()) { // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
