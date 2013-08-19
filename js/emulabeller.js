@@ -225,7 +225,7 @@ var EmuLabeller = {
 
                 case "cmd_download":
                     var myName = emulabeller.curLoadedBaseName + ".Textgrid";
-                    var myData = emulabeller.iohandler.toTextGrid();
+                    var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
                     if (!$('#downDialog').dialog('isOpen')) {
                         $('#downDialog').dialog('option', 'title', 'Download ' + myName);
                         $("#downDialog").dialog('moveToTop');

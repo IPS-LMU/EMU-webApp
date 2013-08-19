@@ -145,7 +145,7 @@ EmuLabeller.tierHandler = {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.resizeTier(n);
 		});
-		$("#" + myName + "_save").bind("mouseup", function(event) {
+		$("#" + myName + "_save").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.downloadDialog(n);
 		});
