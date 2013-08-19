@@ -353,7 +353,7 @@ EmuLabeller.tierHandler = {
 		if ($("#" + tierName).height() >= s) {
 			$("#" + tierName + "_del").hide();
 			$("#" + tierName + "_save").hide();
-			$("#" + tierName).height(this.internalCanvasHeightBig / 2.9);
+			$("#" + tierName).height($("#" + tierName+ "_del").height()-3+"px");
 		} else {
 			$("#" + tierName).height(this.internalCanvasHeightBig);
 			$("#" + tierName + "_del").show();
