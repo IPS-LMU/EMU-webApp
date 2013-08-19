@@ -461,18 +461,15 @@ EmuLabeller.tierHandler = {
 		var r = null;
 		var curSample = Math.round(c);
 		for (var k in e) {
-		    console.log(curSample + " " + e[k].startSample + " " + (e[k].startSample + e[k].sampleDur));
 		    if(e[k].sampleDur==0) {
-			if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
-				r = e[k];
-				console.log("found");
-			}
+			    if (curSample == e[k].startSample) {
+				    r = e[k];
+    			}
 			}
 			else {
-			if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
-				r = e[k];
-				console.log("found");
-			}
+	    		if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
+		    		r = e[k];
+			    }
 			}
 			
 		}
