@@ -151,7 +151,6 @@ EmuLabeller.tierHandler = {
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
-			console.log(emulabeller.getX(event.originalEvent));
 			emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent));
 		});
 		$("#" + myName).bind("contextmenu", function(event) {
@@ -370,7 +369,7 @@ EmuLabeller.tierHandler = {
 		var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 		if (tierDetails.type == "seg") {
-			var nearest = this.nextEvent(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
+			var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
 			if (null != nearest) {
 				emulabeller.viewPort.curMouseMoveTierName = nearest.label;
 				emulabeller.viewPort.curMouseMoveTierType = tierDetails.type;
@@ -457,13 +456,25 @@ EmuLabeller.tierHandler = {
 		emulabeller.drawBuffer();
 	},
 
-	nearestSegment: function(t, curSample) {
+	nearestSegment: function(t, c) {
 		var e = t.events;
 		var r = null;
+		var curSample = Math.round(c);
 		for (var k in e) {
+		    console.log(curSample + " " + e[k].startSample + " " + (e[k].startSample + e[k].sampleDur));
+		    if(e[k].sampleDur==0) {
 			if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
 				r = e[k];
+				console.log("found");
 			}
+			}
+			else {
+			if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
+				r = e[k];
+				console.log("found");
+			}
+			}
+			
 		}
 		return r;
 	},
@@ -488,6 +499,9 @@ EmuLabeller.tierHandler = {
 				r = e[k];
 			}
 		}
+		console.log(r.startSample);
+		console.log(diff);
+		
 		return r;
 	},
 
