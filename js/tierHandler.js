@@ -332,6 +332,31 @@ EmuLabeller.tierHandler = {
 		return false;
 	},
 
+	doDownload: function() {
+	    var mydata = $('#preview').html();
+	    var myname = $('#saveAsFileName').val();
+	    // for non-IE
+	    if (!window.ActiveXObject) {
+	        try { var blob = new Blob([mydata], { "type" : "text\/plain" }); }
+	        catch (e) { // Backwards-compatibility
+                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                blob.append(mydata);
+                blob = blob.getBlob();
+            }
+            window.URL = window.URL || window.webkitURL;
+	        var url = window.URL.createObjectURL(blob);	    
+	        var save = document.createElement('a');
+	        save.href = url;
+	        save.target = '_blank';
+	        save.download = myname || 'unknown';
+
+	        var event = document.createEvent('Event');
+	        event.initEvent('click', true, true);
+	        save.dispatchEvent(event);
+	        //(window.URL || window.webkitURL).revokeObjectURL(save.href);
+	    }
+	},
+
 	deleteBorder: function() {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {

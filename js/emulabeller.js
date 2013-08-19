@@ -289,6 +289,10 @@ var EmuLabeller = {
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
                     break;
+                    
+                case "cmd_doDownload":
+                    my.tierHandler.doDownload();
+                    break;
 
                 case "cmd_specSettings":
                     var specOpen = $('#specDialog').dialog('isOpen');
