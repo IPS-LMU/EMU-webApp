@@ -19,6 +19,35 @@ EmuLabeller.tierHandler = {
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
 
+		$("#downDialog").dialog({
+			bgiframe: true,
+			modal: true,
+			autoOpen: false,
+			width: 500,
+			show: {
+				effect: "fade",
+				duration: 500
+			},
+			hide: {
+				effect: "fade",
+				duration: 500
+			},
+			position: 'center',
+			buttons: {
+				"Ok": function() {
+					alert('OK');
+					$(this).dialog('close');
+				},
+				"Cancel": function() {
+					alert('Not ok');
+					$(this).dialog('close');
+				}
+			},
+			close: function(ev, ui) {
+				$(this).hide();
+			}
+		});
+
 
 	},
 
@@ -348,35 +377,35 @@ EmuLabeller.tierHandler = {
 	
 
 	doDownload: function() {
-	    var mydata = $('#preview').html();
-	    var myname = $('#saveAsFileName').val();
-	    var blob;
-	    if('Blob' in window){
-	        try{
-	        blob = new Blob([mydata],{ "type" : "text\/plain"});
-	        }
-	        catch(e){}	        
-	    }
-	    if(!blob){
-	        try{
-	        var bb = new BlobBuilder();
-	        bb.append( mydata );
-	        blob = bb.getBlob("text\/plain");
-	        }
-	        catch(e){}
-	    }	    
-	    window.URL = window.URL || window.webkitURL;
-	    var load = window.URL.createObjectURL(blob);
-	    window.saveAs || (window.saveAs == window.navigator.msSaveBlob || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs /** || URL Download Hack **/ );
-	    if(window.saveAs){
-	  // Move the builder object content to a blob and
-	  window.saveAs(load, myname);
-	}
-	else{
-	  // Fallover, open as DataURL
-	  //window.open(url.toDataURL());
-	  this.SaveToDisk(load,myname);
-	}
+		var mydata = $('#preview').html();
+		var myname = $('#saveAsFileName').val();
+		// for non-IE
+		if (!window.ActiveXObject) {
+			if (null != save)
+				(window.URL || window.webkitURL).revokeObjectURL(save.href);
+			try { 
+				var blob = new Blob([mydata], {
+					"type": "text\/plain"
+				});
+			} catch (e) { // Backwards-compatibility
+				window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+				blob.append(mydata);
+				blob = blob.getBlob();
+			}
+			window.URL = window.URL || window.webkitURL;
+			var url = window.URL.createObjectURL(blob);
+			var save = document.createElement('a');
+			save.href = url;
+			save.target = '_blank';
+			save.download = myname || 'unknown';
+
+			var evt = document.createEvent('MouseEvents');
+			evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+			save.dispatchEvent(evt);
+			save.remove();
+			url = null;
+		}
+		return false;
 	},
 
 	deleteBorder: function() {
@@ -510,19 +539,18 @@ EmuLabeller.tierHandler = {
 		var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
 		var curSample = Math.round(c);
 		var curSampleA = curSample + sDist;
-		var curSampleE = curSample ;
+		var curSampleE = curSample;
 		console.log(sDist + " " + curSample + " " + curSampleE);
 		for (var k in e) {
 
-		    if(e[k].sampleDur==0) {
-			    if (curSampleA == e[k].startSample || curSampleE == e[k].startSample) {
-				    r = e[k];
-    			}
-			}
-			else {
-	    		if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
-		    		r = e[k];
-			    }
+			if (e[k].sampleDur == 0) {
+				if (curSampleA == e[k].startSample || curSampleE == e[k].startSample) {
+					r = e[k];
+				}
+			} else {
+				if (curSample >= e[k].startSample && curSample <= (e[k].startSample + e[k].sampleDur)) {
+					r = e[k];
+				}
 			}
 
 		}
@@ -1122,11 +1150,13 @@ EmuLabeller.tierHandler = {
 	},
 
 	/**
-	 *
+	 * 
 	 */
 	moveSelctionToCurMouseBoundary: function() {
 		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
 			console.log("moveSelctionToCurMouseBoundary")
+			emulabeller.viewPort.select(emulabeller.viewPort.curMouseMoveSegmentStart, emulabeller.viewPort.curMouseMoveSegmentStart);
+			emulabeller.drawBuffer();
 		}
 
 	},

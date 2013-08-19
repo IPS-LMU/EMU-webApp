@@ -135,6 +135,10 @@ var emulabeller = (function() {
             emulabeller.tierHandler.snapSelectedBoundaryToNearestTopOrBottom(false);
             e.preventDefault();
         }
+        if (code == 67 && emulabeller.keyBindingAllowed()) { // 67 == c
+            emulabeller.tierHandler.moveSelctionToCurMouseBoundary();
+            e.preventDefault();
+        }
         if (code == 68 && emulabeller.keyBindingAllowed()) { // 68 == d
             emulabeller.shiftViewP(1);
             e.preventDefault();
