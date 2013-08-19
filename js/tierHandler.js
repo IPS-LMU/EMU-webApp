@@ -19,26 +19,6 @@ EmuLabeller.tierHandler = {
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.params = params;
 
-		$("#downDialog").dialog({
-		    bgiframe: true,
-			modal: true,
-			autoOpen: false,
-			width: 500,
-			show: {
-                effect: "fade",
-                duration: 500
-            },
-            hide: {
-                effect: "fade",
-                duration: 500
-            },
-			position: 'center',
-			buttons: {
-				 "Ok": function () { alert('OK'); $(this).dialog('close'); },
-				 "Cancel": function () { alert('Not ok'); $(this).dialog('close'); }
-			},
-            close: function(ev, ui) { $(this).hide(); }
-		});
 
 	},
 
@@ -149,8 +129,9 @@ EmuLabeller.tierHandler = {
 			emulabeller.tierHandler.resizeTier(n);
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
-			var n = $(this).parent().prev().get(0).id;
-			emulabeller.tierHandler.downloadDialog(n);
+            var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
+            var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
+            emulabeller.tierHandler.downloadDialog(myName,myData);
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -322,13 +303,28 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	downloadDialog: function(TierName) {
-		var myName, myData;
-		myName = emulabeller.curLoadedBaseName + "." + TierName;
-		myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName));
-
-		$('#downDialog').dialog('option', 'title', 'Download ' + myName);
-		$("#downDialog").dialog('moveToTop');
+	downloadDialog: function(myName, myData) {
+		$("#downDialog").dialog({
+		    bgiframe: true,
+			modal: true,
+			autoOpen: false,
+			width: 500,
+			show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+			position: 'center',
+			buttons: {
+				 "Ok": function () { alert('OK'); $(this).dialog('close'); },
+				 "Cancel": function () { alert('Not ok'); $(this).dialog('close'); }
+			},
+            close: function(ev, ui) { $(this).hide(); }
+		});	
+		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
