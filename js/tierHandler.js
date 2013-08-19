@@ -485,10 +485,15 @@ EmuLabeller.tierHandler = {
 	nearestSegment: function(t, c) {
 		var e = t.events;
 		var r = null;
+		var canvas = emulabeller.tierHandler.getCanvas(t.TierName);
+		var sDist = emulabeller.viewPort.getSampleDist(canvas.width);
 		var curSample = Math.round(c);
+		var curSampleA = curSample + sDist;
+		var curSampleE = curSample ;
+		console.log(sDist + " " + curSample + " " + curSampleE);
 		for (var k in e) {
 		    if(e[k].sampleDur==0) {
-			    if (curSample == e[k].startSample) {
+			    if (curSampleA == e[k].startSample || curSampleE == e[k].startSample) {
 				    r = e[k];
     			}
 			}
