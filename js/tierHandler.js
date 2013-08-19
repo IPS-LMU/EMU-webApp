@@ -328,7 +328,7 @@ EmuLabeller.tierHandler = {
 		$('#downDialog').dialog('option', 'title', 'Download ' + myName);
 		$("#downDialog").dialog('moveToTop');
 		$('#saveAsFileName').val(myName);
-		$('#preview').html("<pre>" + myData + "</pre>");
+		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
 		return false;
 	},
