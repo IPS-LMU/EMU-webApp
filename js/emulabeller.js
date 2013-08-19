@@ -123,6 +123,7 @@ var EmuLabeller = {
         this.tiers = params.tiers;
         this.showLeftPush = params.showLeftPush;
         this.osciCanvas = params.osciCanvas;
+        this.initLoad = params.initLoad;
 
 
         // Object Classes
@@ -208,7 +209,7 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
-            
+
             if (null !== my.getElement(e))
                 my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
@@ -223,13 +224,13 @@ var EmuLabeller = {
                 case "cmd_addTierPoint":
                     my.tierHandler.addTier(true);
                     break;
-                    
+
                 case "cmd_about":
-            		$("#popup").dialog({
-            			modal: true,
-            			autoOpen: false,
-			            width: 500,
-            			show: {
+                    $("#popup").dialog({
+                        modal: true,
+                        autoOpen: false,
+                        width: 500,
+                        show: {
                             effect: "fade",
                             duration: 500
                         },
@@ -237,17 +238,19 @@ var EmuLabeller = {
                             effect: "fade",
                             duration: 500
                         },
-		            	position: 'center',
-                        close: function(ev, ui) { $(this).hide(); }
-            		});   	     
+                        position: 'center',
+                        close: function(ev, ui) {
+                            $(this).hide();
+                        }
+                    });
                     break;
 
                 case "cmd_download":
-                    var myName = emulabeller.curLoadedBaseName + ".Textgrid";
-                    var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
-                    my.tierHandler.downloadDialog(myName,myData);
+                    var myName = emulabeller.curLoadedBaseName + ".TextGrid";
+                    var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers());
+                    my.tierHandler.downloadDialog(myName, myData);
                     break;
-                    
+
                 case "cmd_doDownload":
                     my.tierHandler.doDownload();
                     break;
@@ -302,8 +305,8 @@ var EmuLabeller = {
 
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
-                    break;                 
-                    
+                    break;
+
                 case "cmd_specSettings":
                     var specOpen = $('#specDialog').dialog('isOpen');
                     if (!specOpen) {
@@ -344,7 +347,7 @@ var EmuLabeller = {
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
-                    
+
 
                 default:
                     break;
@@ -424,7 +427,7 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
-        
+
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({
@@ -622,8 +625,17 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
 
+        if (this.initLoad) {
+            this.initLoad = false;
+        } else {
+            if (confirm("Loading an audio file will delete all tiers!")) {
+                this.tierHandler.reinit();
+            }
+        }
+
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
         // this.viewPort.init(10365, 18660, this.backend.currentBuffer.length); // for development
+
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();

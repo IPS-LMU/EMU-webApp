@@ -147,7 +147,7 @@ EmuLabeller.TextGridParser = {
         }
 
         // console.log(labelJSO);
-        console.log(tG);
+        // console.log(tG);
         return (tG);
 
     },

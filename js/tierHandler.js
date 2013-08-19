@@ -9,7 +9,7 @@ EmuLabeller.tierHandler = {
 		this.isEditing = false;
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
-		this.myHistory = new Object();
+		this.myHistory = {};
 		this.editAreaTextfieldName = "editArea";
 		this.tierCssName = "tierSettings";
 		this.historyEndError = "Cannot go back, no more history saved.... =(";
@@ -49,6 +49,15 @@ EmuLabeller.tierHandler = {
 		});
 
 
+	},
+
+	reinit: function() {
+		this.myHistory = {};
+		this.tierInfos = {
+			"tiers": [],
+			"canvases": []
+		};
+		$("#cans").empty();
 	},
 
 	history: function() {
@@ -158,9 +167,9 @@ EmuLabeller.tierHandler = {
 			emulabeller.tierHandler.resizeTier(n);
 		});
 		$("#" + myName + "_save").bind("click", function(event) {
-            var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
-            var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
-            emulabeller.tierHandler.downloadDialog(myName,myData);
+			var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
+			var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
+			emulabeller.tierHandler.downloadDialog(myName, myData);
 		});
 
 		$("#" + myName).bind("dblclick", function(event) {
@@ -338,15 +347,15 @@ EmuLabeller.tierHandler = {
 			autoOpen: false,
 			width: 600,
 			show: {
-                effect: "fade",
-                duration: 500
-            },
-            hide: {
-                effect: "fade",
-                duration: 500
-            },
-			position: 'center',    
-		});	
+				effect: "fade",
+				duration: 500
+			},
+			hide: {
+				effect: "fade",
+				duration: 500
+			},
+			position: 'center',
+		});
 
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
 		$('#saveAsFileName').val(myName);
@@ -354,27 +363,25 @@ EmuLabeller.tierHandler = {
 		$('#downDialog').dialog('open');
 		return false;
 	},
-	
-	
-	
+
+
+
 	SaveToDisk: function(fileURL, fileName) {
-    // for non-IE
-    if (!window.ActiveXObject) {
-        var save = document.createElement('a');
-        save.href = fileURL;
-        save.target = '_blank';
-        save.download = fileName || 'unknown';
+		// for non-IE
+		if (!window.ActiveXObject) {
+			var save = document.createElement('a');
+			save.href = fileURL;
+			save.target = '_blank';
+			save.download = fileName || 'unknown';
 
-        var event = document.createEvent('Event');
-        event.initEvent('click', true, true);
-        save.dispatchEvent(event);
-        //(window.URL || window.webkitURL).revokeObjectURL(save.href);
-    }
-},
+			var event = document.createEvent('Event');
+			event.initEvent('click', true, true);
+			save.dispatchEvent(event);
+			//(window.URL || window.webkitURL).revokeObjectURL(save.href);
+		}
+	},
 
-	
-	
-	
+
 
 	doDownload: function() {
 		var mydata = $('#preview').html();
@@ -1150,7 +1157,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	/**
-	 * 
+	 *
 	 */
 	moveSelctionToCurMouseBoundary: function() {
 		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
@@ -1159,8 +1166,5 @@ EmuLabeller.tierHandler = {
 			emulabeller.drawBuffer();
 		}
 
-	},
-
-
-
+	}
 };

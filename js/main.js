@@ -39,15 +39,16 @@ var emulabeller = (function() {
         internalCanvasWidth: '2048', // in pixel
         internalCanvasHeightSmall: '128', // in pixel -> Cans
         internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro
-        mode: 'standalone' // server or standalone
+        mode: 'standalone', // server or standalone
+        initLoad: autoLoad
     });
 
 
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
     if (isiPad || autoLoad) {
-        labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 'text', 3);
         labeller.iohandler.xhrLoad('data/msajc003.wav', 'arraybuffer', 0);
+        labeller.iohandler.xhrLoad('data/msajc003.TextGrid', 'text', 3);
     }
 
 
@@ -208,7 +209,7 @@ var emulabeller = (function() {
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
-        console.log(code);
+        // console.log(code);
     });
 
 
