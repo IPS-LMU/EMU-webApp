@@ -322,7 +322,7 @@ EmuLabeller.tierHandler = {
 
 	downloadDialog: function(TierName) {
 		var myName, myData;
-		myName = TierName + "." + emulabeller.curLoadedBaseName;
+		myName =  emulabeller.curLoadedBaseName + "." + TierName;
 		myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier(TierName));
 
 		$('#downDialog').dialog('option', 'title', 'Download ' + myName);
