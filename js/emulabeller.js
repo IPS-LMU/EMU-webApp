@@ -208,6 +208,7 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
+            
             if (null !== my.getElement(e))
                 my.clickedOn = my.getElement(e).id;
             switch (my.clickedOn) {
@@ -293,7 +294,8 @@ var EmuLabeller = {
 
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
-                    break;
+                    break;                 
+                    
                 case "cmd_specSettings":
                     var specOpen = $('#specDialog').dialog('isOpen');
                     if (!specOpen) {
@@ -334,7 +336,15 @@ var EmuLabeller = {
                     my.offsetTimeline = my.timeline.offsetHeight;
                     my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
+                    
+                case "downDialog":
+                	break;
+                    
+                default:
+                    break;
             }
+            e.preventDefault();
+            return false;
         });
 
         // All mouse up Functions  
@@ -407,6 +417,26 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
+        
+
+		$("#popup").dialog({
+			modal: true,
+			autoOpen: false,
+			width: 500,
+			show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+			position: 'center',
+			buttons: {
+				 "Ok": function () { $(this).dialog('close'); },
+			},
+            close: function(ev, ui) { $(this).hide(); }
+		});        
 
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");

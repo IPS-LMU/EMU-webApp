@@ -20,17 +20,24 @@ EmuLabeller.tierHandler = {
 		this.params = params;
 
 		$("#downDialog").dialog({
-			modal: false,
+		    bgiframe: true,
+			modal: true,
 			autoOpen: false,
 			width: 500,
-			show: 'fade',
-			hide: 'fade',
+			show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
 			position: 'center',
 			buttons: {
-				Cancel: function() {
-					$(this).dialog("close");
-				}
-			}
+				 "Ok": function () { alert('OK'); $(this).dialog('close'); },
+				 "Cancel": function () { alert('Not ok'); $(this).dialog('close'); }
+			},
+            close: function(ev, ui) { $(this).hide(); }
 		});
 
 	},
@@ -345,17 +352,16 @@ EmuLabeller.tierHandler = {
 	        var url = window.URL.createObjectURL(blob);	    
 	        var save = document.createElement('a');
 	        save.href = url;
-	        save.id = 'temporaryDownloadLink'
 	        save.target = '_blank';
 	        save.download = myname || 'unknown';
-
-	        var event = document.createEvent('Event');
-	        event.initEvent('click', true, true);
-	        save.dispatchEvent(event);
-	        document.getElementById("temporaryDownloadLink").remove();
-	        return false;
+	        
+	        var evt = document.createEvent('MouseEvents');
+	        evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+	        save.dispatchEvent(evt);
+	        save.remove();
+	        url = null;
 	    }
-	    else alert ("please do not use iexplorer");
+	    return false;
 	},
 
 	deleteBorder: function() {
