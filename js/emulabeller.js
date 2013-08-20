@@ -429,8 +429,11 @@ var EmuLabeller = {
                 duration: 500
             },
             position: 'center',
- create: function(event, ui) {
+ open: function(event, ui) {
   window.onscroll = function () { window.scrollTo(0, 0); };
+ },
+  beforeClose: function(event, ui) {
+  window.onscroll = function () {  };
  }
         });
         $('#wave').css("height", "80px");
