@@ -45,19 +45,27 @@ EmuLabeller.LabFileParser = {
 	 * @return a sting containing the lab file
 	 */
 	toESPS: function(tierDetails) {
+		var my = this;
 
 		var lF = ""; // lab file
 		lF = lF + "signal " + emulabeller.curLoadedBaseName + "\n";
 		lF = lF + "nfields 1\n#\n";
-
+		var counter = 1;
 		for (var i in tierDetails.events) {
 			var c = tierDetails.events[i];
-			var eT = (c.startSample + c.sampleDur) / this.ssr;
-			lF = lF + "\t" + eT + "\t125\t" + c.label + "\n";
+			var eT = (c.startSample + c.sampleDur + 1) / 44100; // SIC hardcoded coz of this problem
+			if (tierDetails.type == "seg" && counter == 1) {
+				lF = lF + "\t" + eT + "\t125\t" + "H#" + "\n";
+			} else {
+				if (counter < tierDetails.events.length) {
+					lF = lF + "\t" + eT + "\t125\t" + c.label + "\n";
+				}
+			}
+			counter += 1;
 		}
 
-		console.log(tierDetails);
-		console.log(lF);
+		// console.log(tierDetails);
+		// console.log(lF);
 
 		return (lF);
 	}

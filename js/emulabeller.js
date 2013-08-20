@@ -212,7 +212,7 @@ var EmuLabeller = {
 
             if (null !== my.getElement(e))
                 var cOn = my.getElement(e).id;
-                             
+
             switch (cOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
@@ -227,7 +227,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_about":
-                    
+
                     $('#popup').dialog('open');
                     break;
 
@@ -422,13 +422,15 @@ var EmuLabeller = {
             },
             position: 'center',
             open: function(event, ui) {
-                window.onscroll = function () { window.scrollTo(0, 0); };
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
             },
             beforeClose: function(event, ui) {
-                window.onscroll = function () {  };
+                window.onscroll = function() {};
             }
         });
-        $("#popup").dialog('option', 'position', ["center",10]);
+        $("#popup").dialog('option', 'position', ["center", 10]);
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({
@@ -448,12 +450,8 @@ var EmuLabeller = {
         $("#cans").disableSelection();
 
     },
-    
-    
-    
-    
-    
-    
+
+
 
     /**
      *
@@ -648,8 +646,8 @@ var EmuLabeller = {
         this.drawer.uiMiniMapDraw();
         this.drawer.uiAllTierDrawUpdate();
 
-        emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
-
+        // emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
+        // emulabeller.iohandler.toESPS(emulabeller.tierHandler.getTiers()["Phonetic"]); // for testing toESPS
     },
 
 
@@ -1058,8 +1056,8 @@ var EmuLabeller = {
             // cleanUp(this);
         };*/
     },
-    
-    
+
+
 
     /**
     * use socketIOhandler to request something from server
