@@ -211,8 +211,9 @@ var EmuLabeller = {
         document.addEventListener('mousedown', function(e) {
 
             if (null !== my.getElement(e))
-                my.clickedOn = my.getElement(e).id;
-            switch (my.clickedOn) {
+                var cOn = my.getElement(e).id;
+                             
+            switch (cOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
                     break;
@@ -227,6 +228,7 @@ var EmuLabeller = {
 
                 case "cmd_about":
                     $("#popup").dialog({
+                        bgiframe: true,
                         modal: true,
                         autoOpen: false,
                         width: 500,
@@ -243,6 +245,7 @@ var EmuLabeller = {
                             $(this).hide();
                         }
                     });
+                    $('#popup').dialog('open');
                     break;
 
                 case "cmd_download":
