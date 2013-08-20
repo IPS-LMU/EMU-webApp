@@ -294,15 +294,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_specSettings":
-                    var specOpen = $('#specDialog').dialog('isOpen');
-                    if (!specOpen) {
-                        $('#specDialog').dialog('open');
-                        $("#specDialog").dialog('moveToTop');
-                        specOpen = true;
-                    } else {
-                        $('#specDialog').dialog('close');
-                        specOpen = false;
-                    }
+                    $('#specDialog').dialog('open');
                     break;
 
                 case params.scrollCanvas.id:

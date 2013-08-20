@@ -51,40 +51,52 @@ EmuLabeller.Drawer.SpectogramDrawer = {
 		my.clearImageCache();
 		
 		$("#specDialog").dialog({
-         bgiframe: true,
-         autoOpen: false,
-         width: 500,
-         closeOnEscape: true,
-         show: 'fade',
-         hide: 'fade',
-         position: 'center',
-         stack: false,
-         buttons: {
-            OK: function() {
-                var nN = $("#windowLength").val();
-                var nvrf = $("#viewrange_from").val();
-                var nvrt = $("#viewrange_to").val();
-                var ndr = $("#dynamicRange").val();
-                var nwf = $("#windowFunction").val();
-                if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
-                    alert("Please enter valid numbers !");
-                } else {
-                    my.N = parseInt(nN, 10);
-                    my.freq = parseInt(nvrt, 10);
-                    my.freq_lower = parseInt(nvrf, 10);
-                    my.dynRangeInDB = parseInt(ndr, 10);
-                    my.windowFunction = parseInt(nwf, 10);
-                    my.clearImageCache();
-                    my.killSpectroRenderingThread();
-                    my.uiDraw();
-                    my.drawTimeLine();
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: 500,
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            position: 'center',
+            open: function(event, ui) {
+                window.onscroll = function () { window.scrollTo(0, 0); };
+            },
+            beforeClose: function(event, ui) {
+                window.onscroll = function () {  };
+            },
+            buttons: {
+                OK: function() {
+                    var nN = $("#windowLength").val();
+                    var nvrf = $("#viewrange_from").val();
+                    var nvrt = $("#viewrange_to").val();
+                    var ndr = $("#dynamicRange").val();
+                    var nwf = $("#windowFunction").val();
+                    if (isNaN(nN) || isNaN(nvrf) || isNaN(nvrt) || isNaN(ndr)) {
+                        alert("Please enter valid numbers !");
+                    } else {
+                        my.N = parseInt(nN, 10);
+                        my.freq = parseInt(nvrt, 10);
+                        my.freq_lower = parseInt(nvrf, 10);
+                        my.dynRangeInDB = parseInt(ndr, 10);
+                        my.windowFunction = parseInt(nwf, 10);
+                        my.clearImageCache();
+                        my.killSpectroRenderingThread();
+                        my.uiDraw();
+                        my.drawTimeLine();
+                        $(this).dialog('close');
+                    } 
+                },
+                Cancel: function() {
                     $(this).dialog('close');
                 }
-            },
-            Cancel: function() {
-                $(this).dialog('close');
-            }
-         }
+             }
         });		
 		
         },
