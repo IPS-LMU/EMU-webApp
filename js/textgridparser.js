@@ -1,7 +1,7 @@
 EmuLabeller.TextGridParser = {
     init: function() {
-        this.l1 = "File type = \"ooTextFile\"";
-        this.l2 = "Object class = \"TextGrid\"";
+        this.l1 = "Filetype=\"ooTextFile\"";
+        this.l2 = "Objectclass=\"TextGrid\"";
         this.ssr = 44100; // SIC! Do on init...
     },
 
@@ -12,47 +12,57 @@ EmuLabeller.TextGridParser = {
      * @param fileName name of textGrid including ext.
      * @returns a label java script object
      */
-    toJSO: function(string, fileName) {
+    toJSO: function(string) {
 
+        // remove all empty lines from string
+        string = string.replace(/([ \t]*\r?\n)+/g, "\n");
+        // remove all blanks
+        string = string.replace(/[ \t]+/g, "");
         var lines = string.split("\n");
+        console.log(lines);
 
         var tiers = [];
         var tT, tN, eT, lab;
+        var inHeader = true;
 
         //meta info for labelJSO
         var labelJSO = {
-            origSamplerate: 44100,
+            origSamplerate: this.ssr,
             labelEncoding: "UTF-8",
             tiers: []
         };
 
-        if (lines[0] == this.l1 && lines[1] == this.l2) {
-            for (var i = 8; i < lines.length; i++) {
-                var curLineEl1 = lines[i].split(/\s+/)[1];
-                if (!curLineEl1) continue;
-                if (curLineEl1 == "item") {
+        if (lines[0].replace(/\s+/g,'') == this.l1 && lines[1].replace(/\s+/g,'') == this.l2) {
+            for (var i = 2; i < lines.length; i++) {
+                var cL = lines[i];
+                if (cL == "item[]:") {
+                    inHeader = false;
+                    continue;
+                }
+                if (inHeader) continue;
+
+                if (cL.indexOf("item[")=== 0) {
                     // get tier type
-                    if (lines[i + 1].split(/\s+/)[3] == "\"IntervalTier\"") {
+                    if (lines[i + 1].split(/=/)[1] == "\"IntervalTier\"") {
                         tT = "seg";
                     } else {
                         tT = "point";
                     }
                     // get tier name
-                    tN = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
+                    tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
                     // adding new tier
                     labelJSO.tiers.push({
                         TierName: tN,
                         type: tT,
-                        events: [],
-                        associatedFile: fileName
+                        events: []
                     });
                 }
-                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (curLineEl1.indexOf("intervals") === 0) && (curLineEl1.indexOf("intervals:") !== 0)) {
+                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (cL.indexOf("intervals") === 0) && (cL.indexOf("intervals:") !== 0)) {
                     // parse seg tiers event
-                    eSt = Math.ceil(lines[i + 1].split(/\s+/)[3] * this.ssr);
-                    eEt = Math.floor(lines[i + 2].split(/\s+/)[3] * this.ssr);
-                    lab = lines[i + 3].split(/\s+/)[3].replace(/"/g, '');
+                    eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.ssr);
+                    eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.ssr);
+                    lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 
                     // var correctFact = 0;
                     if (eSt === 0) {
@@ -64,10 +74,10 @@ EmuLabeller.TextGridParser = {
                         startSample: eSt - 1, // correct so starts at 0
                         sampleDur: eEt - eSt
                     });
-                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points") === 0 && curLineEl1.indexOf("points:") !== 0) {
+                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && cL.indexOf("points") === 0 && cL.indexOf("points:") !== 0) {
                     // parse point tier event
-                    eT = lines[i + 1].split(/\s+/)[3] * this.ssr;
-                    lab = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
+                    eT = lines[i + 1].split(/=/)[1] * this.ssr;
+                    lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
@@ -77,7 +87,7 @@ EmuLabeller.TextGridParser = {
 
             }
             // console.log(JSON.stringify(labelJSO, undefined, 2));
-            this.testForGapsInLabelJSO(labelJSO);
+            // this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
         } else {
@@ -104,9 +114,7 @@ EmuLabeller.TextGridParser = {
         tG = tG + "size = " + emulabeller.tierHandler.getLength() + nl;
         tG = tG + "item []:" + nl;
         var tierNr = 0;
-        // $("#cans div canvas").each(function(){
         $("#cans div canvas").each(function(index) {
-            console.log($(this).attr("id"));
             var curTier = emulabeller.tierHandler.getTier($(this).attr("id"));
             //write tier items
             tierNr = tierNr + 1;
@@ -154,7 +162,7 @@ EmuLabeller.TextGridParser = {
         // }
 
         // console.log(labelJSO);
-        console.log(tG);
+        // console.log(tG);
         return (tG);
 
     },
