@@ -383,6 +383,11 @@ textarea {
 }
 
 
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
 
 @media screen and (max-width: 600px){
     body{background: black;}

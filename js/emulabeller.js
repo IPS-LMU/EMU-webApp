@@ -413,24 +413,26 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
+
         $("#popup").dialog({
-                        bgiframe: true,
-                        modal: true,
-                        autoOpen: false,
-                        width: 500,
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        position: 'center',
-                        close: function(ev, ui) {
-                            $(this).hide();
-                        }
-                    });
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: 500,
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            position: 'center',
+ create: function(event, ui) {
+  window.onscroll = function () { window.scrollTo(0, 0); };
+ }
+        });
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({
@@ -450,6 +452,12 @@ var EmuLabeller = {
         $("#cans").disableSelection();
 
     },
+    
+    
+    
+    
+    
+    
 
     /**
      *
@@ -1054,6 +1062,8 @@ var EmuLabeller = {
             // cleanUp(this);
         };*/
     },
+    
+    
 
     /**
     * use socketIOhandler to request something from server
