@@ -35,12 +35,11 @@ EmuLabeller.tierHandler = {
 			},
 			position: 'center',
 			buttons: {
-				"Ok": function() {
-					alert('OK');
+				"Download": function() {
+					emulabeller.tierHandler.doDownload();
 					$(this).dialog('close');
 				},
 				"Cancel": function() {
-					alert('Not ok');
 					$(this).dialog('close');
 				}
 			},
@@ -350,7 +349,6 @@ EmuLabeller.tierHandler = {
         window.scrollTo(0, 0);
 		$("#downDialog").dialog('option', 'position', ["center",10]);
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
-		
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
