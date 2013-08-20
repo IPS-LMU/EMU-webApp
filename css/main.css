@@ -234,10 +234,6 @@ canvas {
     height:37px;
 }
 
-.aboutLink button {
-    width: 37px;
-    height:37px;
-}
 
 .isScrollable {
     z-index: 9999;

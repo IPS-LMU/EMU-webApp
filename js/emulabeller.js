@@ -227,24 +227,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_about":
-                    $("#popup").dialog({
-                        bgiframe: true,
-                        modal: true,
-                        autoOpen: false,
-                        width: 500,
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        position: 'center',
-                        close: function(ev, ui) {
-                            $(this).hide();
-                        }
-                    });
+                    
                     $('#popup').dialog('open');
                     break;
 
@@ -430,7 +413,24 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
-
+        $("#popup").dialog({
+                        bgiframe: true,
+                        modal: true,
+                        autoOpen: false,
+                        width: 500,
+                        show: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        position: 'center',
+                        close: function(ev, ui) {
+                            $(this).hide();
+                        }
+                    });
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({
