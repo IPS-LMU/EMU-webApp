@@ -1,7 +1,7 @@
 EmuLabeller.TextGridParser = {
     init: function() {
-        this.l1 = "Filetype=\"ooTextFile\"";
-        this.l2 = "Objectclass=\"TextGrid\"";
+        this.l1 = "File type = \"ooTextFile\"";
+        this.l2 = "Object class = \"TextGrid\"";
         this.ssr = 44100; // SIC! Do on init...
     },
 
@@ -19,7 +19,6 @@ EmuLabeller.TextGridParser = {
         // remove all blanks
         string = string.replace(/[ \t]+/g, "");
         var lines = string.split("\n");
-        console.log(lines);
 
         var tiers = [];
         var tT, tN, eT, lab;
@@ -32,7 +31,7 @@ EmuLabeller.TextGridParser = {
             tiers: []
         };
 
-        if (lines[0].replace(/\s+/g,'') == this.l1 && lines[1].replace(/\s+/g,'') == this.l2) {
+        if (lines[0].replace(/\s+/g,'') == this.l1.replace(/\s+/g,'') && lines[1].replace(/\s+/g,'') == this.l2.replace(/\s+/g,'')) {
             for (var i = 2; i < lines.length; i++) {
                 var cL = lines[i];
                 if (cL == "item[]:") {
@@ -86,8 +85,8 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            // console.log(JSON.stringify(labelJSO, undefined, 2));
-            // this.testForGapsInLabelJSO(labelJSO);
+            console.log(JSON.stringify(labelJSO, undefined, 2));
+            this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
         } else {
@@ -135,7 +134,7 @@ EmuLabeller.TextGridParser = {
             for (var j = 0; j < curTier.events.length; j++) {
                 var evtNr = j + 1;
                 if (curTier.type == "seg") {
-                    tG = tG + t + t + t + "intervals[" + evtNr + "]:" + nl;
+                    tG = tG + t + t + t + "intervals [" + evtNr + "]:" + nl;
                     if (curTier.events[j].startSample !== 0) {
                         tG = tG + t + t + t + t + "xmin = " + ((curTier.events[j].startSample) / my.ssr + ((1 / my.ssr) / 2)) + nl;
                     } else {
