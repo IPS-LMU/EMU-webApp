@@ -85,7 +85,7 @@ EmuLabeller.TextGridParser = {
                 }
 
             }
-            console.log(JSON.stringify(labelJSO, undefined, 2));
+            // console.log(JSON.stringify(labelJSO, undefined, 2));
             this.testForGapsInLabelJSO(labelJSO);
             return labelJSO;
 
@@ -155,13 +155,8 @@ EmuLabeller.TextGridParser = {
             }
         });
 
-        // for (var tN in tiers) {
-            // console.log(tN)
-
-        // }
-
         // console.log(labelJSO);
-        // console.log(tG);
+        console.log(tG);
         return (tG);
 
     },
