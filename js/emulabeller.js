@@ -429,13 +429,14 @@ var EmuLabeller = {
                 duration: 500
             },
             position: 'center',
- open: function(event, ui) {
-  window.onscroll = function () { window.scrollTo(0, 0); };
- },
-  beforeClose: function(event, ui) {
-  window.onscroll = function () {  };
- }
+            open: function(event, ui) {
+                window.onscroll = function () { window.scrollTo(0, 0); };
+            },
+            beforeClose: function(event, ui) {
+                window.onscroll = function () {  };
+            }
         });
+        $("#popup").dialog('option', 'position', ["center",10]);
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         $('#cans').sortable({

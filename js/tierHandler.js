@@ -24,6 +24,7 @@ EmuLabeller.tierHandler = {
 			modal: true,
 			autoOpen: false,
 			width: 500,
+			height: 500,
 			show: {
 				effect: "fade",
 				duration: 500
@@ -43,10 +44,14 @@ EmuLabeller.tierHandler = {
 					$(this).dialog('close');
 				}
 			},
-			close: function(ev, ui) {
-				$(this).hide();
-			}
+            open: function(event, ui) {
+                window.onscroll = function () {  window.scrollTo(0, 0); };
+            },
+            beforeClose: function(event, ui) {
+                window.onscroll = function () {  };
+            }
 		});
+		
 
 
 	},
@@ -342,22 +347,10 @@ EmuLabeller.tierHandler = {
 
 
 	downloadDialog: function(myName, myData) {
-		$("#downDialog").dialog({
-			modal: true,
-			autoOpen: false,
-			width: 600,
-			show: {
-				effect: "fade",
-				duration: 500
-			},
-			hide: {
-				effect: "fade",
-				duration: 500
-			},
-			position: 'center',
-		});
-
+        window.scrollTo(0, 0);
+		$("#downDialog").dialog('option', 'position', ["center",10]);
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
+		
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
