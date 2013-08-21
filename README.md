@@ -22,9 +22,10 @@ quick start to get you up and labelling:
 
 * install [nodejs and npm](http://nodejs.org/)
 * install `bower` with `npm install -g bower`
-* install `grunt` with `npm install.-g grunt`
+* install `grunt` with `npm install -g grunt`
 * install dependencies with the command `bower install` and `npm install`
 * build `emuLVC.min.js` with the command `grunt`
+* run static webserver on `http://localhost:8001/` with `grunt connect` 
 * for livereload use `grunt watch` with the livereload plugin for chrome  
 
 ## Authors
