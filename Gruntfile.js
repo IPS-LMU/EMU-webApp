@@ -36,9 +36,17 @@ module.exports = function(grunt) {
                 files: {
                     'emuLVC.min.js': allJsFiles
                 }
+            },
+            spectogram: {
+                options: {
+                    // banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
+                    // sourceMapRoot: 'http://localhost:8001/js/',
+                },
+                files: {
+                    'spectrogram.min.js': 'js/spectrogram.js'
+                }
             }
         },
-
         cssmin: {
             combine: {
                 files: {
@@ -46,7 +54,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-
         watch: {
             all: {
                 files: allJsFiles.concat(['index.html']).concat(allCssFiles),
@@ -64,6 +71,22 @@ module.exports = function(grunt) {
                     keepalive: true
                 }
             }
+        },
+        replace: {
+            dist: {
+                options: {
+                    variables: {
+                        'insertCompressedSpectWorkerHere': 'eval(' + grunt.file.read('spectrogram.min.js') + ')'
+                    },
+                    prefix: '@@'
+                },
+                files: [{
+                    expand: false,
+                    flatten: true,
+                    src: ['index.template'],
+                    dest: 'replaced.html'
+                }]
+            }
         }
     });
 
@@ -76,7 +99,10 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    // Default task(s).
+    grunt.loadNpmTasks('grunt-replace');
+
+
+    // Default task(s)
     grunt.registerTask('default', ['uglify', 'cssmin']);
 
 

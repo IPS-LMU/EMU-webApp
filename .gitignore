@@ -41,5 +41,6 @@ bower_components
 # Minified code+maps #
 ###################
 emuLVC.min.js
+spectrogram.min.js
 emuLVC.min.map
 emuLVC.min.css
