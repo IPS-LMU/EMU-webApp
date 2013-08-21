@@ -212,7 +212,8 @@ var EmuLabeller = {
 
             if (null !== my.getElement(e))
                 var cOn = my.getElement(e).id;
-
+            
+            if(emulabeller.internalMode != my.EDITMODE.MODAL)
             switch (cOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
@@ -328,11 +329,11 @@ var EmuLabeller = {
 
 
                 default:
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                     break;
             }
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
         });
 
         // All mouse up Functions  
@@ -394,12 +395,15 @@ var EmuLabeller = {
             } else {
                 my.lastX = my.getX(e);
                 if (!my.tierHandler.isEditing) {
-                    if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL)
+                    if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL) {
                         my.internalMode = my.EDITMODE.STANDARD;
+                        $("*").css("cursor", "auto");
+                    }
+                    //else
+                        //$("*").css("cursor", "help");
                 }
-                $("*").css("cursor", "auto");
+                
             }
-            console.log(emulabeller.internalMode);
         });
 
         // All Right Mouse Button Functions  
