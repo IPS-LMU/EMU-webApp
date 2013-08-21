@@ -53,7 +53,7 @@ EmuLabeller.LabFileParser = {
 		var counter = 1;
 		for (var i in tierDetails.events) {
 			var c = tierDetails.events[i];
-			var eT = (c.startSample + c.sampleDur + 1) / 44100; // SIC hardcoded coz of this problem
+			var eT = (c.startSample + c.sampleDur + 1) / 44100 + (1/44100)/2; // SIC hardcoded coz of "this" problem
 			if (tierDetails.type == "seg" && counter == 1) {
 				lF = lF + "\t" + eT + "\t125\t" + "H#" + "\n";
 			} else {
@@ -65,7 +65,7 @@ EmuLabeller.LabFileParser = {
 		}
 
 		// console.log(tierDetails);
-		// console.log(lF);
+		console.log(lF);
 
 		return (lF);
 	}
