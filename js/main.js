@@ -96,8 +96,8 @@ var emulabeller = (function() {
         //     emulabeller.tierHandler.addSegmentAtSelection();
         //     e.preventDefault();
         // }
-        if (code == 13) { // 13 == enter	
-            if (emulabeller.tierHandler.isEditing == true) {
+        if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter	
+            if (emulabeller.tierHandler.isEditing) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
             } else {

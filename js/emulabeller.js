@@ -933,9 +933,9 @@ var EmuLabeller = {
      */
     keyBindingAllowed: function(c) {
         var my = this;
-        if(c==9) {
-            if(emulabeller.internalMode == my.EDITMODE.MODAL) return false; //special case for tab
-            else return true; //special case for tab
+        if(c==9 || c==13) { //special case for tab(9) / enter(13) in modal mode
+            if(emulabeller.internalMode == my.EDITMODE.MODAL) return false; 
+            else return true;
         }
 
         if (my.internalMode != my.EDITMODE.LABEL_RENAME) {
