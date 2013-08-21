@@ -44,9 +44,11 @@ EmuLabeller.tierHandler = {
 				}
 			},
             open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
                 window.onscroll = function () {  window.scrollTo(0, 0); };
             },
             beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
                 window.onscroll = function () {  };
             }
 		});

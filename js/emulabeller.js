@@ -338,7 +338,7 @@ var EmuLabeller = {
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
 
-            my.internalMode = my.EDITMODE.STANDARD;
+            if(emulabeller.internalMode != my.EDITMODE.MODAL) my.internalMode = my.EDITMODE.STANDARD;
             $("*").css("cursor", "auto");
 
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
@@ -393,9 +393,13 @@ var EmuLabeller = {
                 }
             } else {
                 my.lastX = my.getX(e);
-                if (!my.tierHandler.isEditing) my.internalMode = my.EDITMODE.STANDARD;
+                if (!my.tierHandler.isEditing) {
+                    if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL)
+                        my.internalMode = my.EDITMODE.STANDARD;
+                }
                 $("*").css("cursor", "auto");
             }
+            console.log(emulabeller.internalMode);
         });
 
         // All Right Mouse Button Functions  
@@ -422,11 +426,13 @@ var EmuLabeller = {
             },
             position: 'center',
             open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
                 window.onscroll = function() {
                     window.scrollTo(0, 0);
                 };
             },
             beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
                 window.onscroll = function() {};
             }
         });
@@ -829,8 +835,13 @@ var EmuLabeller = {
 
     /**
      */
-    keyBindingAllowed: function() {
+    keyBindingAllowed: function(c) {
         var my = this;
+        if(c==9) {
+            if(emulabeller.internalMode == my.EDITMODE.MODAL) return false; //special case for tab
+            else return true; //special case for tab
+        }
+
         if (my.internalMode != my.EDITMODE.LABEL_RENAME) {
             if (my.internalMode != my.EDITMODE.MODAL) {
                 return true;
