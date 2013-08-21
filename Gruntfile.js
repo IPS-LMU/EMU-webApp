@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         "js/textgridparser.js",
         "js/ssffparser.js",
         "js/JSONvalidator.js",
-	"js/base64-binary/base64-binary.js",
+        "js/base64-binary/base64-binary.js",
         "js/socketIOhandler.js",
         "js/iohandler.js",
         "js/tierHandler.js",
@@ -55,6 +55,15 @@ module.exports = function(grunt) {
                     livereload: true
                 }
             }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 8001,
+                    base: '',
+                    keepalive: true
+                }
+            }
         }
     });
 
@@ -64,6 +73,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     // Default task(s).
     grunt.registerTask('default', ['uglify', 'cssmin']);
