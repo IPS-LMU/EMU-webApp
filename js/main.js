@@ -76,21 +76,20 @@ var emulabeller = (function() {
                 alert("Please mark one of more segments first!");
         }
         if (code == 9 && emulabeller.keyBindingAllowed(code)) { // 9 == tab
-            
+
             if (emulabeller.tierHandler.isEditing) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
-             }   
-                
+            }
+
             if (!e.shiftKey) {
                 emulabeller.tierHandler.selectPrevNextEvent(false);
             } else {
                 emulabeller.tierHandler.selectPrevNextEvent(true);
             }
-            
-                
-            
-            
+
+
+
         }
         // if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter
         //     emulabeller.tierHandler.addSegmentAtSelection();
@@ -243,6 +242,26 @@ var emulabeller = (function() {
             emulabeller.zoomViewPort(0);
         });
     }
+
+    // app cache update
+    // Check if a new cache is available on page load.
+    window.addEventListener('load', function(e) {
+
+        window.applicationCache.addEventListener('updateready', function(e) {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                // Browser downloaded a new app cache.
+                // Swap it in and reload the page to get the new hotness.
+                window.applicationCache.swapCache();
+
+                console.log("#### UPDATING TO LATEST VERSION!!!");
+                window.location.reload();
+            } else {
+                // Manifest didn't changed. Nothing new to server.
+                console.log("#### applicationCache manifest not changed!!!");
+            }
+        }, false);
+
+    }, false);
 
     labeller.start();
     return labeller;

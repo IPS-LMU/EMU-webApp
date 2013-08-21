@@ -57,7 +57,7 @@ module.exports = function(grunt) {
         watch: {
             all: {
                 files: allJsFiles.concat(['index.html']).concat(allCssFiles),
-                tasks: ['uglify', 'cssmin'],
+                tasks: ['uglify', 'cssmin', 'replace'],
                 options: {
                     livereload: true
                 }
@@ -86,6 +86,20 @@ module.exports = function(grunt) {
                     src: ['index.template'],
                     dest: 'replaced.html'
                 }]
+            },
+            timestamp: {
+                options: {
+                    variables: {
+                        'timestamp': '<%= grunt.template.today() %>'
+                    },
+                    prefix: '@@'
+                },
+                files: [{
+                    expand: false,
+                    flatten: true,
+                    src: ['manifest.template'],
+                    dest: 'manifest.appcache'
+                }]
             }
         }
     });
@@ -103,7 +117,7 @@ module.exports = function(grunt) {
 
 
     // Default task(s)
-    grunt.registerTask('default', ['uglify', 'cssmin']);
+    grunt.registerTask('default', ['uglify', 'cssmin', 'replace']);
 
 
 };

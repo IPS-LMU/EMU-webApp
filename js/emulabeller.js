@@ -749,7 +749,7 @@ var EmuLabeller = {
         this.drawer.uiAllTierDrawUpdate();
 
         // emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
-        emulabeller.iohandler.toESPS(emulabeller.tierHandler.getTiers()["Phonetic"]); // for testing toESPS
+        // emulabeller.iohandler.toESPS(emulabeller.tierHandler.getTiers()["Phonetic"]); // for testing toESPS
     },
 
 

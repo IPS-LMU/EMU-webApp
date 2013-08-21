@@ -1,0 +1,21 @@
+CACHE MANIFEST
+# Wed Aug 21 2013 16:56:09
+CACHE:
+/favicon.ico
+index.html
+css/jquery-ui.css
+emuLVC.min.css
+bower_components/jquery/jquery.min.js
+bower_components/jquery-ui/ui/minified/jquery-ui.min.js
+bower_components/hammerjs/dist/hammer.min.js
+emuLVC.min.js
+emuLVC.min.map
+
+css/images/ui-bg_flat_75_ffffff_40x100.png
+css/images/ui-icons_222222_256x240.png
+css/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+css/images/ui-bg_glass_75_e6e6e6_1x400.png
+css/images/ui-icons_888888_256x240.png
+data/msajc003.wav
+data/msajc003.TextGrid
+bower_components/jquery/jquery.min.map
