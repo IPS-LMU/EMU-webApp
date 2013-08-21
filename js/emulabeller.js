@@ -443,6 +443,38 @@ var EmuLabeller = {
                 window.onscroll = function() {};
             }
         });
+
+        $("#alertDialog").dialog({
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: "auto",
+            show: {
+                effect: "fade",
+                duration: 175
+            },
+            hide: {
+                effect: "fade",
+                duration: 175
+            },
+            position: 'center',
+			buttons: {
+				"OK": function() {
+					$(this).dialog('close');
+				}
+			},            
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function() {};
+            }
+        });        
         $("#popup").dialog('option', 'position', ["center", 10]);
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
@@ -465,6 +497,16 @@ var EmuLabeller = {
     },
 
 
+    /**
+     *
+     */
+    alertUser: function(title,msg) {
+        window.scrollTo(0, 0);
+        $("#alertDialog").dialog('option', 'position', ["center",10]);
+		$("#alertDialog").dialog('option', 'title', title);
+		$('#alertContent').html(msg);        
+        $('#alertDialog').dialog('open');
+    },
 
     /**
      *
@@ -499,6 +541,7 @@ var EmuLabeller = {
         //this.hideModalDialog();
         console.log("Connected to emuSX");
     },
+    
 
     /**
      * Called on receive of utterance list from emuSX server

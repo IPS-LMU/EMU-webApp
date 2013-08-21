@@ -79,7 +79,10 @@ EmuLabeller.tierHandler = {
 			--this.myHistoryCounter;
 			this.rebuildTiers();
 			emulabeller.drawBuffer();
-		} else alert(this.historyEndError);
+		} else {
+		    emulabeller.alertUser("Error",this.historyEndError);
+		}
+		//alert(this.historyEndError);
 	},
 
 	addTier: function(addPointTier) {
@@ -427,7 +430,10 @@ EmuLabeller.tierHandler = {
 				this.history();
 				emulabeller.drawBuffer();
 			}
-		} else alert("Error: Please select a boundary first!");
+		} else {
+		    emulabeller.alertUser("Error","Please select a boundary first!");
+		}
+		//alert("Error: Please select a boundary first!");
 	},
 
 	resizeTier: function(tierName) {
@@ -688,7 +694,7 @@ EmuLabeller.tierHandler = {
 			// save history state
 			this.history();
 		} else {
-			alert("Error : A tier with this name ('" + new_key + "') already exists!");
+		    emulabeller.alertUser("Error","A tier with this name ('" + new_key + "') already exists!");
 		}
 
 	},
@@ -701,7 +707,7 @@ EmuLabeller.tierHandler = {
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
 			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, false);
 		} else {
-			alert("Please mark a tier first...");
+		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}
 
 	},
@@ -756,8 +762,9 @@ EmuLabeller.tierHandler = {
 					if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
 						if (null != thisSegment)
 							this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
-						else
-							alert(this.commonError);
+						else {
+							emulabeller.alertUser("Error",this.commonError);
+						}
 					} else {
 						this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
 					}
@@ -778,15 +785,15 @@ EmuLabeller.tierHandler = {
 							return parseFloat(a.startSample) - parseFloat(b.startSample);
 						});
 					} else {
-						alert(this.pointExistsError);
+					    emulabeller.alertUser("Error",this.pointExistsError);
 					}
 				} else {
-					alert(this.pointSegmentError);
+				    emulabeller.alertUser("Error",this.pointSegmentError);
 				}
 			}
 			emulabeller.drawBuffer();
 		} else {
-			alert(this.noTierError);
+		    emulabeller.alertUser("Error",this.noTierError);
 		}
 
 	},
@@ -934,12 +941,12 @@ EmuLabeller.tierHandler = {
 		if (getAbove) {
 			hullID = $("#hull" + tName).prev().attr('id');
 			if (!hullID && throwAlert) {
-				alert("no tier above the selected boundary!");
+			    emulabeller.alertUser("Error","no tier above the selected boundary!");
 			}
 		} else {
 			hullID = $("#hull" + tName).next().attr('id');
 			if (!hullID && throwAlert) {
-				alert("no tier below the selected boundary!");
+			    emulabeller.alertUser("Error","no tier below the selected boundary!");
 			}
 		}
 		if (hullID) {
@@ -965,7 +972,7 @@ EmuLabeller.tierHandler = {
 			if (closestSeg) {
 				this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
 			} else {
-				alert("closest segment is null?!?!?!?");
+			    emulabeller.alertUser("Error","closest segment is null?!?!?!?");
 			}
 		}
 		emulabeller.drawBuffer();
