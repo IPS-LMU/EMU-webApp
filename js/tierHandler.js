@@ -7,6 +7,7 @@ EmuLabeller.tierHandler = {
 		this.iconImageSize = 12;
 		this.isSelected = false;
 		this.isEditing = false;
+		this.exportData = null;
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
 		this.myHistory = {};
@@ -348,6 +349,7 @@ EmuLabeller.tierHandler = {
 
 
 	downloadDialog: function(myName, myData) {
+	    this.exportData = myData;
         window.scrollTo(0, 0);
 		$("#downDialog").dialog('option', 'position', ["center",10]);
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
@@ -377,15 +379,16 @@ EmuLabeller.tierHandler = {
 
 
 	doDownload: function() {
-		var mydata = $('#preview').html();
+		var mydata = this.exportData;
 		var myname = $('#saveAsFileName').val();
+		
 		// for non-IE
 		if (!window.ActiveXObject) {
 			if (null != save)
 				(window.URL || window.webkitURL).revokeObjectURL(save.href);
 			try { 
 				var blob = new Blob([mydata], {
-					"type": "text\/plain"
+					"type": "text\/plain;charset=UTF-8"
 				});
 			} catch (e) { // Backwards-compatibility
 				window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -393,6 +396,10 @@ EmuLabeller.tierHandler = {
 				blob = blob.getBlob();
 			}
 			window.URL = window.URL || window.webkitURL;
+			
+			//var base64 = btoa(unescape(encodeURIComponent(data)));
+			
+			
 			var url = window.URL.createObjectURL(blob);
 			var save = document.createElement('a');
 			save.href = url;
