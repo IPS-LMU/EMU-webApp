@@ -228,7 +228,8 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_about":
-
+                    window.scrollTo(0, 0);
+                    $("#popup").dialog('option', 'position', ["center",10]);
                     $('#popup').dialog('open');
                     break;
 
@@ -295,6 +296,8 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_specSettings":
+                    window.scrollTo(0, 0);
+                    $("#specDialog").dialog('option', 'position', ["center",10]);
                     $('#specDialog').dialog('open');
                     break;
 
