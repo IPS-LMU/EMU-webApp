@@ -511,6 +511,52 @@ var EmuLabeller = {
     /**
      *
      */
+    confirmUser: function(title,msg,onSuccessFunction, functionArg) {
+        window.scrollTo(0, 0);
+        $("#confirmDialog").dialog({
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: "auto",
+            show: {
+                effect: "fade",
+                duration: 175
+            },
+            hide: {
+                effect: "fade",
+                duration: 175
+            },
+            position: 'center',
+			buttons: {
+				"OK": function() {
+				    onSuccessFunction(functionArg);
+					$(this).dialog('close');
+				},
+				"Cancel": function() {
+					$(this).dialog('close');
+				}
+			},            
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function() {};
+            }
+        }); 
+        $("#confirmDialog").dialog('option', 'position', ["center",10]);
+		$("#confirmDialog").dialog('option', 'title', title);
+		$('#confirmContent').html(msg);            		    
+        $('#confirmDialog').dialog('open');
+    },
+
+    /**
+     *
+     */
     start: function() {
         var my = this;
         switch (my.externalMode) {

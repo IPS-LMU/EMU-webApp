@@ -169,8 +169,7 @@ EmuLabeller.tierHandler = {
 
 		$("#" + myName + "_del").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
-			if (confirm("Do you really wish to delete Tier: '" + n + "' ?"))
-				emulabeller.tierHandler.removeTier(n);
+			emulabeller.confirmUser("Delete","Do you really wish to delete Tier: '" + n + "' ?", emulabeller.tierHandler.removeTier, n);
 		});
 		$("#" + myName + "_res").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
@@ -283,10 +282,10 @@ EmuLabeller.tierHandler = {
 
 
 	removeTier: function(tierName) {
-		this.removeTierHtml(tierName);
-		delete this.tierInfos.tiers[tierName];
+		emulabeller.tierHandler.removeTierHtml(tierName);
+		delete emulabeller.tierHandler.tierInfos.tiers[tierName];
 		// save history state
-		this.history();
+		emulabeller.tierHandler.history();
 	},
 
 	removeSegment: function(t, labelName, labelStart) {
