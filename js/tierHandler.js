@@ -330,23 +330,25 @@ EmuLabeller.tierHandler = {
 
 	deleteSelected: function() {
 		var my = this;
-		var t = this.getSelectedTier();
-		var selected = emulabeller.viewPort.getAllSelected(t);
+		var selected = emulabeller.viewPort.getAllSelected(emulabeller.tierHandler.getSelectedTier());
 		var warn = "Really delete ";
 		for (s in selected) warn += selected[s].label + ", ";
-		if (confirm(warn.substring(0, warn.length - 2))) {
-			for (s in selected) {
-				if (t.type == "seg")
-					this.removeSegment(t, selected[s].label, selected[s].startSample)
-				if (t.type == "point")
-					this.removePoint(t, selected[s].label, selected[s].startSample)
-			}
-			t.events.sort(function(a, b) {
-				return parseFloat(a.startSample) - parseFloat(b.startSample);
-			});
-			this.history();
-			emulabeller.drawBuffer();
+		emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2), emulabeller.tierHandler.subDeleteSelected , selected);
+	},
+	
+	subDeleteSelected: function(selected) {
+	    var t = emulabeller.tierHandler.getSelectedTier();
+		for (s in selected) {
+			if (t.type == "seg")
+				emulabeller.tierHandler.removeSegment(t, selected[s].label, selected[s].startSample)
+			if (t.type == "point")
+				emulabeller.tierHandler.removePoint(t, selected[s].label, selected[s].startSample)
 		}
+		t.events.sort(function(a, b) {
+			return parseFloat(a.startSample) - parseFloat(b.startSample);
+		});
+		emulabeller.tierHandler.history();
+		emulabeller.drawBuffer();	
 	},
 
 
@@ -398,16 +400,11 @@ EmuLabeller.tierHandler = {
 				blob = blob.getBlob();
 			}
 			window.URL = window.URL || window.webkitURL;
-			
-			//var base64 = btoa(unescape(encodeURIComponent(data)));
-			
-			
 			var url = window.URL.createObjectURL(blob);
 			var save = document.createElement('a');
 			save.href = url;
 			save.target = '_blank';
 			save.download = myname || 'unknown';
-
 			var evt = document.createEvent('MouseEvents');
 			evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
 			save.dispatchEvent(evt);
@@ -421,6 +418,7 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {
 			var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
+			
 			if (confirm("Wollen Sie die Grenze bei '" + this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName].label + "' wirklich loeschen?")) {
 				this.removeBorder(t, emulabeller.viewPort.curMouseMoveSegmentName)
 				t.events.sort(function(a, b) {
