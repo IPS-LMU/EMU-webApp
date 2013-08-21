@@ -73,21 +73,21 @@ module.exports = function(grunt) {
             }
         },
         replace: {
-            dist: {
-                options: {
-                    variables: {
-                        'insertCompressedSpectWorkerHere': 'eval(' + grunt.file.read('spectrogram.min.js') + ')'
-                    },
-                    prefix: '@@'
-                },
-                files: [{
-                    expand: false,
-                    flatten: true,
-                    src: ['index.template'],
-                    dest: 'replaced.html'
-                }]
-            },
-            timestamp: {
+            // dist: {
+            //     options: {
+            //         variables: {
+            //             'insertCompressedSpectWorkerHere': 'eval(' + grunt.file.read('spectrogram.min.js') + ')'
+            //         },
+            //         prefix: '@@'
+            //     },
+            //     files: [{
+            //         expand: false,
+            //         flatten: true,
+            //         src: ['index.template'],
+            //         dest: 'replaced.html'
+            //     }]
+            // },
+            timestampManifest: {
                 options: {
                     variables: {
                         'timestamp': '<%= grunt.template.today() %>'
