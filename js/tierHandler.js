@@ -27,11 +27,11 @@ EmuLabeller.tierHandler = {
 			height: 500,
 			show: {
 				effect: "fade",
-				duration: 500
+				duration: 175
 			},
 			hide: {
 				effect: "fade",
-				duration: 500
+				duration: 175
 			},
 			position: 'center',
 			buttons: {
