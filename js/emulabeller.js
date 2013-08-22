@@ -196,7 +196,7 @@ var EmuLabeller = {
                 my.fileSelect.style.display = "none";
                 break;
             default:
-                alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
+                emulabeller.alertUser("Configuration Error","Please specify Usage mode 'server' or 'standalone' in main.js !");
                 my.fileSelect.style.display = "none";
                 my.showLeftPush.style.display = "none";
                 break;
@@ -1016,7 +1016,7 @@ var EmuLabeller = {
             emulabeller.newFileType = 3;
             reader.readAsText(file);
         } else {
-            alert('File type not supported.... sorry!');
+            emulabeller.alertUser("File Read Error",'File type not supported.... sorry!');
         }
     },
 
