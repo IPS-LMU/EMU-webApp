@@ -735,9 +735,12 @@ var EmuLabeller = {
         if (this.initLoad) {
             this.initLoad = false;
         } else {
-            if (confirm("Loading an audio file will delete all tiers!")) {
-                this.tierHandler.reinit();
-            }
+        
+            emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", emulabeller.tierHandler.reinit);
+        
+            //if (confirm("Loading an audio file will delete all tiers!")) {
+            //    this.tierHandler.reinit();
+            //}
         }
 
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
