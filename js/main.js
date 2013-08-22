@@ -123,10 +123,12 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 38 && emulabeller.keyBindingAllowed(code)) { // 38 == UP ARROW
+            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(true);
             e.preventDefault();
         }
         if (code == 40 && emulabeller.keyBindingAllowed(code)) { // 40 == DOWN ARROW
+            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(false);
             e.preventDefault();
         }
