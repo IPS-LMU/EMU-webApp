@@ -8,13 +8,16 @@
         "128": "assets/icon.png"
     },
     "app": {
-    "background": {
-      "scripts": ["main.js"]
-    }
-  },
+        "background": {
+            "scripts": ["main.js"]
+        }
+    },
     "offline_enabled": true,
     "permissions": ["storage",
-                    "notifications",
-                    "<all_urls>"
-                    ]
+        "notifications",
+        "<all_urls>"
+    ],
+    "sandbox": {
+        "pages": ["index.html"]
+    }
 }
