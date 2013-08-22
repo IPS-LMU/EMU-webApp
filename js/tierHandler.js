@@ -310,14 +310,6 @@ EmuLabeller.tierHandler = {
 
 	},
 
-	removeBorder: function(t, labelName, labelStart) {
-		if (null != this.tierInfos.tiers[t.TierName].events[labelName - 1]) {
-			this.tierInfos.tiers[t.TierName].events[labelName - 1].sampleDur += this.tierInfos.tiers[t.TierName].events[labelName].sampleDur;
-			this.tierInfos.tiers[t.TierName].events[labelName - 1].label += this.tierInfos.tiers[t.TierName].events[labelName].label;
-			delete this.tierInfos.tiers[t.TierName].events[labelName];
-		}
-	},
-
 
 	removePoint: function(t, labelName, labelStart) {
 		for (s in this.tierInfos.tiers[t.TierName].events) {
@@ -419,9 +411,15 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {
 			var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
-			var warnmsg = "Wollen Sie die Grenze bei '" + this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName].label + "' wirklich loeschen?";
+			var a = this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
+    	    //var next = emulabeller.tierHandler.nextEvent(t,a.startSamepl);
+	        var prev = emulabeller.tierHandler.previousEvent(t,a.startSample);
+
+			var warnmsg = this.reallyDeleteMsg + "border between " + prev.label + " and " + a.label + " (Sample "+a.startSample+") ?";
+
+
 			
-			emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2) + " ?", emulabeller.tierHandler.subDeleteSelected , selected);
+			emulabeller.confirmUser("Remove Border", warnmsg+ " ?", emulabeller.tierHandler.subDeleteBorder, a.startSample, t);
 			//if (confirm()) {
 			//}
 		} else {
@@ -430,14 +428,22 @@ EmuLabeller.tierHandler = {
 		//alert("Error: Please select a boundary first!");
 	},
 	
-	subDeleteBorder: function(t) {
-		emulabeller.tierHandler.removeBorder(t, emulabeller.viewPort.curMouseMoveSegmentName)
+	subDeleteBorder: function(startSample, t) {
+	
+
+		if (null != t.events[labelName - 1]) {
+			tier.events[labelName - 1].sampleDur += tier.events[labelName].sampleDur;
+			tier.events[labelName - 1].label += tier.events[labelName].label;
+			delete tier.events[labelName];
+		}
+
 		t.events.sort(function(a, b) {
 			return parseFloat(a.startSample) - parseFloat(b.startSample);
 		});
 		emulabeller.tierHandler.history();
 		emulabeller.drawBuffer();	
 	},
+
 
 	resizeTier: function(tierName) {
 		var s = this.internalCanvasHeightBig - 1;
@@ -453,7 +459,6 @@ EmuLabeller.tierHandler = {
 	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
-
 		//deselect everything
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		emulabeller.viewPort.setSelectTier(tierDetails.TierName);
@@ -600,7 +605,18 @@ EmuLabeller.tierHandler = {
 	},
 
 	nextEvent: function(t, curSample) {
-		var e = t.events;
+
+        // better && faster code
+        
+        var e = t.events;
+		var r = null;
+		for (var k in e) {
+		    if(r.startSample==curSample) return e[k];
+		    r = e[k];
+		}
+		return null;
+	
+	/*	var e = t.events;
 		var r = null;
 		var temp = 0;
 		for (var k in e) {
@@ -610,7 +626,18 @@ EmuLabeller.tierHandler = {
 				r = e[k];
 			}
 		}
-		return r;
+		return r;*/
+	},
+
+
+	previousEvent: function(t, curSample) {
+		var e = t.events;
+		var r = null;
+		for (var k in e) {
+		    if(e[k].startSample==curSample) return r;
+		    r = e[k];
+		}
+		return null;
 	},
 
 
