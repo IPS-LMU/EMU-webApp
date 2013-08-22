@@ -18,6 +18,7 @@ EmuLabeller.tierHandler = {
 		this.pointExistsError = "Error: This point already exists !";
 		this.noTierError = "Error: No Tier chosen !";
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
+		this.reallyDeleteMsg = "Really delete ";
 		this.params = params;
 
 		$("#downDialog").dialog({
@@ -169,7 +170,7 @@ EmuLabeller.tierHandler = {
 
 		$("#" + myName + "_del").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
-			emulabeller.confirmUser("Delete","Do you really wish to delete Tier: '" + n + "' ?", emulabeller.tierHandler.removeTier, n);
+			emulabeller.confirmUser("Delete", emulabeller.tierHandler.reallyDeleteMsg +"'" + n + "' ?", emulabeller.tierHandler.removeTier, n);
 		});
 		$("#" + myName + "_res").bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
@@ -331,9 +332,9 @@ EmuLabeller.tierHandler = {
 	deleteSelected: function() {
 		var my = this;
 		var selected = emulabeller.viewPort.getAllSelected(emulabeller.tierHandler.getSelectedTier());
-		var warn = "Really delete ";
+		var warn = emulabeller.tierHandler.reallyDeleteMsg;
 		for (s in selected) warn += selected[s].label + ", ";
-		emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2), emulabeller.tierHandler.subDeleteSelected , selected);
+		emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2) + " ?", emulabeller.tierHandler.subDeleteSelected , selected);
 	},
 	
 	subDeleteSelected: function(selected) {
@@ -418,19 +419,24 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {
 			var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
+			var warnmsg = "Wollen Sie die Grenze bei '" + this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName].label + "' wirklich loeschen?";
 			
-			if (confirm("Wollen Sie die Grenze bei '" + this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName].label + "' wirklich loeschen?")) {
-				this.removeBorder(t, emulabeller.viewPort.curMouseMoveSegmentName)
-				t.events.sort(function(a, b) {
-					return parseFloat(a.startSample) - parseFloat(b.startSample);
-				});
-				this.history();
-				emulabeller.drawBuffer();
-			}
+			emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2) + " ?", emulabeller.tierHandler.subDeleteSelected , selected);
+			//if (confirm()) {
+			//}
 		} else {
 		    emulabeller.alertUser("Error","Please select a boundary first!");
 		}
 		//alert("Error: Please select a boundary first!");
+	},
+	
+	subDeleteBorder: function(t) {
+		emulabeller.tierHandler.removeBorder(t, emulabeller.viewPort.curMouseMoveSegmentName)
+		t.events.sort(function(a, b) {
+			return parseFloat(a.startSample) - parseFloat(b.startSample);
+		});
+		emulabeller.tierHandler.history();
+		emulabeller.drawBuffer();	
 	},
 
 	resizeTier: function(tierName) {

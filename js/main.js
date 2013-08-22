@@ -218,7 +218,7 @@ var emulabeller = (function() {
         // console.log(code);
     });
 
-
+ 
     // touch events
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
         // alert("On mobile device!!!! Lots of things not working yet...");
