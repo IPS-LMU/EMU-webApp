@@ -72,8 +72,10 @@ var emulabeller = (function() {
             e.preventDefault();
             if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
                 emulabeller.tierHandler.deleteSelected();
-            else
-                alert("Please mark one of more segments first!");
+            else {
+                emulabeller.alertUser("Error","Please mark one of more segments first!");
+                //alert("Please mark one of more segments first!");
+            }
         }
         if (code == 9 && emulabeller.keyBindingAllowed(code)) { // 9 == tab
 
