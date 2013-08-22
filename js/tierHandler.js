@@ -411,37 +411,43 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {
 			var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
-			var a = this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
-    	    //var next = emulabeller.tierHandler.nextEvent(t,a.startSamepl);
-	        var prev = emulabeller.tierHandler.previousEvent(t,a.startSample);
+			var thisEvent = this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
+	        var prevEvent = emulabeller.tierHandler.previousEvent(t,thisEvent.startSample);
+			var warnmsg = this.reallyDeleteMsg + "border between " + prevEvent.label + " and " + thisEvent.label + " (Sample "+ thisEvent.startSample+") ?";
 
-			var warnmsg = this.reallyDeleteMsg + "border between " + prev.label + " and " + a.label + " (Sample "+a.startSample+") ?";
+			emulabeller.confirmUser("Remove Border", warnmsg+ " ?", emulabeller.tierHandler.subDeleteBorder, [t, thisEvent, prevEvent]);
 
-
-			
-			emulabeller.confirmUser("Remove Border", warnmsg+ " ?", emulabeller.tierHandler.subDeleteBorder, a.startSample, t);
-			//if (confirm()) {
-			//}
 		} else {
 		    emulabeller.alertUser("Error","Please select a boundary first!");
 		}
-		//alert("Error: Please select a boundary first!");
 	},
 	
-	subDeleteBorder: function(startSample, t) {
-	
+	subDeleteBorder: function(params) {
+	    
+	    var t = params[0];
+	    var thisEvent = params[1];
+	    var prevEvent = params[2];
+		if (null != prevEvent) {
+			prevEvent.sampleDur += thisEvent.sampleDur;
+			prevEvent.label += thisEvent.label;
+			
+			var id = emulabeller.viewPort.getId(t, thisEvent.label, thisEvent.startSample);
+			delete emulabeller.tierHandler.tierInfos.tiers[t.TierName].events[id];
 
-		if (null != t.events[labelName - 1]) {
-			tier.events[labelName - 1].sampleDur += tier.events[labelName].sampleDur;
-			tier.events[labelName - 1].label += tier.events[labelName].label;
-			delete tier.events[labelName];
+			
+			/*
+			
+			console.log(emulabeller.tierHandler.tierInfos.tiers[t.TierName]);
+			delete emulabeller.tierHandler.tierInfos.tiers[t.TierName].events[thisEvent.label];
+			
+			*/
+			t.events.sort(function(a, b) {
+			    return parseFloat(a.startSample) - parseFloat(b.startSample);
+			});
+			emulabeller.tierHandler.history();
+			emulabeller.drawBuffer();
 		}
 
-		t.events.sort(function(a, b) {
-			return parseFloat(a.startSample) - parseFloat(b.startSample);
-		});
-		emulabeller.tierHandler.history();
-		emulabeller.drawBuffer();	
 	},
 
 

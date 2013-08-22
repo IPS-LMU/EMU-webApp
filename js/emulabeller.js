@@ -511,7 +511,7 @@ var EmuLabeller = {
     /**
      *
      */
-    confirmUser: function(title,msg,onSuccessFunction, functionArg, functionArg2) {
+    confirmUser: function(title,msg,onSuccessFunction, functionArg) {
         window.scrollTo(0, 0);
         $("#confirmDialog").dialog({
             bgiframe: true,
@@ -530,7 +530,7 @@ var EmuLabeller = {
             position: 'center',
 			buttons: {
 				"OK": function() {
-				    onSuccessFunction(functionArg, functionArg2);
+				    onSuccessFunction(functionArg);
 					$(this).dialog('close');
 				},
 				"Cancel": function() {
@@ -736,7 +736,7 @@ var EmuLabeller = {
             this.initLoad = false;
         } else {
         
-            emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", emulabeller.tierHandler.reinit);
+            emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", emulabeller.tierHandler.reinit, ""); // ???
         
             //if (confirm("Loading an audio file will delete all tiers!")) {
             //    this.tierHandler.reinit();
