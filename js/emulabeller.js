@@ -291,6 +291,14 @@ var EmuLabeller = {
                     my.tierHandler.renameTier();
                     break;
 
+                case "cmd_resizeWave":
+                    emulabeller.tierHandler.resizeSpectroWave("wave");
+                    break;
+
+                case "cmd_resizeSpectro":
+        			emulabeller.tierHandler.resizeSpectroWave("spectrogram");
+                    break;
+
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
                     break;

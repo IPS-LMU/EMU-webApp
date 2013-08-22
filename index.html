@@ -159,10 +159,16 @@
 
 
 <div class="timeline" id="timeline">
- <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
- <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
- <div id="signalcans" class="signalcans"></div>
- <div id="resizer" class="resizer"><span id="resizer"></span></div>
+    <div class="hull" style="position:relative;">
+        <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
+        <div class='tierButtons'><a href='#' class='resizeButton'><img id='cmd_resizeWave'/></a></div>
+    </div>
+    <div class="hull" style="position:relative;">
+        <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
+        <div class='tierButtons'><a href='#' class='resizeButton'><img id='cmd_resizeSpectro'/></a></div>
+    </div>
+    <div id="signalcans" class="signalcans"></div>
+    <div id="resizer" class="resizer"><span id="resizer"></span></div>
 </div>
 
 

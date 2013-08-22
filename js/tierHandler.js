@@ -441,6 +441,14 @@ EmuLabeller.tierHandler = {
 	},
 
 
+	resizeSpectroWave: function(tierName) {
+	    console.log(tierName);
+		if ($("#" + tierName).height() >= 34) {
+			$("#" + tierName).height("34px");
+		} 
+	},
+
+
 	resizeTier: function(tierName) {
 		var s = this.internalCanvasHeightBig - 1;
 		if ($("#" + tierName).height() >= s) {
