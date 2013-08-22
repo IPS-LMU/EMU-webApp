@@ -249,23 +249,23 @@ var emulabeller = (function() {
 
     // app cache update
     // Check if a new cache is available on page load.
-    window.addEventListener('load', function(e) {
+    // window.addEventListener('load', function(e) {
 
-        window.applicationCache.addEventListener('updateready', function(e) {
-            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                // Browser downloaded a new app cache.
-                // Swap it in and reload the page to get the new hotness.
-                window.applicationCache.swapCache();
+    //     window.applicationCache.addEventListener('updateready', function(e) {
+    //         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+    //             // Browser downloaded a new app cache.
+    //             // Swap it in and reload the page to get the new hotness.
+    //             window.applicationCache.swapCache();
 
-                console.log("#### UPDATING TO LATEST VERSION!!!");
-                window.location.reload();
-            } else {
-                // Manifest didn't changed. Nothing new to server.
-                console.log("#### applicationCache manifest not changed!!!");
-            }
-        }, false);
+    //             console.log("#### UPDATING TO LATEST VERSION!!!");
+    //             window.location.reload();
+    //         } else {
+    //             // Manifest didn't changed. Nothing new to server.
+    //             console.log("#### applicationCache manifest not changed!!!");
+    //         }
+    //     }, false);
 
-    }, false);
+    // }, false);
 
     labeller.start();
     return labeller;
