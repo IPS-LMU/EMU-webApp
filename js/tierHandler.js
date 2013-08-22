@@ -430,24 +430,14 @@ EmuLabeller.tierHandler = {
 		if (null != prevEvent) {
 			prevEvent.sampleDur += thisEvent.sampleDur;
 			prevEvent.label += thisEvent.label;
-			
 			var id = emulabeller.viewPort.getId(t, thisEvent.label, thisEvent.startSample);
 			delete emulabeller.tierHandler.tierInfos.tiers[t.TierName].events[id];
-
-			
-			/*
-			
-			console.log(emulabeller.tierHandler.tierInfos.tiers[t.TierName]);
-			delete emulabeller.tierHandler.tierInfos.tiers[t.TierName].events[thisEvent.label];
-			
-			*/
 			t.events.sort(function(a, b) {
 			    return parseFloat(a.startSample) - parseFloat(b.startSample);
 			});
 			emulabeller.tierHandler.history();
 			emulabeller.drawBuffer();
 		}
-
 	},
 
 
@@ -611,18 +601,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	nextEvent: function(t, curSample) {
-
-        // better && faster code
-        
-        var e = t.events;
-		var r = null;
-		for (var k in e) {
-		    if(r.startSample==curSample) return e[k];
-		    r = e[k];
-		}
-		return null;
-	
-	/*	var e = t.events;
+	var e = t.events;
 		var r = null;
 		var temp = 0;
 		for (var k in e) {
@@ -632,7 +611,7 @@ EmuLabeller.tierHandler = {
 				r = e[k];
 			}
 		}
-		return r;*/
+		return r;
 	},
 
 
