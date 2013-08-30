@@ -389,6 +389,13 @@ textarea {
   overflow: hidden;
 }
 
+.ui-dialog-titlebar-close {
+  display: none;
+}
+.ui-dialog-titlebar {
+  background: #0DC5FF;
+}
+
 
 @media screen and (max-width: 600px){
     body{background: black;}

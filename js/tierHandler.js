@@ -22,6 +22,7 @@ EmuLabeller.tierHandler = {
 		this.params = params;
 
 		$("#downDialog").dialog({
+            dialogClass:'myPopup',
 			bgiframe: true,
 			modal: true,
 			autoOpen: false,

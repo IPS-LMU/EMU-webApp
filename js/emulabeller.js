@@ -427,6 +427,8 @@ var EmuLabeller = {
 
         $("#popup").dialog({
             bgiframe: true,
+            draggable: false,
+            resizable: false,
             modal: true,
             autoOpen: false,
             width: 500,
@@ -439,7 +441,7 @@ var EmuLabeller = {
                 effect: "fade",
                 duration: 175
             },
-            position: 'center',
+            position: ['center', 'top'],
             open: function(event, ui) {
                 emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
                 window.onscroll = function() {
@@ -456,6 +458,8 @@ var EmuLabeller = {
             bgiframe: true,
             modal: true,
             autoOpen: false,
+            draggable: false,
+            resizable: false,
             width: 500,
             height: "auto",
             show: {
@@ -466,7 +470,7 @@ var EmuLabeller = {
                 effect: "fade",
                 duration: 175
             },
-            position: 'center',
+            position: ['center', 'top'],
 			buttons: {
 				"OK": function() {
 					$(this).dialog('close');
