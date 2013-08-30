@@ -175,6 +175,9 @@ var EmuLabeller = {
         this.dragStart = -1;
         this.curLoadedBaseName = ''; // set to base name of audio file
         this.exportData = null;
+        this.oBottom = 0;
+        this.oTop = 0;
+        this.oTimeline = 0;
 
         // infos filled by ssff/lab/textgrid parsers
         this.ssffInfos = {
@@ -333,9 +336,6 @@ var EmuLabeller = {
                 case params.draggableBar.id:
                     my.internalMode = my.EDITMODE.DRAGING_BAR;
                     my.tierHandler.removeLabelDoubleClick();
-                    my.dragingStartY = event.clientY;
-                    my.offsetTimeline = my.timeline.offsetHeight;
-                    my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
                     break;
 
 
@@ -394,14 +394,13 @@ var EmuLabeller = {
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                    var diff_Y = Math.round((event.clientY - my.dragingStartY) / 2);
-                    if (diff_Y * 2 <= $(body).height() - ($("#menu-bottom").height() + 2 * $("#menu").height())) {
-                        $('#wave').css("height", "+=" + diff_Y + "px");
-                        $('#spectrogram').css("height", "+=" + diff_Y + "px");
+                    if (event.clientY + (document.getElementById("menu-bottom").clientHeight/2) <= document.getElementById("menu-bottom").offsetTop){
+                        $('#wave').css("height",event.clientY/2 + "px");
+                        $('#spectrogram').css("height", event.clientY/2 + "px");
                         $('#timeline').css($('#wave').height() + $('#spectrogram').height() + "px");
                         $('#spacer').height(($('#timeline').height() + 64) + "px");
-                        my.dragingStartY = event.clientY;
                     }
+                    //my.dragingStartY = event.clientY;
                 }
             } else {
                 my.lastX = my.getX(e);
@@ -441,7 +440,7 @@ var EmuLabeller = {
                 effect: "fade",
                 duration: 175
             },
-            position: ['center', 'top'],
+            position: ['center', 10],
             open: function(event, ui) {
                 emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
                 window.onscroll = function() {
@@ -470,7 +469,7 @@ var EmuLabeller = {
                 effect: "fade",
                 duration: 175
             },
-            position: ['center', 'top'],
+            position: ['center', 10],
 			buttons: {
 				"OK": function() {
 					$(this).dialog('close');
