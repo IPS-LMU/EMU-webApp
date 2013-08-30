@@ -443,10 +443,12 @@ EmuLabeller.tierHandler = {
 
 
 	resizeSpectroWave: function(tierName) {
-	    console.log(tierName);
-		if ($("#" + tierName).height() >= 34) {
+		if ($("#" + tierName).height() > 34) {
 			$("#" + tierName).height("34px");
 		} 
+		else { 
+		    $("#" + tierName).height("80px");
+		}
 	},
 
 
