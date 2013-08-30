@@ -487,8 +487,18 @@ var EmuLabeller = {
             }
         });        
         $("#popup").dialog('option', 'position', ["center", 10]);
+        
+        
+        
+        document.getElementById("wave").width = 2048 * window.devicePixelRatio;
+        document.getElementById("wave").height = 224;
+        document.getElementById("spectrogram").width = 1024 * window.devicePixelRatio;
+        document.getElementById("spectrogram").height = 128;
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
+        
+        
+        
         $('#cans').sortable({
             tolerance: 'pointer',
             cursor: 'move',
