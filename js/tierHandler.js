@@ -481,6 +481,19 @@ EmuLabeller.tierHandler = {
 			$("#" + tierName + "_save").show();
 		}
 	},
+	
+	selectSegmentsUnderSelection: function() {
+	    var tD = this.getSelectedTier();
+		if(null != tD) {
+    		if (tD.type == "seg") {
+	    	}
+		    else if (tD.type == "point") {
+		    }
+		}
+		else {
+		    emulabeller.alertUser("Error","Please select a Tier first!");
+		}
+	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
 		//deselect everything

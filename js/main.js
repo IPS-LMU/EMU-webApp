@@ -39,7 +39,7 @@ var emulabeller = (function() {
         internalCanvasWidth: '2048', // in pixel
         internalCanvasHeightSmall: '128', // in pixel -> Cans
         internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro
-        mode: 'server', // server or standalone
+        mode: 'standalone', // server or standalone
         initLoad: autoLoad
     });
 
@@ -154,6 +154,10 @@ var emulabeller = (function() {
         }
         if (code == 70 && emulabeller.keyBindingAllowed(code)) { // 70 == f
             emulabeller.playInMode("all");
+            e.preventDefault();
+        }
+        if (code == 71 && emulabeller.keyBindingAllowed(code)) { // 70 == g
+            emulabeller.tierHandler.selectSegmentsUnderSelection();
             e.preventDefault();
         }
         if (code == 78 && emulabeller.keyBindingAllowed(code)) { // 78 == n
