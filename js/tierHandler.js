@@ -444,17 +444,19 @@ EmuLabeller.tierHandler = {
 
 
 	resizeSpectroWave: function(isWave) {
+	   
+	    var small = this.internalCanvasHeightBig - 1;
 	
 	    var size = $("#wave").height() + $("#spectrogram").height();
-	    var big = size - 34;
+	    var big = size - small;
 	    if(!this.isWaveSpecZoomMode) {
 	    if(isWave) {
-		    $("#wave").height("34px");
+		    $("#wave").height(small+"px");
     		$("#spectrogram").height(big+"px");
     		this.isWaveSpecZoomMode = true;
         }
     	else {
-	    	$("#spectrogram").height("34px");
+	    	$("#spectrogram").height(small+"px");
 	    	$("#wave").height(big+"px");  
     		this.isWaveSpecZoomMode = true;	    	  		    
         }
