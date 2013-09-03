@@ -494,11 +494,10 @@ var EmuLabeller = {
         
         this.dpr = 1;
         if(window.devicePixelRatio !== undefined) this.dpr = window.devicePixelRatio;
-        console.log("ratio: "+window.devicePixelRatio);
         document.getElementById("wave").width = 2048 * this.dpr;
-        document.getElementById("wave").height = 224;
+        document.getElementById("wave").height = 224 * this.dpr;
         document.getElementById("spectrogram").width = 1024 * this.dpr;
-        document.getElementById("spectrogram").height = 128;
+        document.getElementById("spectrogram").height = 128 * this.dpr;
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         
