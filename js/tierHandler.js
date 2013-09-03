@@ -483,12 +483,37 @@ EmuLabeller.tierHandler = {
 	},
 	
 	selectSegmentsUnderSelection: function() {
-	    var tD = this.getSelectedTier();
-		if(null != tD) {
-    		if (tD.type == "seg") {
+	    var tierDetails = this.getSelectedTier();
+		if(null != tierDetails) {
+    		if (tierDetails.type == "seg") {
+    		    var first = true;
+    		    emulabeller.viewPort.resetSelection(tierDetails.events.length);
+    		    emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+    		    this.removeLabelDoubleClick();
+    		    var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+    		    var e = tierDetails.events;
+    		    var count = 0;
+    		    var start = emulabeller.viewPort.eS;
+    		    var end = emulabeller.viewPort.sS;
+    		    for (var k in e) 
+    		        if( e[k].startSample >= emulabeller.viewPort.selectS && (e[k].startSample+e[k].sampleDur) <= emulabeller.viewPort.selectE) {
+    		            ++count;
+    		            if(e[k].startSample<=start)
+    		                start = e[k].startSample;
+    		            if(e[k].startSample+e[k].sampleDur>=end)
+    		                end = e[k].startSample+e[k].sampleDur;
+				        emulabeller.viewPort.setSelectMultiSegment(tierDetails, e[k], true, canvas.width,true);				        
+    		        }
+    		    if(count==0)
+    		        emulabeller.alertUser("Error","There were no segments under your selection!");
+    		    else 
+    		        emulabeller.viewPort.resizeSelectArea(start,end);
+    		        
+    		    emulabeller.drawBuffer();
 	    	}
-		    else if (tD.type == "point") {
+		    else if (tierDetails.type == "point") {
 		    }
+		    
 		}
 		else {
 		    emulabeller.alertUser("Error","Please select a Tier first!");
