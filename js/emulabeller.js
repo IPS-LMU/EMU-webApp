@@ -1057,16 +1057,16 @@ var EmuLabeller = {
             this.subMenuOpen = false;
             $("#serverSelect").html("Open Menu");
             $("#menuLeft").removeClass("cbp-spmenu-open");
-            $("#timeline").removeClass("cbp-spmenu-push-toright");
-            $("#tierPush").removeClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").removeClass("cbp-spmenu-push-toright");
+            $("#moveHull").removeClass("cbp-spmenu-push-toright");
+            //$("#tierPush").removeClass("cbp-spmenu-push-toright");
+            //$("#menu-bottom").removeClass("cbp-spmenu-push-toright");
         } else {
             this.subMenuOpen = true;
             $("#serverSelect").html("Close Menu");
             $("#menuLeft").addClass("cbp-spmenu-open");
-            $("#timeline").addClass("cbp-spmenu-push-toright");
-            $("#tierPush").addClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").addClass("cbp-spmenu-push-toright");
+            $("#moveHull").addClass("cbp-spmenu-push-toright");
+            //$("#tierPush").addClass("cbp-spmenu-push-toright");
+            //$("#menu-bottom").addClass("cbp-spmenu-push-toright");
         }
     },
 
