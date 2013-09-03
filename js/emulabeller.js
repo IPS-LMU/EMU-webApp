@@ -295,11 +295,11 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_resizeWave":
-                    emulabeller.tierHandler.resizeSpectroWave("wave");
+                    emulabeller.tierHandler.resizeSpectroWave(true);
                     break;
 
                 case "cmd_resizeSpectro":
-        			emulabeller.tierHandler.resizeSpectroWave("spectrogram");
+        			emulabeller.tierHandler.resizeSpectroWave(false);
                     break;
 
                 case "cmd_disconnect":

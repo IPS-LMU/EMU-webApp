@@ -20,6 +20,7 @@ EmuLabeller.tierHandler = {
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
 		this.reallyDeleteMsg = "Really delete ";
 		this.params = params;
+		this.isWaveSpecZoomMode = false;
 
 		$("#downDialog").dialog({
             dialogClass:'myPopup',
@@ -442,13 +443,27 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	resizeSpectroWave: function(tierName) {
-		if ($("#" + tierName).height() > 34) {
-			$("#" + tierName).height("34px");
-		} 
-		else { 
-		    $("#" + tierName).height("80px");
-		}
+	resizeSpectroWave: function(isWave) {
+	
+	    var size = $("#wave").height() + $("#spectrogram").height();
+	    var big = size - 34;
+	    if(!this.isWaveSpecZoomMode) {
+	    if(isWave) {
+		    $("#wave").height("34px");
+    		$("#spectrogram").height(big+"px");
+    		this.isWaveSpecZoomMode = true;
+        }
+    	else {
+	    	$("#spectrogram").height("34px");
+	    	$("#wave").height(big+"px");  
+    		this.isWaveSpecZoomMode = true;	    	  		    
+        }
+        }
+        else {
+	    	$("#spectrogram").height(size/2+"px");
+	    	$("#wave").height(size/2+"px");          
+            this.isWaveSpecZoomMode = false;
+        }
 	},
 
 
