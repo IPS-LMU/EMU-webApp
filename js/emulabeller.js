@@ -336,6 +336,7 @@ var EmuLabeller = {
                 case params.draggableBar.id:
                     my.internalMode = my.EDITMODE.DRAGING_BAR;
                     my.tierHandler.removeLabelDoubleClick();
+                    $("*").css("cursor", "s-resize");
                     break;
 
 
@@ -395,11 +396,14 @@ var EmuLabeller = {
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
                     if (event.clientY + (document.getElementById("menu-bottom").clientHeight/2) <= document.getElementById("menu-bottom").offsetTop){
+                        
+                        $("*").css("cursor", "s-resize");
                         $('#wave').css("height",event.clientY/2 + "px");
                         $('#spectrogram').css("height", event.clientY/2 + "px");
                         $('#timeline').css($('#wave').height() + $('#spectrogram').height() + "px");
                         $('#spacer').height(($('#timeline').height() + 64) + "px");
                     }
+                    
                     //my.dragingStartY = event.clientY;
                 }
             } else {
@@ -488,11 +492,12 @@ var EmuLabeller = {
         });        
         $("#popup").dialog('option', 'position', ["center", 10]);
         
-        
-        
-        document.getElementById("wave").width = 2048 * window.devicePixelRatio;
+        this.dpr = 1;
+        if(window.devicePixelRatio !== undefined) this.dpr = window.devicePixelRatio;
+        console.log("ratio: "+window.devicePixelRatio);
+        document.getElementById("wave").width = 2048 * this.dpr;
         document.getElementById("wave").height = 224;
-        document.getElementById("spectrogram").width = 1024 * window.devicePixelRatio;
+        document.getElementById("spectrogram").width = 1024 * this.dpr;
         document.getElementById("spectrogram").height = 128;
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
