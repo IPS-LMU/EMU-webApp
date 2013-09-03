@@ -93,10 +93,6 @@ var emulabeller = (function() {
 
 
         }
-        // if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter
-        //     emulabeller.tierHandler.addSegmentAtSelection();
-        //     e.preventDefault();
-        // }
         if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter	
             if (emulabeller.tierHandler.isEditing) {
                 emulabeller.tierHandler.saveLabelName(this);
@@ -217,7 +213,7 @@ var emulabeller = (function() {
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
-        // console.log(code);
+     console.log(code);
     });
 
  

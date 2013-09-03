@@ -107,9 +107,9 @@ canvas {
 }
 
 #timeline {
-    position:absolute;
+    position:fixed;
     overflow: none;
-    top:30px;
+    top:40px;
     left:0px;
     margin:0px auto;
     text-align: center;

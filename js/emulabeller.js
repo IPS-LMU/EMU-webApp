@@ -1057,15 +1057,17 @@ var EmuLabeller = {
             this.subMenuOpen = false;
             $("#serverSelect").html("Open Menu");
             $("#menuLeft").removeClass("cbp-spmenu-open");
-            $("#moveHull").removeClass("cbp-spmenu-push-toright");
+            $("#timeline").css("left","0px");
+            $("#tierPush").css("left","0px");
             //$("#tierPush").removeClass("cbp-spmenu-push-toright");
             //$("#menu-bottom").removeClass("cbp-spmenu-push-toright");
         } else {
             this.subMenuOpen = true;
             $("#serverSelect").html("Close Menu");
             $("#menuLeft").addClass("cbp-spmenu-open");
-            $("#moveHull").addClass("cbp-spmenu-push-toright");
-            //$("#tierPush").addClass("cbp-spmenu-push-toright");
+            $("#timeline").css("left","240px");
+            $("#tierPush").css("left","240px");
+        
             //$("#menu-bottom").addClass("cbp-spmenu-push-toright");
         }
     },
