@@ -445,7 +445,7 @@ EmuLabeller.tierHandler = {
 
 	resizeSpectroWave: function(isWave) {
 	   
-	    var small = this.internalCanvasHeightBig - 1;
+	    var small = this.internalCanvasHeightBig /2;
 	
 	    var size = $("#wave").height() + $("#spectrogram").height();
 	    var big = size - small;
