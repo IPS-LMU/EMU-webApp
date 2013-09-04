@@ -104,6 +104,7 @@ canvas {
 #wave, #spectrogram {
     padding: 0px;
     margin: 0px; 
+    min-height: 15px;    
 }
 
 #timeline {
@@ -172,7 +173,6 @@ canvas {
 /*tier buttons*/
 .tierButtons {
     position: absolute;
-    z-index:4;
     margin: 0px;
     padding: 0px;
     width: 20px;
