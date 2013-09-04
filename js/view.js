@@ -16,7 +16,7 @@ EmuLabeller.ViewPort = {
      * @param eSample of view to init view with
      * @param bufferLength of currently loaded buffer
      */
-    init: function(sSample, eSample, bufferLength) {
+    init: function(sSample, eSample, bufferLength, sRate) {
 
         this.sS = sSample;
         this.eS = eSample;
@@ -24,6 +24,7 @@ EmuLabeller.ViewPort = {
         this.selectS = -1;
         this.selectE = -1;
         this.bufferLength = bufferLength; // on init
+        this.sampleRate = sRate;
 
         // red line on wave & spectro
         this.percent = -1;

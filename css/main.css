@@ -114,7 +114,8 @@ canvas {
     margin:0px auto;
     text-align: center;
     padding: 0px; 
-    padding-bottom:20px;     
+    padding-bottom:15px;
+    padding-top:5px;     
     z-index: 1;
     width:100%;
     /*background-repeat: repeat;*/

@@ -767,8 +767,7 @@ var EmuLabeller = {
             //    this.tierHandler.reinit();
             //}
         }
-
-        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
+        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length,this.backend.currentBuffer.sampleRate);
         // this.viewPort.init(10365, 18660, this.backend.currentBuffer.length); // for development
 
         this.drawer.uiWaveDrawUpdate();
