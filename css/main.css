@@ -395,10 +395,14 @@ textarea {
 }
 
 .ui-dialog-titlebar-close {
-
+  border-radius:0px;
 }
 .ui-dialog-titlebar {
   background: #0DC5FF;
+  border-radius:0px;
+}
+.ui-dialog {
+  border-radius:0px;
 }
 
 
