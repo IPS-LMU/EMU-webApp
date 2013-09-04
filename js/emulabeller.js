@@ -403,7 +403,7 @@ var EmuLabeller = {
                         $("*").css("cursor", "s-resize");
                         $('#wave').css("height",event.clientY/2 + "px");
                         $('#spectrogram').css("height", event.clientY/2+ "px");
-                        //$('#timeline').css("height", $('#wave').height() + $('#spectrogram').height() + "px");
+                        $('#timeline').css("height", 10 + $('#wave').height() + $('#spectrogram').height() + "px");
                         $('#spacer').height(($('#timeline').height() + 64) + "px");
                     }
                     
