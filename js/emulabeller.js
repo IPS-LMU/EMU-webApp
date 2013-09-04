@@ -395,12 +395,15 @@ var EmuLabeller = {
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                    if (event.clientY + (document.getElementById("menu-bottom").clientHeight/2) <= document.getElementById("menu-bottom").offsetTop){
+                    var offset = $("#menu-bottom").offset(); 
+                    var height = $("#menu-bottom").height();
+                    console.log(offset.top-height );
+                    if (event.clientY <= offset.top-height){
                         
                         $("*").css("cursor", "s-resize");
                         $('#wave').css("height",event.clientY/2 + "px");
-                        $('#spectrogram').css("height", event.clientY/2 + "px");
-                        $('#timeline').css($('#wave').height() + $('#spectrogram').height() + "px");
+                        $('#spectrogram').css("height", event.clientY/2+ "px");
+                        //$('#timeline').css("height", $('#wave').height() + $('#spectrogram').height() + "px");
                         $('#spacer').height(($('#timeline').height() + 64) + "px");
                     }
                     
