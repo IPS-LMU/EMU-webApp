@@ -35,13 +35,12 @@ EmuLabeller.WebAudio = {
         this.analyser.connect(this.destination);
 
         if (navigator.userAgent.indexOf("Firefox") !== -1) {
-            console.log("in Mozilla");
             this.proc = this.ac.createScriptProcessor(this.fftSize / 2, 1, 1);
         } else {
             this.proc = this.ac.createJavaScriptNode(this.fftSize / 2, 1, 1);
 
         }
-        
+
         this.proc.connect(this.destination);
         this.dataArray = new Uint8Array(this.analyser.fftSize);
 
