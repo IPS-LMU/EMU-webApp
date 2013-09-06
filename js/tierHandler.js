@@ -13,7 +13,7 @@ EmuLabeller.tierHandler = {
 		this.myHistory = {};
 		this.editAreaTextfieldName = "editArea";
 		this.tierCssName = "tierSettings";
-		this.historyEndError = "Cannot go back, no more history saved.... =(";
+		this.historyEndError = "Cannot go back, no more history saved.... &#9785;";
 		this.commonError = "Error: It is not allowed to insert a segment here!";
 		this.pointExistsError = "Error: This point already exists !";
 		this.noTierError = "Error: No Tier chosen !";
