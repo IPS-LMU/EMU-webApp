@@ -6,7 +6,7 @@ EmuLabeller.WebAudio = {
 
 
     // ac: new (window.AudioContext || window.webkitAudioContext)
-    ac: new window.webkitAudioContext(),
+    // ac: new window.webkitAudioContext(),
 
 
     /**
@@ -15,9 +15,15 @@ EmuLabeller.WebAudio = {
      * @param {Object} params
      * @param {String} params.smoothingTimeConstant
      */
-    init: function (params) {
+    init: function(params) {
         var my = this;
         params = params || {};
+
+        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+            this.ac = new window.AudioContext();
+        } else {
+            this.ac = new window.webkitAudioContext();
+        }
 
         this.fftSize = params.fftSize || this.Defaults.fftSize;
         this.destination = params.destination || this.ac.destination;
@@ -28,9 +34,15 @@ EmuLabeller.WebAudio = {
         this.analyser.fftSize = this.fftSize;
         this.analyser.connect(this.destination);
 
-        this.proc = this.ac.createJavaScriptNode(this.fftSize / 2, 1, 1);
-        this.proc.connect(this.destination);
+        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+            console.log("in Mozilla");
+            this.proc = this.ac.createScriptProcessor(this.fftSize / 2, 1, 1);
+        } else {
+            this.proc = this.ac.createJavaScriptNode(this.fftSize / 2, 1, 1);
 
+        }
+        
+        this.proc.connect(this.destination);
         this.dataArray = new Uint8Array(this.analyser.fftSize);
 
         // this.verb = this.ac.createConvolver();
@@ -46,11 +58,11 @@ EmuLabeller.WebAudio = {
         this.paused = true;
     },
 
-    bindUpdate: function (callback) {
+    bindUpdate: function(callback) {
         this.proc.onaudioprocess = callback; //calculate fft and when done update (everz 1024 samples)
     },
 
-    setSource: function (source) {
+    setSource: function(source) {
         // this.source && this.source.disconnect();
         this.source = source;
         this.source.connect(this.analyser);
@@ -61,18 +73,18 @@ EmuLabeller.WebAudio = {
     },
 
     /**
-     * Loads audiobuffer 
+     * Loads audiobuffer
      *
      * @param {AudioBuffer} audioData Audio data.
      */
-    loadData: function (audioData, cb) {
+    loadData: function(audioData, cb) {
         var my = this;
 
         this.pause();
 
         this.ac.decodeAudioData(
             audioData,
-            function (buffer) {
+            function(buffer) {
                 my.currentBuffer = buffer;
                 my.lastStart = 0; // all set to 0?????
                 my.lastPause = 0;
@@ -82,15 +94,15 @@ EmuLabeller.WebAudio = {
             },
             Error
         );
-        
-        
+
+
     },
 
-    isPaused: function () {
+    isPaused: function() {
         return this.paused;
     },
 
-    getDuration: function () {
+    getDuration: function() {
         return this.currentBuffer && this.currentBuffer.duration;
     },
 
@@ -103,7 +115,7 @@ EmuLabeller.WebAudio = {
      * @param {Number} end End offset in seconds,
      * relative to the beginning of the track.
      */
-    play: function (start, end, delay) {
+    play: function(start, end, delay) {
 
         if (!this.currentBuffer) {
             return;
@@ -133,7 +145,7 @@ EmuLabeller.WebAudio = {
     /**
      * Pauses the loaded audio.
      */
-    pause: function (delay) {
+    pause: function(delay) {
         if (!this.currentBuffer || this.paused) {
             return;
         }
@@ -147,7 +159,7 @@ EmuLabeller.WebAudio = {
         this.paused = true;
     },
 
-    getPlayedPercents: function () {
+    getPlayedPercents: function() {
         //console.log("sdfsadfsa");
         if (this.getCurrentTime() / this.getDuration() > 1) {
             this.pause();
@@ -157,7 +169,7 @@ EmuLabeller.WebAudio = {
 
     },
 
-    getCurrentTime: function () {
+    getCurrentTime: function() {
         if (this.isPaused()) {
             //console.log("SDFSADFASDF");
             return this.lastPause;
@@ -173,7 +185,7 @@ EmuLabeller.WebAudio = {
      * @return {Uint8Array} The waveform data.
      * Values range from 0 to 255.
      */
-    waveform: function () {
+    waveform: function() {
         this.analyser.getByteTimeDomainData(this.dataArray);
         return this.dataArray;
     },
@@ -184,22 +196,21 @@ EmuLabeller.WebAudio = {
      * @return {Uint8Array} The frequency data.
      * Values range from 0 to 255.
      */
-    frequency: function () {
+    frequency: function() {
         this.analyser.getByteFrequencyData(this.dataArray);
         return this.dataArray;
     },
 
 
 
-
-    loadBuffer: function (ctx, filename, callback) {
+    loadBuffer: function(ctx, filename, callback) {
         var request = new XMLHttpRequest();
         request.open("GET", filename, true);
         request.responseType = "arraybuffer";
         request.onload = function() {
-        // Create a buffer and keep the channels unchanged.
-        var buffer = ctx.createBuffer(request.response, false);
-        callback(buffer);
+            // Create a buffer and keep the channels unchanged.
+            var buffer = ctx.createBuffer(request.response, false);
+            callback(buffer);
         };
         request.send();
     }
