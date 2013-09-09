@@ -73,7 +73,7 @@ var emulabeller = (function() {
             if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
                 emulabeller.tierHandler.deleteSelected();
             else {
-                emulabeller.alertUser("Error","Please mark one of more segments first!");
+                emulabeller.alertUser("Error", "Please mark one of more segments first!");
                 //alert("Please mark one of more segments first!");
             }
         }
@@ -172,8 +172,10 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 81 && emulabeller.keyBindingAllowed(code)) { // 81 == q
-            emulabeller.setView(-Infinity, Infinity);
-            e.preventDefault();
+            if (!e.metaKey) {
+                emulabeller.setView(-Infinity, Infinity);
+                e.preventDefault();
+            }
         }
         if (code == 82 && emulabeller.keyBindingAllowed(code)) { // 82 == r
             if (!e.metaKey) {
@@ -190,8 +192,10 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 87 && emulabeller.keyBindingAllowed(code)) { // 87 == w
-            emulabeller.zoomViewPort(1);
-            e.preventDefault();
+            if (!e.metaKey) {
+                emulabeller.zoomViewPort(1);
+                e.preventDefault();
+            }
         }
         if (code == 88 && emulabeller.keyBindingAllowed(code)) { // 88 == x
             emulabeller.tierHandler.snapToNearestZeroCrossing();
@@ -217,10 +221,10 @@ var emulabeller = (function() {
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
-     console.log(code);
+        console.log(code);
     });
 
- 
+
     // touch events
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
         // alert("On mobile device!!!! Lots of things not working yet...");
