@@ -1,0 +1,608 @@
+File type= "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.000000
+xmax = 2.904450
+
+tiers? <exists>
+size = 11
+item []:
+	item [1]:
+		class = "IntervalTier"
+		name = "Utterance"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 3
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 2.604489
+			text = ""
+		intervals[3]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [2]:
+		class = "IntervalTier"
+		name = "Intonational"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 3
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 2.604489
+			text = "L%"
+		intervals[3]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [3]:
+		class = "IntervalTier"
+		name = "Intermediate"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 4
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 1.289494
+			text = "L-"
+		intervals[3]:
+			xmin = 1.289494
+			xmax = 2.604489
+			text = "L-"
+		intervals[4]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [4]:
+		class = "IntervalTier"
+		name = "Word"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 9
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.674237
+			text = "C"
+		intervals[3]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "F"
+		intervals[4]:
+			xmin = 0.739994
+			xmax = 1.289494
+			text = "C"
+		intervals[5]:
+			xmin = 1.289494
+			xmax = 1.463242
+			text = "F"
+		intervals[6]:
+			xmin = 1.463242
+			xmax = 1.634493
+			text = "F"
+		intervals[7]:
+			xmin = 1.634493
+			xmax = 2.033739
+			text = "C"
+		intervals[8]:
+			xmin = 2.033739
+			xmax = 2.604489
+			text = "C"
+		intervals[9]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [5]:
+		class = "IntervalTier"
+		name = "Accent"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 9
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.674237
+			text = "S"
+		intervals[3]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "W"
+		intervals[4]:
+			xmin = 0.739994
+			xmax = 1.289494
+			text = "S"
+		intervals[5]:
+			xmin = 1.289494
+			xmax = 1.463242
+			text = "W"
+		intervals[6]:
+			xmin = 1.463242
+			xmax = 1.634493
+			text = "W"
+		intervals[7]:
+			xmin = 1.634493
+			xmax = 2.033739
+			text = "W"
+		intervals[8]:
+			xmin = 2.033739
+			xmax = 2.604489
+			text = "S"
+		intervals[9]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [6]:
+		class = "IntervalTier"
+		name = "Text"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 9
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.674237
+			text = "amongst"
+		intervals[3]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "her"
+		intervals[4]:
+			xmin = 0.739994
+			xmax = 1.289494
+			text = "friends"
+		intervals[5]:
+			xmin = 1.289494
+			xmax = 1.463242
+			text = "she"
+		intervals[6]:
+			xmin = 1.463242
+			xmax = 1.634493
+			text = "was"
+		intervals[7]:
+			xmin = 1.634493
+			xmax = 2.033739
+			text = "considered"
+		intervals[8]:
+			xmin = 2.033739
+			xmax = 2.604489
+			text = "beautiful"
+		intervals[9]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [7]:
+		class = "IntervalTier"
+		name = "Syllable"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 14
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.256994
+			text = "W"
+		intervals[3]:
+			xmin = 0.256994
+			xmax = 0.674237
+			text = "S"
+		intervals[4]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "S"
+		intervals[5]:
+			xmin = 0.739994
+			xmax = 1.289494
+			text = "S"
+		intervals[6]:
+			xmin = 1.289494
+			xmax = 1.463242
+			text = "W"
+		intervals[7]:
+			xmin = 1.463242
+			xmax = 1.634493
+			text = "W"
+		intervals[8]:
+			xmin = 1.634493
+			xmax = 1.791494
+			text = "W"
+		intervals[9]:
+			xmin = 1.791494
+			xmax = 1.945495
+			text = "S"
+		intervals[10]:
+			xmin = 1.945495
+			xmax = 2.033739
+			text = "W"
+		intervals[11]:
+			xmin = 2.033739
+			xmax = 2.283744
+			text = "S"
+		intervals[12]:
+			xmin = 2.283744
+			xmax = 2.361989
+			text = "W"
+		intervals[13]:
+			xmin = 2.361989
+			xmax = 2.604489
+			text = "W"
+		intervals[14]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [8]:
+		class = "IntervalTier"
+		name = "Phoneme"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 34
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.256994
+			text = "V"
+		intervals[3]:
+			xmin = 0.256994
+			xmax = 0.340238
+			text = "m"
+		intervals[4]:
+			xmin = 0.340238
+			xmax = 0.426743
+			text = "V"
+		intervals[5]:
+			xmin = 0.426743
+			xmax = 0.483490
+			text = "N"
+		intervals[6]:
+			xmin = 0.483490
+			xmax = 0.566994
+			text = "s"
+		intervals[7]:
+			xmin = 0.566994
+			xmax = 0.674237
+			text = "t"
+		intervals[8]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "@:"
+		intervals[9]:
+			xmin = 0.739994
+			xmax = 0.892734
+			text = "f"
+		intervals[10]:
+			xmin = 0.892734
+			xmax = 0.949994
+			text = "r"
+		intervals[11]:
+			xmin = 0.949994
+			xmax = 1.031989
+			text = "E"
+		intervals[12]:
+			xmin = 1.031989
+			xmax = 1.195988
+			text = "n"
+		intervals[13]:
+			xmin = 1.195988
+			xmax = 1.289494
+			text = "z"
+		intervals[14]:
+			xmin = 1.289494
+			xmax = 1.419986
+			text = "S"
+		intervals[15]:
+			xmin = 1.419986
+			xmax = 1.463242
+			text = "i:"
+		intervals[16]:
+			xmin = 1.463242
+			xmax = 1.506239
+			text = "w"
+		intervals[17]:
+			xmin = 1.506239
+			xmax = 1.548486
+			text = "@"
+		intervals[18]:
+			xmin = 1.548486
+			xmax = 1.634493
+			text = "z"
+		intervals[19]:
+			xmin = 1.634493
+			xmax = 1.715488
+			text = "k"
+		intervals[20]:
+			xmin = 1.715488
+			xmax = 1.741497
+			text = "@"
+		intervals[21]:
+			xmin = 1.741497
+			xmax = 1.791494
+			text = "n"
+		intervals[22]:
+			xmin = 1.791494
+			xmax = 1.893237
+			text = "s"
+		intervals[23]:
+			xmin = 1.893237
+			xmax = 1.945495
+			text = "I"
+		intervals[24]:
+			xmin = 1.945495
+			xmax = 1.966743
+			text = "d"
+		intervals[25]:
+			xmin = 1.966743
+			xmax = 2.033739
+			text = "@"
+		intervals[26]:
+			xmin = 2.033739
+			xmax = 2.150242
+			text = "d_b"
+		intervals[27]:
+			xmin = 2.150242
+			xmax = 2.211239
+			text = "j"
+		intervals[28]:
+			xmin = 2.211239
+			xmax = 2.283744
+			text = "u:"
+		intervals[29]:
+			xmin = 2.283744
+			xmax = 2.302993
+			text = "d"
+		intervals[30]:
+			xmin = 2.302993
+			xmax = 2.361989
+			text = "@"
+		intervals[31]:
+			xmin = 2.361989
+			xmax = 2.447484
+			text = "f"
+		intervals[32]:
+			xmin = 2.447484
+			xmax = 2.506316
+			text = "@"
+		intervals[33]:
+			xmin = 2.506316
+			xmax = 2.604489
+			text = "l"
+		intervals[34]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [9]:
+		class = "IntervalTier"
+		name = "Phonetic"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 36
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.187498
+			text = ""
+		intervals[2]:
+			xmin = 0.187498
+			xmax = 0.256994
+			text = "V"
+		intervals[3]:
+			xmin = 0.256994
+			xmax = 0.340238
+			text = "m"
+		intervals[4]:
+			xmin = 0.340238
+			xmax = 0.426743
+			text = "V"
+		intervals[5]:
+			xmin = 0.426743
+			xmax = 0.483490
+			text = "N"
+		intervals[6]:
+			xmin = 0.483490
+			xmax = 0.566994
+			text = "s"
+		intervals[7]:
+			xmin = 0.566994
+			xmax = 0.596742
+			text = "t"
+		intervals[8]:
+			xmin = 0.596742
+			xmax = 0.674237
+			text = "H"
+		intervals[9]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "@:"
+		intervals[10]:
+			xmin = 0.739994
+			xmax = 0.892734
+			text = "f"
+		intervals[11]:
+			xmin = 0.892734
+			xmax = 0.949994
+			text = "r"
+		intervals[12]:
+			xmin = 0.949994
+			xmax = 1.031989
+			text = "E"
+		intervals[13]:
+			xmin = 1.031989
+			xmax = 1.195988
+			text = "n"
+		intervals[14]:
+			xmin = 1.195988
+			xmax = 1.289494
+			text = "z"
+		intervals[15]:
+			xmin = 1.289494
+			xmax = 1.419986
+			text = "S"
+		intervals[16]:
+			xmin = 1.419986
+			xmax = 1.463242
+			text = "i:"
+		intervals[17]:
+			xmin = 1.463242
+			xmax = 1.506239
+			text = "w"
+		intervals[18]:
+			xmin = 1.506239
+			xmax = 1.548486
+			text = "@"
+		intervals[19]:
+			xmin = 1.548486
+			xmax = 1.634493
+			text = "z"
+		intervals[20]:
+			xmin = 1.634493
+			xmax = 1.675991
+			text = "k"
+		intervals[21]:
+			xmin = 1.675991
+			xmax = 1.715488
+			text = "H"
+		intervals[22]:
+			xmin = 1.715488
+			xmax = 1.741497
+			text = "@"
+		intervals[23]:
+			xmin = 1.741497
+			xmax = 1.791494
+			text = "n"
+		intervals[24]:
+			xmin = 1.791494
+			xmax = 1.893237
+			text = "s"
+		intervals[25]:
+			xmin = 1.893237
+			xmax = 1.945495
+			text = "I"
+		intervals[26]:
+			xmin = 1.945495
+			xmax = 1.966743
+			text = "d"
+		intervals[27]:
+			xmin = 1.966743
+			xmax = 2.033739
+			text = "@"
+		intervals[28]:
+			xmin = 2.033739
+			xmax = 2.150242
+			text = "db"
+		intervals[29]:
+			xmin = 2.150242
+			xmax = 2.211239
+			text = "j"
+		intervals[30]:
+			xmin = 2.211239
+			xmax = 2.283744
+			text = "u:"
+		intervals[31]:
+			xmin = 2.283744
+			xmax = 2.302993
+			text = "dH"
+		intervals[32]:
+			xmin = 2.302993
+			xmax = 2.361989
+			text = "@"
+		intervals[33]:
+			xmin = 2.361989
+			xmax = 2.447484
+			text = "f"
+		intervals[34]:
+			xmin = 2.447484
+			xmax = 2.506316
+			text = "@"
+		intervals[35]:
+			xmin = 2.506316
+			xmax = 2.604489
+			text = "l"
+		intervals[36]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
+	item [10]:
+		class = "TextTier"
+		name = "Tone"
+		xmin = 0.000000
+		xmax = 2.904450
+		points: size = 13
+		points[1]:
+			time = 0.418082
+			mark = "H*"
+		points[2]:
+			time = 0.930588
+			mark = "H*"
+		points[3]:
+			time = 1.105992
+			mark = "L-"
+		points[4]:
+			time = 1.911750
+			mark = "H*"
+		points[5]:
+			time = 2.229668
+			mark = "H*"
+		points[6]:
+			time = 2.542105
+			mark = "L-"
+		points[7]:
+			time = 2.576642
+			mark = "L%"
+	item [11]:
+		class = "IntervalTier"
+		name = "Foot"
+		xmin = 0.000000
+		xmax = 2.904450
+		intervals: size = 7
+		intervals[1]:
+			xmin = 0.000000
+			xmax = 0.256994
+			text = ""
+		intervals[2]:
+			xmin = 0.256994
+			xmax = 0.674237
+			text = "F"
+		intervals[3]:
+			xmin = 0.674237
+			xmax = 0.739994
+			text = "F"
+		intervals[4]:
+			xmin = 0.739994
+			xmax = 1.791494
+			text = "F"
+		intervals[5]:
+			xmin = 1.791494
+			xmax = 2.033739
+			text = "F"
+		intervals[6]:
+			xmin = 2.033739
+			xmax = 2.604489
+			text = "F"
+		intervals[7]:
+			xmin = 2.604489
+			xmax = 2.904450
+			text = ""
