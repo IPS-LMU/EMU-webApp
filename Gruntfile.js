@@ -1,26 +1,26 @@
 module.exports = function(grunt) {
 
-    var allJsFiles = ["js/emulabeller.js",
-        "js/webaudio.js",
-        "js/drawer.js",
-        "js/oscidrawer.js",
-        "js/spectogramDrawer.js",
-        "js/tierdrawer.js",
-        "js/ssffdrawer.js",
-        "js/view.js",
-        "js/labfileparser.js",
-        "js/textgridparser.js",
-        "js/ssffparser.js",
-        "js/JSONvalidator.js",
-        "js/base64-binary/base64-binary.js",
-        "js/socketIOhandler.js",
-        "js/iohandler.js",
-        "js/tierHandler.js",
-        "js/dropBoxHandler.js",
-        "js/main.js"
+    var allJsFiles = ["app/js/emulabeller.js",
+        "app/js/webaudio.js",
+        "app/js/drawer.js",
+        "app/js/oscidrawer.js",
+        "app/js/spectogramDrawer.js",
+        "app/js/tierdrawer.js",
+        "app/js/ssffdrawer.js",
+        "app/js/view.js",
+        "app/js/labfileparser.js",
+        "app/js/textgridparser.js",
+        "app/js/ssffparser.js",
+        "app/js/JSONvalidator.js",
+        "app/js/base64-binary/base64-binary.js",
+        "app/js/socketIOhandler.js",
+        "app/js/iohandler.js",
+        "app/js/tierHandler.js",
+        "app/js/dropBoxHandler.js",
+        "app/js/main.js"
     ];
 
-    var allCssFiles = ['css/main.css', 'css/menu.css', 'css/tooltip.css', 'css/modal.css', 'css/spinner.css'];
+    var allCssFiles = ['app/styles/main.css', 'app/styles/menu.css', 'app/styles/tooltip.css', 'app/styles/modal.css', 'app/styles/spinner.css'];
 
     // Project configuration.
     grunt.initConfig({
@@ -30,34 +30,34 @@ module.exports = function(grunt) {
                 options: {
                     // banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
                     // sourceMapRoot: 'http://localhost:8001/js/',
-                    sourceMap: 'emuLVC.min.map'
+                    sourceMap: 'app/emuLVC.min.map'
                 },
 
                 files: {
-                    'emuLVC.min.js': allJsFiles
+                    'app/emuLVC.min.js': allJsFiles
                 }
             },
-            spectogram: {
-                options: {
-                    // banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
-                    // sourceMapRoot: 'http://localhost:8001/js/',
-                },
-                files: {
-                    'spectrogram.min.js': 'js/spectrogram.js'
-                }
-            }
+            // spectogram: {
+            //     options: {
+            //         // banner: '/*! <%= pkg.name %> <%= grunt.template.today("isoDateTime") %> */\n',
+            //         // sourceMapRoot: 'http://localhost:8001/js/',
+            //     },
+            //     files: {
+            //         'appspectrogram.min.js': 'app/js/spectrogram.js'
+            //     }
+            // }
         },
         cssmin: {
             combine: {
                 files: {
-                    'emuLVC.min.css': allCssFiles
+                    'app/emuLVC.min.css': allCssFiles
                 }
             }
         },
         watch: {
             all: {
-                files: allJsFiles.concat(['index.html']).concat(allCssFiles),
-                tasks: ['uglify', 'cssmin', 'replace'],
+                files: allJsFiles.concat(['app/index.html']).concat(allCssFiles),
+                tasks: ['uglify', 'cssmin'],
                 options: {
                     livereload: true
                 }
