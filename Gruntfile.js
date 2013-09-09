@@ -71,37 +71,37 @@ module.exports = function(grunt) {
                     keepalive: true
                 }
             }
-        },
-        replace: {
-            // dist: {
-            //     options: {
-            //         variables: {
-            //             'insertCompressedSpectWorkerHere': 'eval(' + grunt.file.read('spectrogram.min.js') + ')'
-            //         },
-            //         prefix: '@@'
-            //     },
-            //     files: [{
-            //         expand: false,
-            //         flatten: true,
-            //         src: ['index.template'],
-            //         dest: 'replaced.html'
-            //     }]
-            // },
-            timestampManifest: {
-                options: {
-                    variables: {
-                        'timestamp': '<%= grunt.template.today() %>'
-                    },
-                    prefix: '@@'
-                },
-                files: [{
-                    expand: false,
-                    flatten: true,
-                    src: ['manifest.template'],
-                    dest: 'manifest.appcache'
-                }]
-            }
         }
+        // replace: {
+        //     // dist: {
+        //     //     options: {
+        //     //         variables: {
+        //     //             'insertCompressedSpectWorkerHere': 'eval(' + grunt.file.read('spectrogram.min.js') + ')'
+        //     //         },
+        //     //         prefix: '@@'
+        //     //     },
+        //     //     files: [{
+        //     //         expand: false,
+        //     //         flatten: true,
+        //     //         src: ['index.template'],
+        //     //         dest: 'replaced.html'
+        //     //     }]
+        //     // },
+        //     timestampManifest: {
+        //         options: {
+        //             variables: {
+        //                 'timestamp': '<%= grunt.template.today() %>'
+        //             },
+        //             prefix: '@@'
+        //         },
+        //         files: [{
+        //             expand: false,
+        //             flatten: true,
+        //             src: ['manifest.template'],
+        //             dest: 'manifest.appcache'
+        //         }]
+        //     }
+        // }
     });
 
     // Load plugins
@@ -113,11 +113,11 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.loadNpmTasks('grunt-replace');
+    // grunt.loadNpmTasks('grunt-replace');
 
 
     // Default task(s)
-    grunt.registerTask('default', ['uglify', 'cssmin', 'replace']);
+    grunt.registerTask('default', ['uglify', 'cssmin']);
 
 
 };

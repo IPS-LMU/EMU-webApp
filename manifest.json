@@ -9,7 +9,7 @@
     },
     "app": {
         "background": {
-            "scripts": ["main.js"]
+            "scripts": ["background.js"]
         }
     },
     "offline_enabled": true,
@@ -18,6 +18,6 @@
         "<all_urls>"
     ],
     "sandbox": {
-        "pages": ["index.html"]
+        "pages": ["index.html"] // still has inline code so sanboxing is necessary
     }
 }
