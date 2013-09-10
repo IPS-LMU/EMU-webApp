@@ -3,7 +3,7 @@ var emulabeller = (function() {
 
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
-    var autoLoad = true;
+    var autoLoad = false;
 
 
     var tierInfos = {

@@ -788,13 +788,6 @@ var EmuLabeller = {
 
         if (this.initLoad) {
             this.initLoad = false;
-        } else {
-        
-            emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", emulabeller.tierHandler.reinit, ""); // ???
-        
-            //if (confirm("Loading an audio file will delete all tiers!")) {
-            //    this.tierHandler.reinit();
-            //}
         }
         this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length,this.backend.currentBuffer.sampleRate);
         // this.viewPort.init(10365, 18660, this.backend.currentBuffer.length); // for development
@@ -1013,27 +1006,43 @@ var EmuLabeller = {
     parseNewFile: function(readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
+        console.log(my.fileState);
         if (ft === 0) {
-            if(!my.initLoad && my.fileState != my.FILESTATE.CLEAN) emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", my.parseNewFileConfirm, readerRes);
-            else {
+            if(my.fileState.value > my.FILESTATE.CLEAN.value) 
+                emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", my.parseNewFileConfirm, readerRes);
+            else 
                 my.parseNewFileConfirm(readerRes);
-                my.fileState = my.FILESTATE.CLEAN;
-            }
+                
         } else if (ft == 1) {
-            my.fileState = my.FILESTATE.TIERS;
-            var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
-            this.tierHandler.addLoadedTiers(newTiers[0]);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {        
+                my.fileState = my.FILESTATE.TIERS;
+                var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
+                this.tierHandler.addLoadedTiers(newTiers[0]);
+            }
         } else if (ft == 2) {
-            var sCanName = "F0";
-            my.fileState = my.FILESTATE.TIERS;
-            my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
-            var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
-            emulabeller.ssffInfos.data.push(ssffData);
-            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {        
+                var sCanName = "F0";
+                my.fileState = my.FILESTATE.TIERS;
+                my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
+                var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
+                emulabeller.ssffInfos.data.push(ssffData);
+                emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
+            }
         } else if (ft == 3) {
-            my.fileState = my.FILESTATE.TIERS;
-            var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
-            this.tierHandler.addLoadedTiers(parserRes);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {
+                my.fileState = my.FILESTATE.TIERS;
+                var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
+                this.tierHandler.addLoadedTiers(parserRes);
+            } 
         }
     },
     
