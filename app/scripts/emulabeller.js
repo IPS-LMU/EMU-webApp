@@ -37,6 +37,29 @@ var EmuLabeller = {
                 name: "NotConfigured"
             }
         };
+        
+        
+        // define internal File State Modes that may not interfere
+        my.FILESTATE = {
+
+            // nothing is loaded
+            CLEAN: {
+                value: 0,
+                name: "Clean"
+            },
+
+            // Wave File is loaded and Basename is set
+            BASENAME: {
+                value: 1,
+                name: "Basename"
+            },
+
+            // Tiers are loaded
+            TIERS: {
+                value: 2,
+                name: "Tiers"
+            }
+        };
 
         // define internal Applications Modes that may not interfere
         my.EDITMODE = {
@@ -99,6 +122,9 @@ var EmuLabeller = {
 
         // internal standard at the beginning
         this.internalMode = my.EDITMODE.STANDARD;
+        
+        // internal filestate at the beginning
+        this.fileState = my.FILESTATE.CLEAN;
 
         // default is not configured
         this.externalMode = my.USAGEMODE.NOT_CONFIGURED;
@@ -988,23 +1014,36 @@ var EmuLabeller = {
         var my = this;
         var ft = emulabeller.newFileType;
         if (ft === 0) {
-            my.backend.loadData(
-                readerRes,
-                my.newlyLoadedBufferReady.bind(my)
-            );
+            if(!my.initLoad && my.fileState != my.FILESTATE.CLEAN) emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", my.parseNewFileConfirm, readerRes);
+            else {
+                my.parseNewFileConfirm(readerRes);
+                my.fileState = my.FILESTATE.CLEAN;
+            }
         } else if (ft == 1) {
+            my.fileState = my.FILESTATE.TIERS;
             var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
             this.tierHandler.addLoadedTiers(newTiers[0]);
         } else if (ft == 2) {
             var sCanName = "F0";
+            my.fileState = my.FILESTATE.TIERS;
             my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
             var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
             emulabeller.ssffInfos.data.push(ssffData);
             emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
         } else if (ft == 3) {
+            my.fileState = my.FILESTATE.TIERS;
             var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
             this.tierHandler.addLoadedTiers(parserRes);
         }
+    },
+    
+    parseNewFileConfirm: function(readerRes) {
+        var my = emulabeller;
+        my.fileState = my.FILESTATE.BASENAME;
+        my.backend.loadData(
+            readerRes,
+            my.newlyLoadedBufferReady.bind(my)
+        );
     },
 
 
