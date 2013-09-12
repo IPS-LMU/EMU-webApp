@@ -16,7 +16,7 @@ EmuLabeller.ViewPort = {
      * @param eSample of view to init view with
      * @param bufferLength of currently loaded buffer
      */
-    init: function(sSample, eSample, bufferLength) {
+    init: function(sSample, eSample, bufferLength, sRate) {
 
         this.sS = sSample;
         this.eS = eSample;
@@ -24,6 +24,7 @@ EmuLabeller.ViewPort = {
         this.selectS = -1;
         this.selectE = -1;
         this.bufferLength = bufferLength; // on init
+        this.sampleRate = sRate;
 
         // red line on wave & spectro
         this.percent = -1;
@@ -133,11 +134,11 @@ EmuLabeller.ViewPort = {
             this.selectE = end;
     },
 
-    setSelectMultiSegment: function(tier, evt, isSelected, width) {
+    setSelectMultiSegment: function(tier, evt, isSelected, width, dontCheck) {
         var id = this.getId(tier, evt.label, evt.startSample);
-        if (this.uiInfo[id - 1] ||  this.uiInfo[id + 1]) {
-            this.uiInfo[id] = isSelected;
-            this.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + 1);
+        if (emulabeller.viewPort.uiInfo[id - 1] ||  emulabeller.viewPort.uiInfo[id + 1] || dontCheck) {
+            emulabeller.viewPort.uiInfo[id] = isSelected;
+            if(!dontCheck) emulabeller.viewPort.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + 1);
             return true;
         } else return false;
     },

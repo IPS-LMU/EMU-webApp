@@ -6,53 +6,62 @@ EmuLabeller.TextGridParser = {
     },
 
     /**
-    * parse a textgrid string to the specified json format
-    *
-    * @param string TextGrid file string to be parsed
-    * @param fileName name of textGrid including ext.
-    * @returns a label java script object
-    */
-    toJSO: function(string, fileName) {
+     * parse a textgrid string to the specified json format
+     *
+     * @param string TextGrid file string to be parsed
+     * @param fileName name of textGrid including ext.
+     * @returns a label java script object
+     */
+    toJSO: function(string) {
 
+        // remove all empty lines from string
+        string = string.replace(/([ \t]*\r?\n)+/g, "\n");
+        // remove all blanks
+        string = string.replace(/[ \t]+/g, "");
         var lines = string.split("\n");
 
         var tiers = [];
         var tT, tN, eT, lab;
+        var inHeader = true;
 
         //meta info for labelJSO
         var labelJSO = {
-            origSamplerate: 44100,
+            origSamplerate: this.ssr,
             labelEncoding: "UTF-8",
             tiers: []
         };
 
-        if (lines[0] == this.l1 && lines[1] == this.l2) {
-            for (var i = 7; i < lines.length; i++) {
-                var curLineEl1 = lines[i].split(/\s+/)[1];
-                if (!curLineEl1) continue;
-                if (curLineEl1 == "item") {
+        if (lines[0].replace(/\s+/g,'') == this.l1.replace(/\s+/g,'') && lines[1].replace(/\s+/g,'') == this.l2.replace(/\s+/g,'')) {
+            for (var i = 2; i < lines.length; i++) {
+                var cL = lines[i];
+                if (cL == "item[]:") {
+                    inHeader = false;
+                    continue;
+                }
+                if (inHeader) continue;
+
+                if (cL.indexOf("item[")=== 0) {
                     // get tier type
-                    if (lines[i + 1].split(/\s+/)[3] == "\"IntervalTier\"") {
+                    if (lines[i + 1].split(/=/)[1] == "\"IntervalTier\"") {
                         tT = "seg";
                     } else {
                         tT = "point";
                     }
                     // get tier name
-                    tN = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
+                    tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
                     // adding new tier
                     labelJSO.tiers.push({
                         TierName: tN,
                         type: tT,
-                        events: [],
-                        associatedFile: fileName
+                        events: []
                     });
                 }
-                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (curLineEl1.indexOf("intervals") === 0) && (curLineEl1.indexOf("intervals:") !== 0)) {
+                if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "seg" && (cL.indexOf("intervals") === 0) && (cL.indexOf("intervals:") !== 0)) {
                     // parse seg tiers event
-                    eSt = Math.ceil(lines[i + 1].split(/\s+/)[3] * this.ssr);
-                    eEt = Math.floor(lines[i + 2].split(/\s+/)[3] * this.ssr);
-                    lab = lines[i + 3].split(/\s+/)[3].replace(/"/g, '');
+                    eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.ssr);
+                    eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.ssr);
+                    lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 
                     // var correctFact = 0;
                     if (eSt === 0) {
@@ -64,10 +73,10 @@ EmuLabeller.TextGridParser = {
                         startSample: eSt - 1, // correct so starts at 0
                         sampleDur: eEt - eSt
                     });
-                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && curLineEl1.indexOf("points") === 0 && curLineEl1.indexOf("points:") !== 0) {
+                } else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type == "point" && cL.indexOf("points") === 0 && cL.indexOf("points:") !== 0) {
                     // parse point tier event
-                    eT = lines[i + 1].split(/\s+/)[3] * this.ssr;
-                    lab = lines[i + 2].split(/\s+/)[3].replace(/"/g, '');
+                    eT = lines[i + 1].split(/=/)[1] * this.ssr;
+                    lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
                     labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
                         label: lab,
@@ -81,7 +90,7 @@ EmuLabeller.TextGridParser = {
             return labelJSO;
 
         } else {
-            alert("bad header in textgrid file!!! The header has to be: ", this.l1 , "\n", this.l2);
+            alert("bad header in textgrid file!!! The header has to be: ", this.l1, "\n", this.l2);
         }
 
     },
@@ -91,21 +100,21 @@ EmuLabeller.TextGridParser = {
      * to a string containing a TextGrid file
      */
     toTextGrid: function(tiers) {
+        var my = this;
         var tG = "";
         var nl = "\n";
         var t = "\t";
 
         // writing header infos
-        tG = tG + this.l1 + nl + this.l2 + nl + nl;
-        tG = tG + "xmin = " + this.findTimeOfMinSample() + nl;
-        tG = tG + "xmax = " + this.findTimeOfMaxSample() + nl + nl;
-        tG = tG + "tiers? <exists>" + nl + nl;
+        tG = tG + my.l1 + nl + my.l2 + nl + nl;
+        tG = tG + "xmin = " + my.findTimeOfMinSample() + nl;
+        tG = tG + "xmax = " + my.findTimeOfMaxSample() + nl;
+        tG = tG + "tiers? <exists>" + nl;
         tG = tG + "size = " + emulabeller.tierHandler.getLength() + nl;
         tG = tG + "item []:" + nl;
-        var tierNr = 1;
-        for (var tN in tiers) {
-            // console.log(tN)
-            var curTier = emulabeller.tierHandler.getTier(tN);
+        var tierNr = 0;
+        $("#cans div canvas").each(function(index) {
+            var curTier = emulabeller.tierHandler.getTier($(this).attr("id"));
             //write tier items
             tierNr = tierNr + 1;
             tG = tG + t + "item [" + tierNr + "]:" + nl;
@@ -115,8 +124,8 @@ EmuLabeller.TextGridParser = {
                 tG = tG + t + t + 'class = "TextTier"' + nl;
             }
             tG = tG + t + t + 'name = "' + curTier.TierName + '"' + nl;
-            tG = tG + t + t + "xmin = " + this.findTimeOfMinSample() + nl;
-            tG = tG + t + t + "xmax = " + this.findTimeOfMaxSample() + nl;
+            tG = tG + t + t + "xmin = " + my.findTimeOfMinSample() + nl;
+            tG = tG + t + t + "xmax = " + my.findTimeOfMaxSample() + nl;
             if (curTier.type == "seg") {
                 tG = tG + t + t + "intervals: size = " + curTier.events.length + nl;
             } else if (curTier.type == "point") {
@@ -125,21 +134,26 @@ EmuLabeller.TextGridParser = {
             for (var j = 0; j < curTier.events.length; j++) {
                 var evtNr = j + 1;
                 if (curTier.type == "seg") {
-                    tG = tG + t + t + t + "intervals[" + evtNr + "]:" + nl;
+                    tG = tG + t + t + t + "intervals [" + evtNr + "]:" + nl;
                     if (curTier.events[j].startSample !== 0) {
-                        tG = tG + t + t + t + t + "xmin = " + ((curTier.events[j].startSample + 1) / this.ssr + (1 / this.ssr) / 2) + nl;
-                    }else{
+                        tG = tG + t + t + t + t + "xmin = " + ((curTier.events[j].startSample) / my.ssr + ((1 / my.ssr) / 2)) + nl;
+                    } else {
                         tG = tG + t + t + t + t + "xmin = " + 0 + nl;
                     }
-                    tG = tG + t + t + t + t + "xmax = " + (curTier.events[j].startSample + 1 + curTier.events[j].sampleDur + 1) / this.ssr + nl;
+                    if (j < curTier.events.length - 1) {
+                        tG = tG + t + t + t + t + "xmax = " + ((curTier.events[j].startSample + curTier.events[j].sampleDur + 1) / my.ssr + ((1 / my.ssr) / 2)) + nl;
+                    } else {
+                        tG = tG + t + t + t + t + "xmax = " + my.findTimeOfMaxSample() + nl;
+                    }
+
                     tG = tG + t + t + t + t + 'text = "' + curTier.events[j].label + '"' + nl;
                 } else if (curTier.type == "point") {
                     tG = tG + t + t + t + "points[" + evtNr + "]:" + nl;
-                    tG = tG + t + t + t + t + "time = " + curTier.events[j].startSample / this.ssr + nl;
+                    tG = tG + t + t + t + t + "time = " + curTier.events[j].startSample / my.ssr + nl;
                     tG = tG + t + t + t + t + 'mark = "' + curTier.events[j].label + '"' + nl;
                 }
             }
-        }
+        });
 
         // console.log(labelJSO);
         // console.log(tG);

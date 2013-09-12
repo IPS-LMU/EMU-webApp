@@ -37,6 +37,29 @@ var EmuLabeller = {
                 name: "NotConfigured"
             }
         };
+        
+        
+        // define internal File State Modes that may not interfere
+        my.FILESTATE = {
+
+            // nothing is loaded
+            CLEAN: {
+                value: 0,
+                name: "Clean"
+            },
+
+            // Wave File is loaded and Basename is set
+            BASENAME: {
+                value: 1,
+                name: "Basename"
+            },
+
+            // Tiers are loaded
+            TIERS: {
+                value: 2,
+                name: "Tiers"
+            }
+        };
 
         // define internal Applications Modes that may not interfere
         my.EDITMODE = {
@@ -53,44 +76,50 @@ var EmuLabeller = {
             }, // no keybindings exept enter -> save
 
             // EDITMODE when editing tiers
-            LABEL_MOVE: {
+            TIER_RENAME: {
                 value: 2,
+                name: "TierRenameMode"
+            }, // no keybindings exept enter -> save
+
+            // EDITMODE when editing tiers
+            LABEL_MOVE: {
+                value: 3,
                 name: "LabelRenameMode"
             },
 
             // when draging in a tier / multiple tiers
             LABEL_RESIZE: {
-                value: 3,
+                value: 4,
                 name: "DragingTierMode"
             },
 
             // when draging in the timeline (wave & spectro)
             DRAGING_TIMELINE: {
-                value: 4,
+                value: 5,
                 name: "DragingTimelineMode"
             },
 
             // when draging in the minimap
             DRAGING_MINIMAP: {
-                value: 5,
+                value: 6,
                 name: "DragingMinimapMode"
             },
 
             // when draging the timeline resize bar
             DRAGING_BAR: {
-                value: 6,
+                value: 7,
                 name: "DragingBarMode"
             },
 
             // when draging the timeline resize bar
             DRAGING_TIER: {
-                value: 7,
+                value: 8,
                 name: "DragingTierMode"
             },
 
             // when showing modal
             MODAL: {
-                value: 8,
+                value: 9,
                 name: "ModalMode"
             }
         };
@@ -99,6 +128,9 @@ var EmuLabeller = {
 
         // internal standard at the beginning
         this.internalMode = my.EDITMODE.STANDARD;
+        
+        // internal filestate at the beginning
+        this.fileState = my.FILESTATE.CLEAN;
 
         // default is not configured
         this.externalMode = my.USAGEMODE.NOT_CONFIGURED;
@@ -123,6 +155,7 @@ var EmuLabeller = {
         this.tiers = params.tiers;
         this.showLeftPush = params.showLeftPush;
         this.osciCanvas = params.osciCanvas;
+        this.initLoad = params.initLoad;
 
 
         // Object Classes
@@ -174,6 +207,9 @@ var EmuLabeller = {
         this.dragStart = -1;
         this.curLoadedBaseName = ''; // set to base name of audio file
         this.exportData = null;
+        this.oBottom = 0;
+        this.oTop = 0;
+        this.oTimeline = 0;
 
         // infos filled by ssff/lab/textgrid parsers
         this.ssffInfos = {
@@ -195,7 +231,7 @@ var EmuLabeller = {
                 my.fileSelect.style.display = "none";
                 break;
             default:
-                alert("Please specify Usage mode 'server' or 'standalone' in main.js !");
+                emulabeller.alertUser("Configuration Error","Please specify Usage mode 'server' or 'standalone' in main.js !");
                 my.fileSelect.style.display = "none";
                 my.showLeftPush.style.display = "none";
                 break;
@@ -208,10 +244,12 @@ var EmuLabeller = {
 
         // All left mouse down Functions  
         document.addEventListener('mousedown', function(e) {
-            
+
             if (null !== my.getElement(e))
-                my.clickedOn = my.getElement(e).id;
-            switch (my.clickedOn) {
+                var cOn = my.getElement(e).id;
+            
+            if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL)
+            switch (cOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
                     break;
@@ -223,31 +261,19 @@ var EmuLabeller = {
                 case "cmd_addTierPoint":
                     my.tierHandler.addTier(true);
                     break;
-                    
+
                 case "cmd_about":
-            		$("#popup").dialog({
-            			modal: true,
-            			autoOpen: false,
-			            width: 500,
-            			show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-		            	position: 'center',
-                        close: function(ev, ui) { $(this).hide(); }
-            		});   	     
+                    window.scrollTo(0, 0);
+                    $("#popup").dialog('option', 'position', ["center",10]);
+                    $('#popup').dialog('open');
                     break;
 
                 case "cmd_download":
-                    var myName = emulabeller.curLoadedBaseName + ".Textgrid";
-                    var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); 
-                    my.tierHandler.downloadDialog(myName,myData);
+                    var myName = emulabeller.curLoadedBaseName + ".TextGrid";
+                    var myData = emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers());
+                    my.tierHandler.downloadDialog(myName, myData);
                     break;
-                    
+
                 case "cmd_doDownload":
                     my.tierHandler.doDownload();
                     break;
@@ -297,28 +323,31 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_renameTierPoint":
-                    my.tierHandler.renameTier();
+                    emulabeller.tierHandler.removeLabelDoubleClick();
+                    emulabeller.tierHandler.renameTier();
+                    break;
+
+                case "cmd_resizeWave":
+                    emulabeller.tierHandler.resizeSpectroWave(true);
+                    break;
+
+                case "cmd_resizeSpectro":
+        			emulabeller.tierHandler.resizeSpectroWave(false);
                     break;
 
                 case "cmd_disconnect":
                     my.iohandler.disconnect();
-                    break;                 
-                    
+                    break;
+
                 case "cmd_specSettings":
-                    var specOpen = $('#specDialog').dialog('isOpen');
-                    if (!specOpen) {
-                        $('#specDialog').dialog('open');
-                        $("#specDialog").dialog('moveToTop');
-                        specOpen = true;
-                    } else {
-                        $('#specDialog').dialog('close');
-                        specOpen = false;
-                    }
+                    window.scrollTo(0, 0);
+                    $("#specDialog").dialog('option', 'position', ["center",10]);
+                    $('#specDialog').dialog('open');
                     break;
 
                 case params.scrollCanvas.id:
-                    my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
-                    my.tierHandler.removeLabelDoubleClick();
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_MINIMAP;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
                     var len = (my.viewPort.eS - my.viewPort.sS);
@@ -327,8 +356,8 @@ var EmuLabeller = {
 
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
-                    my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-                    my.tierHandler.removeLabelDoubleClick();
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_TIMELINE;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
                     my.viewPort.selectE = my.dragStart;
@@ -338,43 +367,39 @@ var EmuLabeller = {
                     break;
 
                 case params.draggableBar.id:
-                    my.internalMode = my.EDITMODE.DRAGING_BAR;
-                    my.tierHandler.removeLabelDoubleClick();
-                    my.dragingStartY = event.clientY;
-                    my.offsetTimeline = my.timeline.offsetHeight;
-                    my.offsetBottom = document.getElementById("menu-bottom").offsetHeight;
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_BAR;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
+                    $("*").css("cursor", "s-resize");
                     break;
-                    
+
 
                 default:
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                     break;
             }
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
         });
 
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
-
-            my.internalMode = my.EDITMODE.STANDARD;
-            $("*").css("cursor", "auto");
-
-            if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+            if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_TIMELINE) {
                 my.dragStart = -1;
                 my.drawer.uiDrawUpdate();
-            } else if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
+            } else if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
-            } else if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+            } else if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_MINIMAP) {
                 var bL = my.backend.currentBuffer.length;
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
             }
-
+            if(!emulabeller.inEditingMode()) {
+               emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+               $("*").css("cursor", "auto");
+            }            
         });
 
         // All mouse move Functions  
@@ -401,19 +426,25 @@ var EmuLabeller = {
                     my.drawer.uiDrawUpdate();
                 }
                 if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
-                    var diff_Y = Math.round((event.clientY - my.dragingStartY) / 2);
-                    if (diff_Y * 2 <= $(body).height() - ($("#menu-bottom").height() + 2 * $("#menu").height())) {
-                        $('#wave').css("height", "+=" + diff_Y + "px");
-                        $('#spectrogram').css("height", "+=" + diff_Y + "px");
-                        $('#timeline').css($('#wave').height() + $('#spectrogram').height() + "px");
+                    var offset = $("#menu-bottom").offset(); 
+                    var height = $("#menu-bottom").height();
+                    console.log(offset.top-height );
+                    if (event.clientY <= offset.top-height){
+                        $("*").css("cursor", "s-resize");
+                        $('#wave').css("height",event.clientY/2 + "px");
+                        $('#spectrogram').css("height", event.clientY/2+ "px");
+                        $('#timeline').css("height", 10 + $('#wave').height() + $('#spectrogram').height() + "px");
                         $('#spacer').height(($('#timeline').height() + 64) + "px");
-                        my.dragingStartY = event.clientY;
                     }
+                    
+                    //my.dragingStartY = event.clientY;
                 }
             } else {
                 my.lastX = my.getX(e);
-                if (!my.tierHandler.isEditing) my.internalMode = my.EDITMODE.STANDARD;
-                $("*").css("cursor", "auto");
+                if(!emulabeller.inEditingMode()) {
+                    emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                    $("*").css("cursor", "auto");
+                } 
             }
         });
 
@@ -424,9 +455,82 @@ var EmuLabeller = {
         $(window).resize(function() {
             my.tierHandler.removeLabelDoubleClick();
         });
+
+        $("#popup").dialog({
+            bgiframe: true,
+            draggable: false,
+            resizable: false,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: 500,
+            show: {
+                effect: "fade",
+                duration: 175
+            },
+            hide: {
+                effect: "fade",
+                duration: 175
+            },
+            position: ['center', 10],
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function() {};
+            }
+        });
+
+        $("#alertDialog").dialog({
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            width: 500,
+            height: "auto",
+            show: {
+                effect: "fade",
+                duration: 175
+            },
+            hide: {
+                effect: "fade",
+                duration: 175
+            },
+            position: ['center', 10],
+			buttons: {
+				"OK": function() {
+					$(this).dialog('close');
+				}
+			},            
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function() {};
+            }
+        });        
+        $("#popup").dialog('option', 'position', ["center", 10]);
         
+        this.dpr = 1;
+        if(window.devicePixelRatio !== undefined) this.dpr = window.devicePixelRatio;
+        document.getElementById("wave").width = 2048 * this.dpr;
+        document.getElementById("wave").height = 224 * this.dpr;
+        document.getElementById("spectrogram").width = 1024 * this.dpr;
+        document.getElementById("spectrogram").height = 128 * this.dpr;
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
+        
+        
+        
         $('#cans').sortable({
             tolerance: 'pointer',
             cursor: 'move',
@@ -443,6 +547,64 @@ var EmuLabeller = {
         });
         $("#cans").disableSelection();
 
+    },
+
+
+    /**
+     *
+     */
+    alertUser: function(title,msg) {
+        window.scrollTo(0, 0);
+        $("#alertDialog").dialog('option', 'position', ["center",10]);
+		$("#alertDialog").dialog('option', 'title', title);
+		$('#alertContent').html(msg);        
+        $('#alertDialog').dialog('open');
+    },
+
+    /**
+     *
+     */
+    confirmUser: function(title,msg,onSuccessFunction, functionArg) {
+        window.scrollTo(0, 0);
+        $("#confirmDialog").dialog({
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            height: "auto",
+            show: {
+                effect: "fade",
+                duration: 175
+            },
+            hide: {
+                effect: "fade",
+                duration: 175
+            },
+            position: 'center',
+			buttons: {
+				"OK": function() {
+				    onSuccessFunction(functionArg);
+					$(this).dialog('close');
+				},
+				"Cancel": function() {
+					$(this).dialog('close');
+				}
+			},            
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function() {
+                    window.scrollTo(0, 0);
+                };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function() {};
+            }
+        }); 
+        $("#confirmDialog").dialog('option', 'position', ["center",10]);
+		$("#confirmDialog").dialog('option', 'title', title);
+		$('#confirmContent').html(msg);            		    
+        $('#confirmDialog').dialog('open');
     },
 
     /**
@@ -478,6 +640,7 @@ var EmuLabeller = {
         //this.hideModalDialog();
         console.log("Connected to emuSX");
     },
+    
 
     /**
      * Called on receive of utterance list from emuSX server
@@ -622,15 +785,19 @@ var EmuLabeller = {
      */
     newlyLoadedBufferReady: function() {
 
-        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length);
+        if (this.initLoad) {
+            this.initLoad = false;
+        }
+        this.viewPort.init(0, this.backend.currentBuffer.length - 1, this.backend.currentBuffer.length,this.backend.currentBuffer.sampleRate);
         // this.viewPort.init(10365, 18660, this.backend.currentBuffer.length); // for development
+
         this.drawer.uiWaveDrawUpdate();
         this.drawer.uiSpectroDrawUpdate();
         this.drawer.uiMiniMapDraw();
         this.drawer.uiAllTierDrawUpdate();
 
-        emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
-
+        // emulabeller.iohandler.toTextGrid(emulabeller.tierHandler.getTiers()); // for testing toTextGrid
+        // emulabeller.iohandler.toESPS(emulabeller.tierHandler.getTiers()["Phonetic"]); // for testing toESPS
     },
 
 
@@ -812,13 +979,29 @@ var EmuLabeller = {
 
     /**
      */
-    keyBindingAllowed: function() {
-        var my = this;
-        if (my.internalMode != my.EDITMODE.LABEL_RENAME) {
-            if (my.internalMode != my.EDITMODE.MODAL) {
+    keyBindingAllowed: function(c) {
+
+        if(c==9 || c==13) { //special case for tab(9) / enter(13) in modal mode
+            return true;
+        }
+        if (emulabeller.inEditingMode()) {
+                return false;
+        }
+        return true;
+    },
+    
+    /**
+     * checks if Application is in editing mode (modal/label_rename/tier_rename)
+     * emulabeller.inEditingMode()
+     *
+     * @return true if in editing mode
+     * 
+     */    
+    inEditingMode: function() {
+        if (emulabeller.internalMode == emulabeller.EDITMODE.TIER_RENAME  ||
+            emulabeller.internalMode == emulabeller.EDITMODE.LABEL_RENAME ||
+            emulabeller.internalMode == emulabeller.EDITMODE.MODAL) {
                 return true;
-            }
-            return false;
         }
         return false;
     },
@@ -833,24 +1016,53 @@ var EmuLabeller = {
     parseNewFile: function(readerRes) {
         var my = this;
         var ft = emulabeller.newFileType;
+        console.log(my.fileState);
         if (ft === 0) {
-            my.backend.loadData(
-                readerRes,
-                my.newlyLoadedBufferReady.bind(my)
-            );
+            if(my.fileState.value > my.FILESTATE.CLEAN.value) 
+                emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", my.parseNewFileConfirm, readerRes);
+            else 
+                my.parseNewFileConfirm(readerRes);
+                
         } else if (ft == 1) {
-            var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
-            this.tierHandler.addLoadedTiers(newTiers[0]);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {        
+                my.fileState = my.FILESTATE.TIERS;
+                var newTiers = emulabeller.labParser.parseFile(readerRes, emulabeller.tierHandler.getLength());
+                this.tierHandler.addLoadedTiers(newTiers[0]);
+            }
         } else if (ft == 2) {
-            var sCanName = "F0";
-            my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
-            var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
-            emulabeller.ssffInfos.data.push(ssffData);
-            emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {        
+                var sCanName = "F0";
+                my.fileState = my.FILESTATE.TIERS;
+                my.tierHandler.addTiertoHtml(sCanName, "-1", "tierSettings", "#signalcans");
+                var ssffData = emulabeller.ssffParser.parseSSFF(readerRes);
+                emulabeller.ssffInfos.data.push(ssffData);
+                emulabeller.ssffInfos.canvases.push($("#" + sCanName)[0]);
+            }
         } else if (ft == 3) {
-            var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
-            this.tierHandler.addLoadedTiers(parserRes);
+            if(my.fileState == my.FILESTATE.CLEAN) {
+                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+            }
+            else {
+                my.fileState = my.FILESTATE.TIERS;
+                var parserRes = emulabeller.iohandler.parseTextGrid(readerRes);
+                this.tierHandler.addLoadedTiers(parserRes);
+            } 
         }
+    },
+    
+    parseNewFileConfirm: function(readerRes) {
+        var my = emulabeller;
+        my.fileState = my.FILESTATE.BASENAME;
+        my.backend.loadData(
+            readerRes,
+            my.newlyLoadedBufferReady.bind(my)
+        );
     },
 
 
@@ -892,7 +1104,7 @@ var EmuLabeller = {
             emulabeller.newFileType = 3;
             reader.readAsText(file);
         } else {
-            alert('File type not supported.... sorry!');
+            emulabeller.alertUser("File Read Error",'File type not supported.... sorry!');
         }
     },
 
@@ -905,16 +1117,18 @@ var EmuLabeller = {
             this.subMenuOpen = false;
             $("#serverSelect").html("Open Menu");
             $("#menuLeft").removeClass("cbp-spmenu-open");
-            $("#timeline").removeClass("cbp-spmenu-push-toright");
-            $("#tierPush").removeClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").removeClass("cbp-spmenu-push-toright");
+            $("#timeline").css("left","0px");
+            $("#tierPush").css("left","0px");
+            //$("#tierPush").removeClass("cbp-spmenu-push-toright");
+            //$("#menu-bottom").removeClass("cbp-spmenu-push-toright");
         } else {
             this.subMenuOpen = true;
             $("#serverSelect").html("Close Menu");
             $("#menuLeft").addClass("cbp-spmenu-open");
-            $("#timeline").addClass("cbp-spmenu-push-toright");
-            $("#tierPush").addClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").addClass("cbp-spmenu-push-toright");
+            $("#timeline").css("left","240px");
+            $("#tierPush").css("left","240px");
+        
+            //$("#menu-bottom").addClass("cbp-spmenu-push-toright");
         }
     },
 
@@ -1039,6 +1253,8 @@ var EmuLabeller = {
             // cleanUp(this);
         };*/
     },
+
+
 
     /**
     * use socketIOhandler to request something from server

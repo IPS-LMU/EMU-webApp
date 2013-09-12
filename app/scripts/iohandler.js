@@ -169,6 +169,14 @@ EmuLabeller.IOhandler = {
     /**
      *
      */
+    toESPS: function(tierDetails) {
+        res = this.labFileHandler.toESPS(tierDetails);
+        return res;
+    },
+
+    /**
+     *
+     */
     dropBoxOpen: function() {
         this.DropBoxHandler.openDropBox();
     }

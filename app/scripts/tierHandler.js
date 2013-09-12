@@ -6,49 +6,66 @@ EmuLabeller.tierHandler = {
 		this.tierInfos = params.tierInfos;
 		this.iconImageSize = 12;
 		this.isSelected = false;
-		this.isEditing = false;
+		this.exportData = null;
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
-		this.myHistory = new Object();
-		this.editAreaTextfieldName = "editArea";
+		this.myHistory = {};
 		this.tierCssName = "tierSettings";
-		this.historyEndError = "Cannot go back, no more history saved.... =(";
+		this.historyEndError = "Cannot go back, no more history saved.... &#9785;";
 		this.commonError = "Error: It is not allowed to insert a segment here!";
 		this.pointExistsError = "Error: This point already exists !";
 		this.noTierError = "Error: No Tier chosen !";
 		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
+		this.reallyDeleteMsg = "Really delete ";
 		this.params = params;
+		this.isWaveSpecZoomMode = false;
 
 		$("#downDialog").dialog({
+            dialogClass:'myPopup',
 			bgiframe: true,
 			modal: true,
 			autoOpen: false,
 			width: 500,
+			height: 500,
 			show: {
 				effect: "fade",
-				duration: 500
+				duration: 175
 			},
 			hide: {
 				effect: "fade",
-				duration: 500
+				duration: 175
 			},
 			position: 'center',
 			buttons: {
-				"Ok": function() {
-					alert('OK');
+				"Download": function() {
+					emulabeller.tierHandler.doDownload();
 					$(this).dialog('close');
 				},
 				"Cancel": function() {
-					alert('Not ok');
 					$(this).dialog('close');
 				}
 			},
-			close: function(ev, ui) {
-				$(this).hide();
-			}
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function () {  window.scrollTo(0, 0); };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function () {  };
+            }
 		});
+		
 
 
+	},
+
+	reinit: function() {
+		this.myHistory = {};
+		this.tierInfos = {
+			"tiers": [],
+			"canvases": []
+		};
+		$("#cans").empty();
 	},
 
 	history: function() {
@@ -63,7 +80,10 @@ EmuLabeller.tierHandler = {
 			--this.myHistoryCounter;
 			this.rebuildTiers();
 			emulabeller.drawBuffer();
-		} else alert(this.historyEndError);
+		} else {
+		    emulabeller.alertUser("Error",this.historyEndError);
+		}
+		//alert(this.historyEndError);
 	},
 
 	addTier: function(addPointTier) {
@@ -107,6 +127,7 @@ EmuLabeller.tierHandler = {
 		});
 		// save history state
 		this.history();
+        emulabeller.drawer.uiAllTierDrawUpdate();
 	},
 
 	getLength: function() {
@@ -139,6 +160,8 @@ EmuLabeller.tierHandler = {
 			id: myName,
 			width: this.internalCanvasWidth,
 			height: this.internalCanvasHeightSmall
+		}).css({
+		    "position": "relative"
 		}).addClass(myCssClass).add(buttons);
 
 		$('<div class="hull' + myName + '" style="position:relative;">').attr({
@@ -155,8 +178,7 @@ EmuLabeller.tierHandler = {
 		var myElemDel=document.getElementById(myName+'_del');
 		$(myElemDel).bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
-			if (confirm("Do you really wish to delete Tier: '" + n + "' ?"))
-				emulabeller.tierHandler.removeTier(n);
+			emulabeller.confirmUser("Delete", emulabeller.tierHandler.reallyDeleteMsg +"'" + n + "' ?", emulabeller.tierHandler.removeTier, n);
 		});
 		
 		var myElemRes=document.getElementById(myName+'_res');
@@ -164,12 +186,12 @@ EmuLabeller.tierHandler = {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.resizeTier(n);
 		});
-		
+
 		var myElemSave=document.getElementById(myName+'_save');
-		$(myElemSave).bind("click", function(event) {
-            var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
-            var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
-            emulabeller.tierHandler.downloadDialog(myName,myData);
+		$(myElemSave).bind("click", function(event)  {
+			var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
+			var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
+			emulabeller.tierHandler.downloadDialog(myName, myData);
 		});
 
 		
@@ -228,7 +250,7 @@ EmuLabeller.tierHandler = {
 	 * @param tierName
 	 */
 	trackMouseInTiers: function(event, percX, percY, tierName) {
-		if (!this.isEditing) {
+		if (emulabeller.keyBindingAllowed()) {
 			var curTierDetails = this.getTier(tierName);
 			var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
 			var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
@@ -274,10 +296,10 @@ EmuLabeller.tierHandler = {
 
 
 	removeTier: function(tierName) {
-		this.removeTierHtml(tierName);
-		delete this.tierInfos.tiers[tierName];
+		emulabeller.tierHandler.removeTierHtml(tierName);
+		delete emulabeller.tierHandler.tierInfos.tiers[tierName];
 		// save history state
-		this.history();
+		emulabeller.tierHandler.history();
 	},
 
 	removeSegment: function(t, labelName, labelStart) {
@@ -301,14 +323,6 @@ EmuLabeller.tierHandler = {
 
 	},
 
-	removeBorder: function(t, labelName, labelStart) {
-		if (null != this.tierInfos.tiers[t.TierName].events[labelName - 1]) {
-			this.tierInfos.tiers[t.TierName].events[labelName - 1].sampleDur += this.tierInfos.tiers[t.TierName].events[labelName].sampleDur;
-			this.tierInfos.tiers[t.TierName].events[labelName - 1].label += this.tierInfos.tiers[t.TierName].events[labelName].label;
-			delete this.tierInfos.tiers[t.TierName].events[labelName];
-		}
-	},
-
 
 	removePoint: function(t, labelName, labelStart) {
 		for (s in this.tierInfos.tiers[t.TierName].events) {
@@ -322,80 +336,69 @@ EmuLabeller.tierHandler = {
 
 	deleteSelected: function() {
 		var my = this;
-		var t = this.getSelectedTier();
-		var selected = emulabeller.viewPort.getAllSelected(t);
-		var warn = "Really delete ";
+		var selected = emulabeller.viewPort.getAllSelected(emulabeller.tierHandler.getSelectedTier());
+		var warn = emulabeller.tierHandler.reallyDeleteMsg;
 		for (s in selected) warn += selected[s].label + ", ";
-		if (confirm(warn.substring(0, warn.length - 2))) {
-			for (s in selected) {
-				if (t.type == "seg")
-					this.removeSegment(t, selected[s].label, selected[s].startSample)
-				if (t.type == "point")
-					this.removePoint(t, selected[s].label, selected[s].startSample)
-			}
-			t.events.sort(function(a, b) {
-				return parseFloat(a.startSample) - parseFloat(b.startSample);
-			});
-			this.history();
-			emulabeller.drawBuffer();
+		emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2) + " ?", emulabeller.tierHandler.subDeleteSelected , selected);
+	},
+	
+	subDeleteSelected: function(selected) {
+	    var t = emulabeller.tierHandler.getSelectedTier();
+		for (s in selected) {
+			if (t.type == "seg")
+				emulabeller.tierHandler.removeSegment(t, selected[s].label, selected[s].startSample)
+			if (t.type == "point")
+				emulabeller.tierHandler.removePoint(t, selected[s].label, selected[s].startSample)
 		}
+		t.events.sort(function(a, b) {
+			return parseFloat(a.startSample) - parseFloat(b.startSample);
+		});
+		emulabeller.tierHandler.history();
+		emulabeller.drawBuffer();	
 	},
 
 
 	downloadDialog: function(myName, myData) {
-		$("#downDialog").dialog({
-			modal: true,
-			autoOpen: false,
-			width: 600,
-			show: {
-                effect: "fade",
-                duration: 500
-            },
-            hide: {
-                effect: "fade",
-                duration: 500
-            },
-			position: 'center',    
-		});	
-
+	    this.exportData = myData;
+        window.scrollTo(0, 0);
+		$("#downDialog").dialog('option', 'position', ["center",10]);
 		$("#downDialog").dialog('option', 'title', 'Download ' + myName);
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
 		return false;
 	},
-	
-	
-	
+
+
+
 	SaveToDisk: function(fileURL, fileName) {
-    // for non-IE
-    if (!window.ActiveXObject) {
-        var save = document.createElement('a');
-        save.href = fileURL;
-        save.target = '_blank';
-        save.download = fileName || 'unknown';
+		// for non-IE
+		if (!window.ActiveXObject) {
+			var save = document.createElement('a');
+			save.href = fileURL;
+			save.target = '_blank';
+			save.download = fileName || 'unknown';
 
-        var event = document.createEvent('Event');
-        event.initEvent('click', true, true);
-        save.dispatchEvent(event);
-        //(window.URL || window.webkitURL).revokeObjectURL(save.href);
-    }
-},
+			var event = document.createEvent('Event');
+			event.initEvent('click', true, true);
+			save.dispatchEvent(event);
+			//(window.URL || window.webkitURL).revokeObjectURL(save.href);
+		}
+	},
 
-	
-	
-	
+
 
 	doDownload: function() {
-		var mydata = $('#preview').html();
+		var mydata = this.exportData;
 		var myname = $('#saveAsFileName').val();
+		
 		// for non-IE
 		if (!window.ActiveXObject) {
 			if (null != save)
 				(window.URL || window.webkitURL).revokeObjectURL(save.href);
 			try { 
 				var blob = new Blob([mydata], {
-					"type": "text\/plain"
+					"type": "text\/plain;charset=UTF-8"
 				});
 			} catch (e) { // Backwards-compatibility
 				window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -408,7 +411,6 @@ EmuLabeller.tierHandler = {
 			save.href = url;
 			save.target = '_blank';
 			save.download = myname || 'unknown';
-
 			var evt = document.createEvent('MouseEvents');
 			evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
 			save.dispatchEvent(evt);
@@ -422,16 +424,61 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		if (emulabeller.viewPort.curMouseMoveTierName != "") {
 			var t = this.getTier(emulabeller.viewPort.curMouseMoveTierName);
-			if (confirm("Wollen Sie die Grenze bei '" + this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName].label + "' wirklich loeschen?")) {
-				this.removeBorder(t, emulabeller.viewPort.curMouseMoveSegmentName)
-				t.events.sort(function(a, b) {
-					return parseFloat(a.startSample) - parseFloat(b.startSample);
-				});
-				this.history();
-				emulabeller.drawBuffer();
-			}
-		} else alert("Error: Please select a boundary first!");
+			var thisEvent = this.tierInfos.tiers[t.TierName].events[emulabeller.viewPort.curMouseMoveSegmentName];
+	        var prevEvent = emulabeller.tierHandler.previousEvent(t,thisEvent.startSample);
+			var warnmsg = this.reallyDeleteMsg + "border between " + prevEvent.label + " and " + thisEvent.label + " (Sample "+ thisEvent.startSample+") ?";
+
+			emulabeller.confirmUser("Remove Border", warnmsg+ " ?", emulabeller.tierHandler.subDeleteBorder, [t, thisEvent, prevEvent]);
+
+		} else {
+		    emulabeller.alertUser("Error","Please select a boundary first!");
+		}
 	},
+	
+	subDeleteBorder: function(params) {
+	    
+	    var t = params[0];
+	    var thisEvent = params[1];
+	    var prevEvent = params[2];
+		if (null != prevEvent) {
+			prevEvent.sampleDur += thisEvent.sampleDur;
+			prevEvent.label += thisEvent.label;
+			var id = emulabeller.viewPort.getId(t, thisEvent.label, thisEvent.startSample);
+			delete emulabeller.tierHandler.tierInfos.tiers[t.TierName].events[id];
+			t.events.sort(function(a, b) {
+			    return parseFloat(a.startSample) - parseFloat(b.startSample);
+			});
+			emulabeller.tierHandler.history();
+			emulabeller.drawBuffer();
+		}
+	},
+
+
+	resizeSpectroWave: function(isWave) {
+	   
+	    var small = this.internalCanvasHeightBig /2;
+	
+	    var size = $("#wave").height() + $("#spectrogram").height();
+	    var big = size - small;
+	    if(!this.isWaveSpecZoomMode) {
+	    if(isWave) {
+		    $("#wave").height(small+"px");
+    		$("#spectrogram").height(big+"px");
+    		this.isWaveSpecZoomMode = true;
+        }
+    	else {
+	    	$("#spectrogram").height(small+"px");
+	    	$("#wave").height(big+"px");  
+    		this.isWaveSpecZoomMode = true;	    	  		    
+        }
+        }
+        else {
+	    	$("#spectrogram").height(size/2+"px");
+	    	$("#wave").height(size/2+"px");          
+            this.isWaveSpecZoomMode = false;
+        }
+	},
+
 
 	resizeTier: function(tierName) {
 		var s = this.internalCanvasHeightBig - 1;
@@ -445,9 +492,46 @@ EmuLabeller.tierHandler = {
 			$("#" + tierName + "_save").show();
 		}
 	},
+	
+	selectSegmentsUnderSelection: function() {
+	    var tierDetails = this.getSelectedTier();
+		if(null != tierDetails) {
+    		if (tierDetails.type == "seg") {
+    		    var first = true;
+    		    emulabeller.viewPort.resetSelection(tierDetails.events.length);
+    		    emulabeller.viewPort.setSelectTier(tierDetails.TierName);
+    		    this.removeLabelDoubleClick();
+    		    var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
+    		    var e = tierDetails.events;
+    		    var count = 0;
+    		    var start = emulabeller.viewPort.eS;
+    		    var end = emulabeller.viewPort.sS;
+    		    for (var k in e) 
+    		        if( e[k].startSample >= emulabeller.viewPort.selectS && (e[k].startSample+e[k].sampleDur) <= emulabeller.viewPort.selectE) {
+    		            ++count;
+    		            if(e[k].startSample<=start)
+    		                start = e[k].startSample;
+    		            if(e[k].startSample+e[k].sampleDur>=end)
+    		                end = e[k].startSample+e[k].sampleDur;
+				        emulabeller.viewPort.setSelectMultiSegment(tierDetails, e[k], true, canvas.width,true);				        
+    		        }
+    		    if(count==0)
+    		        emulabeller.alertUser("Error","There were no segments under your selection!");
+    		    else 
+    		        emulabeller.viewPort.resizeSelectArea(start,end);
+    		        
+    		    emulabeller.drawBuffer();
+	    	}
+		    else if (tierDetails.type == "point") {
+		    }
+		    
+		}
+		else {
+		    emulabeller.alertUser("Error","Please select a Tier first!");
+		}
+	},
 
 	handleTierClick: function(percX, percY, tierDetails) {
-
 		//deselect everything
 		emulabeller.viewPort.resetSelection(tierDetails.events.length);
 		emulabeller.viewPort.setSelectTier(tierDetails.TierName);
@@ -517,7 +601,6 @@ EmuLabeller.tierHandler = {
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 		var edit = $('#' + this.editAreaTextfieldName);
 		if (edit.length === 0) {
-			emulabeller.tierHandler.isEditing = true;
 			if (tierDetails.type == "seg") {
 				if (percX)
 					var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -525,7 +608,7 @@ EmuLabeller.tierHandler = {
 					emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
 					var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 					var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-					this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, true);
+					this.createEditArea(posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, tierDetails.TierName, false);
 				}
 
 			} else if (tierDetails.type == "point") {
@@ -534,10 +617,10 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
 				var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 				var editWidth = 45;
-				this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
+				this.createEditArea(posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, tierDetails.TierName, false);
 			}
 		} else {
-			my.removeLabelDoubleClick();
+			emulabeller.removeLabelDoubleClick();
 		}
 		emulabeller.drawBuffer();
 	},
@@ -594,7 +677,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	nextEvent: function(t, curSample) {
-		var e = t.events;
+	var e = t.events;
 		var r = null;
 		var temp = 0;
 		for (var k in e) {
@@ -605,6 +688,17 @@ EmuLabeller.tierHandler = {
 			}
 		}
 		return r;
+	},
+
+
+	previousEvent: function(t, curSample) {
+		var e = t.events;
+		var r = null;
+		for (var k in e) {
+		    if(e[k].startSample==curSample) return r;
+		    r = e[k];
+		}
+		return null;
 	},
 
 
@@ -626,25 +720,32 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	createEditArea: function(myName, x, y, width, height, label, c, saveTier) {
+	createEditArea: function(x, y, width, height, label, c, isTier) {
 		var my = this;
-		var textAreaX = Math.round(x) + c.offsetLeft + 2;
-		var textAreaY = c.offsetTop + 2 + y;
+
+		if(isTier)
+    		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
+    	else
+    	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+
+		var textAreaX = Math.round(x) + $("#"+c).offset().left + 2;
+		var textAreaY = $("#"+c).offset().top + 2 + y;
 		var textAreaWidth = width;
 		var textAreaHeight = height;
 		var content = $("<textarea>").attr({
-			id: "editing"
+			id: "label_edit_textarea", 
+			"autofocus":"true"
 		}).css({
+		    "position": "absolute",
 			"top": textAreaY + "px",
 			"left": textAreaX + "px",
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
-		}).addClass(this.editAreaTextfieldName).text(label);
+		}).text(label);
+		$("body").prepend(content);
+		$("#label_edit_textarea").focus();
+		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, $("#label_edit_textarea").val().length); // select textarea text     
 
-		$("#hull" + myName).prepend(content);
-
-		this.createSelection(document.getElementById("editing"), 0, label.length); // select textarea text     
-		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
 	},
 
 
@@ -666,7 +767,7 @@ EmuLabeller.tierHandler = {
 
 	saveLabelName: function(a) {
 		var tierDetails = this.getSelectedTier();
-		var content = $("#editing").val();
+		var content = $("#label_edit_textarea").val();
 		tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, ''); // remove new line from content with regex
 		emulabeller.drawer.updateSingleTier(tierDetails);
 
@@ -679,8 +780,8 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		var tierDetails = this.getSelectedTier();
 		var old_key = tierDetails.TierName;
-		var new_key = $("#editing").val().replace(/[\n\r]/g, '');
-
+		var new_key = $("#label_edit_textarea").val().replace(/[\n\r]/g, '');
+		alert(new_key);
 		if (!this.tierExists(new_key)) {
 			var backup = jQuery.extend(true, {}, tierDetails);
 			delete this.tierInfos.tiers[old_key];
@@ -691,20 +792,19 @@ EmuLabeller.tierHandler = {
 			// save history state
 			this.history();
 		} else {
-			alert("Error : A tier with this name ('" + new_key + "') already exists!");
+		    emulabeller.alertUser("Error","A tier with this name ('" + new_key + "') already exists!");
 		}
 
 	},
 
 	renameTier: function() { //maybe rename to removeLabelBox or something
-		var my = this;
 		var tierDetails = this.getSelectedTier();
 		if (null != tierDetails) {
 			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, false);
+			this.createEditArea(0, posS, canvas.clientWidth - 5, canvas.clientHeight - 5, tierDetails.TierName,tierDetails.TierName, true);
 		} else {
-			alert("Please mark a tier first...");
+		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}
 
 	},
@@ -759,8 +859,9 @@ EmuLabeller.tierHandler = {
 					if (emulabeller.viewPort.selectS == emulabeller.viewPort.selectE) {
 						if (null != thisSegment)
 							this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
-						else
-							alert(this.commonError);
+						else {
+							emulabeller.alertUser("Error",this.commonError);
+						}
 					} else {
 						this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
 					}
@@ -781,23 +882,21 @@ EmuLabeller.tierHandler = {
 							return parseFloat(a.startSample) - parseFloat(b.startSample);
 						});
 					} else {
-						alert(this.pointExistsError);
+					    emulabeller.alertUser("Error",this.pointExistsError);
 					}
 				} else {
-					alert(this.pointSegmentError);
+				    emulabeller.alertUser("Error",this.pointSegmentError);
 				}
 			}
 			emulabeller.drawBuffer();
 		} else {
-			alert(this.noTierError);
+		    emulabeller.alertUser("Error",this.noTierError);
 		}
 
 	},
 
 	removeLabelDoubleClick: function() {
-		var my = this;
-		$('.' + this.editAreaTextfieldName).remove();
-		emulabeller.tierHandler.isEditing = false;
+		$('#label_edit_textarea').remove();
 	},
 
 	moveBoundary: function(newTime, myName) {
@@ -937,12 +1036,12 @@ EmuLabeller.tierHandler = {
 		if (getAbove) {
 			hullID = $("#hull" + tName).prev().attr('id');
 			if (!hullID && throwAlert) {
-				alert("no tier above the selected boundary!");
+			    emulabeller.alertUser("Error","no tier above the selected boundary!");
 			}
 		} else {
 			hullID = $("#hull" + tName).next().attr('id');
 			if (!hullID && throwAlert) {
-				alert("no tier below the selected boundary!");
+			    emulabeller.alertUser("Error","no tier below the selected boundary!");
 			}
 		}
 		if (hullID) {
@@ -968,7 +1067,7 @@ EmuLabeller.tierHandler = {
 			if (closestSeg) {
 				this.moveBoundary(closestSeg.startSample, emulabeller.viewPort.curMouseMoveTierName);
 			} else {
-				alert("closest segment is null?!?!?!?");
+			    emulabeller.alertUser("Error","closest segment is null?!?!?!?");
 			}
 		}
 		emulabeller.drawBuffer();
@@ -1160,7 +1259,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	/**
-	 * 
+	 *
 	 */
 	moveSelctionToCurMouseBoundary: function() {
 		if (emulabeller.internalMode == emulabeller.EDITMODE.STANDARD) {
@@ -1169,8 +1268,5 @@ EmuLabeller.tierHandler = {
 			emulabeller.drawBuffer();
 		}
 
-	},
-
-
-
+	}
 };

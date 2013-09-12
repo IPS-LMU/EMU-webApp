@@ -29,8 +29,6 @@ EmuLabeller.Drawer.OsciDrawer = {
         this.scrollCanvas = params.scrollCanvas;
 
         this.forTesting = 1;
-
-        this.sR = 44100; // SIC not good hardcoded
         this.showSampleNrs = false; // probably only good for debugging / developing
 
     },
@@ -265,8 +263,8 @@ EmuLabeller.Drawer.OsciDrawer = {
         var eTime;
         if (emulabeller.viewPort) {
             //draw time and sample nr
-            sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS / this.sR, 6);
-            eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS / this.sR, 6);
+            sTime = emulabeller.viewPort.round(emulabeller.viewPort.sS / emulabeller.viewPort.sampleRate, 6);
+            eTime = emulabeller.viewPort.round(emulabeller.viewPort.eS / emulabeller.viewPort.sampleRate, 6);
             cc.fillText(emulabeller.viewPort.sS, 5, this.params.fontPxSize);
             cc.fillText(sTime, 5, this.params.fontPxSize * 2);
             var metrics = cc.measureText(sTime);
@@ -291,7 +289,7 @@ EmuLabeller.Drawer.OsciDrawer = {
                 cc.fillStyle = this.params.selectedBorderColor;
                 cc.fillRect(posS + xOffset, 0, 1, this.osciCanvas.height);
                 cc.fillStyle = this.params.labelColor;
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR + (1 / this.sR) / 2, 6), posS + xOffset + 5, this.params.fontPxSize);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / emulabeller.viewPort.sampleRate + (1 / emulabeller.viewPort.sampleRate) / 2, 6), posS + xOffset + 5, this.params.fontPxSize);
                 cc.fillText(emulabeller.viewPort.selectS, posS + xOffset + 5, this.params.fontPxSize * 2);
             } else {
                 cc.fillStyle = this.params.selectedAreaColor;
@@ -308,18 +306,18 @@ EmuLabeller.Drawer.OsciDrawer = {
                 // start values
                 var tW = cc.measureText(emulabeller.viewPort.selectS).width;
                 cc.fillText(emulabeller.viewPort.selectS, posS - tW - 4, this.params.fontPxSize);
-                tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6)).width;
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / this.sR, 6), posS - tW - 4, this.params.fontPxSize * 2);
+                tW = cc.measureText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / emulabeller.viewPort.sampleRate, 6)).width;
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectS / emulabeller.viewPort.sampleRate, 6), posS - tW - 4, this.params.fontPxSize * 2);
                 // end values
                 cc.fillText(emulabeller.viewPort.selectE, posE + 5, this.params.fontPxSize);
-                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / this.sR, 6), posE + 5, this.params.fontPxSize * 2);
+                cc.fillText(emulabeller.viewPort.round(emulabeller.viewPort.selectE / emulabeller.viewPort.sampleRate, 6), posE + 5, this.params.fontPxSize * 2);
                 // dur values
                 // check if space
-                if (posE - posS > cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width) {
+                if (posE - posS > cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / emulabeller.viewPort.sampleRate, 6)).width) {
                     tW = cc.measureText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS).width;
                     cc.fillText(emulabeller.viewPort.selectE - emulabeller.viewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize);
-                    tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR, 6)).width;
-                    cc.fillText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / this.sR), 6), posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize * 2);
+                    tW = cc.measureText(emulabeller.viewPort.round((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / emulabeller.viewPort.sampleRate, 6)).width;
+                    cc.fillText(emulabeller.viewPort.round(((emulabeller.viewPort.selectE - emulabeller.viewPort.selectS) / emulabeller.viewPort.sampleRate), 6), posS + (posE - posS) / 2 - tW / 2, this.params.fontPxSize * 2);
                 }
 
             }

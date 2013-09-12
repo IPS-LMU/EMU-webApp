@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<!-- <html manifest="/emulabeller.manifest"> -->
+<!-- <html manifest="manifest.appcache"> -->
 <html>
 <head>
  <meta name="apple-mobile-web-app-capable" content="yes">
- <link rel="apple-touch-icon-precomposed-" href="/assets/icon.png"/>
+ <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+ <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png"/>
+ <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
  <meta charset="utf-8">
  <title>emuLVC</title>
  <!-- external css -->
- <link rel="stylesheet" href="css/jquery-ui.css" />
+ <!-- build:css(.tmp) styles/jquery-ui.min.css -->
+ <link rel="stylesheet" href="styles/jquery-ui.css" />
+ <!-- endbuild -->
  <!-- our css -->
- <link rel="stylesheet" href="emuLVC.min.css">
-         <!-- <link rel="stylesheet" href="css/main.css">
-         <link rel="stylesheet" href="css/menu.css">
-         <link rel="stylesheet" href="css/modal.css">
-         <link rel="stylesheet" href="css/tooltip.css"> -->
-       </head>
-       <body id="body">
+ <!-- build:css(.tmp) styles/emuLVC.min.css -->
+ <link rel="stylesheet" href='styles/main.css'> 
+ <link rel="stylesheet" href='styles/menu.css'>
+ <link rel="stylesheet" href='styles/tooltip.css'>
+ <link rel="stylesheet" href='styles/modal.css'>
+ <link rel="stylesheet" href='styles/spinner.css'>
+ <!-- endbuild -->
+
+ <!-- <link rel="stylesheet" href="emuLVC.min.css"> -->
+</head>
+ <body id="body">  
          <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft">
           <h3>&nbsp;</h3>
           <div id="utteranceList" class="isScrollable">
@@ -38,98 +46,19 @@
             </div>
         </div>
         
-        <div id="specDialog" title="Spectogram Settings" style="display:none;">
-          <p>View Range (Hz)</p>
-          <input type="text" name="viewrange_from" id="viewrange_from" value="0" />
-          <input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
-          
-          <p>Window Length (samples)</p>
-          <input type="text" name="windowLength" id="windowLength" value="512" />
-          
-          <p>Dynamic Range for Maximum (dB)</p>  
-          <input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
-          
-          <p>Window Function</p>      
-          <select name="windowFunction" id="windowFunction">
-            <option value="1">BARTLETT</option>
-            <option value="2" selected>BARTLETTHANN</option>
-            <option value="3">BLACKMAN</option>
-            <option value="4">COSINE</option>
-            <option value="5">GAUSS</option>
-            <option value="6">HAMMING</option>
-            <option value="7">HANN</option>
-            <option value="8">LANCZOS</option>
-            <option value="9">RECTANGULAR</option>
-            <option value="10">TRIANGULAR</option>	
-          </select>     
-        </div>
-    
-
-
-        <div class="menu" id="menu">
-          <input type="file" id="fileGetterBtn" name="file"/>
-          <div class="btn-group">
-           <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: O">Open File</button>
-<!--    <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button>
--->   
-<button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: O">Open Menu</button>
-<button class="mini-btn tooltip" id="cmd_addTierSeg" data-tooltip="Shortcut: none">Add Tier (seg)</button>
-<button class="mini-btn tooltip" id="cmd_addTierPoint" data-tooltip="Shortcut: none">Add Tier (point)</button>
-<button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
-<button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Download TextGrid</button>
-<button class="mini-btn tooltip" id="cmd_specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
-<button class="mini-btn tooltip" id="cmd_disconnect" disabled="disabled" >Disconnect</button> 
-<a href="#" id="cmd_about" class="aboutLink"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC%0AAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE%0AAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAC%2BdJREFUeNrtm1uMXddZx3/f2nuf%2B9zv%0Aduw4aRwbuyiEJKrcOo0oCKgUAmrUJx6goPAWIbWKUkTpUwMI0QjUIl7yVhQhJIQsQEqF3BbFiuOW%0AkiYtsd0kjseOPb7MzTPnzLnsvdbHw9pnzpmZMzPneCzZbvyXtkazL2t93/%2B7rrX3QVXHVRVV5eOC%0Apr6qOn67ZbmHe7iHe7itkM0u5E8pLiAyDZ4M4Kjo5vfeiVBBrXLCZXndWOLqpzqL3/Fs/pRihUxk%0A%2BYooXxEY4W6rkgIKcyp8Mw74ZqA0OpFgOj5rIYg5KsqXRe9C5QEURBkR5ctBzFGxnW8zm50MhKMC%0Ao7dbj51CYDSAo2aT62HHh7T57C8AFEQ21yXsZay7FluEsOl%2BlF9M3JUeoIBNrRrIzmJ1gwdcunTJ%0AX7hDM4ACk6Hy3ITj98eUyQw7KlIbCDh%2B/DjVIdgbuSB/hwWIAvmkxp%2BNr/CNiQp/u6fBX9%2BvPFq8%0AeQo2qHj58mUGD8CuyAalYGfs3nICrGVwdprP5KqotZye/oifvHsGapWbTmYbcsC5c%2BfYZyCDEtxp%0AYWAtbuY81ItcbBj%2B9Ltv825ugvDBKVzxFhFQLpdZBkqJEt9J5gdASZKYRhzzc4qc2/9pNDeAjTI3%0APeIGz9m9ezdnAXE2FHrLsL3e37v6MNLfz2CpwI2wSG5ojGwhD0Fw6wgolUqoCFlNMnnTvUIC9Idw%0AM4mzP4RCNzrEDT57/xhD%2BSwNDLuykN8h4xvErVQqiCrTdXE17Y2AooGBsDcvCATGI0/cVhHnnOPJ%0AUsIfH5pARKg4YdnKjsN0Qw4QEYjhOtmasS2hmkptNp8ILKf3C91XjwC41oDGFmRb5ziSrfGX94fs%0AzSRUHVyoWmYTQW61B1SrVbgKToxr3ynfk4WxaHPFDK3mqVuhFAj9up1sW7gVjA8JBaxTHjZV/nxX%0AzEOZBFWYXrH8aDEhY4SMaRmoL/Dj7YiA/v5%2BUK9Mzvi/AvSFXsjN4ICGg2hda2rW3WPVH4FAVrzA%0AFki0dQxHMBRAQZTfGYz51ieUXy0q1ikWeHV6mffjCNtkET/efVkvY9MLu8GGEIjjGAogqtLeB1xt%0AtBTq5AWheLJqrnU9a3x8X6x7AfdEyicLyqGCsitScqLUVVi0wmwizDSEioO9WWUsVPZHCZ8pxhQ0%0AxjolDAz/eX6ef5mNCMbyOAUrLQJC8QoJnsSag8omGyGbElCr1SBlMUk1EYG68xOIQKeXSKqQtFmk%0A6d4jofJARnl6yPHpQsxkkJDHrhlEREgQYgwWwaBkUIxarPVWD4zhxzMLvHRmmcWJA4wYoWy9V4HP%0AJQ1HcyuMkRDK1h9becMGAs6ePUvhI4glSHDg1CsSiSdE2tzatT3n8BspudRFrFMO5RxfGrU8VYoZ%0AJMY6h1qIN9KXCmNXBXJt44tAObb83Xtlzg3uI8rk/HwCGYEGPqyuxH4kg88jdce22BDVr732GlEZ%0AVMyqjZre0Px/KPQu1u4IRlr/F7E8Nxbz7b11fre0QsnWia3D6dbVQduONVYyhuNXq7wRTlLsH6CY%0AJkinrZwTiifBpfll2W5dWTYloF2QjLSyaqMteQWyNtkFArmUgNDG/Mlwja9O1NlFjdi6nS1XBeYb%0Aju9csTRKg0xmYF8ORsOUqHTeQLwygg%2BHuQSqLq1M6iQuwjPPPNMdAU0EacxH6dFUfMXBUhpbWePL%0AY2QgjhOeMEv84ZglcvHqpsVOIGI4dmGJt7WfIIy4HsOFGiwkbdYCYvVHmMoZayuHRTbO1B6BgwcP%0Abk/As88%2By9IRKLp6VAx8LOUNlAKvfF%2BQhkDozw2H3jPKFvIri3wuWqLfeHffKUJj%2BNlsmX%2BbdeT7%0A%2BukPfTmuq8/u%2BbRfyBvoD7wxMgYGQ9%2BVFgMv72Bc7lMRqdfr2xOQJJ7ajEuCKA0BwSuZTSdyKfGZ%0AdMJYwajSV57lgbCxY%2BVFhCgIuFap8a0zc1wqjBOFASHevUOBIO1RnHrvy6UElAJ4MOevZcSfC5wV%0AQJaWljaSvP7EsWPHGDgJC2GxhoVK0mosmu61mHjm4jQvLFlIEkuhcoPJvilclx9biMiaDzMCY1BV%0AFisrvDV9hX%2B/VObUwC%2BxHJaQpPVczbVWnjXjy59TH5oohBkfIoJvsrJhvi6q7i%2B%2B/vXtCYBWFm44%0Ab%2B2s8WU7VigZWEyvN7suVRBVVhbmuTBj2D82SBwnHZOfiBAYg3WOWiMmG4Wryp/%2B6Ar/%2BuZP%2BO/p%0A65wv7WbikU8hQ2MErtUyu3WZPQTiNOad%2Buw/XffxbwAVkFSSlZWVLglIJW%2BkZSsAnEDi4ELdWyBr%0AYG8Grqa1V4xhKcjx7f/4HlN9efZNTRJFIeocIkIYGKx13KhU%2Bdn0Rxz/6VnOnr/Ic7/9FL/5%2BCP8%0A4Ow0X/v%2BT/kwO0r8y48jI5NcLRRJrJBJwzAQH/%2BrZOJDsGF9/xGnXjBd84aL0gB3QRQDNBqN7gjY%0ADErqZqkl%2BkK43GgSEBA%2BeJhTMx/wR//wKr%2ByZ5wXvvg0n9g1zkJ5hTdPv88b713gf2fm%2BVBKLJTG%0AqZuE31isML1U5W/eW%2Bbi4c8xMDTCkgYkCtW2rhL82mH98rcZCu3b46vdYVrF8uICgOHh4d4IaPb9%0A9dS92pEAH9Y8Ic2JZXCM4LO/x/T50xzprzE1Msi7l67x0nd/yOuzdaojuxk8/BjR6BTZKE/%2B4s/Z%0Af7/h%2BwuOMyMHMH1DJAaSxLtwRjzJfUErxtvlkGZrnhpkfcg1nCchMWEMaZvfLQFKWvvxrK8f3CrM%0Are9pRdC%2BYQ4fPMjzhzKcvXadF15/n7fHHiU4fB9htkAuG9AfwY1Kwrg22D8%2BRYUBHnMZciHsynqF%0AS8Y3Ow/nHFNBwo9WAv5%2BJmA%2B7vzOou42GslIWipFlPgmPEDS7iqk1VRsBQWKSZXn7wuoLM7z4g8v%0A8c6uR4mGxz056ZhOwVkLi9eZX8hzZCLi0FiVmeUVLl9bZGZ%2BkcVyhRv1KgvG8vnHPskX9uwmNHle%0APG%2BYTzO8U6imq71OO9iSkpBo4DgHo6MbX3ZvTQCtem%2B3WVYqYJIGfzCacCCs8eLJGd6dOEw4MLpm%0AvMUEbiS%2BGsxU6nzpH/%2BZ0eEhypKhHOZYCfMsSBYLaKOOzHzId35wiuef/jVKDx7iifwU/7UcrVk3%0AGOlMQNLsDANjH6rByZMneyOgOUE3mwtqLU%2BXanxxKOGlNy/xzuBDRIOja7J2Uyhvsgg5fIQLY3uY%0ARimU%2BiiU%2BghzBbImi8Ovu3V5nvdP/5ivvXEOMw0cLEJpZHW8jKQZv4OQiu9UHaIR8Morr3RPgJAu%0AJ9WXwM0cQPEblk/lqry4R3j1ncuciKbIDo/R6LS0W51AkMFRwsERQIgC390J%2BKanuRcxPEnmiV%2Bn%0AWi2DCZBsoZV0aeWDhts4leL7gprrTNC2HtBsOporwfWwChlRnirW%2BcZe4eyVOf6pXCI7sctvcHTV%0AEMrqXIlbu6xumTmHyeQ6kt9sgDoZyClcarAlti6DaRI0bCwzAcqT/cqzw5bP98P8jTIvf1BlYeAB%0AJgNDTvwCqVsk6t11pUM23%2B65KG3SOmG7rrzzR1JtFzOyMQeoKuHiNX4rucgX%2Bqr8z/%2Bd4YUTH/BO%0AdgKTyfoOTeh5H2Ak8qu4btHcTd6bZXV3uFds6wHNHrx9IanOsSdZwl29xlffeotjc8qNhx4nLA0C%0AMJ/0/ulJ86OHXhJvsxQOpxuvvewGb0lA03IuHdGx1pqSNLh4fY6/mr3C8tg%2BzKMPE%2BZLqy8EuukZ%0ANsyZ5plGj8/WHSwlNzfnpgQ0EavPoOtDWcKI2n0H0L2HvOJm519SKH5Ts%2BF6s6LD9xbNDdtbSgD4%0AF5cVuzYECEKkb%2BiWvglWfIPUK5q7wTfrAVuaToGBoLXuvxOhpOuAm3x%2B2z5gpuFD4U77WORWYdsQ%0AWOqhlt%2BNuCu/E%2BwZW7hv5zIobX/u1ODvQXlVNv21Q8ckmL7GPqEwe7vl3ykUZi2c2CxJdn41FoCN%0AOKHCyyrM3ZUZUECFORVethEnNNj0ts5Y/clMnSfT3w6kgXH7FOpq7lQjpbufzNzDPdzDPXy88XH/%0A%2Bfz/A5BjIHN2ii1%2BAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEzLTA3LTI0VDE0OjQ3OjU4KzAyOjAw%0A14fOFwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMy0wNy0yNFQxNDo0Nzo1OCswMjowMKbadqsAAAAA%0ASUVORK5CYII%3D%0A"/></a>
-
-</div>
-
-</div>
-
-
-
-<div class="timeline" id="timeline">
- <canvas id="wave" class="canvasSettings" height="224" width="2048"></canvas>
- <canvas id="spectrogram" class="canvasSettings" height="112" width="1024"></canvas>
- <div id="signalcans" class="signalcans"></div>
- <div id="resizer" class="resizer"><span id="resizer"></span></div>
-</div>
-
-
-<div class="tierPush" id="tierPush">
-  <div class="spacer" id="spacer">&nbsp;</div>
-  <div class="tiers" id="tiers">
-   <div id="cans" class="cans"></div>
- </div>
- <div class="spacerbottom" id="spacerbottom">&nbsp;</div>
-</div>
-
-<div class="menu-bottom" id="menu-bottom">
-  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="64"></canvas>
-  <div class="btn-group">
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
-    <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
-    <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>            
-    <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button> 
-  </div>
-</div> 
+        
 
 
 <div id="downDialog" class="downDialog" title="Download" onclick="return false;">
   <p>Please choose a name as filename: <br />
   
-  <input type="text" id="saveAsFileName" value="">
-  <button class="mini-btn" id="cmd_doDownload">Download</button>
+  <input type="text" id="saveAsFileName" style="width:90%;" value="">
   <div> &nbsp; <br />Preview: <br /><textarea id="preview" readonly> </textarea> </div>
   
   </p>
 </div>
 
-<div class="popup" id="popup" title="About Emu LVC" onclick="return false;">
+<div class="popup" id="popup" title="About Emu LVC">
   <p>
   emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
   <hr />
@@ -141,7 +70,8 @@
   move the mouse to the desired position. The boundary will then track the
   mouse movement. If a segment is selected (= marked yellow) then holding down 
   alt will move the entire segment
-  <h3>Navigation shortcuts:</h3>
+  <hr />
+  Navigation shortcuts:
   <table>
     <tbody>
       <tr><td><b>W:</b></td><td>Zoom in<sup>1</sup></td></tr>
@@ -183,6 +113,104 @@
     </tbody>
   </table>
   </p>
+</div>        
+        
+        <div id="specDialog" title="Spectogram Settings">
+          <p>View Range (Hz)</p>
+          <input type="text" name="viewrange_from" id="viewrange_from" value="0" />
+          <input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
+          
+          <p>Window Length (samples)</p>
+          <input type="text" name="windowLength" id="windowLength" value="512" />
+          
+          <p>Dynamic Range for Maximum (dB)</p>  
+          <input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
+          
+          <p>Window Function</p>      
+          <select name="windowFunction" id="windowFunction">
+            <option value="1">BARTLETT</option>
+            <option value="2" selected>BARTLETTHANN</option>
+            <option value="3">BLACKMAN</option>
+            <option value="4">COSINE</option>
+            <option value="5">GAUSS</option>
+            <option value="6">HAMMING</option>
+            <option value="7">HANN</option>
+            <option value="8">LANCZOS</option>
+            <option value="9">RECTANGULAR</option>
+            <option value="10">TRIANGULAR</option>	
+          </select>     
+        </div>
+    
+
+
+        <div class="menu" id="menu">
+          <input type="file" id="fileGetterBtn" name="file"/>
+          <div class="btn-group">
+           <button class="mini-btn tooltip" id="fileSelect" data-tooltip="Shortcut: O">Open File</button>
+<!--    <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button>
+-->   
+<button class="mini-btn tooltip" id="serverSelect" data-tooltip="Shortcut: O">Open Menu</button>
+<button class="mini-btn tooltip" id="cmd_addTierSeg" data-tooltip="Shortcut: none">Add Tier (seg)</button>
+<button class="mini-btn tooltip" id="cmd_addTierPoint" data-tooltip="Shortcut: none">Add Tier (point)</button>
+<button class="mini-btn tooltip" id="cmd_renameTierPoint" data-tooltip="Shortcut: none">Rename sel. Tier</button>
+<button class="mini-btn tooltip" id="cmd_download" data-tooltip="Shortcut: none">Download TextGrid</button>
+<button class="mini-btn tooltip" id="cmd_specSettings" data-tooltip="Shortcut: none">Spec. Settings</button>
+<button class="mini-btn tooltip" id="cmd_disconnect" disabled="disabled" >Disconnect</button> 
+
+<a href="#" id="cmd_about" class="aboutLink"><img id="cmd_about" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC%0AAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE%0AAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAC%2BdJREFUeNrtm1uMXddZx3/f2nuf%2B9zv%0Aduw4aRwbuyiEJKrcOo0oCKgUAmrUJx6goPAWIbWKUkTpUwMI0QjUIl7yVhQhJIQsQEqF3BbFiuOW%0AkiYtsd0kjseOPb7MzTPnzLnsvdbHw9pnzpmZMzPneCzZbvyXtkazL2t93/%2B7rrX3QVXHVRVV5eOC%0Apr6qOn67ZbmHe7iHe7itkM0u5E8pLiAyDZ4M4Kjo5vfeiVBBrXLCZXndWOLqpzqL3/Fs/pRihUxk%0A%2BYooXxEY4W6rkgIKcyp8Mw74ZqA0OpFgOj5rIYg5KsqXRe9C5QEURBkR5ctBzFGxnW8zm50MhKMC%0Ao7dbj51CYDSAo2aT62HHh7T57C8AFEQ21yXsZay7FluEsOl%2BlF9M3JUeoIBNrRrIzmJ1gwdcunTJ%0AX7hDM4ACk6Hy3ITj98eUyQw7KlIbCDh%2B/DjVIdgbuSB/hwWIAvmkxp%2BNr/CNiQp/u6fBX9%2BvPFq8%0AeQo2qHj58mUGD8CuyAalYGfs3nICrGVwdprP5KqotZye/oifvHsGapWbTmYbcsC5c%2BfYZyCDEtxp%0AYWAtbuY81ItcbBj%2B9Ltv825ugvDBKVzxFhFQLpdZBkqJEt9J5gdASZKYRhzzc4qc2/9pNDeAjTI3%0APeIGz9m9ezdnAXE2FHrLsL3e37v6MNLfz2CpwI2wSG5ojGwhD0Fw6wgolUqoCFlNMnnTvUIC9Idw%0AM4mzP4RCNzrEDT57/xhD%2BSwNDLuykN8h4xvErVQqiCrTdXE17Y2AooGBsDcvCATGI0/cVhHnnOPJ%0AUsIfH5pARKg4YdnKjsN0Qw4QEYjhOtmasS2hmkptNp8ILKf3C91XjwC41oDGFmRb5ziSrfGX94fs%0AzSRUHVyoWmYTQW61B1SrVbgKToxr3ynfk4WxaHPFDK3mqVuhFAj9up1sW7gVjA8JBaxTHjZV/nxX%0AzEOZBFWYXrH8aDEhY4SMaRmoL/Dj7YiA/v5%2BUK9Mzvi/AvSFXsjN4ICGg2hda2rW3WPVH4FAVrzA%0AFki0dQxHMBRAQZTfGYz51ieUXy0q1ikWeHV6mffjCNtkET/efVkvY9MLu8GGEIjjGAogqtLeB1xt%0AtBTq5AWheLJqrnU9a3x8X6x7AfdEyicLyqGCsitScqLUVVi0wmwizDSEioO9WWUsVPZHCZ8pxhQ0%0AxjolDAz/eX6ef5mNCMbyOAUrLQJC8QoJnsSag8omGyGbElCr1SBlMUk1EYG68xOIQKeXSKqQtFmk%0A6d4jofJARnl6yPHpQsxkkJDHrhlEREgQYgwWwaBkUIxarPVWD4zhxzMLvHRmmcWJA4wYoWy9V4HP%0AJQ1HcyuMkRDK1h9becMGAs6ePUvhI4glSHDg1CsSiSdE2tzatT3n8BspudRFrFMO5RxfGrU8VYoZ%0AJMY6h1qIN9KXCmNXBXJt44tAObb83Xtlzg3uI8rk/HwCGYEGPqyuxH4kg88jdce22BDVr732GlEZ%0AVMyqjZre0Px/KPQu1u4IRlr/F7E8Nxbz7b11fre0QsnWia3D6dbVQduONVYyhuNXq7wRTlLsH6CY%0AJkinrZwTiifBpfll2W5dWTYloF2QjLSyaqMteQWyNtkFArmUgNDG/Mlwja9O1NlFjdi6nS1XBeYb%0Aju9csTRKg0xmYF8ORsOUqHTeQLwygg%2BHuQSqLq1M6iQuwjPPPNMdAU0EacxH6dFUfMXBUhpbWePL%0AY2QgjhOeMEv84ZglcvHqpsVOIGI4dmGJt7WfIIy4HsOFGiwkbdYCYvVHmMoZayuHRTbO1B6BgwcP%0Abk/As88%2By9IRKLp6VAx8LOUNlAKvfF%2BQhkDozw2H3jPKFvIri3wuWqLfeHffKUJj%2BNlsmX%2BbdeT7%0A%2BukPfTmuq8/u%2BbRfyBvoD7wxMgYGQ9%2BVFgMv72Bc7lMRqdfr2xOQJJ7ajEuCKA0BwSuZTSdyKfGZ%0AdMJYwajSV57lgbCxY%2BVFhCgIuFap8a0zc1wqjBOFASHevUOBIO1RnHrvy6UElAJ4MOevZcSfC5wV%0AQJaWljaSvP7EsWPHGDgJC2GxhoVK0mosmu61mHjm4jQvLFlIEkuhcoPJvilclx9biMiaDzMCY1BV%0AFisrvDV9hX%2B/VObUwC%2BxHJaQpPVczbVWnjXjy59TH5oohBkfIoJvsrJhvi6q7i%2B%2B/vXtCYBWFm44%0Ab%2B2s8WU7VigZWEyvN7suVRBVVhbmuTBj2D82SBwnHZOfiBAYg3WOWiMmG4Wryp/%2B6Ar/%2BuZP%2BO/p%0A65wv7WbikU8hQ2MErtUyu3WZPQTiNOad%2Buw/XffxbwAVkFSSlZWVLglIJW%2BkZSsAnEDi4ELdWyBr%0AYG8Grqa1V4xhKcjx7f/4HlN9efZNTRJFIeocIkIYGKx13KhU%2Bdn0Rxz/6VnOnr/Ic7/9FL/5%2BCP8%0A4Ow0X/v%2BT/kwO0r8y48jI5NcLRRJrJBJwzAQH/%2BrZOJDsGF9/xGnXjBd84aL0gB3QRQDNBqN7gjY%0ADErqZqkl%2BkK43GgSEBA%2BeJhTMx/wR//wKr%2ByZ5wXvvg0n9g1zkJ5hTdPv88b713gf2fm%2BVBKLJTG%0AqZuE31isML1U5W/eW%2Bbi4c8xMDTCkgYkCtW2rhL82mH98rcZCu3b46vdYVrF8uICgOHh4d4IaPb9%0A9dS92pEAH9Y8Ic2JZXCM4LO/x/T50xzprzE1Msi7l67x0nd/yOuzdaojuxk8/BjR6BTZKE/%2B4s/Z%0Af7/h%2BwuOMyMHMH1DJAaSxLtwRjzJfUErxtvlkGZrnhpkfcg1nCchMWEMaZvfLQFKWvvxrK8f3CrM%0Are9pRdC%2BYQ4fPMjzhzKcvXadF15/n7fHHiU4fB9htkAuG9AfwY1Kwrg22D8%2BRYUBHnMZciHsynqF%0AS8Y3Ow/nHFNBwo9WAv5%2BJmA%2B7vzOou42GslIWipFlPgmPEDS7iqk1VRsBQWKSZXn7wuoLM7z4g8v%0A8c6uR4mGxz056ZhOwVkLi9eZX8hzZCLi0FiVmeUVLl9bZGZ%2BkcVyhRv1KgvG8vnHPskX9uwmNHle%0APG%2BYTzO8U6imq71OO9iSkpBo4DgHo6MbX3ZvTQCtem%2B3WVYqYJIGfzCacCCs8eLJGd6dOEw4MLpm%0AvMUEbiS%2BGsxU6nzpH/%2BZ0eEhypKhHOZYCfMsSBYLaKOOzHzId35wiuef/jVKDx7iifwU/7UcrVk3%0AGOlMQNLsDANjH6rByZMneyOgOUE3mwtqLU%2BXanxxKOGlNy/xzuBDRIOja7J2Uyhvsgg5fIQLY3uY%0ARimU%2BiiU%2BghzBbImi8Ovu3V5nvdP/5ivvXEOMw0cLEJpZHW8jKQZv4OQiu9UHaIR8Morr3RPgJAu%0AJ9WXwM0cQPEblk/lqry4R3j1ncuciKbIDo/R6LS0W51AkMFRwsERQIgC390J%2BKanuRcxPEnmiV%2Bn%0AWi2DCZBsoZV0aeWDhts4leL7gprrTNC2HtBsOporwfWwChlRnirW%2BcZe4eyVOf6pXCI7sctvcHTV%0AEMrqXIlbu6xumTmHyeQ6kt9sgDoZyClcarAlti6DaRI0bCwzAcqT/cqzw5bP98P8jTIvf1BlYeAB%0AJgNDTvwCqVsk6t11pUM23%2B65KG3SOmG7rrzzR1JtFzOyMQeoKuHiNX4rucgX%2Bqr8z/%2Bd4YUTH/BO%0AdgKTyfoOTeh5H2Ak8qu4btHcTd6bZXV3uFds6wHNHrx9IanOsSdZwl29xlffeotjc8qNhx4nLA0C%0AMJ/0/ulJ86OHXhJvsxQOpxuvvewGb0lA03IuHdGx1pqSNLh4fY6/mr3C8tg%2BzKMPE%2BZLqy8EuukZ%0ANsyZ5plGj8/WHSwlNzfnpgQ0EavPoOtDWcKI2n0H0L2HvOJm519SKH5Ts%2BF6s6LD9xbNDdtbSgD4%0AF5cVuzYECEKkb%2BiWvglWfIPUK5q7wTfrAVuaToGBoLXuvxOhpOuAm3x%2B2z5gpuFD4U77WORWYdsQ%0AWOqhlt%2BNuCu/E%2BwZW7hv5zIobX/u1ODvQXlVNv21Q8ckmL7GPqEwe7vl3ykUZi2c2CxJdn41FoCN%0AOKHCyyrM3ZUZUECFORVethEnNNj0ts5Y/clMnSfT3w6kgXH7FOpq7lQjpbufzNzDPdzDPXy88XH/%0A%2Bfz/A5BjIHN2ii1%2BAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEzLTA3LTI0VDE0OjQ3OjU4KzAyOjAw%0A14fOFwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMy0wNy0yNFQxNDo0Nzo1OCswMjowMKbadqsAAAAA%0ASUVORK5CYII%3D%0A"/></a>
+
+</div>
+
+</div>
+
+
+
+<div class="timeline" id="timeline">
+    <div class="hull" style="position:relative;">
+        <canvas id="wave" class="canvasSettings"></canvas>
+        <div class='tierButtons'><a href='#' class='resizeButton'><img id='cmd_resizeWave'/></a></div>
+    </div>
+    <div class="hull" style="position:relative;">
+        <canvas id="spectrogram" class="canvasSettings"></canvas>
+        <div class='tierButtons'><a href='#' class='resizeButton'><img id='cmd_resizeSpectro'/></a></div>
+    </div>
+    <div id="signalcans" class="signalcans"></div>
+    <div id="resizer" class="resizer"><span id="resizer"></span></div>
+</div>
+
+
+<div class="tierPush" id="tierPush">
+  <div class="spacer" id="spacer">&nbsp;</div>
+  <div class="tiers" id="tiers">
+   <div id="cans" class="cans"></div>
+ </div>
+ <div class="spacerbottom" id="spacerbottom">&nbsp;</div>
+</div>
+
+<div class="menu-bottom" id="menu-bottom">
+  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="64"></canvas>
+  <div class="btn-group">
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
+    <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
+    <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>            
+    <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>            
+    <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button> 
+  </div>
+</div> 
+
+
+
+<div id="alertDialog" class="alertDialog" title="Warning" onclick="return false;" style="display:hidden;">
+  <p id="alertContent">
+  </p>
+</div>
+<div id="confirmDialog" class="confirmDialog" title="Confirm" onclick="return false;" style="display:hidden;">
+  <p id="confirmContent">
+  </p>
 </div>
 
 
@@ -201,38 +229,37 @@
 
   <!-- external scripts -->
   <!-- bower dependencies -->
+  <!-- build:js scripts/externalLibs.min.js -->
   <script src="bower_components/jquery/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
   <script src="bower_components/hammerjs/dist/hammer.min.js"></script>
+  <!-- endbuild -->
 
   <!-- others -->
   <!-- // <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs" data-app-key="sb3cfyzt35eilzj"></script> -->
 
   <!-- our scripts -->
-  <script src="emuLVC.min.js"></script>
-  <!-- // <script src="js/emulabeller.js"></script>
-  // <script src="js/webaudio.js"></script>
-
-  // <script src="js/drawer.js"></script>
-  // <script src="js/oscidrawer.js"></script>
-  // <script src="js/spectogramDrawer.js"></script>
-  // <script src="js/tierdrawer.js"></script>
-  // <script src="js/ssffdrawer.js"></script>
   
-
-  
-  // <script src="js/view.js"></script>
-  // <script src="js/labfileparser.js"></script>
-  // <script src="js/textgridparser.js"></script>
-  // <script src="js/ssffparser.js"></script>
-  // <script src="js/JSONvalidator.js"></script>
-  // <script src="js/socketIOhandler.js"></script>
-  // <script src="js/iohandler.js"></script>
-  // <script src="js/tierHandler.js"></script>
-  // <script src="js/dropBoxHandler.js"></script>
-  // <script src="js/main.js"></script>
--->
-
+  <!-- build:js scripts/emuLVC.min.js -->
+  <script src="scripts/emulabeller.js"></script>
+  <script src="scripts/webaudio.js"></script>
+  <script src="scripts/drawer.js"></script>
+  <script src="scripts/oscidrawer.js"></script>
+  <script src="scripts/spectogramDrawer.js"></script>
+  <script src="scripts/tierdrawer.js"></script>
+  <script src="scripts/ssffdrawer.js"></script>
+  <script src="scripts/view.js"></script>
+  <script src="scripts/labfileparser.js"></script>
+  <script src="scripts/textgridparser.js"></script>
+  <script src="scripts/ssffparser.js"></script>
+  <script src="scripts/JSONvalidator.js"></script>
+  <script src="scripts/base64-binary/base64-binary.js"></script>
+  <script src="scripts/socketIOhandler.js"></script>
+  <script src="scripts/iohandler.js"></script>
+  <script src="scripts/tierHandler.js"></script>
+  <script src="scripts/dropBoxHandler.js"></script>
+  <script src="scripts/main.js"></script>
+  <!-- endbuild -->
 </body>
 
 </html>
