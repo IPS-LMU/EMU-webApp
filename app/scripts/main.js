@@ -72,33 +72,28 @@ var emulabeller = (function() {
         if (code == 27) { // 27 == escape
             emulabeller.tierHandler.removeLabelDoubleClick();
             e.preventDefault();
-        }        
-        
-        if(emulabeller.keyBindingAllowed(code)) {
+        }       
         if (code == 8) { // 8 == backspace
-            e.preventDefault();
-            if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
-                emulabeller.tierHandler.deleteSelected();
-            else {
-                emulabeller.alertUser("Error", "Please mark one of more segments first!");
-                //alert("Please mark one of more segments first!");
+            if(!emulabeller.inEditingMode()) {
+                e.preventDefault();
+                if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
+                    emulabeller.tierHandler.deleteSelected();
+                else {
+                    emulabeller.alertUser("Error", "Please mark one of more segments first!");
+                }
             }
-        }
+        }   
         if (code == 9) { // 9 == tab
-
-            if (emulabeller.tierHandler.isEditing) {
+            e.preventDefault();
+            if (emulabeller.internalMode != labeller.EDITMODE.MODAL && emulabeller.inEditingMode()) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
             }
-
-            if (!e.shiftKey) {
-                emulabeller.tierHandler.selectPrevNextEvent(false);
-            } else {
+            if (emulabeller.internalMode != labeller.EDITMODE.MODAL && !e.shiftKey) {
+                 emulabeller.tierHandler.selectPrevNextEvent(false);
+            } else if (emulabeller.internalMode != labeller.EDITMODE.MODAL) {
                 emulabeller.tierHandler.selectPrevNextEvent(true);
             }
-
-
-
         }
         if (code == 13) { // 13 == enter	
             if (emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
@@ -115,7 +110,9 @@ var emulabeller = (function() {
                 emulabeller.tierHandler.addSegmentAtSelection();
             }
             e.preventDefault();
-        }
+        }              
+        if(emulabeller.keyBindingAllowed(code)) {
+
         if (code == 16) { // 16 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
@@ -130,13 +127,13 @@ var emulabeller = (function() {
             e.preventDefault();
         }
         if (code == 38) { // 38 == UP ARROW
-            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(true);
+            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             e.preventDefault();
         }
         if (code == 40) { // 40 == DOWN ARROW
-            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(false);
+            emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             e.preventDefault();
         }
         if (code == 46) { // 46 == entfernen

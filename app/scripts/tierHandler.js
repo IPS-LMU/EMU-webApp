@@ -726,7 +726,7 @@ EmuLabeller.tierHandler = {
     		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
     	else
     	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-		$("#hull" + myName).prepend(content);
+		$("#hull" + myName).append(content);
 		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, label.length); // select textarea text     
 
 	},
