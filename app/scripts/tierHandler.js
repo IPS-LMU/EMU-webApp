@@ -597,7 +597,7 @@ EmuLabeller.tierHandler = {
 					emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
 					var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 					var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-					this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, true);
+					this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, false);
 				}
 
 			} else if (tierDetails.type == "point") {
@@ -606,10 +606,10 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
 				var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 				var editWidth = 45;
-				this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, true);
+				this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, false);
 			}
 		} else {
-			my.removeLabelDoubleClick();
+			emulabeller.removeLabelDoubleClick();
 		}
 		emulabeller.drawBuffer();
 	},
@@ -709,7 +709,7 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	createEditArea: function(myName, x, y, width, height, label, c, saveTier) {
+	createEditArea: function(myName, x, y, width, height, label, c, isTier) {
 		var my = this;
 		var textAreaX = Math.round(x) + c.offsetLeft + 2;
 		var textAreaY = c.offsetTop + 2 + y;
@@ -723,10 +723,13 @@ EmuLabeller.tierHandler = {
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
 		}).addClass(this.editAreaTextfieldName).text(label);
-		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+		if(isTier)
+    		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
+    	else
+    	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
 		$("#hull" + myName).prepend(content);
-		this.createSelection(document.getElementById("label_editing"), 0, label.length); // select textarea text     
-		
+		emulabeller.tierHandler.createSelection(document.getElementById("label_editing"), 0, label.length); // select textarea text     
+
 	},
 
 
@@ -762,7 +765,7 @@ EmuLabeller.tierHandler = {
 		var tierDetails = this.getSelectedTier();
 		var old_key = tierDetails.TierName;
 		var new_key = $("#label_editing").val().replace(/[\n\r]/g, '');
-
+		alert(new_key);
 		if (!this.tierExists(new_key)) {
 			var backup = jQuery.extend(true, {}, tierDetails);
 			delete this.tierInfos.tiers[old_key];
@@ -784,7 +787,7 @@ EmuLabeller.tierHandler = {
 		if (null != tierDetails) {
 			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, false);
+			my.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, true);
 		} else {
 		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}

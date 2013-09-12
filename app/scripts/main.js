@@ -97,7 +97,12 @@ var emulabeller = (function() {
             if (emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
-            } else {
+            } 
+            else if (emulabeller.internalMode == labeller.EDITMODE.TIER_RENAME) {
+                emulabeller.tierHandler.saveTierName(this);
+                emulabeller.tierHandler.removeLabelDoubleClick();
+            } 
+            else {
                 emulabeller.tierHandler.addSegmentAtSelection();
             }
             e.preventDefault();
@@ -110,7 +115,7 @@ var emulabeller = (function() {
             emulabeller.tierHandler.history();
             e.preventDefault();
         }
-        if (code == 27 && emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) { // 27 == escape
+        if (code == 27) { // 27 == escape
             emulabeller.tierHandler.removeLabelDoubleClick();
             e.preventDefault();
         }

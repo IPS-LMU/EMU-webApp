@@ -983,8 +983,7 @@ var EmuLabeller = {
     keyBindingAllowed: function(c) {
 
         if(c && (c==9 || c==13)) { //special case for tab(9) / enter(13) in modal mode
-            if(emulabeller.internalMode == emulabeller.EDITMODE.MODAL) return false; 
-            else return true;
+            return true;
         }
         if (emulabeller.inEditingMode()) {
                 return false;
