@@ -74,7 +74,7 @@ var emulabeller = (function() {
             e.preventDefault();
         }       
         if (code == 8) { // 8 == backspace
-            if(!emulabeller.inEditingMode()) {
+            if(emulabeller.internalMode == labeller.EDITMODE.STANDARD) {
                 e.preventDefault();
                 if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
                     emulabeller.tierHandler.deleteSelected();
@@ -82,6 +82,8 @@ var emulabeller = (function() {
                     emulabeller.alertUser("Error", "Please mark one of more segments first!");
                 }
             }
+            console.log(emulabeller.internalMode);
+            e.preventDefault();
         }   
         if (code == 9) { // 9 == tab
             e.preventDefault();
