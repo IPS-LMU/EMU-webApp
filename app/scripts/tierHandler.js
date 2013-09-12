@@ -159,6 +159,8 @@ EmuLabeller.tierHandler = {
 			id: myName,
 			width: this.internalCanvasWidth,
 			height: this.internalCanvasHeightSmall
+		}).css({
+		    "position": "relative"
 		}).addClass(myCssClass).add(buttons);
 
 		$('<div class="hull' + myName + '" style="position:relative;">').attr({
@@ -596,7 +598,7 @@ EmuLabeller.tierHandler = {
 					emulabeller.viewPort.setSelectSegment(tierDetails, nearest, true, canvas.width);
 					var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 					var posE = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectE);
-					this.createEditArea(tierDetails.TierName, posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, canvas, false);
+					this.createEditArea(posS, 0, posE - posS - 5, canvas.height / 2 - 5, nearest.label, tierDetails.TierName, false);
 				}
 
 			} else if (tierDetails.type == "point") {
@@ -605,7 +607,7 @@ EmuLabeller.tierHandler = {
 				emulabeller.viewPort.select(nearest.startSample, nearest.startSample);
 				var posS = emulabeller.viewPort.getPos(canvas.clientWidth, emulabeller.viewPort.selectS);
 				var editWidth = 45;
-				this.createEditArea(tierDetails.TierName, posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, canvas, false);
+				this.createEditArea(posS - ((editWidth - 5) / 2), canvas.height / 8, editWidth - 5, canvas.height / 4 - 5, nearest.label, tierDetails.TierName, false);
 			}
 		} else {
 			emulabeller.removeLabelDoubleClick();
@@ -708,15 +710,16 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	createEditArea: function(myName, x, y, width, height, label, c, isTier) {
+	createEditArea: function(x, y, width, height, label, c, isTier) {
 		var my = this;
-		var textAreaX = Math.round(x) + c.offsetLeft + 2;
-		var textAreaY = c.offsetTop + 2 + y;
+		var textAreaX = Math.round(x) + $("#"+c).offset().left + 2;
+		var textAreaY = $("#"+c).offset().top + 2 + y;
 		var textAreaWidth = width;
 		var textAreaHeight = height;
 		var content = $("<textarea>").attr({
 			id: "label_edit_textarea"
 		}).css({
+		    "position": "absolute",
 			"top": textAreaY + "px",
 			"left": textAreaX + "px",
 			"width": textAreaWidth + "px",
@@ -726,7 +729,7 @@ EmuLabeller.tierHandler = {
     		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
     	else
     	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-		$("#hull" + myName).append(content);
+		$("#cans").prepend(content);
 		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, label.length); // select textarea text     
 
 	},
@@ -785,7 +788,7 @@ EmuLabeller.tierHandler = {
 		if (null != tierDetails) {
 			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, true);
+			this.createEditArea(0, posS, canvas.clientWidth - 5, canvas.clientHeight - 5, tierDetails.TierName,tierDetails.TierName, true);
 		} else {
 		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}

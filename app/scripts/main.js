@@ -68,7 +68,6 @@ var emulabeller = (function() {
 
     $(document).bind("keydown", function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        
         if (code == 27) { // 27 == escape
             emulabeller.tierHandler.removeLabelDoubleClick();
             e.preventDefault();
@@ -231,8 +230,9 @@ var emulabeller = (function() {
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
-        console.log(code);
+        
         }
+
         
     });
 

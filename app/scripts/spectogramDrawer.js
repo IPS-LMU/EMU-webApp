@@ -185,7 +185,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         
         killSpectroRenderingThread: function () {
             var my = this;
-            my.context.fillStyle = my.params.selectedBorderColor; 
+            my.context.fillStyle = my.params.osciColor; 
         	my.context.fillRect(0,0,my.canvas.width,my.canvas.height);    
         	my.context.font = my.params.fontPxSize+"px "+my.params.fontType;
         	my.context.fillStyle = my.params.loadingBackground;
