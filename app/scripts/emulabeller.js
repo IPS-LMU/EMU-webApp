@@ -76,44 +76,50 @@ var EmuLabeller = {
             }, // no keybindings exept enter -> save
 
             // EDITMODE when editing tiers
-            LABEL_MOVE: {
+            TIER_RENAME: {
                 value: 2,
+                name: "TierRenameMode"
+            }, // no keybindings exept enter -> save
+
+            // EDITMODE when editing tiers
+            LABEL_MOVE: {
+                value: 3,
                 name: "LabelRenameMode"
             },
 
             // when draging in a tier / multiple tiers
             LABEL_RESIZE: {
-                value: 3,
+                value: 4,
                 name: "DragingTierMode"
             },
 
             // when draging in the timeline (wave & spectro)
             DRAGING_TIMELINE: {
-                value: 4,
+                value: 5,
                 name: "DragingTimelineMode"
             },
 
             // when draging in the minimap
             DRAGING_MINIMAP: {
-                value: 5,
+                value: 6,
                 name: "DragingMinimapMode"
             },
 
             // when draging the timeline resize bar
             DRAGING_BAR: {
-                value: 6,
+                value: 7,
                 name: "DragingBarMode"
             },
 
             // when draging the timeline resize bar
             DRAGING_TIER: {
-                value: 7,
+                value: 8,
                 name: "DragingTierMode"
             },
 
             // when showing modal
             MODAL: {
-                value: 8,
+                value: 9,
                 name: "ModalMode"
             }
         };
@@ -376,27 +382,23 @@ var EmuLabeller = {
 
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
-
-            if(emulabeller.internalMode != my.EDITMODE.MODAL &&
-               emulabeller.internalMode != my.EDITMODE.LABEL_RENAME) {
-               my.internalMode = my.EDITMODE.STANDARD;
-               $("*").css("cursor", "auto");
-            }
-            if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
-                //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
+            if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_TIMELINE) {
                 my.dragStart = -1;
                 my.drawer.uiDrawUpdate();
-            } else if (my.internalMode == my.EDITMODE.DRAGING_BAR) {
+            } else if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_BAR) {
                 my.dragingStartY = event.clientY;
                 my.offsetTimeline = my.timeline.offsetHeight;
                 my.offsetTiers = my.tiers.offsetHeight;
-            } else if (my.internalMode == my.EDITMODE.DRAGING_MINIMAP) {
+            } else if (emulabeller.internalMode == emulabeller.EDITMODE.DRAGING_MINIMAP) {
                 var bL = my.backend.currentBuffer.length;
                 var posInB = my.getX(e) * bL;
                 var len = (my.viewPort.eS - my.viewPort.sS);
                 my.setView(posInB - len / 2, posInB + len / 2);
             }
-
+            if(!emulabeller.inEditingMode()) {
+               emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+               $("*").css("cursor", "auto");
+            }            
         });
 
         // All mouse move Functions  
@@ -439,12 +441,10 @@ var EmuLabeller = {
                 }
             } else {
                 my.lastX = my.getX(e);
-                if (emulabeller.internalMode != emulabeller.EDITMODE.LABEL_RENAME &&
-                    emulabeller.internalMode != emulabeller.EDITMODE.MODAL) {
-                        my.internalMode = my.EDITMODE.STANDARD;
-                        $("*").css("cursor", "auto");
-                }
-                
+                if(!emulabeller.inEditingMode()) {
+                    emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                    $("*").css("cursor", "auto");
+                } 
             }
             console.log(emulabeller.internalMode);
         });
@@ -986,12 +986,25 @@ var EmuLabeller = {
             if(emulabeller.internalMode == emulabeller.EDITMODE.MODAL) return false; 
             else return true;
         }
-
-        if (emulabeller.internalMode == emulabeller.EDITMODE.LABEL_RENAME ||
-            emulabeller.internalMode == emulabeller.EDITMODE.MODAL) {
+        if (emulabeller.inEditingMode()) {
                 return false;
         }
         else return true;
+    },
+    
+    /**
+     * checks if Application is in editing mode (modal/label_rename/tier_rename)
+     * emulabeller.inEditingMode()
+     *
+     * @return true if in editing mode
+     * 
+     */    
+    inEditingMode: function() {
+        if (emulabeller.internalMode == emulabeller.EDITMODE.TIER_RENAME  ||
+            emulabeller.internalMode == emulabeller.EDITMODE.LABEL_RENAME ||
+            emulabeller.internalMode == emulabeller.EDITMODE.MODAL)
+            return true;
+        return false;
     },
 
     /**
