@@ -3,7 +3,7 @@ var emulabeller = (function() {
 
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
-    var autoLoad = true;
+    var autoLoad = false;
 
 
     var tierInfos = {
@@ -81,8 +81,6 @@ var emulabeller = (function() {
                     emulabeller.alertUser("Error", "Please mark one of more segments first!");
                 }
             }
-            console.log(emulabeller.internalMode);
-            e.preventDefault();
         }   
         if (code == 9) { // 9 == tab
             e.preventDefault();

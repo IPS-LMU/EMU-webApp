@@ -712,12 +712,19 @@ EmuLabeller.tierHandler = {
 
 	createEditArea: function(x, y, width, height, label, c, isTier) {
 		var my = this;
+
+		if(isTier)
+    		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
+    	else
+    	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+
 		var textAreaX = Math.round(x) + $("#"+c).offset().left + 2;
 		var textAreaY = $("#"+c).offset().top + 2 + y;
 		var textAreaWidth = width;
 		var textAreaHeight = height;
 		var content = $("<textarea>").attr({
-			id: "label_edit_textarea"
+			id: "label_edit_textarea", 
+			"autofocus":"true"
 		}).css({
 		    "position": "absolute",
 			"top": textAreaY + "px",
@@ -725,12 +732,9 @@ EmuLabeller.tierHandler = {
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
 		}).text(label);
-		if(isTier)
-    		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
-    	else
-    	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
-		$("#cans").prepend(content);
-		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, label.length); // select textarea text     
+		$("body").prepend(content);
+		$("#label_edit_textarea").focus();
+		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, $("#label_edit_textarea").val().length); // select textarea text     
 
 	},
 

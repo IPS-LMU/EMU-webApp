@@ -248,7 +248,7 @@ var EmuLabeller = {
             if (null !== my.getElement(e))
                 var cOn = my.getElement(e).id;
             
-            if(emulabeller.internalMode != my.EDITMODE.MODAL)
+            if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL)
             switch (cOn) {
                 case params.showLeftPush.id:
                     my.openSubmenu();
@@ -323,6 +323,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_renameTierPoint":
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     emulabeller.tierHandler.renameTier();
                     break;
 
