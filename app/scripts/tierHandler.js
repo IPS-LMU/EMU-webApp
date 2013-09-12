@@ -129,6 +129,7 @@ EmuLabeller.tierHandler = {
 		});
 		// save history state
 		this.history();
+        emulabeller.drawer.uiAllTierDrawUpdate();
 	},
 
 	getLength: function() {
