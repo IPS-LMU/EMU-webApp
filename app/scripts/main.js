@@ -3,7 +3,7 @@ var emulabeller = (function() {
 
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
-    var autoLoad = false;
+    var autoLoad = true;
 
 
     var tierInfos = {
@@ -94,7 +94,7 @@ var emulabeller = (function() {
 
         }
         if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter	
-            if (emulabeller.tierHandler.isEditing) {
+            if (emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
             } else {

@@ -317,7 +317,7 @@ var EmuLabeller = {
                     break;
 
                 case "cmd_renameTierPoint":
-                    my.tierHandler.renameTier();
+                    emulabeller.tierHandler.renameTier();
                     break;
 
                 case "cmd_resizeWave":
@@ -339,8 +339,8 @@ var EmuLabeller = {
                     break;
 
                 case params.scrollCanvas.id:
-                    my.internalMode = my.EDITMODE.DRAGING_MINIMAP;
-                    my.tierHandler.removeLabelDoubleClick();
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_MINIMAP;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     var bL = my.backend.currentBuffer.length;
                     var posInB = my.getX(e) * bL;
                     var len = (my.viewPort.eS - my.viewPort.sS);
@@ -349,8 +349,8 @@ var EmuLabeller = {
 
                 case params.osciCanvas.id:
                 case params.specCanvas.id:
-                    my.internalMode = my.EDITMODE.DRAGING_TIMELINE;
-                    my.tierHandler.removeLabelDoubleClick();
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_TIMELINE;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     my.dragStart = Math.round(my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e));
                     my.viewPort.selectS = my.dragStart;
                     my.viewPort.selectE = my.dragStart;
@@ -360,8 +360,8 @@ var EmuLabeller = {
                     break;
 
                 case params.draggableBar.id:
-                    my.internalMode = my.EDITMODE.DRAGING_BAR;
-                    my.tierHandler.removeLabelDoubleClick();
+                    emulabeller.internalMode = emulabeller.EDITMODE.DRAGING_BAR;
+                    emulabeller.tierHandler.removeLabelDoubleClick();
                     $("*").css("cursor", "s-resize");
                     break;
 
@@ -377,9 +377,11 @@ var EmuLabeller = {
         // All mouse up Functions  
         document.addEventListener('mouseup', function(e) {
 
-            if(emulabeller.internalMode != my.EDITMODE.MODAL) my.internalMode = my.EDITMODE.STANDARD;
-            $("*").css("cursor", "auto");
-
+            if(emulabeller.internalMode != my.EDITMODE.MODAL &&
+               emulabeller.internalMode != my.EDITMODE.LABEL_RENAME) {
+               my.internalMode = my.EDITMODE.STANDARD;
+               $("*").css("cursor", "auto");
+            }
             if (my.internalMode == my.EDITMODE.DRAGING_TIMELINE) {
                 //my.viewPort.selectE = my.viewPort.sS + (my.viewPort.eS - my.viewPort.sS) * my.getX(e);
                 my.dragStart = -1;
@@ -437,16 +439,14 @@ var EmuLabeller = {
                 }
             } else {
                 my.lastX = my.getX(e);
-                if (!my.tierHandler.isEditing) {
-                    if(emulabeller.internalMode != emulabeller.EDITMODE.MODAL) {
+                if (emulabeller.internalMode != emulabeller.EDITMODE.LABEL_RENAME &&
+                    emulabeller.internalMode != emulabeller.EDITMODE.MODAL) {
                         my.internalMode = my.EDITMODE.STANDARD;
                         $("*").css("cursor", "auto");
-                    }
-                    //else
-                        //$("*").css("cursor", "help");
                 }
                 
             }
+            console.log(emulabeller.internalMode);
         });
 
         // All Right Mouse Button Functions  
@@ -981,19 +981,17 @@ var EmuLabeller = {
     /**
      */
     keyBindingAllowed: function(c) {
-        var my = this;
-        if(c==9 || c==13) { //special case for tab(9) / enter(13) in modal mode
-            if(emulabeller.internalMode == my.EDITMODE.MODAL) return false; 
+
+        if(c && (c==9 || c==13)) { //special case for tab(9) / enter(13) in modal mode
+            if(emulabeller.internalMode == emulabeller.EDITMODE.MODAL) return false; 
             else return true;
         }
 
-        if (my.internalMode != my.EDITMODE.LABEL_RENAME) {
-            if (my.internalMode != my.EDITMODE.MODAL) {
-                return true;
-            }
-            return false;
+        if (emulabeller.internalMode == emulabeller.EDITMODE.LABEL_RENAME ||
+            emulabeller.internalMode == emulabeller.EDITMODE.MODAL) {
+                return false;
         }
-        return false;
+        else return true;
     },
 
     /**

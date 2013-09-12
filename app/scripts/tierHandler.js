@@ -6,7 +6,6 @@ EmuLabeller.tierHandler = {
 		this.tierInfos = params.tierInfos;
 		this.iconImageSize = 12;
 		this.isSelected = false;
-		this.isEditing = false;
 		this.exportData = null;
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
@@ -240,7 +239,7 @@ EmuLabeller.tierHandler = {
 	 * @param tierName
 	 */
 	trackMouseInTiers: function(event, percX, percY, tierName) {
-		if (!this.isEditing) {
+		if (emulabeller.keyBindingAllowed()) {
 			var curTierDetails = this.getTier(tierName);
 			var curSample = emulabeller.viewPort.sS + (emulabeller.viewPort.eS - emulabeller.viewPort.sS) * percX;
 			var event = this.findAndMarkNearestSegmentBoundry(curTierDetails, curSample);
@@ -591,7 +590,6 @@ EmuLabeller.tierHandler = {
 		var cc = emulabeller.tierHandler.getCanvasContext(tierDetails.TierName);
 		var edit = $('#' + this.editAreaTextfieldName);
 		if (edit.length === 0) {
-			emulabeller.tierHandler.isEditing = true;
 			if (tierDetails.type == "seg") {
 				if (percX)
 					var nearest = this.nearestSegment(tierDetails, emulabeller.viewPort.getCurrentSample(percX));
@@ -718,18 +716,17 @@ EmuLabeller.tierHandler = {
 		var textAreaWidth = width;
 		var textAreaHeight = height;
 		var content = $("<textarea>").attr({
-			id: "editing"
+			id: "label_editing"
 		}).css({
 			"top": textAreaY + "px",
 			"left": textAreaX + "px",
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
 		}).addClass(this.editAreaTextfieldName).text(label);
-
-		$("#hull" + myName).prepend(content);
-
-		this.createSelection(document.getElementById("editing"), 0, label.length); // select textarea text     
 		emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+		$("#hull" + myName).prepend(content);
+		this.createSelection(document.getElementById("label_editing"), 0, label.length); // select textarea text     
+		
 	},
 
 
@@ -751,7 +748,7 @@ EmuLabeller.tierHandler = {
 
 	saveLabelName: function(a) {
 		var tierDetails = this.getSelectedTier();
-		var content = $("#editing").val();
+		var content = $("#label_editing").val();
 		tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, ''); // remove new line from content with regex
 		emulabeller.drawer.updateSingleTier(tierDetails);
 
@@ -764,7 +761,7 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		var tierDetails = this.getSelectedTier();
 		var old_key = tierDetails.TierName;
-		var new_key = $("#editing").val().replace(/[\n\r]/g, '');
+		var new_key = $("#label_editing").val().replace(/[\n\r]/g, '');
 
 		if (!this.tierExists(new_key)) {
 			var backup = jQuery.extend(true, {}, tierDetails);
@@ -883,7 +880,6 @@ EmuLabeller.tierHandler = {
 	removeLabelDoubleClick: function() {
 		var my = this;
 		$('.' + this.editAreaTextfieldName).remove();
-		emulabeller.tierHandler.isEditing = false;
 	},
 
 	moveBoundary: function(newTime, myName) {
