@@ -152,8 +152,8 @@ canvas {
     text-align: center;
 }
 
-.editArea {
-    border: 0px;
+#label_edit_textarea {
+    border: 1px #000;
     outline: none;
     resize: none;
     background-color:rgba(255,255,0,1);

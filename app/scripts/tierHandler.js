@@ -10,7 +10,6 @@ EmuLabeller.tierHandler = {
 		this.lastSample = 0;
 		this.myHistoryCounter = 0;
 		this.myHistory = {};
-		this.editAreaTextfieldName = "editArea";
 		this.tierCssName = "tierSettings";
 		this.historyEndError = "Cannot go back, no more history saved.... &#9785;";
 		this.commonError = "Error: It is not allowed to insert a segment here!";
@@ -716,19 +715,19 @@ EmuLabeller.tierHandler = {
 		var textAreaWidth = width;
 		var textAreaHeight = height;
 		var content = $("<textarea>").attr({
-			id: "label_editing"
+			id: "label_edit_textarea"
 		}).css({
 			"top": textAreaY + "px",
 			"left": textAreaX + "px",
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
-		}).addClass(this.editAreaTextfieldName).text(label);
+		}).addClass("label_edit_textarea").text(label);
 		if(isTier)
     		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
     	else
     	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
 		$("#hull" + myName).prepend(content);
-		emulabeller.tierHandler.createSelection(document.getElementById("label_editing"), 0, label.length); // select textarea text     
+		emulabeller.tierHandler.createSelection(document.querySelector("#label_edit_textarea"), 0, label.length); // select textarea text     
 
 	},
 
@@ -751,7 +750,7 @@ EmuLabeller.tierHandler = {
 
 	saveLabelName: function(a) {
 		var tierDetails = this.getSelectedTier();
-		var content = $("#label_editing").val();
+		var content = $("#label_edit_textarea").val();
 		tierDetails.events[emulabeller.viewPort.getSelectName()].label = content.replace(/[\n\r]/g, ''); // remove new line from content with regex
 		emulabeller.drawer.updateSingleTier(tierDetails);
 
@@ -764,7 +763,7 @@ EmuLabeller.tierHandler = {
 		var my = this;
 		var tierDetails = this.getSelectedTier();
 		var old_key = tierDetails.TierName;
-		var new_key = $("#label_editing").val().replace(/[\n\r]/g, '');
+		var new_key = $("#label_edit_textarea").val().replace(/[\n\r]/g, '');
 		alert(new_key);
 		if (!this.tierExists(new_key)) {
 			var backup = jQuery.extend(true, {}, tierDetails);
@@ -782,12 +781,11 @@ EmuLabeller.tierHandler = {
 	},
 
 	renameTier: function() { //maybe rename to removeLabelBox or something
-		var my = this;
 		var tierDetails = this.getSelectedTier();
 		if (null != tierDetails) {
 			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			my.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, true);
+			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName+"a", canvas, true);
 		} else {
 		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}
@@ -881,8 +879,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	removeLabelDoubleClick: function() {
-		var my = this;
-		$('.' + this.editAreaTextfieldName).remove();
+		$('.label_edit_textarea').remove();
 	},
 
 	moveBoundary: function(newTime, myName) {

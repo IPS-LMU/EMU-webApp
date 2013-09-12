@@ -429,7 +429,6 @@ var EmuLabeller = {
                     var height = $("#menu-bottom").height();
                     console.log(offset.top-height );
                     if (event.clientY <= offset.top-height){
-                        
                         $("*").css("cursor", "s-resize");
                         $('#wave').css("height",event.clientY/2 + "px");
                         $('#spectrogram').css("height", event.clientY/2+ "px");
@@ -446,7 +445,6 @@ var EmuLabeller = {
                     $("*").css("cursor", "auto");
                 } 
             }
-            console.log(emulabeller.internalMode);
         });
 
         // All Right Mouse Button Functions  
