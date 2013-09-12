@@ -68,7 +68,14 @@ var emulabeller = (function() {
 
     $(document).bind("keydown", function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 8 && emulabeller.keyBindingAllowed(code)) { // 8 == backspace
+        
+        if (code == 27) { // 27 == escape
+            emulabeller.tierHandler.removeLabelDoubleClick();
+            e.preventDefault();
+        }        
+        
+        if(emulabeller.keyBindingAllowed(code)) {
+        if (code == 8) { // 8 == backspace
             e.preventDefault();
             if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
                 emulabeller.tierHandler.deleteSelected();
@@ -77,7 +84,7 @@ var emulabeller = (function() {
                 //alert("Please mark one of more segments first!");
             }
         }
-        if (code == 9 && emulabeller.keyBindingAllowed(code)) { // 9 == tab
+        if (code == 9) { // 9 == tab
 
             if (emulabeller.tierHandler.isEditing) {
                 emulabeller.tierHandler.saveLabelName(this);
@@ -93,128 +100,127 @@ var emulabeller = (function() {
 
 
         }
-        if (code == 13 && emulabeller.keyBindingAllowed(code)) { // 13 == enter	
+        if (code == 13) { // 13 == enter	
             if (emulabeller.internalMode == labeller.EDITMODE.LABEL_RENAME) {
                 emulabeller.tierHandler.saveLabelName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
+                emulabeller.internalMode = labeller.EDITMODE.STANDARD;
             } 
             else if (emulabeller.internalMode == labeller.EDITMODE.TIER_RENAME) {
                 emulabeller.tierHandler.saveTierName(this);
                 emulabeller.tierHandler.removeLabelDoubleClick();
+                emulabeller.internalMode = labeller.EDITMODE.STANDARD;
             } 
             else {
                 emulabeller.tierHandler.addSegmentAtSelection();
             }
             e.preventDefault();
         }
-        if (code == 16 && emulabeller.keyBindingAllowed(code)) { // 16 == ???
+        if (code == 16) { // 16 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
         }
-        if (code == 18 && emulabeller.keyBindingAllowed(code)) { // 18 == ???
+        if (code == 18) { // 18 == ???
             emulabeller.tierHandler.history();
             e.preventDefault();
         }
-        if (code == 27) { // 27 == escape
-            emulabeller.tierHandler.removeLabelDoubleClick();
-            e.preventDefault();
-        }
-        if (code == 32 && emulabeller.keyBindingAllowed(code)) { // 32 == SPACE
+
+        if (code == 32) { // 32 == SPACE
             emulabeller.playPauseInView();
             e.preventDefault();
         }
-        if (code == 38 && emulabeller.keyBindingAllowed(code)) { // 38 == UP ARROW
+        if (code == 38) { // 38 == UP ARROW
             emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(true);
             e.preventDefault();
         }
-        if (code == 40 && emulabeller.keyBindingAllowed(code)) { // 40 == DOWN ARROW
+        if (code == 40) { // 40 == DOWN ARROW
             emulabeller.internalMode == emulabeller.EDITMODE.STANDARD;
             emulabeller.tierHandler.moveSelectedTierUpDown(false);
             e.preventDefault();
         }
-        if (code == 46 && emulabeller.keyBindingAllowed(code)) { // 46 == entfernen
+        if (code == 46) { // 46 == entfernen
             emulabeller.tierHandler.deleteBorder();
             e.preventDefault();
         }
-        if (code == 65 && emulabeller.keyBindingAllowed(code)) { // 65 == a
+        if (code == 65) { // 65 == a
             emulabeller.shiftViewP(0);
             e.preventDefault();
         }
-        if (code == 66 && emulabeller.keyBindingAllowed(code)) { // 66 == b
+        if (code == 66) { // 66 == b
             emulabeller.tierHandler.snapSelectedBoundaryToNearestTopOrBottom(false);
             e.preventDefault();
         }
-        if (code == 67 && emulabeller.keyBindingAllowed(code)) { // 67 == c
+        if (code == 67) { // 67 == c
             emulabeller.tierHandler.moveSelctionToCurMouseBoundary();
             e.preventDefault();
         }
-        if (code == 68 && emulabeller.keyBindingAllowed(code)) { // 68 == d
+        if (code == 68) { // 68 == d
             emulabeller.shiftViewP(1);
             e.preventDefault();
         }
-        if (code == 69 && emulabeller.keyBindingAllowed(code)) { // 69 == e
+        if (code == 69) { // 69 == e
             emulabeller.zoomSel();
             e.preventDefault();
         }
-        if (code == 70 && emulabeller.keyBindingAllowed(code)) { // 70 == f
+        if (code == 70) { // 70 == f
             emulabeller.playInMode("all");
             e.preventDefault();
         }
-        if (code == 71 && emulabeller.keyBindingAllowed(code)) { // 70 == g
+        if (code == 71) { // 70 == g
             emulabeller.tierHandler.selectSegmentsUnderSelection();
             e.preventDefault();
         }
-        if (code == 78 && emulabeller.keyBindingAllowed(code)) { // 78 == n
+        if (code == 78) { // 78 == n
             emulabeller.tierHandler.renameTier();
             e.preventDefault();
         }
-        if (code == 79 && emulabeller.keyBindingAllowed(code)) { // 79 == o
+        if (code == 79) { // 79 == o
             if (emulabeller.externalMode == labeller.USAGEMODE.STANDALONE)
                 $('#fileGetterBtn').click();
             if (emulabeller.externalMode == labeller.USAGEMODE.SERVER)
                 emulabeller.openSubmenu();
             e.preventDefault();
         }
-        if (code == 81 && emulabeller.keyBindingAllowed(code)) { // 81 == q
+        if (code == 81) { // 81 == q
             if (!e.metaKey) {
                 emulabeller.setView(-Infinity, Infinity);
                 e.preventDefault();
             }
         }
-        if (code == 82 && emulabeller.keyBindingAllowed(code)) { // 82 == r
+        if (code == 82) { // 82 == r
             if (!e.metaKey) {
                 emulabeller.playInMode("sel");
                 e.preventDefault();
             }
         }
-        if (code == 83 && emulabeller.keyBindingAllowed(code)) { // 83 == s
+        if (code == 83) { // 83 == s
             emulabeller.zoomViewPort(0);
             e.preventDefault();
         }
-        if (code == 84 && emulabeller.keyBindingAllowed(code)) { // 84 == t
+        if (code == 84) { // 84 == t
             emulabeller.tierHandler.snapSelectedBoundaryToNearestTopOrBottom(true);
             e.preventDefault();
         }
-        if (code == 87 && emulabeller.keyBindingAllowed(code)) { // 87 == w
+        if (code == 87) { // 87 == w
             if (!e.metaKey) {
                 emulabeller.zoomViewPort(1);
                 e.preventDefault();
             }
         }
-        if (code == 88 && emulabeller.keyBindingAllowed(code)) { // 88 == x
+        if (code == 88) { // 88 == x
             emulabeller.tierHandler.snapToNearestZeroCrossing();
             e.preventDefault();
         }
-        if (code == 90 && emulabeller.keyBindingAllowed(code)) { // 90 == z
+        if (code == 90) { // 90 == z
             emulabeller.tierHandler.goBackHistory();
             e.preventDefault();
         }
-        if (code == 187 && emulabeller.keyBindingAllowed(code)) { // 187 == +
+        if (code == 187) { // 187 == +
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, false);
             e.preventDefault();
         }
-        if (code == 189 && emulabeller.keyBindingAllowed(code)) { // 187 == -
+        if (code == 189) { // 187 == -
             if (!e.shiftKey) {
                 emulabeller.tierHandler.addRemoveTimeToSelectedSegs(false, false);
             } else {
@@ -222,11 +228,13 @@ var emulabeller = (function() {
             }
             e.preventDefault();
         }
-        if (code == 221 && emulabeller.keyBindingAllowed(code)) { // 221 == * no idea why this has a separate id it is shift+187
+        if (code == 221) { // 221 == * no idea why this has a separate id it is shift+187
             emulabeller.tierHandler.addRemoveTimeToSelectedSegs(true, true);
             e.preventDefault();
         }
         console.log(code);
+        }
+        
     });
 
 

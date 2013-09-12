@@ -980,13 +980,13 @@ var EmuLabeller = {
      */
     keyBindingAllowed: function(c) {
 
-        if(c && (c==9 || c==13)) { //special case for tab(9) / enter(13) in modal mode
+        if(c==9 || c==13) { //special case for tab(9) / enter(13) in modal mode
             return true;
         }
         if (emulabeller.inEditingMode()) {
                 return false;
         }
-        else return true;
+        return true;
     },
     
     /**
@@ -999,8 +999,9 @@ var EmuLabeller = {
     inEditingMode: function() {
         if (emulabeller.internalMode == emulabeller.EDITMODE.TIER_RENAME  ||
             emulabeller.internalMode == emulabeller.EDITMODE.LABEL_RENAME ||
-            emulabeller.internalMode == emulabeller.EDITMODE.MODAL)
-            return true;
+            emulabeller.internalMode == emulabeller.EDITMODE.MODAL) {
+                return true;
+        }
         return false;
     },
 

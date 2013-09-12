@@ -721,7 +721,7 @@ EmuLabeller.tierHandler = {
 			"left": textAreaX + "px",
 			"width": textAreaWidth + "px",
 			"height": textAreaHeight + "px"
-		}).addClass("label_edit_textarea").text(label);
+		}).text(label);
 		if(isTier)
     		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
     	else
@@ -785,7 +785,7 @@ EmuLabeller.tierHandler = {
 		if (null != tierDetails) {
 			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
 			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName+"a", canvas, true);
+			this.createEditArea(tierDetails.TierName, 0, posS, canvas.clientWidth - 5, canvas.height / 2 - 5, tierDetails.TierName, canvas, true);
 		} else {
 		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}
@@ -879,7 +879,7 @@ EmuLabeller.tierHandler = {
 	},
 
 	removeLabelDoubleClick: function() {
-		$('.label_edit_textarea').remove();
+		$('#label_edit_textarea').remove();
 	},
 
 	moveBoundary: function(newTime, myName) {
