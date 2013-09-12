@@ -117,7 +117,8 @@ EmuLabeller.tierHandler = {
 	},
 
 	getCanvas: function(name) {
-		return $("#" + name)[0];
+		var nameElem=document.getElementById(name);
+		return $(nameElem)[0];
 	},
 
 	getCanvasContext: function(name) {
@@ -144,32 +145,41 @@ EmuLabeller.tierHandler = {
 			id: "hull" + myName
 		}).html(myCan).appendTo(myAppendTo);
 
-		$("#" + myName).bind("click", function(event) {
+		// jQuery does not accept ID strings containing CSS selector special chars (e.g. the colon)
+		// so get the element by DOM function first
+		var myElem=document.getElementById(myName);
+		$(myElem).bind("click", function(event) {
 			emulabeller.tierHandler.handleTierClick(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTier(emulabeller.getTierName(event.originalEvent)));
 		});
-
-		$("#" + myName + "_del").bind("click", function(event) {
+		
+		var myElemDel=document.getElementById(myName+'_del');
+		$(myElemDel).bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
 			if (confirm("Do you really wish to delete Tier: '" + n + "' ?"))
 				emulabeller.tierHandler.removeTier(n);
 		});
-		$("#" + myName + "_res").bind("click", function(event) {
+		
+		var myElemRes=document.getElementById(myName+'_res');
+		$(myElemRes).bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
 			emulabeller.tierHandler.resizeTier(n);
 		});
-		$("#" + myName + "_save").bind("click", function(event) {
+		
+		var myElemSave=document.getElementById(myName+'_save');
+		$(myElemSave).bind("click", function(event) {
             var myName = emulabeller.curLoadedBaseName + "." + $(this).parent().prev().get(0).id;
             var myData = emulabeller.LabFileParser.toESPS(emulabeller.tierHandler.getTier($(this).parent().prev().get(0).id));
             emulabeller.tierHandler.downloadDialog(myName,myData);
 		});
 
-		$("#" + myName).bind("dblclick", function(event) {
+		
+		$(myElem).bind("dblclick", function(event) {
 			emulabeller.tierHandler.handleTierDoubleClick(emulabeller.getX(event.originalEvent));
 		});
-		$("#" + myName).bind("contextmenu", function(event) {
+		$(myElem).bind("contextmenu", function(event) {
 			emulabeller.tierHandler.handleTierClickMulti(emulabeller.getX(event.originalEvent), emulabeller.getY(event.originalEvent), emulabeller.tierHandler.getTier(this.id));
 		});
-		$("#" + myName).bind("mousemove", function(event) {
+		$(myElem).bind("mousemove", function(event) {
 			curSample = emulabeller.viewPort.getCurrentSample(emulabeller.getX(event.originalEvent));
 			if (emulabeller.tierHandler.isSelected && event.shiftKey) {
 				emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RESIZE;
@@ -186,7 +196,7 @@ EmuLabeller.tierHandler = {
 			}
 			emulabeller.tierHandler.lastSample = curSample;
 		});
-		$("#" + myName).bind("mouseout", function(event) {
+		$(myElem).bind("mouseout", function(event) {
 			emulabeller.tierHandler.isSelected = false;
 			emulabeller.viewPort.curMouseMoveTierName = "";
 			emulabeller.viewPort.curMouseMoveSegmentName = "";
@@ -194,13 +204,13 @@ EmuLabeller.tierHandler = {
 			emulabeller.viewPort.curMouseMoveSegmentDuration = "";
 			emulabeller.drawer.updateSingleTier(emulabeller.tierHandler.getTier(emulabeller.getTierName(event.originalEvent)));
 		});
-		$("#" + myName).bind("mouseup", function(event) {
+		$(myElem).bind("mouseup", function(event) {
 			//myMouseUp(e);
 		});
-		$("#" + myName).bind("mousedown", function(event) {
+		$(myElem).bind("mousedown", function(event) {
 			//myMouseDown(e);
 		});
-		$("#" + myName).bind("mouseout", function(event) {
+		$(myElem).bind("mouseout", function(event) {
 			// maybe set flag to not drag over boundaries here...
 			// console.log("leaving tier canvas", event);
 

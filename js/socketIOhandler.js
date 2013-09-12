@@ -149,6 +149,15 @@ EmuLabeller.socketIOhandler = {
            // var audioData=window.atob(response.data);
            var audioData=Base64Binary.decodeArrayBuffer(response.data);
            this.dataLoadHandler(0,audioData);
+        }else if(responseContent === 'textGrid'){
+        	
+           
+        //   var tgAsString=Base64Binary.decode(response.data);
+         //  for (var i=0; i<unitArr.byteLength; i++) {
+          //  myString += String.fromCharCode(unitArr[i])
+       // }
+       	var tgAsString=atob(response.data);
+           this.dataLoadHandler(3,tgAsString);
         }
         }else{
         	console.log("ON MESSAGE with binary message (ERROR we do not use binary wrbsocket mode)");

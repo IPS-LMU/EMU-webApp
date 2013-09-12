@@ -27,7 +27,7 @@ EmuLabeller.TextGridParser = {
         };
 
         if (lines[0] == this.l1 && lines[1] == this.l2) {
-            for (var i = 8; i < lines.length; i++) {
+            for (var i = 7; i < lines.length; i++) {
                 var curLineEl1 = lines[i].split(/\s+/)[1];
                 if (!curLineEl1) continue;
                 if (curLineEl1 == "item") {
