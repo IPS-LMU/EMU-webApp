@@ -539,7 +539,7 @@ var EmuLabeller = {
         $('#wave').css("height", "80px");
         $('#spectrogram').css("height", "80px");
         
-        
+
         
         $('#cans').sortable({
             tolerance: 'pointer',
@@ -556,6 +556,16 @@ var EmuLabeller = {
             }
         });
         $("#cans").disableSelection();
+        
+        // Set Language on HTML Menu
+        $('#fileSelect').text(my.language.MENU.FILE_OPEN.title);
+        $('#fileSelect').attr("data-tooltip" ,my.language.MENU.FILE_OPEN.value);
+        $('#serverSelect').text(my.language.MENU.SERVER_OPEN.title);
+        $('#serverSelect').attr("data-tooltip" ,my.language.MENU.SERVER_OPEN.value);
+        $('#cmd_addTierSeg').text(my.language.MENU.ADD_TIER.title);
+        $('#cmd_addTierSeg').attr("data-tooltip" ,my.language.MENU.ADD_TIER.value);
+
+
 
     },
 

@@ -1,5 +1,23 @@
 // German Language
 EmuLabeller.German = {
+
+    MENU: {
+        FILE_OPEN: {
+            title: "Datei "+unescape("%F6")+"ffnen",    // unescape("%F6") -> ö
+            value: "Abk"+unescape("%FC")+"rzung: O"     // unescape("%FC") -> ü
+        },
+        
+        SERVER_OPEN: {
+            title: "Menu "+unescape("%F6")+"ffnen",    // unescape("%F6") -> ö
+            value: "Abk"+unescape("%FC")+"rzung: O"     // unescape("%FC") -> ü
+        },
+        
+        ADD_TIER: {
+            title: "Tier hinzuf"+unescape("%FC")+"gen (seg)",
+            value: "Abk"+unescape("%FC")+"rzung: keine"        
+        }
+    },
+    
     ALERTS: {
         // nothing is loaded
         USAGEMODE: {

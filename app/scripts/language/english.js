@@ -1,5 +1,23 @@
 // English Language
 EmuLabeller.English = {
+
+    MENU: {
+        FILE_OPEN: {
+            title: "Open File",
+            value: "Shortcut: O"        
+        },
+        
+        SERVER_OPEN: {
+            title: "Open Menu",
+            value: "Shortcut: O"        
+        },
+        
+        ADD_TIER: {
+            title: "Add Tier (seg)",
+            value: "Shortcut: O"        
+        }
+    },
+
     ALERTS: {
         // nothing is loaded
         USAGEMODE: {
