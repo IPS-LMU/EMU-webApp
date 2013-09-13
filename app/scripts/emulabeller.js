@@ -220,6 +220,12 @@ var EmuLabeller = {
         this.fileNames = {
             'audioFile': ''
         };
+        
+        this.german = Object.create(EmuLabeller.German);
+        this.english = Object.create(EmuLabeller.English);
+        
+        if     (params.language=="de") this.language = this.german;
+        else if(params.language=="us") this.language = this.english;
 
         // Initial Usage Mode Configuration
 
@@ -231,7 +237,8 @@ var EmuLabeller = {
                 my.fileSelect.style.display = "none";
                 break;
             default:
-                emulabeller.alertUser("Configuration Error","Please specify Usage mode 'server' or 'standalone' in main.js !");
+                alert(this.language.ALERTS.USAGEMODE.value);
+                console.log(this.language.ALERTS.USAGEMODE.value);
                 my.fileSelect.style.display = "none";
                 my.showLeftPush.style.display = "none";
                 break;
@@ -327,7 +334,7 @@ var EmuLabeller = {
                     if(emulabeller.viewPort.getSelectTier()!="")
                         emulabeller.tierHandler.renameTierDialog(emulabeller.viewPort.getSelectTier(), emulabeller.viewPort.getSelectTier());
                     else
-                        emulabeller.alertUser("Warning",'Please select a Tier first!');   
+                        emulabeller.alertUser(emulabeller.language.ALERTS.SELECT_TIER_FIRST.title,emulabeller.language.ALERTS.SELECT_TIER_FIRST.value);   
                     break;
 
                 case "cmd_resizeWave":

@@ -4,7 +4,10 @@ var emulabeller = (function() {
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
     var autoLoad = false;
-
+    
+    // set language of interface
+    // available now: german "de" and english "us"
+    var language = "de";
 
     var tierInfos = {
         "tiers": [],
@@ -40,7 +43,8 @@ var emulabeller = (function() {
         internalCanvasHeightSmall: '128', // in pixel -> Cans
         internalCanvasHeightBig: '64', // in pixel -> Wave & Spectro
         mode: 'standalone', // server or standalone
-        initLoad: autoLoad
+        initLoad: autoLoad,
+        language: language
     });
 
 
