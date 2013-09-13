@@ -55,6 +55,42 @@ EmuLabeller.tierHandler = {
             }
 		});
 		
+		
+		$("#renameTierDialog").dialog({
+            dialogClass:'myPopup',
+			bgiframe: true,
+			modal: true,
+			autoOpen: false,
+			width: 500,
+			height: 500,
+			show: {
+				effect: "fade",
+				duration: 175
+			},
+			hide: {
+				effect: "fade",
+				duration: 175
+			},
+			position: 'center',
+			buttons: {
+				"Save": function() {
+					emulabeller.tierHandler.doRenameTier($('#newTierName').val());
+					$(this).dialog('close');
+				},
+				"Cancel": function() {
+					$(this).dialog('close');
+				}
+			},
+            open: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.MODAL;
+                window.onscroll = function () {  window.scrollTo(0, 0); };
+            },
+            beforeClose: function(event, ui) {
+                emulabeller.internalMode = emulabeller.EDITMODE.STANDARD;
+                window.onscroll = function () {  };
+            }
+		});
+		
 
 
 	},
@@ -366,6 +402,17 @@ EmuLabeller.tierHandler = {
 		$('#saveAsFileName').val(myName);
 		$('#preview').html(myData);
 		$('#downDialog').dialog('open');
+		return false;
+	},
+
+
+	renameTierDialog: function(myName, myData) {
+	    this.exportData = myData;
+        window.scrollTo(0, 0);
+		$("#renameTierDialog").dialog('option', 'position', ["center",10]);
+		$("#renameTierDialog").dialog('option', 'title', 'Rename ' + myName);
+		$('#newTierName').val(myName);
+		$('#renameTierDialog').dialog('open');
 		return false;
 	},
 
@@ -720,13 +767,10 @@ EmuLabeller.tierHandler = {
 	},
 
 
-	createEditArea: function(x, y, width, height, label, c, isTier) {
+	createEditArea: function(x, y, width, height, label, c) {
 		var my = this;
 
-		if(isTier)
-    		emulabeller.internalMode = emulabeller.EDITMODE.TIER_RENAME;
-    	else
-    	    emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
+    	emulabeller.internalMode = emulabeller.EDITMODE.LABEL_RENAME;
 
 		var textAreaX = Math.round(x) + $("#"+c).offset().left + 2;
 		var textAreaY = $("#"+c).offset().top + 2 + y;
@@ -776,12 +820,11 @@ EmuLabeller.tierHandler = {
 
 	},
 
-	saveTierName: function(a) {
+	doRenameTier: function(newTierName) {
 		var my = this;
 		var tierDetails = this.getSelectedTier();
 		var old_key = tierDetails.TierName;
-		var new_key = $("#label_edit_textarea").val().replace(/[\n\r]/g, '');
-		alert(new_key);
+		var new_key = newTierName.replace(/[\n\r]/g, '');
 		if (!this.tierExists(new_key)) {
 			var backup = jQuery.extend(true, {}, tierDetails);
 			delete this.tierInfos.tiers[old_key];
@@ -793,18 +836,6 @@ EmuLabeller.tierHandler = {
 			this.history();
 		} else {
 		    emulabeller.alertUser("Error","A tier with this name ('" + new_key + "') already exists!");
-		}
-
-	},
-
-	renameTier: function() { //maybe rename to removeLabelBox or something
-		var tierDetails = this.getSelectedTier();
-		if (null != tierDetails) {
-			var canvas = emulabeller.tierHandler.getCanvas(tierDetails.TierName);
-			var posS = emulabeller.viewPort.getPos(canvas.clientWidth, 0);
-			this.createEditArea(0, posS, canvas.clientWidth - 5, canvas.clientHeight - 5, tierDetails.TierName,tierDetails.TierName, true);
-		} else {
-		    emulabeller.alertUser("Error","Please mark a tier first...");
 		}
 
 	},

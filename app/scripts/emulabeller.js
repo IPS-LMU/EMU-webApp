@@ -324,7 +324,10 @@ var EmuLabeller = {
 
                 case "cmd_renameTierPoint":
                     emulabeller.tierHandler.removeLabelDoubleClick();
-                    emulabeller.tierHandler.renameTier();
+                    if(emulabeller.viewPort.getSelectTier()!="")
+                        emulabeller.tierHandler.renameTierDialog(emulabeller.viewPort.getSelectTier(), emulabeller.viewPort.getSelectTier());
+                    else
+                        emulabeller.alertUser("Warning",'Please select a Tier first!');   
                     break;
 
                 case "cmd_resizeWave":
