@@ -110,6 +110,31 @@ EmuLabeller.German = {
         NEW_BASENAME: {
             title: "Warnung",
             value: "Wenn Sie eine neue Wave Datei laden werden alle Tiers gel&ouml;scht!"        
+        },
+        
+        HISTORY_END: {
+            title: "Warnung",
+            value: "Kann nicht weiter in der History zur"+unescape("%FC")+"ckgehen.... &#9785;"        
+        },
+        
+        INSERT_NEW_SEGMENT: {
+            title: "Warnung",
+            value: "Hier d"+unescape("%FC")+"rfen Sie kein Segment einf"+unescape("%FC")+"gen!"        
+        },
+        
+        POINT_EXISTS: {
+            title: "Warnung",
+            value: "Dieser Punkt existiert bereits!"        
+        },
+        
+        POINT_SEGMENT: {
+            title: "Warnung",
+            value: "Punkt d"+unescape("%FC")+"rfen nicht auf einem Segment Tier eingef"+unescape("%FC")+"gt werden!"        
+        },
+        
+        DELETE: {
+            title: "L"+unescape("%F6")+"schen",
+            value: "'{@}' wirklich l"+unescape("%F6")+"schen ?"        
         }
         
     }

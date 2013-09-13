@@ -11,12 +11,6 @@ EmuLabeller.tierHandler = {
 		this.myHistoryCounter = 0;
 		this.myHistory = {};
 		this.tierCssName = "tierSettings";
-		this.historyEndError = "Cannot go back, no more history saved.... &#9785;";
-		this.commonError = "Error: It is not allowed to insert a segment here!";
-		this.pointExistsError = "Error: This point already exists !";
-		this.noTierError = "Error: No Tier chosen !";
-		this.pointSegmentError = "Error: Points may not be inserted on a Segment Tier!";
-		this.reallyDeleteMsg = "Really delete ";
 		this.params = params;
 		this.isWaveSpecZoomMode = false;
 
@@ -117,7 +111,7 @@ EmuLabeller.tierHandler = {
 			this.rebuildTiers();
 			emulabeller.drawBuffer();
 		} else {
-		    emulabeller.alertUser("Error",this.historyEndError);
+		    emulabeller.alertUser(emulabeller.language.ALERTS.HISTORY_END.title,emulabeller.language.ALERTS.HISTORY_END.value);
 		}
 		//alert(this.historyEndError);
 	},
@@ -214,7 +208,8 @@ EmuLabeller.tierHandler = {
 		var myElemDel=document.getElementById(myName+'_del');
 		$(myElemDel).bind("click", function(event) {
 			var n = $(this).parent().prev().get(0).id;
-			emulabeller.confirmUser("Delete", emulabeller.tierHandler.reallyDeleteMsg +"'" + n + "' ?", emulabeller.tierHandler.removeTier, n);
+			var question = emulabeller.language.ALERTS.DELETE.value.replace("{@}",n);
+			emulabeller.confirmUser(emulabeller.language.ALERTS.DELETE.title, question, emulabeller.tierHandler.removeTier, n);
 		});
 		
 		var myElemRes=document.getElementById(myName+'_res');
@@ -373,9 +368,11 @@ EmuLabeller.tierHandler = {
 	deleteSelected: function() {
 		var my = this;
 		var selected = emulabeller.viewPort.getAllSelected(emulabeller.tierHandler.getSelectedTier());
-		var warn = emulabeller.tierHandler.reallyDeleteMsg;
+		var warn = "";
 		for (s in selected) warn += selected[s].label + ", ";
-		emulabeller.confirmUser("Delete", warn.substring(0, warn.length - 2) + " ?", emulabeller.tierHandler.subDeleteSelected , selected);
+		var question = emulabeller.language.ALERTS.DELETE.value.replace("{@}",warn);
+		
+		emulabeller.confirmUser(emulabeller.language.ALERTS.DELETE.title, question, emulabeller.tierHandler.subDeleteSelected , selected);
 	},
 	
 	subDeleteSelected: function(selected) {
@@ -891,7 +888,7 @@ EmuLabeller.tierHandler = {
 						if (null != thisSegment)
 							this.addBorder(sT, thisSegment, emulabeller.viewPort.selectS);
 						else {
-							emulabeller.alertUser("Error",this.commonError);
+							emulabeller.alertUser(emulabeller.language.ALERTS.INSERT_NEW_SEGMENT.title,emulabeller.language.ALERTS.INSERT_NEW_SEGMENT.value);
 						}
 					} else {
 						this.addSegment(sT, thisSegment, emulabeller.viewPort.selectS, emulabeller.viewPort.selectE);
@@ -913,15 +910,15 @@ EmuLabeller.tierHandler = {
 							return parseFloat(a.startSample) - parseFloat(b.startSample);
 						});
 					} else {
-					    emulabeller.alertUser("Error",this.pointExistsError);
+					    emulabeller.alertUser(emulabeller.language.ALERTS.POINT_EXISTS.title,emulabeller.language.ALERTS.POINT_EXISTS.value);
 					}
 				} else {
-				    emulabeller.alertUser("Error",this.pointSegmentError);
+				    emulabeller.alertUser(emulabeller.language.ALERTS.POINT_SEGMENT.title,emulabeller.language.ALERTS.POINT_SEGMENT.value);
 				}
 			}
 			emulabeller.drawBuffer();
 		} else {
-		    emulabeller.alertUser("Error",this.noTierError);
+		    emulabeller.alertUser(emulabeller.language.ALERTS.SELECT_TIER_FIRST.title,emulabeller.language.ALERTS.SELECT_TIER_FIRST.value);
 		}
 
 	},

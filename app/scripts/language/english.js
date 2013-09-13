@@ -112,6 +112,31 @@ EmuLabeller.English = {
         NEW_BASENAME: {
             title: "Warning",
             value: "Loading an audio file will delete all tiers!"
-        }
+        },
+        
+        HISTORY_END: {
+            title: "Warning",
+            value: "Cannot go back, no more history saved.... &#9785;"        
+        },
+        
+        INSERT_NEW_SEGMENT: {
+            title: "Warning",
+            value: "It is not allowed to insert a segment here!"        
+        },
+        
+        POINT_EXISTS: {
+            title: "Warning",
+            value: "This Point already exists!"        
+        },
+        
+        POINT_SEGMENT: {
+            title: "Warning",
+            value: "Points may not be inserted into a segment tier!"        
+        } ,
+        
+        DELETE: {
+            title: "Delete",
+            value: "Really delete '{@}' ?"        
+        }       
     }
 }; 
