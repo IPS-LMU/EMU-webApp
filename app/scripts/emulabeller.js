@@ -1029,13 +1029,13 @@ var EmuLabeller = {
         console.log(my.fileState);
         if (ft === 0) {
             if(my.fileState.value > my.FILESTATE.CLEAN.value) 
-                emulabeller.confirmUser("Warning", "Loading an audio file will delete all tiers!", my.parseNewFileConfirm, readerRes);
+                emulabeller.confirmUser(emulabeller.language.ALERTS.NEW_BASENAME.title,emulabeller.language.ALERTS.NEW_BASENAME.value, my.parseNewFileConfirm, readerRes);
             else 
                 my.parseNewFileConfirm(readerRes);
                 
         } else if (ft == 1) {
             if(my.fileState == my.FILESTATE.CLEAN) {
-                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+                emulabeller.alertUser(emulabeller.language.ALERTS.SET_BASENAME.title,emulabeller.language.ALERTS.SET_BASENAME.value);
             }
             else {        
                 my.fileState = my.FILESTATE.TIERS;
@@ -1044,7 +1044,7 @@ var EmuLabeller = {
             }
         } else if (ft == 2) {
             if(my.fileState == my.FILESTATE.CLEAN) {
-                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+                emulabeller.alertUser(emulabeller.language.ALERTS.SET_BASENAME.title,emulabeller.language.ALERTS.SET_BASENAME.value);
             }
             else {        
                 var sCanName = "F0";
@@ -1056,7 +1056,7 @@ var EmuLabeller = {
             }
         } else if (ft == 3) {
             if(my.fileState == my.FILESTATE.CLEAN) {
-                emulabeller.alertUser("Wave",'A Wave file should be loaded first in order to set the Basename!');
+                emulabeller.alertUser(emulabeller.language.ALERTS.SET_BASENAME.title,emulabeller.language.ALERTS.SET_BASENAME.value);
             }
             else {
                 my.fileState = my.FILESTATE.TIERS;
@@ -1114,7 +1114,7 @@ var EmuLabeller = {
             emulabeller.newFileType = 3;
             reader.readAsText(file);
         } else {
-            emulabeller.alertUser("File Read Error",'File type not supported.... sorry!');
+            emulabeller.alertUser(emulabeller.language.ALERTS.FILE_READ_ERROR.title,emulabeller.language.ALERTS.FILE_READ_ERROR.value);
         }
     },
 
