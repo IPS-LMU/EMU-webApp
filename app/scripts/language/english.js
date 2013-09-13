@@ -12,11 +12,80 @@ EmuLabeller.English = {
             value: "Shortcut: O"        
         },
         
-        ADD_TIER: {
+        ADD_TIER_SEG: {
             title: "Add Tier (seg)",
-            value: "Shortcut: O"        
+            value: "Shortcut: none"        
+        },
+        
+        ADD_TIER_POINT: {
+            title: "Add Tier (point)",
+            value: "Shortcut: none"        
+        },
+        
+        RENAME_TIER: {
+            title: "Rename sel. Tier",
+            value: "Shortcut: none"        
+        },
+        
+        DOWNLOAD_TEXTGRID: {
+            title: "Download Textgrid",
+            value: "Shortcut: none"        
+        },
+        
+        SPECTROGRAM_SETTINGS: {
+            title: "Spec. Settings",
+            value: "Shortcut: none"        
         }
     },
+    
+    SUBMENU: {
+        ZOOM_ALL: {
+            title: "All",
+            value: "Shortcut: Q"        
+        },
+        
+        ZOOM_IN: {
+            title: "In",
+            value: "Shortcut: W"        
+        },
+        
+        ZOOM_OUT: {
+            title: "Out",
+            value: "Shortcut: S"        
+        },
+        
+        LEFT: {
+            title: "Left",
+            value: "Shortcut: A"        
+        },
+        
+        RIGHT: {
+            title: "Right",
+            value: "Shortcut: D"        
+        },
+        
+        SELECTED: {
+            title: "Sel",
+            value: "Shortcut: E"        
+        },
+        
+        PLAY_VIEW: {
+            title: "Play/Pause in View",
+            value: "Shortcut: Space"        
+        },
+        
+        PLAY_SELECTED: {
+            title: "Play selected",
+            value: "Shortcut: R"        
+        },
+        
+        PLAY_ENTIRE: {
+            title: "Play entire File",
+            value: "Shortcut: F"        
+        }
+    },
+    
+    
 
     ALERTS: {
         // nothing is loaded

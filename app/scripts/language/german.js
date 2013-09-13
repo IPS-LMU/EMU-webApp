@@ -12,9 +12,76 @@ EmuLabeller.German = {
             value: "Abk"+unescape("%FC")+"rzung: O"     // unescape("%FC") -> ü
         },
         
-        ADD_TIER: {
+        ADD_TIER_SEG: {
             title: "Tier hinzuf"+unescape("%FC")+"gen (seg)",
             value: "Abk"+unescape("%FC")+"rzung: keine"        
+        },
+        
+        ADD_TIER_POINT: {
+            title: "Tier hinzuf"+unescape("%FC")+"gen (point)",
+            value: "Abk"+unescape("%FC")+"rzung: keine"        
+        },
+        
+        RENAME_TIER: {
+            title: "Tier umbenennen",
+            value: "Abk"+unescape("%FC")+"rzung: keine"       
+        },
+        
+        DOWNLOAD_TEXTGRID: {
+            title: "Textgrid runterladen",
+            value: "Abk"+unescape("%FC")+"rzung: keine"       
+        },
+        
+        SPECTROGRAM_SETTINGS: {
+            title: "Spec. Einstellungen",
+            value: "Abk"+unescape("%FC")+"rzung: keine"       
+        }
+    },
+    
+    SUBMENU: {
+        ZOOM_ALL: {
+            title: "Alles",
+            value: "Abk"+unescape("%FC")+"rzung: Q"        
+        },
+        
+        ZOOM_IN: {
+            title: "In",
+            value: "Abk"+unescape("%FC")+"rzung: W"        
+        },
+        
+        ZOOM_OUT: {
+            title: "Out",
+            value: "Abk"+unescape("%FC")+"rzung: S"        
+        },
+        
+        LEFT: {
+            title: "Links",
+            value: "Abk"+unescape("%FC")+"rzung: A"        
+        },
+        
+        RIGHT: {
+            title: "Rechts",
+            value: "Abk"+unescape("%FC")+"rzung: D"        
+        },
+        
+        SELECTED: {
+            title: "Sel",
+            value: "Abk"+unescape("%FC")+"rzung: E"        
+        },
+        
+        PLAY_VIEW: {
+            title: "Play/Pause in Sicht",
+            value: "Abk"+unescape("%FC")+"rzung: Space"        
+        },
+        
+        PLAY_SELECTED: {
+            title: "Play/Pause selektiert",
+            value: "Abk"+unescape("%FC")+"rzung: R"        
+        },
+        
+        PLAY_ENTIRE: {
+            title: "Play/pause alles",
+            value: "Abk"+unescape("%FC")+"rzung: F"        
         }
     },
     

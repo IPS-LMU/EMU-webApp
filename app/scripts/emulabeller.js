@@ -557,15 +557,43 @@ var EmuLabeller = {
         });
         $("#cans").disableSelection();
         
-        // Set Language on HTML Menu
+        // Set Language on MAIN Menu
         $('#fileSelect').text(my.language.MENU.FILE_OPEN.title);
         $('#fileSelect').attr("data-tooltip" ,my.language.MENU.FILE_OPEN.value);
         $('#serverSelect').text(my.language.MENU.SERVER_OPEN.title);
         $('#serverSelect').attr("data-tooltip" ,my.language.MENU.SERVER_OPEN.value);
-        $('#cmd_addTierSeg').text(my.language.MENU.ADD_TIER.title);
-        $('#cmd_addTierSeg').attr("data-tooltip" ,my.language.MENU.ADD_TIER.value);
-
-
+        $('#cmd_addTierSeg').text(my.language.MENU.ADD_TIER_SEG.title);
+        $('#cmd_addTierSeg').attr("data-tooltip" ,my.language.MENU.ADD_TIER_SEG.value);
+        $('#cmd_addTierPoint').text(my.language.MENU.ADD_TIER_POINT.title);
+        $('#cmd_addTierPoint').attr("data-tooltip" ,my.language.MENU.ADD_TIER_POINT.value);
+        $('#cmd_renameTierPoint').text(my.language.MENU.RENAME_TIER.title);
+        $('#cmd_renameTierPoint').attr("data-tooltip" ,my.language.MENU.RENAME_TIER.value);
+        $('#cmd_download').text(my.language.MENU.DOWNLOAD_TEXTGRID.title);
+        $('#cmd_download').attr("data-tooltip" ,my.language.MENU.DOWNLOAD_TEXTGRID.value);
+        $('#cmd_specSettings').text(my.language.MENU.SPECTROGRAM_SETTINGS.title);
+        $('#cmd_specSettings').attr("data-tooltip" ,my.language.MENU.SPECTROGRAM_SETTINGS.value);
+        
+        // Set Language on SUB Menu
+        $('#cmd_viewZoomAll').text(my.language.SUBMENU.ZOOM_ALL.title);
+        $('#cmd_viewZoomAll').attr("data-tooltip" ,my.language.SUBMENU.ZOOM_ALL.value);
+        $('#cmd_viewZoomIn').text(my.language.SUBMENU.ZOOM_IN.title);
+        $('#cmd_viewZoomIn').attr("data-tooltip" ,my.language.SUBMENU.ZOOM_IN.value);
+        $('#cmd_viewZoomOut').text(my.language.SUBMENU.ZOOM_OUT.title);
+        $('#cmd_viewZoomOut').attr("data-tooltip" ,my.language.SUBMENU.ZOOM_OUT.value);
+        $('#cmd_viewMoveLeft').text(my.language.SUBMENU.LEFT.title);
+        $('#cmd_viewMoveLeft').attr("data-tooltip" ,my.language.SUBMENU.LEFT.value);
+        $('#cmd_viewMoveRight').text(my.language.SUBMENU.RIGHT.title);
+        $('#cmd_viewMoveRight').attr("data-tooltip" ,my.language.SUBMENU.RIGHT.value);
+        $('#cmd_viewZoomSelect').text(my.language.SUBMENU.SELECTED.title);
+        $('#cmd_viewZoomSelect').attr("data-tooltip" ,my.language.SUBMENU.SELECTED.value);
+        $('#cmd_playPause').text(my.language.SUBMENU.PLAY_VIEW.title);
+        $('#cmd_playPause').attr("data-tooltip" ,my.language.SUBMENU.PLAY_SELECTED.value);
+        $('#cmd_playSelected').text(my.language.SUBMENU.PLAY_VIEW.title);
+        $('#cmd_playSelected').attr("data-tooltip" ,my.language.SUBMENU.PLAY_ENTIRE.value);
+        $('#cmd_playAll').text(my.language.SUBMENU.PLAY_VIEW.title);
+        $('#cmd_playAll').attr("data-tooltip" ,my.language.SUBMENU.PLAY_ENTIRE.value);
+        
+        
 
     },
 
