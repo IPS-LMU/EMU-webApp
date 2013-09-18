@@ -1,0 +1,19 @@
+<div handleglobalkeystrokes>
+  <h1>Get one tier to work first!</h1>
+  <div ng-controller="HandletiersCtrl">
+  <tier id='Phonetic'></tier>
+  	<!-- <tier id="Phonetic"></tier> -->
+  	<p>Change all labels to:
+  		<input type="text" ng-model="testValue" ng-keyup='{{updateAllLabels()}}'/>
+  	</p>
+  	<p>Set start sampelnr :
+  		<input type="text" ng-model="viewState.sS">
+  	</p>
+	  <p>Set end sampelnr :
+  		<input type="text" ng-model="viewState.eS">
+  	</p>
+  	<h3>{{testValue}}</h3>
+    <p>Keycode of last key hit: {{lastkeycode}}
+    </p>
+  </div>
+</div>

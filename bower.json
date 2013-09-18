@@ -5,6 +5,7 @@
     "jquery": "~1.10.2",
     "jquery-ui": "~1.10.3",
     "hammerjs": "~1.0.4",
-    "angular": "~1.2.0-rc.2"
+    "angular": "~1.2.0-rc.2",
+    "angular-route": "~1.2.0-rc.2"
   }
 }
