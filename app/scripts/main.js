@@ -3,7 +3,7 @@ var emulabeller = (function() {
 
     // autoload wav file and TextGrid for testing
     // will only work if running on server...
-    var autoLoad = false;
+    var autoLoad = true;
     
     // set language of interface
     // available now: german "de" and english "us"
@@ -25,8 +25,8 @@ var emulabeller = (function() {
     var showLeftPush = document.getElementById('serverSelect');
     var spectroworker = document.querySelector('#spectroworker');
     var labeller = Object.create(EmuLabeller);
-
-
+    
+    // initialization of main labeller
     labeller.init({
         osciCanvas: osciCanvas,
         specCanvas: specCanvas,
@@ -51,8 +51,10 @@ var emulabeller = (function() {
     // see if on iPad... if so preload data... just for testing
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
     if (isiPad || autoLoad) {
+        var t=setTimeout(function(){labeller.iohandler.xhrLoad('testData/msajc003.TextGrid', 'text', 3)},50)
         labeller.iohandler.xhrLoad('testData/msajc003.wav', 'arraybuffer', 0);
-        labeller.iohandler.xhrLoad('testData/msajc003.TextGrid', 'text', 3);
+        
+        
     }
 
 
