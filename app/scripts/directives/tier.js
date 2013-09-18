@@ -18,9 +18,9 @@ angular.module('emulvcApp')
 					// console.log(oldVal, newVal);
 					drawTierDetails(scope.tierDetails, scope);
 				}, true);
-				
+
 				scope.$watch('viewState', function(newVal, oldVal) {
-					console.log(oldVal, newVal);
+					// console.log(oldVal, newVal);
 					drawTierDetails(scope.tierDetails, scope);
 				}, true);
 
@@ -33,10 +33,13 @@ angular.module('emulvcApp')
 				 * @param perx
 				 * @param pery
 				 */
-				console.log('scope');
 
 				function drawTierDetails(tierDetails, scope) {
-					
+
+					if ($.isEmptyObject(tierDetails)) {
+						// console.log("undef tierDetails");
+						return;
+					}
 					var viewPort = scope.viewState;
 					console.log('#########################################');
 					console.log(viewPort.eS);
@@ -52,11 +55,11 @@ angular.module('emulvcApp')
 					console.log(sDist)
 
 					if (tierDetails.TierName == viewPort.getSelectTier()) {
-					// cc.clearRect(0, 0, canvas.width, canvas.height);
-					// cc.fillStyle = this.params.selectedTierColor;
-					// cc.fillRect(0, 0, canvas.width, canvas.height);
-					// } else {
-					// cc.clearRect(0, 0, canvas.width, canvas.height);
+						// cc.clearRect(0, 0, canvas.width, canvas.height);
+						// cc.fillStyle = this.params.selectedTierColor;
+						// cc.fillRect(0, 0, canvas.width, canvas.height);
+						// } else {
+						// cc.clearRect(0, 0, canvas.width, canvas.height);
 					}
 
 					// draw name of tier
@@ -80,7 +83,6 @@ angular.module('emulvcApp')
 
 								// draw segment start
 								var posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
-								console.log(posS)
 								// check if selected -> if draw as marked
 								// var tierId = emulabeller.viewPort.curMouseMoveTierName;
 								// var segId = emulabeller.viewPort.curMouseMoveSegmentName;

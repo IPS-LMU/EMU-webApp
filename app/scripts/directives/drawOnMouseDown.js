@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-.directive("clickable", function(){
+.directive("drawonmousedown", function(){
   return {
     restrict: "A",
     link: function(scope, element){
