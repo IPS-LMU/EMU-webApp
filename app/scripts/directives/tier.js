@@ -9,23 +9,15 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas");
-				// canvas.on('mousemove', function(e) {
-				// 	// redraw();
-				// });
-
 
 				scope.$watch('tierDetails', function(newVal, oldVal) {
-					// console.log(oldVal, newVal);
-					drawTierDetails(scope.tierDetails, scope);
+					drawTierDetails(scope.tierDetails,scope.viewState, scope);
 				}, true);
 
 				scope.$watch('viewState', function(newVal, oldVal) {
-					// console.log(oldVal, newVal);
-					drawTierDetails(scope.tierDetails, scope);
+					drawTierDetails(scope.tierDetails,scope.viewState, scope);
 				}, true);
 				
-				console.log(scope.viewState);
-
 				/**
 				 * draw tier details
 				 * @param tierDetails
@@ -33,25 +25,22 @@ angular.module('emulvcApp')
 				 * @param pery
 				 */
 
-				function drawTierDetails(tierDetails, scope) {
+				function drawTierDetails(tierDetails, viewPort, scope) {
 
 					if ($.isEmptyObject(tierDetails)) {
-						// console.log("undef tierDetails");
+						 console.log("undef tierDetails");
 						return;
 					}
-					var viewPort = scope.viewState;
-					console.log('#########################################');
-					console.log(viewPort.eS);
-
+					if ($.isEmptyObject(viewPort)) {
+						 console.log("undef viewPort");
+						return;
+					}
 
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
-
-					var mpx = canvas[0].width * undefined;
-					var mpy = canvas[0].height * undefined;
 					var sDist = viewPort.getSampleDist(canvas[0].width);
 
-					console.log(sDist)
+					console.log(sDist);
 
 					if (tierDetails.TierName == viewPort.getSelectTier()) {
 						// cc.clearRect(0, 0, canvas.width, canvas.height);

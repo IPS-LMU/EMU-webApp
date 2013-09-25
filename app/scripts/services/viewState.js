@@ -3,7 +3,7 @@
 angular.module('emulvcApp')
   .factory('viewState', function() {
     var sS = 0;
-    var eS = 128085;
+    var eS = 0;
 
     var selectS = -1;
     var selectE = -1;
@@ -72,7 +72,7 @@ angular.module('emulvcApp')
        * @param s is current sample to convert to pixel value
        */
       getPos: function(w, s) {
-        return (w * (s - sS) / (eS - sS + 1)); // + 1 because of view (displays all samples in view)
+        return (w * (s - this.sS) / (this.eS - this.sS + 1)); // + 1 because of view (displays all samples in view)
       },
 
       /**

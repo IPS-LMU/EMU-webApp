@@ -8,6 +8,7 @@ angular.module('emulvcApp')
 
 
 		$http.get('testData/PhoneticTier.json').success(function(data) {
+			$scope.viewState.eS = data.events[data.events.length-1].startSample + data.events[data.events.length-1].sampleDur;
 			$scope.tierDetails = data;
 		});
 
