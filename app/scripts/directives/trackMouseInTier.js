@@ -86,8 +86,7 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label) {
-        var shift = height/3;
-        var content = $("<textarea>").attr({
+        $("#"+id).prepend($("<textarea>").attr({
 			id: editAreaName.substr(1), 
 			"autofocus":"true",
 			"class": editAreaName.substr(1)
@@ -97,11 +96,9 @@ angular.module('emulvcApp')
 			"left": x+2 + "px",
 			"width": width-1 + "px",
 			"height": height + "px",
-			"max-height": height-shift + "px",
-			"padding-top": shift + "px"
-		}).text(label);
-        $("#"+id).prepend(content);
-		$("#label_edit_textarea").focus();
+			"max-height": height-(height/3) + "px",
+			"padding-top": (height/3) + "px"
+		}).text(label).focus());
       }
       function deleteEditArea() {
         $("#label_edit_textarea").remove();
