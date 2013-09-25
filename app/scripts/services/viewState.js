@@ -2,52 +2,37 @@
 
 angular.module('emulvcApp')
   .factory('viewState', function() {
+  
+    // start Sample of current Wave
     var sS = 0;
+    
+    // end Sample of current Wave
     var eS = 0;
 
+    // current selected border start (left side)
     var selectS = -1;
+    
+    // current selected border end (right side)
     var selectE = -1;
-    var bufferLength = 128085; // on init
+    
+    // current selected (clicked) tier Name
+    var curClickTierName = "";
+    
+    // current selected (mousemove) tier Name
+    var curMouseTierName = "";    
+    
+    // complete buffer length
+    var bufferLength = 0; 
+    
+    // sample Rate of Wave
     var sampleRate = 44100;
-
-    // red line on wave & spectro
-    var percent = -1;
-
-    // list of selected Segments 
-    var uiInfo = []; // [Segments]
-
-    var selectInfo = []; // [Segments]
-
-    // set everything to deselect when tiers are loaded and view is init()
-    // var resetSelection();
-
-    // id of tier and segment CLICKED on
-    var MouseTierName = '';
-    var MouseSegmentName = '';
-
-    // id of tier and segment MOVED on
-    var curMouseMoveTierName = '';
-    var curMouseMoveTierType = '';
-    var curMouseMoveSegmentName = '';
-    var curMouseMoveSegmentStart = '';
-    var curMouseMoveSegmentDuration = '';
-
-    var selectSPixel = 0;
-    var selectEPixel = 0;
-
-    var curCursorPosInPercent = 0.0;
-
-    var meaningOfLife = 42;
 
 
     // Public API here
     return {
       sS: sS,
       eS: eS,
-
-      someMethod: function() {
-        return meaningOfLife;
-      },
+      
       /**
        * set selected Area
        * @param start of selected Area
@@ -57,15 +42,7 @@ angular.module('emulvcApp')
         this.selectS = start;
         this.selectE = end;
       },
-
-      selectMove: function(tier, evt) {
-        this.curMouseMoveTierName = tier.TierName;
-        this.curMouseMoveTierType = tier.type;
-        this.curMouseMoveSegmentName = this.getId(tier, evt.label, evt.startSample);
-        this.curMouseMoveSegmentStart = evt.startSample;
-        this.curMouseMoveSegmentDuration = evt.sampleDur;
-      },
-
+      
       /**
        * get pixel position in current viewport given the canvas width
        * @param w is width of canvas
@@ -84,24 +61,35 @@ angular.module('emulvcApp')
       },
 
       /**
-       * param name name of tier
+       * sets the current (clicked) Tier Name
+       * @param name is name of tier
        */
-      setSelectTier: function(name) {
-        this.MouseTierName = name;
+      setcurClickTierName: function(name) {
+        this.curClickTierName = name;
       },
 
-      getSelectTier: function() {
-        return this.MouseTierName;
+      /**
+       * gets the current (clicked) Tier Name
+       */
+      getcurClickTierName: function() {
+        return this.curClickTierName;
       },
 
-      getSelectName: function() {
-        console.log(this.MouseSegmentName)
-        return this.MouseSegmentName;
+      /**
+       * sets the current (mousemove) Tier Name
+       * @param name is name of tier
+       */
+      setcurMouseTierName: function(name) {
+        this.curMouseTierName = name;
       },
 
-      setSelectName: function(n) {
-        this.MouseSegmentName = n;
+      /**
+       * gets the current (mousemove) Tier Name
+       */
+      getcurMouseTierName: function() {
+        return this.curMouseTierName;
       },
+
 
       setSelectSegment: function(tier, evt, isSelected, width) {
         var id = this.getId(tier, evt.label, evt.startSample);
@@ -176,15 +164,6 @@ angular.module('emulvcApp')
         return (sample * (100 / (this.eS - this.sS) / 100));
       },
 
-      getId: function(tier, name, start) {
-        var j = 0;
-        for (var y in tier.events) {
-          if (tier.events[y].label == name && tier.events[y].startSample == start)
-            return j;
-          j++;
-        }
-        return false;
-      },
 
       resetSelection: function(length) {
         for (var i = 0; i < length; i++) {

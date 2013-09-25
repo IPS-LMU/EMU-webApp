@@ -42,14 +42,6 @@ angular.module('emulvcApp')
 
 					console.log(sDist);
 
-					if (tierDetails.TierName == viewPort.getSelectTier()) {
-						// cc.clearRect(0, 0, canvas.width, canvas.height);
-						// cc.fillStyle = this.params.selectedTierColor;
-						// cc.fillRect(0, 0, canvas.width, canvas.height);
-						// } else {
-						// cc.clearRect(0, 0, canvas.width, canvas.height);
-					}
-
 					// draw name of tier
 					ctx.fillStyle = 'black';
 					ctx.font = ('12' + 'px' + ' ' + 'Calibri');

@@ -10,28 +10,41 @@ angular.module('emulvcApp')
       var lastX,currentX;
       var lastY,currentY;
       // the last event before the current move
-      var lastEvent;
+      var lastEventClick;
+      var lastEventMove;
       
       element.bind('mousedown', function(event){
-          lastEvent = getEvent(getX(event),event);
+        setLastMove(event);
+        setLastClick(event);
       });
       
       element.bind('dblclick', function(event){
-          lastEvent = getEvent(getX(event),event);
-          alert("dblclick at "+lastEvent.label);
+        setLastMove(event);
+        setLastClick(event);
       });
       
       element.bind('mousemove', function(event){ 
-        lastEvent = getEvent(getX(event),event);
+        setLastMove(event);
       });
 
       element.bind('mouseup', function(event){
+        setLastMove(event);
+        setLastClick(event);
       });      
 
       element.bind('mouseout', function(event){
+        setLastMove(event);
         $("*").css("cursor", "auto");
-      });              
-
+      });      
+      
+      function setLastClick(x) {
+        lastEventClick = getEvent(getX(x),x);
+        scope.viewState.setcurClickTierName(element[0].id);
+      } 
+      function setLastMove(x) {
+        lastEventMove = getEvent(getX(x),x);
+        scope.viewState.setcurMouseTierName(element[0].id);
+      }               
       function getX(e) {
         return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
       }  
