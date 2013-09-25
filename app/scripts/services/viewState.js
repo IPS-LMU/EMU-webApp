@@ -13,22 +13,10 @@ angular.module('emulvcApp')
     var selectS = -1;
     
     // current selected border end (right side)
-    var selectE = -1;
+    var selectE = -1;  
     
-    // current selected (clicked) Tier Name
-    var curClickTierName = "";
-    
-    // current selected (mousemove) Tier Name
-    var curMouseTierName = "";     
-    
-    // current selected (clicked) Segment
-    var curClickSegment = null;
-    
-    // current selected (clicked) Segment
-    var curClickArray = [];    
-    
-    // current selected (mousemove) Segment
-    var curMouseSegment = null;        
+    // current selected segments
+    var selected = [];     
     
     // complete buffer length
     var bufferLength = 0; 
@@ -41,6 +29,10 @@ angular.module('emulvcApp')
     return {
       sS: sS,
       eS: eS,
+      selectS : selectS,
+      selectE : selectE,
+      selected : selected,
+      
       
       /**
        * set selected Area
@@ -116,12 +108,24 @@ angular.module('emulvcApp')
       
       /**
        * sets the current (click) Segment
-       * @param name is name of tier
+       * @param segment
        */
-      setcurClickSegment: function(segment) {
+      setcurClickSegment: function(segment,id) {
         this.curClickSegment = segment;
-        curClickArray.push(segment);
-        console.log(curClickArray);
+        selected = [];
+        selected.push(id);
+      },
+
+      /**
+       * sets a multiple select (click) Segment
+       * @param segment
+       */
+      setcurClickSegmentMultiple: function(segment,id) {
+        selected.forEach(function(entry) {
+          if(entry-1==id || entry+1==id) selected.push(id);
+        });
+        console.log(selected);
+
       },
 
       /**
