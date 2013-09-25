@@ -129,12 +129,12 @@ angular.module('emulvcApp')
         $("#label_edit_textarea").remove();
       }
       function getPCMpp(event) {
-        var lastStart = scope.tierDetails.events[scope.tierDetails.events.length-1].startSample;
-        var length = lastStart + scope.tierDetails.events[scope.tierDetails.events.length-1].sampleDur;
-        return length/event.originalEvent.srcElement.width;      
+        var start = parseInt(scope.viewState.sS,10);
+        var end = parseInt(scope.viewState.eS,10);
+        return (end-start)/event.originalEvent.srcElement.clientWidth;      
       }
       function getEventId(x,event) {
-        var pcm = x * getPCMpp(event); 
+        var pcm = parseInt(scope.viewState.sS,10)+(x * getPCMpp(event)); 
         var id = 0;
         var ret = 0;
         angular.forEach(scope.tierDetails.events, function(evt) {
@@ -143,10 +143,11 @@ angular.module('emulvcApp')
 		  }
 		  ++id;
 		});      
+		console.log(ret);
 		return ret;
       }
       function getEvent(x,event) {
-        var pcm = x * getPCMpp(event); 
+        var pcm = parseInt(scope.viewState.sS,10)+(x * getPCMpp(event)); 
         var evtr = null;
 		angular.forEach(scope.tierDetails.events, function(evt) {
 		  if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
