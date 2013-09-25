@@ -143,20 +143,6 @@ angular.module('emulvcApp')
       },
 
 
-      setSelectSegment: function(tier, evt, isSelected, width) {
-        var id = this.getId(tier, evt.label, evt.startSample);
-        this.MouseSegmentName = id;
-        this.uiInfo[id] = isSelected;
-        this.resizeSelectArea(evt.startSample, evt.startSample + evt.sampleDur + 1);
-      },
-
-      setSelectPoint: function(tier, evt, isSelected, width) {
-        var id = this.getId(tier, evt.label, evt.startSample);
-        this.MouseSegmentName = id;
-        this.uiInfo[id] = isSelected;
-        this.resizeSelectArea(evt.startSample, evt.startSample);
-      },
-
       resizeSelectArea: function(start, end) {
         this.selectS = start;
         this.selectE = end;
@@ -169,44 +155,10 @@ angular.module('emulvcApp')
           this.selectE = end;
       },
 
-      // SIC call to emulabeller
-      // setSelectMultiSegment: function(tier, evt, isSelected, width, dontCheck) {
-      //   var id = this.getId(tier, evt.label, evt.startSample);
-      //   if (emulabeller.viewPort.uiInfo[id - 1] ||  emulabeller.viewPort.uiInfo[id + 1] ||  dontCheck) {
-      //     emulabeller.viewPort.uiInfo[id] = isSelected;
-      //     if (!dontCheck) emulabeller.viewPort.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + 1);
-      //     return true;
-      //   } else return false;
-      // },
-
-      isSelected: function(tier, name, start) {
-        if (tier.TierName == this.getSelectTier())
-          return this.uiInfo[this.getId(tier, name, start)];
-        else
-          return false;
-      },
-
-      getAllSelected: function(tier) {
-        var ret = [];
-        var j = 0;
-        if (tier.TierName == this.getSelectTier()) {
-          for (e in tier.events) {
-            if (this.uiInfo[j]) ret[j] = tier.events[e];
-            j++;
-          }
-          return ret;
-        } else
-          return false;
-      },
-
 
       countSelected: function() {
-        var x = 0;
-        for (var i = 0; i < tierhis.uiInfo.length; i++)
-          if (this.uiInfo[i]) x++;
-        return x;
+        return this.selected.length;
       },
-
 
       getCurrentSample: function(perc) {
         return this.sS + (this.eS - this.sS) * perc;
@@ -214,13 +166,6 @@ angular.module('emulvcApp')
 
       getCurrentPercent: function(sample) {
         return (sample * (100 / (this.eS - this.sS) / 100));
-      },
-
-
-      resetSelection: function(length) {
-        for (var i = 0; i < length; i++) {
-          this.uiInfo[i] = false;
-        }
       },
 
       /**
