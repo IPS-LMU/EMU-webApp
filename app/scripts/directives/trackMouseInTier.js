@@ -13,6 +13,7 @@ angular.module('emulvcApp')
       var lastY,currentY;
       // the last event before the current move
       var lastEventClick;
+      var lastEventRightClick;
       var lastEventMove;
       var editAreaName = "#label_edit_textarea";
       
@@ -38,23 +39,28 @@ angular.module('emulvcApp')
 
       element.bind('mouseup', function(event){
         setLastMove(event);
-        setLastClick(event);
       });      
 
       element.bind('mouseout', function(event){
         setLastMove(event);
-        $("*").css("cursor", "auto");
       });      
       
       function setLastClick(x) {
         lastEventClick = getEvent(getX(x),x);
+        lastEventRightClick = getEvent(getX(x),x);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick);
         deleteEditArea();
         scope.$digest(); 
       } 
       function setLastRightClick(x) {
+        var beforeClick = lastEventClick;
+        var beforeRightClick = lastEventRightClick;
         lastEventClick = getEvent(getX(x),x);
+        lastEventRightClick = getEvent(getX(x),x);
+        
+        
+
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick);
         deleteEditArea();
@@ -126,7 +132,6 @@ angular.module('emulvcApp')
 		  if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
 		      evtr=evt;
 		  }
-
 		});      
         return evtr;
       }

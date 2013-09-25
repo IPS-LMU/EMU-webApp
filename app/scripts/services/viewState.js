@@ -24,6 +24,9 @@ angular.module('emulvcApp')
     // current selected (clicked) Segment
     var curClickSegment = null;
     
+    // current selected (clicked) Segment
+    var curClickArray = [];    
+    
     // current selected (mousemove) Segment
     var curMouseSegment = null;        
     
@@ -117,6 +120,8 @@ angular.module('emulvcApp')
        */
       setcurClickSegment: function(segment) {
         this.curClickSegment = segment;
+        curClickArray.push(segment);
+        console.log(curClickArray);
       },
 
       /**
