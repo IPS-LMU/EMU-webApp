@@ -26,9 +26,10 @@ angular.module('emulvcApp')
       });
       
       element.bind('contextmenu', function(event){
+        event.preventDefault();
         setLastMove(event);
         setLastRightClick(event);
-        event.preventDefault();
+        
       });      
       
       element.bind('dblclick', function(event){
@@ -50,24 +51,24 @@ angular.module('emulvcApp')
       
       function setLastClick(x) {
         var perX = getX(x);
+        deleteEditArea();
         lastEventClick = getEvent(perX,x);
         lastEventClickId = getEventId(perX,x);
         lastEventRightClick = getEvent(perX,x);
         lastEventRightClickId = getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
-        deleteEditArea();
         scope.$digest(); 
       } 
       function setLastRightClick(x) {
         var perX = getX(x);
+        deleteEditArea();
         lastEventClick = getEvent(perX,x);
         lastEventClickId = getEventId(perX,x);
         lastEventRightClick = getEvent(perX,x);
         lastEventRightClickId = getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
-        deleteEditArea();
         scope.$digest(); 
       } 
       function setLastDblClick(x) {

@@ -48,7 +48,7 @@ angular.module('emulvcApp')
 					
 					var segMId = viewPort.getcurMouseSegment();
 					var segCId = viewPort.getcurClickSegment();
-					
+					var curID = 0;
 					if (tierDetails.type == "seg") {
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
@@ -70,11 +70,14 @@ angular.module('emulvcApp')
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurMouseTierName();
 								
-								if(segCId == curEvt) {
-								  ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
-								  ctx.fillRect(posS, 0, posE-posS, canvas[0].height);
-								  ctx.fillStyle = 'black';
-								} 
+								segCId.forEach(function(entry) {
+								    if(entry==curID) {
+    								  ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+	    							  ctx.fillRect(posS, 0, posE-posS, canvas[0].height);
+		    						  ctx.fillStyle = 'black';					    
+								    }
+								});
+								
 								if(segMId == curEvt) {
 								  ctx.fillStyle = "blue";
 								  ctx.fillRect(posS, 0, 3, canvas[0].height);
@@ -133,6 +136,7 @@ angular.module('emulvcApp')
 								if (posE - posS > sDtW) {
 									ctx.fillText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas[0].height - canvas[0].height / 8);
 								}
+								++curID;
 							}
 						}
 					}

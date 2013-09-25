@@ -112,8 +112,8 @@ angular.module('emulvcApp')
        */
       setcurClickSegment: function(segment,id) {
         this.curClickSegment = segment;
-        selected = [];
-        selected.push(id);
+        this.selected = [];
+        this.selected.push(id);
       },
 
       /**
@@ -121,18 +121,25 @@ angular.module('emulvcApp')
        * @param segment
        */
       setcurClickSegmentMultiple: function(segment,id) {
-        selected.forEach(function(entry) {
-          if(entry-1==id || entry+1==id) selected.push(id);
+        var empty = true;
+        var my = this;
+        this.selected.forEach(function(entry) {
+          if(entry-1==id || entry+1==id) {
+            my.selected.push(id);
+            empty = false;
+          }
         });
-        console.log(selected);
-
+        if(empty) {
+          this.selected = [];
+          this.selected.push(id);        
+        }
       },
 
       /**
        * gets the current (click) Segment
        */
       getcurClickSegment: function() {
-        return this.curClickSegment;
+        return this.selected;
       },
 
 
