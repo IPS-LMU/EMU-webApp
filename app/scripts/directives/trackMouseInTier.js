@@ -6,6 +6,7 @@ angular.module('emulvcApp')
     restrict: "A",
     link: function(scope, element){
       var elem = element[0];
+      var id = element.parent().parent()[0].id;
       var ctx = elem.getContext('2d');      
       // the last coordinates before the current move
       var lastX,currentX;
@@ -41,14 +42,14 @@ angular.module('emulvcApp')
       
       function setLastClick(x) {
         lastEventClick = getEvent(getX(x),x);
-        scope.viewState.setcurClickTierName(elem.id);
+        scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick);
         deleteEditArea();
         scope.$digest(); 
       } 
       function setLastDblClick(x) {
         lastEventClick = getEvent(getX(x),x);
-        scope.viewState.setcurClickTierName(elem.id);
+        scope.viewState.setcurClickTierName(id);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample);
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
         var top = x.originalEvent.srcElement.offsetTop;
@@ -74,7 +75,7 @@ angular.module('emulvcApp')
       }      
       function setLastMove(x) {
         lastEventMove = getEvent(getX(x),x);
-        scope.viewState.setcurMouseTierName(elem.id);
+        scope.viewState.setcurMouseTierName(id);
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.$digest(); 
       }               
@@ -88,7 +89,8 @@ angular.module('emulvcApp')
         var shift = height/3;
         var content = $("<textarea>").attr({
 			id: editAreaName.substr(1), 
-			"autofocus":"true"
+			"autofocus":"true",
+			"class": editAreaName.substr(1)
 		}).css({
 		    "position": "absolute",
 			"top": y+1 + "px",
@@ -96,13 +98,9 @@ angular.module('emulvcApp')
 			"width": width-1 + "px",
 			"height": height + "px",
 			"max-height": height-shift + "px",
-			"z-index":"9999",
-			"text-align":"center",
-			"padding":"0",
-			"margin":"0",
 			"padding-top": shift + "px"
 		}).text(label);
-        $("."+elem.id).prepend(content);
+        $("#"+id).prepend(content);
 		$("#label_edit_textarea").focus();
       }
       function deleteEditArea() {

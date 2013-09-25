@@ -10,6 +10,8 @@ angular.module('emulvcApp')
 
                     $(document).bind("keydown", function(e) {
                             var code = (e.keyCode ? e.keyCode : e.which);
+                            
+                            if(code==13) alert("enter");
 
                             scope.$apply(function() {
                                 scope.setlastkeycode(code);

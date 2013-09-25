@@ -9,14 +9,13 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas");
-
-				scope.$watch('tierDetails', function(newVal, oldVal) {
-					drawTierDetails(scope.tierDetails,scope.viewState, scope);
+				var myid = element[0].id;
+				scope.$watch('tierDetails', function() {
+					drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
 
-				scope.$watch('viewState', function(newVal, oldVal) {
-				    console.log("update");
-					drawTierDetails(scope.tierDetails,scope.viewState, scope);
+				scope.$watch('viewState', function() {
+					drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
 				
 				/**
@@ -26,7 +25,7 @@ angular.module('emulvcApp')
 				 * @param pery
 				 */
 
-				function drawTierDetails(tierDetails, viewPort, scope) {
+				function drawTierDetails(tierDetails, viewPort) {
 
 					if ($.isEmptyObject(tierDetails)) {
 						 console.log("undef tierDetails");
@@ -48,8 +47,6 @@ angular.module('emulvcApp')
 					ctx.fillText("(" + tierDetails.type + ")", 5, 24 * 2);
 					
 					var segId = viewPort.getcurMouseSegment();
-					console.log(segId);
-					
 					if (tierDetails.type == "seg") {
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
