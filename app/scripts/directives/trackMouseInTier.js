@@ -5,13 +5,15 @@ angular.module('emulvcApp')
   return {
     restrict: "A",
     link: function(scope, element){
-      var ctx = element[0].getContext('2d');      
+      var elem = element[0];
+      var ctx = elem.getContext('2d');      
       // the last coordinates before the current move
       var lastX,currentX;
       var lastY,currentY;
       // the last event before the current move
       var lastEventClick;
       var lastEventMove;
+      var editAreaName = "#label_edit_textarea";
       
       element.bind('mousedown', function(event){
         setLastMove(event);
@@ -39,18 +41,40 @@ angular.module('emulvcApp')
       
       function setLastClick(x) {
         lastEventClick = getEvent(getX(x),x);
-        scope.viewState.setcurClickTierName(element[0].id);
+        scope.viewState.setcurClickTierName(elem.id);
         scope.viewState.setcurClickSegment(lastEventClick);
+        deleteEditArea();
         scope.$digest(); 
       } 
       function setLastDblClick(x) {
         lastEventClick = getEvent(getX(x),x);
-        scope.viewState.setcurClickTierName(element[0].id);
+        scope.viewState.setcurClickTierName(elem.id);
+        var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample);
+        var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
+        var top = x.originalEvent.srcElement.offsetTop;
+        var height = x.originalEvent.srcElement.clientHeight;
+        createEditArea(start+1,top+1,end-start-3,height-3,lastEventClick.label);
+        createSelection(document.querySelector(editAreaName), 0, $(editAreaName).val().length);
         scope.$digest(); 
-      }       
+      }  
+      function createSelection(field, start, end) {
+		if (field.createTextRange) {
+			var selRange = field.createTextRange();
+			selRange.collapse(true);
+			selRange.moveStart('character', start);
+			selRange.moveEnd('character', end);
+			selRange.select();
+		} else if (field.setSelectionRange) {
+			field.setSelectionRange(start, end);
+		} else if (field.selectionStart) {
+			field.selectionStart = start;
+			field.selectionEnd = end;
+		}
+		field.focus();
+      }      
       function setLastMove(x) {
         lastEventMove = getEvent(getX(x),x);
-        scope.viewState.setcurMouseTierName(element[0].id);
+        scope.viewState.setcurMouseTierName(elem.id);
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.$digest(); 
       }               
@@ -59,6 +83,24 @@ angular.module('emulvcApp')
       }  
       function getY(e) {
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
+      }
+      function createEditArea(x,y,width,height,label) {
+        var content = $("<textarea>").attr({
+			id: editAreaName.substr(1), 
+			"autofocus":"true"
+		}).css({
+		    "position": "absolute",
+			"top": y + "px",
+			"left": x + "px",
+			"width": width + "px",
+			"height": height + "px",
+			"z-index":"9999"
+		}).text(label);
+        $("."+elem.id).prepend(content);
+		$("#label_edit_textarea").focus();
+      }
+      function deleteEditArea() {
+        $("#label_edit_textarea").remove();
       }
       function getEvent(x,event) {
         var lastStart = scope.tierDetails.events[scope.tierDetails.events.length-1].startSample;
