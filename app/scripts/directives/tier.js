@@ -46,7 +46,9 @@ angular.module('emulvcApp')
 					ctx.fillText(tierDetails.TierName, 5, 24);
 					ctx.fillText("(" + tierDetails.type + ")", 5, 24 * 2);
 					
-					var segId = viewPort.getcurMouseSegment();
+					var segMId = viewPort.getcurMouseSegment();
+					var segCId = viewPort.getcurClickSegment();
+					
 					if (tierDetails.type == "seg") {
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
@@ -63,11 +65,17 @@ angular.module('emulvcApp')
 
 								// draw segment start
 								var posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
+								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+								
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurMouseTierName();
 								
-
-								if(segId == curEvt) {
+								if(segCId == curEvt) {
+								  ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+								  ctx.fillRect(posS, 0, posE-posS, canvas[0].height);
+								  ctx.fillStyle = 'black';
+								} 
+								if(segMId == curEvt) {
 								  ctx.fillStyle = "blue";
 								  ctx.fillRect(posS, 0, 3, canvas[0].height);
 								  ctx.fillStyle = 'black';
@@ -79,14 +87,9 @@ angular.module('emulvcApp')
 
 
 								//draw segment end
-								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+								
 								// cc.fillStyle = this.params.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
-
-								// 			if (emulabeller.viewPort.isSelected(tierDetails, curEvt.label, curEvt.startSample)) {
-								// 				cc.fillStyle = this.params.selectedSegmentColor;
-								// 				cc.fillRect(posS, 0, posE - posS, canvas.height);
-								// 			}
 
 								// 			// draw label 
 								// 			// cc.strokeStyle = this.;
