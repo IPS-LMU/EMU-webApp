@@ -124,18 +124,15 @@ angular.module('emulvcApp')
         var empty = true;
         var my = this;
         this.selected.forEach(function(entry) {
-          if(my.selected.indexOf(id) == -1) {
-            if(entry-1==id || entry+1==id) {
+            if(my.selected.indexOf(id) == -1 &&(entry-1==id || entry+1==id)) {
               my.selected.push(id);
               empty = false;
             }
-          }
         });
         if(empty) {
           this.selected = [];
           this.selected.push(id);        
         }
-        console.log(this.selected);
       },
 
       /**

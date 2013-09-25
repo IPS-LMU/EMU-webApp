@@ -48,12 +48,13 @@ angular.module('emulvcApp')
 					
 					var segMId = viewPort.getcurMouseSegment();
 					var segCId = viewPort.getcurClickSegment();
-					var curID = 0;
+					var curID = -1;
 					if (tierDetails.type == "seg") {
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
 						for (var k in e) {
+						    ++curID;
 							var curEvt = e[k];
 							if (curEvt.startSample > viewPort.sS &&
 								curEvt.startSample < viewPort.eS || //within segment
@@ -136,7 +137,6 @@ angular.module('emulvcApp')
 								if (posE - posS > sDtW) {
 									ctx.fillText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas[0].height - canvas[0].height / 8);
 								}
-								++curID;
 							}
 						}
 					}

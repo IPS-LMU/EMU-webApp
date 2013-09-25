@@ -143,7 +143,6 @@ angular.module('emulvcApp')
 		  }
 		  ++id;
 		});      
-		console.log(ret);
 		return ret;
       }
       function getEvent(x,event) {
