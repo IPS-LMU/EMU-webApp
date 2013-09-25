@@ -53,7 +53,7 @@ angular.module('emulvcApp')
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        createEditArea(start+1,top+1,end-start-3,height-3,lastEventClick.label);
+        createEditArea(start,top,end-start,height,lastEventClick.label);
         createSelection(document.querySelector(editAreaName), 0, $(editAreaName).val().length);
         scope.$digest(); 
       }  
@@ -85,16 +85,22 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label) {
+        var shift = height/3;
         var content = $("<textarea>").attr({
 			id: editAreaName.substr(1), 
 			"autofocus":"true"
 		}).css({
 		    "position": "absolute",
-			"top": y + "px",
-			"left": x + "px",
-			"width": width + "px",
+			"top": y+1 + "px",
+			"left": x+2 + "px",
+			"width": width-1 + "px",
 			"height": height + "px",
-			"z-index":"9999"
+			"max-height": height-shift + "px",
+			"z-index":"9999",
+			"text-align":"center",
+			"padding":"0",
+			"margin":"0",
+			"padding-top": shift + "px"
 		}).text(label);
         $("."+elem.id).prepend(content);
 		$("#label_edit_textarea").focus();
