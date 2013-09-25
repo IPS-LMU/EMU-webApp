@@ -20,7 +20,7 @@ angular.module('emulvcApp')
       
       element.bind('dblclick', function(event){
         setLastMove(event);
-        setLastClick(event);
+        setLastDblClick(event);
       });
       
       element.bind('mousemove', function(event){ 
@@ -40,10 +40,19 @@ angular.module('emulvcApp')
       function setLastClick(x) {
         lastEventClick = getEvent(getX(x),x);
         scope.viewState.setcurClickTierName(element[0].id);
+        scope.viewState.setcurClickSegment(lastEventClick);
+        scope.$digest(); 
       } 
+      function setLastDblClick(x) {
+        lastEventClick = getEvent(getX(x),x);
+        scope.viewState.setcurClickTierName(element[0].id);
+        scope.$digest(); 
+      }       
       function setLastMove(x) {
         lastEventMove = getEvent(getX(x),x);
         scope.viewState.setcurMouseTierName(element[0].id);
+        scope.viewState.setcurMouseSegment(lastEventMove);
+        scope.$digest(); 
       }               
       function getX(e) {
         return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);

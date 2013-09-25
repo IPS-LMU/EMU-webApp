@@ -15,6 +15,7 @@ angular.module('emulvcApp')
 				}, true);
 
 				scope.$watch('viewState', function(newVal, oldVal) {
+				    console.log("update");
 					drawTierDetails(scope.tierDetails,scope.viewState, scope);
 				}, true);
 				
@@ -40,13 +41,15 @@ angular.module('emulvcApp')
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 					var sDist = viewPort.getSampleDist(canvas[0].width);
 
-					console.log(sDist);
-
 					// draw name of tier
 					ctx.fillStyle = 'black';
 					ctx.font = ('12' + 'px' + ' ' + 'Calibri');
 					ctx.fillText(tierDetails.TierName, 5, 24);
 					ctx.fillText("(" + tierDetails.type + ")", 5, 24 * 2);
+					
+					var segId = viewPort.getcurMouseSegment();
+					console.log(segId);
+					
 					if (tierDetails.type == "seg") {
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
@@ -64,16 +67,16 @@ angular.module('emulvcApp')
 								// draw segment start
 								var posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
 								// check if selected -> if draw as marked
-								// var tierId = emulabeller.viewPort.curMouseMoveTierName;
-								// var segId = emulabeller.viewPort.curMouseMoveSegmentName;
-								// var nowid = emulabeller.viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
-								// if (tierDetails.TierName == tierId && segId == nowid) {
-								// cc.fillStyle = this.params.selectedBoundaryColor;
-								// cc.fillRect(posS - 4, 0, 8, canvas.height);
-								// } else {
-								ctx.fillStyle = 'blue';
-								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
-								// }
+								var tierId = viewPort.getcurMouseTierName();
+								
+								
+								  if(segId == curEvt) {
+								    ctx.fillStyle = "blue";
+								    ctx.fillRect(posS - 4, 0, 8, canvas.height);
+								  } else {
+								    ctx.fillStyle = 'red';
+								    ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
+								  }
 
 								//draw segment end
 								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));

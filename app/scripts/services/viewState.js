@@ -15,11 +15,17 @@ angular.module('emulvcApp')
     // current selected border end (right side)
     var selectE = -1;
     
-    // current selected (clicked) tier Name
+    // current selected (clicked) Tier Name
     var curClickTierName = "";
     
-    // current selected (mousemove) tier Name
-    var curMouseTierName = "";    
+    // current selected (mousemove) Tier Name
+    var curMouseTierName = "";     
+    
+    // current selected (clicked) Segment
+    var curClickSegment = null;
+    
+    // current selected (mousemove) Segment
+    var curMouseSegment = null;        
     
     // complete buffer length
     var bufferLength = 0; 
@@ -88,6 +94,36 @@ angular.module('emulvcApp')
        */
       getcurMouseTierName: function() {
         return this.curMouseTierName;
+      },
+
+      /**
+       * sets the current (mousemove) Segment
+       * @param name is name of tier
+       */
+      setcurMouseSegment: function(segment) {
+        this.curMouseSegment = segment;
+      },
+
+      /**
+       * gets the current (mousemove) Segment
+       */
+      getcurMouseSegment: function() {
+        return this.curMouseSegment;
+      },
+      
+      /**
+       * sets the current (click) Segment
+       * @param name is name of tier
+       */
+      setcurClickSegment: function(segment) {
+        this.curClickSegment = segment;
+      },
+
+      /**
+       * gets the current (click) Segment
+       */
+      getcurClickSegment: function() {
+        return this.curClickSegment;
       },
 
 
