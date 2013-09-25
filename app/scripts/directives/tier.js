@@ -23,8 +23,7 @@ angular.module('emulvcApp')
 					// console.log(oldVal, newVal);
 					drawTierDetails(scope.tierDetails, scope);
 				}, true);
-
-
+				
 				console.log(scope.viewState);
 
 				/**

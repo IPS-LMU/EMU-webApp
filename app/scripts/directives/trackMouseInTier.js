@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-.directive("drawonmousedown", function(){
+.directive("trackmouseintier", function(){
   return {
     restrict: "A",
     link: function(scope, element){
@@ -18,6 +18,13 @@ angular.module('emulvcApp')
         ctx.beginPath();        
         drawing = true;
       });
+      
+      element.bind('dblclick', function(event){ 
+          currentX = getX(event);
+          currentY = getY(event);             
+          alert("dblclick at "+currentX+" "+currentY);
+      });
+      
       element.bind('mousemove', function(event){
         if(drawing){
           // get current mouse position
