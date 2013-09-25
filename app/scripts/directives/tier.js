@@ -69,14 +69,16 @@ angular.module('emulvcApp')
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurMouseTierName();
 								
-								
-								  if(segId == curEvt) {
-								    ctx.fillStyle = "blue";
-								    ctx.fillRect(posS - 4, 0, 8, canvas.height);
-								  } else {
-								    ctx.fillStyle = 'red';
-								    ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
-								  }
+
+								if(segId == curEvt) {
+								  ctx.fillStyle = "blue";
+								  ctx.fillRect(posS, 0, 3, canvas[0].height);
+								} 
+								else {
+								  ctx.fillStyle = 'red';
+								  ctx.fillRect(posS, 0, 2, canvas[0].height / 2);							
+								}
+								ctx.fillStyle = 'red';
 
 								//draw segment end
 								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
