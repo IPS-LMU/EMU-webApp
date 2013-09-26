@@ -144,21 +144,15 @@ angular.module('emulvcApp')
 	  },
 	  getlastID: function() {
 	      return this.lasteditArea.substr(0,this.lasteditArea.indexOf("__"));
-        },	
+	  },	
 		
-		getlasteditArea: function() {
-		    return this.lasteditArea;
-		},			
+	  getlasteditArea: function() {
+	      return this.lasteditArea;
+	  },			
 		
-	    deleteEditArea: function() {
-            if(null!=this.getlasteditArea()) $("."+this.getlasteditArea()).remove();
-        },
-      
-      
-      
-      
-      
-      
+	  deleteEditArea: function() {
+	      if(null!=this.getlasteditArea()) $("."+this.getlasteditArea()).remove();
+	  },
 
       /**
        * gets the current (click) Segment

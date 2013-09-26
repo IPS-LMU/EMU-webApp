@@ -53,28 +53,28 @@ angular.module('emulvcApp')
       function setLastClick(x) {
         var perX = getX(x);
         scope.viewState.deleteEditArea();
-        lastEventClick = getEvent(perX,x);
-        lastEventClickId = getEventId(perX,x);
-        lastEventRightClick = getEvent(perX,x);
-        lastEventRightClickId = getEventId(perX,x);
+        lastEventClick = scope.getEvent(perX,x);
+        lastEventClickId = scope.getEventId(perX,x);
+        lastEventRightClick = scope.getEvent(perX,x);
+        lastEventRightClickId = scope.getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         scope.$digest(); 
       } 
       function setLastRightClick(x) {
         var perX = getX(x);
-        deleteEditArea();
-        lastEventClick = getEvent(perX,x);
-        lastEventClickId = getEventId(perX,x);
-        lastEventRightClick = getEvent(perX,x);
-        lastEventRightClickId = getEventId(perX,x);
+        scope.viewState.deleteEditArea();
+        lastEventClick = scope.getEvent(perX,x);
+        lastEventClickId = scope.getEventId(perX,x);
+        lastEventRightClick = scope.getEvent(perX,x);
+        lastEventRightClickId = scope.getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
         scope.$digest(); 
       } 
       function setLastDblClick(x) {
-        lastEventClick = getEvent(getX(x),x);
-        lastEventClickId = getEventId(getX(x),x);
+        lastEventClick = scope.getEvent(getX(x),x);
+        lastEventClickId = scope.getEventId(getX(x),x);
         scope.viewState.setcurClickTierName(id);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample);
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
@@ -100,7 +100,7 @@ angular.module('emulvcApp')
 		field.focus();
       }      
       function setLastMove(x) {
-        lastEventMove = getEvent(getX(x),x);
+        lastEventMove = scope.getEvent(getX(x),x);
         scope.viewState.setcurMouseTierName(id);
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.$digest(); 
@@ -131,33 +131,6 @@ angular.module('emulvcApp')
 			"padding-top": (height/3) + "px"
 		}).text(label).focus());
 		return myid;
-      }
-      function getPCMpp(event) {
-        var start = parseInt(scope.viewState.sS,10);
-        var end = parseInt(scope.viewState.eS,10);
-        return (end-start)/event.originalEvent.srcElement.clientWidth;      
-      }
-      function getEventId(x,event) {
-        var pcm = parseInt(scope.viewState.sS,10)+(x * getPCMpp(event)); 
-        var id = 0;
-        var ret = 0;
-        angular.forEach(scope.tierDetails.events, function(evt) {
-          if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
-		      ret=id;
-		  }
-		  ++id;
-		});      
-		return ret;
-      }
-      function getEvent(x,event) {
-        var pcm = parseInt(scope.viewState.sS,10)+(x * getPCMpp(event)); 
-        var evtr = null;
-		angular.forEach(scope.tierDetails.events, function(evt) {
-		  if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
-		      evtr=evt;
-		  }
-		});      
-        return evtr;
       }
     }
   };

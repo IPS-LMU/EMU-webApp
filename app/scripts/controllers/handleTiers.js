@@ -22,15 +22,45 @@ angular.module('emulvcApp')
 		};
 		
 		$scope.$on('renameLabel', function(e) {
-		    $scope.renameLabel("",viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
+		    $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
 		    viewState.deleteEditArea();
 		});
 		
 	    $scope.renameLabel = function(tier,id,name) {
+		    viewState.getcurClickSegment()[0].label = name;
             console.log(tier);
             console.log(id);
             console.log(name);
-        }		
+        }	
+        
+
+        $scope.getPCMpp = function(event) {
+        var start = parseInt($scope.viewState.sS,10);
+        var end = parseInt($scope.viewState.eS,10);
+        return (end-start)/event.originalEvent.srcElement.clientWidth;      
+      }
+      $scope.getEventId = function(x,event) {
+        var pcm = parseInt($scope.viewState.sS,10)+(x * $scope.getPCMpp(event)); 
+        var id = 0;
+        var ret = 0;
+        angular.forEach($scope.tierDetails.events, function(evt) {
+          if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
+		      ret=id;
+		  }
+		  ++id;
+		});      
+		return ret;
+      }
+      $scope.getEvent = function(x,event) {
+        var pcm = parseInt($scope.viewState.sS,10)+(x * $scope.getPCMpp(event)); 
+        var evtr = null;
+		angular.forEach($scope.tierDetails.events, function(evt) {
+		  if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {
+		      evtr=evt;
+		  }
+		});      
+        return evtr;
+      }        	
 		
 		
 });
