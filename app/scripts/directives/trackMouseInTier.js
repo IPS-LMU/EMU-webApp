@@ -76,8 +76,8 @@ angular.module('emulvcApp')
         lastEventClick = scope.getEvent(getX(x),x);
         lastEventClickId = scope.getEventId(getX(x),x);
         scope.viewState.setcurClickTierName(id);
-        var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample);
-        var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
+        var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
+        var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
         var myid = createEditArea(start,top,end-start,height,lastEventClick.label,lastEventClickId);
@@ -112,7 +112,7 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label,labelid) {
-          var myid = labelid+"__"+label;
+          var myid = labelid+"__";
           scope.$apply(function() {
               scope.viewState.setlasteditArea(myid);
           });
