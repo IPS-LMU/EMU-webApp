@@ -79,8 +79,8 @@ angular.module('emulvcApp')
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur));
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        createEditArea(start,top,end-start,height,lastEventClick.label);
-        createSelection(document.querySelector("#"+scope.getlasteditArea()), 0, $("#"+scope.getlasteditArea()).val().length);
+        var myid = createEditArea(start,top,end-start,height,lastEventClick.label,lastEventClickId);
+        createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         scope.$digest(); 
       }  
       function createSelection(field, start, end) {
@@ -110,14 +110,15 @@ angular.module('emulvcApp')
       function getY(e) {
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
-      function createEditArea(x,y,width,height,label) {
+      function createEditArea(x,y,width,height,label,labelid) {
+          var myid = labelid+"-"+label;
           scope.$apply(function() {
               scope.setlasteditArea(label);
           });
-        $("#"+id).prepend($("<textarea>").attr({
-			id: label,
+        $("#"+id).append($("<textarea>").attr({
+			id: myid,
 			"autofocus":"true",
-			"class": label + " Label_Edit"
+			"class": myid + " Label_Edit"
 		}).css({
 		    "position": "absolute",
 			"top": y+1 + "px",
@@ -127,6 +128,7 @@ angular.module('emulvcApp')
 			"max-height": height-(height/3) + "px",
 			"padding-top": (height/3) + "px"
 		}).text(label).focus());
+		return myid;
       }
       function deleteEditArea() {
         $(".Label_Edit").remove();

@@ -7,12 +7,10 @@ angular.module('emulvcApp')
 		$scope.lasteditArea = "N/A";	
 		
 		$scope.setlastkeycode = function(c) {
-			$scope.lastkeycode = c;
+		    $scope.lastkeycode = c;
 			switch(c) {
 			    case 13:
-			        console.log($("#"+$scope.lasteditArea).val());
-			        //var content = $("#"+viewState.getEditAreaName()).val();
-			        //alert(content);
+			        $scope.HandletiersCtrl.updateLabel($scope.message);
 			        break;
 			    default:
 			        break;

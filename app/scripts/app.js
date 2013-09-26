@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp', ['ngRoute'])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -10,4 +10,5 @@ angular.module('emulvcApp', ['ngRoute'])
       .otherwise({
         redirectTo: '/'
       });
+    $locationProvider.html5Mode(true);
   });
