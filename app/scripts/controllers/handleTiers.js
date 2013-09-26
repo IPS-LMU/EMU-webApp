@@ -26,6 +26,10 @@ angular.module('emulvcApp')
 		    viewState.deleteEditArea();
 		});
 		
+		$scope.$on('deleteEditArea', function(e) {
+		    viewState.deleteEditArea();
+		});		
+		
 	    $scope.renameLabel = function(tier,id,name) {
 	        var i = 0;
             angular.forEach($scope.tierDetails.events, function(evt) {

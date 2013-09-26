@@ -11,6 +11,9 @@ angular.module('emulvcApp')
 			    case 13:
 			        $scope.$broadcast('renameLabel');
 			        break;
+			    case 27:
+			        $scope.$broadcast('deleteEditArea');
+			        break;			        
 			    default:
 			        break;
 			}
