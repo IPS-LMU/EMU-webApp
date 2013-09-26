@@ -22,8 +22,10 @@ angular.module('emulvcApp')
 		};
 		
 		$scope.$on('renameLabel', function(e) {
-		    $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
-		    viewState.deleteEditArea();
+		    if(viewState.isEditing()) {
+		        $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
+		        viewState.deleteEditArea();
+		    }
 		});
 		
 		$scope.$on('deleteEditArea', function(e) {

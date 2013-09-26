@@ -24,7 +24,11 @@ angular.module('emulvcApp')
     // sample Rate of Wave
     var sampleRate = 44100;
     
+    // id of label edit (textarea)
     var lasteditArea = null;	
+    
+    // user is editing label
+    var editing = false;	    
     
 
     // Public API here
@@ -35,6 +39,7 @@ angular.module('emulvcApp')
       selectE : selectE,
       selected : selected,
       lasteditArea : lasteditArea,
+      editing : editing,
       
       
       /**
@@ -138,9 +143,15 @@ angular.module('emulvcApp')
         }
       },
       
+	  isEditing: function() {
+	      return this.editing;
+	  },
+      
+      
       
       setlasteditArea: function(name) {
           this.lasteditArea = name;
+          this.editing = true;
 	  },
 	  getlastID: function() {
 	      return this.lasteditArea.substr(0,this.lasteditArea.indexOf("__"));
@@ -152,6 +163,7 @@ angular.module('emulvcApp')
 		
 	  deleteEditArea: function() {
 	      if(null!=this.getlasteditArea()) $("."+this.getlasteditArea()).remove();
+	      this.editing = false;
 	  },
 
       /**
