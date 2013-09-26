@@ -33,11 +33,17 @@ angular.module('emulvcApp')
 		});	
 		
 		$scope.$on('tab-next', function(e) {
-		    viewState.setcurClickSegment(viewState.getcurClickTierName(),parseInt(viewState.getcurClickSegment()[0],10)+1);
+		    var now = parseInt(viewState.getcurClickSegment()[0],10);
+		    if(now<$scope.tierDetails.events.length-1) ++now;
+		    else now = 0;
+		    viewState.setcurClickSegment(viewState.getcurClickTierName(),now);
 		});				
 
 		$scope.$on('tab-prev', function(e) {
-		    viewState.setcurClickSegment(viewState.getcurClickTierName(),parseInt(viewState.getcurClickSegment()[0],10)-1);
+		    var now = parseInt(viewState.getcurClickSegment()[0],10);
+		    if(now>0) --now;
+		    else now = $scope.tierDetails.events.length-1;
+		    viewState.setcurClickSegment(viewState.getcurClickTierName(),now);
 		});				
 
 		
