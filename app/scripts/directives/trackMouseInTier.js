@@ -113,7 +113,7 @@ angular.module('emulvcApp')
       function createEditArea(x,y,width,height,label,labelid) {
           var myid = labelid+"-"+label;
           scope.$apply(function() {
-              scope.setlasteditArea(label);
+              scope.setlasteditArea(myid);
           });
         $("#"+id).append($("<textarea>").attr({
 			id: myid,
@@ -131,7 +131,7 @@ angular.module('emulvcApp')
 		return myid;
       }
       function deleteEditArea() {
-        $(".Label_Edit").remove();
+        if(null!=scope.getlasteditArea()) $("."+scope.getlasteditArea()).remove();
       }
       function getPCMpp(event) {
         var start = parseInt(scope.viewState.sS,10);
