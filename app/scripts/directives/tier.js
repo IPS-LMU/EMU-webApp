@@ -9,6 +9,7 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas");
+								
 				var myid = element[0].id;
 				scope.$watch('tierDetails', function() {
 					drawTierDetails(scope.tierDetails,scope.viewState);

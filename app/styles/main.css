@@ -53,13 +53,10 @@ div.center {
     float:right;
     margin-right: 12px;
 }
-.button {
-    margin: 0px;
-    padding: 0px;
-}
 .resize, .delete, .save{
     margin: 0px;
     padding: 0px;
+    margin-bottom: 2px;
     background-color:#B9B9B9;
 }
 .delete img {
