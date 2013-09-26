@@ -45,11 +45,11 @@ angular.module('emulvcApp')
         $scope.getPCMpp = function(event) {
             var start = parseInt($scope.viewState.sS,10);
             var end = parseInt($scope.viewState.eS,10);
-            return (end-start)/event.originalEvent.srcElement.clientWidth;      
+            return (end-start)/event.originalEvent.srcElement.width;      
         }
         
         $scope.getEventId = function(x,event) {
-            var pcm = parseInt($scope.viewState.sS,10)+(x * $scope.getPCMpp(event)); 
+            var pcm = parseInt($scope.viewState.sS,10)+x; 
             var id = 0;
             var ret = 0;
             angular.forEach($scope.tierDetails.events, function(evt) {
@@ -62,8 +62,8 @@ angular.module('emulvcApp')
         }
         
         
-        $scope.getEvent = function(x,event) {
-            var pcm = parseInt($scope.viewState.sS,10)+(x * $scope.getPCMpp(event)); 
+        $scope.getEvent = function(x) {
+            var pcm = parseInt($scope.viewState.sS,10)+x; 
             var evtr = null;
 		    angular.forEach($scope.tierDetails.events, function(evt) {
 		        if(pcm>=evt.startSample && pcm <= (evt.startSample+evt.sampleDur)) {

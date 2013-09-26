@@ -51,7 +51,7 @@ angular.module('emulvcApp')
       });      
       
       function setLastClick(x) {
-        var perX = getX(x);
+        var perX = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(perX,x);
         lastEventClickId = scope.getEventId(perX,x);
@@ -62,7 +62,7 @@ angular.module('emulvcApp')
         scope.$digest(); 
       } 
       function setLastRightClick(x) {
-        var perX = getX(x);
+        var perX = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(perX,x);
         lastEventClickId = scope.getEventId(perX,x);
@@ -73,8 +73,9 @@ angular.module('emulvcApp')
         scope.$digest(); 
       } 
       function setLastDblClick(x) {
-        lastEventClick = scope.getEvent(getX(x),x);
-        lastEventClickId = scope.getEventId(getX(x),x);
+        var perX = getX(x) * scope.getPCMpp(x);
+        lastEventClick = scope.getEvent(perX,x);
+        lastEventClickId = scope.getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
@@ -82,6 +83,13 @@ angular.module('emulvcApp')
         var height = x.originalEvent.srcElement.clientHeight;
         var myid = createEditArea(start,top,end-start,height,lastEventClick.label,lastEventClickId);
         createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+        scope.$digest(); 
+      }     
+      function setLastMove(x) {
+        var perX = getX(x) * scope.getPCMpp(x);
+        lastEventMove = scope.getEvent(perX,x);
+        scope.viewState.setcurMouseTierName(id);
+        scope.viewState.setcurMouseSegment(lastEventMove);
         scope.$digest(); 
       }  
       function createSelection(field, start, end) {
@@ -98,13 +106,7 @@ angular.module('emulvcApp')
 			field.selectionEnd = end;
 		}
 		field.focus();
-      }      
-      function setLastMove(x) {
-        lastEventMove = scope.getEvent(getX(x),x);
-        scope.viewState.setcurMouseTierName(id);
-        scope.viewState.setcurMouseSegment(lastEventMove);
-        scope.$digest(); 
-      }               
+      }                
       function getX(e) {
         return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
       }  
