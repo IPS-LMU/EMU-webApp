@@ -5,6 +5,7 @@ angular.module('emulvcApp')
   return {
     restrict: "A",
     link: function(scope, element){
+    
       var elem = element[0];
       var id = element.parent().parent()[0].id;
       var ctx = elem.getContext('2d');      
@@ -17,8 +18,7 @@ angular.module('emulvcApp')
       var lastEventRightClick;
       var lastEventRightClickId;
       var lastEventMove;
-      
-      var editAreaName = "#label_edit_textarea";
+
       
       element.bind('click', function(event){
         setLastMove(event);
@@ -80,7 +80,7 @@ angular.module('emulvcApp')
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
         createEditArea(start,top,end-start,height,lastEventClick.label);
-        createSelection(document.querySelector(editAreaName), 0, $(editAreaName).val().length);
+        createSelection(document.querySelector("#"+scope.viewState.getEditAreaName()), 0, $("#"+scope.viewState.getEditAreaName()).val().length);
         scope.$digest(); 
       }  
       function createSelection(field, start, end) {
@@ -111,10 +111,11 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label) {
+        scope.viewState.setEditAreaName(label);
         $("#"+id).prepend($("<textarea>").attr({
-			id: editAreaName.substr(1), 
+			id: scope.viewState.getEditAreaName(), 
 			"autofocus":"true",
-			"class": editAreaName.substr(1)
+			"class": scope.viewState.getEditAreaName() + " Label_Edit"
 		}).css({
 		    "position": "absolute",
 			"top": y+1 + "px",
@@ -126,7 +127,7 @@ angular.module('emulvcApp')
 		}).text(label).focus());
       }
       function deleteEditArea() {
-        $("#label_edit_textarea").remove();
+        $("#"+scope.viewState.getEditAreaName()).remove();
       }
       function getPCMpp(event) {
         var start = parseInt(scope.viewState.sS,10);

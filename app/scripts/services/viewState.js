@@ -23,6 +23,9 @@ angular.module('emulvcApp')
     
     // sample Rate of Wave
     var sampleRate = 44100;
+    
+    // variable name of edit area (textarea)
+    var editAreaName = "";
 
 
     // Public API here
@@ -32,6 +35,7 @@ angular.module('emulvcApp')
       selectS : selectS,
       selectE : selectE,
       selected : selected,
+      editAreaName : editAreaName,
       
       
       /**
@@ -114,6 +118,21 @@ angular.module('emulvcApp')
         this.curClickSegment = segment;
         this.selected = [];
         this.selected.push(id);
+      },
+      
+      /**
+       * sets the name of the current Edit Area (textarea)
+       * @name of Edit Area
+       */
+      setEditAreaName: function(name) {
+        this.editAreaName = name;
+      },
+      
+      /**
+       * gets the current name of the Edit Area (textarea)
+       */      
+      getEditAreaName: function() {
+        return this.editAreaName;
       },
 
       /**

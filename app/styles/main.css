@@ -27,7 +27,7 @@ html, body{
     height: 64px;
 }
 
-.label_edit_textarea {
+.Label_Edit {
     z-index:9999;
     text-align:center;
     padding:0;
