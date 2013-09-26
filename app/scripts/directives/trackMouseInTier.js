@@ -18,6 +18,7 @@ angular.module('emulvcApp')
       var lastEventRightClick;
       var lastEventRightClickId;
       var lastEventMove;
+      var message;
 
       
       element.bind('click', function(event){
@@ -51,7 +52,7 @@ angular.module('emulvcApp')
       
       function setLastClick(x) {
         var perX = getX(x);
-        deleteEditArea();
+        scope.viewState.deleteEditArea();
         lastEventClick = getEvent(perX,x);
         lastEventClickId = getEventId(perX,x);
         lastEventRightClick = getEvent(perX,x);
@@ -111,14 +112,15 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label,labelid) {
-          var myid = labelid+"-"+label;
+          var myid = labelid+"__"+label;
           scope.$apply(function() {
-              scope.setlasteditArea(myid);
+              scope.viewState.setlasteditArea(myid);
           });
         $("#"+id).append($("<textarea>").attr({
 			id: myid,
 			"autofocus":"true",
-			"class": myid + " Label_Edit"
+			"class": myid + " Label_Edit",
+			"ng-model":"message"
 		}).css({
 		    "position": "absolute",
 			"top": y+1 + "px",
@@ -129,9 +131,6 @@ angular.module('emulvcApp')
 			"padding-top": (height/3) + "px"
 		}).text(label).focus());
 		return myid;
-      }
-      function deleteEditArea() {
-        if(null!=scope.getlasteditArea()) $("."+scope.getlasteditArea()).remove();
       }
       function getPCMpp(event) {
         var start = parseInt(scope.viewState.sS,10);

@@ -24,6 +24,8 @@ angular.module('emulvcApp')
     // sample Rate of Wave
     var sampleRate = 44100;
     
+    var lasteditArea = null;	
+    
 
     // Public API here
     return {
@@ -32,6 +34,7 @@ angular.module('emulvcApp')
       selectS : selectS,
       selectE : selectE,
       selected : selected,
+      lasteditArea : lasteditArea,
       
       
       /**
@@ -134,6 +137,28 @@ angular.module('emulvcApp')
           this.selected.push(id);        
         }
       },
+      
+      
+      setlasteditArea: function(name) {
+          this.lasteditArea = name;
+	  },
+	  getlastID: function() {
+	      return this.lasteditArea.substr(0,this.lasteditArea.indexOf("__"));
+        },	
+		
+		getlasteditArea: function() {
+		    return this.lasteditArea;
+		},			
+		
+	    deleteEditArea: function() {
+            if(null!=this.getlasteditArea()) $("."+this.getlasteditArea()).remove();
+        },
+      
+      
+      
+      
+      
+      
 
       /**
        * gets the current (click) Segment

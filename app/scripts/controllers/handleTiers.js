@@ -5,7 +5,7 @@ angular.module('emulvcApp')
 	
 		$scope.viewState = viewState;
 		$scope.testValue = '';
-		$scope.lasteditArea = null;	
+		$scope.message = '';
 
 		$http.get('testData/PhoneticTier.json').success(function(data) {
 			$scope.viewState.eS = data.events[data.events.length-1].startSample + data.events[data.events.length-1].sampleDur;
@@ -21,16 +21,16 @@ angular.module('emulvcApp')
 		    }
 		};
 		
-		$scope.$on('renameLabel', function(e, newName) {
-		    alert($("."+$scope.getlasteditArea()).val());
+		$scope.$on('renameLabel', function(e) {
+		    $scope.renameLabel("",viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
+		    viewState.deleteEditArea();
 		});
 		
-		$scope.setlasteditArea = function(name) {
-		    $scope.lasteditArea = name;
-		}
+	    $scope.renameLabel = function(tier,id,name) {
+            console.log(tier);
+            console.log(id);
+            console.log(name);
+        }		
 		
-		$scope.getlasteditArea = function() {
-		    return $scope.lasteditArea;
-		}			
 		
 });
