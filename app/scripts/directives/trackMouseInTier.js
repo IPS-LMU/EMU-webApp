@@ -80,7 +80,7 @@ angular.module('emulvcApp')
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
         createEditArea(start,top,end-start,height,lastEventClick.label);
-        createSelection(document.querySelector("#"+scope.viewState.getEditAreaName()), 0, $("#"+scope.viewState.getEditAreaName()).val().length);
+        createSelection(document.querySelector("#"+scope.getlasteditArea()), 0, $("#"+scope.getlasteditArea()).val().length);
         scope.$digest(); 
       }  
       function createSelection(field, start, end) {
@@ -111,11 +111,13 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label) {
-        scope.viewState.setEditAreaName(label);
+          scope.$apply(function() {
+              scope.setlasteditArea(label);
+          });
         $("#"+id).prepend($("<textarea>").attr({
-			id: scope.viewState.getEditAreaName(), 
+			id: label,
 			"autofocus":"true",
-			"class": scope.viewState.getEditAreaName() + " Label_Edit"
+			"class": label + " Label_Edit"
 		}).css({
 		    "position": "absolute",
 			"top": y+1 + "px",
@@ -127,7 +129,7 @@ angular.module('emulvcApp')
 		}).text(label).focus());
       }
       function deleteEditArea() {
-        $("#"+scope.viewState.getEditAreaName()).remove();
+        $(".Label_Edit").remove();
       }
       function getPCMpp(event) {
         var start = parseInt(scope.viewState.sS,10);
