@@ -5,9 +5,14 @@ angular.module('emulvcApp')
 
 		$scope.lastkeycode = "N/A";
 		
-		$scope.setlastkeycode = function(c) {
+		$scope.setlastkeycode = function(c,shift) {
 		    $scope.lastkeycode = c;
 			switch(c) {
+			    case 9:
+			        $scope.$broadcast('renameLabel');
+			        if(shift) $scope.$broadcast('tab-prev');
+			        else $scope.$broadcast('tab-next');
+			        break;
 			    case 13:
 			        $scope.$broadcast('renameLabel');
 			        break;

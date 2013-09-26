@@ -16,7 +16,7 @@ angular.module('emulvcApp')
     var selectE = -1;  
     
     // current selected segments
-    var selected = [];     
+    var selected = [-1];     
     
     // complete buffer length
     var bufferLength = 0; 
@@ -142,19 +142,24 @@ angular.module('emulvcApp')
           this.selected.push(id);        
         }
       },
+
+      /**
+       * gets the current (click) Segment
+       */
+      getcurClickSegment: function() {
+        return this.selected;
+      },
       
 	  isEditing: function() {
 	      return this.editing;
 	  },
-      
-      
       
       setlasteditArea: function(name) {
           this.lasteditArea = name;
           this.editing = true;
 	  },
 	  getlastID: function() {
-	      return this.lasteditArea.substr(0,this.lasteditArea.indexOf("__"));
+	      return this.lasteditArea.substr(2);
 	  },	
 		
 	  getlasteditArea: function() {
@@ -165,13 +170,6 @@ angular.module('emulvcApp')
 	      if(null!=this.getlasteditArea()) $("."+this.getlasteditArea()).remove();
 	      this.editing = false;
 	  },
-
-      /**
-       * gets the current (click) Segment
-       */
-      getcurClickSegment: function() {
-        return this.selected;
-      },
 
 
       resizeSelectArea: function(start, end) {

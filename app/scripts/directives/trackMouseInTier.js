@@ -114,14 +114,14 @@ angular.module('emulvcApp')
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
       }
       function createEditArea(x,y,width,height,label,labelid) {
-          var myid = labelid+"__";
+          labelid = "el"+labelid;
           scope.$apply(function() {
-              scope.viewState.setlasteditArea(myid);
+              scope.viewState.setlasteditArea(labelid);
           });
         $("#"+id).append($("<textarea>").attr({
-			id: myid,
+			id: labelid,
 			"autofocus":"true",
-			"class": myid + " Label_Edit",
+			"class": labelid + " Label_Edit",
 			"ng-model":"message"
 		}).css({
 		    "position": "absolute",
@@ -132,7 +132,7 @@ angular.module('emulvcApp')
 			"max-height": height-(height/3) + "px",
 			"padding-top": (height/3) + "px"
 		}).text(label).focus());
-		return myid;
+		return labelid;
       }
     }
   };

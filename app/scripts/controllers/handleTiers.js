@@ -30,7 +30,16 @@ angular.module('emulvcApp')
 		
 		$scope.$on('deleteEditArea', function(e) {
 		    viewState.deleteEditArea();
-		});		
+		});	
+		
+		$scope.$on('tab-next', function(e) {
+		    viewState.setcurClickSegment(viewState.getcurClickTierName(),parseInt(viewState.getcurClickSegment()[0],10)+1);
+		});				
+
+		$scope.$on('tab-prev', function(e) {
+		    viewState.setcurClickSegment(viewState.getcurClickTierName(),parseInt(viewState.getcurClickSegment()[0],10)-1);
+		});				
+
 		
 	    $scope.renameLabel = function(tier,id,name) {
 	        var i = 0;
