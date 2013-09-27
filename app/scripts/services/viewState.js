@@ -16,7 +16,7 @@ angular.module('emulvcApp')
     var selectE = -1;  
     
     // current selected segments
-    var selected = [-1];     
+    var selected = [];     
     
     // complete buffer length
     var bufferLength = 0; 
@@ -149,6 +149,14 @@ angular.module('emulvcApp')
       getcurClickSegment: function() {
         return this.selected;
       },
+      
+
+      /**
+       * gets the current (click) Segment
+       */
+      getcurClickSegmentSize: function() {
+        return this.selected.length;
+      },      
       
       /**
        * gets the current (click) Segment

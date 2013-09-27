@@ -27,8 +27,13 @@ angular.module('emulvcApp')
 		        viewState.deleteEditArea();
 		    }
 		    else {
-		        viewState.setEditing(true);
-		        $scope.openEditArea();
+		        if(viewState.getcurClickSegmentSize()==0) {
+		            alert("please select a segement first!");
+		        }
+		        else {
+    		        viewState.setEditing(true);
+	    	        $scope.openEditArea();
+	    	    }
 		    }
 		});
 		
