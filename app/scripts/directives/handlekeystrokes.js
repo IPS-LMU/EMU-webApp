@@ -9,7 +9,10 @@ angular.module('emulvcApp')
                         var code = (e.keyCode ? e.keyCode : e.which);
                         scope.$apply(function() {
                             scope.setlastkeycode(code, e.shiftKey);
-                            if(!viewState.isEditing()) e.preventDefault();
+                            if(viewState.isEditing()) {
+                                if(code==13) e.preventDefault();
+                            }
+                            else e.preventDefault();
                         });
                     });
                     scope.$on(

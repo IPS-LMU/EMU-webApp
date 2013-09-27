@@ -80,7 +80,7 @@ angular.module('emulvcApp')
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
-        scope.setEditing(true);
+        scope.viewState.setEditing(true);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;

@@ -44,7 +44,8 @@ angular.module('emulvcApp')
 		    var now = parseInt(viewState.getcurClickSegment()[0],10);
 		    if(now<$scope.tierDetails.events.length-1) ++now;
 		    else now = 0;
-		    viewState.setcurClickSegment(viewState.getcurClickTierName(),now);
+		    viewState.setlasteditArea("_"+now);
+		    viewState.setcurClickSegment($scope.tierDetails.events[now],now);
 		});				
 
 		$scope.$on('tab-prev', function(e) {
@@ -55,7 +56,8 @@ angular.module('emulvcApp')
 		    var now = parseInt(viewState.getcurClickSegment()[0],10);
 		    if(now>0) --now;
 		    else now = $scope.tierDetails.events.length-1;
-		    viewState.setcurClickSegment(viewState.getcurClickTierName(),now);
+		    viewState.setlasteditArea("_"+now);
+		    viewState.setcurClickSegment($scope.tierDetails.events[now],now);
 		});				
 
 		
@@ -147,7 +149,7 @@ angular.module('emulvcApp')
 		       "height": height + "px",
 		       "max-height": height-(height/3) + "px",
 		       "padding-top": (height/3) + "px"
-        }).text(label).focus());
+        }).text(label));
 		return textid;
       }			
 });
