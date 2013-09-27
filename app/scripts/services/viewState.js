@@ -150,16 +150,26 @@ angular.module('emulvcApp')
         return this.selected;
       },
       
+      /**
+       * gets the current (click) Segment
+       */
+      getlastClickSegment: function() {
+        return this.curClickSegment;
+      },      
+      
 	  isEditing: function() {
 	      return this.editing;
 	  },
+	  
+	  setEditing: function(n) {
+	      this.editing = n;
+	  },	  
       
       setlasteditArea: function(name) {
           this.lasteditArea = name;
-          this.editing = true;
 	  },
 	  getlastID: function() {
-	      return this.lasteditArea.substr(2);
+	      return this.lasteditArea.substr(1);
 	  },	
 		
 	  getlasteditArea: function() {

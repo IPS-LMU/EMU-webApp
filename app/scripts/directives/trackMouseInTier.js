@@ -57,6 +57,7 @@ angular.module('emulvcApp')
         lastEventClickId = scope.getEventId(perX,x);
         lastEventRightClick = scope.getEvent(perX,x);
         lastEventRightClickId = scope.getEventId(perX,x);
+        scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickTierName(id);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         scope.$digest(); 
@@ -77,12 +78,15 @@ angular.module('emulvcApp')
         lastEventClick = scope.getEvent(perX,x);
         lastEventClickId = scope.getEventId(perX,x);
         scope.viewState.setcurClickTierName(id);
+        scope.viewState.setlasteditArea("_"+lastEventClickId);
+        scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
+        scope.setEditing(true);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        var myid = createEditArea(start,top,end-start,height,lastEventClick.label,lastEventClickId);
-        createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+        var myid = scope.createEditArea(id, start,top,end-start,height,lastEventClick.label,lastEventClickId);
+        scope.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         scope.$digest(); 
       }     
       function setLastMove(x) {
@@ -91,48 +95,12 @@ angular.module('emulvcApp')
         scope.viewState.setcurMouseTierName(id);
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.$digest(); 
-      }  
-      function createSelection(field, start, end) {
-		if (field.createTextRange) {
-			var selRange = field.createTextRange();
-			selRange.collapse(true);
-			selRange.moveStart('character', start);
-			selRange.moveEnd('character', end);
-			selRange.select();
-		} else if (field.setSelectionRange) {
-			field.setSelectionRange(start, end);
-		} else if (field.selectionStart) {
-			field.selectionStart = start;
-			field.selectionEnd = end;
-		}
-		field.focus();
-      }                
+      }                 
       function getX(e) {
         return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
       }  
       function getY(e) {
         return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
-      }
-      function createEditArea(x,y,width,height,label,labelid) {
-          labelid = "el"+labelid;
-          scope.$apply(function() {
-              scope.viewState.setlasteditArea(labelid);
-          });
-        $("#"+id).append($("<textarea>").attr({
-			id: labelid,
-			"autofocus":"true",
-			"class": labelid + " Label_Edit",
-			"ng-model":"message"
-		}).css({
-		    "position": "absolute",
-			"top": y+1 + "px",
-			"left": x+2 + "px",
-			"width": width-1 + "px",
-			"height": height + "px",
-			"max-height": height-(height/3) + "px",
-			"padding-top": (height/3) + "px"
-		}).text(label).focus());
-		return labelid;
       }
     }
   };
