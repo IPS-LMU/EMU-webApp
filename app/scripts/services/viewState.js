@@ -235,15 +235,57 @@ angular.module('emulvcApp')
         if (k.indexOf('.') == -1) k += '.';
         k += e.toString().substring(1);
         return k.substring(0, k.indexOf('.') + n + 1);
-      }
+      },
+      
 
-      // getsS: function(){
-      //   return sS;
-      // },
-
-      // geteS: function(){
-      //   return eS;
-      // },
+    openEditArea: function() {
+            var lastEventClick = this.getlastClickSegment();
+            var lastEventClickId = this.getlastID();
+            var elem = $("#"+this.getcurClickTierName()).find("canvas")[0];
+            var start = this.getPos(elem.clientWidth,lastEventClick.startSample) + elem.offsetLeft;
+            var end = this.getPos(elem.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + elem.offsetLeft;
+            var top = elem.offsetTop;
+            var height = elem.clientHeight;
+            var myid = this.createEditArea(this.getcurClickTierName(), start,top,end-start,height,lastEventClick.label,lastEventClickId);
+            this.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+        },            
+             
+    createSelection: function(field, start, end) {
+		    if (field.createTextRange) {
+			    var selRange = field.createTextRange();
+    			selRange.collapse(true);
+	    		selRange.moveStart('character', start);
+		    	selRange.moveEnd('character', end);
+			    selRange.select();
+    		} else if (field.setSelectionRange) {
+	    		field.setSelectionRange(start, end);
+		    } else if (field.selectionStart) {
+    			field.selectionStart = start;
+	    		field.selectionEnd = end;
+		    }
+    		field.focus();
+        },       	
+		
+    createEditArea: function(id,x,y,width,height,label,labelid) {
+            var textid = "_"+labelid;
+            $("#"+id).append($("<textarea>").attr({
+	    		id: textid,
+		    	"autofocus":"true",
+			    "class": textid + " Label_Edit",
+    			"ng-model":"message"
+	       }).css({
+		       "position": "absolute",
+		       "top": y+1 + "px",
+		       "left": x+2 + "px",
+		       "width": width-1 + "px",
+		       "height": height + "px",
+		       "max-height": height-(height/3) + "px",
+		       "padding-top": (height/3) + "px"
+            }).text(label));
+		    return textid;
+        }
+        
+              
 
     };
   });

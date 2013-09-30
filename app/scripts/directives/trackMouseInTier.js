@@ -49,13 +49,13 @@ angular.module('emulvcApp')
               scope.viewState.deleteEditArea();
               scope.moveBorder(Math.floor(thisPCM-lastPCM));
               lastPCM = thisPCM;
-              scope.$digest(); 
+              scope.$apply(); 
             }  
             if(event.shiftKey) {
               scope.viewState.deleteEditArea();
               scope.moveSegment(Math.floor(thisPCM-lastPCM));
               lastPCM = thisPCM;
-              scope.$digest(); 
+              scope.$apply(); 
             }
             break;
         case 2:
@@ -92,7 +92,7 @@ angular.module('emulvcApp')
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         lastPCM = thisPCM;
-        scope.$digest(); 
+        scope.$apply(); 
       } 
       function setLastRightClick(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
@@ -104,7 +104,7 @@ angular.module('emulvcApp')
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
         lastPCM = thisPCM;
-        scope.$digest(); 
+        scope.$apply(); 
       } 
       function setLastDblClick(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
@@ -118,10 +118,10 @@ angular.module('emulvcApp')
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        var myid = scope.createEditArea(tierId, start,top,end-start,height,lastEventClick.label,lastEventClickId);
-        scope.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+        var myid = scope.viewState.createEditArea(tierId, start,top,end-start,height,lastEventClick.label,lastEventClickId);
+        scope.viewState.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         lastPCM = thisPCM;
-        scope.$digest(); 
+        scope.$apply(); 
       }     
       function setLastMove(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
@@ -131,7 +131,7 @@ angular.module('emulvcApp')
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.viewState.setcurMouseSegmentId(lastEventMoveId);
         lastPCM = thisPCM;
-        scope.$digest(); 
+        scope.$apply(); 
       }                 
       function getX(e) {
         return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
