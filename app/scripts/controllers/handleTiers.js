@@ -171,12 +171,23 @@ angular.module('emulvcApp')
 		    return textid;
         }	
         
-    
+
+        $scope.moveBorder = function(changeTime) {
+		    var t = $scope.tierDetails;
+		    if (null != t) {
+			    var seg = viewState.getcurMouseSegmentId();
+			    if((t.events[seg-1].sampleDur + changeTime ) >= 1 && ( t.events[seg].sampleDur - changeTime ) >= 1) {
+			        t.events[seg-1].sampleDur += changeTime;
+			        t.events[seg].startSample += changeTime;
+			        t.events[seg].sampleDur -= changeTime;
+    			}
+		    }
+    	};
+    	    
         $scope.moveSegment = function(changeTime) {
 		    var t = $scope.tierDetails;
 		    if (null != t) {
 			    var selected = viewState.getcurClickSegment();
-			    console.log(t.events[selected[selected.length-1]+1].sampleDur - changeTime);
 			    if((t.events[selected[0]-1].sampleDur + changeTime ) >= 1 && ( t.events[selected[selected.length-1]+1].sampleDur - changeTime ) >= 1) {
 			        t.events[selected[0]-1].sampleDur += changeTime;
         			for (var i = 0; i < selected.length; i++) {

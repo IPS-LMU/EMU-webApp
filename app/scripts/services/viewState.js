@@ -113,6 +113,22 @@ angular.module('emulvcApp')
       getcurMouseSegment: function() {
         return this.curMouseSegment;
       },
+
+      /**
+       * sets the current (mousemove) Segment
+       * @param name is name of tier
+       */
+      setcurMouseSegmentId: function(id) {
+        this.curMouseSegmentId = id;
+      },
+
+      /**
+       * gets the current (mousemove) Segment
+       */
+      getcurMouseSegmentId: function() {
+        return this.curMouseSegmentId;
+      },
+            
       
       /**
        * sets the current (click) Segment

@@ -7,7 +7,7 @@ angular.module('emulvcApp')
     link: function(scope, element){
     
       var elem = element[0];
-      var id = element.parent().parent()[0].id;
+      var tierId = element.parent().parent()[0].id;
       var ctx = elem.getContext('2d');      
       // the last coordinates before the current move
       var lastX,currentX;
@@ -18,6 +18,7 @@ angular.module('emulvcApp')
       var lastEventRightClick;
       var lastEventRightClickId;
       var lastEventMove;
+      var lastEventMoveId;
       var lastPCM;
       var thisPCM;
       var message;
@@ -41,14 +42,15 @@ angular.module('emulvcApp')
       });
       
       element.bind('mousemove', function(event){ 
-      thisPCM = getX(event) * scope.getPCMpp(event);
-      switch (event.which) {
-        case 1:
+        thisPCM = getX(event) * scope.getPCMpp(event);
+        switch (event.which) {
+          case 1:
             if(event.altKey) {
               scope.viewState.deleteEditArea();
-              console.log('move border');
-            }
-            
+              scope.moveBorder(Math.floor(thisPCM-lastPCM));
+              lastPCM = thisPCM;
+              scope.$digest(); 
+            }  
             if(event.shiftKey) {
               scope.viewState.deleteEditArea();
               scope.moveSegment(Math.floor(thisPCM-lastPCM));
@@ -86,7 +88,7 @@ angular.module('emulvcApp')
         lastEventRightClick = scope.getEvent(thisPCM,x);
         lastEventRightClickId = scope.getEventId(thisPCM,x);
         scope.viewState.setlasteditArea("_"+lastEventClickId);
-        scope.viewState.setcurClickTierName(id);
+        scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         lastPCM = thisPCM;
         scope.$digest(); 
@@ -98,7 +100,7 @@ angular.module('emulvcApp')
         lastEventClickId = scope.getEventId(thisPCM,x);
         lastEventRightClick = scope.getEvent(thisPCM,x);
         lastEventRightClickId = scope.getEventId(thisPCM,x);
-        scope.viewState.setcurClickTierName(id);
+        scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
         lastPCM = thisPCM;
         scope.$digest(); 
@@ -107,7 +109,7 @@ angular.module('emulvcApp')
         thisPCM = getX(x) * scope.getPCMpp(x);
         lastEventClick = scope.getEvent(thisPCM,x);
         lastEventClickId = scope.getEventId(thisPCM,x);
-        scope.viewState.setcurClickTierName(id);
+        scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         scope.viewState.setEditing(true);
@@ -115,7 +117,7 @@ angular.module('emulvcApp')
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        var myid = scope.createEditArea(id, start,top,end-start,height,lastEventClick.label,lastEventClickId);
+        var myid = scope.createEditArea(tierId, start,top,end-start,height,lastEventClick.label,lastEventClickId);
         scope.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         lastPCM = thisPCM;
         scope.$digest(); 
@@ -123,8 +125,10 @@ angular.module('emulvcApp')
       function setLastMove(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
         lastEventMove = scope.getEvent(thisPCM,x);
-        scope.viewState.setcurMouseTierName(id);
+        lastEventMoveId = scope.getEventId(thisPCM,x);
+        scope.viewState.setcurMouseTierName(tierId);
         scope.viewState.setcurMouseSegment(lastEventMove);
+        scope.viewState.setcurMouseSegmentId(lastEventMoveId);
         lastPCM = thisPCM;
         scope.$digest(); 
       }                 
