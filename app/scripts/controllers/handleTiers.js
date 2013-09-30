@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function($scope, $http, viewState) {
+var HandletiersCtrl = angular.module('emulvcApp')
+	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState) {
+	
 	
 		$scope.viewState = viewState;
 		$scope.testValue = '';
@@ -38,9 +39,9 @@ angular.module('emulvcApp')
     		}
 	    };
 		
-		$scope.$on('renameLabel', function(e) {
+		$scope.renameLabel = function() {
 		    if(viewState.isEditing()) {
-		        $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
+		        $scope.rename(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
 		        viewState.deleteEditArea();
 		    }
 		    else {
@@ -52,18 +53,14 @@ angular.module('emulvcApp')
 	    	        viewState.openEditArea();
 	    	    }
 		    }
-		});
+		};
 		
-		$scope.$on('history', function(e) {
-		    $scope.goBackHistory();
-		});	
-		
-		$scope.$on('deleteEditArea', function(e) {
+		$scope.deleteEditArea = function() {
 		    viewState.deleteEditArea();
-		});	
+		};	
 		
 		
-		$scope.$on('tab-next', function(e) {
+		$scope.tabNext = function() {
 		    if(viewState.isEditing()) {
 		        $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
 		        viewState.deleteEditArea();
@@ -73,9 +70,9 @@ angular.module('emulvcApp')
 		    else now = 0;
 		    viewState.setlasteditArea("_"+now);
 		    viewState.setcurClickSegment($scope.tierDetails.events[now],now);
-		});				
+		};				
 
-		$scope.$on('tab-prev', function(e) {
+		$scope.tabPrev = function() {
 		    if(viewState.isEditing()) {
 		        $scope.renameLabel(viewState.getcurClickTierName(),viewState.getlastID(),$("."+viewState.getlasteditArea()).val());
 		        viewState.deleteEditArea();
@@ -85,10 +82,10 @@ angular.module('emulvcApp')
 		    else now = $scope.tierDetails.events.length-1;
 		    viewState.setlasteditArea("_"+now);
 		    viewState.setcurClickSegment($scope.tierDetails.events[now],now);
-		});				
+		};				
 
 		
-	    $scope.renameLabel = function(tier,id,name) {
+	    $scope.rename = function(tier,id,name) {
 	        var i = 0;
             angular.forEach($scope.tierDetails.events, function(evt) {
                 if(id==i) {

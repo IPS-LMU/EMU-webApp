@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope) {
 
 		$scope.lastkeycode = "N/A";
@@ -9,17 +9,17 @@ angular.module('emulvcApp')
 		    $scope.lastkeycode = c;
 			switch(c) {
 			    case 9:
-			        if(shift) $scope.$broadcast('tab-prev');
-			        else $scope.$broadcast('tab-next');
+			        if(shift) angular.element(document.getElementById('HandletiersCtrlId')).scope().tabPrev();
+			        else      angular.element(document.getElementById('HandletiersCtrlId')).scope().tabNext();
 			        break;
 			    case 13:
-			        $scope.$broadcast('renameLabel');
+			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().renameLabel();
 			        break;
 			    case 27:
-			        $scope.$broadcast('deleteEditArea');
+			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().deleteEditArea();
 			        break;		
 			    case 90:
-			        $scope.$broadcast('deleteEditArea');
+			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().goBackHistory();
 			        break;					        	        
 			    default:
 			        break;
