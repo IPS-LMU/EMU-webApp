@@ -6,6 +6,8 @@ angular.module('emulvcApp')
 		$scope.viewState = viewState;
 		$scope.testValue = '';
 		$scope.message = '';
+		$scope.myHistory = [];
+		$scope.myHistoryCounter = 0;
 
 		$http.get('testData/PhoneticTier.json').success(function(data) {
 			$scope.viewState.eS = data.events[data.events.length-1].startSample + data.events[data.events.length-1].sampleDur;
@@ -20,6 +22,21 @@ angular.module('emulvcApp')
 		        });
 		    }
 		};
+		
+		$scope.history = function() {
+		    $scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails);
+		    ++$scope.myHistoryCounter;
+	    };
+	    
+	    $scope.goBackHistory = function() {
+		    if (($scope.myHistoryCounter - 1) > 0) {
+			    delete $scope.tierDetails;
+    			$scope.tierDetails = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
+	    		--$scope.myHistoryCounter;
+		    } else {
+		        emulabeller.alertUser(emulabeller.language.ALERTS.HISTORY_END.title,emulabeller.language.ALERTS.HISTORY_END.value);
+    		}
+	    };
 		
 		$scope.$on('renameLabel', function(e) {
 		    if(viewState.isEditing()) {
@@ -115,12 +132,8 @@ angular.module('emulvcApp')
             var end = viewState.getPos(elem.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + elem.offsetLeft;
             var top = elem.offsetTop;
             var height = elem.clientHeight;
-
-            
             var myid = $scope.createEditArea(viewState.getcurClickTierName(), start,top,end-start,height,lastEventClick.label,lastEventClickId);
-
-            console.log($("#"+myid));
-                        $scope.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+            $scope.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         }            
              
         $scope.createSelection = function(field, start, end) {
@@ -154,7 +167,24 @@ angular.module('emulvcApp')
 		       "height": height + "px",
 		       "max-height": height-(height/3) + "px",
 		       "padding-top": (height/3) + "px"
-        }).text(label));
-		return textid;
-      }			
+            }).text(label));
+		    return textid;
+        }	
+        
+    
+        $scope.moveSegment = function(changeTime) {
+		    var t = $scope.tierDetails;
+		    if (null != t) {
+			    var selected = viewState.getcurClickSegment();
+			    console.log(t.events[selected[selected.length-1]+1].sampleDur - changeTime);
+			    if((t.events[selected[0]-1].sampleDur + changeTime ) >= 1 && ( t.events[selected[selected.length-1]+1].sampleDur - changeTime ) >= 1) {
+			        t.events[selected[0]-1].sampleDur += changeTime;
+        			for (var i = 0; i < selected.length; i++) {
+	        			t.events[selected[i]].startSample += changeTime;
+    	    		}
+    		    	t.events[selected[selected.length-1]+1].startSample += changeTime;
+    			    t.events[selected[selected.length-1]+1].sampleDur -= changeTime;
+    			}
+		    }
+    	};
 });

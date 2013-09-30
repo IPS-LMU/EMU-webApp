@@ -148,15 +148,7 @@ angular.module('emulvcApp')
        */
       getcurClickSegment: function() {
         return this.selected;
-      },
-      
-
-      /**
-       * gets the current (click) Segment
-       */
-      getcurClickSegmentSize: function() {
-        return this.selected.length;
-      },      
+      },  
       
       /**
        * gets the current (click) Segment
