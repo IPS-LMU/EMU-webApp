@@ -39,7 +39,29 @@ angular.module('emulvcApp')
       });
       
       element.bind('mousemove', function(event){ 
-        setLastMove(event);
+
+      switch (event.which) {
+        case 1:
+            if(event.altKey) {
+              console.log('move border');
+            }
+            
+            if(event.shiftKey) {
+              console.log('move segment');
+            }
+            break;
+        case 2:
+            //console.log('Middle mouse button pressed');
+            break;
+        case 3:
+            //console.log('Right mouse button pressed');
+            break;
+        default:
+            setLastMove(event);
+            break;
+        }
+
+        
       });
 
       element.bind('mouseup', function(event){
