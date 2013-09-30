@@ -17,7 +17,10 @@ angular.module('emulvcApp')
 			        break;
 			    case 27:
 			        $scope.$broadcast('deleteEditArea');
-			        break;			        
+			        break;		
+			    case 90:
+			        $scope.$broadcast('history');
+			        break;					        	        
 			    default:
 			        break;
 			}

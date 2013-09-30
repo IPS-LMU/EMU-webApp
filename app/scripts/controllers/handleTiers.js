@@ -34,7 +34,7 @@ angular.module('emulvcApp')
     			$scope.tierDetails = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
 	    		--$scope.myHistoryCounter;
 		    } else {
-		        emulabeller.alertUser(emulabeller.language.ALERTS.HISTORY_END.title,emulabeller.language.ALERTS.HISTORY_END.value);
+		        alert("no more history!");
     		}
 	    };
 		
@@ -54,9 +54,14 @@ angular.module('emulvcApp')
 		    }
 		});
 		
+		$scope.$on('history', function(e) {
+		    $scope.goBackHistory();
+		});	
+		
 		$scope.$on('deleteEditArea', function(e) {
 		    viewState.deleteEditArea();
 		});	
+		
 		
 		$scope.$on('tab-next', function(e) {
 		    if(viewState.isEditing()) {

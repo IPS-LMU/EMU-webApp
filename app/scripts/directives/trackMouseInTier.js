@@ -74,6 +74,7 @@ angular.module('emulvcApp')
 
       element.bind('mouseup', function(event){
         setLastMove(event);
+        scope.history();
       });      
 
       element.bind('mouseout', function(event){
