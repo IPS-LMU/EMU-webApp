@@ -2,9 +2,9 @@
 
 
 angular.module('emulvcApp')
-	.directive('osci', function() {
+	.directive('spectro', function() {
 		return {
-			templateUrl: 'views/osci.html',
+			templateUrl: 'views/spectro.html',
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template

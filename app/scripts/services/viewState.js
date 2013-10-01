@@ -248,6 +248,7 @@ angular.module('emulvcApp')
             var height = elem.clientHeight;
             var myid = this.createEditArea(this.getcurClickTierName(), start,top,end-start,height,lastEventClick.label,lastEventClickId);
             this.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+            return myid;
         },            
              
     createSelection: function(field, start, end) {

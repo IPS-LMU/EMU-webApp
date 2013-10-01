@@ -26,7 +26,17 @@ html, body{
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
     width: 95%;
-    height: 64px;
+}
+
+.Osci , .Spectro {
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid gray;
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(top, #1d1f20,#2f3031);
+    background: #E7E7E7;
+    box-shadow: 0px 1px 2px #000;
+    width: 95%;
 }
 
 .Label_Edit {
