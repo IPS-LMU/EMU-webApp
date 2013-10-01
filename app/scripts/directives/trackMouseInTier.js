@@ -118,7 +118,7 @@ angular.module('emulvcApp')
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;
         var height = x.originalEvent.srcElement.clientHeight;
-        var myid = scope.viewState.createEditArea(tierId, start,top,end-start,height,lastEventClick.label,lastEventClickId);
+        var myid = scope.viewState.openEditArea();
         scope.viewState.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
         lastPCM = thisPCM;
         scope.$apply(); 
