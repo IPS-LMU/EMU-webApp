@@ -3,10 +3,6 @@
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope) {
 	
-	    var bottom = $('#TimelineCtrl').offset().top+$('#TimelineCtrl').outerHeight( true );
-	    console.log(bottom);
-	    $("#TierCtrlId").offset({ top: bottom, left: 0 });
-
 		$scope.lastkeycode = "N/A";
 		
 		$scope.setlastkeycode = function(c,shift) {

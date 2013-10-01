@@ -1,5 +1,4 @@
 <div handleglobalkeystrokes>
-  <div ng-controller="HandletiersCtrl" id="HandletiersCtrlId">
 
   <div class="menu" id="menu">
     <input type="file" id="fileGetterBtn" name="file" style="display: none;"/>
@@ -18,12 +17,14 @@
   </div>
 
   <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
-      <osci id='osci'></osci>
-      <spectro id='spectro'></spectro>
-      <div id="resizer" class="resizer"><span> </span></div>
+      <osci id='osci' class='osci'></osci>
+      <spectro id='spectro' class='spectro'></spectro>
+      <resizer id='resizer' class='resizer'><span id="resizeIcon" class="resizeIcon"> </span></resizer>
   </div>
   
-  <div id="TierCtrlId" class="TierCtrl">
+  <div ng-controller="HandletiersCtrl" id="HandletiersCtrl" class="HandletiersCtrl">
+  
+  <div id="TierCtrl" class="TierCtrl">
       <tier id='Phonetic'></tier>
   </div>
   	
