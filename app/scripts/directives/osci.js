@@ -9,9 +9,9 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas")[0];
-
 								
 				var myid = element[0].id;
+				
 				scope.$watch('tierDetails', function() {
 					//drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
@@ -19,6 +19,10 @@ angular.module('emulvcApp')
 				scope.$watch('viewState', function() {
 					//drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
+				
+				scope.updateView = function() {
+				    drawTierDetails(scope.tierDetails, scope.viewState);
+				};				
 				
 				/**
 				 * draw tier details
