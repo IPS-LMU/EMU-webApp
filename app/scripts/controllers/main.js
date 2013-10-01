@@ -9,17 +9,19 @@ var MainCtrl = angular.module('emulvcApp')
 		    $scope.lastkeycode = c;
 			switch(c) {
 			    case 9:
-			        if(shift) angular.element(document.getElementById('HandletiersCtrlId')).scope().tabPrev();
-			        else      angular.element(document.getElementById('HandletiersCtrlId')).scope().tabNext();
+			        if(shift) 
+			            $('#HandletiersCtrlId').scope().tabPrev();
+			        else      
+			            $('#HandletiersCtrlId').scope().tabNext();
 			        break;
 			    case 13:
-			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().renameLabel();
+			        $('#HandletiersCtrlId').scope().renameLabel();
 			        break;
 			    case 27:
-			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().deleteEditArea();
+			        $('#HandletiersCtrlId').scope().deleteEditArea();
 			        break;		
 			    case 90:
-			                  angular.element(document.getElementById('HandletiersCtrlId')).scope().goBackHistory();
+			        $('#HandletiersCtrlId').scope().goBackHistory();
 			        break;					        	        
 			    default:
 			        break;
