@@ -10,18 +10,18 @@ var MainCtrl = angular.module('emulvcApp')
 			switch(c) {
 			    case 9:
 			        if(shift) 
-			            $('#HandletiersCtrlId').scope().tabPrev();
+			            $('#HandletiersCtrl').scope().tabPrev();
 			        else      
-			            $('#HandletiersCtrlId').scope().tabNext();
+			            $('#HandletiersCtrl').scope().tabNext();
 			        break;
 			    case 13:
-			        $('#HandletiersCtrlId').scope().renameLabel();
+			        $('#HandletiersCtrl').scope().renameLabel();
 			        break;
 			    case 27:
-			        $('#HandletiersCtrlId').scope().deleteEditArea();
+			        $('#HandletiersCtrl').scope().deleteEditArea();
 			        break;		
 			    case 90:
-			        $('#HandletiersCtrlId').scope().goBackHistory();
+			        $('#HandletiersCtrl').scope().goBackHistory();
 			        break;					        	        
 			    default:
 			        break;
