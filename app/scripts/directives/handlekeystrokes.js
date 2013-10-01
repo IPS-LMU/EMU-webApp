@@ -7,7 +7,7 @@ angular.module('emulvcApp')
                 link: function postLink(scope, element, attrs) {
                 
                     element.bind("mousedown", function(e) {
-                     console.log(e);
+                     console.log(element);
                     });
                     
                     $(document).bind("keydown", function(e) {
@@ -15,9 +15,9 @@ angular.module('emulvcApp')
                         scope.$apply(function() {
                             scope.setlastkeycode(code, e.shiftKey);
                             if(viewState.isEditing()) {
-                                if(code==13) e.stopPropagation();
+                                if(code==13) e.preventDefault();
                             }
-                            else e.stopPropagation();
+                            else e.preventDefault();
                         });
                     });
                     scope.$on(
