@@ -9,12 +9,14 @@ html, body{
     width:100%;
     padding: 0px;
     margin: 0px;
-    z-index: 0;
-    -webkit-transition: all 0.7s ease;
-    -moz-transition: all 0.7s ease;
-    transition: all 0.7s ease;    
+    z-index: 0; 
     background: white;
     text-align:center;
+}
+
+.container {
+    margin: 0px;
+    padding: 0px;
 }
 
 .Tier {
@@ -41,7 +43,7 @@ html, body{
 }
 
 .Label_Edit {
-    z-index:9999;
+    z-index:89;
     text-align:center;
     padding:0;
     margin:0;
@@ -65,7 +67,7 @@ div.center {
 }
 
 .menu {
-    z-index: 9999;
+    z-index: 99;
     position:fixed;
     display: inline-block;
     top:0px;
@@ -99,7 +101,7 @@ div.center {
 }
 
 .TimelineCtrl {
-    z-index:9998;
+    z-index:98;
     overflow:hidden;
     position: fixed;
     margin: 0px;

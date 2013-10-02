@@ -7,9 +7,9 @@ var MainCtrl = angular.module('emulvcApp')
 		
 		$scope.items = ['item1', 'item2', 'item3'];
 		
-		$scope.open = function () {
+		$scope.openAbout = function () {
 		    var modalInstance = $modal.open({
-		        templateUrl: 'views/modal.html',
+		        templateUrl: 'modal.html',
 		        controller: ModalInstanceCtrl,
 		        resolve: {
 		            items: function () {
@@ -49,9 +49,6 @@ var MainCtrl = angular.module('emulvcApp')
 		};	
 		
 	});
-	
-	
-	
 	
 	
 var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
