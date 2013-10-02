@@ -5,16 +5,17 @@ var MainCtrl = angular.module('emulvcApp')
 	
 		$scope.lastkeycode = "N/A";
 		
-		$scope.items = ['item1', 'item2', 'item3'];
-		
-		$scope.openAbout = function () {
+		$scope.openModal = function (myTitle, myContent) {
 		    var modalInstance = $modal.open({
 		        templateUrl: 'modal.html',
 		        controller: ModalInstanceCtrl,
 		        resolve: {
-		            items: function () {
-		                return $scope.items;
-    		        }
+		            modalContent: function () {
+		                return myContent;
+    		        },
+		            modalTitle: function () {
+		                return myTitle;
+    		        }    		        
 	    	    }
 		    });
 		
@@ -51,15 +52,14 @@ var MainCtrl = angular.module('emulvcApp')
 	});
 	
 	
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, modalTitle, modalContent) {
 
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
+  $scope.modalContent = modalContent;
+  $scope.modalTitle = modalTitle;
+  
   $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
+    //$modalInstance.close($scope.selected.item);
+     $modalInstance.dismiss('cancel');
   };
 
   $scope.cancel = function () {
