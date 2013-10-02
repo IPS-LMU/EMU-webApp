@@ -6,6 +6,10 @@
     "jquery-ui": "~1.10.3",
     "hammerjs": "~1.0.4",
     "angular": "~1.2.0-rc.2",
-    "angular-route": "~1.2.0-rc.2"
+    "angular-route": "~1.2.0-rc.2",
+    "angular-bootstrap": "~0.6.0"
+  },
+  "devDependencies": {
+    "angular-bootstrap": "~0.6.0"
   }
 }

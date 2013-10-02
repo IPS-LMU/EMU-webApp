@@ -15,9 +15,15 @@ angular.module('emulvcApp')
                         scope.$apply(function() {
                             scope.setlastkeycode(code, e.shiftKey);
                             if(viewState.isEditing()) {
-                                if(code==13) e.preventDefault();
+                                if(code==13) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
                             }
-                            else e.preventDefault();
+                            else {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
                         });
                     });
                     scope.$on(

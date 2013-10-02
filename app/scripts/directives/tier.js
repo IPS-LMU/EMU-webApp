@@ -125,7 +125,7 @@ angular.module('emulvcApp')
 									var sStW = ctx.measureText(curEvt.startSample).width;
 									//check for enough space to stroke text
 									if (posE - posS > sStW) {
-										ctx.fillText(curEvt.startSample, posS + 5, canvas[0].height / 8 + 24 / 2);
+										ctx.fillText(curEvt.startSample, posS+3, canvas[0].height / 5);
 									}
 									// end helper line
 									ctx.strokeStyle = 'black';
@@ -140,7 +140,7 @@ angular.module('emulvcApp')
 								var sDtW = ctx.measureText("dur: " + curEvt.sampleDur).width;
 								//check for enough space to stroke text
 								if (posE - posS > sDtW) {
-									ctx.fillText("dur: " + curEvt.sampleDur, posE - sDtW - 5, canvas[0].height - canvas[0].height / 8);
+									ctx.fillText("dur: " + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
 						}
