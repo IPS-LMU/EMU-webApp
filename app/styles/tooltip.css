@@ -1,21 +1,22 @@
 
 .btn-group {
+    z-index:3;
 	width: 100%;
 	padding-left:15px;
 	padding-top:2px;
 }
 
-.tooltip {
+.tool-tip {
   color: red;
   position: relative;
 }
 
-.tooltip:hover {
+.tool-tip:hover {
   color: red;
   position: relative;
 }
 
-.tooltip[title]:hover:after {
+.tool-tip[title]:hover:after {
   content: attr(title);
   padding: 4px 8px;
   margin: 12px 0px;
@@ -25,7 +26,7 @@
   opacity: 0.9;
   top: 100%;
   white-space: nowrap; 
-  z-index: 20px;
+  z-index: 3;
   -moz-border-radius: 5px; 
   -webkit-border-radius: 5px;  
   border-radius: 5px;  
@@ -38,13 +39,13 @@
   background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);  
   background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);  
   background-image: -o-linear-gradient(top, #eeeeee, #cccccc); 
-  width: 90px;
-  height: 32px; 
+  width: 100px;
+  height: 22px; 
 }
 
 
 .mini-btn {
-    margin: 1px;
+    margin: 3px;
     padding: 3px;
     display: inline-block;
 	/*background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(0.7, #dfdfdf) );*/
@@ -63,9 +64,8 @@
 	font-weight:bold;
 	text-decoration:none;
 	text-align:center;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	width: 100px;
+    width: 100px;
+    height: 22px; 
 }
 
 .mini-btn:hover {
@@ -81,6 +81,5 @@
 }
 
 .mini-btn:active {
-	position:relative;
 	top:1px;
 }
