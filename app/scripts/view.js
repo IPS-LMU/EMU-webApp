@@ -136,7 +136,7 @@ EmuLabeller.ViewPort = {
 
     setSelectMultiSegment: function(tier, evt, isSelected, width, dontCheck) {
         var id = this.getId(tier, evt.label, evt.startSample);
-        if (emulabeller.viewPort.uiInfo[id - 1] ||  emulabeller.viewPort.uiInfo[id + 1] || dontCheck) {
+        if (emulabeller.viewPort.uiInfo[id - 1] || emulabeller.viewPort.uiInfo[id + 1] || dontCheck) {
             emulabeller.viewPort.uiInfo[id] = isSelected;
             if(!dontCheck) emulabeller.viewPort.resizeSelectAreaMulti(evt.startSample, evt.startSample + evt.sampleDur + 1);
             return true;

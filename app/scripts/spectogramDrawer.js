@@ -40,7 +40,7 @@ EmuLabeller.Drawer.SpectogramDrawer = {
         my.devicePixelRatio = window.devicePixelRatio || 1;
         my.response = spectroworker.textContent;
         my.blob;
-        try { my.blob = new Blob([my.response], { "type" : "text\/javascript" }); }
+        try {my.blob = new Blob([my.response], { "type" : "text\/javascript" }); }
         catch (e) { // Backwards-compatibility
                 window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
                 my.blob.append(my.response);

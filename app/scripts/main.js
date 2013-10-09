@@ -81,7 +81,7 @@ var emulabeller = (function() {
         if (code == 8) { // 8 == backspace
             if(emulabeller.internalMode == labeller.EDITMODE.STANDARD) {
                 e.preventDefault();
-                if (emulabeller.tierHandler.getSelectedTierType() == "seg" ||  emulabeller.tierHandler.getSelectedTierType() == "point")
+                if (emulabeller.tierHandler.getSelectedTierType() == "seg" || emulabeller.tierHandler.getSelectedTierType() == "point")
                     emulabeller.tierHandler.deleteSelected();
                 else {
                     emulabeller.alertUser("Error", "Please mark one of more segments first!");

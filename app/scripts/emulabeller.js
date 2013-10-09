@@ -1240,7 +1240,7 @@ var EmuLabeller = {
      * will then be presented as a link in the top menu
      */
     prepDownload: function() {
-        try { 
+        try {
             var blob = new Blob([emulabeller.iohandler.textGridHandler.toTextGrid(emulabeller.tierHandler.tierInfos.tiers)], {
                 "type": "text\/plain"
             });

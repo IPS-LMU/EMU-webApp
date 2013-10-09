@@ -440,7 +440,7 @@ EmuLabeller.tierHandler = {
 		if (!window.ActiveXObject) {
 			if (null != save)
 				(window.URL || window.webkitURL).revokeObjectURL(save.href);
-			try { 
+			try {
 				var blob = new Blob([mydata], {
 					"type": "text\/plain;charset=UTF-8"
 				});
