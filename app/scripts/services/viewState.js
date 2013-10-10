@@ -350,6 +350,28 @@ angular.module('emulvcApp')
         this.setViewPort(newStartS, newEndS);
     };
 
+    /**
+     * moves view port to the right or to the left
+     * without changing the zoom
+     *
+     * @param shiftRight bool to specify direction
+     * if set to true -> shift right
+     * if set to falce -> shift left
+     */
+    sServObj.shiftViewPort = function(shiftRight) {
+        // my.removeLabelDoubleClick();
+        var newStartS, newEndS;
+        if (shiftRight) {
+            newStartS = this.sS + ~~((this.eS - this.sS) / 4);
+            newEndS = this.eS + ~~((this.eS - this.sS) / 4);
+        } else {
+            newStartS = this.sS - ~~((this.eS - this.sS) / 4);
+            newEndS = this.eS - ~~((this.eS - this.sS) / 4);
+        }
+
+        this.setViewPort(newStartS, newEndS);
+    };
+
     return sServObj;
 
   });

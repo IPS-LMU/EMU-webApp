@@ -19,6 +19,12 @@ angular.module('emulvcApp')
                                 }
                             }
                             else {
+                                if(code==65) { // A
+                                    viewState.shiftViewPort(false);
+                                }
+                                if(code==68) { // D
+                                    viewState.shiftViewPort(true);
+                                }
                                 if(code==83) { // S
                                     viewState.zoomViewPort(false);
                                 }
