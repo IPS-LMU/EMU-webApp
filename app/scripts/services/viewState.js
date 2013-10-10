@@ -14,6 +14,8 @@ angular.module('emulvcApp')
     sServObj.lasteditArea = null;
     sServObj.editing = false;
 
+    sServObj.tmpFixedBufferLength = 128085;
+
     /**
      * set selected Area
      * @param start of selected Area
@@ -276,21 +278,21 @@ angular.module('emulvcApp')
             this.eS = Math.round(eSample);
         }
 
-        // // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
-        // if (oldStart > this.sS && oldEnd > this.eS) {
-        //     //moved left
-        //     if (this.sS < 0) {
-        //         this.sS = 0;
-        //         this.eS = oldEnd + Math.abs(this.sS);
-        //     }
-        // }
-        // if (oldStart < this.sS && oldEnd < this.eS) {
-        //     //moved right
-        //     if (this.eS > this.backend.currentBuffer.length - 1) {
-        //         this.sS = oldStart;
-        //         this.eS = this.backend.currentBuffer.length - 1;
-        //     }
-        // }
+        // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
+        if (oldStart > this.sS && oldEnd > this.eS) {
+            //moved left
+            if (this.sS < 0) {
+                this.sS = 0;
+                this.eS = oldEnd + Math.abs(this.sS);
+            }
+        }
+        if (oldStart < this.sS && oldEnd < this.eS) {
+            //moved right
+            if (this.eS > this.tmpFixedBufferLength) {
+                this.sS = oldStart;
+                this.eS = this.tmpFixedBufferLength;
+            }
+        }
 
         // // check if in range
         // if (this.sS < 0) {

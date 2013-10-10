@@ -32,8 +32,6 @@ angular.module('emulvcApp')
                                     viewState.zoomViewPort(true);
                                 }
 
-                                // console.log(e)
-                                // e.preventDefault();
                                 e.stopPropagation();
                             }
                         });
