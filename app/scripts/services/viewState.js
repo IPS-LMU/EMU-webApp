@@ -4,22 +4,22 @@ angular.module('emulvcApp')
   .factory('viewState', function($rootScope) {
 
     //shared service object to be returned
-    var sServ = {};
+    var sServObj = {};
 
-    sServ.sS = 0;
-    sServ.eS = 0;
-    sServ.selectS = -1;
-    sServ.selectE = -1;
-    sServ.selected = [];
-    sServ.lasteditArea = null;
-    sServ.editing = false;
+    sServObj.sS = 0;
+    sServObj.eS = 0;
+    sServObj.selectS = -1;
+    sServObj.selectE = -1;
+    sServObj.selected = [];
+    sServObj.lasteditArea = null;
+    sServObj.editing = false;
 
     /**
      * set selected Area
      * @param start of selected Area
      * @param end of seleected Area
      */
-    sServ.select = function(start, end) {
+    sServObj.select = function(start, end) {
       this.selectS = start;
       this.selectE = end;
     };
@@ -29,7 +29,7 @@ angular.module('emulvcApp')
      * @param w is width of canvas
      * @param s is current sample to convert to pixel value
      */
-    sServ.getPos = function(w, s) {
+    sServObj.getPos = function(w, s) {
       return (w * (s - this.sS) / (this.eS - this.sS + 1)); // + 1 because of view (displays all samples in view)
     };
 
@@ -37,7 +37,7 @@ angular.module('emulvcApp')
      * calculate the pixel distance between two samples
      * @param w is width of canvas
      */
-    sServ.getSampleDist = function(w) {
+    sServObj.getSampleDist = function(w) {
       return this.getPos(w, this.sS + 1) - this.getPos(w, this.sS);
     };
 
@@ -45,14 +45,14 @@ angular.module('emulvcApp')
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
-    sServ.setcurClickTierName= function(name) {
+    sServObj.setcurClickTierName= function(name) {
       this.curClickTierName = name;
     };
 
     /**
      * gets the current (clicked) Tier Name
      */
-    sServ.getcurClickTierName = function() {
+    sServObj.getcurClickTierName = function() {
       return this.curClickTierName;
     };
 
@@ -60,14 +60,14 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Tier Name
      * @param name is name of tier
      */
-    sServ.setcurMouseTierName= function(name) {
+    sServObj.setcurMouseTierName= function(name) {
       this.curMouseTierName = name;
     };
 
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServ.getcurMouseTierName = function() {
+    sServObj.getcurMouseTierName = function() {
       return this.curMouseTierName;
     };
 
@@ -75,14 +75,14 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Segment
      * @param name is name of tier
      */
-    sServ.setcurMouseSegment = function(segment) {
+    sServObj.setcurMouseSegment = function(segment) {
       this.curMouseSegment = segment;
     };
 
     /**
      * gets the current (mousemove) Segment
      */
-    sServ.getcurMouseSegment= function() {
+    sServObj.getcurMouseSegment= function() {
       return this.curMouseSegment;
     };
 
@@ -90,14 +90,14 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Segment
      * @param name is name of tier
      */
-    sServ.setcurMouseSegmentId = function(id) {
+    sServObj.setcurMouseSegmentId = function(id) {
       this.curMouseSegmentId = id;
     };
 
     /**
      * gets the current (mousemove) Segment
      */
-    sServ.getcurMouseSegmentId= function() {
+    sServObj.getcurMouseSegmentId= function() {
       return this.curMouseSegmentId;
     };
 
@@ -106,7 +106,7 @@ angular.module('emulvcApp')
      * sets the current (click) Segment
      * @param segment
      */
-    sServ.setcurClickSegment = function(segment, id) {
+    sServObj.setcurClickSegment = function(segment, id) {
       this.curClickSegment = segment;
       this.selected = [];
       this.selected.push(id);
@@ -116,7 +116,7 @@ angular.module('emulvcApp')
      * sets a multiple select (click) Segment
      * @param segment
      */
-    sServ.setcurClickSegmentMultiple = function(segment, id) {
+    sServObj.setcurClickSegmentMultiple = function(segment, id) {
       var empty = true;
       var my = this;
       this.selected.forEach(function(entry) {
@@ -134,49 +134,49 @@ angular.module('emulvcApp')
     /**
      * gets the current (click) Segment
      */
-    sServ.getcurClickSegment= function() {
+    sServObj.getcurClickSegment= function() {
       return this.selected;
     };
 
     /**
      * gets the current (click) Segment
      */
-    sServ.getlastClickSegment= function() {
+    sServObj.getlastClickSegment= function() {
       return this.curClickSegment;
     };
 
-    sServ.isEditing = function() {
+    sServObj.isEditing = function() {
       return this.editing;
     };
 
-    sServ.setEditing = function(n) {
+    sServObj.setEditing = function(n) {
       this.editing = n;
     };
 
-    sServ.setlasteditArea = function(name) {
+    sServObj.setlasteditArea = function(name) {
       this.lasteditArea = name;
     };
 
-    sServ.getlastID= function() {
+    sServObj.getlastID= function() {
       return this.lasteditArea.substr(1);
     };
 
-    sServ.getlasteditArea = function() {
+    sServObj.getlasteditArea = function() {
       return this.lasteditArea;
     };
 
-    sServ.deleteEditArea = function() {
+    sServObj.deleteEditArea = function() {
       if (null != this.getlasteditArea()) $("." + this.getlasteditArea()).remove();
       this.editing = false;
     };
 
 
-    sServ.resizeSelectArea = function(start, end) {
+    sServObj.resizeSelectArea = function(start, end) {
       this.selectS = start;
       this.selectE = end;
     };
 
-    sServ.resizeSelectAreaMulti = function(start, end) {
+    sServObj.resizeSelectAreaMulti = function(start, end) {
       if (start < this.selectS)
         this.selectS = start;
       if (end > this.selectE)
@@ -184,15 +184,15 @@ angular.module('emulvcApp')
     };
 
 
-    sServ.countSelected = function() {
+    sServObj.countSelected = function() {
       return this.selected.length;
     };
 
-    sServ.getCurrentSample = function(perc) {
+    sServObj.getCurrentSample = function(perc) {
       return this.sS + (this.eS - this.sS) * perc;
     };
 
-    sServ.getCurrentPercent = function(sample) {
+    sServObj.getCurrentPercent = function(sample) {
       return (sample * (100 / (this.eS - this.sS) / 100));
     };
 
@@ -201,7 +201,7 @@ angular.module('emulvcApp')
      * used to help display numbers with a given
      * precision
      */
-    sServ.round = function(x, n) {
+    sServObj.round = function(x, n) {
       if (n < 1 || n > 14) alert("error in call of round function!!");
       var e = Math.pow(10, n);
       var k = (Math.round(x * e) / e).toString();
@@ -210,7 +210,7 @@ angular.module('emulvcApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServ.openEditArea = function() {
+    sServObj.openEditArea = function() {
       var lastEventClick = this.getlastClickSegment();
       var lastEventClickId = this.getlastID();
       var elem = $("#" + this.getcurClickTierName()).find("canvas")[0];
@@ -223,7 +223,7 @@ angular.module('emulvcApp')
       return myid;
     };
 
-    sServ.createSelection = function(field, start, end) {
+    sServObj.createSelection = function(field, start, end) {
       if (field.createTextRange) {
         var selRange = field.createTextRange();
         selRange.collapse(true);
@@ -239,7 +239,7 @@ angular.module('emulvcApp')
       field.focus();
     };
 
-    sServ.createEditArea = function(id, x, y, width, height, label, labelid) {
+    sServObj.createEditArea = function(id, x, y, width, height, label, labelid) {
       var textid = "_" + labelid;
       $("#" + id).append($("<textarea>").attr({
         id: textid,
@@ -258,6 +258,98 @@ angular.module('emulvcApp')
       return textid;
     };
 
-    return sServ;
+    /**
+     * set view port to start and end sample
+     * (with several out-of-bounds like checks)
+     *
+     * @param sSample start sample of view
+     * @param sSample end sample of view
+     */
+    sServObj.setViewPort = function(sSample, eSample) {
+
+        var oldStart = this.sS;
+        var oldEnd = this.eS;
+        if (sSample !== undefined) {
+            this.sS = Math.round(sSample);
+        }
+        if (eSample !== undefined) {
+            this.eS = Math.round(eSample);
+        }
+
+        // // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
+        // if (oldStart > this.sS && oldEnd > this.eS) {
+        //     //moved left
+        //     if (this.sS < 0) {
+        //         this.sS = 0;
+        //         this.eS = oldEnd + Math.abs(this.sS);
+        //     }
+        // }
+        // if (oldStart < this.sS && oldEnd < this.eS) {
+        //     //moved right
+        //     if (this.eS > this.backend.currentBuffer.length - 1) {
+        //         this.sS = oldStart;
+        //         this.eS = this.backend.currentBuffer.length - 1;
+        //     }
+        // }
+
+        // // check if in range
+        // if (this.sS < 0) {
+        //     this.sS = 0;
+        // }
+        // if (this.eS > this.backend.currentBuffer.length - 1) {
+        //     this.eS = this.backend.currentBuffer.length - 1;
+        // }
+        // if (this.eS - this.sS < 4) {
+        //     this.sS = oldStart;
+        //     this.eS = oldEnd;
+        // }
+        // this.drawBuffer();
+    };
+
+    /**
+     * set view port to start and end sample
+     * (with several out-of-bounds like checks)
+     *
+     * @param zoomIn bool to specify zooming direction
+     * if set to true -> zoom in
+     * if set to false -> zoom out
+     */
+    sServObj.zoomViewPort = function(zoomIn) {
+
+        // this.tierHandler.removeLabelDoubleClick();
+        var newStartS, newEndS;
+        var d1 = 1;//this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
+        var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
+        var d = this.eS - this.sS;
+
+        if (zoomIn) {
+
+          newStartS = this.sS + d * 0.1;
+          newEndS = this.eS - d * 0.1;
+
+            // if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
+                // newStartS = this.sS + d1 * 0.5;
+                // newEndS = this.eS - d2 * 0.5;
+            // } //else {
+            //     newStartS = this.viewPort.sS + ~~(d / 4);
+            //     newEndS = this.viewPort.eS - ~~(d / 4);
+            // }
+        } else {
+          newStartS = this.sS - d * 0.1;
+          newEndS = this.eS + d * 0.1;
+
+
+        //     if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
+        //         newStartS = this.viewPort.sS - d1 * 0.5;
+        //         newEndS = this.viewPort.eS + d2 * 0.5;
+        //     } else {
+        //         newStartS = this.viewPort.sS - ~~(d / 4);
+        //         newEndS = this.viewPort.eS + ~~(d / 4);
+        //     }
+       }
+        this.setViewPort(newStartS, newEndS);
+    };
+
+    return sServObj;
 
   });

@@ -5,11 +5,8 @@ angular.module('emulvcApp')
             return {
                 restrict: 'A',
                 link: function postLink(scope, element, attrs) {
-                
-                    // element.bind("mousedown", function(e) {
-                    //  console.log(element);
-                    // });
                     
+                    // bind all keydown events
                     $(document).bind("keydown", function(e) {
                         var code = (e.keyCode ? e.keyCode : e.which);
                         scope.$apply(function() {
@@ -22,7 +19,14 @@ angular.module('emulvcApp')
                                 }
                             }
                             else {
-                                console.log(e)
+                                if(code==83) { // S
+                                    viewState.zoomViewPort(false);
+                                }
+                                if(code==87) { // W
+                                    viewState.zoomViewPort(true);
+                                }
+
+                                // console.log(e)
                                 // e.preventDefault();
                                 e.stopPropagation();
                             }
