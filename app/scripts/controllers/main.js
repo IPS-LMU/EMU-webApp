@@ -1,70 +1,68 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, dialogService) {
-	
+	.controller('MainCtrl', function($scope, $modal, $log, dialogService, viewState) {
+
 		$scope.lastkeycode = "N/A";
-		
-		$scope.openModal = function (myTitle, myContent) {
-		    var modalInstance = $modal.open({
-		        templateUrl: 'modal.html',
-		        controller: ModalInstanceCtrl,
-		        resolve: {
-		            modalContent: function () {
-		                return myContent;
-    		        },
-		            modalTitle: function () {
-		                return myTitle;
-    		        }    		        
-	    	    }
-		    });
-		
-    		modalInstance.result.then(function (selectedItem) {
-	    	    $scope.selected = selectedItem;
-		    }, function () {
-		        $log.info('Modal dismissed at: ' + new Date());
-    		});
-    	};
-		
-		$scope.setlastkeycode = function(c,shift) {
-		    $scope.lastkeycode = c;
-			switch(c) {
-			    case 9:
-			        if(shift) 
-			            $('#HandletiersCtrl').scope().tabPrev();
-			        else      
-			            $('#HandletiersCtrl').scope().tabNext();
-			        break;
-			    case 13:
-			        $('#HandletiersCtrl').scope().renameLabel();
-			        break;
-			    case 27:
-			        $('#HandletiersCtrl').scope().deleteEditArea();
-			        break;		
-			    case 90:
-			        $('#HandletiersCtrl').scope().goBackHistory();
-			        break;					        	        
-			    default:
-			        break;
+
+		$scope.openModal = function(myTitle, myContent) {
+			var modalInstance = $modal.open({
+				templateUrl: 'modal.html',
+				controller: ModalInstanceCtrl,
+				resolve: {
+					modalContent: function() {
+						return myContent;
+					},
+					modalTitle: function() {
+						return myTitle;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(selectedItem) {
+				$scope.selected = selectedItem;
+			}, function() {
+				$log.info('Modal dismissed at: ' + new Date());
+			});
+		};
+
+		$scope.setlastkeycode = function(c, shift) {
+			$scope.lastkeycode = c;
+			switch (c) {
+				case 9:
+					if (shift)
+						$('#HandletiersCtrl').scope().tabPrev();
+					else
+						$('#HandletiersCtrl').scope().tabNext();
+					break;
+				case 13:
+					$('#HandletiersCtrl').scope().renameLabel();
+					break;
+				case 27:
+					$('#HandletiersCtrl').scope().deleteEditArea();
+					break;
+				case 90:
+					$('#HandletiersCtrl').scope().goBackHistory();
+					break;
+				default:
+					break;
 			}
-		};	
-		
+		};
+
 	});
-	
-	
-var ModalInstanceCtrl = function ($scope, $modalInstance, modalTitle, modalContent) {
 
-  $scope.modalContent = modalContent;
-  $scope.modalTitle = modalTitle;
-  
-  $scope.ok = function () {
-    //$modalInstance.close($scope.selected.item);
-     $modalInstance.dismiss('cancel');
-  };
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent) {
+
+	$scope.modalContent = modalContent;
+	$scope.modalTitle = modalTitle;
+
+	$scope.ok = function() {
+		//$modalInstance.close($scope.selected.item);
+		$modalInstance.dismiss('cancel');
+	};
+
+	$scope.cancel = function() {
+		$modalInstance.dismiss('cancel');
+	};
 };
-	
-	
