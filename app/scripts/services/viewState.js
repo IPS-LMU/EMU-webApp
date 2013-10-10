@@ -294,18 +294,18 @@ angular.module('emulvcApp')
             }
         }
 
-        // // check if in range
-        // if (this.sS < 0) {
-        //     this.sS = 0;
-        // }
-        // if (this.eS > this.backend.currentBuffer.length - 1) {
-        //     this.eS = this.backend.currentBuffer.length - 1;
-        // }
-        // if (this.eS - this.sS < 4) {
-        //     this.sS = oldStart;
-        //     this.eS = oldEnd;
-        // }
-        // this.drawBuffer();
+        // check if in range
+        if (this.sS < 0) {
+            this.sS = 0;
+        }
+        if (this.eS > this.tmpFixedBufferLength) {
+            this.eS = this.tmpFixedBufferLength;
+        }
+        // check if at least 4 samples are showing (fixed max zoom size)
+        if (this.eS - this.sS < 4) {
+            this.sS = oldStart;
+            this.eS = oldEnd;
+        }
     };
 
     /**
