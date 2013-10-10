@@ -1,9 +1,25 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, dialogService, viewState) {
+	.controller('MainCtrl', function($scope, $modal, $log, dialogService, viewState, Iohandlerservice, Soundhandlerservice) {
 
 		$scope.lastkeycode = "N/A";
+
+		// init loading of files for testing for testing
+		Iohandlerservice.httpGetLabelJson();
+		Iohandlerservice.httpGetAudioFile();
+
+		/**
+		* listen for newlyLoadedLabelJson broadcast
+		* update tierDetails if heard
+		*/ 
+		$scope.$on('newlyLoadedAudioFile', function(evt, data){
+			// console.log(data);
+			Soundhandlerservice.decodeAudioFile(data, function(d){
+				console.log(d);
+				// Soundhandlerservice.play(0, 2.9044217803634114 , undefined)
+			});
+		});
 
 		$scope.openModal = function(myTitle, myContent) {
 			var modalInstance = $modal.open({

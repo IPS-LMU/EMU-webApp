@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-    .directive('handleglobalkeystrokes', function(viewState) {
+    .directive('handleglobalkeystrokes', function(viewState, Soundhandlerservice) {
             return {
                 restrict: 'A',
                 link: function postLink(scope, element, attrs) {
@@ -30,6 +30,10 @@ angular.module('emulvcApp')
                                 }
                                 if(code==87) { // W
                                     viewState.zoomViewPort(true);
+                                }
+                                if(code==32) { // Space
+                                    //play entire file
+                                    Soundhandlerservice.play(0, 2.9044217803634114 , undefined);
                                 }
 
                                 e.stopPropagation();

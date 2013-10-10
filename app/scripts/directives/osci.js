@@ -9,39 +9,155 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas")[0];
-								
+
 				var myid = element[0].id;
-				
-				scope.$watch('tierDetails', function() {
-					//drawTierDetails(scope.tierDetails,scope.viewState);
+
+				scope.$watch('vs', function() {
+					console.log(scope.shs)
+					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+						var allPeakVals = getPeaks(scope.vs, scope.shs.currentBuffer);
+						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer);
+
+					}
 				}, true);
 
-				scope.$watch('viewState', function() {
-					//drawTierDetails(scope.tierDetails,scope.viewState);
-				}, true);
-				
-				scope.updateView = function() {
-				    drawTierDetails(scope.tierDetails, scope.viewState);
-				};				
-				
+
 				/**
-				 * draw tier details
-				 * @param tierDetails
-				 * @param perx
-				 * @param pery
+				 * get current peaks to be drawn
+				 * if drawing over sample exact -> samples
+				 * if multiple samples per pixel -> calculate envelope points
 				 */
 
-				function drawTierDetails(tierDetails, viewPort) {
+				function getPeaks(viewState, buffer) {
+					console.log("getting peaks")
+					var k = (viewState.eS - viewState.sS) / 1024; //this.osciCanvas.width; // PCM Samples per new pixel
 
-					if ($.isEmptyObject(tierDetails)) {
-						 console.log("undef tierDetails");
-						return;
-					}
-					if ($.isEmptyObject(viewPort)) {
-						 console.log("undef viewPort");
-						return;
+					var peaks = [];
+					var minPeak = Infinity;
+					var maxPeak = -Infinity;
+
+					var chan = buffer.getChannelData(0);
+					// console.log(chan);
+					var relData;
+
+					if (k <= 1) {
+						// check if view at start            
+						if (viewState.sS === 0) {
+							relData = chan.subarray(viewState.sS, viewState.eS + 2); // +2 to compensate for length
+						} else {
+							relData = chan.subarray(viewState.sS - 1, viewState.eS + 2); // +2 to compensate for length
+						}
+						minPeak = Math.min.apply(Math, relData);
+						maxPeak = Math.max.apply(Math, relData);
+						peaks = Array.prototype.slice.call(relData);
+						// console.log(peaks)
+					} else {
+						relData = chan.subarray(viewState.sS, viewState.eS);
+
+						for (var i = 0; i < 1024; i++) { // SIC HARDCODED... BAD!!!!
+							var sum = 0;
+							for (var c = 0; c < buffer.numberOfChannels; c++) {
+
+								var vals = relData.subarray(i * k, (i + 1) * k);
+								var peak = -Infinity;
+
+								var av = 0;
+								for (var p = 0, l = vals.length; p < l; p++) {
+									//console.log(p);
+									if (vals[p] > peak) {
+										peak = vals[p];
+									}
+									av += vals[p];
+								}
+								//sum += peak;
+								sum += av / vals.length;
+							}
+
+							peaks[i] = sum;
+							if (sum > maxPeak) {
+								maxPeak = sum;
+							}
+						}
+					} //else
+					return {
+						"peaks": peaks,
+						"minPeak": minPeak,
+						"maxPeak": maxPeak,
+						"samplePerPx": k
+					};
+				};
+
+
+				/**
+				 *
+				 */
+
+				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer) {
+					var ctx = canvas.getContext("2d");
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+					console.log(allPeakVals);
+					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
+						allPeakVals.peaks.forEach(function(peak, index) {
+							if (index !== 0) {
+								drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, buffer.currentBuffer);
+							}
+						});
+
 					}
 				}
+
+				/**
+				 * drawing method to draw single line between two
+				 * envelope points. Is used by drawOsciOnCanvas if
+				 * envelope drawing is done
+				 * @param index
+				 * @param value
+				 * @param max
+				 * @param prevPeak
+				 * @param canvas
+				 */
+
+				function drawFrame(viewState, index, value, max, prevPeak, canvas) {
+					// var cc = canvas.getContext('2d');
+					var ctx = canvas.getContext("2d");
+					// ctx.strokeText("drawing onto osci", 10, 50);
+					//calculate sample of cur cursor position
+
+					//calc cursor pos
+					var all = viewState.eS - viewState.sS;
+					var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.sS;
+					var procC = fracC / all;
+					var posC = canvas.width * procC;
+
+					//cur
+					var w = 1;
+					var h = Math.round(value * (canvas.height / max)); //rel to max
+					var x = index * w;
+					var y = Math.round((canvas.height - h) / 2);
+
+					//prev
+					var prevW = 1;
+					var prevH = Math.round(prevPeak * (canvas.height / max));
+					var prevX = (index - 1) * w;
+					var prevY = Math.round((canvas.height - prevH) / 2);
+
+
+					// if (posC >= x) {
+					// 	ctx.fillStyle = this.params.playProgressColor;
+					// 	ctx.strokeStyle = this.params.playProgressColor;
+					// } else {
+					// 	ctx.fillStyle = this.params.osciColor;
+					// 	ctx.strokeStyle = this.params.osciColor;
+					// }
+
+					ctx.beginPath();
+					ctx.moveTo(prevX, prevY);
+					ctx.lineTo(x, y);
+					ctx.stroke();
+
+				}
+
 			}
 		}
 	});

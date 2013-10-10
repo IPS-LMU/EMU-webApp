@@ -29,7 +29,6 @@ angular.module('emulvcApp')
 				 * @param perx
 				 * @param pery
 				 */
-
 				function drawTierDetails(tierDetails, viewPort) {
 
 					if ($.isEmptyObject(tierDetails)) {
