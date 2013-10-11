@@ -19,16 +19,16 @@ angular.module('emulvcApp')
                                 }
                             }
                             else {
-                                if(code==65) { // A
+                                if(code==scope.keyMappings.shiftViewPortLeft) {
                                     viewState.shiftViewPort(false);
                                 }
-                                if(code==68) { // D
+                                if(code==scope.keyMappings.shiftViewPortRight) {
                                     viewState.shiftViewPort(true);
                                 }
-                                if(code==83) { // S
+                                if(code==scope.keyMappings.zoomOut) {
                                     viewState.zoomViewPort(false);
                                 }
-                                if(code==87) { // W
+                                if(code==scope.keyMappings.zoomIn) {
                                     viewState.zoomViewPort(true);
                                 }
                                 if(code==32) { // Space

@@ -1,21 +1,29 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, dialogService, viewState, Iohandlerservice, Soundhandlerservice) {
+	.controller('MainCtrl', function($scope, $modal, $log, $http, dialogService, viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
 
 		$scope.lastkeycode = "N/A";
+
+		// init load of config files
+		Colorproviderservice.httpGetDrawingColorsConfig();
+		// get keyboard shortcut mappings
+		$http.get('configFiles/keyboardShortcuts.json').success(function(data) {
+			$scope.keyMappings = data;
+		});
+
 
 		// init loading of files for testing for testing
 		Iohandlerservice.httpGetLabelJson();
 		Iohandlerservice.httpGetAudioFile();
 
 		/**
-		* listen for newlyLoadedLabelJson broadcast
-		* update tierDetails if heard
-		*/ 
-		$scope.$on('newlyLoadedAudioFile', function(evt, data){
+		 * listen for newlyLoadedLabelJson broadcast
+		 * update tierDetails if heard
+		 */
+		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
 			// console.log(data);
-			Soundhandlerservice.decodeAudioFile(data, function(d){
+			Soundhandlerservice.decodeAudioFile(data, function(d) {
 				console.log(d);
 				// Soundhandlerservice.play(0, 2.9044217803634114 , undefined)
 			});

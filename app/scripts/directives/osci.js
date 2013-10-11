@@ -13,10 +13,9 @@ angular.module('emulvcApp')
 				var myid = element[0].id;
 
 				scope.$watch('vs', function() {
-					console.log(scope.shs)
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
-						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer);
+						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
 
 					}
 				}, true);
@@ -90,9 +89,13 @@ angular.module('emulvcApp')
 
 				/**
 				 *
+				 * @param cps color provider service
 				 */
 
-				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer) {
+				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, cps) {
+					console.log("##########################################")
+					console.log(cps)
+
 					var ctx = canvas.getContext("2d");
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -100,7 +103,7 @@ angular.module('emulvcApp')
 					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
 						allPeakVals.peaks.forEach(function(peak, index) {
 							if (index !== 0) {
-								drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, buffer.currentBuffer);
+								drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, cps);
 							}
 						});
 
@@ -118,10 +121,10 @@ angular.module('emulvcApp')
 				 * @param canvas
 				 */
 
-				function drawFrame(viewState, index, value, max, prevPeak, canvas) {
-					// var cc = canvas.getContext('2d');
+				function drawFrame(viewState, index, value, max, prevPeak, canvas, cps) {
+
 					var ctx = canvas.getContext("2d");
-					// ctx.strokeText("drawing onto osci", 10, 50);
+
 					//calculate sample of cur cursor position
 
 					//calc cursor pos
@@ -147,8 +150,8 @@ angular.module('emulvcApp')
 					// 	ctx.fillStyle = this.params.playProgressColor;
 					// 	ctx.strokeStyle = this.params.playProgressColor;
 					// } else {
-					// 	ctx.fillStyle = this.params.osciColor;
-					// 	ctx.strokeStyle = this.params.osciColor;
+					ctx.fillStyle = cps.vals.osciColor;
+					ctx.strokeStyle = cps.vals.osciColor;
 					// }
 
 					ctx.beginPath();
@@ -157,7 +160,6 @@ angular.module('emulvcApp')
 					ctx.stroke();
 
 				}
-
 			}
 		}
 	});
