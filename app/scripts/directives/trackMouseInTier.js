@@ -45,6 +45,14 @@ angular.module('emulvcApp')
         thisPCM = getX(event) * scope.getPCMpp(event);
         switch (event.which) {
           case 1:
+            break;
+        case 2:
+            //console.log('Middle mouse button pressed');
+            break;
+        case 3:
+            //console.log('Right mouse button pressed');
+            break;
+        default:
             if(event.altKey) {
               scope.viewState.deleteEditArea();
               scope.moveBorder(Math.floor(thisPCM-lastPCM));
@@ -56,15 +64,7 @@ angular.module('emulvcApp')
               scope.moveSegment(Math.floor(thisPCM-lastPCM));
               lastPCM = thisPCM;
               scope.$apply(); 
-            }
-            break;
-        case 2:
-            //console.log('Middle mouse button pressed');
-            break;
-        case 3:
-            //console.log('Right mouse button pressed');
-            break;
-        default:
+            }        
             setLastMove(event);
             break;
         }
