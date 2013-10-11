@@ -75,8 +75,11 @@ angular.module('emulvcApp')
 								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 								// check if selected -> if draw as marked
-								var tierId = viewPort.getcurMouseTierName();
-
+								var tierId = viewPort.getcurClickTierName();
+								
+								
+								if(tierId==tierDetails.TierName) {
+								
 								segCId.forEach(function(entry) {
 									if (entry == curID) {
 										ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
@@ -84,6 +87,8 @@ angular.module('emulvcApp')
 										ctx.fillStyle = 'black';
 									}
 								});
+								
+								}
 
 								if (segMId == curEvt) {
 									ctx.fillStyle = "blue";
