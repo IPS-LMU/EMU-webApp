@@ -7,7 +7,7 @@ angular.module('emulvcApp')
     link: function(scope, element){
     
       var elem = element[0];
-      var tierId = element.parent().parent()[0].id;
+      var tierId = scope.this.tier.TierName;
       var ctx = elem.getContext('2d');      
       // the last coordinates before the current move
       var lastX,currentX;
@@ -84,9 +84,7 @@ angular.module('emulvcApp')
         thisPCM = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,x);
-        
         console.log(lastEventClick);
-        
         lastEventClickId = scope.getEventId(thisPCM,x);
         lastEventRightClick = scope.getEvent(thisPCM,x);
         lastEventRightClickId = scope.getEventId(thisPCM,x);
