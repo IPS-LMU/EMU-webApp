@@ -14,6 +14,51 @@ html, body{
     text-align:center;
 }
 
+.about {
+
+}
+
+.about div {
+    text-align:left;
+    padding: 5px;
+    margin: 5px;
+}
+
+.about hr {
+    padding: 0px;
+    margin: 0px;
+}
+
+.about h2 {
+    position:fixed;
+    width: 90%;
+    font-size:15px;
+    background: #E7E7E7;
+    margin: 0px;
+    margin-top: -5px;
+    padding: 0px;
+}
+
+.about h3 {
+    position:fixed;
+    width: 90%;
+    font-size:15px;
+    background: #a7a7a7;
+    margin: 0px;
+    margin-top: -5px;
+    padding: 0px;
+    top: 90%;
+}
+
+.modal {
+    overflow-y:auto;
+    width: 90%;
+    height: 80%;
+    max-height: 80%;
+    margin-left: -45%;
+    
+}
+
 .container {
     margin: 0px;
     padding: 0px;

@@ -1,7 +1,69 @@
-<p>
- <h3>{{ modalTitle }}</h3>
-</p>
-<p>
-{{ modalContent }}
-</p>
-<button ng-click="cancel();" class="mini-btn">Close</button>
+<div id="about" class="about">
+ <h2>emuLVC</h2>
+ <div>
+  emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
+ </div>
+ <hr />
+ <div>
+  <b>General usage:</b><br />
+  Moving the mouse over tiers automatically tracks the mouse movement
+  and calculates the nearest boundary to the current mouse position and
+  selects it.
+  To move the currently selected boundary hold down the <b>shift</b> key and 
+  move the mouse to the desired position. The boundary will then track the
+  mouse movement. If a segment is selected (= marked yellow) then holding down 
+  <b>alt</b> will move the entire segment
+ </div>
+ <hr />
+ <div>
+  <b><u>Navigation shortcuts:</u></b><br />
+  <table>
+    <tbody>
+      <tr><td><b>W:</b></td><td>Zoom in<sup>1</sup></td></tr>
+      <tr><td><b>S:</b></td><td>Zoom out<sup>1</sup></td></tr>
+      <tr><td><b>D:</b></td><td>Move view right</td></tr>
+      <tr><td><b>A:</b></td><td>Move view left</td></tr>
+      <tr><td><b>Q:</b></td><td>View all</td></tr>
+      <tr><td><b>E:</b></td><td>Zoom in to selected</td></tr>
+      <tr><td><b>Tab:</b></td><td>Select next event</td></tr>
+      <tr><td><b>Shift+Tab:</b></td><td>Select previous event</td></tr>
+    </tbody>
+  </table>
+  <small>1.) Zooming while a Boundary is selected will keep the position of that boundary fixed</small>
+ </div>
+ <hr />
+ <div>
+  <b><u>Labeling shortcuts:</u></b><br />
+  <table>
+    <tbody>
+      <tr><td><b>Enter:</b></td><td>Add event / boundary at selected position</td></tr>
+      <tr><td><b>Backspace:</b></td><td>Remove selected event</td></tr>
+      <tr><td><b>Delete:</b></td><td>Remove selected boundary</td></tr>
+      <tr><td><b>T:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
+      <tr><td><b>B:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
+      <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
+      <tr><td><b>+:</b></td><td>Add time to selected segments (expand to right)</td></tr>
+      <tr><td><b>Shift++:</b></td><td>Add time to selected segments (expand to left)</td></tr>
+      <tr><td><b>-:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
+      <tr><td><b>Shift+-:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
+      <tr><td><b>&uarr;</b></td><td>Move tier selection up</td></tr>
+      <tr><td><b>&darr;</b></td><td>Move tier selection down</td></tr>
+      <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <hr />
+  <div>
+  <b><u>Playback shortcuts:</u></b><br />
+  <table>
+    <tbody>
+      <tr><td><b>F:</b></td><td>Play entire file</td></tr>
+      <tr><td><b>R:</b></td><td>Play selected</td></tr>
+      <tr><td><b>Space:</b></td><td>Space: Play/Pause in view (also use as general stop for playback)</td></tr>
+    </tbody>
+  </table>
+  </div>
+<h3>
+ <button ng-click="cancel();" class="mini-btn">Close</button>
+</h3>
+</div>
