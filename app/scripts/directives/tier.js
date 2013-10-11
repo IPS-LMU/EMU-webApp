@@ -23,6 +23,7 @@ angular.module('emulvcApp')
 					drawTierDetails(scope.tier, scope.viewState);
 				};
 
+
 				/**
 				 * draw tier details
 				 * @param tierDetails
