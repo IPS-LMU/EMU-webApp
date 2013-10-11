@@ -14,8 +14,10 @@ html, body{
     text-align:center;
 }
 
-.about {
-
+.closeDialog {
+    float:right;
+    margin-top: -5px;
+    margin-right: -5px;
 }
 
 .about div {
