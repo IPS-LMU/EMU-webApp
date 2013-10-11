@@ -56,13 +56,13 @@ angular.module('emulvcApp')
         default:
             if(event.altKey) {
               scope.viewState.deleteEditArea();
-              scope.moveBorder(Math.floor(thisPCM-lastPCM));
+              scope.moveBorder(Math.floor(thisPCM-lastPCM),scope.this.tier);
               lastPCM = thisPCM;
               scope.$apply(); 
             }  
             if(event.shiftKey) {
               scope.viewState.deleteEditArea();
-              scope.moveSegment(Math.floor(thisPCM-lastPCM));
+              scope.moveSegment(Math.floor(thisPCM-lastPCM),scope.this.tier);
               lastPCM = thisPCM;
               scope.$apply(); 
             }        

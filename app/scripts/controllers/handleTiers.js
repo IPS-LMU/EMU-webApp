@@ -139,10 +139,13 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			}
 		};
 
-		$scope.moveSegment = function(changeTime) {
-			var t = $scope.tierDetails.tiers;
+		$scope.moveSegment = function(changeTime, t) {
 			if (null != t) {
 				var selected = viewState.getcurClickSegment();
+				console.log(changeTime);
+				console.log(t);
+				
+				
 				if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.events[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
