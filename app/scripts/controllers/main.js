@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $http, dialogService, viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
+	.controller('MainCtrl', function($scope, $modal, $log, $http, viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
 
 		$scope.lastkeycode = "N/A";
 
@@ -29,24 +29,21 @@ var MainCtrl = angular.module('emulvcApp')
 			});
 		});
 
-		$scope.openModal = function(myTitle, myContent) {
+		$scope.openModal = function(templatefile,title, content) {
 			var modalInstance = $modal.open({
-				templateUrl: 'modal.html',
-				controller: ModalInstanceCtrl,
+		        backdrop: true,
+                keyboard: true,
+                backdropClick: true,
+				templateUrl: templatefile,
+				controller: 'ModalInstanceCtrl',
 				resolve: {
 					modalContent: function() {
-						return myContent;
+						return content;
 					},
 					modalTitle: function() {
-						return myTitle;
-					}
+						return title;
+					}										
 				}
-			});
-
-			modalInstance.result.then(function(selectedItem) {
-				$scope.selected = selectedItem;
-			}, function() {
-				$log.info('Modal dismissed at: ' + new Date());
 			});
 		};
 
