@@ -8,7 +8,7 @@ angular.module('emulvcApp')
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
-				var canvas = element.find("canvas");
+				var canvas = element.find("canvas")[0];
 				var myid = element[0].id;
 				var myWindow = {
                     BARTLETT:       1,
@@ -38,14 +38,14 @@ angular.module('emulvcApp')
             var channels = 1;                                  // default number of channels
             var freq_lower = 0;                                // default upper Frequency
             var freq = 8000;                                   // default upper Frequency
-            var context = canvas[0].getContext("2d");    
+            var context = canvas.getContext("2d");    
             var pcmperpixel = 0; 
             var myImage = new Image();
-            var font = "Verdana";
             window.URL = window.URL || window.webkitURL;
             var devicePixelRatio = window.devicePixelRatio || 1;
             var response = spectroworker.textContent;
-            var blob;
+            var blob, vs;
+            
             try { var blob = new Blob([response], { "type" : "text\/javascript" }); }
             catch (e) { // Backwards-compatibility
                 window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -60,7 +60,7 @@ angular.module('emulvcApp')
 
 			scope.$watch('vs.curViewPort', function() {
 			    if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-					drawOsci(scope.vs.curViewPort, canvas, scope.shs.currentBuffer);
+					drawOsci(scope.vs, canvas, scope.shs.currentBuffer);
     			}		
 			}, true);
 			
@@ -88,15 +88,16 @@ angular.module('emulvcApp')
             }
             
             function drawTimeLineContext() {
-                var posS = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectS);
-                var posE = emulabeller.viewPort.getPos(canvas.width, emulabeller.viewPort.selectE);
-                var sDist = emulabeller.viewPort.getSampleDist(canvas.width)/2;
+                console.log(scope.vs);
+                var posS = vs.getPos(canvas.width, vs.curViewPort.selectS);
+                var posE = vs.getPos(canvas.width, vs.curViewPort.selectE);
+                var sDist = vs.getSampleDist(canvas.width)/2;
                 var curPos = posS + sDist;
-                if(posS!=0 &&  emulabeller.viewPort.selectS==emulabeller.viewPort.selectE) {
+                if(posS!=0 &&  vs.selectS==vs.selectE) {
                     context.fillStyle = "#000";
                     context.fillRect(curPos, 0, 1, canvas.height);
                 }            
-                if (curPos!=0 && emulabeller.viewPort.selectS!=emulabeller.viewPort.selectE){
+                if (curPos!=0 && vs.selectS!=vs.selectE){
                     context.fillStyle = "#f00";
                     context.fillRect(posS, 0, posE-posS, canvas.height);
                     context.strokeStyle = "#111";
@@ -135,12 +136,12 @@ angular.module('emulvcApp')
 			
 			function setupEvent() {
                 primeWorker.addEventListener('message', function(event){
-            	    worker_img = event.data.img;
-            	    worker_start = event.data.start;
-            	    worker_end = event.data.end;
-            	    worker_cache_width = event.data.cacheWidth;
-            	    worker_cache_side = event.data.cacheSide;
-                    render_width = canvas.width - worker_cache_width;
+            	    var worker_img = event.data.img;
+            	    var worker_start = event.data.start;
+            	    var worker_end = event.data.end;
+            	    var worker_cache_width = event.data.cacheWidth;
+            	    var worker_cache_side = event.data.cacheSide;
+                    var render_width = canvas.width - worker_cache_width;
                     myImage.onload = function() {
                         if(worker_cache_side==0)
     	    	            context.drawImage(myImage, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
@@ -183,14 +184,11 @@ angular.module('emulvcApp')
         }
         
         function startSpectroRenderingThread(viewState, buffer) {
-            pcmperpixel = Math.round((viewState.eS-viewState.sS)/canvas.width);
+            vs = viewState;
+            pcmperpixel = Math.round((vs.curViewPort.eS-vs.curViewPort.sS)/canvas.width);
             primeWorker = new Worker(URL.createObjectURL(blob));
-            var cwidth = canvas.clientWidth;
-            var cheight = canvas.clientHeight;
-            var parseData = buffer.getChannelData(0).subarray(viewState.sS, viewState.eS+(2*N));
+            var parseData = buffer.getChannelData(0).subarray(vs.curViewPort.sS, vs.curViewPort.eS+(2*N));
             setupEvent();
-            
-            console.log(parseData);
             
             primeWorker.postMessage({'cmd': 'config', 'N': N});
             primeWorker.postMessage({'cmd': 'config', 'alpha': alpha});
@@ -201,8 +199,8 @@ angular.module('emulvcApp')
             primeWorker.postMessage({'cmd': 'config', 'myStep': pcmperpixel});
             primeWorker.postMessage({'cmd': 'config', 'window': windowFunction});
             primeWorker.postMessage({'cmd': 'config', 'cacheSide': 0});
-            primeWorker.postMessage({'cmd': 'config', 'width': cwidth});
-            primeWorker.postMessage({'cmd': 'config', 'height': cheight});
+            primeWorker.postMessage({'cmd': 'config', 'width': canvas.width});
+            primeWorker.postMessage({'cmd': 'config', 'height': canvas.height});
             primeWorker.postMessage({'cmd': 'config', 'cacheWidth': 0});    
             primeWorker.postMessage({'cmd': 'config', 'dynRangeInDB': dynRangeInDB}); 
             primeWorker.postMessage({'cmd': 'config', 'pixelRatio': devicePixelRatio}); 
