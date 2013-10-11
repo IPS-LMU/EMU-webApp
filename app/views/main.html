@@ -25,18 +25,11 @@
 
     <tier id='Phonetic' class='tier'></tier>
 	
-  	<p>Change all labels to:
-  		<input type="text" ng-model="testValue" ng-keyup='{{updateAllLabels()}}'/>
-  	</p>
-  	<p>Set start sampelnr :
-  		<input type="text" ng-model="viewState.sS">
-  	</p>
-	  <p>Set end sampelnr :
-  		<input type="text" ng-model="viewState.eS">
-  	</p>
+
   	<h3>{{testValue}}</h3>
-    <p>Keycode of last key hit: {{lastkeycode}}
-    </p>
+    <p>viewState.curViewPort.sS: {{viewState.curViewPort.sS}};
+      viewState.curViewPort.eS: {{viewState.curViewPort.eS}};
+      last hit keycode: {{lastkeycode}}</p>
   </div>
   
   
