@@ -52,3 +52,21 @@ emuLVC.min.css
 
 # tmp files # 
 .tmp
+
+*.aux
+
+*.bbl
+
+*.bcf
+
+*.blg
+
+*.fdb_latexmk
+
+*.log
+
+*.pdf
+
+*.xml
+
+*.gz
