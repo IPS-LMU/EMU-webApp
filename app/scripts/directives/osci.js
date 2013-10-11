@@ -13,9 +13,6 @@ angular.module('emulvcApp')
 				var myid = element[0].id;
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-					console.log("äää#############")
-					console.log(newValue)
-					console.log(oldValue)
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
