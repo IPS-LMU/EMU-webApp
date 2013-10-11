@@ -30,8 +30,8 @@ angular.module('emulvcApp')
      * @param end of seleected Area
      */
     sServObj.select = function(start, end) {
-      this.curViewPort.selectS = start;
-      this.curViewPort.selectE = end;
+      this.sServObj.curViewPort.selectS = start;
+      this.sServObj.curViewPort.selectE = end;
     };
 
     /**

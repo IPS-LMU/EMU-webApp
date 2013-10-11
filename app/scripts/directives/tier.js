@@ -15,7 +15,7 @@ angular.module('emulvcApp')
 					drawTierDetails(scope.tierDetails, scope.viewState);
 				}, true);
 
-				scope.$watch('viewState.curViewPort', function() {
+				scope.$watch('viewState', function() {
 					drawTierDetails(scope.tierDetails, scope.viewState);
 				}, true);
 

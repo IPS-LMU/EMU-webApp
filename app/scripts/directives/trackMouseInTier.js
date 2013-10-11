@@ -69,8 +69,6 @@ angular.module('emulvcApp')
             setLastMove(event);
             break;
         }
-
-        
       });
 
       element.bind('mouseup', function(event){
