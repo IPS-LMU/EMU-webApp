@@ -14,12 +14,10 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs', function() {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-					    //alert("vs");
 					}
 				}, true);
 
 				scope.$watch('viewState', function() {
-				    //alert("viewState");
 					//drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
 				
