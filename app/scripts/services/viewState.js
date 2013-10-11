@@ -6,10 +6,17 @@ angular.module('emulvcApp')
     //shared service object to be returned
     var sServObj = {};
 
-    sServObj.sS = 0;
-    sServObj.eS = 0;
-    sServObj.selectS = -1;
-    sServObj.selectE = -1;
+    sServObj.curViewPort = {
+      sS: 0,
+      eS: 0,
+      selectS: -1,
+      selectE: -1
+    };
+
+    // sServObj.sS = 0;
+    // sServObj.eS = 0;
+    // sServObj.selectS = -1;
+    // sServObj.selectE = -1;
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
@@ -22,8 +29,8 @@ angular.module('emulvcApp')
      * @param end of seleected Area
      */
     sServObj.select = function(start, end) {
-      this.selectS = start;
-      this.selectE = end;
+      this.curViewPort.selectS = start;
+      this.curViewPort.selectE = end;
     };
 
     /**
@@ -32,7 +39,7 @@ angular.module('emulvcApp')
      * @param s is current sample to convert to pixel value
      */
     sServObj.getPos = function(w, s) {
-      return (w * (s - this.sS) / (this.eS - this.sS + 1)); // + 1 because of view (displays all samples in view)
+      return (w * (s - this.curViewPort.sS) / (this.curViewPort.eS - this.curViewPort.sS + 1)); // + 1 because of view (displays all samples in view)
     };
 
     /**
@@ -40,14 +47,14 @@ angular.module('emulvcApp')
      * @param w is width of canvas
      */
     sServObj.getSampleDist = function(w) {
-      return this.getPos(w, this.sS + 1) - this.getPos(w, this.sS);
+      return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
 
     /**
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurClickTierName= function(name) {
+    sServObj.setcurClickTierName = function(name) {
       this.curClickTierName = name;
     };
 
@@ -62,7 +69,7 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurMouseTierName= function(name) {
+    sServObj.setcurMouseTierName = function(name) {
       this.curMouseTierName = name;
     };
 
@@ -84,7 +91,7 @@ angular.module('emulvcApp')
     /**
      * gets the current (mousemove) Segment
      */
-    sServObj.getcurMouseSegment= function() {
+    sServObj.getcurMouseSegment = function() {
       return this.curMouseSegment;
     };
 
@@ -99,7 +106,7 @@ angular.module('emulvcApp')
     /**
      * gets the current (mousemove) Segment
      */
-    sServObj.getcurMouseSegmentId= function() {
+    sServObj.getcurMouseSegmentId = function() {
       return this.curMouseSegmentId;
     };
 
@@ -136,14 +143,14 @@ angular.module('emulvcApp')
     /**
      * gets the current (click) Segment
      */
-    sServObj.getcurClickSegment= function() {
+    sServObj.getcurClickSegment = function() {
       return this.selected;
     };
 
     /**
      * gets the current (click) Segment
      */
-    sServObj.getlastClickSegment= function() {
+    sServObj.getlastClickSegment = function() {
       return this.curClickSegment;
     };
 
@@ -159,7 +166,7 @@ angular.module('emulvcApp')
       this.lasteditArea = name;
     };
 
-    sServObj.getlastID= function() {
+    sServObj.getlastID = function() {
       return this.lasteditArea.substr(1);
     };
 
@@ -174,15 +181,15 @@ angular.module('emulvcApp')
 
 
     sServObj.resizeSelectArea = function(start, end) {
-      this.selectS = start;
-      this.selectE = end;
+      this.curViewPort.selectS = start;
+      this.curViewPort.selectE = end;
     };
 
     sServObj.resizeSelectAreaMulti = function(start, end) {
-      if (start < this.selectS)
-        this.selectS = start;
+      if (start < this.curViewPort.selectS)
+        this.curViewPort.selectS = start;
       if (end > this.selectE)
-        this.selectE = end;
+        this.curViewPort.selectE = end;
     };
 
 
@@ -191,11 +198,11 @@ angular.module('emulvcApp')
     };
 
     sServObj.getCurrentSample = function(perc) {
-      return this.sS + (this.eS - this.sS) * perc;
+      return this.curViewPort.sS + (this.curViewPort.eS - this.curViewPort.sS) * perc;
     };
 
     sServObj.getCurrentPercent = function(sample) {
-      return (sample * (100 / (this.eS - this.sS) / 100));
+      return (sample * (100 / (this.curViewPort.eS - this.curViewPort.sS) / 100));
     };
 
     /**
@@ -269,43 +276,45 @@ angular.module('emulvcApp')
      */
     sServObj.setViewPort = function(sSample, eSample) {
 
-        var oldStart = this.sS;
-        var oldEnd = this.eS;
-        if (sSample !== undefined) {
-            this.sS = Math.round(sSample);
-        }
-        if (eSample !== undefined) {
-            this.eS = Math.round(eSample);
-        }
+      var oldStart = this.curViewPort.sS;
+      var oldEnd = this.curViewPort.eS;
+      if (sSample !== undefined) {
+        this.curViewPort.sS = Math.round(sSample);
+      }
+      if (eSample !== undefined) {
+        this.curViewPort.eS = Math.round(eSample);
+      }
 
-        // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
-        if (oldStart > this.sS && oldEnd > this.eS) {
-            //moved left
-            if (this.sS < 0) {
-                this.sS = 0;
-                this.eS = oldEnd + Math.abs(this.sS);
-            }
+      // check if moving left or right is not out of bounds -> prevent zooming on edge when moving left/right
+      if (oldStart > this.curViewPort.sS && oldEnd > this.curViewPort.eS) {
+        //moved left
+        if (this.curViewPort.sS < 0) {
+          this.curViewPort.sS = 0;
+          this.curViewPort.eS = oldEnd + Math.abs(this.curViewPort.sS);
         }
-        if (oldStart < this.sS && oldEnd < this.eS) {
-            //moved right
-            if (this.eS > this.tmpFixedBufferLength) {
-                this.sS = oldStart;
-                this.eS = this.tmpFixedBufferLength;
-            }
+      }
+      if (oldStart < this.curViewPort.sS && oldEnd < this.curViewPort.eS) {
+        //moved right
+        if (this.curViewPort.eS > this.tmpFixedBufferLength) {
+          this.curViewPort.sS = oldStart;
+          this.curViewPort.eS = this.tmpFixedBufferLength;
         }
+      }
 
-        // check if in range
-        if (this.sS < 0) {
-            this.sS = 0;
-        }
-        if (this.eS > this.tmpFixedBufferLength) {
-            this.eS = this.tmpFixedBufferLength;
-        }
-        // check if at least 4 samples are showing (fixed max zoom size)
-        if (this.eS - this.sS < 4) {
-            this.sS = oldStart;
-            this.eS = oldEnd;
-        }
+      // check if in range
+      if (this.curViewPort.sS < 0) {
+        this.curViewPort.sS = 0;
+      }
+      if (this.curViewPort.eS > this.tmpFixedBufferLength) {
+        this.curViewPort.eS = this.tmpFixedBufferLength;
+      }
+      // check if at least 4 samples are showing (fixed max zoom size)
+      if (this.curViewPort.eS - this.curViewPort.sS < 4) {
+        this.curViewPort.sS = oldStart;
+        this.curViewPort.eS = oldEnd;
+      }
+      // this.curViewPort.sS = 400;
+      // console.log(this.curViewPort)
     };
 
     /**
@@ -317,28 +326,29 @@ angular.module('emulvcApp')
      * if set to false -> zoom out
      */
     sServObj.zoomViewPort = function(zoomIn) {
+      // this.tierHandler.removeLabelDoubleClick();
+      var newStartS, newEndS;
+      var d1 = 1; //this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
+      var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
+      var d = this.curViewPort.eS - this.curViewPort.sS;
 
-        // this.tierHandler.removeLabelDoubleClick();
-        var newStartS, newEndS;
-        var d1 = 1;//this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
-        var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
-        var d = this.eS - this.sS;
+      console.log(d)
 
-        if (zoomIn) {
+      if (zoomIn) {
 
-          newStartS = this.sS + d * 0.1;
-          newEndS = this.eS - d * 0.1;
+        newStartS = this.curViewPort.sS + d * 0.1;
+        newEndS = this.curViewPort.eS - d * 0.1;
 
-            // if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
-                // newStartS = this.sS + d1 * 0.5;
-                // newEndS = this.eS - d2 * 0.5;
-            // } //else {
-            //     newStartS = this.viewPort.sS + ~~(d / 4);
-            //     newEndS = this.viewPort.eS - ~~(d / 4);
-            // }
-        } else {
-          newStartS = this.sS - d * 0.1;
-          newEndS = this.eS + d * 0.1;
+        // if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
+        // newStartS = this.sS + d1 * 0.5;
+        // newEndS = this.eS - d2 * 0.5;
+        // } //else {
+        //     newStartS = this.viewPort.sS + ~~(d / 4);
+        //     newEndS = this.viewPort.eS - ~~(d / 4);
+        // }
+      } else {
+        newStartS = this.curViewPort.sS - d * 0.1;
+        newEndS = this.curViewPort.eS + d * 0.1;
 
 
         //     if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
@@ -348,8 +358,8 @@ angular.module('emulvcApp')
         //         newStartS = this.viewPort.sS - ~~(d / 4);
         //         newEndS = this.viewPort.eS + ~~(d / 4);
         //     }
-       }
-        this.setViewPort(newStartS, newEndS);
+      }
+      this.setViewPort(newStartS, newEndS);
     };
 
     /**
@@ -361,17 +371,17 @@ angular.module('emulvcApp')
      * if set to falce -> shift left
      */
     sServObj.shiftViewPort = function(shiftRight) {
-        // my.removeLabelDoubleClick();
-        var newStartS, newEndS;
-        if (shiftRight) {
-            newStartS = this.sS + ~~((this.eS - this.sS) / 4);
-            newEndS = this.eS + ~~((this.eS - this.sS) / 4);
-        } else {
-            newStartS = this.sS - ~~((this.eS - this.sS) / 4);
-            newEndS = this.eS - ~~((this.eS - this.sS) / 4);
-        }
+      // my.removeLabelDoubleClick();
+      var newStartS, newEndS;
+      if (shiftRight) {
+        newStartS = this.curViewPort.sS + ~~((this.curViewPort.eS - this.curViewPort.sS) / 4);
+        newEndS = this.curViewPort.eS + ~~((this.curViewPort.eS - this.curViewPort.sS) / 4);
+      } else {
+        newStartS = this.curViewPort.sS - ~~((this.curViewPort.eS - this.curViewPort.sS) / 4);
+        newEndS = this.curViewPort.eS - ~~((this.curViewPort.eS - this.curViewPort.sS) / 4);
+      }
 
-        this.setViewPort(newStartS, newEndS);
+      this.setViewPort(newStartS, newEndS);
     };
 
     return sServObj;

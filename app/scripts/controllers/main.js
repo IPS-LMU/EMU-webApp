@@ -13,7 +13,7 @@ var MainCtrl = angular.module('emulvcApp')
 		});
 
 
-		// init loading of files for testing for testing
+		// init loading of files for testing
 		Iohandlerservice.httpGetLabelJson();
 		Iohandlerservice.httpGetAudioFile();
 

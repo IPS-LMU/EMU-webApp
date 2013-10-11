@@ -15,8 +15,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		* update tierDetails if heard
 		*/ 
 		$scope.$on('newlyLoadedLabelJson', function(evt, data){
-			$scope.viewState.eS = data.events[data.events.length - 1].startSample + data.events[data.events.length - 1].sampleDur;
-			$scope.viewState.bufferLength = $scope.viewState.eS;
+			$scope.viewState.curViewPort.eS = data.events[data.events.length - 1].startSample + data.events[data.events.length - 1].sampleDur;
+			$scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
 
@@ -99,13 +99,13 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.getPCMpp = function(event) {
-			var start = parseInt($scope.viewState.sS, 10);
-			var end = parseInt($scope.viewState.eS, 10);
+			var start = parseInt($scope.viewState.curViewPort.sS, 10);
+			var end = parseInt($scope.viewState.curViewPort.eS, 10);
 			return (end - start) / event.originalEvent.srcElement.width;
 		}
 
 		$scope.getEventId = function(x, event) {
-			var pcm = parseInt($scope.viewState.sS, 10) + x;
+			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
 			angular.forEach($scope.tierDetails.events, function(evt) {
@@ -118,7 +118,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		}
 
 		$scope.getEvent = function(x) {
-			var pcm = parseInt($scope.viewState.sS, 10) + x;
+			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var evtr = null;
 			angular.forEach($scope.tierDetails.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
