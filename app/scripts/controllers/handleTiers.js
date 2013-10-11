@@ -104,11 +104,11 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			return (end - start) / event.originalEvent.srcElement.width;
 		}
 
-		$scope.getEventId = function(x, event) {
+		$scope.getEventId = function(x, tier) {
 			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
-			angular.forEach($scope.tierDetails.events, function(evt) {
+			angular.forEach(tier.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 					ret = id;
 				}
@@ -117,10 +117,10 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			return ret;
 		}
 
-		$scope.getEvent = function(x) {
+		$scope.getEvent = function(x, tier) {
 			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var evtr = null;
-			angular.forEach($scope.tierDetails.events, function(evt) {
+			angular.forEach(tier.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 					evtr = evt;
 				}
@@ -128,8 +128,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			return evtr;
 		}
 
-		$scope.moveBorder = function(changeTime) {
-			var t = $scope.tierDetails;
+		$scope.moveBorder = function(changeTime, t) {
 			if (null != t) {
 				var seg = viewState.getcurMouseSegmentId();
 				if ((t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
@@ -141,7 +140,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.moveSegment = function(changeTime) {
-			var t = $scope.tierDetails;
+			var t = $scope.tierDetails.tiers;
 			if (null != t) {
 				var selected = viewState.getcurClickSegment();
 				if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {

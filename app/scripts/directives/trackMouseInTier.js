@@ -83,11 +83,10 @@ angular.module('emulvcApp')
       function setLastClick(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
-        lastEventClick = scope.getEvent(thisPCM,x);
-        console.log(lastEventClick);
-        lastEventClickId = scope.getEventId(thisPCM,x);
-        lastEventRightClick = scope.getEvent(thisPCM,x);
-        lastEventRightClickId = scope.getEventId(thisPCM,x);
+        lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
+        lastEventRightClick = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventRightClickId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
@@ -97,10 +96,10 @@ angular.module('emulvcApp')
       function setLastRightClick(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
-        lastEventClick = scope.getEvent(thisPCM,x);
-        lastEventClickId = scope.getEventId(thisPCM,x);
-        lastEventRightClick = scope.getEvent(thisPCM,x);
-        lastEventRightClickId = scope.getEventId(thisPCM,x);
+        lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
+        lastEventRightClick = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventRightClickId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
         lastPCM = thisPCM;
@@ -108,8 +107,8 @@ angular.module('emulvcApp')
       } 
       function setLastDblClick(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
-        lastEventClick = scope.getEvent(thisPCM,x);
-        lastEventClickId = scope.getEventId(thisPCM,x);
+        lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
@@ -125,8 +124,8 @@ angular.module('emulvcApp')
       }     
       function setLastMove(x) {
         thisPCM = getX(x) * scope.getPCMpp(x);
-        lastEventMove = scope.getEvent(thisPCM,x);
-        lastEventMoveId = scope.getEventId(thisPCM,x);
+        lastEventMove = scope.getEvent(thisPCM,scope.this.tier);
+        lastEventMoveId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurMouseTierName(tierId);
         scope.viewState.setcurMouseSegment(lastEventMove);
         scope.viewState.setcurMouseSegmentId(lastEventMoveId);
