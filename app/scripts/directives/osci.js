@@ -15,7 +15,7 @@ angular.module('emulvcApp')
 				scope.$watch('vs', function() {
 					console.log(scope.shs)
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-						var allPeakVals = getPeaks(scope.vs, scope.shs.currentBuffer);
+						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer);
 
 					}
@@ -28,9 +28,9 @@ angular.module('emulvcApp')
 				 * if multiple samples per pixel -> calculate envelope points
 				 */
 
-				function getPeaks(viewState, buffer) {
+				function getPeaks(viewState, canvas, buffer) {
 					console.log("getting peaks")
-					var k = (viewState.eS - viewState.sS) / 1024; //this.osciCanvas.width; // PCM Samples per new pixel
+					var k = (viewState.eS - viewState.sS) / canvas.width; //this.osciCanvas.width; // PCM Samples per new pixel
 
 					var peaks = [];
 					var minPeak = Infinity;
@@ -54,7 +54,7 @@ angular.module('emulvcApp')
 					} else {
 						relData = chan.subarray(viewState.sS, viewState.eS);
 
-						for (var i = 0; i < 1024; i++) { // SIC HARDCODED... BAD!!!!
+						for (var i = 0; i < canvas.width; i++) { // SIC HARDCODED... BAD!!!!
 							var sum = 0;
 							for (var c = 0; c < buffer.numberOfChannels; c++) {
 
