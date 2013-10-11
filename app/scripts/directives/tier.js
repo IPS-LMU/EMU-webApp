@@ -10,18 +10,17 @@ angular.module('emulvcApp')
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas");
 
-				var myid = element[0].id;
-				console.log(canvas)
+				var myid = scope.tier.TierName;
 				scope.$watch('tierDetails', function() {
-					drawTierDetails(scope.tierDetails, scope.viewState);
+					drawTierDetails(scope.tier, scope.viewState);
 				}, true);
 
 				scope.$watch('viewState', function() {
-					drawTierDetails(scope.tierDetails, scope.viewState);
+					drawTierDetails(scope.tier, scope.viewState);
 				}, true);
 
 				scope.updateView = function() {
-					drawTierDetails(scope.tierDetails, scope.viewState);
+					drawTierDetails(scope.tier, scope.viewState);
 				};
 
 				/**

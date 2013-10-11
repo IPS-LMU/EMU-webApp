@@ -84,6 +84,9 @@ angular.module('emulvcApp')
         thisPCM = getX(x) * scope.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,x);
+        
+        console.log(lastEventClick);
+        
         lastEventClickId = scope.getEventId(thisPCM,x);
         lastEventRightClick = scope.getEvent(thisPCM,x);
         lastEventRightClickId = scope.getEventId(thisPCM,x);

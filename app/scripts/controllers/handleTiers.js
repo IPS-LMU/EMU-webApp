@@ -3,7 +3,6 @@
 var HandletiersCtrl = angular.module('emulvcApp')
 	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState) {
 
-
 		$scope.viewState = viewState;
 		$scope.testValue = '';
 		$scope.message = '';
@@ -16,7 +15,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		*/ 
 		$scope.$on('newlyLoadedLabelJson', function(evt, data){
 			// should look for longest tier in tier details
-			console.log(data)
 			$scope.viewState.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
 			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
