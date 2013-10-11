@@ -28,8 +28,7 @@ angular.module('emulvcApp')
 				 */
 
 				function getPeaks(viewState, canvas, buffer) {
-					console.log("getting peaks")
-					var k = (viewState.eS - viewState.sS) / canvas.width; //this.osciCanvas.width; // PCM Samples per new pixel
+					var k = (viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width; //this.osciCanvas.width; // PCM Samples per new pixel
 
 					var peaks = [];
 					var minPeak = Infinity;
@@ -41,17 +40,17 @@ angular.module('emulvcApp')
 
 					if (k <= 1) {
 						// check if view at start            
-						if (viewState.sS === 0) {
-							relData = chan.subarray(viewState.sS, viewState.eS + 2); // +2 to compensate for length
+						if (viewState.curViewPort.sS === 0) {
+							relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
 						} else {
-							relData = chan.subarray(viewState.sS - 1, viewState.eS + 2); // +2 to compensate for length
+							relData = chan.subarray(viewState.curViewPort.sS - 1, viewState.curViewPort.eS + 2); // +2 to compensate for length
 						}
 						minPeak = Math.min.apply(Math, relData);
 						maxPeak = Math.max.apply(Math, relData);
 						peaks = Array.prototype.slice.call(relData);
 						// console.log(peaks)
 					} else {
-						relData = chan.subarray(viewState.sS, viewState.eS);
+						relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
 
 						for (var i = 0; i < canvas.width; i++) { // SIC HARDCODED... BAD!!!!
 							var sum = 0;
@@ -128,8 +127,8 @@ angular.module('emulvcApp')
 					//calculate sample of cur cursor position
 
 					//calc cursor pos
-					var all = viewState.eS - viewState.sS;
-					var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.sS;
+					var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
+					var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
 					var procC = fracC / all;
 					var posC = canvas.width * procC;
 
