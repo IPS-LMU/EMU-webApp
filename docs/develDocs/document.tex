@@ -1,4 +1,4 @@
-\documentclass[A4,12pt, utf8]{article}
+\documentclass[A4,12pt, utf8, landscape]{article}
 \usepackage{tikz}
 \usepackage[
     backend=biber,
@@ -16,16 +16,8 @@
 \author{Raphael Winkelmann}
 \date{\today}
 \begin{document}
-  \maketitle
-% \begin{abstract}
-% The advent of HTML5 sparked a great increase of interest in the web as
-% a development platform for a variety of different research applications.
-% In this paper we'll introduce an open-source client-side web app for labeling speech 
-% data, visualizing speech and segmentation information and manually correcting 
-% derived speech signals such as formant trajectories. The future integration in 
-% the EMU speech database management system will also be 
-% outlined as this is one of several components contributing to the future system.
-% \end{abstract}
+  % \maketitle
+
 
 
 \begin{figure}[h]
@@ -43,43 +35,45 @@
 
 
   \begin{tikzpicture}
-  \node (rootscope) at ( 0, 7) [rootscope] {rootscope};
+  \node (rootscope) at ( 0, 7) [rootscope] {\small{rootscope}};
 
-    \node (mainCtrl) at ( 0, 5) [ctrl] {mainCtl};
-    \node (viewState) at ( -4, 5) [service] {viewState};
-    \node (ioHandler) at ( 4, 6) [service] {Iohandlerservice};
-    \node (soundHandler) at ( 4, 5) [service] {Soundhandlerservice};
-      \node (TextGridParser) at ( 7, 7) [service] {TGParser};
-      \node (labFileParser) at ( 7, 6.5) [service] {labParser};
-      \node (Dropbox) at ( 7, 6) [service] {DBHandler};
-      \node (Socket) at ( 7, 5.5) [service] {Sockethandler};
+    \node (colorServ) at ( -4, 0) [service] {\small{Colorproviderservice}};
+
+    \node (mainCtrl) at ( 0, 5) [ctrl] {\small{mainCtl}};
+    \node (viewState) at ( -4, 5) [service] {\small{viewState}};
+    \node (ioHandler) at ( 4, 6) [service] {\small{Iohandlerservice}};
+    \node (soundHandler) at ( 4, 5) [service] {\small{Soundhandlerservice}};
+      \node (TextGridParser) at ( 7, 7) [service] {\small{TGParser}};
+      \node (labFileParser) at ( 7, 6.5) [service] {\small{labParser}};
+      \node (Dropbox) at ( 7, 6) [service] {\small{DBHandler}};
+      \node (Socket) at ( 7, 5.5) [service] {\small{Sockethandler}};
 
 
-    \node (keys) at ( 0, 4) [ctrl] {handleglobalkeys};
+    \node (keys) at ( 0, 4) [ctrl] {\small{handleglobalkeys}};
 
     % oscispec ctrl
     \draw (-1, 3) rectangle (7, -1.5);
 
-    \node (osciSpecCtrl) at ( 0, 3) [ctrl] {handlespectosciCtrl};
+    \node (osciSpecCtrl) at ( 0, 3) [ctrl] {\small{handlespectosciCtrl}};
 
-    \node (spect) at ( 1, 2) [directive] {$<$spectrogram$>$};
+    \node (spect) at ( 1, 2) [directive] {\small{$<$spectrogram$>$}};
 
-          \node (canspect) at (4 , 1) [directive] {$<$canvas handlemouseinspect$>$};
+          \node (canspect) at (4 , 1) [directive] {\small{$<$canvas handlemouseinspect$>$}};
     
-    \node (osci) at ( 1, 0) [directive] {$<$oscii$>$};
+    \node (osci) at ( 1, 0) [directive] {\small{$<$oscii$>$}};
 
-          \node (canosci) at (4 , -1) [directive] {$<$canvas handlemouseinosci$>$};
+          \node (canosci) at (4 , -1) [directive] {\small{$<$canvas handlemouseinosci$>$}};
 
     % tiers
     \draw (-1, -2) rectangle (7, -4.5);
-    \node (model) at ( -4, -2) [jso] {tierInfos(model)};
-    \node (tierCtrl) at ( 0, -2) [ctrl] {handletiersCtl};
+    \node (model) at ( -4, -2) [jso] {\small{tierInfos(model)}};
+    \node (tierCtrl) at ( 0, -2) [ctrl] {\small{handletiersCtl}};
 
-    \node (tier) at ( 1, -3) [directive] {$<$tier$>$};
+    \node (tier) at ( 1, -3) [directive] {\small{$<$tier$>$}};
 
-          \node (cantier) at (4 , -4) [directive] {$<$canvas handlemouseintier$>$};
+          \node (cantier) at (4 , -4) [directive] {\small{$<$canvas handlemouseintier$>$}};
 
-
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %connections
     \draw [-] (mainCtrl) -- (keys);
     \draw [-] (keys) -- (osciSpecCtrl);
@@ -98,6 +92,10 @@
     \draw [->, dotted] (viewState) -- (mainCtrl);
     \draw [->, dotted] (viewState) -- (osciSpecCtrl);
     \draw [->, dotted] (viewState) -- (tierCtrl.west);
+
+    %colorproviderservice
+    \draw [->, dotted] (colorServ) -- (osciSpecCtrl.west);
+    \draw [->, dotted] (colorServ) -- (tierCtrl.west);
 
   \end{tikzpicture}
 \end{figure}
