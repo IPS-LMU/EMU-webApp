@@ -11,8 +11,13 @@ angular.module('emulvcApp')
 				var canvas = element.find("canvas");
 								
 				var myid = element[0].id;
-				scope.$watch('tierDetails', function() {
-					//drawTierDetails(scope.tierDetails,scope.viewState);
+
+				scope.$watch('vs', function() {
+					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
+						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
+
+					}
 				}, true);
 
 				scope.$watch('viewState', function() {
