@@ -92,13 +92,9 @@ angular.module('emulvcApp')
 				 */
 
 				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, cps) {
-					console.log("##########################################")
-					console.log(cps)
-
 					var ctx = canvas.getContext("2d");
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-					console.log(allPeakVals);
 					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
 						allPeakVals.peaks.forEach(function(peak, index) {
 							if (index !== 0) {

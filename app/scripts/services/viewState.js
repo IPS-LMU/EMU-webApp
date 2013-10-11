@@ -313,8 +313,7 @@ angular.module('emulvcApp')
         this.curViewPort.sS = oldStart;
         this.curViewPort.eS = oldEnd;
       }
-      // this.curViewPort.sS = 400;
-      // console.log(this.curViewPort)
+
     };
 
     /**
@@ -331,8 +330,6 @@ angular.module('emulvcApp')
       var d1 = 1; //this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
       var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
-
-      console.log(d)
 
       if (zoomIn) {
 
