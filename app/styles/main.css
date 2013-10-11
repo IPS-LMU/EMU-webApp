@@ -14,51 +14,54 @@ html, body{
     text-align:center;
 }
 
-.closeDialog {
-    float:right;
-    margin-top: -5px;
-    margin-right: -5px;
+.about {
+    position: absolute;
+    display: block;
+    overflow-x:hidden;
+    overflow-y:auto;
+    width: 90%;
+    max-width: 90%;
+    height: 80%;
+    max-height: 80%;
+    margin-left: -45%;
 }
 
-.about div {
+.deleteTier {
+    position: absolute;
+    display: block;
+    overflow-x:hidden;
+    overflow-y:auto;
+    width: 40%;
+    max-width: 40%;
+    height: 30%;
+    max-height: 30%;
+    margin-left: -20%;
+}
+
+
+.about div, .deleteTier div {
     text-align:left;
     padding: 5px;
     margin: 5px;
 }
 
-.about hr {
+.about hr, .deleteTier hr {
     padding: 0px;
     margin: 0px;
 }
 
 .about h2 {
-    position:fixed;
+    position: fixed;
+    background: #ddd;
     width: 90%;
-    font-size:15px;
-    background: #E7E7E7;
-    margin: 0px;
-    margin-top: -5px;
-    padding: 0px;
+    font-size: 15px;
 }
 
-.about h3 {
-    position:fixed;
-    width: 90%;
-    font-size:15px;
-    background: #a7a7a7;
-    margin: 0px;
-    margin-top: -5px;
-    padding: 0px;
-    top: 90%;
-}
-
-.modal {
-    overflow-y:auto;
-    width: 90%;
-    height: 80%;
-    max-height: 80%;
-    margin-left: -45%;
-    
+.deleteTier h2 {
+    position: fixed;
+    background: #ddd;
+    width: 40%;
+    font-size: 15px;
 }
 
 .container {

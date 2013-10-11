@@ -10,7 +10,7 @@ angular.module('emulvcApp')
       var id = element.parent().parent().parent()[0].id;   
 
       element.bind('click', function(event){
-        alert(id);
+        scope.openModal('views/deleteTier.html','deleteTier',id,id);
       });
       
     }

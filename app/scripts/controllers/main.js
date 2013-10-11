@@ -29,13 +29,13 @@ var MainCtrl = angular.module('emulvcApp')
 			});
 		});
 
-		$scope.openModal = function(templatefile,cssStyle,title, content) {
+		$scope.openModal = function(templatefile,cssStyle,title,content) {
 			var modalInstance = $modal.open({
 		        backdrop: true,
                 keyboard: true,
                 backdropClick: true,
 				templateUrl: templatefile,
-				dialogClass: cssStyle,
+				windowClass: cssStyle,
 				controller: 'ModalInstanceCtrl',
 				resolve: {
 					modalContent: function() {
