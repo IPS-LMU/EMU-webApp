@@ -25,11 +25,11 @@
 
     <!-- all tiers are listed here -->
     <ul ng-repeat="tier in tierDetails.tiers">
-      <tier id='{{tier.TierName}}' class='tier'></tier>
-	  </ul>
-
+      {{tier.TierName}}
+      <tier tiername="{{tier.TierName}}" class='tier'></tier>
+    </ul>
+    
     <!-- small status bar for development -->
-  	<h3>{{testValue}}</h3>
     <p>viewState.curViewPort.sS: {{viewState.curViewPort.sS}};
       viewState.curViewPort.eS: {{viewState.curViewPort.eS}};
       last hit keycode: {{lastkeycode}}</p>
