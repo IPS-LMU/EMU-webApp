@@ -7,6 +7,8 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init load of config files
 		Colorproviderservice.httpGetDrawingColorsConfig();
+
+		// move out of controller...
 		// get keyboard shortcut mappings
 		$http.get('configFiles/keyboardShortcuts.json').success(function(data) {
 			$scope.keyMappings = data;

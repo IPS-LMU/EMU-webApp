@@ -5,13 +5,19 @@ angular.module('emulvcApp')
 		// shared service object
 		var sServObj = {};
 
+		/**
+		 *
+		 */
 		sServObj.httpGetLabelJson = function() {
-			$http.get('testData/PhoneticTier.json').success(function(data) {
+			$http.get('testData/msajc003.json').success(function(data) {
 				console.log(data);
 				$rootScope.$broadcast('newlyLoadedLabelJson', data);
 			});
 		};
 
+		/**
+		 *
+		 */
 		sServObj.httpGetAudioFile = function() {
 			var my = this;
 			$http.get('testData/msajc003.wav', {

@@ -11,6 +11,7 @@ angular.module('emulvcApp')
 				var canvas = element.find("canvas");
 
 				var myid = element[0].id;
+				console.log(canvas)
 				scope.$watch('tierDetails', function() {
 					drawTierDetails(scope.tierDetails, scope.viewState);
 				}, true);

@@ -15,7 +15,9 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		* update tierDetails if heard
 		*/ 
 		$scope.$on('newlyLoadedLabelJson', function(evt, data){
-			$scope.viewState.curViewPort.eS = data.events[data.events.length - 1].startSample + data.events[data.events.length - 1].sampleDur;
+			// should look for longest tier in tier details
+			console.log(data)
+			$scope.viewState.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
 			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
