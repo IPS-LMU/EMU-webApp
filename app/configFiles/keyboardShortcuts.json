@@ -2,5 +2,6 @@
     "zoomIn": 87,
     "zoomOut": 83,
     "shiftViewPortLeft": 65,
-    "shiftViewPortRight": 68 
+    "shiftViewPortRight": 68,
+    "playEntireFile": 70
 }
