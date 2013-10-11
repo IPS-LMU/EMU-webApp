@@ -64,6 +64,10 @@ html, body{
     font-size: 15px;
 }
 
+#dialogButton {
+    width: 120px;
+}
+
 .container {
     margin: 0px;
     padding: 0px;

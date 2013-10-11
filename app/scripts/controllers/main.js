@@ -87,4 +87,12 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	$scope.cancel = function() {
 		$modalInstance.dismiss('cancel');
 	};
+	
+	$scope.deleteSegment = function() {
+		alert(modalTitle);
+	};
+	
+	$scope.deleteTier = function() {
+		alert(modalTitle);
+	};		
 };
