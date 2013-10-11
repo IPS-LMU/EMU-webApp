@@ -14,13 +14,12 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs', function() {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
-						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
-
+					    alert("vs");
 					}
 				}, true);
 
 				scope.$watch('viewState', function() {
+				    alert("viewState");
 					//drawTierDetails(scope.tierDetails,scope.viewState);
 				}, true);
 				
