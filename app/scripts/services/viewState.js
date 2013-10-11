@@ -10,7 +10,8 @@ angular.module('emulvcApp')
       sS: 0,
       eS: 0,
       selectS: -1,
-      selectE: -1
+      selectE: -1,
+      bufferLength: -1
     };
 
     // sServObj.sS = 0;

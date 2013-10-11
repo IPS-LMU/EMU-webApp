@@ -18,14 +18,12 @@ var MainCtrl = angular.module('emulvcApp')
 		Iohandlerservice.httpGetAudioFile();
 
 		/**
-		 * listen for newlyLoadedLabelJson broadcast
-		 * update tierDetails if heard
+		 * listen for newlyLoadedAudioFile
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
-			// console.log(data);
 			Soundhandlerservice.decodeAudioFile(data, function(d) {
-				console.log(d);
-				// Soundhandlerservice.play(0, 2.9044217803634114 , undefined)
+				viewState.curViewPort.bufferLength = d.length;
+				$scope.$digest(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
 		});
 

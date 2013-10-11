@@ -12,7 +12,10 @@ angular.module('emulvcApp')
 
 				var myid = element[0].id;
 
-				scope.$watch('vs.curViewPort', function() {
+				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+					console.log("äää#############")
+					console.log(newValue)
+					console.log(oldValue)
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
@@ -39,6 +42,7 @@ angular.module('emulvcApp')
 					var relData;
 
 					if (k <= 1) {
+						console.log("over sample exact")
 						// check if view at start            
 						if (viewState.curViewPort.sS === 0) {
 							relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
@@ -87,13 +91,15 @@ angular.module('emulvcApp')
 
 
 				/**
-				 *
 				 * @param cps color provider service
 				 */
 
 				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, cps) {
 					var ctx = canvas.getContext("2d");
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					
+					//set font
+        			// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
 
 					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
 						allPeakVals.peaks.forEach(function(peak, index) {
@@ -141,13 +147,13 @@ angular.module('emulvcApp')
 					var prevY = Math.round((canvas.height - prevH) / 2);
 
 
-					// if (posC >= x) {
-					// 	ctx.fillStyle = this.params.playProgressColor;
-					// 	ctx.strokeStyle = this.params.playProgressColor;
-					// } else {
-					ctx.fillStyle = cps.vals.osciColor;
-					ctx.strokeStyle = cps.vals.osciColor;
-					// }
+					if (posC >= x) {
+						ctx.fillStyle = cps.playProgressColor;
+						ctx.strokeStyle = cps.playProgressColor;
+					} else {
+						ctx.fillStyle = cps.vals.osciColor;
+						ctx.strokeStyle = cps.vals.osciColor;
+					}
 
 					ctx.beginPath();
 					ctx.moveTo(prevX, prevY);

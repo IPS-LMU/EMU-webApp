@@ -16,7 +16,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		*/ 
 		$scope.$on('newlyLoadedLabelJson', function(evt, data){
 			$scope.viewState.curViewPort.eS = data.events[data.events.length - 1].startSample + data.events[data.events.length - 1].sampleDur;
-			$scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
+			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
 
