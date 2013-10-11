@@ -45,6 +45,7 @@ angular.module('emulvcApp')
         thisPCM = getX(event) * scope.getPCMpp(event);
         switch (event.which) {
           case 1:
+            //console.log('Left mouse button pressed');
             break;
         case 2:
             //console.log('Middle mouse button pressed');
