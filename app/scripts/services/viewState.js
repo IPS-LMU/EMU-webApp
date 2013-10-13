@@ -27,12 +27,33 @@ angular.module('emulvcApp')
     /**
      * set selected Area
      * @param start of selected Area
-     * @param end of seleected Area
+     * @param end of selected Area
      */
     sServObj.select = function(start, end) {
-      this.sServObj.curViewPort.selectS = start;
-      this.sServObj.curViewPort.selectE = end;
+      sServObj.curViewPort.selectS = start;
+      sServObj.curViewPort.selectE = end;
     };
+    
+    /**
+     * returns current selection as array
+     */
+    sServObj.getSelect = function() {
+      return [sServObj.curViewPort.selectS,sServObj.curViewPort.selectE];
+    };    
+    
+    /**
+     * set selected Area if new 
+     * start value is smaler than actual and 
+     * end value is greater than actual
+     * @param start of selected Area
+     * @param end of seleected Area
+     */    
+    sServObj.selectDependent = function(start, end) {
+      if (start < this.curViewPort.selectS)
+        this.curViewPort.selectS = start;
+      if (end > this.selectE)
+        this.curViewPort.selectE = end;
+    };    
 
     /**
      * get pixel position in current viewport given the canvas width
@@ -181,19 +202,6 @@ angular.module('emulvcApp')
     };
 
 
-    sServObj.resizeSelectArea = function(start, end) {
-      this.curViewPort.selectS = start;
-      this.curViewPort.selectE = end;
-    };
-
-    sServObj.resizeSelectAreaMulti = function(start, end) {
-      if (start < this.curViewPort.selectS)
-        this.curViewPort.selectS = start;
-      if (end > this.selectE)
-        this.curViewPort.selectE = end;
-    };
-
-
     sServObj.countSelected = function() {
       return this.selected.length;
     };
@@ -213,6 +221,12 @@ angular.module('emulvcApp')
     sServObj.getCurrentPercent = function(sample) {
       return (sample * (100 / (this.curViewPort.eS - this.curViewPort.sS) / 100));
     };
+    
+	sServObj.getPCMpp = function(event) {
+	  var start = parseInt(this.curViewPort.sS, 10);
+	  var end = parseInt(this.curViewPort.eS, 10);
+	  return (end - start) / event.originalEvent.srcElement.width;
+	};   
 
     /**
      * round to n decimal digits after the comma
@@ -265,7 +279,7 @@ angular.module('emulvcApp')
         "class": textid + " Label_Edit",
         "ng-model": "message"
       }).css({
-        "position": "absolute",
+        "position": "relative",
         "top": y + 1 + "px",
         "left": x + 2 + "px",
         "width": width - 1 + "px",

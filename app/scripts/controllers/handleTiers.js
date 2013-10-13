@@ -98,12 +98,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 		};
 
-		$scope.getPCMpp = function(event) {
-			var start = parseInt($scope.viewState.curViewPort.sS, 10);
-			var end = parseInt($scope.viewState.curViewPort.eS, 10);
-			return (end - start) / event.originalEvent.srcElement.width;
-		}
-
 		$scope.getEventId = function(x, tier) {
 			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var id = 0;

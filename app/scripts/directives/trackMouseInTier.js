@@ -42,7 +42,7 @@ angular.module('emulvcApp')
       });
       
       element.bind('mousemove', function(event){ 
-        thisPCM = getX(event) * scope.getPCMpp(event);
+        thisPCM = getX(event) * scope.viewState.getPCMpp(event);
         switch (event.which) {
           case 1:
             //console.log('Left mouse button pressed');
@@ -81,7 +81,7 @@ angular.module('emulvcApp')
       });      
       
       function setLastClick(x) {
-        thisPCM = getX(x) * scope.getPCMpp(x);
+        thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
         lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
@@ -95,7 +95,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       } 
       function setLastRightClick(x) {
-        thisPCM = getX(x) * scope.getPCMpp(x);
+        thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
         lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
@@ -108,7 +108,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       } 
       function setLastDblClick(x) {
-        thisPCM = getX(x) * scope.getPCMpp(x);
+        thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
         lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurClickTierName(tierId);
@@ -126,7 +126,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       }     
       function setLastMove(x) {
-        thisPCM = getX(x) * scope.getPCMpp(x);
+        thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         lastEventMove = scope.getEvent(thisPCM,scope.this.tier);
         lastEventMoveId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurMouseTierName(tierId);

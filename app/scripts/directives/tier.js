@@ -45,6 +45,7 @@ angular.module('emulvcApp')
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 					var sDist = viewPort.getSampleDist(canvas[0].width);
+					var selection = viewPort.getSelect();
 
 					// draw name of tier
 					ctx.fillStyle = 'black';
@@ -55,7 +56,32 @@ angular.module('emulvcApp')
 					var segMId = viewPort.getcurMouseSegment();
 					var segCId = viewPort.getcurClickSegment();
 					var curID = -1;
+					var curPoS = selection[0];
+					var curPoE = selection[1];
 					if (tierDetails.type == "seg") {
+					
+					    if (viewPort.selectS == viewPort.selectE) {
+					        if (viewPort.selectS !== -1) {
+                                // draw clickbox + pos line
+                                ctx.fillStyle = "rgba(255, 0, 0, 0.9)";
+                                ctx.fillRect(curPoS - 5 , 0, 10, 10);
+                                ctx.beginPath();
+                                ctx.moveTo(curPoS , 10);
+                                ctx.lineTo(curPoS , canvas.height);
+                                ctx.stroke();
+                            }
+					    }
+					    else {
+                            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+                            ctx.fillRect(posS, 0, curPoE - curPoS, canvas.height);
+                            ctx.beginPath();
+                            ctx.moveTo(curPoS, 0);
+                            ctx.lineTo(curPoS, canvas.height);
+                            ctx.moveTo(curPoE, 0);
+                            ctx.lineTo(curPoE, canvas.height);
+                            ctx.stroke();					    
+					    }
+					
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
