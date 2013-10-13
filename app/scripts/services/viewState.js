@@ -272,15 +272,17 @@ angular.module('emulvcApp')
     };
 
     sServObj.createEditArea = function(id, x, y, width, height, label, labelid) {
+      console.log(id);
       var textid = "_" + labelid;
-      $("#" + id).append($("<textarea>").attr({
+      $("#HandletiersCtrl").prepend($("<textarea>").attr({
         id: textid,
         "autofocus": "true",
         "class": textid + " Label_Edit",
         "ng-model": "message"
       }).css({
-        "position": "relative",
-        "top": y + 1 + "px",
+        "position": "absolute",
+        "z-index":"5",
+        "top": y + 2 + "px",
         "left": x + 2 + "px",
         "width": width - 1 + "px",
         "height": height + "px",

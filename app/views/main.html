@@ -24,7 +24,9 @@
     <div id="spacer" class="spacer"></div>
 
     <!-- all tiers are listed here -->
-    <tier ng-repeat="tier in tierDetails.tiers" id='{{tier.TierName}}' class='tier'></tier>
+    <div id="TierMain">
+        <tier ng-repeat="tier in tierDetails.tiers" id='{{tier.TierName}}' class="Tier"></tier>
+    </div>
 
     <!-- small status bar for development -->
     <p>viewState.curViewPort.sS: {{viewState.curViewPort.sS}};

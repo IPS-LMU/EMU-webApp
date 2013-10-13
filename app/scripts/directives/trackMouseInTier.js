@@ -116,12 +116,7 @@ angular.module('emulvcApp')
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         scope.viewState.setEditing(true);
         scope.viewState.setTierLength(scope.this.tier.events.length);
-        var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
-        var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
-        var top = x.originalEvent.srcElement.offsetTop;
-        var height = x.originalEvent.srcElement.clientHeight;
-        var myid = scope.viewState.openEditArea();
-        scope.viewState.createSelection($("#"+myid)[0], 0, $("#"+myid).val().length);
+        scope.viewState.openEditArea();
         lastPCM = thisPCM;
         scope.$apply(); 
       }     
