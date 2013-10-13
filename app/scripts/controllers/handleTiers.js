@@ -129,9 +129,9 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		}
 
 		$scope.moveBorder = function(changeTime, t) {
-			if (null != t) {
+			if (null != t && t.TierName == viewState.getcurMouseTierName()) {
 				var seg = viewState.getcurMouseSegmentId();
-				if ((t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
+				if (seg>=1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
 					t.events[seg - 1].sampleDur += changeTime;
 					t.events[seg].startSample += changeTime;
 					t.events[seg].sampleDur -= changeTime;
@@ -140,12 +140,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.moveSegment = function(changeTime, t) {
-			if (null != t) {
+			if (null != t && t.TierName == viewState.getcurClickTierName()) {
 				var selected = viewState.getcurClickSegment();
-				console.log(changeTime);
-				console.log(t);
-				
-				
 				if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.events[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
