@@ -90,6 +90,7 @@ angular.module('emulvcApp')
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
+        scope.viewState.setTierLength(scope.this.tier.events.length);
         lastPCM = thisPCM;
         scope.$apply(); 
       } 
@@ -102,6 +103,7 @@ angular.module('emulvcApp')
         lastEventRightClickId = scope.getEventId(thisPCM,scope.this.tier);
         scope.viewState.setcurClickTierName(tierId);
         scope.viewState.setcurClickSegmentMultiple(lastEventClick,lastEventClickId);
+        scope.viewState.setTierLength(scope.this.tier.events.length);
         lastPCM = thisPCM;
         scope.$apply(); 
       } 
@@ -113,6 +115,7 @@ angular.module('emulvcApp')
         scope.viewState.setlasteditArea("_"+lastEventClickId);
         scope.viewState.setcurClickSegment(lastEventClick,lastEventClickId);
         scope.viewState.setEditing(true);
+        scope.viewState.setTierLength(scope.this.tier.events.length);
         var start = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,lastEventClick.startSample) + x.originalEvent.srcElement.offsetLeft;
         var end = scope.viewState.getPos(x.originalEvent.srcElement.clientWidth,(lastEventClick.startSample+lastEventClick.sampleDur)) + x.originalEvent.srcElement.offsetLeft;
         var top = x.originalEvent.srcElement.offsetTop;

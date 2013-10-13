@@ -197,7 +197,15 @@ angular.module('emulvcApp')
     sServObj.countSelected = function() {
       return this.selected.length;
     };
-
+    
+    sServObj.setTierLength = function(length) {
+      this.tierLength = length;
+    };    
+    
+    sServObj.getTierLength = function() {
+      return this.tierLength;
+    };    
+    
     sServObj.getCurrentSample = function(perc) {
       return this.curViewPort.sS + (this.curViewPort.eS - this.curViewPort.sS) * perc;
     };

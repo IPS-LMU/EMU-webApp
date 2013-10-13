@@ -69,10 +69,10 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				viewState.deleteEditArea();
 			}
 			var now = parseInt(viewState.getcurClickSegment()[0], 10);
-			if (now < $scope.tierDetails.events.length - 1)++now;
+			if (now < viewState.getTierLength() - 1)++now;
 			else now = 0;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
 		};
 
 		$scope.tabPrev = function() {
@@ -82,9 +82,9 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			}
 			var now = parseInt(viewState.getcurClickSegment()[0], 10);
 			if (now > 0)--now;
-			else now = $scope.tierDetails.events.length - 1;
+			else now = viewState.getTierLength() - 1;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
 		};
 
 

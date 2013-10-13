@@ -12,7 +12,6 @@ angular.module('emulvcApp')
                     scope.$apply(function() {
                         scope.setlastkeycode(code, e.shiftKey);
                         if (viewState.isEditing()) {
-                            console.log(code)
                             if (code == 13) {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -35,7 +34,9 @@ angular.module('emulvcApp')
                                 //play entire file
                                 Soundhandlerservice.play(0, 2.9044217803634114, undefined); // SIC.. hard coded
                             }
-
+                            if (code == scope.keyMappings.shiftViewPortRight) {
+                                viewState.shiftViewPort(true);
+                            }
                             e.stopPropagation();
                         }
                     });
