@@ -7,7 +7,7 @@ angular.module('emulvcApp')
     link: function(scope, element){
     
       var elem = element[0];
-      var id = element.parent().parent().parent()[0].id;   
+      var id = scope.this.tier.TierName;   
 
       element.bind('click', function(event){
         scope.openModal('views/deleteTier.html','deleteTier',id,id);

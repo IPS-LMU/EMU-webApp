@@ -46,7 +46,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.renameLabel = function() {
 			if (viewState.isEditing()) {
-				$scope.rename(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
+				$scope.rename(viewState.getcurClickTierName(),viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
 				viewState.deleteEditArea();
 			} else {
 				if (viewState.countSelected() == 0) {
@@ -65,7 +65,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.tabNext = function() {
 			if (viewState.isEditing()) {
-				$scope.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
+				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
 			var now = parseInt(viewState.getcurClickSegment()[0], 10);
@@ -77,7 +77,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.tabPrev = function() {
 			if (viewState.isEditing()) {
-				$scope.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
+				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
 			var now = parseInt(viewState.getcurClickSegment()[0], 10);
@@ -86,15 +86,17 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			viewState.setlasteditArea("_" + now);
 			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
 		};
-
-
-		$scope.rename = function(tier, id, name) {
-			var i = 0;
-			angular.forEach($scope.tierDetails.events, function(evt) {
-				if (id == i) {
-					evt.label = name;
-				}
-				++i;
+		
+		$scope.rename = function(tiername, id, name) {
+			angular.forEach($scope.tierDetails.tiers, function(t) {
+			    var i = 0;
+			    if(t.TierName==tiername)
+			    angular.forEach(t.events, function(evt) {
+				    if (id == i) {
+					    evt.label = name;
+    				}
+	    			++i;
+		    	});
 			});
 		};
 
