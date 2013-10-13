@@ -3,5 +3,9 @@
     "zoomOut": 83,
     "shiftViewPortLeft": 65,
     "shiftViewPortRight": 68,
-    "playEntireFile": 70
+    "playEntireFile": 70,
+    "tab": 9,
+    "enter":13,
+    "esc":27,
+    "history":90
 }

@@ -12,6 +12,12 @@ angular.module('emulvcApp')
                     scope.$apply(function() {
                         scope.setlastkeycode(code, e.shiftKey);
                         if (viewState.isEditing()) {
+                            if (code == scope.keyMappings.enter) {
+                            	$('#HandletiersCtrl').scope().renameLabel();
+                            } 
+                            if (code == scope.keyMappings.esc) {
+                            	$('#HandletiersCtrl').scope().deleteEditArea();
+                            }                           
                             if (code == 13) {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -37,6 +43,18 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.shiftViewPortRight) {
                                 viewState.shiftViewPort(true);
                             }
+                            if (code == scope.keyMappings.tab) {
+                            	if (e.shiftKey)
+                            	    $('#HandletiersCtrl').scope().tabPrev();
+                            	else
+                            	    $('#HandletiersCtrl').scope().tabNext();
+                            }                                                            
+                            if (code == scope.keyMappings.history) {
+                            	$('#HandletiersCtrl').scope().goBackHistory();
+                            }                                 
+                            console.log(code);
+                                                  
+                            e.preventDefault();
                             e.stopPropagation();
                         }
                     });
