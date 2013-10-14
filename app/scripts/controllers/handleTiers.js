@@ -8,6 +8,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.message = '';
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
+		
+		$scope.sortableOptions = {
+		    update: function(e, ui) { 
+		        //alert("update"); 
+		    },
+		    start: function(e, ui) { 
+		        $scope.deleteEditArea();
+		    },
+		    axis: 'y'
+		};
 
 		/**
 		* listen for newlyLoadedLabelJson broadcast
@@ -19,7 +29,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
-
 
 		$scope.updateAllLabels = function() {
 			if ($scope.testValue !== '') {

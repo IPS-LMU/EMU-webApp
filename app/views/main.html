@@ -26,7 +26,7 @@
     <div id="spacer" class="spacer"></div>
 
     <!-- all tiers are listed here -->
-    <ul ui:sortable ng-model="tierDetails.tiers">
+    <ul ui:sortable="sortableOptions" ng-model="tierDetails.tiers">
         <li ng-repeat="tier in tierDetails.tiers"><tier id='{{tier.TierName}}' class="Tier"></tier></li>
     </ul>
 
