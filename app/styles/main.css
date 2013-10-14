@@ -128,7 +128,6 @@ html, body{
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
     width: 97%;
-    height: 96px;
 }
 
 .Label_Edit {
@@ -190,10 +189,10 @@ div.center {
 
 .TimelineCtrl {
     z-index:1;
-    position: fixed;
+    position: absolute;
     margin: 0px;
     padding-top: 45px;
-    padding-bottom: 16px;
+    padding-bottom: 0px;
     background: #fff;
     -webkit-touch-callout: none;    
     width: 100%;
@@ -216,19 +215,14 @@ div.center {
 
 
 #resizer{
-    position: relative;
     background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzUwNTA1MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzM4MzgzOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
     background: white;
     border-top:1px solid black;
     border-bottom:1px solid black;
     box-shadow:inset 0 1px 0 #6e6e6e,0 2px 2px rgba(0,0,0,0.4);
-    position:absolute;
     left:-10px;
     right:-10px;
-    bottom:0px;
     height:15px;
-    margin:0px;
-    padding:0px;
     cursor:row-resize;
 }
 
