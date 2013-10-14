@@ -7,7 +7,7 @@ angular.module('emulvcApp')
     link: function(scope, element){
     
       var elem = element[0];
-      var tierId = scope.this.tier.TierName;
+      //var tierId = scope.this.tier.TierName;
       var ctx = elem.getContext('2d');      
       // the last coordinates before the current move
       var lastX,currentX;
@@ -81,6 +81,7 @@ angular.module('emulvcApp')
       });      
       
       function setLastClick(x) {
+        var tierId = element.parent()[0].id;
         thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
@@ -95,6 +96,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       } 
       function setLastRightClick(x) {
+        var tierId = element.parent()[0].id;
         thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         scope.viewState.deleteEditArea();
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
@@ -108,6 +110,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       } 
       function setLastDblClick(x) {
+        var tierId = element.parent()[0].id;
         thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         lastEventClick = scope.getEvent(thisPCM,scope.this.tier);
         lastEventClickId = scope.getEventId(thisPCM,scope.this.tier);
@@ -121,6 +124,7 @@ angular.module('emulvcApp')
         scope.$apply(); 
       }     
       function setLastMove(x) {
+        var tierId = element.parent()[0].id;
         thisPCM = getX(x) * scope.viewState.getPCMpp(x);
         lastEventMove = scope.getEvent(thisPCM,scope.this.tier);
         lastEventMoveId = scope.getEventId(thisPCM,scope.this.tier);
