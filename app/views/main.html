@@ -2,8 +2,8 @@
 
   <div class="menu" id="menu">
       <a href="#" class="mini-btn tool-tip" title="Shortcut: O">Open File</a>
-<!--  <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button>
--->   <a href="#" class="mini-btn tool-tip" title="Shortcut: O">Open Menu</a>
+ <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
+      <a href="#" class="mini-btn tool-tip" title="Shortcut: O">Open Menu</a>
       <a href="#" class="mini-btn tool-tip" title="Shortcut: none">Add Tier (seg)</a>
       <a href="#" class="mini-btn tool-tip" title="Shortcut: none">Add Tier (point)</a>
       <a href="#" class="mini-btn tool-tip" title="Shortcut: none">Rename sel. Tier</a>
@@ -15,7 +15,7 @@
 
   <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
       <osci id='osci' class='osci'></osci>
-      <spectro id='spectro' class='spectro'></spectro>
+      <spectro id='spectro' class='spectro' drawssff></spectro>
       <div id="resizer" class="resizer" draggableResizeBar="{key: value}">
           <span id="resizeIcon" class="resizeIcon"> </span>
       </div>
@@ -70,9 +70,5 @@
   <script type="text/ng-template" id="about.html">
     <div>TEST</div>
 </script>
-  
-
-   
-  
   
 </div>

@@ -349,7 +349,7 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function(zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      var d1 = 1; //this.viewPort.curMouseMoveSegmentStart - this.viewPort.sS;
+      var d1 = 1; //this.curMouseMoveSegmentStart - this.curViewPort.sS;
       var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
