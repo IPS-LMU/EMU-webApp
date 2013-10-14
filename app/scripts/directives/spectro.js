@@ -91,7 +91,6 @@ angular.module('emulvcApp')
                 }
 
                 function drawTimeLineContext() {
-                    console.log(scope.vs);
                     var posS = vs.getPos(canvas.width, vs.curViewPort.selectS);
                     var posE = vs.getPos(canvas.width, vs.curViewPort.selectE);
                     var sDist = vs.getSampleDist(canvas.width) / 2;
