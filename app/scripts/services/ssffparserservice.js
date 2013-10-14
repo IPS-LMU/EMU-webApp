@@ -8,20 +8,25 @@ angular.module('emulvcApp')
 
 		sServObj.ssffData = {};
 
-		sServObj.ssffData.headID = "SSFF -- (c) SHLRC\n";
-		sServObj.ssffData.machineID = "Machine IBM-PC\n";
-		sServObj.ssffData.sepString = "-----------------\n";
-		sServObj.ssffData.Record_Freq = -1;
-		sServObj.ssffData.Start_Time = -1;
-		sServObj.ssffData.Columns = [];
+		sServObj.headID = "SSFF -- (c) SHLRC\n";
+		sServObj.machineID = "Machine IBM-PC\n";
+		sServObj.sepString = "-----------------\n";
 
 		sServObj.columTypeMap = {
 			'DOUBLE': 8
 		};
 
+		sServObj.ssffData.sampleRate = -1;
+		sServObj.ssffData.origFreq = -1;
+		sServObj.ssffData.startTime = -1;
+		sServObj.ssffData.startRecord = -1;
+		sServObj.ssffData.endRecord = -1;
+		sServObj.ssffData.ssffColumnTypes = {};
+		sServObj.ssffData.Columns = [];
+
 
 		/**
-		 *
+		 * @param buf arraybuffer containing ssff file
 		 */
 		sServObj.ssff2jso = function(buf) {
 			var my = this;
@@ -33,19 +38,19 @@ angular.module('emulvcApp')
 			var newLsep = buffStr.split(/^/m);
 
 			//check if header has headID and machineID
-			if (newLsep[0] != my.ssffData.headID || newLsep[1] != my.ssffData.machineID) {
+			if (newLsep[0] != my.headID || newLsep[1] != my.machineID) {
 				alert('no ssff file... or missing fields');
 			}
 			// check if Record_Freq+Start_Time is there
 			if (newLsep[2].split(/[ ,]+/)[0] != "Record_Freq " || newLsep[3].split(/[ ,]+/)[0] != "Start_Time ") {
-				this.ssffData.Record_Freq = newLsep[2].split(/[ ,]+/)[1];
-				this.ssffData.Start_Time = newLsep[3].split(/[ ,]+/)[1];
+				this.ssffData.sampleRate = newLsep[2].split(/[ ,]+/)[1];
+				this.ssffData.startTime = newLsep[3].split(/[ ,]+/)[1];
 			} else {
 				alert('no ssff file... or missing fields ');
 			}
 
 			for (var i = 4; i < newLsep.length; i++) {
-				if (newLsep[i] == this.ssffData.sepString) {
+				if (newLsep[i] == this.sepString) {
 					//console.log(newLsep[i]);
 					break;
 				}
@@ -58,6 +63,7 @@ angular.module('emulvcApp')
 						"length": lSpl[3],
 						"values": []
 					});
+					this.ssffData.ssffColumnTypes[lSpl[1]] = lSpl[2];
 				}
 
 			}
@@ -75,7 +81,7 @@ angular.module('emulvcApp')
 
 						curLen = 8 * this.ssffData.Columns[i].length;
 						curBuffer = buf.subarray(curBinIdx, curLen);
-
+						
 						curBufferView = new Float64Array(curBuffer);
 
 						this.ssffData.Columns[i].values.push(curBufferView);
@@ -102,7 +108,7 @@ angular.module('emulvcApp')
 			console.log(this.ssffData);
 
 		}
-		
+
 		return sServObj;
 
 	});
