@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp', ['ui.bootstrap','ngRoute'])
+angular.module('emulvcApp', ['ui','ui.bootstrap','ngRoute'])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {

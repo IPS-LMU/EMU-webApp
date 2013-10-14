@@ -16,6 +16,17 @@ html, body{
     text-align:center;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0pt;
+    padding: 0pt;    
+}
+
+li {
+    margin: 0pt;
+    padding: 0pt;
+}
+
 .about {
     position: absolute;
     display: block;
