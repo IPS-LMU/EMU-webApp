@@ -39,7 +39,6 @@ angular.module('emulvcApp')
 					var relData;
 
 					if (k <= 1) {
-						console.log("over sample exact")
 						// check if view at start            
 						if (viewState.curViewPort.sS === 0) {
 							relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
@@ -84,7 +83,7 @@ angular.module('emulvcApp')
 						"maxPeak": maxPeak,
 						"samplePerPx": k
 					};
-				};
+				}
 
 
 				/**
@@ -94,9 +93,9 @@ angular.module('emulvcApp')
 				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, cps) {
 					var ctx = canvas.getContext("2d");
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					
+
 					//set font
-        			// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
+					// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
 
 					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
 						allPeakVals.peaks.forEach(function(peak, index) {
@@ -105,6 +104,72 @@ angular.module('emulvcApp')
 							}
 						});
 
+					} else if (allPeakVals.samplePerPx < 1) {
+						// console.log("at 0 over sample exact")
+						var hDbS = (1 / allPeakVals.samplePerPx) / 2; // half distance between samples
+						var sNr = viewState.curViewPort.sS;
+						// over sample exact
+						ctx.strokeStyle = cps.vals.osciColor;
+						ctx.fillStyle = cps.vals.osciColor;
+						// ctx.beginPath();
+						var i;
+						if (viewState.curViewPort.sS === 0) {
+							ctx.moveTo(hDbS, (allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
+							for (i = 0; i < allPeakVals.peaks.length; i++) {
+								ctx.lineTo(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
+							}
+							ctx.stroke();
+							// draw sample dots
+							for (i = 0; i < allPeakVals.peaks.length; i++) {
+								ctx.beginPath();
+								ctx.arc(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 3, 4, 0, 2 * Math.PI, false);
+								ctx.stroke();
+								ctx.fill();
+								if (true) { // SIC !!!
+									ctx.strokeText(sNr, i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
+									sNr = sNr + 1;
+								}
+							}
+						} else {
+							//draw lines
+							ctx.moveTo(-hDbS, canvas.height - ((allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height));
+							for (i = 1; i < allPeakVals.peaks.length; i++) {
+								ctx.lineTo(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height + 3));
+							}
+							ctx.stroke();
+							// draw sample dots
+							for (i = 1; i < allPeakVals.peaks.length; i++) {
+								ctx.beginPath();
+								ctx.arc(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 3, 4, 0, 2 * Math.PI, false);
+								ctx.stroke();
+								ctx.fill();
+								if (true) { // SIC !!! 
+									ctx.fillText(sNr, i / allPeakVals.samplePerPx - hDbS, canvas.height - (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
+									sNr = sNr + 1;
+								}
+							}
+
+						}
+					}
+					if (true) { // SIC !!!
+						// draw zero line
+						ctx.strokeStyle = cps.vals.zeroLineColor;
+						ctx.fillStyle = cps.vals.wwzeroLineColor;
+						// see if Chrome ->dashed line
+						if (navigator.vendor == "Google Inc.") {
+							ctx.setLineDash([5]);
+						}
+						if (allPeakVals.samplePerPx >= 1) {
+							ctx.strokeRect(0, canvas.height / 2, canvas.width, 2);
+							ctx.fillText("0", 5, canvas.height / 2 - 5, canvas.width);
+						} else {
+							ctx.strokeRect(0, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height), canvas.width, 1);
+							ctx.fillText("0", 5, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 5, canvas.width);
+						}
+						// see if Chrome ->dashed line
+						if (navigator.vendor == "Google Inc.") {
+							ctx.setLineDash([0]);
+						}
 					}
 				}
 
@@ -159,5 +224,5 @@ angular.module('emulvcApp')
 
 				}
 			}
-		}
+		};
 	});

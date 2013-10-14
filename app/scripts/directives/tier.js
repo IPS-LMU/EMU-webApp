@@ -59,29 +59,28 @@ angular.module('emulvcApp')
 					var curPoS = selection[0];
 					var curPoE = selection[1];
 					if (tierDetails.type == "seg") {
-					
-					    if (viewPort.selectS == viewPort.selectE) {
-					        if (viewPort.selectS !== -1) {
-                                // draw clickbox + pos line
-                                ctx.fillStyle = "rgba(255, 0, 0, 0.9)";
-                                ctx.fillRect(curPoS - 5 , 0, 10, 10);
-                                ctx.beginPath();
-                                ctx.moveTo(curPoS , 10);
-                                ctx.lineTo(curPoS , canvas.height);
-                                ctx.stroke();
-                            }
-					    }
-					    else {
-                            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-                            ctx.fillRect(posS, 0, curPoE - curPoS, canvas.height);
-                            ctx.beginPath();
-                            ctx.moveTo(curPoS, 0);
-                            ctx.lineTo(curPoS, canvas.height);
-                            ctx.moveTo(curPoE, 0);
-                            ctx.lineTo(curPoE, canvas.height);
-                            ctx.stroke();					    
-					    }
-					
+
+						if (viewPort.selectS == viewPort.selectE) {
+							if (viewPort.selectS !== -1) {
+								// draw clickbox + pos line
+								ctx.fillStyle = "rgba(255, 0, 0, 0.9)";
+								ctx.fillRect(curPoS - 5, 0, 10, 10);
+								ctx.beginPath();
+								ctx.moveTo(curPoS, 10);
+								ctx.lineTo(curPoS, canvas.height);
+								ctx.stroke();
+							}
+						} else {
+							ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+							ctx.fillRect(posS, 0, curPoE - curPoS, canvas.height);
+							ctx.beginPath();
+							ctx.moveTo(curPoS, 0);
+							ctx.lineTo(curPoS, canvas.height);
+							ctx.moveTo(curPoE, 0);
+							ctx.lineTo(curPoE, canvas.height);
+							ctx.stroke();
+						}
+
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
@@ -102,18 +101,18 @@ angular.module('emulvcApp')
 
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurClickTierName();
-								
-								
-								if(tierId==tierDetails.TierName) {
-								
-								segCId.forEach(function(entry) {
-									if (entry == curID) {
-										ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
-										ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-										ctx.fillStyle = 'black';
-									}
-								});
-								
+
+
+								if (tierId == tierDetails.TierName) {
+
+									segCId.forEach(function(entry) {
+										if (entry == curID) {
+											ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+											ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
+											ctx.fillStyle = 'black';
+										}
+									});
+
 								}
 
 								if (segMId == curEvt) {

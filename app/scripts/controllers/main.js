@@ -1,7 +1,8 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $http, viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
+	.controller('MainCtrl', function($scope, $modal, $log, $http,
+		viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
 
 		$scope.lastkeycode = "N/A";
 
@@ -30,11 +31,11 @@ var MainCtrl = angular.module('emulvcApp')
 			});
 		});
 
-		$scope.openModal = function(templatefile,cssStyle,title,content) {
+		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			var modalInstance = $modal.open({
-		        backdrop: true,
-                keyboard: true,
-                backdropClick: true,
+				backdrop: true,
+				keyboard: true,
+				backdropClick: true,
 				templateUrl: templatefile,
 				windowClass: cssStyle,
 				controller: 'ModalInstanceCtrl',
@@ -44,7 +45,7 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					modalTitle: function() {
 						return title;
-					}										
+					}
 				}
 			});
 		};
@@ -69,12 +70,12 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	$scope.cancel = function() {
 		$modalInstance.dismiss('cancel');
 	};
-	
+
 	$scope.deleteSegment = function() {
 		alert(modalTitle);
 	};
-	
+
 	$scope.deleteTier = function() {
 		alert(modalTitle);
-	};		
+	};
 };

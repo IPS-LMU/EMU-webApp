@@ -13,11 +13,11 @@ angular.module('emulvcApp')
                         scope.setlastkeycode(code, e.shiftKey);
                         if (viewState.isEditing()) {
                             if (code == scope.keyMappings.enter) {
-                            	$('#HandletiersCtrl').scope().renameLabel();
-                            } 
+                                $('#HandletiersCtrl').scope().renameLabel();
+                            }
                             if (code == scope.keyMappings.esc) {
-                            	$('#HandletiersCtrl').scope().deleteEditArea();
-                            }                           
+                                $('#HandletiersCtrl').scope().deleteEditArea();
+                            }
                             if (code == 13) {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -44,18 +44,19 @@ angular.module('emulvcApp')
                                 viewState.shiftViewPort(true);
                             }
                             if (code == scope.keyMappings.tab) {
-                            	if (e.shiftKey)
-                            	    $('#HandletiersCtrl').scope().tabPrev();
-                            	else
-                            	    $('#HandletiersCtrl').scope().tabNext();
-                            }                                                            
+                                if (e.shiftKey)
+                                    $('#HandletiersCtrl').scope().tabPrev();
+                                else
+                                    $('#HandletiersCtrl').scope().tabNext();
+                            }
                             if (code == scope.keyMappings.history) {
-                            	$('#HandletiersCtrl').scope().goBackHistory();
-                            }                                 
-                            console.log(code);
-                                                  
-                            e.preventDefault();
-                            e.stopPropagation();
+                                $('#HandletiersCtrl').scope().goBackHistory();
+                            }
+                            // console.log(e);
+                            if (!e.metaKey) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
                         }
                     });
                 });

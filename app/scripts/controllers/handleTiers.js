@@ -8,24 +8,27 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.message = '';
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
-		
+
 		$scope.sortableOptions = {
-		    update: function(e, ui) { 
-		        //alert("update"); 
-		    },
-		    start: function(e, ui) { 
-		        $scope.deleteEditArea();
-		    },
-		    axis: 'y'
+			update: function(e, ui) {
+				//alert("update"); 
+			},
+			start: function(e, ui) {
+				$scope.deleteEditArea();
+			},
+			axis: 'y'
 		};
 
 		/**
-		* listen for newlyLoadedLabelJson broadcast
-		* update tierDetails if heard
-		*/ 
-		$scope.$on('newlyLoadedLabelJson', function(evt, data){
-			// should look for longest tier in tier details
+		 * listen for newlyLoadedLabelJson broadcast
+		 * update tierDetails if heard
+		 */
+		$scope.$on('newlyLoadedLabelJson', function(evt, data) {
+			// SIC should look for longest tier in tier details
 			$scope.viewState.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
+			// for development
+			// $scope.viewState.curViewPort.sS = 100;
+			// $scope.viewState.curViewPort.eS = 1000;
 			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
@@ -55,7 +58,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.renameLabel = function() {
 			if (viewState.isEditing()) {
-				$scope.rename(viewState.getcurClickTierName(),viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
+				$scope.rename(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
 				viewState.deleteEditArea();
 			} else {
 				if (viewState.countSelected() == 0) {
@@ -95,17 +98,17 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			viewState.setlasteditArea("_" + now);
 			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
 		};
-		
+
 		$scope.rename = function(tiername, id, name) {
 			angular.forEach($scope.tierDetails.tiers, function(t) {
-			    var i = 0;
-			    if(t.TierName==tiername)
-			    angular.forEach(t.events, function(evt) {
-				    if (id == i) {
-					    evt.label = name;
-    				}
-	    			++i;
-		    	});
+				var i = 0;
+				if (t.TierName == tiername)
+					angular.forEach(t.events, function(evt) {
+						if (id == i) {
+							evt.label = name;
+						}
+						++i;
+					});
 			});
 		};
 
@@ -136,7 +139,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.moveBorder = function(changeTime, t) {
 			if (null != t && t.TierName == viewState.getcurMouseTierName()) {
 				var seg = viewState.getcurMouseSegmentId();
-				if (seg>=1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
+				if (seg >= 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
 					t.events[seg - 1].sampleDur += changeTime;
 					t.events[seg].startSample += changeTime;
 					t.events[seg].sampleDur -= changeTime;
