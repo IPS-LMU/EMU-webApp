@@ -16,6 +16,7 @@ angular.module('emulvcApp')
         element.bind('mousedown', function(x) {
           startPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.select(startPCM, startPCM);
+          scope.$apply();
         });
 
         element.bind('mousemove', function(event) {
@@ -34,11 +35,13 @@ angular.module('emulvcApp')
             default:
               break;
           }
+          scope.$apply();
         });
 
         element.bind('mouseup', function(x) {
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.select(startPCM, thisPCM);
+          scope.$apply();
         });
 
         function getX(e) {
