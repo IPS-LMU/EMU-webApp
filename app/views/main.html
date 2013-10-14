@@ -38,7 +38,7 @@
 
 
 <div class="menu-bottom" id="menu-bottom">
-  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="64"></canvas>
+  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="48"></canvas>
   <div class="btn-group">
     <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
     <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
@@ -51,24 +51,4 @@
     <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
   </div>
 </div>
-
-  
-  
-  <script type="text/ng-template" id="modal.html">
-    <div class="modal-header">
-        <h3>{{modalTitle}}</h3>
-    </div>
-    <div class="modal-body">
-        {{modalContent}}
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-</script>
-
-  <script type="text/ng-template" id="about.html">
-    <div>TEST</div>
-</script>
-  
 </div>
