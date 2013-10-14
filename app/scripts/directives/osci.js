@@ -16,7 +16,7 @@ angular.module('emulvcApp')
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
-
+						drawVpOsciMarkup(scope.vs, canvas, scope.cps)
 					}
 				}, true);
 
@@ -35,7 +35,6 @@ angular.module('emulvcApp')
 					var maxPeak = -Infinity;
 
 					var chan = buffer.getChannelData(0);
-					// console.log(chan);
 					var relData;
 
 					if (k <= 1) {
@@ -48,7 +47,7 @@ angular.module('emulvcApp')
 						minPeak = Math.min.apply(Math, relData);
 						maxPeak = Math.max.apply(Math, relData);
 						peaks = Array.prototype.slice.call(relData);
-						// console.log(peaks)
+
 					} else {
 						relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
 
@@ -61,13 +60,11 @@ angular.module('emulvcApp')
 
 								var av = 0;
 								for (var p = 0, l = vals.length; p < l; p++) {
-									//console.log(p);
 									if (vals[p] > peak) {
 										peak = vals[p];
 									}
 									av += vals[p];
 								}
-								//sum += peak;
 								sum += av / vals.length;
 							}
 
@@ -125,7 +122,7 @@ angular.module('emulvcApp')
 								ctx.arc(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 3, 4, 0, 2 * Math.PI, false);
 								ctx.stroke();
 								ctx.fill();
-								if (true) { // SIC !!!
+								if (false) { // SIC !!!
 									ctx.strokeText(sNr, i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
 									sNr = sNr + 1;
 								}
@@ -143,7 +140,7 @@ angular.module('emulvcApp')
 								ctx.arc(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 3, 4, 0, 2 * Math.PI, false);
 								ctx.stroke();
 								ctx.fill();
-								if (true) { // SIC !!! 
+								if (false) { // SIC !!! 
 									ctx.fillText(sNr, i / allPeakVals.samplePerPx - hDbS, canvas.height - (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
 									sNr = sNr + 1;
 								}
@@ -221,6 +218,44 @@ angular.module('emulvcApp')
 					ctx.moveTo(prevX, prevY);
 					ctx.lineTo(x, y);
 					ctx.stroke();
+
+				}
+
+				/**
+				 * draws markup of osci according to
+				 * the information that is specified in
+				 * the viewport
+				 */
+
+				function drawVpOsciMarkup(viewState, canvas, cps) {
+
+					var ctx = canvas.getContext("2d");
+
+					ctx.strokeStyle = cps.vals.labelColor;
+					ctx.fillStyle = cps.vals.labelColor;
+					ctx.font = (cps.vals.fontPxSize + "px" + " " + cps.vals.fontType);
+
+					// lines to corners
+					ctx.beginPath();
+					ctx.moveTo(0, 0);
+					ctx.lineTo(5, 5);
+					ctx.moveTo(canvas.width, 0);
+					ctx.lineTo(canvas.width - 5, 5);
+					ctx.closePath();
+					ctx.stroke();
+
+					var sTime;
+					var eTime;
+					if (viewState.curViewPort) {
+						//draw time and sample nr
+						sTime = viewState.round(viewState.curViewPort.sS / 44100, 6); //SIC hardcoded sample rate
+						eTime = viewState.round(viewState.curViewPort.eS / 44100, 6); //SIC hardcoded sample rate
+						ctx.fillText(viewState.curViewPort.sS, 5, cps.vals.fontPxSize);
+						ctx.fillText(sTime, 5, cps.vals.fontPxSize * 2);
+						var metrics = ctx.measureText(sTime);
+						ctx.fillText(viewState.curViewPort.eS, canvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, cps.vals.fontPxSize);
+						ctx.fillText(eTime, canvas.width - metrics.width - 5, cps.vals.fontPxSize * 2);
+					}
 
 				}
 			}
