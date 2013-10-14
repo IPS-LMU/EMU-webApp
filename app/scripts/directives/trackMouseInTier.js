@@ -54,13 +54,13 @@ angular.module('emulvcApp')
             //console.log('Right mouse button pressed');
             break;
         default:
-            if(event.altKey) {
+            if(event.shiftKey) {
               scope.viewState.deleteEditArea();
               scope.moveBorder(Math.floor(thisPCM-lastPCM),scope.this.tier);
               lastPCM = thisPCM;
               scope.$apply(); 
             }  
-            if(event.shiftKey) {
+            if(event.altKey) {
               scope.viewState.deleteEditArea();
               scope.moveSegment(Math.floor(thisPCM-lastPCM),scope.this.tier);
               lastPCM = thisPCM;
