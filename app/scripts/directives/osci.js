@@ -207,8 +207,8 @@ angular.module('emulvcApp')
 
 
 					if (posC >= x) {
-						ctx.fillStyle = cps.playProgressColor;
-						ctx.strokeStyle = cps.playProgressColor;
+						ctx.fillStyle = cps.vals.playProgressColor;
+						ctx.strokeStyle = cps.vals.playProgressColor;
 					} else {
 						ctx.fillStyle = cps.vals.osciColor;
 						ctx.strokeStyle = cps.vals.osciColor;
@@ -256,7 +256,54 @@ angular.module('emulvcApp')
 						ctx.fillText(viewState.curViewPort.eS, canvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, cps.vals.fontPxSize);
 						ctx.fillText(eTime, canvas.width - metrics.width - 5, cps.vals.fontPxSize * 2);
 					}
-
+					//draw emulabeller.viewPortselected
+					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
+						var posS = viewState.getPos(canvas.width, viewState.curViewPort.selectS);
+						var posE = viewState.getPos(canvas.width, viewState.curViewPort.selectE);
+						var sDist = viewState.getSampleDist(canvas.width);
+						var xOffset;
+						if (viewState.curViewPort.selectS == viewState.curViewPort.selectE) {
+							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+							if (viewState.curMouseMoveTierType == "seg") {
+								xOffset = 0;
+							} else {
+								xOffset = (sDist / 2);
+							}
+							ctx.fillStyle = cps.vals.selectedBorderColor;
+							ctx.fillRect(posS + xOffset, 0, 1, canvas.height);
+							ctx.fillStyle = cps.vals.labelColor;
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, cps.vals.fontPxSize);
+							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, cps.vals.fontPxSize * 2);
+						} else {
+							ctx.fillStyle = cps.vals.selectedAreaColor;
+							ctx.fillRect(posS, 0, posE - posS, canvas.height);
+							ctx.strokeStyle = cps.vals.selectedBoundaryColor;
+							ctx.beginPath();
+							ctx.moveTo(posS, 0);
+							ctx.lineTo(posS, canvas.height);
+							ctx.moveTo(posE, 0);
+							ctx.lineTo(posE, canvas.height);
+							ctx.closePath();
+							ctx.stroke();
+							ctx.fillStyle = canvas.labelColor;
+							// start values
+							var tW = ctx.measureText(viewState.curViewPort.selectS).width;
+							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, cps.vals.fontPxSize);
+							tW = ctx.measureText(viewState.round(viewState.curViewPort.selectS / 44100, 6)).width;
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100, 6), posS - tW - 4, cps.vals.fontPxSize * 2);
+							// end values
+							ctx.fillText(viewState.curViewPort.selectE, posE + 5, cps.vals.fontPxSize);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectE / 44100, 6), posE + 5, cps.vals.fontPxSize * 2);
+							// dur values
+							// check if space
+							if (posE - posS > ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100, 6)).width) {
+								tW = ctx.measureText(viewState.curViewPort.selectE - viewState.curViewPort.selectS).width;
+								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize);
+								tW = ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100, 6)).width;
+								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize * 2);
+							}
+						}
+					}
 				}
 			}
 		};
