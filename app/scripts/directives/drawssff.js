@@ -65,15 +65,22 @@ angular.module('emulvcApp')
           col.values.forEach(function(valRep, valIdx) {
             valRep.forEach(function(val, idx) {
               if (valIdx !== 0) {
+                prevX = (valIdx - 1) * canvas.width / nrOfSamples;
+                prevY = canvas.height - ((col.values[valIdx-1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+                
                 x = valIdx * canvas.width / nrOfSamples;
                 y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-                // console.log(y)
-                // ctx.moveTo(x, y);
-                // ctx.lineTo(x+5, y+5);
+                
+                ctx.strokeStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
+                
+                ctx.fillStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
+                // draw line
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
 
                 // draw dot
-                ctx.strokeStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
-                ctx.fillStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
                 ctx.beginPath();
                 ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
                 ctx.stroke();
