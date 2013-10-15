@@ -15,7 +15,7 @@ angular.module('emulvcApp')
 		sServObj.columTypeMap = {
 			'DOUBLE': 8
 		};
-
+		sServObj.ssffData.fileURL = '';
 		sServObj.ssffData.sampleRate = -1;
 		sServObj.ssffData.startTime = -1;
 		sServObj.ssffData.origFreq = -1;
@@ -23,6 +23,8 @@ angular.module('emulvcApp')
 
 
 		/**
+		 * convert arraybuffer containing a ssff file
+		 * to a javascript object
 		 * @param buf arraybuffer containing ssff file
 		 */
 		sServObj.ssff2jso = function(buf) {
@@ -40,15 +42,15 @@ angular.module('emulvcApp')
 			}
 			// check if Record_Freq+Start_Time is there
 			if (newLsep[2].split(/[ ,]+/)[0] != "Record_Freq " || newLsep[3].split(/[ ,]+/)[0] != "Start_Time ") {
-				this.ssffData.sampleRate = parseFloat(newLsep[2].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm,""));
-				this.ssffData.startTime = parseFloat(newLsep[3].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm,""));
+				this.ssffData.sampleRate = parseFloat(newLsep[2].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ""));
+				this.ssffData.startTime = parseFloat(newLsep[3].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ""));
 			} else {
 				alert('no ssff file... or missing fields ');
 			}
 
 			for (var i = 4; i < newLsep.length; i++) {
 				if (newLsep[i].split(/[ ,]+/)[0] == "Original_Freq") {
-					this.ssffData.origFreq = parseFloat(newLsep[i].split(/[ ,]+/)[2].replace(/(\r\n|\n|\r)/gm,""));
+					this.ssffData.origFreq = parseFloat(newLsep[i].split(/[ ,]+/)[2].replace(/(\r\n|\n|\r)/gm, ""));
 				}
 				if (newLsep[i] == this.sepString) {
 					break;
@@ -59,7 +61,7 @@ angular.module('emulvcApp')
 					this.ssffData.Columns.push({
 						"name": lSpl[1],
 						"ssffdatatype": lSpl[2],
-						"length": parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm,"")),
+						"length": parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm, "")),
 						"values": []
 					});
 				}
@@ -96,7 +98,6 @@ angular.module('emulvcApp')
 						curBinIdx += curLen;
 
 					} else {
-						//console.log("fasdfsd");
 						alert("not supported... only doubles and floats for now");
 					}
 
@@ -106,7 +107,11 @@ angular.module('emulvcApp')
 			// console.log(JSON.stringify(this.ssffData, undefined, 2));
 			return this.ssffData;
 
-		}
+		};
+
+		sServObj.jso2ssff = function(jso) {
+			alert("not implemented yet!!!!!")
+		};
 
 		return sServObj;
 

@@ -290,6 +290,21 @@ angular.module('emulvcApp')
     };
 
     /**
+     * calcs and returns start in secs
+     */
+    sServObj.getStartTime = function() {
+      return (this.curViewPort.sS * 1 / 44100); // SIC hardcoded sample rate
+    };
+
+    /**
+     * calcs and returns end time in secs
+     */
+    sServObj.getEndTime = function() {
+      return (this.curViewPort.eS * 1 / 44100); // SIC hardcoded sample rate
+    };
+
+
+    /**
      * set view port to start and end sample
      * (with several out-of-bounds like checks)
      *

@@ -7,16 +7,14 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.shs = Soundhandlerservice;
 		$scope.cps = Colorproviderservice;
 
+		$scope.ssffData = [];
+
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
-
-			// for development
-			// $scope.viewState.curViewPort.sS = 100;
-			// $scope.viewState.curViewPort.eS = 1000;
-			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
-			// console.log(data)
+			$scope.ssffData.push(data);
+			// console.log($scope.ssffData);
 		});
 
 	});

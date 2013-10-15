@@ -150,11 +150,9 @@
 
 \begin{lstlisting}[caption=internal label representation, label=ilr, language=json,firstnumber=1]
 {
-  "labelfileurls": [
-    "file:/path/to/msajc003.TextGrid"
-  ],
+  "fileURL": "file:/path/to/msajc003.TextGrid",
   "tiers": [
-  {"TierName": "Phonetic",
+  {"tierName": "Phonetic",
     "type": "seg",
     "events": [
       {"label": "", "startSample": 0, "sampleDur": 8267}, 
@@ -168,21 +166,26 @@
 
 \begin{lstlisting}[caption=internal derived signal representation,label=idsr, language=json,firstnumber=1]
 {
-  "signalurl": "file:/path/to/msajc003.fms",
-  "names" = ["fm", "bw"],
+  "fileURL": "file:/path/to/msajc003.fms",
   "sampleRate" = 200,
-  "origFreq" = 0,
+  "origFreq" = 20000,
   "startTime" = 0.0025,
-  "startRecord" = 1,
-  "endRecord" = 581, //first 3 shown
-  "fm" = [[0, 1042, 2072, 3170],
-          [0, 1260, 2122, 3118],
-          [0, 1339, 2293, 3258],
-          ...],
-  "bw" = [[0, 886, 371, 890],
-         [0, 724, 567, 826],
-         [0, 410, 664, 740],
-          ...]
+  "columns" = [
+  {"name": "fm",
+    "length": 4,
+    "ssffDataType": "SHORT"
+    "values" : [[0, 1042, 2072, 3170],
+                [0, 1260, 2122, 3118],
+                [0, 1339, 2293, 3258],
+                ...]},
+  {"name": "bw",
+    "length": 4,
+    "ssffDataType": "SHORT"
+    "values" : [[0, 886, 371, 890],
+                [0, 724, 567, 826],
+                [0, 410, 664, 740],
+                ...]}
+  ]
 }
 \end{lstlisting}
 

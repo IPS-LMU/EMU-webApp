@@ -51,7 +51,7 @@ angular.module('emulvcApp')
 					} else {
 						relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
 
-						for (var i = 0; i < canvas.width; i++) { // SIC HARDCODED... BAD!!!!
+						for (var i = 0; i < canvas.width; i++) {
 							var sum = 0;
 							for (var c = 0; c < buffer.numberOfChannels; c++) {
 
