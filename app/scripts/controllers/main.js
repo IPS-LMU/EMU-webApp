@@ -19,7 +19,7 @@ var MainCtrl = angular.module('emulvcApp')
 		// init loading of files for testing
 		Iohandlerservice.httpGetLabelJson();
 		Iohandlerservice.httpGetAudioFile();
-		Iohandlerservice.httpGetSSFFfile('testData/msajc003.f0');
+		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
 
 		/**
 		 * listen for newlyLoadedAudioFile

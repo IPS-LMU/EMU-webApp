@@ -59,13 +59,12 @@ angular.module('emulvcApp')
 					this.ssffData.Columns.push({
 						"name": lSpl[1],
 						"ssffdatatype": lSpl[2],
-						"length": lSpl[3],
+						"length": parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm,"")),
 						"values": []
 					});
 				}
 
 			}
-
 
 			var curBinIdx = newLsep.slice(0, i + 1).join("").length;
 
@@ -79,14 +78,21 @@ angular.module('emulvcApp')
 						curLen = 8 * this.ssffData.Columns[i].length;
 						curBuffer = buf.subarray(curBinIdx, curLen);
 						curBufferView = new Float64Array(curBuffer);
-						this.ssffData.Columns[i].values.push(curBufferView);
+						this.ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 						curBinIdx += curLen;
 
 					} else if (this.ssffData.Columns[i].ssffdatatype == "FLOAT") {
 						curLen = 4 * this.ssffData.Columns[i].length;
 						curBuffer = buf.subarray(curBinIdx, curLen);
 						curBufferView = new Float32Array(curBuffer);
-						this.ssffData.Columns[i].values.push(curBufferView);
+						this.ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
+						curBinIdx += curLen;
+
+					} else if (this.ssffData.Columns[i].ssffdatatype == "SHORT") {
+						curLen = 2 * this.ssffData.Columns[i].length;
+						curBuffer = buf.subarray(curBinIdx, curLen);
+						curBufferView = new Uint16Array(curBuffer);
+						this.ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 						curBinIdx += curLen;
 
 					} else {
@@ -97,6 +103,8 @@ angular.module('emulvcApp')
 				} //for
 			} //while
 			console.log(this.ssffData);
+			// console.log(JSON.stringify(this.ssffData, undefined, 2));
+			return this.ssffData;
 
 		}
 
