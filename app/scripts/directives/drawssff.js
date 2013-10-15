@@ -60,19 +60,23 @@ angular.module('emulvcApp')
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
+          if (nrOfSamples < canvas.width) {
+            console.log("over sample exact ssff drawing");
+          }
+
           var x, y, prevX, prevY;
 
           col.values.forEach(function(valRep, valIdx) {
             valRep.forEach(function(val, idx) {
               if (valIdx !== 0) {
                 prevX = (valIdx - 1) * canvas.width / nrOfSamples;
-                prevY = canvas.height - ((col.values[valIdx-1][idx] - minVal) / (maxVal - minVal) * canvas.height);
-                
+                prevY = canvas.height - ((col.values[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+
                 x = valIdx * canvas.width / nrOfSamples;
                 y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-                
+
                 ctx.strokeStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
-                
+
                 ctx.fillStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8);
                 // draw line
                 ctx.beginPath();
