@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Ssffparserservice', function Ssffparserservice() {
+	.service('Ssffparserservice', function Ssffparserservice(viewState) {
 
 		// shared service object
 		var sServObj = {};
+
+		sServObj.vs = viewState;
 
 		sServObj.ssffData = {};
 
@@ -31,6 +33,7 @@ angular.module('emulvcApp')
 
 			var uIntBuffView = new Uint8Array(buf);
 			var buffStr = String.fromCharCode.apply(null, uIntBuffView);
+			console.log(buffStr);
 
 			var newLsep = buffStr.split(/^/m);
 
@@ -114,42 +117,46 @@ angular.module('emulvcApp')
 		 * @returns ssff arraybuffer
 		 */
 		sServObj.jso2ssff = function(jso) {
-
+			var my = this;
 			// create header
 			var headerStr = this.headID + this.machineID;
-			headerStr += "Record_Freq " + jso.sampleRate + "\n";
+			headerStr += "Record_Freq " + this.vs.round(jso.sampleRate, 1) + "\n";
 			headerStr += "Start_Time " + jso.startTime + "\n";
 
 			jso.Columns.forEach(function(col, index) {
-				console.log(col.name)
+				// console.log(col.name)
 				headerStr += "Column " + col.name + " " + col.ssffdatatype + " " + col.length + "\n";
 			});
 
-			headerStr += "Original_Freq DOUBLE " + jso.origFreq + "\n";
+			headerStr += "Original_Freq DOUBLE " + this.vs.round(jso.origFreq, 1) + "\n";
 			headerStr += this.sepString;
 
 			// convert buffer to header
 			var ssffBuf = new Uint8Array(this.stringToUint(headerStr));
 
-			var curBufferView, curRecord;
+			var curBufferView, curArray;
 
-			console.log("####################");
-			if (jso.Columns[0].ssffdatatype == "SHORT") {
-				console.log(jso.Columns[0]);
-				curBufferView = new Uint16Array(jso.Columns[0].length);
-				curRecord = jso.Columns[0].values[0];
-				console.log(curRecord);
-				curBufferView[0] = curRecord[0];
-				curBufferView[1] = curRecord[1];
-				curBufferView[2] = curRecord[2];
-				curBufferView[3] = curRecord[3];
-				console.log(curBufferView)
-				var tmp = new Uint8Array(curBufferView);
-				ssffBuf = this.Uint8Concat(ssffBuf, tmp);
-			}
+			curBufferView = new Uint16Array(jso.Columns[0].length);
+			curArray = jso.Columns[0].values[0];
 
-			// console.log(ssffBuf);
-			console.log(String.fromCharCode.apply(null, ssffBuf));
+			// loop through vals and append array of each column to ssffBuf
+			jso.Columns[0].values.forEach(function(curArray, curArrayIDX) {
+				jso.Columns.forEach(function(curCol, curColIDX) {
+					if (curCol.ssffdatatype == "SHORT") {
+						curBufferView = new Uint16Array(curCol.length);
+						curCol.values[curArrayIDX].forEach(function(val, valIDX) {
+							curBufferView[valIDX] = val;
+						});
+						var tmp = new Uint8Array(curBufferView.buffer);
+						ssffBuf = my.Uint8Concat(ssffBuf, tmp);
+					} else {
+						alert("Only SHORT columns supported for now!!!");
+						return;
+					}
+				});
+			});
+
+			// console.log(String.fromCharCode.apply(null, ssffBuf));
 			return ssffBuf;
 		};
 
