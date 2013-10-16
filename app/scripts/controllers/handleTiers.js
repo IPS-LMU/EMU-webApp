@@ -115,17 +115,25 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.deleteSegment = function() {
 		    var now = parseInt(viewState.getcurClickSegment()[0], 10);
 		    var tierName = viewState.getcurClickTierName();
-		
+		    
 			angular.forEach($scope.tierDetails.tiers, function(t) {
 				var i = 0;
-				if (t.TierName == tierName)
+				if (t.TierName == tierName) {
+				    console.log(t.events.length);
 					angular.forEach(t.events, function(evt) {
 						if (i == now) {
-							delete t.events[i];
+						    var length = evt.sampleDur/2;
+						    t.events[i-1].sampleDur += length;
+						    t.events[i+1].sampleDur += length;
+						    t.events[i+1].startSample -= length;
+							t.events.splice(i,1);
 						}
 						++i;
 					});
+					console.log(t.events.length);
+				}
 			});
+			$scope.history();
 		};		
 
 		$scope.getEventId = function(x, tier) {
@@ -150,7 +158,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				}
 			});
 			return evtr;
-		}
+		};
 
 		$scope.moveBorder = function(changeTime, t) {
 			if (null != t && t.TierName == viewState.getcurMouseTierName()) {
