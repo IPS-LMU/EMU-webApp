@@ -13,10 +13,13 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	};
 
 	$scope.deleteSegment = function() {
-		//$scope.
+	    $('#HandletiersCtrl').scope().deleteSegments();
+	    $modalInstance.dismiss('ok');
 	};
 
-	$scope.deleteTier = function() {
-		alert(modalTitle);
+	$scope.deleteTier = function(tierName) {
+		$('#HandletiersCtrl').scope().deleteTier(tierName);
+		$('#HandletiersCtrl').scope().history();
+		$modalInstance.dismiss('ok');
 	};
 };

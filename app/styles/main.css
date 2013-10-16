@@ -125,6 +125,24 @@ li {
     width: 97%;    
 }
 
+.SpectroTop {
+    position:relative;
+    width: 100%
+    text-align:left;
+    left: 0px;
+}
+
+.SSFFCanvas {
+    position:absolute;
+    z-index: 40;
+}
+
+.SpectroCanvas {
+    position:absolute;
+    z-index: 38;
+}
+
+
 .TierMain {
     margin: 0px;
     padding: 0px;
@@ -218,6 +236,8 @@ div.center {
     background: #fff;
     -webkit-touch-callout: none;    
     width: 100%;
+    text-align:left;
+    margin-left: 5px;
 }
 
 .HandletiersCtrl {
@@ -330,4 +350,8 @@ div.center {
 	/*height: 35px;*/
 	/*width: 1024px;*/
     width:95%;
+}
+
+.TimelineSub {
+    position:relative;
 }
