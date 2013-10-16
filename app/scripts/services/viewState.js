@@ -244,7 +244,7 @@ angular.module('emulvcApp')
     };
 
     sServObj.openEditArea = function() {
-      var lastEventClick = this.getlastClickSegment();
+      var lastEventClick = this.getcurClickSegments()[0];
       var lastEventClickId = this.getlastID();
       var elem = $("#" + this.getcurClickTierName()).find("canvas")[0];
       var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;

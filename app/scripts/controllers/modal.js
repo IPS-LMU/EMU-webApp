@@ -1,4 +1,4 @@
-var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent) {
+var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, viewState) {
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
@@ -13,7 +13,7 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	};
 
 	$scope.deleteSegment = function() {
-		alert(modalTitle);
+		//$scope.
 	};
 
 	$scope.deleteTier = function() {
