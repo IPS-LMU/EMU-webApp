@@ -7,6 +7,11 @@ angular.module('emulvcApp')
       // template: '<h2>howdy</h2>',
       link: function postLink(scope, element, attrs) {
         var canvas = element[0];
+        
+        var transparentColor = [];
+        transparentColor.r = "255";
+        transparentColor.g = "0";
+        transparentColor.b = "0";        
 
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
@@ -46,7 +51,10 @@ angular.module('emulvcApp')
 
         function drawValues(viewState, canvas, cps, col) {
           var ctx = canvas.getContext("2d");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // create a destination canvas. Here the altered image will be placed
+          
+          ctx.fillStyle="rgba("+transparentColor.r+", "+transparentColor.g+", "+transparentColor.b+", 1.0)";
+          ctx.fillRect(0,0,canvas.width,canvas.height);
 
           // hardcode min max display for now
           var minVal = 0;
@@ -92,6 +100,25 @@ angular.module('emulvcApp')
               }
             });
           });
+          
+              // read pixels from source
+    var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // iterate through pixel data (1 pixels consists of 4 ints in the array)
+    for(var i = 0, len = pixels.data.length; i < len; i += 4){
+        var r = pixels.data[i];
+        var g = pixels.data[i+1];
+        var b = pixels.data[i+2];
+
+        // if the pixel matches our transparent color, set alpha to 0
+        if(r == transparentColor.r && g == transparentColor.g && b == transparentColor.b){
+            pixels.data[i+3] = 0;
+        }
+    }
+
+    // write pixel data to destination context
+    ctx.putImageData(pixels,0,0);
+          
         }
       }
     };
