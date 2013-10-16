@@ -129,19 +129,18 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		    var tierName = viewState.getcurClickTierName();
 		    
 			angular.forEach($scope.tierDetails.tiers, function(t) {
-				var i = 0;
 				if (t.TierName == tierName) {
-					angular.forEach(t.events, function(evt) {
-						if (i == now) {
-						    var length = evt.sampleDur/2;
-						    t.events[i-1].sampleDur += length;
-						    t.events[i+1].sampleDur += length;
-						    t.events[i+1].startSample -= length;
-							t.events.splice(i,1);
-						}
-						++i;
-					});
-					console.log(t.events.length);
+    				var length = 0;
+				    if(toDelete.length==1) {
+				        length = t.events[toDelete[0]].sampleDur;
+				        t.events[toDelete[0]-1].sampleDur += length/2;
+						t.events[toDelete[0]+1].sampleDur += length/2;
+						t.events[toDelete[0]+1].startSample -= length/2;
+						t.events.splice(toDelete[0],1);
+				    }
+				    else {
+				        length = (toDelete[-1].startSample+toDelete[-1].smapleDur)-toDelete[0].startSample;
+				    }
 				}
 			});
 			$scope.history();
