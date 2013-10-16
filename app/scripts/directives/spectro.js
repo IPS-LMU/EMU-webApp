@@ -104,26 +104,51 @@ angular.module('emulvcApp')
                 }                
 
                 function drawTimeLineContext() {
-                    var posS = vs.getPos(canvas.width, vs.curViewPort.selectS);
-                    var posE = vs.getPos(canvas.width, vs.curViewPort.selectE);
-                    var sDist = vs.getSampleDist(canvas.width) / 2;
-                    var curPos = posS + sDist;
-                    if (posS != 0 && vs.selectS == vs.selectE) {
-                        context.fillStyle = "#000";
-                        context.fillRect(curPos, 0, 1, canvas.height);
-                    }
-                    if (curPos != 0 && vs.selectS != vs.selectE) {
-                        context.fillStyle = "#f00";
-                        context.fillRect(posS, 0, posE - posS, canvas.height);
-                        context.strokeStyle = "#111";
-                        context.beginPath();
-                        context.moveTo(posS, 0);
-                        context.lineTo(posS, canvas.height);
-                        context.moveTo(posE, 0);
-                        context.lineTo(posE, canvas.height);
-                        context.closePath();
-                        context.stroke();
-                    }
+					var posS = vs.getPos(canvas.width, vs.curViewPort.selectS);
+					var posE = vs.getPos(canvas.width, vs.curViewPort.selectE);
+					var sDist = vs.getSampleDist(canvas.width);
+					var xOffset;        
+					if (vs.curViewPort.selectS == vs.curViewPort.selectE) {
+						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+						if (vs.curMouseMoveTierType == "seg") {
+							xOffset = 0;
+						} else {
+							xOffset = (sDist / 2);
+						}
+						context.fillStyle = scope.cps.vals.selectedBorderColor;
+						context.fillRect(posS + xOffset, 0, 1, canvas.height);
+						context.fillStyle = scope.cps.vals.labelColor;
+						context.fillText(vs.round(vs.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, scope.cps.vals.fontPxSize);
+						context.fillText(vs.curViewPort.selectS, posS + xOffset + 5, scope.cps.vals.fontPxSize * 2);
+					} else {
+						context.fillStyle = scope.cps.vals.selectedAreaColor;
+						context.fillRect(posS, 0, posE - posS, canvas.height);
+						context.strokeStyle = scope.cps.vals.selectedBoundaryColor;
+						context.beginPath();
+						context.moveTo(posS, 0);
+						context.lineTo(posS, canvas.height);
+						context.moveTo(posE, 0);
+						context.lineTo(posE, canvas.height);
+						context.closePath();
+						context.stroke();
+						context.fillStyle = canvas.labelColor;
+						// start values
+						var tW = context.measureText(vs.curViewPort.selectS).width;
+						context.fillText(vs.curViewPort.selectS, posS - tW - 4, scope.cps.vals.fontPxSize);
+						tW = context.measureText(vs.round(vs.curViewPort.selectS / 44100, 6)).width;
+						context.fillText(vs.round(vs.curViewPort.selectS / 44100, 6), posS - tW - 4, scope.cps.vals.fontPxSize * 2);
+						// end values
+						context.fillText(vs.curViewPort.selectE, posE + 5, scope.cps.vals.fontPxSize);
+						context.fillText(vs.round(vs.curViewPort.selectE / 44100, 6), posE + 5, scope.cps.vals.fontPxSize * 2);
+						// dur values
+						// check if space
+						if (posE - posS > context.measureText(vs.round((vs.curViewPort.selectE - vs.curViewPort.selectS) / 44100, 6)).width) {
+							tW = context.measureText(vs.curViewPort.selectE - vs.curViewPort.selectS).width;
+							context.fillText(vs.curViewPort.selectE - vs.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, scope.cps.vals.fontPxSize);
+							tW = context.measureText(vs.round((vs.curViewPort.selectE - vs.curViewPort.selectS) / 44100, 6)).width;
+							context.fillText(vs.round(((vs.curViewPort.selectE - vs.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, scope.cps.vals.fontPxSize * 2);
+						}
+					}
                 }
 
 
