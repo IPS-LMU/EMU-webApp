@@ -57,38 +57,51 @@ angular.module('emulvcApp')
                 }
                 var primeWorker = new Worker(URL.createObjectURL(blob));
                 var imageCache = null;
-                var imageCacheCounter = null;
+                var imageCacheCounter = 0;
+                
                 setupEvent();
                 clearImageCache();
 
                 scope.$watch('vs.curViewPort', function() {
+
                     if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-                        drawOsci(scope.vs, canvas, scope.shs.currentBuffer);
+                        var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
+                        var cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
+                        if(cache!=null) {
+                            
+                            drawTimeLine(cache);
+                        }
+                        else {
+                            drawOsci(scope.vs, scope.shs.currentBuffer);
+                        }
                     }
                 }, true);
 
                 function clearImageCache() {
                     imageCache = null;
-                    imageCacheCounter = null;
+                    imageCacheCounter = 0;
                     imageCache = new Array();
-                    imageCacheCounter = new Array();
                 }
 
-                function buildImageCache(cstart, cend, imgData) {
-                    if (imageCache[pcmperpixel] == null)
-                        imageCache[pcmperpixel] = new Array();
-
-                    if (imageCacheCounter[pcmperpixel] == null)
-                        imageCacheCounter[pcmperpixel] = 0;
-
-                    if (imageCache[pcmperpixel][imageCacheCounter[pcmperpixel]] == null) {
-                        imageCache[pcmperpixel][imageCacheCounter[pcmperpixel]] = new Array();
-                        imageCache[pcmperpixel][imageCacheCounter[pcmperpixel]][0] = cstart;
-                        imageCache[pcmperpixel][imageCacheCounter[pcmperpixel]][1] = cend;
-                        imageCache[pcmperpixel][imageCacheCounter[pcmperpixel]][2] = imgData;
-                        ++imageCacheCounter[pcmperpixel];
+                function buildImageCache(cstart, cend, ppp, imgData) {
+                    imageCache[imageCacheCounter] = new Array();
+                    imageCache[imageCacheCounter][0] = cstart;
+                    imageCache[imageCacheCounter][1] = cend;
+                    imageCache[imageCacheCounter][2] = ppp;
+                    imageCache[imageCacheCounter][3] = imgData;
+                    ++imageCacheCounter;
+                }
+                
+                function cacheHit(cstart, cend, ppp) {
+                    for (var i = 0; i < imageCache.length; ++i) {
+                        if (imageCache[i][0] == cstart &&
+                            imageCache[i][1] == cend &&
+                            imageCache[i][2] == ppp) {
+                            return i;
+                        }
                     }
-                }
+                    return null;
+                }                
 
                 function drawTimeLineContext() {
                     var posS = vs.getPos(canvas.width, vs.curViewPort.selectS);
@@ -114,13 +127,14 @@ angular.module('emulvcApp')
                 }
 
 
-                function drawTimeLine() {
+                function drawTimeLine(id) {
+                 
                     var image = new Image();
                     image.onload = function() {
                         context.drawImage(image, 0, 0);
                         drawTimeLineContext();
                     };
-                    image.src = this.myImage.src;
+                    image.src = imageCache[id][3];
                 }
 
 
@@ -139,48 +153,19 @@ angular.module('emulvcApp')
                 function setupEvent() {
                     primeWorker.addEventListener('message', function(event) {
                         var worker_img = event.data.img;
-                        var worker_start = event.data.start;
-                        var worker_end = event.data.end;
-                        var worker_cache_width = event.data.cacheWidth;
-                        var worker_cache_side = event.data.cacheSide;
-                        var render_width = canvas.width - worker_cache_width;
                         myImage.onload = function() {
-                            if (worker_cache_side == 0)
-                                context.drawImage(myImage, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-                            if (worker_cache_side == 1)
-                                context.drawImage(myImage, 0, 0, render_width, canvas.height, 0, 0, render_width, canvas.height);
-                            if (worker_cache_side == 2)
-                                context.drawImage(myImage, worker_cache_width, 0, render_width, canvas.height, worker_cache_width, 0, render_width, canvas.height);
-                            buildImageCache(worker_start, worker_end, canvas.toDataURL("image/png"));
+                            context.drawImage(myImage, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
                             drawTimeLineContext();
+                            var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
+                            buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas.toDataURL("image/png"));
                         }
                         myImage.src = worker_img;
                     });
                 }
 
-                function drawOsci(viewState, canvas, buffer) {
-                    var newpcmperpixel = Math.round((viewState.eS - viewState.sS) / canvas.width);
-                    if (imageCache != null) {
-                        if (imageCache[newpcmperpixel] != null) {
-                            for (var i = 0; i < imageCache[newpcmperpixel].length; ++i) {
-                                // check for complete image
-                                if (imageCache[newpcmperpixel][i][0] == viewState.sS &&
-                                    imageCache[newpcmperpixel][i][1] == viewState.eS) {
-                                    myImage.src = imageCache[newpcmperpixel][i][2];
-                                    drawTimeLine();
-                                    return;
-                                }
-                            }
-                            killSpectroRenderingThread();
-                            startSpectroRenderingThread(viewState, buffer);
-                        } else {
-                            killSpectroRenderingThread();
-                            startSpectroRenderingThread(viewState, buffer);
-                        }
-                    } else { // image has to be rendered completely
-                        killSpectroRenderingThread();
-                        startSpectroRenderingThread(viewState, buffer);
-                    }
+                function drawOsci(viewState, buffer) {
+                    killSpectroRenderingThread();
+                    startSpectroRenderingThread(viewState, buffer);
                 }
 
                 function startSpectroRenderingThread(viewState, buffer) {

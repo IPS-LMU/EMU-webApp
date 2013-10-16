@@ -69,7 +69,7 @@ angular.module('emulvcApp')
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
           if (nrOfSamples < canvas.width) {
-            console.log("over sample exact ssff drawing");
+            //console.log("over sample exact ssff drawing");
           }
 
           var x, y, prevX, prevY;

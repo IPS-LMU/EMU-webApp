@@ -9,8 +9,8 @@ angular.module('emulvcApp')
         var elem = element[0];
 
         element.bind('mousemove', function(event) {
-          console.log(event);
-          scope.$apply();
+          //console.log(event);
+          //scope.$apply();
         });
 
       }
