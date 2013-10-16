@@ -52,7 +52,10 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.history) {
                                 $('#HandletiersCtrl').scope().goBackHistory();
                             }
-                            // console.log(e);
+                            if (code == scope.keyMappings.backspace) {
+                                $('#HandletiersCtrl').scope().deleteSegment();
+                            }                            
+                            console.log(code);
                             if (!e.metaKey) {
                                 e.preventDefault();
                                 e.stopPropagation();

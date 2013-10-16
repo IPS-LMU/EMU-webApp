@@ -112,6 +112,22 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 		};
 
+		$scope.deleteSegment = function() {
+		    var now = parseInt(viewState.getcurClickSegment()[0], 10);
+		    var tierName = viewState.getcurClickTierName();
+		
+			angular.forEach($scope.tierDetails.tiers, function(t) {
+				var i = 0;
+				if (t.TierName == tierName)
+					angular.forEach(t.events, function(evt) {
+						if (i == now) {
+							delete t.events[i];
+						}
+						++i;
+					});
+			});
+		};		
+
 		$scope.getEventId = function(x, tier) {
 			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
 			var id = 0;
@@ -123,7 +139,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				++id;
 			});
 			return ret;
-		}
+		};
 
 		$scope.getEvent = function(x, tier) {
 			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;

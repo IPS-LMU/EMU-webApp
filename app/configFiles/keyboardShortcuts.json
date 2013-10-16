@@ -4,6 +4,7 @@
     "shiftViewPortLeft": 65,
     "shiftViewPortRight": 68,
     "playEntireFile": 70,
+    "backspace":8,
     "tab": 9,
     "enter":13,
     "esc":27,
