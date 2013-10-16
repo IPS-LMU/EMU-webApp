@@ -27,7 +27,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
 			Soundhandlerservice.decodeAudioFile(data, function(d) {
 				viewState.curViewPort.bufferLength = d.length;
-				$scope.$digest(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
+				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
 		});
 

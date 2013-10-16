@@ -42,7 +42,7 @@ angular.module('emulvcApp')
         });
 
         element.bind('mousemove', function(event) {
-          thisPCM = getX(event) * scope.viewState.getPCMpp(event);
+          thisPCM = getX(event) * scope.vs.getPCMpp(event);
           switch (event.which) {
             case 1:
               //console.log('Left mouse button pressed');
@@ -55,13 +55,13 @@ angular.module('emulvcApp')
               break;
             default:
               if (event.shiftKey) {
-                scope.viewState.deleteEditArea();
+                scope.vs.deleteEditArea();
                 scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
                 lastPCM = thisPCM;
                 scope.$apply();
               }
               if (event.altKey) {
-                scope.viewState.deleteEditArea();
+                scope.vs.deleteEditArea();
                 scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                 lastPCM = thisPCM;
                 scope.$apply();
@@ -82,58 +82,58 @@ angular.module('emulvcApp')
 
         function setLastClick(x) {
           var tierId = element.parent()[0].id;
-          thisPCM = getX(x) * scope.viewState.getPCMpp(x);
-          scope.viewState.deleteEditArea();
+          thisPCM = getX(x) * scope.vs.getPCMpp(x);
+          scope.vs.deleteEditArea();
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
-          scope.viewState.setlasteditArea("_" + lastEventClickId);
-          scope.viewState.setcurClickTierName(tierId);
-          scope.viewState.setcurClickSegment(lastEventClick, lastEventClickId);
-          scope.viewState.setTierLength(scope.this.tier.events.length);
+          scope.vs.setlasteditArea("_" + lastEventClickId);
+          scope.vs.setcurClickTierName(tierId);
+          scope.vs.setcurClickSegment(lastEventClick, lastEventClickId);
+          scope.vs.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastRightClick(x) {
           var tierId = element.parent()[0].id;
-          thisPCM = getX(x) * scope.viewState.getPCMpp(x);
-          scope.viewState.deleteEditArea();
+          thisPCM = getX(x) * scope.vs.getPCMpp(x);
+          scope.vs.deleteEditArea();
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
-          scope.viewState.setcurClickTierName(tierId);
-          scope.viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
-          scope.viewState.setTierLength(scope.this.tier.events.length);
+          scope.vs.setcurClickTierName(tierId);
+          scope.vs.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
+          scope.vs.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastDblClick(x) {
           var tierId = element.parent()[0].id;
-          thisPCM = getX(x) * scope.viewState.getPCMpp(x);
+          thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
-          scope.viewState.setcurClickTierName(tierId);
-          scope.viewState.setlasteditArea("_" + lastEventClickId);
-          scope.viewState.setcurClickSegment(lastEventClick, lastEventClickId);
-          scope.viewState.setEditing(true);
-          scope.viewState.setTierLength(scope.this.tier.events.length);
-          scope.viewState.openEditArea();
+          scope.vs.setcurClickTierName(tierId);
+          scope.vs.setlasteditArea("_" + lastEventClickId);
+          scope.vs.setcurClickSegment(lastEventClick, lastEventClickId);
+          scope.vs.setEditing(true);
+          scope.vs.setTierLength(scope.this.tier.events.length);
+          scope.vs.openEditArea();
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastMove(x) {
           var tierId = element.parent()[0].id;
-          thisPCM = getX(x) * scope.viewState.getPCMpp(x);
+          thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
           lastEventMoveId = scope.getEventId(thisPCM, scope.this.tier);
-          scope.viewState.setcurMouseTierName(tierId);
-          scope.viewState.setcurMouseSegment(lastEventMove);
-          scope.viewState.setcurMouseSegmentId(lastEventMoveId);
+          scope.vs.setcurMouseTierName(tierId);
+          scope.vs.setcurMouseSegment(lastEventMove);
+          scope.vs.setcurMouseSegmentId(lastEventMoveId);
           lastPCM = thisPCM;
           scope.$apply();
         }

@@ -1,9 +1,11 @@
 'use strict';
 
 var HandletiersCtrl = angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState) {
+	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, Colorproviderservice, Soundhandlerservice) {
 
-		$scope.viewState = viewState;
+		$scope.vs = viewState;
+		$scope.shs = Soundhandlerservice;
+		$scope.cps = Colorproviderservice;
 		$scope.testValue = '';
 		$scope.message = '';
 		$scope.myHistory = [];
@@ -25,7 +27,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedLabelJson', function(evt, data) {
 			// SIC should look for longest tier in tier details
-			$scope.viewState.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
+			$scope.vs.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
 			// for development
 			// $scope.viewState.curViewPort.sS = 100;
 			// $scope.viewState.curViewPort.eS = 1000;
@@ -149,7 +151,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};		
 
 		$scope.getEventId = function(x, tier) {
-			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
+			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
 			angular.forEach(tier.events, function(evt) {
@@ -162,7 +164,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.getEvent = function(x, tier) {
-			var pcm = parseInt($scope.viewState.curViewPort.sS, 10) + x;
+			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var evtr = null;
 			angular.forEach(tier.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
