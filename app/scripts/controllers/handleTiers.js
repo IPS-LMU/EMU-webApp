@@ -126,24 +126,25 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.deleteSegments = function(seg) {
 
 		    var toDelete = viewState.getselected();
+		    var last = toDelete.length-1;
 		    var tierName = viewState.getcurClickTierName();
 		    
 			angular.forEach($scope.tierDetails.tiers, function(t) {
 				if (t.TierName == tierName) {
-    				var length = 0;
-				    if(toDelete.length==1) {
-				        length = t.events[toDelete[0]].sampleDur;
-				        t.events[toDelete[0]-1].sampleDur += length/2;
-						t.events[toDelete[0]+1].sampleDur += length/2;
-						t.events[toDelete[0]+1].startSample -= length/2;
-						t.events.splice(toDelete[0],1);
-				    }
-				    else {
-				        length = (toDelete[-1].startSample+toDelete[-1].smapleDur)-toDelete[0].startSample;
-				    }
+    				for(var x in toDelete) {
+    				    var id = toDelete[x];
+				        length = t.events[id].sampleDur;
+				        t.events[id-1].sampleDur += length/2;
+						t.events[id+1].sampleDur += length/2;
+						t.events[id+1].startSample -= length/2;
+						t.events.splice(id,1);
+					}
+					
+					viewState.setcurClickSegment(t.events[toDelete[0]-1], toDelete[0]-1);
 				}
 			});
 			$scope.history();
+			
 		};		
 
 		$scope.getEventId = function(x, tier) {
