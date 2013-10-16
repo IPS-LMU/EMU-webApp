@@ -33,7 +33,7 @@ angular.module('emulvcApp')
 
 			var uIntBuffView = new Uint8Array(buf);
 			var buffStr = String.fromCharCode.apply(null, uIntBuffView);
-			console.log(buffStr);
+			// console.log(buffStr);
 
 			var newLsep = buffStr.split(/^/m);
 
@@ -66,7 +66,6 @@ angular.module('emulvcApp')
 						"values": []
 					});
 				}
-
 			}
 
 			var curBinIdx = newLsep.slice(0, i + 1).join("").length;
@@ -104,7 +103,7 @@ angular.module('emulvcApp')
 
 				} //for
 			} //while
-			console.log(this.ssffData);
+			// console.log(this.ssffData);
 			// console.log(JSON.stringify(this.ssffData, undefined, 2));
 			return this.ssffData;
 
