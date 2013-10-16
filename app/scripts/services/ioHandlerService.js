@@ -38,6 +38,7 @@ angular.module('emulvcApp')
 				responseType: "arraybuffer"
 			}).success(function(data) {
 				var ssffJso = Ssffparserservice.ssff2jso(data);
+				var arrbuf = Ssffparserservice.jso2ssff(ssffJso);
 				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso);
 			});
 		};

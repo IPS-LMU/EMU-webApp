@@ -12,9 +12,6 @@ angular.module('emulvcApp')
 		sServObj.machineID = "Machine IBM-PC\n";
 		sServObj.sepString = "-----------------\n";
 
-		sServObj.columTypeMap = {
-			'DOUBLE': 8
-		};
 		sServObj.ssffData.fileURL = '';
 		sServObj.ssffData.sampleRate = -1;
 		sServObj.ssffData.startTime = -1;
@@ -26,6 +23,7 @@ angular.module('emulvcApp')
 		 * convert arraybuffer containing a ssff file
 		 * to a javascript object
 		 * @param buf arraybuffer containing ssff file
+		 * @returns ssff javascript object
 		 */
 		sServObj.ssff2jso = function(buf) {
 			var my = this;
@@ -98,7 +96,7 @@ angular.module('emulvcApp')
 						curBinIdx += curLen;
 
 					} else {
-						alert("not supported... only doubles and floats for now");
+						alert("not supported... only doubles, floats, short  column types and for now");
 					}
 
 				} //for
@@ -109,8 +107,77 @@ angular.module('emulvcApp')
 
 		};
 
+		/**
+		 * convert javascript object of label file to
+		 * array buffer containing
+		 * @param ssff javascipt object
+		 * @returns ssff arraybuffer
+		 */
 		sServObj.jso2ssff = function(jso) {
-			alert("not implemented yet!!!!!")
+
+			// create header
+			var headerStr = this.headID + this.machineID;
+			headerStr += "Record_Freq " + jso.sampleRate + "\n";
+			headerStr += "Start_Time " + jso.startTime + "\n";
+
+			jso.Columns.forEach(function(col, index) {
+				console.log(col.name)
+				headerStr += "Column " + col.name + " " + col.ssffdatatype + " " + col.length + "\n";
+			});
+
+			headerStr += "Original_Freq DOUBLE " + jso.origFreq + "\n";
+			headerStr += this.sepString;
+
+			// convert buffer to header
+			var ssffBuf = new Uint8Array(this.stringToUint(headerStr));
+
+			var curBufferView, curRecord;
+
+			console.log("####################");
+			if (jso.Columns[0].ssffdatatype == "SHORT") {
+				console.log(jso.Columns[0]);
+				curBufferView = new Uint16Array(jso.Columns[0].length);
+				curRecord = jso.Columns[0].values[0];
+				console.log(curRecord);
+				curBufferView[0] = curRecord[0];
+				curBufferView[1] = curRecord[1];
+				curBufferView[2] = curRecord[2];
+				curBufferView[3] = curRecord[3];
+				console.log(curBufferView)
+				var tmp = new Uint8Array(curBufferView);
+				ssffBuf = this.Uint8Concat(ssffBuf, tmp);
+			}
+
+			// console.log(ssffBuf);
+			console.log(String.fromCharCode.apply(null, ssffBuf));
+			return ssffBuf;
+		};
+
+		/**
+		 * helper function to convert string to Uint8Array
+		 * @param string
+		 */
+		sServObj.stringToUint = function(string) {
+			// var string = btoa(unescape(encodeURIComponent(string)));
+			var charList = string.split('');
+			var uintArray = [];
+			for (var i = 0; i < charList.length; i++) {
+				uintArray.push(charList[i].charCodeAt(0));
+			}
+			return new Uint8Array(uintArray);
+		};
+
+		/**
+		 *
+		 */
+		sServObj.Uint8Concat = function(first, second) {
+			var firstLength = first.length;
+			var result = new Uint8Array(firstLength + second.length);
+
+			result.set(first);
+			result.set(second, firstLength);
+
+			return result;
 		};
 
 		return sServObj;
