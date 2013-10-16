@@ -54,7 +54,7 @@ angular.module('emulvcApp')
 					ctx.fillText("(" + tierDetails.type + ")", 5, 24 * 2);
 
 					var segMId = viewPort.getcurMouseSegment();
-					var segCId = viewPort.getcurClickSegment();
+					var segCId = viewPort.getselected();
 					var curID = -1;
 					var curPoS = selection[0];
 					var curPoE = selection[1];

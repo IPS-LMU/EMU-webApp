@@ -80,11 +80,11 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
-			var now = parseInt(viewState.getcurClickSegment()[0], 10);
+			var now = parseInt(viewState.getselected()[0], 10);
 			if (now < viewState.getTierLength() - 1)++now;
 			else now = 0;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getselected()].events[now], now);
 		};
 
 		$scope.tabPrev = function() {
@@ -92,11 +92,11 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
-			var now = parseInt(viewState.getcurClickSegment()[0], 10);
+			var now = parseInt(viewState.getselected()[0], 10);
 			if (now > 0)--now;
 			else now = viewState.getTierLength() - 1;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getcurClickSegment()].events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getselected()].events[now], now);
 		};
 
 		$scope.rename = function(tiername, id, name) {
@@ -113,7 +113,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.deleteSegment = function() {
-		    var now = parseInt(viewState.getcurClickSegment()[0], 10);
+		    var now = parseInt(viewState.getselected()[0], 10);
 		    var tierName = viewState.getcurClickTierName();
 		    
 			angular.forEach($scope.tierDetails.tiers, function(t) {
@@ -173,7 +173,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.moveSegment = function(changeTime, t) {
 			if (null != t && t.TierName == viewState.getcurClickTierName()) {
-				var selected = viewState.getcurClickSegment();
+				var selected = viewState.getselected();
 				if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.events[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {

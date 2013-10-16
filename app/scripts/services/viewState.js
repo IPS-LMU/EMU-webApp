@@ -135,7 +135,8 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function(segment, id) {
-      this.curClickSegment = segment;
+      this.curClickSegments = [];
+      this.curClickSegments.push(segment);
       this.selected = [];
       this.selected.push(id);
     };
@@ -150,10 +151,13 @@ angular.module('emulvcApp')
       this.selected.forEach(function(entry) {
         if (my.selected.indexOf(id) == -1 && (entry - 1 == id ||  entry + 1 == id)) {
           my.selected.push(id);
+          my.curClickSegments.push(segment);
           empty = false;
         }
       });
       if (empty) {
+        this.curClickSegments = [];
+        this.curClickSegments.push(segment);      
         this.selected = [];
         this.selected.push(id);
       }
@@ -162,15 +166,15 @@ angular.module('emulvcApp')
     /**
      * gets the current (click) Segment
      */
-    sServObj.getcurClickSegment = function() {
+    sServObj.getselected = function() {
       return this.selected;
     };
 
     /**
      * gets the current (click) Segment
      */
-    sServObj.getlastClickSegment = function() {
-      return this.curClickSegment;
+    sServObj.getcurClickSegments = function() {
+      return this.curClickSegments;
     };
 
     sServObj.isEditing = function() {

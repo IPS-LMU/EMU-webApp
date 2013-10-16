@@ -53,9 +53,20 @@ angular.module('emulvcApp')
                                 $('#HandletiersCtrl').scope().goBackHistory();
                             }
                             if (code == scope.keyMappings.backspace) {
-                                $('#HandletiersCtrl').scope().deleteSegment();
+                                var seg = viewState.getcurClickSegments();
+                                var toDelete = "";
+                                if(seg.length==1)
+                                    toDelete = seg[0].label;
+                                else {
+                                    console.log(seg);
+                                    //for (var i in seg) {
+                                    //    toDelete = scope.
+                                    //}
+                                }
+                                scope.openModal('views/deleteSegment.html','deleteTier',toDelete,toDelete);
+                                //$('#HandletiersCtrl').scope().deleteSegment();
                             }                            
-                            console.log(code);
+
                             if (!e.metaKey) {
                                 e.preventDefault();
                                 e.stopPropagation();
