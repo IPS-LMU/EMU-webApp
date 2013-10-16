@@ -21,7 +21,7 @@ angular.module('emulvcApp')
                     LANCZOS: 8,
                     RECTANGULAR: 9,
                     TRIANGULAR: 10
-                };
+                };                
 
                 // various mathematical vars
                 var PI = 3.141592653589793; // value : Math.PI
@@ -150,6 +150,7 @@ angular.module('emulvcApp')
 						}
 					}
                 }
+
 
 
                 function drawTimeLine(id) {

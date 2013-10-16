@@ -16,5 +16,14 @@ var TimelineCtrl = angular.module('emulvcApp')
 			$scope.ssffData.push(data);
 			// console.log($scope.ssffData);
 		});
+		
+                
+        $scope.resizeSpectro = function() {
+                    alert("hier");
+        }
+        
+        $scope.resizeOsci = function() {
+                    alert("osci");
+        }        		
 
 	});
