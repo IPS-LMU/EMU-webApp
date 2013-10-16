@@ -17,8 +17,8 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	    $modalInstance.dismiss('ok');
 	};
 
-	$scope.deleteTier = function(tierName) {
-		$('#HandletiersCtrl').scope().deleteTier(tierName);
+	$scope.deleteTier = function(id) {
+		$('#HandletiersCtrl').scope().deleteTier(id);
 		$('#HandletiersCtrl').scope().history();
 		$modalInstance.dismiss('ok');
 	};

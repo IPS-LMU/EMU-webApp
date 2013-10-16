@@ -60,7 +60,6 @@ angular.module('emulvcApp')
                                 }
                                 toDelete = toDelete.substring(0,toDelete.length-1);
                                 scope.openModal('views/deleteSegment.html','deleteTier',toDelete,toDelete);
-                                //$('#HandletiersCtrl').scope().deleteSegment();
                             }                            
 
                             if (!e.metaKey) {

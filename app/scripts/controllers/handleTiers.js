@@ -112,18 +112,19 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 		};
 		
-		$scope.deleteTier = function(name) {
-		    var id = 0;
+		$scope.deleteTier = function(id) {
+		    var x = 0;
 			angular.forEach($scope.tierDetails.tiers, function(t) {
-				if (t.TierName == name) {
-				    $scope.tierDetails.tiers.splice(id,1);
+				if (t.TierName == id) {
+				    $scope.tierDetails.tiers.splice(x,1);
+				    
 				}
-				++id;
+				++x;
 			});
 			$scope.history();
 		};
 		
-		$scope.deleteSegments = function(seg) {
+		$scope.deleteSegments = function() {
 
 		    var toDelete = viewState.getselected();
 		    var last = toDelete.length-1;
