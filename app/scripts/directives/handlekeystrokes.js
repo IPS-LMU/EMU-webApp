@@ -55,14 +55,10 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.backspace) {
                                 var seg = viewState.getcurClickSegments();
                                 var toDelete = "";
-                                if(seg.length==1)
-                                    toDelete = seg[0].label;
-                                else {
-                                    console.log(seg);
-                                    //for (var i in seg) {
-                                    //    toDelete = scope.
-                                    //}
+                                for (var i=0;i<seg.length;i++) {
+                                    toDelete += seg[i].label +",";
                                 }
+                                toDelete = toDelete.substring(0,toDelete.length-1);
                                 scope.openModal('views/deleteSegment.html','deleteTier',toDelete,toDelete);
                                 //$('#HandletiersCtrl').scope().deleteSegment();
                             }                            
