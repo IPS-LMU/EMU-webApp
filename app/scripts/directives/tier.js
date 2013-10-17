@@ -60,9 +60,9 @@ angular.module('emulvcApp')
 
 					// draw name of tier
 					ctx.fillStyle = 'black';
-					ctx.font = ('12' + 'px' + ' ' + 'Calibri');
-					ctx.fillText(tierDetails.TierName, 5, 24);
-					ctx.fillText("(" + tierDetails.type + ")", 5, 24 * 2);
+					ctx.font = (cps.vals.fontPxSize + 'px' + ' ' + cps.vals.fontType);
+					ctx.fillText(tierDetails.TierName, 5, cps.vals.fontPxSize);
+					ctx.fillText("(" + tierDetails.type + ")", 5, cps.vals.fontPxSize * 2);
 
 					var segMId = viewPort.getcurMouseSegment();
 					var segCId = viewPort.getselected();
@@ -162,12 +162,12 @@ angular.module('emulvcApp')
 
 								//draw segment end
 
-								// cc.fillStyle = this.params.endBoundaryColor;
+								ctx.fillStyle = cps.vals.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
-								// 			// draw label 
-								// 			// cc.strokeStyle = this.;
-								// 			cc.fillStyle = this.params.labelColor;
+								// draw label 
+								ctx.strokeStyle = cps.vals.labelColor;
+								ctx.fillStyle = cps.vals.labelColor;
 								var tW = ctx.measureText(curEvt.label).width;
 								var tX = posS + (posE - posS) / 2 - tW / 2;
 								// 			//check for enough space to stroke text
@@ -178,7 +178,7 @@ angular.module('emulvcApp')
 								//draw helper lines
 								if (posE - posS > ctx.measureText("m").width * 3) {
 									// start helper line
-									ctx.strokeStyle = 'black';
+									ctx.strokeStyle = cps.vals.startBoundaryColor;
 									ctx.beginPath();
 									ctx.moveTo(posS, canvas[0].height / 4);
 									ctx.lineTo(tX + tW / 2, canvas[0].height / 4);
@@ -186,14 +186,14 @@ angular.module('emulvcApp')
 									ctx.stroke();
 
 									// draw startSample numbers
-									ctx.fillStyle = 'black';
+									ctx.fillStyle = cps.vals.startBoundaryColor;
 									var sStW = ctx.measureText(curEvt.startSample).width;
 									//check for enough space to stroke text
 									if (posE - posS > sStW) {
 										ctx.fillText(curEvt.startSample, posS + 3, canvas[0].height / 5);
 									}
 									// end helper line
-									ctx.strokeStyle = 'black';
+									ctx.strokeStyle = cps.vals.endBoundaryColor;
 									ctx.beginPath();
 									ctx.moveTo(posE, canvas[0].height / 4 * 3);
 									ctx.lineTo(tX + tW / 2, canvas[0].height / 4 * 3);
@@ -201,7 +201,7 @@ angular.module('emulvcApp')
 									ctx.stroke();
 								}
 								// draw sampleDur numbers.
-								ctx.fillStyle = 'black';
+								ctx.fillStyle = cps.vals.endBoundaryColor;
 								var sDtW = ctx.measureText("dur: " + curEvt.sampleDur).width;
 								//check for enough space to stroke text
 								if (posE - posS > sDtW) {
