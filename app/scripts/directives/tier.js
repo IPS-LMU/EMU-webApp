@@ -116,7 +116,7 @@ angular.module('emulvcApp')
 							}
 						}
 
-						// cc.fillStyle = this.params.startBoundaryColor;
+						ctx.fillStyle = cps.vals.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
 						for (var k in e) {
@@ -137,25 +137,24 @@ angular.module('emulvcApp')
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurClickTierName();
 
-
 								if (tierId == tierDetails.TierName) {
 
 									segCId.forEach(function(entry) {
 										if (entry == curID) {
-											ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+											ctx.fillStyle = cps.vals.selectedSegmentColor;
 											ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-											ctx.fillStyle = 'black';
+											ctx.fillStyle = cps.vals.startBoundaryColor;
 										}
 									});
 
 								}
 
 								if (segMId == curEvt) {
-									ctx.fillStyle = "blue";
+									ctx.fillStyle = "blue"; //SIC -> colors externally defined
 									ctx.fillRect(posS, 0, 3, canvas[0].height);
-									ctx.fillStyle = 'black';
+									ctx.fillStyle = 'black'; //SIC -> colors externally defined
 								} else {
-									ctx.fillStyle = 'black';
+									ctx.fillStyle = 'black'; //SIC -> colors externally defined
 									ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 								}
 
@@ -209,8 +208,13 @@ angular.module('emulvcApp')
 								}
 							}
 						}
+					} else {
+						console.log(tierDetails.type);
+						var posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
+						var posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
 					}
-				};
+					// draw cursor/selected area
+				}
 			}
 		};
 	});
