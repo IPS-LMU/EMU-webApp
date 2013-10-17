@@ -34,6 +34,9 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.zoomOut) {
                                 viewState.zoomViewPort(false);
                             }
+                            if (code == scope.keyMappings.zoomSel) {
+                                viewState.setViewPort(viewState.curViewPort.selectS,viewState.curViewPort.selectE);
+                            }                            
                             if (code == scope.keyMappings.selectFirstContourCorrectionTool) {
                                 viewState.curCorrectionToolNr = 1;
                             }
@@ -56,6 +59,9 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.shiftViewPortRight) {
                                 viewState.shiftViewPort(true);
                             }
+                            if (code == scope.keyMappings.zoomAll) {
+                                viewState.setViewPort(0,viewState.curViewPort.bufferLength);
+                            }                            
                             if (code == scope.keyMappings.tab) {
                                 if (e.shiftKey)
                                     $('#HandletiersCtrl').scope().tabPrev();

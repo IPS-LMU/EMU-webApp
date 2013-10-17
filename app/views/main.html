@@ -42,15 +42,15 @@
 <div class="menu-bottom" id="menu-bottom">
   <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="48"></canvas>
   <div class="btn-group">
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
-    <button class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
-    <button class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>
-    <button class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>
-    <button class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
+    <button ng-click="cmd_zoomAll();" class="mini-btn tooltipabove" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
+    <button ng-click="cmd_zoomIn();" class="mini-btn tooltipabove" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
+    <button ng-click="cmd_zoomOut();" class="mini-btn tooltipabove" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
+    <button ng-click="cmd_zoomLeft();" class="mini-btn tooltipabove" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
+    <button ng-click="cmd_zoomRight();" class="mini-btn tooltipabove" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
+    <button ng-click="cmd_zoomSel();" class="mini-btn tooltipabove" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
+    <button ng-click="cmd_playView();" class="mini-btn tooltipabove" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>
+    <button ng-click="cmd_playSel();" class="mini-btn tooltipabove" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>
+    <button ng-click="cmd_playAll();" class="mini-btn tooltipabove" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
   </div>
 </div>
 </div>

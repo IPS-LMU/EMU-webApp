@@ -11,6 +11,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		
 		var osciOpen = true;
 		var spectroOpen = true;
+		var multiplier = 2;
 
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
@@ -20,28 +21,30 @@ var TimelineCtrl = angular.module('emulvcApp')
 			// console.log($scope.ssffData);
 		});
 		
+		$scope.$watch('vs.scroll', function() {
+		    console.log("scroll");
+		}, true);			
+		
                 
         $scope.resizeSpectro = function() {
-            var now = viewState.getscrollHSpectro();
             if(spectroOpen) {
                 spectroOpen = false;
-                viewState.setscrollHSpectro(now/2);
+                viewState.setscrollHSpectro(Math.floor(viewState.getscrollHSpectro() / multiplier));
             }
             else {
                 spectroOpen = true;
-                viewState.setscrollHSpectro(now*2);
+                viewState.setscrollHSpectro(Math.floor(viewState.getscrollHSpectro() * multiplier));
             }
         }
         
         $scope.resizeOsci = function() {
-            var now = viewState.getscrollHOsci();
             if(osciOpen) {
                 osciOpen = false;
-                viewState.setscrollHOsci(now/2);
+                viewState.setscrollHOsci(Math.floor(viewState.getscrollHOsci() / multiplier));
             }
             else {
                 osciOpen = true;
-                viewState.setscrollHOsci(now*2);
+                viewState.setscrollHOsci(Math.floor(viewState.getscrollHOsci() * multiplier));
             }
         }        		
 

@@ -18,6 +18,7 @@ angular.module('emulvcApp')
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
+    
     sServObj.scrollHOsci = 80;
     sServObj.scrollHSpectro = 80;
     this.curClickTierName = "";

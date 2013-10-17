@@ -1,5 +1,7 @@
 {
     "zoomIn": 87,
+    "zoomAll": 81,
+    "zoomSel": 69,
     "zoomOut": 83,
     "shiftViewPortLeft": 65,
     "shiftViewPortRight": 68,

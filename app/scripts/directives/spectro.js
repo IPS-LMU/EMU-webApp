@@ -67,12 +67,14 @@ angular.module('emulvcApp')
                         var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
                         var cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
                         if(cache!=null) {
-                            
                             drawTimeLine(cache);
                         }
                         else {
                             drawOsci(scope.vs, scope.shs.currentBuffer);
                         }                        
+					$(".spectro canvas").css("height",scope.vs.getscrollHSpectro()+"px");									
+					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
+
                     }
                 }, true);
                 

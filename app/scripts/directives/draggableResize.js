@@ -6,8 +6,8 @@ angular.module("emulvcApp")
       restrict: "A",
       link: function(scope, element) {
       
-        var osci = scope.cps.vals.osciCanvasHeight;
-        var spectro = scope.cps.vals.osciCanvasHeight;
+        var osci = scope.vs.getscrollHOsci();
+        var spectro = scope.vs.getscrollHSpectro();
         
         element.draggable({ 
             axis: "y",
@@ -19,8 +19,8 @@ angular.module("emulvcApp")
 			drag: function(e, ui) {
 			    var add = ui.offset.top / 2;
 			    scope.vs.setmarginTop(add);
-			    scope.vs.setscrollHOsci(scope.cps.vals.osciCanvasHeight+add);
-			    scope.vs.setscrollHSpectro(scope.cps.vals.spectroCanvasHeight+add);
+			    scope.vs.setscrollHOsci(osci+add);
+			    scope.vs.setscrollHSpectro(spectro+add);
 			    scope.$apply();
 			},	            
         });
