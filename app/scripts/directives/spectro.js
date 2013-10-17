@@ -76,8 +76,8 @@ angular.module('emulvcApp')
                     }
                 }, true);
                 
-				scope.$watch('vs.scrollHeight', function() {
-					$(".spectro canvas").css("height",scope.vs.getscrollHeight()+"px");									
+				scope.$watch('vs.scrollHSpectro', function() {
+					$(".spectro canvas").css("height",scope.vs.getscrollHSpectro()+"px");									
 					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
 				}, true);	                
 

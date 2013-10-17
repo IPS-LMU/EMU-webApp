@@ -6,10 +6,11 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
 		$scope.cps = Colorproviderservice;
-
 		$scope.dhs = Drawhelperservice;
-
 		$scope.ssffData = [];
+		
+		var osciOpen = true;
+		var spectroOpen = true;
 
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
@@ -21,11 +22,27 @@ var TimelineCtrl = angular.module('emulvcApp')
 		
                 
         $scope.resizeSpectro = function() {
-                    alert("hier");
+            var now = viewState.getscrollHSpectro();
+            if(spectroOpen) {
+                spectroOpen = false;
+                viewState.setscrollHSpectro(now/2);
+            }
+            else {
+                spectroOpen = true;
+                viewState.setscrollHSpectro(now*2);
+            }
         }
         
         $scope.resizeOsci = function() {
-                    alert("osci");
+            var now = viewState.getscrollHOsci();
+            if(osciOpen) {
+                osciOpen = false;
+                viewState.setscrollHOsci(now/2);
+            }
+            else {
+                osciOpen = true;
+                viewState.setscrollHOsci(now*2);
+            }
         }        		
 
 	});

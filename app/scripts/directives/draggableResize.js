@@ -18,7 +18,9 @@ angular.module("emulvcApp")
 		
 			drag: function(e, ui) {
 			    var add = ui.offset.top / 2;
-			    scope.vs.setscrollHeight(scope.cps.vals.osciCanvasHeight+add,add);
+			    scope.vs.setmarginTop(add);
+			    scope.vs.setscrollHOsci(scope.cps.vals.osciCanvasHeight+add);
+			    scope.vs.setscrollHSpectro(scope.cps.vals.spectroCanvasHeight+add);
 			    scope.$apply();
 			},	            
         });

@@ -18,7 +18,8 @@ angular.module('emulvcApp')
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
-    sServObj.scrollHeight = 80;
+    sServObj.scrollHOsci = 80;
+    sServObj.scrollHSpectro = 80;
     this.curClickTierName = "";
 
     sServObj.tmpFixedBufferLength = 128085;
@@ -75,27 +76,46 @@ angular.module('emulvcApp')
     };
     
     /**
+     * get the height of the osci
+     */
+    sServObj.getscrollHOsci = function() {
+      return this.scrollHOsci;
+    };  
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getscrollHSpectro = function() {
+      return this.scrollHSpectro;
+    };      
+    
+    /**
+     * set the height of the osci
+     */
+    sServObj.setscrollHOsci = function(h) {
+      this.scrollHOsci = h;
+    };  
+    
+    /**
+     * set the height of the osci
+     */
+    sServObj.setscrollHSpectro = function(h) {
+      this.scrollHSpectro = h;
+    };      
+          
+    
+    /**
      * get the height (offset top) of the scrollbar
      */
-    sServObj.getscrollHeight = function() {
-      return this.scrollHeight;
-    };  
+    sServObj.setmarginTop = function(h) {
+      this.marginTop = h;
+    };         
     
     /**
      * get the height (offset top) of the scrollbar
      */
     sServObj.getmarginTop = function() {
       return this.marginTop;
-    };        
-    
-    
-    /**
-     * set the height (offset top) of the scrollbar
-     * @param new scroll height
-     */
-    sServObj.setscrollHeight = function(h,m) {
-      this.scrollHeight = h;
-      this.marginTop = m;
     };        
 
     /**

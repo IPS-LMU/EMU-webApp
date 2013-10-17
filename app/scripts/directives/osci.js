@@ -20,8 +20,8 @@ angular.module('emulvcApp')
 					}
 				}, true);
 				
-				scope.$watch('vs.scrollHeight', function() {
-					$(".osci canvas").css("height",scope.vs.getscrollHeight()+"px");
+				scope.$watch('vs.scrollHOsci', function() {
+					$(".osci canvas").css("height",scope.vs.getscrollHOsci()+"px");
 					$(".osci canvas").css("margin-bottom",scope.vs.getmarginTop()+"px");				
 					$(".spectro .buttons").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
 				}, true);					

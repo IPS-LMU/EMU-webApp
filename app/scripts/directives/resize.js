@@ -18,16 +18,13 @@ angular.module('emulvcApp')
       element.bind('click', function(event){
         if(open) {
           open = false;
-          //console.log(canvas[0].style.height);
           orignalSize = canvas[0].height;
           canvas[0].height = orignalSize/3;
           b_delete.hide();
           b_save.hide();
-          //console.log(element.parent().children());
         }
         else {
           open = true;
-          //console.log(canvas[0].style.height);
           canvas[0].height = orignalSize;        
           b_delete.show();
           b_save.show();
