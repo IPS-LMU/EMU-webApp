@@ -8,5 +8,9 @@
     "tab": 9,
     "enter":13,
     "esc":27,
-    "history":90
+    "history":90,
+    "selectFirstContourCorrectionTool": 49,
+    "selectSecondContourCorrectionTool": 50,
+    "selectThirdContourCorrectionTool": 51,
+    "selectFourthContourCorrectionTool": 52
 }

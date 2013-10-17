@@ -1,11 +1,13 @@
 'use strict';
 
 var TimelineCtrl = angular.module('emulvcApp')
-	.controller('TimelineCtrl', function($scope, $http, viewState, Soundhandlerservice, Colorproviderservice) {
+	.controller('TimelineCtrl', function($scope, $http, viewState, Soundhandlerservice, Colorproviderservice, Drawhelperservice) {
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
 		$scope.cps = Colorproviderservice;
+
+		$scope.dhs = Drawhelperservice;
 
 		$scope.ssffData = [];
 

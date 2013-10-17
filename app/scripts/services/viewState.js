@@ -21,6 +21,9 @@ angular.module('emulvcApp')
 
     sServObj.tmpFixedBufferLength = 128085;
 
+    sServObj.curCorrectionToolNr = -1;
+
+
     /**
      * set selected Area
      * @param start of selected Area

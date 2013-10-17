@@ -9,6 +9,7 @@ angular.module('emulvcApp')
                 // bind all keydown events
                 $(document).bind("keydown", function(e) {
                     var code = (e.keyCode ? e.keyCode : e.which);
+                    console.log(code)
                     scope.$apply(function() {
                         scope.setlastkeycode(code, e.shiftKey);
                         if (viewState.isEditing()) {
@@ -33,6 +34,18 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.zoomOut) {
                                 viewState.zoomViewPort(false);
                             }
+                            if (code == scope.keyMappings.selectFirstContourCorrectionTool) {
+                                viewState.curCorrectionToolNr = 1;
+                            }
+                            if (code == scope.keyMappings.selectSecondContourCorrectionTool) {
+                                viewState.curCorrectionToolNr = 2;
+                            }
+                            if (code == scope.keyMappings.selectThirdContourCorrectionTool) {
+                                viewState.curCorrectionToolNr = 3;
+                            }
+                            if (code == scope.keyMappings.selectFourthContourCorrectionTool) {
+                                viewState.curCorrectionToolNr = 4;
+                            }
                             if (code == scope.keyMappings.zoomIn) {
                                 viewState.zoomViewPort(true);
                             }
@@ -55,12 +68,12 @@ angular.module('emulvcApp')
                             if (code == scope.keyMappings.backspace) {
                                 var seg = viewState.getcurClickSegments();
                                 var toDelete = "";
-                                for (var i=0;i<seg.length;i++) {
-                                    toDelete += seg[i].label +",";
+                                for (var i = 0; i < seg.length; i++) {
+                                    toDelete += seg[i].label + ",";
                                 }
-                                toDelete = toDelete.substring(0,toDelete.length-1);
-                                scope.openModal('views/deleteSegment.html','deleteTier',toDelete,toDelete);
-                            }                            
+                                toDelete = toDelete.substring(0, toDelete.length - 1);
+                                scope.openModal('views/deleteSegment.html', 'deleteTier', toDelete, toDelete);
+                            }
 
                             if (!e.metaKey) {
                                 e.preventDefault();

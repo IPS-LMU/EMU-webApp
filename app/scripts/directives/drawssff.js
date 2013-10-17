@@ -24,6 +24,17 @@ angular.module('emulvcApp')
           }
         }, true);
 
+        scope.$watch('ssffData', function(newValue, oldValue) {
+          if (scope.ssffData.length !== 0) {
+            // get name of column to be drawn
+            var colName = "fm"; //SIC hardcoded
+            // find according field in scope.ssffData
+            var col = findColumn(scope.ssffData, colName);
+            // draw values  
+            drawValues(scope.vs, canvas, scope.cps, col);
+          }
+        }, true);
+
         /**
          * find a certain column in ssffData array
          * and append meta data of file to that col
