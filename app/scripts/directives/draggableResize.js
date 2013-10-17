@@ -24,6 +24,9 @@ angular.module("emulvcApp")
 			    $(".spectro canvas").css("height",(start+(add))+"px");
 			    $(".osci canvas").css("margin-bottom",add+"px");
 			    $(".spectro canvas").css("margin-top","-"+add+"px");
+			    
+			    // new state in vs has to be established in order to save state (px) of draggable globally
+			    // will do that on weekend
 
 			    //console.log();
 			    //$(".OsciCanvas").css("height",(osci.substr(0,osci.length-2) + add)+"px");
