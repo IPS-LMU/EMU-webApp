@@ -136,8 +136,11 @@ li {
     border: 1px solid gray;
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
-    width: 97%;  
-    height: 80px;  
+    width: 97%;   
+}
+
+.osci canvas {
+    height: 80px; 
 }
 
 .SSFFCanvas {
@@ -228,15 +231,24 @@ div.center {
     height:35px;
 }
 
+.controls {
+    position: absolute;
+    bottom: 0;
+}
+
 .TimelineCtrl {
     z-index:1;
     position: absolute;
     margin: 0px;
-    padding-top: 45px;
+    padding-top: 0px;
     padding-bottom: 0px;
-    background: #fff;
+    background-size:100%;
+    background-color:#fff;
+    background-repeat:repeat;
     -webkit-touch-callout: none;    
     width: 100%;
+    height: 2000px;
+    margin-top:-1755px;
     text-align:left;
 }
 
