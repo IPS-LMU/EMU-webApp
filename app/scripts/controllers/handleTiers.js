@@ -18,7 +18,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			start: function(e, ui) {
 				$scope.deleteEditArea();
 			},
-			axis: 'y'
+			axis: 'y',
+			placeholder: "tierPlaceholder"
 		};
 
 		/**
