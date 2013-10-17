@@ -18,6 +18,7 @@ angular.module('emulvcApp')
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
+    this.curClickTierName = "";
 
     sServObj.tmpFixedBufferLength = 128085;
 
@@ -138,6 +139,7 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function(segment, id) {
+      this.select(segment.startSample, segment.startSample+segment.sampleDur)
       this.curClickSegments = [];
       this.curClickSegments.push(segment);
       this.selected = [];

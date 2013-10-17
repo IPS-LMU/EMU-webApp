@@ -26,8 +26,8 @@ angular.module('emulvcApp')
 				/**
 				 * draw tier details
 				 * @param tierDetails
-				 * @param perx
-				 * @param pery
+				 * @param viewPort
+				 * @param cps
 				 */
 
 				function drawTierDetails(tierDetails, viewPort, cps) {
@@ -47,6 +47,14 @@ angular.module('emulvcApp')
 
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+
+					if (tierDetails.TierName == viewPort.curClickTierName) {
+						ctx.fillStyle = cps.vals.selectedTierColor;
+						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
+					}
+
+
+
 					var sDist = viewPort.getSampleDist(canvas[0].width);
 					var selection = viewPort.getSelect();
 
@@ -65,48 +73,48 @@ angular.module('emulvcApp')
 						var posS = viewPort.getPos(canvas.width, viewPort.curViewPort.selectS);
 						var posE = viewPort.getPos(canvas.width, viewPort.curViewPort.selectE);
 						var sDist = viewPort.getSampleDist(canvas.width);
-						var xOffset;        
-					if (viewPort.curViewPort.selectS == viewPort.curViewPort.selectE) {
-						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-						if (viewPort.curMouseMoveTierType == "seg") {
-							xOffset = 0;
+						var xOffset;
+						if (viewPort.curViewPort.selectS == viewPort.curViewPort.selectE) {
+							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+							if (viewPort.curMouseMoveTierType == "seg") {
+								xOffset = 0;
+							} else {
+								xOffset = (sDist / 2);
+							}
+							ctx.fillStyle = cps.vals.selectedBorderColor;
+							ctx.fillRect(posS + xOffset, 0, 1, canvas.height);
+							ctx.fillStyle = cps.vals.labelColor;
+							ctx.fillText(viewPort.round(viewPort.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, cps.vals.fontPxSize);
+							ctx.fillText(viewPort.curViewPort.selectS, posS + xOffset + 5, cps.vals.fontPxSize * 2);
 						} else {
-							xOffset = (sDist / 2);
+							ctx.fillStyle = cps.vals.selectedAreaColor;
+							ctx.fillRect(posS, 0, posE - posS, canvas.height);
+							ctx.strokeStyle = cps.vals.selectedBoundaryColor;
+							ctx.beginPath();
+							ctx.moveTo(posS, 0);
+							ctx.lineTo(posS, canvas.height);
+							ctx.moveTo(posE, 0);
+							ctx.lineTo(posE, canvas.height);
+							ctx.closePath();
+							ctx.stroke();
+							ctx.fillStyle = canvas.labelColor;
+							// start values
+							var tW = ctx.measureText(viewPort.curViewPort.selectS).width;
+							ctx.fillText(viewPort.curViewPort.selectS, posS - tW - 4, cps.vals.fontPxSize);
+							tW = ctx.measureText(viewPort.round(viewPort.curViewPort.selectS / 44100, 6)).width;
+							ctx.fillText(viewPort.round(viewPort.curViewPort.selectS / 44100, 6), posS - tW - 4, cps.vals.fontPxSize * 2);
+							// end values
+							ctx.fillText(viewPort.curViewPort.selectE, posE + 5, cps.vals.fontPxSize);
+							ctx.fillText(viewPort.round(viewPort.curViewPort.selectE / 44100, 6), posE + 5, cps.vals.fontPxSize * 2);
+							// dur values
+							// check if space
+							if (posE - posS > ctx.measureText(viewPort.round((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100, 6)).width) {
+								tW = ctx.measureText(viewPort.curViewPort.selectE - viewPort.curViewPort.selectS).width;
+								ctx.fillText(viewPort.curViewPort.selectE - viewPort.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize);
+								tW = ctx.measureText(viewPort.round((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100, 6)).width;
+								ctx.fillText(viewPort.round(((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize * 2);
+							}
 						}
-						ctx.fillStyle = cps.vals.selectedBorderColor;
-						ctx.fillRect(posS + xOffset, 0, 1, canvas.height);
-						ctx.fillStyle = cps.vals.labelColor;
-						ctx.fillText(viewPort.round(viewPort.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, cps.vals.fontPxSize);
-						ctx.fillText(viewPort.curViewPort.selectS, posS + xOffset + 5, cps.vals.fontPxSize * 2);
-					} else {
-						ctx.fillStyle = cps.vals.selectedAreaColor;
-						ctx.fillRect(posS, 0, posE - posS, canvas.height);
-						ctx.strokeStyle = cps.vals.selectedBoundaryColor;
-						ctx.beginPath();
-						ctx.moveTo(posS, 0);
-						ctx.lineTo(posS, canvas.height);
-						ctx.moveTo(posE, 0);
-						ctx.lineTo(posE, canvas.height);
-						ctx.closePath();
-						ctx.stroke();
-						ctx.fillStyle = canvas.labelColor;
-						// start values
-						var tW = ctx.measureText(viewPort.curViewPort.selectS).width;
-						ctx.fillText(viewPort.curViewPort.selectS, posS - tW - 4, cps.vals.fontPxSize);
-						tW = ctx.measureText(viewPort.round(viewPort.curViewPort.selectS / 44100, 6)).width;
-						ctx.fillText(viewPort.round(viewPort.curViewPort.selectS / 44100, 6), posS - tW - 4, cps.vals.fontPxSize * 2);
-						// end values
-						ctx.fillText(viewPort.curViewPort.selectE, posE + 5, cps.vals.fontPxSize);
-						ctx.fillText(viewPort.round(viewPort.curViewPort.selectE / 44100, 6), posE + 5, cps.vals.fontPxSize * 2);
-						// dur values
-						// check if space
-						if (posE - posS > ctx.measureText(viewPort.round((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100, 6)).width) {
-							tW = ctx.measureText(viewPort.curViewPort.selectE - viewPort.curViewPort.selectS).width;
-							ctx.fillText(viewPort.curViewPort.selectE - viewPort.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize);
-							tW = ctx.measureText(viewPort.round((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100, 6)).width;
-							ctx.fillText(viewPort.round(((viewPort.curViewPort.selectE - viewPort.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize * 2);
-						}
-					}
 
 						// cc.fillStyle = this.params.startBoundaryColor;
 						// draw segments
@@ -128,7 +136,7 @@ angular.module('emulvcApp')
 
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurClickTierName();
-								
+
 
 								if (tierId == tierDetails.TierName) {
 
