@@ -154,10 +154,15 @@ angular.module('emulvcApp')
       var empty = true;
       var my = this;
       this.selected.forEach(function(entry) {
-        if (my.selected.indexOf(id) == -1 && (entry - 1 == id ||  entry + 1 == id)) {
+        if (my.selected.indexOf(id) == -1 && (entry - 1 == id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
-          empty = false;
+          empty = false;        
+        }
+        if (my.selected.indexOf(id) == -1 && (entry + 1 == id)) {
+          my.selected.push(id);
+          my.curClickSegments.push(segment);
+          empty = false; 
         }
       });
       if (empty) {
@@ -166,6 +171,14 @@ angular.module('emulvcApp')
         this.selected = [];
         this.selected.push(id);
       }
+      var left = this.curClickSegments[0].startSample;
+      var right = this.curClickSegments[0].startSample+this.curClickSegments[0].sampleDur;
+      this.curClickSegments.forEach(function(entry) {
+          if(entry.startSample<=left) left = entry.startSample;
+          if(entry.startSample+entry.sampleDur>=right) right = entry.startSample+entry.sampleDur;
+      });
+      console.log(left,right);
+      this.select(left,right);
     };
 
     /**
