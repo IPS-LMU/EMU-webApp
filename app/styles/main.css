@@ -134,8 +134,7 @@ li {
     border: 1px solid gray;
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
-    width: 97%; 
-    height: 80px;    
+    width: 97%;    
 }
 
 .OsciCanvas {
@@ -146,18 +145,13 @@ li {
     width: 97%;   
 }
 
-.osci canvas {
-    height: 80px; 
-}
-
 .SSFFCanvas {
     margin-left: 5px;
     border: 1px solid gray;
     box-shadow: 0px 1px 2px #000;
     width: 97%;    
     position:absolute;
-    z-index: 2;
-    height: 80px;    
+    z-index: 2;  
 }
 
 .SpectroCanvas {

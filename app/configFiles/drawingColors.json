@@ -21,5 +21,7 @@
     "endBoundaryWidth": 2,
     "zeroLineColor": "#0DC5FF",
     "fontType": "Verdana",
-    "fontPxSize": 20
+    "fontPxSize": 20,
+    "osciCanvasHeight": 80,
+    "spectroCanvasHeight": 80
 }

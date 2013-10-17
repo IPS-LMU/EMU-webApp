@@ -11,13 +11,14 @@ angular.module('emulvcApp')
       eS: 0,
       selectS: -1,
       selectE: -1,
-      bufferLength: -1
+      bufferLength: -1,
     };
 
 
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
+    sServObj.scrollHeight = 80;
     this.curClickTierName = "";
 
     sServObj.tmpFixedBufferLength = 128085;
@@ -72,6 +73,30 @@ angular.module('emulvcApp')
     sServObj.getSampleDist = function(w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
+    
+    /**
+     * get the height (offset top) of the scrollbar
+     */
+    sServObj.getscrollHeight = function() {
+      return this.scrollHeight;
+    };  
+    
+    /**
+     * get the height (offset top) of the scrollbar
+     */
+    sServObj.getmarginTop = function() {
+      return this.marginTop;
+    };        
+    
+    
+    /**
+     * set the height (offset top) of the scrollbar
+     * @param new scroll height
+     */
+    sServObj.setscrollHeight = function(h,m) {
+      this.scrollHeight = h;
+      this.marginTop = m;
+    };        
 
     /**
      * sets the current (clicked) Tier Name

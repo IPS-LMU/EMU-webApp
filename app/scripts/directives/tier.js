@@ -209,7 +209,7 @@ angular.module('emulvcApp')
 							}
 						}
 					} else {
-						console.log(tierDetails.type);
+						//console.log(tierDetails.type);
 						var posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
 						var posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
 					}

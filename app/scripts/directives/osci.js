@@ -16,10 +16,16 @@ angular.module('emulvcApp')
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
-						drawVpOsciMarkup(scope.vs, canvas, scope.cps)
+						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
 					}
 				}, true);
-
+				
+				scope.$watch('vs.scrollHeight', function() {
+					$(".osci canvas").css("height",scope.vs.getscrollHeight()+"px");
+					$(".osci canvas").css("margin-bottom",scope.vs.getmarginTop()+"px");				
+					$(".spectro .buttons").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
+				}, true);					
+				
 
 				/**
 				 * get current peaks to be drawn

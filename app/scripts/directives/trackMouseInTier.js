@@ -69,7 +69,7 @@ angular.module('emulvcApp')
                 scope.$apply();
               }
               setLastMove(event);
-              
+              console.log(scope.vs.getscrollHeight());
               break;
           }
         });

@@ -20,6 +20,8 @@ var MainCtrl = angular.module('emulvcApp')
 		Iohandlerservice.httpGetLabelJson();
 		Iohandlerservice.httpGetAudioFile();
 		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
+		
+		
 
 		/**
 		 * listen for newlyLoadedAudioFile
@@ -27,9 +29,12 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
 			Soundhandlerservice.decodeAudioFile(data, function(d) {
 				viewState.curViewPort.bufferLength = d.length;
+				$(".osci canvas").css("height",Colorproviderservice.vals.osciCanvasHeight+"px");
+				$(".spectro canvas").css("height",Colorproviderservice.vals.spectroCanvasHeight+"px");
+				console.log();
 				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
-		});
+		});	
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			var modalInstance = $modal.open({

@@ -63,7 +63,6 @@ angular.module('emulvcApp')
                 clearImageCache();
 
                 scope.$watch('vs.curViewPort', function() {
-
                     if (!$.isEmptyObject(scope.shs.currentBuffer)) {
                         var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
                         var cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
@@ -73,9 +72,14 @@ angular.module('emulvcApp')
                         }
                         else {
                             drawOsci(scope.vs, scope.shs.currentBuffer);
-                        }
+                        }                        
                     }
                 }, true);
+                
+				scope.$watch('vs.scrollHeight', function() {
+					$(".spectro canvas").css("height",scope.vs.getscrollHeight()+"px");									
+					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
+				}, true);	                
 
                 function clearImageCache() {
                     imageCache = null;
