@@ -119,6 +119,13 @@ li {
     width: 100%
     text-align:left;
     left: 0px;
+    vertical-align:top;
+}
+
+.SpectroOuter {
+    top: 0px;
+    left: 0px;
+    vertical-align:top;
 }
 
 
@@ -290,6 +297,8 @@ div.center {
 .buttons {
     float:right;
     margin-right: 4px;
+    vertical-align:top;
+    top: 0px;
 }
 .resize, .delete, .save{
     margin: 0px;
