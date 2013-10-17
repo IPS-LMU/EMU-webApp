@@ -5,10 +5,7 @@ angular.module("emulvcApp")
     return {
       restrict: "A",
       link: function(scope, element) {
-      
-        var osci = scope.vs.getscrollHOsci();
-        var spectro = scope.vs.getscrollHSpectro();
-        
+
         element.draggable({ 
             axis: "y",
             cursor: "move", 
@@ -17,10 +14,7 @@ angular.module("emulvcApp")
             containment: "parent",
 		
 			drag: function(e, ui) {
-			    var add = ui.offset.top / 2;
-			    scope.vs.setmarginTop(add);
-			    scope.vs.setscrollHOsci(osci+add);
-			    scope.vs.setscrollHSpectro(spectro+add);
+			    scope.vs.setscroll(ui.offset.top);
 			    scope.$apply();
 			},	            
         });

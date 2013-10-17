@@ -9,42 +9,47 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffData = [];
 		
-		var osciOpen = true;
-		var spectroOpen = true;
-		var multiplier = 2;
-
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
 			$scope.ssffData.push(data);
-			// console.log($scope.ssffData);
 		});
 		
 		$scope.$watch('vs.scroll', function() {
-		    console.log("scroll");
-		}, true);			
+			$(".OsciCanvas").height(viewState.getheightOsci()+(viewState.getscroll()/2));
+			$(".SpectroCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".SSFFCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".emptyCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+		}, true);	
 		
-                
         $scope.resizeSpectro = function() {
-            if(spectroOpen) {
-                spectroOpen = false;
-                viewState.setscrollHSpectro(Math.floor(viewState.getscrollHSpectro() / multiplier));
+            var full = $scope.cps.vals.canvasFull;
+            if(viewState.getscrollSpectroOpen()) {
+                viewState.setscrollSpectroOpen(false);
+                viewState.setscrollHSpectro(full);
+                viewState.setscrollHOsci(100-full);
             }
             else {
-                spectroOpen = true;
-                viewState.setscrollHSpectro(Math.floor(viewState.getscrollHSpectro() * multiplier));
+                viewState.setscrollSpectroOpen(true);
+                viewState.setscrollHSpectro(50);
+                viewState.setscrollHOsci(50);
             }
         }
         
         $scope.resizeOsci = function() {
-            if(osciOpen) {
-                osciOpen = false;
-                viewState.setscrollHOsci(Math.floor(viewState.getscrollHOsci() / multiplier));
+            var multiplier = $scope.cps.vals.canvasMultiplier;
+            if(viewState.getscrollOsciOpen()) {
+                viewState.setscrollOsciOpen(false);
+                viewState.setscrollHSpectro(100-full);
+                viewState.setscrollHOsci(full);
+
             }
             else {
-                osciOpen = true;
-                viewState.setscrollHOsci(Math.floor(viewState.getscrollHOsci() * multiplier));
+                viewState.setscrollOsciOpen(true);
+                viewState.setscrollHSpectro(50);
+                viewState.setscrollHOsci(50);
+
             }
         }        		
 

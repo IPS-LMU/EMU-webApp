@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope) {
+  .factory('viewState', function($rootScope,Colorproviderservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -19,8 +19,10 @@ angular.module('emulvcApp')
     sServObj.lasteditArea = null;
     sServObj.editing = false;
     
-    sServObj.scrollHOsci = 80;
-    sServObj.scrollHSpectro = 80;
+    sServObj.scroll = 0;
+    sServObj.heightOsci = 0;
+    sServObj.heightSpectro = 0;
+
     this.curClickTierName = "";
 
     sServObj.tmpFixedBufferLength = 128085;
@@ -79,45 +81,44 @@ angular.module('emulvcApp')
     /**
      * get the height of the osci
      */
-    sServObj.getscrollHOsci = function() {
-      return this.scrollHOsci;
+    sServObj.getscroll = function() {
+      return this.scroll;
     };  
     
     /**
      * get the height of the osci
      */
-    sServObj.getscrollHSpectro = function() {
-      return this.scrollHSpectro;
-    };      
+    sServObj.setscroll = function(s) {
+      this.scroll = s;
+    }; 
     
     /**
-     * set the height of the osci
+     * get the height of the osci
      */
-    sServObj.setscrollHOsci = function(h) {
-      this.scrollHOsci = h;
+    sServObj.getheightOsci = function() {
+      return this.heightOsci;
     };  
     
     /**
-     * set the height of the osci
+     * get the height of the osci
      */
-    sServObj.setscrollHSpectro = function(h) {
-      this.scrollHSpectro = h;
-    };      
-          
+    sServObj.setheightOsci = function(s) {
+      this.heightOsci = s;
+    }; 
     
     /**
-     * get the height (offset top) of the scrollbar
+     * get the height of the osci
      */
-    sServObj.setmarginTop = function(h) {
-      this.marginTop = h;
-    };         
+    sServObj.getheightSpectro = function() {
+      return this.heightSpectro;
+    };  
     
     /**
-     * get the height (offset top) of the scrollbar
+     * get the height of the osci
      */
-    sServObj.getmarginTop = function() {
-      return this.marginTop;
-    };        
+    sServObj.setheightSpectro = function(s) {
+      this.heightSpectro = s;
+    };                
 
     /**
      * sets the current (clicked) Tier Name

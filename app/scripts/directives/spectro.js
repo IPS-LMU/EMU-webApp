@@ -71,17 +71,9 @@ angular.module('emulvcApp')
                         }
                         else {
                             drawOsci(scope.vs, scope.shs.currentBuffer);
-                        }                        
-					$(".spectro canvas").css("height",scope.vs.getscrollHSpectro()+"px");									
-					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
-
+                        }
                     }
-                }, true);
-                
-				scope.$watch('vs.scrollHSpectro', function() {
-					$(".spectro canvas").css("height",scope.vs.getscrollHSpectro()+"px");									
-					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
-				}, true);	                
+                }, true);                
 
                 function clearImageCache() {
                     imageCache = null;

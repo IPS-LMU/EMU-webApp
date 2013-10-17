@@ -17,17 +17,8 @@ angular.module('emulvcApp')
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
 						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
-					$(".spectro canvas").css("height",scope.vs.getscrollHSpectro()+"px");									
-					$(".spectro canvas").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
-						
 					}
-				}, true);
-				
-				scope.$watch('vs.scrollHOsci', function() {
-					$(".osci canvas").css("height",scope.vs.getscrollHOsci()+"px");
-					$(".osci canvas").css("margin-bottom",scope.vs.getmarginTop()+"px");				
-					$(".spectro .buttons").css("margin-top","-"+scope.vs.getmarginTop()+"px");				
-				}, true);					
+				}, true);			
 				
 
 				/**
