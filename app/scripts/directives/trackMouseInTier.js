@@ -58,15 +58,18 @@ angular.module('emulvcApp')
                 scope.vs.deleteEditArea();
                 scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
                 lastPCM = thisPCM;
+                scope.vs.selectBoundry();
                 scope.$apply();
               }
               if (event.altKey) {
                 scope.vs.deleteEditArea();
                 scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                 lastPCM = thisPCM;
+                scope.vs.selectBoundry();
                 scope.$apply();
               }
               setLastMove(event);
+              
               break;
           }
         });
