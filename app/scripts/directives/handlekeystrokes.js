@@ -83,7 +83,7 @@ angular.module('emulvcApp')
                                     toDelete += seg[i].label + ",";
                                 }
                                 toDelete = toDelete.substring(0, toDelete.length - 1);
-                                scope.openModal('views/deleteSegment.html', 'deleteTier', toDelete, toDelete);
+                                scope.openModal('views/deleteSegment.html', 'dialogSmall', toDelete, toDelete);
                             }
 
                             if (!e.metaKey) {

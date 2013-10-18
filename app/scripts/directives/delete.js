@@ -10,7 +10,7 @@ angular.module('emulvcApp')
       var id = scope.this.tier.TierName;   
 
       element.bind('click', function(event){
-        scope.openModal('views/deleteTier.html','deleteTier',id,id);
+        scope.openModal('views/deleteTier.html','dialogSmall',id,id);
       });
       
     }
