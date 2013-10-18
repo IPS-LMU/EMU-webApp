@@ -14,17 +14,19 @@ var MainCtrl = angular.module('emulvcApp')
 		
 		$scope.$on('configLoaded', function(evt, data) {
 		    if(ConfigProviderService.vals.main.mode=="standalone") {
-	    	    $("#menu").prepend($("<a>").attr({
-                    "class": "mini-btn tool-tip",
-                    "ng-click": "openFile();",
-                    "title":"Shortcut: O"
+	    	    $("#menu").prepend($("<button>").attr({
+                    "data-tooltip":"Shortcut: O",
+                    "tooltip-placement": "bottom",
+                    "ng-click": "openFile()",
+                    "class": "mini-btn"                    
                 }).text("Open File"));
     		}
 	    	else {
-	    	    $("#menu").prepend($("<a>").attr({
-                    "class": "mini-btn tool-tip",
-                    "ng-click": "openMenu();",
-                    "title":"Shortcut: O"
+	    	    $("#menu").prepend($("<button>").attr({
+                    "class": "mini-btn",
+                    "data-tooltip":"Shortcut: O",
+                    "tooltip-placement": "bottom",
+                    "ng-click": "openMenu()",
                 }).text("Open Menu"));
     		}		
 		});
