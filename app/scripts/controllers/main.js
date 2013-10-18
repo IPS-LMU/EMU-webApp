@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $http,
+	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
 		
@@ -13,21 +13,28 @@ var MainCtrl = angular.module('emulvcApp')
 		console.log(ConfigProviderService.vals);
 		
 		$scope.$on('configLoaded', function(evt, data) {
+		
 		    if(ConfigProviderService.vals.main.mode=="standalone") {
-	    	    $("#menu").prepend($("<button>").attr({
+	    	   var b = $("<button>").attr({
                     "data-tooltip":"Shortcut: O",
                     "tooltip-placement": "bottom",
-                    "ng-click": "openFile()",
+                    "ng-click": "openFile();",
+                    "z-index":"9999",
                     "class": "mini-btn"                    
-                }).text("Open File"));
+                }).text("Open File");		    
+		       $compile(b)($scope);
+		       $("#menu").prepend(b);
     		}
 	    	else {
-	    	    $("#menu").prepend($("<button>").attr({
+	    	    var b = $("<button>").attr({
                     "class": "mini-btn",
                     "data-tooltip":"Shortcut: O",
                     "tooltip-placement": "bottom",
+                    "z-index":"9999",                    
                     "ng-click": "openMenu()",
-                }).text("Open Menu"));
+                }).text("Open Menu");
+		       $compile(b)($scope);
+		       $("#menu").prepend(b);                
     		}		
 		});
 
@@ -69,6 +76,10 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 			});
 		};
+		
+		$scope.openFile = function() {
+			alert("code to open file");
+		};		
 
 		$scope.setlastkeycode = function(c, shift) {
 			$scope.lastkeycode = c;
