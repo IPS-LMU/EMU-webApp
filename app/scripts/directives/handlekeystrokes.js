@@ -61,7 +61,13 @@ angular.module('emulvcApp')
                             }
                             if (code == scope.keyMappings.zoomAll) {
                                 viewState.setViewPort(0,viewState.curViewPort.bufferLength);
-                            }                            
+                            }    
+                            if (code == scope.keyMappings.tierUp) {
+                                $('#HandletiersCtrl').scope().selectTier(false);
+                            }        
+                            if (code == scope.keyMappings.tierDown) {
+                                $('#HandletiersCtrl').scope().selectTier(true);
+                            }                                                                                
                             if (code == scope.keyMappings.tab) {
                                 if (e.shiftKey)
                                     $('#HandletiersCtrl').scope().tabPrev();

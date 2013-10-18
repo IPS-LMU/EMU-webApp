@@ -1,8 +1,8 @@
 {
-    "zoomIn": 87,
-    "zoomAll": 81,
     "zoomSel": 69,
+    "zoomAll": 81,
     "zoomOut": 83,
+    "zoomIn": 87,
     "shiftViewPortLeft": 65,
     "shiftViewPortRight": 68,
     "playEntireFile": 70,
@@ -14,5 +14,7 @@
     "selectFirstContourCorrectionTool": 49,
     "selectSecondContourCorrectionTool": 50,
     "selectThirdContourCorrectionTool": 51,
-    "selectFourthContourCorrectionTool": 52
+    "selectFourthContourCorrectionTool": 52,
+    "tierUp":38,
+    "tierDown":40
 }

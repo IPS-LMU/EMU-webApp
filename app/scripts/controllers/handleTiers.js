@@ -76,6 +76,23 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.deleteEditArea = function() {
 			viewState.deleteEditArea();
 		};
+		
+		$scope.selectTier = function(next) {
+			if (viewState.isEditing()) {
+				$scope.renameLabel();
+				viewState.deleteEditArea();
+			}
+			var now = viewState.getcurClickTierName();
+			if(now==undefined) {
+			
+			}
+			else {
+			    if(next) 
+			        viewState.setcurClickTierName($("li."+now).next().children()[0].id);
+			    else 
+			        viewState.setcurClickTierName($("li."+now).prev().children()[0].id);
+			}
+		};		
 
 
 		$scope.tabNext = function() {
