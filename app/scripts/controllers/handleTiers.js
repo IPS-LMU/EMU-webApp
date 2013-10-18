@@ -84,13 +84,23 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			}
 			var now = viewState.getcurClickTierName();
 			if(now==undefined) {
-			
+			    viewState.setcurClickTierName($("li").children()[0].id);
 			}
 			else {
-			    if(next) 
-			        viewState.setcurClickTierName($("li."+now).next().children()[0].id);
-			    else 
-			        viewState.setcurClickTierName($("li."+now).prev().children()[0].id);
+			    if(next) {
+			        var tag = $("li."+now).next().children()[0];
+			        if(tag==undefined)
+			            viewState.setcurClickTierName($("li").children()[0].id);
+			        else 
+			            viewState.setcurClickTierName(tag.id);
+			    }
+			    else {
+			        var tag = $("li."+now).prev().children()[0];
+			        if(tag==undefined)
+			            viewState.setcurClickTierName($("li").children()[0].id);
+			        else
+			            viewState.setcurClickTierName(tag.id);
+			    }
 			}
 		};		
 
