@@ -22,5 +22,5 @@
     "zeroLineColor": "#0DC5FF",
     "fontType": "Verdana",
     "fontPxSize": 12,
-    "canvasFull": 80
+    "osciSpectroZoomFactor": 6
 }

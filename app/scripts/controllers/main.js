@@ -31,8 +31,6 @@ var MainCtrl = angular.module('emulvcApp')
 				viewState.curViewPort.bufferLength = d.length;
 				viewState.setheightOsci($(".OsciCanvas").height());
 				viewState.setheightSpectro($(".SpectroCanvas").height());
-				viewState.setscrollSpectroOpen(true);
-				viewState.setscrollOsciOpen(true);
 				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
 		});	

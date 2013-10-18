@@ -24,27 +24,28 @@ var TimelineCtrl = angular.module('emulvcApp')
 		}, true);
 		
 		$scope.$watch('vs.heightOsci', function() {
-			$(".OsciCanvas").height(viewState.getheightOsci());
-			$(".SpectroCanvas").height(viewState.getheightSpectro());
-			$(".SSFFCanvas").height(viewState.getheightSpectro());
-			$(".emptyCanvas").height(viewState.getheightSpectro());
+			$(".OsciCanvas").height(viewState.getheightOsci()+(viewState.getscroll()/2));
+			$(".SpectroCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".SSFFCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".emptyCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
 			
 		}, true);			
 
 		$scope.$watch('vs.heightSpectro', function() {
-		    $(".OsciCanvas").height(viewState.getheightOsci());
-			$(".SpectroCanvas").height(viewState.getheightSpectro());
-			$(".SSFFCanvas").height(viewState.getheightSpectro());
-			$(".emptyCanvas").height(viewState.getheightSpectro());
+		    $(".OsciCanvas").height(viewState.getheightOsci()+(viewState.getscroll()/2));
+			$(".SpectroCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".SSFFCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
+			$(".emptyCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
 			
 		}, true);			
 		
         $scope.resizeSpectro = function() {
+            var i = Colorproviderservice.vals.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollSpectroOpen()) {
                 viewState.setscrollSpectroOpen(false);
-                viewState.setheightSpectro(3*full/4);
-                viewState.setheightOsci(full/4);
+                viewState.setheightSpectro(((i-1)*full)/i);
+                viewState.setheightOsci(full/i);
             }
             else {
                 viewState.setscrollSpectroOpen(true);
@@ -54,11 +55,12 @@ var TimelineCtrl = angular.module('emulvcApp')
         }
         
         $scope.resizeOsci = function() {
+            var i = Colorproviderservice.vals.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollOsciOpen()) {
                 viewState.setscrollOsciOpen(false);
-                viewState.setheightSpectro(3*full/4);
-                viewState.setheightOsci(full/4);
+                viewState.setheightSpectro(full/i);
+                viewState.setheightOsci(((i-1)*full)/i);
 
             }
             else {

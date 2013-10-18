@@ -22,8 +22,8 @@ angular.module('emulvcApp')
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
     sServObj.heightSpectro = 0;
-    sServObj.scrollSpectroOpen = false;
-    sServObj.scrollOsciOpen = false;
+    sServObj.scrollSpectroOpen = true;
+    sServObj.scrollOsciOpen = true;
 
     this.curClickTierName = "";
 
