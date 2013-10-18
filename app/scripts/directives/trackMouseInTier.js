@@ -73,11 +73,17 @@ angular.module('emulvcApp')
           }
         });
 
+        element.bind('mousedown', function(event) {
+          setLastMove(event);
+          scope.history();
+        });
+        
+
         element.bind('mouseup', function(event) {
           setLastMove(event);
           scope.history();
         });
-
+        
         element.bind('mouseout', function(event) {
           setLastMove(event);
         });

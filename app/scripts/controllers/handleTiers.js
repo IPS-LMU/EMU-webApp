@@ -50,8 +50,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.goBackHistory = function() {
-			if (($scope.myHistoryCounter - 1) > 0) {
-				delete $scope.tierDetails;
+			if ($scope.myHistoryCounter >= 1) {
+				//delete $scope.tierDetails;
 				$scope.tierDetails = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
 				--$scope.myHistoryCounter;
 			} else {
@@ -136,6 +136,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 					angular.forEach(t.events, function(evt) {
 						if (id == i) {
 							evt.label = name;
+							$scope.history();
 						}
 						++i;
 					});

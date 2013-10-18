@@ -227,13 +227,15 @@ angular.module('emulvcApp')
     
     
     sServObj.selectBoundry = function () {
-      var left = this.curClickSegments[0].startSample;
-      var right = this.curClickSegments[0].startSample+this.curClickSegments[0].sampleDur;
-      this.curClickSegments.forEach(function(entry) {
+      if(this.curClickSegments!=undefined) {
+        var left = this.curClickSegments[0].startSample;
+        var right = this.curClickSegments[0].startSample+this.curClickSegments[0].sampleDur;
+        this.curClickSegments.forEach(function(entry) {
           if(entry.startSample<=left) left = entry.startSample;
           if(entry.startSample+entry.sampleDur>=right) right = entry.startSample+entry.sampleDur;
-      });
-      this.select(left,right);    
+        });
+        this.select(left,right);    
+      }
     };
 
     /**
