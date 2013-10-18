@@ -58,14 +58,25 @@ angular.module('emulvcApp')
                 var primeWorker = new Worker(URL.createObjectURL(blob));
                 var imageCache = null;
                 var imageCacheCounter = 0;
+                var ppp;
+                var cache;
                 
                 setupEvent();
                 clearImageCache();
-
+                
+                
                 scope.$watch('vs.curViewPort', function() {
+                    if (!$.isEmptyObject(cache)) {
+                        if(cache!=null) drawTimeLine(cache);
+                        //else drawOsci(scope.vs, scope.shs.currentBuffer);
+                    }
+                }, true);                   
+                
+
+                scope.$watch('vs', function() {
                     if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-                        var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
-                        var cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
+                        ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
+                        cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
                         if(cache!=null) {
                             drawTimeLine(cache);
                         }
@@ -152,7 +163,6 @@ angular.module('emulvcApp')
 
 
                 function drawTimeLine(id) {
-                 
                     var image = new Image();
                     image.onload = function() {
                         context.drawImage(image, 0, 0);
@@ -175,13 +185,13 @@ angular.module('emulvcApp')
                 }
 
                 function setupEvent() {
+                    ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
                     primeWorker.addEventListener('message', function(event) {
                         var worker_img = event.data.img;
                         myImage.onload = function() {
                             context.drawImage(myImage, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-                            drawTimeLineContext();
-                            var ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
                             buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas.toDataURL("image/png"));
+                            drawTimeLineContext();                            
                         }
                         myImage.src = worker_img;
                     });
