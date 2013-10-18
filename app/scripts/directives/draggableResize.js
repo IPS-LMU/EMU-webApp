@@ -9,7 +9,7 @@ angular.module("emulvcApp")
         element.draggable({ 
             axis: "y",
             cursor: "move", 
-            cursorAt: { bottom: 8 },
+            //cursorAt: { bottom: 8 },
             handle: "div",
             containment: "parent",
 		
