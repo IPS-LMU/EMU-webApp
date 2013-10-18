@@ -2,19 +2,14 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http,
-		viewState, Iohandlerservice, Soundhandlerservice, Colorproviderservice) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
-		$scope.lastkeycode = "N/A";
+		
 
 		// init load of config files
-		Colorproviderservice.httpGetDrawingColorsConfig();				
-
-		// move out of controller...
-		// get keyboard shortcut mappings
-		$http.get('configFiles/keyboardShortcuts.json').success(function(data) {
-			$scope.keyMappings = data;
-		});
-
+		ConfigProviderService.httpGetConfig();		
+		
+		$scope.lastkeycode = "N/A";
 
 		// init loading of files for testing
 		Iohandlerservice.httpGetLabelJson();
@@ -31,6 +26,7 @@ var MainCtrl = angular.module('emulvcApp')
 				viewState.curViewPort.bufferLength = d.length;
 				viewState.setheightOsci($(".OsciCanvas").height());
 				viewState.setheightSpectro($(".SpectroCanvas").height());
+				$scope.keyMappings = ConfigProviderService.vals.shortcuts;
 				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
 		});	

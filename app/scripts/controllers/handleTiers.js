@@ -1,16 +1,16 @@
 'use strict';
 
 var HandletiersCtrl = angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, Colorproviderservice, Soundhandlerservice) {
+	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, ConfigProviderService, Soundhandlerservice) {
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
-		$scope.cps = Colorproviderservice;
+		$scope.config = ConfigProviderService;
 		$scope.testValue = '';
 		$scope.message = '';
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
-
+		
 		$scope.sortableOptions = {
 			update: function(e, ui) {
 				//alert("update"); 

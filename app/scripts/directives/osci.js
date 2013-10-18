@@ -14,15 +14,15 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
+						drawVpOsciMarkup(scope.vs, canvas, scope.config);						
 					}
 				}, true);			
 				
 				scope.$watch('vs', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
-						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
-						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
+						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.config);
+						drawVpOsciMarkup(scope.vs, canvas, scope.config);						
 					}
 				}, true);			
 				
@@ -94,7 +94,7 @@ angular.module('emulvcApp')
 				 * @param cps color provider service
 				 */
 
-				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, cps) {
+				function freshRedrawDrawOsciOnCanvas(viewState, canvas, allPeakVals, buffer, config) {
 					var ctx = canvas.getContext("2d");
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -104,7 +104,7 @@ angular.module('emulvcApp')
 					if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
 						allPeakVals.peaks.forEach(function(peak, index) {
 							if (index !== 0) {
-								drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, cps);
+								drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
 							}
 						});
 
@@ -113,8 +113,8 @@ angular.module('emulvcApp')
 						var hDbS = (1 / allPeakVals.samplePerPx) / 2; // half distance between samples
 						var sNr = viewState.curViewPort.sS;
 						// over sample exact
-						ctx.strokeStyle = cps.vals.osciColor;
-						ctx.fillStyle = cps.vals.osciColor;
+						ctx.strokeStyle = config.vals.colors.osciColor;
+						ctx.fillStyle = config.vals.colors.osciColor;
 						// ctx.beginPath();
 						var i;
 						if (viewState.curViewPort.sS === 0) {
@@ -157,8 +157,8 @@ angular.module('emulvcApp')
 					}
 					if (true) { // SIC !!!
 						// draw zero line
-						ctx.strokeStyle = cps.vals.zeroLineColor;
-						ctx.fillStyle = cps.vals.wwzeroLineColor;
+						ctx.strokeStyle = config.vals.colors.zeroLineColor;
+						ctx.fillStyle = config.vals.colors.wwzeroLineColor;
 						// see if Chrome ->dashed line
 						if (navigator.vendor == "Google Inc.") {
 							ctx.setLineDash([5]);
@@ -188,7 +188,7 @@ angular.module('emulvcApp')
 				 * @param canvas
 				 */
 
-				function drawFrame(viewState, index, value, max, prevPeak, canvas, cps) {
+				function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
 
 					var ctx = canvas.getContext("2d");
 
@@ -214,11 +214,11 @@ angular.module('emulvcApp')
 
 
 					if (posC >= x) {
-						ctx.fillStyle = cps.vals.playProgressColor;
-						ctx.strokeStyle = cps.vals.playProgressColor;
+						ctx.fillStyle = config.vals.colors.playProgressColor;
+						ctx.strokeStyle = config.vals.colors.playProgressColor;
 					} else {
-						ctx.fillStyle = cps.vals.osciColor;
-						ctx.strokeStyle = cps.vals.osciColor;
+						ctx.fillStyle = config.vals.colors.osciColor;
+						ctx.strokeStyle = config.vals.colors.osciColor;
 					}
 
 					ctx.beginPath();
@@ -234,13 +234,13 @@ angular.module('emulvcApp')
 				 * the viewport
 				 */
 
-				function drawVpOsciMarkup(viewState, canvas, cps) {
+				function drawVpOsciMarkup(viewState, canvas, config) {
 
 					var ctx = canvas.getContext("2d");
 
-					ctx.strokeStyle = cps.vals.labelColor;
-					ctx.fillStyle = cps.vals.labelColor;
-					ctx.font = (cps.vals.fontPxSize + "px" + " " + cps.vals.fontType);
+					ctx.strokeStyle = config.vals.colors.labelColor;
+					ctx.fillStyle = config.vals.colors.labelColor;
+					ctx.font = (config.vals.colors.fontPxSize + "px" + " " + config.vals.colors.fontType);
 
 					// lines to corners
 					ctx.beginPath();
@@ -257,11 +257,11 @@ angular.module('emulvcApp')
 						//draw time and sample nr
 						sTime = viewState.round(viewState.curViewPort.sS / 44100, 6); //SIC hardcoded sample rate
 						eTime = viewState.round(viewState.curViewPort.eS / 44100, 6); //SIC hardcoded sample rate
-						ctx.fillText(viewState.curViewPort.sS, 5, cps.vals.fontPxSize);
-						ctx.fillText(sTime, 5, cps.vals.fontPxSize * 2);
+						ctx.fillText(viewState.curViewPort.sS, 5, config.vals.colors.fontPxSize);
+						ctx.fillText(sTime, 5, config.vals.colors.fontPxSize * 2);
 						var metrics = ctx.measureText(sTime);
-						ctx.fillText(viewState.curViewPort.eS, canvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, cps.vals.fontPxSize);
-						ctx.fillText(eTime, canvas.width - metrics.width - 5, cps.vals.fontPxSize * 2);
+						ctx.fillText(viewState.curViewPort.eS, canvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, config.vals.colors.fontPxSize);
+						ctx.fillText(eTime, canvas.width - metrics.width - 5, config.vals.colors.fontPxSize * 2);
 					}
 					//draw emulabeller.viewPortselected
 					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
@@ -276,15 +276,15 @@ angular.module('emulvcApp')
 							} else {
 								xOffset = (sDist / 2);
 							}
-							ctx.fillStyle = cps.vals.selectedBorderColor;
+							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, canvas.height);
-							ctx.fillStyle = cps.vals.labelColor;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, cps.vals.fontPxSize);
-							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, cps.vals.fontPxSize * 2);
+							ctx.fillStyle = config.vals.colors.labelColor;
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, config.vals.colors.fontPxSize);
+							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, config.vals.colors.fontPxSize * 2);
 						} else {
-							ctx.fillStyle = cps.vals.selectedAreaColor;
+							ctx.fillStyle = config.vals.colors.selectedAreaColor;
 							ctx.fillRect(posS, 0, posE - posS, canvas.height);
-							ctx.strokeStyle = cps.vals.selectedBoundaryColor;
+							ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
 							ctx.beginPath();
 							ctx.moveTo(posS, 0);
 							ctx.lineTo(posS, canvas.height);
@@ -295,19 +295,19 @@ angular.module('emulvcApp')
 							ctx.fillStyle = canvas.labelColor;
 							// start values
 							var tW = ctx.measureText(viewState.curViewPort.selectS).width;
-							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, cps.vals.fontPxSize);
+							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, config.vals.colors.fontPxSize);
 							tW = ctx.measureText(viewState.round(viewState.curViewPort.selectS / 44100, 6)).width;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100, 6), posS - tW - 4, cps.vals.fontPxSize * 2);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / 44100, 6), posS - tW - 4, config.vals.colors.fontPxSize * 2);
 							// end values
-							ctx.fillText(viewState.curViewPort.selectE, posE + 5, cps.vals.fontPxSize);
-							ctx.fillText(viewState.round(viewState.curViewPort.selectE / 44100, 6), posE + 5, cps.vals.fontPxSize * 2);
+							ctx.fillText(viewState.curViewPort.selectE, posE + 5, config.vals.colors.fontPxSize);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectE / 44100, 6), posE + 5, config.vals.colors.fontPxSize * 2);
 							// dur values
 							// check if space
 							if (posE - posS > ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100, 6)).width) {
 								tW = ctx.measureText(viewState.curViewPort.selectE - viewState.curViewPort.selectS).width;
-								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize);
+								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, config.vals.colors.fontPxSize);
 								tW = ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100, 6)).width;
-								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, cps.vals.fontPxSize * 2);
+								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, config.vals.colors.fontPxSize * 2);
 							}
 						}
 					}

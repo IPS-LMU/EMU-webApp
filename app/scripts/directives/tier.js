@@ -12,21 +12,17 @@ angular.module('emulvcApp')
 
 				var myid = scope.tier.TierName;
 				scope.$watch('tierDetails', function() {
-					drawTierDetails(scope.tier, scope.vs, scope.cps);
+					drawTierDetails(scope.tier, scope.vs, scope.config);
 				}, true);
 
 				scope.$watch('vs', function() {
-					drawTierDetails(scope.tier, scope.vs, scope.cps);
+					drawTierDetails(scope.tier, scope.vs, scope.config);
 					$(".HandletiersCtrl").css("padding-top",(scope.vs.getscroll()+scope.vs.getheightOsci()+scope.vs.getheightSpectro() + (2*$(".menu").height()) + 5)+"px");
 				}, true);
 
-				/*scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-					drawTierDetails(scope.tier, scope.vs, scope.cps);
-				}, true);*/
-
 
 				scope.updateView = function() {
-					drawTierDetails(scope.tier, scope.vs, scope.cps);
+					drawTierDetails(scope.tier, scope.vs, scope.config);
 				};
 
 				/**
@@ -36,26 +32,26 @@ angular.module('emulvcApp')
 				 * @param cps
 				 */
 
-				function drawTierDetails(tierDetails, viewPort, cps) {
+				function drawTierDetails(tierDetails, viewPort, config) {
 
 					if ($.isEmptyObject(tierDetails)) {
-						console.log("undef tierDetails");
+						//console.log("undef tierDetails");
 						return;
 					}
 					if ($.isEmptyObject(viewPort)) {
-						console.log("undef viewPort");
+						//console.log("undef viewPort");
 						return;
 					}
-					if ($.isEmptyObject(cps)) {
-						console.log("undef cps");
+					if ($.isEmptyObject(config)) {
+						//console.log("undef config");
 						return;
 					}
-
+			
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
 					if (tierDetails.TierName == viewPort.curClickTierName) {
-						ctx.fillStyle = cps.vals.selectedTierColor;
+						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
@@ -63,10 +59,10 @@ angular.module('emulvcApp')
 					var selection = viewPort.getSelect();
 					
 					// draw name of tier
-					ctx.fillStyle = cps.vals.labelColor;
-					ctx.font = (cps.vals.fontPxSize + 'px' + ' ' + cps.vals.fontType);
-					ctx.fillText(tierDetails.TierName, 5, cps.vals.fontPxSize);
-					ctx.fillText("(" + tierDetails.type + ")", 5, cps.vals.fontPxSize * 2);
+					ctx.fillStyle = config.vals.colors.labelColor;
+					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
+					ctx.fillText(tierDetails.TierName, 5, config.vals.colors.fontPxSize);
+					ctx.fillText("(" + tierDetails.type + ")", 5, config.vals.colors.fontPxSize * 2);
 
 					var segMId = viewPort.getcurMouseSegment();
 					var segCId = viewPort.getselected();
@@ -85,12 +81,12 @@ angular.module('emulvcApp')
 							} else {
 								xOffset = (sDist / 2);
 							}
-							ctx.fillStyle = cps.vals.selectedBorderColor;
+							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
 						} else {
-							ctx.fillStyle = cps.vals.selectedAreaColor;
+							ctx.fillStyle = config.vals.colors.selectedAreaColor;
 							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-							ctx.strokeStyle = cps.vals.selectedBoundaryColor;
+							ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
 							ctx.beginPath();
 							ctx.moveTo(posS, 0);
 							ctx.lineTo(posS, canvas[0].height);
@@ -101,7 +97,7 @@ angular.module('emulvcApp')
 
 						}
 
-						ctx.fillStyle = cps.vals.startBoundaryColor;
+						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
 						for (var k in e) {
@@ -126,9 +122,9 @@ angular.module('emulvcApp')
 
 									segCId.forEach(function(entry) {
 										if (entry == curID) {
-											ctx.fillStyle = cps.vals.selectedSegmentColor;
+											ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 											ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-											ctx.fillStyle = cps.vals.startBoundaryColor;
+											ctx.fillStyle = config.vals.colors.startBoundaryColor;
 										}
 									});
 
@@ -146,12 +142,12 @@ angular.module('emulvcApp')
 
 								//draw segment end
 
-								ctx.fillStyle = cps.vals.endBoundaryColor;
+								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
 								// draw label 
-								ctx.strokeStyle = cps.vals.labelColor;
-								ctx.fillStyle = cps.vals.labelColor;
+								ctx.strokeStyle = config.vals.colors.labelColor;
+								ctx.fillStyle = config.vals.colors.labelColor;
 								var tW = ctx.measureText(curEvt.label).width;
 								var tX = posS + (posE - posS) / 2 - tW / 2;
 								// 			//check for enough space to stroke text
@@ -162,7 +158,7 @@ angular.module('emulvcApp')
 								//draw helper lines
 								if (posE - posS > ctx.measureText("m").width * 3) {
 									// start helper line
-									ctx.strokeStyle = cps.vals.startBoundaryColor;
+									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
 									ctx.moveTo(posS, canvas[0].height / 4);
 									ctx.lineTo(tX + tW / 2, canvas[0].height / 4);
@@ -170,14 +166,14 @@ angular.module('emulvcApp')
 									ctx.stroke();
 
 									// draw startSample numbers
-									ctx.fillStyle = cps.vals.startBoundaryColor;
+									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									var sStW = ctx.measureText(curEvt.startSample).width;
 									//check for enough space to stroke text
 									if (posE - posS > sStW) {
 										ctx.fillText(curEvt.startSample, posS + 3, canvas[0].height / 5);
 									}
 									// end helper line
-									ctx.strokeStyle = cps.vals.endBoundaryColor;
+									ctx.strokeStyle = config.vals.colors.endBoundaryColor;
 									ctx.beginPath();
 									ctx.moveTo(posE, canvas[0].height / 4 * 3);
 									ctx.lineTo(tX + tW / 2, canvas[0].height / 4 * 3);
@@ -185,7 +181,7 @@ angular.module('emulvcApp')
 									ctx.stroke();
 								}
 								// draw sampleDur numbers.
-								ctx.fillStyle = cps.vals.endBoundaryColor;
+								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								var sDtW = ctx.measureText("dur: " + curEvt.sampleDur).width;
 								//check for enough space to stroke text
 								if (posE - posS > sDtW) {

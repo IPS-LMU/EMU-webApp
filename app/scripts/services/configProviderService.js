@@ -1,19 +1,18 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Colorproviderservice', function Colorproviderservice($http) {
+	.service('ConfigProviderService', function ConfigProviderService($http) {
 
 		// shared service object
 		var sServObj = {};
 		sServObj.vals = {};
 
-		sServObj.httpGetDrawingColorsConfig = function() {
-			$http.get('configFiles/drawingColors.json').success(function(data) {
+		sServObj.httpGetConfig = function() {
+			$http.get('configFiles/config.json').success(function(data) {
 				sServObj.vals = data;
 			});
 		};
-
-
+		
 		/**
 		 * convert hsv values to rgb hex rep.
 		 */
@@ -50,7 +49,7 @@ angular.module('emulvcApp')
 			return '#' + rgb.map(function(x) {
 				return ("0" + Math.round(x * 255).toString(16)).slice(-2);
 			}).join('');
-		};
+		};		
 
 		return sServObj;
 

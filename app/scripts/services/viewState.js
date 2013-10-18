@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope,Colorproviderservice) {
+  .factory('viewState', function($rootScope) {
 
     //shared service object to be returned
     var sServObj = {};

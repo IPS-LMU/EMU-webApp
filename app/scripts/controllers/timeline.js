@@ -1,11 +1,13 @@
 'use strict';
 
 var TimelineCtrl = angular.module('emulvcApp')
-	.controller('TimelineCtrl', function($scope, $http, viewState, Soundhandlerservice, Colorproviderservice, Drawhelperservice) {
+	.controller('TimelineCtrl', function($scope, $http, 
+	  viewState, Soundhandlerservice, Drawhelperservice,ConfigProviderService) {
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
-		$scope.cps = Colorproviderservice;
+		$scope.cps = ConfigProviderService.vals.colors;
+		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffData = [];
 		
@@ -40,7 +42,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		}, true);			
 		
         $scope.resizeSpectro = function() {
-            var i = Colorproviderservice.vals.osciSpectroZoomFactor;
+            var i = Configproviderservice.vals.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollSpectroOpen()) {
                 viewState.setscrollSpectroOpen(false);
@@ -55,7 +57,8 @@ var TimelineCtrl = angular.module('emulvcApp')
         }
         
         $scope.resizeOsci = function() {
-            var i = Colorproviderservice.vals.osciSpectroZoomFactor;
+            console.log(Configproviderservice);
+            var i = Configproviderservice.vals.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollOsciOpen()) {
                 viewState.setscrollOsciOpen(false);

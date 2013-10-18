@@ -20,7 +20,7 @@ angular.module('emulvcApp')
             // find according field in scope.ssffData
             var col = findColumn(scope.ssffData, colName);
             // draw values  
-            drawValues(scope.vs, canvas, scope.cps, col);
+            drawValues(scope.vs, canvas, scope.config, col);
           }
         }, true);
 
@@ -31,7 +31,7 @@ angular.module('emulvcApp')
             // find according field in scope.ssffData
             var col = findColumn(scope.ssffData, colName);
             // draw values  
-            drawValues(scope.vs, canvas, scope.cps, col);
+            drawValues(scope.vs, canvas, scope.config, col);
           }
         }, true);
 
@@ -60,7 +60,7 @@ angular.module('emulvcApp')
          * draw values onto canvas
          */
 
-        function drawValues(viewState, canvas, cps, col) {
+        function drawValues(viewState, canvas, config, col) {
           var ctx = canvas.getContext("2d");
           // create a destination canvas. Here the altered image will be placed
 
@@ -96,9 +96,9 @@ angular.module('emulvcApp')
                 x = valIdx * canvas.width / nrOfSamples;
                 y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-                ctx.strokeStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
+                ctx.strokeStyle = config.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
 
-                ctx.fillStyle = cps.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
+                ctx.fillStyle = config.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
                 // draw line
                 ctx.beginPath();
                 ctx.moveTo(prevX, prevY);

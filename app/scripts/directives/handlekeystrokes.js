@@ -9,7 +9,6 @@ angular.module('emulvcApp')
                 // bind all keydown events
                 $(document).bind("keydown", function(e) {
                     var code = (e.keyCode ? e.keyCode : e.which);
-                    console.log(code)
                     scope.$apply(function() {
                         scope.setlastkeycode(code, e.shiftKey);
                         if (viewState.isEditing()) {
