@@ -12,7 +12,7 @@ angular.module("emulvcApp")
             axis: "y",
             cursor: "move", 
             scroll: false,
-            handle: "div",
+            handle: "#resizer",
             containment: "body",
 		
 			drag: function(e, ui) {
