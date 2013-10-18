@@ -217,11 +217,13 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function(segment, id) {
-      this.select(segment.startSample, segment.startSample+segment.sampleDur)
-      this.curClickSegments = [];
-      this.curClickSegments.push(segment);
-      this.selected = [];
-      this.selected.push(id);
+      if(segment!=null) {
+        this.select(segment.startSample, segment.startSample+segment.sampleDur)
+        this.curClickSegments = [];
+        this.curClickSegments.push(segment);
+        this.selected = [];
+        this.selected.push(id);
+      }
     };
     
     
