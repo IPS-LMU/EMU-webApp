@@ -285,6 +285,7 @@ div.center {
     padding: 0px;
     margin-bottom: 2px;
     background-color:#B9B9B9;
+    vertical-align: middle;
 }
 .delete img {
     width: 20px;

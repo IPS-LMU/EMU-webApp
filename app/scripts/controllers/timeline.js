@@ -42,7 +42,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		}, true);			
 		
         $scope.resizeSpectro = function() {
-            var i = Configproviderservice.vals.osciSpectroZoomFactor;
+            var i = $scope.config.vals.main.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollSpectroOpen()) {
                 viewState.setscrollSpectroOpen(false);
@@ -57,8 +57,7 @@ var TimelineCtrl = angular.module('emulvcApp')
         }
         
         $scope.resizeOsci = function() {
-            console.log(Configproviderservice);
-            var i = Configproviderservice.vals.osciSpectroZoomFactor;
+            var i = $scope.config.vals.main.osciSpectroZoomFactor;
             var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollOsciOpen()) {
                 viewState.setscrollOsciOpen(false);
