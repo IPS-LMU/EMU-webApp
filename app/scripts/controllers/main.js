@@ -10,6 +10,24 @@ var MainCtrl = angular.module('emulvcApp')
 		ConfigProviderService.httpGetConfig();		
 		
 		$scope.lastkeycode = "N/A";
+		console.log(ConfigProviderService.vals);
+		
+		$scope.$on('configLoaded', function(evt, data) {
+		    if(ConfigProviderService.vals.main.mode=="standalone") {
+	    	    $("#menu").prepend($("<a>").attr({
+                    "class": "mini-btn tool-tip",
+                    "ng-click": "openFile();",
+                    "title":"Shortcut: O"
+                }).text("Open File"));
+    		}
+	    	else {
+	    	    $("#menu").prepend($("<a>").attr({
+                    "class": "mini-btn tool-tip",
+                    "ng-click": "openMenu();",
+                    "title":"Shortcut: O"
+                }).text("Open Menu"));
+    		}		
+		});
 
 		// init loading of files for testing
 		Iohandlerservice.httpGetLabelJson();

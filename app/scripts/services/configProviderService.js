@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('ConfigProviderService', function ConfigProviderService($http) {
+	.service('ConfigProviderService', function ConfigProviderService($rootScope,$http) {
 
 		// shared service object
 		var sServObj = {};
@@ -10,6 +10,7 @@ angular.module('emulvcApp')
 		sServObj.httpGetConfig = function() {
 			$http.get('configFiles/config.json').success(function(data) {
 				sServObj.vals = data;
+				$rootScope.$broadcast('configLoaded', data);
 			});
 		};
 		
