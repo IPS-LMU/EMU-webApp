@@ -14,12 +14,19 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
+					}
+				}, true);			
+				
+				scope.$watch('vs', function(newValue, oldValue) {
+					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
 						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.cps);
 						drawVpOsciMarkup(scope.vs, canvas, scope.cps);						
 					}
 				}, true);			
 				
+
 
 				/**
 				 * get current peaks to be drawn
