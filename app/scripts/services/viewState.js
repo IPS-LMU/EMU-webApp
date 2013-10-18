@@ -22,6 +22,8 @@ angular.module('emulvcApp')
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
     sServObj.heightSpectro = 0;
+    sServObj.scrollSpectroOpen = false;
+    sServObj.scrollOsciOpen = false;
 
     this.curClickTierName = "";
 
@@ -118,7 +120,36 @@ angular.module('emulvcApp')
      */
     sServObj.setheightSpectro = function(s) {
       this.heightSpectro = s;
-    };                
+    };     
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getscrollSpectroOpen = function() {
+      return this.scrollSpectroOpen;
+    };  
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.setscrollSpectroOpen = function(s) {
+      this.scrollSpectroOpen = s;
+    };       
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getscrollOsciOpen = function() {
+      return this.scrollOsciOpen;
+    };  
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.setscrollOsciOpen = function(s) {
+      this.scrollOsciOpen = s;
+    };     
+               
 
     /**
      * sets the current (clicked) Tier Name

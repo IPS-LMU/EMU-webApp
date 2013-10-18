@@ -21,34 +21,50 @@ var TimelineCtrl = angular.module('emulvcApp')
 			$(".SpectroCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
 			$(".SSFFCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
 			$(".emptyCanvas").height(viewState.getheightSpectro()+(viewState.getscroll()/2));
-		}, true);	
+		}, true);
+		
+		$scope.$watch('vs.heightOsci', function() {
+			$(".OsciCanvas").height(viewState.getheightOsci());
+			$(".SpectroCanvas").height(viewState.getheightSpectro());
+			$(".SSFFCanvas").height(viewState.getheightSpectro());
+			$(".emptyCanvas").height(viewState.getheightSpectro());
+			
+		}, true);			
+
+		$scope.$watch('vs.heightSpectro', function() {
+		    $(".OsciCanvas").height(viewState.getheightOsci());
+			$(".SpectroCanvas").height(viewState.getheightSpectro());
+			$(".SSFFCanvas").height(viewState.getheightSpectro());
+			$(".emptyCanvas").height(viewState.getheightSpectro());
+			
+		}, true);			
 		
         $scope.resizeSpectro = function() {
-            var full = $scope.cps.vals.canvasFull;
+            var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollSpectroOpen()) {
                 viewState.setscrollSpectroOpen(false);
-                viewState.setscrollHSpectro(full);
-                viewState.setscrollHOsci(100-full);
+                viewState.setheightSpectro(3*full/4);
+                viewState.setheightOsci(full/4);
             }
             else {
                 viewState.setscrollSpectroOpen(true);
-                viewState.setscrollHSpectro(50);
-                viewState.setscrollHOsci(50);
+                viewState.setheightSpectro(full/2);
+                viewState.setheightOsci(full/2);
             }
         }
         
         $scope.resizeOsci = function() {
-            var multiplier = $scope.cps.vals.canvasMultiplier;
+            var full = viewState.getheightSpectro() + viewState.getheightOsci();
             if(viewState.getscrollOsciOpen()) {
                 viewState.setscrollOsciOpen(false);
-                viewState.setscrollHSpectro(100-full);
-                viewState.setscrollHOsci(full);
+                viewState.setheightSpectro(3*full/4);
+                viewState.setheightOsci(full/4);
 
             }
             else {
                 viewState.setscrollOsciOpen(true);
-                viewState.setscrollHSpectro(50);
-                viewState.setscrollHOsci(50);
+                viewState.setheightSpectro(full/2);
+                viewState.setheightOsci(full/2);
 
             }
         }        		
