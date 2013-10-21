@@ -1,7 +1,5 @@
 {
-  "labelfileurls": [
-    "file:/path/to/msajc003.TextGrid"
-  ],
+  "fileURL": "http://localhost:9000/testData/msajc003.TextGrid",
   "tiers": [{
     "TierName": "Utterance",
     "type": "seg",

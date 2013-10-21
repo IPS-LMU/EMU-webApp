@@ -8,8 +8,8 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.httpGetLabelJson = function() {
-			$http.get('testData/msajc003.json').success(function(data) {
+		sServObj.httpGetLabelJson = function(filePath) {
+			$http.get(filePath).success(function(data) {
 				console.log(data);
 				$rootScope.$broadcast('newlyLoadedLabelJson', data);
 			});
@@ -20,7 +20,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.httpGetAudioFile = function(filePath) {
 			// var my = this;
-			$http.get('testData/msajc003.wav', {
+			$http.get(filePath, {
 				responseType: "arraybuffer"
 			}).success(function(data) {
 				$rootScope.$broadcast('newlyLoadedAudioFile', data);
@@ -38,7 +38,7 @@ angular.module('emulvcApp')
 				responseType: "arraybuffer"
 			}).success(function(data) {
 				var ssffJso = Ssffparserservice.ssff2jso(data);
-				var arrbuf = Ssffparserservice.jso2ssff(ssffJso);
+				ssffJso.fileURL = document.URL + filePath;
 				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso);
 			});
 		};
