@@ -12,82 +12,88 @@ angular.module('emulvcApp')
 
 				var myid = element[0].id;
 
+				// scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+				// 	if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+				// 		console.log("viewport changed")
+				// 		drawVpOsciMarkup(scope.vs, canvas, scope.config);						
+				// 	}
+				// }, true);			
+				
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+						// check for changed zoom
+						if(oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1){ // SIC -1 check not that clean...
+							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.currentBuffer.getChannelData(0));
+							scope.dhs.osciPeaks = allPeakVals;
+							
+						}
+						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.currentBuffer, scope.config);
 						drawVpOsciMarkup(scope.vs, canvas, scope.config);						
 					}
 				}, true);			
 				
-				scope.$watch('vs', function(newValue, oldValue) {
-					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
-						var allPeakVals = getPeaks(scope.vs, canvas, scope.shs.currentBuffer);
-						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, allPeakVals, scope.shs.currentBuffer, scope.config);
-						drawVpOsciMarkup(scope.vs, canvas, scope.config);						
-					}
-				}, true);			
-				
 
 
-				/**
-				 * get current peaks to be drawn
-				 * if drawing over sample exact -> samples
-				 * if multiple samples per pixel -> calculate envelope points
-				 */
+				// /**
+				//  * get current peaks to be drawn
+				//  * if drawing over sample exact -> samples
+				//  * if multiple samples per pixel -> calculate envelope points
+				//  */
 
-				function getPeaks(viewState, canvas, buffer) {
-					var k = (viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width; //this.osciCanvas.width; // PCM Samples per new pixel
+				// function getPeaks(viewState, canvas, buffer) {
+				// 	var k = (viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width; //this.osciCanvas.width; // PCM Samples per new pixel
 
-					var peaks = [];
-					var minPeak = Infinity;
-					var maxPeak = -Infinity;
+				// 	var peaks = [];
+				// 	var minPeak = Infinity;
+				// 	var maxPeak = -Infinity;
 
-					var chan = buffer.getChannelData(0);
-					var relData;
+				// 	var chan = buffer.getChannelData(0);
+				// 	var relData;
 
-					if (k <= 1) {
-						// check if view at start            
-						if (viewState.curViewPort.sS === 0) {
-							relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
-						} else {
-							relData = chan.subarray(viewState.curViewPort.sS - 1, viewState.curViewPort.eS + 2); // +2 to compensate for length
-						}
-						minPeak = Math.min.apply(Math, relData);
-						maxPeak = Math.max.apply(Math, relData);
-						peaks = Array.prototype.slice.call(relData);
+				// 	if (k <= 1) {
+				// 		// check if view at start            
+				// 		if (viewState.curViewPort.sS === 0) {
+				// 			relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
+				// 		} else {
+				// 			relData = chan.subarray(viewState.curViewPort.sS - 1, viewState.curViewPort.eS + 2); // +2 to compensate for length
+				// 		}
+				// 		minPeak = Math.min.apply(Math, relData);
+				// 		maxPeak = Math.max.apply(Math, relData);
+				// 		peaks = Array.prototype.slice.call(relData);
 
-					} else {
-						relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
+				// 	} else {
+				// 		relData = chan.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
 
-						for (var i = 0; i < canvas.width; i++) {
-							var sum = 0;
-							for (var c = 0; c < buffer.numberOfChannels; c++) {
+				// 		for (var i = 0; i < canvas.width; i++) {
+				// 			var sum = 0;
+				// 			for (var c = 0; c < buffer.numberOfChannels; c++) {
 
-								var vals = relData.subarray(i * k, (i + 1) * k);
-								var peak = -Infinity;
+				// 				var vals = relData.subarray(i * k, (i + 1) * k);
+				// 				var peak = -Infinity;
 
-								var av = 0;
-								for (var p = 0, l = vals.length; p < l; p++) {
-									if (vals[p] > peak) {
-										peak = vals[p];
-									}
-									av += vals[p];
-								}
-								sum += av / vals.length;
-							}
+				// 				var av = 0;
+				// 				for (var p = 0, l = vals.length; p < l; p++) {
+				// 					if (vals[p] > peak) {
+				// 						peak = vals[p];
+				// 					}
+				// 					av += vals[p];
+				// 				}
+				// 				sum += av / vals.length;
+				// 			}
 
-							peaks[i] = sum;
-							if (sum > maxPeak) {
-								maxPeak = sum;
-							}
-						}
-					} //else
-					return {
-						"peaks": peaks,
-						"minPeak": minPeak,
-						"maxPeak": maxPeak,
-						"samplePerPx": k
-					};
-				}
+				// 			peaks[i] = sum;
+				// 			if (sum > maxPeak) {
+				// 				maxPeak = sum;
+				// 			}
+				// 		}
+				// 	} //else
+				// 	return {
+				// 		"peaks": peaks,
+				// 		"minPeak": minPeak,
+				// 		"maxPeak": maxPeak,
+				// 		"samplePerPx": k
+				// 	};
+				// }
 
 
 				/**
