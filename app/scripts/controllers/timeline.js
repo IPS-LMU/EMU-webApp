@@ -15,6 +15,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		 * listen for newlyLoadedSSFFfile broadcast
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
+			// $scope.vs.curViewPort.sS = 0;
 			$scope.ssffData.push(data);
 		});
 		

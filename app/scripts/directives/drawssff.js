@@ -71,11 +71,11 @@ angular.module('emulvcApp')
           var minVal = 0;
           var maxVal = 8000; //Hz in the case of formants
 
-          var startTimeVP = viewState.getStartTime();
-          var endTimeVP = viewState.getEndTime();
+          var startTimeVP = viewState.getViewPortStartTime();
+          var endTimeVP = viewState.getViewPortEndTime();
 
-          var colStartSampleNr = Math.round((startTimeVP + col.startTime) * col.sampleRate); // CHECK
-          var colEndSampleNr = Math.round((endTimeVP + col.startTime) * col.sampleRate); //CHECK
+          var colStartSampleNr = Math.round((startTimeVP + col.startTime) * col.sampleRate);
+          var colEndSampleNr = Math.round((endTimeVP + col.startTime) * col.sampleRate);
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
@@ -85,34 +85,42 @@ angular.module('emulvcApp')
             //console.log("over sample exact ssff drawing");
           }
 
-          var x, y, prevX, prevY;
+          var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
 
           curSampleArrs.forEach(function(valRep, valIdx) {
             valRep.forEach(function(val, idx) {
-              if (valIdx !== 0) {
-                prevX = (valIdx - 1) * canvas.width / nrOfSamples;
-                prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
 
-                x = valIdx * canvas.width / nrOfSamples;
-                y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+              curSampleInCol = colStartSampleNr + valIdx;
+              curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
-                ctx.strokeStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
+              x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+              y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-                ctx.fillStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
-                // draw line
-                ctx.beginPath();
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(x, y);
-                ctx.stroke();
-                // ctx.fill();
+              ctx.strokeStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
+              ctx.fillStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
 
-                // draw dot
-                ctx.beginPath();
-                ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                ctx.closePath();
-                ctx.stroke();
-                ctx.fill();
-              }
+              // draw dot
+              ctx.beginPath();
+              ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+              ctx.closePath();
+              ctx.stroke();
+              ctx.fill();
+
+              // if (valIdx !== 0) {
+              //   curSampleInCol = colStartSampleNr + valIdx - 1;
+              //   curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+              //   prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+              //   prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+              //   // draw line
+              //   ctx.beginPath();
+              //   ctx.moveTo(prevX, prevY);
+              //   ctx.lineTo(x, y);
+              //   ctx.stroke();
+              //   ctx.fill();
+
+              // }
             });
           });
 

@@ -10,7 +10,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.message = '';
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
-		
+
 		$scope.sortableOptions = {
 			update: function(e, ui) {
 				//alert("update"); 
@@ -27,12 +27,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 * update tierDetails if heard
 		 */
 		$scope.$on('newlyLoadedLabelJson', function(evt, data) {
-			// SIC should look for longest tier in tier details
-			$scope.vs.curViewPort.eS = data.tiers[8].events[data.tiers[8].events.length - 1].startSample + data.tiers[8].events[data.tiers[8].events.length - 1].sampleDur;
-			// for development
-			// $scope.viewState.curViewPort.sS = 100;
-			// $scope.viewState.curViewPort.eS = 1000;
-			// $scope.viewState.bufferLength = $scope.viewState.curViewPort.eS;
 			$scope.tierDetails = data;
 		});
 
@@ -76,33 +70,31 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.deleteEditArea = function() {
 			viewState.deleteEditArea();
 		};
-		
+
 		$scope.selectTier = function(next) {
 			if (viewState.isEditing()) {
 				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
 			var now = viewState.getcurClickTierName();
-			if(now==undefined) {
-			    viewState.setcurClickTierName($("li").children()[0].id);
+			if (now == undefined) {
+				viewState.setcurClickTierName($("li").children()[0].id);
+			} else {
+				if (next) {
+					var tag = $("li." + now).next().children()[0];
+					if (tag == undefined)
+						viewState.setcurClickTierName($("li").children()[0].id);
+					else
+						viewState.setcurClickTierName(tag.id);
+				} else {
+					var tag = $("li." + now).prev().children()[0];
+					if (tag == undefined)
+						viewState.setcurClickTierName($("li").children()[0].id);
+					else
+						viewState.setcurClickTierName(tag.id);
+				}
 			}
-			else {
-			    if(next) {
-			        var tag = $("li."+now).next().children()[0];
-			        if(tag==undefined)
-			            viewState.setcurClickTierName($("li").children()[0].id);
-			        else 
-			            viewState.setcurClickTierName(tag.id);
-			    }
-			    else {
-			        var tag = $("li."+now).prev().children()[0];
-			        if(tag==undefined)
-			            viewState.setcurClickTierName($("li").children()[0].id);
-			        else
-			            viewState.setcurClickTierName(tag.id);
-			    }
-			}
-		};		
+		};
 
 
 		$scope.tabNext = function() {
@@ -142,42 +134,42 @@ var HandletiersCtrl = angular.module('emulvcApp')
 					});
 			});
 		};
-		
+
 		$scope.deleteTier = function(id) {
-		    var x = 0;
+			var x = 0;
 			angular.forEach($scope.tierDetails.tiers, function(t) {
 				if (t.TierName == id) {
-				    $scope.tierDetails.tiers.splice(x,1);
-				    
+					$scope.tierDetails.tiers.splice(x, 1);
+
 				}
 				++x;
 			});
 			$scope.history();
 		};
-		
+
 		$scope.deleteSegments = function() {
 
-		    var toDelete = viewState.getselected();
-		    var last = toDelete.length-1;
-		    var tierName = viewState.getcurClickTierName();
-		    
+			var toDelete = viewState.getselected();
+			var last = toDelete.length - 1;
+			var tierName = viewState.getcurClickTierName();
+
 			angular.forEach($scope.tierDetails.tiers, function(t) {
 				if (t.TierName == tierName) {
-    				for(var x in toDelete) {
-    				    var id = toDelete[x];
-				        length = t.events[id].sampleDur;
-				        t.events[id-1].sampleDur += length/2;
-						t.events[id+1].sampleDur += length/2;
-						t.events[id+1].startSample -= length/2;
-						t.events.splice(id,1);
+					for (var x in toDelete) {
+						var id = toDelete[x];
+						length = t.events[id].sampleDur;
+						t.events[id - 1].sampleDur += length / 2;
+						t.events[id + 1].sampleDur += length / 2;
+						t.events[id + 1].startSample -= length / 2;
+						t.events.splice(id, 1);
 					}
-					
-					viewState.setcurClickSegment(t.events[toDelete[0]-1], toDelete[0]-1);
+
+					viewState.setcurClickSegment(t.events[toDelete[0] - 1], toDelete[0] - 1);
 				}
 			});
 			$scope.history();
-			
-		};		
+
+		};
 
 		$scope.getEventId = function(x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;

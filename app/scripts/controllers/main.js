@@ -53,6 +53,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
 			Soundhandlerservice.decodeAudioFile(data, function(d) {
+				viewState.curViewPort.eS = d.length;
 				viewState.curViewPort.bufferLength = d.length;
 				viewState.setheightOsci($(".OsciCanvas").height());
 				viewState.setheightSpectro($(".SpectroCanvas").height());

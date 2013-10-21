@@ -27,8 +27,6 @@ angular.module('emulvcApp')
 
     this.curClickTierName = "";
 
-    sServObj.tmpFixedBufferLength = 128085;
-
     sServObj.curCorrectionToolNr = -1;
 
 
@@ -401,14 +399,14 @@ angular.module('emulvcApp')
     /**
      * calcs and returns start in secs
      */
-    sServObj.getStartTime = function() {
+    sServObj.getViewPortStartTime = function() {
       return (this.curViewPort.sS * 1 / Soundhandlerservice.ac.sampleRate) - 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
     };
 
     /**
      * calcs and returns end time in secs
      */
-    sServObj.getEndTime = function() {
+    sServObj.getViewPortEndTime = function() {
       return (this.curViewPort.eS * 1 / Soundhandlerservice.ac.sampleRate) + 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
     };
 
@@ -441,9 +439,9 @@ angular.module('emulvcApp')
       }
       if (oldStart < this.curViewPort.sS && oldEnd < this.curViewPort.eS) {
         //moved right
-        if (this.curViewPort.eS > this.tmpFixedBufferLength) {
+        if (this.curViewPort.eS > Soundhandlerservice.currentBuffer.length) {
           this.curViewPort.sS = oldStart;
-          this.curViewPort.eS = this.tmpFixedBufferLength;
+          this.curViewPort.eS = Soundhandlerservice.currentBuffer.length;
         }
       }
 
@@ -451,8 +449,8 @@ angular.module('emulvcApp')
       if (this.curViewPort.sS < 0) {
         this.curViewPort.sS = 0;
       }
-      if (this.curViewPort.eS > this.tmpFixedBufferLength) {
-        this.curViewPort.eS = this.tmpFixedBufferLength;
+      if (this.curViewPort.eS > Soundhandlerservice.currentBuffer.length) {
+        this.curViewPort.eS = Soundhandlerservice.currentBuffer.length;
       }
       // check if at least 4 samples are showing (fixed max zoom size)
       if (this.curViewPort.eS - this.curViewPort.sS < 4) {
