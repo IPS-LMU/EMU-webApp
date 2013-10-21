@@ -9,7 +9,7 @@ angular.module('emulvcApp')
         var canvas = element[0];
 
         var transparentColor = [];
-        transparentColor.r = "255";
+        transparentColor.r = "0";
         transparentColor.g = "0";
         transparentColor.b = "0";
 
@@ -96,18 +96,20 @@ angular.module('emulvcApp')
                 x = valIdx * canvas.width / nrOfSamples;
                 y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-                ctx.strokeStyle = config.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
+                ctx.strokeStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
 
-                ctx.fillStyle = config.hsv2rgb(idx * (360 / valRep.length), 1, 0.8); //use css3 hsl value instead
+                ctx.fillStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
                 // draw line
                 ctx.beginPath();
                 ctx.moveTo(prevX, prevY);
                 ctx.lineTo(x, y);
                 ctx.stroke();
+                // ctx.fill();
 
                 // draw dot
                 ctx.beginPath();
                 ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                ctx.closePath();
                 ctx.stroke();
                 ctx.fill();
               }
