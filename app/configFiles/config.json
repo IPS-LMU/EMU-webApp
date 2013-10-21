@@ -3,7 +3,7 @@
         "mode": "standalone",
         "osciSpectroZoomFactor": 6
     },
-    "shortcuts": {
+    "keyMappings": {
         "zoomSel": 69,
         "zoomAll": 81,
         "zoomOut": 83,
