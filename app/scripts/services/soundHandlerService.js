@@ -7,10 +7,17 @@ angular.module('emulvcApp')
 		sServObj.paused = true;
 		sServObj.currentBuffer = {};
 
+		// generate audio context according to browser type
 		if (navigator.userAgent.indexOf("Firefox") !== -1) {
 			sServObj.ac = new window.AudioContext();
 		} else {
 			sServObj.ac = new window.webkitAudioContext();
+
+		}
+
+		// check if sample rate is 44100...
+		if (sServObj.ac.sampleRate != 44100) {
+			alert("sample rate not 44100!! Currently only 44100 supported! Sorry");
 		}
 		sServObj.destination = sServObj.ac.destination;
 

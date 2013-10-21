@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope) {
+  .factory('viewState', function($rootScope, Soundhandlerservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -18,7 +18,7 @@ angular.module('emulvcApp')
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
-    
+
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
     sServObj.heightSpectro = 0;
@@ -79,77 +79,77 @@ angular.module('emulvcApp')
     sServObj.getSampleDist = function(w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
-    
+
     /**
      * get the height of the osci
      */
     sServObj.getscroll = function() {
       return this.scroll;
-    };  
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.setscroll = function(s) {
       this.scroll = s;
-    }; 
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.getheightOsci = function() {
       return this.heightOsci;
-    };  
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.setheightOsci = function(s) {
       this.heightOsci = s;
-    }; 
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.getheightSpectro = function() {
       return this.heightSpectro;
-    };  
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.setheightSpectro = function(s) {
       this.heightSpectro = s;
-    };     
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.getscrollSpectroOpen = function() {
       return this.scrollSpectroOpen;
-    };  
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.setscrollSpectroOpen = function(s) {
       this.scrollSpectroOpen = s;
-    };       
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.getscrollOsciOpen = function() {
       return this.scrollOsciOpen;
-    };  
-    
+    };
+
     /**
      * get the height of the osci
      */
     sServObj.setscrollOsciOpen = function(s) {
       this.scrollOsciOpen = s;
-    };     
-               
+    };
+
 
     /**
      * sets the current (clicked) Tier Name
@@ -217,26 +217,26 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function(segment, id) {
-      if(segment!=null) {
-        this.select(segment.startSample, segment.startSample+segment.sampleDur)
+      if (segment != null) {
+        this.select(segment.startSample, segment.startSample + segment.sampleDur)
         this.curClickSegments = [];
         this.curClickSegments.push(segment);
         this.selected = [];
         this.selected.push(id);
       }
     };
-    
-    
-    
-    sServObj.selectBoundry = function () {
-      if(this.curClickSegments!=undefined) {
+
+
+
+    sServObj.selectBoundry = function() {
+      if (this.curClickSegments != undefined) {
         var left = this.curClickSegments[0].startSample;
-        var right = this.curClickSegments[0].startSample+this.curClickSegments[0].sampleDur;
+        var right = this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur;
         this.curClickSegments.forEach(function(entry) {
-          if(entry.startSample<=left) left = entry.startSample;
-          if(entry.startSample+entry.sampleDur>=right) right = entry.startSample+entry.sampleDur;
+          if (entry.startSample <= left) left = entry.startSample;
+          if (entry.startSample + entry.sampleDur >= right) right = entry.startSample + entry.sampleDur;
         });
-        this.select(left,right);    
+        this.select(left, right);
       }
     };
 
@@ -251,17 +251,17 @@ angular.module('emulvcApp')
         if (my.selected.indexOf(id) == -1 && (entry - 1 == id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
-          empty = false;        
+          empty = false;
         }
         if (my.selected.indexOf(id) == -1 && (entry + 1 == id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
-          empty = false; 
+          empty = false;
         }
       });
       if (empty) {
         this.curClickSegments = [];
-        this.curClickSegments.push(segment);      
+        this.curClickSegments.push(segment);
         this.selected = [];
         this.selected.push(id);
       }
@@ -402,14 +402,14 @@ angular.module('emulvcApp')
      * calcs and returns start in secs
      */
     sServObj.getStartTime = function() {
-      return (this.curViewPort.sS * 1 / 44100); // SIC hardcoded sample rate
+      return (this.curViewPort.sS * 1 / Soundhandlerservice.ac.sampleRate) - 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
     };
 
     /**
      * calcs and returns end time in secs
      */
     sServObj.getEndTime = function() {
-      return (this.curViewPort.eS * 1 / 44100); // SIC hardcoded sample rate
+      return (this.curViewPort.eS * 1 / Soundhandlerservice.ac.sampleRate) + 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
     };
 
 
