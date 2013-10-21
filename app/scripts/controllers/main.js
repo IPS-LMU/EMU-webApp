@@ -8,8 +8,6 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		$scope.lastkeycode = "N/A";
-		console.log(ConfigProviderService.vals);
-
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -21,7 +19,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		/**
-		 * listen for newlyLoadedAudioFile
+		 * listen for configLoaded
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 
