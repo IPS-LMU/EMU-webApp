@@ -165,6 +165,7 @@ li {
 }
 
 .Tier {
+    position:relative;
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -246,6 +247,7 @@ div.center {
     margin: 5px;
     padding: 0px;  
     z-index:0; 
+    position:relative;
 }
 .TierCtrl {
     z-index:0;
