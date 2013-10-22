@@ -18,6 +18,7 @@ angular.module('emulvcApp')
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
+    sServObj.submenuOpen = false;
 
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
@@ -107,6 +108,20 @@ angular.module('emulvcApp')
     sServObj.setheightOsci = function(s) {
       this.heightOsci = s;
     };
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getsubmenuOpen = function() {
+      return this.submenuOpen;
+    };
+
+    /**
+     * get the height of the osci
+     */
+    sServObj.setsubmenuOpen = function(s) {
+      this.submenuOpen = s;
+    };    
 
     /**
      * get the height of the osci

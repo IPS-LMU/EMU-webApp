@@ -26,6 +26,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
 			if (ConfigProviderService.vals.main.mode == "standalone") {
 				var b = $("<button>").attr({
+				    "id":"submenuOpen",
 					"data-tooltip": "Shortcut: O",
 					"tooltip-placement": "bottom",
 					"ng-click": "openFile();",
@@ -36,6 +37,7 @@ var MainCtrl = angular.module('emulvcApp')
 				$("#firstButton").after(b);
 			} else {
 				var b = $("<button>").attr({
+				    "id":"submenuOpen",
 					"class": "mini-btn",
 					"data-tooltip": "Shortcut: O",
 					"tooltip-placement": "bottom",
@@ -80,6 +82,26 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 			});
 		};
+		
+		$scope.openSubmenu = function() {
+		  if (viewState.getsubmenuOpen()) {
+            viewState.setsubmenuOpen(false);
+            $("#submenuOpen").html("Open Menu");
+            $("#menuLeft").removeClass("cbp-spmenu-open");
+            $("#TimelineCtrl").removeClass("cbp-spmenu-push-toright");
+            $("#HandletiersCtrl").removeClass("cbp-spmenu-push-toright");
+            $("#menu").removeClass("cbp-spmenu-push-toright");
+            $("#menu-bottom").removeClass("cbp-spmenu-push-toright");
+          } else {
+            viewState.setsubmenuOpen(true);
+            $("#submenuOpen").html("Close Menu");
+            $("#menuLeft").addClass("cbp-spmenu-open");
+            $("#TimelineCtrl").addClass("cbp-spmenu-push-toright");
+            $("#HandletiersCtrl").addClass("cbp-spmenu-push-toright");
+            $("#menu").addClass("cbp-spmenu-push-toright");
+            $("#menu-bottom").addClass("cbp-spmenu-push-toright");
+          }			
+		};		
 
 		$scope.openFile = function() {
 			alert("code to open file");
