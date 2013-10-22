@@ -25,7 +25,9 @@ angular.module('emulvcApp')
     sServObj.scrollSpectroOpen = true;
     sServObj.scrollOsciOpen = true;
 
-    this.curClickTierName = "";
+    sServObj.curClickTierName = '';
+
+    sServObj.curPreselColumnSample = 2;
 
     sServObj.curCorrectionToolNr = -1;
 
@@ -378,7 +380,7 @@ angular.module('emulvcApp')
     sServObj.createEditArea = function(id, x, y, width, height, label, labelid) {
       console.log(id);
       var textid = "_" + labelid;
-      $("#"+id).prepend($("<textarea>").attr({
+      $("#" + id).prepend($("<textarea>").attr({
         id: textid,
         "autofocus": "true",
         "class": textid + " Label_Edit",
@@ -390,7 +392,7 @@ angular.module('emulvcApp')
         "width": width - 1 + "px",
         "height": height + "px",
         "padding": "0px",
-        "vertical-align":"middle"
+        "vertical-align": "middle"
       }).text(label));
       return textid;
     };

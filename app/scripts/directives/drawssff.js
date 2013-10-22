@@ -4,7 +4,6 @@ angular.module('emulvcApp')
   .directive('drawssff', function() {
     return {
       restrict: 'A',
-      // template: '<h2>howdy</h2>',
       link: function postLink(scope, element, attrs) {
         var canvas = element[0];
 
@@ -13,7 +12,19 @@ angular.module('emulvcApp')
         transparentColor.g = "0";
         transparentColor.b = "0";
 
+        //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+          if (scope.ssffData.length !== 0) {
+            // get name of column to be drawn
+            var colName = "fm"; //SIC hardcoded
+            // find according field in scope.ssffData
+            var col = findColumn(scope.ssffData, colName);
+            // draw values  
+            drawValues(scope.vs, canvas, scope.config, col);
+          }
+        }, true);
+
+        scope.$watch('vs', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
             var colName = "fm"; //SIC hardcoded
@@ -96,8 +107,17 @@ angular.module('emulvcApp')
               x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
               y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-              ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-              ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+
+
+              // mark selected11
+              if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
+                ctx.strokeStyle = 'white';
+                ctx.fillStyle = 'white';
+              } else {
+                ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+              }
+
 
               // draw dot
               ctx.beginPath();
@@ -111,7 +131,13 @@ angular.module('emulvcApp')
                 curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
                 prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                prevY = canvas.height - ((curSampleArrs[valIdx-1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+                prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+
+                // mark selected
+                if (viewState.curCorrectionToolNr - 1 === idx) {
+                  ctx.strokeStyle = 'white';
+                  ctx.fillStyle = 'white';
+                }
 
                 // draw line
                 ctx.beginPath();
