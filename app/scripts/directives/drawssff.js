@@ -146,6 +146,8 @@ angular.module('emulvcApp')
                 ctx.stroke();
                 ctx.fill();
               }
+
+              
             });
           });
 

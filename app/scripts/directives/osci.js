@@ -9,7 +9,9 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvas = element.find("canvas")[0];
+				var markupCanvas = element.find("canvas")[1];
 
+				console.log(markupCanvas)
 				var myid = element[0].id;
 
 				// scope.$watch('vs.curViewPort', function(newValue, oldValue) {
@@ -18,20 +20,19 @@ angular.module('emulvcApp')
 				// 		drawVpOsciMarkup(scope.vs, canvas, scope.config);						
 				// 	}
 				// }, true);			
-				
+
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
 						// check for changed zoom
-						if(oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1){ // SIC -1 check not that clean...
+						if (oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1) { // SIC -1 check not that clean...
 							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.currentBuffer.getChannelData(0));
 							scope.dhs.osciPeaks = allPeakVals;
-							
+							freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.currentBuffer, scope.config);
 						}
-						freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.currentBuffer, scope.config);
-						drawVpOsciMarkup(scope.vs, canvas, scope.config);						
+						drawVpOsciMarkup(scope.vs, markupCanvas, scope.config);
 					}
-				}, true);			
-				
+				}, true);
+
 
 
 				/**
@@ -180,11 +181,12 @@ angular.module('emulvcApp')
 
 				function drawVpOsciMarkup(viewState, canvas, config) {
 
-					var ctx = canvas.getContext("2d");
+					var ctx = canvas.getContext('2d');
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
 					ctx.fillStyle = config.vals.colors.labelColor;
-					ctx.font = (config.vals.colors.fontPxSize + "px" + " " + config.vals.colors.fontType);
+					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
 
 					// lines to corners
 					ctx.beginPath();
@@ -236,7 +238,7 @@ angular.module('emulvcApp')
 							ctx.lineTo(posE, canvas.height);
 							ctx.closePath();
 							ctx.stroke();
-							ctx.fillStyle = canvas.labelColor;
+							ctx.fillStyle = config.vals.colors.labelColor;
 							// start values
 							var tW = ctx.measureText(viewState.curViewPort.selectS).width;
 							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, config.vals.colors.fontPxSize);

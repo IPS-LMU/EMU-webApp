@@ -25,11 +25,7 @@ angular.module('emulvcApp')
 
 					if (event.shiftKey) {
 						curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = 8000 - scope.dhs.getY(event) / event.originalEvent.srcElement.height * 8000; // SIC hardcoded
-						// curSampleArrs.forEach(function(arr, arrIDX) {
-							// if (scope.vs.curCorrectionToolNr != -1) {
-								// arr[scope.vs.curCorrectionToolNr - 1] = 8000 - scope.dhs.getY(event) / event.originalEvent.srcElement.height * 8000; // SIC hardcoded
-							// }
-						// })
+
 					}
 					scope.$apply();
 				});
