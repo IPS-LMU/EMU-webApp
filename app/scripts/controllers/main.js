@@ -22,7 +22,12 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for configLoaded
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
-
+			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
+				                         ConfigProviderService.vals.spectrogramSettings.range_from,
+				                         ConfigProviderService.vals.spectrogramSettings.range_to,
+				                         ConfigProviderService.vals.spectrogramSettings.dynamicRange,
+				                         ConfigProviderService.vals.spectrogramSettings.windowFunction);
+		
 			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
 			if (ConfigProviderService.vals.main.mode == "standalone") {
 				var b = $("<button>").attr({
@@ -67,6 +72,7 @@ var MainCtrl = angular.module('emulvcApp')
 		});
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
+		    viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
 				backdrop: true,
 				keyboard: true,

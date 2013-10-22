@@ -2,7 +2,7 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 6
-    },
+    },   
     "keyMappings": {
         "zoomSel": 69,
         "zoomAll": 81,
@@ -47,5 +47,12 @@
         "zeroLineColor": "#0DC5FF",
         "fontType": "Verdana",
         "fontPxSize": 12    
-    }
+    },
+    "spectrogramSettings": {
+        "N": 512,
+        "range_from": 0,
+        "range_to": 8000,
+        "dynamicRange": 50,
+        "windowFunc": "BARTLETTHANN"
+    }    
 }

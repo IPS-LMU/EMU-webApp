@@ -9,6 +9,7 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	};
 
 	$scope.cancel = function() {
+	    viewState.setmodalOpen(false);
 		$modalInstance.dismiss('cancel');
 	};
 
@@ -22,4 +23,16 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 		$('#HandletiersCtrl').scope().history();
 		$modalInstance.dismiss('ok');
 	};
+	
+	$scope.saveSpectroSettings = function() {
+	    var len = $("#windowLength").val();
+	    var from = $("#viewrange_from").val();
+	    var to = $("#viewrange_to").val();
+	    var dyna = $("#dynamicRange").val();
+	    var win = $("#windowFunction").val();
+	    viewState.setspectroSettings(len, from, to, dyna, win);
+	    viewState.setmodalOpen(false);
+		$modalInstance.dismiss('ok');
+	    
+	}
 };

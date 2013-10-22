@@ -13,12 +13,21 @@ angular.module('emulvcApp')
       selectE: -1,
       bufferLength: -1,
     };
+    
+    sServObj.spectroSettings = {
+      windowLength: -1,
+      range_from: -1,
+      range_to: -1,
+      dynamicRange: -1,
+      windowFunction: -1
+    };
 
 
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
     sServObj.submenuOpen = false;
+    sServObj.modalOpen = false;
 
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
@@ -42,6 +51,19 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
     };
+    
+    /**
+     * set selected Area
+     * @param start of selected Area
+     * @param end of selected Area
+     */
+    sServObj.setspectroSettings = function(len, from, to, dyna, win) {
+      sServObj.spectroSettings.windowLength = len;
+      sServObj.spectroSettings.range_from = from;
+      sServObj.spectroSettings.range_to = to;
+      sServObj.spectroSettings.dynamicRange = dyna;
+      sServObj.spectroSettings.windowFunction = win;
+    };    
 
     /**
      * returns current selection as array
@@ -121,6 +143,20 @@ angular.module('emulvcApp')
      */
     sServObj.setsubmenuOpen = function(s) {
       this.submenuOpen = s;
+    }; 
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getmodalOpen = function() {
+      return this.modalOpen;
+    };
+
+    /**
+     * get the height of the osci
+     */
+    sServObj.setmodalOpen = function(s) {
+      this.modalOpen = s;
     };    
 
     /**

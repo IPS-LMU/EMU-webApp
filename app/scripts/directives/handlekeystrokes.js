@@ -22,7 +22,16 @@ angular.module('emulvcApp')
                                 e.preventDefault();
                                 e.stopPropagation();
                             }
-                        } else {
+                        } 
+                        else if(viewState.getmodalOpen()) {
+                            if (code == ConfigProviderService.vals.keyMappings.enter) {
+                                //$('#HandletiersCtrl').scope().renameLabel();
+                            }
+                            if (code == ConfigProviderService.vals.keyMappings.esc) {
+                                //$('#HandletiersCtrl').scope().deleteEditArea();
+                            }                        
+                        }
+                        else {
                             // delegate keyboard keyMappings according to keyMappings of scope
                             if (code == ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
                                 viewState.shiftViewPort(false);

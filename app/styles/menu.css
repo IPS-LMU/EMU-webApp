@@ -1,15 +1,15 @@
 .cbp-spmenu {
-    background-color: black;
     position: fixed;
-    width:240px;    
+    width:238px;  
+    background: #fff; 
+    border: 0px;
 }
  
 .cbp-spmenu h3 {
-    color: #eee;
+    background: #0DC5FF;
     font-size: 16px;
     height:40px;
     margin: 0;
-    background: -webkit-linear-gradient(top, #666, #444);
     padding-left:10px;
 
 }
