@@ -354,7 +354,7 @@ angular.module('emulvcApp')
     };
 
     sServObj.deleteEditArea = function() {
-      if (null != this.getlasteditArea()) $("." + this.getlasteditArea()).remove();
+      if (null != this.getlasteditArea()) $('.' + this.getlasteditArea()).remove();
       this.editing = false;
     };
 
@@ -391,7 +391,7 @@ angular.module('emulvcApp')
      * precision
      */
     sServObj.round = function(x, n) {
-      if (n < 1 || n > 14) alert("error in call of round function!!");
+      if (n < 1 || n > 14) alert('error in call of round function!!');
       var e = Math.pow(10, n);
       var k = (Math.round(x * e) / e).toString();
       if (k.indexOf('.') == -1) k += '.';
@@ -402,13 +402,13 @@ angular.module('emulvcApp')
     sServObj.openEditArea = function() {
       var lastEventClick = this.getcurClickSegments()[0];
       var lastEventClickId = this.getlastID();
-      var elem = $("#" + this.getcurClickTierName()).find("canvas")[0];
+      var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
       var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
       var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
       var top = elem.offsetTop;
       var height = elem.clientHeight;
       var myid = this.createEditArea(this.getcurClickTierName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
-      this.createSelection($("#" + myid)[0], 0, $("#" + myid).val().length);
+      this.createSelection($('#' + myid)[0], 0, $('#' + myid).val().length);
       return myid;
     };
 
@@ -430,20 +430,20 @@ angular.module('emulvcApp')
 
     sServObj.createEditArea = function(id, x, y, width, height, label, labelid) {
       console.log(id);
-      var textid = "_" + labelid;
-      $("#" + id).prepend($("<textarea>").attr({
+      var textid = '_' + labelid;
+      $('#' + id).prepend($('<textarea>').attr({
         id: textid,
-        "autofocus": "true",
-        "class": textid + " Label_Edit",
-        "ng-model": "message"
+        'autofocus': 'true',
+        'class': textid + ' Label_Edit',
+        'ng-model': 'message'
       }).css({
-        "position": "absolute",
-        "z-index": "5",
-        "left": x + 2 + "px",
-        "width": width - 1 + "px",
-        "height": height + "px",
-        "padding": "0px",
-        "vertical-align": "middle"
+        'position': 'absolute',
+        'z-index': '5',
+        'left': x + 2 + 'px',
+        'width': width - 1 + 'px',
+        'height': height + 'px',
+        'padding': '0px',
+        'vertical-align': 'middle'
       }).text(label));
       return textid;
     };
