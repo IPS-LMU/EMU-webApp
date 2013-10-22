@@ -15,16 +15,18 @@ angular.module('emulvcApp')
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
-            // get name of column to be drawn
-            var colName = "fm"; //SIC hardcoded
-            // find according field in scope.ssffData
-            var col = findColumn(scope.ssffData, colName);
-            // draw values  
-            drawValues(scope.vs, canvas, scope.config, col);
+            if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
+              // get name of column to be drawn
+              var colName = 'fm'; //SIC hardcoded
+              // find according field in scope.ssffData
+              var col = findColumn(scope.ssffData, colName);
+              // draw values  
+              drawValues(scope.vs, canvas, scope.config, col);
+            }
           }
         }, true);
 
-        scope.$watch('vs', function(newValue, oldValue) {
+        scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
             var colName = 'fm'; //SIC hardcoded
@@ -34,6 +36,18 @@ angular.module('emulvcApp')
             drawValues(scope.vs, canvas, scope.config, col);
           }
         }, true);
+
+        scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
+          if (scope.ssffData.length !== 0) {
+            // get name of column to be drawn
+            var colName = 'fm'; //SIC hardcoded
+            // find according field in scope.ssffData
+            var col = findColumn(scope.ssffData, colName);
+            // draw values  
+            drawValues(scope.vs, canvas, scope.config, col);
+          }
+        }, true);
+
 
         scope.$watch('ssffData', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
@@ -150,7 +164,7 @@ angular.module('emulvcApp')
 
 
             });
-          }else{
+          } else {
             ctx.strokeStyle = 'white';
             ctx.strokeText("Zoom in to see contour", 10, 10);
           }
