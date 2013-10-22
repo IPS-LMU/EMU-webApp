@@ -11,7 +11,6 @@ angular.module('emulvcApp')
 				var canvas = element.find("canvas")[0];
 				var markupCanvas = element.find("canvas")[1];
 
-				console.log(markupCanvas)
 				var myid = element[0].id;
 
 				// scope.$watch('vs.curViewPort', function(newValue, oldValue) {

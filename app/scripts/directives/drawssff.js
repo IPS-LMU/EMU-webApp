@@ -27,7 +27,7 @@ angular.module('emulvcApp')
         scope.$watch('vs', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
-            var colName = "fm"; //SIC hardcoded
+            var colName = 'fm'; //SIC hardcoded
             // find according field in scope.ssffData
             var col = findColumn(scope.ssffData, colName);
             // draw values  
@@ -38,7 +38,7 @@ angular.module('emulvcApp')
         scope.$watch('ssffData', function(newValue, oldValue) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
-            var colName = "fm"; //SIC hardcoded
+            var colName = 'fm'; //SIC hardcoded
             // find according field in scope.ssffData
             var col = findColumn(scope.ssffData, colName);
             // draw values  
@@ -75,8 +75,8 @@ angular.module('emulvcApp')
           var ctx = canvas.getContext("2d");
           // create a destination canvas. Here the altered image will be placed
 
-          ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           // hardcode min max display for now
           var minVal = 0;
@@ -94,82 +94,68 @@ angular.module('emulvcApp')
 
           if (nrOfSamples < canvas.width) {
             //console.log("over sample exact ssff drawing");
-          }
+            // }//if
 
-          var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
+            var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
 
-          curSampleArrs.forEach(function(valRep, valIdx) {
-            valRep.forEach(function(val, idx) {
+            curSampleArrs.forEach(function(valRep, valIdx) {
+              valRep.forEach(function(val, idx) {
 
-              curSampleInCol = colStartSampleNr + valIdx;
-              curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
-
-              x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-              y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-
-
-              // mark selected11
-              if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
-                ctx.strokeStyle = 'white';
-                ctx.fillStyle = 'white';
-              } else {
-                ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-              }
-
-
-              // draw dot
-              ctx.beginPath();
-              ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-              ctx.closePath();
-              ctx.stroke();
-              ctx.fill();
-
-              if (valIdx !== 0) {
-                curSampleInCol = colStartSampleNr + valIdx - 1;
+                curSampleInCol = colStartSampleNr + valIdx;
                 curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
-                prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+                x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-                // mark selected
-                if (viewState.curCorrectionToolNr - 1 === idx) {
+
+
+                // mark selected11
+                if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
                   ctx.strokeStyle = 'white';
                   ctx.fillStyle = 'white';
+                } else {
+                  ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                  ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
                 }
 
-                // draw line
+
+                // draw dot
                 ctx.beginPath();
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(x, y);
+                ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                ctx.closePath();
                 ctx.stroke();
                 ctx.fill();
-              }
 
-              
+                if (valIdx !== 0) {
+                  curSampleInCol = colStartSampleNr + valIdx - 1;
+                  curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+                  prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                  prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+
+                  // mark selected
+                  if (viewState.curCorrectionToolNr - 1 === idx) {
+                    ctx.strokeStyle = 'white';
+                    ctx.fillStyle = 'white';
+                  }
+
+                  // draw line
+                  ctx.beginPath();
+                  ctx.moveTo(prevX, prevY);
+                  ctx.lineTo(x, y);
+                  ctx.stroke();
+                  ctx.fill();
+                }
+              });
+
+
             });
-          });
-
-          // read pixels from source
-          var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-          // iterate through pixel data (1 pixels consists of 4 ints in the array)
-          for (var i = 0, len = pixels.data.length; i < len; i += 4) {
-            var r = pixels.data[i];
-            var g = pixels.data[i + 1];
-            var b = pixels.data[i + 2];
-
-            // if the pixel matches our transparent color, set alpha to 0
-            if (r == transparentColor.r && g == transparentColor.g && b == transparentColor.b) {
-              pixels.data[i + 3] = 0;
-            }
+          }else{
+            ctx.strokeStyle = 'white';
+            ctx.strokeText("Zoom in to see contour", 10, 10);
           }
 
-          // write pixel data to destination context
-          ctx.putImageData(pixels, 0, 0);
-
-        }
+        } //function
       }
     };
   });

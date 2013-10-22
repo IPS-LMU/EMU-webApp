@@ -140,17 +140,21 @@ li {
 }
 
 .OsciCanvas {
+    /*position:absolute;*/
+    /*overflow: auto;*/
     margin-left: 5px;
     border: 1px solid gray;
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
     width: 97%;
+    z-index: 2;
 }
 
 .OsciMarkupCanvas {
     margin-left: 5px;
     border: 1px solid gray;
-    /*background: #E7E7E7;*/
+    /*position: absolute;*/
+    z-index: 3;
     width: 97%;
     background-color: transparent; 
 }
@@ -165,11 +169,12 @@ li {
 
 .SSFFCanvas {
     margin-left: 5px;
-    border: 1px solid gray;
-    box-shadow: 0px 1px 2px #000;
+    /*border: 1px solid gray;*/
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%;    
     position:absolute;
     z-index: 3;
+    background-color: transparent;
 }
 
 .TierMain {
