@@ -38,8 +38,9 @@
 
 
 <div class="menu-bottom" id="menu-bottom">
-  <canvas id="scrollbar" class="canvasSettingsBottom" width="2048" height="48"></canvas>
-  <div class="btn-group">
+    <div ng-controller="TimelineCtrl">
+        <preview id="preview" class="preview"></preview>  
+    </div>
     <button ng-click="cmd_zoomAll();" class="mini-btn" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
     <button ng-click="cmd_zoomIn();" class="mini-btn" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
     <button ng-click="cmd_zoomOut();" class="mini-btn" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
@@ -49,6 +50,5 @@
     <button ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play/Pause In View</button>
     <button ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>
     <button ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
-  </div>
 </div>
 </div>
