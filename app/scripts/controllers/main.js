@@ -33,7 +33,7 @@ var MainCtrl = angular.module('emulvcApp')
 					"class": "mini-btn"
 				}).text("Open File");
 				$compile(b)($scope);
-				$("#menu").prepend(b);
+				$("#firstButton").after(b);
 			} else {
 				var b = $("<button>").attr({
 					"class": "mini-btn",
@@ -43,7 +43,7 @@ var MainCtrl = angular.module('emulvcApp')
 					"ng-click": "openMenu()",
 				}).text("Open Menu");
 				$compile(b)($scope);
-				$("#menu").prepend(b);
+				$("#firstButton").after(b);
 			}
 		});
 
