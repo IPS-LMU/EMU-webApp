@@ -96,8 +96,8 @@ angular.module('emulvcApp')
               x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
               y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-              ctx.strokeStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
-              ctx.fillStyle = "hsl(" + idx * (360 / valRep.length) + ",80%, 50%)";
+              ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+              ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
 
               // draw dot
               ctx.beginPath();
@@ -106,21 +106,20 @@ angular.module('emulvcApp')
               ctx.stroke();
               ctx.fill();
 
-              // if (valIdx !== 0) {
-              //   curSampleInCol = colStartSampleNr + valIdx - 1;
-              //   curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+              if (valIdx !== 0) {
+                curSampleInCol = colStartSampleNr + valIdx - 1;
+                curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
-              //   prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-              //   prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+                prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                prevY = canvas.height - ((curSampleArrs[valIdx-1][idx] - minVal) / (maxVal - minVal) * canvas.height);
 
-              //   // draw line
-              //   ctx.beginPath();
-              //   ctx.moveTo(prevX, prevY);
-              //   ctx.lineTo(x, y);
-              //   ctx.stroke();
-              //   ctx.fill();
-
-              // }
+                // draw line
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.fill();
+              }
             });
           });
 

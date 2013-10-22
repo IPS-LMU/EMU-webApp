@@ -215,7 +215,7 @@ angular.module('emulvcApp')
 						var xOffset;
 						if (viewState.curViewPort.selectS == viewState.curViewPort.selectE) {
 							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-							if (viewState.curMouseMoveTierType == "seg") {
+							if (viewState.curMouseMoveTierType == 'seg') {
 								xOffset = 0;
 							} else {
 								xOffset = (sDist / 2);
