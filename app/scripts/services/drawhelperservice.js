@@ -6,7 +6,7 @@ angular.module('emulvcApp')
 		//shared service object to be returned
 		var sServObj = {};
 
-		sServObj.osciPeaks = [];		
+		sServObj.osciPeaks = [];
 
 		/**
 		 *
@@ -80,10 +80,10 @@ angular.module('emulvcApp')
 				}
 			} //else
 			return {
-				"peaks": peaks,
-				"minPeak": minPeak,
-				"maxPeak": maxPeak,
-				"samplePerPx": k
+				'peaks': peaks,
+				'minPeak': minPeak,
+				'maxPeak': maxPeak,
+				'samplePerPx': k
 			};
 		};
 

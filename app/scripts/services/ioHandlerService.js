@@ -21,12 +21,12 @@ angular.module('emulvcApp')
 		sServObj.httpGetAudioFile = function(filePath) {
 			// var my = this;
 			$http.get(filePath, {
-				responseType: "arraybuffer"
+				responseType: 'arraybuffer'
 			}).success(function(data) {
 				$rootScope.$broadcast('newlyLoadedAudioFile', data);
 			}).
 			error(function(data, status) {
-				console.log("Request failed with status: " + status);
+				console.log('Request failed with status: ' + status);
 			});
 		};
 
@@ -35,7 +35,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.httpGetSSFFfile = function(filePath) {
 			$http.get(filePath, {
-				responseType: "arraybuffer"
+				responseType: 'arraybuffer'
 			}).success(function(data) {
 				var ssffJso = Ssffparserservice.ssff2jso(data);
 				ssffJso.fileURL = document.URL + filePath;
