@@ -6,8 +6,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 
-
-		$scope.lastkeycode = "N/A";
+		$scope.lastkeycode = 'N/A';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -27,30 +26,30 @@ var MainCtrl = angular.module('emulvcApp')
 				                         ConfigProviderService.vals.spectrogramSettings.range_to,
 				                         ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				                         ConfigProviderService.vals.spectrogramSettings.window);
-		
+
 			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
-			if (ConfigProviderService.vals.main.mode == "standalone") {
-				var b = $("<button>").attr({
-				    "id":"submenuOpen",
-					"data-tooltip": "Shortcut: O",
-					"tooltip-placement": "bottom",
-					"ng-click": "openFile();",
-					"z-index": "9999",
-					"class": "mini-btn"
-				}).text("Open File");
+			if (ConfigProviderService.vals.main.mode == 'standalone') {
+				var b = $('<button>').attr({
+					'id': 'submenuOpen',
+					'data-tooltip': 'Shortcut: O',
+					'tooltip-placement': 'bottom',
+					'ng-click': 'openFile();',
+					'z-index': '9999',
+					'class': 'mini-btn'
+				}).text('Open File');
 				$compile(b)($scope);
-				$("#firstButton").after(b);
+				$('#firstButton').after(b);
 			} else {
-				var b = $("<button>").attr({
-				    "id":"submenuOpen",
-					"class": "mini-btn",
-					"data-tooltip": "Shortcut: O",
-					"tooltip-placement": "bottom",
-					"z-index": "9999",
-					"ng-click": "openMenu()",
-				}).text("Open Menu");
+				var b = $('<button>').attr({
+					'id': 'submenuOpen',
+					'class': 'mini-btn',
+					'data-tooltip': 'Shortcut: O',
+					'tooltip-placement': 'bottom',
+					'z-index': '9999',
+					'ng-click': 'openMenu()',
+				}).text('Open Menu');
 				$compile(b)($scope);
-				$("#firstButton").after(b);
+				$('#firstButton').after(b);
 			}
 		});
 
@@ -65,14 +64,14 @@ var MainCtrl = angular.module('emulvcApp')
 				// viewState.curViewPort.eS = 71646;
 				viewState.curViewPort.eS = d.length;
 				viewState.curViewPort.bufferLength = d.length;
-				viewState.setheightOsci($(".OsciCanvas").height());
-				viewState.setheightSpectro($(".SpectroCanvas").height());
+				viewState.setheightOsci($('.OsciCanvas').height());
+				viewState.setheightSpectro($('.SpectroCanvas').height());
 				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
 			});
 		});
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
-		    viewState.setmodalOpen(true);
+			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
 				backdrop: true,
 				keyboard: true,
@@ -90,29 +89,30 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 			});
 		};
-		
+
 		$scope.openSubmenu = function() {
-		  if (viewState.getsubmenuOpen()) {
-            viewState.setsubmenuOpen(false);
-            $("#firstButton").html("Open Menu");
-            $("#menuLeft").removeClass("cbp-spmenu-open");
-            $("#TimelineCtrl").removeClass("cbp-spmenu-push-toright");
-            $("#HandletiersCtrl").removeClass("cbp-spmenu-push-toright");
-            $("#menu").removeClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").removeClass("cbp-spmenu-push-toright");
-          } else {
-            viewState.setsubmenuOpen(true);
-            $("#firstButton").html("Close Menu");
-            $("#menuLeft").addClass("cbp-spmenu-open");
-            $("#TimelineCtrl").addClass("cbp-spmenu-push-toright");
-            $("#HandletiersCtrl").addClass("cbp-spmenu-push-toright");
-            $("#menu").addClass("cbp-spmenu-push-toright");
-            $("#menu-bottom").addClass("cbp-spmenu-push-toright");
-          }			
-		};		
+			if (viewState.getsubmenuOpen()) {
+				viewState.setsubmenuOpen(false);
+				$('#submenuOpen').html('Open Menu');
+				$('#menuLeft').removeClass('cbp-spmenu-open');
+				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright');
+				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toright');
+				$('#menu').removeClass('cbp-spmenu-push-toright');
+				$('#menu-bottom').removeClass('cbp-spmenu-push-toright');
+			} else {
+				viewState.setsubmenuOpen(true);
+				$('#submenuOpen').html('Close Menu');
+				$('#menuLeft').addClass('cbp-spmenu-open');
+				$('#TimelineCtrl').addClass('cbp-spmenu-push-toright');
+				$('#HandletiersCtrl').addClass('cbp-spmenu-push-toright');
+				$('#menu').addClass('cbp-spmenu-push-toright');
+				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
+			}
+		};
+
 
 		$scope.openFile = function() {
-			alert("code to open file");
+			alert('code to open file');
 		};
 
 		$scope.setlastkeycode = function(c, shift) {

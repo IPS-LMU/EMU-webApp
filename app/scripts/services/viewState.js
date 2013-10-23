@@ -27,11 +27,11 @@ angular.module('emulvcApp')
       selectE: -1,
       bufferLength: -1,
     };
-    
+
     sServObj.spectroSettings = {
       windowLength: -1,
-      range_from: -1,
-      range_to: -1,
+      rangeFrom: -1,
+      rangeTo: -1,
       dynamicRange: -1,
       window: -1,
     };
@@ -65,12 +65,13 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
     };
-    
+
     /**
      * set selected Area
      * @param start of selected Area
      * @param end of selected Area
      */
+<<<<<<< HEAD
     sServObj.setspectroSettings = function(len, from, to, dyn, win) {
       sServObj.spectroSettings.windowLength = parseInt(len,10);
       sServObj.spectroSettings.range_from   = parseInt(from,10);
@@ -78,6 +79,15 @@ angular.module('emulvcApp')
       sServObj.spectroSettings.dynamicRange = parseInt(dyn,10);
       sServObj.spectroSettings.window       = win;
     };    
+=======
+    sServObj.setspectroSettings = function(len, from, to, dyna, win) {
+      sServObj.spectroSettings.windowLength = len;
+      sServObj.spectroSettings.rangeFrom = from;
+      sServObj.spectroSettings.rangeTo = to;
+      sServObj.spectroSettings.dynamicRange = dyna;
+      sServObj.spectroSettings.windowFunction = win;
+    };
+>>>>>>> 9dfddb2ee33fcb8a717bfb4f537527975ca7cc90
 
     /**
      * returns current selection as array
@@ -94,10 +104,12 @@ angular.module('emulvcApp')
      * @param end of seleected Area
      */
     sServObj.selectDependent = function(start, end) {
-      if (start < this.curViewPort.selectS)
+      if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
-      if (end > this.selectE)
+      }
+      if (end > this.selectE) {
         this.curViewPort.selectE = end;
+      }
     };
 
     /**
@@ -144,7 +156,7 @@ angular.module('emulvcApp')
     sServObj.setheightOsci = function(s) {
       this.heightOsci = s;
     };
-    
+
     /**
      * get the height of the osci
      */
@@ -157,8 +169,8 @@ angular.module('emulvcApp')
      */
     sServObj.setsubmenuOpen = function(s) {
       this.submenuOpen = s;
-    }; 
-    
+    };
+
     /**
      * get the height of the osci
      */
@@ -171,7 +183,7 @@ angular.module('emulvcApp')
      */
     sServObj.setmodalOpen = function(s) {
       this.modalOpen = s;
-    };    
+    };
 
     /**
      * get the height of the osci
@@ -282,8 +294,8 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function(segment, id) {
-      if (segment != null) {
-        this.select(segment.startSample, segment.startSample + segment.sampleDur)
+      if (segment !== null) {
+        this.select(segment.startSample, segment.startSample + segment.sampleDur);
         this.curClickSegments = [];
         this.curClickSegments.push(segment);
         this.selected = [];
@@ -291,15 +303,21 @@ angular.module('emulvcApp')
       }
     };
 
-
-
+    /**
+     * sets a multiple select (click) Segment
+     * @param segment
+     */
     sServObj.selectBoundry = function() {
-      if (this.curClickSegments != undefined) {
+      if (this.curClickSegments !== undefined) {
         var left = this.curClickSegments[0].startSample;
         var right = this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur;
         this.curClickSegments.forEach(function(entry) {
-          if (entry.startSample <= left) left = entry.startSample;
-          if (entry.startSample + entry.sampleDur >= right) right = entry.startSample + entry.sampleDur;
+          if (entry.startSample <= left) {
+            left = entry.startSample;
+          }
+          if (entry.startSample + entry.sampleDur >= right) {
+            right = entry.startSample + entry.sampleDur;
+          }
         });
         this.select(left, right);
       }
@@ -313,12 +331,12 @@ angular.module('emulvcApp')
       var empty = true;
       var my = this;
       this.selected.forEach(function(entry) {
-        if (my.selected.indexOf(id) == -1 && (entry - 1 == id)) {
+        if (my.selected.indexOf(id) === -1 && (entry - 1 === id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
           empty = false;
         }
-        if (my.selected.indexOf(id) == -1 && (entry + 1 == id)) {
+        if (my.selected.indexOf(id) === -1 && (entry + 1 === id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
           empty = false;
@@ -368,7 +386,9 @@ angular.module('emulvcApp')
     };
 
     sServObj.deleteEditArea = function() {
-      if (null != this.getlasteditArea()) $('.' + this.getlasteditArea()).remove();
+      if (null !== this.getlasteditArea()) {
+        $('.' + this.getlasteditArea()).remove();
+      }
       this.editing = false;
     };
 
@@ -405,10 +425,14 @@ angular.module('emulvcApp')
      * precision
      */
     sServObj.round = function(x, n) {
-      if (n < 1 || n > 14) alert('error in call of round function!!');
+      if (n < 1 || n > 14) {
+        alert('error in call of round function!!');
+      }
       var e = Math.pow(10, n);
       var k = (Math.round(x * e) / e).toString();
-      if (k.indexOf('.') == -1) k += '.';
+      if (k.indexOf('.') === -1) {
+        k += '.';
+      }
       k += e.toString().substring(1);
       return k.substring(0, k.indexOf('.') + n + 1);
     };
@@ -537,8 +561,8 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function(zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      var d1 = 1; //this.curMouseMoveSegmentStart - this.curViewPort.sS;
-      var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
+      // var d1 = 1; //this.curMouseMoveSegmentStart - this.curViewPort.sS;
+      // var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       if (zoomIn) {
