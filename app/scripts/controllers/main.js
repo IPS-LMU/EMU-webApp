@@ -85,7 +85,19 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					modalTitle: function() {
 						return title;
-					}
+					},
+					windowLength: function() {
+						return viewState.spectroSettings.windowLength;
+					},
+					range_from: function() {
+						return viewState.spectroSettings.range_from;
+					},
+					range_to: function() {
+						return viewState.spectroSettings.range_to;
+					},
+					dynamicRange: function() {
+						return viewState.spectroSettings.dynamicRange;
+					}					
 				}
 			});
 		};

@@ -1,7 +1,11 @@
-var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, viewState) {
+var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, windowLength, range_from, range_to, dynamicRange, viewState) {
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
+	$scope.windowLength = windowLength;
+	$scope.range_from = range_from;
+	$scope.range_to = range_to;
+	$scope.dynamicRange = dynamicRange;
 
 	$scope.ok = function() {
 		//$modalInstance.close($scope.selected.item);
