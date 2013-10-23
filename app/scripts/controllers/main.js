@@ -26,7 +26,7 @@ var MainCtrl = angular.module('emulvcApp')
 				                         ConfigProviderService.vals.spectrogramSettings.range_from,
 				                         ConfigProviderService.vals.spectrogramSettings.range_to,
 				                         ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				                         ConfigProviderService.vals.spectrogramSettings.windowFunction);
+				                         ConfigProviderService.vals.spectrogramSettings.window);
 		
 			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
 			if (ConfigProviderService.vals.main.mode == "standalone") {

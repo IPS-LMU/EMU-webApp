@@ -10,33 +10,14 @@ angular.module('emulvcApp')
                 // select the needed DOM elements from the template
                 var canvas = element.find("canvas")[0];
                 var myid = element[0].id;
-                var myWindow = {
-                    BARTLETT: 1,
-                    BARTLETTHANN: 2,
-                    BLACKMAN: 3,
-                    COSINE: 4,
-                    GAUSS: 5,
-                    HAMMING: 6,
-                    HANN: 7,
-                    LANCZOS: 8,
-                    RECTANGULAR: 9,
-                    TRIANGULAR: 10
-                };                
-
                 // various mathematical vars
                 var PI = 3.141592653589793; // value : Math.PI
                 var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
                 var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
                 var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);		
-                var dynamicRange = 5000; // value : toLinearLevel(50);
-                var dynRangeInDB = 50; // value : toLevelInDB(dynamicRange);    
                 // FFT default vars
                 var alpha = 0.16; // default alpha for Window Function
                 var windowFunction = myWindow.BARTLETTHANN; // default Window Function
-                var sampleRate = 44100; // default sample rate
-                var channels = 1; // default number of channels
-                var freq_lower = 0; // default upper Frequency
-                var freq = 8000; // default upper Frequency
                 var context = canvas.getContext("2d");
                 var pcmperpixel = 0;
                 var myImage = new Image();
@@ -92,7 +73,6 @@ angular.module('emulvcApp')
                     else {
                         drawOsci(scope.vs, scope.shs.currentBuffer);
                     }
-                    console.log("draw");
                 }              
 
                 function clearImageCache() {
@@ -211,12 +191,23 @@ angular.module('emulvcApp')
                     killSpectroRenderingThread();
                     startSpectroRenderingThread(viewState, buffer);
                 }
+                
+                function findEnum(myset, v) {
+                    for(var k in myset) {
+                       if(k==v) return k;
+                    }
+                    return -1;
+                }                
 
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var parseData = buffer.getChannelData(0).subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
+                    var win = findEnum(myWindow, viewState.spectroSettings.window);
+                    
                     setupEvent();
+                    console.log(viewState.spectroSettings);
+                    console.log(win);
 
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -228,19 +219,19 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'freq': freq
+                        'freq': viewState.spectroSettings.range_to
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'freq_low': freq_lower
+                        'freq_low': viewState.spectroSettings.range_from
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'start': Math.round(viewState.sS)
+                        'start': Math.round(viewState.curViewPort.sS)
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'end': Math.round(viewState.eS)
+                        'end': Math.round(viewState.curViewPort.eS)
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -248,7 +239,7 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'window': windowFunction
+                        'window': win
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -268,7 +259,7 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'dynRangeInDB': dynRangeInDB
+                        'dynRangeInDB': viewState.spectroSettings.dynamicRange
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',

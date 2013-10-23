@@ -30,6 +30,7 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	    var to = $("#viewrange_to").val();
 	    var dyna = $("#dynamicRange").val();
 	    var win = $("#windowFunction").val();
+	    console.log(dyna);
 	    viewState.setspectroSettings(len, from, to, dyna, win);
 	    viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');

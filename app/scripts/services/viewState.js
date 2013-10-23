@@ -5,6 +5,20 @@ angular.module('emulvcApp')
 
     //shared service object to be returned
     var sServObj = {};
+    
+    var myWindow = {
+        BARTLETT: 1,
+        BARTLETTHANN: 2,
+        BLACKMAN: 3,
+        COSINE: 4,
+        GAUSS: 5,
+        HAMMING: 6,
+        HANN: 7,
+        LANCZOS: 8,
+        RECTANGULAR: 9,
+        TRIANGULAR: 10
+    };                
+    
 
     sServObj.curViewPort = {
       sS: 0,
@@ -19,7 +33,7 @@ angular.module('emulvcApp')
       range_from: -1,
       range_to: -1,
       dynamicRange: -1,
-      windowFunction: -1
+      window: -1,
     };
 
 
@@ -57,12 +71,12 @@ angular.module('emulvcApp')
      * @param start of selected Area
      * @param end of selected Area
      */
-    sServObj.setspectroSettings = function(len, from, to, dyna, win) {
-      sServObj.spectroSettings.windowLength = len;
-      sServObj.spectroSettings.range_from = from;
-      sServObj.spectroSettings.range_to = to;
-      sServObj.spectroSettings.dynamicRange = dyna;
-      sServObj.spectroSettings.windowFunction = win;
+    sServObj.setspectroSettings = function(len, from, to, dyn, win) {
+      sServObj.spectroSettings.windowLength = parseInt(len,10);
+      sServObj.spectroSettings.range_from   = parseInt(from,10);
+      sServObj.spectroSettings.range_to     = parseInt(to,10);
+      sServObj.spectroSettings.dynamicRange = parseInt(dyn,10);
+      sServObj.spectroSettings.window       = win;
     };    
 
     /**

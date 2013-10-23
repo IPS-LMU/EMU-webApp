@@ -53,6 +53,6 @@
         "range_from": 0,
         "range_to": 8000,
         "dynamicRange": 50,
-        "windowFunc": "BARTLETTHANN"
+        "window": "BLACKMAN"
     }    
 }
