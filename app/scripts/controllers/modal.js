@@ -1,4 +1,4 @@
-var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, windowLength, range_from, range_to, dynamicRange, viewState) {
+var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, windowLength, range_from, range_to, dynamicRange, window, viewState) {
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
@@ -6,6 +6,7 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	$scope.range_from = range_from;
 	$scope.range_to = range_to;
 	$scope.dynamicRange = dynamicRange;
+	$scope.window = window;
 
 	$scope.ok = function() {
 		//$modalInstance.close($scope.selected.item);
@@ -21,6 +22,11 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	    $('#HandletiersCtrl').scope().deleteSegments();
 	    $modalInstance.dismiss('ok');
 	};
+	
+	$scope.selected = function(name) {
+	    if(name==viewState.spectroSettings.window) return true;
+	    return false;
+	};	
 
 	$scope.deleteTier = function(id) {
 		$('#HandletiersCtrl').scope().deleteTier(id);

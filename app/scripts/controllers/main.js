@@ -97,6 +97,9 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					dynamicRange: function() {
 						return viewState.spectroSettings.dynamicRange;
+					},
+					window: function() {
+						return viewState.spectroSettings.window;
 					}					
 				}
 			});

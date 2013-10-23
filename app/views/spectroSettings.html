@@ -3,8 +3,8 @@
  <div>&nbsp;</div>
  <div>
     <p>View Range (Hz)</p>
-    <input type="text" name="viewrange_from" id="viewrange_from" value="0" />
-    <input type="text" name="viewrange_to" id="viewrange_to" value="8000" />
+    <input type="text" name="viewrange_from" id="viewrange_from" value="{{range_from}}" />
+    <input type="text" name="viewrange_to" id="viewrange_to" value="{{range_to}}" />
 </div>
 <hr />
 <div>
@@ -14,22 +14,22 @@
 <hr />
 <div>          
     <p>Dynamic Range for Maximum (dB)</p>  
-    <input type="text" name="dynamicRange" id="dynamicRange" value="50" /> 
+    <input type="text" name="dynamicRange" id="dynamicRange" value="{{dynamicRange}}" /> 
 </div>
 <hr />
 <div>      
     <p>Window Function</p>      
     <select name="windowFunction" id="windowFunction">
-      <option value="BARTLETT">BARTLETT</option>
-      <option value="BARTLETTHANN" selected>BARTLETTHANN</option>
-      <option value="BLACKMAN">BLACKMAN</option>
-      <option value="COSINE">COSINE</option>
-      <option value="GAUSS">GAUSS</option>
-      <option value="HAMMING">HAMMING</option>
-      <option value="HANN">HANN</option>
-      <option value="LANCZOS">LANCZOS</option>
-      <option value="RECTANGULAR">RECTANGULAR</option>
-      <option value="TRIANGULAR">TRIANGULAR</option>	
+      <option value="BARTLETT" ng-selected="selected('BARTLETT');">BARTLETT</option>
+      <option value="BARTLETTHANN" ng-selected="selected('BARTLETTHANN');">BARTLETTHANN</option>
+      <option value="BLACKMAN" ng-selected="selected('BLACKMAN');">BLACKMAN</option>
+      <option value="COSINE" ng-selected="selected('COSINE');">COSINE</option>
+      <option value="GAUSS" ng-selected="selected('GAUSS');">GAUSS</option>
+      <option value="HAMMING" ng-selected="selected('HAMMING');">HAMMING</option>
+      <option value="HANN" ng-selected="selected('HANN');">HANN</option>
+      <option value="LANCZOS" ng-selected="selected('LANCZOS');">LANCZOS</option>
+      <option value="RECTANGULAR" ng-selected="selected('RECTANGULAR');">RECTANGULAR</option>
+      <option value="TRIANGULAR" ng-selected="selected('TRIANGULAR');">TRIANGULAR</option>	
     </select> 
  </div>
  <div>
