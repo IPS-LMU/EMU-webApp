@@ -110,6 +110,7 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 		};
 
+
 		$scope.openFile = function() {
 			alert('code to open file');
 		};
