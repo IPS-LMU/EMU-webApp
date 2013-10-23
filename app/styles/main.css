@@ -141,6 +141,16 @@ li {
     z-index: 2;
 }
 
+.SpectroMarkupCanvas {
+    margin-left: 5px;
+    border: 1px solid gray;
+    background: #E7E7E7;
+    box-shadow: 0px 1px 2px #000;
+    width: 97%; 
+    opacity: 0;
+    float:left; 
+}
+
 .OsciCanvas {
     /*position:absolute;*/
     /*overflow: auto;*/
