@@ -17,7 +17,7 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
-					$('.HandletiersCtrl').css('padding-top',(scope.vs.getscroll()+scope.vs.getheightOsci()+scope.vs.getheightSpectro() + (2*$('.menu').height()) + 5)+'px');
+					$('.HandletiersCtrl').css('padding-top', (scope.vs.getscroll() + scope.vs.getheightOsci() + scope.vs.getheightSpectro() + (2 * $('.menu').height()) + 5) + 'px');
 				}, true);
 
 
@@ -46,7 +46,7 @@ angular.module('emulvcApp')
 						//console.log("undef config");
 						return;
 					}
-			
+
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
@@ -60,7 +60,7 @@ angular.module('emulvcApp')
 
 					sDist = viewPort.getSampleDist(canvas[0].width);
 					// var selection = viewPort.getSelect();
-					
+
 					// draw name of tier
 					ctx.fillStyle = config.vals.colors.labelColor;
 					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
@@ -103,9 +103,10 @@ angular.module('emulvcApp')
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
-						for (var k in e) {
+
+						e.forEach(function(curEvt) {
 							++curID;
-							var curEvt = e[k];
+
 							if (curEvt.startSample > viewPort.curViewPort.sS &&
 								curEvt.startSample < viewPort.curViewPort.eS || //within segment
 								curEvt.startSample + curEvt.sampleDur > viewPort.curViewPort.sS &&
@@ -191,7 +192,7 @@ angular.module('emulvcApp')
 									ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
-						}
+						});
 					} else {
 						//console.log(tierDetails.type);
 						posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
