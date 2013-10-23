@@ -177,7 +177,10 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			var ret = 0;
 			angular.forEach(tier.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					ret = id;
+				    if(pcm-evt.startSample>=evt.sampleDur/2)
+					    ret = id+1;
+					else 
+					    ret = id;
 				}
 				++id;
 			});

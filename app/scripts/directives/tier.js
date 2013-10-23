@@ -64,7 +64,7 @@ angular.module('emulvcApp')
 					ctx.fillText(tierDetails.TierName, 5, config.vals.colors.fontPxSize);
 					ctx.fillText("(" + tierDetails.type + ")", 5, config.vals.colors.fontPxSize * 2);
 
-					var segMId = viewPort.getcurMouseSegment();
+					var segMId = viewPort.getcurMouseSegmentId();
 					var segCId = viewPort.getselected();
 					var curID = -1;
 					var curPoS = selection[0];
@@ -130,7 +130,7 @@ angular.module('emulvcApp')
 
 								}
 
-								if (segMId == curEvt) {
+								if (segMId == curID && tierDetails.TierName == viewPort.getcurMouseTierName()) {
 									ctx.fillStyle = "blue"; //SIC -> colors externally defined
 									ctx.fillRect(posS, 0, 3, canvas[0].height);
 									ctx.fillStyle = 'black'; //SIC -> colors externally defined

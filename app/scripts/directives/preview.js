@@ -41,22 +41,19 @@ angular.module('emulvcApp')
 					var posS = (canvas.width/vs.curViewPort.bufferLength) * vs.curViewPort.sS;
 					var posE = (canvas.width/vs.curViewPort.bufferLength) * vs.curViewPort.eS;
 					var sDist = vs.getSampleDist(canvas.width);
-					console.log(posS,posE);
                     image.onload = function() {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(image, 0, 0);
-					
-					ctx.fillStyle = config.vals.colors.selectedAreaColor;
-					ctx.fillRect(posS, 0, posE - posS, canvas.height);
-					ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
-					ctx.beginPath();
-					ctx.moveTo(posS, 0);
-					ctx.lineTo(posS, canvas.height);
-					ctx.moveTo(posE, 0);
-					ctx.lineTo(posE, canvas.height);
-					ctx.closePath();
-					ctx.stroke();
-
+                        ctx.fillStyle = config.vals.colors.selectedAreaColor;
+                        ctx.fillRect(posS, 0, posE - posS, canvas.height);
+                        ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
+                        ctx.beginPath();
+                        ctx.moveTo(posS, 0);
+                        ctx.lineTo(posS, canvas.height);
+                        ctx.moveTo(posE, 0);
+                        ctx.lineTo(posE, canvas.height);
+                        ctx.closePath();
+                        ctx.stroke();
                     };
                     image.src = cacheImage.src;
 				}			
