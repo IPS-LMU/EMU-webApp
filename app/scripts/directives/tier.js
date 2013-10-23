@@ -6,18 +6,18 @@ angular.module('emulvcApp')
 		return {
 			templateUrl: 'views/tier.html',
 			restrict: 'E',
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 				// select the needed DOM elements from the template
-				var canvas = element.find("canvas");
+				var canvas = element.find('canvas');
 
-				var myid = scope.tier.TierName;
+				// var myid = scope.tier.TierName;
 				scope.$watch('tierDetails', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 				}, true);
 
 				scope.$watch('vs', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
-					$(".HandletiersCtrl").css("padding-top",(scope.vs.getscroll()+scope.vs.getheightOsci()+scope.vs.getheightSpectro() + (2*$(".menu").height()) + 5)+"px");
+					$('.HandletiersCtrl').css('padding-top',(scope.vs.getscroll()+scope.vs.getheightOsci()+scope.vs.getheightSpectro() + (2*$('.menu').height()) + 5)+'px');
 				}, true);
 
 
@@ -50,33 +50,36 @@ angular.module('emulvcApp')
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
-					if (tierDetails.TierName == viewPort.curClickTierName) {
+					if (tierDetails.TierName === viewPort.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
-					var sDist = viewPort.getSampleDist(canvas[0].width);
-					var selection = viewPort.getSelect();
+					//predef vars
+					var sDist, posS, posE;
+
+					sDist = viewPort.getSampleDist(canvas[0].width);
+					// var selection = viewPort.getSelect();
 					
 					// draw name of tier
 					ctx.fillStyle = config.vals.colors.labelColor;
 					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
 					ctx.fillText(tierDetails.TierName, 5, config.vals.colors.fontPxSize);
-					ctx.fillText("(" + tierDetails.type + ")", 5, config.vals.colors.fontPxSize * 2);
+					ctx.fillText('(' + tierDetails.type + ')', 5, config.vals.colors.fontPxSize * 2);
 
 					var segMId = viewPort.getcurMouseSegmentId();
 					var segCId = viewPort.getselected();
 					var curID = -1;
-					var curPoS = selection[0];
-					var curPoE = selection[1];
-					if (tierDetails.type == "seg") {
-						var posS = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS);
-						var posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
-						var sDist = viewPort.getSampleDist(canvas[0].width);
+					// var curPoS = selection[0];
+					// var curPoE = selection[1];
+					if (tierDetails.type === 'seg') {
+						posS = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS);
+						posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
+						sDist = viewPort.getSampleDist(canvas[0].width);
 						var xOffset;
-						if (posS == posE) {
+						if (posS === posE) {
 							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-							if (viewPort.curMouseMoveTierType == "seg") {
+							if (viewPort.curMouseMoveTierType === 'seg') {
 								xOffset = 0;
 							} else {
 								xOffset = (sDist / 2);
@@ -112,16 +115,16 @@ angular.module('emulvcApp')
 							) {
 
 								// draw segment start
-								var posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
-								var posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+								posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
+								posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 								// check if selected -> if draw as marked
 								var tierId = viewPort.getcurClickTierName();
 
-								if (tierId == tierDetails.TierName) {
+								if (tierId === tierDetails.TierName) {
 
 									segCId.forEach(function(entry) {
-										if (entry == curID) {
+										if (entry === curID) {
 											ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 											ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 											ctx.fillStyle = config.vals.colors.startBoundaryColor;
@@ -130,8 +133,8 @@ angular.module('emulvcApp')
 
 								}
 
-								if (segMId == curID && tierDetails.TierName == viewPort.getcurMouseTierName()) {
-									ctx.fillStyle = "blue"; //SIC -> colors externally defined
+								if (segMId === curID && tierDetails.TierName === viewPort.getcurMouseTierName()) {
+									ctx.fillStyle = 'blue'; //SIC -> colors externally defined
 									ctx.fillRect(posS, 0, 3, canvas[0].height);
 									ctx.fillStyle = 'black'; //SIC -> colors externally defined
 								} else {
@@ -156,7 +159,7 @@ angular.module('emulvcApp')
 								}
 
 								//draw helper lines
-								if (posE - posS > ctx.measureText("m").width * 3) {
+								if (posE - posS > ctx.measureText('m').width * 3) {
 									// start helper line
 									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
@@ -182,17 +185,17 @@ angular.module('emulvcApp')
 								}
 								// draw sampleDur numbers.
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
-								var sDtW = ctx.measureText("dur: " + curEvt.sampleDur).width;
+								var sDtW = ctx.measureText('dur: ' + curEvt.sampleDur).width;
 								//check for enough space to stroke text
 								if (posE - posS > sDtW) {
-									ctx.fillText("dur: " + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
+									ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
 						}
 					} else {
 						//console.log(tierDetails.type);
-						var posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
-						var posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
+						posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
+						posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
 					}
 					// draw cursor/selected area
 				}
