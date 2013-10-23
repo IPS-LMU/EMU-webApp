@@ -10,17 +10,10 @@ angular.module('emulvcApp')
                 // select the needed DOM elements from the template
                 var canvas = element.find("canvas")[0];
                 var myid = element[0].id;
-                // various mathematical vars
-                var PI = 3.141592653589793; // value : Math.PI
-                var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
-                var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
-                var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);		
                 // FFT default vars
                 var alpha = 0.16; // default alpha for Window Function
-                var windowFunction = myWindow.BARTLETTHANN; // default Window Function
                 var context = canvas.getContext("2d");
                 var pcmperpixel = 0;
-                var myImage = new Image();
                 window.URL = window.URL || window.webkitURL;
                 var devicePixelRatio = window.devicePixelRatio || 1;
                 var response = spectroworker.textContent;
@@ -52,9 +45,10 @@ angular.module('emulvcApp')
                 }, true);                   
                 
                 scope.$watch('vs.spectroSettings', function() {
-                    clearImageCache();
-                    if (!$.isEmptyObject(scope.shs.currentBuffer))
-                        redraw();
+                    if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+                        clearImageCache();
+                        drawOsci(scope.vs, scope.shs.currentBuffer);
+                    }                
                 }, true);                   
                                 
 
@@ -174,6 +168,7 @@ angular.module('emulvcApp')
                 }
 
                 function setupEvent() {
+                    var myImage = new Image();
                     ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
                     primeWorker.addEventListener('message', function(event) {
                         var worker_img = event.data.img;
@@ -203,7 +198,6 @@ angular.module('emulvcApp')
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var parseData = buffer.getChannelData(0).subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
-                    var win = findEnum(myWindow, viewState.spectroSettings.window);
                     
                     setupEvent();
                     console.log(viewState.spectroSettings);
@@ -238,7 +232,7 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'window': win
+                        'window': findEnum(myWindow, viewState.spectroSettings.window)
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',

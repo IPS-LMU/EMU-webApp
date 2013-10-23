@@ -36,8 +36,8 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	
 	$scope.saveSpectroSettings = function() {
 	    var len = $("#windowLength").val();
-	    var from = $("#range_from").val();
-	    var to = $("#range_to").val();
+	    var from = $("#rangeFrom").val();
+	    var to = $("#rangeTo").val();
 	    var dyna = $("#dynamicRange").val();
 	    var win = $("#windowFunction").val();
 	    viewState.setspectroSettings(len, from, to, dyna, win);
