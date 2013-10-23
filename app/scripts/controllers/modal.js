@@ -25,11 +25,11 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	};
 	
 	$scope.saveSpectroSettings = function() {
-	    var len = $("#windowLength").val();
-	    var from = $("#viewrange_from").val();
-	    var to = $("#viewrange_to").val();
-	    var dyna = $("#dynamicRange").val();
-	    var win = $("#windowFunction").val();
+	    var len = $('#windowLength').val();
+	    var from = $('#viewrangeFrom').val();
+	    var to = $('#viewrangeTo').val();
+	    var dyna = $('#dynamicRange').val();
+	    var win = $('#windowFunction').val();
 	    viewState.setspectroSettings(len, from, to, dyna, win);
 	    viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');

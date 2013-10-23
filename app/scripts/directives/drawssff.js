@@ -8,9 +8,9 @@ angular.module('emulvcApp')
         var canvas = element[0];
 
         var transparentColor = [];
-        transparentColor.r = "0";
-        transparentColor.g = "0";
-        transparentColor.b = "0";
+        transparentColor.r = '0';
+        transparentColor.g = '0';
+        transparentColor.b = '0';
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
@@ -86,7 +86,7 @@ angular.module('emulvcApp')
          */
 
         function drawValues(viewState, canvas, config, col) {
-          var ctx = canvas.getContext("2d");
+          var ctx = canvas.getContext('2d');
           // create a destination canvas. Here the altered image will be placed
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
@@ -166,9 +166,8 @@ angular.module('emulvcApp')
             });
           } else {
             ctx.strokeStyle = 'white';
-            ctx.strokeText("Zoom in to see contour", 10, 10);
+            ctx.strokeText('Zoom in to see contour', 10, 10);
           }
-
         } //function
       }
     };
