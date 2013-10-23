@@ -171,7 +171,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		};
 
-		$scope.getEventId = function(x, tier) {
+		$scope.getNearest = function(x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
@@ -186,6 +186,20 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 			return ret;
 		};
+		
+		$scope.getEventId = function(x, tier) {
+			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
+			var id = 0;
+			var ret = 0;
+			angular.forEach(tier.events, function(evt) {
+				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+					ret = id;
+				}
+				++id;
+			});
+			return ret;
+		};
+		
 
 		$scope.getEvent = function(x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;

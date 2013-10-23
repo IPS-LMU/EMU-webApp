@@ -138,7 +138,7 @@ angular.module('emulvcApp')
           var tierId = element.parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
-          lastEventMoveId = scope.getEventId(thisPCM, scope.this.tier);
+          lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier);
           scope.vs.setcurMouseTierName(tierId);
           scope.vs.setcurMouseSegment(lastEventMove);
           scope.vs.setcurMouseSegmentId(lastEventMoveId);
