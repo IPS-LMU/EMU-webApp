@@ -50,8 +50,8 @@
     },
     "spectrogramSettings": {
         "N": 512,
-        "range_from": 0,
-        "range_to": 8000,
+        "rangeFrom": 0,
+        "rangeTo": 8000,
         "dynamicRange": 50,
         "window": "BLACKMAN"
     }    

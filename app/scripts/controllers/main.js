@@ -22,8 +22,8 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
-				                         ConfigProviderService.vals.spectrogramSettings.range_from,
-				                         ConfigProviderService.vals.spectrogramSettings.range_to,
+				                         ConfigProviderService.vals.spectrogramSettings.rangeFrom,
+				                         ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				                         ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				                         ConfigProviderService.vals.spectrogramSettings.window);
 
@@ -89,11 +89,11 @@ var MainCtrl = angular.module('emulvcApp')
 					windowLength: function() {
 						return viewState.spectroSettings.windowLength;
 					},
-					range_from: function() {
-						return viewState.spectroSettings.range_from;
+					rangeFrom: function() {
+						return viewState.spectroSettings.rangeFrom;
 					},
-					range_to: function() {
-						return viewState.spectroSettings.range_to;
+					rangeTo: function() {
+						return viewState.spectroSettings.rangeTo;
 					},
 					dynamicRange: function() {
 						return viewState.spectroSettings.dynamicRange;

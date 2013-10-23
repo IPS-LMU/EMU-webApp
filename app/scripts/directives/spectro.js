@@ -207,7 +207,6 @@ angular.module('emulvcApp')
                     
                     setupEvent();
                     console.log(viewState.spectroSettings);
-                    console.log(win);
 
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -219,11 +218,11 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'freq': viewState.spectroSettings.range_to
+                        'freq': viewState.spectroSettings.rangeTo
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'freq_low': viewState.spectroSettings.range_from
+                        'freq_low': viewState.spectroSettings.rangeFrom
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
