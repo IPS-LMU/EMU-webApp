@@ -71,7 +71,6 @@ angular.module('emulvcApp')
      * @param start of selected Area
      * @param end of selected Area
      */
-<<<<<<< HEAD
     sServObj.setspectroSettings = function(len, from, to, dyn, win) {
       sServObj.spectroSettings.windowLength = parseInt(len,10);
       sServObj.spectroSettings.range_from   = parseInt(from,10);
@@ -79,15 +78,7 @@ angular.module('emulvcApp')
       sServObj.spectroSettings.dynamicRange = parseInt(dyn,10);
       sServObj.spectroSettings.window       = win;
     };    
-=======
-    sServObj.setspectroSettings = function(len, from, to, dyna, win) {
-      sServObj.spectroSettings.windowLength = len;
-      sServObj.spectroSettings.rangeFrom = from;
-      sServObj.spectroSettings.rangeTo = to;
-      sServObj.spectroSettings.dynamicRange = dyna;
-      sServObj.spectroSettings.windowFunction = win;
-    };
->>>>>>> 9dfddb2ee33fcb8a717bfb4f537527975ca7cc90
+
 
     /**
      * returns current selection as array
