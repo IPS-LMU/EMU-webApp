@@ -198,9 +198,7 @@ angular.module('emulvcApp')
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var parseData = buffer.getChannelData(0).subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
-                    
                     setupEvent();
-                    console.log(viewState.spectroSettings);
 
                     primeWorker.postMessage({
                         'cmd': 'config',
