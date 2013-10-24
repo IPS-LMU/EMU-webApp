@@ -28,18 +28,18 @@ angular.module('emulvcApp')
 				/**
 				 * draw tier details
 				 * @param tierDetails
-				 * @param viewPort
+				 * @param viewState
 				 * @param cps
 				 */
 
-				function drawTierDetails(tierDetails, viewPort, config) {
+				function drawTierDetails(tierDetails, viewState, config) {
 
 					if ($.isEmptyObject(tierDetails)) {
 						//console.log("undef tierDetails");
 						return;
 					}
-					if ($.isEmptyObject(viewPort)) {
-						//console.log("undef viewPort");
+					if ($.isEmptyObject(viewState)) {
+						//console.log("undef viewState");
 						return;
 					}
 					if ($.isEmptyObject(config)) {
@@ -50,7 +50,7 @@ angular.module('emulvcApp')
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
-					if (tierDetails.TierName === viewPort.curClickTierName) {
+					if (tierDetails.TierName === viewState.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
@@ -58,8 +58,8 @@ angular.module('emulvcApp')
 					//predef vars
 					var sDist, posS, posE;
 
-					sDist = viewPort.getSampleDist(canvas[0].width);
-					// var selection = viewPort.getSelect();
+					sDist = viewState.getSampleDist(canvas[0].width);
+					// var selection = viewState.getSelect();
 
 					// draw name of tier
 					ctx.fillStyle = config.vals.colors.labelColor;
@@ -67,19 +67,19 @@ angular.module('emulvcApp')
 					ctx.fillText(tierDetails.TierName, 5, config.vals.colors.fontPxSize);
 					ctx.fillText('(' + tierDetails.type + ')', 5, config.vals.colors.fontPxSize * 2);
 
-					var segMId = viewPort.getcurMouseSegmentId();
-					var segCId = viewPort.getselected();
+					var segMId = viewState.getcurMouseSegmentId();
+					var segCId = viewState.getselected();
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
 					if (tierDetails.type === 'seg') {
-						posS = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS);
-						posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
-						sDist = viewPort.getSampleDist(canvas[0].width);
+						posS = viewState.getPos(canvas[0].width, viewState.curViewPort.selectS);
+						posE = viewState.getPos(canvas[0].width, viewState.curViewPort.selectE);
+						sDist = viewState.getSampleDist(canvas[0].width);
 						var xOffset;
 						if (posS === posE) {
 							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-							if (viewPort.curMouseMoveTierType === 'seg') {
+							if (viewState.curMouseMoveTierType === 'seg') {
 								xOffset = 0;
 							} else {
 								xOffset = (sDist / 2);
@@ -107,20 +107,20 @@ angular.module('emulvcApp')
 						e.forEach(function(curEvt) {
 							++curID;
 
-							if (curEvt.startSample > viewPort.curViewPort.sS &&
-								curEvt.startSample < viewPort.curViewPort.eS || //within segment
-								curEvt.startSample + curEvt.sampleDur > viewPort.curViewPort.sS &&
-								curEvt.startSample + curEvt.sampleDur < viewPort.curViewPort.eS || //end in segment
-								curEvt.startSample < viewPort.curViewPort.sS &&
-								curEvt.startSample + curEvt.sampleDur > viewPort.curViewPort.eS // within sample
+							if (curEvt.startSample > viewState.curViewPort.sS &&
+								curEvt.startSample < viewState.curViewPort.eS || //within segment
+								curEvt.startSample + curEvt.sampleDur > viewState.curViewPort.sS &&
+								curEvt.startSample + curEvt.sampleDur < viewState.curViewPort.eS || //end in segment
+								curEvt.startSample < viewState.curViewPort.sS &&
+								curEvt.startSample + curEvt.sampleDur > viewState.curViewPort.eS // within sample
 							) {
 
 								// draw segment start
-								posS = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample));
-								posE = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+								posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
+								posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 								// check if selected -> if draw as marked
-								var tierId = viewPort.getcurClickTierName();
+								var tierId = viewState.getcurClickTierName();
 
 								if (tierId === tierDetails.TierName) {
 
@@ -134,7 +134,7 @@ angular.module('emulvcApp')
 
 								}
 
-								if (segMId === curID && tierDetails.TierName === viewPort.getcurMouseTierName()) {
+								if (segMId === curID && tierDetails.TierName === viewState.getcurMouseTierName()) {
 									ctx.fillStyle = 'blue'; //SIC -> colors externally defined
 									ctx.fillRect(posS, 0, 3, canvas[0].height);
 									ctx.fillStyle = 'black'; //SIC -> colors externally defined
@@ -201,10 +201,9 @@ angular.module('emulvcApp')
 						for (var k in tierDetails.events) {
 							//for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
 							var curEvt = tierDetails.events[k];
-							// var id = viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
-							if (curEvt.startSample > viewPort.curViewPort.sS && curEvt.startSample < viewPort.curViewPort.eS) {
-								perc = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
-								console.log(perc)
+							// var id = viewState.getId(tierDetails, curEvt.label, curEvt.startSample);
+							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
+								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
 								// 	if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
 								// 		ctx.fillStyle = this.params.selectedBoundaryColor;
