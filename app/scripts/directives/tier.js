@@ -205,21 +205,22 @@ angular.module('emulvcApp')
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
-								// 	if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
-								// 		ctx.fillStyle = this.params.selectedBoundaryColor;
-								// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		tW = ctx.measureText(tierDetails.events[k].label).width;
-								// 		ctx.fillStyle = this.params.labelColor;
-								// 		ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
-								// 	} else {
-								ctx.fillStyle = config.vals.colors.startBoundaryColor;
-								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								tW = ctx.measureText(tierDetails.events[k].label).width;
-								ctx.fillStyle = config.vals.colors.labelColor;
-								ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
-								// 	}
+								if (tierDetails.TierName === viewState.curMouseMoveTierName && segMId === viewState.curMouseMoveSegmentName) {
+									console.log('this is the selected boundary');
+									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
+									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
+									// 		tW = ctx.measureText(tierDetails.events[k].label).width;
+									// 		ctx.fillStyle = this.params.labelColor;
+									// 		ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+								} else {
+									ctx.fillStyle = config.vals.colors.startBoundaryColor;
+									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
+									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
+									tW = ctx.measureText(tierDetails.events[k].label).width;
+									ctx.fillStyle = config.vals.colors.labelColor;
+									ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+								}
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								tW = ctx.measureText(curEvt.startSample).width;
 								ctx.fillText(curEvt.startSample, perc + 5, canvas[0].height / 8);
