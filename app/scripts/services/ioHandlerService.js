@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, Ssffparserservice) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, Ssffparserservice, Wavparserservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -23,6 +23,7 @@ angular.module('emulvcApp')
 			$http.get(filePath, {
 				responseType: 'arraybuffer'
 			}).success(function(data) {
+				Wavparserservice.wav2jso(data);
 				$rootScope.$broadcast('newlyLoadedAudioFile', data);
 			}).
 			error(function(data, status) {
