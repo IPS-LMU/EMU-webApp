@@ -237,22 +237,50 @@ angular.module('emulvcApp')
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 
-					var segMId = viewState.getcurMouseSegmentId();
-					var segCId = viewState.getselected();
+					var posS, posE, sDist, xOffset;
 
+					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
+					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
+					sDist = viewState.getSampleDist(canvas[1].width);
+
+					if (posS === posE) {
+						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+						if (viewState.curMouseMoveTierType === 'seg') {
+							xOffset = 0;
+						} else {
+							xOffset = (sDist / 2);
+						}
+						ctx.fillStyle = config.vals.colors.selectedBorderColor;
+						ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
+					} else {
+						ctx.fillStyle = config.vals.colors.selectedAreaColor;
+						ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
+						ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
+						ctx.beginPath();
+						ctx.moveTo(posS, 0);
+						ctx.lineTo(posS, canvas[0].height);
+						ctx.moveTo(posE, 0);
+						ctx.lineTo(posE, canvas[0].height);
+						ctx.closePath();
+						ctx.stroke();
+
+					}
+
+
+
+					// var segMId = viewState.getcurMouseSegmentId();
+					var segCId = viewState.getselected();
 					var tierId = viewState.getcurClickTierName();
 					if (tierId !== '' && tierDetails.TierName === tierId) {
+						// draw clicked on selected areas
 						segCId.forEach(function(entry) {
-							
 							var curEvt = tierDetails.events[entry];
-							console.log(curEvt)
-							var posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
-							var posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+							posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
+							posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
 							ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 							ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						});
-						console.log(tierId);
 					}
 				}
 			}

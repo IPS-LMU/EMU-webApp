@@ -142,7 +142,7 @@ angular.module('emulvcApp')
           scope.vs.setcurMouseTierName(tierId);
           scope.vs.setcurMouseSegment(lastEventMove);
           scope.vs.setcurMouseSegmentId(lastEventMoveId);
-          console.log(lastEventMoveId);
+          // console.log(lastEventMoveId);
           lastPCM = thisPCM;
           scope.$apply();
         }
