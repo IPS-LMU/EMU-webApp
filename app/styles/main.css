@@ -19,7 +19,7 @@ html, body{
 ul {
     list-style-type: none;
     margin: 0pt;
-    padding: 0pt;    
+    padding: 0pt;
 }
 
 li {
@@ -103,6 +103,18 @@ li {
     z-index: 1; 
 }
 
+.TierMarkupCanvas {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid gray;
+    background-color: transparent;
+    box-shadow: 0px 1px 2px #000;
+    width: 97%;
+    height: 65px;
+    z-index: 1; 
+}
+
 
 .tierPlaceholder {
     border: 1px dashed #eee;
@@ -111,7 +123,6 @@ li {
     border-radius: 4px;
     background: #efefef;
 }
-
 
 
 .SpectroTop {
@@ -486,6 +497,7 @@ div.center {
     border-bottom:5px solid transparent;
     border-left:5px solid #111;
 }
+
 .tooltip.bottom .tooltip-arrow{
     top:0;
     left:50%;
@@ -494,6 +506,7 @@ div.center {
     border-right:5px solid transparent;
     border-bottom:5px solid #111;
 }
+
 .tooltip.right .tooltip-arrow{
     top:50%;
     left:0;
