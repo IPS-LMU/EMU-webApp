@@ -193,10 +193,41 @@ angular.module('emulvcApp')
 								}
 							}
 						});
-					} else {
-						//console.log(tierDetails.type);
-						posS = Math.round(viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectS));
-						posE = viewPort.getPos(canvas[0].width, viewPort.curViewPort.selectE);
+					} else if (tierDetails.type == 'point') {
+						ctx.fillStyle = config.vals.colors.startBoundaryColor;
+						// predef. vars
+						var perc, tW;
+
+						for (var k in tierDetails.events) {
+							//for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
+							var curEvt = tierDetails.events[k];
+							// var id = viewPort.getId(tierDetails, curEvt.label, curEvt.startSample);
+							if (curEvt.startSample > viewPort.curViewPort.sS && curEvt.startSample < viewPort.curViewPort.eS) {
+								perc = Math.round(viewPort.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
+								console.log(perc)
+
+								// 	if (tierDetails.TierName == emulabeller.viewPort.curMouseMoveTierName && id == emulabeller.viewPort.curMouseMoveSegmentName) {
+								// 		ctx.fillStyle = this.params.selectedBoundaryColor;
+								// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
+								// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
+								// 		tW = ctx.measureText(tierDetails.events[k].label).width;
+								// 		ctx.fillStyle = this.params.labelColor;
+								// 		ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+								// 	} else {
+								ctx.fillStyle = config.vals.colors.startBoundaryColor;
+								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
+								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
+								tW = ctx.measureText(tierDetails.events[k].label).width;
+								ctx.fillStyle = config.vals.colors.labelColor;
+								ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+								// 	}
+								ctx.fillStyle = config.vals.colors.startBoundaryColor;
+								tW = ctx.measureText(curEvt.startSample).width;
+								ctx.fillText(curEvt.startSample, perc + 5, canvas[0].height / 8);
+
+
+							}
+						}
 					}
 					// draw cursor/selected area
 				}
