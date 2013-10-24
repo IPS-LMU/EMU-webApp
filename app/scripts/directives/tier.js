@@ -17,6 +17,7 @@ angular.module('emulvcApp')
 
 				scope.$watch('vs', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
+					drawTierMarkup(scope.tier, scope.vs, scope.config);
 					$('.HandletiersCtrl').css('padding-top', (scope.vs.getscroll() + scope.vs.getheightOsci() + scope.vs.getheightSpectro() + (2 * $('.menu').height()) + 5) + 'px');
 				}, true);
 
@@ -135,11 +136,11 @@ angular.module('emulvcApp')
 								}
 
 								if (segMId === curID && tierDetails.TierName === viewState.getcurMouseTierName()) {
-									ctx.fillStyle = 'blue'; //SIC -> colors externally defined
+									ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									ctx.fillRect(posS, 0, 3, canvas[0].height);
-									ctx.fillStyle = 'black'; //SIC -> colors externally defined
+									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								} else {
-									ctx.fillStyle = 'black'; //SIC -> colors externally defined
+									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 								}
 
@@ -193,7 +194,7 @@ angular.module('emulvcApp')
 								}
 							}
 						});
-					} else if (tierDetails.type == 'point') {
+					} else if (tierDetails.type === 'point') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
 						var perc, tW;
@@ -230,6 +231,29 @@ angular.module('emulvcApp')
 						}
 					}
 					// draw cursor/selected area
+				}
+
+				function drawTierMarkup(tierDetails, viewState, config) {
+					var ctx = canvas[1].getContext('2d');
+					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
+
+					var segMId = viewState.getcurMouseSegmentId();
+					var segCId = viewState.getselected();
+
+					var tierId = viewState.getcurClickTierName();
+					if (tierId !== '' && tierDetails.TierName === tierId) {
+						segCId.forEach(function(entry) {
+							
+							var curEvt = tierDetails.events[entry];
+							console.log(curEvt)
+							var posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
+							var posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+							ctx.fillStyle = config.vals.colors.selectedSegmentColor;
+							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
+							ctx.fillStyle = config.vals.colors.startBoundaryColor;
+						});
+						console.log(tierId);
+					}
 				}
 			}
 		};
