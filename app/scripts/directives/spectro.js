@@ -8,11 +8,15 @@ angular.module('emulvcApp')
             restrict: 'E',
             link: function postLink(scope, element, attrs) {
                 // select the needed DOM elements from the template
-                var canvas = element.find("canvas")[0];
+                var canvas0 = element.find("canvas")[0];
+                var canvas1 = element.find("canvas")[1];
+                var canvas2 = element.find("canvas")[2];
                 var myid = element[0].id;
                 // FFT default vars
                 var alpha = 0.16; // default alpha for Window Function
-                var context = canvas.getContext("2d");
+                var context = canvas0.getContext("2d");
+                var contextssff = canvas1.getContext("2d");
+                var contextmarkup = canvas2.getContext("2d");
                 var pcmperpixel = 0;
                 window.URL = window.URL || window.webkitURL;
                 var devicePixelRatio = window.devicePixelRatio || 1;
@@ -35,14 +39,7 @@ angular.module('emulvcApp')
                 var cache;
                 
                 setupEvent();
-                clearImageCache();
-                
-                
-                scope.$watch('vs.curViewPort', function() {
-                    if (!$.isEmptyObject(cache)) {
-                        if(cache!=null) drawTimeLine(cache);
-                    }
-                }, true);                   
+                clearImageCache();                
                 
                 scope.$watch('vs.spectroSettings', function() {
                     if (!$.isEmptyObject(scope.shs.currentBuffer)) {
@@ -59,10 +56,11 @@ angular.module('emulvcApp')
                 }, true);  
                 
                 function redraw() {
-                    ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
+                    ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
                     cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
                     if(cache!=null) {
                         drawTimeLine(cache);
+                        drawTimeLineContext();
                     }
                     else {
                         drawOsci(scope.vs, scope.shs.currentBuffer);
@@ -96,9 +94,10 @@ angular.module('emulvcApp')
                 }                
 
                 function drawTimeLineContext() {
-					var posS = scope.vs.getPos(canvas.width, scope.vs.curViewPort.selectS);
-					var posE = scope.vs.getPos(canvas.width, scope.vs.curViewPort.selectE);
-					var sDist = scope.vs.getSampleDist(canvas.width);
+                    contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
+					var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
+					var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
+					var sDist = scope.vs.getSampleDist(canvas0.width);
 					var xOffset;        
 					if (scope.vs.curViewPort.selectS == scope.vs.curViewPort.selectE) {
 						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
@@ -107,38 +106,38 @@ angular.module('emulvcApp')
 						} else {
 							xOffset = (sDist / 2);
 						}
-						context.fillStyle = scope.config.vals.colors.selectedBorderColor;
-						context.fillRect(posS + xOffset, 0, 1, canvas.height);
-						context.fillStyle = scope.config.vals.colors.labelColor;
-						context.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, scope.config.vals.colors.fontPxSize);
-						context.fillText(scope.vs.curViewPort.selectS, posS + xOffset + 5, scope.config.vals.colors.fontPxSize * 2);
+						contextmarkup.fillStyle = scope.config.vals.colors.selectedBorderColor;
+						contextmarkup.fillRect(posS + xOffset, 0, 1, canvas0.height);
+						contextmarkup.fillStyle = scope.config.vals.colors.labelColor;
+						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, scope.config.vals.colors.fontPxSize);
+						contextmarkup.fillText(scope.vs.curViewPort.selectS, posS + xOffset + 5, scope.config.vals.colors.fontPxSize * 2);
 					} else {
-						context.fillStyle = scope.config.vals.colors.selectedAreaColor;
-						context.fillRect(posS, 0, posE - posS, canvas.height);
-						context.strokeStyle = scope.config.vals.colors.selectedBoundaryColor;
-						context.beginPath();
-						context.moveTo(posS, 0);
-						context.lineTo(posS, canvas.height);
-						context.moveTo(posE, 0);
-						context.lineTo(posE, canvas.height);
-						context.closePath();
-						context.stroke();
-						context.fillStyle = canvas.labelColor;
+						contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
+						contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
+						contextmarkup.strokeStyle = scope.config.vals.colors.selectedBoundaryColor;
+						contextmarkup.beginPath();
+						contextmarkup.moveTo(posS, 0);
+						contextmarkup.lineTo(posS, canvas0.height);
+						contextmarkup.moveTo(posE, 0);
+						contextmarkup.lineTo(posE, canvas0.height);
+						contextmarkup.closePath();
+						contextmarkup.stroke();
+						contextmarkup.fillStyle = canvas0.labelColor;
 						// start values
-						var tW = context.measureText(scope.vs.curViewPort.selectS).width;
-						context.fillText(scope.vs.curViewPort.selectS, posS - tW - 4, scope.config.vals.colors.fontPxSize);
-						tW = context.measureText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6)).width;
-						context.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6), posS - tW - 4, scope.config.vals.colors.fontPxSize * 2);
+						var tW = contextmarkup.measureText(scope.vs.curViewPort.selectS).width;
+						contextmarkup.fillText(scope.vs.curViewPort.selectS, posS - tW - 4, scope.config.vals.colors.fontPxSize);
+						tW = contextmarkup.measureText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6)).width;
+						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6), posS - tW - 4, scope.config.vals.colors.fontPxSize * 2);
 						// end values
-						context.fillText(scope.vs.curViewPort.selectE, posE + 5, scope.config.vals.colors.fontPxSize);
-						context.fillText(scope.vs.round(scope.vs.curViewPort.selectE / 44100, 6), posE + 5, scope.config.vals.colors.fontPxSize * 2);
+						contextmarkup.fillText(scope.vs.curViewPort.selectE, posE + 5, scope.config.vals.colors.fontPxSize);
+						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectE / 44100, 6), posE + 5, scope.config.vals.colors.fontPxSize * 2);
 						// dur values
 						// check if space
-						if (posE - posS > context.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width) {
-							tW = context.measureText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS).width;
-							context.fillText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize);
-							tW = context.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width;
-							context.fillText(scope.vs.round(((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize * 2);
+						if (posE - posS > contextmarkup.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width) {
+							tW = contextmarkup.measureText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS).width;
+							contextmarkup.fillText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize);
+							tW = contextmarkup.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width;
+							contextmarkup.fillText(scope.vs.round(((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize * 2);
 						}
 					}
                 }
@@ -149,7 +148,6 @@ angular.module('emulvcApp')
                     var image = new Image();
                     image.onload = function() {
                         context.drawImage(image, 0, 0);
-                        drawTimeLineContext();
                     };
                     image.src = imageCache[id][3];
                 }
@@ -157,7 +155,7 @@ angular.module('emulvcApp')
 
                 function killSpectroRenderingThread() {
                     context.fillStyle = "#222";
-                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    context.fillRect(0, 0, canvas0.width, canvas0.height);
                     context.font = "10px Verdana";
                     context.fillStyle = "#333";
                     context.fillText("loading...", 10, 25);
@@ -169,12 +167,12 @@ angular.module('emulvcApp')
 
                 function setupEvent() {
                     var myImage = new Image();
-                    ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas.width);
+                    ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
                     primeWorker.addEventListener('message', function(event) {
                         var worker_img = event.data.img;
                         myImage.onload = function() {
-                            context.drawImage(myImage, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-                            buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas.toDataURL("image/png"));
+                            context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
+                            buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas0.toDataURL("image/png"));
                             drawTimeLineContext();                            
                         }
                         myImage.src = worker_img;
@@ -195,7 +193,7 @@ angular.module('emulvcApp')
                 }                
 
                 function startSpectroRenderingThread(viewState, buffer) {
-                    pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width);
+                    pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var parseData = buffer.getChannelData(0).subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
                     setupEvent();
@@ -238,11 +236,11 @@ angular.module('emulvcApp')
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'width': canvas.width
+                        'width': canvas0.width
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'height': canvas.height
+                        'height': canvas0.height
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',

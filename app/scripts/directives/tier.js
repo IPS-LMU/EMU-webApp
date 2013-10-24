@@ -51,10 +51,7 @@ angular.module('emulvcApp')
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
-					if (tierDetails.TierName === viewState.curClickTierName) {
-						ctx.fillStyle = config.vals.colors.selectedTierColor;
-						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
-					}
+
 
 					//predef vars
 					var sDist, posS, posE;
@@ -74,33 +71,6 @@ angular.module('emulvcApp')
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
 					if (tierDetails.type === 'seg') {
-						posS = viewState.getPos(canvas[0].width, viewState.curViewPort.selectS);
-						posE = viewState.getPos(canvas[0].width, viewState.curViewPort.selectE);
-						sDist = viewState.getSampleDist(canvas[0].width);
-						var xOffset;
-						if (posS === posE) {
-							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-							if (viewState.curMouseMoveTierType === 'seg') {
-								xOffset = 0;
-							} else {
-								xOffset = (sDist / 2);
-							}
-							ctx.fillStyle = config.vals.colors.selectedBorderColor;
-							ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
-						} else {
-							ctx.fillStyle = config.vals.colors.selectedAreaColor;
-							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-							ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
-							ctx.beginPath();
-							ctx.moveTo(posS, 0);
-							ctx.lineTo(posS, canvas[0].height);
-							ctx.moveTo(posE, 0);
-							ctx.lineTo(posE, canvas[0].height);
-							ctx.closePath();
-							ctx.stroke();
-
-						}
-
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
 						var e = tierDetails.events;
@@ -119,34 +89,10 @@ angular.module('emulvcApp')
 								// draw segment start
 								posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
 								posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
-
-								// check if selected -> if draw as marked
-								var tierId = viewState.getcurClickTierName();
-
-								if (tierId === tierDetails.TierName) {
-
-									segCId.forEach(function(entry) {
-										if (entry === curID) {
-											ctx.fillStyle = config.vals.colors.selectedSegmentColor;
-											ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-											ctx.fillStyle = config.vals.colors.startBoundaryColor;
-										}
-									});
-
-								}
-
-								if (segMId === curID && tierDetails.TierName === viewState.getcurMouseTierName()) {
-									ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-									ctx.fillRect(posS, 0, 3, canvas[0].height);
-									ctx.fillStyle = config.vals.colors.startBoundaryColor;
-								} else {
-									ctx.fillStyle = config.vals.colors.startBoundaryColor;
-									ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
-								}
-
+								ctx.fillStyle = config.vals.colors.startBoundaryColor;
+								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 
 								//draw segment end
-
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
@@ -236,7 +182,12 @@ angular.module('emulvcApp')
 				function drawTierMarkup(tierDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
-
+					
+					if (tierDetails.TierName === viewState.curClickTierName) {
+						ctx.fillStyle = config.vals.colors.selectedTierColor;
+						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
+					}					
+					
 					var posS, posE, sDist, xOffset, curEvt;
 
 					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
