@@ -107,6 +107,10 @@ angular.module('emulvcApp')
 
         function setLastRightClick(x) {
           var tierId = element.parent().parent().parent()[0].id;
+          if(scope.vs.getcurClickTierName()!=tierId) {
+              setLastClick(x);
+              //console.log(scope.vs.getcurClickTierName(),tierId);
+          }
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.deleteEditArea();
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
