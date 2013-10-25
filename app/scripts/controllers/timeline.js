@@ -19,28 +19,6 @@ var TimelineCtrl = angular.module('emulvcApp')
 			$scope.ssffData.push(data);
 		});
 
-		$scope.$watch('vs.scroll', function() {
-			$('.OsciCanvas').height(viewState.getheightOsci() + (viewState.getscroll() / 2));
-			$('.SpectroCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.SSFFCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.emptyCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-		}, true);
-
-		$scope.$watch('vs.heightOsci', function() {
-			$('.OsciCanvas').height(viewState.getheightOsci() + (viewState.getscroll() / 2));
-			$('.SpectroCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.SSFFCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.emptyCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-
-		}, true);
-
-		$scope.$watch('vs.heightSpectro', function() {
-			$('.OsciCanvas').height(viewState.getheightOsci() + (viewState.getscroll() / 2));
-			$('.SpectroCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.SSFFCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-			$('.emptyCanvas').height(viewState.getheightSpectro() + (viewState.getscroll() / 2));
-
-		}, true);
 
 		$scope.resizeSpectro = function() {
 			var i = $scope.config.vals.main.osciSpectroZoomFactor;

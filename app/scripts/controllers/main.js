@@ -15,6 +15,9 @@ var MainCtrl = angular.module('emulvcApp')
 		Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
 		Iohandlerservice.httpGetAudioFile('testData/msajc003.wav');
 		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
+		
+		// init pure jquery dragbar
+		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
 
 
 		/**
@@ -59,14 +62,11 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
 			Soundhandlerservice.decodeAudioFile(data, function(d) {
-				//for development
-				// viewState.curViewPort.sS = 59962;
-				// viewState.curViewPort.eS = 71646;
 				viewState.curViewPort.eS = d.length;
 				viewState.curViewPort.bufferLength = d.length;
 				viewState.setheightOsci($('.OsciCanvas').height());
 				viewState.setheightSpectro($('.SpectroCanvas').height());
-				$scope.$apply(); // To update changed var... don't know if this is the way to do it... but it seems to be needed
+				$scope.$apply(); 
 			});
 		});
 

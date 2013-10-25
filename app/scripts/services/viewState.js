@@ -46,6 +46,7 @@ angular.module('emulvcApp')
     sServObj.scroll = 0;
     sServObj.heightOsci = 0;
     sServObj.heightSpectro = 0;
+    sServObj.heightTimeline = 0;
     sServObj.scrollSpectroOpen = true;
     sServObj.scrollOsciOpen = true;
 
@@ -147,6 +148,20 @@ angular.module('emulvcApp')
     sServObj.setheightOsci = function(s) {
       this.heightOsci = s;
     };
+    
+    /**
+     * get the height of the timeline
+     */
+    sServObj.getheightTimeline = function() {
+      return this.heightTimeline;
+    };
+
+    /**
+     * get the height of the timeline
+     */
+    sServObj.setheightTimeline = function(s) {
+      this.heightTimeline = s;
+    };    
 
     /**
      * get the height of the osci
