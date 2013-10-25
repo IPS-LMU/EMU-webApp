@@ -89,7 +89,7 @@ angular.module('emulvcApp')
         });
 
         function setLastClick(x) {
-          var tierId = element.parent()[0].id;
+          var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.deleteEditArea();
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
@@ -98,6 +98,7 @@ angular.module('emulvcApp')
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
           scope.vs.setlasteditArea("_" + lastEventClickId);
           scope.vs.setcurClickTierName(tierId);
+          console.log(tierId);
           scope.vs.setcurClickSegment(lastEventClick, lastEventClickId);
           scope.vs.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;
@@ -105,7 +106,7 @@ angular.module('emulvcApp')
         }
 
         function setLastRightClick(x) {
-          var tierId = element.parent()[0].id;
+          var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.deleteEditArea();
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
@@ -120,7 +121,7 @@ angular.module('emulvcApp')
         }
 
         function setLastDblClick(x) {
-          var tierId = element.parent()[0].id;
+          var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
@@ -135,7 +136,7 @@ angular.module('emulvcApp')
         }
 
         function setLastMove(x) {
-          var tierId = element.parent()[0].id;
+          var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier);
