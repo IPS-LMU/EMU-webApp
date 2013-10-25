@@ -91,7 +91,7 @@ li {
 
 .controls {
     position: absolute;
-    bottom: 0px;
+    height: 100%;
     width: 100%;
 }
 
@@ -138,6 +138,10 @@ li {
     background: #efefef;
 }
 
+.SpectroOuter {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
 
 .SpectroTop, .TierTop {
     height: 100%;
@@ -169,6 +173,8 @@ li {
 .OsciDiv {
     width: 100%;
     height: 100px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .OsciDiv canvas {
@@ -294,13 +300,13 @@ div.center {
 .TimelineCtrl {
     z-index:2;
     position: fixed;
+    left:0px;
+    top: 40px;
     background:#fff;
     -webkit-touch-callout: none;    
     width: 100%;
     text-align:left;
-    height: 1000px;
-    margin-top: -785px;
-    
+    height: 205px;  
 }
 
 .HandletiersCtrl {
@@ -319,6 +325,8 @@ div.center {
 }
 
 #resizer{
+    position:absolute;
+    bottom: 0px;
     background: white;
     border-top:1px solid black;
     border-bottom:1px solid black;
