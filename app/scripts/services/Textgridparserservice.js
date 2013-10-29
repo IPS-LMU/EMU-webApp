@@ -94,11 +94,90 @@ angular.module('emulvcApp')
 				return labelJSO;
 
 			} else {
-				alert('bad header in textgrid file!!! The header has to be: ', this.l1, '\n', this.l2);
+				alert('bad header in TextGrid file!!! The header has to be: ', this.l1, '\n', this.l2);
 			}
 
 		};
 
+		/**
+		 * converts the internal tiers format returned from tierHandler.getTiers
+		 * to a string containing a TextGrid file
+		 */
+		// sServObj.toTextGrid = function(tiers) {
+		// 	var my = this;
+		// 	var tG = "";
+		// 	var nl = "\n";
+		// 	var t = "\t";
+
+		// 	// writing header infos
+		// 	tG = tG + my.l1 + nl + my.l2 + nl + nl;
+		// 	tG = tG + "xmin = " + my.findTimeOfMinSample() + nl;
+		// 	tG = tG + "xmax = " + my.findTimeOfMaxSample() + nl;
+		// 	tG = tG + "tiers? <exists>" + nl;
+		// 	tG = tG + "size = " + emulabeller.tierHandler.getLength() + nl;
+		// 	tG = tG + "item []:" + nl;
+		// 	var tierNr = 0;
+		// 	$("#cans div canvas").each(function(index) {
+		// 		var curTier = emulabeller.tierHandler.getTier($(this).attr("id"));
+		// 		//write tier items
+		// 		tierNr = tierNr + 1;
+		// 		tG = tG + t + "item [" + tierNr + "]:" + nl;
+		// 		if (curTier.type == "seg") {
+		// 			tG = tG + t + t + 'class = "IntervalTier"' + nl;
+		// 		} else if (curTier.type == "point") {
+		// 			tG = tG + t + t + 'class = "TextTier"' + nl;
+		// 		}
+		// 		tG = tG + t + t + 'name = "' + curTier.TierName + '"' + nl;
+		// 		tG = tG + t + t + "xmin = " + my.findTimeOfMinSample() + nl;
+		// 		tG = tG + t + t + "xmax = " + my.findTimeOfMaxSample() + nl;
+		// 		if (curTier.type == "seg") {
+		// 			tG = tG + t + t + "intervals: size = " + curTier.events.length + nl;
+		// 		} else if (curTier.type == "point") {
+		// 			tG = tG + t + t + "points: size = " + curTier.events.length + nl;
+		// 		}
+		// 		for (var j = 0; j < curTier.events.length; j++) {
+		// 			var evtNr = j + 1;
+		// 			if (curTier.type == "seg") {
+		// 				tG = tG + t + t + t + "intervals [" + evtNr + "]:" + nl;
+		// 				if (curTier.events[j].startSample !== 0) {
+		// 					tG = tG + t + t + t + t + "xmin = " + ((curTier.events[j].startSample) / my.ssr + ((1 / my.ssr) / 2)) + nl;
+		// 				} else {
+		// 					tG = tG + t + t + t + t + "xmin = " + 0 + nl;
+		// 				}
+		// 				if (j < curTier.events.length - 1) {
+		// 					tG = tG + t + t + t + t + "xmax = " + ((curTier.events[j].startSample + curTier.events[j].sampleDur + 1) / my.ssr + ((1 / my.ssr) / 2)) + nl;
+		// 				} else {
+		// 					tG = tG + t + t + t + t + "xmax = " + my.findTimeOfMaxSample() + nl;
+		// 				}
+
+		// 				tG = tG + t + t + t + t + 'text = "' + curTier.events[j].label + '"' + nl;
+		// 			} else if (curTier.type == "point") {
+		// 				tG = tG + t + t + t + "points[" + evtNr + "]:" + nl;
+		// 				tG = tG + t + t + t + t + "time = " + curTier.events[j].startSample / my.ssr + nl;
+		// 				tG = tG + t + t + t + t + 'mark = "' + curTier.events[j].label + '"' + nl;
+		// 			}
+		// 		}
+		// 	});
+
+		// 	// console.log(labelJSO);
+		// 	// console.log(tG);
+		// 	return (tG);
+
+		// };
+
+		// /**
+		//  *
+		//  */
+		// sServObj.findTimeOfMinSample = function() {
+		// 	return 0.000000; // maybe needed at some point...
+		// };
+
+		// /**
+		//  *
+		//  */
+		// sServObj.findTimeOfMaxSample = function() {
+		// 	return emulabeller.viewPort.bufferLength / this.ssr;
+		// };
 
 
 		/**
