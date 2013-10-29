@@ -179,15 +179,19 @@ angular.module('emulvcApp')
 					// draw cursor/selected area
 				}
 
+				/**
+				 *
+				 */
+
 				function drawTierMarkup(tierDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
-					
+
 					if (tierDetails.TierName === viewState.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
-					}					
-					
+					}
+
 					var posS, posE, sDist, xOffset, curEvt;
 
 					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
@@ -217,8 +221,6 @@ angular.module('emulvcApp')
 
 					}
 
-
-
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getselected();
 					var tierId = viewState.getcurClickTierName();
@@ -237,7 +239,7 @@ angular.module('emulvcApp')
 					// draw preselected boundary
 					if (segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
 						curEvt = tierDetails.events[segMId];
-						
+
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 
@@ -245,8 +247,6 @@ angular.module('emulvcApp')
 						ctx.fillRect(posS, 0, 3, canvas[1].height);
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 					}
-
-
 				}
 			}
 		};
