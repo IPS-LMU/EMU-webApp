@@ -497,14 +497,14 @@ angular.module('emulvcApp')
      * calcs and returns start in secs
      */
     sServObj.getViewPortStartTime = function() {
-      return (this.curViewPort.sS * 1 / Soundhandlerservice.ac.sampleRate) - 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
+      return (this.curViewPort.sS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
     /**
      * calcs and returns end time in secs
      */
     sServObj.getViewPortEndTime = function() {
-      return (this.curViewPort.eS * 1 / Soundhandlerservice.ac.sampleRate) + 0.5 / Soundhandlerservice.ac.sampleRate; // SIC hardcoded sample rate
+      return (this.curViewPort.eS * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
 
@@ -536,9 +536,9 @@ angular.module('emulvcApp')
       }
       if (oldStart < this.curViewPort.sS && oldEnd < this.curViewPort.eS) {
         //moved right
-        if (this.curViewPort.eS > Soundhandlerservice.currentBuffer.length) {
+        if (this.curViewPort.eS > Soundhandlerservice.wavJSO.Data.length) {
           this.curViewPort.sS = oldStart;
-          this.curViewPort.eS = Soundhandlerservice.currentBuffer.length;
+          this.curViewPort.eS = Soundhandlerservice.wavJSO.Data.length;
         }
       }
 
@@ -546,8 +546,8 @@ angular.module('emulvcApp')
       if (this.curViewPort.sS < 0) {
         this.curViewPort.sS = 0;
       }
-      if (this.curViewPort.eS > Soundhandlerservice.currentBuffer.length) {
-        this.curViewPort.eS = Soundhandlerservice.currentBuffer.length;
+      if (this.curViewPort.eS > Soundhandlerservice.wavJSO.Data.length) {
+        this.curViewPort.eS = Soundhandlerservice.wavJSO.Data.length;
       }
       // check if at least 4 samples are showing (fixed max zoom size)
       if (this.curViewPort.eS - this.curViewPort.sS < 4) {
