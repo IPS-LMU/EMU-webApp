@@ -507,6 +507,20 @@ angular.module('emulvcApp')
       return (this.curViewPort.eS * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
+    /**
+     * calcs and returns start in secs
+     */
+    sServObj.getSelectedStartTime = function() {
+      return (this.curViewPort.selectS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+    };
+
+    /**
+     * calcs and returns end time in secs
+     */
+    sServObj.getSelectedEndTime = function() {
+      return (this.curViewPort.selectE * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+    };
+
 
     /**
      * set view port to start and end sample

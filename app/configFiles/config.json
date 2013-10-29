@@ -11,6 +11,8 @@
         "shiftViewPortLeft": 65,
         "shiftViewPortRight": 68,
         "playEntireFile": 70,
+        "playAllInView": 32,
+        "playSelected": 82,
         "backspace":8,
         "tab": 9,
         "enter":13,

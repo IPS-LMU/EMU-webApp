@@ -152,6 +152,9 @@ angular.module('emulvcApp')
 			curBufferView = new Int16Array(curBuffer);
 			wavRep.Data = curBufferView;
 			// console.log(wavRep);
+
+			// finally append original array buffer
+			wavRep.origArrBuf = buf;
 			return wavRep;
 
 		};

@@ -7,10 +7,10 @@ angular.module('emulvcApp')
       link: function postLink(scope, element, attrs) {
         var canvas = element[0];
 
-        var transparentColor = [];
-        transparentColor.r = '0';
-        transparentColor.g = '0';
-        transparentColor.b = '0';
+        // var transparentColor = [];
+        // transparentColor.r = '0';
+        // transparentColor.g = '0';
+        // transparentColor.b = '0';
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {

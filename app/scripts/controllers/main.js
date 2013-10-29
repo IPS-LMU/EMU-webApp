@@ -67,6 +67,7 @@ var MainCtrl = angular.module('emulvcApp')
 			viewState.setheightOsci($('.OsciCanvas').height());
 			viewState.setheightSpectro($('.SpectroCanvas').height());
 			Soundhandlerservice.wavJSO = wavJSO;
+			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
 
 		});
