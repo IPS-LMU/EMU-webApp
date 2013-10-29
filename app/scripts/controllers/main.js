@@ -12,7 +12,7 @@ var MainCtrl = angular.module('emulvcApp')
 		ConfigProviderService.httpGetConfig();
 
 		// init loading of files for testing
-		Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
+		// Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
 		Iohandlerservice.httpGetAudioFile('testData/msajc003.wav');
 		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
 
@@ -67,15 +67,8 @@ var MainCtrl = angular.module('emulvcApp')
 			viewState.setheightOsci($('.OsciCanvas').height());
 			viewState.setheightSpectro($('.SpectroCanvas').height());
 			Soundhandlerservice.wavJSO = wavJSO;
-			// $scope.$apply();
+			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
 
-			// Soundhandlerservice.decodeAudioFile(data, function(d) {
-				// viewState.curViewPort.eS = d.length;
-				// viewState.curViewPort.bufferLength = d.length;
-				// viewState.setheightOsci($('.OsciCanvas').height());
-				// viewState.setheightSpectro($('.SpectroCanvas').height());
-				// $scope.$apply();
-			// });
 		});
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {

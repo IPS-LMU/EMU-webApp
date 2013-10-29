@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, Ssffparserservice, Wavparserservice) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, Ssffparserservice, Wavparserservice, Textgridparserservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -12,6 +12,17 @@ angular.module('emulvcApp')
 			$http.get(filePath).success(function(data) {
 				console.log(data);
 				$rootScope.$broadcast('newlyLoadedLabelJson', data);
+			});
+		};
+
+		/**
+		 * 
+		 */
+		sServObj.httpGetTextGrid = function(filePath) {
+			$http.get(filePath).success(function(data) {
+				var labelJSO = Textgridparserservice.toJSO(data)
+				// console.log(labelJSO);
+				$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
 			});
 		};
 
