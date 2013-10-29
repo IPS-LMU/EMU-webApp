@@ -15,7 +15,7 @@ var MainCtrl = angular.module('emulvcApp')
 		Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
 		Iohandlerservice.httpGetAudioFile('testData/msajc003.wav');
 		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
-		
+
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
 
@@ -25,10 +25,10 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
-				                         ConfigProviderService.vals.spectrogramSettings.rangeFrom,
-				                         ConfigProviderService.vals.spectrogramSettings.rangeTo,
-				                         ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				                         ConfigProviderService.vals.spectrogramSettings.window);
+				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
+				ConfigProviderService.vals.spectrogramSettings.rangeTo,
+				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
+				ConfigProviderService.vals.spectrogramSettings.window);
 
 			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
 			if (ConfigProviderService.vals.main.mode == 'standalone') {
@@ -60,14 +60,22 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newlyLoadedAudioFile
 		 */
-		$scope.$on('newlyLoadedAudioFile', function(evt, data) {
-			Soundhandlerservice.decodeAudioFile(data, function(d) {
-				viewState.curViewPort.eS = d.length;
-				viewState.curViewPort.bufferLength = d.length;
-				viewState.setheightOsci($('.OsciCanvas').height());
-				viewState.setheightSpectro($('.SpectroCanvas').height());
-				$scope.$apply(); 
-			});
+		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO) {
+			console.log(wavJSO);
+			viewState.curViewPort.eS = wavJSO.Data.length;
+			viewState.curViewPort.bufferLength = wavJSO.length;
+			viewState.setheightOsci($('.OsciCanvas').height());
+			viewState.setheightSpectro($('.SpectroCanvas').height());
+			Soundhandlerservice.wavJSO = wavJSO;
+			// $scope.$apply();
+
+			// Soundhandlerservice.decodeAudioFile(data, function(d) {
+				// viewState.curViewPort.eS = d.length;
+				// viewState.curViewPort.bufferLength = d.length;
+				// viewState.setheightOsci($('.OsciCanvas').height());
+				// viewState.setheightSpectro($('.SpectroCanvas').height());
+				// $scope.$apply();
+			// });
 		});
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
@@ -100,7 +108,7 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					window: function() {
 						return viewState.spectroSettings.window;
-					}					
+					}
 				}
 			});
 		};

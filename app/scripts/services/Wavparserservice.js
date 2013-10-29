@@ -150,7 +150,7 @@ angular.module('emulvcApp')
 			curBinIdx = 44;
 			curBuffer = buf.subarray(curBinIdx, wavRep.Subchunk2Size);
 			curBufferView = new Int16Array(curBuffer);
-			wavRep.pcmData = curBufferView;
+			wavRep.Data = curBufferView;
 			// console.log(wavRep);
 			return wavRep;
 

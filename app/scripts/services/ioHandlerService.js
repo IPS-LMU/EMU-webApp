@@ -23,8 +23,8 @@ angular.module('emulvcApp')
 			$http.get(filePath, {
 				responseType: 'arraybuffer'
 			}).success(function(data) {
-				Wavparserservice.wav2jso(data);
-				$rootScope.$broadcast('newlyLoadedAudioFile', data);
+				var wavJSO = Wavparserservice.wav2jso(data);
+				$rootScope.$broadcast('newlyLoadedAudioFile', wavJSO);
 			}).
 			error(function(data, status) {
 				console.log('Request failed with status: ' + status);

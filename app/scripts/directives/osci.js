@@ -21,12 +21,12 @@ angular.module('emulvcApp')
 				// }, true);			
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+					if (!$.isEmptyObject(scope.shs.wavJSO)) {
 						// check for changed zoom
 						if (oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1) { // SIC -1 check not that clean...
-							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.currentBuffer.getChannelData(0));
+							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 							scope.dhs.osciPeaks = allPeakVals;
-							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.currentBuffer, scope.config);
+							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 						}
 						drawVpOsciMarkup(scope.vs, markupCanvas, scope.config);
 					}

@@ -4,6 +4,9 @@ angular.module('emulvcApp')
 	.service('Soundhandlerservice', function Soundhandlerservice() {
 		// shared service object
 		var sServObj = {};
+
+		sServObj.wavJSO = {};
+
 		sServObj.paused = true;
 		sServObj.currentBuffer = {};
 
