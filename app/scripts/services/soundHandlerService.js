@@ -24,6 +24,7 @@ angular.module('emulvcApp')
 
 		sServObj.resetPlayerSrcFromTo = function(startTime, endTime) {
 			var header = this.wavJSO.origArrBuf.subarray(0, 44);
+			var data = this.wavJSO.origArrBuf.subarray(44, this.wavJSO.Data.length)
 			console.log(header);
 
 			// var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
