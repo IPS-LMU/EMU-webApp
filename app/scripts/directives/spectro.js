@@ -222,8 +222,6 @@ angular.module('emulvcApp')
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
-                    console.log(scope.shs.wavJSO);
-                    console.log(pcmperpixel);
                     setupEvent();
 
                     primeWorker.postMessage({

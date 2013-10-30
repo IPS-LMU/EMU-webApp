@@ -14,11 +14,10 @@ angular.module('emulvcApp')
 				var cacheImage = new Image();
 				
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-					if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+					if (!$.isEmptyObject(scope.shs.wavJSO)) {
 					    if(!initialized) {
-							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.currentBuffer.getChannelData(0));
-							scope.dhs.osciPeaks = allPeakVals;
-							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.currentBuffer, scope.config);
+							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
+							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO, scope.config);
 							cacheImage.src = canvas.toDataURL("image/png");
 							initialized = true;
 						}
@@ -38,8 +37,8 @@ angular.module('emulvcApp')
 				function drawVpOsciMarkup(vs, canvas, config, cacheImage) {
 					var ctx = canvas.getContext("2d");
 					var image = new Image();
-					var posS = (canvas.width/vs.curViewPort.bufferLength) * vs.curViewPort.sS;
-					var posE = (canvas.width/vs.curViewPort.bufferLength) * vs.curViewPort.eS;
+					var posS = (canvas.width/scope.shs.wavJSO.Data.length) * vs.curViewPort.sS;
+					var posE = (canvas.width/scope.shs.wavJSO.Data.length) * vs.curViewPort.eS;
 					var sDist = vs.getSampleDist(canvas.width);
                     image.onload = function() {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
