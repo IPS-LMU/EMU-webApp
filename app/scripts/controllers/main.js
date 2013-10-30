@@ -7,6 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		$scope.lastkeycode = 'N/A';
+		$scope.baseName = undefined;
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -60,15 +61,18 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newlyLoadedAudioFile
 		 */
-		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO) {
+		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.length;
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
-
+			$scope.baseName = fileName.replace(/^.*[\\\/]/, '');
 		});
+		
+
+				
 		
 		$scope.renameTier = function() {
 		    if(viewState.getcurClickTierName()!==undefined) {
