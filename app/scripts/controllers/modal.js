@@ -31,9 +31,13 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 
 	$scope.deleteTier = function(id) {
 		$('#HandletiersCtrl').scope().deleteTier(id);
-		$('#HandletiersCtrl').scope().history();
 		$modalInstance.dismiss('ok');
 	};
+	
+	$scope.renameTier = function() {
+	    $('#HandletiersCtrl').scope().renameTier($('#newName').val());
+		$modalInstance.dismiss('ok');
+	};	
 	
 	$scope.saveSpectroSettings = function() {
 	    var len = $("#windowLength").val();

@@ -147,6 +147,27 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			$scope.history();
 		};
 
+		$scope.renameTier = function(newName) {
+			var x = 0;
+			var found = false;
+			angular.forEach($scope.tierDetails.tiers, function(t) {
+				if (t.TierName == newName) {
+					found = true;
+				}
+			});	
+			if(!found) {		
+			    angular.forEach($scope.tierDetails.tiers, function(t) {
+				    if (t.TierName == viewState.getcurClickTierName()) {
+					    t.TierName = newName;
+    				}
+	    		});
+		    	$scope.history();
+		    }
+		    else {
+		        $scope.openModal('views/error.html','dialog','Rename Error','This Tiername already exists ! Please choose another name !');
+		    }
+		};
+
 		$scope.deleteSegments = function() {
 
 			var toDelete = viewState.getselected();

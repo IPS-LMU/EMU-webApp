@@ -71,7 +71,16 @@ var MainCtrl = angular.module('emulvcApp')
 			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
 
 		});
-
+		
+		$scope.renameTier = function() {
+		    if(viewState.getcurClickTierName()!=='') {
+		        $scope.openModal('views/renameTier.html','dialog');
+		    }
+		    else {
+		        $scope.openModal('views/error.html','dialog','Rename Error','Please choose a Tier first !');
+		    }
+		};
+		
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
