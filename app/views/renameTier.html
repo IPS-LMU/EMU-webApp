@@ -1,0 +1,9 @@
+ <h2>Rename Tier</h2>
+ <div> &nbsp;</div>
+ <div> Rename Tier "{{currentTier}}"</div>
+ <div> to <input type="text" name="newName" id="newName" size="10"/></div>
+ <div>
+   <button ng-click="cancel();" id="dialogButton" class="dialogButton">Cancel</button>
+   <button ng-click="renameTier('{{currentTier}}',$('#newName').val());" id="dialogButton" class="dialogButton">Save</button>
+</div>
+<div></div>

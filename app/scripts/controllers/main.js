@@ -102,7 +102,15 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					window: function() {
 						return viewState.spectroSettings.window;
-					}
+					},
+					currentTier: function() {
+					    if(viewState.getcurClickTierName()!=='') {
+						    return viewState.getcurClickTierName();
+						}
+						else {
+						    return "error";
+						}
+					}					
 				}
 			});
 		};
