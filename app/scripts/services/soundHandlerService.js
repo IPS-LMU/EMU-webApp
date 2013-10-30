@@ -5,47 +5,52 @@ angular.module('emulvcApp')
 		// shared service object
 		var sServObj = {};
 
-		sServObj.wavJSO = {};
-
-		sServObj.paused = true;
-
-		sServObj.playEndTime = Infinity;
+		sServObj.wavJSO = {};;
 
 		sServObj.player = $document[0].createElement('audio');
-
-		sServObj.player.playEndTime = Infinity;
-
-		sServObj.player.curPlayPos = 0;
+		sServObj.player.isPlaying = false;
 
 		sServObj.setPlayerSrc = function(buf) {
 			var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
 			this.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
-		sServObj.resetPlayerSrcFromTo = function(startTime, endTime) {
+		sServObj.resetPlayerSrcFromTo = function(startSample, endSample) {
+			var bytePerSample = this.wavJSO.BitsPerSample / 8;
 			var header = this.wavJSO.origArrBuf.subarray(0, 44);
-			var data = this.wavJSO.origArrBuf.subarray(44, this.wavJSO.Data.length)
-			console.log(header);
+			var data = this.wavJSO.origArrBuf.subarray(44, this.wavJSO.Data.length * bytePerSample)
 
-			// var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
-			// this.player.src = 'data:audio/wav;base64,' + base64String;
+			var dv = new DataView(header);
+			dv.setUint32(40, (endSample - startSample) * bytePerSample, true);
+			var Subchunk2Size = dv.getUint32(40, true);
+			// console.log(Subchunk2Size);
+
+			var newData = data.subarray(startSample * bytePerSample, (endSample - startSample) * bytePerSample);
+
+			var tmp = new Uint8Array(header.byteLength + newData.byteLength);
+			tmp.set(new Uint8Array(header), 0);
+			tmp.set(new Uint8Array(newData), header.byteLength);
+
+			var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(tmp.buffer)));
+			this.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
-		sServObj.playFromTo = function(startTime, endTime) {
-			this.resetPlayerSrcFromTo(startTime, endTime);
+		sServObj.playFromTo = function(startSample, endSample) {
+			this.resetPlayerSrcFromTo(startSample, endSample);
 
-			this.player.currentTime = startTime;
-			this.player.playEndTime = endTime;
-			this.player.play();
+			if (this.player.isPlaying) {
+				this.player.isPlaying = false;
+				this.player.pause();
+			} else {
+				this.player.isPlaying = true;
+				this.player.play();
+			}
+
 		};
 
-		// sServObj.player.addEventListener('timeupdate', function(evt) {
-		// 	if (this.currentTime >= this.playEndTime) {
-		// 		// console.log(this.currentTime);
-		// 		this.pause();
-		// 	}
-		// 	// console.log(this.player.currentTime);
-		// }, false);
+		sServObj.player.addEventListener('ended', function() {
+			this.isPlaying = false;
+		}, false);
 
 
 		return sServObj;
