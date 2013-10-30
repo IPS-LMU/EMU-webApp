@@ -42,15 +42,15 @@ angular.module('emulvcApp')
                 clearImageCache();                
                 
                 scope.$watch('vs.spectroSettings', function() {
-                    if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+                    if (!$.isEmptyObject(scope.shs.wavJSO.Data)) {
                         clearImageCache();
-                        drawOsci(scope.vs, scope.shs.currentBuffer);
+                        drawOsci(scope.vs, scope.shs.wavJSO.Data);
                     }                
                 }, true);                   
                                 
 
                 scope.$watch('vs.curViewPort', function() {
-                    if (!$.isEmptyObject(scope.shs.currentBuffer)) {
+                    if (!$.isEmptyObject(scope.shs.wavJSO.Data)) {
                         redraw();
                     }
                 }, true);  
@@ -63,7 +63,7 @@ angular.module('emulvcApp')
                         drawTimeLineContext();
                     }
                     else {
-                        drawOsci(scope.vs, scope.shs.currentBuffer);
+                        drawOsci(scope.vs, scope.shs.wavJSO.Data);
                     }
                 }              
 
@@ -195,7 +195,10 @@ angular.module('emulvcApp')
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
-                    var parseData = buffer.getChannelData(0).subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
+                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
+                    var parseData = new Float32Array(x);
+                    console.log(scope.shs.wavJSO);
+                    console.log(pcmperpixel);
                     setupEvent();
 
                     primeWorker.postMessage({
@@ -255,9 +258,13 @@ angular.module('emulvcApp')
                         'pixelRatio': devicePixelRatio
                     });
                     primeWorker.postMessage({
-                        'cmd': 'pcm',
-                        'config': JSON.stringify(buffer)
+                        'cmd': 'config',
+                        'sampleRate': scope.shs.wavJSO.SampleRate
                     });
+                    primeWorker.postMessage({
+                        'cmd': 'config',
+                        'streamChannels': scope.shs.wavJSO.NumChannels
+                    });                    
                     primeWorker.postMessage({
                         'cmd': 'pcm',
                         'stream': parseData
