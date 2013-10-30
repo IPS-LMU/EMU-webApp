@@ -13,23 +13,26 @@ angular.module('emulvcApp')
       var b_delete = elem.find(del);
       var b_save = elem.find(sav);
       var open = true;
-      var orignalSize;
+      var cssTier = "Tier";
+      var cssSmallTier = "smallTier";
+      var cssTierCanvas = "TierCanvas";
+      var cssTierMarkupCanvas = "TierMarkupCanvas";
+      var cssSmallCanvas = "smallCanvas";
 
       element.bind('click', function(event){
         if(open) {
           open = false;
-          orignalSize = canvas[0].height;
-          canvas[0].setAttribute("height", orignalSize/3+ "px", false);
-          canvas[1].setAttribute("height", orignalSize/3+ "px", false);
-          //canvas[0].height = orignalSize/3;
-          //canvas[1].height = orignalSize/3;
+          elem.parent().parent()[0].className =  cssSmallTier + " ng-scope";
+          canvas[0].className = cssTierCanvas + " " + cssSmallCanvas;
+          canvas[1].className = cssTierMarkupCanvas + " " + cssSmallCanvas;
           b_delete.hide();
           b_save.hide();
         }
         else {
           open = true;
-          canvas[0].height = orignalSize;        
-          canvas[1].height = orignalSize;        
+          elem.parent().parent()[0].className =  cssTier + " ng-scope";
+          canvas[0].className = cssTierCanvas;
+          canvas[1].className = cssTierMarkupCanvas;
           b_delete.show();
           b_save.show();
         }

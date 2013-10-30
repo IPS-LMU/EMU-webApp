@@ -239,8 +239,6 @@ angular.module('emulvcApp')
 					// draw preselected boundary
 					curEvt = tierDetails.events[segMId];
 					if (curEvt!== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
-						
-						console.log(curEvt);
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 

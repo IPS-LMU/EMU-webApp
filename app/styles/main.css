@@ -113,6 +113,7 @@ li {
 
 .TierMarkupCanvas {
     position:absolute;
+    overflow: auto;
     margin: 0px;
     padding: 0px;
     border: 1px solid gray;
@@ -123,11 +124,23 @@ li {
     z-index: 2; 
 }
 
+.smallCanvas {
+    height: 30px;
+}
+
 .Tier {
     margin: 0px;
     padding: 0px;
     width: 100%;
     height: 65px;
+    z-index: 0;  
+}
+
+.smallTier {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 30px;
     z-index: 0;  
 }
 
