@@ -22,19 +22,29 @@ angular.module('emulvcApp')
 			this.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
+		sServObj.resetPlayerSrcFromTo = function(startTime, endTime) {
+			var header = this.wavJSO.origArrBuf.subarray(0, 44);
+			console.log(header);
+
+			// var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+			// this.player.src = 'data:audio/wav;base64,' + base64String;
+		};
+
 		sServObj.playFromTo = function(startTime, endTime) {
+			this.resetPlayerSrcFromTo(startTime, endTime);
+
 			this.player.currentTime = startTime;
 			this.player.playEndTime = endTime;
 			this.player.play();
 		};
 
-		sServObj.player.addEventListener('timeupdate', function(evt) {
-			if (this.currentTime >= this.playEndTime) {
-				// console.log(this.currentTime);
-				this.pause();
-			}
-			// console.log(this.player.currentTime);
-		}, false);
+		// sServObj.player.addEventListener('timeupdate', function(evt) {
+		// 	if (this.currentTime >= this.playEndTime) {
+		// 		// console.log(this.currentTime);
+		// 		this.pause();
+		// 	}
+		// 	// console.log(this.player.currentTime);
+		// }, false);
 
 
 		return sServObj;
