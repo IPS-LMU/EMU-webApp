@@ -61,7 +61,6 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for newlyLoadedAudioFile
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO) {
-			console.log(wavJSO);
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.length;
 			viewState.setscrollOpen(0);
@@ -72,7 +71,7 @@ var MainCtrl = angular.module('emulvcApp')
 		});
 		
 		$scope.renameTier = function() {
-		    if(viewState.getcurClickTierName()!=='') {
+		    if(viewState.getcurClickTierName()!==undefined) {
 		        $scope.openModal('views/renameTier.html','dialog');
 		    }
 		    else {

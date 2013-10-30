@@ -44,7 +44,7 @@ angular.module('emulvcApp')
     sServObj.modalOpen = false;
     sServObj.scrollOpen = 0;
 
-    sServObj.curClickTierName = '';
+    sServObj.curClickTierName = undefined;
 
     sServObj.curPreselColumnSample = 2;
 

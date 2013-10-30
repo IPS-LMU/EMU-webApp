@@ -77,7 +77,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				viewState.deleteEditArea();
 			}
 			var now = viewState.getcurClickTierName();
-			if (now == undefined) {
+			if (now === undefined) {
 				viewState.setcurClickTierName($("li").children()[0].id);
 			} else {
 				if (next) {
