@@ -19,12 +19,30 @@ angular.module('emulvcApp')
 					ctx.fillStyle = config.vals.colors.crossHairsColor;
 
 					// draw lines
+					var mouseX = dhs.getX(mouseEvt);
+					var mouseY = dhs.getY(mouseEvt);
+
 					ctx.beginPath();
-					ctx.moveTo(0, dhs.getY(mouseEvt));
-					ctx.lineTo(canvas.width, dhs.getY(mouseEvt));
-					ctx.moveTo(dhs.getX(mouseEvt), 0);
-					ctx.lineTo(dhs.getX(mouseEvt), canvas.height);
+					ctx.moveTo(0, mouseY);
+					ctx.lineTo(5, mouseY + 5);
+					ctx.moveTo(0, mouseY);
+					ctx.lineTo(canvas.width, mouseY);
+					ctx.lineTo(canvas.width - 5, mouseY + 5);
+					ctx.moveTo(mouseX, 0);
+					ctx.lineTo(mouseX, canvas.height);
 					ctx.stroke();
+					// draw frequency / sample / time
+					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
+
+					var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
+
+					var tW = ctx.measureText(mouseFreq + ' Hz').width;
+
+					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.colors.fontPxSize);
+					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.colors.fontPxSize);
+
+					ctx.fillText("Sample", mouseX+5, config.vals.colors.fontPxSize);
+					ctx.fillText("secs", mouseX+5, config.vals.colors.fontPxSize*2);
 				}
 
 			}
