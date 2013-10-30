@@ -19,13 +19,17 @@ angular.module('emulvcApp')
         if(open) {
           open = false;
           orignalSize = canvas[0].height;
-          canvas[0].height = orignalSize/3;
+          canvas[0].setAttribute("height", orignalSize/3+ "px", false);
+          canvas[1].setAttribute("height", orignalSize/3+ "px", false);
+          //canvas[0].height = orignalSize/3;
+          //canvas[1].height = orignalSize/3;
           b_delete.hide();
           b_save.hide();
         }
         else {
           open = true;
           canvas[0].height = orignalSize;        
+          canvas[1].height = orignalSize;        
           b_delete.show();
           b_save.show();
         }
