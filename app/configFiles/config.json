@@ -1,7 +1,7 @@
 {
     "main": {
         "mode": "standalone",
-        "osciSpectroZoomFactor": 6
+        "osciSpectroZoomFactor": 2
     },   
     "keyMappings": {
         "zoomSel": 69,

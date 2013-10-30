@@ -42,8 +42,7 @@ angular.module('emulvcApp')
     sServObj.editing = false;
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
-    sServObj.scrollSpectroOpen = true;
-    sServObj.scrollOsciOpen = true;
+    sServObj.scrollOpen = 0;
 
     sServObj.curClickTierName = '';
 
@@ -147,29 +146,15 @@ angular.module('emulvcApp')
     /**
      * get the height of the osci
      */
-    sServObj.getscrollSpectroOpen = function() {
-      return this.scrollSpectroOpen;
+    sServObj.getscrollOpen = function() {
+      return this.scrollOpen;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.setscrollSpectroOpen = function(s) {
-      this.scrollSpectroOpen = s;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.getscrollOsciOpen = function() {
-      return this.scrollOsciOpen;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setscrollOsciOpen = function(s) {
-      this.scrollOsciOpen = s;
+    sServObj.setscrollOpen = function(s) {
+      this.scrollOpen = s;
     };
 
 

@@ -55,16 +55,30 @@ angular.module('emulvcApp')
                     }
                 }, true);  
                 
-                scope.$watch('vs.scrollSpectroOpen', function() {
-                    if(scope.vs.scrollSpectroOpen) {
-                        console.log(element.children()[0]);
-                    }
-                    else {
-                    
+                scope.$watch('vs.scrollOpen', function() {
+                    if (!$.isEmptyObject(scope.config.vals)) {
+                        var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
+                        var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
+                        if(scope.vs.scrollOpen == 0) {
+                            $('.OsciDiv').css({ height: '50%' });
+                            $('.OsciDiv canvas').css({ height: '48%' });
+                            $('.SpectroDiv').css({  height: '50%' });
+                            $('.SpectroDiv canvas').css({ height: '48%' });
+                        }
+                        else if(scope.vs.scrollOpen == 1){
+                            $('.OsciDiv').css({ height: per+'%' });
+                            $('.OsciDiv canvas').css({ height: per+'%' });
+                            $('.SpectroDiv').css({ height: perInvers+'%' });  
+                            $('.SpectroDiv canvas').css({ height: perInvers+'%' });                      
+                        }
+                        else if(scope.vs.scrollOpen == 2){
+                            $('.OsciDiv').css({ height: perInvers+'%' });
+                            $('.OsciDiv canvas').css({ height: perInvers+'%' });
+                            $('.SpectroDiv').css({ height: per+'%' });  
+                            $('.SpectroDiv canvas').css({ height: per+'%' });                      
+                        }                        
                     }
                 }, true);                  
-                
-                
                 
                 function redraw() {
                     ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);

@@ -31,6 +31,30 @@ angular.module('emulvcApp')
 						drawVpOsciMarkup(scope, markupCanvas, scope.config);
 					}
 				}, true);
+                
+                scope.$watch('vs.scrollOpen', function() {
+                    if (!$.isEmptyObject(scope.config.vals)) {
+                        var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
+                        var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
+                        if(scope.vs.scrollOpen == 0) {
+                            $('.OsciDiv').css({ height: '50%' });
+                            $('.OsciDiv canvas').css({ height: '48%' });
+                            $('.SpectroDiv').css({  height: '50%' });
+                            $('.SpectroDiv canvas').css({ height: '48%' });
+                        }
+                        else if(scope.vs.scrollOpen == 1){
+                            $('.OsciDiv').css({ height: per+'%' });
+                            $('.OsciDiv canvas').css({ height: per+'%' });
+                            $('.SpectroDiv').css({ height: perInvers+'%' });  
+                            $('.SpectroDiv canvas').css({ height: perInvers+'%' });                      
+                        }
+                        else if(scope.vs.scrollOpen == 2){
+                            $('.OsciDiv').css({ height: perInvers+'%' });
+                            $('.OsciDiv canvas').css({ height: perInvers+'%' });
+                            $('.SpectroDiv').css({ height: per+'%' });  
+                            $('.SpectroDiv canvas').css({ height: per+'%' });                      
+                        }                     }
+                }, true);   
 
 				/**
 				 * draws markup of osci according to
