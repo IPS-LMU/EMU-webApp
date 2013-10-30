@@ -55,6 +55,17 @@ angular.module('emulvcApp')
                     }
                 }, true);  
                 
+                scope.$watch('vs.scrollSpectroOpen', function() {
+                    if(scope.vs.scrollSpectroOpen) {
+                        console.log(element.children()[0]);
+                    }
+                    else {
+                    
+                    }
+                }, true);                  
+                
+                
+                
                 function redraw() {
                     ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
                     cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);

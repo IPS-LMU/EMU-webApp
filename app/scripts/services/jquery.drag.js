@@ -25,7 +25,6 @@
   }
 
   function init(e,h,k) {
-    console.log(e.css('top'));
     return e.each( function() {
       var $box = $(this),
           $handle = (h) ? $(h,this).css('cursor',k) : $box;
@@ -47,6 +46,7 @@
 
   function drag(v) {
     var p = xy(v);
+    $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
     E.css({ height:Math.max(p.y-M.pY+M.H,0) });
     return false;
   };

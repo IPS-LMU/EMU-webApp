@@ -335,10 +335,12 @@ div.center {
 }
 
 .HandletiersCtrl {
+    z-index:1;
     text-align:left;
     margin: 5px;
     padding: 0px;  
     z-index:0; 
+    top: 0px;
     position:relative;
 }
 

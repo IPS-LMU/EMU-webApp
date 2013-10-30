@@ -42,11 +42,6 @@ angular.module('emulvcApp')
     sServObj.editing = false;
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
-
-    sServObj.scroll = 0;
-    sServObj.heightOsci = 0;
-    sServObj.heightSpectro = 0;
-    sServObj.heightTimeline = 0;
     sServObj.scrollSpectroOpen = true;
     sServObj.scrollOsciOpen = true;
 
@@ -119,49 +114,7 @@ angular.module('emulvcApp')
      */
     sServObj.getSampleDist = function(w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.getscroll = function() {
-      return this.scroll;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setscroll = function(s) {
-      this.scroll = s;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.getheightOsci = function() {
-      return this.heightOsci;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setheightOsci = function(s) {
-      this.heightOsci = s;
-    };
-    
-    /**
-     * get the height of the timeline
-     */
-    sServObj.getheightTimeline = function() {
-      return this.heightTimeline;
-    };
-
-    /**
-     * get the height of the timeline
-     */
-    sServObj.setheightTimeline = function(s) {
-      this.heightTimeline = s;
-    };    
+    }; 
 
     /**
      * get the height of the osci
@@ -189,20 +142,6 @@ angular.module('emulvcApp')
      */
     sServObj.setmodalOpen = function(s) {
       this.modalOpen = s;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.getheightSpectro = function() {
-      return this.heightSpectro;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setheightSpectro = function(s) {
-      this.heightSpectro = s;
     };
 
     /**

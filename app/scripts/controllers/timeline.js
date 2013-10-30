@@ -21,32 +21,18 @@ var TimelineCtrl = angular.module('emulvcApp')
 
 
 		$scope.resizeSpectro = function() {
-			var i = $scope.config.vals.main.osciSpectroZoomFactor;
-			var full = viewState.getheightSpectro() + viewState.getheightOsci();
 			if (viewState.getscrollSpectroOpen()) {
 				viewState.setscrollSpectroOpen(false);
-				viewState.setheightSpectro(((i - 1) * full) / i);
-				viewState.setheightOsci(full / i);
 			} else {
 				viewState.setscrollSpectroOpen(true);
-				viewState.setheightSpectro(full / 2);
-				viewState.setheightOsci(full / 2);
 			}
 		};
 
 		$scope.resizeOsci = function() {
-			var i = $scope.config.vals.main.osciSpectroZoomFactor;
-			var full = viewState.getheightSpectro() + viewState.getheightOsci();
 			if (viewState.getscrollOsciOpen()) {
 				viewState.setscrollOsciOpen(false);
-				viewState.setheightSpectro(full / i);
-				viewState.setheightOsci(((i - 1) * full) / i);
-
 			} else {
 				viewState.setscrollOsciOpen(true);
-				viewState.setheightSpectro(full / 2);
-				viewState.setheightOsci(full / 2);
-
 			}
 		};
 

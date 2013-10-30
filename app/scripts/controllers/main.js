@@ -64,8 +64,6 @@ var MainCtrl = angular.module('emulvcApp')
 			console.log(wavJSO);
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.length;
-			viewState.setheightOsci($('.OsciCanvas').height());
-			viewState.setheightSpectro($('.SpectroCanvas').height());
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');

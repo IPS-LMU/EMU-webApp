@@ -18,7 +18,7 @@ angular.module('emulvcApp')
 				scope.$watch('vs', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 					drawTierMarkup(scope.tier, scope.vs, scope.config);
-					$('.HandletiersCtrl').css('padding-top', (scope.vs.getscroll() + scope.vs.getheightOsci() + scope.vs.getheightSpectro() + (2 * $('.menu').height()) + 5) + 'px');
+					$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
 				}, true);
 
 
