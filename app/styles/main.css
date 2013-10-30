@@ -172,7 +172,7 @@ li {
     box-shadow: 0px 1px 2px #000;
     width: 97%; 
     height: 100%; 
-    z-index: 2;
+    z-index: 3;
 }
 
 .SpectroMarkupCanvas {
@@ -209,7 +209,7 @@ li {
     border: 1px solid gray;
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
-    z-index: 2;
+    z-index: 3;
     width: 97%;
     height: 100%;
 }
@@ -219,7 +219,7 @@ li {
     overflow: auto;
     border: 1px solid gray;
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     background-color: transparent; 
     width: 97%;
     height: 100%;    
@@ -239,7 +239,7 @@ li {
     /*box-shadow: 0px 1px 2px #000;*/
     width: 97%;    
     position:absolute;
-    z-index: 3;
+    z-index: 5;
     background-color: transparent;
     width: 97%;
     height: 100%;     
@@ -268,10 +268,16 @@ li {
 
 .submenu {
     width: 100%;
-    float: left;
     height: 100%;
     text-align: left;
-    margin: 3px;
+    padding: 5px;
+}
+
+.submenu div{
+    width: 200px;
+    text-align: left;
+    padding-left: 10px;
+    font-size: 90%;
 }
 
 
@@ -560,4 +566,36 @@ div.center {
     position:absolute;
     width:0;
     height:0
+}
+
+
+.dragOver {
+    border: 2px dashed black !important;
+    background-color: #0DC5FF;
+    opacity: 0.3;
+}
+
+.dragDragging {
+   width:25px;
+   height:25px;
+   background:#0DC5FF;
+   margin:0;
+   padding:0;
+}
+
+.dragOver > div {
+    opacity: 1;
+}
+
+.dragTarget > div  {
+	background-color: #0DC5FF;
+	opacity: 0.8;
+}
+
+[draggable] {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: move;
 }

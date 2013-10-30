@@ -2,9 +2,9 @@
 
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft">
     <h3>&nbsp;</h3>
-    <div id="submenuLeft" class="submenu">
+    <div id="submenu" class="submenu">
         {{baseName}}
-        <span></span>
+        <div id="dragSsff" class="dragSsff" draggable="true">{{ssff}}</siv>
     </div>
   </nav>
 
@@ -22,8 +22,8 @@
 
   <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
     <div class="controls">
-      <osci id="osci" class="osci"></osci>  
-      <spectro id="spectro" class="spectro"></spectro>
+      <osci id="osci" class="osci" dropable="true" drop-target="true" drop="dropped(dragEl, dropEl)"></osci>  
+      <spectro id="spectro" class="spectro" dropable="true" drop-target="true" drop="dropped(dragEl, dropEl)"></spectro>
       <div id="resizer" class="resizer">
           <span id="resizeIcon" class="resizeIcon"> </span>
       </div>

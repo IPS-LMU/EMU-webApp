@@ -31,7 +31,7 @@ angular.module('emulvcApp')
 						drawVpOsciMarkup(scope, markupCanvas, scope.config);
 					}
 				}, true);
-                
+				                
                 scope.$watch('vs.scrollOpen', function() {
                     if (!$.isEmptyObject(scope.config.vals)) {
                         var per = scope.config.vals.main.osciSpectroZoomFactor * 10;

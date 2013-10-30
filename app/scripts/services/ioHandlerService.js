@@ -51,7 +51,7 @@ angular.module('emulvcApp')
 			}).success(function(data) {
 				var ssffJso = Ssffparserservice.ssff2jso(data);
 				ssffJso.fileURL = document.URL + filePath;
-				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso);
+				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, filePath.replace(/^.*[\\\/]/, ''));
 			});
 		};
 

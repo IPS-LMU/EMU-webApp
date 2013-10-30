@@ -8,6 +8,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.lastkeycode = 'N/A';
 		$scope.baseName = undefined;
+		$scope.ssff = undefined;
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -71,8 +72,12 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.baseName = fileName.substr(0,fileName.lastIndexOf("."));
 		});
 		
-
-				
+		/**
+		 * listen for newlyLoadedSSFFfile
+		 */
+		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
+			$scope.ssff = fileName;
+		});				
 		
 		$scope.renameTier = function() {
 		    if(viewState.getcurClickTierName()!==undefined) {
