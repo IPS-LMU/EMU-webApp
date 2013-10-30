@@ -50,6 +50,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 				$compile(ssff)($scope);
 		        elem.children().children().last().before(ssff);
 		        $scope.$apply();
+		        $scope.openSubmenu();
 		    }
 		}		
 
