@@ -68,7 +68,7 @@ var MainCtrl = angular.module('emulvcApp')
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
-			$scope.baseName = fileName.replace(/^.*[\\\/]/, '');
+			$scope.baseName = fileName.substr(0,fileName.lastIndexOf("."));
 		});
 		
 

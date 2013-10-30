@@ -266,19 +266,14 @@ li {
     font-size:12px;    
 }
 
-.submenuLeft {
-    width: 49%;
+.submenu {
+    width: 100%;
     float: left;
     height: 100%;
     text-align: left;
+    margin: 3px;
 }
 
-.submenuRight {
-    width: 50%;
-    float: right;
-    height: 100%;
-    text-align: left;
-}
 
 div.center {
     text-align:center; 
