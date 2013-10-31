@@ -41,8 +41,8 @@ angular.module('emulvcApp')
 					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.colors.fontPxSize);
 					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.colors.fontPxSize);
 
-					ctx.fillText("Sample", mouseX+5, config.vals.colors.fontPxSize);
-					ctx.fillText("secs", mouseX+5, config.vals.colors.fontPxSize*2);
+					ctx.fillText('Sample', mouseX + 5, config.vals.colors.fontPxSize);
+					ctx.fillText('secs', mouseX + 5, config.vals.colors.fontPxSize * 2);
 				}
 
 			}

@@ -57,5 +57,12 @@
         "rangeTo": 8000,
         "dynamicRange": 50,
         "window": "BLACKMAN"
-    }    
+    },
+    "signalsCanvasConfig":{
+        "order": ["osci", "spect", "canvas3"],
+        "asign": {
+            "spect": "fms:fm",
+            "canvas3": "f0:F0"
+        }
+    }
 }
