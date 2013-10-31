@@ -40,7 +40,7 @@ angular.module('emulvcApp')
                 clearImageCache();                
                 
                 scope.$watch('vs.spectroSettings', function() {
-                    if (!$.isEmptyObject(scope.shs.wavJSO.Data)) {
+                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
                         clearImageCache();
                         drawOsci(scope.vs, scope.shs.wavJSO.Data);
                     }                
@@ -48,7 +48,7 @@ angular.module('emulvcApp')
                                 
 
                 scope.$watch('vs.curViewPort', function() {
-                    if (!$.isEmptyObject(scope.shs.wavJSO.Data)) {
+                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
                         redraw();
                     }
                 }, true);  
@@ -207,13 +207,6 @@ angular.module('emulvcApp')
                     killSpectroRenderingThread();
                     startSpectroRenderingThread(viewState, buffer);
                 }
-                
-                function findEnum(myset, v) {
-                    for(var k in myset) {
-                       if(k==v) return k;
-                    }
-                    return -1;
-                }                
 
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
@@ -221,6 +214,10 @@ angular.module('emulvcApp')
                     var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
                     setupEvent();
+                    
+                    primeWorker.addEventListener('message', function(e) {
+                      console.log('Worker said: ', e.data);
+                    }, false);     
 
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -250,9 +247,10 @@ angular.module('emulvcApp')
                         'cmd': 'config',
                         'myStep': pcmperpixel
                     });
+                    console.log("s:"+viewState.spectroSettings.window);
                     primeWorker.postMessage({
                         'cmd': 'config',
-                        'window': findEnum(myWindow, viewState.spectroSettings.window)
+                        'window': viewState.spectroSettings.window
                     });
                     primeWorker.postMessage({
                         'cmd': 'config',

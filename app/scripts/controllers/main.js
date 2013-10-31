@@ -4,8 +4,6 @@ var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
-
-
 		$scope.lastkeycode = 'N/A';
 		$scope.baseName = undefined;
 		$scope.ssff = undefined;
@@ -32,7 +30,6 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
 
-			// $scope.keyMappings = ConfigProviderService.vals.shortcuts;
 			if (ConfigProviderService.vals.main.mode == 'standalone') {
 				var b = $('<button>').attr({
 					'id': 'submenuOpen',

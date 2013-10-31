@@ -71,7 +71,7 @@ angular.module('emulvcApp')
       sServObj.spectroSettings.rangeFrom    = parseInt(rfrom,10);
       sServObj.spectroSettings.rangeTo      = parseInt(rto,10);
       sServObj.spectroSettings.dynamicRange = parseInt(dyn,10);
-      sServObj.spectroSettings.window       = win;
+      sServObj.setWindowFunction(win);
     };    
 
 
@@ -97,6 +97,50 @@ angular.module('emulvcApp')
         this.curViewPort.selectE = end;
       }
     };
+    
+    
+    /**
+     * set the window Function for the Spectrogram
+     * @param name of Window Function
+     */
+    sServObj.setWindowFunction = function(name) {
+      switch(name) {
+        case "BARTLETT":
+                 sServObj.spectroSettings.window = myWindow.BARTLETT;
+            break;
+        case "BARTLETTHANN":
+                 sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+            break;
+        case "BLACKMAN":
+                 sServObj.spectroSettings.window = myWindow.BLACKMAN;
+            break;
+        case "COSINE":
+                 sServObj.spectroSettings.window = myWindow.COSINE;
+            break;
+        case "GAUSS":
+                 sServObj.spectroSettings.window = myWindow.GAUSS;
+            break;
+        case "HAMMING":
+                 sServObj.spectroSettings.window = myWindow.HAMMING;
+            break;
+        case "HANN":
+                 sServObj.spectroSettings.window = myWindow.HANN;
+            break;
+        case "LANCZOS":
+                 sServObj.spectroSettings.window = myWindow.LANCZOS;
+            break;
+        case "RECTANGULAR":
+                 sServObj.spectroSettings.window = myWindow.RECTANGULAR;
+            break;
+        case "TRIANGULAR":
+                 sServObj.spectroSettings.window = myWindow.TRIANGULAR;
+            break;
+        default:
+                 sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+            break;
+      }
+    };
+    
 
     /**
      * get pixel position in current viewport given the canvas width

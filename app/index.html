@@ -558,7 +558,7 @@ function FFT(fftSize){
 		        	drawOfflineSpectogram(j,p,c,d,myDrawOffset); 
 		        
 		        // post generated image block with settings back
-		        self.postMessage({'start':start,'end':end,'cacheWidth':cacheWidth,'cacheSide':cacheSide,'img':'data:image/png;base64,'+p.getBase64()});
+		        self.postMessage({'window':wFunction,'start':start,'end':end,'cacheWidth':cacheWidth,'cacheSide':cacheSide,'img':'data:image/png;base64,'+p.getBase64()});
 		        
 		        // free vars
 		        myFFT = null;
@@ -780,8 +780,40 @@ function FFT(fftSize){
     			end = data.end;
     		if (data.myStep != undefined)
     			myStep = data.myStep;  
-    		if (data.window != undefined)
-    			wFunction = data.window;
+    		if (data.window != undefined) {
+    			switch(data.window) {
+    			    case 1:
+    			        wFunction = myWindow.BARTLETT;
+    			        break;
+    			    case 2:
+    			        wFunction = myWindow.BARTLETTHANN;
+    			        break;
+    			    case 3:
+    			        wFunction = myWindow.BLACKMAN;
+    			        break;
+    			    case 4:
+    			        wFunction = myWindow.COSINE;
+    			        break;
+    			    case 5:
+    			        wFunction = myWindow.GAUSS;
+    			        break;
+    			    case 6:
+    			        wFunction = myWindow.HAMMING;
+    			        break;
+    			    case 7:
+    			        wFunction = myWindow.HANN;
+    			        break;
+    			    case 8:
+    			        wFunction = myWindow.LANCZOS;
+    			        break;
+    			    case 9:
+    			        wFunction = myWindow.RECTANGULAR;
+    			        break;
+    			    case 10:
+    			        wFunction = myWindow.TRIANGULAR;
+    			        break;    			        
+    			}  			
+    		}
     		if (data.cacheSide != undefined)
     			cacheSide = data.cacheSide;      			
     		if (data.width != undefined)

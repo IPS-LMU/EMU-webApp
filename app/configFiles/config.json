@@ -56,7 +56,7 @@
         "rangeFrom": 0,
         "rangeTo": 8000,
         "dynamicRange": 50,
-        "window": "BLACKMAN"
+        "window": "BARTLETTHANN"
     },
     "signalsCanvasConfig":{
         "order": ["osci", "spect", "canvas3"],
