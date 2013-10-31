@@ -39,19 +39,18 @@ angular.module('emulvcApp')
                 setupEvent();
                 clearImageCache();                
                 
+                scope.$watch('vs.curViewPort', function() {
+                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                        redraw();
+                    }
+                }, true); 
+                                
                 scope.$watch('vs.spectroSettings', function() {
                     if (!$.isEmptyObject(scope.shs.wavJSO)) {
                         clearImageCache();
                         drawOsci(scope.vs, scope.shs.wavJSO.Data);
                     }                
-                }, true);                   
-                                
-
-                scope.$watch('vs.curViewPort', function() {
-                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
-                        redraw();
-                    }
-                }, true);  
+                }, true);                    
                 
                 scope.$watch('vs.scrollOpen', function() {
                     if (!$.isEmptyObject(scope.config.vals)) {
@@ -196,8 +195,8 @@ angular.module('emulvcApp')
                         myImage.onload = function() {
                             context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
                             buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas0.toDataURL("image/png"));
-                            drawTimeLineContext();                            
-                        }
+                            drawTimeLineContext();                             
+                        }                           
                         myImage.src = worker_img;
                     });
                     
@@ -205,6 +204,7 @@ angular.module('emulvcApp')
 
                 function drawOsci(viewState, buffer) {
                     killSpectroRenderingThread();
+                    drawTimeLineContext();                     
                     startSpectroRenderingThread(viewState, buffer);
                 }
 
