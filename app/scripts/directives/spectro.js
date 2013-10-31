@@ -213,11 +213,7 @@ angular.module('emulvcApp')
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
-                    setupEvent();
-                    
-                    primeWorker.addEventListener('message', function(e) {
-                      console.log('Worker said: ', e.data);
-                    }, false);     
+                    setupEvent();  
 
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -247,7 +243,6 @@ angular.module('emulvcApp')
                         'cmd': 'config',
                         'myStep': pcmperpixel
                     });
-                    console.log("s:"+viewState.spectroSettings.window);
                     primeWorker.postMessage({
                         'cmd': 'config',
                         'window': viewState.spectroSettings.window
