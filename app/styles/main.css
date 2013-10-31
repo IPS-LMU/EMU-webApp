@@ -314,6 +314,7 @@ div.center {
     display:inline-block;
     right: 10px;
     margin-right: 19px;
+    cursor: pointer;
 }
 
 .aboutLink img {

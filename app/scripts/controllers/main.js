@@ -116,6 +116,24 @@ var MainCtrl = angular.module('emulvcApp')
 					window: function() {
 						return viewState.spectroSettings.window;
 					},
+					keyZoomIn: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomIn);
+					},
+					keyZoomOut: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomOut);
+					},
+					keyZoomAll: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomAll);
+					},
+					keyZoomSel: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomSel);
+					},
+					shiftViewPortLeft: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortLeft);
+					},
+					shiftViewPortRight: function() {
+					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortRight);
+					},
 					currentTier: function() {
 					    if(viewState.getcurClickTierName()!=='') {
 						    return viewState.getcurClickTierName();

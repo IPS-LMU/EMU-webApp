@@ -17,8 +17,7 @@ angular.module('emulvcApp')
         LANCZOS: 8,
         RECTANGULAR: 9,
         TRIANGULAR: 10
-    };                
-    
+    };
 
     sServObj.curViewPort = {
       sS: 0,
@@ -36,18 +35,14 @@ angular.module('emulvcApp')
       window: -1,
     };
 
-
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.scrollOpen = 0;
-
     sServObj.curClickTierName = undefined;
-
     sServObj.curPreselColumnSample = 2;
-
     sServObj.curCorrectionToolNr = -1;
 
 

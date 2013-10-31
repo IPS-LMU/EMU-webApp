@@ -52,16 +52,16 @@
         "fontPxSize": 12    
     },
     "spectrogramSettings": {
-        "N": 512,
+        "N": 256,
         "rangeFrom": 0,
         "rangeTo": 8000,
         "dynamicRange": 50,
         "window": "BARTLETTHANN"
     },
     "signalsCanvasConfig":{
-        "order": ["osci", "spect", "canvas3"],
+        "order": ["osci", "spec", "canvas3"],
         "asign": {
-            "spect": "fms:fm",
+            "spec": "fms:fm",
             "canvas3": "f0:F0"
         }
     }

@@ -1,4 +1,6 @@
-var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState) {
+var ModalInstanceCtrl = function($scope, $modalInstance, 
+    modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState, 
+    keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight) {
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
@@ -8,6 +10,12 @@ var ModalInstanceCtrl = function($scope, $modalInstance, modalTitle, modalConten
 	$scope.dynamicRange = dynamicRange;
 	$scope.window = window;
 	$scope.currentTier = currentTier;
+	$scope.keyZoomIn = keyZoomIn;
+	$scope.keyZoomOut = keyZoomOut;
+	$scope.keyZoomAll = keyZoomAll;
+	$scope.keyZoomSel = keyZoomSel;
+	$scope.shiftViewPortLeft = shiftViewPortLeft;
+	$scope.shiftViewPortRight = shiftViewPortRight;
 
 	$scope.ok = function() {
 		//$modalInstance.close($scope.selected.item);
