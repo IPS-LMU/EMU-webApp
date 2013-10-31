@@ -61,7 +61,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
 			viewState.curViewPort.eS = wavJSO.Data.length;
-			viewState.curViewPort.bufferLength = wavJSO.length;
+			viewState.curViewPort.bufferLength = wavJSO.Data.length;
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
@@ -83,6 +83,10 @@ var MainCtrl = angular.module('emulvcApp')
 		    else {
 		        $scope.openModal('views/error.html','dialog','Rename Error','Please choose a Tier first !');
 		    }
+		};
+		
+		$scope.downloadTextGrid = function() {
+		    console.log(Iohandlerservice.TextGrid());
 		};
 		
 		$scope.openModal = function(templatefile, cssStyle, title, content) {

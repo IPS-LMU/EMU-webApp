@@ -38,6 +38,20 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			}
 		};
 
+		$scope.getTierLength = function() {
+			return $scope.tierDetails.tiers.length;
+		};
+		
+		$scope.getTier = function(id) {
+		    var t = undefined;
+			angular.forEach($scope.tierDetails.tiers, function(tier) {
+			    if(tier.TierName==id) {
+				    t = tier;
+				}
+			});
+			return t;
+		};		
+
 		$scope.history = function() {
 			$scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails);
 			++$scope.myHistoryCounter;
