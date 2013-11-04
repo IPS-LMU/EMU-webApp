@@ -86,7 +86,7 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 		
 		$scope.downloadTextGrid = function() {
-		    console.log(Iohandlerservice.TextGrid());
+		    console.log(Iohandlerservice.toTextGrid());
 		};
 		
 		$scope.openModal = function(templatefile, cssStyle, title, content) {

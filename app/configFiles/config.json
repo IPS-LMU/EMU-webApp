@@ -54,7 +54,7 @@
     "spectrogramSettings": {
         "N": 256,
         "rangeFrom": 0,
-        "rangeTo": 8000,
+        "rangeTo": 5000,
         "dynamicRange": 70,
         "window": "GAUSS"
     },
