@@ -41,7 +41,7 @@ angular.module('emulvcApp')
 				console.log('Request failed with status: ' + status);
 			});
 		};
-		
+
 		/**
 		 *
 		 */
@@ -68,6 +68,24 @@ angular.module('emulvcApp')
 				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, filePath.replace(/^.*[\\\/]/, ''));
 			});
 		};
+
+		/**
+		 *
+		 */
+		sServObj.httpGetUtterence = function(utt, pathPrefix) {
+			console.log("sdfasdf")
+			utt.files.forEach(function(f){	
+				// do suffix check for now and load accordingly
+				if(f.indexOf('wav', f.length - f.length) !== -1){
+					sServObj.httpGetAudioFile('testData/msajc003/msajc003.wav')
+				}
+				if(f.indexOf('TextGrid', f.length - f.length) !== -1){
+					// sServObj.httpGetTextGrid('testData/msajc003/msajc003.TextGrid');
+				}
+			});
+
+		};
+
 
 		/**
 		 * pass through to Textgridparserservice

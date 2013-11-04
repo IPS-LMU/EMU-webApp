@@ -8,13 +8,24 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.baseName = undefined;
 		$scope.ssff = undefined;
 
+		// hard code for now -> in future build this array from drag and drop or request from server 
+		$scope.uttsList = [{
+			'utteranceName': 'msajc003',
+			'files': [
+				'msajc003.wav', 'msajc003.TextGrid', 'msajc003.fms', 'msajc003.f0'
+			]// files can either be a list of filenames or a list of file object in the case of drag and drop
+		}];
+
+
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
 
 		// init loading of files for testing
-		// Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
-		Iohandlerservice.httpGetAudioFile('testData/msajc003/msajc003.wav');
-		Iohandlerservice.httpGetSSFFfile('testData/msajc003/msajc003.fms');
+		Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/msajc003/');
+
+
+		// Iohandlerservice.httpGetAudioFile('testData/msajc003/msajc003.wav');
+		// Iohandlerservice.httpGetSSFFfile('testData/msajc003/msajc003.fms');
 
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
@@ -66,29 +77,28 @@ var MainCtrl = angular.module('emulvcApp')
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			Iohandlerservice.httpGetTextGrid('testData/msajc003/msajc003.TextGrid');
-			$scope.baseName = fileName.substr(0,fileName.lastIndexOf("."));
+			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
 		});
-		
+
 		/**
 		 * listen for newlyLoadedSSFFfile
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
-		});				
-		
+		});
+
 		$scope.renameTier = function() {
-		    if(viewState.getcurClickTierName()!==undefined) {
-		        $scope.openModal('views/renameTier.html','dialog');
-		    }
-		    else {
-		        $scope.openModal('views/error.html','dialog','Rename Error','Please choose a Tier first !');
-		    }
+			if (viewState.getcurClickTierName() !== undefined) {
+				$scope.openModal('views/renameTier.html', 'dialog');
+			} else {
+				$scope.openModal('views/error.html', 'dialog', 'Rename Error', 'Please choose a Tier first !');
+			}
 		};
-		
+
 		$scope.downloadTextGrid = function() {
-		    console.log(Iohandlerservice.toTextGrid());
+			console.log(Iohandlerservice.toTextGrid());
 		};
-		
+
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
@@ -121,31 +131,30 @@ var MainCtrl = angular.module('emulvcApp')
 						return viewState.spectroSettings.window;
 					},
 					keyZoomIn: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomIn);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomIn);
 					},
 					keyZoomOut: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomOut);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomOut);
 					},
 					keyZoomAll: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomAll);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomAll);
 					},
 					keyZoomSel: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomSel);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomSel);
 					},
 					shiftViewPortLeft: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortLeft);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortLeft);
 					},
 					shiftViewPortRight: function() {
-					    return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortRight);
+						return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortRight);
 					},
 					currentTier: function() {
-					    if(viewState.getcurClickTierName()!=='') {
-						    return viewState.getcurClickTierName();
+						if (viewState.getcurClickTierName() !== '') {
+							return viewState.getcurClickTierName();
+						} else {
+							return "error";
 						}
-						else {
-						    return "error";
-						}
-					}					
+					}
 				}
 			});
 		};

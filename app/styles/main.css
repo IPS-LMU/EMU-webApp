@@ -175,7 +175,7 @@ li {
     z-index: 3;
 }
 
-.SpectroMarkupCanvas {
+.SpectroSSFFCanvas {
     position:absolute;
     margin-left: 5px;
     border: 1px solid gray;
@@ -184,6 +184,17 @@ li {
     width: 97%; 
     height: 100%;    
     z-index: 4; 
+}
+
+.SpectroMarkupCanvas {
+    position:absolute;
+    margin-left: 5px;
+    border: 1px solid gray;
+    background-color: transparent; 
+    box-shadow: 0px 1px 2px #000;
+    width: 97%; 
+    height: 100%;    
+    z-index: 5; 
 }
 
 .OsciDiv {
