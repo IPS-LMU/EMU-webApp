@@ -55,8 +55,8 @@
         "N": 256,
         "rangeFrom": 0,
         "rangeTo": 8000,
-        "dynamicRange": 50,
-        "window": "BARTLETTHANN"
+        "dynamicRange": 70,
+        "window": "GAUSS"
     },
     "signalsCanvasConfig":{
         "order": ["osci", "spec", "canvas3"],
