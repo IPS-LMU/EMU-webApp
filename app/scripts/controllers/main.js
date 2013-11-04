@@ -13,8 +13,8 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init loading of files for testing
 		// Iohandlerservice.httpGetLabelJson('testData/msajc003.json');
-		Iohandlerservice.httpGetAudioFile('testData/msajc003.wav');
-		Iohandlerservice.httpGetSSFFfile('testData/msajc003.fms');
+		Iohandlerservice.httpGetAudioFile('testData/msajc003/msajc003.wav');
+		Iohandlerservice.httpGetSSFFfile('testData/msajc003/msajc003.fms');
 
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
@@ -65,7 +65,7 @@ var MainCtrl = angular.module('emulvcApp')
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
 			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
-			Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
+			Iohandlerservice.httpGetTextGrid('testData/msajc003/msajc003.TextGrid');
 			$scope.baseName = fileName.substr(0,fileName.lastIndexOf("."));
 		});
 		

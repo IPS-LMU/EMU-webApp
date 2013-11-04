@@ -1,0 +1,105 @@
+.menu {
+    z-index: 10;
+    position:fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:40px;
+    /*background: -webkit-linear-gradient(top, #666, #444);*/
+    background: #0DC5FF;
+    -webkit-touch-callout: none;
+    text-align:left;
+}
+
+
+.aboutLink {
+    position: absolute;
+    width: 35px;
+    height:35px;
+    /*margin: 5px;*/
+    padding: 0px;
+    background-color:#161616;
+    border-radius:0;
+    border:1px solid white;
+    display:inline-block;
+    right: 10px;
+    margin-right: 19px;
+    cursor: pointer;
+}
+
+.aboutLink img {
+    width: 35px;
+    height:35px;
+}
+
+.menu button, .menu-bottom button{
+    margin: 2px;
+    padding: 1px;
+    height: 30px;
+    line-height: 12px;
+    float:left;
+    text-align:center;
+    width: 9%;
+}
+.menu button{
+    z-index: 9999;
+    margin-top: 5px;
+}
+.menu-bottom {
+    z-index: 10;
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    width:100%;
+    height:80px;
+    /*background: -webkit-linear-gradient(top, #666, #444);*/
+    background: #0DC5FF;
+    box-shadow: 0px 3px 5px #000;
+    -webkit-touch-callout: none;
+    text-align:left;
+    padding-left:5px;
+}
+
+.btn-group {
+    z-index:3;
+    width: 100%;
+    padding-left:15px;
+    padding-top:2px;
+}
+
+
+.mini-btn {
+    margin: 3px;
+    padding: 3px;
+    display: inline-block;
+    background: #353535;
+    background-color:#ededed;
+    border-radius:0px;
+    border:1px solid white;
+    color:black;
+    font-family:Arial;
+    font-size:10px;
+    font-weight:bold;
+    text-decoration:none;
+    text-align:center;
+    width: 100px;
+    height: 22px; 
+}
+
+.mini-btn:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(0.7, #3f3f3f) );
+    background:-moz-linear-gradient( center top, #ededed 5%, #3f3f3f 70% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#3f3f3f');
+    background-color:#fff;
+    color:#eee;
+}
+
+.mini-btn:disabled {
+    background-color:#161616;
+}
+
+.mini-btn:active {
+    top:1px;
+}
+
+
