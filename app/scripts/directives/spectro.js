@@ -8,13 +8,13 @@ angular.module('emulvcApp')
             restrict: 'E',
             link: function postLink(scope, element, attrs) {
                 // select the needed DOM elements from the template
-                var canvas0 = element.find("canvas")[0];
-                var canvas1 = element.find("canvas")[1];
+                var canvas0 = element.find('canvas')[0];
+                var canvas1 = element.find('canvas')[1];
                 var myid = element[0].id;
                 // FFT default vars
                 var alpha = 0.16; // default alpha for Window Function
-                var context = canvas0.getContext("2d");
-                var contextmarkup = canvas1.getContext("2d");
+                var context = canvas0.getContext('2d');
+                var contextmarkup = canvas1.getContext('2d');
                 var pcmperpixel = 0;
                 window.URL = window.URL || window.webkitURL;
                 var devicePixelRatio = window.devicePixelRatio || 1;
@@ -23,7 +23,7 @@ angular.module('emulvcApp')
 
                 try { 
                     blob = new Blob([response], {
-                        "type": "text\/javascript"
+                        'type': 'text\/javascript'
                     });
                 } catch (e) { // Backwards-compatibility
                     window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -134,9 +134,6 @@ angular.module('emulvcApp')
 						}
 						contextmarkup.fillStyle = scope.config.vals.colors.selectedBorderColor;
 						contextmarkup.fillRect(posS + xOffset, 0, 1, canvas0.height);
-						contextmarkup.fillStyle = scope.config.vals.colors.labelColor;
-						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100 + (1 / 44100) / 2, 6), posS + xOffset + 5, scope.config.vals.colors.fontPxSize);
-						contextmarkup.fillText(scope.vs.curViewPort.selectS, posS + xOffset + 5, scope.config.vals.colors.fontPxSize * 2);
 					} else {
 						contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
 						contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
@@ -149,22 +146,7 @@ angular.module('emulvcApp')
 						contextmarkup.closePath();
 						contextmarkup.stroke();
 						contextmarkup.fillStyle = canvas0.labelColor;
-						// start values
-						var tW = contextmarkup.measureText(scope.vs.curViewPort.selectS).width;
-						contextmarkup.fillText(scope.vs.curViewPort.selectS, posS - tW - 4, scope.config.vals.colors.fontPxSize);
-						tW = contextmarkup.measureText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6)).width;
-						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectS / 44100, 6), posS - tW - 4, scope.config.vals.colors.fontPxSize * 2);
-						// end values
-						contextmarkup.fillText(scope.vs.curViewPort.selectE, posE + 5, scope.config.vals.colors.fontPxSize);
-						contextmarkup.fillText(scope.vs.round(scope.vs.curViewPort.selectE / 44100, 6), posE + 5, scope.config.vals.colors.fontPxSize * 2);
-						// dur values
-						// check if space
-						if (posE - posS > contextmarkup.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width) {
-							tW = contextmarkup.measureText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS).width;
-							contextmarkup.fillText(scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize);
-							tW = contextmarkup.measureText(scope.vs.round((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100, 6)).width;
-							contextmarkup.fillText(scope.vs.round(((scope.vs.curViewPort.selectE - scope.vs.curViewPort.selectS) / 44100), 6), posS + (posE - posS) / 2 - tW / 2, scope.config.vals.colors.fontPxSize * 2);
-						}
+
 					}
                 }
 
