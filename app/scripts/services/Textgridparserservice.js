@@ -29,7 +29,7 @@ angular.module('emulvcApp')
 			//meta info for labelJSO
 			var labelJSO = {
 				origSamplerate: this.ssr,
-				labelEncoding: 'UTF-8',
+				fileURI: '',
 				tiers: []
 			};
 
@@ -195,7 +195,7 @@ angular.module('emulvcApp')
 					}
 				}
 			}
-			console.log('TextGridParser had: ', counter, 'alignment issues found in parsed TextGrid');
+			// console.log('TextGridParser had: ', counter, 'alignment issues found in parsed TextGrid');
 		};
 
 		return sServObj;
