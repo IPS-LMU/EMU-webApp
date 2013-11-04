@@ -36,8 +36,7 @@ angular.module('emulvcApp')
                 var ppp;
                 var cache;
                 
-                setupEvent();
-                clearImageCache();                
+                clearImageCache(); 
                 
                 scope.$watch('vs.curViewPort', function() {
                     if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -46,13 +45,17 @@ angular.module('emulvcApp')
                 }, true); 
                                 
                 scope.$watch('vs.spectroSettings', function() {
+                  if (!$.isEmptyObject(scope.shs)) {
                     if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                        setupEvent();
                         clearImageCache();
                         drawOsci(scope.vs, scope.shs.wavJSO.Data);
-                    }                
+                    } 
+                  }               
                 }, true);                    
                 
                 scope.$watch('vs.scrollOpen', function() {
+                  if (!$.isEmptyObject(scope.config)) {
                     if (!$.isEmptyObject(scope.config.vals)) {
                         var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
                         var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
@@ -75,6 +78,7 @@ angular.module('emulvcApp')
                             $('.SpectroDiv canvas').css({ height: per+'%' });                      
                         }                        
                     }
+                  }
                 }, true);                  
                 
                 function redraw() {

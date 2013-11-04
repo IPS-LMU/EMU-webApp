@@ -12,6 +12,8 @@ angular.module('emulvcApp')
 				var markupCanvas = element.find("canvas")[1];
 
 				var myid = element[0].id;
+				
+				console.log(scope.shs);
 
 				// scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 				// 	if (!$.isEmptyObject(scope.shs.currentBuffer)) {
@@ -21,6 +23,7 @@ angular.module('emulvcApp')
 				// }, true);			
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+				    
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
 						// check for changed zoom
 						if (oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1) { // SIC -1 check not that clean...
@@ -33,6 +36,7 @@ angular.module('emulvcApp')
 				}, true);
 				                
                 scope.$watch('vs.scrollOpen', function() {
+                  if (!$.isEmptyObject(scope.config)) {
                     if (!$.isEmptyObject(scope.config.vals)) {
                         var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
                         var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
@@ -53,7 +57,9 @@ angular.module('emulvcApp')
                             $('.OsciDiv canvas').css({ height: perInvers+'%' });
                             $('.SpectroDiv').css({ height: per+'%' });  
                             $('.SpectroDiv canvas').css({ height: per+'%' });                      
-                        }                     }
+                        }                     
+                    }
+                  }
                 }, true);   
 
 				/**

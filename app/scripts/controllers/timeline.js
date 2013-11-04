@@ -34,24 +34,6 @@ var TimelineCtrl = angular.module('emulvcApp')
 			} else {
 				viewState.setscrollOpen(0);
 			}
-		};		
-		
-		$scope.drop = function(dragEl, dropEl) {
-		    if(dragEl.id=="dragSsff") {
-		        var elem = angular.element(dropEl);
-				var ssff = $('<canvas>').attr({
-					'width': '2048',
-					'height': '128',
-					'class': 'SSFFCanvas',
-					'id': 'SSFFCanvas',
-					'drawssff': 'fm',
-					'correctiontool': ''
-				});
-				$compile(ssff)($scope);
-		        elem.children().children().last().before(ssff);
-		        $scope.$apply();
-		        $scope.openSubmenu();
-		    }
-		}		
+		};				
 
 	});
