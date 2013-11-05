@@ -11,6 +11,10 @@ angular.module('emulvcApp')
 				element.bind('mousemove', function(event) {
 					drawCrossHairs(scope.vs, canvas, scope.config, scope.dhs, event);
 				});
+				element.bind('mouseleave', function(event) {
+					var ctx = canvas.getContext('2d');
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+				});
 
 				function drawCrossHairs(viewState, canvas, config, dhs, mouseEvt) {
 					var ctx = canvas.getContext('2d');
@@ -47,8 +51,8 @@ angular.module('emulvcApp')
 					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.colors.fontPxSize);
 					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.colors.fontPxSize);
 
-					ctx.fillText(Math.round(mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.colors.fontPxSize);
-					ctx.fillText(viewState.round(mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.colors.fontPxSize * 2);
+					ctx.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.colors.fontPxSize);
+					ctx.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.colors.fontPxSize * 2);
 					// see if Chrome ->dashed line
 					if (navigator.vendor === 'Google Inc.') {
 						ctx.setLineDash([0]);
