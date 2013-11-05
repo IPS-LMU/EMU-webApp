@@ -50,23 +50,19 @@ spectrogram.min.js
 emuLVC.min.map
 emuLVC.min.css
 
-# tmp files # 
+# tmp latex files # 
+##############
 .tmp
-
 *.aux
-
 *.bbl
-
 *.bcf
-
 *.blg
-
 *.fdb_latexmk
-
 *.log
-
 *.pdf
-
 *.xml
-
 *.gz
+
+# build dir # 
+#########
+dist/
