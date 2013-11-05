@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope, Soundhandlerservice) {
+  .factory('viewState', function($rootScope, Soundhandlerservice, $window) {
 
     //shared service object to be returned
     var sServObj = {};
-    
+
     var myWindow = {
-        BARTLETT: 1,
-        BARTLETTHANN: 2,
-        BLACKMAN: 3,
-        COSINE: 4,
-        GAUSS: 5,
-        HAMMING: 6,
-        HANN: 7,
-        LANCZOS: 8,
-        RECTANGULAR: 9,
-        TRIANGULAR: 10
+      BARTLETT: 1,
+      BARTLETTHANN: 2,
+      BLACKMAN: 3,
+      COSINE: 4,
+      GAUSS: 5,
+      HAMMING: 6,
+      HANN: 7,
+      LANCZOS: 8,
+      RECTANGULAR: 9,
+      TRIANGULAR: 10
     };
 
     sServObj.curViewPort = {
@@ -35,6 +35,14 @@ angular.module('emulvcApp')
       window: -1,
     };
 
+    sServObj.playHeadAnimationInfos = {
+      sS: -1,
+      eS: -1,
+      curS: null,
+      animStatTime: null
+    };
+
+
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
@@ -44,6 +52,44 @@ angular.module('emulvcApp')
     sServObj.curClickTierName = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = -1;
+
+    /**
+     */
+    sServObj.updatePlayHead = function(timestamp) {
+      if (sServObj.playHeadAnimationInfos.animStatTime === null) {
+        sServObj.playHeadAnimationInfos.animStatTime = timestamp;
+      };
+      var timePassedMs = (timestamp - sServObj.playHeadAnimationInfos.animStatTime);
+      var timePassedSecs = timePassedMs / 1000;
+      var samplesPassed = timePassedSecs * Soundhandlerservice.wavJSO.SampleRate;
+      
+      // console.log(sServObj.playHeadAnimationInfos);
+      // console.log(timestamp);
+      // console.log(timePassedMs);
+      // console.log(timePassedSecs);
+      // console.log(samplesPassed);
+
+      sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
+      if (sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS) {
+        $rootScope.$apply();
+        $window.requestAnimationFrame(sServObj.updatePlayHead);
+      } else {
+        sServObj.playHeadAnimationInfos.sS = -1;
+        sServObj.playHeadAnimationInfos.eS = -1;
+        sServObj.playHeadAnimationInfos.curS = 0;
+        sServObj.playHeadAnimationInfos.animStatTime = null;
+      }
+    };
+
+    /**
+     */
+    sServObj.animatePlayHead = function(startS, endS) {
+
+      sServObj.playHeadAnimationInfos.sS = startS;
+      sServObj.playHeadAnimationInfos.eS = endS;
+      sServObj.playHeadAnimationInfos.curS = startS;
+      $window.requestAnimationFrame(sServObj.updatePlayHead);
+    };
 
 
     /**
@@ -62,12 +108,12 @@ angular.module('emulvcApp')
      * @param end of selected Area
      */
     sServObj.setspectroSettings = function(len, rfrom, rto, dyn, win) {
-      sServObj.spectroSettings.windowLength = parseInt(len,10);
-      sServObj.spectroSettings.rangeFrom    = parseInt(rfrom,10);
-      sServObj.spectroSettings.rangeTo      = parseInt(rto,10);
-      sServObj.spectroSettings.dynamicRange = parseInt(dyn,10);
+      sServObj.spectroSettings.windowLength = parseInt(len, 10);
+      sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
+      sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
+      sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);
       sServObj.setWindowFunction(win);
-    };    
+    };
 
 
     /**
@@ -92,50 +138,50 @@ angular.module('emulvcApp')
         this.curViewPort.selectE = end;
       }
     };
-    
-    
+
+
     /**
      * set the window Function for the Spectrogram
      * @param name of Window Function
      */
     sServObj.setWindowFunction = function(name) {
-      switch(name) {
+      switch (name) {
         case "BARTLETT":
-                 sServObj.spectroSettings.window = myWindow.BARTLETT;
-            break;
+          sServObj.spectroSettings.window = myWindow.BARTLETT;
+          break;
         case "BARTLETTHANN":
-                 sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
-            break;
+          sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+          break;
         case "BLACKMAN":
-                 sServObj.spectroSettings.window = myWindow.BLACKMAN;
-            break;
+          sServObj.spectroSettings.window = myWindow.BLACKMAN;
+          break;
         case "COSINE":
-                 sServObj.spectroSettings.window = myWindow.COSINE;
-            break;
+          sServObj.spectroSettings.window = myWindow.COSINE;
+          break;
         case "GAUSS":
-                 sServObj.spectroSettings.window = myWindow.GAUSS;
-            break;
+          sServObj.spectroSettings.window = myWindow.GAUSS;
+          break;
         case "HAMMING":
-                 sServObj.spectroSettings.window = myWindow.HAMMING;
-            break;
+          sServObj.spectroSettings.window = myWindow.HAMMING;
+          break;
         case "HANN":
-                 sServObj.spectroSettings.window = myWindow.HANN;
-            break;
+          sServObj.spectroSettings.window = myWindow.HANN;
+          break;
         case "LANCZOS":
-                 sServObj.spectroSettings.window = myWindow.LANCZOS;
-            break;
+          sServObj.spectroSettings.window = myWindow.LANCZOS;
+          break;
         case "RECTANGULAR":
-                 sServObj.spectroSettings.window = myWindow.RECTANGULAR;
-            break;
+          sServObj.spectroSettings.window = myWindow.RECTANGULAR;
+          break;
         case "TRIANGULAR":
-                 sServObj.spectroSettings.window = myWindow.TRIANGULAR;
-            break;
+          sServObj.spectroSettings.window = myWindow.TRIANGULAR;
+          break;
         default:
-                 sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
-            break;
+          sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+          break;
       }
     };
-    
+
 
     /**
      * get pixel position in current viewport given the canvas width
@@ -152,7 +198,7 @@ angular.module('emulvcApp')
      */
     sServObj.getSampleDist = function(w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
-    }; 
+    };
 
     /**
      * get the height of the osci

@@ -9,7 +9,9 @@ angular.module('emulvcApp')
 			link: function postLink(scope, element) {
 				// select the needed DOM elements from the template
 				var canvas = element.find('canvas');
-
+				var ctx = canvas[0].getContext('2d');
+				ctx.font = (scope.config.vals.colors.fontPxSize + 'px' + ' ' + scope.config.vals.colors.fontType);
+				
 				// var myid = scope.tier.TierName;
 				scope.$watch('tierDetails', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
@@ -61,7 +63,7 @@ angular.module('emulvcApp')
 
 					// draw name of tier
 					ctx.fillStyle = config.vals.colors.labelColor;
-					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
+					// ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
 					ctx.fillText(tierDetails.TierName, 5, config.vals.colors.fontPxSize);
 					ctx.fillText('(' + tierDetails.type + ')', 5, config.vals.colors.fontPxSize * 2);
 

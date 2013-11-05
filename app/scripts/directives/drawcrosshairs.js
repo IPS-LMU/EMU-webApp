@@ -11,7 +11,8 @@ angular.module('emulvcApp')
 				element.bind('mousemove', function(event) {
 					drawCrossHairs(scope.vs, canvas, scope.config, scope.dhs, event);
 				});
-				element.bind('mouseleave', function(event) {
+				// on mouse leave
+				element.bind('mouseleave', function() {
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 				});

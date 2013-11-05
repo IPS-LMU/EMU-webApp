@@ -74,6 +74,7 @@ angular.module('emulvcApp')
               // playAllInView
               if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
                 Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
               }
               // playSelected
               if (code === ConfigProviderService.vals.keyMappings.playSelected) {
