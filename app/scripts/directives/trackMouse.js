@@ -6,11 +6,13 @@ angular.module('emulvcApp')
       restrict: "A",
       link: function(scope, element) {
 
+        var curMouseSample;
         var dragStartSample;
         var dragEndSample;
 
-        element.bind('mousedown', function(x) {
-          dragStartSample = Math.round(scope.dhs.getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS);
+        element.bind('mousedown', function(event) {
+          dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+          dragEndSample = dragStartSample;
           scope.vs.select(dragStartSample, dragStartSample);
           scope.$apply();
         });
@@ -19,18 +21,26 @@ angular.module('emulvcApp')
           switch (event.which) {
             case 1:
               //console.log('Left mouse button pressed');
-              dragEndSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
-              scope.vs.select(dragStartSample, dragEndSample);
-              scope.$apply();
+              setSelectDrag(event);
               break;
           }
         });
 
-        element.bind('mouseup', function(x) {
-          dragEndSample = Math.round(scope.dhs.getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS);
-          scope.vs.select(dragStartSample, dragEndSample);
-          scope.$apply();
+        element.bind('mouseup', function(event) {
+          setSelectDrag(event);
         });
+
+        function setSelectDrag(event) {
+          curMouseSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+          if (curMouseSample > dragStartSample) {
+            dragEndSample = curMouseSample;
+            scope.vs.select(dragStartSample, dragEndSample);
+          } else {
+            dragStartSample = curMouseSample;
+            scope.vs.select(dragStartSample, dragEndSample);
+          }
+          scope.$apply();
+        }
 
       }
     };
