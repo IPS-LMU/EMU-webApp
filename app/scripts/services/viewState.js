@@ -58,17 +58,11 @@ angular.module('emulvcApp')
     sServObj.updatePlayHead = function(timestamp) {
       if (sServObj.playHeadAnimationInfos.animStatTime === null) {
         sServObj.playHeadAnimationInfos.animStatTime = timestamp;
-      };
+      }
       var timePassedMs = (timestamp - sServObj.playHeadAnimationInfos.animStatTime);
       var timePassedSecs = timePassedMs / 1000;
       var samplesPassed = timePassedSecs * Soundhandlerservice.wavJSO.SampleRate;
       
-      // console.log(sServObj.playHeadAnimationInfos);
-      // console.log(timestamp);
-      // console.log(timePassedMs);
-      // console.log(timePassedSecs);
-      // console.log(samplesPassed);
-
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
       if (sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS) {
         $rootScope.$apply();
