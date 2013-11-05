@@ -163,7 +163,7 @@ angular.module('emulvcApp')
 						} else {
 							ctx.fillStyle = config.vals.colors.selectedAreaColor;
 							ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
-							ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
+							ctx.strokeStyle = config.vals.colors.selectedBorderColor;
 							ctx.beginPath();
 							ctx.moveTo(posS, 0);
 							ctx.lineTo(posS, markupCanvas.height);

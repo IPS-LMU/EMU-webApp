@@ -11,7 +11,7 @@ angular.module('emulvcApp')
 				var canvas = element.find('canvas');
 				var ctx = canvas[0].getContext('2d');
 				ctx.font = (scope.config.vals.colors.fontPxSize + 'px' + ' ' + scope.config.vals.colors.fontType);
-				
+
 				// var myid = scope.tier.TierName;
 				scope.$watch('tierDetails', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
@@ -212,7 +212,7 @@ angular.module('emulvcApp')
 					} else {
 						ctx.fillStyle = config.vals.colors.selectedAreaColor;
 						ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-						ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
+						ctx.strokeStyle = config.vals.colors.selectedBorderColor;
 						ctx.beginPath();
 						ctx.moveTo(posS, 0);
 						ctx.lineTo(posS, canvas[0].height);

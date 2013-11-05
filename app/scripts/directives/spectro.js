@@ -137,7 +137,7 @@ angular.module('emulvcApp')
 					} else {
 						contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
 						contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
-						contextmarkup.strokeStyle = scope.config.vals.colors.selectedBoundaryColor;
+						contextmarkup.strokeStyle = scope.config.vals.colors.selectedBorderColor;
 						contextmarkup.beginPath();
 						contextmarkup.moveTo(posS, 0);
 						contextmarkup.lineTo(posS, canvas0.height);
