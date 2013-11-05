@@ -5,11 +5,15 @@
   "main": "app/js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "grunt server"
   },
   "author": "Raphael Winkelmann, Georg Raess",
   "license": "BSD",
   "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raphywink/emuLVC.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -49,7 +53,8 @@
     "karma-coffee-preprocessor": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma": "~0.10.2",
-    "karma-ng-html2js-preprocessor": "~0.1.0"
+    "karma-ng-html2js-preprocessor": "~0.1.0",
+    "grunt-ngmin": "0.0.3"
   },
   "engines": {
     "node": ">=0.8.0"
