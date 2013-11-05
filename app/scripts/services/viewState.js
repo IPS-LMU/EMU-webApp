@@ -97,9 +97,7 @@ angular.module('emulvcApp')
     };
 
     /**
-     * set selected Area
-     * @param start of selected Area
-     * @param end of selected Area
+     * setspectroSettings
      */
     sServObj.setspectroSettings = function(len, rfrom, rto, dyn, win) {
       sServObj.spectroSettings.windowLength = parseInt(len, 10);
@@ -585,6 +583,11 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function(zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
+      var tierId = this.getcurMouseTierName();
+      var segMId = this.getcurMouseSegmentId();
+      // console.log();
+      // var curMouseMoveSegmentStart = thietierDetails.events[segMId];
+
       // var d1 = 1; //this.curMouseMoveSegmentStart - this.curViewPort.sS;
       // var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
