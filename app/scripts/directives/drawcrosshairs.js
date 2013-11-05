@@ -18,6 +18,12 @@ angular.module('emulvcApp')
 					ctx.strokeStyle = config.vals.colors.crossHairsColor;
 					ctx.fillStyle = config.vals.colors.crossHairsColor;
 
+					// see if Chrome ->dashed line
+					if (navigator.vendor === 'Google Inc.') {
+						ctx.setLineDash([2]);
+					}
+
+
 					// draw lines
 					var mouseX = dhs.getX(mouseEvt);
 					var mouseY = dhs.getY(mouseEvt);
@@ -41,8 +47,12 @@ angular.module('emulvcApp')
 					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.colors.fontPxSize);
 					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.colors.fontPxSize);
 
-					ctx.fillText('Sample', mouseX + 5, config.vals.colors.fontPxSize);
-					ctx.fillText('secs', mouseX + 5, config.vals.colors.fontPxSize * 2);
+					ctx.fillText(Math.round(mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.colors.fontPxSize);
+					ctx.fillText(viewState.round(mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.colors.fontPxSize * 2);
+					// see if Chrome ->dashed line
+					if (navigator.vendor === 'Google Inc.') {
+						ctx.setLineDash([0]);
+					}
 				}
 
 			}
