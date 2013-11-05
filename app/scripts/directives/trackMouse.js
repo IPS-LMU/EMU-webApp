@@ -6,12 +6,12 @@ angular.module('emulvcApp')
       restrict: "A",
       link: function(scope, element) {
 
-        var startPCM;
-        var thisPCM;
+        var dragStartSample;
+        var dragEndSample;
 
         element.bind('mousedown', function(x) {
-          startPCM = getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS;
-          scope.vs.select(startPCM, startPCM);
+          dragStartSample = Math.round(scope.dhs.getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS);
+          scope.vs.select(dragStartSample, dragStartSample);
           scope.$apply();
         });
 
@@ -19,26 +19,18 @@ angular.module('emulvcApp')
           switch (event.which) {
             case 1:
               //console.log('Left mouse button pressed');
-              thisPCM = getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS;
-              scope.vs.select(startPCM, thisPCM);
+              dragEndSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+              scope.vs.select(dragStartSample, dragEndSample);
               scope.$apply();
               break;
           }
         });
 
         element.bind('mouseup', function(x) {
-          thisPCM = getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS;
-          scope.vs.select(startPCM, thisPCM);
+          dragEndSample = Math.round(scope.dhs.getX(x) * scope.vs.getPCMpp(x) + scope.vs.curViewPort.sS);
+          scope.vs.select(dragStartSample, dragEndSample);
           scope.$apply();
         });
-
-        function getX(e) {
-          return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
-        }
-
-        function getY(e) {
-          return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
-        }
 
       }
     };
