@@ -164,7 +164,7 @@ angular.module('emulvcApp')
                 function killSpectroRenderingThread() {
                     context.fillStyle = "#222";
                     context.fillRect(0, 0, canvas0.width, canvas0.height);
-                    context.font = "10px Verdana";
+                    context.font = (scope.config.vals.font.fontPxSize + 'px' + ' ' + scope.config.vals.font.fontType);
                     context.fillStyle = "#333";
                     context.fillText("loading...", 10, 25);
                     if (primeWorker != null) {
