@@ -11,6 +11,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
 
+		$scope.tierDetails = {};
+
 		$scope.sortableOptions = {
 			update: function(e, ui) {
 				//alert("update"); 
@@ -27,7 +29,17 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 * update tierDetails if heard
 		 */
 		$scope.$on('newlyLoadedLabelJson', function(evt, data) {
-			$scope.tierDetails = data;
+			if ($.isEmptyObject($scope.tierDetails)) {
+				$scope.tierDetails = data;
+			} else {
+				data.tiers.forEach(function(tier) {
+					$scope.tierDetails.tiers.push(tier);
+				})
+				data.fileInfos.forEach(function(fInf) {
+					$scope.tierDetails.fileInfos.push(fInf);
+				})
+				console.log(JSON.stringify($scope.tierDetails, undefined, 2));
+			}
 		});
 
 		$scope.updateAllLabels = function() {
@@ -41,16 +53,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.getTierLength = function() {
 			return $scope.tierDetails.tiers.length;
 		};
-		
+
 		$scope.getTier = function(id) {
-		    var t = undefined;
+			var t = undefined;
 			angular.forEach($scope.tierDetails.tiers, function(tier) {
-			    if(tier.TierName==id) {
-				    t = tier;
+				if (tier.TierName == id) {
+					t = tier;
 				}
 			});
 			return t;
-		};		
+		};
 
 		$scope.history = function() {
 			$scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails);
@@ -168,18 +180,17 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				if (t.TierName == newName) {
 					found = true;
 				}
-			});	
-			if(!found) {		
-			    angular.forEach($scope.tierDetails.tiers, function(t) {
-				    if (t.TierName == viewState.getcurClickTierName()) {
-					    t.TierName = newName;
-    				}
-	    		});
-		    	$scope.history();
-		    }
-		    else {
-		        $scope.openModal('views/error.html','dialog','Rename Error','This Tiername already exists ! Please choose another name !');
-		    }
+			});
+			if (!found) {
+				angular.forEach($scope.tierDetails.tiers, function(t) {
+					if (t.TierName == viewState.getcurClickTierName()) {
+						t.TierName = newName;
+					}
+				});
+				$scope.history();
+			} else {
+				$scope.openModal('views/error.html', 'dialog', 'Rename Error', 'This Tiername already exists ! Please choose another name !');
+			}
 		};
 
 		$scope.deleteSegments = function() {
@@ -212,16 +223,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			var ret = 0;
 			angular.forEach(tier.events, function(evt) {
 				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-				    if(pcm-evt.startSample>=evt.sampleDur/2)
-					    ret = id+1;
-					else 
-					    ret = id;
+					if (pcm - evt.startSample >= evt.sampleDur / 2)
+						ret = id + 1;
+					else
+						ret = id;
 				}
 				++id;
 			});
 			return ret;
 		};
-		
+
 		$scope.getEventId = function(x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var id = 0;
@@ -234,7 +245,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 			return ret;
 		};
-		
+
 
 		$scope.getEvent = function(x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
