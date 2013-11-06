@@ -53,6 +53,8 @@ angular.module('emulvcApp')
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = -1;
 
+    sServObj.loadingUtt = false;
+
     /**
      */
     sServObj.updatePlayHead = function(timestamp) {
