@@ -14,7 +14,7 @@ angular.module('emulvcApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-          if (scope.ssffData.length !== 0) {
+          if (scope.ssffData.length !== 0 && !scope.vs.loadingUtt) {
             if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
               // get name of column to be drawn
               var colName = 'fm'; //SIC hardcoded
