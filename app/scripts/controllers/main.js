@@ -1,4 +1,3 @@
-
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
@@ -6,7 +5,7 @@ var MainCtrl = angular.module('emulvcApp')
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
 		$scope.lastkeycode = 'N/A';
-		$scope.ssff = undefined;		
+		$scope.ssff = undefined;
 
 		// hard code for now -> in future build this array from drag and drop or request from server 
 		$scope.uttsList = [{
@@ -15,23 +14,23 @@ var MainCtrl = angular.module('emulvcApp')
 				'testData/msajc003/msajc003.wav', 'testData/msajc003/msajc003.fms', 'testData/msajc003/msajc003.lab', 'testData/msajc003/msajc003.tone'
 			] // files can either be a list of filenames or a list of file object in the case of drag and drop
 		}];
-		
+
 		/**
 		 * listen for dropped files
 		 */
 		$scope.$on('fileLoaded', function(evt, type, data) {
-			switch(type) {
+			switch (type) {
 				case fileType.WAV:
-				        $scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
-				        Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/'+$scope.uttsList[0]+'/');
-				break;
+					$scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
+					Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/' + $scope.uttsList[0] + '/');
+					break;
 				case fileType.TEXTGRID:
-				
-				break;				
+
+					break;
 			}
 			console.log("data");
 			console.log(data);
-		});		
+		});
 
 
 		// init load of config files
@@ -53,17 +52,20 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-				var b = $('<button>').attr({
-					'id': 'submenuOpen',
-					'class': 'mini-btn',
-					'data-tooltip': 'Shortcut: O',
-					'tooltip-placement': 'bottom',
-					'z-index': '9999',
-					'ng-click': 'openSubmenu()',
-				}).text('Open Menu');
-				$compile(b)($scope);
-				$('#firstButton').before(b);
-				$scope.openSubmenu();			
+
+			var b = $('<button>').attr({
+				'id': 'submenuOpen',
+				'class': 'mini-btn',
+				'data-tooltip': 'Shortcut: O',
+				'tooltip-placement': 'bottom',
+				'z-index': '9999',
+				'ng-click': 'openSubmenu()',
+			}).text('Open Menu');
+			$compile(b)($scope);
+			$('#firstButton').before(b);
+			if (ConfigProviderService.vals.main.mode === 'standalone') {
+				$scope.openSubmenu();
+			}
 		});
 
 
@@ -86,7 +88,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
 		});
-		
+
 
 		$scope.renameTier = function() {
 			if (viewState.getcurClickTierName() !== undefined) {
