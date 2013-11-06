@@ -41,29 +41,18 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
 
-			if (ConfigProviderService.vals.main.mode == 'standalone') {
-				var b = $('<button>').attr({
-					'id': 'submenuOpen',
-					'data-tooltip': 'Shortcut: O',
-					'tooltip-placement': 'bottom',
-					'ng-click': 'openFile();',
-					'z-index': '9999',
-					'class': 'mini-btn'
-				}).text('Open File');
-				$compile(b)($scope);
-				$('#firstButton').after(b);
-			} else {
 				var b = $('<button>').attr({
 					'id': 'submenuOpen',
 					'class': 'mini-btn',
 					'data-tooltip': 'Shortcut: O',
 					'tooltip-placement': 'bottom',
 					'z-index': '9999',
-					'ng-click': 'openMenu()',
+					'ng-click': 'openSubmenu()',
 				}).text('Open Menu');
 				$compile(b)($scope);
-				$('#firstButton').after(b);
-			}
+				$('#firstButton').before(b);
+
+			
 		});
 
 
