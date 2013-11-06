@@ -11,8 +11,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.uttsList = [{
 			'utteranceName': 'msajc003',
 			'files': [
-				'msajc003.wav', 'msajc003.TextGrid', 'msajc003.fms', 'msajc003.f0'
-			]// files can either be a list of filenames or a list of file object in the case of drag and drop
+				'testData/msajc003/msajc003.wav', 'testData/msajc003/msajc003.fms', 'testData/msajc003/msajc003.lab', 'testData/msajc003/msajc003.tone'
+			] // files can either be a list of filenames or a list of file object in the case of drag and drop
 		}];
 		
 		/**
@@ -35,8 +35,6 @@ var MainCtrl = angular.module('emulvcApp')
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
 
-		// init loading of files for testing
-		Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/msajc003/');
 
 
 		// Iohandlerservice.httpGetAudioFile('testData/msajc003/msajc003.wav');
@@ -50,6 +48,8 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for configLoaded
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
+			// init loading of files for testing
+			Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/msajc003/');
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
@@ -78,8 +78,8 @@ var MainCtrl = angular.module('emulvcApp')
 			viewState.curViewPort.bufferLength = wavJSO.Data.length;
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
-			Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
-			Iohandlerservice.httpGetTextGrid('testData/msajc003/msajc003.TextGrid');
+			// Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
+			// Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
 			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
 		});
 
