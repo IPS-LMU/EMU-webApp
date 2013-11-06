@@ -15,6 +15,17 @@ var MainCtrl = angular.module('emulvcApp')
 				'msajc003.wav', 'msajc003.TextGrid', 'msajc003.fms', 'msajc003.f0'
 			]// files can either be a list of filenames or a list of file object in the case of drag and drop
 		}];
+		
+		/**
+		 * listen for dropped files
+		 */
+		$scope.$on('fileLoaded', function(evt, type, data) {
+			switch(type) {
+				case fileType.WAV:
+						console.log("wav loaded");
+						break;
+			}
+		});		
 
 
 		// init load of config files
@@ -73,15 +84,6 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
-		});
-		
-		/**
-		 * listen for dropped WAV file
-		 */
-		$scope.$on('fileLoaded', function(evt, type, data) {
-			console.log("FILE LOADED");
-			console.log(type);
-			console.log(data);
 		});
 		
 
