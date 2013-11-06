@@ -3,7 +3,7 @@
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
-      <div id="dropFileList" class="dropFileList">Basename : {{baseName}}</div>
+      <div id="dropFileList" class="dropFileList">Basename : {{uttsList[0].utteranceName}}</div>
       <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
       <div ng-show="files.length">
         <div ng-repeat="file in files.slice(0)">
