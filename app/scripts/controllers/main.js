@@ -6,7 +6,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.lastkeycode = 'N/A';
 		$scope.baseName = undefined;
-		$scope.ssff = undefined;
+		$scope.ssff = undefined;		
 
 		// hard code for now -> in future build this array from drag and drop or request from server 
 		$scope.uttsList = [{
@@ -74,6 +74,16 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
 		});
+		
+		/**
+		 * listen for dropped WAV file
+		 */
+		$scope.$on('fileLoaded', function(evt, type, data) {
+			console.log("FILE LOADED");
+			console.log(type);
+			console.log(data);
+		});
+		
 
 		$scope.renameTier = function() {
 			if (viewState.getcurClickTierName() !== undefined) {

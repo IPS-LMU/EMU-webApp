@@ -12,4 +12,5 @@ angular.module('emulvcApp', ['ui', 'ui.bootstrap', 'ngRoute'])
         redirectTo: '/'
       });
     $locationProvider.html5Mode(true);
+    
   });

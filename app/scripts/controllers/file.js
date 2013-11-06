@@ -1,18 +1,17 @@
 "use strict";
 
 var FileCtrl = angular.module("emulvcApp")
-	.controller("FileCtrl", function($scope, $modal, $log, $http, $compile,
+	.controller("FileCtrl", function($rootScope, $scope,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
     var dropbox = document.getElementById("dropbox");
     var droptext1 = "Drop your files here";
     var droptext2 = "File is not allowed";
     var droptext3 = "Parsing started";
-    var wavLoaded = false;
+    var parsingFile;
+    var parsingFileType;
     
-    $scope.dropText = droptext1;
-    $scope.files = [];
-   
+    $scope.dropText = droptext1;   
     
     function dragEnterLeave(evt) {
         evt.stopPropagation();
@@ -36,7 +35,6 @@ var FileCtrl = angular.module("emulvcApp")
     }, false);
     
     dropbox.addEventListener("drop", function(evt) {
-        console.log("drop evt:", JSON.parse(JSON.stringify(evt.dataTransfer)));
         evt.stopPropagation();
         evt.preventDefault();
         $scope.$apply(function(){
@@ -47,9 +45,10 @@ var FileCtrl = angular.module("emulvcApp")
         if (files.length > 0) {
             $scope.$apply(function(){
                 for (var i = 0; i < files.length; i++) {
-                	$scope.files.push(files[i]);
-                	var extension = files[i].name.substr(files[i].name.lastIndexOf(".")).toUpperCase();
-        			console.log(extension);
+                	var extension = files[i].name.substr(files[i].name.lastIndexOf(".")+1).toUpperCase();
+        			if(extension=="WAV") {
+        			    $rootScope.$broadcast('fileLoaded', fileType.WAV, files[i]);
+        			}
                 }                
             });
         }
