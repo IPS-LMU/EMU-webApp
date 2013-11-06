@@ -49,6 +49,10 @@
         "fontType": "Verdana",
         "fontPxSize": 12
     },
+    "font": {
+        "fontType": "Verdana",
+        "fontPxSize": 12
+    },
     "spectrogramSettings": {
         "N": 256,
         "rangeFrom": 0,
