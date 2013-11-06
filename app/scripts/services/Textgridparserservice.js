@@ -12,7 +12,6 @@ angular.module('emulvcApp')
 		 * parse a textgrid string to the specified json format
 		 *
 		 * @param string TextGrid file string to be parsed
-		 * @param fileName name of textGrid including ext.
 		 * @returns a label java script object
 		 */
 		sServObj.toJSO = function(string) {
@@ -28,7 +27,7 @@ angular.module('emulvcApp')
 
 			//meta info for labelJSO
 			var labelJSO = {
-				origSamplerate: this.ssr,
+				origSamplerate: this.shs.wavJSO.SampleRate,
 				fileURI: '',
 				tiers: []
 			};
