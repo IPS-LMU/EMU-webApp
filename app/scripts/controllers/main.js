@@ -40,7 +40,6 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-
 				var b = $('<button>').attr({
 					'id': 'submenuOpen',
 					'class': 'mini-btn',
@@ -52,7 +51,7 @@ var MainCtrl = angular.module('emulvcApp')
 				$compile(b)($scope);
 				$('#firstButton').before(b);
 
-			
+				$scope.openSubmenu();			
 		});
 
 
