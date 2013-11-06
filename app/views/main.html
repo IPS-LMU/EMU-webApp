@@ -3,7 +3,14 @@
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
-        {{baseName}}
+      <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
+      <div ng-show="files.length">
+        <div ng-repeat="file in files.slice(0)">
+          <span>{{file.webkitRelativePath || file.name}}</span>
+            <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
+        </div>
+      </div>      
+      </div>
     </div>
   </nav>
 
