@@ -119,7 +119,7 @@ angular.module('emulvcApp')
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
 					ctx.fillStyle = config.vals.colors.labelColor;
-					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
+					ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
 
 					// lines to corners
 					ctx.beginPath();
@@ -136,11 +136,11 @@ angular.module('emulvcApp')
 						//draw time and sample nr
 						sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
 						eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
-						ctx.fillText(viewState.curViewPort.sS, 5, config.vals.colors.fontPxSize);
-						ctx.fillText(sTime, 5, config.vals.colors.fontPxSize * 2);
+						ctx.fillText(viewState.curViewPort.sS, 5, config.vals.font.fontPxSize);
+						ctx.fillText(sTime, 5, config.vals.font.fontPxSize * 2);
 						var metrics = ctx.measureText(sTime);
-						ctx.fillText(viewState.curViewPort.eS, markupCanvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, config.vals.colors.fontPxSize);
-						ctx.fillText(eTime, markupCanvas.width - metrics.width - 5, config.vals.colors.fontPxSize * 2);
+						ctx.fillText(viewState.curViewPort.eS, markupCanvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, config.vals.font.fontPxSize);
+						ctx.fillText(eTime, markupCanvas.width - metrics.width - 5, config.vals.font.fontPxSize * 2);
 					}
 					//draw emulabeller.viewPortselected
 					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
@@ -158,8 +158,8 @@ angular.module('emulvcApp')
 							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, markupCanvas.height);
 							ctx.fillStyle = config.vals.colors.labelColor;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6), posS + xOffset + 5, config.vals.colors.fontPxSize);
-							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, config.vals.colors.fontPxSize * 2);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6), posS + xOffset + 5, config.vals.font.fontPxSize);
+							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, config.vals.font.fontPxSize * 2);
 						} else {
 							ctx.fillStyle = config.vals.colors.selectedAreaColor;
 							ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
@@ -174,19 +174,19 @@ angular.module('emulvcApp')
 							ctx.fillStyle = config.vals.colors.labelColor;
 							// start values
 							var tW = ctx.measureText(viewState.curViewPort.selectS).width;
-							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, config.vals.colors.fontPxSize);
+							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, config.vals.font.fontPxSize);
 							tW = ctx.measureText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6)).width;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), posS - tW - 4, config.vals.colors.fontPxSize * 2);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), posS - tW - 4, config.vals.font.fontPxSize * 2);
 							// end values
-							ctx.fillText(viewState.curViewPort.selectE, posE + 5, config.vals.colors.fontPxSize);
-							ctx.fillText(viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6), posE + 5, config.vals.colors.fontPxSize * 2);
+							ctx.fillText(viewState.curViewPort.selectE, posE + 5, config.vals.font.fontPxSize);
+							ctx.fillText(viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6), posE + 5, config.vals.font.fontPxSize * 2);
 							// dur values
 							// check if space
 							if (posE - posS > ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6)).width) {
 								tW = ctx.measureText(viewState.curViewPort.selectE - viewState.curViewPort.selectS).width;
-								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, config.vals.colors.fontPxSize);
+								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, config.vals.font.fontPxSize);
 								tW = ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6)).width;
-								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6), posS + (posE - posS) / 2 - tW / 2, config.vals.colors.fontPxSize * 2);
+								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6), posS + (posE - posS) / 2 - tW / 2, config.vals.font.fontPxSize * 2);
 							}
 						}
 					}
