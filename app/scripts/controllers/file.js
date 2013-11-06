@@ -40,30 +40,35 @@ var FileCtrl = angular.module("emulvcApp")
         $scope.$apply(function(){
             $scope.dropText = droptext3;
             $scope.dropClass = "";
-        })
-        var files = evt.dataTransfer.files;
-        if (files.length > 0) {
-            $scope.$apply(function(){
-                for (var i = 0; i < files.length; i++) {
-                	var extension = files[i].name.substr(files[i].name.lastIndexOf(".")+1).toUpperCase();
-        			if(extension=="WAV") {
-        			    $rootScope.$broadcast('fileLoaded', fileType.WAV, files[i]);
-        			}
-        			if(extension=="TEXTGRID") {
-        			    $rootScope.$broadcast('fileLoaded', fileType.TEXTGRID, files[i]);
-        			}        			
-                }                
+        });
+        var items = evt.dataTransfer.items;
+        for (var i=0; i<items.length; i++) {
+            var item = items[i].webkitGetAsEntry();
+            if (item) {
+                traverseFileTree(item);
+            }
+        }        
+    }, false);
+    
+    function traverseFileTree(item, path) {
+        path = path || "";
+        if (item.isFile) {
+            item.file(function(file) {
+                var extension = file.name.substr(file.name.lastIndexOf(".")+1).toUpperCase();
+            	if(extension=="WAV") {
+            		$rootScope.$broadcast('fileLoaded', fileType.WAV, file);
+            	}
+        	    if(extension=="TEXTGRID") {
+        		    $rootScope.$broadcast('fileLoaded', fileType.TEXTGRID, file);
+            	}        			
+            });
+        } else if (item.isDirectory) {
+            var dirReader = item.createReader();
+            dirReader.readEntries(function(entries) {
+                for (var i=0; i<entries.length; i++) {
+                    traverseFileTree(entries[i], path + item.name + "/");
+                }
             });
         }
-    }, false)
-
-    $scope.setFiles = function(element) {
-    $scope.$apply(function(scope) {
-      console.log("files:", element.files);
-        $scope.files = [];
-        for (var i = 0; i < element.files.length; i++) {
-          $scope.files.push(element.files[i]);
-        }
-      });
-    };
+    }
 });

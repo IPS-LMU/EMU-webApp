@@ -22,6 +22,7 @@ var MainCtrl = angular.module('emulvcApp')
 			switch(type) {
 				case fileType.WAV:
 				        $scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
+				        Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/'+$scope.uttsList[0]+'/');
 				break;
 				case fileType.TEXTGRID:
 				
@@ -35,10 +36,6 @@ var MainCtrl = angular.module('emulvcApp')
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
 
-
-
-		// Iohandlerservice.httpGetAudioFile('testData/msajc003/msajc003.wav');
-		// Iohandlerservice.httpGetSSFFfile('testData/msajc003/msajc003.fms');
 
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
@@ -65,7 +62,6 @@ var MainCtrl = angular.module('emulvcApp')
 				}).text('Open Menu');
 				$compile(b)($scope);
 				$('#firstButton').before(b);
-
 				$scope.openSubmenu();			
 		});
 
