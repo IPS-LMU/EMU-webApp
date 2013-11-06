@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.toJSO = function(string, filePath) {
 
-			var ext = '.' + filePath.split('.')[filePath.split('.').length - 1];
+			var ext = '_' + filePath.split('.')[filePath.split('.').length - 1];
 
 			// remove all empty lines from string
 			string = string.replace(/([ \t]*\r?\n)+/g, '\n');
