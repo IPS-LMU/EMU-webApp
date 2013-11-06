@@ -45,9 +45,7 @@
         "endBoundaryColor": "#888",
         "endBoundaryWidth": 2,
         "zeroLineColor": "#0DC5FF",
-        "crossHairsColor": "#FF0000",
-        "fontType": "Verdana",
-        "fontPxSize": 12
+        "crossHairsColor": "#FF0000"
     },
     "font": {
         "fontType": "Verdana",
