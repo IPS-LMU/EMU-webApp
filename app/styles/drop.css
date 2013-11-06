@@ -1,6 +1,9 @@
 table { 
     border-collapse: collapse; 
 }
+.dropFileList {
+
+}
 .percent {
     position: absolute; 
     width: 300px; 

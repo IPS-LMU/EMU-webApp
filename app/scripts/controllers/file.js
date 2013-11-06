@@ -49,6 +49,9 @@ var FileCtrl = angular.module("emulvcApp")
         			if(extension=="WAV") {
         			    $rootScope.$broadcast('fileLoaded', fileType.WAV, files[i]);
         			}
+        			if(extension=="TEXTGRID") {
+        			    $rootScope.$broadcast('fileLoaded', fileType.TEXTGRID, files[i]);
+        			}        			
                 }                
             });
         }

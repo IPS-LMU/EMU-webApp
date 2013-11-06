@@ -5,7 +5,7 @@ var MainCtrl = angular.module('emulvcApp')
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
 		$scope.lastkeycode = 'N/A';
-		$scope.baseName = undefined;
+		$scope.baseName = "not yet set";
 		$scope.ssff = undefined;		
 
 		// hard code for now -> in future build this array from drag and drop or request from server 
@@ -22,8 +22,11 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('fileLoaded', function(evt, type, data) {
 			switch(type) {
 				case fileType.WAV:
-						console.log("wav loaded");
-						break;
+				        $scope.baseName = data.name.substr(0, data.name.lastIndexOf("."));;
+				break;
+				case fileType.TEXTGRID:
+						console.log("textgrid loaded");
+				break;				
 			}
 		});		
 
