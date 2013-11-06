@@ -1,3 +1,4 @@
+
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
@@ -46,7 +47,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 			// init loading of files for testing
-			Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/msajc003/');
+			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
