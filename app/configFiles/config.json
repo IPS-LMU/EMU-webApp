@@ -2,7 +2,7 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 2
-    },   
+    },
     "keyMappings": {
         "zoomSel": 69,
         "zoomAll": 81,
@@ -13,24 +13,22 @@
         "playEntireFile": 70,
         "playAllInView": 32,
         "playSelected": 82,
-        "backspace":8,
+        "backspace": 8,
         "tab": 9,
-        "enter":13,
-        "esc":27,
-        "history":90,
+        "enter": 13,
+        "esc": 27,
+        "history": 90,
         "selectFirstContourCorrectionTool": 49,
         "selectSecondContourCorrectionTool": 50,
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
-        "tierUp":38,
-        "tierDown":40   
+        "tierUp": 38,
+        "tierDown": 40
     },
     "colors": {
         "labelColor": "#000",
         "osciColor": "#000",
-        "playProgressColor": "#777",
-        "playCursorColor": "#fff",
-        "playCursorWidth": 4,
+        "playProgressColor": "rgba(255, 255, 255, 0.5)",
         "loadingColor": "#333",
         "loadingBackground": "#fff",
         "loadingBars": 20,
@@ -49,7 +47,7 @@
         "zeroLineColor": "#0DC5FF",
         "crossHairsColor": "#FF0000",
         "fontType": "Verdana",
-        "fontPxSize": 12    
+        "fontPxSize": 12
     },
     "spectrogramSettings": {
         "N": 256,
@@ -58,11 +56,31 @@
         "dynamicRange": 70,
         "window": "GAUSS"
     },
-    "signalsCanvasConfig":{
-        "order": ["osci", "spec", "canvas3"],
-        "asign": {
-            "spec": "fms:fm",
-            "canvas3": "f0:F0"
+    "signalsCanvasConfig": {
+        "order": ["osci", "spec"],
+        "assign": {
+            "spec": "fms:fm"
+        },
+        "extensions": {
+            "audio": ".wav",
+            "signals": [".fms"]
         }
+    },
+    "labelCanvasConfig": {
+        "order": [".lab", ".tone"]
+    },
+    "restrictions": {
+        "changeLabels": false,
+        "editLabels": false
+    },
+    "activeButtons": {
+        "openMenu": true,
+        "openFile": true,
+        "addTierSeg": true,
+        "addTierPoint": true,
+        "renameSelTier": true,
+        "downloadTextGrid": true,
+        "specSettings": true,
+        "Connect": true
     }
 }
