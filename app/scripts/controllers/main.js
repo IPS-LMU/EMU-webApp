@@ -12,7 +12,12 @@ var MainCtrl = angular.module('emulvcApp')
 			'utteranceName': 'msajc003',
 			'files': [
 				'testData/msajc003/msajc003.wav', 'testData/msajc003/msajc003.fms', 'testData/msajc003/msajc003.lab', 'testData/msajc003/msajc003.tone'
-			] // files can either be a list of filenames or a list of file object in the case of drag and drop
+			]
+		}, {
+			'utteranceName': 'msajc010',
+			'files': [
+				'testData/msajc010/msajc010.wav', 'testData/msajc010/msajc010.fms', 'testData/msajc010/msajc010.lab', 'testData/msajc010/msajc010.tone'
+			]
 		}];
 
 		/**
