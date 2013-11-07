@@ -6,7 +6,7 @@
       <div ng-repeat="utt in uttsList">
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance" tooltip-placement="right" data-tooltip="Save Utterance {{utt.utteranceName}}">
-               <img style="cursor: pointer;">
+               <img style="cursor: pointer;" ng-click="menuUttSave(utt);">
            </div> 
         <div ng-repeat="file in utt.files">
           {{file}}

@@ -189,6 +189,11 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
 		};
+		
+		$scope.menuUttSave = function (utt) {
+			console.log("SAVE");
+			console.log(utt);
+		};		
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);
