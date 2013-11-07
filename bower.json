@@ -8,8 +8,7 @@
     "angular": "~1.2.0-rc.2",
     "angular-route": "~1.2.0-rc.2",
     "angular-bootstrap": "~0.6.0",
-    "angular-ui": "~0.4.0",
-    "angular-snap": "~1.0.0"
+    "angular-ui": "~0.4.0"
   },
   "devDependencies": {}
 }
