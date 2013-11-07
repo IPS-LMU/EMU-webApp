@@ -35,6 +35,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
 		
 
+
 		/**
 		 * listen for configLoaded
 		 */
@@ -48,13 +49,13 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.openSubmenu();
 			Iohandlerservice.httpGetUttJson("testData/uttList.json");
 			
-			// disable sorting of tiers when config setting "restrictions.sortLabels" = false
-			if(!ConfigProviderService.vals.restrictions.sortLabels) {
-			    $("#allowSortable").sortable('destroy');
-			}
-			
 			// set timeline height according to config settings "colors.timelineHeight"
 			$(".TimelineCtrl").css('height',ConfigProviderService.vals.colors.timelineHeight);
+			
+			if(ConfigProviderService.vals.restrictions.sortLabels) {
+                    $('#allowSortable').sortable('enable');
+            }
+			
 			
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]);
@@ -181,13 +182,13 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.downloadTextGrid = function() {
 			console.log(Iohandlerservice.toTextGrid());
-		};
+		};	
 
 		$scope.menuUttClick = function (utt) {
 			console.log(utt);
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
-		}
+		};
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);

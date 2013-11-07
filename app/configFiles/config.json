@@ -82,7 +82,7 @@
         "openFile": false,
         "addTierSeg": false,
         "addTierPoint": false,
-        "renameSelTier": false,
+        "renameSelTier": true,
         "downloadTextGrid": false,
         "specSettings": true,
         "Connect": false

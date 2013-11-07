@@ -1,4 +1,4 @@
-var ModalInstanceCtrl = function($scope, $modalInstance, 
+var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance, 
     modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState, 
     keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight) {
 

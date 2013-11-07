@@ -13,7 +13,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.tierDetails = {};
 
-
 		$scope.sortableOptions = {
 			update: function(e, ui) {
 			    if(!ConfigProviderService.vals.restrictions.sortLabels) {
@@ -23,9 +22,13 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			start: function(e, ui) {
 				$scope.deleteEditArea();			
 			},
+			create: function( event, ui ) {
+			    $('#allowSortable').sortable('disable');
+			},
 			axis: 'y',
 			placeholder: "tierPlaceholder"
 		};
+
 
 		/**
 		 * listen for newlyLoadedLabelJson broadcast
