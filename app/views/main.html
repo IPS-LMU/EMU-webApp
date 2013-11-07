@@ -3,12 +3,15 @@
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
-      <div id="dropFileList" class="dropFileList" ng-repeat="utt in uttsList">
-        <a class="mini-btn" title="About" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
+      <div ng-repeat="utt in uttsList">
+        <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
+           <div class="saveUtterance" id="saveUtterance" tooltip-placement="right" data-tooltip="Save Utterance {{utt.utteranceName}}">
+               <img style="cursor: pointer;">
+           </div> 
         <div ng-repeat="file in utt.files">
-          -{{file}}
+          {{file}}
         </div>
-        <button>save changes to fms</button>
+        
 
       <!-- Split button -->
  <!--      <div class="btn-group btn-group-xs">

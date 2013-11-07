@@ -14,32 +14,11 @@
 
 }
  
-.cbp-spmenu a {
-    display: block;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-}
- 
-.cbp-spmenu a:hover {
-    background: #258ecd;
-}
- 
-.cbp-spmenu a:active {
-    background: #afdefa;
-    color: #47a3da;
-}
- 
 .cbp-spmenu-vertical {
     width: 240px;
     height: 100%;
     top: 0;
     z-index: 1000;
-}
- 
-.cbp-spmenu-vertical a {
-    border-bottom: 1px solid #eee;
-    padding: 0px;
 }
  
 /* Vertical menu that slides from the left or right */
