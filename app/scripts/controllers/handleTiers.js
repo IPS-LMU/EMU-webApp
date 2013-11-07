@@ -24,15 +24,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				$scope.deleteEditArea();			
 			},
 			axis: 'y',
-			placeholder: "tierPlaceholder",
-			cancel: function(e, ui) {
-			    if(ConfigProviderService.vals.restrictions.sortLabels) {
-                    return "";
-                }		
-                else {
-                    return "sort";
-                }	
-			}
+			placeholder: "tierPlaceholder"
 		};
 
 		/**

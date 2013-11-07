@@ -48,6 +48,10 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.openSubmenu();
 			Iohandlerservice.httpGetUttJson("testData/uttList.json");
 			
+			if(!ConfigProviderService.vals.restrictions.sortLabels) {
+			    $("#allowSortable").sortable('destroy');
+			}
+			
 		    $scope.buttonstyle = function(id) {
 		        var show = {};
 		        var hidden = {"display": "none"};

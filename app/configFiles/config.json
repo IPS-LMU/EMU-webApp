@@ -72,7 +72,7 @@
         "order": [".lab", ".tone"]
     },
     "restrictions": {
-        "sortLabels": false,
+        "sortLabels": true,
         "changeLabels": false,
         "editLabels": false
     },
