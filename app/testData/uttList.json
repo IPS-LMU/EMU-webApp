@@ -1,0 +1,37 @@
+[{
+		"utteranceName": "msajc003",
+		"files": [
+			"testData/msajc003/msajc003.wav", "testData/msajc003/msajc003.fms", "testData/msajc003/msajc003.lab", "testData/msajc003/msajc003.tone"
+		]
+	}, {
+		"utteranceName": "msajc010",
+		"files": [
+			"testData/msajc010/msajc010.wav", "testData/msajc010/msajc010.fms", "testData/msajc010/msajc010.lab", "testData/msajc010/msajc010.tone"
+		]
+	}, {
+		"utteranceName": "msajc012",
+		"files": [
+			"testData/msajc012/msajc012.wav", "testData/msajc012/msajc012.fms", "testData/msajc012/msajc012.lab", "testData/msajc012/msajc012.tone"
+		]
+	}, {
+		"utteranceName": "msajc015",
+		"files": [
+			"testData/msajc015/msajc015.wav", "testData/msajc015/msajc015.fms", "testData/msajc015/msajc015.lab", "testData/msajc015/msajc015.tone"
+		]
+	}, {
+		"utteranceName": "msajc022",
+		"files": [
+			"testData/msajc022/msajc022.wav", "testData/msajc022/msajc022.fms", "testData/msajc022/msajc022.lab", "testData/msajc022/msajc022.tone"
+		]
+	}, {
+		"utteranceName": "msajc023",
+		"files": [
+			"testData/msajc023/msajc023.wav", "testData/msajc023/msajc023.fms", "testData/msajc023/msajc023.lab", "testData/msajc023/msajc023.tone"
+		]
+	}, {
+		"utteranceName": "msajc057",
+		"files": [
+			"testData/msajc057/msajc057.wav", "testData/msajc057/msajc057.fms", "testData/msajc057/msajc057.lab", "testData/msajc057/msajc057.tone"
+		]
+	}
+]

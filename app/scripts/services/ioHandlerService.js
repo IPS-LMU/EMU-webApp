@@ -8,9 +8,19 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
+		sServObj.httpGetUttJson = function(filePath) {
+			$http.get(filePath).success(function(data) {
+				// console.log(data);
+				$rootScope.$broadcast('newlyLoadedUttList', data);
+			});
+		};
+
+		/**
+		 *
+		 */
 		sServObj.httpGetLabelJson = function(filePath) {
 			$http.get(filePath).success(function(data) {
-				console.log(data);
+				// console.log(data);
 				$rootScope.$broadcast('newlyLoadedLabelJson', data);
 			});
 		};

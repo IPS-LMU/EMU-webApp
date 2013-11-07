@@ -7,18 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.ssff = undefined;
 
-		// hard code for now -> in future build this array from drag and drop or request from server 
-		$scope.uttsList = [{
-			'utteranceName': 'msajc003',
-			'files': [
-				'testData/msajc003/msajc003.wav', 'testData/msajc003/msajc003.fms', 'testData/msajc003/msajc003.lab', 'testData/msajc003/msajc003.tone'
-			]
-		}, {
-			'utteranceName': 'msajc010',
-			'files': [
-				'testData/msajc010/msajc010.wav', 'testData/msajc010/msajc010.fms', 'testData/msajc010/msajc010.lab', 'testData/msajc010/msajc010.tone'
-			]
-		}];
+		$scope.uttsList =[];
 
 		/**
 		 * listen for dropped files
@@ -51,7 +40,6 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 			// init loading of files for testing
-			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
@@ -68,9 +56,20 @@ var MainCtrl = angular.module('emulvcApp')
 			}).text('Open Menu');
 			$compile(b)($scope);
 			$('#firstButton').before(b);
-			if (ConfigProviderService.vals.main.mode === 'standalone') {
+			// if (ConfigProviderService.vals.main.mode === 'standalone') {
 				$scope.openSubmenu();
-			}
+			// }
+			Iohandlerservice.httpGetUttJson("testData/uttList.json");
+		});
+
+
+		/**
+		 * listen for newlyLoadedUttList
+		 */
+		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
+			console.log(uttList)
+			$scope.uttsList = uttList;
+			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 		});
 
 
@@ -106,6 +105,12 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.downloadTextGrid = function() {
 			console.log(Iohandlerservice.toTextGrid());
 		};
+
+		$scope.menuUttClick = function (utt) {
+			console.log(utt);
+			$scope.$broadcast('loadingNewUtt');
+			Iohandlerservice.httpGetUtterence(utt);
+		}
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);

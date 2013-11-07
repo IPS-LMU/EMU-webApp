@@ -38,8 +38,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				data.fileInfos.forEach(function(fInf) {
 					$scope.tierDetails.fileInfos.push(fInf);
 				})
-				console.log(JSON.stringify($scope.tierDetails, undefined, 2));
+				// console.log(JSON.stringify($scope.tierDetails, undefined, 2));
 			}
+		});
+		
+		/**
+		 * clear tierDetails when new utt is loaded
+		 */
+		$scope.$on('loadingNewUtt', function(evt) {
+			console.log("wer")
+				$scope.tierDetails = {};
 		});
 
 		$scope.updateAllLabels = function() {
