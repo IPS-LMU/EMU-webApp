@@ -11,7 +11,8 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffData = [];
 		
-		$scope.showSSFFCanvas = "spec";
+		$scope.showSSFFOsci = false;
+		$scope.showSSFFSpectro = false;
 		
 
 		/**
@@ -22,9 +23,14 @@ var TimelineCtrl = angular.module('emulvcApp')
 			$scope.ssffData.push(data);
 			for(var key in ConfigProviderService.vals.signalsCanvasConfig.assign) {
 			    if(ConfigProviderService.vals.signalsCanvasConfig.assign[key] === "fms:fm") {
-				    $scope.showSSFFCanvas = key;
+				    if(key === "osci") {
+				        $scope.showSSFFOsci = true;
+				    }
+				    if(key === "spec") {
+				        $scope.showSSFFSpectro = true;
+				    }				    
 			    }
-			}	
+			}
 		});
 		
 		/**

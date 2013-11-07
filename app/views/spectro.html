@@ -1,8 +1,8 @@
 <div class="SpectroDiv" id="SpectroDiv">
     <div class="SpectroTop">
 	    <canvas width="2048" height="128" class="SpectroCanvas" id="SpectroCanvas"></canvas>
-	    <span ng-switch="showSSFFCanvas">
-	        <canvas ng-switch-when="spec" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff></canvas>
+	    <span ng-switch="showSSFFSpectro">
+	        <canvas ng-switch-when="true" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff></canvas>
 		</span>
     	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse drawcrosshairs></canvas>
     	<div class="buttons" id="buttons">
