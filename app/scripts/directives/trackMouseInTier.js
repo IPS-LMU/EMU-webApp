@@ -25,23 +25,24 @@ angular.module('emulvcApp')
 
 
         element.bind('click', function(event) {
-          setLastMove(event);
+          setLastMove(event,true);
           setLastClick(event);
         });
 
         element.bind('contextmenu', function(event) {
           event.preventDefault();
-          setLastMove(event);
+          setLastMove(event,true);
           setLastRightClick(event);
 
         });
 
         element.bind('dblclick', function(event) {
-          setLastMove(event);
+          setLastMove(event,true);
           setLastDblClick(event);
         });
 
         element.bind('mousemove', function(event) {
+          var moveLine = true;
           thisPCM = getX(event) * scope.vs.getPCMpp(event);
           switch (event.which) {
             case 1:
@@ -60,6 +61,7 @@ angular.module('emulvcApp')
                 lastPCM = thisPCM;
                 scope.vs.selectBoundry();
                 scope.$apply();
+                moveLine = false;
               }
               if (event.altKey) {
                 scope.vs.deleteEditArea();
@@ -68,24 +70,24 @@ angular.module('emulvcApp')
                 scope.vs.selectBoundry();
                 scope.$apply();
               }
-              setLastMove(event);
               break;
           }
+          setLastMove(event,moveLine);
         });
 
         element.bind('mousedown', function(event) {
-          setLastMove(event);
+          setLastMove(event,true);
           scope.history();
         });
         
 
         element.bind('mouseup', function(event) {
-          setLastMove(event);
+          setLastMove(event,true);
           scope.history();
         });
         
         element.bind('mouseout', function(event) {
-          setLastMove(event);
+          setLastMove(event,true);
         });
 
         function setLastClick(x) {
@@ -139,15 +141,16 @@ angular.module('emulvcApp')
           scope.$apply();
         }
 
-        function setLastMove(x) {
+        function setLastMove(x,doChange) {
           var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier);
           scope.vs.setcurMouseTierName(tierId);
-          scope.vs.setcurMouseSegment(lastEventMove);
-          scope.vs.setcurMouseSegmentId(lastEventMoveId);
-          // console.log(lastEventMoveId);
+          if(doChange) {
+              scope.vs.setcurMouseSegment(lastEventMove);
+              scope.vs.setcurMouseSegmentId(lastEventMoveId);
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
