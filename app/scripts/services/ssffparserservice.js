@@ -29,6 +29,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.ssff2jso = function(buf) {
 			var my = this;
+			sServObj.ssffData.Columns = [];
 			// console.log('SSFF loaded');
 
 			var uIntBuffView = new Uint8Array(buf);

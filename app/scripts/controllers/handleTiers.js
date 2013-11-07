@@ -46,8 +46,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 * clear tierDetails when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
-			console.log("wer")
-				$scope.tierDetails = {};
+			$scope.tierDetails = {};
 		});
 
 		$scope.updateAllLabels = function() {
