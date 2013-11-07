@@ -9,6 +9,25 @@
           -{{file}}
         </div>
         <button>save changes to fms</button>
+
+      <!-- Split button -->
+ <!--      <div class="btn-group btn-group-xs">
+        <button type="button" class="btn" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</button>
+        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+          <span class="sr-only">Files</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">{{file}}</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+        <button type="button" class="btn">Save .fms</button>
+      </div> -->
+
+
       </div>
       <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
       <div ng-show="files.length">
@@ -24,12 +43,12 @@
 
   <div class="menu" id="menu">
       <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
-      <button id="firstButton" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button>
-      <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button>
-      <button class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button>
-      <button class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button>
-      <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
-      <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Disconnect</button> 
+      <!-- <button id="firstButton" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> -->
+      <!-- <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> -->
+      <!-- <button class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> -->
+      <!-- <button class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> -->
+      <button id="firstButton" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
+      <!-- <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Disconnect</button>  -->
       <a class="aboutLink" title="About" ng-click="openModal('views/about.html','dialog');"><img></a>
   </div>
 
