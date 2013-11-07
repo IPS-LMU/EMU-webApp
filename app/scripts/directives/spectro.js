@@ -39,9 +39,11 @@ angular.module('emulvcApp')
                 clearImageCache(); 
                 
                 scope.$watch('vs.curViewPort', function() {
+                if (!$.isEmptyObject(scope.shs)) {
                     if (!$.isEmptyObject(scope.shs.wavJSO)) {
                         redraw();
                     }
+                }
                 }, true); 
                                 
                 scope.$watch('vs.spectroSettings', function() {

@@ -14,6 +14,7 @@ angular.module('emulvcApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+        if (!$.isEmptyObject(scope.ssffData)) {
           if (scope.ssffData.length !== 0 && !scope.vs.loadingUtt) {
             if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
               // get name of column to be drawn
@@ -24,9 +25,11 @@ angular.module('emulvcApp')
               drawValues(scope.vs, canvas, scope.config, col);
             }
           }
+        }
         }, true);
 
         scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
+        if (!$.isEmptyObject(scope.ssffData)) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
             var colName = 'fm'; //SIC hardcoded
@@ -35,9 +38,11 @@ angular.module('emulvcApp')
             // draw values  
             drawValues(scope.vs, canvas, scope.config, col);
           }
+        }
         }, true);
 
         scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
+        if (!$.isEmptyObject(scope.ssffData)) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
             var colName = 'fm'; //SIC hardcoded
@@ -46,10 +51,12 @@ angular.module('emulvcApp')
             // draw values  
             drawValues(scope.vs, canvas, scope.config, col);
           }
+        }
         }, true);
 
 
         scope.$watch('ssffData', function(newValue, oldValue) {
+        if (!$.isEmptyObject(scope.ssffData)) {
           if (scope.ssffData.length !== 0) {
             // get name of column to be drawn
             var colName = 'fm'; //SIC hardcoded
@@ -58,6 +65,7 @@ angular.module('emulvcApp')
             // draw values  
             drawValues(scope.vs, canvas, scope.config, col);
             console.log(scope.config);
+          }
           }
         }, true);
 

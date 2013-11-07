@@ -48,10 +48,17 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.openSubmenu();
 			Iohandlerservice.httpGetUttJson("testData/uttList.json");
 			
+			// disable sorting of tiers when config setting "restrictions.sortLabels" = false
 			if(!ConfigProviderService.vals.restrictions.sortLabels) {
 			    $("#allowSortable").sortable('destroy');
 			}
+			
+			// set timeline height according to config settings "colors.timelineHeight"
 			$(".TimelineCtrl").css('height',ConfigProviderService.vals.colors.timelineHeight);
+			
+			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
+			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]);
+			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]);
 			
 		    $scope.buttonstyle = function(id) {
 		        var show = {};
@@ -148,7 +155,9 @@ var MainCtrl = angular.module('emulvcApp')
 			Soundhandlerservice.wavJSO = wavJSO;
 			// Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			// Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
-			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
+			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));		
+			
+
 		});
 
 		/**

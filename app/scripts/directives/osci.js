@@ -15,16 +15,16 @@ angular.module('emulvcApp')
 				// var setIntervalID;
 				// var viewState = scope.vs;
 
-				console.log(scope.shs);
-
 				scope.$watch('vs.playHeadAnimationInfos', function(newValue, oldValue) {
-					if (!$.isEmptyObject(scope.shs.wavJSO)) {
-						drawPlayHead(scope, scope.config);
+					if (!$.isEmptyObject(scope.shs)) {
+					    if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						    drawPlayHead(scope, scope.config);
+    					}
 					}
 				}, true);
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-
+				    if (!$.isEmptyObject(scope.shs)) {
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
 						// check for changed zoom
 						if (oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1) { // SIC -1 check not that clean...
@@ -33,6 +33,7 @@ angular.module('emulvcApp')
 							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 						}
 						drawVpOsciMarkup(scope, scope.config);
+					}
 					}
 				}, true);
 

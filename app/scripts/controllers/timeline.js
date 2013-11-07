@@ -10,6 +10,9 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffData = [];
+		
+		
+		
 
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
@@ -24,8 +27,9 @@ var TimelineCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
 				$scope.ssffData = [];
-		});
-		
+	        
+		});		
+  
 
 
 		$scope.resizeSpectro = function() {
