@@ -33,6 +33,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
+		
 
 
 		/**
@@ -45,21 +46,81 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-
-			var b = $('<button>').attr({
-				'id': 'submenuOpen',
-				'class': 'mini-btn',
-				'data-tooltip': 'Shortcut: O',
-				'tooltip-placement': 'bottom',
-				'z-index': '9999',
-				'ng-click': 'openSubmenu()',
-			}).text('Open Menu');
-			$compile(b)($scope);
-			$('#firstButton').before(b);
-			// if (ConfigProviderService.vals.main.mode === 'standalone') {
-				$scope.openSubmenu();
-			// }
+			$scope.openSubmenu();
 			Iohandlerservice.httpGetUttJson("testData/uttList.json");
+			
+		    $scope.buttonstyle = function(id) {
+		        var show = {};
+		        var hidden = {"display": "none"};
+		        switch(id) {
+		            case "openMenu":
+		                if(ConfigProviderService.vals.activeButtons.openMenu) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;
+		            case "openFile":
+		                if(ConfigProviderService.vals.activeButtons.openFile) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;
+		            case "addTierSeg":
+		                if(ConfigProviderService.vals.activeButtons.addTierSeg) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;
+		            case "addTierPoint":
+		                if(ConfigProviderService.vals.activeButtons.addTierPoint) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;
+		            case "renameSelTier":
+		                if(ConfigProviderService.vals.activeButtons.renameSelTier) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;
+		            case "downloadTextGrid":
+		                if(ConfigProviderService.vals.activeButtons.downloadTextGrid) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;	
+		            case "specSettings":
+		                if(ConfigProviderService.vals.activeButtons.specSettings) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;	
+		            case "Connect":
+		                if(ConfigProviderService.vals.activeButtons.Connect) {
+		                    return show;
+		                }
+		                else {
+		                    return hidden;
+		                }
+		                break;		                		                		                		                		                
+		        }
+		        return hidden;
+    		}			
+			
 		});
 
 

@@ -43,12 +43,14 @@
 
   <div class="menu" id="menu">
       <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
-      <!-- <button id="firstButton" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> -->
-      <!-- <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> -->
-      <!-- <button class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> -->
-      <!-- <button class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> -->
-      <button id="firstButton" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
-      <!-- <button class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Disconnect</button>  -->
+       <button ng-style="buttonstyle('openMenu')" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open Menu</button> 
+       <button ng-style="buttonstyle('openFile')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open File</button> 
+       <button ng-style="buttonstyle('addTierSg')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> 
+       <button ng-style="buttonstyle('addTierPoint')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> 
+       <button ng-style="buttonstyle('renameSelTier')" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> 
+       <button ng-style="buttonstyle('downloadTextGrid')" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> 
+       <button ng-style="buttonstyle('specSettings')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
+       <button ng-style="buttonstyle('Connect')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Disconnect</button>  
       <a class="aboutLink" title="About" ng-click="openModal('views/about.html','dialog');"><img></a>
   </div>
 

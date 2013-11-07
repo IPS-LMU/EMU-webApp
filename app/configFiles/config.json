@@ -77,12 +77,12 @@
     },
     "activeButtons": {
         "openMenu": true,
-        "openFile": true,
-        "addTierSeg": true,
-        "addTierPoint": true,
-        "renameSelTier": true,
-        "downloadTextGrid": true,
+        "openFile": false,
+        "addTierSeg": false,
+        "addTierPoint": false,
+        "renameSelTier": false,
+        "downloadTextGrid": false,
         "specSettings": true,
-        "Connect": true
+        "Connect": false
     }
 }
