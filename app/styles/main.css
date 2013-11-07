@@ -232,7 +232,7 @@ li {
     overflow: auto;
     border: 1px solid gray;
     position: absolute;
-    z-index: 4;
+    z-index: 5;
     background-color: transparent; 
     width: 97%;
     height: 100%;    
@@ -252,7 +252,7 @@ li {
     /*box-shadow: 0px 1px 2px #000;*/
     width: 97%;    
     position:absolute;
-    z-index: 5;
+    z-index: 4;
     background-color: transparent;
     width: 97%;
     height: 100%;     

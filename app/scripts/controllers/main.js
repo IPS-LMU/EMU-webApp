@@ -60,6 +60,7 @@ var MainCtrl = angular.module('emulvcApp')
 			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]);
 			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]);
 			
+			
 		    $scope.buttonstyle = function(id) {
 		        var show = {};
 		        var hidden = {"display": "none"};
@@ -142,6 +143,7 @@ var MainCtrl = angular.module('emulvcApp')
 			console.log(uttList)
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
+			
 		});
 
 
@@ -165,6 +167,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
+						
 		});
 
 

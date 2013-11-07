@@ -11,7 +11,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffData = [];
 		
-		
+		$scope.showSSFFCanvas = "spec";
 		
 
 		/**
@@ -20,14 +20,18 @@ var TimelineCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
 			// $scope.vs.curViewPort.sS = 0;
 			$scope.ssffData.push(data);
+			for(var key in ConfigProviderService.vals.signalsCanvasConfig.assign) {
+			    if(ConfigProviderService.vals.signalsCanvasConfig.assign[key] === "fms:fm") {
+				    $scope.showSSFFCanvas = key;
+			    }
+			}	
 		});
 		
 		/**
 		 * clear ssff data when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
-				$scope.ssffData = [];
-	        
+				$scope.ssffData = [];	        
 		});		
   
 
