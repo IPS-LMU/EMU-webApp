@@ -32,7 +32,6 @@ angular.module('emulvcApp')
 					// draw lines
 					var mouseX = dhs.getX(mouseEvt);
 					var mouseY = dhs.getY(mouseEvt);
-					console.log(mouseY);
 
 					ctx.beginPath();
 					ctx.moveTo(0, mouseY);
