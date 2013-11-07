@@ -32,6 +32,7 @@ angular.module('emulvcApp')
 					// draw lines
 					var mouseX = dhs.getX(mouseEvt);
 					var mouseY = dhs.getY(mouseEvt);
+					console.log(mouseY);
 
 					ctx.beginPath();
 					ctx.moveTo(0, mouseY);
@@ -43,17 +44,17 @@ angular.module('emulvcApp')
 					ctx.lineTo(mouseX, canvas.height);
 					ctx.stroke();
 					// draw frequency / sample / time
-					ctx.font = (config.vals.colors.fontPxSize + 'px' + ' ' + config.vals.colors.fontType);
+					ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
 
 					var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
 
 					var tW = ctx.measureText(mouseFreq + ' Hz').width;
 
-					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.colors.fontPxSize);
-					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.colors.fontPxSize);
+					ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.font.fontPxSize);
+					ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.font.fontPxSize);
 
-					ctx.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.colors.fontPxSize);
-					ctx.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.colors.fontPxSize * 2);
+					ctx.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.font.fontPxSize);
+					ctx.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.font.fontPxSize * 2);
 					// see if Chrome ->dashed line
 					if (navigator.vendor === 'Google Inc.') {
 						ctx.setLineDash([0]);
