@@ -51,6 +51,7 @@ var MainCtrl = angular.module('emulvcApp')
 			if(!ConfigProviderService.vals.restrictions.sortLabels) {
 			    $("#allowSortable").sortable('destroy');
 			}
+			$(".TimelineCtrl").css('height',ConfigProviderService.vals.colors.timelineHeight);
 			
 		    $scope.buttonstyle = function(id) {
 		        var show = {};
