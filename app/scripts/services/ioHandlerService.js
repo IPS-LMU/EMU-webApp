@@ -104,17 +104,18 @@ angular.module('emulvcApp')
 			// load signal files
 			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 				curFile = sServObj.findFileInUtt(utt, ext);
-				sServObj.httpGetSSFFfile(curFile);
+				sServObj.httpGetSSFFfile(curFile);				
 			})
 
 			// load label files
 			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
 				curFile = sServObj.findFileInUtt(utt, ext);
 				sServObj.httpGetESPS(curFile);
+
 			})
 
 			viewState.loadingUtt = false; // SIC in async behaviour!!!
-			console.log("finished loading utt")
+			console.log("finished loading utt");
 		};
 
 		/**

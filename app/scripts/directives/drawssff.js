@@ -57,6 +57,7 @@ angular.module('emulvcApp')
             var col = findColumn(scope.ssffData, colName);
             // draw values  
             drawValues(scope.vs, canvas, scope.config, col);
+            console.log(scope.config);
           }
         }, true);
 
@@ -91,18 +92,22 @@ angular.module('emulvcApp')
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+          
+          console.log(config.vals.spectrogramSettings);
           // hardcode min max display for now
-          var minVal = 0;
-          var maxVal = 8000; //Hz in the case of formants
+          var minVal = config.vals.spectrogramSettings.rangeFrom;
+          var maxVal = config.vals.spectrogramSettings.rangeTo; //Hz in the case of formants
 
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
+          
+          
 
           var colStartSampleNr = Math.round((startTimeVP + col.startTime) * col.sampleRate);
           var colEndSampleNr = Math.round((endTimeVP + col.startTime) * col.sampleRate);
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
+          
 
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
@@ -146,6 +151,7 @@ angular.module('emulvcApp')
 
                   prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                   prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+                
 
                   // mark selected
                   if (viewState.curCorrectionToolNr - 1 === idx) {

@@ -18,6 +18,14 @@ var TimelineCtrl = angular.module('emulvcApp')
 			// $scope.vs.curViewPort.sS = 0;
 			$scope.ssffData.push(data);
 		});
+		
+		/**
+		 * clear ssff data when new utt is loaded
+		 */
+		$scope.$on('loadingNewUtt', function(evt) {
+				$scope.ssffData = [];
+		});
+		
 
 
 		$scope.resizeSpectro = function() {
