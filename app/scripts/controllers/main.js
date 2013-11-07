@@ -35,7 +35,6 @@ var MainCtrl = angular.module('emulvcApp')
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
 		
 
-
 		/**
 		 * listen for configLoaded
 		 */

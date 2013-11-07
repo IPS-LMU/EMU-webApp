@@ -13,15 +13,26 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.tierDetails = {};
 
+
 		$scope.sortableOptions = {
 			update: function(e, ui) {
-				//alert("update"); 
+			    if(!ConfigProviderService.vals.restrictions.sortLabels) {
+                    ui.item.parent().sortable('cancel');
+                }
 			},
 			start: function(e, ui) {
-				$scope.deleteEditArea();
+				$scope.deleteEditArea();			
 			},
 			axis: 'y',
-			placeholder: "tierPlaceholder"
+			placeholder: "tierPlaceholder",
+			cancel: function(e, ui) {
+			    if(ConfigProviderService.vals.restrictions.sortLabels) {
+                    return "";
+                }		
+                else {
+                    return "sort";
+                }	
+			}
 		};
 
 		/**
