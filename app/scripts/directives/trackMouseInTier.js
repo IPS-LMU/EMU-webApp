@@ -25,20 +25,22 @@ angular.module('emulvcApp')
 
 
         element.bind('click', function(event) {
-          setLastMove(event,true);
+          setLastMove(event, true);
           setLastClick(event);
         });
 
         element.bind('contextmenu', function(event) {
           event.preventDefault();
-          setLastMove(event,true);
+          setLastMove(event, true);
           setLastRightClick(event);
 
         });
 
         element.bind('dblclick', function(event) {
-          setLastMove(event,true);
-          setLastDblClick(event);
+          setLastMove(event, true);
+          if (scope.config.vals.restrictions.changeLabels){
+            setLastDblClick(event);
+          }
         });
 
         element.bind('mousemove', function(event) {
@@ -56,38 +58,42 @@ angular.module('emulvcApp')
               break;
             default:
               if (event.shiftKey) {
-                scope.vs.deleteEditArea();
-                scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
-                lastPCM = thisPCM;
-                scope.vs.selectBoundry();
-                scope.$apply();
-                moveLine = false;
+                if (scope.config.vals.restrictions.editItemBoundaries) {
+                  scope.vs.deleteEditArea();
+                  scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                  lastPCM = thisPCM;
+                  scope.vs.selectBoundry();
+                  scope.$apply();
+                  moveLine = false;
+                }
               }
               if (event.altKey) {
-                scope.vs.deleteEditArea();
-                scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
-                lastPCM = thisPCM;
-                scope.vs.selectBoundry();
-                scope.$apply();
+                if (scope.config.vals.restrictions.editItemBoundaries) {
+                  scope.vs.deleteEditArea();
+                  scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                  lastPCM = thisPCM;
+                  scope.vs.selectBoundry();
+                  scope.$apply();
+                }
               }
               break;
           }
-          setLastMove(event,moveLine);
+          setLastMove(event, moveLine);
         });
 
         element.bind('mousedown', function(event) {
-          setLastMove(event,true);
+          setLastMove(event, true);
           scope.history();
         });
-        
+
 
         element.bind('mouseup', function(event) {
-          setLastMove(event,true);
+          setLastMove(event, true);
           scope.history();
         });
-        
+
         element.bind('mouseout', function(event) {
-          setLastMove(event,true);
+          setLastMove(event, true);
         });
 
         function setLastClick(x) {
@@ -109,9 +115,9 @@ angular.module('emulvcApp')
 
         function setLastRightClick(x) {
           var tierId = element.parent().parent().parent()[0].id;
-          if(scope.vs.getcurClickTierName()!=tierId) {
-              setLastClick(x);
-              //console.log(scope.vs.getcurClickTierName(),tierId);
+          if (scope.vs.getcurClickTierName() != tierId) {
+            setLastClick(x);
+            //console.log(scope.vs.getcurClickTierName(),tierId);
           }
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           scope.vs.deleteEditArea();
@@ -141,15 +147,15 @@ angular.module('emulvcApp')
           scope.$apply();
         }
 
-        function setLastMove(x,doChange) {
+        function setLastMove(x, doChange) {
           var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier);
           scope.vs.setcurMouseTierName(tierId);
-          if(doChange) {
-              scope.vs.setcurMouseSegment(lastEventMove);
-              scope.vs.setcurMouseSegmentId(lastEventMoveId);
+          if (doChange) {
+            scope.vs.setcurMouseSegment(lastEventMove);
+            scope.vs.setcurMouseSegmentId(lastEventMoveId);
           }
           lastPCM = thisPCM;
           scope.$apply();

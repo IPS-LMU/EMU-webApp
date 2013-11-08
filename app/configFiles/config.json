@@ -75,7 +75,7 @@
     "restrictions": {
         "sortLabels": false,
         "changeLabels": false,
-        "editLabels": false,
+        "editItemBoundaries": false,
         "drawCrossHairs": true
     },
     "activeButtons": {
