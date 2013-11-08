@@ -56,19 +56,23 @@ angular.module('emulvcApp')
               break;
             default:
               if (event.shiftKey) {
-                scope.vs.deleteEditArea();
-                scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
-                lastPCM = thisPCM;
-                scope.vs.selectBoundry();
-                scope.$apply();
-                moveLine = false;
+                if(scope.config.vals.restrictions.changeLabels) {
+                  scope.vs.deleteEditArea();
+                  scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                  lastPCM = thisPCM;
+                  scope.vs.selectBoundry();
+                  scope.$apply();
+                  moveLine = false;
+                }
               }
               if (event.altKey) {
-                scope.vs.deleteEditArea();
-                scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
-                lastPCM = thisPCM;
-                scope.vs.selectBoundry();
-                scope.$apply();
+                if(scope.config.vals.restrictions.changeLabels) {
+                  scope.vs.deleteEditArea();
+                  scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                  lastPCM = thisPCM;
+                  scope.vs.selectBoundry();
+                  scope.$apply();
+                }
               }
               break;
           }
