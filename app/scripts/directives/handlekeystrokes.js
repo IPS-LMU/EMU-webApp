@@ -73,6 +73,7 @@ angular.module('emulvcApp')
               // playEntireFile
               if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
                 Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+                viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
               }
               // playAllInView
               if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
@@ -82,6 +83,7 @@ angular.module('emulvcApp')
               // playSelected
               if (code === ConfigProviderService.vals.keyMappings.playSelected) {
                 Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
               }
               // shiftViewPortRight
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
