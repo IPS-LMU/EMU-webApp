@@ -10,7 +10,7 @@ angular.module('emulvcApp')
                 // select the needed DOM elements from the template
                 var canvasLength = element.find('canvas').length;
                 var canvas0 = element.find('canvas')[0];
-                var canvas1 = element.find('canvas')[canvasLength-1];
+                var canvas1 = element.find('canvas')[canvasLength - 1];
                 var myid = element[0].id;
                 // FFT default vars
                 var alpha = 0.16; // default alpha for Window Function
@@ -36,65 +36,98 @@ angular.module('emulvcApp')
                 var imageCacheCounter = 0;
                 var ppp;
                 var cache;
-                
-                clearImageCache(); 
-                
+
+                clearImageCache();
+
+                // on mouse move
+                element.bind('mousemove', function(event) {
+                    drawCrossHairs(scope.vs, canvas1, scope.config, scope.dhs, event);
+                });
+
+                // on mouse leave clear markup canvas
+                element.bind('mouseleave', function() {
+                    contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+                    drawTimeLineContext();
+                });
+
                 scope.$watch('vs.curViewPort', function() {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
-                        redraw();
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            redraw();
+                        }
                     }
-                }
-                }, true); 
-                                
+                }, true);
+
                 scope.$watch('vs.spectroSettings', function() {
-                  if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.wavJSO)) {
-                        setupEvent();
-                        clearImageCache();
-                        drawOsci(scope.vs, scope.shs.wavJSO.Data);
-                    } 
-                  }               
-                }, true);                    
-                
-                scope.$watch('vs.scrollOpen', function() {
-                  if (!$.isEmptyObject(scope.config)) {
-                    if (!$.isEmptyObject(scope.config.vals)) {
-                        var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
-                        var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
-                        if(scope.vs.scrollOpen == 0) {
-                            $('.OsciDiv').css({ height: '50%' });
-                            $('.OsciDiv canvas').css({ height: '48%' });
-                            $('.SpectroDiv').css({  height: '50%' });
-                            $('.SpectroDiv canvas').css({ height: '48%' });
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            setupEvent();
+                            clearImageCache();
+                            drawOsci(scope.vs, scope.shs.wavJSO.Data);
                         }
-                        else if(scope.vs.scrollOpen == 1){
-                            $('.OsciDiv').css({ height: per+'%' });
-                            $('.OsciDiv canvas').css({ height: per+'%' });
-                            $('.SpectroDiv').css({ height: perInvers+'%' });  
-                            $('.SpectroDiv canvas').css({ height: perInvers+'%' });                      
-                        }
-                        else if(scope.vs.scrollOpen == 2){
-                            $('.OsciDiv').css({ height: perInvers+'%' });
-                            $('.OsciDiv canvas').css({ height: perInvers+'%' });
-                            $('.SpectroDiv').css({ height: per+'%' });  
-                            $('.SpectroDiv canvas').css({ height: per+'%' });                      
-                        }                        
                     }
-                  }
-                }, true);                  
-                
+                }, true);
+
+                scope.$watch('vs.scrollOpen', function() {
+                    if (!$.isEmptyObject(scope.config)) {
+                        if (!$.isEmptyObject(scope.config.vals)) {
+                            var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
+                            var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
+                            if (scope.vs.scrollOpen == 0) {
+                                $('.OsciDiv').css({
+                                    height: '50%'
+                                });
+                                $('.OsciDiv canvas').css({
+                                    height: '48%'
+                                });
+                                $('.SpectroDiv').css({
+                                    height: '50%'
+                                });
+                                $('.SpectroDiv canvas').css({
+                                    height: '48%'
+                                });
+                            } else if (scope.vs.scrollOpen == 1) {
+                                $('.OsciDiv').css({
+                                    height: per + '%'
+                                });
+                                $('.OsciDiv canvas').css({
+                                    height: per + '%'
+                                });
+                                $('.SpectroDiv').css({
+                                    height: perInvers + '%'
+                                });
+                                $('.SpectroDiv canvas').css({
+                                    height: perInvers + '%'
+                                });
+                            } else if (scope.vs.scrollOpen == 2) {
+                                $('.OsciDiv').css({
+                                    height: perInvers + '%'
+                                });
+                                $('.OsciDiv canvas').css({
+                                    height: perInvers + '%'
+                                });
+                                $('.SpectroDiv').css({
+                                    height: per + '%'
+                                });
+                                $('.SpectroDiv canvas').css({
+                                    height: per + '%'
+                                });
+                            }
+                        }
+                    }
+                }, true);
+
                 function redraw() {
                     ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
-                    cache = cacheHit(scope.vs.curViewPort.sS,scope.vs.curViewPort.eS,ppp);
-                    if(cache!=null) {
+                    cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp);
+                    if (cache != null) {
+                        contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
                         drawTimeLine(cache);
                         drawTimeLineContext();
-                    }
-                    else {
+                    } else {
                         drawOsci(scope.vs, scope.shs.wavJSO.Data);
                     }
-                }              
+                }
 
                 function clearImageCache() {
                     imageCache = null;
@@ -110,7 +143,7 @@ angular.module('emulvcApp')
                     imageCache[imageCacheCounter][3] = imgData;
                     ++imageCacheCounter;
                 }
-                
+
                 function cacheHit(cstart, cend, ppp) {
                     for (var i = 0; i < imageCache.length; ++i) {
                         if (imageCache[i][0] == cstart &&
@@ -120,37 +153,37 @@ angular.module('emulvcApp')
                         }
                     }
                     return null;
-                }                
+                }
 
                 function drawTimeLineContext() {
-                    contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
-					var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
-					var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
-					var sDist = scope.vs.getSampleDist(canvas0.width);
-					var xOffset;        
-					if (scope.vs.curViewPort.selectS == scope.vs.curViewPort.selectE) {
-						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-						if (scope.vs.curMouseMoveTierType == "seg") {
-							xOffset = 0;
-						} else {
-							xOffset = (sDist / 2);
-						}
-						contextmarkup.fillStyle = scope.config.vals.colors.selectedBorderColor;
-						contextmarkup.fillRect(posS + xOffset, 0, 1, canvas0.height);
-					} else {
-						contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
-						contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
-						contextmarkup.strokeStyle = scope.config.vals.colors.selectedBorderColor;
-						contextmarkup.beginPath();
-						contextmarkup.moveTo(posS, 0);
-						contextmarkup.lineTo(posS, canvas0.height);
-						contextmarkup.moveTo(posE, 0);
-						contextmarkup.lineTo(posE, canvas0.height);
-						contextmarkup.closePath();
-						contextmarkup.stroke();
-						contextmarkup.fillStyle = canvas0.labelColor;
+                    // contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
+                    var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
+                    var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
+                    var sDist = scope.vs.getSampleDist(canvas0.width);
+                    var xOffset;
+                    if (scope.vs.curViewPort.selectS == scope.vs.curViewPort.selectE) {
+                        // calc. offset dependant on type of tier of mousemove  -> default is sample exact
+                        if (scope.vs.curMouseMoveTierType == "seg") {
+                            xOffset = 0;
+                        } else {
+                            xOffset = (sDist / 2);
+                        }
+                        contextmarkup.fillStyle = scope.config.vals.colors.selectedBorderColor;
+                        contextmarkup.fillRect(posS + xOffset, 0, 1, canvas0.height);
+                    } else {
+                        contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
+                        contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
+                        contextmarkup.strokeStyle = scope.config.vals.colors.selectedBorderColor;
+                        contextmarkup.beginPath();
+                        contextmarkup.moveTo(posS, 0);
+                        contextmarkup.lineTo(posS, canvas0.height);
+                        contextmarkup.moveTo(posE, 0);
+                        contextmarkup.lineTo(posE, canvas0.height);
+                        contextmarkup.closePath();
+                        contextmarkup.stroke();
+                        contextmarkup.fillStyle = canvas0.labelColor;
 
-					}
+                    }
                 }
 
 
@@ -183,17 +216,18 @@ angular.module('emulvcApp')
                         var worker_img = event.data.img;
                         myImage.onload = function() {
                             context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
-                            buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp,canvas0.toDataURL("image/png"));
-                            drawTimeLineContext();                             
-                        }                           
+                            buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp, canvas0.toDataURL("image/png"));
+                            drawTimeLineContext();
+                        }
                         myImage.src = worker_img;
                     });
-                    
+
                 }
 
                 function drawOsci(viewState, buffer) {
                     killSpectroRenderingThread();
-                    drawTimeLineContext();                     
+                    contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+                    drawTimeLineContext();
                     startSpectroRenderingThread(viewState, buffer);
                 }
 
@@ -202,7 +236,7 @@ angular.module('emulvcApp')
                     primeWorker = new Worker(URL.createObjectURL(blob));
                     var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
-                    setupEvent();  
+                    setupEvent();
 
                     primeWorker.postMessage({
                         'cmd': 'config',
@@ -267,7 +301,7 @@ angular.module('emulvcApp')
                     primeWorker.postMessage({
                         'cmd': 'config',
                         'streamChannels': scope.shs.wavJSO.NumChannels
-                    });                    
+                    });
                     primeWorker.postMessage({
                         'cmd': 'pcm',
                         'stream': parseData
@@ -275,6 +309,50 @@ angular.module('emulvcApp')
                     primeWorker.postMessage({
                         'cmd': 'render'
                     });
+                }
+
+                function drawCrossHairs(viewState, canvas, config, dhs, mouseEvt) {
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = config.vals.colors.crossHairsColor;
+                    ctx.fillStyle = config.vals.colors.crossHairsColor;
+
+                    // see if Chrome ->dashed line
+                    if (navigator.vendor === 'Google Inc.') {
+                        ctx.setLineDash([2]);
+                    }
+
+
+                    // draw lines
+                    var mouseX = dhs.getX(mouseEvt);
+                    var mouseY = dhs.getY(mouseEvt);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, mouseY);
+                    ctx.lineTo(5, mouseY + 5);
+                    ctx.moveTo(0, mouseY);
+                    ctx.lineTo(canvas.width, mouseY);
+                    ctx.lineTo(canvas.width - 5, mouseY + 5);
+                    ctx.moveTo(mouseX, 0);
+                    ctx.lineTo(mouseX, canvas.height);
+                    ctx.stroke();
+                    // draw frequency / sample / time
+                    ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+
+                    var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
+
+                    var tW = ctx.measureText(mouseFreq + ' Hz').width;
+
+                    ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.font.fontPxSize);
+                    ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.font.fontPxSize);
+
+                    ctx.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.font.fontPxSize);
+                    ctx.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.font.fontPxSize * 2);
+                    // see if Chrome ->dashed line
+                    if (navigator.vendor === 'Google Inc.') {
+                        ctx.setLineDash([0]);
+                    }
+                    drawTimeLineContext();
                 }
 
 

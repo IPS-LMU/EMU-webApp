@@ -31,7 +31,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		// init pure jquery dragbar
-		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
+		$('.TimelineCtrl').ownDrag('.resizer').ownResize('.resizer');
 
 
 
@@ -64,94 +64,94 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.buttonstyle = function(id) {
 				var show = {};
 				var hidden = {
-					"display": "none"
+					'display': 'none'
 				};
 				switch (id) {
-					case "openMenu":
+					case 'openMenu':
 						if (ConfigProviderService.vals.activeButtons.openMenu) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "openFile":
+					case 'openFile':
 						if (ConfigProviderService.vals.activeButtons.openFile) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "addTierSeg":
+					case 'addTierSeg':
 						if (ConfigProviderService.vals.activeButtons.addTierSeg) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "addTierPoint":
+					case 'addTierPoint':
 						if (ConfigProviderService.vals.activeButtons.addTierPoint) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "renameSelTier":
+					case 'renameSelTier':
 						if (ConfigProviderService.vals.activeButtons.renameSelTier) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "downloadTextGrid":
+					case 'downloadTextGrid':
 						if (ConfigProviderService.vals.activeButtons.downloadTextGrid) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "specSettings":
+					case 'specSettings':
 						if (ConfigProviderService.vals.activeButtons.specSettings) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "Connect":
+					case 'Connect':
 						if (ConfigProviderService.vals.activeButtons.Connect) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "deleteSingleTier":
+					case 'deleteSingleTier':
 						if (ConfigProviderService.vals.activeButtons.deleteSingleTier) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "resizeSingleTier":
+					case 'resizeSingleTier':
 						if (ConfigProviderService.vals.activeButtons.resizeSingleTier) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "saveSingleTier":
+					case 'saveSingleTier':
 						if (ConfigProviderService.vals.activeButtons.saveSingleTier) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "resizeOsci":
+					case 'resizeOsci':
 						if (ConfigProviderService.vals.activeButtons.resizeOsci) {
 							return show;
 						} else {
 							return hidden;
 						}
 						break;
-					case "resizeSpectro":
+					case 'resizeSpectro':
 						if (ConfigProviderService.vals.activeButtons.resizeSpectro) {
 							return show;
 						} else {
