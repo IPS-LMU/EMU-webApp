@@ -25,16 +25,24 @@ angular.module('emulvcApp')
           elem.parent().parent()[0].className =  cssSmallTier + " ng-scope";
           canvas[0].className = cssTierCanvas + " " + cssSmallCanvas;
           canvas[1].className = cssTierMarkupCanvas + " " + cssSmallCanvas;
-          b_delete.hide();
-          b_save.hide();
+          if(scope.config.vals.activeButtons.deleteSingleTier) {
+            b_delete.hide();
+          }
+          if(scope.config.vals.activeButtons.saveSingleTier) {
+            b_save.hide();
+          }
         }
         else {
           open = true;
           elem.parent().parent()[0].className =  cssTier + " ng-scope";
           canvas[0].className = cssTierCanvas;
           canvas[1].className = cssTierMarkupCanvas;
-          b_delete.show();
-          b_save.show();
+          if(scope.config.vals.activeButtons.deleteSingleTier) {
+            b_delete.show();
+          }            
+          if(scope.config.vals.activeButtons.saveSingleTier) {
+            b_save.show();
+          }            
         }
         scope.updateView();
       });
