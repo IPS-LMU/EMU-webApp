@@ -57,18 +57,24 @@ angular.module('emulvcApp')
     /**
      */
     sServObj.updatePlayHead = function(timestamp) {
+	  // at first push animation !!!
+      if(Soundhandlerservice.player.isPlaying) {
+        $window.requestAnimationFrame(sServObj.updatePlayHead);
+      }    
+      
+      // do work in this animation round now
       if (sServObj.start  === null) sServObj.start = timestamp;
       var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
-      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS ) {
+      
+      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS ) {
         $rootScope.$apply();
-        $window.requestAnimationFrame(sServObj.updatePlayHead);
       } else {
         sServObj.playHeadAnimationInfos.sS = -1;
         sServObj.playHeadAnimationInfos.eS = -1;
         sServObj.playHeadAnimationInfos.curS = 0;
         sServObj.start = null;
-      }
+      }    
     };
 
     /**
