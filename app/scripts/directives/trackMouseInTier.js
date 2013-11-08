@@ -38,7 +38,7 @@ angular.module('emulvcApp')
 
         element.bind('dblclick', function(event) {
           setLastMove(event, true);
-          if (scope.config.vals.restrictions.changeLabels){
+          if (scope.config.vals.restrictions.changeLabels) {
             setLastDblClick(event);
           }
         });
@@ -68,7 +68,7 @@ angular.module('emulvcApp')
                 }
               }
               if (event.altKey) {
-                if (scope.config.vals.restrictions.editItemBoundaries) {
+                if (scope.config.vals.restrictions.changeLabels) {
                   scope.vs.deleteEditArea();
                   scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                   lastPCM = thisPCM;

@@ -29,7 +29,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			placeholder: "tierPlaceholder"
 		};
 
-
 		/**
 		 * listen for newlyLoadedLabelJson broadcast
 		 * update tierDetails if heard
