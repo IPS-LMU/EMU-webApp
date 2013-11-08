@@ -172,7 +172,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
 			console.log(uttList)
 			$scope.uttsList = uttList;
-			Iohandlerservice.httpGetUtterence($scope.uttsList[4]);
+			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 
 		});
 
