@@ -6,7 +6,6 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.lastkeycode = 'N/A';
 		$scope.ssff = undefined;
-
 		$scope.uttsList = [];
 
 		/**

@@ -11,6 +11,15 @@ var FileCtrl = angular.module("emulvcApp")
     var parsingFile;
     var parsingFileType;
     
+    /**
+	* listen for configLoaded
+	*/
+	$scope.$on('configLoaded', function(evt, data) {
+	    if(ConfigProviderService.vals.main.mode=="server") {
+		    $scope.dropClass = "hidden";
+		}
+	});
+    
     $scope.dropText = droptext1;   
     
     function dragEnterLeave(evt) {

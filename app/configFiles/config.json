@@ -1,6 +1,6 @@
 {
     "main": {
-        "mode": "client",
+        "mode": "server",
         "osciSpectroZoomFactor": 2
     },
     "keyMappings": {

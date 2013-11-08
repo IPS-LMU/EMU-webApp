@@ -4,13 +4,11 @@
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
       <div ng-repeat="utt in uttsList">
-
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance">
             Finished editing: <input type="checkbox">
                <img style="cursor: pointer;" ng-click="menuUttSave(utt);">
            </div>
-
       </div>
       <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
       <div ng-show="files.length">
