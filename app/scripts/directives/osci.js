@@ -33,7 +33,7 @@ angular.module('emulvcApp')
 							scope.dhs.osciPeaks = allPeakVals;
 							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 						}
-						drawVpOsciMarkup(scope, scope.config);
+						drawVpOsciMarkup(scope, scope.config, true);
 					}
 					}
 				}, true);
@@ -105,7 +105,7 @@ angular.module('emulvcApp')
 					
 					//console.log(posS,posCur);
 
-					// drawVpOsciMarkup(scope, config);
+					 drawVpOsciMarkup(scope, config ,false);
 
 				};
 
@@ -115,11 +115,13 @@ angular.module('emulvcApp')
 				 * the viewport
 				 */
 
-				function drawVpOsciMarkup(scope, config) {
+				function drawVpOsciMarkup(scope, config, reset) {
 
 					var viewState = scope.vs;
 					var ctx = markupCanvas.getContext('2d');
-					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
+					if(reset) {
+					  ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
+					}
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
 					ctx.fillStyle = config.vals.colors.labelColor;
