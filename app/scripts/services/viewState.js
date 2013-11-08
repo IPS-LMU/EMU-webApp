@@ -39,7 +39,6 @@ angular.module('emulvcApp')
       sS: -1,
       eS: -1,
       curS: null,
-      animStatTime: null
     };
 
 
@@ -52,43 +51,33 @@ angular.module('emulvcApp')
     sServObj.curClickTierName = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = -1;
-    sServObj.soundPlaying = false;
-
+    sServObj.start = null; 
     sServObj.loadingUtt = false;
 
     /**
      */
     sServObj.updatePlayHead = function(timestamp) {
-      if (sServObj.playHeadAnimationInfos.animStatTime === null) {
-        sServObj.playHeadAnimationInfos.animStatTime = timestamp;
-      }
-      var timePassedMs = (timestamp - sServObj.playHeadAnimationInfos.animStatTime);
-      var timePassedSecs = timePassedMs / 1000;
-      var samplesPassed = timePassedSecs * Soundhandlerservice.wavJSO.SampleRate;
-      
+      if (sServObj.start  === null) sServObj.start = timestamp;
+      var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
-      if (sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS && sServObj.soundPlaying ) {
+      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS ) {
         $rootScope.$apply();
         $window.requestAnimationFrame(sServObj.updatePlayHead);
       } else {
         sServObj.playHeadAnimationInfos.sS = -1;
         sServObj.playHeadAnimationInfos.eS = -1;
         sServObj.playHeadAnimationInfos.curS = 0;
-        sServObj.playHeadAnimationInfos.animStatTime = null;
+        sServObj.start = null;
       }
     };
 
     /**
      */
     sServObj.animatePlayHead = function(startS, endS) {
-      if(!sServObj.soundPlaying) {
         sServObj.playHeadAnimationInfos.sS = startS;
         sServObj.playHeadAnimationInfos.eS = endS;
         sServObj.playHeadAnimationInfos.curS = startS;
         $window.requestAnimationFrame(sServObj.updatePlayHead);
-        sServObj.soundPlaying = true;
-      }
-      else sServObj.soundPlaying = false;
     };
 
 

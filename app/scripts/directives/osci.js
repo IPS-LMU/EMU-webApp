@@ -100,8 +100,10 @@ angular.module('emulvcApp')
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
 					// console.log(viewState.playHeadAnimationInfos.curS)
 
-					ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-					ctx.fillRect(posS , 0, posCur, canvas.height);
+					ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+					ctx.fillRect(posS , 0, posCur-posS, canvas.height);
+					
+					//console.log(posS,posCur);
 
 					// drawVpOsciMarkup(scope, config);
 
