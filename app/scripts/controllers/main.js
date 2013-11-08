@@ -7,7 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.ssff = undefined;
 
-		$scope.uttsList =[];
+		$scope.uttsList = [];
 
 		/**
 		 * listen for dropped files
@@ -33,7 +33,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init pure jquery dragbar
 		$(".TimelineCtrl").ownDrag(".resizer").ownResize(".resizer");
-		
+
 
 
 		/**
@@ -46,94 +46,123 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-			$scope.openSubmenu();
+			// $scope.openSubmenu();
 			Iohandlerservice.httpGetUttJson("testData/uttList.json");
-			
+
 			// set timeline height according to config settings "colors.timelineHeight"
-			$(".TimelineCtrl").css('height',ConfigProviderService.vals.colors.timelineHeight);
-			
-			if(ConfigProviderService.vals.restrictions.sortLabels) {
-                    $('#allowSortable').sortable('enable');
-            }
-			
-			
+			$(".TimelineCtrl").css('height', ConfigProviderService.vals.colors.timelineHeight);
+
+			if (ConfigProviderService.vals.restrictions.sortLabels) {
+				$('#allowSortable').sortable('enable');
+			}
+
+
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
-			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]);
-			$('#'+ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#'+ConfigProviderService.vals.signalsCanvasConfig.order[1]);
-			
-			
-		    $scope.buttonstyle = function(id) {
-		        var show = {};
-		        var hidden = {"display": "none"};
-		        switch(id) {
-		            case "openMenu":
-		                if(ConfigProviderService.vals.activeButtons.openMenu) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;
-		            case "openFile":
-		                if(ConfigProviderService.vals.activeButtons.openFile) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;
-		            case "addTierSeg":
-		                if(ConfigProviderService.vals.activeButtons.addTierSeg) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;
-		            case "addTierPoint":
-		                if(ConfigProviderService.vals.activeButtons.addTierPoint) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;
-		            case "renameSelTier":
-		                if(ConfigProviderService.vals.activeButtons.renameSelTier) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;
-		            case "downloadTextGrid":
-		                if(ConfigProviderService.vals.activeButtons.downloadTextGrid) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;	
-		            case "specSettings":
-		                if(ConfigProviderService.vals.activeButtons.specSettings) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;	
-		            case "Connect":
-		                if(ConfigProviderService.vals.activeButtons.Connect) {
-		                    return show;
-		                }
-		                else {
-		                    return hidden;
-		                }
-		                break;		                		                		                		                		                
-		        }
-		        return hidden;
-    		}			
-			
+			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
+			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
+
+
+			$scope.buttonstyle = function(id) {
+				var show = {};
+				var hidden = {
+					"display": "none"
+				};
+				switch (id) {
+					case "openMenu":
+						if (ConfigProviderService.vals.activeButtons.openMenu) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "openFile":
+						if (ConfigProviderService.vals.activeButtons.openFile) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "addTierSeg":
+						if (ConfigProviderService.vals.activeButtons.addTierSeg) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "addTierPoint":
+						if (ConfigProviderService.vals.activeButtons.addTierPoint) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "renameSelTier":
+						if (ConfigProviderService.vals.activeButtons.renameSelTier) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "downloadTextGrid":
+						if (ConfigProviderService.vals.activeButtons.downloadTextGrid) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "specSettings":
+						if (ConfigProviderService.vals.activeButtons.specSettings) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "Connect":
+						if (ConfigProviderService.vals.activeButtons.Connect) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "deleteSingleTier":
+						if (ConfigProviderService.vals.activeButtons.deleteSingleTier) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "resizeSingleTier":
+						if (ConfigProviderService.vals.activeButtons.resizeSingleTier) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "saveSingleTier":
+						if (ConfigProviderService.vals.activeButtons.saveSingleTier) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "resizeOsci":
+						if (ConfigProviderService.vals.activeButtons.resizeOsci) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+					case "resizeSpectro":
+						if (ConfigProviderService.vals.activeButtons.resizeSpectro) {
+							return show;
+						} else {
+							return hidden;
+						}
+						break;
+				}
+				return hidden;
+			}
+
 		});
 
 
@@ -144,7 +173,7 @@ var MainCtrl = angular.module('emulvcApp')
 			console.log(uttList)
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
-			
+
 		});
 
 
@@ -158,8 +187,8 @@ var MainCtrl = angular.module('emulvcApp')
 			Soundhandlerservice.wavJSO = wavJSO;
 			// Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
 			// Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
-			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));		
-			
+			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
+
 
 		});
 
@@ -168,7 +197,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
 			$scope.ssff = fileName;
-						
+
 		});
 
 
@@ -182,18 +211,18 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.downloadTextGrid = function() {
 			console.log(Iohandlerservice.toTextGrid());
-		};	
+		};
 
-		$scope.menuUttClick = function (utt) {
+		$scope.menuUttClick = function(utt) {
 			console.log(utt);
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
 		};
-		
-		$scope.menuUttSave = function (utt) {
+
+		$scope.menuUttSave = function(utt) {
 			console.log("SAVE");
 			console.log(utt);
-		};		
+		};
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);

@@ -73,7 +73,7 @@
         "order": [".lab", ".tone"]
     },
     "restrictions": {
-        "sortLabels": true,
+        "sortLabels": false,
         "changeLabels": false,
         "editLabels": false
     },
@@ -85,6 +85,11 @@
         "renameSelTier": true,
         "downloadTextGrid": false,
         "specSettings": true,
-        "Connect": false
+        "Connect": false,
+        "deleteSingleTier": false,
+        "resizeSingleTier": true,
+        "saveSingleTier": false,
+        "resizeOsci": true,
+        "resizeSpectro": true
     }
 }

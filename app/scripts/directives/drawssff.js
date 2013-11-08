@@ -101,7 +101,7 @@ angular.module('emulvcApp')
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           
-          console.log(config.vals.spectrogramSettings);
+          // console.log(config.vals.spectrogramSettings);
           // hardcode min max display for now
           var minVal = config.vals.spectrogramSettings.rangeFrom;
           var maxVal = config.vals.spectrogramSettings.rangeTo; //Hz in the case of formants
