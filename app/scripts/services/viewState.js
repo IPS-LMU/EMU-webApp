@@ -52,6 +52,7 @@ angular.module('emulvcApp')
     sServObj.curClickTierName = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = -1;
+    sServObj.soundPlaying = false;
 
     sServObj.loadingUtt = false;
 
@@ -66,7 +67,7 @@ angular.module('emulvcApp')
       var samplesPassed = timePassedSecs * Soundhandlerservice.wavJSO.SampleRate;
       
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
-      if (sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS) {
+      if (sServObj.playHeadAnimationInfos.curS < sServObj.playHeadAnimationInfos.eS && sServObj.soundPlaying ) {
         $rootScope.$apply();
         $window.requestAnimationFrame(sServObj.updatePlayHead);
       } else {
@@ -80,11 +81,14 @@ angular.module('emulvcApp')
     /**
      */
     sServObj.animatePlayHead = function(startS, endS) {
-
-      sServObj.playHeadAnimationInfos.sS = startS;
-      sServObj.playHeadAnimationInfos.eS = endS;
-      sServObj.playHeadAnimationInfos.curS = startS;
-      $window.requestAnimationFrame(sServObj.updatePlayHead);
+      if(!sServObj.soundPlaying) {
+        sServObj.playHeadAnimationInfos.sS = startS;
+        sServObj.playHeadAnimationInfos.eS = endS;
+        sServObj.playHeadAnimationInfos.curS = startS;
+        $window.requestAnimationFrame(sServObj.updatePlayHead);
+        sServObj.soundPlaying = true;
+      }
+      else sServObj.soundPlaying = false;
     };
 
 

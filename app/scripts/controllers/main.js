@@ -342,10 +342,12 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.cmd_playSel = function() {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+			viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
 		$scope.cmd_playAll = function() {
 			Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+			viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 		};
 
 	});
