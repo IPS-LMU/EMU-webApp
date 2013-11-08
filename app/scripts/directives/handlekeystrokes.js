@@ -29,7 +29,10 @@ angular.module('emulvcApp')
               // if (code === ConfigProviderService.vals.keyMappings.esc) {
               //     //$('#HandletiersCtrl').scope().deleteEditArea();
               // }
-            } else {
+            } else if (viewState.getsubmenuOpen()) {
+              // disable keys when submenu is open
+            }
+            else {
               // delegate keyboard keyMappings according to keyMappings of scope
               // shiftViewPortLeft
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
