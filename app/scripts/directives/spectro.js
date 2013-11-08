@@ -312,47 +312,47 @@ angular.module('emulvcApp')
                 }
 
                 function drawCrossHairs(viewState, canvas, config, dhs, mouseEvt) {
-                    var ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.strokeStyle = config.vals.colors.crossHairsColor;
-                    ctx.fillStyle = config.vals.colors.crossHairsColor;
+                    if (config.vals.restrictions.drawCrossHairs) {
+                        contextmarkup.clearRect(0, 0, canvas.width, canvas.height);
+                        contextmarkup.strokeStyle = config.vals.colors.crossHairsColor;
+                        contextmarkup.fillStyle = config.vals.colors.crossHairsColor;
 
-                    // see if Chrome ->dashed line
-                    if (navigator.vendor === 'Google Inc.') {
-                        ctx.setLineDash([2]);
+                        // see if Chrome ->dashed line
+                        if (navigator.vendor === 'Google Inc.') {
+                            contextmarkup.setLineDash([2]);
+                        }
+
+                        // draw lines
+                        var mouseX = dhs.getX(mouseEvt);
+                        var mouseY = dhs.getY(mouseEvt);
+
+                        contextmarkup.beginPath();
+                        contextmarkup.moveTo(0, mouseY);
+                        contextmarkup.lineTo(5, mouseY + 5);
+                        contextmarkup.moveTo(0, mouseY);
+                        contextmarkup.lineTo(canvas.width, mouseY);
+                        contextmarkup.lineTo(canvas.width - 5, mouseY + 5);
+                        contextmarkup.moveTo(mouseX, 0);
+                        contextmarkup.lineTo(mouseX, canvas.height);
+                        contextmarkup.stroke();
+                        // draw frequency / sample / time
+                        contextmarkup.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+
+                        var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
+
+                        var tW = contextmarkup.measureText(mouseFreq + ' Hz').width;
+
+                        contextmarkup.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.font.fontPxSize);
+                        contextmarkup.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.font.fontPxSize);
+
+                        contextmarkup.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.font.fontPxSize);
+                        contextmarkup.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.font.fontPxSize * 2);
+                        // see if Chrome ->dashed line
+                        if (navigator.vendor === 'Google Inc.') {
+                            contextmarkup.setLineDash([0]);
+                        }
+                        drawTimeLineContext();
                     }
-
-
-                    // draw lines
-                    var mouseX = dhs.getX(mouseEvt);
-                    var mouseY = dhs.getY(mouseEvt);
-
-                    ctx.beginPath();
-                    ctx.moveTo(0, mouseY);
-                    ctx.lineTo(5, mouseY + 5);
-                    ctx.moveTo(0, mouseY);
-                    ctx.lineTo(canvas.width, mouseY);
-                    ctx.lineTo(canvas.width - 5, mouseY + 5);
-                    ctx.moveTo(mouseX, 0);
-                    ctx.lineTo(mouseX, canvas.height);
-                    ctx.stroke();
-                    // draw frequency / sample / time
-                    ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
-
-                    var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
-
-                    var tW = ctx.measureText(mouseFreq + ' Hz').width;
-
-                    ctx.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.font.fontPxSize);
-                    ctx.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.font.fontPxSize);
-
-                    ctx.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.font.fontPxSize);
-                    ctx.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.font.fontPxSize * 2);
-                    // see if Chrome ->dashed line
-                    if (navigator.vendor === 'Google Inc.') {
-                        ctx.setLineDash([0]);
-                    }
-                    drawTimeLineContext();
                 }
 
 

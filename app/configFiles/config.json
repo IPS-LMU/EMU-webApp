@@ -75,7 +75,8 @@
     "restrictions": {
         "sortLabels": false,
         "changeLabels": false,
-        "editLabels": false
+        "editLabels": false,
+        "drawCrossHairs": true
     },
     "activeButtons": {
         "openMenu": true,
