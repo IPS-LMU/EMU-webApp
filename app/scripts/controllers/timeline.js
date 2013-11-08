@@ -32,15 +32,14 @@ var TimelineCtrl = angular.module('emulvcApp')
 			    }
 			}
 		});
-		
+			
 		/**
 		 * clear ssff data when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
 				$scope.ssffData = [];	        
-		});		
+		});	
   
-
 
 		$scope.resizeSpectro = function() {
 			if (viewState.getscrollOpen()==0) {
