@@ -4,7 +4,7 @@
 	    <span ng-switch="showSSFFSpectro">
 	        <canvas ng-switch-when="true" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff></canvas>
 		</span>
-    	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse drawcrosshairs></canvas>
+    	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse drawcrosshairs correctiontool></canvas>
     	<div class="buttons" id="buttons">
 	    	<div ng-click="resizeSpectro();" class="resize" id="resize" ng-style="buttonstyle('resizeSpectro')">
 		    	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">

@@ -121,9 +121,8 @@ angular.module('emulvcApp')
           var endTimeVP = viewState.getViewPortEndTime();
 
 
-
-          var colStartSampleNr = Math.round((startTimeVP + col.startTime) * col.sampleRate);
-          var colEndSampleNr = Math.round((endTimeVP + col.startTime) * col.sampleRate);
+          var colStartSampleNr = Math.round(startTimeVP * col.sampleRate + col.startTime);
+          var colEndSampleNr = Math.round(endTimeVP * col.sampleRate + col.startTime);
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
@@ -131,8 +130,6 @@ angular.module('emulvcApp')
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
           if (nrOfSamples < canvas.width) {
-            //console.log("over sample exact ssff drawing");
-            // }//if
 
             var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
 
@@ -145,9 +142,7 @@ angular.module('emulvcApp')
                 x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                 y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-
-
-                // mark selected11
+                // mark selected
                 if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
                   ctx.strokeStyle = 'white';
                   ctx.fillStyle = 'white';
@@ -184,13 +179,55 @@ angular.module('emulvcApp')
                   ctx.lineTo(x, y);
                   ctx.stroke();
                   ctx.fill();
+
+                  //check if last sample
+                  if (valIdx === curSampleArrs.length - 1) {
+                    if (colEndSampleNr !== col.values.length - 1) {
+                      // lines to right boarder samples not in view
+                      var rightBorder = col.values[colEndSampleNr + 1];
+                      val = rightBorder[idx];
+
+                      curSampleInCol = colEndSampleNr + 1;
+                      curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+                      var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                      var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+                      // draw line
+                      ctx.beginPath();
+                      ctx.moveTo(x, y);
+                      ctx.lineTo(nextX, nextY);
+                      ctx.stroke();
+                      ctx.fill();
+                    }
+                  }
+                } else {
+                  // lines to left boarder samples not in view
+                  if (colStartSampleNr !== 0) {
+                    var leftBorder = col.values[colStartSampleNr - 1];
+                    val = leftBorder[idx];
+
+                    curSampleInCol = colStartSampleNr - 1;
+                    curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+                    prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                    prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+                    // draw line
+                    ctx.beginPath();
+                    ctx.moveTo(prevX, prevY);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                    ctx.fill();
+                  }
                 }
               });
 
 
             });
+
           } else {
-            ctx.strokeStyle = 'white';
+            ctx.strokeStyle = 'red';
             ctx.strokeText('Zoom in to see contour', 10, 10);
           }
         } //function

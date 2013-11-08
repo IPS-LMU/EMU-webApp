@@ -172,7 +172,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
 			console.log(uttList)
 			$scope.uttsList = uttList;
-			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
+			Iohandlerservice.httpGetUtterence($scope.uttsList[4]);
 
 		});
 
@@ -181,15 +181,14 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for newlyLoadedAudioFile
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
+			// for dev:
+			// viewState.curViewPort.sS = 28535;
+			// viewState.curViewPort.eS = 29555;
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.Data.length;
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
-			// Soundhandlerservice.setPlayerSrc(wavJSO.origArrBuf);
-			// Iohandlerservice.httpGetTextGrid('testData/msajc003.TextGrid');
 			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
-
-
 		});
 
 		/**
