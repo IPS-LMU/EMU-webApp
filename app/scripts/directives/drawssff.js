@@ -14,58 +14,69 @@ angular.module('emulvcApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-        if (!$.isEmptyObject(scope.ssffData)) {
-          if (scope.ssffData.length !== 0 && !scope.vs.loadingUtt) {
-            if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
+          if (!$.isEmptyObject(scope.ssffData)) {
+            if (scope.ssffData.length !== 0 && !scope.vs.loadingUtt) {
+              if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
+                var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
+                //TODO get file:
+
+                // get name of column to be drawn
+                var colName = extAndCol[1];
+                // find according field in scope.ssffData
+                var col = findColumn(scope.ssffData, colName);
+                // draw values  
+                drawValues(scope.vs, canvas, scope.config, col);
+              }
+            }
+          }
+        }, true);
+
+        scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
+          if (!$.isEmptyObject(scope.ssffData)) {
+            if (scope.ssffData.length !== 0) {
+              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
+              //TODO get file:
+
               // get name of column to be drawn
-              var colName = 'fm'; //SIC hardcoded
+              var colName = extAndCol[1];
               // find according field in scope.ssffData
               var col = findColumn(scope.ssffData, colName);
               // draw values  
               drawValues(scope.vs, canvas, scope.config, col);
             }
           }
-        }
-        }, true);
-
-        scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
-        if (!$.isEmptyObject(scope.ssffData)) {
-          if (scope.ssffData.length !== 0) {
-            // get name of column to be drawn
-            var colName = 'fm'; //SIC hardcoded
-            // find according field in scope.ssffData
-            var col = findColumn(scope.ssffData, colName);
-            // draw values  
-            drawValues(scope.vs, canvas, scope.config, col);
-          }
-        }
         }, true);
 
         scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
-        if (!$.isEmptyObject(scope.ssffData)) {
-          if (scope.ssffData.length !== 0) {
-            // get name of column to be drawn
-            var colName = 'fm'; //SIC hardcoded
-            // find according field in scope.ssffData
-            var col = findColumn(scope.ssffData, colName);
-            // draw values  
-            drawValues(scope.vs, canvas, scope.config, col);
+          if (!$.isEmptyObject(scope.ssffData)) {
+            if (scope.ssffData.length !== 0) {
+              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
+              //TODO get file:
+
+              // get name of column to be drawn
+              var colName = extAndCol[1];
+              // find according field in scope.ssffData
+              var col = findColumn(scope.ssffData, colName);
+              // draw values  
+              drawValues(scope.vs, canvas, scope.config, col);
+            }
           }
-        }
         }, true);
 
 
         scope.$watch('ssffData', function(newValue, oldValue) {
-        if (!$.isEmptyObject(scope.ssffData)) {
-          if (scope.ssffData.length !== 0) {
-            // get name of column to be drawn
-            var colName = 'fm'; //SIC hardcoded
-            // find according field in scope.ssffData
-            var col = findColumn(scope.ssffData, colName);
-            // draw values  
-            drawValues(scope.vs, canvas, scope.config, col);
-            console.log(scope.config);
-          }
+          if (!$.isEmptyObject(scope.ssffData)) {
+            if (scope.ssffData.length !== 0) {
+              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
+              //TODO get file:
+
+              // get name of column to be drawn
+              var colName = extAndCol[1]; // find according field in scope.ssffData
+              var col = findColumn(scope.ssffData, colName);
+              // draw values  
+              drawValues(scope.vs, canvas, scope.config, col);
+              console.log(scope.config);
+            }
           }
         }, true);
 
@@ -100,7 +111,7 @@ angular.module('emulvcApp')
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          
+
           // console.log(config.vals.spectrogramSettings);
           // hardcode min max display for now
           var minVal = config.vals.spectrogramSettings.rangeFrom;
@@ -108,14 +119,14 @@ angular.module('emulvcApp')
 
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
-          
-          
+
+
 
           var colStartSampleNr = Math.round((startTimeVP + col.startTime) * col.sampleRate);
           var colEndSampleNr = Math.round((endTimeVP + col.startTime) * col.sampleRate);
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
-          
+
 
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
@@ -159,7 +170,7 @@ angular.module('emulvcApp')
 
                   prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                   prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
-                
+
 
                   // mark selected
                   if (viewState.curCorrectionToolNr - 1 === idx) {
