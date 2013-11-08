@@ -18,7 +18,7 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 	$scope.shiftViewPortRight = shiftViewPortRight;
 
 	$scope.ok = function() {
-		//$modalInstance.close($scope.selected.item);
+        viewState.setmodalOpen(false);
 		$modalInstance.dismiss('cancel');
 	};
 

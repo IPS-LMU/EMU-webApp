@@ -30,13 +30,10 @@ li {
 
 .dialog {
     position: absolute;
-    display: block;
-    overflow-x:hidden;
+    display: inline-block;
     overflow-y:auto;
     width: 60%;
-    max-width: 60%;
     height: 60%;
-    max-height: 60%;
     margin-left: -30%;
 }
 
@@ -77,6 +74,26 @@ li {
     background: #0DC5FF;
     box-shadow: 0px 3px 5px #000;
     color: #353535;    
+}
+
+
+@media (max-width: 767px) {
+  .dialog {
+    position: absolute;
+    display: inline-block;
+    overflow-y:auto;
+    width: 75%;
+    height: 80%;
+    margin-left: 7%;  
+  }
+  .dialog h2 {
+    position: fixed;
+    width: 85%;
+    font-size: 15px;
+    background: #0DC5FF;
+    box-shadow: 0px 3px 5px #000;
+    color: #353535;    
+  }
 }
 
 
