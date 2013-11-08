@@ -6,7 +6,7 @@
       <div ng-repeat="utt in uttsList">
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance">
-            Finished editing: <input type="checkbox">
+            Finished editing: <input type="checkbox"> <br />
             Comment:<input type="text">
                <img style="cursor: pointer;" ng-click="menuUttSave(utt);">
            </div>
