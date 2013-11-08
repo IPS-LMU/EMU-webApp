@@ -21,7 +21,8 @@
 
 .saveUtterance input[type='text'] {
     width: 170px;
-    height: 30px;
+    height: 25px;
+    font-size: 14px;
 }
 .saveUtterance img {
     height: 25px;

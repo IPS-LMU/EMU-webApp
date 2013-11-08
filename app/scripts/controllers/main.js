@@ -336,15 +336,16 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.cmd_playView = function() {
-			// todo
+			Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+            viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 		};
 
 		$scope.cmd_playSel = function() {
-			// todo
+			Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
 		$scope.cmd_playAll = function() {
-			// todo
+			Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 		};
 
 	});
