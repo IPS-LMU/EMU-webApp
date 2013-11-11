@@ -60,7 +60,7 @@
         "window": "GAUSS"
     },
     "signalsCanvasConfig": {
-        "order": ["osci","spec"],
+        "order": ["osci", "spec"],
         "assign": {
             "spec": "fms:fm"
         },
@@ -92,5 +92,8 @@
         "saveSingleTier": false,
         "resizeOsci": true,
         "resizeSpectro": true
+    },
+    "userManagment": {
+        "passcode": "1234"
     }
 }

@@ -61,6 +61,7 @@ var MainCtrl = angular.module('emulvcApp')
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
 
 
+
 			$scope.buttonstyle = function(id) {
 				var show = {};
 				var hidden = {
@@ -161,6 +162,8 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 				return hidden;
 			}
+
+			$scope.openModal('views/login.html','dialog');
 
 		});
 
