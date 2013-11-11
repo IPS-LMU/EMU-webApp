@@ -75,7 +75,7 @@ angular.module('emulvcApp')
               var col = findColumn(scope.ssffds.data, colName);
               // draw values  
               drawValues(scope.vs, canvas, scope.config, col);
-              console.log(scope.config);
+              // console.log(scope.config);
             }
           }
         }, true);
