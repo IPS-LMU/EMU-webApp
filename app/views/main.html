@@ -6,12 +6,12 @@
       <div ng-repeat="utt in uttsList">
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance">
-            Finished editing: <input type="checkbox" ng-model="utt.finishedEditing"> <br />
-            Comment:<input type="text" ng-model="utt.comment">
+            Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changedUttList();"> <br />
+            Comment:<input type="text" ng-model="utt.comment" ng-keyup="changedUttList();">
                <img style="cursor: pointer;" ng-click="menuUttSave(utt);">
            </div>
       </div>
-      <button class="mini-btn" ng-click="saveUttList();">Save Session</button>
+      <button class="mini-btn" ng-style="{color: uttsChangedColor}" ng-click="saveUttList();">Save Meta Data</button>
 
       <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
       <div ng-show="files.length">

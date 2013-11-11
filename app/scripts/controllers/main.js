@@ -7,8 +7,9 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.ssff = undefined;
 		$scope.uttsList = [];
-		$scope.curUserName = 'user1';
 
+		$scope.curUserName = 'user1';
+		$scope.uttsChangedColor = 'green';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -294,6 +295,11 @@ var MainCtrl = angular.module('emulvcApp')
 			});
 		};
 
+
+		$scope.changedUttList = function () {
+			$scope.uttsChangedColor = 'red';
+		};
+
 		$scope.openSubmenu = function() {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
@@ -314,11 +320,24 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 		};
 
-		// $scope.saveUttsList() = function () {
-		// 	console.log("dfasdfasdfasdfadsfadsfad");
-		// };
-
 		$scope.saveUttList = function() {
+			// SIC should not be done here but in iohandler...
+			$http({
+				url: 'index.html',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					method: 'saveUttList',
+					username: $scope.curUserName,
+					data: $scope.uttsList
+				}
+			}).success(function() {
+				console.log("save utt")
+				$scope.uttsChangedColor = 'green';
+				// console.log("saved file... well server says so...");
+			});
 
 			console.log($scope.uttsList);
 		};
@@ -358,7 +377,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.cmd_playView = function() {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
-            viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+			viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 		};
 
 		$scope.cmd_playSel = function() {
