@@ -2,10 +2,9 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, Ssffdataservice) {
 
 		$scope.lastkeycode = 'N/A';
-		$scope.ssff = undefined;
 		$scope.uttsList = [];
 
 		$scope.curUserName = 'user1';
@@ -24,14 +23,15 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for configLoaded
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
+			// for devel.
+			Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+
 			// init loading of files for testing
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-			// $scope.openSubmenu();
-			Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
@@ -174,7 +174,6 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for newlyLoadedUttList
 		 */
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
-			// console.log(uttList)
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 			$scope.openSubmenu();
@@ -203,14 +202,6 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
 		});
 
-		/**
-		 * listen for newlyLoadedSSFFfile
-		 */
-		$scope.$on('newlyLoadedSSFFfile', function(evt, ssff, fileName) {
-			$scope.ssff = fileName;
-
-		});
-
 
 		$scope.renameTier = function() {
 			if (viewState.getcurClickTierName() !== undefined) {
@@ -225,15 +216,15 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.menuUttClick = function(utt) {
-			console.log(utt);
+			console.log("menuUttClick gekljasdlkfj");
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
 		};
 
+		/**
+		 *
+		 */
 		$scope.menuUttSave = function(utt) {
-			console.log("SAVE");
-			console.log(utt);
-
 			// SIC should not be done here but in iohandler...
 			$http({
 				url: 'index.html',
@@ -243,11 +234,11 @@ var MainCtrl = angular.module('emulvcApp')
 				},
 				data: {
 					method: 'saveSSFFfile',
-					data : {'a': 1234}
+					data: {
+						'a': 1234
+					}
 				}
-			}).success(function() {
-				$scope.uttsChangedColor = 'green';
-			});
+			}).success(function() {});
 
 		};
 

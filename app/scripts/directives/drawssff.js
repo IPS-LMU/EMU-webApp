@@ -7,11 +7,6 @@ angular.module('emulvcApp')
       link: function postLink(scope, element, attrs) {
         var canvas = element[0];
 
-        // var transparentColor = [];
-        // transparentColor.r = '0';
-        // transparentColor.g = '0';
-        // transparentColor.b = '0';
-
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
           if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -31,6 +26,7 @@ angular.module('emulvcApp')
           }
         }, true);
 
+        //watch vs.curPreselColumnSample change
         scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
@@ -47,6 +43,7 @@ angular.module('emulvcApp')
           }
         }, true);
 
+        //watch vs.curCorrectionToolNr change
         scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {

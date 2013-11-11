@@ -20,6 +20,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
 			// $scope.vs.curViewPort.sS = 0;
+			$scope.ssffds.data = []; // SIC HACK! NO idea why event is fired twice...
 			$scope.ssffds.data.push(data);
 			for (var key in ConfigProviderService.vals.signalsCanvasConfig.assign) {
 				if (ConfigProviderService.vals.signalsCanvasConfig.assign[key] === "fms:fm") {
