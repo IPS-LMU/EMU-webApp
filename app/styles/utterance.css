@@ -1,6 +1,6 @@
 .utterance {
     display: block;
-    color: #111;
+    color: #fff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -31,5 +31,5 @@
     vertical-align: middle;
 }
 .saveUtterance img:hover{
-    background-color:#0DC5FF;
+    color:#0DC5FF;
 }
