@@ -2,13 +2,15 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, Ssffdataservice) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttsList = [];
 
 		$scope.curUserName = 'user1';
 		$scope.uttsChangedColor = 'green';
+
+		$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -215,8 +217,10 @@ var MainCtrl = angular.module('emulvcApp')
 			console.log(Iohandlerservice.toTextGrid());
 		};
 
+		/**
+		 *
+		 */
 		$scope.menuUttClick = function(utt) {
-			console.log("menuUttClick gekljasdlkfj");
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
 		};
@@ -224,24 +228,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.menuUttSave = function(utt) {
-			// SIC should not be done here but in iohandler...
-			$http({
-				url: 'index.html',
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				data: {
-					method: 'saveSSFFfile',
-					data: {
-						'a': 1234
-					}
-				}
-			}).success(function() {});
-
+		$scope.menuUttSave = function() {
+			Iohandlerservice.postSaveSSFF();
+			$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 		};
 
+		/**
+		 *
+		 */
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({

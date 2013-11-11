@@ -1,9 +1,34 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice) {
 		// shared service object
 		var sServObj = {};
+
+		/**
+		 *
+		 */
+		sServObj.postSaveSSFF = function() {
+
+			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded
+			console.log(Ssffdataservice.data[0]);
+			console.log(data);
+		// 	// SIC should not be done here but in iohandler...
+		// 	$http({
+		// 		url: 'index.html',
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json'
+		// 		},
+		// 		data: {
+		// 			method: 'saveSSFFfile',
+		// 			data: {
+		// 				'a': 1234
+		// 			}
+		// 		}
+		// 	}).success(function() {});
+		};
+
 
 		/**
 		 *
@@ -104,7 +129,7 @@ angular.module('emulvcApp')
 			// load signal files
 			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 				curFile = sServObj.findFileInUtt(utt, ext);
-				sServObj.httpGetSSFFfile(curFile);				
+				sServObj.httpGetSSFFfile(curFile);
 			})
 
 			// load label files
