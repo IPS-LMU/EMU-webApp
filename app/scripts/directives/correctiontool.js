@@ -9,7 +9,7 @@ angular.module('emulvcApp')
 				var elem = element[0];
 
 				element.bind('mousemove', function(event) {
-					var col = scope.ssffData[0].Columns[0]; // SIC hardcoded...
+					var col = scope.ssffds.data[0].Columns[0]; // SIC hardcoded...
 					var startTimeVP = scope.vs.getViewPortStartTime();
 					var endTimeVP = scope.vs.getViewPortEndTime();
 

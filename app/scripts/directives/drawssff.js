@@ -14,16 +14,16 @@ angular.module('emulvcApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffData)) {
-            if (scope.ssffData.length !== 0 && !scope.vs.loadingUtt) {
+          if (!$.isEmptyObject(scope.ssffds.data)) {
+            if (scope.ssffds.data.length !== 0 && !scope.vs.loadingUtt) {
               if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
                 var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
                 //TODO get file:
 
                 // get name of column to be drawn
                 var colName = extAndCol[1];
-                // find according field in scope.ssffData
-                var col = findColumn(scope.ssffData, colName);
+                // find according field in scope.ssffds.data
+                var col = findColumn(scope.ssffds.data, colName);
                 // draw values  
                 drawValues(scope.vs, canvas, scope.config, col);
               }
@@ -32,15 +32,15 @@ angular.module('emulvcApp')
         }, true);
 
         scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffData)) {
-            if (scope.ssffData.length !== 0) {
+          if (!$.isEmptyObject(scope.ssffds.data)) {
+            if (scope.ssffds.data.length !== 0) {
               var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
               //TODO get file:
 
               // get name of column to be drawn
               var colName = extAndCol[1];
-              // find according field in scope.ssffData
-              var col = findColumn(scope.ssffData, colName);
+              // find according field in scope.ssffds.data
+              var col = findColumn(scope.ssffds.data, colName);
               // draw values  
               drawValues(scope.vs, canvas, scope.config, col);
             }
@@ -48,15 +48,15 @@ angular.module('emulvcApp')
         }, true);
 
         scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffData)) {
-            if (scope.ssffData.length !== 0) {
+          if (!$.isEmptyObject(scope.ssffds.data)) {
+            if (scope.ssffds.data.length !== 0) {
               var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
               //TODO get file:
 
               // get name of column to be drawn
               var colName = extAndCol[1];
-              // find according field in scope.ssffData
-              var col = findColumn(scope.ssffData, colName);
+              // find according field in scope.ssffds.data
+              var col = findColumn(scope.ssffds.data, colName);
               // draw values  
               drawValues(scope.vs, canvas, scope.config, col);
             }
@@ -64,15 +64,15 @@ angular.module('emulvcApp')
         }, true);
 
 
-        scope.$watch('ssffData', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffData)) {
-            if (scope.ssffData.length !== 0) {
+        scope.$watch('ssffds.data', function(newValue, oldValue) {
+          if (!$.isEmptyObject(scope.ssffds.data)) {
+            if (scope.ssffds.data.length !== 0) {
               var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
               //TODO get file:
 
               // get name of column to be drawn
-              var colName = extAndCol[1]; // find according field in scope.ssffData
-              var col = findColumn(scope.ssffData, colName);
+              var colName = extAndCol[1]; // find according field in scope.ssffds.data
+              var col = findColumn(scope.ssffds.data, colName);
               // draw values  
               drawValues(scope.vs, canvas, scope.config, col);
               console.log(scope.config);
@@ -81,15 +81,15 @@ angular.module('emulvcApp')
         }, true);
 
         /**
-         * find a certain column in ssffData array
+         * find a certain column in ssffds.data array
          * and append meta data of file to that col
          * for drawing
          */
 
-        function findColumn(ssffData, colName) {
-          // console.log(scope.ssffData);
+        function findColumn(data, colName) {
+          // console.log(scope.ssffds.data);
           var col;
-          ssffData.forEach(function(fileRep, fileRepIdx) {
+          data.forEach(function(fileRep, fileRepIdx) {
             fileRep.Columns.forEach(function(colRep, colIdx) {
               if (colRep.name == colName) {
                 col = colRep;

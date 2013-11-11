@@ -233,6 +233,22 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.menuUttSave = function(utt) {
 			console.log("SAVE");
 			console.log(utt);
+
+			// SIC should not be done here but in iohandler...
+			$http({
+				url: 'index.html',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					method: 'saveSSFFfile',
+					data : {'a': 1234}
+				}
+			}).success(function() {
+				$scope.uttsChangedColor = 'green';
+			});
+
 		};
 
 		$scope.openModal = function(templatefile, cssStyle, title, content) {
@@ -296,7 +312,7 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 
-		$scope.changedUttList = function () {
+		$scope.changedUttList = function() {
 			$scope.uttsChangedColor = 'red';
 		};
 
@@ -320,6 +336,9 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 		};
 
+		/**
+		 *
+		 */
 		$scope.saveUttList = function() {
 			// SIC should not be done here but in iohandler...
 			$http({
@@ -334,12 +353,9 @@ var MainCtrl = angular.module('emulvcApp')
 					data: $scope.uttsList
 				}
 			}).success(function() {
-				console.log("save utt")
 				$scope.uttsChangedColor = 'green';
-				// console.log("saved file... well server says so...");
 			});
 
-			console.log($scope.uttsList);
 		};
 
 

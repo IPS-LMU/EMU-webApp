@@ -1,15 +1,24 @@
-[{
-	"utteranceName": "msajc003",
-	"files": [
-		"testData/msajc003/msajc003.wav", "testData/msajc003/msajc003.fms", "testData/msajc003/msajc003.lab", "testData/msajc003/msajc003.tone"
-	],
-	"finishedEditing": false,
-	"comment": ""
-}, {
-	"utteranceName": "msajc010",
-	"files": [
-		"testData/msajc010/msajc010.wav", "testData/msajc010/msajc010.fms", "testData/msajc010/msajc010.lab", "testData/msajc010/msajc010.tone"
-	],
-	"finishedEditing": false,
-	"comment": ""
-}]
+[
+  {
+    "utteranceName": "msajc003",
+    "files": [
+      "testData/msajc003/msajc003.wav",
+      "testData/msajc003/msajc003.fms",
+      "testData/msajc003/msajc003.lab",
+      "testData/msajc003/msajc003.tone"
+    ],
+    "finishedEditing": false,
+    "comment": ""
+  },
+  {
+    "utteranceName": "msajc010",
+    "files": [
+      "testData/msajc010/msajc010.wav",
+      "testData/msajc010/msajc010.fms",
+      "testData/msajc010/msajc010.lab",
+      "testData/msajc010/msajc010.tone"
+    ],
+    "finishedEditing": false,
+    "comment": ""
+  }
+]
