@@ -132,14 +132,14 @@ angular.module('emulvcApp')
 			headerStr += this.sepString;
 
 			// convert buffer to header
-			var ssffBuf = new Uint8Array(this.stringToUint(headerStr));
+			var ssffBufView = new Uint8Array(this.stringToUint(headerStr));
 
 			var curBufferView, curArray;
 
 			curBufferView = new Uint16Array(jso.Columns[0].length);
 			curArray = jso.Columns[0].values[0];
 
-			// loop through vals and append array of each column to ssffBuf
+			// loop through vals and append array of each column to ssffBufView
 			jso.Columns[0].values.forEach(function(curArray, curArrayIDX) {
 				jso.Columns.forEach(function(curCol) {
 					if (curCol.ssffdatatype === 'SHORT') {
@@ -148,7 +148,7 @@ angular.module('emulvcApp')
 							curBufferView[valIDX] = val;
 						});
 						var tmp = new Uint8Array(curBufferView.buffer);
-						ssffBuf = my.Uint8Concat(ssffBuf, tmp);
+						ssffBufView = my.Uint8Concat(ssffBufView, tmp);
 					} else {
 						alert('Only SHORT columns supported for now!!!');
 						return;
@@ -156,8 +156,8 @@ angular.module('emulvcApp')
 				});
 			});
 
-			// console.log(String.fromCharCode.apply(null, ssffBuf));
-			return ssffBuf;
+			// console.log(String.fromCharCode.apply(null, ssffBufView));
+			return ssffBufView.buffer;
 		};
 
 		/**

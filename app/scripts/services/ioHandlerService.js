@@ -11,22 +11,28 @@ angular.module('emulvcApp')
 		sServObj.postSaveSSFF = function() {
 
 			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded
-			console.log(Ssffdataservice.data[0]);
-			console.log(data);
-		// 	// SIC should not be done here but in iohandler...
-		// 	$http({
-		// 		url: 'index.html',
-		// 		method: 'POST',
-		// 		headers: {
-		// 			'Content-Type': 'application/json'
-		// 		},
-		// 		data: {
-		// 			method: 'saveSSFFfile',
-		// 			data: {
-		// 				'a': 1234
-		// 			}
-		// 		}
-		// 	}).success(function() {});
+
+			var binary = '';
+			var bytes = new Uint8Array(data);
+			var len = bytes.byteLength;
+			for (var i = 0; i < len; i++) {
+				binary += String.fromCharCode(bytes[i])
+			}
+			var base64  = window.btoa(binary);
+
+			console.log(base64);
+
+			$http({
+				url: 'index.html',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					method: 'saveSSFFfile',
+					data: base64
+				}
+			}) //.success(function() {});
 		};
 
 
