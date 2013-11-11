@@ -29,8 +29,8 @@ angular.module('emulvcApp')
               // if (code === ConfigProviderService.vals.keyMappings.esc) {
               //     //$('#HandletiersCtrl').scope().deleteEditArea();
               // }
-            } else if (viewState.getsubmenuOpen()) {
-              // disable keys when submenu is open
+            } else if (viewState.focusInTextField) {
+              // disable keys when focus is in comment text filed
             }
             else {
               // delegate keyboard keyMappings according to keyMappings of scope

@@ -54,6 +54,8 @@ angular.module('emulvcApp')
     sServObj.start = null; 
     sServObj.loadingUtt = false;
 
+    sServObj.focusInTextField = false;
+
     /**
      */
     sServObj.updatePlayHead = function(timestamp) {

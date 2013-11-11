@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.postSaveSSFF = function() {
 
-			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded
+			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded [0];
 
 			var binary = '';
 			var bytes = new Uint8Array(data);
@@ -32,7 +32,7 @@ angular.module('emulvcApp')
 					method: 'saveSSFFfile',
 					data: base64
 				}
-			}) //.success(function() {});
+			})//.success(function() {});
 		};
 
 

@@ -296,11 +296,30 @@ var MainCtrl = angular.module('emulvcApp')
 			});
 		};
 
-
+		/**
+		 *
+		 */
 		$scope.changedUttList = function() {
 			$scope.uttsChangedColor = 'red';
 		};
 
+		/**
+		 *
+		 */
+		$scope.cursorInTextField = function() {
+			viewState.focusInTextField = true;
+		};
+
+		/**
+		 *
+		 */
+		$scope.cursorOutOfTextField = function() {
+			viewState.focusInTextField = false;
+		};
+
+		/**
+		 *
+		 */
 		$scope.openSubmenu = function() {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
