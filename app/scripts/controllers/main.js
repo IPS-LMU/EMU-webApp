@@ -46,7 +46,7 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
 			// $scope.openSubmenu();
-			Iohandlerservice.httpGetUttJson("testData/uttList.json");
+			// Iohandlerservice.httpGetUttJson("testData/uttList.json");
 
 			// set timeline height according to config settings "colors.timelineHeight"
 			$(".TimelineCtrl").css('height', ConfigProviderService.vals.colors.timelineHeight);
