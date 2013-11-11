@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('LoginCtrl', function($scope, $http, ConfigProviderService, Iohandlerservice) {
+	.controller('LoginCtrl', function($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice) {
 		$scope.username = '';
-		console.log(ConfigProviderService)
 		$scope.passcode = '';
 		$scope.loginError = '';
 
@@ -15,6 +14,7 @@ angular.module('emulvcApp')
 				$http.get(filePath).success(function(data) {
 					$scope.loginError = 'Loading data...';
 					Iohandlerservice.httpGetUttJson(filePath);
+					$rootScope.$broadcast('newUserLoggedOn', $scope.username);
 					$scope.cancel();
 
 				}).error(function() {
