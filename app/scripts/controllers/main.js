@@ -7,23 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.ssff = undefined;
 		$scope.uttsList = [];
-
-		/**
-		 * listen for dropped files
-		 */
-		$scope.$on('fileLoaded', function(evt, type, data) {
-			switch (type) {
-				case fileType.WAV:
-					$scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
-					Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/' + $scope.uttsList[0] + '/');
-					break;
-				case fileType.TEXTGRID:
-
-					break;
-			}
-			console.log("data");
-			console.log(data);
-		});
+		$scope.curUserName = 'user1';
 
 
 		// init load of config files
@@ -46,10 +30,10 @@ var MainCtrl = angular.module('emulvcApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
 			// $scope.openSubmenu();
-			// Iohandlerservice.httpGetUttJson("testData/uttList.json");
+			Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 
 			// set timeline height according to config settings "colors.timelineHeight"
-			$(".TimelineCtrl").css('height', ConfigProviderService.vals.colors.timelineHeight);
+			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				$('#allowSortable').sortable('enable');
@@ -163,19 +147,44 @@ var MainCtrl = angular.module('emulvcApp')
 				return hidden;
 			}
 
-			$scope.openModal('views/login.html','dialog');
+			// open login modal
+			// $scope.openModal('views/login.html','dialog');
 
 		});
 
+		/**
+		 * listen for dropped files
+		 */
+		$scope.$on('fileLoaded', function(evt, type, data) {
+			switch (type) {
+				case fileType.WAV:
+					$scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
+					Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/' + $scope.uttsList[0] + '/');
+					break;
+				case fileType.TEXTGRID:
+
+					break;
+			}
+			console.log("data");
+			console.log(data);
+		});
 
 		/**
 		 * listen for newlyLoadedUttList
 		 */
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
-			console.log(uttList)
+			// console.log(uttList)
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
+			$scope.openSubmenu();
 
+		});
+
+		/**
+		 * listen for newUserLoggedOn
+		 */
+		$scope.$on('newUserLoggedOn', function(evt, name) {
+			$scope.curUserName = name;
 		});
 
 
@@ -303,6 +312,15 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#menu').addClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}
+		};
+
+		// $scope.saveUttsList() = function () {
+		// 	console.log("dfasdfasdfasdfadsfadsfad");
+		// };
+
+		$scope.saveUttList = function() {
+
+			console.log($scope.uttsList);
 		};
 
 
