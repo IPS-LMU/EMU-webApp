@@ -13,7 +13,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
 
-		$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
+		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -406,7 +406,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.openSubmenu = function() {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
-				$('#submenuOpen').html('Open Menu');
+				$('#submenuOpen').html('☰');
 				$('#menuLeft').removeClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright');
 				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toright');
@@ -414,7 +414,7 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#menu-bottom').removeClass('cbp-spmenu-push-toright');
 			} else {
 				viewState.setsubmenuOpen(true);
-				$('#submenuOpen').html('Close Menu');
+				$('#submenuOpen').html('☰');
 				$('#menuLeft').addClass('cbp-spmenu-open');
 				$('#TimelineCtrl').addClass('cbp-spmenu-push-toright');
 				$('#HandletiersCtrl').addClass('cbp-spmenu-push-toright');
