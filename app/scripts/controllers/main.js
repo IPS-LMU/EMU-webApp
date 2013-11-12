@@ -10,8 +10,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.curUserName = 'user1';
 		$scope.curUtt = {};
 		$scope.modifiedCurSSFF = false;
-
-		$scope.uttsChangedColor = 'green';
+		$scope.modifiedMetaData = false;
 
 		$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
@@ -304,9 +303,9 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		// $scope.changedUttList = function() {
-		// 	$scope.uttsChangedColor = 'red';
-		// };
+		$scope.changingMetaData = function() {
+			$scope.modifiedMetaData = true;
+		};
 
 		/**
 		 *
@@ -318,7 +317,7 @@ var MainCtrl = angular.module('emulvcApp')
 					'background-color': '#999',
 					'color': 'black'
 				};
-			}else{
+			} else {
 				curColor = {
 					'background-color': '#f00',
 					'color': 'white'
@@ -330,6 +329,19 @@ var MainCtrl = angular.module('emulvcApp')
 			if (utt.utteranceName === $scope.curUtt.utteranceName) {
 				return curColor
 			}
+		};
+
+		/**
+		 *
+		 */
+		$scope.getMetaBtnColor = function() {
+				if (!$scope.modifiedMetaData){
+					var curColor = {'color': 'green'};
+					
+				}else{
+					var curColor = {'color': 'red'};
+				}
+				return curColor;
 		};
 
 		/**
@@ -386,7 +398,7 @@ var MainCtrl = angular.module('emulvcApp')
 					data: $scope.uttsList
 				}
 			}).success(function() {
-				$scope.uttsChangedColor = 'green';
+				$scope.modifiedMetaData = false;
 			});
 
 		};
