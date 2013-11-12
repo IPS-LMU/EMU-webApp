@@ -9,6 +9,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.curUserName = 'user1';
 		$scope.curUtt = {};
+		$scope.modifiedCurSSFF = false;
 
 		$scope.uttsChangedColor = 'green';
 
@@ -303,22 +304,31 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.changedUttList = function() {
-			$scope.uttsChangedColor = 'red';
-		};
+		// $scope.changedUttList = function() {
+		// 	$scope.uttsChangedColor = 'red';
+		// };
 
 		/**
 		 *
 		 */
 		$scope.getUttColor = function(utt) {
-			var curColor = {
-				'background-color': '#999',
-				'color': 'black'
-			};
+			var curColor;
+			if (!$scope.modifiedCurSSFF) {
+				curColor = {
+					'background-color': '#999',
+					'color': 'black'
+				};
+			}else{
+				curColor = {
+					'background-color': '#f00',
+					'color': 'white'
+				};
+
+			}
 
 			// console.log(utt.utteranceName)
-			if (utt.utteranceName === $scope.curUtt.utteranceName){
-				return curColor 	
+			if (utt.utteranceName === $scope.curUtt.utteranceName) {
+				return curColor
 			}
 		};
 
