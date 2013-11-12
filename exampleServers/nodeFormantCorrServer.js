@@ -4,22 +4,22 @@ small static file webserver aimed at fomant correction purposes...
 @author Raphael Winkelmann
 */
 
+
+
 // require needed modules
-var b64 = require("base64-arraybuffer");
-var open = require('open');
-var sys = require("sys"),
-	my_http = require("http"),
-	path = require("path"),
-	url = require("url"),
-	filesys = require("fs");
+// var b64 = require("base64-arraybuffer");
+var sys = require('sys'),
+	myHttp = require('http'),
+	path = require('path'),
+	url = require('url'),
+	filesys = require('fs');
 
-var path2webApp = "../app/";
+var path2webApp = '../app/';
 
 
-my_http.createServer(function(request, response) {
+myHttp.createServer(function(request, response) {
 	if (request.method === 'POST') {
-		console.log('################ new POST request ##################');
-
+		// console.log('################ new POST request ##################');
 		var body = '';
 		request.on('data', function(data) {
 			body += data;
@@ -43,20 +43,15 @@ my_http.createServer(function(request, response) {
 				});
 			}
 			if (POST.method === 'saveSSFFfile') {
-				console.log(POST.data.length);
-				// var binData = toBuffer(POST.data);
-				// var arrBuf = THREE.Base64.toArrayBuffer(POST.data);
-				// console.log(binData);
-				// arrBuf = b64.decode(POST.data);
-
+				console.log(POST.fileURL);
 				var view = new Buffer(POST.data, 'base64');
 				console.log(view);
-				filesys.writeFile('/Users/raphaelwinkelmann/Desktop/node.fms', view, function(err) {
+				filesys.writeFile(path2webApp + POST.fileURL, view, function(err) {
 					if (err) {
 						console.log('ERROR while saving uttList')
 						console.log(err);
 					} else {
-						console.log("ssffFile saved");
+						console.log('ssffFile saved');
 						response.writeHeader(204);
 						response.end();
 					}
