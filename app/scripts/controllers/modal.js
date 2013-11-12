@@ -29,13 +29,6 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 		$modalInstance.dismiss('cancel');
 	};
 
-	// $scope.login = function() {
-	// 	console.log($scope.username);
-	// 	console.log($scope.passcode);
-	// 	// viewState.setmodalOpen(false);
-	// 	// $modalInstance.dismiss('cancel');
-	// };
-
 	$scope.deleteSegment = function() {
 		$('#HandletiersCtrl').scope().deleteSegments();
 		$modalInstance.dismiss('ok');
@@ -70,12 +63,14 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 
 	$scope.saveSSFF = function() {
 		$rootScope.$broadcast('saveSSFFb4load');
+		viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');
 	};
 
 
 	$scope.discardSSFF = function() {
 		$rootScope.$broadcast('discardSSFFb4load');
+		viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');
 	};
 
