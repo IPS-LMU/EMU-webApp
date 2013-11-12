@@ -20,8 +20,6 @@ angular.module('emulvcApp')
 			}
 			var base64  = window.btoa(binary);
 
-			console.log(base64);
-
 			$http({
 				url: 'index.html',
 				method: 'POST',

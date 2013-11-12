@@ -25,6 +25,7 @@ angular.module('emulvcApp')
 
 					if (event.shiftKey) {
 						curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
+						scope.changingSSFFdata();
 
 					}
 					scope.$apply();

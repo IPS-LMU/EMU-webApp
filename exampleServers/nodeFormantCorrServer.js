@@ -45,7 +45,7 @@ my_http.createServer(function(request, response) {
 			if (POST.method === 'saveSSFFfile') {
 				console.log(POST.data.length);
 				// var binData = toBuffer(POST.data);
-				var arrBuf = THREE.Base64.toArrayBuffer(POST.data);
+				// var arrBuf = THREE.Base64.toArrayBuffer(POST.data);
 				// console.log(binData);
 				// arrBuf = b64.decode(POST.data);
 

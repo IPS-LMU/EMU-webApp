@@ -234,7 +234,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function() {
 			Iohandlerservice.postSaveSSFF();
-			$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
+			$scope.modifiedCurSSFF = false;
 		};
 
 		/**
@@ -310,6 +310,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
+		$scope.changingSSFFdata = function() {
+			console.log('changingSSFFdata')
+			$scope.modifiedCurSSFF = true;
+		};
+
+		/**
+		 *
+		 */
 		$scope.getUttColor = function(utt) {
 			var curColor;
 			if (!$scope.modifiedCurSSFF) {
@@ -335,13 +343,17 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.getMetaBtnColor = function() {
-				if (!$scope.modifiedMetaData){
-					var curColor = {'color': 'green'};
-					
-				}else{
-					var curColor = {'color': 'red'};
-				}
-				return curColor;
+			if (!$scope.modifiedMetaData) {
+				var curColor = {
+					'color': 'green'
+				};
+
+			} else {
+				var curColor = {
+					'color': 'red'
+				};
+			}
+			return curColor;
 		};
 
 		/**
