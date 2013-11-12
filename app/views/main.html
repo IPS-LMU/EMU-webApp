@@ -5,7 +5,7 @@
     <div id="submenu" class="submenu">
       <div ng-repeat="utt in uttsList">
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
-           <div class="saveUtterance" id="saveUtterance" ng-style="{'background-color': sssffChangedColor}">
+           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
             Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changedUttList();"> <br />
             Comment:<input type="text" ng-model="utt.comment" ng-keyup="changedUttList();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
                <img style="cursor: pointer;" ng-click="menuUttSave(utt);">

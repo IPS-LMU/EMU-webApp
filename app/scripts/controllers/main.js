@@ -8,6 +8,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.uttsList = [];
 
 		$scope.curUserName = 'user1';
+		$scope.curUtt = {};
+
 		$scope.uttsChangedColor = 'green';
 
 		$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
@@ -178,6 +180,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
+			$scope.curUtt = $scope.uttsList[0];
 			$scope.openSubmenu();
 
 		});
@@ -223,6 +226,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.menuUttClick = function(utt) {
 			$scope.$broadcast('loadingNewUtt');
 			Iohandlerservice.httpGetUtterence(utt);
+			$scope.curUtt = utt;
 		};
 
 		/**
@@ -301,6 +305,21 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.changedUttList = function() {
 			$scope.uttsChangedColor = 'red';
+		};
+
+		/**
+		 *
+		 */
+		$scope.getUttColor = function(utt) {
+			var curColor = {
+				'background-color': '#999',
+				'color': 'black'
+			};
+
+			// console.log(utt.utteranceName)
+			if (utt.utteranceName === $scope.curUtt.utteranceName){
+				return curColor 	
+			}
 		};
 
 		/**
