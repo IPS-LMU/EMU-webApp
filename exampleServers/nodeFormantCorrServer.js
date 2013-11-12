@@ -13,7 +13,7 @@ var sys = require("sys"),
 	url = require("url"),
 	filesys = require("fs");
 
-var path2webApp = "../emuLVC/app/";
+var path2webApp = "../app/";
 
 
 my_http.createServer(function(request, response) {
@@ -50,7 +50,7 @@ my_http.createServer(function(request, response) {
 				// arrBuf = b64.decode(POST.data);
 
 				var view = new Buffer(POST.data, 'base64');
-				console.log(view)
+				console.log(view);
 				filesys.writeFile('/Users/raphaelwinkelmann/Desktop/node.fms', view, function(err) {
 					if (err) {
 						console.log('ERROR while saving uttList')
@@ -69,7 +69,7 @@ my_http.createServer(function(request, response) {
 		var curUrl = url.parse(request.url, true);
 		var my_path = url.parse(request.url).pathname;
 		var full_path = path.join(path2webApp, my_path);
-
+		console.log(full_path)
 
 		filesys.exists(full_path, function(exists) {
 			if (!exists) {
