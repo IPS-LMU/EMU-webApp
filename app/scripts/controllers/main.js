@@ -224,9 +224,13 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function(utt) {
-			$scope.$broadcast('loadingNewUtt');
-			Iohandlerservice.httpGetUtterence(utt);
-			$scope.curUtt = utt;
+			if($scope.modifiedCurSSFF){
+				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', 'Changes made to: '+ utt.utteranceName+ '. Do you wish to save them?');
+			}else{
+				$scope.$broadcast('loadingNewUtt');
+				Iohandlerservice.httpGetUtterence(utt);
+				$scope.curUtt = utt;
+			}
 		};
 
 		/**
