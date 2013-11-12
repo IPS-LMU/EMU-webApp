@@ -16,8 +16,8 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 	$scope.keyZoomSel = keyZoomSel;
 	$scope.shiftViewPortLeft = shiftViewPortLeft;
 	$scope.shiftViewPortRight = shiftViewPortRight;
-	$scope.username = '';
-	$scope.passcode = '';
+	// $scope.username = '';
+	// $scope.passcode = '';
 
 	$scope.ok = function() {
 		viewState.setmodalOpen(false);
@@ -29,12 +29,12 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 		$modalInstance.dismiss('cancel');
 	};
 
-	$scope.login = function() {
-		console.log($scope.username);
-		console.log($scope.passcode);
-		// viewState.setmodalOpen(false);
-		// $modalInstance.dismiss('cancel');
-	};
+	// $scope.login = function() {
+	// 	console.log($scope.username);
+	// 	console.log($scope.passcode);
+	// 	// viewState.setmodalOpen(false);
+	// 	// $modalInstance.dismiss('cancel');
+	// };
 
 	$scope.deleteSegment = function() {
 		$('#HandletiersCtrl').scope().deleteSegments();
@@ -66,5 +66,18 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 		viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');
 
-	}
+	};
+
+	$scope.saveSSFF = function() {
+		$rootScope.$broadcast('saveSSFFb4load');
+		$modalInstance.dismiss('ok');
+	};
+
+
+	$scope.discardSSFF = function() {
+		$rootScope.$broadcast('discardSSFFb4load');
+		$modalInstance.dismiss('ok');
+	};
+
+
 };

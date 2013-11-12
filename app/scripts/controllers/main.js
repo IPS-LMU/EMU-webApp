@@ -11,6 +11,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.curUtt = {};
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
+		$scope.lastclickedutt = null;
 
 		$scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
@@ -20,8 +21,6 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownDrag('.resizer').ownResize('.resizer');
-
-
 
 		/**
 		 * listen for configLoaded
@@ -194,6 +193,31 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		/**
+		 * listen for saveSSFFb4load
+		 */
+		$scope.$on('saveSSFFb4load', function(evt, data) {
+			console.log("saving utt")
+			Iohandlerservice.postSaveSSFF();
+			$scope.modifiedCurSSFF = false;
+			$scope.$broadcast('loadingNewUtt');
+			console.log($scope.lastclickedutt);
+			Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			$scope.curUtt = $scope.lastclickedutt;
+		});
+
+		/**
+		 * listen for saveSSFFb4load
+		 */
+		$scope.$on('discardSSFFb4load', function(evt, data) {
+			console.log("dicarding ssff changes")
+			$scope.modifiedCurSSFF = false;
+			$scope.$broadcast('loadingNewUtt');
+			console.log($scope.lastclickedutt);
+			Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			$scope.curUtt = $scope.lastclickedutt;
+		});
+
+		/**
 		 * listen for newlyLoadedAudioFile
 		 */
 		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
@@ -224,14 +248,16 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function(utt) {
-			if($scope.modifiedCurSSFF){
-				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', 'Changes made to: '+ utt.utteranceName+ '. Do you wish to save them?');
-			}else{
+			if ($scope.modifiedCurSSFF) {
+				$scope.lastclickedutt = utt;
+				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', 'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
+			} else {
 				$scope.$broadcast('loadingNewUtt');
 				Iohandlerservice.httpGetUtterence(utt);
 				$scope.curUtt = utt;
 			}
 		};
+
 
 		/**
 		 *
@@ -315,7 +341,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.changingSSFFdata = function() {
-			console.log('changingSSFFdata')
+			// console.log('changingSSFFdata')
 			$scope.modifiedCurSSFF = true;
 		};
 
@@ -400,7 +426,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.saveUttList = function() {
+		$scope.saveUttList = function() { // SIC RENAME to metadata
 			// SIC should not be done here but in iohandler...
 			$http({
 				url: 'index.html',
