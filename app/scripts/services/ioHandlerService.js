@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -11,6 +11,9 @@ angular.module('emulvcApp')
 		sServObj.postSaveSSFF = function() {
 
 			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded [0];
+			console.log()
+			// console.log($location.absUrl());
+
 
 			var binary = '';
 			var bytes = new Uint8Array(data);
@@ -28,6 +31,7 @@ angular.module('emulvcApp')
 				},
 				data: {
 					method: 'saveSSFFfile',
+					fileURL: Ssffdataservice.data[0].fileURL.split($location.absUrl())[1],
 					data: base64
 				}
 			})//.success(function() {});
