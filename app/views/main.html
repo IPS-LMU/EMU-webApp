@@ -27,14 +27,14 @@
 
   <div class="menu" id="menu">
       <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
-       <button ng-style="buttonstyle('openMenu')" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open Menu</button> 
-       <button ng-style="buttonstyle('openFile')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open File</button> 
-       <button ng-style="buttonstyle('addTierSg')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> 
-       <button ng-style="buttonstyle('addTierPoint')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> 
-       <button ng-style="buttonstyle('renameSelTier')" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> 
-       <button ng-style="buttonstyle('downloadTextGrid')" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> 
-       <button ng-style="buttonstyle('specSettings')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
-       <button ng-style="buttonstyle('Connect')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Disconnect</button>  
+       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">☰</button> 
+       <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open File</button> 
+       <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> 
+       <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> 
+       <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> 
+       <button ng-show="cps.vals.activeButtons.downloadTextGrid" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> 
+       <button ng-show="cps.vals.activeButtons.specSettings" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
+       <button ng-show="cps.vals.activeButtons.Connect" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Connect</button>
       <a class="aboutLink" title="About" ng-click="openModal('views/about.html','dialog');"><img></a>
   </div>
 

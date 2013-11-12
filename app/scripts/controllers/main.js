@@ -4,6 +4,8 @@ var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
+		$scope.cps = ConfigProviderService;
+
 		$scope.lastkeycode = 'N/A';
 		$scope.uttsList = [];
 
@@ -26,6 +28,9 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for configLoaded
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
+
+			console.log($scope.cps.vals.activeButtons.openMenu);
+
 			// for devel.
 			// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 
@@ -47,109 +52,6 @@ var MainCtrl = angular.module('emulvcApp')
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
-
-
-
-			$scope.buttonstyle = function(id) {
-				var show = {};
-				var hidden = {
-					'display': 'none'
-				};
-				switch (id) {
-					case 'openMenu':
-						if (ConfigProviderService.vals.activeButtons.openMenu) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'openFile':
-						if (ConfigProviderService.vals.activeButtons.openFile) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'addTierSeg':
-						if (ConfigProviderService.vals.activeButtons.addTierSeg) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'addTierPoint':
-						if (ConfigProviderService.vals.activeButtons.addTierPoint) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'renameSelTier':
-						if (ConfigProviderService.vals.activeButtons.renameSelTier) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'downloadTextGrid':
-						if (ConfigProviderService.vals.activeButtons.downloadTextGrid) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'specSettings':
-						if (ConfigProviderService.vals.activeButtons.specSettings) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'Connect':
-						if (ConfigProviderService.vals.activeButtons.Connect) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'deleteSingleTier':
-						if (ConfigProviderService.vals.activeButtons.deleteSingleTier) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'resizeSingleTier':
-						if (ConfigProviderService.vals.activeButtons.resizeSingleTier) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'saveSingleTier':
-						if (ConfigProviderService.vals.activeButtons.saveSingleTier) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'resizeOsci':
-						if (ConfigProviderService.vals.activeButtons.resizeOsci) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-					case 'resizeSpectro':
-						if (ConfigProviderService.vals.activeButtons.resizeSpectro) {
-							return show;
-						} else {
-							return hidden;
-						}
-						break;
-				}
-				return hidden;
-			}
 
 			// open login modal
 			$scope.openModal('views/login.html','dialog');

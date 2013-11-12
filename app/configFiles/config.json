@@ -86,7 +86,7 @@
         "renameSelTier": false,
         "downloadTextGrid": false,
         "specSettings": true,
-        "Connect": false,
+        "connect": false,
         "deleteSingleTier": false,
         "resizeSingleTier": true,
         "saveSingleTier": false,
