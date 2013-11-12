@@ -7,7 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.uttsList = [];
 
-		$scope.curUserName = 'user1';
+		$scope.curUserName = '';
 		$scope.curUtt = {};
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
@@ -27,7 +27,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 			// for devel.
-			Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+			// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 
 			// init loading of files for testing
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
@@ -152,7 +152,7 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 
 			// open login modal
-			// $scope.openModal('views/login.html','dialog');
+			$scope.openModal('views/login.html','dialog');
 
 		});
 
