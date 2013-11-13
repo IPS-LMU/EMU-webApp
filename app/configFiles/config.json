@@ -1,7 +1,8 @@
 {
     "main": {
         "mode": "server",
-        "osciSpectroZoomFactor": 2
+        "osciSpectroZoomFactor": 2,
+        "develMode": true
     },
     "keyMappings": {
         "zoomSel": 69,

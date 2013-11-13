@@ -29,10 +29,15 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('configLoaded', function(evt, data) {
 
-			console.log($scope.cps.vals.activeButtons.openMenu);
-
-			// for devel.
-			// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+			// for develment
+			console.log(ConfigProviderService.vals.main.develMode)
+			if (ConfigProviderService.vals.main.develMode) {
+				$scope.curUserName = 'user1';
+				Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+			} else {
+				// open login modal
+				$scope.openModal('views/login.html', 'dialog');
+			}
 
 			// init loading of files for testing
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
@@ -52,9 +57,6 @@ var MainCtrl = angular.module('emulvcApp')
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
-
-			// open login modal
-			$scope.openModal('views/login.html','dialog');
 
 		});
 
