@@ -101,6 +101,10 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.tierDown) {
                 $('#HandletiersCtrl').scope().selectTier(true);
               }
+              // openSubmenu
+              if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
+                scope.openSubmenu();
+              }              
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 if (e.shiftKey)
@@ -127,7 +131,7 @@ angular.module('emulvcApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
-              // console.log(code);
+               console.log(code);
             }
           });
         });

@@ -5,6 +5,9 @@
         "develMode": true
     },
     "keyMappings": {
+        "openFile" : -1,
+        "openSubmenu" : 79,
+        "spectroSettings" : 80,
         "zoomSel": 69,
         "zoomAll": 81,
         "zoomOut": 83,
