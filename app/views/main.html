@@ -29,14 +29,14 @@
 
   <div class="menu" id="menu">
       <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
-       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">☰</button> 
-       <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Open File</button> 
-       <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (seg)</button> 
-       <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Add Tier (point)</button> 
-       <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Rename sel. Tier</button> 
-       <button ng-show="cps.vals.activeButtons.downloadTextGrid" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: none">Download TextGrid</button> 
-       <button ng-show="cps.vals.activeButtons.specSettings" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
-       <button ng-show="cps.vals.activeButtons.Connect" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: none">Connect</button>
+       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button> 
+       <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">Open File</button> 
+       <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierSeg}}">Add Tier (seg)</button> 
+       <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierPoint}}">Add Tier (point)</button> 
+       <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameTier}}">Rename sel. Tier</button> 
+       <button ng-show="cps.vals.activeButtons.downloadTextGrid" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.downloadTextgrid}}">Download TextGrid</button> 
+       <button ng-show="cps.vals.activeButtons.specSettings" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="openModal('views/spectroSettings.html','dialog');">Spec. Settings</button>
+       <button ng-show="cps.vals.activeButtons.Connect" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.connect}}">Connect</button>
       <a class="aboutLink" title="About" ng-click="openModal('views/about.html','dialog');"><img></a>
   </div>
 
@@ -64,14 +64,14 @@
     <div ng-controller="TimelineCtrl">
         <preview id="preview" class="preview"></preview>  
     </div>
-    <button ng-click="cmd_zoomAll();" class="mini-btn" id="cmd_viewZoomAll" data-tooltip="Shortcut: Q">all</button>
-    <button ng-click="cmd_zoomIn();" class="mini-btn" id="cmd_viewZoomIn" data-tooltip="Shortcut: W">In</button>
-    <button ng-click="cmd_zoomOut();" class="mini-btn" id="cmd_viewZoomOut" data-tooltip="Shortcut: S">Out</button>
-    <button ng-click="cmd_zoomLeft();" class="mini-btn" id="cmd_viewMoveLeft" data-tooltip="Shortcut: A">Lft</button>
-    <button ng-click="cmd_zoomRight();" class="mini-btn" id="cmd_viewMoveRight" data-tooltip="Shortcut: D">Rght</button>
-    <button ng-click="cmd_zoomSel();" class="mini-btn" id="cmd_viewZoomSelect" data-tooltip="Shortcut: E">Sel</button>
-    <button ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: SPACE">Play In View</button>
-    <button ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: R">Play Selected</button>
-    <button ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: F">Play Entire File</button>
+    <button ng-click="cmd_zoomAll();" class="mini-btn" id="cmd_viewZoomAll" data-tooltip="Shortcut: {{shortcut.zoomAll}}">all</button>
+    <button ng-click="cmd_zoomIn();" class="mini-btn" id="cmd_viewZoomIn" data-tooltip="Shortcut: {{shortcut.zoomIn}}">In</button>
+    <button ng-click="cmd_zoomOut();" class="mini-btn" id="cmd_viewZoomOut" data-tooltip="Shortcut: {{shortcut.zoomOut}}">Out</button>
+    <button ng-click="cmd_zoomLeft();" class="mini-btn" id="cmd_viewMoveLeft" data-tooltip="Shortcut: {{shortcut.shiftViewPortLeft}}">Lft</button>
+    <button ng-click="cmd_zoomRight();" class="mini-btn" id="cmd_viewMoveRight" data-tooltip="Shortcut: {{shortcut.shiftViewPortRight}}">Rght</button>
+    <button ng-click="cmd_zoomSel();" class="mini-btn" id="cmd_viewZoomSelect" data-tooltip="Shortcut: ??">Sel</button>
+    <button ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">Play In View</button>
+    <button ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">Play Selected</button>
+    <button ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">Play Entire File</button>
 </div>
 </div>

@@ -14,6 +14,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
+		$scope.shortcut = null;
 
 		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
@@ -31,6 +32,13 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// for develment
 			console.log(ConfigProviderService.vals.main.develMode)
+			
+			$scope.shortcut = ConfigProviderService.vals.keyMappings;
+			// convert int values to char for front end
+			for (var i in $scope.shortcut ) {
+			    $scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+			}
+			
 			if (ConfigProviderService.vals.main.develMode) {
 				$scope.curUserName = 'user1';
 				Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
@@ -171,7 +179,10 @@ var MainCtrl = angular.module('emulvcApp')
 			Iohandlerservice.postSaveSSFF();
 			$scope.modifiedCurSSFF = false;
 		};
+		
 
+		
+		
 		/**
 		 *
 		 */
