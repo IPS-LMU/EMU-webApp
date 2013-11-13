@@ -57,6 +57,11 @@ angular.module('emulvcApp')
                         }
                     }
                 }, true);
+                
+                scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
+                    console.log("clearing spectro image cache...");
+                	clearImageCache();
+                });
 
                 scope.$watch('vs.spectroSettings', function() {
                     if (!$.isEmptyObject(scope.shs)) {
