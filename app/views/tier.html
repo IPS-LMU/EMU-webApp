@@ -4,13 +4,13 @@
     <canvas trackmouseintier width="1280" height="64" class="TierMarkupCanvas" id="TierMarkupCanvas"></canvas>
   </div>
  <div class="buttons" id="buttons">
-   <div delete class="delete" id="delete" ng-style="buttonstyle('deleteSingleTier')">
+   <div delete class="delete" id="delete" ng-show="cps.vals.activeButtons.deleteSingleTier" >
 	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="delete">
    </div>
-   <div resize class="resize" id="resize" ng-style="buttonstyle('resizeSingleTier')">
+   <div resize class="resize" id="resize" ng-show="cps.vals.activeButtons.resizeSingleTier" >
 	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="resize">
    </div>
-   <div save class="save" id="save" ng-style="buttonstyle('saveSingleTier')">
+   <div save class="save" id="save" ng-show="cps.vals.activeButtons.saveSingleTier" >
 	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="export">
    </div> 
  </div>
