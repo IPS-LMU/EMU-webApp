@@ -62,7 +62,7 @@
 }
  
 .cbp-spmenu-push-toleft {
-    left: -240px;
+    left: 0px;
 }
  
 /* Transitions */
@@ -72,9 +72,11 @@
 .timeline,
 .menu-bottom,
 .cbp-spmenu,
+.cbp-spmenu-push-toright,
+.cbp-spmenu-push-toleft,
 .cbp-spmenu-push {
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    transition: all 0.15s ease;
 }
  
