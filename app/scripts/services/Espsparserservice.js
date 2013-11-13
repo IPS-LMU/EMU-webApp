@@ -58,7 +58,7 @@ angular.module('emulvcApp')
 					curLineArr = lines[i].split(/\s+/);
 					labelJSO.tiers[0].events.push({
 						label: curLineArr[curLineArr.length - 1],
-						startSample: Math.round(curLineArr[1] * 20000) // SIC
+						startSample: Math.round(curLineArr[1] * 44100) // SIC
 					});
 				}
 			} else {
@@ -74,8 +74,8 @@ angular.module('emulvcApp')
 					prevLineArr = lines[i - 1].split(/\s+/);
 					labelJSO.tiers[0].events.push({
 						label: curLineArr[curLineArr.length - 1],
-						startSample: Math.round(prevLineArr[1] * 20000), // SIC
-						sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * 20000) // SIC
+						startSample: Math.round(prevLineArr[1] * 44100), // SIC
+						sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * 44100) // SIC
 					});
 				}
 
