@@ -128,6 +128,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// for dev:
 			// viewState.curViewPort.sS = 28535;
 			// viewState.curViewPort.eS = 29555;
+			viewState.curViewPort.sS = 0;
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.Data.length;
 			viewState.setscrollOpen(0);

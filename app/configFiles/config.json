@@ -88,7 +88,7 @@
         "downloadTextGrid": false,
         "specSettings": true,
         "connect": false,
-        "deleteSingleTier": true,
+        "deleteSingleTier": false,
         "resizeSingleTier": true,
         "saveSingleTier": false,
         "resizeOsci": true,

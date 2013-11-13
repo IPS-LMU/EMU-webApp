@@ -98,6 +98,16 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
     };
+    
+
+    /**
+     * reset selected Area to default
+     * @param length of current pcm stream
+     */
+    sServObj.resetSelect = function(length) {
+      sServObj.curViewPort.selectS = o;
+      sServObj.curViewPort.selectE = length;
+    };    
 
     /**
      * setspectroSettings
