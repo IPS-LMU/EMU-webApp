@@ -43,6 +43,7 @@ angular.module('emulvcApp')
 				events: []
 			});
 
+			console.log(Soundhandlerservice.wavJSO);
 			// set tier type
 			var prevLineArr;
 			var curLineArr = lines[headEndIdx + 1].split(/\s+/);

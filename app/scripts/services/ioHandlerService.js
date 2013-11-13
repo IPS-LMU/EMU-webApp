@@ -76,6 +76,9 @@ angular.module('emulvcApp')
 			$http.get(filePath).success(function(data) {
 				var labelJSO = Espsparserservice.toJSO(data, filePath);
 				$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
+			}).
+			error(function(data, status) {
+				console.log('Request failed with status: ' + status);
 			});
 		};
 
@@ -127,9 +130,21 @@ angular.module('emulvcApp')
 		 */
 		sServObj.httpGetUtterence = function(utt) {
 			console.log('loading utt');
+			console.log(utt);
 			var curFile;
 
 			var defer = $q.defer();
+			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+
+			$http.get(curFile, {
+				responseType: 'arraybuffer'
+			}).success(function(data) {
+				var wavJSO = Wavparserservice.wav2jso(data);
+				// $rootScope.$broadcast('newlyLoadedAudioFile', wavJSO, filePath.replace(/^.*[\\\/]/, ''));
+				return wavJSO;
+			}).then(function(newData){
+				console.log(newData)
+			})
 
 			defer.promise
 				.then(function() {

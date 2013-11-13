@@ -58,7 +58,7 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 			
 			if (ConfigProviderService.vals.main.develMode) {
-				$scope.curUserName = 'user1';
+				$scope.curUserName = 'florian';
 				Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 			} else {
 				// open login modal

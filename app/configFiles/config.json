@@ -74,7 +74,7 @@
         }
     },
     "labelCanvasConfig": {
-        "order": [".lab", ".tone"]
+        "order": [".ORT", ".MAU", ".phon"]
     },
     "restrictions": {
         "sortLabels": false,
