@@ -14,7 +14,7 @@ var sys = require('sys'),
 	url = require('url'),
 	filesys = require('fs');
 
-var path2webApp = '../app/';
+var path2webApp = './';
 
 
 myHttp.createServer(function(request, response) {
@@ -116,8 +116,8 @@ myHttp.createServer(function(request, response) {
 			}
 		});
 	}
-}).listen(8080);
-sys.puts("Server Running on 8080");
+}).listen(8001);
+sys.puts("Server Running on 8001");
 
 
 // open('/http://localhostfdsgh8080/index.html');
