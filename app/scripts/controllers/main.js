@@ -249,6 +249,19 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.modifiedCurSSFF = true;
 		};
 
+
+		/**
+		 *
+		 */
+		$scope.uttIsDisabled = function(utt) {
+			if (utt.utteranceName === $scope.curUtt.utteranceName) {
+				return false;
+			}
+			else {
+			    return true;
+			}
+		};
+
 		/**
 		 *
 		 */

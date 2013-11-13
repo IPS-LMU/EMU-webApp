@@ -6,9 +6,11 @@
       <div ng-repeat="utt in uttsList">
         <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
-            Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();"> <br />
-            Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
-               <img style="cursor: pointer;" ng-click="menuUttSave(utt);">
+            Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" ng-disabled="uttIsDisabled(utt)" /> <br />
+            Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ng-disabled="uttIsDisabled(utt)" >
+               <button style="cursor: pointer;" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" >
+                 <img />
+               </button>
            </div>
       </div>
       <button class="mini-btn" ng-style="getMetaBtnColor();" ng-click="saveUttList();">Save Meta Data</button>
