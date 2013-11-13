@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -21,7 +21,7 @@ angular.module('emulvcApp')
 			for (var i = 0; i < len; i++) {
 				binary += String.fromCharCode(bytes[i])
 			}
-			var base64  = window.btoa(binary);
+			var base64 = window.btoa(binary);
 
 			$http({
 				url: 'index.html',
@@ -34,7 +34,7 @@ angular.module('emulvcApp')
 					fileURL: Ssffdataservice.data[0].fileURL.split($location.absUrl())[1],
 					data: base64
 				}
-			})//.success(function() {});
+			}) //.success(function() {});
 		};
 
 
@@ -126,28 +126,32 @@ angular.module('emulvcApp')
 		 *
 		 */
 		sServObj.httpGetUtterence = function(utt) {
-			console.log("loading utt")
+			console.log('loading utt');
 			var curFile;
 
-			viewState.loadingUtt = true;
-			// load audio file
-			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-			sServObj.httpGetAudioFile(curFile);
+			var defer = $q.defer();
 
-			// load signal files
-			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
-				curFile = sServObj.findFileInUtt(utt, ext);
-				sServObj.httpGetSSFFfile(curFile);
-			})
+			defer.promise
+				.then(function() {
+					curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+					sServObj.httpGetAudioFile(curFile);
+				}).then(function() {
+					// load signal files
+					ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
+						curFile = sServObj.findFileInUtt(utt, ext);
+						sServObj.httpGetSSFFfile(curFile);
+					})
+				}).then(function() {
+					// load label files
+					ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+						curFile = sServObj.findFileInUtt(utt, ext);
+						sServObj.httpGetESPS(curFile);
 
-			// load label files
-			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
-				curFile = sServObj.findFileInUtt(utt, ext);
-				sServObj.httpGetESPS(curFile);
+					})
+				});
 
-			})
+			defer.resolve();
 
-			viewState.loadingUtt = false; // SIC in async behaviour!!!
 			console.log("finished loading utt");
 		};
 
