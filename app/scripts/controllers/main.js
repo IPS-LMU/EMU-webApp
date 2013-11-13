@@ -36,7 +36,25 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end
 			for (var i in $scope.shortcut ) {
-			    $scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+			    // sonderzeichen space
+			    if($scope.shortcut[i]===32) {
+			        $scope.shortcut[i] = "SPACE";
+			    }
+			    else if($scope.shortcut[i]===8) {
+			        $scope.shortcut[i] = "BACKSPACE";
+			    }
+			    else if($scope.shortcut[i]===9) {
+			        $scope.shortcut[i] = "TAB";
+			    }
+			    else if($scope.shortcut[i]===13) {
+			        $scope.shortcut[i] = "ENTER";
+			    }
+			    else if($scope.shortcut[i]===27) {
+			        $scope.shortcut[i] = "ESC";
+			    }
+			    else {
+    			    $scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+    			}
 			}
 			
 			if (ConfigProviderService.vals.main.develMode) {
