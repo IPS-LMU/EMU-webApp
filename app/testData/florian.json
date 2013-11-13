@@ -97,4 +97,15 @@
   ],
   "finishedEditing": false,
   "comment": ""
+}, {
+  "utteranceName": "VP0700081s_naKA_10",
+  "files": [
+    "testData/bigDB/Emu3-2/VP0700081s_naKA_10.wav",
+    "testData/bigDB/Emu3-2/VP0700081s_naKA_10.fms",
+    "testData/bigDB/Emu3-2/labs/VP0700081s_naKA_10.ORT",
+    "testData/bigDB/Emu3-2/labs/VP0700081s_naKA_10.MAU",
+    "testData/bigDB/Emu3-2/labs/VP0700081s_naKA_10.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
 }]
