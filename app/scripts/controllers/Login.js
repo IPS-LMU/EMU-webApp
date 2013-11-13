@@ -9,7 +9,7 @@ angular.module('emulvcApp')
 		$scope.tryLogin = function() {
 			if ($scope.passcode === ConfigProviderService.vals.userManagment.passcode) {
 				$scope.loginError = 'CORRECT PASSCODE!... getting users utterance list...';
-				var filePath = 'testdata/' + $scope.username + '.json';
+				var filePath = 'testData/' + $scope.username + '.json';
 				// $http.get just used as a test if file exists 
 				$http.get(filePath).success(function(data) {
 					$scope.loginError = 'Loading data...';
