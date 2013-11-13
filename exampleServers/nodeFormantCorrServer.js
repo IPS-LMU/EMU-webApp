@@ -14,7 +14,7 @@ var sys = require('sys'),
 	url = require('url'),
 	filesys = require('fs');
 
-var path2webApp = './';
+var path2webApp = '../app/';
 
 
 myHttp.createServer(function(request, response) {
