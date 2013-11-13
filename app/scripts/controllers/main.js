@@ -33,7 +33,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// for develment
 			console.log(ConfigProviderService.vals.main.develMode)
 			
-			$scope.shortcut = ConfigProviderService.vals.keyMappings;
+			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end
 			for (var i in $scope.shortcut ) {
 			    $scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
