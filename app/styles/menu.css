@@ -76,8 +76,8 @@
 .cbp-spmenu-push-toright,
 .cbp-spmenu-push-toleft,
 .cbp-spmenu-push {
-    -webkit-transition: width 0.15s linear, left 0.15s linear;
-    -moz-transition: width 0.15s linear, left 0.15s linear;
-    transition: width 0.15s linear, left 0.15s linear;
+    -webkit-transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
+    -moz-transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
+    transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
 }
  
