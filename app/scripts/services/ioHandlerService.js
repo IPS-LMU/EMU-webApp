@@ -164,9 +164,7 @@ angular.module('emulvcApp')
 
 					})
 				});
-
 			defer.resolve();
-
 			console.log("finished loading utt");
 		};
 

@@ -239,7 +239,7 @@ angular.module('emulvcApp')
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
                     primeWorker = new Worker(URL.createObjectURL(blob));
-                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (2 * viewState.spectroSettings.windowLength));
+                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (3 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
                     setupEvent();
 
@@ -303,6 +303,7 @@ angular.module('emulvcApp')
                         'cmd': 'config',
                         'sampleRate': scope.shs.wavJSO.SampleRate
                     });
+                    console.log(scope.shs.wavJSO.SampleRate);
                     primeWorker.postMessage({
                         'cmd': 'config',
                         'streamChannels': scope.shs.wavJSO.NumChannels

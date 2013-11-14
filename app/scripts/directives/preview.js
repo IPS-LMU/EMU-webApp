@@ -28,6 +28,11 @@ angular.module('emulvcApp')
 					}
 				}, true);			
 
+
+                scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
+                    initialized = false;
+                });
+
 				/**
 				 * draws markup of osci according to
 				 * the information that is specified in
