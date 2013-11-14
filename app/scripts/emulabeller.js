@@ -1113,6 +1113,15 @@ var EmuLabeller = {
         );
     },
 
+    /**
+     * Add annotation tiers
+     * Delegates to tier handler
+     * @param tiers annotation tiers data
+     */
+    addLoadedTiers: function(tiers){
+    	var my=emulabeller;
+    	my.tierHandler.addLoadedTiers(tiers);
+    },
 
     /**
      * called from hidden input type="file" element

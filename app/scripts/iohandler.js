@@ -37,6 +37,9 @@ EmuLabeller.IOhandler = {
             this.socketIOhandler.onDataLoad(function(fileType, data) {
                 my.dataLoaded(fileType, data);
             });
+            this.socketIOhandler.onAnnotationDataLoad(function(data) {
+                my.annotationDataLoaded(data);
+            });
             this.socketIOhandler.onDisconnect(function(evt) {
                 my.websocketDisconnected(evt);
             });
@@ -93,6 +96,11 @@ EmuLabeller.IOhandler = {
     dataLoaded: function(fileType, data) {
         emulabeller.newFileType = fileType;
         emulabeller.parseNewFile(data);
+    },
+    
+    annotationDataLoaded: function(annotationData) {
+       
+        emulabeller.addLoadedTiers(annotationData);
     },
 
     websocketSave: function() {

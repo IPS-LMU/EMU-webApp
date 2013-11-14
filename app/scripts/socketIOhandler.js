@@ -44,6 +44,9 @@ EmuLabeller.socketIOhandler = {
     onDataLoad: function(eventHandler){
     	this.dataLoadHandler=eventHandler;	    
     },
+    onAnnotationDataLoad: function(eventHandler){
+    	this.annotationDataLoadHandler=eventHandler;	    
+    },
     onDisconnect: function(dh){
     	this.disconnectHandler=dh;
     },
@@ -158,9 +161,13 @@ EmuLabeller.socketIOhandler = {
        // }
        	var tgAsString=atob(response.data);
            this.dataLoadHandler(3,tgAsString);
+        }else if(responseContent === 'bundle'){
+        	console.log("Received bundle:");
+        	console.log(response.data);
+        	this.annotationDataLoadHandler(response.data);
         }
         }else{
-        	console.log("ON MESSAGE with binary message (ERROR we do not use binary wrbsocket mode)");
+        	console.log("ON MESSAGE with binary message (ERROR we do not use binary websocket mode)");
         }
     },
 
@@ -180,7 +187,8 @@ EmuLabeller.socketIOhandler = {
     
     loadUtterance: function(uttCode){
     	    // TODO load audio for now
-    	 var r=new sIOrequest('req_audio');
+    	 //var r=new sIOrequest('req_audio');
+    	var r=new sIOrequest('req_bundle');
     	 r.code=uttCode;
     	 this.sendRequest(r);
     }
