@@ -75,6 +75,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
+			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				$('#allowSortable').sortable('enable');
