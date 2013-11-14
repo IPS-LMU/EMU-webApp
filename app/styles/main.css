@@ -260,8 +260,8 @@ li {
     background: #E7E7E7;
     box-shadow: 0px 1px 2px #000;
     width: 97%; 
-    height: 50% !important; 
-    min-height: 50% !important; 
+    height: 38px !important; 
+    min-height: 38px !important; 
     margin-top:5px;
 }
 

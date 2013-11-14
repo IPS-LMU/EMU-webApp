@@ -17,7 +17,7 @@ angular.module('emulvcApp')
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
 					    if(!initialized) {
 							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
-							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO, scope.config);
+							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 							cacheImage.src = canvas.toDataURL("image/png");
 							initialized = true;
 						}
