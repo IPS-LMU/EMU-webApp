@@ -147,22 +147,27 @@ angular.module('emulvcApp')
 			})
 
 			defer.promise
-				.then(function() {
-					curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-					sServObj.httpGetAudioFile(curFile);
-				}).then(function() {
+				.then(function(result){
+				    	curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+						sServObj.httpGetAudioFile(curFile);
+					}, function(error){
+    					$scope.openModal('views/error.html', 'dialog', 'Wave Loading error','Error loading Wave File !');
+				}).then(function(result){
 					// load signal files
 					ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 						curFile = sServObj.findFileInUtt(utt, ext);
 						sServObj.httpGetSSFFfile(curFile);
-					})
-				}).then(function() {
-					// load label files
+					});
+				}, function(error){
+					    $scope.openModal('views/error.html', 'dialog', 'ssff Loading error','Error loading ssff File !');
+				  }).then(function(result){
+				  	// load label files
 					ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
 						curFile = sServObj.findFileInUtt(utt, ext);
 						sServObj.httpGetESPS(curFile);
-
-					})
+					});
+				 	}, function(error){
+					    $scope.openModal('views/error.html', 'dialog', 'esps Loading error','Error loading esps File !');
 				});
 			defer.resolve();
 			console.log("finished loading utt");
