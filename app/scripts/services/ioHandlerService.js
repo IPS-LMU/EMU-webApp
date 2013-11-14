@@ -151,7 +151,7 @@ angular.module('emulvcApp')
 				    	curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 						sServObj.httpGetAudioFile(curFile);
 					}, function(error){
-    					$scope.openModal('views/error.html', 'dialog', 'Wave Loading error','Error loading Wave File !');
+    					$scope.openModal('views/error.html', 'dialog', 'wav Loading error','Error loading Wave File !');
 				}).then(function(result){
 					// load signal files
 					ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
