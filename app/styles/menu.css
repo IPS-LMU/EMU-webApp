@@ -68,15 +68,16 @@
 /* Transitions */
 
 .menu,
-.tierPush,
-.timeline,
+.HandletiersCtrl,
+.OsciDiv,
+.SpectroDiv,
 .menu-bottom,
 .cbp-spmenu,
 .cbp-spmenu-push-toright,
 .cbp-spmenu-push-toleft,
 .cbp-spmenu-push {
-    -webkit-transition: all 0.15s ease;
-    -moz-transition: all 0.15s ease;
-    transition: all 0.15s ease;
+    -webkit-transition: width 0.15s linear, left 0.15s linear;
+    -moz-transition: width 0.15s linear, left 0.15s linear;
+    transition: width 0.15s linear, left 0.15s linear;
 }
  

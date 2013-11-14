@@ -23,7 +23,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 
 		// init pure jquery dragbar
-		//$('.TimelineCtrl').ownResize('.resizer');
+		$('.TimelineCtrl').ownResize('.resizer');
 		// implementing it in angular again
 
 		/**
