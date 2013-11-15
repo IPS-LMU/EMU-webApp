@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
+	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile, $timeout,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,fontScaleService) {
 
 		$scope.cps = ConfigProviderService;
@@ -383,7 +383,9 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#menu').addClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}
+			var mytimeout = $timeout($scope.refreshTimeline, 350);
 		};
+		
 
 		/**
 		 *

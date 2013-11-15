@@ -54,7 +54,11 @@ angular.module('emulvcApp')
                 });
                 
                 scope.$on('refreshTimeline', function(evt, wavJSO, fileName) {
-                	redraw();
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            redraw();
+                        }
+                    }
                 });                
 
                 scope.$watch('vs.spectroSettings', function() {
