@@ -13,7 +13,6 @@
                </button>
            </div>
       </div>
-      <button class="mini-btn" ng-style="getMetaBtnColor();" ng-click="saveUttList();">Save Meta Data</button>
 
       <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
       <div ng-show="files.length">
@@ -22,6 +21,9 @@
             <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
         </div>
       </div>      
+      </div>
+      <div class="utteranceSaveMeta">
+          <button ng-style="getMetaBtnColor();" ng-click="saveUttList();">Save Meta Data</button>
       </div>
     </div>
   </nav>
