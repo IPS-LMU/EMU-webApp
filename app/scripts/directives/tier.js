@@ -19,6 +19,12 @@ angular.module('emulvcApp')
 					drawTierMarkup(scope.tier, scope.vs, scope.config);
 				}, true);
 
+				// on mouse leave reset viewState.
+                element.bind('mouseleave', function() {
+                	scope.vs.setcurMouseSegmentId(undefined);
+                	drawTierMarkup(scope.tier, scope.vs, scope.config);
+                });
+
 
 				scope.updateView = function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);

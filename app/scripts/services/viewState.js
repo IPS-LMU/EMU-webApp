@@ -54,6 +54,7 @@ angular.module('emulvcApp')
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.cleanPreview = 0;
+    sServObj.curMouseSegmentId = undefined;
 
     sServObj.focusInTextField = false;
 
