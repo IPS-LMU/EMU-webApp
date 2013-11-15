@@ -63,7 +63,7 @@ var MainCtrl = angular.module('emulvcApp')
 				Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 			} else {
 				// open login modal
-				$scope.openModal('views/login.html', 'dialog');
+				$scope.openModal('views/login.html', 'dialog', true);
 			}
 
 			// init loading of files for testing
@@ -167,9 +167,9 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.renameTier = function() {
 			if (viewState.getcurClickTierName() !== undefined) {
-				$scope.openModal('views/renameTier.html', 'dialog');
+				$scope.openModal('views/renameTier.html', 'dialog',true);
 			} else {
-				$scope.openModal('views/error.html', 'dialog', 'Rename Error', 'Please choose a Tier first !');
+				$scope.openModal('views/error.html', 'dialog', 'Rename Error',false,'Please choose a Tier first !');
 			}
 		};
 
@@ -183,7 +183,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.menuUttClick = function(utt) {
 			if ($scope.modifiedCurSSFF) {
 				$scope.lastclickedutt = utt;
-				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', 'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
+				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true,'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				Iohandlerservice.httpGetUtterence(utt);
@@ -206,10 +206,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.openModal = function(templatefile, cssStyle, title, content) {
+		$scope.openModal = function(templatefile, cssStyle, blocking, title, content) {
+		    var drop = true;
+		    if(blocking) {
+		        drop = "static";
+		    }
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
-				backdrop: true,
+				backdrop: drop,
 				keyboard: true,
 				backdropClick: true,
 				templateUrl: templatefile,
