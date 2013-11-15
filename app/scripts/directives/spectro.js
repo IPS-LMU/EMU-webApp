@@ -346,7 +346,7 @@ angular.module('emulvcApp')
                         var tW = contextmarkup.measureText(mouseFreq + ' Hz').width;
                         var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
                         var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6)
-                        var horizontalText = scope.fontImage.getTextImage(context,mouseFreq + ' Hz',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor);
+                        var horizontalText = scope.fontImage.getTextImage(context,mouseFreq + ' Hz',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor,true);
 						var verticalText = scope.fontImage.getTextImageTwoLines(context,s1,s2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor, false);
 						
 						contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width,  horizontalText.height);

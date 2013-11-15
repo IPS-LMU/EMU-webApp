@@ -50,8 +50,7 @@
         "endBoundaryWidth": 2,
         "zeroLineColor": "#0DC5FF",
         "crossHairsColor": "#FF0000",
-        "timelineHeight": "300px",
-        "animationDelay": "0.35"
+        "timelineHeight": "300px"
     },
     "font": {
         "fontType": "Verdana",

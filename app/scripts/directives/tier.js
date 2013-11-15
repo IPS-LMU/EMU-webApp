@@ -58,16 +58,15 @@ angular.module('emulvcApp')
 
 
 					//predef vars
-					var sDist, posS, posE;
+					var sDist, posS, posE, horizontalText;
 
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
+					
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx,tierDetails.TierName,'(' + tierDetails.type + ')',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
 
-					// draw name of tier
-					ctx.fillStyle = config.vals.colors.labelColor;
-					ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
-					ctx.fillText(tierDetails.TierName, 5, config.vals.font.fontPxSize);
-					ctx.fillText('(' + tierDetails.type + ')', 5, config.vals.font.fontPxSize * 2);
+
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getselected();
