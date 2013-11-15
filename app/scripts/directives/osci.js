@@ -106,12 +106,16 @@ angular.module('emulvcApp')
 
 				};
 				
+				function getScale(ctx, str,scale) {
+				    return ctx.measureText(str).width * scale;
+				};
+				
 				function getScaleWidth(ctx,str1,str2,scaleX) {
 					if(str1.toString().length > str2.toString().length) {
-					    return ctx.measureText(str1).width * scaleX;
+					    return getScale(ctx,str1,scaleX);
 					}
 					else {
-					    return ctx.measureText(str2).width * scaleX;
+					    return getScale(ctx,str2,scaleX);
 					}	
 				};
 
@@ -196,22 +200,27 @@ angular.module('emulvcApp')
 							ctx.stroke();
 							ctx.fillStyle = config.vals.colors.labelColor;
 							// start values
-							
 							var space = getScaleWidth(ctx,viewState.curViewPort.selectS,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6),scaleX);
 							horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.selectS,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6),config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
 							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width,  horizontalText.height);
-
-														
+			
 							// end values
-							ctx.fillText(viewState.curViewPort.selectE, posE + 5, config.vals.font.fontPxSize);
-							ctx.fillText(viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6), posE + 5, config.vals.font.fontPxSize * 2);
+							horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.selectE,viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6),config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
+							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width,  horizontalText.height);
 							// dur values
 							// check if space
-							if (posE - posS > ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6)).width) {
-								tW = ctx.measureText(viewState.curViewPort.selectE - viewState.curViewPort.selectS).width;
-								ctx.fillText(viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1, posS + (posE - posS) / 2 - tW / 2, config.vals.font.fontPxSize);
-								tW = ctx.measureText(viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6)).width;
-								ctx.fillText(viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6), posS + (posE - posS) / 2 - tW / 2, config.vals.font.fontPxSize * 2);
+							
+							space = getScale(ctx,viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6),scaleX);
+							
+							if (posE - posS > space) {
+							    var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
+							    var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6);
+							    
+							    var space = getScaleWidth(ctx,str1,str2,scaleX);
+							    horizontalText = scope.fontImage.getTextImageTwoLines(ctx,str1,str2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
+								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + (posE - posS) / 2 - space/2 , 0, horizontalText.width,  horizontalText.height);
+
+							    
 							}
 						}
 					}
