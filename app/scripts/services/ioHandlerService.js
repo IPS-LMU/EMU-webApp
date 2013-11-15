@@ -129,48 +129,70 @@ angular.module('emulvcApp')
 		 *
 		 */
 		sServObj.httpGetUtterence = function(utt) {
-			console.log('loading utt');
-			console.log(utt);
+			// console.log('loading utt');
 			var curFile;
 
-			var defer = $q.defer();
+
+			// load audio file first
 			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 
 			$http.get(curFile, {
 				responseType: 'arraybuffer'
-			}).success(function(data) {
-				var wavJSO = Wavparserservice.wav2jso(data);
+			}).then(function(vals) {
+				// console.log(data)
+				var wavJSO = Wavparserservice.wav2jso(vals.data);
 				// $rootScope.$broadcast('newlyLoadedAudioFile', wavJSO, filePath.replace(/^.*[\\\/]/, ''));
 				return wavJSO;
-			}).then(function(newData){
-				console.log(newData)
-			})
-
-			defer.promise
-				.then(function(result){
-				    	curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-						sServObj.httpGetAudioFile(curFile);
-					}, function(error){
-    					$scope.openModal('views/error.html', 'dialog', 'wav Loading error','Error loading Wave File !');
-				}).then(function(result){
-					// load signal files
-					ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
-						curFile = sServObj.findFileInUtt(utt, ext);
-						sServObj.httpGetSSFFfile(curFile);
-					});
-				}, function(error){
-					    $scope.openModal('views/error.html', 'dialog', 'ssff Loading error','Error loading ssff File !');
-				  }).then(function(result){
-				  	// load label files
-					ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
-						curFile = sServObj.findFileInUtt(utt, ext);
-						sServObj.httpGetESPS(curFile);
-					});
-				 	}, function(error){
-					    $scope.openModal('views/error.html', 'dialog', 'esps Loading error','Error loading esps File !');
+			}).then(function(wavJSO) {
+				// console.log('##############setting newlyLoadedAudioFile values################')
+				// set needed vals
+				viewState.curViewPort.sS = 0;
+				viewState.curViewPort.eS = wavJSO.Data.length;
+				viewState.curViewPort.bufferLength = wavJSO.Data.length;
+				viewState.setscrollOpen(0);
+				Soundhandlerservice.wavJSO = wavJSO;
+			}).then(function() {
+				// console.log('##############loading ssff files################')
+				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
+					curFile = sServObj.findFileInUtt(utt, ext);
+					sServObj.httpGetSSFFfile(curFile);
 				});
-			defer.resolve();
-			console.log("finished loading utt");
+			}).then(function() {
+				// console.log('##############loading label files################')
+				// load label files
+				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+					curFile = sServObj.findFileInUtt(utt, ext);
+					sServObj.httpGetESPS(curFile);
+				});
+			});
+
+			// var defer = $q.defer();
+
+			// defer.promise
+			// 	.then(function(result) {
+			// 		curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+			// 		sServObj.httpGetAudioFile(curFile);
+			// 	}, function(error) {
+			// 		$scope.openModal('views/error.html', 'dialog', 'wav Loading error', 'Error loading Wave File !');
+			// 	}).then(function(result) {
+			// 		// load signal files
+			// 		ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
+			// 			curFile = sServObj.findFileInUtt(utt, ext);
+			// 			sServObj.httpGetSSFFfile(curFile);
+			// 		});
+			// 	}, function(error) {
+			// 		$scope.openModal('views/error.html', 'dialog', 'ssff Loading error', 'Error loading ssff File !');
+			// 	}).then(function(result) {
+			// 		// load label files
+			// 		ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+			// 			curFile = sServObj.findFileInUtt(utt, ext);
+			// 			sServObj.httpGetESPS(curFile);
+			// 		});
+			// 	}, function(error) {
+			// 		$scope.openModal('views/error.html', 'dialog', 'esps Loading error', 'Error loading esps File !');
+			// 	});
+			// defer.resolve();
+			console.log('finished loading utt');
 		};
 
 		/**

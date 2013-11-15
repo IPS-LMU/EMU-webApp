@@ -303,7 +303,6 @@ angular.module('emulvcApp')
                         'cmd': 'config',
                         'sampleRate': scope.shs.wavJSO.SampleRate
                     });
-                    console.log(scope.shs.wavJSO.SampleRate);
                     primeWorker.postMessage({
                         'cmd': 'config',
                         'streamChannels': scope.shs.wavJSO.NumChannels
