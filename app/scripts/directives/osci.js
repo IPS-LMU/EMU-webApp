@@ -105,6 +105,15 @@ angular.module('emulvcApp')
 					 drawVpOsciMarkup(scope, config ,false);
 
 				};
+				
+				function getScaleWidth(ctx,str1,str2,scaleX) {
+					if(str1.toString().length > str2.toString().length) {
+					    return ctx.measureText(str1).width * scaleX;
+					}
+					else {
+					    return ctx.measureText(str2).width * scaleX;
+					}	
+				};
 
 				/**
 				 * draws markup of osci according to
@@ -148,15 +157,10 @@ angular.module('emulvcApp')
 						
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.sS,sTime,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
-						var spaceright;
-						if(eTime.toString().length > viewState.curViewPort.eS.toString().length) {
-						    spaceright = ctx.measureText(eTime).width * scaleX;
-						}
-						else {
-						    spaceright = ctx.measureText(viewState.curViewPort.eS).width * scaleX;
-						}
+						
+						var space = getScaleWidth(ctx,viewState.curViewPort.eS,eTime,scaleX);
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.eS,eTime,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - spaceright - 5, 0, horizontalText.width,  horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width,  horizontalText.height);
 
 					}
 					//draw emulabeller.viewPortselected
@@ -175,7 +179,7 @@ angular.module('emulvcApp')
 							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, markupCanvas.height);
 							
-							horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6),viewState.curViewPort.selectS,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor);
+							horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6),viewState.curViewPort.selectS,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
 							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + xOffset + 5, 0, horizontalText.width,  horizontalText.height);
 							
 							
@@ -192,11 +196,12 @@ angular.module('emulvcApp')
 							ctx.stroke();
 							ctx.fillStyle = config.vals.colors.labelColor;
 							// start values
-							var tW = ctx.measureText(viewState.curViewPort.selectS).width;
 							
-							ctx.fillText(viewState.curViewPort.selectS, posS - tW - 4, config.vals.font.fontPxSize);
-							tW = ctx.measureText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6)).width;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), posS - tW - 4, config.vals.font.fontPxSize * 2);
+							var space = getScaleWidth(ctx,viewState.curViewPort.selectS,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6),scaleX);
+							horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.selectS,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6),config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
+							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width,  horizontalText.height);
+
+														
 							// end values
 							ctx.fillText(viewState.curViewPort.selectE, posE + 5, config.vals.font.fontPxSize);
 							ctx.fillText(viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6), posE + 5, config.vals.font.fontPxSize * 2);
