@@ -129,7 +129,6 @@ angular.module('emulvcApp')
 		 *
 		 */
 		sServObj.httpGetUtterence = function(utt) {
-			// console.log('loading utt');
 			var curFile;
 
 
@@ -144,7 +143,6 @@ angular.module('emulvcApp')
 				// $rootScope.$broadcast('newlyLoadedAudioFile', wavJSO, filePath.replace(/^.*[\\\/]/, ''));
 				return wavJSO;
 			}).then(function(wavJSO) {
-				// console.log('##############setting newlyLoadedAudioFile values################')
 				// set needed vals
 				viewState.curViewPort.sS = 0;
 				viewState.curViewPort.eS = wavJSO.Data.length;
@@ -152,13 +150,11 @@ angular.module('emulvcApp')
 				viewState.setscrollOpen(0);
 				Soundhandlerservice.wavJSO = wavJSO;
 			}).then(function() {
-				// console.log('##############loading ssff files################')
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					sServObj.httpGetSSFFfile(curFile);
 				});
 			}).then(function() {
-				// console.log('##############loading label files################')
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
