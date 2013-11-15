@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope, Soundhandlerservice, $window) {
+  .factory('viewState', function($rootScope, Soundhandlerservice, $window, Tierdataservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -51,7 +51,7 @@ angular.module('emulvcApp')
     sServObj.curClickTierName = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = -1;
-    sServObj.start = null; 
+    sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.cleanPreview = 0;
 
@@ -60,33 +60,33 @@ angular.module('emulvcApp')
     /**
      */
     sServObj.updatePlayHead = function(timestamp) {
-	  // at first push animation !!!
-      if(Soundhandlerservice.player.isPlaying) {
+      // at first push animation !!!
+      if (Soundhandlerservice.player.isPlaying) {
         $window.requestAnimationFrame(sServObj.updatePlayHead);
-      }    
-      
+      }
+
       // do work in this animation round now
-      if (sServObj.start  === null) sServObj.start = timestamp;
+      if (sServObj.start === null) sServObj.start = timestamp;
       var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
-      
-      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS ) {
+
+      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
         $rootScope.$apply();
       } else {
         sServObj.playHeadAnimationInfos.sS = -1;
         sServObj.playHeadAnimationInfos.eS = -1;
         sServObj.playHeadAnimationInfos.curS = 0;
         sServObj.start = null;
-      }    
+      }
     };
 
     /**
      */
     sServObj.animatePlayHead = function(startS, endS) {
-        sServObj.playHeadAnimationInfos.sS = startS;
-        sServObj.playHeadAnimationInfos.eS = endS;
-        sServObj.playHeadAnimationInfos.curS = startS;
-        $window.requestAnimationFrame(sServObj.updatePlayHead);
+      sServObj.playHeadAnimationInfos.sS = startS;
+      sServObj.playHeadAnimationInfos.eS = endS;
+      sServObj.playHeadAnimationInfos.curS = startS;
+      $window.requestAnimationFrame(sServObj.updatePlayHead);
     };
 
 
@@ -99,7 +99,7 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
     };
-    
+
 
     /**
      * reset selected Area to default
@@ -108,7 +108,7 @@ angular.module('emulvcApp')
     sServObj.resetSelect = function(length) {
       sServObj.curViewPort.selectS = o;
       sServObj.curViewPort.selectE = length;
-    };    
+    };
 
     /**
      * setspectroSettings
@@ -597,26 +597,41 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function(zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      var tierId = this.getcurMouseTierName();
+      var tierName = this.getcurMouseTierName();
       var segMId = this.getcurMouseSegmentId();
-      // console.log();
-      // var curMouseMoveSegmentStart = thietierDetails.events[segMId];
+      console.log(tierName);
 
-      // var d1 = 1; //this.curMouseMoveSegmentStart - this.curViewPort.sS;
-      // var d2 = 1; //this.viewPort.eS - this.viewPort.curMouseMoveSegmentStart;
+      // get cur mouse move tier details
+      var curTier;
+      Tierdataservice.data.tiers.forEach(function(t) {
+        if (t.TierName === tierName) {
+          curTier = t;
+        }
+      });
+
+      var curMouseMoveSegmentStart = curTier.events[segMId].startSample;
+
+      var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
+      var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       if (zoomIn) {
 
-        newStartS = this.curViewPort.sS + d * 0.1;
-        newEndS = this.curViewPort.eS - d * 0.1;
+        // newStartS = this.curViewPort.sS + d * 0.1;
+        // newEndS = this.curViewPort.eS - d * 0.1;
 
-        // if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
-        // newStartS = this.sS + d1 * 0.5;
-        // newEndS = this.eS - d2 * 0.5;
-        // } //else {
-        //     newStartS = this.viewPort.sS + ~~(d / 4);
-        //     newEndS = this.viewPort.eS - ~~(d / 4);
+        console.log(curMouseMoveSegmentStart)
+        console.log(d1)
+        console.log(d2)
+        newStartS = this.curViewPort.sS + d1 * 0.5;
+        newEndS = this.curViewPort.eS - d2 * 0.5;
+
+        // newStartS = this.curViewPort.sS + ~~(d / 4);
+        // newEndS = this.curViewPort.eS - ~~(d / 4);
+
+        if (curMouseMoveSegmentStart) { //check if in view
+          // console.log("sdfsadf")
+        } //else {
         // }
       } else {
         newStartS = this.curViewPort.sS - d * 0.1;

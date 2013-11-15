@@ -53,7 +53,7 @@
   <div ng-controller="HandletiersCtrl" id="HandletiersCtrl" class="HandletiersCtrl">
     <!-- all tiers are listed here -->
     <ul ui:sortable="sortableOptions" ng-model="tierDetails.tiers" id="allowSortable">
-        <li ng-repeat="tier in tierDetails.tiers" class="{{tier.TierName}} Tier sort">
+        <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
             <tier id='{{tier.TierName}}'></tier>
         </li>
     </ul>

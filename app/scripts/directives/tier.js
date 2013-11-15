@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 				// select the needed DOM elements from the template
 				var canvas = element.find('canvas');
 
-				scope.$watch('tierDetails', function() {
+				scope.$watch('tierDetails.data', function() {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 				}, true);
 

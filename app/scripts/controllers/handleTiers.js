@@ -1,7 +1,7 @@
 'use strict';
 
 var HandletiersCtrl = angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, ConfigProviderService, Soundhandlerservice) {
+	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, ConfigProviderService, Soundhandlerservice, Tierdataservice) {
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
@@ -11,7 +11,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.myHistory = [];
 		$scope.myHistoryCounter = 0;
 
-		$scope.tierDetails = {};
+		$scope.tierDetails = Tierdataservice;
 
 		$scope.sortableOptions = {
 			update: function(e, ui) {
@@ -34,14 +34,14 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 * update tierDetails if heard
 		 */
 		$scope.$on('newlyLoadedLabelJson', function(evt, data) {
-			if ($.isEmptyObject($scope.tierDetails)) {
-				$scope.tierDetails = data;
+			if ($.isEmptyObject($scope.tierDetails.data)) {
+				$scope.tierDetails.data = data;
 			} else {
 				data.tiers.forEach(function(tier) {
-					$scope.tierDetails.tiers.push(tier);
+					$scope.tierDetails.data.tiers.push(tier);
 				})
 				data.fileInfos.forEach(function(fInf) {
-					$scope.tierDetails.fileInfos.push(fInf);
+					$scope.tierDetails.data.fileInfos.push(fInf);
 				})
 				// console.log(JSON.stringify($scope.tierDetails, undefined, 2));
 			}
@@ -51,24 +51,24 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		 * clear tierDetails when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
-			$scope.tierDetails = {};
+			$scope.tierDetails.data = {};
 		});
 
 		$scope.updateAllLabels = function() {
 			if ($scope.testValue !== '') {
-				angular.forEach($scope.tierDetails.events, function(evt) {
+				angular.forEach($scope.tierDetails.data.events, function(evt) {
 					evt.label = $scope.testValue;
 				});
 			}
 		};
 
 		$scope.getTierLength = function() {
-			return $scope.tierDetails.tiers.length;
+			return $scope.tierDetails.data.tiers.length;
 		};
 
 		$scope.getTier = function(id) {
 			var t = undefined;
-			angular.forEach($scope.tierDetails.tiers, function(tier) {
+			angular.forEach($scope.tierDetails.data.tiers, function(tier) {
 				if (tier.TierName == id) {
 					t = tier;
 				}
@@ -77,14 +77,14 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.history = function() {
-			$scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails);
+			$scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails.data);
 			++$scope.myHistoryCounter;
 		};
 
 		$scope.goBackHistory = function() {
 			if ($scope.myHistoryCounter >= 1) {
-				//delete $scope.tierDetails;
-				$scope.tierDetails = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
+				//delete $scope.tierDetails.data;
+				$scope.tierDetails.data = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
 				--$scope.myHistoryCounter;
 			} else {
 				alert("no more history!");
@@ -144,7 +144,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			if (now < viewState.getTierLength() - 1)++now;
 			else now = 0;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getselected()].events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.data.tiers[viewState.getselected()].events[now], now);
 		};
 
 		$scope.tabPrev = function() {
@@ -156,11 +156,11 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			if (now > 0)--now;
 			else now = viewState.getTierLength() - 1;
 			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.tiers[viewState.getselected()].events[now], now);
+			viewState.setcurClickSegment($scope.tierDetails.data.tiers[viewState.getselected()].events[now], now);
 		};
 
 		$scope.rename = function(tiername, id, name) {
-			angular.forEach($scope.tierDetails.tiers, function(t) {
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
 				var i = 0;
 				if (t.TierName == tiername)
 					angular.forEach(t.events, function(evt) {
@@ -175,9 +175,9 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.deleteTier = function(id) {
 			var x = 0;
-			angular.forEach($scope.tierDetails.tiers, function(t) {
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
 				if (t.TierName == id) {
-					$scope.tierDetails.tiers.splice(x, 1);
+					$scope.tierDetails.data.tiers.splice(x, 1);
 
 				}
 				++x;
@@ -188,13 +188,13 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.renameTier = function(newName) {
 			var x = 0;
 			var found = false;
-			angular.forEach($scope.tierDetails.tiers, function(t) {
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
 				if (t.TierName == newName) {
 					found = true;
 				}
 			});
 			if (!found) {
-				angular.forEach($scope.tierDetails.tiers, function(t) {
+				angular.forEach($scope.tierDetails.data.tiers, function(t) {
 					if (t.TierName == viewState.getcurClickTierName()) {
 						t.TierName = newName;
 					}
@@ -211,7 +211,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			var last = toDelete.length - 1;
 			var tierName = viewState.getcurClickTierName();
 
-			angular.forEach($scope.tierDetails.tiers, function(t) {
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
 				if (t.TierName == tierName) {
 					for (var x in toDelete) {
 						var id = toDelete[x];
