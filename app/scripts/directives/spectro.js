@@ -47,10 +47,15 @@ angular.module('emulvcApp')
                     }
                 }, true);
                 
+
                 scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
                     console.log("clearing spectro image cache...");
                 	clearImageCache();
                 });
+                
+                scope.$on('refreshTimeline', function(evt, wavJSO, fileName) {
+                	redraw();
+                });                
 
                 scope.$watch('vs.spectroSettings', function() {
                     if (!$.isEmptyObject(scope.shs)) {
@@ -338,7 +343,7 @@ angular.module('emulvcApp')
                         var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
                         var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6)
                         var horizontalText = scope.fontImage.getTextImage(context,mouseFreq + ' Hz',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor);
-						var verticalText = scope.fontImage.getTextImageTwoLines(context,s1,s2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor);
+						var verticalText = scope.fontImage.getTextImageTwoLines(context,s1,s2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor, false);
 						
 						contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width,  horizontalText.height);
                         contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW*(context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width,  horizontalText.height);                        

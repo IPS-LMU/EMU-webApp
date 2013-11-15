@@ -20,6 +20,10 @@ angular.module('emulvcApp')
     					}
 					}
 				}, true);
+				
+                scope.$on('refreshTimeline', function() {
+                	drawVpOsciMarkup(scope, scope.config, true);
+                });  				
 
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 				    if (!$.isEmptyObject(scope.shs)) {

@@ -26,7 +26,7 @@ angular.module('emulvcApp')
 		    ctx.scale(scaleX,scaleY);
 		    if(alignLeft) {
 		        ctx.fillText(text, 0,15);
-		        ctx.fillText(text2, 0,20+(fontPxSize*scaleY));
+		        ctx.fillText(text2, 0,20+(fontPxSize));
 		    }
 		    else {
 		        var a = ctx.measureText(text).width;
@@ -34,11 +34,11 @@ angular.module('emulvcApp')
 		        var c;
 		        if(a>b) {
     		        ctx.fillText(text, 0,15);
-	    	        ctx.fillText(text2, (a-b),20+(fontPxSize*scaleY));		    
+	    	        ctx.fillText(text2, (a-b),20+(fontPxSize));		    
 		        }
 		        else {
     		        ctx.fillText(text, (b-a),15);
-	    	        ctx.fillText(text2, 0,20+(fontPxSize*scaleY));		    
+	    	        ctx.fillText(text2, 0,20+(fontPxSize));		    
 		        }
 		    }
 		    return img;

@@ -39,6 +39,7 @@
   function drag(v) {
     var p = xy(v);
     E.css({ height:Math.max(p.y-M.pY+M.H,0) });
+    $('.container').scope().refreshTimeline();
     $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
     return false;
   };

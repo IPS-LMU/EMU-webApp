@@ -177,6 +177,14 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.downloadTextGrid = function() {
 			console.log(Iohandlerservice.toTextGrid());
 		};
+		
+		$scope.refreshTimeline = function() {
+			$scope.$broadcast("refreshTimeline");
+		};		
+		
+		$scope.refreshScope = function() {
+		    $scope.$digest();
+		};
 
 		/**
 		 *
