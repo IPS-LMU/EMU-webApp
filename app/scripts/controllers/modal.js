@@ -34,10 +34,22 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 		$modalInstance.dismiss('ok');
 	};
 
+	$scope.cursorInTextField = function() {
+		viewState.focusInTextField = true;
+	};
+	
+	$scope.cursorOutOfTextField = function() {
+		viewState.focusInTextField = false;
+	};
+
 	$scope.selected = function(name) {
 		if (name == viewState.spectroSettings.window) return true;
 		return false;
 	};
+	
+	$scope.test = function() {
+		alert("hier");
+	};	
 
 	$scope.deleteTier = function(id) {
 		$('#HandletiersCtrl').scope().deleteTier(id);

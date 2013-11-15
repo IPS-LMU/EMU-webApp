@@ -9,8 +9,13 @@ angular.module('emulvcApp')
         // bind all keydown events
         $(document).bind('keydown', function(e) {
           var code = (e.keyCode ? e.keyCode : e.which);
+          
           scope.$apply(function() {
             scope.setlastkeycode(code, e.shiftKey);
+            if (viewState.focusInTextField) {
+              // disable keys when focus is in comment text filed
+              
+              // enable enter and escape when in editing mode
             if (viewState.isEditing()) {
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 $('#HandletiersCtrl').scope().renameLabel();
@@ -22,15 +27,9 @@ angular.module('emulvcApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
-            } else if (viewState.getmodalOpen()) {
-              // if (code === ConfigProviderService.vals.keyMappings.enter) {
-              //     //$('#HandletiersCtrl').scope().renameLabel();
-              // }
-              // if (code === ConfigProviderService.vals.keyMappings.esc) {
-              //     //$('#HandletiersCtrl').scope().deleteEditArea();
-              // }
-            } else if (viewState.focusInTextField) {
-              // disable keys when focus is in comment text filed
+            }              
+              
+              
             }
             else {
               // delegate keyboard keyMappings according to keyMappings of scope
@@ -135,7 +134,7 @@ angular.module('emulvcApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
-               console.log(code);
+               
             }
           });
         });

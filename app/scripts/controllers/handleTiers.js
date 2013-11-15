@@ -62,7 +62,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				});
 			}
 		};
-
+		
+		$scope.cursorInTextField = function() {
+			viewState.focusInTextField = true;
+		};
+	
+		$scope.cursorOutOfTextField = function() {
+			viewState.focusInTextField = false;
+		};
+		
+		
 		$scope.getTierLength = function() {
 			return $scope.tierDetails.data.tiers.length;
 		};
@@ -96,12 +105,14 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			if (viewState.isEditing()) {
 				$scope.rename(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
 				viewState.deleteEditArea();
+				viewState.focusInTextField = false;
 			} else {
 				if (viewState.countSelected() == 0) {
 					alert("please select a segement first!");
 				} else {
 					viewState.setEditing(true);
 					viewState.openEditArea();
+					
 				}
 			}
 		};

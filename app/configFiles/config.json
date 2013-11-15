@@ -78,7 +78,7 @@
     },
     "restrictions": {
         "sortLabels": false,
-        "changeLabels": false,
+        "changeLabels": true,
         "editItemBoundaries": false,
         "drawCrossHairs": true
     },

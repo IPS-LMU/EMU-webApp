@@ -353,6 +353,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.cursorInTextField = function() {
 			viewState.focusInTextField = true;
+			console.log("CURSOR");
 		};
 
 		/**

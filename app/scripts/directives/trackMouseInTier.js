@@ -143,6 +143,7 @@ angular.module('emulvcApp')
           scope.vs.setEditing(true);
           scope.vs.setTierLength(scope.this.tier.events.length);
           scope.vs.openEditArea();
+          scope.cursorInTextField();
           lastPCM = thisPCM;
           scope.$apply();
         }

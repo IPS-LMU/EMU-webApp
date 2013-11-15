@@ -66,8 +66,6 @@ angular.module('emulvcApp')
 					horizontalText = scope.fontImage.getTextImageTwoLines(ctx,tierDetails.TierName,'(' + tierDetails.type + ')',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
 
-
-
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getselected();
 					var curID = -1;

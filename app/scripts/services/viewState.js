@@ -493,9 +493,9 @@ angular.module('emulvcApp')
       var textid = '_' + labelid;
       $('#' + id).prepend($('<textarea>').attr({
         id: textid,
-        'autofocus': 'true',
         'class': textid + ' Label_Edit',
-        'ng-model': 'message'
+        'ng-model': 'message',
+        'autofocus': 'true'        
       }).css({
         'position': 'absolute',
         'z-index': '5',
