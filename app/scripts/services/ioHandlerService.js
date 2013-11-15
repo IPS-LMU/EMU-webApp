@@ -140,7 +140,7 @@ angular.module('emulvcApp')
 			}).then(function(vals) {
 				// console.log(data)
 				var wavJSO = Wavparserservice.wav2jso(vals.data);
-				++viewState.cleanPreview;
+				
 				return wavJSO;
 			}).then(function(wavJSO) {
 				// set needed vals
@@ -148,7 +148,9 @@ angular.module('emulvcApp')
 				viewState.curViewPort.eS = wavJSO.Data.length;
 				viewState.curViewPort.bufferLength = wavJSO.Data.length;
 				viewState.setscrollOpen(0);
+				viewState.resetSelect();
 				Soundhandlerservice.wavJSO = wavJSO;
+				$rootScope.$broadcast('cleanPreview');
 			}).then(function() {
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);

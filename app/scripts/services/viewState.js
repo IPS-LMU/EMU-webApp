@@ -53,7 +53,6 @@ angular.module('emulvcApp')
     sServObj.curCorrectionToolNr = -1;
     sServObj.start = null;
     sServObj.loadingUtt = false;
-    sServObj.cleanPreview = 0;
     sServObj.curMouseSegmentId = undefined;
 
     sServObj.focusInTextField = false;
@@ -106,9 +105,9 @@ angular.module('emulvcApp')
      * reset selected Area to default
      * @param length of current pcm stream
      */
-    sServObj.resetSelect = function(length) {
-      sServObj.curViewPort.selectS = o;
-      sServObj.curViewPort.selectE = length;
+    sServObj.resetSelect = function() {
+      sServObj.curViewPort.selectS = -1;
+      sServObj.curViewPort.selectE = -1;
     };
 
     /**

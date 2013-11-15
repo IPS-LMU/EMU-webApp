@@ -20,8 +20,7 @@ angular.module('emulvcApp')
 				}, true);			
 
 
-                scope.$watch('vs.cleanPreview', function(evt, wavJSO, fileName) {
-                    console.log("hier");
+                scope.$on('cleanPreview', function() {
                     initialized = false;
                 });
                 
