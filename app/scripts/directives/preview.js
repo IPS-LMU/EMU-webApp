@@ -15,6 +15,17 @@ angular.module('emulvcApp')
 				
 				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
+					    drawPreview();
+					}
+				}, true);			
+
+
+                scope.$watch('vs.cleanPreview', function(evt, wavJSO, fileName) {
+                    console.log("hier");
+                    initialized = false;
+                });
+                
+                function drawPreview() {
 					    if(!initialized) {
 							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
@@ -23,15 +34,8 @@ angular.module('emulvcApp')
 						}
 						else {
 						    drawVpOsciMarkup(scope.vs, canvas, scope.config, cacheImage);
-						}
-						
-					}
-				}, true);			
-
-
-                scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
-                    initialized = false;
-                });
+						}                
+                }
 
 				/**
 				 * draws markup of osci according to

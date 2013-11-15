@@ -140,7 +140,7 @@ angular.module('emulvcApp')
 			}).then(function(vals) {
 				// console.log(data)
 				var wavJSO = Wavparserservice.wav2jso(vals.data);
-				// $rootScope.$broadcast('newlyLoadedAudioFile', wavJSO, filePath.replace(/^.*[\\\/]/, ''));
+				++viewState.cleanPreview;
 				return wavJSO;
 			}).then(function(wavJSO) {
 				// set needed vals

@@ -53,6 +53,7 @@ angular.module('emulvcApp')
     sServObj.curCorrectionToolNr = -1;
     sServObj.start = null; 
     sServObj.loadingUtt = false;
+    sServObj.cleanPreview = 0;
 
     sServObj.focusInTextField = false;
 
