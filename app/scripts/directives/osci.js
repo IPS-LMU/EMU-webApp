@@ -132,18 +132,33 @@ angular.module('emulvcApp')
 					ctx.lineTo(markupCanvas.width - 5, 5);
 					ctx.closePath();
 					ctx.stroke();
+					
+					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;	
+					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					var sTime;
 					var eTime;
 					if (viewState.curViewPort) {
 						//draw time and sample nr
+						
 						sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
 						eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
-						ctx.fillText(viewState.curViewPort.sS, 5, config.vals.font.fontPxSize);
-						ctx.fillText(sTime, 5, config.vals.font.fontPxSize * 2);
-						var metrics = ctx.measureText(sTime);
-						ctx.fillText(viewState.curViewPort.eS, markupCanvas.width - ctx.measureText(viewState.curViewPort.eS).width - 5, config.vals.font.fontPxSize);
-						ctx.fillText(eTime, markupCanvas.width - metrics.width - 5, config.vals.font.fontPxSize * 2);
+						
+						var horizontalText = scope.fontImage.getTextImage(ctx,viewState.curViewPort.sS,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
+						
+						horizontalText = scope.fontImage.getTextImage(ctx,sTime,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, config.vals.font.fontPxSize, horizontalText.width,  horizontalText.height);
+						
+
+						horizontalText = scope.fontImage.getTextImage(ctx,viewState.curViewPort.eS,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - (ctx.measureText(viewState.curViewPort.eS).width*scaleX) - 5, 0, horizontalText.width,  horizontalText.height);
+
+						horizontalText = scope.fontImage.getTextImage(ctx,eTime,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - (ctx.measureText(eTime).width*scaleX) - 5, config.vals.font.fontPxSize, horizontalText.width,  horizontalText.height);
+
+						
+						
 					}
 					//draw emulabeller.viewPortselected
 					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {

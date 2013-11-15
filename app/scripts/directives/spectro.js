@@ -335,13 +335,16 @@ angular.module('emulvcApp')
                         var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
 
                         var tW = contextmarkup.measureText(mouseFreq + ' Hz').width;
+                        var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
+                        var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6)
+                        var horizontalText = scope.fontImage.getTextImage(context,mouseFreq + ' Hz',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor);
+						var verticalText = scope.fontImage.getTextImageTwoLines(context,s1,s2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor);
+						
+						contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width,  horizontalText.height);
+                        contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW*(context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width,  horizontalText.height);                        
+                        contextmarkup.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX+5, 0,verticalText.width,  verticalText.height);
+                        
 
-                        contextmarkup.fillText(mouseFreq + ' Hz', 5, mouseY + config.vals.font.fontPxSize);
-                        contextmarkup.fillText(mouseFreq + ' Hz', canvas.width - 5 - tW, mouseY + config.vals.font.fontPxSize);
-
-                        contextmarkup.fillText(Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS)), mouseX + 5, config.vals.font.fontPxSize);
-                        contextmarkup.fillText(viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6), mouseX + 5, config.vals.font.fontPxSize * 2);
-                        // see if Chrome ->dashed line
                         if (navigator.vendor === 'Google Inc.') {
                             contextmarkup.setLineDash([0]);
                         }

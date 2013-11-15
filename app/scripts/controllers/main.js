@@ -2,9 +2,10 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,fontScaleService) {
 
 		$scope.cps = ConfigProviderService;
+		$scope.fontImage = fontScaleService;
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttsList = [];
