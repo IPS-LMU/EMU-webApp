@@ -16,7 +16,7 @@ angular.module('emulvcApp')
 		    return img;
 		    
 		};	
-		sServObj.getTextImageTwoLines = function(ctxOriginal,text,text2,fontPxSize,fontType,color) {
+		sServObj.getTextImageTwoLines = function(ctxOriginal,text,text2,fontPxSize,fontType,color,alignLeft) {
 		    var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
             var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;	
 		    var img = document.createElement('canvas');
@@ -24,8 +24,23 @@ angular.module('emulvcApp')
 		    ctx.font = (fontPxSize + 'px' + ' ' + fontType);
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);
-		    ctx.fillText(text, 0,15);
-		    ctx.fillText(text2, 0,20+(fontPxSize*scaleY));
+		    if(alignLeft) {
+		        ctx.fillText(text, 0,15);
+		        ctx.fillText(text2, 0,20+(fontPxSize*scaleY));
+		    }
+		    else {
+		        var a = ctx.measureText(text).width;
+		        var b = ctx.measureText(text2).width;
+		        var c;
+		        if(a>b) {
+    		        ctx.fillText(text, 0,15);
+	    	        ctx.fillText(text2, (a-b),20+(fontPxSize*scaleY));		    
+		        }
+		        else {
+    		        ctx.fillText(text, (b-a),15);
+	    	        ctx.fillText(text2, 0,20+(fontPxSize*scaleY));		    
+		        }
+		    }
 		    return img;
 		    
 		};					
