@@ -28,7 +28,7 @@ angular.module('emulvcApp')
 					    if(!initialized) {
 							var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
-							cacheImage.src = canvas.toDataURL("image/png");
+							cacheImage.src = canvas.toDataURL('image/png');
 							initialized = true;
 						}
 						else {
@@ -43,7 +43,7 @@ angular.module('emulvcApp')
 				 */
 
 				function drawVpOsciMarkup(vs, canvas, config, cacheImage) {
-					var ctx = canvas.getContext("2d");
+					var ctx = canvas.getContext('2d');
 					var image = new Image();
 					var posS = (canvas.width/scope.shs.wavJSO.Data.length) * vs.curViewPort.sS;
 					var posE = (canvas.width/scope.shs.wavJSO.Data.length) * vs.curViewPort.eS;
@@ -53,7 +53,7 @@ angular.module('emulvcApp')
                         ctx.drawImage(image, 0, 0);
                         ctx.fillStyle = config.vals.colors.selectedAreaColor;
                         ctx.fillRect(posS, 0, posE - posS, canvas.height);
-                        ctx.strokeStyle = config.vals.colors.selectedBoundaryColor;
+                        ctx.strokeStyle = config.vals.colors.selectedBorderColor;
                         ctx.beginPath();
                         ctx.moveTo(posS, 0);
                         ctx.lineTo(posS, canvas.height);
