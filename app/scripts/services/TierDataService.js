@@ -5,7 +5,7 @@ angular.module('emulvcApp')
 		// shared service object
 		var sServObj = {};
 
-		sServObj.data = {};		
+		sServObj.data = {};
 
 		return sServObj;
 
