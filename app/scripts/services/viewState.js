@@ -609,43 +609,34 @@ angular.module('emulvcApp')
         }
       });
 
-      var curMouseMoveSegmentStart = curTier.events[segMId].startSample;
-
-      var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
-      var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
-      if (zoomIn) {
-
-        // newStartS = this.curViewPort.sS + d * 0.1;
-        // newEndS = this.curViewPort.eS - d * 0.1;
-
+      if (curTier) {
+        var curMouseMoveSegmentStart = curTier.events[segMId].startSample;
         console.log(curMouseMoveSegmentStart)
-        console.log(d1)
-        console.log(d2)
-        newStartS = this.curViewPort.sS + d1 * 0.5;
-        newEndS = this.curViewPort.eS - d2 * 0.5;
 
-        // newStartS = this.curViewPort.sS + ~~(d / 4);
-        // newEndS = this.curViewPort.eS - ~~(d / 4);
+        var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
+        var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
 
-        if (curMouseMoveSegmentStart) { //check if in view
-          // console.log("sdfsadf")
-        } //else {
-        // }
+        if (zoomIn) {
+          newStartS = this.curViewPort.sS + d1 * 0.5;
+          newEndS = this.curViewPort.eS - d2 * 0.5;
+        } else {
+          newStartS = this.curViewPort.sS - d1 * 0.5;
+          newEndS = this.curViewPort.eS + d2 * 0.5;
+        }
       } else {
-        newStartS = this.curViewPort.sS - d * 0.1;
-        newEndS = this.curViewPort.eS + d * 0.1;
+        if (zoomIn) {
+          newStartS = this.curViewPort.sS + ~~(d / 4);
+          newEndS = this.curViewPort.eS - ~~(d / 4);
+        } else {
+          newStartS = this.curViewPort.sS - ~~(d / 4);
+          newEndS = this.curViewPort.eS + ~~(d / 4);
 
+        }
 
-        //     if (this.viewPort.curMouseMoveSegmentStart) { //check if in view
-        //         newStartS = this.viewPort.sS - d1 * 0.5;
-        //         newEndS = this.viewPort.eS + d2 * 0.5;
-        //     } else {
-        //         newStartS = this.viewPort.sS - ~~(d / 4);
-        //         newEndS = this.viewPort.eS + ~~(d / 4);
-        //     }
       }
+
       this.setViewPort(newStartS, newEndS);
     };
 
