@@ -612,7 +612,7 @@ angular.module('emulvcApp')
 
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
-      if (curTier) {
+      if (curTier && segMId) {
         var curMouseMoveSegmentStart = curTier.events[segMId].startSample;
         console.log(curMouseMoveSegmentStart)
 
