@@ -360,7 +360,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.openSubmenu = function() {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
-				$('#submenuOpen').html('☰');
+				// $('#submenuOpen').html('☰');
 				$('#menuLeft').removeClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
 				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
@@ -368,7 +368,7 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#menu-bottom').removeClass('cbp-spmenu-push-toright');
 			} else {
 				viewState.setsubmenuOpen(true);
-				$('#submenuOpen').html('☰');
+				// $('#submenuOpen').html('☰');
 				$('#menuLeft').addClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
 				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
