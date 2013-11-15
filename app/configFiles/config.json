@@ -54,7 +54,7 @@
     },
     "font": {
         "fontType": "Verdana",
-        "fontPxSize": 12
+        "fontPxSize": 10
     },
     "spectrogramSettings": {
         "N": 256,

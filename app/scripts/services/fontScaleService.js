@@ -9,8 +9,6 @@ angular.module('emulvcApp')
             var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
 		    var img = document.createElement('canvas');
 		    var ctx = img.getContext('2d');
-		    img.height = 700;
-		    img.height = 700;
 		    ctx.font = (fontPxSize + 'px' + ' ' + fontType);
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);
@@ -23,8 +21,6 @@ angular.module('emulvcApp')
             var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;	
 		    var img = document.createElement('canvas');
 		    var ctx = img.getContext('2d');
-		    img.height = 700;
-		    img.height = 700;
 		    ctx.font = (fontPxSize + 'px' + ' ' + fontType);
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);

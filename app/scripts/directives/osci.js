@@ -138,27 +138,20 @@ angular.module('emulvcApp')
 
 					var sTime;
 					var eTime;
+					var horizontalText;
+					
 					if (viewState.curViewPort) {
 						//draw time and sample nr
 						
 						sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
 						eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
 						
-						var horizontalText = scope.fontImage.getTextImage(ctx,viewState.curViewPort.sS,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.sS,sTime,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
 						
-						horizontalText = scope.fontImage.getTextImage(ctx,sTime,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, config.vals.font.fontPxSize, horizontalText.width,  horizontalText.height);
-						
-
-						horizontalText = scope.fontImage.getTextImage(ctx,viewState.curViewPort.eS,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
+						horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.curViewPort.eS,eTime,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - (ctx.measureText(viewState.curViewPort.eS).width*scaleX) - 5, 0, horizontalText.width,  horizontalText.height);
 
-						horizontalText = scope.fontImage.getTextImage(ctx,eTime,config.vals.font.fontPxSize,config.vals.font.fontType,"black");
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - (ctx.measureText(eTime).width*scaleX) - 5, config.vals.font.fontPxSize, horizontalText.width,  horizontalText.height);
-
-						
-						
 					}
 					//draw emulabeller.viewPortselected
 					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
@@ -175,9 +168,11 @@ angular.module('emulvcApp')
 							}
 							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, markupCanvas.height);
-							ctx.fillStyle = config.vals.colors.labelColor;
-							ctx.fillText(viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6), posS + xOffset + 5, config.vals.font.fontPxSize);
-							ctx.fillText(viewState.curViewPort.selectS, posS + xOffset + 5, config.vals.font.fontPxSize * 2);
+							
+						horizontalText = scope.fontImage.getTextImageTwoLines(ctx,viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6),viewState.curViewPort.selectS,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + xOffset + 5, 0, horizontalText.width,  horizontalText.height);
+							
+							
 						} else {
 							ctx.fillStyle = config.vals.colors.selectedAreaColor;
 							ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
