@@ -30,6 +30,7 @@ angular.module('emulvcApp')
 							scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 							cacheImage.src = canvas.toDataURL('image/png');
 							initialized = true;
+							drawVpOsciMarkup(scope.vs, canvas, scope.config, cacheImage);
 						}
 						else {
 						    drawVpOsciMarkup(scope.vs, canvas, scope.config, cacheImage);
