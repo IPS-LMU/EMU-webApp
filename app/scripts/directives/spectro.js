@@ -19,19 +19,8 @@ angular.module('emulvcApp')
                 var pcmperpixel = 0;
                 window.URL = window.URL || window.webkitURL;
                 var devicePixelRatio = window.devicePixelRatio || 1;
-                var response = spectroworker.textContent;
-                var blob, vs;
-
-                try { 
-                    blob = new Blob([response], {
-                        'type': 'text\/javascript'
-                    });
-                } catch (e) { // Backwards-compatibility
-                    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-                    blob.append(response);
-                    blob = blob.getBlob();
-                }
-                var primeWorker = new Worker(URL.createObjectURL(blob));
+                var spectroWorker = 'scripts/services/spectroWorker.js';
+                var primeWorker = new Worker(spectroWorker);
                 var imageCache = null;
                 var imageCacheCounter = 0;
                 var ppp;
@@ -238,7 +227,7 @@ angular.module('emulvcApp')
 
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
-                    primeWorker = new Worker(URL.createObjectURL(blob));
+                    primeWorker = new Worker(spectroWorker);
                     var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (3 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
                     setupEvent();
