@@ -2,7 +2,8 @@
     "main": {
         "mode": "server",
         "osciSpectroZoomFactor": 2,
-        "develMode": true
+        "develMode": true,
+        "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
         "openFile" : -1,

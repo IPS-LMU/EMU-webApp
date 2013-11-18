@@ -82,6 +82,10 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#allowSortable').sortable('enable');
 			}
 
+			// connect to ws server if it says so in config
+			if(ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined){
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl)
+			}
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
