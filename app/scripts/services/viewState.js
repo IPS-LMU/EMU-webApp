@@ -50,7 +50,7 @@ angular.module('emulvcApp')
     sServObj.scrollOpen = 0;
     sServObj.curClickTierName = undefined;
     sServObj.curPreselColumnSample = 2;
-    sServObj.curCorrectionToolNr = -1;
+    sServObj.curCorrectionToolNr = undefined;
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;

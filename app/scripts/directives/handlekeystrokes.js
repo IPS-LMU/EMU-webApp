@@ -65,6 +65,10 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.selectFourthContourCorrectionTool) {
                 viewState.curCorrectionToolNr = 4;
               }
+              // selectFourthContourCorrectionTool
+              if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool) {
+                viewState.curCorrectionToolNr = undefined;
+              }
               // zoomIn
               if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
                 viewState.zoomViewPort(true);
