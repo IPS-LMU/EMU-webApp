@@ -126,7 +126,7 @@ angular.module('emulvcApp')
 
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
-          if (nrOfSamples < canvas.width) {
+          if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
             var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
 
@@ -231,7 +231,18 @@ angular.module('emulvcApp')
 
           } else {
             ctx.strokeStyle = 'red';
-            ctx.strokeText('Zoom in to see contour', 10, 10);
+            var txt;
+            var tW;
+            if (nrOfSamples <= 2) {
+              txt = 'Zoom out to see contour(s)';
+              tW = ctx.measureText(txt).width;
+              ctx.strokeText(txt, canvas.width / 2 - tW / 2, canvas.height / 2);
+            } else {
+              txt = 'Zoom in to see contour(s)';
+              tW = ctx.measureText(txt).width;
+              ctx.strokeText(txt, canvas.width / 2 - tW / 2, canvas.height / 2);
+
+            }
           }
         } //function
       }
