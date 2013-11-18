@@ -41,10 +41,10 @@ angular.module('emulvcApp')
 			if (callbacks.hasOwnProperty(messageObj.callback_id)) {
 				console.log(callbacks[messageObj.callback_id]);
 				console.log(messageObj.data);
-				console.log('########################');
+				console.log('################################')
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
-				$rootScope.$broadcast('newlyLoadedUttList', messageObj.data);
-				delete callbacks[messageObj.callbackID];
+				
+				delete callbacks[messageObj.callback_id];
 			}
 		}
 

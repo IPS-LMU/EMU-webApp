@@ -94,17 +94,18 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('connectedToWSserver', function(evt, type, data) {
 			console.log('connectedToWSserver');
-			$scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
+			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
+			var prom = Iohandlerservice.wsH.getUsrUttList();
 			console.log($scope.uttsList)
-		});
+			prom.then(function (newVal) {
+				console.log(newVal);
+				Iohandlerservice.httpGetUtterence(newVal[0]);
+				$scope.curUtt = newVal[0];
+				$scope.openSubmenu();
+				$scope.uttsList = newVal;
+			})
 
-		$scope.$watch('uttsList', function() {
-			console.log('uttsList changed')
-			console.log($scope.uttsList);
-			// Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
-			// $scope.curUtt = $scope.uttsList[0];
-			// $scope.openSubmenu();
-		})
+		});
 
 		/**
 		 * listen for dropped files
