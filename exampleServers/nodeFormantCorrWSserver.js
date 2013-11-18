@@ -7,6 +7,18 @@ var path2dataRoot = '../app/testData/';
 var portNr = 8080;
 
 
+var tmpRes = {
+	"result": true,
+	"callback_id": 1,
+	"data": [{
+		"first_name": "Danny",
+		"last_name": "Ocean"
+	}, {
+		"first_name": "Rusty",
+		"last_name": "Ryan"
+	}]
+};
+
 
 var WebSocketServer = require('ws').Server,
 	wss = new WebSocketServer({
@@ -14,30 +26,30 @@ var WebSocketServer = require('ws').Server,
 	});
 
 wss.on('connection', function(ws) {
-	
-	ws.send(JSON.stringify({
-		'dataType': 'uttList',
-		'data': 'wooooot'
-	}), undefined, 0);
 
 	ws.on('message', function(message) {
 		console.log('received: %s', message);
-		if (message === 'getUttList') {
-			var labelData;
-			fs.readFile(path2dataRoot + userName + '.json', 'utf8', function(err, data) {
+		var mJSO = JSON.parse(message);
+		if (mJSO.type === 'getUttList') {
+			fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					return;
 				} else {
-					labelData = data;
-					ws.send(labelData);
+					var labelData = JSON.parse(data);
+
+					// ws.send(JSON.stringify(tmpRes, undefined, 0));
+
+					ws.send(JSON.stringify({
+						'callback_id': mJSO.callback_id,
+						'dataType': 'uttList',
+						'data': labelData
+					}), undefined, 0);
+					// ws.send(labelData);
 				}
 
 			});
 
-		}
-		if (message === 'setLabelJSON') {
-			ws.send(labelData);
 		}
 	});
 });

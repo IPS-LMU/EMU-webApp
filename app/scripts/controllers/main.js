@@ -2,7 +2,7 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile, $timeout,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,fontScaleService) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.fontImage = fontScaleService;
@@ -34,34 +34,29 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// for develment
 			console.log(ConfigProviderService.vals.main.develMode)
-			
+
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end
-			for (var i in $scope.shortcut ) {
-			    // sonderzeichen space
-			    if($scope.shortcut[i]===32) {
-			        $scope.shortcut[i] = "SPACE";
-			    }
-			    else if($scope.shortcut[i]===8) {
-			        $scope.shortcut[i] = "BACKSPACE";
-			    }
-			    else if($scope.shortcut[i]===9) {
-			        $scope.shortcut[i] = "TAB";
-			    }
-			    else if($scope.shortcut[i]===13) {
-			        $scope.shortcut[i] = "ENTER";
-			    }
-			    else if($scope.shortcut[i]===27) {
-			        $scope.shortcut[i] = "ESC";
-			    }
-			    else {
-    			    $scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
-    			}
+			for (var i in $scope.shortcut) {
+				// sonderzeichen space
+				if ($scope.shortcut[i] === 32) {
+					$scope.shortcut[i] = 'SPACE';
+				} else if ($scope.shortcut[i] === 8) {
+					$scope.shortcut[i] = 'BACKSPACE';
+				} else if ($scope.shortcut[i] === 9) {
+					$scope.shortcut[i] = 'TAB';
+				} else if ($scope.shortcut[i] === 13) {
+					$scope.shortcut[i] = 'ENTER';
+				} else if ($scope.shortcut[i] === 27) {
+					$scope.shortcut[i] = 'ESC';
+				} else {
+					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+				}
 			}
-			
+
 			if (ConfigProviderService.vals.main.develMode) {
 				$scope.curUserName = 'florian';
-				Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+				// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
 			} else {
 				// open login modal
 				$scope.openModal('views/login.html', 'dialog', true);
@@ -76,15 +71,15 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
-			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
+			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				$('#allowSortable').sortable('enable');
 			}
 
 			// connect to ws server if it says so in config
-			if(ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined){
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl)
+			if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
+				// Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
 			}
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
@@ -92,6 +87,24 @@ var MainCtrl = angular.module('emulvcApp')
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
 
 		});
+
+
+		/**
+		 * listen for connectedToWSserver
+		 */
+		$scope.$on('connectedToWSserver', function(evt, type, data) {
+			console.log('connectedToWSserver');
+			$scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
+			console.log($scope.uttsList)
+		});
+
+		$scope.$watch('uttsList', function() {
+			console.log('uttsList changed')
+			console.log($scope.uttsList);
+			// Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
+			// $scope.curUtt = $scope.uttsList[0];
+			// $scope.openSubmenu();
+		})
 
 		/**
 		 * listen for dropped files
@@ -172,22 +185,22 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.renameTier = function() {
 			if (viewState.getcurClickTierName() !== undefined) {
-				$scope.openModal('views/renameTier.html', 'dialog',true);
+				$scope.openModal('views/renameTier.html', 'dialog', true);
 			} else {
-				$scope.openModal('views/error.html', 'dialog', 'Rename Error',false,'Please choose a Tier first !');
+				$scope.openModal('views/error.html', 'dialog', 'Rename Error', false, 'Please choose a Tier first !');
 			}
 		};
 
 		$scope.downloadTextGrid = function() {
 			console.log(Iohandlerservice.toTextGrid());
 		};
-		
+
 		$scope.refreshTimeline = function() {
 			$scope.$broadcast("refreshTimeline");
-		};		
-		
+		};
+
 		$scope.refreshScope = function() {
-		    $scope.$digest();
+			$scope.$digest();
 		};
 
 		/**
@@ -196,7 +209,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.menuUttClick = function(utt) {
 			if ($scope.modifiedCurSSFF) {
 				$scope.lastclickedutt = utt;
-				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true,'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
+				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				Iohandlerservice.httpGetUtterence(utt);
@@ -212,18 +225,17 @@ var MainCtrl = angular.module('emulvcApp')
 			Iohandlerservice.postSaveSSFF();
 			$scope.modifiedCurSSFF = false;
 		};
-		
 
-		
-		
+
+
 		/**
 		 *
 		 */
 		$scope.openModal = function(templatefile, cssStyle, blocking, title, content) {
-		    var drop = true;
-		    if(blocking) {
-		        drop = "static";
-		    }
+			var drop = true;
+			if (blocking) {
+				drop = "static";
+			}
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
 				backdrop: drop,
@@ -305,9 +317,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.uttIsDisabled = function(utt) {
 			if (utt.utteranceName === $scope.curUtt.utteranceName) {
 				return false;
-			}
-			else {
-			    return true;
+			} else {
+				return true;
 			}
 		};
 
@@ -390,7 +401,7 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 			var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
-		
+
 
 		/**
 		 *
