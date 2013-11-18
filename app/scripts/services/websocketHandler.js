@@ -9,17 +9,18 @@ angular.module('emulvcApp')
 		// Create a unique callback ID to map requests to responses
 		var currentCallbackId = 0;
 		// Create our websocket object with the address to the websocket
-		var ws = new WebSocket("ws://localhost:8080"); // SIC hardcoded
+		var ws = {};
+		// var ws = new WebSocket("ws://localhost:8080"); // SIC hardcoded
 
-		ws.onopen = function() {
+		function wsonopen() {
 			console.log("Socket has been opened!");
 			$rootScope.$broadcast('connectedToWSserver');
 
-		};
+		}
 
-		ws.onmessage = function(message) {
+		function wsonmessage(message) {
 			listener(JSON.parse(message.data));
-		};
+		}
 
 		function sendRequest(request) {
 			var defer = $q.defer();
@@ -43,7 +44,7 @@ angular.module('emulvcApp')
 				console.log(messageObj.data);
 				console.log('################################')
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
-				
+
 				delete callbacks[messageObj.callback_id];
 			}
 		}
@@ -56,6 +57,12 @@ angular.module('emulvcApp')
 			}
 			return currentCallbackId;
 		}
+
+		Service.initConnect = function(url) {
+			ws = new WebSocket(url);
+			ws.onopen = wsonopen;
+			ws.onmessage = wsonmessage;
+		};
 
 		// Define a "getter" for getting customer data
 		Service.getUsrUttList = function() {

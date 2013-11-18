@@ -79,7 +79,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// connect to ws server if it says so in config
 			if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
-				// Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
 			}
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
