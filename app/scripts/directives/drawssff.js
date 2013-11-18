@@ -210,6 +210,12 @@ angular.module('emulvcApp')
                     prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                     prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
+                    // mark selected
+                    if (viewState.curCorrectionToolNr - 1 === idx) {
+                      ctx.strokeStyle = 'white';
+                      ctx.fillStyle = 'white';
+                    }
+
                     // draw line
                     ctx.beginPath();
                     ctx.moveTo(prevX, prevY);
