@@ -75,6 +75,7 @@ angular.module('emulvcApp')
 			return promise;
 		};
 
+		// ws request for saving data
 		Service.saveUsrUttList = function(usrName, uttList) {
 			var request = {
 				type: 'saveUttList',
