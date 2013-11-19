@@ -14,16 +14,16 @@ angular.module('emulvcApp')
 		////////////////////////////
 		// handle received functions
 
-		function handleReceivedESPS(data) {
-			var labelJSO = Espsparserservice.toJSO(data, 'noFilePathWhaaaat');
+		function handleReceivedESPS(fileName, data) {
+			var labelJSO = Espsparserservice.toJSO(data, fileName);
 			$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
 		};
 
-		function handleReceivedSSFF(data) {
+		function handleReceivedSSFF(fileName, data) {
 			var arrBuff = stringToArrayBuffer(data);
 			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
-			ssffJso.fileURL = document.URL + 'hereNOFile path either';
-			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, 'hereNOFile path either'.replace(/^.*[\\\/]/, ''));
+			ssffJso.fileURL = document.URL + fileName;
+			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
 			// var labelJSO = Espsparserservice.toJSO(data, 'noFilePathWhaaaat');
 			// $rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
 		};
@@ -64,10 +64,10 @@ angular.module('emulvcApp')
 				console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callback_id);
 				switch (messageObj.type) {
 					case 'getESPSfile':
-						handleReceivedESPS(messageObj.data);
+						handleReceivedESPS(messageObj.fileName, messageObj.data);
 						break;
 					case 'getSSFFfile':
-						handleReceivedSSFF(messageObj.data);
+						handleReceivedSSFF(messageObj.fileName, messageObj.data);
 						break;
 				}
 

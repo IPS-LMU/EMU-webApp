@@ -15,7 +15,7 @@ var WebSocketServer = require('ws').Server,
 wss.on('connection', function(ws) {
 
 	ws.on('message', function(message) {
-		console.log('received: %s', message);
+		// console.log('received: %s', message);
 		var mJSO = JSON.parse(message);
 
 		// getUttList method
@@ -68,6 +68,7 @@ wss.on('connection', function(ws) {
 					ws.send(JSON.stringify({
 						'type': mJSO.type,
 						'callback_id': mJSO.callback_id,
+						'fileName': mJSO.fileName,
 						'data': data
 					}), undefined, 0);
 				}
@@ -110,9 +111,8 @@ wss.on('connection', function(ws) {
 		}
 		// saveSSFFfile
 		if (mJSO.type === 'saveSSFFfile') {
-			console.log();
 			var view = new Buffer(mJSO.data, 'base64');
-
+			console.log('Writing SSFF to file: ' + mJSO.fileURL)
 			fs.writeFile(path2dataRoot + mJSO.fileURL, view, function(err) {
 				if (err) {
 					console.log('ERROR while saving ssff file')
