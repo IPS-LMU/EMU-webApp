@@ -7,19 +7,6 @@ var path2dataRoot = '../app/testData/';
 var portNr = 8080;
 
 
-var tmpRes = {
-	"result": true,
-	"callback_id": 1,
-	"data": [{
-		"first_name": "Danny",
-		"last_name": "Ocean"
-	}, {
-		"first_name": "Rusty",
-		"last_name": "Ryan"
-	}]
-};
-
-
 var WebSocketServer = require('ws').Server,
 	wss = new WebSocketServer({
 		port: portNr
@@ -37,8 +24,6 @@ wss.on('connection', function(ws) {
 					return;
 				} else {
 					var labelData = JSON.parse(data);
-
-					// ws.send(JSON.stringify(tmpRes, undefined, 0));
 
 					ws.send(JSON.stringify({
 						'callback_id': mJSO.callback_id,
