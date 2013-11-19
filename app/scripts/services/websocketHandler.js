@@ -217,6 +217,7 @@ angular.module('emulvcApp')
 			return (res);
 		};
 
+		// SIC... place all binary manip. functions in service
 		function stringToArrayBuffer(str) {
 			var ab = new ArrayBuffer(str.length);
 			var view = new Uint8Array(ab);
