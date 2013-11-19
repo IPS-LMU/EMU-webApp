@@ -38,26 +38,8 @@ wss.on('connection', function(ws) {
 			});
 
 		}
-		// getUttList method
-		// if (mJSO.type === 'getAudioFile') {
 
-		// 	console.log(mJSO.fileName)
-		// 	fs.readFile(path2dataRoot + mJSO.fileName, 'binary', function(err, data) {
-		// 		if (err) {
-		// 			console.log('Error: ' + err);
-		// 			return;
-		// 		} else {
-		// 			ws.send(JSON.stringify({
-		// 				'callback_id': mJSO.callback_id,
-		// 				'data': data
-		// 			}), undefined, 0);
-
-		// 		}
-
-		// 	});
-		// }
-
-		// getUttList method
+		// method like static get file method
 		if (mJSO.type === 'getSSFFfile' || mJSO.type === 'getESPSfile' || mJSO.type === 'getAudioFile') {
 			console.log(mJSO.fileName)
 			fs.readFile(path2dataRoot + mJSO.fileName, 'binary', function(err, data) {

@@ -24,8 +24,6 @@ angular.module('emulvcApp')
 			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
 			ssffJso.fileURL = document.URL + fileName;
 			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
-			// var labelJSO = Espsparserservice.toJSO(data, 'noFilePathWhaaaat');
-			// $rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
 		};
 
 		////////////////////////////
@@ -33,9 +31,7 @@ angular.module('emulvcApp')
 
 		// broadcast on open
 		function wsonopen() {
-			console.log("Socket has been opened!");
 			$rootScope.$broadcast('connectedToWSserver');
-
 		}
 
 		function wsonmessage(message) {
@@ -176,7 +172,6 @@ angular.module('emulvcApp')
 
 		// ws get Utt from ws server
 		Service.getUtt = function(usrName, utt) {
-			console.log('#######################');
 			var curFile;
 
 			// load audio file first
@@ -198,7 +193,6 @@ angular.module('emulvcApp')
 			}).then(function() {
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
 					curFile = Service.findFileInUtt(utt, ext);
-					console.log('Loading signal file: ' + curFile)
 					Service.getSSFFfile(curFile);
 				});
 			}).then(function() {

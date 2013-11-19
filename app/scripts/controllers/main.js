@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile, $timeout,
+	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
 
 		$scope.cps = ConfigProviderService;
@@ -149,11 +149,12 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('saveSSFFb4load', function(evt, data) {
 			console.log("saving utt")
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveSSFFfile();
+			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
 			console.log($scope.lastclickedutt);
-			Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
 			$scope.curUtt = $scope.lastclickedutt;
 		});
 
@@ -165,7 +166,8 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
 			console.log($scope.lastclickedutt);
-			Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+			Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
 			$scope.curUtt = $scope.lastclickedutt;
 		});
 
@@ -412,21 +414,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.saveUttList = function() { // SIC RENAME to metadata
-			// SIC should not be done here but in iohandler...
-			// $http({
-			// 	url: 'index.html',
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	data: {
-			// 		method: 'saveUttList',
-			// 		username: $scope.curUserName,
-			// 		data: $scope.uttsList
-			// 	}
-			// }).success(function() {
-			// 	$scope.modifiedMetaData = false;
-			// });
+
 			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttsList);
 	
 		};
