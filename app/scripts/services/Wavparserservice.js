@@ -46,7 +46,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.ChunkID = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.ChunkID !== 'RIFF') {
-				alert('Wav read error: ChunkID not RIFF');
+				alert('Wav read error: ChunkID not RIFF. Got ' + wavRep.ChunkID);
 			}
 
 
@@ -63,7 +63,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Format = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.Format !== 'WAVE') {
-				alert('Wav read error: Format not WAVE');
+				alert('Wav read error: Format not WAVE. Got ' + wavRep.Format);
 			}
 
 			// Subchunk1ID == "fmt " CHECK
@@ -72,7 +72,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Subchunk1ID = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.Subchunk1ID !== 'fmt ') {
-				alert('Wav read error: Subchunk1ID not fmt ');
+				alert('Wav read error: Subchunk1ID not fmt. Got ' + wavRep.Subchunk1ID);
 			}
 
 			// Subchunk1Size == 16 CHECK

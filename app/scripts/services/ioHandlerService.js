@@ -13,7 +13,6 @@ angular.module('emulvcApp')
 		sServObj.postSaveSSFF = function() {
 
 			var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded [0];
-			console.log()
 			// console.log($location.absUrl());
 
 

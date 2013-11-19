@@ -2,7 +2,7 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $http, $compile, $timeout,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService) {
+		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.fontImage = fontScaleService;
@@ -98,8 +98,8 @@ var MainCtrl = angular.module('emulvcApp')
 			var prom = Iohandlerservice.wsH.getUsrUttList();
 			console.log($scope.uttsList)
 			prom.then(function (newVal) {
-				console.log(newVal);
-				Iohandlerservice.httpGetUtterence(newVal[0]);
+				console.log(newVal[0]);
+				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
 				$scope.curUtt = newVal[0];
 				$scope.openSubmenu();
 				$scope.uttsList = newVal;
@@ -148,7 +148,8 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('saveSSFFb4load', function(evt, data) {
 			console.log("saving utt")
-			Iohandlerservice.postSaveSSFF();
+			// Iohandlerservice.postSaveSSFF();
+			Iohandlerservice.wsH.saveSSFFfile();
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
 			console.log($scope.lastclickedutt);
@@ -160,7 +161,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for saveSSFFb4load
 		 */
 		$scope.$on('discardSSFFb4load', function(evt, data) {
-			console.log("dicarding ssff changes")
+			console.log("discarding ssff changes")
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
 			console.log($scope.lastclickedutt);
@@ -213,7 +214,8 @@ var MainCtrl = angular.module('emulvcApp')
 				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
 			} else {
 				$scope.$broadcast('loadingNewUtt');
-				Iohandlerservice.httpGetUtterence(utt);
+				// Iohandlerservice.httpGetUtterence(utt);
+				Iohandlerservice.wsH.getUtt(utt);
 				$scope.curUtt = utt;
 			}
 		};
@@ -223,7 +225,8 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttSave = function() {
-			Iohandlerservice.postSaveSSFF();
+			// Iohandlerservice.postSaveSSFF();
+			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
 		};
 
@@ -409,21 +412,22 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.saveUttList = function() { // SIC RENAME to metadata
 			// SIC should not be done here but in iohandler...
-			$http({
-				url: 'index.html',
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				data: {
-					method: 'saveUttList',
-					username: $scope.curUserName,
-					data: $scope.uttsList
-				}
-			}).success(function() {
-				$scope.modifiedMetaData = false;
-			});
-
+			// $http({
+			// 	url: 'index.html',
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	data: {
+			// 		method: 'saveUttList',
+			// 		username: $scope.curUserName,
+			// 		data: $scope.uttsList
+			// 	}
+			// }).success(function() {
+			// 	$scope.modifiedMetaData = false;
+			// });
+			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttsList);
+	
 		};
 
 
