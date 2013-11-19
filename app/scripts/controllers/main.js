@@ -98,7 +98,7 @@ var MainCtrl = angular.module('emulvcApp')
 			var prom = Iohandlerservice.wsH.getUsrUttList();
 			console.log($scope.uttsList)
 			prom.then(function (newVal) {
-				console.log(newVal[0]);
+				// console.log(newVal[0]);
 				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
 				$scope.curUtt = newVal[0];
 				$scope.openSubmenu();
@@ -215,7 +215,8 @@ var MainCtrl = angular.module('emulvcApp')
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				// Iohandlerservice.httpGetUtterence(utt);
-				Iohandlerservice.wsH.getUtt(utt);
+				console.log(utt);
+				Iohandlerservice.wsH.getUtt($scope.curUserName, utt);
 				$scope.curUtt = utt;
 			}
 		};
