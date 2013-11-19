@@ -5,6 +5,8 @@
   emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
  </div>
  <hr />
+
+ <!-- general usage -->
  <div>
   <b>General usage:</b><br />
   Moving the mouse over tiers automatically tracks the mouse movement
@@ -16,6 +18,8 @@
   <b>alt</b> will move the entire segment
  </div>
  <hr />
+
+ <!-- navigation shortcuts -->
  <div>
   <b><u>Default Navigation Shortcuts:</u></b><br />
   <i>(Some might be deactivated / overridden)</i><br />
@@ -34,6 +38,8 @@
   <small>1.) Zooming while a Boundary is selected will keep the position of that boundary fixed</small>
  </div>
  <hr />
+
+ <!-- labeling shortcuts -->
  <div>
   <b><u>Labeling shortcuts:</u></b><br />
   <i>(Some might be deactivated / overridden)</i><br />
@@ -56,6 +62,8 @@
   </table>
   </div>
   <hr />
+
+  <!-- correction shortcuts -->
   <div>
   <b><u>Playback shortcuts:</u></b><br />
   <i>(Some might be deactivated / overridden)</i><br />
@@ -64,10 +72,28 @@
     <tbody>
       <tr><td><b>F:</b></td><td>Play entire file</td></tr>
       <tr><td><b>R:</b></td><td>Play selected</td></tr>
-      <tr><td><b>Space:</b></td><td>Space: Play/Pause in view (also use as general stop for playback)</td></tr>
+      <tr><td><b>Space:</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
     </tbody>
   </table>
   </div>
+
+  <!-- playback shortcuts -->
+  <div>
+  <b><u>Playback shortcuts:</u></b><br />
+  <i>(Some might be deactivated / overridden)</i><br />
+
+  <table>
+    <tbody>
+      <tr><td><b>1:</b></td><td>Choose first correction tool</td></tr>
+      <tr><td><b>2:</b></td><td>Choose second correction tool</td></tr>
+      <tr><td><b>3:</b></td><td>Choose third correction tool</td></tr>
+      <tr><td><b>4:</b></td><td>Choose fourth correction tool</td></tr>
+      <tr><td><b>^:</b></td><td>Choose NO correction tool (choose when not correcting)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- close button -->
   <div>
       <button ng-click="cancel();" id="dialogButton" class="dialogButton">close</button>
   </div>
