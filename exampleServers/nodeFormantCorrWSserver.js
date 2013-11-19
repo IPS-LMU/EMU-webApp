@@ -6,6 +6,8 @@ var labelData;
 var path2dataRoot = '../app/testData/';
 var portNr = 8080;
 
+var curUttList = [];
+var curStrippedUttList = [];
 
 var WebSocketServer = require('ws').Server,
 	wss = new WebSocketServer({
@@ -26,6 +28,8 @@ wss.on('connection', function(ws) {
 					return;
 				} else {
 					var labelData = JSON.parse(data);
+					curUttList = labelData;
+					// curStrippedUttList = stripUttList(labelData);
 
 					ws.send(JSON.stringify({
 						'callback_id': mJSO.callback_id,
@@ -119,12 +123,15 @@ wss.on('connection', function(ws) {
 	});
 });
 
+function stripUttList(list) {
+	var sF; // stripped file
+	list.forEach(function(utt) {
+		utt.files.forEach(function(file, fIdx) {
+			sF = file.split('/')[file.split('/').length - 1];
+			utt.files[fIdx] = sF;
+			console.log(sF);
+		})
 
-function toArrayBuffer(buffer) {
-	var ab = new ArrayBuffer(buffer.length);
-	var view = new Uint8Array(ab);
-	for (var i = 0; i < buffer.length; ++i) {
-		view[i] = buffer[i];
-	}
-	return ab;
+	})
 }
+
