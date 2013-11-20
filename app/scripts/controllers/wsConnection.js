@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('WsconnectionCtrl', function($scope, ConfigProviderService, Iohandlerservice) {
+	.controller('WsconnectionCtrl', function($scope, ConfigProviderService, Iohandlerservice, viewState) {
 
 		$scope.wsServerUrl = ConfigProviderService.vals.main.wsServerUrl;
 
 		$scope.connectionError = '';
+		viewState.focusInTextField = true;
 
 		$scope.tryConnection = function() {
 			var conProm = Iohandlerservice.wsH.initConnect($scope.wsServerUrl);
@@ -14,6 +15,7 @@ angular.module('emulvcApp')
 				if (val.type === 'error') {
 					$scope.connectionError = 'ERROR trying to connect to ws-server';
 				} else if (val.type === 'open') {
+					viewState.focusInTextField = false;
 					$scope.cancel();
 				}
 			})
