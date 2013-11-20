@@ -18,7 +18,7 @@ See tools for development for now
 * install `grunt` with `npm install -g grunt`
 * install dependencies (in `emuLVC` folder) with the command `bower install` and `npm install`
 * run static file server at `http://localhost:9000`  with `grunt server`
-* for livereload use `livereload plugin for chrome
+* for livereload use `livereload` plugin for chrome
 * a small websocket data provider server can be found under `exampleServers/nodeFormantCorrWSserver.js`
 
 ## Authors
