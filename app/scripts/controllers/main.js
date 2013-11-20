@@ -22,7 +22,6 @@ var MainCtrl = angular.module('emulvcApp')
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
 
-
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer');
 		// implementing it in angular again
@@ -30,62 +29,8 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for configLoaded
 		 */
-		$scope.$on('configLoaded', function(evt, data) {
-
-			// for develment
-			console.log(ConfigProviderService.vals.main.develMode)
-
-			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
-			// convert int values to char for front end
-			for (var i in $scope.shortcut) {
-				// sonderzeichen space
-				if ($scope.shortcut[i] === 32) {
-					$scope.shortcut[i] = 'SPACE';
-				} else if ($scope.shortcut[i] === 8) {
-					$scope.shortcut[i] = 'BACKSPACE';
-				} else if ($scope.shortcut[i] === 9) {
-					$scope.shortcut[i] = 'TAB';
-				} else if ($scope.shortcut[i] === 13) {
-					$scope.shortcut[i] = 'ENTER';
-				} else if ($scope.shortcut[i] === 27) {
-					$scope.shortcut[i] = 'ESC';
-				} else {
-					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
-				}
-			}
-
-			if (ConfigProviderService.vals.main.develMode) {
-				$scope.curUserName = 'florian';
-				// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
-			} else {
-				// open login modal
-				$scope.openModal('views/login.html', 'dialog', true);
-			}
-
-			// init loading of files for testing
-			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
-				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
-				ConfigProviderService.vals.spectrogramSettings.rangeTo,
-				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				ConfigProviderService.vals.spectrogramSettings.window);
-
-			// set timeline height according to config settings "colors.timelineHeight"
-			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
-			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
-
-			if (ConfigProviderService.vals.restrictions.sortLabels) {
-				$('#allowSortable').sortable('enable');
-			}
-
-			// connect to ws server if it says so in config
-			if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
-			}
-
-			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
-			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
-			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
-
+		$scope.$on('configLoaded', function() {
+			$scope.handleConfigLoaded();
 		});
 
 
@@ -94,6 +39,12 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('connectedToWSserver', function(evt, type, data) {
 			console.log('connectedToWSserver');
+			var promConf = Iohandlerservice.wsH.getConfigFile();
+
+			promConf.then(function(newVal) {
+				ConfigProviderService.vals = newVal;
+			})
+
 			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
 			var prom = Iohandlerservice.wsH.getUsrUttList();
 			console.log($scope.uttsList)
@@ -185,6 +136,65 @@ var MainCtrl = angular.module('emulvcApp')
 			Soundhandlerservice.wavJSO = wavJSO;
 			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
 		});
+
+		// 
+		$scope.handleConfigLoaded = function() {
+
+			// for develment
+			console.log(ConfigProviderService.vals.main.develMode)
+
+			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
+			// convert int values to char for front end
+			for (var i in $scope.shortcut) {
+				// sonderzeichen space
+				if ($scope.shortcut[i] === 32) {
+					$scope.shortcut[i] = 'SPACE';
+				} else if ($scope.shortcut[i] === 8) {
+					$scope.shortcut[i] = 'BACKSPACE';
+				} else if ($scope.shortcut[i] === 9) {
+					$scope.shortcut[i] = 'TAB';
+				} else if ($scope.shortcut[i] === 13) {
+					$scope.shortcut[i] = 'ENTER';
+				} else if ($scope.shortcut[i] === 27) {
+					$scope.shortcut[i] = 'ESC';
+				} else {
+					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+				}
+			}
+
+			if (ConfigProviderService.vals.main.develMode) {
+				$scope.curUserName = 'florian';
+				// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
+			} else {
+				// open login modal
+				$scope.openModal('views/login.html', 'dialog', true);
+			}
+
+			// init loading of files for testing
+			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
+				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
+				ConfigProviderService.vals.spectrogramSettings.rangeTo,
+				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
+				ConfigProviderService.vals.spectrogramSettings.window);
+
+			// set timeline height according to config settings "colors.timelineHeight"
+			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
+			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
+
+			if (ConfigProviderService.vals.restrictions.sortLabels) {
+				$('#allowSortable').sortable('enable');
+			}
+
+			// connect to ws server if it says so in config
+			if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
+			}
+
+			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
+			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
+			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
+
+		};
 
 
 		$scope.renameTier = function() {

@@ -88,6 +88,16 @@ angular.module('emulvcApp')
 			ws.onmessage = wsonmessage;
 		};
 
+		// ws getConfigFile
+		Service.getConfigFile = function() {
+			var request = {
+				type: 'getConfigFile'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
 		// ws getUsrUttList
 		Service.getUsrUttList = function() {
 			var request = {

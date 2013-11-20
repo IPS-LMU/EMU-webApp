@@ -7,8 +7,8 @@ angular.module('emulvcApp')
 		var sServObj = {};
 		sServObj.vals = {};
 
-		sServObj.httpGetConfig = function() {
-			$http.get('configFiles/config.json').success(function(data) {
+		sServObj.httpGetConfig = function() { // SIC SIC SIC... und gar nicht teuer...
+			$http.get('configFiles/defaultConfig.json').success(function(data) {
 				sServObj.vals = data;
 				$rootScope.$broadcast('configLoaded', data);
 			});

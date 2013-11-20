@@ -4,6 +4,7 @@ var userName = 'klaus';
 var labelData;
 
 var path2dataRoot = '../app/testData/';
+var path2configFile = '../app/testData/customConfig.json';
 var portNr = 8080;
 
 var curUttList = [];
@@ -40,7 +41,28 @@ wss.on('connection', function(ws) {
 				}
 
 			});
+		}
 
+		// getUttList method
+		if (mJSO.type === 'getConfigFile') {
+			fs.readFile(path2configFile, 'utf8', function(err, data) {
+				if (err) {
+					console.log('Error: ' + err);
+					return;
+				} else {
+					var labelData = JSON.parse(data);
+					curUttList = labelData;
+					// curStrippedUttList = stripUttList(labelData);
+
+					ws.send(JSON.stringify({
+						'callback_id': mJSO.callback_id,
+						'dataType': 'uttList',
+						'data': labelData
+					}), undefined, 0);
+					// ws.send(labelData);
+				}
+
+			});
 		}
 
 		// method like static get file method

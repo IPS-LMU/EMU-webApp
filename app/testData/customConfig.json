@@ -1,0 +1,105 @@
+{
+    "main": {
+        "mode": "server",
+        "osciSpectroZoomFactor": 2,
+        "develMode": true,
+        "wsServerUrl": "ws://localhost:8080"
+    },
+    "keyMappings": {
+        "openFile" : -1,
+        "openSubmenu" : 79,
+        "spectroSettings" : 80,
+        "zoomSel": 69,
+        "zoomAll": 81,
+        "zoomOut": 83,
+        "zoomIn": 87,
+        "shiftViewPortLeft": 65,
+        "shiftViewPortRight": 68,
+        "playEntireFile": 70,
+        "playAllInView": 32,
+        "playSelected": 82,
+        "backspace": 8,
+        "tab": 9,
+        "enter": 13,
+        "esc": 27,
+        "history": 90,
+        "selectFirstContourCorrectionTool": 49,
+        "selectSecondContourCorrectionTool": 50,
+        "selectThirdContourCorrectionTool": 51,
+        "selectFourthContourCorrectionTool": 52,
+        "selectNoContourCorrectionTool": 192,
+        "tierUp": 38,
+        "tierDown": 40
+    },
+    "colors": {
+        "labelColor": "#000",
+        "osciColor": "#000",
+        "playProgressColor": "rgba(255, 255, 255, 0.5)",
+        "loadingColor": "#333",
+        "loadingBackground": "#fff",
+        "loadingBars": 20,
+        "barHeight": 1,
+        "barMargin": 10,
+        "selectedAreaColor": "rgba(22, 22, 22, 0.2)",
+        "selectedBorderColor": "rgba(0, 0, 0, 0.7)",
+        "selectedBoundaryColor": "#0DC5FF",
+        "selectedTierColor": "rgba(22, 22, 22, 0.2)",
+        "selectedSegmentColor": "rgba(255, 255, 22, 0.5)",
+        "selectedMinimapColor": "rgba(0, 0, 0, 0.2)",
+        "startBoundaryColor": "#000",
+        "startBoundaryWidth": 2,
+        "endBoundaryColor": "#888",
+        "endBoundaryWidth": 2,
+        "zeroLineColor": "#0DC5FF",
+        "crossHairsColor": "#FF0000",
+        "timelineHeight": "300px"
+    },
+    "font": {
+        "fontType": "Verdana",
+        "fontPxSize": 11
+    },
+    "spectrogramSettings": {
+        "N": 256,
+        "rangeFrom": 0,
+        "rangeTo": 5000,
+        "dynamicRange": 70,
+        "window": "GAUSS"
+    },
+    "signalsCanvasConfig": {
+        "order": ["osci", "spec"],
+        "assign": {
+            "spec": "fms:fm"
+        },
+        "extensions": {
+            "audio": ".wav",
+            "signals": [".fms"]
+        }
+    },
+    "labelCanvasConfig": {
+        "order": [".ORT", ".MAU", ".phon"]
+    },
+    "restrictions": {
+        "sortLabels": false,
+        "changeLabels": true,
+        "editItemBoundaries": false,
+        "drawCrossHairs": true
+    },
+    "activeButtons": {
+        "openMenu": true,
+        "openFile": false,
+        "addTierSeg": false,
+        "addTierPoint": false,
+        "renameSelTier": false,
+        "downloadTextGrid": false,
+        "specSettings": true,
+        "connect": false,
+        "deleteSingleTier": false,
+        "resizeSingleTier": true,
+        "saveSingleTier": false,
+        "resizeOsci": true,
+        "resizeSpectro": true
+    },
+    "userManagment": {
+        "passcode": "1234"
+    }
+}
