@@ -3,7 +3,7 @@
         "mode": "server",
         "osciSpectroZoomFactor": 2,
         "develMode": true,
-        "wsServerUrl": "ws://localhost:8080"
+        "wsServerUrl": "ws://localhost:9001"
     },
     "keyMappings": {
         "openFile" : -1,
@@ -100,6 +100,6 @@
         "resizeSpectro": true
     },
     "userManagment": {
-        "passcode": "1234"
+        "passcode": "0000"
     }
 }

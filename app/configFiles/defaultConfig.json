@@ -1,6 +1,6 @@
 {
     "main": {
-        "mode": "server",
+        "mode": "standalone",
         "osciSpectroZoomFactor": 2,
         "develMode": true,
         "wsServerUrl": "ws://localhost:8080"
@@ -86,16 +86,16 @@
     },
     "activeButtons": {
         "openMenu": true,
-        "openFile": false,
-        "addTierSeg": false,
-        "addTierPoint": false,
-        "renameSelTier": false,
-        "downloadTextGrid": false,
+        "openFile": true,
+        "addTierSeg": true,
+        "addTierPoint": true,
+        "renameSelTier": true,
+        "downloadTextGrid": true,
         "specSettings": true,
-        "connect": false,
-        "deleteSingleTier": false,
+        "connect": true,
+        "deleteSingleTier": true,
         "resizeSingleTier": true,
-        "saveSingleTier": false,
+        "saveSingleTier": true,
         "resizeOsci": true,
         "resizeSpectro": true
     },

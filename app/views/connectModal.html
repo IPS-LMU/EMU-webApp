@@ -1,0 +1,13 @@
+<h2>User Login</h2>
+<div ng-controller="WsconnectionCtrl">> 
+ <div>&nbsp;</div>
+Please enter:
+
+ <ul>
+<li>ws-server URL:<input type="text" ng-model="wsServerUrl"></li>
+<li>{{loginError}}</li>
+ </ul>
+  <div>
+      <button ng-click="tryConnection();" id="dialogButton" class="dialogButton">Connect</button>
+  </div>
+</div>
