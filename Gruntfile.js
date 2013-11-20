@@ -281,7 +281,8 @@ module.exports = function(grunt) {
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
             'testData/{,*/}*.*',
-            'configFiles/{,*/}*.*'
+            'configFiles/{,*/}*.*',
+            'scripts/services/spectroWorker.js'
           ]
         }, {
           expand: true,
