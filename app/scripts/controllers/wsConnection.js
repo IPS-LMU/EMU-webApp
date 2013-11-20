@@ -5,10 +5,19 @@ angular.module('emulvcApp')
 
 		$scope.wsServerUrl = ConfigProviderService.vals.main.wsServerUrl;
 
+		$scope.connectionError = '';
+
 		$scope.tryConnection = function() {
-			Iohandlerservice.wsH.initConnect($scope.wsServerUrl);
-			$scope.cancel();
-			$scope.openModal('views/login.html', 'dialog', true);
+			var conProm = Iohandlerservice.wsH.initConnect($scope.wsServerUrl);
+			conProm.then(function(val) {
+				console.log(val)
+				if (val.type === 'error') {
+					$scope.connectionError = 'ERROR trying to connect to ws-server';
+				} else if (val.type === 'open') {
+					$scope.cancel();
+				}
+			})
+			// $scope.openModal('views/login.html', 'dialog', true);
 		};
 
 	});

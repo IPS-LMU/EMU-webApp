@@ -30,13 +30,21 @@ angular.module('emulvcApp')
 
                 // on mouse move
                 element.bind('mousemove', function(event) {
-                    drawCrossHairs(scope.vs, canvas1, scope.config, scope.dhs, event);
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            drawCrossHairs(scope.vs, canvas1, scope.config, scope.dhs, event);
+                        }
+                    }
                 });
 
                 // on mouse leave clear markup canvas
                 element.bind('mouseleave', function() {
-                    contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-                    drawTimeLineContext();
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+                            drawTimeLineContext();
+                        }
+                    }
                 });
 
                 scope.$watch('vs.curViewPort', function() {
@@ -46,20 +54,20 @@ angular.module('emulvcApp')
                         }
                     }
                 }, true);
-                
+
 
                 scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
                     console.log("clearing spectro image cache...");
-                	clearImageCache();
+                    clearImageCache();
                 });
-                
+
                 scope.$on('refreshTimeline', function(evt, wavJSO, fileName) {
                     if (!$.isEmptyObject(scope.shs)) {
                         if (!$.isEmptyObject(scope.shs.wavJSO)) {
                             redraw();
                         }
                     }
-                });                
+                });
 
                 scope.$watch('vs.spectroSettings', function() {
                     if (!$.isEmptyObject(scope.shs)) {
@@ -346,13 +354,13 @@ angular.module('emulvcApp')
                         var tW = contextmarkup.measureText(mouseFreq + ' Hz').width;
                         var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
                         var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6)
-                        var horizontalText = scope.fontImage.getTextImage(context,mouseFreq + ' Hz',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor,true);
-						var verticalText = scope.fontImage.getTextImageTwoLines(context,s1,s2,config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.crossHairsColor, false);
-						
-						contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width,  horizontalText.height);
-                        contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW*(context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width,  horizontalText.height);                        
-                        contextmarkup.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX+5, 0,verticalText.width,  verticalText.height);
-                        
+                        var horizontalText = scope.fontImage.getTextImage(context, mouseFreq + ' Hz', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
+                        var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, false);
+
+                        contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+                        contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW * (context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+                        contextmarkup.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
+
 
                         if (navigator.vendor === 'Google Inc.') {
                             contextmarkup.setLineDash([0]);

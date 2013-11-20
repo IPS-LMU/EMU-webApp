@@ -11,6 +11,8 @@ angular.module('emulvcApp')
 		// Create our websocket object with the address to the websocket
 		var ws = {};
 
+		// empty promise object to be resolved when connection is up
+		var conPromise = {};
 		////////////////////////////
 		// handle received functions
 
@@ -30,12 +32,18 @@ angular.module('emulvcApp')
 		// ws function
 
 		// broadcast on open
-		function wsonopen() {
+		function wsonopen(message) {
 			$rootScope.$broadcast('connectedToWSserver');
+			$rootScope.$apply(conPromise.resolve(message));
 		}
 
 		function wsonmessage(message) {
 			listener(JSON.parse(message.data));
+		}
+
+		function wsonerror(message) {
+			console.log('WEBSOCKET ERROR!!!!!');
+			$rootScope.$apply(conPromise.resolve(message));
 		}
 
 		function sendRequest(request) {
@@ -82,10 +90,17 @@ angular.module('emulvcApp')
 			return currentCallbackId;
 		}
 
+		///////////////////////////////////////////
+		// public api
 		Service.initConnect = function(url) {
+			var defer = $q.defer();
 			ws = new WebSocket(url);
 			ws.onopen = wsonopen;
 			ws.onmessage = wsonmessage;
+			ws.onerror = wsonerror;
+
+			conPromise = defer;
+			return defer.promise;
 		};
 
 		// ws getConfigFile
