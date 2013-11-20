@@ -10,6 +10,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.lastkeycode = 'N/A';
 		$scope.uttsList = [];
 
+		$scope.showDropZone = true;
+
 		$scope.curUserName = '';
 		$scope.curUtt = {};
 		$scope.modifiedCurSSFF = false;
@@ -39,6 +41,10 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('connectedToWSserver', function(evt, type, data) {
 			console.log('connectedToWSserver');
+			// TODO hardcode removal of save / load/ manipulation buttons 
+
+			$scope.showDropZone = false;
+
 			var promConf = Iohandlerservice.wsH.getConfigFile();
 
 			promConf.then(function(newVal) {
@@ -52,7 +58,9 @@ var MainCtrl = angular.module('emulvcApp')
 				// console.log(newVal[0]);
 				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
 				$scope.curUtt = newVal[0];
-				$scope.openSubmenu();
+				if (!viewState.getsubmenuOpen()) {
+					$scope.openSubmenu();
+				}
 				$scope.uttsList = newVal;
 			})
 
@@ -82,8 +90,10 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.uttsList = uttList;
 			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
 			$scope.curUtt = $scope.uttsList[0];
-			$scope.openSubmenu();
+			if (!viewState.getsubmenuOpen()) {
 
+				$scope.openSubmenu();
+			}
 		});
 
 		/**
@@ -142,6 +152,9 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// for develment
 			console.log(ConfigProviderService.vals.main.develMode)
+			if (!viewState.getsubmenuOpen()) {
+				$scope.openSubmenu();
+			}
 
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end

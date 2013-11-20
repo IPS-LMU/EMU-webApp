@@ -14,7 +14,7 @@
            </div>
       </div>
 
-      <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span>
+      <div id="dropbox" class="dropbox" ng-class="dropClass" ng-show="showDropZone"><span>{{dropText}}</span>
       <div ng-show="files.length">
         <div ng-repeat="file in files.slice(0)">
           <span>{{file.webkitRelativePath || file.name}}</span>
