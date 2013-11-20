@@ -97,7 +97,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
 			var prom = Iohandlerservice.wsH.getUsrUttList();
 			console.log($scope.uttsList)
-			prom.then(function (newVal) {
+			prom.then(function(newVal) {
 				// console.log(newVal[0]);
 				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
 				$scope.curUtt = newVal[0];
@@ -359,7 +359,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.getMetaBtnColor = function() {
 			if (!$scope.modifiedMetaData) {
 				var curColor = {
-					'color': 'green'
+					'color': 'rgb(128,230,25)'
 				};
 
 			} else {
@@ -375,7 +375,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.cursorInTextField = function() {
 			viewState.focusInTextField = true;
-			console.log("CURSOR");
+			// console.log("CURSOR");
 		};
 
 		/**
@@ -413,10 +413,10 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.saveUttList = function() { // SIC RENAME to metadata
+		$scope.saveMetaData = function() {
 
 			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttsList);
-	
+			$scope.modifiedMetaData = false;
 		};
 
 
