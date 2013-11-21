@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid) {
 		// We return this object to anything injecting our service
 		var Service = {};
 		// Keep all pending requests here until they get responses
@@ -68,7 +68,7 @@ angular.module('emulvcApp')
 			// If an object exists with callbackID in our callbacks object, resolve it
 			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
 				// console.log(callbacks[messageObj.callbackID]);
-				// console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callbackID);
+				console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
 					case 'getESPSfile':
 						handleReceivedESPS(messageObj.fileName, messageObj.data);
@@ -86,11 +86,15 @@ angular.module('emulvcApp')
 
 		// This creates a new callback ID for a request
 		function getCallbackId() {
-			currentCallbackId += 1;
-			if (currentCallbackId > 10000) {
-				currentCallbackId = 0;
-			}
-			return currentCallbackId;
+			var newUUID = uuid.new();
+			console.log(newUUID);
+
+			// currentCallbackId += 1;
+			// if (currentCallbackId > 10000) {
+			// 	currentCallbackId = 0;
+			// }
+			// return currentCallbackId;
+			return newUUID;
 		}
 
 		///////////////////////////////////////////
