@@ -32,6 +32,7 @@
       H:f('height')||E[0].scrollHeight||0,
       pX:p.x, pY:p.y, k:v.data.k
     };
+    $('.container').scope().dragStart();
     $(document).bind(MOVE,drag).bind(STOP,dragEnd);
     return false;
   };
@@ -45,6 +46,7 @@
   };
 
   function dragEnd() {
+    $('.container').scope().dragEnd();
     $(document).unbind(MOVE,drag).unbind(STOP,dragEnd);
   };
   $.fn.ownResize = function(h) { return init(this, h, 'ns-resize'); };

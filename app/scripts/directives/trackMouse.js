@@ -20,14 +20,17 @@ angular.module('emulvcApp')
         element.bind('mousemove', function(event) {
           switch (event.which) {
             case 1:
-              //console.log('Left mouse button pressed');
-              setSelectDrag(event);
+              if(!scope.vs.getdragBarActive()) {
+                  setSelectDrag(event);
+              }
               break;
           }
         });
 
         element.bind('mouseup', function(event) {
-          setSelectDrag(event);
+            if(!scope.vs.getdragBarActive()) {
+                setSelectDrag(event);
+            }
         });
 
         function setSelectDrag(event) {

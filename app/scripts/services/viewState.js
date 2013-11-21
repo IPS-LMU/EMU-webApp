@@ -54,6 +54,8 @@ angular.module('emulvcApp')
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;
+    
+    sServObj.dragBarActive = false;
 
     sServObj.focusInTextField = false;
 
@@ -186,6 +188,23 @@ angular.module('emulvcApp')
           sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
           break;
       }
+    };
+    
+    
+    
+    /**
+     * set if user is dragging dragbar
+     */
+    sServObj.getdragBarActive = function() {
+      return this.dragBarActive;
+    };
+
+    
+    /**
+     * set if user is dragging dragbar
+     */
+    sServObj.setdragBarActive = function(b) {
+      this.dragBarActive = b;
     };
 
 

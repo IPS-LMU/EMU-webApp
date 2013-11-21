@@ -284,6 +284,20 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.modifiedCurSSFF = false;
 		};
 
+		/**
+		 *
+		 */
+		$scope.dragStart = function() {
+			viewState.setdragBarActive(true);
+		};
+
+		/**
+		 *
+		 */
+		$scope.dragEnd = function() {
+			viewState.setdragBarActive(false);
+		};
+
 
 
 		/**

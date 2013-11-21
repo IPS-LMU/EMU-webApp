@@ -57,7 +57,7 @@ angular.module('emulvcApp')
               //console.log('Right mouse button pressed');
               break;
             default:
-              if (event.shiftKey) {
+              if (event.shiftKey && !scope.vs.getdragBarActive()) {
                 if (scope.config.vals.restrictions.editItemBoundaries) {
                   scope.vs.deleteEditArea();
                   scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
@@ -67,7 +67,7 @@ angular.module('emulvcApp')
                   moveLine = false;
                 }
               }
-              if (event.altKey) {
+              if (event.altKey && !scope.vs.getdragBarActive()) {
                 if (scope.config.vals.restrictions.changeLabels) {
                   scope.vs.deleteEditArea();
                   scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
