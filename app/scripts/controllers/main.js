@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout,
+	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout, $window,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
 
 		$scope.cps = ConfigProviderService;
@@ -18,6 +18,13 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
+		
+		$scope.windowWidth = $window.outerWidth;
+		angular.element($window).bind('resize',function(){
+		    $scope.refreshTimeline();
+		    $scope.windowWidth = $window.outerWidth;
+		    $scope.$apply('windowWidth');
+		});
 
 		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 

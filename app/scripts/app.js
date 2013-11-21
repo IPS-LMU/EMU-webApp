@@ -14,3 +14,5 @@ angular.module('emulvcApp', ['ui', 'ui.bootstrap', 'ngRoute'])
     $locationProvider.html5Mode(true);
     
   });
+  
+  

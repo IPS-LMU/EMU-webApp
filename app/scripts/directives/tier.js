@@ -24,6 +24,14 @@ angular.module('emulvcApp')
                 	scope.vs.setcurMouseSegmentId(undefined);
                 	drawTierMarkup(scope.tier, scope.vs, scope.config);
                 });
+                
+                scope.$on('refreshTimeline', function() {
+                    if (!$.isEmptyObject(scope.tier)) {
+                        if (!$.isEmptyObject(scope.vs)) {
+                            drawTierDetails(scope.tier, scope.vs, scope.config);
+                        }
+                    }
+                });                
 
 
 				scope.updateView = function() {
@@ -88,8 +96,11 @@ angular.module('emulvcApp')
 							) {
 
 								// draw segment start
-								posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
-								posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1));
+								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
+								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1));
+								posS = viewState.getPos(canvas[0].width, curEvt.startSample);
+								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1);
+								
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 
@@ -113,7 +124,8 @@ angular.module('emulvcApp')
 								var hst2 = scope.fontImage.getLastImageWidth();
 								var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
-								if (posE - posS >= (hst1+hst2)) {
+							
+
 									// start helper line
 									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
@@ -121,13 +133,6 @@ angular.module('emulvcApp')
 									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4);
 									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
 									ctx.stroke();
-
-									// draw startSample numbers
-									//check for enough space to stroke text
-									if (posE - posS > hst1) {
-									    ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width,  horizontalText.height);                                
-										//ctx.fillText(curEvt.startSample, posS + 3, canvas[0].height / 5);
-									}
 									// end helper line
 									ctx.strokeStyle = config.vals.colors.endBoundaryColor;
 									ctx.beginPath();
@@ -135,7 +140,21 @@ angular.module('emulvcApp')
 									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3);
 									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3 - 10);
 									ctx.stroke();
+								
+								if(posE - posS <= tW) {
+								
+									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
+									ctx.beginPath();
+									ctx.moveTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
+									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 30);
+									ctx.stroke();							
 								}
+
+								// draw startSample numbers
+								//check for enough space to stroke text
+								if (posE - posS > hst1) {
+								    ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width,  horizontalText.height);                    
+								}								
 								// draw sampleDur numbers.
 								
     							//sStW = scope.fontImage.getLastImageWidth();
