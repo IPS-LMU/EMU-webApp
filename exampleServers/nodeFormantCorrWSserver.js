@@ -28,6 +28,10 @@ wss.on('connection', function(ws) {
 				'data': {
 					'protocol': 'emuLVC-websocket-protocol',
 					'version': '0.0.1'
+				},
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
 				}
 			}), undefined, 0);
 		}
@@ -36,7 +40,11 @@ wss.on('connection', function(ws) {
 		if (mJSO.type === 'getDoUserManagement') {
 			ws.send(JSON.stringify({
 				'callbackID': mJSO.callbackID,
-				'data': 'YES'
+				'data': 'YES',
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				}
 			}), undefined, 0);
 		}
 
@@ -47,7 +55,11 @@ wss.on('connection', function(ws) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
 						'callbackID': mJSO.callbackID,
-						'data': 'USER NOT FOUND'
+						'data': 'USER NOT FOUND',
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
 					}), undefined, 0);
 					return;
 				} else {
@@ -58,7 +70,11 @@ wss.on('connection', function(ws) {
 					ws.send(JSON.stringify({
 						'callbackID': mJSO.callbackID,
 						'dataType': 'uttList',
-						'data': labelData
+						'data': labelData,
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
 					}), undefined, 0);
 					// ws.send(labelData);
 				}
@@ -71,6 +87,13 @@ wss.on('connection', function(ws) {
 			fs.readFile(path2configFile, 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
+					ws.send(JSON.stringify({
+						'callbackID': mJSO.callbackID,
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
+					}), undefined, 0);
 					return;
 				} else {
 					var configData = JSON.parse(data);
@@ -79,7 +102,11 @@ wss.on('connection', function(ws) {
 
 					ws.send(JSON.stringify({
 						'callbackID': mJSO.callbackID,
-						'data': configData
+						'data': configData,
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
 					}), undefined, 0);
 					// ws.send(labelData);
 				}
@@ -94,13 +121,25 @@ wss.on('connection', function(ws) {
 			fs.readFile(path2dataRoot + mJSO.fileName, 'binary', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
+					ws.send(JSON.stringify({
+						'callbackID': mJSO.callbackID,
+						'data': 'USER NOT FOUND',
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
+					}), undefined, 0);
 					return;
 				} else {
 					ws.send(JSON.stringify({
 						'type': mJSO.type,
 						'callbackID': mJSO.callbackID,
 						'fileName': mJSO.fileName,
-						'data': data
+						'data': data,
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
 					}), undefined, 0);
 				}
 			});
@@ -119,26 +158,31 @@ wss.on('connection', function(ws) {
 						ws.send(JSON.stringify({
 							'callbackID': mJSO.callbackID,
 							'type': mJSO.type,
-							'status': 'FAILURE',
-							'details': 'error writing file'
+							'status': {
+								'type': 'ERROR',
+								'message': err
+							}
 						}), undefined, 0);
 					} else {
 						console.log("uttList saved");
 						ws.send(JSON.stringify({
 							'callbackID': mJSO.callbackID,
 							'type': mJSO.type,
-							'status': 'SUCCESS'
+							'status': {
+								'type': 'SUCCESS',
+								'message': ''
+							}
 						}), undefined, 0);
 					}
 				});
 
 			}
-			ws.send(JSON.stringify({
-				'callbackID': mJSO.callbackID,
-				'type': mJSO.type,
-				'status': 'FAILURE',
-				'details': 'file not found'
-			}), undefined, 0);
+			// ws.send(JSON.stringify({
+			// 	'callbackID': mJSO.callbackID,
+			// 	'type': mJSO.type,
+			// 	'status': 'ERROR',
+			// 	'details': 'file not found'
+			// }), undefined, 0);
 		}
 		// saveSSFFfile
 		if (mJSO.type === 'saveSSFFfile') {
@@ -151,15 +195,20 @@ wss.on('connection', function(ws) {
 					ws.send(JSON.stringify({
 						'callbackID': mJSO.callbackID,
 						'type': mJSO.type,
-						'status': 'FAILURE',
-						'details': 'error writing file'
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
 					}), undefined, 0);
 				} else {
 					console.log('ssffFile saved');
 					ws.send(JSON.stringify({
 						'callbackID': mJSO.callbackID,
 						'type': mJSO.type,
-						'status': 'SUCCESS'
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
 					}), undefined, 0);
 				}
 			});
