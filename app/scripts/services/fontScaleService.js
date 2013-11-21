@@ -4,6 +4,9 @@ angular.module('emulvcApp')
 	.service('fontScaleService', function fontScaleService() {
 		// shared service object
 		var sServObj = {};
+		
+		sServObj.lastTextWidth = null;
+		
 		sServObj.getTextImage = function(ctxOriginal,text,fontPxSize,fontType,color) {
 		    var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
             var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
@@ -13,9 +16,12 @@ angular.module('emulvcApp')
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);
 		    ctx.fillText(text, 0,15);
+		    sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
 		    return img;
-		    
 		};	
+		sServObj.getLastImageWidth = function() {
+		    return sServObj.lastTextWidth;
+		};			
 		sServObj.getTextImageTwoLines = function(ctxOriginal,text,text2,fontPxSize,fontType,color,alignLeft) {
 		    var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
             var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;	

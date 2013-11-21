@@ -45,6 +45,7 @@ angular.module('emulvcApp')
           }            
         }
         scope.updateView();
+        
       });
     }
   };

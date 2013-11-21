@@ -106,7 +106,6 @@ angular.module('emulvcApp')
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
           scope.vs.setlasteditArea("_" + lastEventClickId);
           scope.vs.setcurClickTierName(tierId);
-          console.log(tierId);
           scope.vs.setcurClickSegment(lastEventClick, lastEventClickId);
           scope.vs.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;

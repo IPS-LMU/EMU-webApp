@@ -84,6 +84,7 @@ angular.module('emulvcApp')
 									height: per + '%'
 								});
 							}
+							drawVpOsciMarkup(scope, scope.config, true);
 						}
 					}
 				}, true);

@@ -98,15 +98,30 @@ angular.module('emulvcApp')
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
 								// draw label 
-								ctx.strokeStyle = config.vals.colors.labelColor;
-								ctx.fillStyle = config.vals.colors.labelColor;
-								var tW = ctx.measureText(curEvt.label).width;
+								//ctx.strokeStyle = config.vals.colors.labelColor;
+								//ctx.fillStyle = config.vals.colors.labelColor;
+								//ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+								
+								
+								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.label, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
+								var tW = scope.fontImage.getLastImageWidth();
+								//var tW = ctx.measureText(curEvt.label).width;
 								var tX = posS + (posE - posS) / 2 - tW / 2;
+								
+								
+								
 								// 			//check for enough space to stroke text
-								if (posE - posS > tW) {
-									ctx.fillText(curEvt.label, tX, canvas[0].height / 2 + 3);
+								if (posE - posS > (tW)) {
+									//ctx.fillText(curEvt.label, tX, canvas[0].height / 2 + 3);
+									console.log(tW);
+									console.log((posE - posS));
+									
+									
+                                    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height/2)-(config.vals.font.fontPxSize), horizontalText.width,  horizontalText.height);
+                                
 								}
-
+								
+								
 								//draw helper lines
 								if (posE - posS > ctx.measureText('m').width * 3) {
 									// start helper line
