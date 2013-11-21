@@ -47,7 +47,7 @@ wss.on('connection', function(ws) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
 						'callback_id': mJSO.callback_id,
-						'data': 'NO USER FOUND'
+						'data': 'USER NOT FOUND'
 					}), undefined, 0);
 					return;
 				} else {

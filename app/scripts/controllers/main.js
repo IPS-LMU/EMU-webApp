@@ -49,10 +49,14 @@ var MainCtrl = angular.module('emulvcApp')
 			Iohandlerservice.wsH.getProtocol().then(function(res) {
 				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
 					console.log('we speak the same protocol!!');
-					Iohandlerservice.wsH.getDoUserManagement().then(function (manageRes) {
-						// if(manageRes === 'YES'){
-						// 	$scope.openModal('views/login.html', 'dialog', true);
-						// }
+					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
+						ConfigProviderService.vals = newVal;
+					});
+
+					Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
+						if (manageRes === 'YES') {
+							$scope.openModal('views/login.html', 'dialog', true);
+						}
 					});
 
 				} else {
@@ -61,24 +65,16 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 			});
 
-			var promConf = Iohandlerservice.wsH.getConfigFile();
+			// var promConf = Iohandlerservice.wsH.getConfigFile();
 
-			promConf.then(function(newVal) {
-				ConfigProviderService.vals = newVal;
-			})
+			// promConf.then(function(newVal) {
+			// 	ConfigProviderService.vals = newVal;
+			// })
 
-			$scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
-			var prom = Iohandlerservice.wsH.getUsrUttList('florian');
-			// console.log($scope.uttsList)
-			prom.then(function(newVal) {
-				// console.log(newVal[0]);
-				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
-				$scope.curUtt = newVal[0];
-				if (!viewState.getsubmenuOpen()) {
-					$scope.openSubmenu();
-				}
-				$scope.uttsList = newVal;
-			})
+			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
+			// var prom = ;
+			// // console.log($scope.uttsList)
+
 
 		});
 
@@ -117,6 +113,15 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('newUserLoggedOn', function(evt, name) {
 			$scope.curUserName = name;
+			Iohandlerservice.wsH.getUsrUttList(name).then(function(newVal) {
+				// console.log(newVal[0]);
+				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
+				$scope.curUtt = newVal[0];
+				if (!viewState.getsubmenuOpen()) {
+					$scope.openSubmenu();
+				}
+				$scope.uttsList = newVal;
+			})
 		});
 
 

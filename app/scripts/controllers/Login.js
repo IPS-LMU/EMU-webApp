@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('LoginCtrl', function($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice) {
+	.controller('LoginCtrl', function($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState) {
 		$scope.username = '';
 		$scope.passcode = '';
 		$scope.loginError = '';
@@ -12,7 +12,14 @@ angular.module('emulvcApp')
 				var filePath = 'testData/' + $scope.username + '.json';
 
 				Iohandlerservice.wsH.getUsrUttList($scope.username).then(function(usrRes) {
-					console.log(usrRes);
+					if(usrRes === 'USER NOT FOUND'){
+
+						$scope.loginError = usrRes;
+					}else{
+						$scope.loginError = 'USER FOUND';
+						$rootScope.$broadcast('newUserLoggedOn', $scope.username);
+						$scope.cancel();
+					};
 				});
 
 				// $http.get just used as a test if file exists 
@@ -29,4 +36,15 @@ angular.module('emulvcApp')
 				$scope.loginError = 'WRONG PASSCODE!';
 			}
 		}
+
+		//
+		$scope.cursorInTextField = function() {
+			viewState.focusInTextField = true;
+			// console.log("CURSOR");
+		};
+
+		//
+		$scope.cursorOutOfTextField = function() {
+			viewState.focusInTextField = false;
+		};
 	});
