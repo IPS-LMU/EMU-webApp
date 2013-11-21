@@ -22,6 +22,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.windowWidth = $window.outerWidth;
 		angular.element($window).bind('resize',function(){
 		    $scope.refreshTimeline();
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 		    $scope.windowWidth = $window.outerWidth;
 		    $scope.$apply('windowWidth');
 		});
@@ -47,7 +48,6 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for connectedToWSserver
 		 */
 		$scope.$on('connectedToWSserver', function(evt, type, data) {
-			console.log('connectedToWSserver');
 			// TODO hardcode removal of save / load/ manipulation buttons 
 
 			$scope.showDropZone = false;
@@ -55,7 +55,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// Check if server speaks emuLVC
 			Iohandlerservice.wsH.getProtocol().then(function(res) {
 				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
-					console.log('we speak the same protocol!!');
+					//console.log('we speak the same protocol!!');
 					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
 						ConfigProviderService.vals = newVal;
 					});
@@ -179,7 +179,6 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.handleConfigLoaded = function() {
 
 			// for develment
-			console.log(ConfigProviderService.vals.main.develMode)
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}

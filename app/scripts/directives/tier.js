@@ -71,7 +71,7 @@ angular.module('emulvcApp')
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
 					
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx,tierDetails.TierName,'(' + tierDetails.type + ')',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,true);
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx,tierDetails.TierName,'(' + tierDetails.type + ')',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
 
 					var segMId = viewState.getcurMouseSegmentId();

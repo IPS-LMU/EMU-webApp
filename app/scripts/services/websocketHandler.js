@@ -13,6 +13,9 @@ angular.module('emulvcApp')
 
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
+		
+		var promises = [];
+		
 		////////////////////////////
 		// handle received functions
 
@@ -65,7 +68,7 @@ angular.module('emulvcApp')
 			// If an object exists with callback_id in our callbacks object, resolve it
 			if (callbacks.hasOwnProperty(messageObj.callback_id)) {
 				// console.log(callbacks[messageObj.callback_id]);
-				console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callback_id);
+				//console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callback_id);
 				switch (messageObj.type) {
 					case 'getESPSfile':
 						handleReceivedESPS(messageObj.fileName, messageObj.data);
@@ -193,8 +196,8 @@ angular.module('emulvcApp')
 		// ws request for saving ssff file
 		Service.saveSSFFfile = function(usrName, ssffJSO) {
 			var buf = Ssffparserservice.jso2ssff(ssffJSO);
-			console.log(usrName);
-			console.log(buf);
+			//console.log(usrName);
+			//console.log(buf);
 			var binary = '';
 			var bytes = new Uint8Array(buf);
 			var len = bytes.byteLength;
@@ -202,7 +205,7 @@ angular.module('emulvcApp')
 				binary += String.fromCharCode(bytes[i])
 			}
 			var base64 = window.btoa(binary);
-			console.log(base64);
+			//console.log(base64);
 
 			var request = {
 				type: 'saveSSFFfile',
@@ -221,7 +224,7 @@ angular.module('emulvcApp')
 
 			// load audio file first
 			curFile = Service.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-			console.log(curFile)
+			//console.log(curFile)
 			Service.getAudioFile(curFile).then(function(audioF) {
 				var arrBuff = stringToArrayBuffer(audioF);
 				var wavJSO = Wavparserservice.wav2jso(arrBuff);
@@ -243,9 +246,15 @@ angular.module('emulvcApp')
 			}).then(function() {
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+				    var deferred = $q.defer();
 					curFile = Service.findFileInUtt(utt, ext);
-					Service.getESPSfile(curFile);
+					var promise = Service.getESPSfile(curFile);
+					//promises.push(promise);
+					deferred.resolve(promise);
+
+					//console.log(curFile);
 				});
+				//$q.all(promises).then(function () { Service.sortESPS(); });
 			});
 
 		};

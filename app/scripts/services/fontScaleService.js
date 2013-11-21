@@ -16,7 +16,7 @@ angular.module('emulvcApp')
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);
 		    ctx.fillText(text, 0,15);
-		    sServObj.lastTextWidth = Math.ceil(ctx.measureText(text).width * scaleX);
+		    sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
 		    return img;
 		};	
 		sServObj.getLastImageWidth = function() {
@@ -30,6 +30,7 @@ angular.module('emulvcApp')
 		    ctx.font = (fontPxSize + 'px' + ' ' + fontType);
 		    ctx.fillStyle = color;
 		    ctx.scale(scaleX,scaleY);
+		    sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
 		    if(alignLeft) {
 		        ctx.fillText(text, 0,15);
 		        ctx.fillText(text2, 0,20+(fontPxSize));

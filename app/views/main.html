@@ -4,7 +4,7 @@
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
       <div class="utteranceOuter" ng-repeat="utt in uttsList">
-        <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);">{{utt.utteranceName}}</a>
+        <a class="utterance" title="{{utt.utteranceName}}" ng-click="menuUttClick(utt);"  tooltip-placement="right" data-tooltip="Load {{utt.utteranceName}}">{{utt.utteranceName}}</a>
            <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
             Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br />
             Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" >

@@ -161,6 +161,7 @@ angular.module('emulvcApp')
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					sServObj.httpGetESPS(curFile);
+					console.log(curFile);
 				});
 			});
 		};
