@@ -56,7 +56,7 @@ angular.module('emulvcApp')
 				time: new Date(),
 				cb: defer
 			};
-			request.callback_id = callbackId;
+			request.callbackID = callbackId;
 			// console.log('Sending request', request);
 			ws.send(JSON.stringify(request));
 			return defer.promise;
@@ -65,10 +65,10 @@ angular.module('emulvcApp')
 		function listener(data) {
 			var messageObj = data;
 			// console.log("Received data from websocket: ", messageObj);
-			// If an object exists with callback_id in our callbacks object, resolve it
-			if (callbacks.hasOwnProperty(messageObj.callback_id)) {
-				// console.log(callbacks[messageObj.callback_id]);
-				//console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callback_id);
+			// If an object exists with callbackID in our callbacks object, resolve it
+			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
+				// console.log(callbacks[messageObj.callbackID]);
+				// console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
 					case 'getESPSfile':
 						handleReceivedESPS(messageObj.fileName, messageObj.data);
@@ -78,9 +78,9 @@ angular.module('emulvcApp')
 						break;
 				}
 
-				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
+				$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
 
-				delete callbacks[messageObj.callback_id];
+				delete callbacks[messageObj.callbackID];
 			}
 		}
 

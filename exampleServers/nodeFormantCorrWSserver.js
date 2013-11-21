@@ -24,7 +24,7 @@ wss.on('connection', function(ws) {
 		// getProtocolType method
 		if (mJSO.type === 'getProtocol') {
 			ws.send(JSON.stringify({
-				'callback_id': mJSO.callback_id,
+				'callbackID': mJSO.callbackID,
 				'data': {
 					'protocol': 'emuLVC-websocket-protocol',
 					'version': '0.0.1'
@@ -35,7 +35,7 @@ wss.on('connection', function(ws) {
 		// getUserManagment method
 		if (mJSO.type === 'getDoUserManagement') {
 			ws.send(JSON.stringify({
-				'callback_id': mJSO.callback_id,
+				'callbackID': mJSO.callbackID,
 				'data': 'YES'
 			}), undefined, 0);
 		}
@@ -46,7 +46,7 @@ wss.on('connection', function(ws) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'data': 'USER NOT FOUND'
 					}), undefined, 0);
 					return;
@@ -56,7 +56,7 @@ wss.on('connection', function(ws) {
 					// curStrippedUttList = stripUttList(labelData);
 
 					ws.send(JSON.stringify({
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'dataType': 'uttList',
 						'data': labelData
 					}), undefined, 0);
@@ -78,7 +78,7 @@ wss.on('connection', function(ws) {
 					// curStrippedUttList = stripUttList(configData);
 
 					ws.send(JSON.stringify({
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'data': configData
 					}), undefined, 0);
 					// ws.send(labelData);
@@ -98,7 +98,7 @@ wss.on('connection', function(ws) {
 				} else {
 					ws.send(JSON.stringify({
 						'type': mJSO.type,
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'fileName': mJSO.fileName,
 						'data': data
 					}), undefined, 0);
@@ -117,7 +117,7 @@ wss.on('connection', function(ws) {
 						console.log('ERROR while saving uttList')
 						console.log(err);
 						ws.send(JSON.stringify({
-							'callback_id': mJSO.callback_id,
+							'callbackID': mJSO.callbackID,
 							'type': mJSO.type,
 							'status': 'FAILURE',
 							'details': 'error writing file'
@@ -125,7 +125,7 @@ wss.on('connection', function(ws) {
 					} else {
 						console.log("uttList saved");
 						ws.send(JSON.stringify({
-							'callback_id': mJSO.callback_id,
+							'callbackID': mJSO.callbackID,
 							'type': mJSO.type,
 							'status': 'SUCCESS'
 						}), undefined, 0);
@@ -134,7 +134,7 @@ wss.on('connection', function(ws) {
 
 			}
 			ws.send(JSON.stringify({
-				'callback_id': mJSO.callback_id,
+				'callbackID': mJSO.callbackID,
 				'type': mJSO.type,
 				'status': 'FAILURE',
 				'details': 'file not found'
@@ -149,7 +149,7 @@ wss.on('connection', function(ws) {
 					console.log('ERROR while saving ssff file')
 					console.log(err);
 					ws.send(JSON.stringify({
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'type': mJSO.type,
 						'status': 'FAILURE',
 						'details': 'error writing file'
@@ -157,7 +157,7 @@ wss.on('connection', function(ws) {
 				} else {
 					console.log('ssffFile saved');
 					ws.send(JSON.stringify({
-						'callback_id': mJSO.callback_id,
+						'callbackID': mJSO.callbackID,
 						'type': mJSO.type,
 						'status': 'SUCCESS'
 					}), undefined, 0);
