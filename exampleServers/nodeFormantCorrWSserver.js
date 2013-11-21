@@ -66,21 +66,20 @@ wss.on('connection', function(ws) {
 			});
 		}
 
-		// getUttList method
+		// getConfigFile method
 		if (mJSO.type === 'getConfigFile') {
 			fs.readFile(path2configFile, 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					return;
 				} else {
-					var labelData = JSON.parse(data);
-					curUttList = labelData;
-					// curStrippedUttList = stripUttList(labelData);
+					var configData = JSON.parse(data);
+					curUttList = configData;
+					// curStrippedUttList = stripUttList(configData);
 
 					ws.send(JSON.stringify({
 						'callback_id': mJSO.callback_id,
-						'dataType': 'uttList',
-						'data': labelData
+						'data': configData
 					}), undefined, 0);
 					// ws.send(labelData);
 				}
