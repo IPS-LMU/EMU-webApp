@@ -21,11 +21,34 @@ wss.on('connection', function(ws) {
 		// console.log('received: %s', message);
 		var mJSO = JSON.parse(message);
 
+		// getProtocolType method
+		if (mJSO.type === 'getProtocol') {
+			ws.send(JSON.stringify({
+				'callback_id': mJSO.callback_id,
+				'data': {
+					'protocol': 'emuLVC-websocket-protocol',
+					'version': '0.0.1'
+				}
+			}), undefined, 0);
+		}
+
+		// getUserManagment method
+		if (mJSO.type === 'getDoUserManagement') {
+			ws.send(JSON.stringify({
+				'callback_id': mJSO.callback_id,
+				'data': 'YES'
+			}), undefined, 0);
+		}
+
 		// getUttList method
 		if (mJSO.type === 'getUttList') {
 			fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
+					ws.send(JSON.stringify({
+						'callback_id': mJSO.callback_id,
+						'data': 'NO USER FOUND'
+					}), undefined, 0);
 					return;
 				} else {
 					var labelData = JSON.parse(data);
@@ -64,6 +87,7 @@ wss.on('connection', function(ws) {
 
 			});
 		}
+
 
 		// method like static get file method
 		if (mJSO.type === 'getSSFFfile' || mJSO.type === 'getESPSfile' || mJSO.type === 'getAudioFile') {
@@ -156,4 +180,3 @@ function stripUttList(list) {
 
 	})
 }
-

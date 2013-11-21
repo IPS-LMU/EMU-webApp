@@ -45,15 +45,31 @@ var MainCtrl = angular.module('emulvcApp')
 
 			$scope.showDropZone = false;
 
+			// Check if server speaks emuLVC
+			Iohandlerservice.wsH.getProtocol().then(function(res) {
+				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
+					console.log('we speak the same protocol!!');
+					Iohandlerservice.wsH.getDoUserManagement().then(function (manageRes) {
+						// if(manageRes === 'YES'){
+						// 	$scope.openModal('views/login.html', 'dialog', true);
+						// }
+					});
+
+				} else {
+					// disconnect from server and reopen connect dialog
+
+				}
+			});
+
 			var promConf = Iohandlerservice.wsH.getConfigFile();
 
 			promConf.then(function(newVal) {
 				ConfigProviderService.vals = newVal;
 			})
 
-			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
-			var prom = Iohandlerservice.wsH.getUsrUttList();
-			console.log($scope.uttsList)
+			$scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
+			var prom = Iohandlerservice.wsH.getUsrUttList('florian');
+			// console.log($scope.uttsList)
 			prom.then(function(newVal) {
 				// console.log(newVal[0]);
 				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);

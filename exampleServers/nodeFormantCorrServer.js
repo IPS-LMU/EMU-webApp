@@ -33,10 +33,10 @@ myHttp.createServer(function(request, response) {
 
 				filesys.writeFile(outputFilename, JSON.stringify(POST.data, null, 2), function(err) {
 					if (err) {
-						console.log('ERROR while saving uttList')
+						console.log('ERROR while saving uttList');
 						console.log(err);
 					} else {
-						console.log("uttList saved");
+						console.log('uttList saved');
 						response.writeHeader(204);
 						response.end();
 					}
@@ -48,7 +48,7 @@ myHttp.createServer(function(request, response) {
 				console.log(view);
 				filesys.writeFile(path2webApp + POST.fileURL, view, function(err) {
 					if (err) {
-						console.log('ERROR while saving uttList')
+						console.log('ERROR while saving uttList');
 						console.log(err);
 					} else {
 						console.log('ssffFile saved');

@@ -103,6 +103,26 @@ angular.module('emulvcApp')
 			return defer.promise;
 		};
 
+		// ws getProtocol
+		Service.getProtocol = function() {
+			var request = {
+				type: 'getProtocol'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
+		// ws getDoUserManagement
+		Service.getDoUserManagement = function() {
+			var request = {
+				type: 'getDoUserManagement'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
 		// ws getConfigFile
 		Service.getConfigFile = function() {
 			var request = {
@@ -114,10 +134,10 @@ angular.module('emulvcApp')
 		};
 
 		// ws getUsrUttList
-		Service.getUsrUttList = function() {
+		Service.getUsrUttList = function(usrName) {
 			var request = {
 				type: 'getUttList',
-				usrName: 'florian'
+				usrName: usrName
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
