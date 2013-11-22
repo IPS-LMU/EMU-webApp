@@ -25,9 +25,10 @@ angular.module('emulvcApp')
 				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].ssff);
 				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].tier);
 				--sServObj.myHistoryCounter;
-				
-			} else {
-				alert("no more history!");
+				return true;
+			}
+			else {
+			    return false;
 			}
 		};
 						

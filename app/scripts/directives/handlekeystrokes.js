@@ -121,7 +121,10 @@ angular.module('emulvcApp')
               }
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
-                HistoryService.goBackHistory();
+                if(HistoryService.goBackHistory()===false) {
+                    scope.openModal('views/error.html', 'dialog', false, "History Error","No more history saved");
+                }
+                
               }
               // backspace
               if (code === ConfigProviderService.vals.keyMappings.backspace) {
