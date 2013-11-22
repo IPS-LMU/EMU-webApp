@@ -280,9 +280,9 @@ module.exports = function(grunt) {
             'bower_components/**/*',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
-            'testData/{,*/}*.*',
             'configFiles/{,*/}*.*',
-            'scripts/workers/spectroWorker.js'
+            'scripts/workers/spectroWorker.js',
+            'styles/external/bootstrap-combined.min.css'
           ]
         }, {
           expand: true,
