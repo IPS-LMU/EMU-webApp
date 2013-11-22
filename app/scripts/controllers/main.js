@@ -8,7 +8,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.fontImage = fontScaleService;
 
 		$scope.lastkeycode = 'N/A';
-		$scope.uttsList = [];
+		$scope.uttList = [];
 
 		$scope.showDropZone = true;
 
@@ -83,8 +83,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('fileLoaded', function(evt, type, data) {
 			switch (type) {
 				case fileType.WAV:
-					$scope.uttsList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
-					Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/' + $scope.uttsList[0] + '/');
+					$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
+					Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
 					break;
 				case fileType.TEXTGRID:
 
@@ -98,9 +98,9 @@ var MainCtrl = angular.module('emulvcApp')
 		 * listen for newlyLoadedUttList
 		 */
 		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
-			$scope.uttsList = uttList;
-			Iohandlerservice.httpGetUtterence($scope.uttsList[0]);
-			$scope.curUtt = $scope.uttsList[0];
+			$scope.uttList = uttList;
+			Iohandlerservice.httpGetUtterence($scope.uttList[0]);
+			$scope.curUtt = $scope.uttList[0];
 			if (!viewState.getsubmenuOpen()) {
 
 				$scope.openSubmenu();
@@ -119,7 +119,7 @@ var MainCtrl = angular.module('emulvcApp')
 				if (!viewState.getsubmenuOpen()) {
 					$scope.openSubmenu();
 				}
-				$scope.uttsList = newVal;
+				$scope.uttList = newVal;
 			})
 		});
 
@@ -469,7 +469,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.saveMetaData = function() {
 
-			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttsList);
+			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttList);
 			$scope.modifiedMetaData = false;
 		};
 
