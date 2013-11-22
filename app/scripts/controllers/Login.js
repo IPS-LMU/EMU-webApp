@@ -21,17 +21,6 @@ angular.module('emulvcApp')
 						$scope.cancel();
 					};
 				});
-
-				// $http.get just used as a test if file exists 
-				// $http.get(filePath).success(function(data) {
-				// 	$scope.loginError = 'Loading data...';
-				// 	Iohandlerservice.httpGetUttJson(filePath);
-				// 	$rootScope.$broadcast('newUserLoggedOn', $scope.username);
-				// 	$scope.cancel();
-
-				// }).error(function() {
-				// 	$scope.loginError = 'WRONG USERNAME!!!';
-				// });
 			} else {
 				$scope.loginError = 'WRONG PASSCODE!';
 			}
