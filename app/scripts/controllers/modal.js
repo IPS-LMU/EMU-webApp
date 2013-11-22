@@ -1,4 +1,7 @@
-var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
+'use strict';
+
+var MainCtrl = angular.module('emulvcApp')
+	.controller('ModalInstanceCtrl', function($rootScope, $scope, $modalInstance,
 	modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState,
 	keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight) {
 
@@ -85,6 +88,4 @@ var ModalInstanceCtrl = function($rootScope, $scope, $modalInstance,
 		viewState.setmodalOpen(false);
 		$modalInstance.dismiss('ok');
 	};
-
-
-};
+});

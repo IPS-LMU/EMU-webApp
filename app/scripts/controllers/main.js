@@ -2,9 +2,10 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout, $window,
-		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
 
 		$scope.cps = ConfigProviderService;
+		$scope.history = HistoryService;
 		$scope.fontImage = fontScaleService;
 
 		$scope.lastkeycode = 'N/A';
@@ -31,6 +32,9 @@ var MainCtrl = angular.module('emulvcApp')
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
+		
+		// init history service
+		$scope.history.init();
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer');

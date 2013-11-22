@@ -1,12 +1,13 @@
 'use strict';
 
 var HandletiersCtrl = angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService) {
+	.controller('HandletiersCtrl', function($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService) {
 
 		$scope.vs = viewState;
 		$scope.fontImage = fontScaleService;
 		$scope.shs = Soundhandlerservice;
 		$scope.config = ConfigProviderService;
+		$scope.history = HistoryService;
 		$scope.testValue = '';
 		$scope.message = '';
 		$scope.myHistory = [];
@@ -179,6 +180,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 						if (id == i) {
 							evt.label = name;
 							$scope.history();
+							//$scope.history.history($scope.tierDetails.data);
 						}
 						++i;
 					});
