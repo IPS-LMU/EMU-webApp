@@ -1,5 +1,6 @@
 var fs = require('fs');
 var userName = 'klaus';
+var os = require('os');
 
 var labelData;
 
@@ -14,6 +15,8 @@ var WebSocketServer = require('ws').Server,
 	wss = new WebSocketServer({
 		port: portNr
 	});
+
+console.log('websocketserver running @: ws://' + os.hostname() + ':' + portNr);
 
 wss.on('connection', function(ws) {
 
