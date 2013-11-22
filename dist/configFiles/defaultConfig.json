@@ -21,6 +21,8 @@
         "backspace": 8,
         "tab": 9,
         "enter": 13,
+        "shift": 16,
+        "alt": 18,
         "esc": 27,
         "history": 90,
         "selectFirstContourCorrectionTool": 49,
@@ -81,7 +83,9 @@
     "restrictions": {
         "sortLabels": false,
         "editItemSize": true,
+        "editItemName": true,
         "editItemBoundaries": true,
+        "deleteItem": false,
         "drawCrossHairs": true
     },
     "activeButtons": {
