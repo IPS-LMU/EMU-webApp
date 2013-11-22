@@ -63,10 +63,7 @@ emuLVC.min.css
 *.xml
 *.gz
 
-# build dir # 
-#########
-dist/
 
-# build dir # 
+# data dir # 
 #########
 app/testData/bigDB
