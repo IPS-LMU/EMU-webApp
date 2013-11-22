@@ -77,7 +77,7 @@ module.exports = function(grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0'
+        hostname: 'localhost'
       },
       livereload: {
         options: {
@@ -191,7 +191,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
+            '<%= yeoman.dist %>/scripts/*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/styles/fonts/*'
@@ -282,7 +282,7 @@ module.exports = function(grunt) {
             'styles/fonts/*',
             'testData/{,*/}*.*',
             'configFiles/{,*/}*.*',
-            'scripts/services/spectroWorker.js'
+            'scripts/workers/spectroWorker.js'
           ]
         }, {
           expand: true,

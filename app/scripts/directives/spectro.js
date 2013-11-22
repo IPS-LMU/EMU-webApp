@@ -19,7 +19,7 @@ angular.module('emulvcApp')
                 var pcmperpixel = 0;
                 window.URL = window.URL || window.webkitURL;
                 var devicePixelRatio = window.devicePixelRatio || 1;
-                var spectroWorker = 'scripts/services/spectroWorker.js';
+                var spectroWorker = 'scripts/workers/spectroWorker.js';
                 var primeWorker = new Worker(spectroWorker);
                 var imageCache = null;
                 var imageCacheCounter = 0;
