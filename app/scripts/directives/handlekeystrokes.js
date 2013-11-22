@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('handleglobalkeystrokes', function(viewState, Soundhandlerservice, ConfigProviderService) {
+  .directive('handleglobalkeystrokes', function(viewState, Soundhandlerservice, ConfigProviderService, HistoryService) {
     return {
       restrict: 'A',
       link: function postLink(scope, element, attrs) {
@@ -121,7 +121,7 @@ angular.module('emulvcApp')
               }
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
-                $('#HandletiersCtrl').scope().goBackHistory();
+                HistoryService.goBackHistory();
               }
               // backspace
               if (code === ConfigProviderService.vals.keyMappings.backspace) {

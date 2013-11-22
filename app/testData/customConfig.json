@@ -81,6 +81,7 @@
     "restrictions": {
         "sortLabels": false,
         "editItemSize": true,
+        "editItemName": true,
         "editItemBoundaries": true,
         "drawCrossHairs": true
     },

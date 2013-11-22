@@ -7,28 +7,26 @@ angular.module('emulvcApp')
 		
 		sServObj.myHistory = undefined;
 		sServObj.myHistoryCounter = undefined;
-		sServObj.jsonTier = undefined;
-		sServObj.jsonSSFF = undefined;
+		sServObj.session = undefined;
 		
 		
 		sServObj.init = function() {
-			//sServObj.myHistory[sServObj.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails.data);
 			sServObj.myHistoryCounter = 0;
 			sServObj.myHistory = new Array();
 		};		
 
+
 		sServObj.history = function() {
-		    sServObj.myHistory[sServObj.myHistoryCounter] = new Array();
-			sServObj.myHistory[sServObj.myHistoryCounter][0] = Ssffdataservice.jsonData();
-			sServObj.myHistory[sServObj.myHistoryCounter][1] = Tierdataservice.jsonData();
-		    ++sServObj.myHistoryCounter;			
+			sServObj.myHistory[sServObj.myHistoryCounter] = angular.copy({ ssff: Ssffdataservice.getData(), tier: Tierdataservice.getData() });
+			++sServObj.myHistoryCounter;
+			console.log(sServObj.myHistory);
 		};
 
 		sServObj.goBackHistory = function() {
-			if (sServObj.myHistoryCounter >= 0) {
+			if (sServObj.myHistoryCounter > 0) {
+				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-1].ssff);
+				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-1].tier);
 				--sServObj.myHistoryCounter;
-				Ssffdataservice.restoreJsonData($scope.myHistory[sServObj.myHistoryCounter][0]);
-				Tierdataservice.restoreJsonData($scope.myHistory[sServObj.myHistoryCounter][1]);
 				
 			} else {
 				alert("no more history!");

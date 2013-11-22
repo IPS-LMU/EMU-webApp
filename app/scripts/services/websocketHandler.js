@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid) {
 		// We return this object to anything injecting our service
 		var Service = {};
 		// Keep all pending requests here until they get responses
@@ -258,7 +258,7 @@ angular.module('emulvcApp')
 
 					//console.log(curFile);
 				});
-				//$q.all(promises).then(function () { Service.sortESPS(); });
+				//$q.all(promises).then(function () { HistoryService.history(); });
 			});
 
 		};

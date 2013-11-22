@@ -106,7 +106,6 @@ var MainCtrl = angular.module('emulvcApp')
 			Iohandlerservice.httpGetUtterence($scope.uttList[0]);
 			$scope.curUtt = $scope.uttList[0];
 			if (!viewState.getsubmenuOpen()) {
-
 				$scope.openSubmenu();
 			}
 		});
