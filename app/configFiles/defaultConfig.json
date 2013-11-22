@@ -85,6 +85,7 @@
         "editItemSize": true,
         "editItemName": true,
         "editItemBoundaries": true,
+        "deleteItem": false,
         "drawCrossHairs": true
     },
     "activeButtons": {

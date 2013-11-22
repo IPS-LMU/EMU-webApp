@@ -130,14 +130,14 @@ angular.module('emulvcApp')
                 
               }
               // backspace
-              if (code === ConfigProviderService.vals.keyMappings.backspace) {
+              if (code === ConfigProviderService.vals.keyMappings.backspace && ConfigProviderService.vals.restrictions.deleteItem) {
                 var seg = viewState.getcurClickSegments();
                 var toDelete = "";
                 for (var i = 0; i < seg.length; i++) {
                   toDelete += seg[i].label + ",";
                 }
                 toDelete = toDelete.substring(0, toDelete.length - 1);
-                scope.openModal('views/deleteSegment.html', 'dialogSmall', toDelete, toDelete);
+                scope.openModal('views/deleteSegment.html', 'dialogSmall', false,"Really Delete", toDelete);
               }
 
               if (!e.metaKey) {
