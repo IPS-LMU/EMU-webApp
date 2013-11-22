@@ -1,5 +1,5 @@
 [{
-  "utteranceName": "VP0700081s_naKU_01",
+  "name": "VP0700081s_naKU_01",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_01.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_01.fms",
@@ -10,7 +10,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_02",
+  "name": "VP0700081s_naKU_02",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_02.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_02.fms",
@@ -21,7 +21,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_03",
+  "name": "VP0700081s_naKU_03",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_03.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_03.fms",
@@ -32,7 +32,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_04",
+  "name": "VP0700081s_naKU_04",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_04.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_04.fms",
@@ -43,7 +43,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_05",
+  "name": "VP0700081s_naKU_05",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_05.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_05.fms",
@@ -54,7 +54,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_06",
+  "name": "VP0700081s_naKU_06",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_06.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_06.fms",
@@ -65,7 +65,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_07",
+  "name": "VP0700081s_naKU_07",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_07.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_07.fms",
@@ -76,7 +76,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_08",
+  "name": "VP0700081s_naKU_08",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_08.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_08.fms",
@@ -87,7 +87,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_09",
+  "name": "VP0700081s_naKU_09",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_09.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_09.fms",
@@ -98,7 +98,7 @@
   "finishedEditing": false,
   "comment": ""
 }, {
-  "utteranceName": "VP0700081s_naKU_10",
+  "name": "VP0700081s_naKU_10",
   "files": [
     "bigDB/Emu3-2/VP0700081s_naKU_10.wav",
     "bigDB/Emu3-2/VP0700081s_naKU_10.fms",

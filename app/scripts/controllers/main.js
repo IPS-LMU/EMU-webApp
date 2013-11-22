@@ -83,7 +83,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.$on('fileLoaded', function(evt, type, data) {
 			switch (type) {
 				case fileType.WAV:
-					$scope.uttsList[0].utteranceName = data.name.substr(0, data.name.lastIndexOf("."));
+					$scope.uttsList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
 					Iohandlerservice.httpGetUtterence($scope.uttsList[0], 'testData/' + $scope.uttsList[0] + '/');
 					break;
 				case fileType.TEXTGRID:
@@ -253,7 +253,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.menuUttClick = function(utt) {
 			if ($scope.modifiedCurSSFF) {
 				$scope.lastclickedutt = utt;
-				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.utteranceName + '. Do you wish to save them?');
+				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				// Iohandlerservice.httpGetUtterence(utt);
@@ -376,7 +376,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.uttIsDisabled = function(utt) {
-			if (utt.utteranceName === $scope.curUtt.utteranceName) {
+			if (utt.name === $scope.curUtt.name) {
 				return false;
 			} else {
 				return true;
@@ -401,8 +401,8 @@ var MainCtrl = angular.module('emulvcApp')
 
 			}
 
-			// console.log(utt.utteranceName)
-			if (utt.utteranceName === $scope.curUtt.utteranceName) {
+			// console.log(utt.name)
+			if (utt.name === $scope.curUtt.name) {
 				return curColor
 			}
 		};
