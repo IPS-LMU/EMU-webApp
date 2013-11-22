@@ -65,7 +65,7 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.selectFourthContourCorrectionTool) {
                 viewState.curCorrectionToolNr = 4;
               }
-              // selectFourthContourCorrectionTool
+              // selectNOContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool) {
                 viewState.curCorrectionToolNr = undefined;
               }
