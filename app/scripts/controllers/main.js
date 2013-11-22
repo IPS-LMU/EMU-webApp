@@ -43,6 +43,8 @@ var MainCtrl = angular.module('emulvcApp')
 		ConfigProviderService.httpGetConfig();
 		
 		// init history service
+		
+		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
 		$scope.history.init();
 
 		// init pure jquery dragbar
