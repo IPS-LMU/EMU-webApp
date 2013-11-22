@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive("trackmouseintier", function() {
+  .directive("trackmouseintier", function(ConfigProviderService) {
     return {
       restrict: "A",
       link: function(scope, element) {
@@ -67,7 +67,6 @@ angular.module('emulvcApp')
                   moveLine = false;
                 }
                 if (scope.config.vals.restrictions.editItemSize && event.altKey ) {
-                  console.log("hier");
                   scope.vs.deleteEditArea();
                   scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                   lastPCM = thisPCM;

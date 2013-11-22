@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService() {
+	.service('HistoryService', function HistoryService(Ssffdataservice, Tierdataservice) {
 		// shared service object
 		var sServObj = {};
 		
@@ -17,18 +17,18 @@ angular.module('emulvcApp')
 			sServObj.myHistory = new Array();
 		};		
 
-		sServObj.history = function(tierData,ssffData) {
+		sServObj.history = function() {
 		    sServObj.myHistory[sServObj.myHistoryCounter] = new Array();
-			sServObj.myHistory[sServObj.myHistoryCounter][0] = jQuery.extend(true, {}, tierData);
-			sServObj.myHistory[sServObj.myHistoryCounter][1] = jQuery.extend(true, {}, ssffData);
+			sServObj.myHistory[sServObj.myHistoryCounter][0] = Ssffdataservice.jsonData();
+			sServObj.myHistory[sServObj.myHistoryCounter][1] = Tierdataservice.jsonData();
 		    ++sServObj.myHistoryCounter;			
 		};
 
 		sServObj.goBackHistory = function() {
 			if (sServObj.myHistoryCounter >= 0) {
 				--sServObj.myHistoryCounter;
-				sServObj.jsonTier = jQuery.extend(true, {}, $scope.myHistory[sServObj.myHistoryCounter][0]);
-				sServObj.jsonSSFF = jQuery.extend(true, {}, $scope.myHistory[sServObj.myHistoryCounter][1]);
+				Ssffdataservice.restoreJsonData($scope.myHistory[sServObj.myHistoryCounter][0]);
+				Tierdataservice.restoreJsonData($scope.myHistory[sServObj.myHistoryCounter][1]);
 				
 			} else {
 				alert("no more history!");

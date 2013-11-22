@@ -80,8 +80,8 @@
     },
     "restrictions": {
         "sortLabels": false,
-        "changeLabels": true,
-        "editItemBoundaries": false,
+        "editItemSize": true,
+        "editItemBoundaries": true,
         "drawCrossHairs": true
     },
     "activeButtons": {
