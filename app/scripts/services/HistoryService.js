@@ -21,7 +21,7 @@ angular.module('emulvcApp')
 		};
 
 		sServObj.goBackHistory = function() {
-			if (sServObj.myHistoryCounter > 0) {
+			if (sServObj.myHistoryCounter > 1) {
 				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].ssff);
 				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].tier);
 				--sServObj.myHistoryCounter;

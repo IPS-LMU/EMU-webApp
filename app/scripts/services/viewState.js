@@ -618,7 +618,6 @@ angular.module('emulvcApp')
       var newStartS, newEndS;
       var tierName = this.getcurMouseTierName();
       var segMId = this.getcurMouseSegmentId();
-      console.log(tierName);
 
       // get cur mouse move tier details
       var curTier;

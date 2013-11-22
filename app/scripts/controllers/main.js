@@ -27,6 +27,15 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.windowWidth = $window.outerWidth;
 			$scope.$apply('windowWidth');
 		});
+		
+		angular.element($window).bind('keyup', function(e) {
+			if(e.keyCode==ConfigProviderService.vals.keyMappings.shift) {
+			    HistoryService.history();
+			}
+			if(e.keyCode==ConfigProviderService.vals.keyMappings.alt) {
+				HistoryService.history();
+			}			
+		});		
 
 		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
