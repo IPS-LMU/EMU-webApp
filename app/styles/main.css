@@ -39,7 +39,7 @@ li {
     display: inline-block;
     overflow-y:auto;
     width: 60%;
-    height: 60%;
+    height: 350px;
     margin-left: -30%;
 }
 
@@ -50,8 +50,7 @@ li {
     overflow-y:auto;
     width: 38%;
     max-width: 38%;
-    height: 24%;
-    max-height: 24%;
+    height: 200px;
     margin-left: -19%;
 }
 
@@ -73,6 +72,17 @@ li {
     color: #353535;    
 }
 
+.dialog h3 {
+    position: fixed;
+    width: 60%;
+    height: 75px;
+    font-size: 15px;
+    background: #0DC5FF;
+    box-shadow: 0px -3px 5px #000;
+    color: #353535;  
+    margin-top: 315px;  
+}
+
 .dialogSmall h2 {
     position: fixed;
     width: 38%;
@@ -80,6 +90,18 @@ li {
     background: #0DC5FF;
     box-shadow: 0px 3px 5px #000;
     color: #353535;    
+}
+
+
+.dialogSmall h3 {
+    position: fixed;
+    width: 38%;
+    height: 45px;
+    font-size: 15px;
+    background: #0DC5FF;
+    box-shadow: 0px -3px 5px #000;
+    color: #353535;  
+    margin-top: 155px;  
 }
 
 
@@ -369,6 +391,8 @@ div.center {
     z-index: 0; 
     
 }
+
+
 .resize, .delete, .save{
     margin: 0px;
     padding: 0px;

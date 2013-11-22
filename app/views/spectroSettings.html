@@ -1,5 +1,10 @@
  
  <h2>Settings</h2>
+    <!-- close button -->
+  <h3>
+      <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
+      <button ng-click="saveSpectroSettings();" id="dialogButton" class="mini-btn-dialog">Save</button>
+  </h3> 
  <div>&nbsp;</div>
  <div>
     <p>View Range (Hz)</p>
@@ -32,9 +37,6 @@
       <option value="TRIANGULAR" ng-selected="selected(10);">TRIANGULAR</option>	
     </select> 
  </div>
- <div>
-  <button ng-click="cancel();" id="dialogButton" class="dialogButton">Cancel</button>
-  <button ng-click="saveSpectroSettings();" id="dialogButton" class="dialogButton">OK</button>
-  </div>
+
   <div></div>
   

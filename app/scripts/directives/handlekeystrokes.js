@@ -122,7 +122,10 @@ angular.module('emulvcApp')
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
                 if(HistoryService.goBackHistory()===false) {
-                    scope.openModal('views/error.html', 'dialog', false, "History Error","No more history saved");
+                    if(viewState.getmodalOpen()===false) {
+                        scope.openModal('views/error.html', 'dialogSmall', false, "History Error","No more history saved");
+                    }
+                    
                 }
                 
               }

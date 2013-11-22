@@ -95,7 +95,7 @@
 }
 
 
-.mini-btn {
+.mini-btn,.mini-btn-dialog {
     display: inline-block;
     /*background: #353535;*/
     background: transparent;
@@ -113,9 +113,13 @@
     padding: 1px;
     height: 30px;
     line-height: 12px;
-    float:left;
+
     text-align:center;
     width: 9%;    
+}
+
+.mini-btn {
+    float:left;
 }
 
 .mini-btn:hover {
