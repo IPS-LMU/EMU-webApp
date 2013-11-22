@@ -5,16 +5,14 @@ angular.module('emulvcApp')
 		// shared service object
 		var sServObj = {};
 		
-		sServObj.myHistory = undefined;
-		sServObj.myHistoryCounter = undefined;
+		sServObj.myHistory = new Array();
+		sServObj.myHistoryCounter = 0;
 		sServObj.session = undefined;
 		
 		
 		sServObj.init = function() {
-			sServObj.myHistoryCounter = 0;
-			sServObj.myHistory = new Array();
+			sServObj.history();
 		};		
-
 
 		sServObj.history = function() {
 			sServObj.myHistory[sServObj.myHistoryCounter] = angular.copy({ ssff: Ssffdataservice.getData(), tier: Tierdataservice.getData() });
@@ -24,8 +22,8 @@ angular.module('emulvcApp')
 
 		sServObj.goBackHistory = function() {
 			if (sServObj.myHistoryCounter > 0) {
-				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-1].ssff);
-				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-1].tier);
+				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].ssff);
+				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter-2].tier);
 				--sServObj.myHistoryCounter;
 				
 			} else {
