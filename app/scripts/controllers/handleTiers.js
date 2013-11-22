@@ -16,15 +16,15 @@ var HandletiersCtrl = angular.module('emulvcApp')
 
 		$scope.sortableOptions = {
 			update: function(e, ui) {
-			    if(!ConfigProviderService.vals.restrictions.sortLabels) {
-                    ui.item.parent().sortable('cancel');
-                }
+				if (!ConfigProviderService.vals.restrictions.sortLabels) {
+					ui.item.parent().sortable('cancel');
+				}
 			},
 			start: function(e, ui) {
-				$scope.deleteEditArea();			
+				$scope.deleteEditArea();
 			},
-			create: function( event, ui ) {
-			    $('#allowSortable').sortable('disable');
+			create: function(event, ui) {
+				$('#allowSortable').sortable('disable');
 			},
 			axis: 'y',
 			placeholder: "tierPlaceholder"
@@ -46,14 +46,37 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				})
 				// console.log(JSON.stringify($scope.tierDetails, undefined, 2));
 			}
+			$scope.sortTiers();
 		});
-		
+
 		/**
 		 * clear tierDetails when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function(evt) {
 			$scope.tierDetails.data = {};
 		});
+
+		//
+		$scope.sortTiers = function() {
+			var sortedTiers = [];
+			var sortedFileInfos = [];
+			var searchOrd;
+
+			ConfigProviderService.vals
+			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(curOrd, curOrdIdx) {
+				// console.log(curOrdIdx)
+				searchOrd = curOrd.split('.')[1];
+				$scope.tierDetails.data.tiers.forEach(function(t, tIdx) {
+					if(t.TierName.split('_')[1] === searchOrd){
+						sortedTiers.push(t);
+						sortedFileInfos.push($scope.tierDetails.data.fileInfos[tIdx]);
+					};
+				});
+			})
+			$scope.tierDetails.data.tiers = sortedTiers;
+			$scope.tierDetails.data.fileInfos = sortedFileInfos;
+		};
+
 
 		$scope.updateAllLabels = function() {
 			if ($scope.testValue !== '') {
@@ -62,16 +85,16 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				});
 			}
 		};
-		
+
 		$scope.cursorInTextField = function() {
 			viewState.focusInTextField = true;
 		};
-	
+
 		$scope.cursorOutOfTextField = function() {
 			viewState.focusInTextField = false;
 		};
-		
-		
+
+
 		$scope.getTierLength = function() {
 			return $scope.tierDetails.data.tiers.length;
 		};
@@ -97,7 +120,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				} else {
 					viewState.setEditing(true);
 					viewState.openEditArea();
-					
+
 				}
 			}
 		};
