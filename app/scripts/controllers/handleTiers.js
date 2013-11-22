@@ -86,21 +86,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			return t;
 		};
 
-		$scope.history = function() {
-			$scope.myHistory[$scope.myHistoryCounter] = jQuery.extend(true, {}, $scope.tierDetails.data);
-			++$scope.myHistoryCounter;
-		};
-
-		$scope.goBackHistory = function() {
-			if ($scope.myHistoryCounter >= 1) {
-				//delete $scope.tierDetails.data;
-				$scope.tierDetails.data = jQuery.extend(true, {}, $scope.myHistory[$scope.myHistoryCounter - 2]);
-				--$scope.myHistoryCounter;
-			} else {
-				alert("no more history!");
-			}
-		};
-
 		$scope.renameLabel = function() {
 			if (viewState.isEditing()) {
 				$scope.rename(viewState.getcurClickTierName(), viewState.getlastID(), $("." + viewState.getlasteditArea()).val());
@@ -178,7 +163,6 @@ var HandletiersCtrl = angular.module('emulvcApp')
 					angular.forEach(t.events, function(evt) {
 						if (id == i) {
 							evt.label = name;
-							//$scope.history();
 							HistoryService.history();
 						}
 						++i;
@@ -194,8 +178,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				}
 				++x;
 			});
-			//$scope.history();
-			$scope.history.history();
+			HistoryService.history();
 		};
 
 		$scope.renameTier = function(newName) {
@@ -212,8 +195,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 						t.TierName = newName;
 					}
 				});
-				//$scope.history();
-				$scope.history.history();
+				HistoryService.history();
 			} else {
 				$scope.openModal('views/error.html', 'dialog', 'Rename Error', 'This Tiername already exists ! Please choose another name !');
 			}
@@ -239,8 +221,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 					viewState.setcurClickSegment(t.events[toDelete[0] - 1], toDelete[0] - 1);
 				}
 			});
-			//$scope.history();
-			$scope.history.history();
+			HistoryService.history();
 
 		};
 
