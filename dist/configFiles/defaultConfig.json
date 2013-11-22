@@ -29,7 +29,7 @@
         "selectSecondContourCorrectionTool": 50,
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
-        "selectNoContourCorrectionTool": 192,
+        "selectNoContourCorrectionTool": 48,
         "tierUp": 38,
         "tierDown": 40
     },
