@@ -2,7 +2,7 @@
     "main": {
         "mode": "server",
         "osciSpectroZoomFactor": 2,
-        "develMode": true,
+        "develMode": false,
         "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
