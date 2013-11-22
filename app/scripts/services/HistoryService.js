@@ -15,9 +15,19 @@ angular.module('emulvcApp')
 		};		
 
 		sServObj.history = function() {
-			sServObj.myHistory[sServObj.myHistoryCounter] = angular.copy({ ssff: Ssffdataservice.getData(), tier: Tierdataservice.getData() });
-			++sServObj.myHistoryCounter;
-			console.log(sServObj.myHistory);
+		    var newClone = angular.copy({ ssff: Ssffdataservice.getData(), tier: Tierdataservice.getData() });
+		    if(sServObj.myHistoryCounter > 0) {
+		        var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter-1]);
+		        if(angular.equals(newClone,oldClone)===false) {
+		           sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
+		           ++sServObj.myHistoryCounter;
+		        }		        
+		    }
+		    else {
+		        sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
+		        ++sServObj.myHistoryCounter;
+		    }
+		    
 		};
 
 		sServObj.goBackHistory = function() {
