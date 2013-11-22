@@ -18,13 +18,13 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
-		
+
 		$scope.windowWidth = $window.outerWidth;
-		angular.element($window).bind('resize',function(){
-		    $scope.refreshTimeline();
-		    $('#HandletiersCtrl').scope().deleteEditArea();
-		    $scope.windowWidth = $window.outerWidth;
-		    $scope.$apply('windowWidth');
+		angular.element($window).bind('resize', function() {
+			$scope.refreshTimeline();
+			$('#HandletiersCtrl').scope().deleteEditArea();
+			$scope.windowWidth = $window.outerWidth;
+			$scope.$apply('windowWidth');
 		});
 
 		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
@@ -59,30 +59,22 @@ var MainCtrl = angular.module('emulvcApp')
 					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
 						ConfigProviderService.vals = newVal;
 					});
+					if (!ConfigProviderService.vals.main.develMode) {
+						Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
+							if (manageRes === 'YES') {
+								$scope.openModal('views/login.html', 'dialog', true);
+								// Iohandlerservice.wsH.getUsrUttList('florian');
+							}
+						});
+					} else {
+						$scope.$broadcast('newUserLoggedOn', 'florian');
 
-					Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
-						if (manageRes === 'YES') {
-							$scope.openModal('views/login.html', 'dialog', true);
-						}
-					});
-
+					}
 				} else {
 					// disconnect from server and reopen connect dialog
 
 				}
 			});
-
-			// var promConf = Iohandlerservice.wsH.getConfigFile();
-
-			// promConf.then(function(newVal) {
-			// 	ConfigProviderService.vals = newVal;
-			// })
-
-			// $scope.uttsList = Iohandlerservice.wsH.getUsrUttList();
-			// var prom = ;
-			// // console.log($scope.uttsList)
-
-
 		});
 
 		/**
@@ -203,11 +195,9 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 
 			if (ConfigProviderService.vals.main.develMode) {
-				$scope.curUserName = 'florian';
-				// Iohandlerservice.httpGetUttJson('testData/' + $scope.curUserName + '.json');
-			} else {
-				// open login modal
-				$scope.openModal('views/login.html', 'dialog', true);
+				console.log("DEVEL");
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
+				// $scope.curUserName = 'florian';
 			}
 
 			// init loading of files for testing
@@ -226,9 +216,9 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 
 			// connect to ws server if it says so in config
-			if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
-			}
+			// if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
+			// 	Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
+			// }
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);

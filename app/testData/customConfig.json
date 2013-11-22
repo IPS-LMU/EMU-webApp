@@ -3,7 +3,7 @@
         "mode": "server",
         "osciSpectroZoomFactor": 2,
         "develMode": true,
-        "wsServerUrl": "ws://localhost:9001"
+        "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
         "openFile" : -1,
