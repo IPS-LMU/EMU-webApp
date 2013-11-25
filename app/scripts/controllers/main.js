@@ -82,7 +82,7 @@ var MainCtrl = angular.module('emulvcApp')
 							}
 						});
 					} else {
-						$scope.$broadcast('newUserLoggedOn', 'florian');
+						$scope.$broadcast('newUserLoggedOn', 'user1');
 
 					}
 				} else {

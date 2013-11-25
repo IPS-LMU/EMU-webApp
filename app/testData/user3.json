@@ -1,22 +1,111 @@
 [{
-	"name": "msajc022",
-	"files": [
-		"testData/msajc022/msajc022.wav", "testData/msajc022/msajc022.fms", "testData/msajc022/msajc022.lab", "testData/msajc022/msajc022.tone"
-	],
-	"finishedEditing": false,
-	"comment": ""
+  "name": "VP0200031s_naKA_01",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_01.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_01.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_01.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_01.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_01.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
 }, {
-	"name": "msajc023",
-	"files": [
-		"testData/msajc023/msajc023.wav", "testData/msajc023/msajc023.fms", "testData/msajc023/msajc023.lab", "testData/msajc023/msajc023.tone"
-	],
-	"finishedEditing": false,
-	"comment": ""
+  "name": "VP0200031s_naKA_02",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_02.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_02.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
 }, {
-	"name": "msajc057",
-	"files": [
-		"testData/msajc057/msajc057.wav", "testData/msajc057/msajc057.fms", "testData/msajc057/msajc057.lab", "testData/msajc057/msajc057.tone"
-	],
-	"finishedEditing": false,
-	"comment": ""
+  "name": "VP0200031s_naKA_03",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_03.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_03.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_03.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_03.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_03.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_04",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_04.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_04.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_04.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_04.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_04.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_05",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_05.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_05.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_05.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_05.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_05.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_06",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_06.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_06.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_06.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_06.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_06.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_02",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_02.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_02.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_02.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_08",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_08.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_08.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_08.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_08.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_08.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_09",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_09.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_09.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_09.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_09.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_09.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
+}, {
+  "name": "VP0200031s_naKA_10",
+  "files": [
+    "bigDB/Emu3-2/VP0200031s_naKA_10.wav",
+    "bigDB/Emu3-2/VP0200031s_naKA_10.fms",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_10.ORT",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_10.MAU",
+    "bigDB/Emu3-2/labs/VP0200031s_naKA_10.phon"
+  ],
+  "finishedEditing": false,
+  "comment": ""
 }]
