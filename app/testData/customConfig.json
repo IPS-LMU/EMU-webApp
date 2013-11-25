@@ -2,7 +2,7 @@
     "main": {
         "mode": "server",
         "osciSpectroZoomFactor": 2,
-        "develMode": true,
+        "develMode": false,
         "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
@@ -82,9 +82,9 @@
     },
     "restrictions": {
         "sortLabels": false,
-        "editItemSize": true,
-        "editItemName": true,
-        "editItemBoundaries": true,
+        "editItemSize": false,
+        "editItemName": false,
+        "editItemBoundaries": false,
         "deleteItem": false,
         "drawCrossHairs": true
     },
