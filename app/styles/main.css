@@ -68,7 +68,7 @@ li {
     width: 60%;
     font-size: 15px;
     background: #0DC5FF;
-    box-shadow: 0px 3px 5px #000;
+    /*box-shadow: 0px 3px 5px #000;*/
     color: #353535;    
 }
 
@@ -78,7 +78,7 @@ li {
     height: 75px;
     font-size: 15px;
     background: #0DC5FF;
-    box-shadow: 0px -3px 5px #000;
+    /*box-shadow: 0px -3px 5px #000;*/
     color: #353535;  
     margin-top: 315px;  
 }
@@ -88,7 +88,7 @@ li {
     width: 38%;
     font-size: 15px;
     background: #0DC5FF;
-    box-shadow: 0px 3px 5px #000;
+    /*box-shadow: 0px 3px 5px #000;*/
     color: #353535;    
 }
 
@@ -99,7 +99,7 @@ li {
     height: 45px;
     font-size: 15px;
     background: #0DC5FF;
-    box-shadow: 0px -3px 5px #000;
+    /*box-shadow: 0px -3px 5px #000;*/
     color: #353535;  
     margin-top: 155px;  
 }
@@ -119,7 +119,7 @@ li {
     width: 85%;
     font-size: 15px;
     background: #0DC5FF;
-    box-shadow: 0px 3px 5px #000;
+    /*box-shadow: 0px 3px 5px #000;*/
     color: #353535;    
   }
 }
@@ -150,7 +150,7 @@ li {
     /* Safari 5.1, Chrome 10+ */
     background: -webkit-linear-gradient(top, #1d1f20,#2f3031);
     background: #E7E7E7;
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%;
     height: 65px;
     z-index: 1; 
@@ -163,7 +163,7 @@ li {
     padding: 0px;
     border: 1px solid gray;
     background-color: transparent;
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%;
     height: 65px;
     z-index: 2; 
@@ -216,7 +216,7 @@ li {
     margin-left: 5px;
     border: 1px solid gray;
     background: #E7E7E7;
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%; 
     height: 100%; 
     z-index: 3;
@@ -227,7 +227,7 @@ li {
     margin-left: 5px;
     border: 1px solid gray;
     background-color: transparent; 
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%; 
     height: 100%;    
     z-index: 4; 
@@ -238,7 +238,7 @@ li {
     margin-left: 5px;
     border: 1px solid gray;
     background-color: transparent; 
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%; 
     height: 100%;    
     z-index: 5; 
@@ -266,7 +266,7 @@ li {
     margin-left: 5px;
     border: 1px solid gray;
     background: #E7E7E7;
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     z-index: 3;
     width: 97%;
     height: 100%;
@@ -286,7 +286,7 @@ li {
 .PreviewCanvas {
     border: 1px solid gray;
     background: #E7E7E7;
-    box-shadow: 0px 1px 2px #000;
+    /*box-shadow: 0px 1px 2px #000;*/
     width: 97%; 
     height: 38px !important; 
     min-height: 38px !important; 
@@ -322,7 +322,7 @@ li {
     outline: none;
     resize: none;
     background-color:rgba(255,255,0,1);
-    box-shadow: 0px 0px 25px #eeee00;
+    /*box-shadow: 0px 0px 25px #eeee00;*/
     font-size:12px;    
 }
 
@@ -370,7 +370,7 @@ div.center {
     background: white;
     border-top:1px solid black;
     border-bottom:1px solid black;
-    box-shadow:inset 0 1px 0 #6e6e6e,0 2px 2px rgba(0,0,0,0.4);
+    /*box-shadow:inset 0 1px 0 #6e6e6e,0 2px 2px rgba(0,0,0,0.4);*/
     height:15px;
     margin-top:4px;
     width: 100%;
@@ -396,7 +396,7 @@ div.center {
 .resize, .delete, .save{
     margin: 0px;
     padding: 0px;
-    background-color:#B9B9B9;
+    /*background-color:#B9B9B9;*/
     vertical-align: middle;
 }
 .delete img {

@@ -17,13 +17,13 @@
 .cbp-spmenu {
     position: fixed;
     width:238px;  
-    background: #000; 
+    background: rgb(56,54,62);
     color: #fff;
     border: 0px;
 }
  
 .cbp-spmenu h3 {
-    background: #000;
+    background: rgb(56,54,62);
     font-size: 16px;
     height:40px;
     margin: 0;
