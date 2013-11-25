@@ -5,14 +5,16 @@ angular.module('emulvcApp')
 
 		$scope.wsServerUrl = ConfigProviderService.vals.main.wsServerUrl;
 
-		$scope.connectionError = '';
+		$scope.connectionError = 'sdfsadf';
 		viewState.focusInTextField = true;
 
 		$scope.tryConnection = function() {
+			console.log($scope.wsServerUrl);
 			var conProm = Iohandlerservice.wsH.initConnect($scope.wsServerUrl);
 			conProm.then(function(val) {
-				//console.log(val)
+				console.log(val)
 				if (val.type === 'error') {
+				console.log("##############################")
 					$scope.connectionError = 'ERROR trying to connect to ws-server';
 				} else if (val.type === 'open') {
 					viewState.focusInTextField = false;
