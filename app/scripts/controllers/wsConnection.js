@@ -5,7 +5,7 @@ angular.module('emulvcApp')
 
 		$scope.wsServerUrl = ConfigProviderService.vals.main.wsServerUrl;
 
-		$scope.connectionError = 'sdfsadf';
+		$scope.connectionError = '';
 		viewState.focusInTextField = true;
 
 		$scope.tryConnection = function() {
