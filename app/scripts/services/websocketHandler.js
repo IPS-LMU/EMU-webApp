@@ -13,9 +13,9 @@ angular.module('emulvcApp')
 
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
-		
+
 		var promises = [];
-		
+
 		////////////////////////////
 		// handle received functions
 
@@ -48,6 +48,10 @@ angular.module('emulvcApp')
 			console.log(message);
 			console.log('WEBSOCKET ERROR!!!!!');
 			$rootScope.$apply(conPromise.resolve(message));
+		}
+
+		function wsonclose(message) {
+			alert('WEBSOCKET closed!!!!!');
 		}
 
 		function sendRequest(request) {
@@ -106,9 +110,16 @@ angular.module('emulvcApp')
 			ws.onopen = wsonopen;
 			ws.onmessage = wsonmessage;
 			ws.onerror = wsonerror;
+			ws.onclose = wsonclose;
 
 			conPromise = defer;
 			return defer.promise;
+		};
+		// close connection with ws
+		Service.closeConnect = function(url) {
+			ws.onclose = function() {};
+			ws.close();
+
 		};
 
 		// ws getProtocol
@@ -251,7 +262,7 @@ angular.module('emulvcApp')
 			}).then(function() {
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
-				    var deferred = $q.defer();
+					var deferred = $q.defer();
 					curFile = Service.findFileInUtt(utt, ext);
 					var promise = Service.getESPSfile(curFile);
 					//promises.push(promise);

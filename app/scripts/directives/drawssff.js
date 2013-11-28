@@ -132,83 +132,37 @@ angular.module('emulvcApp')
 
             curSampleArrs.forEach(function(valRep, valIdx) {
               valRep.forEach(function(val, idx) {
-
-                curSampleInCol = colStartSampleNr + valIdx;
-                curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
-
-                x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-                // mark selected
-                if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
-                  ctx.strokeStyle = 'white';
-                  ctx.fillStyle = 'white';
-                } else {
-                  ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                  ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                }
-
-
-                // draw dot
-                ctx.beginPath();
-                ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                ctx.closePath();
-                ctx.stroke();
-                ctx.fill();
-
-                if (valIdx !== 0) {
-                  curSampleInCol = colStartSampleNr + valIdx - 1;
+                if (idx >= scope.config.vals.signalsCanvasConfig.contourLims.fm.min && idx <= scope.config.vals.signalsCanvasConfig.contourLims.fm.max) { // SIC fm hardcoded
+                  curSampleInCol = colStartSampleNr + valIdx;
                   curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
-                  prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                  prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
-
+                  x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                  y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
                   // mark selected
-                  if (viewState.curCorrectionToolNr - 1 === idx) {
+                  if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
                     ctx.strokeStyle = 'white';
                     ctx.fillStyle = 'white';
+                  } else {
+                    ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                    ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
                   }
 
-                  // draw line
+
+                  // draw dot
                   ctx.beginPath();
-                  ctx.moveTo(prevX, prevY);
-                  ctx.lineTo(x, y);
+                  ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                  ctx.closePath();
                   ctx.stroke();
                   ctx.fill();
 
-                  //check if last sample
-                  if (valIdx === curSampleArrs.length - 1) {
-                    if (colEndSampleNr !== col.values.length - 1) {
-                      // lines to right boarder samples not in view
-                      var rightBorder = col.values[colEndSampleNr + 1];
-                      val = rightBorder[idx];
-
-                      curSampleInCol = colEndSampleNr + 1;
-                      curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
-
-                      var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                      var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-                      // draw line
-                      ctx.beginPath();
-                      ctx.moveTo(x, y);
-                      ctx.lineTo(nextX, nextY);
-                      ctx.stroke();
-                      ctx.fill();
-                    }
-                  }
-                } else {
-                  // lines to left boarder samples not in view
-                  if (colStartSampleNr !== 0) {
-                    var leftBorder = col.values[colStartSampleNr - 1];
-                    val = leftBorder[idx];
-
-                    curSampleInCol = colStartSampleNr - 1;
+                  if (valIdx !== 0) {
+                    curSampleInCol = colStartSampleNr + valIdx - 1;
                     curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
 
                     prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                    prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+                    prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+
 
                     // mark selected
                     if (viewState.curCorrectionToolNr - 1 === idx) {
@@ -222,6 +176,53 @@ angular.module('emulvcApp')
                     ctx.lineTo(x, y);
                     ctx.stroke();
                     ctx.fill();
+
+                    //check if last sample
+                    if (valIdx === curSampleArrs.length - 1) {
+                      if (colEndSampleNr !== col.values.length - 1) {
+                        // lines to right boarder samples not in view
+                        var rightBorder = col.values[colEndSampleNr + 1];
+                        val = rightBorder[idx];
+
+                        curSampleInCol = colEndSampleNr + 1;
+                        curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+                        var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                        var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+                        // draw line
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(nextX, nextY);
+                        ctx.stroke();
+                        ctx.fill();
+                      }
+                    }
+                  } else {
+                    // lines to left boarder samples not in view
+                    if (colStartSampleNr !== 0) {
+                      var leftBorder = col.values[colStartSampleNr - 1];
+                      val = leftBorder[idx];
+
+                      curSampleInCol = colStartSampleNr - 1;
+                      curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+
+                      prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                      prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+                      // mark selected
+                      if (viewState.curCorrectionToolNr - 1 === idx) {
+                        ctx.strokeStyle = 'white';
+                        ctx.fillStyle = 'white';
+                      }
+
+                      // draw line
+                      ctx.beginPath();
+                      ctx.moveTo(prevX, prevY);
+                      ctx.lineTo(x, y);
+                      ctx.stroke();
+                      ctx.fill();
+                    }
                   }
                 }
               });

@@ -7,6 +7,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.cps = ConfigProviderService;
 		$scope.history = HistoryService;
 		$scope.fontImage = fontScaleService;
+		$scope.connectBtnLabel = 'connect';
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
@@ -64,7 +65,7 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('connectedToWSserver', function(evt, type, data) {
 			// TODO hardcode removal of save / load/ manipulation buttons 
-
+			$scope.connectBtnLabel = 'disconnect';
 			$scope.showDropZone = false;
 
 			// Check if server speaks emuLVC
@@ -477,6 +478,16 @@ var MainCtrl = angular.module('emulvcApp')
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}
 			var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
+		};
+
+		//
+		$scope.connectBtnClick = function() {
+			if($scope.connectBtnLabel === 'connect'){
+				openModal('views/connectModal.html','dialog',false);
+			}else{
+				// Iohandlerservice.wsH.closeConnect();
+				// ConfigProviderService.httpGetConfig();
+			}
 		};
 
 
