@@ -196,16 +196,18 @@ var MainCtrl = angular.module('emulvcApp')
 			// convert int values to char for front end
 			for (var i in $scope.shortcut) {
 				// sonderzeichen space
-				if ($scope.shortcut[i] === 32) {
-					$scope.shortcut[i] = 'SPACE';
-				} else if ($scope.shortcut[i] === 8) {
+				if ($scope.shortcut[i] === 8) {
 					$scope.shortcut[i] = 'BACKSPACE';
 				} else if ($scope.shortcut[i] === 9) {
 					$scope.shortcut[i] = 'TAB';
 				} else if ($scope.shortcut[i] === 13) {
-					$scope.shortcut[i] = 'ENTER';
+					$scope.shortcut[i] = 'ENTER';					
+				} else if ($scope.shortcut[i] === 16) {
+					$scope.shortcut[i] = 'SHIFT';					
 				} else if ($scope.shortcut[i] === 27) {
 					$scope.shortcut[i] = 'ESC';
+				} else if ($scope.shortcut[i] === 32) {
+					$scope.shortcut[i] = 'SPACE';
 				} else {
 					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
 				}
@@ -274,7 +276,6 @@ var MainCtrl = angular.module('emulvcApp')
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				// Iohandlerservice.httpGetUtterence(utt);
-				console.log(utt);
 				Iohandlerservice.wsH.getUtt($scope.curUserName, utt);
 				$scope.curUtt = utt;
 			}
@@ -344,23 +345,68 @@ var MainCtrl = angular.module('emulvcApp')
 					window: function() {
 						return viewState.spectroSettings.window;
 					},
+					selectFirstContourCorrectionTool: function() {
+					    return $scope.shortcut.selectFirstContourCorrectionTool;
+					},
+					selectSecondContourCorrectionTool: function() {
+					    return $scope.shortcut.selectSecondContourCorrectionTool;
+					},
+					selectThirdContourCorrectionTool: function() {
+					    return $scope.shortcut.selectThirdContourCorrectionTool;
+					},
+					selectFourthContourCorrectionTool: function() {
+					    return $scope.shortcut.selectFourthContourCorrectionTool;
+					},
+					selectNoContourCorrectionTool: function() {
+					    return $scope.shortcut.selectNoContourCorrectionTool;
+					},
+					playAllInView: function() {
+					    return $scope.shortcut.playAllInView;
+					},
+					keyBackspace: function() {
+					    return $scope.shortcut.backspace;
+					},
+					playSelected: function() {
+					    return $scope.shortcut.playSelected;
+					},
+					keyopenSubmenu: function() {
+					    return $scope.shortcut.openSubmenu;
+					},
+					playEntireFile: function() {
+					    return $scope.shortcut.playEntireFile;
+					},
+					keyTab: function() {
+					    return $scope.shortcut.tab;
+					},
+					tierUp: function() {
+					    return $scope.shortcut.tierUp;
+					},
+					tierDown: function() {
+					    return $scope.shortcut.tierDown;
+					},
+					keyShift: function() {
+					    return $scope.shortcut.shift;
+					},
+					keyEnter: function() {
+					    return $scope.shortcut.enter;
+					},
 					keyZoomIn: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomIn);
+						return $scope.shortcut.zoomIn;
 					},
 					keyZoomOut: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomOut);
+						return $scope.shortcut.zoomOut;
 					},
 					keyZoomAll: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomAll);
+						return $scope.shortcut.zoomAll;
 					},
 					keyZoomSel: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.zoomSel);
+						return $scope.shortcut.zoomSel;
 					},
 					shiftViewPortLeft: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortLeft);
+						return $scope.shortcut.shiftViewPortLeft;
 					},
 					shiftViewPortRight: function() {
-						return String.fromCharCode(ConfigProviderService.vals.keyMappings.shiftViewPortRight);
+						return $scope.shortcut.shiftViewPortRight;
 					},
 					currentTier: function() {
 						if (viewState.getcurClickTierName() !== '') {

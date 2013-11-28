@@ -3,7 +3,10 @@
 var MainCtrl = angular.module('emulvcApp')
 	.controller('ModalInstanceCtrl', function($rootScope, $scope, $modalInstance,
 	modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState,
-	keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight) {
+	keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight, keyTab, keyShift, keyEnter,
+	playAllInView, playSelected, playEntireFile, keyBackspace, tierUp, tierDown,
+	selectFirstContourCorrectionTool, selectSecondContourCorrectionTool, keyopenSubmenu, 
+	selectThirdContourCorrectionTool, selectFourthContourCorrectionTool, selectNoContourCorrectionTool) {
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
@@ -17,6 +20,21 @@ var MainCtrl = angular.module('emulvcApp')
 	$scope.keyZoomOut = keyZoomOut;
 	$scope.keyZoomAll = keyZoomAll;
 	$scope.keyZoomSel = keyZoomSel;
+	$scope.keyTab = keyTab;
+	$scope.keyShift = keyShift;
+	$scope.keyEnter = keyEnter;
+	$scope.playAllInView = playAllInView;
+	$scope.playEntireFile = playEntireFile;
+	$scope.keyBackspace = keyBackspace;
+	$scope.playSelected = playSelected;
+	$scope.tierUp = tierUp;
+	$scope.tierDown = tierDown;
+	$scope.openSubmenu = keyopenSubmenu;
+	$scope.selectFirstContourCorrectionTool = selectFirstContourCorrectionTool;
+	$scope.selectSecondContourCorrectionTool = selectSecondContourCorrectionTool;
+	$scope.selectThirdContourCorrectionTool = selectThirdContourCorrectionTool;
+	$scope.selectFourthContourCorrectionTool = selectFourthContourCorrectionTool;
+	$scope.selectNoContourCorrectionTool = selectNoContourCorrectionTool;
 	$scope.shiftViewPortLeft = shiftViewPortLeft;
 	$scope.shiftViewPortRight = shiftViewPortRight;
 	// $scope.username = '';
