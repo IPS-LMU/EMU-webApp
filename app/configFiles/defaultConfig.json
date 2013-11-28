@@ -2,7 +2,7 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 2,
-        "develMode": false,
+        "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
@@ -101,7 +101,8 @@
         "resizeSingleTier": true,
         "saveSingleTier": true,
         "resizeOsci": true,
-        "resizeSpectro": true
+        "resizeSpectro": true,
+        "openDemoDB": true
     },
     "userManagment": {
         "passcode": "1234"

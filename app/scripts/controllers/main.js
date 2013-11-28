@@ -74,11 +74,13 @@ var MainCtrl = angular.module('emulvcApp')
 					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
 						ConfigProviderService.vals = newVal;
 					});
-					if (!ConfigProviderService.vals.main.develMode) {
+					if (!ConfigProviderService.vals.main.autoConnect) {
 						Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
 							if (manageRes === 'YES') {
 								$scope.openModal('views/login.html', 'dialog', true);
 								// Iohandlerservice.wsH.getUsrUttList('florian');
+							}else{
+								alert("no user managment");
 							}
 						});
 					} else {
@@ -208,8 +210,8 @@ var MainCtrl = angular.module('emulvcApp')
 				}
 			}
 
-			if (ConfigProviderService.vals.main.develMode) {
-				console.log("DEVEL");
+			if (ConfigProviderService.vals.main.autoConnect) {
+				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
 				// $scope.curUserName = 'florian';
 			}
