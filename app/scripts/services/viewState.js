@@ -54,8 +54,9 @@ angular.module('emulvcApp')
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;
-    
+
     sServObj.dragBarActive = false;
+    sServObj.movingBoundary = false;
 
     sServObj.focusInTextField = false;
 
@@ -189,9 +190,9 @@ angular.module('emulvcApp')
           break;
       }
     };
-    
-    
-    
+
+
+
     /**
      * set if user is dragging dragbar
      */
@@ -199,7 +200,7 @@ angular.module('emulvcApp')
       return this.dragBarActive;
     };
 
-    
+
     /**
      * set if user is dragging dragbar
      */
@@ -296,6 +297,22 @@ angular.module('emulvcApp')
      */
     sServObj.getcurMouseTierName = function() {
       return this.curMouseTierName;
+    };
+
+    /**
+     * gets the current (mousemove) Tier Name
+     */
+    sServObj.getcurMouseTierDetails = function() {
+      var tierName = this.getcurMouseTierName();
+
+      var curTier;
+      Tierdataservice.data.tiers.forEach(function(t) {
+        if (t.TierName === tierName) {
+          curTier = t;
+        }
+      });
+      return curTier;
+
     };
 
     /**
@@ -514,7 +531,7 @@ angular.module('emulvcApp')
         id: textid,
         'class': textid + ' Label_Edit',
         'ng-model': 'message',
-        'autofocus': 'true'        
+        'autofocus': 'true'
       }).css({
         'position': 'absolute',
         'z-index': '5',
@@ -605,6 +622,7 @@ angular.module('emulvcApp')
 
     };
 
+
     /**
      * set view port to start and end sample
      * (with several out-of-bounds like checks)
@@ -620,12 +638,12 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
-      var curTier;
-      Tierdataservice.data.tiers.forEach(function(t) {
-        if (t.TierName === tierName) {
-          curTier = t;
-        }
-      });
+      var curTier = this.getcurMouseTierDetails();
+      // Tierdataservice.data.tiers.forEach(function(t) {
+        // if (t.TierName === tierName) {
+          // curTier = t;
+        // }
+      // });
 
       var d = this.curViewPort.eS - this.curViewPort.sS;
 

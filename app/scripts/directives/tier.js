@@ -214,6 +214,14 @@ angular.module('emulvcApp')
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 
+
+					if(tierDetails.events[viewState.getcurMouseSegmentId()] && viewState.movingBoundary){
+						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+						var tD = viewState.getcurMouseTierDetails();
+						var p = Math.round(viewState.getPos(canvas[0].width, tD.events[viewState.getcurMouseSegmentId()].startSample));
+						ctx.fillRect(p, 0, 1, canvas[0].height);
+					};
+
 					if (tierDetails.TierName === viewState.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);

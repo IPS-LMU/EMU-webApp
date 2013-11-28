@@ -57,16 +57,19 @@ angular.module('emulvcApp')
               //console.log('Right mouse button pressed');
               break;
             default:
-              if(viewState.getdragBarActive()===false) {
+              if (viewState.getdragBarActive() === false) {
                 if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                   viewState.deleteEditArea();
                   scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
                   lastPCM = thisPCM;
                   viewState.selectBoundry();
+                  viewState.movingBoundary = true;
                   scope.$apply();
                   moveLine = false;
+                } else {
+                  viewState.movingBoundary = false;
                 }
-                if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey ) {
+                if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                   viewState.deleteEditArea();
                   scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                   lastPCM = thisPCM;
@@ -89,6 +92,7 @@ angular.module('emulvcApp')
         });
 
         element.bind('mouseout', function(event) {
+          viewState.movingBoundary = false;
           setLastMove(event, true);
         });
 
