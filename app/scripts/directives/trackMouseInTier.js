@@ -58,7 +58,7 @@ angular.module('emulvcApp')
               break;
             default:
               if(viewState.getdragBarActive()===false) {
-                if (ConfigProviderService.vals.restrictions.editItemBoundaries && event.shiftKey) {
+                if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                   viewState.deleteEditArea();
                   scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
                   lastPCM = thisPCM;

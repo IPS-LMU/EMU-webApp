@@ -130,20 +130,32 @@ angular.module('emulvcApp')
                 
               }
               // backspace
-              if (code === ConfigProviderService.vals.keyMappings.backspace && ConfigProviderService.vals.restrictions.deleteItem) {
-                var seg = viewState.getcurClickSegments();
-                var toDelete = "";
-                for (var i = 0; i < seg.length; i++) {
-                  toDelete += seg[i].label + ",";
+              if (code === ConfigProviderService.vals.keyMappings.backspace) {
+                if(e.shiftKey) {
+                
                 }
-                toDelete = toDelete.substring(0, toDelete.length - 1);
-                scope.openModal('views/deleteSegment.html', 'dialogSmall', false,"Really Delete", toDelete);
+                else {
+                  if(ConfigProviderService.vals.restrictions.deleteItem) {
+                    var seg = viewState.getcurClickSegments();
+                    if(seg!==undefined) {
+                      var toDelete = "";
+                      for (var i = 0; i < seg.length; i++) {
+                        toDelete += seg[i].label + ",";
+                      }
+                      toDelete = toDelete.substring(0, toDelete.length - 1);
+                      console.log(toDelete);
+                      scope.openModal('views/deleteSegment.html', 'dialogSmall', false,"Really Delete", toDelete);
+                    }
+                  }
+                }
               }
 
               if (!e.metaKey) {
                 e.preventDefault();
                 e.stopPropagation();
               }
+              
+              console.log(code);
                
             }
           });

@@ -369,6 +369,9 @@ var MainCtrl = angular.module('emulvcApp')
 					playSelected: function() {
 					    return $scope.shortcut.playSelected;
 					},
+					history: function() {
+					    return $scope.shortcut.history;
+					},
 					keyopenSubmenu: function() {
 					    return $scope.shortcut.openSubmenu;
 					},

@@ -81,11 +81,12 @@
         "order": [".ORT", ".MAU", ".phon"]
     },
     "restrictions": {
-        "sortLabels": false,
+        "sortLabels": true,
         "editItemSize": true,
         "editItemName": true,
-        "editItemBoundaries": true,
-        "deleteItem": false,
+        "deleteItemBoundary": true,
+        "deleteItem": true,
+        "deleteTier": true,
         "drawCrossHairs": true
     },
     "activeButtons": {
