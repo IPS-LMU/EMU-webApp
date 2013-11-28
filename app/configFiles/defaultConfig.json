@@ -2,13 +2,13 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 2,
-        "autoConnect": true,
+        "autoConnect": false,
         "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {
-        "openFile" : -1,
-        "openSubmenu" : 79,
-        "spectroSettings" : 80,
+        "openFile": -1,
+        "openSubmenu": 79,
+        "spectroSettings": 80,
         "zoomSel": 69,
         "zoomAll": 81,
         "zoomOut": 83,
@@ -75,6 +75,12 @@
         "extensions": {
             "audio": ".wav",
             "signals": [".fms"]
+        },
+        "contourLims": {
+            "fm": {
+                "min": 0,
+                "max": 1
+            }
         }
     },
     "labelCanvasConfig": {

@@ -81,11 +81,11 @@ var MainCtrl = angular.module('emulvcApp')
 								$scope.openModal('views/login.html', 'dialog', true);
 								// Iohandlerservice.wsH.getUsrUttList('florian');
 							}else{
-								alert("no user managment");
+								$scope.$broadcast('newUserLoggedOn', '');
 							}
 						});
 					} else {
-						$scope.$broadcast('newUserLoggedOn', 'user1');
+						$scope.$broadcast('newUserLoggedOn', '');
 
 					}
 				} else {
@@ -532,7 +532,7 @@ var MainCtrl = angular.module('emulvcApp')
 		//
 		$scope.connectBtnClick = function() {
 			if($scope.connectBtnLabel === 'connect'){
-				openModal('views/connectModal.html','dialog',false);
+				$scope.openModal('views/connectModal.html','dialog',false);
 			}else{
 				// Iohandlerservice.wsH.closeConnect();
 				// ConfigProviderService.httpGetConfig();

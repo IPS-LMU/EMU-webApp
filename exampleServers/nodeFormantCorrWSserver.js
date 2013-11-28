@@ -1,5 +1,5 @@
 var fs = require('fs');
-var userName = 'klaus';
+var noUserJsonBasename = 'user6';
 var os = require('os');
 
 var labelData;
@@ -43,7 +43,7 @@ wss.on('connection', function(ws) {
 		if (mJSO.type === 'getDoUserManagement') {
 			ws.send(JSON.stringify({
 				'callbackID': mJSO.callbackID,
-				'data': 'YES',
+				'data': 'NO',
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -53,6 +53,9 @@ wss.on('connection', function(ws) {
 
 		// getUttList method
 		if (mJSO.type === 'getUttList') {
+			if (mJSO.usrName === '') {
+				mJSO.usrName = noUserJsonBasename;
+			}
 			fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
