@@ -2,7 +2,7 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080"
     },
     "keyMappings": {

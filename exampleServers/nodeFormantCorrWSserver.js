@@ -43,7 +43,7 @@ wss.on('connection', function(ws) {
 		if (mJSO.type === 'getDoUserManagement') {
 			ws.send(JSON.stringify({
 				'callbackID': mJSO.callbackID,
-				'data': 'NO',
+				'data': 'YES',
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
