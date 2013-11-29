@@ -537,9 +537,8 @@ angular.module('emulvcApp')
         'z-index': '5',
         'left': x + 2 + 'px',
         'width': width - 1 + 'px',
-        'height': height + 'px',
-        'padding': '0px',
-        'vertical-align': 'middle'
+        'height': (height/3*2) + 'px',
+        'padding-top': (height/3) +'px'
       }).text(label));
       return textid;
     };

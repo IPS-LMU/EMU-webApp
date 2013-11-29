@@ -326,7 +326,8 @@ li {
     resize: none;
     background-color:rgba(255,255,0,1);
     /*box-shadow: 0px 0px 25px #eeee00;*/
-    font-size:12px;    
+    font-size:12px; 
+    vertical-align: middle !important;   
 }
 
 
