@@ -22,10 +22,12 @@
   Moving the mouse over tiers automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
   preselects it.
-  To move the currently preselected boundary hold down the <b>shift</b> key and 
+  <span ng-show="cps.vals.restrictions.editItemSize">
+  To move the currently preselected boundary hold down the <b>{{keyShift}}</b> key and 
   move the mouse to the desired position. The boundary will then track the
   mouse movement. If a segment is selected (= marked yellow), holding down 
-  <b>alt</b> will move the entire segment
+  <b>{{keyAlt}}</b> will move the entire segment
+  </span>
  </div>
  <hr class="aboutHr" />
 
@@ -57,7 +59,7 @@
   <table>
     <tbody>
       <tr><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
-      <tr><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
+      <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundary</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapAbove}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
@@ -67,9 +69,9 @@
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{minus}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{plus}}:</b></td><td>Add time to selected segments (expand to left)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{minus}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
-      <tr><td><b>{{tierUp}}</b></td><td>Move tier selection up</td></tr>
-      <tr><td><b>{{tierDown}}</b></td><td>Move tier selection down</td></tr>
-      <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>
+      <tr><td><b>{{tierUp}}:</b></td><td>Move tier selection up</td></tr>
+      <tr><td><b>{{tierDown}}:</b></td><td>Move tier selection down</td></tr>
+      <tr><td><b>{{snapBoundary}}:</b></td><td>Move selection to currently selected boundary</td></tr>
       <tr ng-show="cps.vals.restrictions.sortLabels"><td><b>MOUSE DRAG</b></td><td>You can sort Tiers by dragging them up and down</td></tr>
     </tbody>
   </table>

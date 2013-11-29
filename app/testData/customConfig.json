@@ -37,7 +37,8 @@
         "snapBelow": 66,
         "snapZero": 88,
         "plus": 187,
-        "minus": 189
+        "minus": 189,
+        "snapBoundary": 67
     },
     "colors": {
         "labelColor": "#000",
@@ -98,6 +99,7 @@
         "editItemName": true,
         "deleteItemBoundary": true,
         "deleteItem": true,
+        "addItem": true,
         "drawCrossHairs": true
     },
     "activeButtons": {

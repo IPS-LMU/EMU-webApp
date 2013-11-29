@@ -204,6 +204,8 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.shortcut[i] = 'ENTER';					
 				} else if ($scope.shortcut[i] === 16) {
 					$scope.shortcut[i] = 'SHIFT';					
+				} else if ($scope.shortcut[i] === 18) {
+					$scope.shortcut[i] = 'ALT';					
 				} else if ($scope.shortcut[i] === 27) {
 					$scope.shortcut[i] = 'ESC';
 				} else if ($scope.shortcut[i] === 32) {
@@ -411,6 +413,12 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					snapZero: function() {
 					    return $scope.shortcut.snapZero;
+					},
+					snapBoundary: function() {
+					    return $scope.shortcut.snapBoundary;
+					},
+					keyAlt: function() {
+					    return $scope.shortcut.alt;
 					},
 					playSelected: function() {
 					    return $scope.shortcut.playSelected;
