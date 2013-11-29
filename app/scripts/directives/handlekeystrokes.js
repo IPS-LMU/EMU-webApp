@@ -140,10 +140,10 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.minus) {
                if(ConfigProviderService.vals.restrictions.editItemSize) {
                 if (e.shiftKey) {
-                  $('#HandletiersCtrl').scope().expandSegment(false,true);
+                  $('#HandletiersCtrl').scope().expandSegment(false,false);
                 }
                 else {
-                  $('#HandletiersCtrl').scope().expandSegment(false,false);
+                  $('#HandletiersCtrl').scope().expandSegment(false,true);
                 }
                }
               }

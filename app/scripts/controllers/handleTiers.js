@@ -190,7 +190,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 		};
 		
-		$scope.expandSegment = function(expand,side) {
+		$scope.expandSegment = function(expand,rightSide) {
 		  if(viewState.getcurClickTierName()===undefined) {
 		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select a Tier first');
 		  }
@@ -216,19 +216,31 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		    var selected = viewState.getselected().sort();
 		    var startTime = 0;
 		    
-		    
-			angular.forEach($scope.tierDetails.data.tiers, function(t) {
-			  var i = 0;
+		    if(rightSide) {
+			 angular.forEach($scope.tierDetails.data.tiers, function(t) {
 				if (t.TierName == viewState.getcurClickTierName()) {	
 				 if(t.events[selected[selected.length - 1] + 1].sampleDur > (selected.length*changeTime)) {
 				  if(t.events[selected[0]].sampleDur > -(selected.length*changeTime)) {	    
+
+
+				   // check loop in order to prevent negative sampleDurs
+				   var found = false;
 				   for (var i = 1; i <= selected.length; i++) {
-					t.events[selected[i-1]].startSample += startTime;
-					t.events[selected[i-1]].sampleDur += changeTime;
-					startTime = i * changeTime;
+					if(t.events[selected[i-1]].sampleDur + changeTime <= 0)
+					  found = true;
 				   }
-				   t.events[selected[selected.length - 1] + 1].startSample += startTime;
-				   t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
+				   if(found) {
+				     $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+				   }
+				   else {
+				    for (var i = 1; i <= selected.length; i++) {
+					 t.events[selected[i-1]].startSample += startTime;
+					 t.events[selected[i-1]].sampleDur += changeTime;
+					 startTime = i * changeTime;
+ 				    }
+				    t.events[selected[selected.length - 1] + 1].startSample += startTime;
+				    t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
+				   }
 				  }
 				  else {
 				    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
@@ -239,7 +251,41 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				 }
 				}
 			});
+			}
+			else {
+			 angular.forEach($scope.tierDetails.data.tiers, function(t) {
+				if (t.TierName == viewState.getcurClickTierName()) {	
+				 if(t.events[selected[0] - 1].sampleDur > (selected.length*changeTime)) {
+				  if(t.events[selected[selected.length - 1]].sampleDur > (selected.length*changeTime)) {
 
+				   // check loop in order to prevent negative sampleDurs
+				   var found = false;
+				   for (var i = 1; i <= selected.length; i++) {
+					if(t.events[selected[i-1]].sampleDur + changeTime <= 0)
+					  found = true;
+				   }
+				   if(found) {
+				     $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+				   }
+				   else {				  	    
+				   for (var i = 0; i < selected.length; i++) {
+					t.events[selected[i]].startSample -= (changeTime * (selected.length-i));
+					t.events[selected[i]].sampleDur += changeTime;
+					
+				   }
+				   t.events[selected[0] - 1].sampleDur -= changeTime * selected.length;
+				   }
+				  }
+				  else {
+				    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+				  }
+				 }
+				 else {
+				   $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+				 }
+				}
+			});			
+			}
 		    }		  
 		  }
 		};
