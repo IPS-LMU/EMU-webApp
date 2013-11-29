@@ -59,14 +59,14 @@
       <tr><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
       <tr><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundry</td></tr>
-      <tr><td><b>{{snapAbove}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
-      <tr><td><b>{{snapBelow}}:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
-      <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
-      <tr><td><b>+:</b></td><td>Add time to selected segments (expand to right)</td></tr>
-      <tr><td><b>-:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
-      <tr><td><b>{{keyShift}} and +:</b></td><td>Add time to selected segments (expand to left)</td></tr>
-      <tr><td><b>{{keyShift}} and -:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapAbove}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapBelow}}:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapZero}}:</b></td><td>Snap to nearest zero crossing</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{plus}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{minus}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{plus}}:</b></td><td>Add time to selected segments (expand to left)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{minus}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
       <tr><td><b>{{tierUp}}</b></td><td>Move tier selection up</td></tr>
       <tr><td><b>{{tierDown}}</b></td><td>Move tier selection down</td></tr>
       <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>

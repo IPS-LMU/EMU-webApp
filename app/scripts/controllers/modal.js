@@ -4,7 +4,7 @@ var MainCtrl = angular.module('emulvcApp')
 	.controller('ModalInstanceCtrl', function($rootScope, $scope, $modalInstance, ConfigProviderService, 
 	modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState,
 	keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight, keyTab, keyShift, keyEnter,
-	playAllInView, playSelected, playEntireFile, keyBackspace, tierUp, tierDown, snapBelow, snapAbove, snapZero,
+	playAllInView, playSelected, playEntireFile, keyBackspace, tierUp, tierDown, snapBelow, snapAbove, snapZero, plus, minus, 
 	selectFirstContourCorrectionTool, selectSecondContourCorrectionTool, keyopenSubmenu, history, selectSegmentsInSelection,
 	selectThirdContourCorrectionTool, selectFourthContourCorrectionTool, selectNoContourCorrectionTool) {
 
@@ -30,6 +30,8 @@ var MainCtrl = angular.module('emulvcApp')
 	$scope.keyBackspace = keyBackspace;
 	$scope.playSelected = playSelected;
 	$scope.tierUp = tierUp;
+	$scope.plus = plus;
+	$scope.minus = minus;
 	$scope.history = history;
 	$scope.snapBelow = snapBelow;
 	$scope.snapAbove = snapAbove;

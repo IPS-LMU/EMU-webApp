@@ -214,6 +214,10 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.shortcut[i] = 'ARROW UP';
 				} else if ($scope.shortcut[i] === 40) {
 					$scope.shortcut[i] = 'ARROW DOWN';
+				} else if ($scope.shortcut[i] === 187) {
+					$scope.shortcut[i] = '+';
+				} else if ($scope.shortcut[i] === 189) {
+					$scope.shortcut[i] = '-';
 				} else {
 					$scope.shortcut[i.toString()] = String.fromCharCode($scope.shortcut[i]);
 				
@@ -398,6 +402,12 @@ var MainCtrl = angular.module('emulvcApp')
 					},
 					snapBelow: function() {
 					    return $scope.shortcut.snapBelow;
+					},
+					plus: function() {
+					    return $scope.shortcut.plus;
+					},
+					minus: function() {
+					    return $scope.shortcut.minus;
 					},
 					snapZero: function() {
 					    return $scope.shortcut.snapZero;

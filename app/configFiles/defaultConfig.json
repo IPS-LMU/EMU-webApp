@@ -36,7 +36,9 @@
         "tierDown": 40,
         "snapAbove": 84,
         "snapBelow": 66,
-        "snapZero": 88
+        "snapZero": 88,
+        "plus": 187,
+        "minus": 189
     },
     "colors": {
         "labelColor": "#000",
