@@ -201,7 +201,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		    else {
 		    var changeTime = 0;
 		    if(ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'absolute') {
-		        changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue;
+		        changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 		    }
 		    else if(ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'relative') {
 		        changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength/100);

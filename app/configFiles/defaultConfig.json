@@ -94,8 +94,8 @@
     },
     "labelCanvasConfig": {
         "order": [".ORT", ".MAU", ".phon"],
-        "addTimeMode": "relative",
-        "addTimeValue": 5           
+        "addTimeMode": "absolute",
+        "addTimeValue": 750          
     },
     "restrictions": {
         "correctionTool": true,
