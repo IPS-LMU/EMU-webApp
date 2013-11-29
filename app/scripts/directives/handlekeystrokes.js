@@ -111,7 +111,12 @@ angular.module('emulvcApp')
               // openSubmenu
               if (code === ConfigProviderService.vals.keyMappings.spectroSettings) {
                 scope.openModal('views/spectroSettings.html','dialog');
-              }              
+              }
+              // openSubmenu
+              if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
+                $('#HandletiersCtrl').scope().selectSegmentsInSelection();
+              }   
+          
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 if (e.shiftKey)

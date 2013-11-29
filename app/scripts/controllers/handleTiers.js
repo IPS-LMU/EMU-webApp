@@ -190,17 +190,25 @@ var HandletiersCtrl = angular.module('emulvcApp')
 			});
 		};
 
-		$scope.tabPrev = function() {
-			if (viewState.isEditing()) {
-				$scope.renameLabel();
-				viewState.deleteEditArea();
-			}
-			var now = parseInt(viewState.getselected()[0], 10);
-			if (now > 0)--now;
-			else now = viewState.getTierLength() - 1;
-			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.data.tiers[viewState.getselected()].events[now], now);
-		};
+		$scope.selectSegmentsInSelection = function() {
+		  if(viewState.getcurClickTierName()===undefined) {
+		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
+		  }
+		  else {
+		    var rangeStart = viewState.curViewPort.selectS;
+		    var rangeEnd = viewState.curViewPort.selectE;
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
+			  var i = 0;
+				if (t.TierName == viewState.getcurClickTierName())
+					angular.forEach(t.events, function(evt) {
+						if (evt.startSample >= rangeStart && (evt.startSample+evt.sampleDur) <= rangeEnd ) {
+							viewState.setcurClickSegmentMultiple(evt, i);
+						}
+						++i;						
+					});
+			});
+		  }	
+		};		
 
 		$scope.rename = function(tiername, id, name) {
 			angular.forEach($scope.tierDetails.data.tiers, function(t) {
@@ -243,7 +251,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				});
 				HistoryService.history();
 			} else {
-				$scope.openModal('views/error.html', 'dialog', 'Rename Error', 'This Tiername already exists ! Please choose another name !');
+				$scope.openModal('views/error.html', 'dialog', false, 'Rename Error', 'This Tiername already exists ! Please choose another name !');
 			}
 		};
 

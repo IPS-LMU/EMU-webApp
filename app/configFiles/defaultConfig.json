@@ -31,6 +31,7 @@
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
         "selectNoContourCorrectionTool": 48,
+        "selectSegmentsInSelection": 71,
         "tierUp": 38,
         "tierDown": 40
     },
