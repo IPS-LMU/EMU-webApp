@@ -33,7 +33,10 @@
         "selectNoContourCorrectionTool": 48,
         "selectSegmentsInSelection": 71,
         "tierUp": 38,
-        "tierDown": 40
+        "tierDown": 40,
+        "snapAbove": 84,
+        "snapBelow": 66,
+        "snapZero": 88
     },
     "colors": {
         "labelColor": "#000",

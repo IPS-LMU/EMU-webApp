@@ -42,8 +42,8 @@
       <tr><td><b>{{keyZoomSel}}:</b></td><td>Zoom in to selected</td></tr>
       <tr><td><b>{{openSubmenu}}:</b></td><td>Open Submenu</td></tr>
       <tr><td><b>{{keyTab}}:</b></td><td>Select next event</td></tr>
+      <tr><td><b>{{keyShift}} and {{keyTab}}:</b></td><td>Select previous event</td></tr>
       <tr><td><b>{{selectSegmentsInSelection}}:</b></td><td>Select all Segments in current Viewport Selection</td></tr>
-      <tr><td><b>{{keyShift}} + {{keyTab}}:</b></td><td>Select previous event</td></tr>
     </tbody>
   </table>
   <small>1.) Zooming while a Boundary is selected will keep the position of that boundary fixed</small>
@@ -60,17 +60,17 @@
       <tr><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundry</td></tr>
-      <tr><td><b>T:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
-      <tr><td><b>B:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
+      <tr><td><b>{{snapAbove}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
+      <tr><td><b>{{snapBelow}}:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
       <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
       <tr><td><b>+:</b></td><td>Add time to selected segments (expand to right)</td></tr>
-      <tr><td><b>Shift++:</b></td><td>Add time to selected segments (expand to left)</td></tr>
       <tr><td><b>-:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
-      <tr><td><b>Shift+-:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
+      <tr><td><b>{{keyShift}} and +:</b></td><td>Add time to selected segments (expand to left)</td></tr>
+      <tr><td><b>{{keyShift}} and -:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
       <tr><td><b>{{tierUp}}</b></td><td>Move tier selection up</td></tr>
       <tr><td><b>{{tierDown}}</b></td><td>Move tier selection down</td></tr>
       <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>
-      <tr ng-show="cps.vals.restrictions.sortLabels"><td>&uarr;&darr;</td><td>You can sort Tiers by dragging them up and down</td></tr>
+      <tr ng-show="cps.vals.restrictions.sortLabels"><td><b>MOUSE DRAG</b></td><td>You can sort Tiers by dragging them up and down</td></tr>
     </tbody>
   </table>
   </div>
