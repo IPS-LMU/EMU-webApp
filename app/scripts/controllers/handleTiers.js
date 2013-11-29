@@ -292,7 +292,8 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		$scope.moveBorder = function(changeTime, t) {
 			if (null != t && t.TierName == viewState.getcurMouseTierName()) {
 				var seg = viewState.getcurMouseSegmentId();
-				if (seg >= 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
+				console.log(seg);
+				if (seg > 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
 					t.events[seg - 1].sampleDur += changeTime;
 					t.events[seg].startSample += changeTime;
 					t.events[seg].sampleDur -= changeTime;
