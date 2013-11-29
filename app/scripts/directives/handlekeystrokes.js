@@ -51,23 +51,33 @@ angular.module('emulvcApp')
               }
               // selectFirstContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool) {
-                viewState.curCorrectionToolNr = 1;
+                if(ConfigProviderService.vals.restrictions.correctionTool) {
+                  viewState.curCorrectionToolNr = 1;
+                }
               }
               // selectSecondContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectSecondContourCorrectionTool) {
-                viewState.curCorrectionToolNr = 2;
+                if(ConfigProviderService.vals.restrictions.correctionTool) {
+                  viewState.curCorrectionToolNr = 2;
+                }
               }
               // selectThirdContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectThirdContourCorrectionTool) {
-                viewState.curCorrectionToolNr = 3;
+                if(ConfigProviderService.vals.restrictions.correctionTool) {
+                  viewState.curCorrectionToolNr = 3;
+                }
               }
               // selectFourthContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectFourthContourCorrectionTool) {
-                viewState.curCorrectionToolNr = 4;
+                if(ConfigProviderService.vals.restrictions.correctionTool) {
+                  viewState.curCorrectionToolNr = 4;
+                }
               }
               // selectNOContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool) {
-                viewState.curCorrectionToolNr = undefined;
+                if(ConfigProviderService.vals.restrictions.correctionTool) {
+                  viewState.curCorrectionToolNr = undefined;
+                }
               }
               // zoomIn
               if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
@@ -75,18 +85,24 @@ angular.module('emulvcApp')
               }
               // playEntireFile
               if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
-                Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-                viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+                if(ConfigProviderService.vals.restrictions.playback) {
+                  Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+                  viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+                }
               }
               // playAllInView
               if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
-                Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
-                viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                if(ConfigProviderService.vals.restrictions.playback) {
+                  Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                  viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                }
               }
               // playSelected
               if (code === ConfigProviderService.vals.keyMappings.playSelected) {
-                Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-                viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                if(ConfigProviderService.vals.restrictions.playback) {
+                  Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                  viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                }
               }
               // shiftViewPortRight
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
@@ -108,11 +124,11 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
                 scope.openSubmenu();
               } 
-              // openSubmenu
+              // spectroSettings
               if (code === ConfigProviderService.vals.keyMappings.spectroSettings) {
                 scope.openModal('views/spectroSettings.html','dialog');
               }
-              // openSubmenu
+              // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
                 $('#HandletiersCtrl').scope().selectSegmentsInSelection();
               }   

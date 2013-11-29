@@ -78,8 +78,8 @@
     <button ng-click="cmd_zoomLeft();" class="mini-btn" id="cmd_viewMoveLeft" data-tooltip="Shortcut: {{shortcut.shiftViewPortLeft}}">left</button>
     <button ng-click="cmd_zoomRight();" class="mini-btn" id="cmd_viewMoveRight" data-tooltip="Shortcut: {{shortcut.shiftViewPortRight}}">right</button>
     <button ng-click="cmd_zoomSel();" class="mini-btn" id="cmd_viewZoomSelect" data-tooltip="Shortcut: {{shortcut.zoomSel}}">selection</button>
-    <button ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">play in view</button>
-    <button ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
-    <button ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
+    <button ng-show="cps.vals.restrictions.playback" ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">play in view</button>
+    <button ng-show="cps.vals.restrictions.playback" ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
+    <button ng-show="cps.vals.restrictions.playback" ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
 </div>
 </div>

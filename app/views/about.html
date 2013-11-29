@@ -8,7 +8,7 @@
  <div>&nbsp;</div>
  <div>&nbsp;</div>
  <div>&nbsp;</div>
- <b>About:</b><br />
+ <b>About:</b><br />&nbsp;<br />
  <div class="aboutDiv">
   emuLVC is an online and offline Web-App for labeling, visualizing
   and correcting speech and derived speech data. (still in alpha!!)
@@ -18,7 +18,7 @@
 
  <!-- general usage -->
  
-  <b>General usage:</b><br />
+  <b>General usage:</b><br />&nbsp;<br />
   <div class="aboutDiv">
   Moving the mouse over tiers automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
@@ -34,7 +34,7 @@
  <hr class="aboutHr" />
 
  <!-- navigation shortcuts -->
-  <b><u>Main Navigation Shortcuts:</u></b><br />
+  <b><u>Main Navigation Shortcuts:</u></b><br />&nbsp;<br />
   <div class="aboutDiv">
   <table class="aboutTable">
     <tbody>
@@ -43,13 +43,13 @@
       <tr><td><b>{{keyZoomIn}}:</b></td><td>Zoom in<sup>1</sup></td></tr>
       <tr><td><b>{{keyZoomOut}}:</b></td><td>Zoom out<sup>1</sup></td></tr>
       
-      <tr><td><b>{{keyZoomAll}}:</b></td><td>View all</td></tr>
-      <tr><td><b>{{keyZoomSel}}:</b></td><td>Zoom in to selected</td></tr>
-      
       <tr><td><b>{{shiftViewPortLeft}}:</b></td><td>Move view right</td></tr>
       <tr><td><b>{{shiftViewPortRight}}:</b></td><td>Move view left</td></tr>
       
+      <tr><td><b>{{keyZoomAll}}:</b></td><td>View all</td></tr>
+      <tr><td><b>{{keyZoomSel}}:</b></td><td>Zoom in to selected</td></tr>
       
+
       <tr><td><b>{{keyTab}}:</b></td><td>Select next event</td></tr>
       <tr><td><b>{{keyShift}} and {{keyTab}}:</b></td><td>Select previous event</td></tr>
       
@@ -63,11 +63,11 @@
 
  <!-- labeling shortcuts -->
  
-  <b><u>Labeling shortcuts:</u></b><br />
+  <b><u>Labeling shortcuts:</u></b><br />&nbsp;<br />
   <div class="aboutDiv">
   <table class="aboutTable">
     <tbody>
-      <tr><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
       <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundary</td></tr>
@@ -87,11 +87,11 @@
   </table>
   </div>
   
-  <hr class="aboutHr" />
+  <hr class="aboutHr" ng-show="cps.vals.restrictions.playback"/>
 
   <!-- playback shortcuts -->
-  <b><u>Playback shortcuts:</u></b><br />
-  <div class="aboutDiv">
+  <b ng-show="cps.vals.restrictions.playback"><u>Playback shortcuts:</u></b><br />&nbsp;<br />
+  <div class="aboutDiv" ng-show="cps.vals.restrictions.playback">
   <table class="aboutTable">
     <tbody>
       <tr><td><b>{{playEntireFile}}:</b></td><td>Play entire file</td></tr>
@@ -105,7 +105,7 @@
 
   <!-- correction shortcuts -->
   
-  <b ng-show="cps.vals.restrictions.correctionTool"><u>Correction Tool shortcuts:</u></b><br />
+  <b ng-show="cps.vals.restrictions.correctionTool"><u>Correction Tool shortcuts:</u></b><br />&nbsp;<br />
   <div class="aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
   <table class="aboutTable">
     <tbody>
