@@ -208,8 +208,10 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.shortcut[i] = 'ESC';
 				} else if ($scope.shortcut[i] === 32) {
 					$scope.shortcut[i] = 'SPACE';
+				} else if ($scope.shortcut[i] === -1) {
+					$scope.shortcut[i] = 'NONE';
 				} else {
-					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+					$scope.shortcut[i.toString()] = String.fromCharCode($scope.shortcut[i]);
 				
 				}
 			}
@@ -265,6 +267,23 @@ var MainCtrl = angular.module('emulvcApp')
 
 		$scope.refreshScope = function() {
 			$scope.$digest();
+		};
+
+		$scope.getShortCut = function(name) {
+		  if($scope.shortcut!==null) {
+			if($scope.shortcut[name]!==null) {
+			  if($scope.shortcut[name]!="") {
+			    return $scope.shortcut[name];
+			  }
+			  else return "NONE";
+			}
+			else {
+			 return "NONE";
+			}
+		  }
+		  else {
+		    return "NOT SET";
+		  }
 		};
 
 		/**

@@ -7,6 +7,7 @@
     },
     "keyMappings": {
         "openFile": -1,
+        "connect": -1,
         "openSubmenu": 79,
         "spectroSettings": 80,
         "zoomSel": 69,
