@@ -475,9 +475,30 @@ padding-right: 4px;
 }
 
 .aboutHr {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin-top: 30px;
+    padding-bottom: 30px;
     width: 100%;
+}
+
+.aboutTable {
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+
+}
+
+.aboutTable tr {
+    border: 0px;
+    border-bottom: 1px dotted #999;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.aboutTable tr td:first-child {
+    width: 40%;
+}
+.aboutTable tr td {
+    width: 60%;
 }
 
 [draggable] {

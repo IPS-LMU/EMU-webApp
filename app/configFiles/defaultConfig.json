@@ -95,6 +95,7 @@
         "order": [".ORT", ".MAU", ".phon"]
     },
     "restrictions": {
+        "correctionTool": true,
         "sortLabels": true,
         "editItemSize": true,
         "editItemName": true,
