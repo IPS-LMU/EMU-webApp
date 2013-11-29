@@ -6,14 +6,19 @@
   </h3> 
   
  <div>&nbsp;</div>
- <div>
-  emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
+ <div>&nbsp;</div>
+ <div>&nbsp;</div>
+ <b>About:</b><br />
+ <div class="aboutDiv">
+  emuLVC is an online and offline Web-App for labeling, visualizing
+  and correcting speech and derived speech data. (still in alpha!!)
  </div>
  <hr />
 
  <!-- general usage -->
- <div>
+ 
   <b>General usage:</b><br />
+  <div class="aboutDiv">
   Moving the mouse over tiers automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
   preselects it.
@@ -22,12 +27,11 @@
   mouse movement. If a segment is selected (= marked yellow), holding down 
   <b>alt</b> will move the entire segment
  </div>
- <hr />
+ <hr class="aboutHr" />
 
  <!-- navigation shortcuts -->
- <div>
-  <b><u>Default Navigation Shortcuts:</u></b><br />
-  <i>(Some might be deactivated / overridden)</i><br />
+  <b><u>Main Shortcuts:</u></b><br />
+  <div class="aboutDiv">
   <table>
     <tbody>
       <tr><td><b>{{keyZoomIn}}:</b></td><td>Zoom in<sup>1</sup></td></tr>
@@ -38,6 +42,7 @@
       <tr><td><b>{{keyZoomSel}}:</b></td><td>Zoom in to selected</td></tr>
       <tr><td><b>{{openSubmenu}}:</b></td><td>Open Submenu</td></tr>
       <tr><td><b>{{keyTab}}:</b></td><td>Select next event</td></tr>
+      <tr><td><b>{{selectSegmentsInSelection}}:</b></td><td>Select all Segments in current Viewport Selection</td></tr>
       <tr><td><b>{{keyShift}} + {{keyTab}}:</b></td><td>Select previous event</td></tr>
     </tbody>
   </table>
@@ -46,16 +51,15 @@
  <hr />
 
  <!-- labeling shortcuts -->
- <div>
+ 
   <b><u>Labeling shortcuts:</u></b><br />
-  <i>(Some might be deactivated / overridden)</i><br />
+  <div class="aboutDiv">
   <table>
     <tbody>
       <tr><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
       <tr><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
-      <tr><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
-      <tr><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundry</td></tr>
-      <tr><td><b>Delete:</b></td><td>Remove selected boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundry</td></tr>
       <tr><td><b>T:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
       <tr><td><b>B:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
       <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
@@ -66,15 +70,15 @@
       <tr><td><b>{{tierUp}}</b></td><td>Move tier selection up</td></tr>
       <tr><td><b>{{tierDown}}</b></td><td>Move tier selection down</td></tr>
       <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.sortLabels"><td>&uarr;&darr;</td><td>You can sort Tiers by dragging them up and down</td></tr>
     </tbody>
   </table>
   </div>
   <hr />
 
   <!-- correction shortcuts -->
-  <div>
+  <div class="aboutDiv">
   <b><u>Playback shortcuts:</u></b><br />
-  <i>(Some might be deactivated / overridden)</i><br />
 
   <table>
     <tbody>
@@ -86,9 +90,8 @@
   </div>
 
   <!-- playback shortcuts -->
-  <div>
+  <div class="aboutDiv">
   <b><u>Playback shortcuts:</u></b><br />
-  <i>(Some might be deactivated / overridden)</i><br />
 
   <table>
     <tbody>

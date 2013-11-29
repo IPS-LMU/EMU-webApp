@@ -467,6 +467,19 @@ padding-right: 4px;
 	opacity: 0.8;
 }
 
+.aboutDiv {
+    text-align:left;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 90%;
+}
+
+.aboutHr {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
 [draggable] {
 	-moz-user-select: none;
 	-khtml-user-select: none;

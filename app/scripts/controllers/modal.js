@@ -1,12 +1,14 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('ModalInstanceCtrl', function($rootScope, $scope, $modalInstance,
+	.controller('ModalInstanceCtrl', function($rootScope, $scope, $modalInstance, ConfigProviderService, 
 	modalTitle, modalContent, windowLength, rangeFrom, rangeTo, dynamicRange, window, currentTier, viewState,
 	keyZoomIn, keyZoomOut, keyZoomAll, keyZoomSel, shiftViewPortLeft, shiftViewPortRight, keyTab, keyShift, keyEnter,
 	playAllInView, playSelected, playEntireFile, keyBackspace, tierUp, tierDown,
-	selectFirstContourCorrectionTool, selectSecondContourCorrectionTool, keyopenSubmenu, history,
+	selectFirstContourCorrectionTool, selectSecondContourCorrectionTool, keyopenSubmenu, history, selectSegmentsInSelection,
 	selectThirdContourCorrectionTool, selectFourthContourCorrectionTool, selectNoContourCorrectionTool) {
+
+	$scope.cps = ConfigProviderService;
 
 	$scope.modalContent = modalContent;
 	$scope.modalTitle = modalTitle;
@@ -30,6 +32,7 @@ var MainCtrl = angular.module('emulvcApp')
 	$scope.tierUp = tierUp;
 	$scope.history = history;
 	$scope.tierDown = tierDown;
+	$scope.selectSegmentsInSelection = selectSegmentsInSelection;
 	$scope.openSubmenu = keyopenSubmenu;
 	$scope.selectFirstContourCorrectionTool = selectFirstContourCorrectionTool;
 	$scope.selectSecondContourCorrectionTool = selectSecondContourCorrectionTool;

@@ -246,7 +246,7 @@ angular.module('emulvcApp')
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
                     primeWorker = new Worker(spectroWorker);
-                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (4 * viewState.spectroSettings.windowLength));
+                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel*3*viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
                     setupEvent();
 

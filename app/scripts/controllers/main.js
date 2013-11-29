@@ -362,6 +362,9 @@ var MainCtrl = angular.module('emulvcApp')
 					dynamicRange: function() {
 						return viewState.spectroSettings.dynamicRange;
 					},
+					selectSegmentsInSelection: function() {
+					    return $scope.shortcut.selectSegmentsInSelection;
+					},
 					window: function() {
 						return viewState.spectroSettings.window;
 					},
