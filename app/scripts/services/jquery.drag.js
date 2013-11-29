@@ -4,6 +4,8 @@
       MOVE = 'mousemove touchmove', 
       STOP = 'mouseup touchend',
       E, M = {};
+      
+  var MAX = 0;
 
   function xy(v) {
     var y = v.pageY, 
@@ -34,14 +36,18 @@
     };
     $('.container').scope().dragStart();
     $(document).bind(MOVE,drag).bind(STOP,dragEnd);
+    MAX = $( document ).height() - 2 * $(".menu-bottom").height();
     return false;
   };
 
   function drag(v) {
     var p = xy(v);
-    E.css({ height:Math.max(p.y-M.pY+M.H,0) });
-    $('.container').scope().refreshTimeline();
-    $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
+    var X = Math.max(p.y-M.pY+M.H,0);
+    if(X<MAX) {
+      E.css({ height:X });
+      $('.container').scope().refreshTimeline();
+      $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2*$('.menu').height() + 'px');
+    }
     return false;
   };
 

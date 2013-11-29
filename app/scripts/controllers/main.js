@@ -210,6 +210,7 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.shortcut[i] = 'SPACE';
 				} else {
 					$scope.shortcut[i] = String.fromCharCode($scope.shortcut[i]);
+				
 				}
 			}
 
