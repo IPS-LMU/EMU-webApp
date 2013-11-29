@@ -38,6 +38,7 @@
         "snapBelow": 66,
         "snapZero": 88,
         "plus": 187,
+        "plusShift": 221,
         "minus": 189,
         "snapBoundary": 67
     },
@@ -92,10 +93,11 @@
         }
     },
     "labelCanvasConfig": {
-        "order": [".ORT", ".MAU", ".phon"]
+        "order": [".ORT", ".MAU", ".phon"],
+        "addTimeMode": "relative",
+        "addTimeValue": 5           
     },
     "restrictions": {
-        "playback": true,
         "correctionTool": true,
         "sortLabels": true,
         "editItemSize": true,

@@ -7,6 +7,7 @@
     },
     "keyMappings": {
         "openFile": -1,
+        "connect": -1,
         "openSubmenu": 79,
         "spectroSettings": 80,
         "zoomSel": 69,
@@ -37,6 +38,7 @@
         "snapBelow": 66,
         "snapZero": 88,
         "plus": 187,
+        "plusShift": 221,
         "minus": 189,
         "snapBoundary": 67
     },
@@ -91,7 +93,9 @@
         }
     },
     "labelCanvasConfig": {
-        "order": [".ORT", ".MAU", ".phon"]
+        "order": [".ORT", ".MAU", ".phon"],
+        "addTimeMode": "relative",
+        "addTimeValue": 5        
     },
     "restrictions": {
         "playback": true,

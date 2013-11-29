@@ -120,6 +120,35 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.tierDown) {
                 $('#HandletiersCtrl').scope().selectTier(true);
               }
+              
+              
+              // expand Segment
+              if (code === ConfigProviderService.vals.keyMappings.plus) {
+                if(ConfigProviderService.vals.restrictions.editItemSize) {
+                  $('#HandletiersCtrl').scope().expandSegment(true,true);
+                }
+              }
+              
+              // expand Segment
+              if (code === ConfigProviderService.vals.keyMappings.plusShift) {
+                if(ConfigProviderService.vals.restrictions.editItemSize) {
+                  $('#HandletiersCtrl').scope().expandSegment(true,false);
+                }
+              }
+              
+              // expand Segment
+              if (code === ConfigProviderService.vals.keyMappings.minus) {
+               if(ConfigProviderService.vals.restrictions.editItemSize) {
+                if (e.shiftKey) {
+                  $('#HandletiersCtrl').scope().expandSegment(false,true);
+                }
+                else {
+                  $('#HandletiersCtrl').scope().expandSegment(false,false);
+                }
+               }
+              }
+              
+              
               // openSubmenu
               if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
                 scope.openSubmenu();
