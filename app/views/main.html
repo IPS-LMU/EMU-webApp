@@ -62,7 +62,7 @@
     <!-- all tiers are listed here -->
     <ul ui:sortable="sortableOptions" ng-model="tierDetails.tiers" id="allowSortable">
         <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
-            <tier id='{{tier.TierName}}'></tier>
+            <tier id='{{tier.TierName}}' class="tier"></tier>
         </li>
     </ul>
   </div>
