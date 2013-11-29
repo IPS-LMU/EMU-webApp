@@ -115,9 +115,9 @@ angular.module('emulvcApp')
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 if (e.shiftKey)
-                  $('#HandletiersCtrl').scope().tabPrev();
+                  $('#HandletiersCtrl').scope().tabNext(true);
                 else
-                  $('#HandletiersCtrl').scope().tabNext();
+                  $('#HandletiersCtrl').scope().tabNext(false);
               }
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {

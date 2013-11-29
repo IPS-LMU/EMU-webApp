@@ -155,16 +155,39 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		};
 
 
-		$scope.tabNext = function() {
+		$scope.tabNext = function(invers) {
 			if (viewState.isEditing()) {
 				$scope.renameLabel();
 				viewState.deleteEditArea();
 			}
 			var now = parseInt(viewState.getselected()[0], 10);
-			if (now < viewState.getTierLength() - 1)++now;
-			else now = 0;
-			viewState.setlasteditArea("_" + now);
-			viewState.setcurClickSegment($scope.tierDetails.data.tiers[viewState.getselected()].events[now], now);
+			
+			if (invers) {
+			  if(now>1) {
+			    --now;
+			  }
+			}
+			else {
+			  if(now < viewState.getTierLength() - 1) {
+			    ++now;
+			  }
+			}
+			
+			if(now<1) {
+			  now = viewState.getTierLength() - 1;
+			}
+			
+			angular.forEach($scope.tierDetails.data.tiers, function(t) {
+			  var i = 0;
+				if (t.TierName == viewState.getcurClickTierName())
+					angular.forEach(t.events, function(evt) {
+						if (i == now) {
+							viewState.setcurClickSegment(evt, now);
+							viewState.setlasteditArea("_" + now);
+						}
+						++i;						
+					});
+			});
 		};
 
 		$scope.tabPrev = function() {
