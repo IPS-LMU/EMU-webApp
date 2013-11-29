@@ -4,14 +4,17 @@
     <h3>&nbsp;</h3>
     <div id="submenu" class="submenu">
       <div class="utteranceOuter" ng-repeat="utt in uttList">
-        <a class="utterance" title="{{utt.name}}" ng-click="menuUttClick(utt);"  tooltip-placement="right" data-tooltip="Load {{utt.name}}">{{utt.name}}</a>
-           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
+        
+        <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
+        
+        <a class="utterance" title="{{utt.name}}" ng-click="menuUttClick(utt);" >{{utt.name}}</a>
+        <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" >
+          <img />
+        </button>
+           
             Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br />
             Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" >
-               <button style="cursor: pointer;" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" >
-                 <img />
-               </button>
-           </div>
+        </div>
       </div>
       <div> &nbsp; </div>
       <div> &nbsp; </div>
