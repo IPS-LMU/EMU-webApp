@@ -4,7 +4,7 @@ var FileCtrl = angular.module("emulvcApp")
 	.controller("FileCtrl", function($rootScope, $scope,
 		viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
-    var dropbox = document.getElementById("dropbox");
+    var dropzone = document.getElementById("dropzone");
     var droptext1 = "Drop your files here";
     var droptext2 = "File is not allowed";
     var droptext3 = "Parsing started";
@@ -30,9 +30,9 @@ var FileCtrl = angular.module("emulvcApp")
             $scope.dropClass = "";
         })
     }
-    dropbox.addEventListener("dragenter", dragEnterLeave, false);
-    dropbox.addEventListener("dragleave", dragEnterLeave, false);
-    dropbox.addEventListener("dragover", function(evt) {
+    dropzone.addEventListener("dragenter", dragEnterLeave, false);
+    dropzone.addEventListener("dragleave", dragEnterLeave, false);
+    dropzone.addEventListener("dragover", function(evt) {
         evt.stopPropagation();
         evt.preventDefault();
         var clazz = "not-available";
@@ -43,7 +43,7 @@ var FileCtrl = angular.module("emulvcApp")
         })
     }, false);
     
-    dropbox.addEventListener("drop", function(evt) {
+    dropzone.addEventListener("drop", function(evt) {
         evt.stopPropagation();
         evt.preventDefault();
         $scope.$apply(function(){

@@ -28,7 +28,7 @@ table {
     background-image: -webkit-gradient(linear, left top, left bottom, from(#66cc00), to(#4b9500));
     border-image: initial;
 }
-.dropbox {
+.dropzone {
     width: 100%;
     height: 90%;
     min-height: 90%;
@@ -39,13 +39,13 @@ table {
     padding: 0px;
     margin: 15px;
 }
-.dropbox span {
+.dropzone span {
     margin-top: 0.9em;
     display: block;
 }
-.dropbox.not-available {
+.dropzone.not-available {
     background-color: #f00;
 }
-.dropbox.over {
+.dropzone.over {
     background-color: #bfb;
 }
