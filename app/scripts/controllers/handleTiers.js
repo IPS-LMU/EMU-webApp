@@ -192,11 +192,11 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		
 		$scope.expandSegment = function(expand,side) {
 		  if(viewState.getcurClickTierName()===undefined) {
-		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
+		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select a Tier first');
 		  }
 		  else {
 		    if(viewState.getselected().length==0) {
-		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select one or more Segments first');
+		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select one or more Segments first');
     		}
 		    else {
 		    var changeTime = 0;
@@ -207,21 +207,36 @@ var HandletiersCtrl = angular.module('emulvcApp')
 		        changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength/100);
 		    }
 		    else {
-		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 		    }
-		    alert(changeTime);
+		    
+		    if(!expand) {
+		        changeTime = 0 - changeTime;
+		    }
+		    var selected = viewState.getselected().sort();
+		    var startTime = 0;
+		    
+		    
 			angular.forEach($scope.tierDetails.data.tiers, function(t) {
 			  var i = 0;
-				if (t.TierName == viewState.getcurClickTierName()) {		    
-				  var selected = viewState.getselected().sort();
-				  if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
-					t.events[selected[0] - 1].sampleDur += changeTime;
-					for (var i = 0; i < selected.length; i++) {
-						t.events[selected[i]].startSample += changeTime;
-					}
-					t.events[selected[selected.length - 1] + 1].startSample += changeTime;
-					t.events[selected[selected.length - 1] + 1].sampleDur -= changeTime;
+				if (t.TierName == viewState.getcurClickTierName()) {	
+				 if(t.events[selected[selected.length - 1] + 1].sampleDur > (selected.length*changeTime)) {
+				  if(t.events[selected[0]].sampleDur > -(selected.length*changeTime)) {	    
+				   for (var i = 1; i <= selected.length; i++) {
+					t.events[selected[i-1]].startSample += startTime;
+					t.events[selected[i-1]].sampleDur += changeTime;
+					startTime = i * changeTime;
+				   }
+				   t.events[selected[selected.length - 1] + 1].startSample += startTime;
+				   t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
 				  }
+				  else {
+				    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+				  }
+				 }
+				 else {
+				   $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+				 }
 				}
 			});
 
