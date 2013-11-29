@@ -100,12 +100,13 @@
     "restrictions": {
         "playback": true,
         "correctionTool": true,
-        "sortLabels": true,
-        "editItemSize": true,
-        "editItemName": true,
-        "deleteItemBoundary": true,
-        "deleteItem": true,
-        "addItem": true,
+        "sortLabels": false,
+        "editItemSize": false,
+        "editItemName": false,
+        "deleteItemBoundary": false,
+        "deleteItem": false,
+        "deleteTier": false,
+        "addItem": false,
         "drawCrossHairs": true
     },
     "activeButtons": {

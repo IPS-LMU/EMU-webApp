@@ -98,6 +98,7 @@
         "addTimeValue": 750          
     },
     "restrictions": {
+        "playback": true,    
         "correctionTool": true,
         "sortLabels": true,
         "editItemSize": true,
