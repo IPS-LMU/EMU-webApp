@@ -13,7 +13,8 @@
                </button>
            </div>
       </div>
-
+      <div> &nbsp; </div>
+      <div> &nbsp; </div>
       <div id="dropbox" class="dropbox" ng-class="dropClass" ng-show="showDropZone"><span>{{dropText}}</span>
       <div ng-show="files.length">
         <div ng-repeat="file in files.slice(0)">
@@ -73,7 +74,7 @@
     <button ng-click="cmd_zoomOut();" class="mini-btn" id="cmd_viewZoomOut" data-tooltip="Shortcut: {{shortcut.zoomOut}}">out</button>
     <button ng-click="cmd_zoomLeft();" class="mini-btn" id="cmd_viewMoveLeft" data-tooltip="Shortcut: {{shortcut.shiftViewPortLeft}}">left</button>
     <button ng-click="cmd_zoomRight();" class="mini-btn" id="cmd_viewMoveRight" data-tooltip="Shortcut: {{shortcut.shiftViewPortRight}}">right</button>
-    <button ng-click="cmd_zoomSel();" class="mini-btn" id="cmd_viewZoomSelect" data-tooltip="Shortcut: {{shortcut.sel}}">selection</button>
+    <button ng-click="cmd_zoomSel();" class="mini-btn" id="cmd_viewZoomSelect" data-tooltip="Shortcut: {{shortcut.zoomSel}}">selection</button>
     <button ng-click="cmd_playView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">play in view</button>
     <button ng-click="cmd_playSel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
     <button ng-click="cmd_playAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
