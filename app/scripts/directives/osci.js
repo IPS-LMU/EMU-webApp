@@ -21,6 +21,22 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
+				scope.$watch('tds.data', function(newValue, oldValue) {
+					if (!$.isEmptyObject(scope.shs)) {
+						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+							drawVpOsciMarkup(scope, scope.config, true);
+						}
+					}
+				}, true);
+
+				scope.$watch('vs.movingBoundary', function(newValue, oldValue) {
+					if (!$.isEmptyObject(scope.shs)) {
+						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+							drawVpOsciMarkup(scope, scope.config, true);
+						}
+					}
+				}, true);
+
 				scope.$on('refreshTimeline', function() {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -140,6 +156,15 @@ angular.module('emulvcApp')
 					if (reset) {
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					}
+
+					// draw boundary moving line
+					if(viewState.movingBoundary){
+						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+						var tD = viewState.getcurMouseTierDetails();
+						var p = Math.round(viewState.getPos(markupCanvas.width, tD.events[viewState.getcurMouseSegmentId()].startSample));
+						ctx.fillRect(p, 0, 1, markupCanvas.height);
+					};
+
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
 					ctx.fillStyle = config.vals.colors.labelColor;

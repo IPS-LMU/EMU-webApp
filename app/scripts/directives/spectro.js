@@ -55,6 +55,24 @@ angular.module('emulvcApp')
                     }
                 }, true);
 
+                scope.$watch('tds.data', function(newValue, oldValue) {
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+                            drawTimeLineContext();
+                        }
+                    }
+                }, true);
+
+                scope.$watch('vs.movingBoundary', function(newValue, oldValue) {
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+                            contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+                            drawTimeLineContext();
+                        }
+                    }
+                }, true);
+
 
                 scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
                     console.log("clearing spectro image cache...");
@@ -167,6 +185,14 @@ angular.module('emulvcApp')
                 }
 
                 function drawTimeLineContext() {
+                    // draw boundary moving line
+                    if (scope.vs.movingBoundary) {
+                        contextmarkup.fillStyle = scope.config.vals.colors.selectedBoundaryColor;
+                        var tD = scope.vs.getcurMouseTierDetails();
+                        var p = Math.round(scope.vs.getPos(contextmarkup.canvas.width, tD.events[scope.vs.getcurMouseSegmentId()].startSample));
+                        contextmarkup.fillRect(p, 0, 1, contextmarkup.canvas.height);
+                    };
+
                     // contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
                     var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
                     var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
@@ -246,7 +272,7 @@ angular.module('emulvcApp')
                 function startSpectroRenderingThread(viewState, buffer) {
                     pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
                     primeWorker = new Worker(spectroWorker);
-                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel*3*viewState.spectroSettings.windowLength));
+                    var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel * 3 * viewState.spectroSettings.windowLength));
                     var parseData = new Float32Array(x);
                     setupEvent();
 

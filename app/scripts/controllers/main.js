@@ -2,11 +2,12 @@
 
 var MainCtrl = angular.module('emulvcApp')
 	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout, $window,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.history = HistoryService;
 		$scope.fontImage = fontScaleService;
+		$scope.tds = Tierdataservice;
 		$scope.connectBtnLabel = 'connect';
 
 		$scope.lastkeycode = 'N/A';
