@@ -67,7 +67,7 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				// console.log(curOrdIdx)
 				searchOrd = curOrd.split('.')[1];
 				$scope.tierDetails.data.tiers.forEach(function(t, tIdx) {
-					if(t.TierName.split('_')[1] === searchOrd){
+					if (t.TierName.split('_')[1] === searchOrd) {
 						sortedTiers.push(t);
 						sortedFileInfos.push($scope.tierDetails.data.fileInfos[tIdx]);
 					};
@@ -161,154 +161,173 @@ var HandletiersCtrl = angular.module('emulvcApp')
 				viewState.deleteEditArea();
 			}
 			var now = parseInt(viewState.getselected()[0], 10);
-			
+
 			if (invers) {
-			  if(now>1) {
-			    --now;
-			  }
+				if (now > 1) {
+					--now;
+				}
+			} else {
+				if (now < viewState.getTierLength() - 1) {
+					++now;
+				}
 			}
-			else {
-			  if(now < viewState.getTierLength() - 1) {
-			    ++now;
-			  }
+
+			if (now < 1) {
+				now = viewState.getTierLength() - 1;
 			}
-			
-			if(now<1) {
-			  now = viewState.getTierLength() - 1;
-			}
-			
+
 			angular.forEach($scope.tierDetails.data.tiers, function(t) {
-			  var i = 0;
+				var i = 0;
 				if (t.TierName == viewState.getcurClickTierName())
 					angular.forEach(t.events, function(evt) {
 						if (i == now) {
 							viewState.setcurClickSegment(evt, now);
 							viewState.setlasteditArea("_" + now);
 						}
-						++i;						
+						++i;
 					});
 			});
 		};
-		
-		$scope.expandSegment = function(expand,rightSide) {
-		  if(viewState.getcurClickTierName()===undefined) {
-		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select a Tier first');
-		  }
-		  else {
-		    if(viewState.getselected().length==0) {
-		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select one or more Segments first');
-    		}
-		    else {
-		    var changeTime = 0;
-		    if(ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'absolute') {
-		        changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-		    }
-		    else if(ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'relative') {
-		        changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength/100);
-		    }
-		    else {
-		      $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-		    }
-		    
-		    if(!expand) {
-		        changeTime = 0 - changeTime;
-		    }
-		    var selected = viewState.getselected().sort();
-		    var startTime = 0;
-		    
-		    if(rightSide) {
-			 angular.forEach($scope.tierDetails.data.tiers, function(t) {
-				if (t.TierName == viewState.getcurClickTierName()) {	
-				 if(t.events[selected[selected.length - 1] + 1].sampleDur > (selected.length*changeTime)) {
-				  if(t.events[selected[0]].sampleDur > -(selected.length*changeTime)) {	    
 
-
-				   // check loop in order to prevent negative sampleDurs
-				   var found = false;
-				   for (var i = 1; i <= selected.length; i++) {
-					if(t.events[selected[i-1]].sampleDur + changeTime <= 0)
-					  found = true;
-				   }
-				   if(found) {
-				     $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
-				   }
-				   else {
-				    for (var i = 1; i <= selected.length; i++) {
-					 t.events[selected[i-1]].startSample += startTime;
-					 t.events[selected[i-1]].sampleDur += changeTime;
-					 startTime = i * changeTime;
- 				    }
-				    t.events[selected[selected.length - 1] + 1].startSample += startTime;
-				    t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
-				   }
-				  }
-				  else {
-				    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
-				  }
-				 }
-				 else {
-				   $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
-				 }
+		$scope.snapBoundary = function(toTop) {
+			var preSelSS = viewState.getcurMouseSegment().startSample;
+			var td = viewState.getcurMouseTierDetails();
+			// console.log(td)
+			var neighTd = undefined;
+			var neighTdIdx;
+			$scope.tierDetails.data.tiers.forEach(function(t, tIdx) {
+				if (t.TierName === td.TierName) {
+					if (tIdx >= 1 && toTop) {
+						neighTd = $scope.tierDetails.data.tiers[tIdx - 1];
+						neighTdIdx = tIdx - 1;
+					}
 				}
 			});
-			}
-			else {
-			 angular.forEach($scope.tierDetails.data.tiers, function(t) {
-				if (t.TierName == viewState.getcurClickTierName()) {	
-				 if(t.events[selected[0] - 1].sampleDur > (selected.length*changeTime)) {
-				  if(t.events[selected[selected.length - 1]].sampleDur > (selected.length*changeTime)) {
+			var absMinDist = Infinity;
+			var absDist;
+			var minDist;
+			if (neighTd !== undefined) {
 
-				   // check loop in order to prevent negative sampleDurs
-				   var found = false;
-				   for (var i = 1; i <= selected.length; i++) {
-					if(t.events[selected[i-1]].sampleDur + changeTime <= 0)
-					  found = true;
-				   }
-				   if(found) {
-				     $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
-				   }
-				   else {				  	    
-				   for (var i = 0; i < selected.length; i++) {
-					t.events[selected[i]].startSample -= (changeTime * (selected.length-i));
-					t.events[selected[i]].sampleDur += changeTime;
-					
-				   }
-				   t.events[selected[0] - 1].sampleDur -= changeTime * selected.length;
-				   }
-				  }
-				  else {
-				    $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
-				  }
-				 }
-				 else {
-				   $scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
-				 }
-				}
-			});			
+				neighTd.events.forEach(function(itm, itmIdx) {
+					absDist = Math.abs(preSelSS - itm.startSample);
+					if (absDist < absMinDist) {
+						absMinDist = absDist;
+						minDist = itm.startSample - preSelSS;
+					}
+				});
+				this.moveBorder(minDist, td);
+
 			}
-		    }		  
-		  }
+		}
+
+
+		$scope.expandSegment = function(expand, rightSide) {
+			if (viewState.getcurClickTierName() === undefined) {
+				$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select a Tier first');
+			} else {
+				if (viewState.getselected().length == 0) {
+					$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select one or more Segments first');
+				} else {
+					var changeTime = 0;
+					if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'absolute') {
+						changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+					} else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode == 'relative') {
+						changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+					} else {
+						$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+					}
+
+					if (!expand) {
+						changeTime = 0 - changeTime;
+					}
+					var selected = viewState.getselected().sort();
+					var startTime = 0;
+
+					if (rightSide) {
+						angular.forEach($scope.tierDetails.data.tiers, function(t) {
+							if (t.TierName == viewState.getcurClickTierName()) {
+								if (t.events[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
+									if (t.events[selected[0]].sampleDur > -(selected.length * changeTime)) {
+
+
+										// check loop in order to prevent negative sampleDurs
+										var found = false;
+										for (var i = 1; i <= selected.length; i++) {
+											if (t.events[selected[i - 1]].sampleDur + changeTime <= 0)
+												found = true;
+										}
+										if (found) {
+											$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+										} else {
+											for (var i = 1; i <= selected.length; i++) {
+												t.events[selected[i - 1]].startSample += startTime;
+												t.events[selected[i - 1]].sampleDur += changeTime;
+												startTime = i * changeTime;
+											}
+											t.events[selected[selected.length - 1] + 1].startSample += startTime;
+											t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
+										}
+									} else {
+										$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+									}
+								} else {
+									$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+								}
+							}
+						});
+					} else {
+						angular.forEach($scope.tierDetails.data.tiers, function(t) {
+							if (t.TierName == viewState.getcurClickTierName()) {
+								if (t.events[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
+									if (t.events[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
+
+										// check loop in order to prevent negative sampleDurs
+										var found = false;
+										for (var i = 1; i <= selected.length; i++) {
+											if (t.events[selected[i - 1]].sampleDur + changeTime <= 0)
+												found = true;
+										}
+										if (found) {
+											$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+										} else {
+											for (var i = 0; i < selected.length; i++) {
+												t.events[selected[i]].startSample -= (changeTime * (selected.length - i));
+												t.events[selected[i]].sampleDur += changeTime;
+
+											}
+											t.events[selected[0] - 1].sampleDur -= changeTime * selected.length;
+										}
+									} else {
+										$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+									}
+								} else {
+									$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+								}
+							}
+						});
+					}
+				}
+			}
 		};
 
 		$scope.selectSegmentsInSelection = function() {
-		  if(viewState.getcurClickTierName()===undefined) {
-		    $scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
-		  }
-		  else {
-		    var rangeStart = viewState.curViewPort.selectS;
-		    var rangeEnd = viewState.curViewPort.selectE;
-			angular.forEach($scope.tierDetails.data.tiers, function(t) {
-			  var i = 0;
-				if (t.TierName == viewState.getcurClickTierName())
-					angular.forEach(t.events, function(evt) {
-						if (evt.startSample >= rangeStart && (evt.startSample+evt.sampleDur) <= rangeEnd ) {
-							viewState.setcurClickSegmentMultiple(evt, i);
-						}
-						++i;						
-					});
-			});
-		  }	
-		};		
+			if (viewState.getcurClickTierName() === undefined) {
+				$scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
+			} else {
+				var rangeStart = viewState.curViewPort.selectS;
+				var rangeEnd = viewState.curViewPort.selectE;
+				angular.forEach($scope.tierDetails.data.tiers, function(t) {
+					var i = 0;
+					if (t.TierName == viewState.getcurClickTierName())
+						angular.forEach(t.events, function(evt) {
+							if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
+								viewState.setcurClickSegmentMultiple(evt, i);
+							}
+							++i;
+						});
+				});
+			}
+		};
 
 		$scope.rename = function(tiername, id, name) {
 			angular.forEach($scope.tierDetails.data.tiers, function(t) {

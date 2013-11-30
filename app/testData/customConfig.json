@@ -40,7 +40,8 @@
         "plus": 187,
         "plusShift": 221,
         "minus": 189,
-        "snapBoundary": 67
+        "snapBoundaryToTop": 84,
+        "snapBoundaryToBottom": 66
     },
     "colors": {
         "labelColor": "#000",

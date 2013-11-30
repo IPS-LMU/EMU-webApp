@@ -121,6 +121,12 @@ angular.module('emulvcApp')
                 $('#HandletiersCtrl').scope().selectTier(true);
               }
               
+              // preselected boundary snap to top
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
+                if(ConfigProviderService.vals.restrictions.editItemSize) {
+                  $('#HandletiersCtrl').scope().snapBoundary(true);
+                }
+              }
               
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plus) {
