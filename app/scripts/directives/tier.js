@@ -87,8 +87,8 @@ angular.module('emulvcApp')
 						e.forEach(function(curEvt) {
 							++curID;
 
-							if (curEvt.startSample > viewState.curViewPort.sS &&
-								curEvt.startSample < viewState.curViewPort.eS || //within segment
+							if (curEvt.startSample >= viewState.curViewPort.sS &&
+								curEvt.startSample <= viewState.curViewPort.eS || //within segment
 								curEvt.startSample + curEvt.sampleDur > viewState.curViewPort.sS &&
 								curEvt.startSample + curEvt.sampleDur < viewState.curViewPort.eS || //end in segment
 								curEvt.startSample < viewState.curViewPort.sS &&
