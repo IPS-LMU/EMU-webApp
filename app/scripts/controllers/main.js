@@ -307,7 +307,7 @@ var MainCtrl = angular.module('emulvcApp')
 			} else {
 				$scope.$broadcast('loadingNewUtt');
 				// Iohandlerservice.httpGetUtterence(utt);
-				Iohandlerservice.wsH.getUtt($scope.curUserName, utt);
+				Iohandlerservice.getUtt(utt);
 				$scope.curUtt = utt;
 			}
 		};
@@ -594,6 +594,18 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 		};
 
+		//
+		$scope.openDemoDBclick = function() {
+			$scope.showDropZone = false;
+			ConfigProviderService.vals.main.comMode = 'http:GET';
+			Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
+				console.log(res.data)
+				$scope.uttList = res.data;
+				Iohandlerservice.getUtt(res.data[0])
+				// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
+				// $scope.curUtt = $scope.uttList[0];
+			});
+		};
 
 		/**
 		 *
