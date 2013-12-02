@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Soundhandlerservice', function Soundhandlerservice($document) {
+	.service('Soundhandlerservice', function Soundhandlerservice($document, Binarydatamaniphelper) {
 		// shared service object
 		var sServObj = {};
 
@@ -11,7 +11,7 @@ angular.module('emulvcApp')
 		sServObj.player.isPlaying = false;
 
 		sServObj.setPlayerSrc = function(buf) {
-			var base64String = this.arrayBufferToBase64(buf);
+			var base64String = Binarydatamaniphelper.arrayBufferToBase64(buf);
 			this.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
@@ -31,7 +31,7 @@ angular.module('emulvcApp')
 			tmp.set(new Uint8Array(header), 0);
 			tmp.set(new Uint8Array(newData), header.byteLength);
 
-			var base64String = this.arrayBufferToBase64(tmp.buffer);
+			var base64String = Binarydatamaniphelper.arrayBufferToBase64(tmp.buffer);
 			this.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
@@ -51,35 +51,6 @@ angular.module('emulvcApp')
 		sServObj.player.addEventListener('ended', function() {
 			this.isPlaying = false;
 		}, false);
-
-		/**
-		 * decode audio file data
-		 *
-		 * @param {AudioBuffer} audioData Audio data.
-		 * @param cb call back function to call when done decoding
-		 */
-
-		sServObj.arrayBufferToBase64 = function(buffer) {
-			var binary = '';
-			var bytes = new Uint8Array(buffer);
-			var len = bytes.byteLength;
-			for (var i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i])
-			}
-			return window.btoa(binary);
-		};
-
-		sServObj.base64ToArrayBuffer = function(string_base64) {
-			console.log('ficken ficken ficken')
-			var binary_string = window.atob(string_base64);
-			var len = binary_string.length;
-			var bytes = new Uint8Array(len);
-			for (var i = 0; i < len; i++) {
-				var ascii = binary_string.charCodeAt(i);
-				bytes[i] = ascii;
-			}
-			return bytes.buffer;
-		}
 
 
 		return sServObj;

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid) {
-		// We return this object to anything injecting our service
-		var Service = {};
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper) {
+		// shared service object
+		var sServObj = {};
 		// Keep all pending requests here until they get responses
 		var callbacks = {};
 		// Create a unique callback ID to map requests to responses
@@ -25,7 +25,7 @@ angular.module('emulvcApp')
 		};
 
 		function handleReceivedSSFF(fileName, data) {
-			var arrBuff = Soundhandlerservice.base64ToArrayBuffer(data);
+			var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(data);
 			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
 			ssffJso.fileURL = document.URL + fileName;
 			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
@@ -104,7 +104,7 @@ angular.module('emulvcApp')
 
 		///////////////////////////////////////////
 		// public api
-		Service.initConnect = function(url) {
+		sServObj.initConnect = function(url) {
 			var defer = $q.defer();
 			ws = new WebSocket(url);
 			ws.onopen = wsonopen;
@@ -116,14 +116,14 @@ angular.module('emulvcApp')
 			return defer.promise;
 		};
 		// close connection with ws
-		Service.closeConnect = function(url) {
+		sServObj.closeConnect = function(url) {
 			ws.onclose = function() {};
 			ws.close();
 
 		};
 
 		// ws getProtocol
-		Service.getProtocol = function() {
+		sServObj.getProtocol = function() {
 			var request = {
 				type: 'getProtocol'
 			};
@@ -133,7 +133,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getDoUserManagement
-		Service.getDoUserManagement = function() {
+		sServObj.getDoUserManagement = function() {
 			var request = {
 				type: 'getDoUserManagement'
 			};
@@ -143,7 +143,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getConfigFile
-		Service.getConfigFile = function() {
+		sServObj.getConfigFile = function() {
 			var request = {
 				type: 'getConfigFile'
 			};
@@ -153,7 +153,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getUsrUttList
-		Service.getUsrUttList = function(usrName) {
+		sServObj.getUsrUttList = function(usrName) {
 			var request = {
 				type: 'getUttList',
 				usrName: usrName
@@ -164,7 +164,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		Service.getSSFFfile = function(fileName) {
+		sServObj.getSSFFfile = function(fileName) {
 			var request = {
 				type: 'getSSFFfile',
 				fileName: fileName
@@ -175,7 +175,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		Service.getESPSfile = function(fileName) {
+		sServObj.getESPSfile = function(fileName) {
 			var request = {
 				type: 'getESPSfile',
 				fileName: fileName
@@ -186,7 +186,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		Service.getAudioFile = function(fileName) {
+		sServObj.getAudioFile = function(fileName) {
 			var request = {
 				type: 'getAudioFile',
 				fileName: fileName
@@ -197,7 +197,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws request for saving uttList
-		Service.saveUsrUttList = function(usrName, uttList) {
+		sServObj.saveUsrUttList = function(usrName, uttList) {
 			var stripped = angular.toJson(uttList); // remove $$hash
 			var request = {
 				type: 'saveUttList',
@@ -210,7 +210,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws request for saving ssff file
-		Service.saveSSFFfile = function(usrName, ssffJSO) {
+		sServObj.saveSSFFfile = function(usrName, ssffJSO) {
 			var buf = Ssffparserservice.jso2ssff(ssffJSO);
 			//console.log(usrName);
 			//console.log(buf);
@@ -235,15 +235,15 @@ angular.module('emulvcApp')
 		};
 
 		// ws get Utt from ws server
-		Service.getUtt = function(utt) {
+		sServObj.getUtt = function(utt) {
 			var curFile;
 
 			// load audio file first
-			curFile = Service.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 			//console.log(curFile)
-			Service.getAudioFile(curFile).then(function(audioF) {
+			sServObj.getAudioFile(curFile).then(function(audioF) {
 				// var arrBuff = stringToArrayBuffer(audioF);
-				var arrBuff = Soundhandlerservice.base64ToArrayBuffer(audioF);
+				var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(audioF);
 				console.log(typeof arrBuff);
 
 				var wavJSO = Wavparserservice.wav2jso(arrBuff);
@@ -259,15 +259,15 @@ angular.module('emulvcApp')
 				$rootScope.$broadcast('cleanPreview');
 			}).then(function() {
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
-					curFile = Service.findFileInUtt(utt, ext);
-					Service.getSSFFfile(curFile);
+					curFile = sServObj.findFileInUtt(utt, ext);
+					sServObj.getSSFFfile(curFile);
 				});
 			}).then(function() {
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
 					var deferred = $q.defer();
-					curFile = Service.findFileInUtt(utt, ext);
-					var promise = Service.getESPSfile(curFile);
+					curFile = sServObj.findFileInUtt(utt, ext);
+					var promise = sServObj.getESPSfile(curFile);
 					//promises.push(promise);
 					deferred.resolve(promise);
 
@@ -279,7 +279,7 @@ angular.module('emulvcApp')
 		};
 
 		// helper function to find file in utt
-		Service.findFileInUtt = function(utt, fileExt) {
+		sServObj.findFileInUtt = function(utt, fileExt) {
 			var res;
 			utt.files.forEach(function(f) {
 				// do suffix check
@@ -290,15 +290,5 @@ angular.module('emulvcApp')
 			return (res);
 		};
 
-		// SIC... place all binary manip. functions in service
-		function stringToArrayBuffer(str) {
-			var ab = new ArrayBuffer(str.length);
-			var view = new Uint8Array(ab);
-			for (var i = 0; i < str.length; ++i) {
-				view[i] = str.charCodeAt(i);
-			}
-			return ab;
-		}
-
-		return Service;
+		return sServObj;
 	});
