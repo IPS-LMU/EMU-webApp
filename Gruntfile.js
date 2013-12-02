@@ -282,7 +282,7 @@ module.exports = function(grunt) {
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
             'testData/demoUttList.json',
-            'testData/msajc*',
+            'testData/msajc*/*',
             'scripts/workers/spectroWorker.js',
             'styles/external/bootstrap-combined.min.css'
           ]
