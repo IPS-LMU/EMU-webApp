@@ -57,7 +57,8 @@
     "karma": "~0.10.2",
     "karma-ng-html2js-preprocessor": "~0.1.0",
     "grunt-ngmin": "0.0.3",
-    "grunt-google-cdn": "~0.2.2"
+    "grunt-google-cdn": "~0.2.2",
+    "grunt-appcache": "~0.1.2"
   },
   "engines": {
     "node": ">=0.8.0"
