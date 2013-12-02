@@ -12,8 +12,8 @@
           <img />
         </button>
            
-            Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br />
-            Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" >
+            <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
+            <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
         </div>
       </div>
       <div> &nbsp; </div>
@@ -26,7 +26,7 @@
         </div>
       </div>      
       </div>
-      <div class="utteranceSaveMeta">
+      <div class="utteranceSaveMeta" ng-show="showSaveCommStaBtnDiv;">
           <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
       </div>
     </div>

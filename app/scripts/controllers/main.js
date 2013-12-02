@@ -9,6 +9,8 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.fontImage = fontScaleService;
 		$scope.tds = Tierdataservice;
 		$scope.connectBtnLabel = 'connect';
+		$scope.showSaveCommStaBtnDiv = false;
+
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
@@ -68,6 +70,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// TODO hardcode removal of save / load/ manipulation buttons 
 			$scope.connectBtnLabel = 'disconnect';
 			$scope.showDropZone = false;
+			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			// Check if server speaks emuLVC
 			Iohandlerservice.wsH.getProtocol().then(function(res) {
