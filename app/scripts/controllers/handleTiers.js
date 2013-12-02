@@ -200,6 +200,10 @@ var HandletiersCtrl = angular.module('emulvcApp')
 					if (tIdx >= 1 && toTop) {
 						neighTd = $scope.tierDetails.data.tiers[tIdx - 1];
 						neighTdIdx = tIdx - 1;
+					}else if(tIdx < $scope.tierDetails.data.tiers.length - 1 && !toTop){
+						console.log("to bottom");
+						neighTd = $scope.tierDetails.data.tiers[tIdx + 1];
+						neighTdIdx = tIdx + 1;
 					}
 				}
 			});

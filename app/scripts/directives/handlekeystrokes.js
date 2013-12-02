@@ -127,6 +127,13 @@ angular.module('emulvcApp')
                   $('#HandletiersCtrl').scope().snapBoundary(true);
                 }
               }
+
+              // preselected boundary snap to bottom
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
+                if(ConfigProviderService.vals.restrictions.editItemSize) {
+                  $('#HandletiersCtrl').scope().snapBoundary(false);
+                }
+              }
               
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plus) {
