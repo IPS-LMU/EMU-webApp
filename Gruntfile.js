@@ -281,6 +281,8 @@ module.exports = function(grunt) {
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
+            'testData/demoUttList.json',
+            'testData/msajc*',
             'scripts/workers/spectroWorker.js',
             'styles/external/bootstrap-combined.min.css'
           ]

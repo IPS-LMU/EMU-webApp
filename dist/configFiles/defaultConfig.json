@@ -2,13 +2,15 @@
     "main": {
         "mode": "standalone",
         "osciSpectroZoomFactor": 2,
-        "develMode": false,
-        "wsServerUrl": "ws://localhost:8080"
+        "autoConnect": false,
+        "wsServerUrl": "ws://localhost:8080",
+        "comType": "ws"
     },
     "keyMappings": {
-        "openFile" : -1,
-        "openSubmenu" : 79,
-        "spectroSettings" : 80,
+        "openFile": -1,
+        "connect": -1,
+        "openSubmenu": 79,
+        "spectroSettings": 80,
         "zoomSel": 69,
         "zoomAll": 81,
         "zoomOut": 83,
@@ -30,8 +32,16 @@
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
         "selectNoContourCorrectionTool": 48,
+        "selectSegmentsInSelection": 71,
         "tierUp": 38,
-        "tierDown": 40
+        "tierDown": 40,
+        "snapAbove": 84,
+        "snapBelow": 66,
+        "snapZero": 88,
+        "plus": 187,
+        "plusShift": 221,
+        "minus": 189,
+        "snapBoundary": 67
     },
     "colors": {
         "labelColor": "#000",
@@ -42,10 +52,10 @@
         "loadingBars": 20,
         "barHeight": 1,
         "barMargin": 10,
-        "selectedAreaColor": "rgba(22, 22, 22, 0.2)",
+        "selectedAreaColor": "rgba(22, 22, 22, 0.1)",
         "selectedBorderColor": "rgba(0, 0, 0, 0.7)",
         "selectedBoundaryColor": "#0DC5FF",
-        "selectedTierColor": "rgba(22, 22, 22, 0.2)",
+        "selectedTierColor": "rgba(22, 22, 22, 0.1)",
         "selectedSegmentColor": "rgba(255, 255, 22, 0.5)",
         "selectedMinimapColor": "rgba(0, 0, 0, 0.2)",
         "startBoundaryColor": "#000",
@@ -75,17 +85,29 @@
         "extensions": {
             "audio": ".wav",
             "signals": [".fms"]
+        },
+        "contourLims": {
+            "fm": {
+                "min": 0,
+                "max": 1
+            }
         }
     },
     "labelCanvasConfig": {
-        "order": [".ORT", ".MAU", ".phon"]
+        "order": [".lab", ".tone"],
+        "addTimeMode": "absolute",
+        "addTimeValue": 750          
     },
     "restrictions": {
-        "sortLabels": false,
+        "playback": true,    
+        "correctionTool": true,
+        "sortLabels": true,
         "editItemSize": true,
         "editItemName": true,
-        "editItemBoundaries": true,
-        "deleteItem": false,
+        "deleteItemBoundary": true,
+        "deleteItem": true,
+        "deleteTier": true,
+        "addItem": true,
         "drawCrossHairs": true
     },
     "activeButtons": {
@@ -101,7 +123,8 @@
         "resizeSingleTier": true,
         "saveSingleTier": true,
         "resizeOsci": true,
-        "resizeSpectro": true
+        "resizeSpectro": true,
+        "openDemoDB": true
     },
     "userManagment": {
         "passcode": "1234"

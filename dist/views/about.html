@@ -5,94 +5,114 @@
   </h3> 
   
  <div>&nbsp;</div>
- <div>
-  emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data. (still in alpha!!)
+ <div>&nbsp;</div>
+ <div>&nbsp;</div>
+ <b>About:</b><br>&nbsp;<br>
+ <div class="aboutDiv">
+  emuLVC is an online and offline Web-App for labeling, visualizing
+  and correcting speech and derived speech data. (still in alpha!!)
  </div>
- <hr>
+ 
+ <hr class="aboutHr">
 
  <!-- general usage -->
- <div>
-  <b>General usage:</b><br>
+ 
+  <b>General usage:</b><br>&nbsp;<br>
+  <div class="aboutDiv">
   Moving the mouse over tiers automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
   preselects it.
-  To move the currently preselected boundary hold down the <b>shift</b> key and 
+  <span ng-show="cps.vals.restrictions.editItemSize">
+  To move the currently preselected boundary hold down the <b>{{keyShift}}</b> key and 
   move the mouse to the desired position. The boundary will then track the
   mouse movement. If a segment is selected (= marked yellow), holding down 
-  <b>alt</b> will move the entire segment
+  <b>{{keyAlt}}</b> will move the entire segment
+  </span>
  </div>
- <hr>
+ 
+ <hr class="aboutHr">
 
  <!-- navigation shortcuts -->
- <div>
-  <b><u>Default Navigation Shortcuts:</u></b><br>
-  <i>(Some might be deactivated / overridden)</i><br>
-  <table>
+  <b><u>Main Navigation Shortcuts:</u></b><br>&nbsp;<br>
+  <div class="aboutDiv">
+  <table class="aboutTable">
     <tbody>
+      <tr><td><b>{{openSubmenu}}:</b></td><td>Open Submenu</td></tr>
+      
       <tr><td><b>{{keyZoomIn}}:</b></td><td>Zoom in<sup>1</sup></td></tr>
       <tr><td><b>{{keyZoomOut}}:</b></td><td>Zoom out<sup>1</sup></td></tr>
+      
       <tr><td><b>{{shiftViewPortLeft}}:</b></td><td>Move view right</td></tr>
       <tr><td><b>{{shiftViewPortRight}}:</b></td><td>Move view left</td></tr>
+      
       <tr><td><b>{{keyZoomAll}}:</b></td><td>View all</td></tr>
       <tr><td><b>{{keyZoomSel}}:</b></td><td>Zoom in to selected</td></tr>
-      <tr><td><b>Tab:</b></td><td>Select next event</td></tr>
-      <tr><td><b>Shift+Tab:</b></td><td>Select previous event</td></tr>
+      
+
+      <tr><td><b>{{keyTab}}:</b></td><td>Select next event</td></tr>
+      <tr><td><b>{{keyShift}} and {{keyTab}}:</b></td><td>Select previous event</td></tr>
+      
+      
     </tbody>
   </table>
   <small>1.) Zooming while a Boundary is selected will keep the position of that boundary fixed</small>
  </div>
- <hr>
+ 
+ <hr class="aboutHr">
 
  <!-- labeling shortcuts -->
- <div>
-  <b><u>Labeling shortcuts:</u></b><br>
-  <i>(Some might be deactivated / overridden)</i><br>
-  <table>
+ 
+  <b><u>Labeling shortcuts:</u></b><br>&nbsp;<br>
+  <div class="aboutDiv">
+  <table class="aboutTable">
     <tbody>
-      <tr><td><b>Enter:</b></td><td>Add event / boundary at selected position</td></tr>
-      <tr><td><b>Backspace:</b></td><td>Remove selected event</td></tr>
-      <tr><td><b>Delete:</b></td><td>Remove selected boundary</td></tr>
-      <tr><td><b>T:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
-      <tr><td><b>B:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
-      <tr><td><b>X:</b></td><td>Snap to nearest zero crossing</td></tr>
-      <tr><td><b>+:</b></td><td>Add time to selected segments (expand to right)</td></tr>
-      <tr><td><b>Shift++:</b></td><td>Add time to selected segments (expand to left)</td></tr>
-      <tr><td><b>-:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
-      <tr><td><b>Shift+-:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
-      <tr><td><b>&uarr;</b></td><td>Move tier selection up</td></tr>
-      <tr><td><b>&darr;</b></td><td>Move tier selection down</td></tr>
-      <tr><td><b>C</b></td><td>Move selection to currently selected boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{history}}:</b></td><td>Go back in history</td></tr>
+      <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{keyEnter}}:</b></td><td>Add event / boundary at selected position</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{keyBackspace}}:</b></td><td>Deleted selected Segments</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{keyShift}} + {{keyBackspace}}:</b></td><td>Deleted current Segment Boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapAbove}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapBelow}}:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapZero}}:</b></td><td>Snap to nearest zero crossing</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{plus}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{minus}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{plus}}:</b></td><td>Add time to selected segments (expand to left)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{keyShift}} and {{minus}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
+      <tr><td><b>{{tierUp}}:</b></td><td>Move tier selection up</td></tr>
+      <tr><td><b>{{tierDown}}:</b></td><td>Move tier selection down</td></tr>
+      <tr><td><b>{{selectSegmentsInSelection}}:</b></td><td>Select all Segments in current Viewport Selection</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{snapBoundary}}:</b></td><td>Move selection to currently selected boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.sortLabels"><td><b>MOUSE DRAG</b></td><td>You can sort Tiers by dragging them up and down</td></tr>
     </tbody>
   </table>
   </div>
-  <hr>
-
-  <!-- correction shortcuts -->
-  <div>
-  <b><u>Playback shortcuts:</u></b><br>
-  <i>(Some might be deactivated / overridden)</i><br>
-
-  <table>
-    <tbody>
-      <tr><td><b>F:</b></td><td>Play entire file</td></tr>
-      <tr><td><b>R:</b></td><td>Play selected</td></tr>
-      <tr><td><b>Space:</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
-    </tbody>
-  </table>
-  </div>
+  
+  <hr class="aboutHr" ng-show="cps.vals.restrictions.playback">
 
   <!-- playback shortcuts -->
-  <div>
-  <b><u>Playback shortcuts:</u></b><br>
-  <i>(Some might be deactivated / overridden)</i><br>
-
-  <table>
+  <b ng-show="cps.vals.restrictions.playback"><u>Playback shortcuts:</u></b><br>&nbsp;<br>
+  <div class="aboutDiv" ng-show="cps.vals.restrictions.playback">
+  <table class="aboutTable">
     <tbody>
-      <tr><td><b>1:</b></td><td>Choose first correction tool</td></tr>
-      <tr><td><b>2:</b></td><td>Choose second correction tool</td></tr>
-      <tr><td><b>3:</b></td><td>Choose third correction tool</td></tr>
-      <tr><td><b>4:</b></td><td>Choose fourth correction tool</td></tr>
-      <tr><td><b>0:</b></td><td>Choose NO correction tool (choose when not correcting)</td></tr>
+      <tr><td><b>{{playEntireFile}}:</b></td><td>Play entire file</td></tr>
+      <tr><td><b>{{playSelected}}:</b></td><td>Play selected</td></tr>
+      <tr><td><b>{{playAllInView}}:</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  
+  <hr class="aboutHr" ng-show="cps.vals.restrictions.correctionTool">
+
+  <!-- correction shortcuts -->
+  
+  <b ng-show="cps.vals.restrictions.correctionTool"><u>Correction Tool shortcuts:</u></b><br>&nbsp;<br>
+  <div class="aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
+  <table class="aboutTable">
+    <tbody>
+      <tr><td><b>{{selectFirstContourCorrectionTool}}:</b></td><td>Choose first correction tool</td></tr>
+      <tr><td><b>{{selectSecondContourCorrectionTool}}:</b></td><td>Choose second correction tool</td></tr>
+      <tr><td><b>{{selectThirdContourCorrectionTool}}:</b></td><td>Choose third correction tool</td></tr>
+      <tr><td><b>{{selectFourthContourCorrectionTool}}:</b></td><td>Choose fourth correction tool</td></tr>
+      <tr><td><b>{{selectNoContourCorrectionTool}}:</b></td><td>Choose NO correction tool (choose when not correcting)</td></tr>
     </tbody>
   </table>
   </div>
