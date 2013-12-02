@@ -46,7 +46,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.ChunkID = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.ChunkID !== 'RIFF') {
-				alert('Wav read error: ChunkID not RIFF. Got ' + wavRep.ChunkID);
+				console.error('Wav read error: ChunkID not RIFF. Got ' + wavRep.ChunkID);
 			}
 
 
@@ -63,7 +63,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Format = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.Format !== 'WAVE') {
-				alert('Wav read error: Format not WAVE. Got ' + wavRep.Format);
+				console.error('Wav read error: Format not WAVE. Got ' + wavRep.Format);
 			}
 
 			// Subchunk1ID == "fmt " CHECK
@@ -72,7 +72,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Subchunk1ID = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.Subchunk1ID !== 'fmt ') {
-				alert('Wav read error: Subchunk1ID not fmt. Got ' + wavRep.Subchunk1ID);
+				console.error('Wav read error: Subchunk1ID not fmt. Got ' + wavRep.Subchunk1ID);
 			}
 
 			// Subchunk1Size == 16 CHECK
@@ -81,7 +81,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint32Array(curBuffer);
 			wavRep.Subchunk1Size = curBufferView[0]
 			if (wavRep.Subchunk1Size !== 16) {
-				alert('Wav read error: Subchunk1Size not 16');
+				console.error('Wav read error: Subchunk1Size not 16');
 			}
 
 			// AudioFormat == 1  CHECK
@@ -90,7 +90,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint16Array(curBuffer);
 			wavRep.AudioFormat = curBufferView[0];
 			if (wavRep.AudioFormat !== 1) {
-				alert('Wav read error: AudioFormat not 1');
+				console.error('Wav read error: AudioFormat not 1');
 			}
 
 			// NumChannels == 1  CHECK
@@ -99,7 +99,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint16Array(curBuffer);
 			wavRep.NumChannels = curBufferView[0];
 			if (wavRep.NumChannels !== 1) {
-				alert('Wav read error: NumChannels not 1');
+				console.error('Wav read error: NumChannels not 1');
 			}
 
 			// SampleRate 
@@ -120,7 +120,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint16Array(curBuffer);
 			wavRep.BlockAlign = curBufferView[0];
 
-			// console.log(blockAlign);
+			// console.error(blockAlign);
 
 			// BitsPerSample
 			curBinIdx = 34;
@@ -128,7 +128,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint16Array(curBuffer);
 			wavRep.BitsPerSample = curBufferView[0];
 			if (wavRep.BitsPerSample !== 16) {
-				alert('Wav read error: NumChannels not 1');
+				console.error('Wav read error: NumChannels not 1');
 			}
 
 			// Subchunk2ID
@@ -137,7 +137,7 @@ angular.module('emulvcApp')
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Subchunk2ID = String.fromCharCode.apply(null, curBufferView);
 			if (wavRep.Subchunk2ID !== 'data') {
-				alert('Wav read error: BitsPerSample not 16');
+				console.error('Wav read error: BitsPerSample not 16');
 			}
 
 			// Subchunk2Size

@@ -15,7 +15,7 @@ angular.module('emulvcApp')
 			var getProm;
 			if (ConfigProviderService.vals.main.comMode === 'http:GET'){
 				getProm = Httphandler.getUttList(filePath);
-			}else{
+			}else if(ConfigProviderService.vals.main.comMode === 'ws'){
 				alert('handle ws case for get utt list')
 			}
 
@@ -25,11 +25,11 @@ angular.module('emulvcApp')
 		//
 		sServObj.getUtt = function(utt) {
 			var getProm;
-			console.log('utt get getutt')
+
 			if (ConfigProviderService.vals.main.comMode === 'http:GET'){
 				getProm = Httphandler.getUtt(utt);
-			}else{
-				alert('handle ws case for get utt list')
+			}else if(ConfigProviderService.vals.main.comMode === 'ws'){
+				Websockethandler.getUtt(utt); // should maybe also return promise???
 			}
 
 			return getProm;

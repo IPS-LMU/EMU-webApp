@@ -119,23 +119,22 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newlyLoadedUttList
 		 */
-		$scope.$on('newlyLoadedUttList', function(evt, uttList) {
-			$scope.uttList = uttList;
-			Iohandlerservice.httpGetUtterence($scope.uttList[0]);
-			$scope.curUtt = $scope.uttList[0];
-			if (!viewState.getsubmenuOpen()) {
-				$scope.openSubmenu();
-			}
-		});
+		// $scope.$on('newlyLoadedUttList', function(evt, uttList) {
+		// 	$scope.uttList = uttList;
+		// 	// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
+		// 	$scope.curUtt = $scope.uttList[0];
+		// 	if (!viewState.getsubmenuOpen()) {
+		// 		$scope.openSubmenu();
+		// 	}
+		// });
 
 		/**
-		 * listen for newUserLoggedOn
+		 * listen for newUserLoggedOn (also called for no user on auto connect)
 		 */
 		$scope.$on('newUserLoggedOn', function(evt, name) {
 			$scope.curUserName = name;
 			Iohandlerservice.wsH.getUsrUttList(name).then(function(newVal) {
-				// console.log(newVal[0]);
-				Iohandlerservice.wsH.getUtt($scope.curUserName, newVal[0]);
+				Iohandlerservice.getUtt(newVal[0]);
 				$scope.curUtt = newVal[0];
 				if (!viewState.getsubmenuOpen()) {
 					$scope.openSubmenu();
@@ -191,10 +190,12 @@ var MainCtrl = angular.module('emulvcApp')
 		// 
 		$scope.handleConfigLoaded = function() {
 
-			// for develment
+			// for development
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}
+			// for development
+			// $scope.openDemoDBclick();
 
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end
@@ -233,7 +234,6 @@ var MainCtrl = angular.module('emulvcApp')
 			if (ConfigProviderService.vals.main.autoConnect) {
 				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
-				// $scope.curUserName = 'florian';
 			}
 
 			// init loading of files for testing

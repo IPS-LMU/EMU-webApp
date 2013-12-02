@@ -69,6 +69,18 @@ angular.module('emulvcApp')
 			return window.btoa(binary);
 		};
 
+		sServObj.base64ToArrayBuffer = function(string_base64) {
+			console.log('ficken ficken ficken')
+			var binary_string = window.atob(string_base64);
+			var len = binary_string.length;
+			var bytes = new Uint8Array(len);
+			for (var i = 0; i < len; i++) {
+				var ascii = binary_string.charCodeAt(i);
+				bytes[i] = ascii;
+			}
+			return bytes.buffer;
+		}
+
 
 		return sServObj;
 

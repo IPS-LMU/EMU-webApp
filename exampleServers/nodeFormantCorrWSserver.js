@@ -122,9 +122,39 @@ wss.on('connection', function(ws) {
 
 
 		// method like static get file method
-		if (mJSO.type === 'getSSFFfile' || mJSO.type === 'getESPSfile' || mJSO.type === 'getAudioFile') {
+		if (mJSO.type === 'getSSFFfile' || mJSO.type === 'getAudioFile') {
 			console.log(mJSO.fileName)
-			fs.readFile(path2dataRoot + mJSO.fileName, 'binary', function(err, data) {
+			fs.readFile(path2dataRoot + mJSO.fileName, 'base64', function(err, data) {
+				if (err) {
+					console.log('Error: ' + err);
+					ws.send(JSON.stringify({
+						'callbackID': mJSO.callbackID,
+						'data': 'USER NOT FOUND',
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
+					}), undefined, 0);
+					return;
+				} else {
+					ws.send(JSON.stringify({
+						'type': mJSO.type,
+						'callbackID': mJSO.callbackID,
+						'fileName': mJSO.fileName,
+						'data': data,
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
+					}), undefined, 0);
+				}
+			});
+		}
+
+		// method for getESPSfile
+		if (mJSO.type === 'getESPSfile') {
+			console.log(mJSO.fileName)
+			fs.readFile(path2dataRoot + mJSO.fileName, 'utf8', function(err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({

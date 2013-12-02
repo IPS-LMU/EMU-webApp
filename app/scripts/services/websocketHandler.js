@@ -25,7 +25,7 @@ angular.module('emulvcApp')
 		};
 
 		function handleReceivedSSFF(fileName, data) {
-			var arrBuff = stringToArrayBuffer(data);
+			var arrBuff = Soundhandlerservice.base64ToArrayBuffer(data);
 			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
 			ssffJso.fileURL = document.URL + fileName;
 			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
@@ -235,14 +235,17 @@ angular.module('emulvcApp')
 		};
 
 		// ws get Utt from ws server
-		Service.getUtt = function(usrName, utt) {
+		Service.getUtt = function(utt) {
 			var curFile;
 
 			// load audio file first
 			curFile = Service.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 			//console.log(curFile)
 			Service.getAudioFile(curFile).then(function(audioF) {
-				var arrBuff = stringToArrayBuffer(audioF);
+				// var arrBuff = stringToArrayBuffer(audioF);
+				var arrBuff = Soundhandlerservice.base64ToArrayBuffer(audioF);
+				console.log(typeof arrBuff);
+
 				var wavJSO = Wavparserservice.wav2jso(arrBuff);
 				return wavJSO;
 			}).then(function(wavJSO) {
