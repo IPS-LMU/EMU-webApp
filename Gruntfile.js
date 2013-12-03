@@ -284,6 +284,9 @@ module.exports = function(grunt) {
             'testData/demoUttList.json',
             'testData/msajc*/*',
             'scripts/workers/spectroWorker.js',
+            'background.js',
+            'manifest.json',
+            'assets/icon.png',
             'styles/external/bootstrap-combined.min.css'
           ]
         }, {
