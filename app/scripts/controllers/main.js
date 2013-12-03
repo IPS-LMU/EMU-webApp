@@ -1,7 +1,7 @@
 'use strict';
 
 var MainCtrl = angular.module('emulvcApp')
-	.controller('MainCtrl', function($scope, $modal, $log, $compile, $timeout, $window,
+	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice) {
 
 		$scope.cps = ConfigProviderService;
@@ -25,29 +25,29 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.shortcut = null;
 
 		$scope.windowWidth = $window.outerWidth;
-		angular.element($window).bind('resize', function() {
+		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
 			$('#HandletiersCtrl').scope().deleteEditArea();
 			$scope.windowWidth = $window.outerWidth;
 			$scope.$apply('windowWidth');
 		});
-		
-		angular.element($window).bind('keyup', function(e) {
-			if(e.keyCode==ConfigProviderService.vals.keyMappings.shift) {
-			    HistoryService.history();
-			}
-			if(e.keyCode==ConfigProviderService.vals.keyMappings.alt) {
+
+		angular.element($window).bind('keyup', function (e) {
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift) {
 				HistoryService.history();
-			}			
-		});		
+			}
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
+				HistoryService.history();
+			}
+		});
 
 		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
-		
+
 		// init history service
-		
+
 		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
 		$scope.history.init();
 
@@ -58,7 +58,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for configLoaded
 		 */
-		$scope.$on('configLoaded', function() {
+		$scope.$on('configLoaded', function () {
 			$scope.handleConfigLoaded();
 		});
 
@@ -66,7 +66,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for connectedToWSserver
 		 */
-		$scope.$on('connectedToWSserver', function(evt, type, data) {
+		$scope.$on('connectedToWSserver', function () {
 			// TODO hardcode removal of save / load/ manipulation buttons 
 			$scope.connectBtnLabel = 'disconnect';
 			$scope.showDropZone = false;
@@ -74,18 +74,18 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			// Check if server speaks emuLVC
-			Iohandlerservice.wsH.getProtocol().then(function(res) {
+			Iohandlerservice.wsH.getProtocol().then(function (res) {
 				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
 					//console.log('we speak the same protocol!!');
-					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
+					Iohandlerservice.wsH.getConfigFile().then(function (newVal) {
 						ConfigProviderService.setVals(newVal);
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
-						Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
+						Iohandlerservice.wsH.getDoUserManagement().then(function (manageRes) {
 							if (manageRes === 'YES') {
 								$scope.openModal('views/login.html', 'dialog', true);
 								// Iohandlerservice.wsH.getUsrUttList('florian');
-							}else{
+							} else {
 								$scope.$broadcast('newUserLoggedOn', '');
 							}
 						});
@@ -103,15 +103,15 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for dropped files
 		 */
-		$scope.$on('fileLoaded', function(evt, type, data) {
+		$scope.$on('fileLoaded', function (evt, type, data) {
 			switch (type) {
-				case fileType.WAV:
-					$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
-					Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
-					break;
-				case fileType.TEXTGRID:
+			case fileType.WAV:
+				$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
+				Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
+				break;
+			case fileType.TEXTGRID:
 
-					break;
+				break;
 			}
 			console.log("data");
 			console.log(data);
@@ -132,9 +132,9 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newUserLoggedOn (also called for no user on auto connect)
 		 */
-		$scope.$on('newUserLoggedOn', function(evt, name) {
+		$scope.$on('newUserLoggedOn', function (evt, name) {
 			$scope.curUserName = name;
-			Iohandlerservice.wsH.getUsrUttList(name).then(function(newVal) {
+			Iohandlerservice.wsH.getUsrUttList(name).then(function (newVal) {
 				Iohandlerservice.getUtt(newVal[0]);
 				$scope.curUtt = newVal[0];
 				if (!viewState.getsubmenuOpen()) {
@@ -148,7 +148,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('saveSSFFb4load', function(evt, data) {
+		$scope.$on('saveSSFFb4load', function (evt, data) {
 			console.log("saving utt")
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
@@ -163,7 +163,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('discardSSFFb4load', function(evt, data) {
+		$scope.$on('discardSSFFb4load', function (evt, data) {
 			console.log("discarding ssff changes")
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
@@ -176,7 +176,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newlyLoadedAudioFile
 		 */
-		$scope.$on('newlyLoadedAudioFile', function(evt, wavJSO, fileName) {
+		$scope.$on('newlyLoadedAudioFile', function (evt, wavJSO, fileName) {
 			// for dev:
 			// viewState.curViewPort.sS = 28535;
 			// viewState.curViewPort.eS = 29555;
@@ -189,7 +189,7 @@ var MainCtrl = angular.module('emulvcApp')
 		});
 
 		// 
-		$scope.handleConfigLoaded = function() {
+		$scope.handleConfigLoaded = function () {
 
 			// for development
 			if (!viewState.getsubmenuOpen()) {
@@ -207,11 +207,11 @@ var MainCtrl = angular.module('emulvcApp')
 				} else if ($scope.shortcut[i] === 9) {
 					$scope.shortcut[i] = 'TAB';
 				} else if ($scope.shortcut[i] === 13) {
-					$scope.shortcut[i] = 'ENTER';					
+					$scope.shortcut[i] = 'ENTER';
 				} else if ($scope.shortcut[i] === 16) {
-					$scope.shortcut[i] = 'SHIFT';					
+					$scope.shortcut[i] = 'SHIFT';
 				} else if ($scope.shortcut[i] === 18) {
-					$scope.shortcut[i] = 'ALT';					
+					$scope.shortcut[i] = 'ALT';
 				} else if ($scope.shortcut[i] === 27) {
 					$scope.shortcut[i] = 'ESC';
 				} else if ($scope.shortcut[i] === 32) {
@@ -228,7 +228,7 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.shortcut[i] = '-';
 				} else {
 					$scope.shortcut[i.toString()] = String.fromCharCode($scope.shortcut[i]);
-				
+
 				}
 			}
 
@@ -264,7 +264,7 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 
-		$scope.renameTier = function() {
+		$scope.renameTier = function () {
 			if (viewState.getcurClickTierName() !== undefined) {
 				$scope.openModal('views/renameTier.html', 'dialog', true);
 			} else {
@@ -272,39 +272,36 @@ var MainCtrl = angular.module('emulvcApp')
 			}
 		};
 
-		$scope.downloadTextGrid = function() {
+		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
 		};
 
-		$scope.refreshTimeline = function() {
+		$scope.refreshTimeline = function () {
 			$scope.$broadcast("refreshTimeline");
 		};
 
-		$scope.refreshScope = function() {
+		$scope.refreshScope = function () {
 			$scope.$digest();
 		};
 
-		$scope.getShortCut = function(name) {
-		  if($scope.shortcut!==null) {
-			if($scope.shortcut[name]!==null) {
-			  if($scope.shortcut[name]!="") {
-			    return $scope.shortcut[name];
-			  }
-			  else return "NONE";
+		$scope.getShortCut = function (name) {
+			if ($scope.shortcut !== null) {
+				if ($scope.shortcut[name] !== null) {
+					if ($scope.shortcut[name] != "") {
+						return $scope.shortcut[name];
+					} else return "NONE";
+				} else {
+					return "NONE";
+				}
+			} else {
+				return "NOT SET";
 			}
-			else {
-			 return "NONE";
-			}
-		  }
-		  else {
-		    return "NOT SET";
-		  }
 		};
 
 		/**
 		 *
 		 */
-		$scope.menuUttClick = function(utt) {
+		$scope.menuUttClick = function (utt) {
 			if ($scope.modifiedCurSSFF) {
 				$scope.lastclickedutt = utt;
 				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
@@ -320,7 +317,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.menuUttSave = function() {
+		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
@@ -329,14 +326,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.dragStart = function() {
+		$scope.dragStart = function () {
 			viewState.setdragBarActive(true);
 		};
 
 		/**
 		 *
 		 */
-		$scope.dragEnd = function() {
+		$scope.dragEnd = function () {
 			viewState.setdragBarActive(false);
 		};
 
@@ -345,7 +342,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.openModal = function(templatefile, cssStyle, blocking, title, content) {
+		$scope.openModal = function (templatefile, cssStyle, blocking, title, content) {
 			var drop = true;
 			if (blocking) {
 				drop = "static";
@@ -359,118 +356,118 @@ var MainCtrl = angular.module('emulvcApp')
 				windowClass: cssStyle,
 				controller: 'ModalInstanceCtrl',
 				resolve: {
-					modalContent: function() {
+					modalContent: function () {
 						return content;
 					},
-					modalTitle: function() {
+					modalTitle: function () {
 						return title;
 					},
-					windowLength: function() {
+					windowLength: function () {
 						return viewState.spectroSettings.windowLength;
 					},
-					rangeFrom: function() {
+					rangeFrom: function () {
 						return viewState.spectroSettings.rangeFrom;
 					},
-					rangeTo: function() {
+					rangeTo: function () {
 						return viewState.spectroSettings.rangeTo;
 					},
-					dynamicRange: function() {
+					dynamicRange: function () {
 						return viewState.spectroSettings.dynamicRange;
 					},
-					selectSegmentsInSelection: function() {
-					    return $scope.shortcut.selectSegmentsInSelection;
+					selectSegmentsInSelection: function () {
+						return $scope.shortcut.selectSegmentsInSelection;
 					},
-					window: function() {
+					window: function () {
 						return viewState.spectroSettings.window;
 					},
-					selectFirstContourCorrectionTool: function() {
-					    return $scope.shortcut.selectFirstContourCorrectionTool;
+					selectFirstContourCorrectionTool: function () {
+						return $scope.shortcut.selectFirstContourCorrectionTool;
 					},
-					selectSecondContourCorrectionTool: function() {
-					    return $scope.shortcut.selectSecondContourCorrectionTool;
+					selectSecondContourCorrectionTool: function () {
+						return $scope.shortcut.selectSecondContourCorrectionTool;
 					},
-					selectThirdContourCorrectionTool: function() {
-					    return $scope.shortcut.selectThirdContourCorrectionTool;
+					selectThirdContourCorrectionTool: function () {
+						return $scope.shortcut.selectThirdContourCorrectionTool;
 					},
-					selectFourthContourCorrectionTool: function() {
-					    return $scope.shortcut.selectFourthContourCorrectionTool;
+					selectFourthContourCorrectionTool: function () {
+						return $scope.shortcut.selectFourthContourCorrectionTool;
 					},
-					selectNoContourCorrectionTool: function() {
-					    return $scope.shortcut.selectNoContourCorrectionTool;
+					selectNoContourCorrectionTool: function () {
+						return $scope.shortcut.selectNoContourCorrectionTool;
 					},
-					playAllInView: function() {
-					    return $scope.shortcut.playAllInView;
+					playAllInView: function () {
+						return $scope.shortcut.playAllInView;
 					},
-					keyBackspace: function() {
-					    return $scope.shortcut.backspace;
+					keyBackspace: function () {
+						return $scope.shortcut.backspace;
 					},
-					snapAbove: function() {
-					    return $scope.shortcut.snapAbove;
+					snapAbove: function () {
+						return $scope.shortcut.snapAbove;
 					},
-					snapBelow: function() {
-					    return $scope.shortcut.snapBelow;
+					snapBelow: function () {
+						return $scope.shortcut.snapBelow;
 					},
-					plus: function() {
-					    return $scope.shortcut.plus;
+					plus: function () {
+						return $scope.shortcut.plus;
 					},
-					minus: function() {
-					    return $scope.shortcut.minus;
+					minus: function () {
+						return $scope.shortcut.minus;
 					},
-					snapZero: function() {
-					    return $scope.shortcut.snapZero;
+					snapZero: function () {
+						return $scope.shortcut.snapZero;
 					},
-					snapBoundary: function() {
-					    return $scope.shortcut.snapBoundary;
+					snapBoundary: function () {
+						return $scope.shortcut.snapBoundary;
 					},
-					keyAlt: function() {
-					    return $scope.shortcut.alt;
+					keyAlt: function () {
+						return $scope.shortcut.alt;
 					},
-					playSelected: function() {
-					    return $scope.shortcut.playSelected;
+					playSelected: function () {
+						return $scope.shortcut.playSelected;
 					},
-					history: function() {
-					    return $scope.shortcut.history;
+					history: function () {
+						return $scope.shortcut.history;
 					},
-					keyopenSubmenu: function() {
-					    return $scope.shortcut.openSubmenu;
+					keyopenSubmenu: function () {
+						return $scope.shortcut.openSubmenu;
 					},
-					playEntireFile: function() {
-					    return $scope.shortcut.playEntireFile;
+					playEntireFile: function () {
+						return $scope.shortcut.playEntireFile;
 					},
-					keyTab: function() {
-					    return $scope.shortcut.tab;
+					keyTab: function () {
+						return $scope.shortcut.tab;
 					},
-					tierUp: function() {
-					    return $scope.shortcut.tierUp;
+					tierUp: function () {
+						return $scope.shortcut.tierUp;
 					},
-					tierDown: function() {
-					    return $scope.shortcut.tierDown;
+					tierDown: function () {
+						return $scope.shortcut.tierDown;
 					},
-					keyShift: function() {
-					    return $scope.shortcut.shift;
+					keyShift: function () {
+						return $scope.shortcut.shift;
 					},
-					keyEnter: function() {
-					    return $scope.shortcut.enter;
+					keyEnter: function () {
+						return $scope.shortcut.enter;
 					},
-					keyZoomIn: function() {
+					keyZoomIn: function () {
 						return $scope.shortcut.zoomIn;
 					},
-					keyZoomOut: function() {
+					keyZoomOut: function () {
 						return $scope.shortcut.zoomOut;
 					},
-					keyZoomAll: function() {
+					keyZoomAll: function () {
 						return $scope.shortcut.zoomAll;
 					},
-					keyZoomSel: function() {
+					keyZoomSel: function () {
 						return $scope.shortcut.zoomSel;
 					},
-					shiftViewPortLeft: function() {
+					shiftViewPortLeft: function () {
 						return $scope.shortcut.shiftViewPortLeft;
 					},
-					shiftViewPortRight: function() {
+					shiftViewPortRight: function () {
 						return $scope.shortcut.shiftViewPortRight;
 					},
-					currentTier: function() {
+					currentTier: function () {
 						if (viewState.getcurClickTierName() !== '') {
 							return viewState.getcurClickTierName();
 						} else {
@@ -484,14 +481,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.changingMetaData = function() {
+		$scope.changingMetaData = function () {
 			$scope.modifiedMetaData = true;
 		};
 
 		/**
 		 *
 		 */
-		$scope.changingSSFFdata = function() {
+		$scope.changingSSFFdata = function () {
 			// console.log('changingSSFFdata')
 			$scope.modifiedCurSSFF = true;
 		};
@@ -500,7 +497,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.uttIsDisabled = function(utt) {
+		$scope.uttIsDisabled = function (utt) {
 			if (utt.name === $scope.curUtt.name) {
 				return false;
 			} else {
@@ -511,7 +508,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.getUttColor = function(utt) {
+		$scope.getUttColor = function (utt) {
 			var curColor;
 			if (!$scope.modifiedCurSSFF) {
 				curColor = {
@@ -535,7 +532,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.getMetaBtnColor = function() {
+		$scope.getMetaBtnColor = function () {
 			if (!$scope.modifiedMetaData) {
 				var curColor = {
 					'color': 'rgb(128,230,25)'
@@ -552,7 +549,7 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.cursorInTextField = function() {
+		$scope.cursorInTextField = function () {
 			viewState.focusInTextField = true;
 			// console.log("CURSOR");
 		};
@@ -560,14 +557,14 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.cursorOutOfTextField = function() {
+		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
 
 		/**
 		 *
 		 */
-		$scope.openSubmenu = function() {
+		$scope.openSubmenu = function () {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
 				// $('#submenuOpen').html('☰');
@@ -589,10 +586,10 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 		//
-		$scope.connectBtnClick = function() {
-			if($scope.connectBtnLabel === 'connect'){
-				$scope.openModal('views/connectModal.html','dialog',false);
-			}else{
+		$scope.connectBtnClick = function () {
+			if ($scope.connectBtnLabel === 'connect') {
+				$scope.openModal('views/connectModal.html', 'dialog', false);
+			} else {
 				Iohandlerservice.wsH.closeConnect();
 				$scope.uttList = [];
 				$scope.showDropZone = true;
@@ -602,7 +599,7 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 		//
-		$scope.openDemoDBclick = function() {
+		$scope.openDemoDBclick = function () {
 			$scope.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'http:GET';
 			Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
@@ -617,56 +614,56 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.saveMetaData = function() {
+		$scope.saveMetaData = function () {
 
 			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttList);
 			$scope.modifiedMetaData = false;
 		};
 
 
-		$scope.openFile = function() {
+		$scope.openFile = function () {
 			alert('code to open file');
 		};
 
-		$scope.setlastkeycode = function(c, shift) {
+		$scope.setlastkeycode = function (c, shift) {
 			$scope.lastkeycode = c;
 		};
 
-		$scope.cmd_zoomAll = function() {
+		$scope.cmd_zoomAll = function () {
 			viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 		};
 
-		$scope.cmd_zoomSel = function() {
+		$scope.cmd_zoomSel = function () {
 			viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
-		$scope.cmd_zoomIn = function() {
+		$scope.cmd_zoomIn = function () {
 			viewState.zoomViewPort(true);
 		};
 
-		$scope.cmd_zoomOut = function() {
+		$scope.cmd_zoomOut = function () {
 			viewState.zoomViewPort(false);
 		};
 
-		$scope.cmd_zoomLeft = function() {
+		$scope.cmd_zoomLeft = function () {
 			viewState.shiftViewPort(false);
 		};
 
-		$scope.cmd_zoomRight = function() {
+		$scope.cmd_zoomRight = function () {
 			viewState.shiftViewPort(true);
 		};
 
-		$scope.cmd_playView = function() {
+		$scope.cmd_playView = function () {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
 			viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 		};
 
-		$scope.cmd_playSel = function() {
+		$scope.cmd_playSel = function () {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
-		$scope.cmd_playAll = function() {
+		$scope.cmd_playAll = function () {
 			Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 			viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 		};

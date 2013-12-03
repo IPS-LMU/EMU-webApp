@@ -1,39 +1,39 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('LoginCtrl', function($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState) {
+	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState) {
 		$scope.username = '';
 		$scope.passcode = '';
 		$scope.loginError = '';
 
-		$scope.tryLogin = function() {
+		$scope.tryLogin = function () {
 			if ($scope.passcode === ConfigProviderService.vals.userManagment.passcode) {
 				$scope.loginError = 'CORRECT PASSCODE!... getting users utterance list...';
-				var filePath = 'testData/' + $scope.username + '.json';
+				// var filePath = 'testData/' + $scope.username + '.json';
 
-				Iohandlerservice.wsH.getUsrUttList($scope.username).then(function(usrRes) {
-					if(usrRes === 'USER NOT FOUND'){
+				Iohandlerservice.wsH.getUsrUttList($scope.username).then(function (usrRes) {
+					if (usrRes === 'USER NOT FOUND') {
 
 						$scope.loginError = usrRes;
-					}else{
+					} else {
 						$scope.loginError = 'USER FOUND';
 						$rootScope.$broadcast('newUserLoggedOn', $scope.username);
 						$scope.cancel();
-					};
+					}
 				});
 			} else {
 				$scope.loginError = 'WRONG PASSCODE!';
 			}
-		}
+		};
 
 		//
-		$scope.cursorInTextField = function() {
+		$scope.cursorInTextField = function () {
 			viewState.focusInTextField = true;
 			// console.log("CURSOR");
 		};
 
 		//
-		$scope.cursorOutOfTextField = function() {
+		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
 	});
