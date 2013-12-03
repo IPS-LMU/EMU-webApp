@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.httpGetConfig = function() { // SIC SIC SIC... und gar nicht teuer...
+		sServObj.httpGetConfig = function() { // SIC SIC SIC...
 			$http.get('configFiles/defaultConfig.json').success(function(data) {
 				sServObj.setVals(data);
 				$rootScope.$broadcast('configLoaded', data);
@@ -18,7 +18,7 @@ angular.module('emulvcApp')
 		};
 
 		/**
-		 * depth of 3 = max
+		 * depth of 2 = max
 		 */
 		sServObj.setVals = function(data) {
 			if ($.isEmptyObject(sServObj.vals)) {
@@ -28,9 +28,15 @@ angular.module('emulvcApp')
 				console.log(data)
 				Object.keys(data).forEach(function(key1) {
 					console.log(key1 + ' : ' + data[key1]);
-					sServObj.vals[key1] = data[key1];
+					// sServObj.vals[key1] = data[key1];
 					Object.keys(data[key1]).forEach(function(key2) {
-						console.log('\t' + key2);
+						if (sServObj.vals[key1][key2] !== undefined) {
+							// console.log('\t' + key2);
+							// console.log(data[key1][key2]);
+							sServObj.vals[key1][key2] = data[key1][key2];
+						}else{
+							console.error("BAD ENTRY IN CONFIG");
+						}
 					})
 
 				})

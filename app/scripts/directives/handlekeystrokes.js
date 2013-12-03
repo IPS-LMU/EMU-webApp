@@ -218,7 +218,7 @@ angular.module('emulvcApp')
                 e.stopPropagation();
               }
               
-              console.log(code);
+              // console.log(code);
                
             }
           });
