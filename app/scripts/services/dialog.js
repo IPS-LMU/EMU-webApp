@@ -2,26 +2,26 @@
 
 angular.module('emulvcApp')
 	.factory('dialogService', ['$modal',
-		function($modal) {
+		function ($modal) {
 			return {
-				open: function(templatefile, myContent, myTitle) {
-					var modalInstance = $modal.open({
+				open: function (templatefile, myContent, myTitle) {
+					$modal.open({
 						backdrop: true,
 						keyboard: true,
 						backdropClick: true,
 						templateUrl: templatefile,
 						controller: 'ModalInstanceCtrl',
 						resolve: {
-							modalContent: function() {
+							modalContent: function () {
 								return myContent;
 							},
-							modalTitle: function() {
+							modalTitle: function () {
 								return myTitle;
 							}
 						}
 					});
 				},
-				closeModal: function() {
+				closeModal: function () {
 					alert('Hier');
 					$modal.close();
 				}

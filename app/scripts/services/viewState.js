@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function($rootScope, Soundhandlerservice, $window, Tierdataservice) {
+  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Tierdataservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -62,14 +62,16 @@ angular.module('emulvcApp')
 
     /**
      */
-    sServObj.updatePlayHead = function(timestamp) {
+    sServObj.updatePlayHead = function (timestamp) {
       // at first push animation !!!
       if (Soundhandlerservice.player.isPlaying) {
         $window.requestAnimationFrame(sServObj.updatePlayHead);
       }
 
       // do work in this animation round now
-      if (sServObj.start === null) sServObj.start = timestamp;
+      if (sServObj.start === null) {
+        sServObj.start = timestamp;
+      }
       var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
@@ -85,7 +87,7 @@ angular.module('emulvcApp')
 
     /**
      */
-    sServObj.animatePlayHead = function(startS, endS) {
+    sServObj.animatePlayHead = function (startS, endS) {
       sServObj.playHeadAnimationInfos.sS = startS;
       sServObj.playHeadAnimationInfos.eS = endS;
       sServObj.playHeadAnimationInfos.curS = startS;
@@ -98,7 +100,7 @@ angular.module('emulvcApp')
      * @param start of selected Area
      * @param end of selected Area
      */
-    sServObj.select = function(start, end) {
+    sServObj.select = function (start, end) {
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
     };
@@ -108,7 +110,7 @@ angular.module('emulvcApp')
      * reset selected Area to default
      * @param length of current pcm stream
      */
-    sServObj.resetSelect = function() {
+    sServObj.resetSelect = function () {
       sServObj.curViewPort.selectS = -1;
       sServObj.curViewPort.selectE = -1;
     };
@@ -116,7 +118,7 @@ angular.module('emulvcApp')
     /**
      * setspectroSettings
      */
-    sServObj.setspectroSettings = function(len, rfrom, rto, dyn, win) {
+    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win) {
       sServObj.spectroSettings.windowLength = parseInt(len, 10);
       sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
       sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
@@ -128,7 +130,7 @@ angular.module('emulvcApp')
     /**
      * returns current selection as array
      */
-    sServObj.getSelect = function() {
+    sServObj.getSelect = function () {
       return [sServObj.curViewPort.selectS, sServObj.curViewPort.selectE];
     };
 
@@ -139,7 +141,7 @@ angular.module('emulvcApp')
      * @param start of selected Area
      * @param end of seleected Area
      */
-    sServObj.selectDependent = function(start, end) {
+    sServObj.selectDependent = function (start, end) {
       if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
       }
@@ -153,41 +155,41 @@ angular.module('emulvcApp')
      * set the window Function for the Spectrogram
      * @param name of Window Function
      */
-    sServObj.setWindowFunction = function(name) {
+    sServObj.setWindowFunction = function (name) {
       switch (name) {
-        case "BARTLETT":
-          sServObj.spectroSettings.window = myWindow.BARTLETT;
-          break;
-        case "BARTLETTHANN":
-          sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
-          break;
-        case "BLACKMAN":
-          sServObj.spectroSettings.window = myWindow.BLACKMAN;
-          break;
-        case "COSINE":
-          sServObj.spectroSettings.window = myWindow.COSINE;
-          break;
-        case "GAUSS":
-          sServObj.spectroSettings.window = myWindow.GAUSS;
-          break;
-        case "HAMMING":
-          sServObj.spectroSettings.window = myWindow.HAMMING;
-          break;
-        case "HANN":
-          sServObj.spectroSettings.window = myWindow.HANN;
-          break;
-        case "LANCZOS":
-          sServObj.spectroSettings.window = myWindow.LANCZOS;
-          break;
-        case "RECTANGULAR":
-          sServObj.spectroSettings.window = myWindow.RECTANGULAR;
-          break;
-        case "TRIANGULAR":
-          sServObj.spectroSettings.window = myWindow.TRIANGULAR;
-          break;
-        default:
-          sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
-          break;
+      case 'BARTLETT':
+        sServObj.spectroSettings.window = myWindow.BARTLETT;
+        break;
+      case 'BARTLETTHANN':
+        sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+        break;
+      case 'BLACKMAN':
+        sServObj.spectroSettings.window = myWindow.BLACKMAN;
+        break;
+      case 'COSINE':
+        sServObj.spectroSettings.window = myWindow.COSINE;
+        break;
+      case 'GAUSS':
+        sServObj.spectroSettings.window = myWindow.GAUSS;
+        break;
+      case 'HAMMING':
+        sServObj.spectroSettings.window = myWindow.HAMMING;
+        break;
+      case 'HANN':
+        sServObj.spectroSettings.window = myWindow.HANN;
+        break;
+      case 'LANCZOS':
+        sServObj.spectroSettings.window = myWindow.LANCZOS;
+        break;
+      case 'RECTANGULAR':
+        sServObj.spectroSettings.window = myWindow.RECTANGULAR;
+        break;
+      case 'TRIANGULAR':
+        sServObj.spectroSettings.window = myWindow.TRIANGULAR;
+        break;
+      default:
+        sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
+        break;
       }
     };
 
@@ -196,7 +198,7 @@ angular.module('emulvcApp')
     /**
      * set if user is dragging dragbar
      */
-    sServObj.getdragBarActive = function() {
+    sServObj.getdragBarActive = function () {
       return this.dragBarActive;
     };
 
@@ -204,7 +206,7 @@ angular.module('emulvcApp')
     /**
      * set if user is dragging dragbar
      */
-    sServObj.setdragBarActive = function(b) {
+    sServObj.setdragBarActive = function (b) {
       this.dragBarActive = b;
     };
 
@@ -214,7 +216,7 @@ angular.module('emulvcApp')
      * @param w is width of canvas
      * @param s is current sample to convert to pixel value
      */
-    sServObj.getPos = function(w, s) {
+    sServObj.getPos = function (w, s) {
       return (w * (s - this.curViewPort.sS) / (this.curViewPort.eS - this.curViewPort.sS + 1)); // + 1 because of view (displays all samples in view)
     };
 
@@ -222,49 +224,49 @@ angular.module('emulvcApp')
      * calculate the pixel distance between two samples
      * @param w is width of canvas
      */
-    sServObj.getSampleDist = function(w) {
+    sServObj.getSampleDist = function (w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.getsubmenuOpen = function() {
+    sServObj.getsubmenuOpen = function () {
       return this.submenuOpen;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.setsubmenuOpen = function(s) {
+    sServObj.setsubmenuOpen = function (s) {
       this.submenuOpen = s;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.getmodalOpen = function() {
+    sServObj.getmodalOpen = function () {
       return this.modalOpen;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.setmodalOpen = function(s) {
+    sServObj.setmodalOpen = function (s) {
       this.modalOpen = s;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.getscrollOpen = function() {
+    sServObj.getscrollOpen = function () {
       return this.scrollOpen;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.setscrollOpen = function(s) {
+    sServObj.setscrollOpen = function (s) {
       this.scrollOpen = s;
     };
 
@@ -273,14 +275,14 @@ angular.module('emulvcApp')
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurClickTierName = function(name) {
+    sServObj.setcurClickTierName = function (name) {
       this.curClickTierName = name;
     };
 
     /**
      * gets the current (clicked) Tier Name
      */
-    sServObj.getcurClickTierName = function() {
+    sServObj.getcurClickTierName = function () {
       return this.curClickTierName;
     };
 
@@ -288,25 +290,25 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurMouseTierName = function(name) {
+    sServObj.setcurMouseTierName = function (name) {
       this.curMouseTierName = name;
     };
 
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServObj.getcurMouseTierName = function() {
+    sServObj.getcurMouseTierName = function () {
       return this.curMouseTierName;
     };
 
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServObj.getcurMouseTierDetails = function() {
+    sServObj.getcurMouseTierDetails = function () {
       var tierName = this.getcurMouseTierName();
 
       var curTier;
-      Tierdataservice.data.tiers.forEach(function(t) {
+      Tierdataservice.data.tiers.forEach(function (t) {
         if (t.TierName === tierName) {
           curTier = t;
         }
@@ -319,14 +321,14 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Segment
      * @param name is name of tier
      */
-    sServObj.setcurMouseSegment = function(segment) {
+    sServObj.setcurMouseSegment = function (segment) {
       this.curMouseSegment = segment;
     };
 
     /**
      * gets the current (mousemove) Segment
      */
-    sServObj.getcurMouseSegment = function() {
+    sServObj.getcurMouseSegment = function () {
       return this.curMouseSegment;
     };
 
@@ -334,14 +336,14 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Segment
      * @param name is name of tier
      */
-    sServObj.setcurMouseSegmentId = function(id) {
+    sServObj.setcurMouseSegmentId = function (id) {
       this.curMouseSegmentId = id;
     };
 
     /**
      * gets the current (mousemove) Segment
      */
-    sServObj.getcurMouseSegmentId = function() {
+    sServObj.getcurMouseSegmentId = function () {
       return this.curMouseSegmentId;
     };
 
@@ -350,7 +352,7 @@ angular.module('emulvcApp')
      * sets the current (click) Segment
      * @param segment
      */
-    sServObj.setcurClickSegment = function(segment, id) {
+    sServObj.setcurClickSegment = function (segment, id) {
       if (segment !== null) {
         this.select(segment.startSample, segment.startSample + segment.sampleDur);
         this.curClickSegments = [];
@@ -364,11 +366,11 @@ angular.module('emulvcApp')
      * sets a multiple select (click) Segment
      * @param segment
      */
-    sServObj.selectBoundry = function() {
+    sServObj.selectBoundry = function () {
       if (this.curClickSegments !== undefined) {
         var left = this.curClickSegments[0].startSample;
         var right = this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur;
-        this.curClickSegments.forEach(function(entry) {
+        this.curClickSegments.forEach(function (entry) {
           if (entry.startSample <= left) {
             left = entry.startSample;
           }
@@ -384,10 +386,10 @@ angular.module('emulvcApp')
      * sets a multiple select (click) Segment
      * @param segment
      */
-    sServObj.setcurClickSegmentMultiple = function(segment, id) {
+    sServObj.setcurClickSegmentMultiple = function (segment, id) {
       var empty = true;
       var my = this;
-      this.selected.forEach(function(entry) {
+      this.selected.forEach(function (entry) {
         if (my.selected.indexOf(id) === -1 && (entry - 1 === id)) {
           my.selected.push(id);
           my.curClickSegments.push(segment);
@@ -411,38 +413,38 @@ angular.module('emulvcApp')
     /**
      * gets the current (click) Segment
      */
-    sServObj.getselected = function() {
+    sServObj.getselected = function () {
       return this.selected;
     };
 
     /**
      * gets the current (click) Segment
      */
-    sServObj.getcurClickSegments = function() {
+    sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
     };
 
-    sServObj.isEditing = function() {
+    sServObj.isEditing = function () {
       return this.editing;
     };
 
-    sServObj.setEditing = function(n) {
+    sServObj.setEditing = function (n) {
       this.editing = n;
     };
 
-    sServObj.setlasteditArea = function(name) {
+    sServObj.setlasteditArea = function (name) {
       this.lasteditArea = name;
     };
 
-    sServObj.getlastID = function() {
+    sServObj.getlastID = function () {
       return this.lasteditArea.substr(1);
     };
 
-    sServObj.getlasteditArea = function() {
+    sServObj.getlasteditArea = function () {
       return this.lasteditArea;
     };
 
-    sServObj.deleteEditArea = function() {
+    sServObj.deleteEditArea = function () {
       if (null !== this.getlasteditArea()) {
         $('.' + this.getlasteditArea()).remove();
       }
@@ -450,27 +452,27 @@ angular.module('emulvcApp')
     };
 
 
-    sServObj.countSelected = function() {
+    sServObj.countSelected = function () {
       return this.selected.length;
     };
 
-    sServObj.setTierLength = function(length) {
+    sServObj.setTierLength = function (length) {
       this.tierLength = length;
     };
 
-    sServObj.getTierLength = function() {
+    sServObj.getTierLength = function () {
       return this.tierLength;
     };
 
-    sServObj.getCurrentSample = function(perc) {
+    sServObj.getCurrentSample = function (perc) {
       return this.curViewPort.sS + (this.curViewPort.eS - this.curViewPort.sS) * perc;
     };
 
-    sServObj.getCurrentPercent = function(sample) {
+    sServObj.getCurrentPercent = function (sample) {
       return (sample * (100 / (this.curViewPort.eS - this.curViewPort.sS) / 100));
     };
 
-    sServObj.getPCMpp = function(event) {
+    sServObj.getPCMpp = function (event) {
       var start = parseInt(this.curViewPort.sS, 10);
       var end = parseInt(this.curViewPort.eS, 10);
       return (end - start) / event.originalEvent.srcElement.width;
@@ -481,9 +483,9 @@ angular.module('emulvcApp')
      * used to help display numbers with a given
      * precision
      */
-    sServObj.round = function(x, n) {
+    sServObj.round = function (x, n) {
       if (n < 1 || n > 14) {
-        alert('error in call of round function!!');
+        console.error('error in call of round function!!');
       }
       var e = Math.pow(10, n);
       var k = (Math.round(x * e) / e).toString();
@@ -494,7 +496,7 @@ angular.module('emulvcApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServObj.openEditArea = function() {
+    sServObj.openEditArea = function () {
       var lastEventClick = this.getcurClickSegments()[0];
       var lastEventClickId = this.getlastID();
       var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
@@ -508,7 +510,7 @@ angular.module('emulvcApp')
       return myid;
     };
 
-    sServObj.createSelection = function(field, start, end) {
+    sServObj.createSelection = function (field, start, end) {
       if (field.createTextRange) {
         var selRange = field.createTextRange();
         selRange.collapse(true);
@@ -524,7 +526,7 @@ angular.module('emulvcApp')
       field.focus();
     };
 
-    sServObj.createEditArea = function(id, x, y, width, height, label, labelid) {
+    sServObj.createEditArea = function (id, x, y, width, height, label, labelid) {
       console.log(id);
       var textid = '_' + labelid;
       $('#' + id).prepend($('<textarea>').attr({
@@ -537,8 +539,8 @@ angular.module('emulvcApp')
         'z-index': '5',
         'left': x + 2 + 'px',
         'width': width - 1 + 'px',
-        'height': (height/3*2) + 'px',
-        'padding-top': (height/3) +'px'
+        'height': (height / 3 * 2) + 'px',
+        'padding-top': (height / 3) + 'px'
       }).text(label));
       return textid;
     };
@@ -546,28 +548,28 @@ angular.module('emulvcApp')
     /**
      * calcs and returns start in secs
      */
-    sServObj.getViewPortStartTime = function() {
+    sServObj.getViewPortStartTime = function () {
       return (this.curViewPort.sS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
     /**
      * calcs and returns end time in secs
      */
-    sServObj.getViewPortEndTime = function() {
+    sServObj.getViewPortEndTime = function () {
       return (this.curViewPort.eS * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
     /**
      * calcs and returns start in secs
      */
-    sServObj.getSelectedStartTime = function() {
+    sServObj.getSelectedStartTime = function () {
       return (this.curViewPort.selectS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
     /**
      * calcs and returns end time in secs
      */
-    sServObj.getSelectedEndTime = function() {
+    sServObj.getSelectedEndTime = function () {
       return (this.curViewPort.selectE * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
     };
 
@@ -579,7 +581,7 @@ angular.module('emulvcApp')
      * @param sSample start sample of view
      * @param sSample end sample of view
      */
-    sServObj.setViewPort = function(sSample, eSample) {
+    sServObj.setViewPort = function (sSample, eSample) {
 
       var oldStart = this.curViewPort.sS;
       var oldEnd = this.curViewPort.eS;
@@ -630,18 +632,18 @@ angular.module('emulvcApp')
      * if set to true -> zoom in
      * if set to false -> zoom out
      */
-    sServObj.zoomViewPort = function(zoomIn) {
+    sServObj.zoomViewPort = function (zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      var tierName = this.getcurMouseTierName();
+      // var tierName = this.getcurMouseTierName();
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
       var curTier = this.getcurMouseTierDetails();
       // Tierdataservice.data.tiers.forEach(function(t) {
-        // if (t.TierName === tierName) {
-          // curTier = t;
-        // }
+      // if (t.TierName === tierName) {
+      // curTier = t;
+      // }
       // });
 
       var d = this.curViewPort.eS - this.curViewPort.sS;
@@ -683,7 +685,7 @@ angular.module('emulvcApp')
      * if set to true -> shift right
      * if set to falce -> shift left
      */
-    sServObj.shiftViewPort = function(shiftRight) {
+    sServObj.shiftViewPort = function (shiftRight) {
       // my.removeLabelDoubleClick();
       var newStartS, newEndS;
       if (shiftRight) {

@@ -95,7 +95,7 @@ angular.module('emulvcApp')
 				console.log('history');
 				HistoryService.history();
 			});
-		}
+		};
 
 		return sServObj;
 	});

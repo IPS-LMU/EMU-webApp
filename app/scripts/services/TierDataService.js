@@ -6,15 +6,15 @@ angular.module('emulvcApp')
 		var sServObj = {};
 
 		sServObj.data = {};
-		
-		sServObj.getData = function() {
-		    return sServObj.data;
-		};				
-		
-		sServObj.setData = function(data) {
-		    angular.copy(data,sServObj.data);
-		};	
-		
+
+		sServObj.getData = function () {
+			return sServObj.data;
+		};
+
+		sServObj.setData = function (data) {
+			angular.copy(data, sServObj.data);
+		};
+
 		return sServObj;
 
 	});

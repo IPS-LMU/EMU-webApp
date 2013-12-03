@@ -593,8 +593,11 @@ var MainCtrl = angular.module('emulvcApp')
 			if($scope.connectBtnLabel === 'connect'){
 				$scope.openModal('views/connectModal.html','dialog',false);
 			}else{
-				// Iohandlerservice.wsH.closeConnect();
-				// ConfigProviderService.httpGetConfig();
+				Iohandlerservice.wsH.closeConnect();
+				$scope.uttList = [];
+				$scope.showDropZone = true;
+				$scope.showSaveCommStaBtnDiv = false;
+				ConfigProviderService.httpGetConfig();
 			}
 		};
 

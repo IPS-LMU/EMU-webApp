@@ -27,15 +27,15 @@ angular.module('emulvcApp')
 		 * @param buf arraybuffer containing ssff file
 		 * @returns wav file javascript object
 		 */
-		sServObj.wav2jso = function(buf) {
+		sServObj.wav2jso = function (buf) {
 
 			var wavRep = {};
 
-			var uIntBuffView = new Uint8Array(buf);
+			// var uIntBuffView = new Uint8Array(buf);
 
 			var curBinIdx, curBuffer, curBufferView;
 
-			var dv = new DataView(buf);
+			// var dv = new DataView(buf);
 
 			// var ChunkSize = dv.getUint32(4)
 			// console.log(ChunkSize)
@@ -79,7 +79,7 @@ angular.module('emulvcApp')
 			curBinIdx = 16;
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint32Array(curBuffer);
-			wavRep.Subchunk1Size = curBufferView[0]
+			wavRep.Subchunk1Size = curBufferView[0];
 			if (wavRep.Subchunk1Size !== 16) {
 				console.error('Wav read error: Subchunk1Size not 16');
 			}
@@ -164,12 +164,12 @@ angular.module('emulvcApp')
 		 * helper function to convert string to Uint8Array
 		 * @param string
 		 */
-		sServObj.stringToUint = function(string) {};
+		// sServObj.stringToUint = function (string) {};
 
 		/**
 		 *
 		 */
-		sServObj.Uint8Concat = function(first, second) {};
+		// sServObj.Uint8Concat = function (first, second) {};
 
 		return sServObj;
 

@@ -7,14 +7,14 @@ angular.module('emulvcApp')
 		// Keep all pending requests here until they get responses
 		var callbacks = {};
 		// Create a unique callback ID to map requests to responses
-		var currentCallbackId = 0;
+		// var currentCallbackId = 0;
 		// Create our websocket object with the address to the websocket
 		var ws = {};
 
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
 
-		var promises = [];
+		// var promises = [];
 
 		////////////////////////////
 		// handle received functions
@@ -22,14 +22,14 @@ angular.module('emulvcApp')
 		function handleReceivedESPS(fileName, data) {
 			var labelJSO = Espsparserservice.toJSO(data, fileName);
 			$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
-		};
+		}
 
 		function handleReceivedSSFF(fileName, data) {
 			var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(data);
 			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
 			ssffJso.fileURL = document.URL + fileName;
 			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
-		};
+		}
 
 		////////////////////////////
 		// ws function
@@ -51,7 +51,8 @@ angular.module('emulvcApp')
 		}
 
 		function wsonclose(message) {
-			alert('WEBSOCKET closed!!!!!');
+			console.log(message);
+			console.log('WEBSOCKET closed!!!!!');
 		}
 
 		function sendRequest(request) {
@@ -73,14 +74,14 @@ angular.module('emulvcApp')
 			// If an object exists with callbackID in our callbacks object, resolve it
 			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
 				// console.log(callbacks[messageObj.callbackID]);
-				console.log("resolving callback: " + messageObj.type + ' Nr.: ' + messageObj.callbackID);
+				console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
-					case 'getESPSfile':
-						handleReceivedESPS(messageObj.fileName, messageObj.data);
-						break;
-					case 'getSSFFfile':
-						handleReceivedSSFF(messageObj.fileName, messageObj.data);
-						break;
+				case 'getESPSfile':
+					handleReceivedESPS(messageObj.fileName, messageObj.data);
+					break;
+				case 'getSSFFfile':
+					handleReceivedSSFF(messageObj.fileName, messageObj.data);
+					break;
 				}
 
 				$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
@@ -104,7 +105,7 @@ angular.module('emulvcApp')
 
 		///////////////////////////////////////////
 		// public api
-		sServObj.initConnect = function(url) {
+		sServObj.initConnect = function (url) {
 			var defer = $q.defer();
 			ws = new WebSocket(url);
 			ws.onopen = wsonopen;
@@ -116,14 +117,14 @@ angular.module('emulvcApp')
 			return defer.promise;
 		};
 		// close connection with ws
-		sServObj.closeConnect = function(url) {
-			ws.onclose = function() {};
+		sServObj.closeConnect = function () {
+			ws.onclose = function () {};
 			ws.close();
 
 		};
 
 		// ws getProtocol
-		sServObj.getProtocol = function() {
+		sServObj.getProtocol = function () {
 			var request = {
 				type: 'getProtocol'
 			};
@@ -133,7 +134,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getDoUserManagement
-		sServObj.getDoUserManagement = function() {
+		sServObj.getDoUserManagement = function () {
 			var request = {
 				type: 'getDoUserManagement'
 			};
@@ -143,7 +144,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getConfigFile
-		sServObj.getConfigFile = function() {
+		sServObj.getConfigFile = function () {
 			var request = {
 				type: 'getConfigFile'
 			};
@@ -153,7 +154,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getUsrUttList
-		sServObj.getUsrUttList = function(usrName) {
+		sServObj.getUsrUttList = function (usrName) {
 			var request = {
 				type: 'getUttList',
 				usrName: usrName
@@ -164,7 +165,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		sServObj.getSSFFfile = function(fileName) {
+		sServObj.getSSFFfile = function (fileName) {
 			var request = {
 				type: 'getSSFFfile',
 				fileName: fileName
@@ -175,7 +176,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		sServObj.getESPSfile = function(fileName) {
+		sServObj.getESPSfile = function (fileName) {
 			var request = {
 				type: 'getESPSfile',
 				fileName: fileName
@@ -186,7 +187,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getAudioFile
-		sServObj.getAudioFile = function(fileName) {
+		sServObj.getAudioFile = function (fileName) {
 			var request = {
 				type: 'getAudioFile',
 				fileName: fileName
@@ -197,7 +198,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws request for saving uttList
-		sServObj.saveUsrUttList = function(usrName, uttList) {
+		sServObj.saveUsrUttList = function (usrName, uttList) {
 			var stripped = angular.toJson(uttList); // remove $$hash
 			var request = {
 				type: 'saveUttList',
@@ -210,7 +211,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws request for saving ssff file
-		sServObj.saveSSFFfile = function(usrName, ssffJSO) {
+		sServObj.saveSSFFfile = function (usrName, ssffJSO) {
 			var buf = Ssffparserservice.jso2ssff(ssffJSO);
 			//console.log(usrName);
 			//console.log(buf);
@@ -218,7 +219,7 @@ angular.module('emulvcApp')
 			var bytes = new Uint8Array(buf);
 			var len = bytes.byteLength;
 			for (var i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i])
+				binary += String.fromCharCode(bytes[i]);
 			}
 			var base64 = window.btoa(binary);
 			//console.log(base64);
@@ -235,20 +236,20 @@ angular.module('emulvcApp')
 		};
 
 		// ws get Utt from ws server
-		sServObj.getUtt = function(utt) {
+		sServObj.getUtt = function (utt) {
 			var curFile;
 
 			// load audio file first
 			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 			//console.log(curFile)
-			sServObj.getAudioFile(curFile).then(function(audioF) {
+			sServObj.getAudioFile(curFile).then(function (audioF) {
 				// var arrBuff = stringToArrayBuffer(audioF);
 				var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(audioF);
 				console.log(typeof arrBuff);
 
 				var wavJSO = Wavparserservice.wav2jso(arrBuff);
 				return wavJSO;
-			}).then(function(wavJSO) {
+			}).then(function (wavJSO) {
 				// set needed vals
 				viewState.curViewPort.sS = 0;
 				viewState.curViewPort.eS = wavJSO.Data.length;
@@ -257,14 +258,14 @@ angular.module('emulvcApp')
 				viewState.resetSelect();
 				Soundhandlerservice.wavJSO = wavJSO;
 				$rootScope.$broadcast('cleanPreview');
-			}).then(function() {
-				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
+			}).then(function () {
+				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					sServObj.getSSFFfile(curFile);
 				});
-			}).then(function() {
+			}).then(function () {
 				// load label files
-				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
 					var deferred = $q.defer();
 					curFile = sServObj.findFileInUtt(utt, ext);
 					var promise = sServObj.getESPSfile(curFile);
@@ -279,14 +280,14 @@ angular.module('emulvcApp')
 		};
 
 		// helper function to find file in utt
-		sServObj.findFileInUtt = function(utt, fileExt) {
+		sServObj.findFileInUtt = function (utt, fileExt) {
 			var res;
-			utt.files.forEach(function(f) {
+			utt.files.forEach(function (f) {
 				// do suffix check
 				if (f.indexOf(fileExt, f.length - f.length) !== -1) {
 					res = f;
 				}
-			})
+			});
 			return (res);
 		};
 

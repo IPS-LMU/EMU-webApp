@@ -12,7 +12,7 @@ angular.module('emulvcApp')
 		 *
 		 */
 
-		sServObj.getX = function(e) {
+		sServObj.getX = function (e) {
 			return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
 		};
 
@@ -20,7 +20,7 @@ angular.module('emulvcApp')
 		 *
 		 */
 
-		sServObj.getY = function(e) {
+		sServObj.getY = function (e) {
 			return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
 		};
 
@@ -31,7 +31,7 @@ angular.module('emulvcApp')
 		 * if multiple samples per pixel -> calculate envelope points
 		 */
 
-		sServObj.calculatePeaks = function(viewState, canvas, data) {
+		sServObj.calculatePeaks = function (viewState, canvas, data) {
 			var k = (viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel
 
 			var numberOfChannels = 1; // hardcode for now...
@@ -93,15 +93,15 @@ angular.module('emulvcApp')
 		 * @param cps color provider service
 		 */
 
-		sServObj.freshRedrawDrawOsciOnCanvas = function(viewState, canvas, allPeakVals, buffer, config) {
-			var ctx = canvas.getContext("2d");
+		sServObj.freshRedrawDrawOsciOnCanvas = function (viewState, canvas, allPeakVals, buffer, config) {
+			var ctx = canvas.getContext('2d');
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 			//set font
 			// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
 
 			if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
-				allPeakVals.peaks.forEach(function(peak, index) {
+				allPeakVals.peaks.forEach(function (peak, index) {
 					if (index !== 0) {
 						drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
 					}
@@ -159,7 +159,7 @@ angular.module('emulvcApp')
 				ctx.strokeStyle = config.vals.colors.zeroLineColor;
 				ctx.fillStyle = config.vals.colors.zeroLineColor;
 				// see if Chrome ->dashed line
-				if (navigator.vendor == "Google Inc.") {
+				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([2]);
 				}
 				if (allPeakVals.samplePerPx >= 1) {
@@ -167,7 +167,7 @@ angular.module('emulvcApp')
 					ctx.moveTo(0, canvas.height / 2);
 					ctx.lineTo(canvas.width, canvas.height / 2);
 					ctx.stroke();
-					ctx.fillText("0", 5, canvas.height / 2 - 5, canvas.width);
+					ctx.fillText('0', 5, canvas.height / 2 - 5, canvas.width);
 				} else {
 					var zeroLineY = canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
 					ctx.beginPath();
@@ -175,14 +175,14 @@ angular.module('emulvcApp')
 					ctx.lineTo(canvas.width, zeroLineY);
 					ctx.stroke();
 					ctx.fill();
-					ctx.fillText("0", 5, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 5, canvas.width);
+					ctx.fillText('0', 5, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 5, canvas.width);
 				}
 				// see if Chrome ->dashed line
-				if (navigator.vendor == "Google Inc.") {
+				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);
 				}
 			}
-		}
+		};
 
 		/**
 		 * drawing method to draw single line between two
@@ -197,7 +197,7 @@ angular.module('emulvcApp')
 
 		function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
 
-			var ctx = canvas.getContext("2d");
+			var ctx = canvas.getContext('2d');
 
 			//calculate sample of cur cursor position
 
@@ -214,7 +214,7 @@ angular.module('emulvcApp')
 			var y = Math.round((canvas.height - h) / 2);
 
 			//prev
-			var prevW = 1;
+			// var prevW = 1;
 			var prevH = Math.round(prevPeak * (canvas.height / max));
 			var prevX = (index - 1) * w;
 			var prevY = Math.round((canvas.height - prevH) / 2);

@@ -6,17 +6,14 @@ angular.module('emulvcApp')
 		var sServObj = {};
 
 		sServObj.wsH = Websockethandler;
-
-		var comMode = 'http:GET'; // SIC hardcoded
-
-
+		
 		//
 		sServObj.getUttList = function(filePath) {
 			var getProm;
 			if (ConfigProviderService.vals.main.comMode === 'http:GET'){
 				getProm = Httphandler.getUttList(filePath);
 			}else if(ConfigProviderService.vals.main.comMode === 'ws'){
-				alert('handle ws case for get utt list')
+				alert('handle ws case for get utt list');
 			}
 
 			return getProm;
