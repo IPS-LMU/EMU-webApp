@@ -1,6 +1,6 @@
 'use strict';
 
-var HandletiersCtrl = angular.module('emulvcApp')
+angular.module('emulvcApp')
 	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService) {
 
 		$scope.vs = viewState;

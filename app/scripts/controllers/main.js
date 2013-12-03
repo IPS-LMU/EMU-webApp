@@ -1,6 +1,6 @@
 'use strict';
 
-var MainCtrl = angular.module('emulvcApp')
+angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice) {
 
@@ -105,15 +105,15 @@ var MainCtrl = angular.module('emulvcApp')
 		 */
 		$scope.$on('fileLoaded', function (evt, type, data) {
 			switch (type) {
-			case fileType.WAV:
-				$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf("."));
+			case type.WAV:
+				$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
 				Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
 				break;
-			case fileType.TEXTGRID:
+			case type.TEXTGRID:
 
 				break;
 			}
-			console.log("data");
+			console.log('data');
 			console.log(data);
 		});
 
@@ -141,15 +141,15 @@ var MainCtrl = angular.module('emulvcApp')
 					$scope.openSubmenu();
 				}
 				$scope.uttList = newVal;
-			})
+			});
 		});
 
 
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('saveSSFFb4load', function (evt, data) {
-			console.log("saving utt")
+		$scope.$on('saveSSFFb4load', function () {
+			console.log('saving utt');
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
@@ -163,8 +163,8 @@ var MainCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('discardSSFFb4load', function (evt, data) {
-			console.log("discarding ssff changes")
+		$scope.$on('discardSSFFb4load', function () {
+			console.log('discarding ssff changes');
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
 			console.log($scope.lastclickedutt);
@@ -185,7 +185,7 @@ var MainCtrl = angular.module('emulvcApp')
 			viewState.curViewPort.bufferLength = wavJSO.Data.length;
 			viewState.setscrollOpen(0);
 			Soundhandlerservice.wavJSO = wavJSO;
-			$scope.baseName = fileName.substr(0, fileName.lastIndexOf("."));
+			$scope.baseName = fileName.substr(0, fileName.lastIndexOf('.'));
 		});
 
 		// 
@@ -277,7 +277,7 @@ var MainCtrl = angular.module('emulvcApp')
 		};
 
 		$scope.refreshTimeline = function () {
-			$scope.$broadcast("refreshTimeline");
+			$scope.$broadcast('refreshTimeline');
 		};
 
 		$scope.refreshScope = function () {
@@ -287,14 +287,16 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.getShortCut = function (name) {
 			if ($scope.shortcut !== null) {
 				if ($scope.shortcut[name] !== null) {
-					if ($scope.shortcut[name] != "") {
+					if ($scope.shortcut[name] !== '') {
 						return $scope.shortcut[name];
-					} else return "NONE";
+					} else {
+						return 'NONE';
+					}
 				} else {
-					return "NONE";
+					return 'NONE';
 				}
 			} else {
-				return "NOT SET";
+				return 'NOT SET';
 			}
 		};
 
@@ -345,7 +347,7 @@ var MainCtrl = angular.module('emulvcApp')
 		$scope.openModal = function (templatefile, cssStyle, blocking, title, content) {
 			var drop = true;
 			if (blocking) {
-				drop = "static";
+				drop = 'static';
 			}
 			viewState.setmodalOpen(true);
 			var modalInstance = $modal.open({
@@ -471,7 +473,7 @@ var MainCtrl = angular.module('emulvcApp')
 						if (viewState.getcurClickTierName() !== '') {
 							return viewState.getcurClickTierName();
 						} else {
-							return "error";
+							return 'error';
 						}
 					}
 				}
@@ -525,7 +527,7 @@ var MainCtrl = angular.module('emulvcApp')
 
 			// console.log(utt.name)
 			if (utt.name === $scope.curUtt.name) {
-				return curColor
+				return curColor;
 			}
 		};
 
@@ -533,13 +535,14 @@ var MainCtrl = angular.module('emulvcApp')
 		 *
 		 */
 		$scope.getMetaBtnColor = function () {
+			var curColor;
 			if (!$scope.modifiedMetaData) {
-				var curColor = {
+				curColor = {
 					'color': 'rgb(128,230,25)'
 				};
 
 			} else {
-				var curColor = {
+				curColor = {
 					'color': 'red'
 				};
 			}
@@ -603,9 +606,9 @@ var MainCtrl = angular.module('emulvcApp')
 			$scope.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'http:GET';
 			Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
-				console.log(res.data)
+				console.log(res.data);
 				$scope.uttList = res.data;
-				Iohandlerservice.getUtt(res.data[0])
+				Iohandlerservice.getUtt(res.data[0]);
 				// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
 				// $scope.curUtt = $scope.uttList[0];
 			});
@@ -625,45 +628,45 @@ var MainCtrl = angular.module('emulvcApp')
 			alert('code to open file');
 		};
 
-		$scope.setlastkeycode = function (c, shift) {
+		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
 		};
 
-		$scope.cmd_zoomAll = function () {
+		$scope.cmdZoomAll = function () {
 			viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 		};
 
-		$scope.cmd_zoomSel = function () {
+		$scope.cmdZoomSel = function () {
 			viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
-		$scope.cmd_zoomIn = function () {
+		$scope.cmdZoomIn = function () {
 			viewState.zoomViewPort(true);
 		};
 
-		$scope.cmd_zoomOut = function () {
+		$scope.cmdZoomOut = function () {
 			viewState.zoomViewPort(false);
 		};
 
-		$scope.cmd_zoomLeft = function () {
+		$scope.cmdZoomLeft = function () {
 			viewState.shiftViewPort(false);
 		};
 
-		$scope.cmd_zoomRight = function () {
+		$scope.cmdZoomRight = function () {
 			viewState.shiftViewPort(true);
 		};
 
-		$scope.cmd_playView = function () {
+		$scope.cmdPlayView = function () {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
 			viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 		};
 
-		$scope.cmd_playSel = function () {
+		$scope.cmdPlaySel = function () {
 			Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
-		$scope.cmd_playAll = function () {
+		$scope.cmdPlayAll = function () {
 			Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 			viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 		};

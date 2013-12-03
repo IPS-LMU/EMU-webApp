@@ -1,6 +1,6 @@
 'use strict';
 
-var FileCtrl = angular.module('emulvcApp')
+angular.module('emulvcApp')
   .controller('FileCtrl', function ($rootScope, $scope,
     viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 

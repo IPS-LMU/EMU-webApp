@@ -1,7 +1,7 @@
 'use strict';
 
-var TimelineCtrl = angular.module('emulvcApp')
-	.controller('TimelineCtrl', function($scope, $http, $compile,
+angular.module('emulvcApp')
+	.controller('TimelineCtrl', function ($scope, $http, $compile,
 		viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService, Ssffdataservice) {
 
 		$scope.vs = viewState;
@@ -18,16 +18,16 @@ var TimelineCtrl = angular.module('emulvcApp')
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
 		 */
-		$scope.$on('newlyLoadedSSFFfile', function(evt, data) {
+		$scope.$on('newlyLoadedSSFFfile', function (evt, data) {
 			// $scope.vs.curViewPort.sS = 0;
 			$scope.ssffds.data = []; // SIC HACK! NO idea why event is fired twice...
 			$scope.ssffds.data.push(data);
 			for (var key in ConfigProviderService.vals.signalsCanvasConfig.assign) {
-				if (ConfigProviderService.vals.signalsCanvasConfig.assign[key] === "fms:fm") {
-					if (key === "osci") {
+				if (ConfigProviderService.vals.signalsCanvasConfig.assign[key] === 'fms:fm') {
+					if (key === 'osci') {
 						$scope.showSSFFOsci = true;
 					}
-					if (key === "spec") {
+					if (key === 'spec') {
 						$scope.showSSFFSpectro = true;
 					}
 				}
@@ -37,7 +37,7 @@ var TimelineCtrl = angular.module('emulvcApp')
 		/**
 		 * clear ssff data when new utt is loaded
 		 */
-		$scope.$on('loadingNewUtt', function(evt) {
+		$scope.$on('loadingNewUtt', function () {
 			$scope.ssffds.data = [];
 		});
 
@@ -45,8 +45,8 @@ var TimelineCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.resizeSpectro = function() {
-			if (viewState.getscrollOpen() == 0) {
+		$scope.resizeSpectro = function () {
+			if (viewState.getscrollOpen() === 0) {
 				viewState.setscrollOpen(1);
 			} else {
 				viewState.setscrollOpen(0);
@@ -57,8 +57,8 @@ var TimelineCtrl = angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.resizeOsci = function() {
-			if (viewState.getscrollOpen() == 0) {
+		$scope.resizeOsci = function () {
+			if (viewState.getscrollOpen() === 0) {
 				viewState.setscrollOpen(2);
 			} else {
 				viewState.setscrollOpen(0);
