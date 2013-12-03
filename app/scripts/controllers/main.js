@@ -70,6 +70,7 @@ var MainCtrl = angular.module('emulvcApp')
 			// TODO hardcode removal of save / load/ manipulation buttons 
 			$scope.connectBtnLabel = 'disconnect';
 			$scope.showDropZone = false;
+			ConfigProviderService.vals.main.comMode = 'ws';
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			// Check if server speaks emuLVC
@@ -77,7 +78,7 @@ var MainCtrl = angular.module('emulvcApp')
 				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
 					//console.log('we speak the same protocol!!');
 					Iohandlerservice.wsH.getConfigFile().then(function(newVal) {
-						ConfigProviderService.vals = newVal;
+						ConfigProviderService.setVals(newVal);
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
 						Iohandlerservice.wsH.getDoUserManagement().then(function(manageRes) {
