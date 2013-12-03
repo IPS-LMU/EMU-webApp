@@ -125,7 +125,8 @@
         "saveSingleTier": true,
         "resizeOsci": true,
         "resizeSpectro": true,
-        "openDemoDB": true
+        "openDemoDB": true,
+        "saveUtterance": false
     },
     "userManagment": {
         "passcode": "1234"

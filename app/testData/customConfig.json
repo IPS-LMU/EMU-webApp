@@ -29,7 +29,7 @@
     },
     "restrictions": {
         "playback": true,
-        "correctionTool": false,
+        "correctionTool": true,
         "sortLabels": false,
         "editItemSize": true,
         "editItemName": true,
@@ -53,7 +53,8 @@
         "saveSingleTier": false,
         "resizeOsci": true,
         "resizeSpectro": true,
-        "openDemoDB": false
+        "openDemoDB": false,
+        "saveUtterance": true
 
     },
     "userManagment": {

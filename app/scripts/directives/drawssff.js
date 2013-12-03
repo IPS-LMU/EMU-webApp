@@ -9,59 +9,33 @@ angular.module('emulvcApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffds.data)) {
-            if (scope.ssffds.data.length !== 0 && !scope.vs.loadingUtt) {
-              if (oldValue.sS != newValue.sS || oldValue.eS != newValue.eS) {
-                var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
-                //TODO get file:
-
-                // get name of column to be drawn
-                var colName = extAndCol[1];
-                // find according field in scope.ssffds.data
-                var col = findColumn(scope.ssffds.data, colName);
-                // draw values  
-                drawValues(scope.vs, canvas, scope.config, col);
-              }
-            }
-          }
+          handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curPreselColumnSample change
         scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffds.data)) {
-            if (scope.ssffds.data.length !== 0) {
-              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
-              //TODO get file:
-
-              // get name of column to be drawn
-              var colName = extAndCol[1];
-              // find according field in scope.ssffds.data
-              var col = findColumn(scope.ssffds.data, colName);
-              // draw values  
-              drawValues(scope.vs, canvas, scope.config, col);
-            }
-          }
+          handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curCorrectionToolNr change
         scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
-          if (!$.isEmptyObject(scope.ssffds.data)) {
-            if (scope.ssffds.data.length !== 0) {
-              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
-              //TODO get file:
-
-              // get name of column to be drawn
-              var colName = extAndCol[1];
-              // find according field in scope.ssffds.data
-              var col = findColumn(scope.ssffds.data, colName);
-              // draw values  
-              drawValues(scope.vs, canvas, scope.config, col);
-            }
-          }
+          handleUpdate(newValue, oldValue);
         }, true);
 
-
+        // watch ssffds.data change
         scope.$watch('ssffds.data', function(newValue, oldValue) {
+          handleUpdate(newValue, oldValue);
+        }, true);
+
+        // watch viewState.spectroSettings change
+        scope.$watch('viewState.spectroSettings', function(newValue, oldValue) {
+          handleUpdate(newValue, oldValue);
+        }, true);
+
+        /**
+         *
+         */
+        function handleUpdate(newValue, oldValue) {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
               var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
@@ -75,14 +49,13 @@ angular.module('emulvcApp')
               // console.log(scope.config);
             }
           }
-        }, true);
+        };
 
         /**
          * find a certain column in ssffds.data array
          * and append meta data of file to that col
          * for drawing
          */
-
         function findColumn(data, colName) {
           // console.log(scope.ssffds.data);
           var col;
@@ -109,10 +82,9 @@ angular.module('emulvcApp')
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // console.log(config.vals.spectrogramSettings);
           // hardcode min max display for now
-          var minVal = config.vals.spectrogramSettings.rangeFrom;
-          var maxVal = config.vals.spectrogramSettings.rangeTo; //Hz in the case of formants
+          var minVal = viewState.spectroSettings.rangeFrom;
+          var maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
 
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
