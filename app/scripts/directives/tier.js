@@ -171,11 +171,10 @@ angular.module('emulvcApp')
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
 						var perc, tW;
+					
 
-						for (var k in tierDetails.events) {
-							//for (curEvtNr = 0; curEvtNr < tierDetails.events.length; curEvtNr++) {
-							var curEvt = tierDetails.events[k];
-							// var id = viewState.getId(tierDetails, curEvt.label, curEvt.startSample);
+						tierDetails.events.forEach(function (curEvt) {
+						
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
@@ -191,9 +190,9 @@ angular.module('emulvcApp')
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-									tW = ctx.measureText(tierDetails.events[k].label).width;
+									tW = ctx.measureText(curEvt.label).width;
 									ctx.fillStyle = config.vals.colors.labelColor;
-									ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+									ctx.fillText(curEvt.label, perc - tW / 2 + 1, canvas[0].height / 2);
 								}
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								tW = ctx.measureText(curEvt.startSample).width;
@@ -201,7 +200,7 @@ angular.module('emulvcApp')
 
 
 							}
-						}
+						});
 					}
 					// draw cursor/selected area
 				}

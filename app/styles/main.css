@@ -152,7 +152,7 @@ li {
     background: -webkit-linear-gradient(top, #1d1f20,#2f3031);
     background: #E7E7E7;
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%;
+    width:calc(100% - 30px);
     height: 65px;
     z-index: 1; 
 }
@@ -165,7 +165,7 @@ li {
     border: 1px solid gray;
     background-color: transparent;
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%;
+    width:calc(100% - 30px);
     height: 65px;
     z-index: 2; 
 }
@@ -195,7 +195,7 @@ li {
 .tierPlaceholder {
     border: 1px dashed #eee;
     height: 65px;
-    width: 97%;
+    width:calc(100% - 30px);
     border-radius: 4px;
     background: #efefef;
 }
@@ -217,7 +217,7 @@ li {
     border: 1px solid gray;
     background: #E7E7E7;
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%; 
+    width:calc(100% - 30px); 
     height: 100%; 
     z-index: 3;
 }
@@ -228,7 +228,7 @@ li {
     border: 1px solid gray;
     background-color: transparent; 
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%; 
+    width:calc(100% - 30px); 
     height: 100%;    
     z-index: 4; 
 }
@@ -239,7 +239,7 @@ li {
     border: 1px solid gray;
     background-color: transparent; 
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%; 
+    width:calc(100% - 30px); 
     height: 100%;    
     z-index: 5; 
 }
@@ -272,7 +272,7 @@ li {
     background: #E7E7E7;
     /*box-shadow: 0px 1px 2px #000;*/
     z-index: 3;
-    width: 97%;
+    width:calc(100% - 30px);
     height: 100%;
 }
 
@@ -283,7 +283,7 @@ li {
     position: absolute;
     z-index: 5;
     background-color: transparent; 
-    width: 97%;
+    width:calc(100% - 30px);
     height: 100%;    
 }
 
@@ -291,7 +291,7 @@ li {
     border: 1px solid gray;
     background: #E7E7E7;
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%; 
+    width:calc(100% - 30px); 
     height: 38px !important; 
     min-height: 38px !important; 
     margin-top:5px;
@@ -301,11 +301,11 @@ li {
     margin-left: 5px;
     /*border: 1px solid gray;*/
     /*box-shadow: 0px 1px 2px #000;*/
-    width: 97%;    
+    width:calc(100% - 30px);    
     position:absolute;
     z-index: 4;
     background-color: transparent;
-    width: 97%;
+    width:calc(100% - 30px);
     height: 100%;     
 }
 
