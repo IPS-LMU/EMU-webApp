@@ -263,9 +263,8 @@ angular.module('emulvcApp')
 					// draw clicked on selected areas
 					if (tierId !== '' && tierDetails.TierName === tierId) {
 						segCId.forEach(function (entry) {
-							curEvt = tierDetails.events[entry];
-							posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
-							posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
+							posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
+							posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur + 1));
 							ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 							ctx.fillStyle = config.vals.colors.startBoundaryColor;
