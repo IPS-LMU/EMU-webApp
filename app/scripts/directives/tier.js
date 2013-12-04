@@ -2,7 +2,7 @@
 
 
 angular.module('emulvcApp')
-	.directive('tier', function() {
+	.directive('tier', function () {
 		return {
 			templateUrl: 'views/tier.html',
 			restrict: 'E',
@@ -10,31 +10,31 @@ angular.module('emulvcApp')
 				// select the needed DOM elements from the template
 				var canvas = element.find('canvas');
 
-				scope.$watch('tierDetails.data', function() {
+				scope.$watch('tierDetails.data', function () {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 				}, true);
 
-				scope.$watch('vs', function() {
+				scope.$watch('vs', function () {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 					drawTierMarkup(scope.tier, scope.vs, scope.config);
 				}, true);
 
 				// on mouse leave reset viewState.
-                element.bind('mouseleave', function() {
-                	scope.vs.setcurMouseSegmentId(undefined);
-                	drawTierMarkup(scope.tier, scope.vs, scope.config);
-                });
-                
-                scope.$on('refreshTimeline', function() {
-                    if (!$.isEmptyObject(scope.tier)) {
-                        if (!$.isEmptyObject(scope.vs)) {
-                            drawTierDetails(scope.tier, scope.vs, scope.config);
-                        }
-                    }
-                });                
+				element.bind('mouseleave', function () {
+					scope.vs.setcurMouseSegmentId(undefined);
+					drawTierMarkup(scope.tier, scope.vs, scope.config);
+				});
+
+				scope.$on('refreshTimeline', function () {
+					if (!$.isEmptyObject(scope.tier)) {
+						if (!$.isEmptyObject(scope.vs)) {
+							drawTierDetails(scope.tier, scope.vs, scope.config);
+						}
+					}
+				});
 
 
-				scope.updateView = function() {
+				scope.updateView = function () {
 					drawTierDetails(scope.tier, scope.vs, scope.config);
 				};
 
@@ -70,12 +70,12 @@ angular.module('emulvcApp')
 
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
-					
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx,tierDetails.TierName,'(' + tierDetails.type + ')',config.vals.font.fontPxSize,config.vals.font.fontType,config.vals.colors.labelColor,false);
-					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width,  horizontalText.height);
+
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, tierDetails.TierName, '(' + tierDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
 					var segMId = viewState.getcurMouseSegmentId();
-					var segCId = viewState.getselected();
+					// var segCId = viewState.getselected();
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
@@ -84,7 +84,7 @@ angular.module('emulvcApp')
 						// draw segments
 						var e = tierDetails.events;
 
-						e.forEach(function(curEvt) {
+						e.forEach(function (curEvt) {
 							++curID;
 
 							if (curEvt.startSample >= viewState.curViewPort.sS &&
@@ -99,70 +99,70 @@ angular.module('emulvcApp')
 								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
 								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1));
 								posS = viewState.getPos(canvas[0].width, curEvt.startSample);
-								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1);
-								
+								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1);
+
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 
 								//draw segment end
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
-								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);								
-								
+								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
+
 								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.label, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
 								var tW = scope.fontImage.getLastImageWidth();
 								var tX = posS + (posE - posS) / 2 - tW / 2;
-								
+
 								// 			//check for enough space to stroke text
 								if (posE - posS > (tW)) {
-                                    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height/2)-(config.vals.font.fontPxSize), horizontalText.width,  horizontalText.height);                                
+									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (config.vals.font.fontPxSize), horizontalText.width, horizontalText.height);
 								}
-								
+
 								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.startSample, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								var hst1 = scope.fontImage.getLastImageWidth();
 								var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
 								var horizontalSubText2 = scope.fontImage.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								var hst2 = scope.fontImage.getLastImageWidth();
-								var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
+								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
-							
 
-									// start helper line
-									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
-									ctx.beginPath();
-									ctx.moveTo(posS, canvas[0].height / 4);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
-									ctx.stroke();
-									// end helper line
-									ctx.strokeStyle = config.vals.colors.endBoundaryColor;
-									ctx.beginPath();
-									ctx.moveTo(posE, canvas[0].height / 4 * 3);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3 - 10);
-									ctx.stroke();
-								
-								if(posE - posS <= tW) {
-								
+
+								// start helper line
+								ctx.strokeStyle = config.vals.colors.startBoundaryColor;
+								ctx.beginPath();
+								ctx.moveTo(posS, canvas[0].height / 4);
+								ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4);
+								ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
+								ctx.stroke();
+								// end helper line
+								ctx.strokeStyle = config.vals.colors.endBoundaryColor;
+								ctx.beginPath();
+								ctx.moveTo(posE, canvas[0].height / 4 * 3);
+								ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3);
+								ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3 - 10);
+								ctx.stroke();
+
+								if (posE - posS <= tW) {
+
 									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
 									ctx.moveTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
 									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 30);
-									ctx.stroke();							
+									ctx.stroke();
 								}
 
 								// draw startSample numbers
 								//check for enough space to stroke text
 								if (posE - posS > hst1) {
-								    ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width,  horizontalText.height);                    
-								}								
+									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
+								}
 								// draw sampleDur numbers.
-								
-    							//sStW = scope.fontImage.getLastImageWidth();
+
+								//sStW = scope.fontImage.getLastImageWidth();
 								//var sDtW = ctx.measureText('dur: ' + curEvt.sampleDur).width;
 								//ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								//check for enough space to stroke text
 								if (posE - posS > hst2) {
-								    ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3 - 5, horizontalText.width,  horizontalText.height);                                
+									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3 - 5, horizontalText.width, horizontalText.height);
 									//ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
@@ -215,12 +215,12 @@ angular.module('emulvcApp')
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 
 
-					if(tierDetails.events[viewState.getcurMouseSegmentId()] && viewState.movingBoundary){
+					if (tierDetails.events[viewState.getcurMouseSegmentId()] && viewState.movingBoundary) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						var tD = viewState.getcurMouseTierDetails();
 						var p = Math.round(viewState.getPos(canvas[0].width, tD.events[viewState.getcurMouseSegmentId()].startSample));
 						ctx.fillRect(p, 0, 1, canvas[0].height);
-					};
+					}
 
 					if (tierDetails.TierName === viewState.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
@@ -262,7 +262,7 @@ angular.module('emulvcApp')
 
 					// draw clicked on selected areas
 					if (tierId !== '' && tierDetails.TierName === tierId) {
-						segCId.forEach(function(entry) {
+						segCId.forEach(function (entry) {
 							curEvt = tierDetails.events[entry];
 							posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
 							posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1));
@@ -273,7 +273,7 @@ angular.module('emulvcApp')
 					}
 					// draw preselected boundary
 					curEvt = tierDetails.events[segMId];
-					if (curEvt!== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
+					if (curEvt !== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 

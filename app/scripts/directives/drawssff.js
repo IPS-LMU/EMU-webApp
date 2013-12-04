@@ -1,41 +1,41 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('drawssff', function() {
+  .directive('drawssff', function () {
     return {
       restrict: 'A',
-      link: function postLink(scope, element, attrs) {
+      link: function postLink(scope, element) {
         var canvas = element[0];
 
         //watch viewPort change
-        scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curPreselColumnSample change
-        scope.$watch('vs.curPreselColumnSample', function(newValue, oldValue) {
+        scope.$watch('vs.curPreselColumnSample', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curCorrectionToolNr change
-        scope.$watch('vs.curCorrectionToolNr', function(newValue, oldValue) {
+        scope.$watch('vs.curCorrectionToolNr', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         // watch ssffds.data change
-        scope.$watch('ssffds.data', function(newValue, oldValue) {
+        scope.$watch('ssffds.data', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         // watch viewState.spectroSettings change
-        scope.$watch('viewState.spectroSettings', function(newValue, oldValue) {
+        scope.$watch('viewState.spectroSettings', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         /**
          *
          */
-        function handleUpdate(newValue, oldValue) {
+        function handleUpdate() {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
               var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
@@ -49,7 +49,7 @@ angular.module('emulvcApp')
               // console.log(scope.config);
             }
           }
-        };
+        }
 
         /**
          * find a certain column in ssffds.data array
@@ -59,9 +59,9 @@ angular.module('emulvcApp')
         function findColumn(data, colName) {
           // console.log(scope.ssffds.data);
           var col;
-          data.forEach(function(fileRep, fileRepIdx) {
-            fileRep.Columns.forEach(function(colRep, colIdx) {
-              if (colRep.name == colName) {
+          data.forEach(function (fileRep) {
+            fileRep.Columns.forEach(function (colRep) {
+              if (colRep.name === colName) {
                 col = colRep;
                 col.sampleRate = fileRep.sampleRate;
                 col.startTime = fileRep.startTime;
@@ -102,8 +102,8 @@ angular.module('emulvcApp')
 
             var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
 
-            curSampleArrs.forEach(function(valRep, valIdx) {
-              valRep.forEach(function(val, idx) {
+            curSampleArrs.forEach(function (valRep, valIdx) {
+              valRep.forEach(function (val, idx) {
                 if (idx >= scope.config.vals.signalsCanvasConfig.contourLims.fm.min && idx <= scope.config.vals.signalsCanvasConfig.contourLims.fm.max) { // SIC fm hardcoded
                   curSampleInCol = colStartSampleNr + valIdx;
                   curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;

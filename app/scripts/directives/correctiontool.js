@@ -6,7 +6,7 @@ angular.module('emulvcApp')
 			restrict: 'A',
 			link: function(scope, element) {
 
-				var elem = element[0];
+				// var elem = element[0];
 
 				element.bind('mousemove', function(event) {
 					if (scope.vs.curCorrectionToolNr !== undefined) {

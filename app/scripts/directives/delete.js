@@ -1,18 +1,18 @@
 'use strict';
 
 angular.module('emulvcApp')
-.directive("delete", function(){
-  return {
-    restrict: "A",
-    link: function(scope, element){
-    
-      var elem = element[0];
-      var id = scope.this.tier.TierName;   
+  .directive('delete', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element) {
 
-      element.bind('click', function(event){
-        scope.openModal('views/deleteTier.html','dialogSmall',id,id);
-      });
-      
-    }
-  };
-});
+        // var elem = element[0];
+        var id = scope.this.tier.TierName;
+
+        element.bind('click', function () {
+          scope.openModal('views/deleteTier.html', 'dialogSmall', id, id);
+        });
+
+      }
+    };
+  });

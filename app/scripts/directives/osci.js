@@ -2,7 +2,7 @@
 
 
 angular.module('emulvcApp')
-	.directive('osci', function() {
+	.directive('osci', function () {
 		return {
 			templateUrl: 'views/osci.html',
 			restrict: 'E',
@@ -13,7 +13,7 @@ angular.module('emulvcApp')
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 
 
-				scope.$watch('vs.playHeadAnimationInfos', function(newValue, oldValue) {
+				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawPlayHead(scope, scope.config);
@@ -21,7 +21,7 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
-				scope.$watch('tds.data', function(newValue, oldValue) {
+				scope.$watch('tds.data', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
@@ -29,7 +29,7 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
-				scope.$watch('vs.movingBoundary', function(newValue, oldValue) {
+				scope.$watch('vs.movingBoundary', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
@@ -37,7 +37,7 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
-				scope.$on('refreshTimeline', function() {
+				scope.$on('refreshTimeline', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
@@ -45,11 +45,11 @@ angular.module('emulvcApp')
 					}
 				});
 
-				scope.$watch('vs.curViewPort', function(newValue, oldValue) {
+				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							// check for changed zoom
-							if (oldValue.sS != newValue.sS || oldValue.sE != newValue.sE || newValue.selectS == -1) { // SIC -1 check not that clean...
+							if (oldValue.sS !== newValue.sS || oldValue.sE !== newValue.sE || newValue.selectS === -1) { // SIC -1 check not that clean...
 								var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 								scope.dhs.osciPeaks = allPeakVals;
 								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
@@ -59,12 +59,12 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
-				scope.$watch('vs.scrollOpen', function() {
+				scope.$watch('vs.scrollOpen', function () {
 					if (!$.isEmptyObject(scope.config)) {
 						if (!$.isEmptyObject(scope.config.vals)) {
 							var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
 							var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
-							if (scope.vs.scrollOpen == 0) {
+							if (scope.vs.scrollOpen === 0) {
 								$('.OsciDiv').css({
 									height: '50%'
 								});
@@ -77,7 +77,7 @@ angular.module('emulvcApp')
 								$('.SpectroDiv canvas').css({
 									height: '48%'
 								});
-							} else if (scope.vs.scrollOpen == 1) {
+							} else if (scope.vs.scrollOpen === 1) {
 								$('.OsciDiv').css({
 									height: per + '%'
 								});
@@ -90,7 +90,7 @@ angular.module('emulvcApp')
 								$('.SpectroDiv canvas').css({
 									height: perInvers + '%'
 								});
-							} else if (scope.vs.scrollOpen == 2) {
+							} else if (scope.vs.scrollOpen === 2) {
 								$('.OsciDiv').css({
 									height: perInvers + '%'
 								});
@@ -129,11 +129,11 @@ angular.module('emulvcApp')
 
 					drawVpOsciMarkup(scope, config, false);
 
-				};
+				}
 
 				function getScale(ctx, str, scale) {
 					return ctx.measureText(str).width * scale;
-				};
+				}
 
 				function getScaleWidth(ctx, str1, str2, scaleX) {
 					if (str1.toString().length > str2.toString().length) {
@@ -141,7 +141,7 @@ angular.module('emulvcApp')
 					} else {
 						return getScale(ctx, str2, scaleX);
 					}
-				};
+				}
 
 				/**
 				 * draws markup of osci according to
@@ -158,12 +158,12 @@ angular.module('emulvcApp')
 					}
 
 					// draw boundary moving line
-					if(viewState.movingBoundary){
+					if (viewState.movingBoundary) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						var tD = viewState.getcurMouseTierDetails();
 						var p = Math.round(viewState.getPos(markupCanvas.width, tD.events[viewState.getcurMouseSegmentId()].startSample));
 						ctx.fillRect(p, 0, 1, markupCanvas.height);
-					};
+					}
 
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
@@ -180,11 +180,12 @@ angular.module('emulvcApp')
 					ctx.stroke();
 
 					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+					// var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					var sTime;
 					var eTime;
 					var horizontalText;
+					var space;
 
 					if (viewState.curViewPort) {
 						//draw time and sample nr
@@ -195,7 +196,7 @@ angular.module('emulvcApp')
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
-						var space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+						space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
@@ -233,7 +234,7 @@ angular.module('emulvcApp')
 							ctx.stroke();
 							ctx.fillStyle = config.vals.colors.labelColor;
 							// start values
-							var space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), scaleX);
+							space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), scaleX);
 							horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width, horizontalText.height);
 
@@ -249,7 +250,7 @@ angular.module('emulvcApp')
 								var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
 								var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6);
 
-								var space = getScaleWidth(ctx, str1, str2, scaleX);
+								space = getScaleWidth(ctx, str1, str2, scaleX);
 								horizontalText = scope.fontImage.getTextImageTwoLines(ctx, str1, str2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + (posE - posS) / 2 - space / 2, 0, horizontalText.width, horizontalText.height);
 

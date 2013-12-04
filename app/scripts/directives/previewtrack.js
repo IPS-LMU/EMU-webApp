@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive("previewtrack", function() {
+  .directive('previewtrack', function () {
     return {
-      restrict: "A",
-      link: function(scope, element) {
+      restrict: 'A',
+      link: function (scope, element) {
 
         var startPCM = -1;
 
-        element.bind('click', function(x) {
+        element.bind('click', function (x) {
           if (!$.isEmptyObject(scope.shs.wavJSO)) {
             var width = scope.vs.curViewPort.eS - scope.vs.curViewPort.sS;
             startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
@@ -18,30 +18,30 @@ angular.module('emulvcApp')
         });
 
 
-        element.bind('mousedown', function(x) {
+        element.bind('mousedown', function (x) {
           if (!$.isEmptyObject(scope.shs.wavJSO)) {
             startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
           }
         });
 
-        element.bind('mousemove', function(x) {
+        element.bind('mousemove', function (x) {
           switch (event.which) {
-            case 1:
-              if (startPCM != -1) {
-                var width = scope.vs.curViewPort.eS - scope.vs.curViewPort.sS;
-                startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
-                scope.vs.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
-                scope.$apply();
-              }
-              break;
+          case 1:
+            if (startPCM !== -1) {
+              var width = scope.vs.curViewPort.eS - scope.vs.curViewPort.sS;
+              startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
+              scope.vs.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
+              scope.$apply();
+            }
+            break;
           }
         });
 
-        element.bind('mouseup', function(x) {
+        element.bind('mouseup', function () {
           startPCM = -1;
         });
 
-        element.bind('mouseout', function(x) {
+        element.bind('mouseout', function () {
           startPCM = -1;
         });
 
