@@ -415,16 +415,35 @@ angular.module('emulvcApp')
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
-			angular.forEach(tier.events, function (evt) {
-				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					if (pcm - evt.startSample >= evt.sampleDur / 2) {
-						ret = id + 1;
-					} else {
-						ret = id;
-					}
-				}
-				++id;
-			});
+			if(tier.type==="seg") {
+			    angular.forEach(tier.events, function (evt) {
+			    	if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+				    	if (pcm - evt.startSample >= evt.sampleDur / 2) {
+					    	ret = id + 1;
+    					} else {
+	    					ret = id;
+		    			}
+			    	}
+				    ++id;
+    			});
+			}
+			else {
+			    var spaceLower = 0;
+			    var spaceHigher = 0;
+			    angular.forEach(tier.events, function (evt, key) {
+			        if(key < tier.events.length - 1 ) {
+			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
+			        }
+			        if(key > 0 ) {
+			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
+			        }
+		            
+			    	if (pcm <= spaceHigher && pcm >= spaceLower) {
+	    					ret = id;
+			    	}
+				    ++id;
+    			});			
+			}
 			return ret;
 		};
 
@@ -432,24 +451,46 @@ angular.module('emulvcApp')
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var id = 0;
 			var ret = 0;
-			angular.forEach(tier.events, function (evt) {
-				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					ret = id;
-				}
-				++id;
-			});
-			return ret;
+			if(tier.type==="seg") {
+			    angular.forEach(tier.events, function (evt) {
+				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+					    return id;
+				    }
+				    ++id;
+			    });
+			}
+			else {
+			    var lastPcm = 0;
+			    angular.forEach(tier.events, function (evt) {
+				    if (pcm <= evt.startSample && pcm >= lastPcm ) {
+					    return id;
+				    }
+				    lastPcm = evt.startSample;
+				    ++id;
+			    });			
+			}
 		};
 
 
 		$scope.getEvent = function (x, tier) {
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var evtr = null;
-			angular.forEach(tier.events, function (evt) {
-				if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					evtr = evt;
-				}
-			});
+			if(tier.type==="seg") {
+			    angular.forEach(tier.events, function (evt) {
+				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+					    evtr = evt;
+				    }
+			    });
+			}
+			else {
+			    var lastPcm = 0;
+			    angular.forEach(tier.events, function (evt) {
+				    if (pcm <= evt.startSample && pcm >= lastPcm ) {
+					    evtr = evt;
+				    }
+				    lastPcm = evt.startSample;
+			    });
+			}
 			return evtr;
 		};
 

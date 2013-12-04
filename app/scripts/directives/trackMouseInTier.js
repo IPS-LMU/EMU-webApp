@@ -6,13 +6,6 @@ angular.module('emulvcApp')
       restrict: 'A',
       link: function (scope, element) {
 
-        // var elem = element[0];
-        //var tierId = scope.this.tier.TierName;
-        // var ctx = elem.getContext('2d');
-        // the last coordinates before the current move
-        // var lastX, currentX;
-        // var lastY, currentY;
-        // the last event before the current move
         var lastEventClick;
         var lastEventClickId;
         var lastEventRightClick;
@@ -21,8 +14,6 @@ angular.module('emulvcApp')
         var lastEventMoveId;
         var lastPCM;
         var thisPCM;
-        // var message;
-
 
         element.bind('click', function (event) {
           setLastMove(event, true);
@@ -66,15 +57,16 @@ angular.module('emulvcApp')
                 viewState.movingBoundary = true;
                 scope.$apply();
                 moveLine = false;
-              } else {
-                viewState.movingBoundary = false;
-              }
-              if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
+              } 
+              else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.$apply();
+              }
+              else {
+                viewState.movingBoundary = false;
               }
             }
             break;
@@ -153,6 +145,8 @@ angular.module('emulvcApp')
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier);
           viewState.setcurMouseTierName(tierId);
+          console.log(lastEventMove)
+          console.log(lastEventMoveId);
           if (doChange) {
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMoveId);
