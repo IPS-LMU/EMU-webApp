@@ -26,8 +26,6 @@ angular.module('emulvcApp')
         var ppp;
         var cache;
 
-        clearImageCache();
-
         // on mouse move
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
@@ -396,6 +394,7 @@ angular.module('emulvcApp')
           }
         }
 
+        clearImageCache();
 
       }
     };

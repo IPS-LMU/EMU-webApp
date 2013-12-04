@@ -350,7 +350,7 @@ angular.module('emulvcApp')
 				drop = 'static';
 			}
 			viewState.setmodalOpen(true);
-			var modalInstance = $modal.open({
+			$modal.open({
 				backdrop: drop,
 				keyboard: true,
 				backdropClick: true,
@@ -585,8 +585,10 @@ angular.module('emulvcApp')
 				$('#menu').addClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}
-			var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
+			//var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
+		
+	
 
 		//
 		$scope.connectBtnClick = function () {
