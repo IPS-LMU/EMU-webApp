@@ -150,7 +150,6 @@ angular.module('emulvcApp')
           if (cache !== null) {
             contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
-            drawTimeLineContext();
           } else {
             drawOsci(scope.vs, scope.shs.wavJSO.Data);
           }
@@ -227,6 +226,8 @@ angular.module('emulvcApp')
           var image = new Image();
           image.onload = function () {
             context.drawImage(image, 0, 0);
+            drawTimeLineContext();
+            scope.$apply();            
           };
           image.src = imageCache[id][3];
         }
@@ -253,9 +254,10 @@ angular.module('emulvcApp')
               context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
               buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp, canvas0.toDataURL('image/png'));
               drawTimeLineContext();
+              scope.$apply();
             };
             myImage.src = workerImg;
-            scope.$apply();
+
           });
 
         }
@@ -263,7 +265,6 @@ angular.module('emulvcApp')
         function drawOsci(viewState, buffer) {
           killSpectroRenderingThread();
           contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-          drawTimeLineContext();
           startSpectroRenderingThread(viewState, buffer);
         }
 
