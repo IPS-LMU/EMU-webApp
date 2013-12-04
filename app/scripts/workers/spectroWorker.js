@@ -218,6 +218,10 @@
 
 })();
 
+
+'use strict';
+
+
 /**
  * A handy class to draw a spectrom (calculate a fft)
  *
@@ -689,12 +693,13 @@ function toLinearLevel(dbLevel) {
 
 // used by FFT
 function log10(arg) {
+    'use strict';
 	return Math.log(arg) / 2.302585092994046; // Math.log(x) / Math.LN10
 }
 
 // used by FFT
 function magnitude(real, imag) {
-	return Math.sqrt((real * real) + (imag * imag))
+	return Math.sqrt((real * real) + (imag * imag));
 }
 
 // used to calculate current packet
@@ -752,8 +757,8 @@ self.addEventListener('message', function (e) {
 		if (data.freq !== undefined) {
 			upperFreq = data.freq;
 		}
-		if (data.freq_low !== undefined) {
-			lowerFreq = data.freq_low;
+		if (data.freqLow !== undefined) {
+			lowerFreq = data.freqLow;
 		}
 		if (data.start !== undefined) {
 			start = data.start;

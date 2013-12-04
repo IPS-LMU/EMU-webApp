@@ -290,7 +290,7 @@ angular.module('emulvcApp')
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'freq_low': viewState.spectroSettings.rangeFrom
+            'freqLow': viewState.spectroSettings.rangeFrom
           });
           primeWorker.postMessage({
             'cmd': 'config',

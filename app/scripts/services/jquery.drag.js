@@ -1,6 +1,6 @@
 'use strict';
 
-(function ($) {
+$(function() {
 
   var DOWN = 'mousedown touchstart',
     MOVE = 'mousemove touchmove',
@@ -14,8 +14,8 @@
       x = v.pageX,
       t = v.originalEvent.targetTouches;
     if (t) {
-      x = t[0]['pageX'];
-      y = t[0]['pageY'];
+      x = t[0].pageX;
+      y = t[0].pageY;
     }
     return {
       x: x,
@@ -37,7 +37,7 @@
   function dragStart(v) {
     var p = xy(v),
       f = function (k) {
-        return parseInt(E.css(k)) || false;
+        return parseInt(E.css(k),10) || false;
       };
     E = v.data.e;
     M = {
@@ -75,4 +75,4 @@
     return init(this, h, 'ns-resize');
   };
 
-})(jQuery);
+});
