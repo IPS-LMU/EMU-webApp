@@ -48,7 +48,7 @@ $(function() {
       pY: p.y,
       k: v.data.k
     };
-    $('.container').scope().dragStart();
+    $('.MainCtrl').scope().dragStart();
     $(document).bind(MOVE, drag).bind(STOP, dragEnd);
     MAX = $(document).height() - 2 * $('.menu-bottom').height();
     return false;
@@ -61,14 +61,14 @@ $(function() {
       E.css({
         height: X
       });
-      $('.container').scope().refreshTimeline();
+      $('.MainCtrl').scope().refreshTimeline();
       $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
     }
     return false;
   }
 
   function dragEnd() {
-    $('.container').scope().dragEnd();
+    $('.MainCtrl').scope().dragEnd();
     $(document).unbind(MOVE, drag).unbind(STOP, dragEnd);
   }
   $.fn.ownResize = function (h) {
