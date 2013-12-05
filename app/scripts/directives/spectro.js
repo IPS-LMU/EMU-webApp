@@ -217,9 +217,7 @@ angular.module('emulvcApp')
             contextmarkup.closePath();
             contextmarkup.stroke();
             contextmarkup.fillStyle = canvas0.labelColor;
-
           } 
-
         }
 
 
@@ -230,7 +228,6 @@ angular.module('emulvcApp')
             scope.$apply(function() {
               context.drawImage(image, 0, 0);
               drawTimeLineContext(); 
-                console.log("old/client:"+pcmperpixel);
             });
           };
           image.src = imageCache[id][3];
@@ -258,8 +255,6 @@ angular.module('emulvcApp')
             var workerImg = event.data.img;
             myImage.onload = function () {
               scope.$apply(function() {
-                //console.log("new/client:"+pcmperpixel);
-                //console.log("new/worker:"+event.data.myStep);
                 if(pcmperpixel==event.data.myStep) {
                   context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
                   buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, canvas0.toDataURL('image/png'));
