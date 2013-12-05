@@ -1,6 +1,5 @@
-// 'use strict';
-/**
- * A handy class to calculate color values.
+
+/** * A handy class to calculate color values.
  *
  * @version 1.0
  * @author Robert Eisele <robert@xarg.org>
@@ -228,30 +227,6 @@
  *
  */
 
-var executed = false;
-var PI = 3.141592653589793; // value : Math.PI
-var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
-var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
-var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);		
-var internalalpha = 0.16;
-var totalMax = 0;
-var dynRangeInDB = 50;
-var myOffset = 0;
-var mywidth = 0;
-var myDrawOffset = 0;
-var pixelRatio = 1;
-var myWindow = {
-	BARTLETT: 1,
-	BARTLETTHANN: 2,
-	BLACKMAN: 3,
-	COSINE: 4,
-	GAUSS: 5,
-	HAMMING: 6,
-	HANN: 7,
-	LANCZOS: 8,
-	RECTANGULAR: 9,
-	TRIANGULAR: 10
-};
 
 
 function FFT(fftSize) {
@@ -441,6 +416,31 @@ function FFT(fftSize) {
 
 
 
+var executed = false;
+var PI = 3.141592653589793; // value : Math.PI
+var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
+var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
+var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);		
+var internalalpha = 0.16;
+var totalMax = 0;
+var dynRangeInDB = 50;
+var myOffset = 0;
+var mywidth = 0;
+var myDrawOffset = 0;
+var pixelRatio = 1;
+var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight;
+var myWindow = {
+	BARTLETT: 1,
+	BARTLETTHANN: 2,
+	BLACKMAN: 3,
+	COSINE: 4,
+	GAUSS: 5,
+	HAMMING: 6,
+	HANN: 7,
+	LANCZOS: 8,
+	RECTANGULAR: 9,
+	TRIANGULAR: 10
+};
 /* 
 	// initial function call for calculating and drawing Spectrogram
 	// input PCM data is coming from the buffer "localSoundBuffer"
@@ -461,6 +461,7 @@ function FFT(fftSize) {
 
 var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
 	return function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
+	
 		if (!executed) {
 			//cWidth *= pixelRatio;
 			//cHeight *= pixelRatio;
@@ -694,7 +695,7 @@ function log10(arg) {
 
 // used by FFT
 function magnitude(real, imag) {
-	return Math.sqrt((real * real) + (imag * imag))
+	return Math.sqrt((real * real) + (imag * imag));
 }
 
 // used to calculate current packet
@@ -752,8 +753,8 @@ self.addEventListener('message', function (e) {
 		if (data.freq !== undefined) {
 			upperFreq = data.freq;
 		}
-		if (data.freq_low !== undefined) {
-			lowerFreq = data.freq_low;
+		if (data.freqLow !== undefined) {
+			lowerFreq = data.freqLow;
 		}
 		if (data.start !== undefined) {
 			start = data.start;

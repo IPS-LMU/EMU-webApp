@@ -9,6 +9,11 @@
     "keyMappings": {
         "openFile": -1,
         "connect": -1,
+        "addTierSeg": -1,
+        "addTierPoint": -1,
+        "renameTier": -1,
+        "downloadTextgrid": -1,
+        "demoDB": -1,
         "openSubmenu": 79,
         "spectroSettings": 80,
         "zoomSel": 69,

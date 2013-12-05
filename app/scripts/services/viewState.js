@@ -500,7 +500,6 @@ angular.module('emulvcApp')
       var lastEventClick = this.getcurClickSegments()[0];
       var lastEventClickId = this.getlastID();
       var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
-      console.log(this.getcurClickTierName());
       var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
       var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
       var top = elem.offsetTop;
@@ -527,7 +526,6 @@ angular.module('emulvcApp')
     };
 
     sServObj.createEditArea = function (id, x, y, width, height, label, labelid) {
-      console.log(id);
       var textid = '_' + labelid;
       $('#' + id).prepend($('<textarea>').attr({
         id: textid,

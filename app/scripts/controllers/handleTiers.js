@@ -345,12 +345,11 @@ angular.module('emulvcApp')
 			angular.forEach($scope.tierDetails.data.tiers, function (t) {
 				var i = 0;
 				if (t.TierName === tiername) {
-					angular.forEach(t.events, function (evt) {
-						if (id === i) {
+					angular.forEach(t.events, function (evt, i) {
+						if (id == i) {
 							evt.label = name;
 							HistoryService.history();
 						}
-						++i;
 					});
 				}
 			});
@@ -454,7 +453,7 @@ angular.module('emulvcApp')
 			if(tier.type==="seg") {
 			    angular.forEach(tier.events, function (evt) {
 				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					    return id;
+					    ret = id;
 				    }
 				    ++id;
 			    });
@@ -463,12 +462,14 @@ angular.module('emulvcApp')
 			    var lastPcm = 0;
 			    angular.forEach(tier.events, function (evt) {
 				    if (pcm <= evt.startSample && pcm >= lastPcm ) {
-					    return id;
+					    ret = id;
 				    }
 				    lastPcm = evt.startSample;
 				    ++id;
 			    });			
 			}
+			
+			return ret;
 		};
 
 

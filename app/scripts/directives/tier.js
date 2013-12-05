@@ -258,13 +258,15 @@ angular.module('emulvcApp')
 					var tierId = viewState.getcurClickTierName();
 
 					// draw clicked on selected areas
-					if (tierId !== '' && tierDetails.TierName === tierId) {
+					if (tierId !== '' && tierDetails.TierName === tierId && segCId.length>0) {
 						segCId.forEach(function (entry) {
+						  if(entry!==undefined) {
 							posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
 							posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur + 1));
 							ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 							ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 							ctx.fillStyle = config.vals.colors.startBoundaryColor;
+						  }
 						});
 					}
 					// draw preselected boundary
