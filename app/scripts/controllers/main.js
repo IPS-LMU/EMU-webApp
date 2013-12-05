@@ -252,13 +252,22 @@ angular.module('emulvcApp')
 			
 			// setting transition values
 			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
-			$(".menu .HandletiersCtrl .OsciDiv .SpectroDiv .menu-bottom .cbp-spmenu .cbp-spmenu-push-toright .cbp-spmenu-push-toleft .cbp-spmenu-push").css({
-                WebkitTransition : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                MozTransition    : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                MsTransition     : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                OTransition      : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                transition       : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out'
-            });
+			var transcss = {
+                '-webkit-transition' : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                '-moz-transition'    : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                '-ms-transition'     : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                '-o-transition'      : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                'transition'       : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out'			
+			};
+			$(".menu").css(transcss);
+			$(".HandletiersCtrl").css(transcss);
+			$(".OsciDiv").css(transcss);
+			$(".SpectroDiv").css(transcss);
+			$(".menu-bottom").css(transcss);
+			$(".cbp-spmenu").css(transcss);
+			$(".cbp-spmenu-push").css(transcss);
+			$(".cbp-spmenu-push-toleft").css(transcss);
+			$(".cbp-spmenu-push-toright").css(transcss);
 			
 			
 
@@ -335,7 +344,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveUtt($scope.curUtt); // SIC hardcoded
+			Iohandlerservice.wsH.saveUtt("sdf"); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
 			$scope.modifTierItems = false;
 		};

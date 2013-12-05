@@ -71,7 +71,7 @@
         "zeroLineColor": "#0DC5FF",
         "crossHairsColor": "#FF0000",
         "timelineHeight": "300px",
-        "transitionTime": 350
+        "transitionTime": 400
     },
     "font": {
         "fontType": "Verdana",
