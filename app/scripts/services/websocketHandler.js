@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice) {
 		// shared service object
 		var sServObj = {};
 		// Keep all pending requests here until they get responses
@@ -211,22 +211,15 @@ angular.module('emulvcApp')
 		};
 
 		// ws request for saving ssff file
-		sServObj.saveSSFFfile = function (usrName, ssffJSO) {
+		sServObj.saveSSFFfile = function (fName) {
+			console.log(fName)
+			var ssffJSO = Ssffdataservice.getDataOfFile(fName);
+			console.log(ssffJSO);
 			var buf = Ssffparserservice.jso2ssff(ssffJSO);
-			//console.log(usrName);
-			//console.log(buf);
-			var binary = '';
-			var bytes = new Uint8Array(buf);
-			var len = bytes.byteLength;
-			for (var i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i]);
-			}
-			var base64 = window.btoa(binary);
-			//console.log(base64);
-
+			var base64 = Binarydatamaniphelper.arrayBufferToBase64(buf);
+			
 			var request = {
 				type: 'saveSSFFfile',
-				usrName: usrName,
 				fileURL: ssffJSO.fileURL.split($location.absUrl())[1],
 				data: base64
 			};
@@ -283,8 +276,17 @@ angular.module('emulvcApp')
 		sServObj.saveUtt = function (utt) {
 			var curFile;
 
-			// curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-			console.log(utt)
+			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
+				curFile = sServObj.findFileInUtt(utt, ext);
+				console.log(curFile);
+				sServObj.saveSSFFfile(curFile);
+			});
+
+			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
+				curFile = sServObj.findFileInUtt(utt, ext);
+				console.log(curFile);
+			});
 
 			// load audio file first
 			// curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
