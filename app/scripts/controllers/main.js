@@ -249,6 +249,18 @@ angular.module('emulvcApp')
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
 			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
+			
+			// setting transition values
+			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
+			$(".menu .HandletiersCtrl .OsciDiv .SpectroDiv .menu-bottom .cbp-spmenu .cbp-spmenu-push-toright .cbp-spmenu-push-toleft .cbp-spmenu-push").css({
+                WebkitTransition : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                MozTransition    : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                MsTransition     : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                OTransition      : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
+                transition       : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out'
+            });
+			
+			
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				$('#allowSortable').sortable('enable');
@@ -594,7 +606,7 @@ angular.module('emulvcApp')
 				$('#menu').addClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}
-			//var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
+			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
 
 

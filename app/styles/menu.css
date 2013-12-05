@@ -64,20 +64,3 @@
 .cbp-spmenu-push-toleft {
     left: 0px;
 }
- 
-/* Transitions */
-
-.menu,
-.HandletiersCtrl,
-.OsciDiv,
-.SpectroDiv,
-.menu-bottom,
-.cbp-spmenu,
-.cbp-spmenu-push-toright,
-.cbp-spmenu-push-toleft,
-.cbp-spmenu-push {
-    -webkit-transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
-    -moz-transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
-    transition: width 0.35s ease-in-out, left 0.35s ease-in-out;
-}
- 
