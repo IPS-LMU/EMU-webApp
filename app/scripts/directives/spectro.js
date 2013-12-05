@@ -2,7 +2,7 @@
 
 
 angular.module('emulvcApp')
-  .directive('spectro', function () {
+  .directive('spectro', function ($q) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -23,7 +23,6 @@ angular.module('emulvcApp')
         var primeWorker = new Worker(spectroWorker);
         var imageCache = null;
         var imageCacheCounter = 0;
-        var ppp;
         var cache;
 
         // on mouse move
@@ -56,8 +55,9 @@ angular.module('emulvcApp')
         scope.$watch('tds.data', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawTimeLineContext();
+              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+              //drawTimeLineContext();
+              redraw();
             }
           }
         }, true);
@@ -65,8 +65,9 @@ angular.module('emulvcApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawTimeLineContext();
+              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+              //drawTimeLineContext();
+              redraw();
             }
           }
         }, true);
@@ -145,8 +146,8 @@ angular.module('emulvcApp')
         }, true);
 
         function redraw() {
-          ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
-          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp);
+          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
           if (cache !== null) {
             contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
@@ -217,7 +218,8 @@ angular.module('emulvcApp')
             contextmarkup.stroke();
             contextmarkup.fillStyle = canvas0.labelColor;
 
-          }
+          } 
+
         }
 
 
@@ -225,9 +227,11 @@ angular.module('emulvcApp')
         function drawTimeLine(id) {
           var image = new Image();
           image.onload = function () {
-            context.drawImage(image, 0, 0);
-            drawTimeLineContext();
-            scope.$apply();            
+            scope.$apply(function() {
+              context.drawImage(image, 0, 0);
+              drawTimeLineContext(); 
+                console.log("old/client:"+pcmperpixel);
+            });
           };
           image.src = imageCache[id][3];
         }
@@ -246,18 +250,24 @@ angular.module('emulvcApp')
         }
 
         function setupEvent() {
+          //var deferred = $q.defer();
+          
           var myImage = new Image();
-          ppp = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           primeWorker.addEventListener('message', function (event) {
             var workerImg = event.data.img;
             myImage.onload = function () {
-              context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
-              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, ppp, canvas0.toDataURL('image/png'));
-              drawTimeLineContext();
-              scope.$apply();
+              scope.$apply(function() {
+                //console.log("new/client:"+pcmperpixel);
+                //console.log("new/worker:"+event.data.myStep);
+                if(pcmperpixel==event.data.myStep) {
+                  context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
+                  buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, canvas0.toDataURL('image/png'));
+                  drawTimeLineContext();
+                }      
+               });
             };
             myImage.src = workerImg;
-
           });
 
         }
@@ -273,8 +283,9 @@ angular.module('emulvcApp')
           primeWorker = new Worker(spectroWorker);
           var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel * 3 * viewState.spectroSettings.windowLength));
           var parseData = new Float32Array(x);
+          
           setupEvent();
-
+          
           primeWorker.postMessage({
             'cmd': 'config',
             'N': viewState.spectroSettings.windowLength
@@ -343,6 +354,7 @@ angular.module('emulvcApp')
             'cmd': 'pcm',
             'stream': parseData
           });
+          
           primeWorker.postMessage({
             'cmd': 'render'
           });

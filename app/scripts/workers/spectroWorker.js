@@ -522,6 +522,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight,
 				'window': wFunction,
 				'start': start,
 				'end': end,
+				'myStep': myStep,
 				'cacheWidth': cacheWidth,
 				'cacheSide': cacheSide,
 				'img': 'data:image/png;base64,' + p.getBase64()
