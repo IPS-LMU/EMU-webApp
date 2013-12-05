@@ -459,14 +459,21 @@ angular.module('emulvcApp')
 			    });
 			}
 			else {
-			    var lastPcm = 0;
-			    angular.forEach(tier.events, function (evt) {
-				    if (pcm <= evt.startSample && pcm >= lastPcm ) {
-					    ret = id;
-				    }
-				    lastPcm = evt.startSample;
+			    var spaceLower = 0;
+			    var spaceHigher = 0;
+			    angular.forEach(tier.events, function (evt, key) {
+			        if(key < tier.events.length - 1 ) {
+			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
+			        }
+			        if(key > 0 ) {
+			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
+			        }
+		            
+			    	if (pcm <= spaceHigher && pcm >= spaceLower) {
+	    					ret = id;
+			    	}
 				    ++id;
-			    });			
+    			});					
 			}
 			
 			return ret;
@@ -484,13 +491,21 @@ angular.module('emulvcApp')
 			    });
 			}
 			else {
-			    var lastPcm = 0;
-			    angular.forEach(tier.events, function (evt) {
-				    if (pcm <= evt.startSample && pcm >= lastPcm ) {
-					    evtr = evt;
-				    }
-				    lastPcm = evt.startSample;
-			    });
+			    var spaceLower = 0;
+			    var spaceHigher = 0;
+			    angular.forEach(tier.events, function (evt, key) {
+			        if(key < tier.events.length - 1 ) {
+			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
+			        }
+			        if(key > 0 ) {
+			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
+			        }
+		            
+			    	if (pcm <= spaceHigher && pcm >= spaceLower) {
+	    					evtr = evt;
+			    	}
+    			});			
+
 			}
 			return evtr;
 		};

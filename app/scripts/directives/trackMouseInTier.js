@@ -130,11 +130,10 @@ angular.module('emulvcApp')
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
           viewState.setcurClickTierName(tierId);
           viewState.setlasteditArea('_' + lastEventClickId);
-          console.log('_' + lastEventClickId);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
           viewState.setEditing(true);
           viewState.setTierLength(scope.this.tier.events.length);
-          viewState.openEditArea();
+          viewState.openEditArea(lastEventClick, lastEventClickId, scope.this.tier.type);
           scope.cursorInTextField();
           lastPCM = thisPCM;
           scope.$apply();

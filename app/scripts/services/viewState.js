@@ -496,12 +496,17 @@ angular.module('emulvcApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServObj.openEditArea = function () {
-      var lastEventClick = this.getcurClickSegments()[0];
-      var lastEventClickId = this.getlastID();
+    sServObj.openEditArea = function (lastEventClick, lastEventClickId, type) {
+      console.log(lastEventClick, lastEventClickId);
       var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
-      var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
-      var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
+      if(type==="seg") {
+          var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
+          var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
+      }
+      else {
+          var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft - (elem.clientWidth/50);
+          var end = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft + (elem.clientWidth/50);
+      }
       var top = elem.offsetTop;
       var height = elem.clientHeight;
       var myid = this.createEditArea(this.getcurClickTierName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
