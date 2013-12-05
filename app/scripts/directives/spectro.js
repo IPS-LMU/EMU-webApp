@@ -55,8 +55,6 @@ angular.module('emulvcApp')
         scope.$watch('tds.data', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              //drawTimeLineContext();
               redraw();
             }
           }
@@ -65,8 +63,6 @@ angular.module('emulvcApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              //drawTimeLineContext();
               redraw();
             }
           }
@@ -151,6 +147,7 @@ angular.module('emulvcApp')
           if (cache !== null) {
             contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
+            drawTimeLineContext();
           } else {
             drawOsci(scope.vs, scope.shs.wavJSO.Data);
           }
@@ -191,7 +188,7 @@ angular.module('emulvcApp')
             contextmarkup.fillRect(p, 0, 1, contextmarkup.canvas.height);
           }
 
-          // contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
+          contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
           var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
           var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
           var sDist = scope.vs.getSampleDist(canvas0.width);
@@ -227,7 +224,7 @@ angular.module('emulvcApp')
           image.onload = function () {
             scope.$apply(function() {
               context.drawImage(image, 0, 0);
-              drawTimeLineContext(); 
+              //drawTimeLineContext(); 
             });
           };
           image.src = imageCache[id][3];
@@ -269,7 +266,7 @@ angular.module('emulvcApp')
 
         function drawOsci(viewState, buffer) {
           killSpectroRenderingThread();
-          contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+          //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
           startSpectroRenderingThread(viewState, buffer);
         }
 
