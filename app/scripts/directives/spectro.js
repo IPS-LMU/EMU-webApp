@@ -29,7 +29,9 @@ angular.module('emulvcApp')
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawCrossHairs(scope.vs, canvas1, scope.config, scope.dhs, event);
+              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+              drawTimeLineContext();     
+              drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);      
             }
           }
         });
@@ -181,6 +183,8 @@ angular.module('emulvcApp')
 
         function drawTimeLineContext() {
           // draw boundary moving line
+          //contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
+          
           if (scope.vs.movingBoundary) {
             contextmarkup.fillStyle = scope.config.vals.colors.selectedBoundaryColor;
             var tD = scope.vs.getcurMouseTierDetails();
@@ -188,7 +192,7 @@ angular.module('emulvcApp')
             contextmarkup.fillRect(p, 0, 1, contextmarkup.canvas.height);
           }
 
-          contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
+          
           var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
           var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
           var sDist = scope.vs.getSampleDist(canvas0.width);
@@ -215,6 +219,7 @@ angular.module('emulvcApp')
             contextmarkup.stroke();
             contextmarkup.fillStyle = canvas0.labelColor;
           } 
+          
         }
 
 
