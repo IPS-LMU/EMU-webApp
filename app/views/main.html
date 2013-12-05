@@ -1,3 +1,4 @@
+<div ng-controller="MainCtrl">
 <div handleglobalkeystrokes>
 
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
@@ -81,5 +82,6 @@
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">play in view</button>
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlaySel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
+</div>
 </div>
 </div>
