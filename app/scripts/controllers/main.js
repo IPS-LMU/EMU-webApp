@@ -344,7 +344,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveUtt("sdf"); // SIC hardcoded
+			Iohandlerservice.wsH.saveUtt($scope.curUtt);
 			$scope.modifiedCurSSFF = false;
 			$scope.modifTierItems = false;
 		};

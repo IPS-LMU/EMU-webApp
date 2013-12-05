@@ -60,6 +60,8 @@ angular.module('emulvcApp')
 
     sServObj.focusInTextField = false;
 
+    sServObj.curTaskPercCompl = 0;
+
     /**
      */
     sServObj.updatePlayHead = function (timestamp) {
@@ -499,13 +501,12 @@ angular.module('emulvcApp')
     sServObj.openEditArea = function (lastEventClick, lastEventClickId, type) {
       console.log(lastEventClick, lastEventClickId);
       var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
-      if(type==="seg") {
-          var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
-          var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
-      }
-      else {
-          var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft - (elem.clientWidth/50);
-          var end = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft + (elem.clientWidth/50);
+      if (type === "seg") {
+        var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
+        var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
+      } else {
+        var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft - (elem.clientWidth / 50);
+        var end = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft + (elem.clientWidth / 50);
       }
       var top = elem.offsetTop;
       var height = elem.clientHeight;
