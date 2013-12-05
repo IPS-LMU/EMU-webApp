@@ -31,6 +31,9 @@ angular.module('emulvcApp')
 
 
             } else {
+            
+              $('#HandletiersCtrl').scope().deleteEditArea();
+            
               // delegate keyboard keyMappings according to keyMappings of scope
               // shiftViewPortLeft
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {

@@ -644,26 +644,32 @@ angular.module('emulvcApp')
 		};
 
 		$scope.cmdZoomAll = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 		};
 
 		$scope.cmdZoomSel = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
 		$scope.cmdZoomIn = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.zoomViewPort(true);
 		};
 
 		$scope.cmdZoomOut = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.zoomViewPort(false);
 		};
 
 		$scope.cmdZoomLeft = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.shiftViewPort(false);
 		};
 
 		$scope.cmdZoomRight = function () {
+		    $('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.shiftViewPort(true);
 		};
 
