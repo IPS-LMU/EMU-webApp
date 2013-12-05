@@ -142,6 +142,7 @@ angular.module('emulvcApp')
 					$scope.openSubmenu();
 				}
 				$scope.uttList = newVal;
+				$scope.curUtt = newVal[0];
 			});
 		});
 
@@ -305,7 +306,7 @@ angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function (utt) {
-			if ($scope.modifiedCurSSFF) {
+			if ($scope.modifiedCurSSFF || $scope.modifTierItems) {
 				$scope.lastclickedutt = utt;
 				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
 			} else {
@@ -322,8 +323,9 @@ angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
+			Iohandlerservice.wsH.saveUtt("sdf"); // SIC hardcoded
 			$scope.modifiedCurSSFF = false;
+			$scope.modifTierItems = false;
 		};
 
 		/**

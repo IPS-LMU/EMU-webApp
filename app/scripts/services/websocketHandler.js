@@ -279,6 +279,54 @@ angular.module('emulvcApp')
 
 		};
 
+		// ws save Utt to ws server
+		sServObj.saveUtt = function (utt) {
+			var curFile;
+
+			// curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+			console.log(utt)
+
+			// load audio file first
+			// curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
+			// //console.log(curFile)
+			// sServObj.getAudioFile(curFile).then(function (audioF) {
+			// 	// var arrBuff = stringToArrayBuffer(audioF);
+			// 	var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(audioF);
+			// 	console.log(typeof arrBuff);
+
+			// 	var wavJSO = Wavparserservice.wav2jso(arrBuff);
+			// 	return wavJSO;
+			// }).then(function (wavJSO) {
+			// 	// set needed vals
+			// 	viewState.curViewPort.sS = 0;
+			// 	viewState.curViewPort.eS = wavJSO.Data.length;
+			// 	viewState.curViewPort.bufferLength = wavJSO.Data.length;
+			// 	viewState.setscrollOpen(0);
+			// 	viewState.resetSelect();
+			// 	Soundhandlerservice.wavJSO = wavJSO;
+			// 	$rootScope.$broadcast('cleanPreview');
+			// }).then(function () {
+			// 	ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
+			// 		curFile = sServObj.findFileInUtt(utt, ext);
+			// 		sServObj.getSSFFfile(curFile);
+			// 	});
+			// }).then(function () {
+			// 	// load label files
+			// 	ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
+			// 		var deferred = $q.defer();
+			// 		curFile = sServObj.findFileInUtt(utt, ext);
+			// 		var promise = sServObj.getESPSfile(curFile);
+			// 		//promises.push(promise);
+			// 		deferred.resolve(promise);
+
+			// 		//console.log(curFile);
+			// 	});
+			// 	//$q.all(promises).then(function () { HistoryService.history(); });
+			// });
+
+		};
+
+
 		// helper function to find file in utt
 		sServObj.findFileInUtt = function (utt, fileExt) {
 			var res;
