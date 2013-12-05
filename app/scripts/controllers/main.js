@@ -19,6 +19,7 @@ angular.module('emulvcApp')
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
+		$scope.modifiedCurTierItems = false;
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
@@ -495,6 +496,13 @@ angular.module('emulvcApp')
 			$scope.modifiedCurSSFF = true;
 		};
 
+		/**
+		 *
+		 */
+		$scope.modifTierItems = function () {
+			console.log('items labs changed')
+			$scope.modifiedCurTierItems = true;
+		};
 
 		/**
 		 *
@@ -512,17 +520,16 @@ angular.module('emulvcApp')
 		 */
 		$scope.getUttColor = function (utt) {
 			var curColor;
-			if (!$scope.modifiedCurSSFF) {
-				curColor = {
-					'background-color': '#999',
-					'color': 'black'
-				};
-			} else {
+			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
 				curColor = {
 					'background-color': '#f00',
 					'color': 'white'
 				};
-
+			} else {
+				curColor = {
+					'background-color': '#999',
+					'color': 'black'
+				};
 			}
 
 			// console.log(utt.name)
@@ -587,8 +594,8 @@ angular.module('emulvcApp')
 			}
 			//var mytimeout = $timeout($scope.refreshTimeline, 350); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
-		
-	
+
+
 
 		//
 		$scope.connectBtnClick = function () {
