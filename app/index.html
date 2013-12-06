@@ -20,12 +20,14 @@
 	<link rel="stylesheet" href="styles/tooltip.css">
 	<link rel="stylesheet" href="styles/utterance.css">	
 	<link rel="stylesheet" href="styles/drop.css">
+	<link rel="stylesheet" href="styles/appcachemodal.css">
 	<!-- endbuild -->
 
 	<!-- set basedir for angular app change if not running in root of server-->
 	<base href="/"/>
 </head>
 <body ng-app="emulvcApp">
+	
 
 	<!-- Add your site or application content here -->
 	<div class="container" id="container" ng-view=""></div>
@@ -87,6 +89,7 @@
 <script src="scripts/services/dialog.js"></script>
 <script src="scripts/controllers/wait.js"></script>
 <script src="scripts/services/appCacheHandler.js"></script>
+<script src="scripts/appcacheUpdate.js"></script>
 <!-- endbuild -->
 </body>
 </html>
