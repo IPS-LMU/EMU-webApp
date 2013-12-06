@@ -327,7 +327,8 @@ angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function (utt) {
-			if ($scope.modifiedCurSSFF || $scope.modifTierItems) {
+			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
+				console.log($scope.modifiedCurTierItems)
 				$scope.lastclickedutt = utt;
 				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
 			} else {

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2013-12-05T12:52:18.216Z
+# rev 1 - 2013-12-06T10:26:47.152Z
 
 CACHE:
 404.html
@@ -115,7 +115,6 @@ bower_components/angular-ui/test/lib/tinymce/jquery.tinymce.js
 bower_components/angular-ui/test/lib/tinymce/tiny_mce.js
 bower_components/angular-ui/test/test-config.js
 bower_components/angular/README.md
-bower_components/angular/angular-csp.css
 bower_components/angular/angular.js
 bower_components/angular/angular.min.js
 bower_components/angular/angular.min.js.map
@@ -910,10 +909,10 @@ favicon.ico
 index.html
 manifest.json
 robots.txt
-scripts/2395e80f.plugins.js
-scripts/5aa9262c.emuLVC.min.js
+scripts/3dfdfcee.emuLVC.min.js
+scripts/8a724d27.plugins.js
 scripts/workers/spectroWorker.js
-styles/3f334739.main.css
+styles/135f3af5.main.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 testData/demoUttList.json
 testData/msajc003/msajc003.TextGrid
@@ -962,6 +961,7 @@ views/saveChanges.html
 views/spectro.html
 views/spectroSettings.html
 views/tier.html
+views/waitDial.html
 
 NETWORK:
 *
