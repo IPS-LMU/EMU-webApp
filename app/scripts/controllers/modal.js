@@ -95,6 +95,12 @@ angular.module('emulvcApp')
 			$modalInstance.dismiss('ok');
 		};
 
+		$scope.deleteBoundary = function () {
+			$('#HandletiersCtrl').scope().deleteBoundary();
+			$modalInstance.dismiss('ok');
+		};
+
+
 		$scope.saveSpectroSettings = function () {
 			var len = $('#windowLength').val();
 			var from = $('#rangeFrom').val();

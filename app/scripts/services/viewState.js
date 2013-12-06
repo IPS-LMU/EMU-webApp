@@ -48,7 +48,10 @@ angular.module('emulvcApp')
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.scrollOpen = 0;
+    sServObj.curMouseTierName = undefined;
+    sServObj.curMouseTierType = undefined;
     sServObj.curClickTierName = undefined;
+    sServObj.curClickTierType = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = undefined;
     sServObj.start = null;
@@ -277,6 +280,22 @@ angular.module('emulvcApp')
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
+    sServObj.setcurClickTierType = function (name) {
+      this.curClickTierType = name;
+    };
+
+    /**
+     * gets the current (clicked) Tier Name
+     */
+    sServObj.getcurClickTierType = function () {
+      return this.curClickTierType;
+    };
+
+
+    /**
+     * sets the current (clicked) Tier Name
+     * @param name is name of tier
+     */
     sServObj.setcurClickTierName = function (name) {
       this.curClickTierName = name;
     };
@@ -301,6 +320,22 @@ angular.module('emulvcApp')
      */
     sServObj.getcurMouseTierName = function () {
       return this.curMouseTierName;
+    };
+
+
+    /**
+     * sets the current (mousemove) Tier Name
+     * @param name is name of tier
+     */
+    sServObj.setcurMouseTierType = function (name) {
+      this.curMouseTierType = name;
+    };
+
+    /**
+     * gets the current (mousemove) Tier Name
+     */
+    sServObj.getcurMouseTierType = function () {
+      return this.curMouseTierType;
     };
 
     /**

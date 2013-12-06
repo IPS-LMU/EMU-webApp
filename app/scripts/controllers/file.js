@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .controller('FileCtrl', function ($rootScope, $scope,
+  .controller('FileCtrl', function ($scope,
     viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
     var dropzone = document.getElementById('dropzone');
@@ -14,13 +14,12 @@ angular.module('emulvcApp')
     /**
      * listen for configLoaded
      */
-    $scope.$on('configLoaded', function () {
-      if (ConfigProviderService.vals.main.mode === 'server') {
-        $scope.dropClass = 'hidden';
-      }
-    });
-
     $scope.dropText = droptext1;
+
+    
+	$scope.hideDropZone = function () {
+	    $scope.dropClass = 'hidden';
+	};    
 
     function dragEnterLeave(evt) {
       evt.stopPropagation();

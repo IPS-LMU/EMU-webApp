@@ -197,7 +197,16 @@ angular.module('emulvcApp')
               // backspace
               if (code === ConfigProviderService.vals.keyMappings.backspace) {
                 if (e.shiftKey) {
-
+                    if (ConfigProviderService.vals.restrictions.deleteItem) {
+                        var seg = viewState.getcurMouseSegment();
+                        var tn = viewState.getcurMouseTierName();
+                        if (seg !== undefined) {
+                            scope.openModal('views/deleteBoundry.html', 'dialogSmall', false, 'Really Delete', seg.startSample + ' on Tier ' + tn);
+                        }
+                        else {
+                            scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'Please select a Boundary first.');
+                        }
+                    }
                 } else {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurClickSegments();
@@ -208,7 +217,12 @@ angular.module('emulvcApp')
                       }
                       toDelete = toDelete.substring(0, toDelete.length - 1);
                       console.log(toDelete);
-                      scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
+                      if(viewState.getcurClickTierType()==="seg") {
+                          scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
+                      }
+                      else {
+                          scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');
+                      }
                     }
                   }
                 }
