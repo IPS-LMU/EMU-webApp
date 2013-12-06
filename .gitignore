@@ -37,7 +37,7 @@ build
 
 # Bower #
 ########
-bower_components
+app/bower_components
 
 # Minified code+maps #
 ###################
