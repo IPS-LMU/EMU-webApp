@@ -421,7 +421,19 @@ angular.module('emulvcApp')
 			var tierType = viewState.getcurMouseTierType();
 			angular.forEach($scope.tierDetails.data.tiers, function (t) {
 				if (t.TierName === tierName) {
-				    
+				    angular.forEach(t.events, function (evt, id) {
+				        if(evt.startSample==toDelete.startSample) {
+				           if(t.type==="point") {
+				               t.events.splice(id, 1);
+				           }
+				           else {
+				               t.events[id - 1].label += t.events[id].label;
+				               t.events[id - 1].sampleDur += t.events[id].sampleDur;
+				               t.events.splice(id, 1);
+				           }
+				           console.log(evt);
+				        }
+				    });
 				}
 			});
 			HistoryService.history();
