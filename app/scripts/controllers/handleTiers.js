@@ -473,7 +473,7 @@ angular.module('emulvcApp')
 			            spaceHigher = $scope.vs.curViewPort.bufferLength;
 			        }
 			        
-			        if(key >= 0 ) {
+			        if(key > 0 ) {
 			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
 			        }
 		            
