@@ -388,28 +388,21 @@ angular.module('emulvcApp')
 		};
 
 		$scope.deleteSegments = function () {
-
 			var toDelete = viewState.getselected();
-			// var last = toDelete.length - 1;
 			var tierName = viewState.getcurClickTierName();
-
 			angular.forEach($scope.tierDetails.data.tiers, function (t) {
 				if (t.TierName === tierName) {
 				    if(t.type==="seg") {
 					    for (var x in toDelete) {
 						    var id = toDelete[x];
-						    var length = t.events[id].sampleDur;
-						    t.events[id - 1].sampleDur += length / 2;
-						    t.events[id + 1].sampleDur += length / 2;
-						    t.events[id + 1].startSample -= length / 2;
-						    t.events.splice(id, 1);
+						    if(id>0) {
+						        var length = t.events[id].sampleDur;
+						        t.events[id - 1].sampleDur += length / 2;
+						        t.events[id + 1].sampleDur += length / 2;
+						        t.events[id + 1].startSample -= length / 2;
+						        t.events.splice(id, 1);
+						    }
 					    }
-					}
-					else {
-					    for (var x in toDelete) {
-						    var id = toDelete[x];
-						    t.events.splice(id, 1);
-					    }					
 					}
 					if(toDelete[0] - 1 > 0) {
 					    viewState.setcurClickSegment(t.events[toDelete[0] - 1], toDelete[0] - 1);
@@ -417,6 +410,18 @@ angular.module('emulvcApp')
 					else {
 					    viewState.setcurClickSegment(t.events[0], 0);
 					}
+				}
+			});
+			HistoryService.history();
+		};
+
+		$scope.deleteBoundary = function () {
+			var toDelete = viewState.getcurMouseSegment();
+			var tierName = viewState.getcurMouseTierName();
+			var tierType = viewState.getcurMouseTierType();
+			angular.forEach($scope.tierDetails.data.tiers, function (t) {
+				if (t.TierName === tierName) {
+				    
 				}
 			});
 			HistoryService.history();

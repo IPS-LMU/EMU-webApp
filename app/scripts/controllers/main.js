@@ -55,7 +55,6 @@ angular.module('emulvcApp')
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer');
-		// implementing it in angular again
 
 		/**
 		 * listen for configLoaded

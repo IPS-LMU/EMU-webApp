@@ -99,6 +99,7 @@ angular.module('emulvcApp')
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickTierName(tierId);
+          viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
           viewState.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;
@@ -118,6 +119,7 @@ angular.module('emulvcApp')
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier);
           viewState.setcurClickTierName(tierId);
+          viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
           viewState.setTierLength(scope.this.tier.events.length);
           lastPCM = thisPCM;
@@ -130,6 +132,7 @@ angular.module('emulvcApp')
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier);
           viewState.setcurClickTierName(tierId);
+          viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
           viewState.setEditing(true);
@@ -150,6 +153,8 @@ angular.module('emulvcApp')
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMoveId);
           }
+          viewState.setcurMouseTierName(tierId);
+          viewState.setcurMouseTierType(scope.this.tier.type);
           lastPCM = thisPCM;
           scope.$apply();
         }
