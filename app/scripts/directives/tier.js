@@ -177,7 +177,7 @@ angular.module('emulvcApp')
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
 								if (tierDetails.TierName === viewState.curMouseMoveTierName && segMId === viewState.curMouseMoveSegmentName) {
-									console.log('this is the selected boundary');
+									//console.log('this is the selected boundary');
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
 									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
@@ -188,14 +188,13 @@ angular.module('emulvcApp')
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-									tW = ctx.measureText(curEvt.label).width;
-									ctx.fillStyle = config.vals.colors.labelColor;
-									ctx.fillText(curEvt.label, perc - tW / 2 + 1, canvas[0].height / 2);
+									horizontalText = scope.fontImage.getTextImage(ctx, curEvt.label, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
+									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								}
-								ctx.fillStyle = config.vals.colors.startBoundaryColor;
-								tW = ctx.measureText(curEvt.startSample).width;
-								ctx.fillText(curEvt.startSample, perc + 5, canvas[0].height / 8);
-
+								
+								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.startSample, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
+								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
+									
 
 							}
 						});

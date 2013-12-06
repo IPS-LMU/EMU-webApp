@@ -150,7 +150,6 @@ angular.module('emulvcApp')
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMoveId);
           }
-          console.log(lastEventMove);
           lastPCM = thisPCM;
           scope.$apply();
         }
