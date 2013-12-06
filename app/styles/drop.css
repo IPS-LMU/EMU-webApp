@@ -29,9 +29,7 @@ table {
     border-image: initial;
 }
 .dropzone {
-    width: 100%;
-    height: 90%;
-    min-height: 90%;
+    height: 600px;
     border: 1px dashed white;
     border-radius: 4px;
     text-align: center;
@@ -39,13 +37,12 @@ table {
     padding: 0px;
     margin: 15px;
 }
-.dropzone span {
-    margin-top: 0.9em;
-    display: block;
-}
 .dropzone.not-available {
     background-color: #f00;
 }
 .dropzone.over {
     background-color: #bfb;
+}
+.dropzone.hidden {
+    display: none;
 }

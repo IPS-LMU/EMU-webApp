@@ -11,7 +11,7 @@ angular.module('emulvcApp')
 		$scope.vs = viewState;
 		$scope.connectBtnLabel = 'connect';
 		$scope.showSaveCommStaBtnDiv = false;
-
+		$scope.showDropZone = false;
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
@@ -601,7 +601,7 @@ angular.module('emulvcApp')
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
 				// $('#submenuOpen').html('☰');
-				$('#menuLeft').removeClass('cbp-spmenu-open');
+				$('#FileCtrl').removeClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
 				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
 				$('#menu').removeClass('cbp-spmenu-push-toright');
@@ -609,7 +609,7 @@ angular.module('emulvcApp')
 			} else {
 				viewState.setsubmenuOpen(true);
 				// $('#submenuOpen').html('☰');
-				$('#menuLeft').addClass('cbp-spmenu-open');
+				$('#FileCtrl').addClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
 				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
 				$('#menu').addClass('cbp-spmenu-push-toright');
@@ -635,10 +635,10 @@ angular.module('emulvcApp')
 
 		//
 		$scope.openDemoDBclick = function () {
-			$scope.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'http:GET';
 			Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
 				console.log(res.data);
+				$('#FileCtrl').scope().hideDropZone();
 				$scope.uttList = res.data;
 				Iohandlerservice.getUtt(res.data[0]);
 				// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
