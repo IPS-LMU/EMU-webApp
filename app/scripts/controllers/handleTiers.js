@@ -522,11 +522,16 @@ angular.module('emulvcApp')
 			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
 			var evtr = null;
 			if(tier.type==="seg") {
-			    angular.forEach(tier.events, function (evt) {
-				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					    evtr = evt;
-				    }
-			    });
+			    angular.forEach(tier.events, function (evt, id) {
+			    	if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+				    	if (pcm - evt.startSample >= evt.sampleDur / 2) {
+					    	evtr = tier.events[id + 1];
+    					} else {
+	    					evtr = tier.events[id];
+		    			}
+			    	}
+    			});
+
 			}
 			else {
 			    var spaceLower = 0;
