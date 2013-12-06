@@ -1,22 +1,14 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, Httphandler) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, Httphandler, Appcachehandler) {
 		// shared service object
 		var sServObj = {};
 
-		function handleCacheEvent(e) {
-			console.log(e);
-		}
-
-		var appCache = window.applicationCache;
-
-		appCache.addEventListener('progress', handleCacheEvent, false);
-
-		appCache.update();
-
-
 		sServObj.wsH = Websockethandler;
+
+
+		Appcachehandler.checkForNewVersion();
 
 		//
 		sServObj.getUttList = function (filePath) {
