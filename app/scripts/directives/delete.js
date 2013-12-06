@@ -10,7 +10,8 @@ angular.module('emulvcApp')
         var id = scope.this.tier.TierName;
 
         element.bind('click', function () {
-          scope.openModal('views/deleteTier.html', 'dialogSmall', id, id);
+          scope.vs.setcurClickTierName(id);
+          scope.openModal('views/deleteTier.html', 'dialogSmall', true, id, id);
         });
 
       }

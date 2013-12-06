@@ -8,6 +8,7 @@ angular.module('emulvcApp')
 		$scope.history = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.tds = Tierdataservice;
+		$scope.vs = viewState;
 		$scope.connectBtnLabel = 'connect';
 		$scope.showSaveCommStaBtnDiv = false;
 

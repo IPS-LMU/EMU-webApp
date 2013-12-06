@@ -355,8 +355,9 @@ angular.module('emulvcApp')
 			});
 		};
 
-		$scope.deleteTier = function (id) {
+		$scope.deleteTier = function () {
 			var x = 0;
+			var id = viewState.getcurClickTierName();
 			angular.forEach($scope.tierDetails.data.tiers, function (t) {
 				if (t.TierName === id) {
 					$scope.tierDetails.data.tiers.splice(x, 1);

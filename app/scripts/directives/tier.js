@@ -256,7 +256,7 @@ angular.module('emulvcApp')
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
 					var tierId = viewState.getcurClickTierName();
-
+					if(segCId!==undefined) {
 					// draw clicked on selected areas
 					if (tierDetails.TierName === tierId && segCId.length>0) {
 						segCId.forEach(function (entry) {
@@ -268,6 +268,7 @@ angular.module('emulvcApp')
 						        ctx.fillStyle = config.vals.colors.startBoundaryColor;
 					        }
 					    });
+					}
 					}								
 
 					// draw preselected boundary
