@@ -135,6 +135,7 @@ angular.module('emulvcApp')
 					}
 				} else {
 					//draw lines
+					ctx.beginPath();
 					ctx.moveTo(-hDbS, canvas.height - ((allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height));
 					for (i = 1; i < allPeakVals.peaks.length; i++) {
 						ctx.lineTo(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height + 3));
