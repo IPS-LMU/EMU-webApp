@@ -1,60 +1,60 @@
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl">
-<div handleglobalkeystrokes>
+  <div handleglobalkeystrokes>
 
-  <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
-    <h3>&nbsp;</h3>
-    <div id="submenu" class="submenu">
-      <div class="utteranceOuter" ng-repeat="utt in uttList">
-        
-        <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
-        
-        <a class="utterance" title="{{utt.name}}" ng-click="menuUttClick(utt);" >{{utt.name}}</a>
-        <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
-          <img />
-        </button>
-           
+    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="menuLeft" ng-controller="FileCtrl">
+      <h3>&nbsp;</h3>
+      <div id="submenu" class="submenu">
+        <div class="utteranceOuter" ng-repeat="utt in uttList">
+
+          <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);">
+
+            <a class="utterance" title="{{utt.name}}" ng-click="menuUttClick(utt);" >{{utt.name}}</a>
+            <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
+              <img />
+            </button>
+
             <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
             <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
+          </div>
         </div>
-      </div>
-      <div> &nbsp; </div>
-      <div> &nbsp; </div>
-      <div id="dropzone" class="dropzone" ng-class="dropClass" ng-show="showDropZone"><span>{{dropText}}</span>
-      <div ng-show="files.length">
-        <div ng-repeat="file in files.slice(0)">
-          <span>{{file.webkitRelativePath || file.name}}</span>
-            <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
+        <div> &nbsp; </div>
+        <div> &nbsp; </div>
+        <div id="dropzone" class="dropzone" ng-class="dropClass" ng-show="showDropZone"><span>{{dropText}}</span>
+          <div ng-show="files.length">
+            <div ng-repeat="file in files.slice(0)">
+              <span>{{file.webkitRelativePath || file.name}}</span>
+              <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
+            </div>
+          </div>      
         </div>
-      </div>      
-      </div>
-      <div class="utteranceSaveMeta" ng-show="showSaveCommStaBtnDiv;">
+        <div class="utteranceSaveMeta" ng-show="showSaveCommStaBtnDiv;">
           <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
 
-  <div class="menu" id="menu">
-       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></button> 
-      <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
-       <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
-       <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">open file</button> 
-       <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierSeg}}">add tier (seg)</button> 
-       <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierPoint}}">add tier (point)</button> 
-       <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameTier}}">rename sel. tier</button> 
-       <button ng-show="cps.vals.activeButtons.downloadTextGrid" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.downloadTextgrid}}">download TextGrid</button> 
-       <button ng-show="cps.vals.activeButtons.specSettings" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="openModal('views/spectroSettings.html','dialog',false);">spec. settings</button>
-       <button ng-show="cps.vals.activeButtons.openDemoDB" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.demoDB}}" ng-click="openDemoDBclick();">open demo DB</button>
-       <button ng-show="cps.vals.activeButtons.connect" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.connect}}" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
-      <a class="SideMenuBtn2 right" title="About" ng-click="openModal('views/about.html','dialog',false);"><img></a>
-  </div>
+    <div class="menu" id="menu">
+     <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></button> 
+     <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
+     <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
+     <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">open file</button> 
+     <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierSeg}}">add tier (seg)</button> 
+     <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierPoint}}">add tier (point)</button> 
+     <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameTier}}">rename sel. tier</button> 
+     <button ng-show="cps.vals.activeButtons.downloadTextGrid" class="mini-btn" ng-click="downloadTextGrid();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.downloadTextgrid}}">download TextGrid</button> 
+     <button ng-show="cps.vals.activeButtons.specSettings" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="openModal('views/spectroSettings.html','dialog',false);">spec. settings</button>
+     <button ng-show="cps.vals.activeButtons.openDemoDB" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.demoDB}}" ng-click="openDemoDBclick();">open demo DB</button>
+     <button ng-show="cps.vals.activeButtons.connect" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.connect}}" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
+     <a class="SideMenuBtn2 right" title="About" ng-click="openModal('views/about.html','dialog',false);"><img></a>
+   </div>
 
-  <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
+   <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
     <div class="controls">
       <osci id="osci" class="osci"></osci>  
       <spectro id="spec" class="spec"></spectro>
       <div id="resizer" class="resizer">
-          <span id="resizeIcon" class="resizeIcon"> </span>
+        <span id="resizeIcon" class="resizeIcon"> </span>
       </div>
     </div>
   </div>
@@ -62,16 +62,15 @@
   <div ng-controller="HandletiersCtrl" id="HandletiersCtrl" class="HandletiersCtrl">
     <!-- all tiers are listed here -->
     <ul ui:sortable="sortableOptions" ng-model="tierDetails.tiers" id="allowSortable">
-        <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
-            <tier id='{{tier.TierName}}' class="tier"></tier>
-        </li>
+      <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
+        <tier id='{{tier.TierName}}' class="tier"></tier>
+      </li>
     </ul>
   </div>
 
-
-<div class="menu-bottom" id="menu-bottom">
+  <div class="menu-bottom" id="menu-bottom">
     <div ng-controller="TimelineCtrl">
-        <preview id="preview" class="preview"></preview>  
+      <preview id="preview" class="preview"></preview>  
     </div>
     <button ng-click="cmdZoomAll();" class="mini-btn" id="cmd_viewZoomAll" data-tooltip="Shortcut: {{shortcut.zoomAll}}">all</button>
     <button ng-click="cmdZoomIn();" class="mini-btn" id="cmd_viewZoomIn" data-tooltip="Shortcut: {{shortcut.zoomIn}}">in</button>
@@ -82,6 +81,6 @@
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayView();" class="mini-btn" id="cmd_playPause" data-tooltip="Shortcut: {{shortcut.playAllInView}}">play in view</button>
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlaySel();" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
-</div>
+  </div>
 </div>
 </div>
