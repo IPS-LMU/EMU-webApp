@@ -433,6 +433,10 @@ angular.module('emulvcApp')
 			        if(key < tier.events.length - 1 ) {
 			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
 			        }
+			        else {
+			            spaceHigher = $scope.vs.curViewPort.bufferLength;
+			        }
+			        			        
 			        if(key > 0 ) {
 			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
 			        }
@@ -462,10 +466,14 @@ angular.module('emulvcApp')
 			    var spaceLower = 0;
 			    var spaceHigher = 0;
 			    angular.forEach(tier.events, function (evt, key) {
-			        if(key < tier.events.length - 1 ) {
+			        if(key < tier.events.length -1 ) {
 			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
 			        }
-			        if(key > 0 ) {
+			        else {
+			            spaceHigher = $scope.vs.curViewPort.bufferLength;
+			        }
+			        
+			        if(key >= 0 ) {
 			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
 			        }
 		            
@@ -497,6 +505,10 @@ angular.module('emulvcApp')
 			        if(key < tier.events.length - 1 ) {
 			            spaceHigher = evt.startSample +  (tier.events[key+1].startSample - tier.events[key].startSample) / 2;
 			        }
+			        else {
+			            spaceHigher = $scope.vs.curViewPort.bufferLength;
+			        }
+			        			        
 			        if(key > 0 ) {
 			            spaceLower = evt.startSample -  (tier.events[key].startSample - tier.events[key-1].startSample) / 2;
 			        }
@@ -513,11 +525,30 @@ angular.module('emulvcApp')
 		$scope.moveBorder = function (changeTime, t) {
 			if (null !== t && t.TierName === viewState.getcurMouseTierName()) {
 				var seg = viewState.getcurMouseSegmentId();
-				// console.log(seg);
-				if (seg > 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
-					t.events[seg - 1].sampleDur += changeTime;
-					t.events[seg].startSample += changeTime;
-					t.events[seg].sampleDur -= changeTime;
+				 console.log(seg);
+				if(t.type==="seg") {
+				    if (seg > 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
+					    t.events[seg - 1].sampleDur += changeTime;
+    					t.events[seg].startSample += changeTime;
+	    				t.events[seg].sampleDur -= changeTime;
+		    		}
+				}
+				else {
+				    if(seg>0 && seg < t.events.length - 1) {
+				        if( t.events[seg].startSample + changeTime >= t.events[seg - 1].startSample && 
+				            t.events[seg].startSample + changeTime <= t.events[seg + 1].startSample )
+        				    t.events[seg].startSample += changeTime;
+    				}
+    				else if(seg==0) {
+				        if( t.events[seg].startSample + changeTime >= 0 && 
+				            t.events[seg].startSample + changeTime <= t.events[seg + 1].startSample )
+        				    t.events[seg].startSample += changeTime;    				
+    				}
+    				else if(seg == t.events.length - 1) {
+				        if( t.events[seg].startSample + changeTime >= t.events[seg - 1].startSample && 
+				            t.events[seg].startSample + changeTime <= $scope.vs.curViewPort.bufferLength )
+        				    t.events[seg].startSample += changeTime;    				
+    				}
 				}
 			}
 		};

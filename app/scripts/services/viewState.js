@@ -508,8 +508,8 @@ angular.module('emulvcApp')
         var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft - (elem.clientWidth / 50);
         var end = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft + (elem.clientWidth / 50);
       }
-      var top = elem.offsetTop;
-      var height = elem.clientHeight;
+      var top = elem.offsetTop + 1;
+      var height = elem.clientHeight + 1;
       var myid = this.createEditArea(this.getcurClickTierName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
       this.createSelection($('#' + myid)[0], 0, $('#' + myid).val().length);
       return myid;
