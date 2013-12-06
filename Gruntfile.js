@@ -362,7 +362,8 @@ module.exports = function(grunt) {
       all: {
         dest: '<%= yeoman.dist %>/manifest.appcache',
         cache: '<%= yeoman.dist %>/**/*',
-        network: '*'
+        network: '*',
+        fallback: 'index.html'
       }
     }
   });

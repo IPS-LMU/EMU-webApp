@@ -5,14 +5,25 @@ angular.module('emulvcApp')
 		// shared service object
 		var sServObj = {};
 
+		function handleCacheEvent(e) {
+			console.log(e);
+		}
+
+		var appCache = window.applicationCache;
+
+		appCache.addEventListener('progress', handleCacheEvent, false);
+
+		appCache.update();
+
+
 		sServObj.wsH = Websockethandler;
-		
+
 		//
-		sServObj.getUttList = function(filePath) {
+		sServObj.getUttList = function (filePath) {
 			var getProm;
-			if (ConfigProviderService.vals.main.comMode === 'http:GET'){
+			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				getProm = Httphandler.getUttList(filePath);
-			}else if(ConfigProviderService.vals.main.comMode === 'ws'){
+			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
 				alert('handle ws case for get utt list');
 			}
 
@@ -20,12 +31,12 @@ angular.module('emulvcApp')
 		};
 
 		//
-		sServObj.getUtt = function(utt) {
+		sServObj.getUtt = function (utt) {
 			var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET'){
+			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				getProm = Httphandler.getUtt(utt);
-			}else if(ConfigProviderService.vals.main.comMode === 'ws'){
+			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
 				Websockethandler.getUtt(utt); // should maybe also return promise???
 			}
 
@@ -200,7 +211,7 @@ angular.module('emulvcApp')
 		/**
 		 * pass through to Textgridparserservice
 		 */
-		sServObj.toTextGrid = function(labelJSO) {
+		sServObj.toTextGrid = function (labelJSO) {
 			return (Textgridparserservice.toTextGrid(labelJSO));
 		};
 
