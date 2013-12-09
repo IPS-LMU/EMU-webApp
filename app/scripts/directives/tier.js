@@ -209,36 +209,25 @@ angular.module('emulvcApp')
 				function drawTierMarkup(tierDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
-
-					var posS, posE, sDist, xOffset, curEvt;
-
-					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
-					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
-					sDist = viewState.getSampleDist(canvas[1].width);
-
-					if (viewState.getcurMouseTierType() === 'seg') {
-						xOffset = 0;
-					} else {
-						xOffset = (sDist / 2);
-					}
-					console.log(xOffset);
-
-					if (tierDetails.events[viewState.getcurMouseSegmentId()] && viewState.movingBoundary) {
-						ctx.fillStyle = 'red'; //config.vals.colors.selectedBoundaryColor;
-						var tD = viewState.getcurMouseTierDetails();
-						var p = Math.round(viewState.getPos(canvas[0].width, tD.events[viewState.getcurMouseSegmentId()].startSample));
-						ctx.fillRect(p + xOffset, 0, 1, canvas[0].height);
-					}
-
 					if (tierDetails.TierName === viewState.curClickTierName) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
+					var posS, posE, sDist, xOffset, curEvt;
+
+					// draw moving boundary line if moving
+					scope.dhs.drawMovingBoundaryLine(ctx, tierDetails);
+
+					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
+					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
+					sDist = viewState.getSampleDist(canvas[1].width);
+
+
 
 
 					if (posS === posE) {
-						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+						
 						ctx.fillStyle = config.vals.colors.selectedBorderColor;
 						ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
 					} else {

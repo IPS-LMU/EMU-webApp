@@ -1,10 +1,63 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Drawhelperservice', function Drawhelperservice() {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService) {
 
 		//shared service object to be returned
 		var sServObj = {};
+
+
+		/**
+		 * drawing method to draw single line between two
+		 * envelope points. Is used by drawOsciOnCanvas if
+		 * envelope drawing is done
+		 * @param index
+		 * @param value
+		 * @param max
+		 * @param prevPeak
+		 * @param canvas
+		 */
+
+		function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
+
+			var ctx = canvas.getContext('2d');
+
+			//calculate sample of cur cursor position
+
+			//calc cursor pos
+			var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
+			var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
+			var procC = fracC / all;
+			var posC = canvas.width * procC;
+
+			//cur
+			var w = 1;
+			var h = Math.round(value * (canvas.height / max)); //rel to max
+			var x = index * w;
+			var y = Math.round((canvas.height - h) / 2);
+
+			//prev
+			// var prevW = 1;
+			var prevH = Math.round(prevPeak * (canvas.height / max));
+			var prevX = (index - 1) * w;
+			var prevY = Math.round((canvas.height - prevH) / 2);
+
+
+			if (posC >= x) {
+				ctx.fillStyle = config.vals.colors.playProgressColor;
+				ctx.strokeStyle = config.vals.colors.playProgressColor;
+			} else {
+				ctx.fillStyle = config.vals.colors.osciColor;
+				ctx.strokeStyle = config.vals.colors.osciColor;
+			}
+
+			ctx.beginPath();
+			ctx.moveTo(prevX, prevY);
+			ctx.lineTo(x, y);
+			ctx.stroke();
+
+		}
+
 
 		sServObj.osciPeaks = [];
 
@@ -185,56 +238,32 @@ angular.module('emulvcApp')
 			}
 		};
 
+
+
 		/**
-		 * drawing method to draw single line between two
-		 * envelope points. Is used by drawOsciOnCanvas if
-		 * envelope drawing is done
-		 * @param index
-		 * @param value
-		 * @param max
-		 * @param prevPeak
-		 * @param canvas
+		 * drawing method to drawMovingBoundaryLine
 		 */
 
-		function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
+		sServObj.drawMovingBoundaryLine = function (ctx) {
 
-			var ctx = canvas.getContext('2d');
+			var xOffset, sDist;
+			sDist = viewState.getSampleDist(ctx.canvas.width);
 
-			//calculate sample of cur cursor position
-
-			//calc cursor pos
-			var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
-			var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
-			var procC = fracC / all;
-			var posC = canvas.width * procC;
-
-			//cur
-			var w = 1;
-			var h = Math.round(value * (canvas.height / max)); //rel to max
-			var x = index * w;
-			var y = Math.round((canvas.height - h) / 2);
-
-			//prev
-			// var prevW = 1;
-			var prevH = Math.round(prevPeak * (canvas.height / max));
-			var prevX = (index - 1) * w;
-			var prevY = Math.round((canvas.height - prevH) / 2);
-
-
-			if (posC >= x) {
-				ctx.fillStyle = config.vals.colors.playProgressColor;
-				ctx.strokeStyle = config.vals.colors.playProgressColor;
+			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+			if (viewState.getcurMouseTierType() === 'seg') {
+				xOffset = 0;
 			} else {
-				ctx.fillStyle = config.vals.colors.osciColor;
-				ctx.strokeStyle = config.vals.colors.osciColor;
+				xOffset = (sDist / 2);
 			}
 
-			ctx.beginPath();
-			ctx.moveTo(prevX, prevY);
-			ctx.lineTo(x, y);
-			ctx.stroke();
+			if (viewState.movingBoundary) {
+				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
+				var tD = viewState.getcurMouseTierDetails();
+				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.events[viewState.getcurMouseSegmentId()].startSample));
+				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+			}
 
-		}
+		};
 
 
 		return sServObj;

@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService) {
+	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService, Drawhelperservice) {
 
 		$scope.vs = viewState;
 		$scope.fontImage = fontScaleService;
 		$scope.shs = Soundhandlerservice;
 		$scope.config = ConfigProviderService;
+		$scope.dhs = Drawhelperservice;
+
 		$scope.testValue = '';
 		$scope.message = '';
 		$scope.myHistory = [];

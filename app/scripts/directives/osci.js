@@ -157,13 +157,11 @@ angular.module('emulvcApp')
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					}
 
-					// draw boundary moving line
-					if (viewState.movingBoundary) {
-						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						var tD = viewState.getcurMouseTierDetails();
-						var p = Math.round(viewState.getPos(markupCanvas.width, tD.events[viewState.getcurMouseSegmentId()].startSample));
-						ctx.fillRect(p, 0, 1, markupCanvas.height);
-					}
+					var xOffset, sDist;
+					sDist = viewState.getSampleDist(markupCanvas.width);
+
+					// draw moving boundary line if moving
+					scope.dhs.drawMovingBoundaryLine(ctx);
 
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
@@ -201,19 +199,14 @@ angular.module('emulvcApp')
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
 					}
-					//draw emulabeller.viewPortselected
+					//draw viewPort.selected
 					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
 						var posS = viewState.getPos(markupCanvas.width, viewState.curViewPort.selectS);
 						var posE = viewState.getPos(markupCanvas.width, viewState.curViewPort.selectE);
-						var sDist = viewState.getSampleDist(markupCanvas.width);
-						var xOffset;
+						// var sDist = viewState.getSampleDist(markupCanvas.width);
+						// var xOffset;
 						if (viewState.curViewPort.selectS === viewState.curViewPort.selectE) {
-							// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-							if (viewState.curMouseMoveTierType === 'seg') {
-								xOffset = 0;
-							} else {
-								xOffset = (sDist / 2);
-							}
+
 							ctx.fillStyle = config.vals.colors.selectedBorderColor;
 							ctx.fillRect(posS + xOffset, 0, 1, markupCanvas.height);
 
