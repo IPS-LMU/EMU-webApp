@@ -115,7 +115,10 @@
         "deleteItem": true,
         "deleteTier": true,
         "addItem": true,
-        "drawCrossHairs": true
+        "drawCrossHairs": true,
+        "drawSampleNrs": true,
+        "drawZeroLine": true
+
     },
     "activeButtons": {
         "openMenu": true,
