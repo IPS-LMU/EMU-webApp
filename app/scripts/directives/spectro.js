@@ -15,7 +15,7 @@ angular.module('emulvcApp')
         // FFT default vars
         var alpha = 0.16; // default alpha for Window Function
         var context = canvas0.getContext('2d');
-        var contextmarkup = canvas1.getContext('2d');
+        var markupCtx = canvas1.getContext('2d');
         var pcmperpixel = 0;
         window.URL = window.URL || window.webkitURL;
         var devicePixelRatio = window.devicePixelRatio || 1;
@@ -29,9 +29,9 @@ angular.module('emulvcApp')
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawTimeLineContext();     
-              drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);      
+              //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              drawSpectMarkup();
+              drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);
             }
           }
         });
@@ -40,8 +40,8 @@ angular.module('emulvcApp')
         element.bind('mouseleave', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawTimeLineContext();
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              drawSpectMarkup();
             }
           }
         });
@@ -147,9 +147,9 @@ angular.module('emulvcApp')
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
           if (cache !== null) {
-            contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
-            drawTimeLineContext();
+            drawSpectMarkup();
           } else {
             drawOsci(scope.vs, scope.shs.wavJSO.Data);
           }
@@ -181,45 +181,14 @@ angular.module('emulvcApp')
           return null;
         }
 
-        function drawTimeLineContext() {
-          // draw boundary moving line
-          //contextmarkup.clearRect(0, 0, canvas0.width, canvas0.height);
-          
-          if (scope.vs.movingBoundary) {
-            contextmarkup.fillStyle = scope.config.vals.colors.selectedBoundaryColor;
-            var tD = scope.vs.getcurMouseTierDetails();
-            var p = Math.round(scope.vs.getPos(contextmarkup.canvas.width, tD.events[scope.vs.getcurMouseSegmentId()].startSample));
-            contextmarkup.fillRect(p, 0, 1, contextmarkup.canvas.height);
-          }
+        function drawSpectMarkup() {
 
-          
-          var posS = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectS);
-          var posE = scope.vs.getPos(canvas0.width, scope.vs.curViewPort.selectE);
-          var sDist = scope.vs.getSampleDist(canvas0.width);
-          var xOffset;
-          if (scope.vs.curViewPort.selectS === scope.vs.curViewPort.selectE) {
-            // calc. offset dependant on type of tier of mousemove  -> default is sample exact
-            if (scope.vs.curMouseMoveTierType === 'seg') {
-              xOffset = 0;
-            } else {
-              xOffset = (sDist / 2);
-            }
-            contextmarkup.fillStyle = scope.config.vals.colors.selectedBorderColor;
-            contextmarkup.fillRect(posS + xOffset, 0, 1, canvas0.height);
-          } else {
-            contextmarkup.fillStyle = scope.config.vals.colors.selectedAreaColor;
-            contextmarkup.fillRect(posS, 0, posE - posS, canvas0.height);
-            contextmarkup.strokeStyle = scope.config.vals.colors.selectedBorderColor;
-            contextmarkup.beginPath();
-            contextmarkup.moveTo(posS, 0);
-            contextmarkup.lineTo(posS, canvas0.height);
-            contextmarkup.moveTo(posE, 0);
-            contextmarkup.lineTo(posE, canvas0.height);
-            contextmarkup.closePath();
-            contextmarkup.stroke();
-            contextmarkup.fillStyle = canvas0.labelColor;
-          } 
-          
+          // draw moving boundary line if moving
+          scope.dhs.drawMovingBoundaryLine(markupCtx);
+
+          // draw current viewport selected
+          scope.dhs.drawCurViewPortSelected(markupCtx, false);
+
         }
 
 
@@ -227,9 +196,9 @@ angular.module('emulvcApp')
         function drawTimeLine(id) {
           var image = new Image();
           image.onload = function () {
-            scope.$apply(function() {
+            scope.$apply(function () {
               context.drawImage(image, 0, 0);
-              //drawTimeLineContext(); 
+              //drawSpectMarkup(); 
             });
           };
           image.src = imageCache[id][3];
@@ -250,19 +219,19 @@ angular.module('emulvcApp')
 
         function setupEvent() {
           //var deferred = $q.defer();
-          
+
           var myImage = new Image();
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           primeWorker.addEventListener('message', function (event) {
             var workerImg = event.data.img;
             myImage.onload = function () {
-              scope.$apply(function() {
-                if(pcmperpixel==event.data.myStep) {
+              scope.$apply(function () {
+                if (pcmperpixel == event.data.myStep) {
                   context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
                   buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, canvas0.toDataURL('image/png'));
-                  drawTimeLineContext();
-                }      
-               });
+                  drawSpectMarkup();
+                }
+              });
             };
             myImage.src = workerImg;
           });
@@ -271,7 +240,7 @@ angular.module('emulvcApp')
 
         function drawOsci(viewState, buffer) {
           killSpectroRenderingThread();
-          //contextmarkup.clearRect(0, 0, canvas1.width, canvas1.height);
+          //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
           startSpectroRenderingThread(viewState, buffer);
         }
 
@@ -280,9 +249,9 @@ angular.module('emulvcApp')
           primeWorker = new Worker(spectroWorker);
           var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel * 3 * viewState.spectroSettings.windowLength));
           var parseData = new Float32Array(x);
-          
+
           setupEvent();
-          
+
           primeWorker.postMessage({
             'cmd': 'config',
             'N': viewState.spectroSettings.windowLength
@@ -351,7 +320,7 @@ angular.module('emulvcApp')
             'cmd': 'pcm',
             'stream': parseData
           });
-          
+
           primeWorker.postMessage({
             'cmd': 'render'
           });
@@ -359,48 +328,48 @@ angular.module('emulvcApp')
 
         function drawCrossHairs(viewState, canvas, config, dhs, mouseEvt) {
           if (config.vals.restrictions.drawCrossHairs) {
-            contextmarkup.clearRect(0, 0, canvas.width, canvas.height);
-            contextmarkup.strokeStyle = config.vals.colors.crossHairsColor;
-            contextmarkup.fillStyle = config.vals.colors.crossHairsColor;
+            markupCtx.clearRect(0, 0, canvas.width, canvas.height);
+            markupCtx.strokeStyle = config.vals.colors.crossHairsColor;
+            markupCtx.fillStyle = config.vals.colors.crossHairsColor;
 
             // see if Chrome ->dashed line
             if (navigator.vendor === 'Google Inc.') {
-              contextmarkup.setLineDash([2]);
+              markupCtx.setLineDash([2]);
             }
 
             // draw lines
             var mouseX = dhs.getX(mouseEvt);
             var mouseY = dhs.getY(mouseEvt);
 
-            contextmarkup.beginPath();
-            contextmarkup.moveTo(0, mouseY);
-            contextmarkup.lineTo(5, mouseY + 5);
-            contextmarkup.moveTo(0, mouseY);
-            contextmarkup.lineTo(canvas.width, mouseY);
-            contextmarkup.lineTo(canvas.width - 5, mouseY + 5);
-            contextmarkup.moveTo(mouseX, 0);
-            contextmarkup.lineTo(mouseX, canvas.height);
-            contextmarkup.stroke();
+            markupCtx.beginPath();
+            markupCtx.moveTo(0, mouseY);
+            markupCtx.lineTo(5, mouseY + 5);
+            markupCtx.moveTo(0, mouseY);
+            markupCtx.lineTo(canvas.width, mouseY);
+            markupCtx.lineTo(canvas.width - 5, mouseY + 5);
+            markupCtx.moveTo(mouseX, 0);
+            markupCtx.lineTo(mouseX, canvas.height);
+            markupCtx.stroke();
             // draw frequency / sample / time
-            contextmarkup.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+            markupCtx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
 
             var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
 
-            var tW = contextmarkup.measureText(mouseFreq + ' Hz').width;
+            var tW = markupCtx.measureText(mouseFreq + ' Hz').width;
             var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
             var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
             var horizontalText = scope.fontImage.getTextImage(context, mouseFreq + ' Hz', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
             var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, false);
 
-            contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-            contextmarkup.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW * (context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-            contextmarkup.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
+            markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+            markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW * (context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+            markupCtx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
 
 
             if (navigator.vendor === 'Google Inc.') {
-              contextmarkup.setLineDash([0]);
+              markupCtx.setLineDash([0]);
             }
-            drawTimeLineContext();
+            drawSpectMarkup();
           }
         }
 
