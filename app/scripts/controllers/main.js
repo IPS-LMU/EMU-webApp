@@ -12,6 +12,7 @@ angular.module('emulvcApp')
 		$scope.connectBtnLabel = 'connect';
 		$scope.showSaveCommStaBtnDiv = false;
 		$scope.showDropZone = false;
+		$scope.dbLoaded = false;
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
@@ -249,27 +250,27 @@ angular.module('emulvcApp')
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
 			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
-			
+
 			// setting transition values
 			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
 			var transcss = {
-                '-webkit-transition' : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                '-moz-transition'    : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                '-ms-transition'     : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                '-o-transition'      : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out',
-                'transition'       : 'width '+dotMs+'s ease-in-out, left '+dotMs+'s ease-in-out'			
+				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
+				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
+				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
+				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
+				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out'
 			};
-			$(".menu").css(transcss);
-			$(".HandletiersCtrl").css(transcss);
-			$(".OsciDiv").css(transcss);
-			$(".SpectroDiv").css(transcss);
-			$(".menu-bottom").css(transcss);
-			$(".cbp-spmenu").css(transcss);
-			$(".cbp-spmenu-push").css(transcss);
-			$(".cbp-spmenu-push-toleft").css(transcss);
-			$(".cbp-spmenu-push-toright").css(transcss);
-			
-			
+			$('.menu').css(transcss);
+			$('.HandletiersCtrl').css(transcss);
+			$('.OsciDiv').css(transcss);
+			$('.SpectroDiv').css(transcss);
+			$('.menu-bottom').css(transcss);
+			$('.cbp-spmenu').css(transcss);
+			$('.cbp-spmenu-push').css(transcss);
+			$('.cbp-spmenu-push-toleft').css(transcss);
+			$('.cbp-spmenu-push-toright').css(transcss);
+
+
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				$('#allowSortable').sortable('enable');
@@ -523,7 +524,7 @@ angular.module('emulvcApp')
 		 *
 		 */
 		$scope.modifTierItems = function () {
-			console.log('items labs changed')
+			console.log('items labs changed');
 			$scope.modifiedCurTierItems = true;
 		};
 
@@ -636,14 +637,19 @@ angular.module('emulvcApp')
 		//
 		$scope.openDemoDBclick = function () {
 			ConfigProviderService.vals.main.comMode = 'http:GET';
-			Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
-				console.log(res.data);
-				$('#FileCtrl').scope().hideDropZone();
-				$scope.uttList = res.data;
-				Iohandlerservice.getUtt(res.data[0]);
-				// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
-				// $scope.curUtt = $scope.uttList[0];
-			});
+			if (!$scope.dbLoaded) {
+				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
+					console.log(res.data);
+					$('#FileCtrl').scope().hideDropZone();
+					$scope.uttList = res.data;
+					Iohandlerservice.getUtt(res.data[0]);
+					// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
+					// $scope.curUtt = $scope.uttList[0];
+					$scope.dbLoaded = true;
+				});
+			}else{
+				// TODO: call unload DB function
+			}
 		};
 
 		/**
@@ -665,32 +671,32 @@ angular.module('emulvcApp')
 		};
 
 		$scope.cmdZoomAll = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 		};
 
 		$scope.cmdZoomSel = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 		};
 
 		$scope.cmdZoomIn = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.zoomViewPort(true);
 		};
 
 		$scope.cmdZoomOut = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.zoomViewPort(false);
 		};
 
 		$scope.cmdZoomLeft = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.shiftViewPort(false);
 		};
 
 		$scope.cmdZoomRight = function () {
-		    $('#HandletiersCtrl').scope().deleteEditArea();
+			$('#HandletiersCtrl').scope().deleteEditArea();
 			viewState.shiftViewPort(true);
 		};
 
