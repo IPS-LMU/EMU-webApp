@@ -226,7 +226,7 @@ angular.module('emulvcApp')
             var workerImg = event.data.img;
             myImage.onload = function () {
               scope.$apply(function () {
-                if (pcmperpixel == event.data.myStep) {
+                if (pcmperpixel === event.data.myStep) {
                   context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
                   buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, canvas0.toDataURL('image/png'));
                   drawSpectMarkup();

@@ -5,7 +5,7 @@ angular.module('emulvcApp')
     viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
     var dropzone = document.getElementById('dropzone');
-    var droptext1 = 'Drop your files here';
+    var droptext1 = 'Drop your files here or click here to open a file';
     var droptext2 = 'File is not allowed';
     var droptext3 = 'Parsing started';
     // var parsingFile;

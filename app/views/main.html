@@ -22,7 +22,7 @@
         </div>
         <div> &nbsp; </div>
         <div> &nbsp; </div>
-          <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass">
+          <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="alert('not implemented yet');">
           <span>{{dropText}}</span>
           <div ng-show="files.length">
             <div ng-repeat="file in files.slice(0)">
@@ -32,7 +32,7 @@
           </div>
         </div>      
         </div>
-        <div class="utteranceSaveMeta" ng-show="showSaveCommStaBtnDiv;">
+        <div class="utteranceSaveMeta" ng-show="showSaveCommStaBtnDiv">
           <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
         </div>
       </div>
@@ -43,7 +43,7 @@
      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></button> 
      <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
      <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
-     <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">open file</button> 
+     <!-- <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">open file</button>  -->
      <button ng-show="cps.vals.activeButtons.addTierSeg" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierSeg}}">add tier (seg)</button> 
      <button ng-show="cps.vals.activeButtons.addTierPoint" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierPoint}}">add tier (point)</button> 
      <button ng-show="cps.vals.activeButtons.renameSelTier" class="mini-btn" ng-click="renameTier();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameTier}}">rename sel. tier</button> 

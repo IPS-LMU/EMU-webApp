@@ -41,7 +41,6 @@
     },
     "activeButtons": {
         "openMenu": true,
-        "openFile": false,
         "addTierSeg": false,
         "addTierPoint": false,
         "renameSelTier": false,
