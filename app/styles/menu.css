@@ -23,7 +23,8 @@
 }
  
 .cbp-spmenu h3 {
-    background: rgb(56,54,62);
+    /*background: rgba(56,54,62,100);*/
+    background: rgba(152, 152, 152, 0.1);
     font-size: 16px;
     height:40px;
     margin: 0;
