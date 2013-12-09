@@ -2,7 +2,7 @@
 
 angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice, dialogService) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.history = HistoryService;
@@ -85,7 +85,7 @@ angular.module('emulvcApp')
 					if (!ConfigProviderService.vals.main.autoConnect) {
 						Iohandlerservice.wsH.getDoUserManagement().then(function (manageRes) {
 							if (manageRes === 'YES') {
-								$scope.openModal('views/login.html', 'dialog', true);
+								dialogService.open('views/login.html', 'LoginCtrl');
 								// Iohandlerservice.wsH.getUsrUttList('florian');
 							} else {
 								$scope.$broadcast('newUserLoggedOn', '');
@@ -273,7 +273,7 @@ angular.module('emulvcApp')
 
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
-				$('#allowSortable').sortable('enable');
+				// $('#allowSortable').sortable('enable');
 			}
 
 			// connect to ws server if it says so in config
@@ -624,7 +624,8 @@ angular.module('emulvcApp')
 		//
 		$scope.connectBtnClick = function () {
 			if ($scope.connectBtnLabel === 'connect') {
-				$scope.openModal('views/connectModal.html', 'dialog', false);
+				// $scope.openModal('views/connectModal.html', 'dialog', false);
+				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
 			} else {
 				Iohandlerservice.wsH.closeConnect();
 				$scope.uttList = [];

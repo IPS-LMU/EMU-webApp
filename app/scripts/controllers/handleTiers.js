@@ -19,14 +19,14 @@ angular.module('emulvcApp')
 		$scope.sortableOptions = {
 			update: function (e, ui) {
 				if (!ConfigProviderService.vals.restrictions.sortLabels) {
-					ui.item.parent().sortable('cancel');
+					// ui.item.parent().sortable('cancel');
 				}
 			},
 			start: function () {
 				$scope.deleteEditArea();
 			},
 			create: function () {
-				$('#allowSortable').sortable('disable');
+				// $('#allowSortable').sortable('disable');
 			},
 			axis: 'y',
 			placeholder: 'tierPlaceholder'

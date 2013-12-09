@@ -1,4 +1,24 @@
-<h2>User Login</h2>
+<div class="modal-header">
+	<h3>User Login</h3>
+</div>
+<div class="modal-body">
+
+	Please enter:
+
+	<ul>
+		<li>User name:<input type="text" ng-model="username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></li>
+		<li>Access code: <input type="text" ng-model="passcode" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></li>
+		<li>{{loginError}}</li>
+	</ul>
+</div>
+<div class="modal-footer">
+	<button ng-click="tryLogin();" class="mini-btn-dialog">Login</button>
+</div>
+
+
+
+
+<!-- <h2>User Login</h2>
 <div ng-controller="LoginCtrl">
   <h3>
    <button ng-click="tryLogin();" id="dialogButton" class="mini-btn-dialog">Login</button>
@@ -12,6 +32,5 @@ Please enter:
 <li>{{loginError}}</li>
  </ul>
   <div>
-      <!-- <button ng-click="tryLogin();" id="dialogButton" class="dialogButton">login</button> -->
   </div>
-</div>
+</div> -->

@@ -7,20 +7,13 @@ angular.module('emulvcApp')
 
 		var modalInstance = {};
 
-		sServObj.open = function (templatefile, myContent, myTitle) {
+		sServObj.open = function (templatefile, argCtrl) {
 			modalInstance = $modal.open({
 				backdrop: true,
 				keyboard: true,
 				backdropClick: true,
 				templateUrl: templatefile,
-				resolve: {
-					modalContent: function () {
-						return myContent;
-					},
-					modalTitle: function () {
-						return myTitle;
-					}
-				}
+				controller: argCtrl
 			});
 		};
 

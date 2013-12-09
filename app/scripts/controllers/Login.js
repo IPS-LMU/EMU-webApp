@@ -7,6 +7,8 @@ angular.module('emulvcApp')
 		$scope.loginError = '';
 
 		$scope.tryLogin = function () {
+			console.log(ConfigProviderService.vals.userManagment.passcode);
+			console.log($scope.passcode);
 			if ($scope.passcode === ConfigProviderService.vals.userManagment.passcode) {
 				$scope.loginError = 'CORRECT PASSCODE!... getting users utterance list...';
 				// var filePath = 'testData/' + $scope.username + '.json';
