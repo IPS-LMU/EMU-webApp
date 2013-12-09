@@ -1,4 +1,3 @@
-
 /** * A handy class to calculate color values.
  *
  * @version 1.0
@@ -227,23 +226,27 @@
  *
  */
 
-
+var sin; // vars to hold sin table
+var cos; // vars to hold cos table
 
 function FFT(fftSize) {
-	var n, m, sin, cos, alpha, func, i;
+	var n, m, alpha, func, i;
 	n = fftSize;
 	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
 	if (n !== (1 << m)) { // Make sure n is a power of 2
 		self.postMessage('ERROR : FFT length must be power of 2');
 	}
-	cos = new Float32Array(n / 2); // precompute cos table
-	sin = new Float32Array(n / 2); // precompute sin table
-	for (var x = 0; x < n / 2; x++) {
-		cos[x] = Math.cos(-2 * PI * x / n);
-		sin[x] = Math.sin(-2 * PI * x / n);
+	if (sin === undefined || sin === undefined) { // SIC also do when n changes 
+		cos = new Float32Array(n / 2); // precompute cos table
+		sin = new Float32Array(n / 2); // precompute sin table
+		for (var x = 0; x < n / 2; x++) {
+			cos[x] = Math.cos(-2 * PI * x / n);
+			sin[x] = Math.sin(-2 * PI * x / n);
+		}
+
 	}
 
-	/*   
+	/*
     // choose window function set alpha and execute it on the buffer 
     //
 	// [parameters]
@@ -461,7 +464,7 @@ var myWindow = {
 
 var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
 	return function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
-	
+
 		if (!executed) {
 			//cWidth *= pixelRatio;
 			//cHeight *= pixelRatio;
