@@ -7,9 +7,9 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.findFileInUtt = function(utt, fileExt) {
+		sServObj.findFileInUtt = function (utt, fileExt) {
 			var res;
-			utt.files.forEach(function(f) {
+			utt.files.forEach(function (f) {
 				// do suffix check
 				if (f.indexOf(fileExt, f.length - f.length) !== -1) {
 					res = f;
@@ -21,7 +21,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.getUttList = function(filePath) {
+		sServObj.getUttList = function (filePath) {
 			var getProm = $http.get(filePath);
 			return getProm;
 		};
@@ -30,10 +30,10 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.getSSFFfile = function(filePath) {
+		sServObj.getSSFFfile = function (filePath) {
 			$http.get(filePath, {
 				responseType: 'arraybuffer'
-			}).success(function(data) {
+			}).success(function (data) {
 				var ssffJso = Ssffparserservice.ssff2jso(data);
 				ssffJso.fileURL = document.URL + filePath;
 				$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, filePath.replace(/^.*[\\\/]/, ''));
@@ -43,12 +43,12 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.getESPS = function(filePath) {
-			$http.get(filePath).success(function(data) {
+		sServObj.getESPS = function (filePath) {
+			$http.get(filePath).success(function (data) {
 				var labelJSO = Espsparserservice.toJSO(data, filePath);
 				$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
 			}).
-			error(function(data, status) {
+			error(function (data, status) {
 				console.log('Request failed with status: ' + status);
 			});
 		};
@@ -57,7 +57,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.getUtt = function(utt) {
+		sServObj.getUtt = function (utt) {
 			var curFile;
 
 			// load audio file first
@@ -65,33 +65,36 @@ angular.module('emulvcApp')
 
 			$http.get(curFile, {
 				responseType: 'arraybuffer'
-			}).then(function(vals) {
+			}).then(function (vals) {
 				// console.log(data)
 				var wavJSO = Wavparserservice.wav2jso(vals.data);
 
 				return wavJSO;
-			}).then(function(wavJSO) {
+			}).then(function (wavJSO) {
 				// set needed vals
 				viewState.curViewPort.sS = 0;
 				viewState.curViewPort.eS = wavJSO.Data.length;
+				// for dev
+				viewState.curViewPort.sS = 28395;
+				viewState.curViewPort.eS = 28406;
 				viewState.curViewPort.bufferLength = wavJSO.Data.length;
 				viewState.setscrollOpen(0);
 				viewState.resetSelect();
 				Soundhandlerservice.wavJSO = wavJSO;
 				$rootScope.$broadcast('cleanPreview');
-			}).then(function() {
-				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function(ext) {
+			}).then(function () {
+				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					sServObj.getSSFFfile(curFile);
 				});
-			}).then(function() {
+			}).then(function () {
 				// load label files
-				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function(ext) {
+				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					console.log(curFile);
 					sServObj.getESPS(curFile);
 				});
-			}).then(function() {
+			}).then(function () {
 				console.log('history');
 				HistoryService.history();
 			});

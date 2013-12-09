@@ -32,7 +32,7 @@ angular.module('emulvcApp')
 		 */
 
 		sServObj.calculatePeaks = function (viewState, canvas, data) {
-			var k = (viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel
+			var k = (viewState.curViewPort.eS + 1 - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel + one for boundaries
 
 			var numberOfChannels = 1; // hardcode for now...
 
@@ -128,7 +128,7 @@ angular.module('emulvcApp')
 						ctx.arc(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 3, 4, 0, 2 * Math.PI, false);
 						ctx.stroke();
 						ctx.fill();
-						if (false) { // SIC !!!
+						if (config.vals.restrictions.drawSampleNrs) {
 							ctx.strokeText(sNr, i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
 							sNr = sNr + 1;
 						}
@@ -137,17 +137,17 @@ angular.module('emulvcApp')
 					//draw lines
 					ctx.beginPath();
 					ctx.moveTo(-hDbS, canvas.height - ((allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height));
-					for (i = 1; i < allPeakVals.peaks.length; i++) {
+					for (i = 1; i <= allPeakVals.peaks.length; i++) {
 						ctx.lineTo(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height + 3));
 					}
 					ctx.stroke();
 					// draw sample dots
-					for (i = 1; i < allPeakVals.peaks.length; i++) {
+					for (i = 1; i <= allPeakVals.peaks.length; i++) {
 						ctx.beginPath();
 						ctx.arc(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 3, 4, 0, 2 * Math.PI, false);
 						ctx.stroke();
 						ctx.fill();
-						if (false) { // SIC !!! 
+						if (config.vals.restrictions.drawSampleNrs) {
 							ctx.fillText(sNr, i / allPeakVals.samplePerPx - hDbS, canvas.height - (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
 							sNr = sNr + 1;
 						}
@@ -155,7 +155,7 @@ angular.module('emulvcApp')
 
 				}
 			}
-			if (true) { // SIC !!!
+			if (config.vals.restrictions.drawZeroLine) {
 				// draw zero line
 				ctx.strokeStyle = config.vals.colors.zeroLineColor;
 				ctx.fillStyle = config.vals.colors.zeroLineColor;
