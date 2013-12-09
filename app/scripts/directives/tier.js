@@ -98,7 +98,7 @@ angular.module('emulvcApp')
 								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
 								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1));
 								posS = viewState.getPos(canvas[0].width, curEvt.startSample);
-								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur + 1);
+								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur);
 
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
@@ -170,10 +170,9 @@ angular.module('emulvcApp')
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
 						var perc, tW;
-					
 
 						tierDetails.events.forEach(function (curEvt) {
-						
+
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
@@ -192,10 +191,10 @@ angular.module('emulvcApp')
 									horizontalText = scope.fontImage.getTextImage(ctx, curEvt.label, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								}
-								
+
 								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.startSample, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
-									
+
 
 							}
 						});
@@ -256,20 +255,20 @@ angular.module('emulvcApp')
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
 					var tierId = viewState.getcurClickTierName();
-					if(segCId!==undefined) {
-					// draw clicked on selected areas
-					if (tierDetails.TierName === tierId && segCId.length>0) {
-						segCId.forEach(function (entry) {
-					        if(entry!==undefined) {
-					            posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
-								posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur + 1));
-					            ctx.fillStyle = config.vals.colors.selectedSegmentColor;
-					            ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-						        ctx.fillStyle = config.vals.colors.startBoundaryColor;
-					        }
-					    });
+					if (segCId !== undefined) {
+						// draw clicked on selected areas
+						if (tierDetails.TierName === tierId && segCId.length > 0) {
+							segCId.forEach(function (entry) {
+								if (entry !== undefined) {
+									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
+									posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur + 1));
+									ctx.fillStyle = config.vals.colors.selectedSegmentColor;
+									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
+									ctx.fillStyle = config.vals.colors.startBoundaryColor;
+								}
+							});
+						}
 					}
-					}								
 
 					// draw preselected boundary
 					curEvt = tierDetails.events[segMId];
