@@ -70,7 +70,6 @@ angular.module('emulvcApp')
 		 */
 		$scope.$on('connectedToWSserver', function () {
 			// TODO hardcode removal of save / load/ manipulation buttons 
-			$scope.connectBtnLabel = 'disconnect';
 			$scope.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'ws';
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
@@ -92,6 +91,7 @@ angular.module('emulvcApp')
 							}
 						});
 					} else {
+						$scope.connectBtnLabel = 'disconnect';
 						$scope.$broadcast('newUserLoggedOn', '');
 
 					}

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState) {
+	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
 		$scope.username = '';
 		$scope.passcode = '';
 		$scope.loginError = '';
@@ -38,4 +38,10 @@ angular.module('emulvcApp')
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
+
+
+		$scope.cancel = function () {
+			alert('should close connection also does not work on Esc. ... damn');
+			dialogService.close();
+		}
 	});

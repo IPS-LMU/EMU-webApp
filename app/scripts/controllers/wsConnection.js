@@ -23,4 +23,9 @@ angular.module('emulvcApp')
 			// $scope.openModal('views/login.html', 'dialog', true);
 		};
 
+		$scope.cancel = function () {
+			dialogService.close();
+		};
+
+
 	});
