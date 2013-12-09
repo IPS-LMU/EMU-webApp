@@ -220,7 +220,6 @@ angular.module('emulvcApp')
 						xOffset = 0;
 					} else {
 						xOffset = (sDist / 2);
-						console.log('sdf2')
 					}
 					console.log(xOffset);
 
