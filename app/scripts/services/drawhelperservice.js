@@ -1,10 +1,22 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService) {
 
 		//shared service object to be returned
 		var sServObj = {};
+
+		function getScale(ctx, str, scale) {
+			return ctx.measureText(str).width * scale;
+		}
+
+		function getScaleWidth(ctx, str1, str2, scaleX) {
+			if (str1.toString().length > str2.toString().length) {
+				return getScale(ctx, str1, scaleX);
+			} else {
+				return getScale(ctx, str2, scaleX);
+			}
+		}
 
 
 		/**
@@ -261,6 +273,72 @@ angular.module('emulvcApp')
 				var tD = viewState.getcurMouseTierDetails();
 				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.events[viewState.getcurMouseSegmentId()].startSample));
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+			}
+
+		};
+
+
+		/**
+		 * drawing method to drawCurViewPortSelected
+		 */
+
+		sServObj.drawCurViewPortSelected = function (ctx, drawTimeAndSamples) {
+
+			var xOffset, sDist;
+			sDist = viewState.getSampleDist(ctx.canvas.width);
+
+			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+			if (viewState.getcurMouseTierType() === 'seg') {
+				xOffset = 0;
+			} else {
+				xOffset = (sDist / 2);
+			}
+
+			var posS = viewState.getPos(ctx.canvas.width, viewState.curViewPort.selectS);
+			var posE = viewState.getPos(ctx.canvas.width, viewState.curViewPort.selectE);
+
+			if (posS === posE) {
+
+				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBorderColor;
+				ctx.fillRect(posS + xOffset, 0, 1, ctx.canvas.height);
+			} else {
+				ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
+				ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
+				ctx.strokeStyle = ConfigProviderService.vals.colors.selectedBorderColor;
+				ctx.beginPath();
+				ctx.moveTo(posS, 0);
+				ctx.lineTo(posS, ctx.canvas.height);
+				ctx.moveTo(posE, 0);
+				ctx.lineTo(posE, ctx.canvas.height);
+				ctx.closePath();
+				ctx.stroke();
+
+				if (drawTimeAndSamples) {
+					// start values
+					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					var space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+					var horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width, horizontalText.height);
+
+					// end values
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectE, viewState.round(viewState.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width, horizontalText.height);
+					// dur values
+					// check if space
+					space = getScale(ctx, viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+
+					if (posE - posS > space) {
+						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS;
+						var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
+
+						space = getScaleWidth(ctx, str1, str2, scaleX);
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, str1, str2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + (posE - posS) / 2 - space / 2, 0, horizontalText.width, horizontalText.height);
+
+
+					}
+				}
+
 			}
 
 		};

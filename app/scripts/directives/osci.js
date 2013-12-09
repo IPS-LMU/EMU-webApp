@@ -163,6 +163,8 @@ angular.module('emulvcApp')
 					// draw moving boundary line if moving
 					scope.dhs.drawMovingBoundaryLine(ctx);
 
+					// draw current viewport selected
+					scope.dhs.drawCurViewPortSelected(ctx, true);
 
 					ctx.strokeStyle = config.vals.colors.labelColor;
 					ctx.fillStyle = config.vals.colors.labelColor;
@@ -198,58 +200,6 @@ angular.module('emulvcApp')
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
-					}
-					//draw viewPort.selected
-					if (viewState.curViewPort.selectS !== -1 && viewState.curViewPort.selectE !== -1) {
-						var posS = viewState.getPos(markupCanvas.width, viewState.curViewPort.selectS);
-						var posE = viewState.getPos(markupCanvas.width, viewState.curViewPort.selectE);
-						// var sDist = viewState.getSampleDist(markupCanvas.width);
-						// var xOffset;
-						if (viewState.curViewPort.selectS === viewState.curViewPort.selectE) {
-
-							ctx.fillStyle = config.vals.colors.selectedBorderColor;
-							ctx.fillRect(posS + xOffset, 0, 1, markupCanvas.height);
-
-							horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate + (1 / scope.shs.wavJSO.SampleRate) / 2, 6), viewState.curViewPort.selectS, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + xOffset + 5, 0, horizontalText.width, horizontalText.height);
-
-
-						} else {
-							ctx.fillStyle = config.vals.colors.selectedAreaColor;
-							ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
-							ctx.strokeStyle = config.vals.colors.selectedBorderColor;
-							ctx.beginPath();
-							ctx.moveTo(posS, 0);
-							ctx.lineTo(posS, markupCanvas.height);
-							ctx.moveTo(posE, 0);
-							ctx.lineTo(posE, markupCanvas.height);
-							ctx.closePath();
-							ctx.stroke();
-							ctx.fillStyle = config.vals.colors.labelColor;
-							// start values
-							space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), scaleX);
-							horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / scope.shs.wavJSO.SampleRate, 6), config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
-							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width, horizontalText.height);
-
-							// end values
-							horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.selectE, viewState.round(viewState.curViewPort.selectE / scope.shs.wavJSO.SampleRate, 6), config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-							ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width, horizontalText.height);
-							// dur values
-							// check if space
-
-							space = getScale(ctx, viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate, 6), scaleX);
-
-							if (posE - posS > space) {
-								var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
-								var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / scope.shs.wavJSO.SampleRate), 6);
-
-								space = getScaleWidth(ctx, str1, str2, scaleX);
-								horizontalText = scope.fontImage.getTextImageTwoLines(ctx, str1, str2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
-								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS + (posE - posS) / 2 - space / 2, 0, horizontalText.width, horizontalText.height);
-
-
-							}
-						}
 					}
 				}
 			}

@@ -214,35 +214,19 @@ angular.module('emulvcApp')
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
-					var posS, posE, sDist, xOffset, curEvt;
 
 					// draw moving boundary line if moving
-					scope.dhs.drawMovingBoundaryLine(ctx, tierDetails);
+					scope.dhs.drawMovingBoundaryLine(ctx);
 
+					// draw current viewport selected
+					scope.dhs.drawCurViewPortSelected(ctx);
+
+					
+					var posS, posE, sDist, xOffset, curEvt;
 					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
 					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
 					sDist = viewState.getSampleDist(canvas[1].width);
 
-
-
-
-					if (posS === posE) {
-						
-						ctx.fillStyle = config.vals.colors.selectedBorderColor;
-						ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
-					} else {
-						ctx.fillStyle = config.vals.colors.selectedAreaColor;
-						ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-						ctx.strokeStyle = config.vals.colors.selectedBorderColor;
-						ctx.beginPath();
-						ctx.moveTo(posS, 0);
-						ctx.lineTo(posS, canvas[0].height);
-						ctx.moveTo(posE, 0);
-						ctx.lineTo(posE, canvas[0].height);
-						ctx.closePath();
-						ctx.stroke();
-
-					}
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
