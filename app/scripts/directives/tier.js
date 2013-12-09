@@ -210,12 +210,25 @@ angular.module('emulvcApp')
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 
+					var posS, posE, sDist, xOffset, curEvt;
+
+					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
+					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
+					sDist = viewState.getSampleDist(canvas[1].width);
+
+					if (viewState.getcurMouseTierType() === 'seg') {
+						xOffset = 0;
+					} else {
+						xOffset = (sDist / 2);
+						console.log('sdf2')
+					}
+					console.log(xOffset);
 
 					if (tierDetails.events[viewState.getcurMouseSegmentId()] && viewState.movingBoundary) {
-						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+						ctx.fillStyle = 'red'; //config.vals.colors.selectedBoundaryColor;
 						var tD = viewState.getcurMouseTierDetails();
 						var p = Math.round(viewState.getPos(canvas[0].width, tD.events[viewState.getcurMouseSegmentId()].startSample));
-						ctx.fillRect(p, 0, 1, canvas[0].height);
+						ctx.fillRect(p + xOffset, 0, 1, canvas[0].height);
 					}
 
 					if (tierDetails.TierName === viewState.curClickTierName) {
@@ -223,19 +236,10 @@ angular.module('emulvcApp')
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
-					var posS, posE, sDist, xOffset, curEvt;
 
-					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
-					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
-					sDist = viewState.getSampleDist(canvas[1].width);
 
 					if (posS === posE) {
 						// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-						if (viewState.curMouseMoveTierType === 'seg') {
-							xOffset = 0;
-						} else {
-							xOffset = (sDist / 2);
-						}
 						ctx.fillStyle = config.vals.colors.selectedBorderColor;
 						ctx.fillRect(posS + xOffset, 0, 1, canvas[0].height);
 					} else {
@@ -277,7 +281,7 @@ angular.module('emulvcApp')
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						if (viewState.curMouseMoveTierType === 'seg') {
+						if (viewState.getcurMouseTierType() === 'seg') {
 							ctx.fillRect(posS, 0, 3, canvas[1].height);
 						} else {
 							xOffset = (sDist / 2);
