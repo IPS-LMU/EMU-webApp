@@ -169,7 +169,7 @@ angular.module('emulvcApp')
 					} else if (tierDetails.type === 'point') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
-						var perc, tW;
+						var perc;
 
 						tierDetails.events.forEach(function (curEvt) {
 
@@ -277,7 +277,12 @@ angular.module('emulvcApp')
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						ctx.fillRect(posS, 0, 3, canvas[1].height);
+						if (viewState.curMouseMoveTierType === 'seg') {
+							ctx.fillRect(posS, 0, 3, canvas[1].height);
+						} else {
+							xOffset = (sDist / 2);
+							ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
+						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 					}
 				}

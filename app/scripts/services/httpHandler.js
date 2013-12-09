@@ -75,8 +75,8 @@ angular.module('emulvcApp')
 				viewState.curViewPort.sS = 0;
 				viewState.curViewPort.eS = wavJSO.Data.length;
 				// for dev
-				viewState.curViewPort.sS = 28395;
-				viewState.curViewPort.eS = 28406;
+				viewState.curViewPort.sS = 22136;
+				viewState.curViewPort.eS = 22145;
 				viewState.curViewPort.bufferLength = wavJSO.Data.length;
 				viewState.setscrollOpen(0);
 				viewState.resetSelect();

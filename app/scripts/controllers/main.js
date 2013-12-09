@@ -180,8 +180,8 @@ angular.module('emulvcApp')
 		 */
 		$scope.$on('newlyLoadedAudioFile', function (evt, wavJSO, fileName) {
 			// for dev:
-			// viewState.curViewPort.sS = 28535;
-			// viewState.curViewPort.eS = 29555;
+			// viewState.curViewPort.sS = 28234;
+			// viewState.curViewPort.eS = 28570;
 			viewState.curViewPort.sS = 0;
 			viewState.curViewPort.eS = wavJSO.Data.length;
 			viewState.curViewPort.bufferLength = wavJSO.Data.length;
