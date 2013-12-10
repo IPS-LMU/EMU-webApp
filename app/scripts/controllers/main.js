@@ -10,7 +10,8 @@ angular.module('emulvcApp')
 		$scope.tds = Tierdataservice;
 		$scope.vs = viewState;
 		$scope.connectBtnLabel = 'connect';
-		$scope.showSaveCommStaBtnDiv = false;
+		$scope.tmp = {};
+		$scope.tmp.showSaveCommStaBtnDiv = false;
 		$scope.showDropZone = false;
 		$scope.dbLoaded = false;
 
@@ -43,8 +44,6 @@ angular.module('emulvcApp')
 				HistoryService.history();
 			}
 		});
-
-		// $scope.sssffChangedColor = 'rgba(152, 152, 152, 0.25)';
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();
@@ -202,7 +201,7 @@ angular.module('emulvcApp')
 				$scope.openSubmenu();
 			}
 			// for development
-			// $scope.openDemoDBclick();
+			$scope.openDemoDBbtnClick();
 
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end

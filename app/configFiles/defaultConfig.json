@@ -121,8 +121,8 @@
 
     },
     "activeButtons": {
-        "openMenu": true,
-        "addTierSeg": true,
+        "openMenu": false,
+        "addTierSeg": false,
         "addTierPoint": true,
         "renameSelTier": true,
         "downloadTextGrid": true,
