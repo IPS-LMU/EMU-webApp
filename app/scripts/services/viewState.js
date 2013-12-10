@@ -68,10 +68,18 @@ angular.module('emulvcApp')
 
     // possible general states of state machine
     sServObj.states = [];
-    sServObj.states.noDBorFilesloaded = {'permittedActions': ['connectBtnClick', 'openDemoDBclick']};
-    sServObj.states.loadingSaving = {'permittedActions': []};
-    sServObj.states.labeling = {'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange']};
-    sServObj.states.modalShowing = {'permittedActions': []};
+    sServObj.states.noDBorFilesloaded = {
+      'permittedActions': ['connectBtnClick', 'openDemoDBclick']
+    };
+    sServObj.states.loadingSaving = {
+      'permittedActions': []
+    };
+    sServObj.states.labeling = {
+      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange']
+    };
+    sServObj.states.modalShowing = {
+      'permittedActions': []
+    };
 
     sServObj.curState = sServObj.states.noDBorFilesloaded;
 
@@ -224,6 +232,13 @@ angular.module('emulvcApp')
         sServObj.spectroSettings.window = myWindow.BARTLETTHANN;
         break;
       }
+    };
+
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getWindowFunctions = function () {
+      return myWindow;
     };
 
 

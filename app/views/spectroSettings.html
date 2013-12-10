@@ -10,17 +10,19 @@
 <hr />
 <div>
   <p>Window Length (samples)</p>
-  <input type="text" ng-model="modalVals.rangeTo" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+  <input type="text" ng-model="modalVals.windowLength" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 </div>
 <hr />
 <div>          
   <p>Dynamic Range for Maximum (dB)</p>  
-  <input type="text" name="dynamicRange" id="dynamicRange" value="{{vs.spectroSettings.dynamicRange}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+  <input type="text" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
 </div>
 <hr />
 <div>      
-  <p>Window Function</p>      
-  <select name="windowFunction" id="windowFunction">
+  <p>Window Function</p>
+  <select ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
+   <!-- <p>name = {{selWindowInfo.name}}</p> -->
+<!--   <select name="windowFunction" id="windowFunction">
     <option value="BARTLETT" ng-selected="selected(1);">BARTLETT</option>
     <option value="BARTLETTHANN" ng-selected="selected(2);">BARTLETTHANN</option>
     <option value="BLACKMAN" ng-selected="selected(3);">BLACKMAN</option>
@@ -31,7 +33,7 @@
     <option value="LANCZOS" ng-selected="selected(8);">LANCZOS</option>
     <option value="RECTANGULAR" ng-selected="selected(9);">RECTANGULAR</option>
     <option value="TRIANGULAR" ng-selected="selected(10);">TRIANGULAR</option>	
-  </select> 
+  </select>  -->
 </div>
 </div>
 
