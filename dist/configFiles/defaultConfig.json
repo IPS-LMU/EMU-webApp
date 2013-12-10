@@ -116,13 +116,12 @@
         "deleteTier": true,
         "addItem": true,
         "drawCrossHairs": true,
-        "drawSampleNrs": true,
+        "drawSampleNrs": false,
         "drawZeroLine": true
 
     },
     "activeButtons": {
         "openMenu": true,
-        "openFile": true,
         "addTierSeg": true,
         "addTierPoint": true,
         "renameSelTier": true,
@@ -136,8 +135,5 @@
         "resizeSpectro": true,
         "openDemoDB": true,
         "saveUtterance": false
-    },
-    "userManagment": {
-        "passcode": "1234"
     }
 }
