@@ -42,6 +42,18 @@ angular.module('emulvcApp')
     };
 
 
+    // possible general states of state machine
+    sServObj.states = {
+      'a': {
+        'name': 'noDBorFilesloaded',
+        'permittedActions': ['connectBtnClick', 'openDemoDBclick']
+      },
+      'b': 'modalShowing',
+      'c': 'labeling'
+    };
+
+    sServObj.curState = sServObj.states.a;
+
     sServObj.selected = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
@@ -64,6 +76,14 @@ angular.module('emulvcApp')
     sServObj.focusInTextField = false;
 
     sServObj.curTaskPercCompl = 0;
+
+    /**
+     * function to ask permission in current labeler state
+     */
+
+    sServObj.getPermission = function (actionName) {
+      return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
+    }
 
     /**
      */

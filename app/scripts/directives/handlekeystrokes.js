@@ -31,25 +31,33 @@ angular.module('emulvcApp')
 
 
             } else {
-            
+
               $('#HandletiersCtrl').scope().deleteEditArea();
-            
+
               // delegate keyboard keyMappings according to keyMappings of scope
               // shiftViewPortLeft
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
-                viewState.shiftViewPort(false);
+                if (viewState.getPermission('cmdZoomLeft')) {
+                  viewState.shiftViewPort(false);
+                }
               }
               // shiftViewPortRight
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
-                viewState.shiftViewPort(true);
+                if (viewState.getPermission('cmdZoomRight')) {
+                  viewState.shiftViewPort(true);
+                }
               }
               // zoomOut
               if (code === ConfigProviderService.vals.keyMappings.zoomOut) {
-                viewState.zoomViewPort(false);
+                if (viewState.getPermission('cmdZoomOut')) {
+                  viewState.zoomViewPort(false);
+                }
               }
               // zoomSel
               if (code === ConfigProviderService.vals.keyMappings.zoomSel) {
-                viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                if (viewState.getPermission('cmdZoomSel')) {
+                  viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                }
               }
               // selectFirstContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool) {
@@ -197,16 +205,15 @@ angular.module('emulvcApp')
               // backspace
               if (code === ConfigProviderService.vals.keyMappings.backspace) {
                 if (e.shiftKey) {
-                    if (ConfigProviderService.vals.restrictions.deleteItem) {
-                        var seg = viewState.getcurMouseSegment();
-                        var tn = viewState.getcurMouseTierName();
-                        if (seg !== undefined) {
-                            scope.openModal('views/deleteBoundry.html', 'dialogSmall', false, 'Really Delete', seg.startSample + ' on Tier ' + tn);
-                        }
-                        else {
-                            scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'Please select a Boundary first.');
-                        }
+                  if (ConfigProviderService.vals.restrictions.deleteItem) {
+                    var seg = viewState.getcurMouseSegment();
+                    var tn = viewState.getcurMouseTierName();
+                    if (seg !== undefined) {
+                      scope.openModal('views/deleteBoundry.html', 'dialogSmall', false, 'Really Delete', seg.startSample + ' on Tier ' + tn);
+                    } else {
+                      scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'Please select a Boundary first.');
                     }
+                  }
                 } else {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurClickSegments();
@@ -217,11 +224,10 @@ angular.module('emulvcApp')
                       }
                       toDelete = toDelete.substring(0, toDelete.length - 1);
                       console.log(toDelete);
-                      if(viewState.getcurClickTierType()==="seg") {
-                          scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
-                      }
-                      else {
-                          scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');
+                      if (viewState.getcurClickTierType() === "seg") {
+                        scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
+                      } else {
+                        scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');
                       }
                     }
                   }

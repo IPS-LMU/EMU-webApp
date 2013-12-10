@@ -288,14 +288,6 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.renameTier = function () {
-			if (viewState.getcurClickTierName() !== undefined) {
-				$scope.openModal('views/renameTier.html', 'dialog', true);
-			} else {
-				$scope.openModal('views/error.html', 'dialog', 'Rename Error', false, 'Please choose a Tier first !');
-			}
-		};
-
 		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
 		};
@@ -375,134 +367,135 @@ angular.module('emulvcApp')
 				drop = 'static';
 			}
 			viewState.setmodalOpen(true);
-			$modal.open({
-				backdrop: drop,
-				keyboard: true,
-				backdropClick: true,
-				templateUrl: templatefile,
-				windowClass: cssStyle,
-				controller: 'ModalInstanceCtrl',
-				resolve: {
-					modalContent: function () {
-						return content;
-					},
-					modalTitle: function () {
-						return title;
-					},
-					windowLength: function () {
-						return viewState.spectroSettings.windowLength;
-					},
-					rangeFrom: function () {
-						return viewState.spectroSettings.rangeFrom;
-					},
-					rangeTo: function () {
-						return viewState.spectroSettings.rangeTo;
-					},
-					dynamicRange: function () {
-						return viewState.spectroSettings.dynamicRange;
-					},
-					selectSegmentsInSelection: function () {
-						return $scope.shortcut.selectSegmentsInSelection;
-					},
-					window: function () {
-						return viewState.spectroSettings.window;
-					},
-					selectFirstContourCorrectionTool: function () {
-						return $scope.shortcut.selectFirstContourCorrectionTool;
-					},
-					selectSecondContourCorrectionTool: function () {
-						return $scope.shortcut.selectSecondContourCorrectionTool;
-					},
-					selectThirdContourCorrectionTool: function () {
-						return $scope.shortcut.selectThirdContourCorrectionTool;
-					},
-					selectFourthContourCorrectionTool: function () {
-						return $scope.shortcut.selectFourthContourCorrectionTool;
-					},
-					selectNoContourCorrectionTool: function () {
-						return $scope.shortcut.selectNoContourCorrectionTool;
-					},
-					playAllInView: function () {
-						return $scope.shortcut.playAllInView;
-					},
-					keyBackspace: function () {
-						return $scope.shortcut.backspace;
-					},
-					snapAbove: function () {
-						return $scope.shortcut.snapAbove;
-					},
-					snapBelow: function () {
-						return $scope.shortcut.snapBelow;
-					},
-					plus: function () {
-						return $scope.shortcut.plus;
-					},
-					minus: function () {
-						return $scope.shortcut.minus;
-					},
-					snapZero: function () {
-						return $scope.shortcut.snapZero;
-					},
-					snapBoundary: function () {
-						return $scope.shortcut.snapBoundary;
-					},
-					keyAlt: function () {
-						return $scope.shortcut.alt;
-					},
-					playSelected: function () {
-						return $scope.shortcut.playSelected;
-					},
-					history: function () {
-						return $scope.shortcut.history;
-					},
-					keyopenSubmenu: function () {
-						return $scope.shortcut.openSubmenu;
-					},
-					playEntireFile: function () {
-						return $scope.shortcut.playEntireFile;
-					},
-					keyTab: function () {
-						return $scope.shortcut.tab;
-					},
-					tierUp: function () {
-						return $scope.shortcut.tierUp;
-					},
-					tierDown: function () {
-						return $scope.shortcut.tierDown;
-					},
-					keyShift: function () {
-						return $scope.shortcut.shift;
-					},
-					keyEnter: function () {
-						return $scope.shortcut.enter;
-					},
-					keyZoomIn: function () {
-						return $scope.shortcut.zoomIn;
-					},
-					keyZoomOut: function () {
-						return $scope.shortcut.zoomOut;
-					},
-					keyZoomAll: function () {
-						return $scope.shortcut.zoomAll;
-					},
-					keyZoomSel: function () {
-						return $scope.shortcut.zoomSel;
-					},
-					shiftViewPortLeft: function () {
-						return $scope.shortcut.shiftViewPortLeft;
-					},
-					shiftViewPortRight: function () {
-						return $scope.shortcut.shiftViewPortRight;
-					},
-					currentTier: function () {
-						if (viewState.getcurClickTierName() !== '') {
-							return viewState.getcurClickTierName();
-						} else {
-							return 'error';
-						}
-					}
-				}
-			});
+			alert('should use new dialogService');
+			// $modal.open({
+			// 	backdrop: drop,
+			// 	keyboard: true,
+			// 	backdropClick: true,
+			// 	templateUrl: templatefile,
+			// 	windowClass: cssStyle,
+			// 	controller: 'ModalInstanceCtrl',
+			// 	resolve: {
+			// 		modalContent: function () {
+			// 			return content;
+			// 		},
+			// 		modalTitle: function () {
+			// 			return title;
+			// 		},
+			// 		windowLength: function () {
+			// 			return viewState.spectroSettings.windowLength;
+			// 		},
+			// 		rangeFrom: function () {
+			// 			return viewState.spectroSettings.rangeFrom;
+			// 		},
+			// 		rangeTo: function () {
+			// 			return viewState.spectroSettings.rangeTo;
+			// 		},
+			// 		dynamicRange: function () {
+			// 			return viewState.spectroSettings.dynamicRange;
+			// 		},
+			// 		selectSegmentsInSelection: function () {
+			// 			return $scope.shortcut.selectSegmentsInSelection;
+			// 		},
+			// 		window: function () {
+			// 			return viewState.spectroSettings.window;
+			// 		},
+			// 		selectFirstContourCorrectionTool: function () {
+			// 			return $scope.shortcut.selectFirstContourCorrectionTool;
+			// 		},
+			// 		selectSecondContourCorrectionTool: function () {
+			// 			return $scope.shortcut.selectSecondContourCorrectionTool;
+			// 		},
+			// 		selectThirdContourCorrectionTool: function () {
+			// 			return $scope.shortcut.selectThirdContourCorrectionTool;
+			// 		},
+			// 		selectFourthContourCorrectionTool: function () {
+			// 			return $scope.shortcut.selectFourthContourCorrectionTool;
+			// 		},
+			// 		selectNoContourCorrectionTool: function () {
+			// 			return $scope.shortcut.selectNoContourCorrectionTool;
+			// 		},
+			// 		playAllInView: function () {
+			// 			return $scope.shortcut.playAllInView;
+			// 		},
+			// 		keyBackspace: function () {
+			// 			return $scope.shortcut.backspace;
+			// 		},
+			// 		snapAbove: function () {
+			// 			return $scope.shortcut.snapAbove;
+			// 		},
+			// 		snapBelow: function () {
+			// 			return $scope.shortcut.snapBelow;
+			// 		},
+			// 		plus: function () {
+			// 			return $scope.shortcut.plus;
+			// 		},
+			// 		minus: function () {
+			// 			return $scope.shortcut.minus;
+			// 		},
+			// 		snapZero: function () {
+			// 			return $scope.shortcut.snapZero;
+			// 		},
+			// 		snapBoundary: function () {
+			// 			return $scope.shortcut.snapBoundary;
+			// 		},
+			// 		keyAlt: function () {
+			// 			return $scope.shortcut.alt;
+			// 		},
+			// 		playSelected: function () {
+			// 			return $scope.shortcut.playSelected;
+			// 		},
+			// 		history: function () {
+			// 			return $scope.shortcut.history;
+			// 		},
+			// 		keyopenSubmenu: function () {
+			// 			return $scope.shortcut.openSubmenu;
+			// 		},
+			// 		playEntireFile: function () {
+			// 			return $scope.shortcut.playEntireFile;
+			// 		},
+			// 		keyTab: function () {
+			// 			return $scope.shortcut.tab;
+			// 		},
+			// 		tierUp: function () {
+			// 			return $scope.shortcut.tierUp;
+			// 		},
+			// 		tierDown: function () {
+			// 			return $scope.shortcut.tierDown;
+			// 		},
+			// 		keyShift: function () {
+			// 			return $scope.shortcut.shift;
+			// 		},
+			// 		keyEnter: function () {
+			// 			return $scope.shortcut.enter;
+			// 		},
+			// 		keyZoomIn: function () {
+			// 			return $scope.shortcut.zoomIn;
+			// 		},
+			// 		keyZoomOut: function () {
+			// 			return $scope.shortcut.zoomOut;
+			// 		},
+			// 		keyZoomAll: function () {
+			// 			return $scope.shortcut.zoomAll;
+			// 		},
+			// 		keyZoomSel: function () {
+			// 			return $scope.shortcut.zoomSel;
+			// 		},
+			// 		shiftViewPortLeft: function () {
+			// 			return $scope.shortcut.shiftViewPortLeft;
+			// 		},
+			// 		shiftViewPortRight: function () {
+			// 			return $scope.shortcut.shiftViewPortRight;
+			// 		},
+			// 		currentTier: function () {
+			// 			if (viewState.getcurClickTierName() !== '') {
+			// 				return viewState.getcurClickTierName();
+			// 			} else {
+			// 				return 'error';
+			// 			}
+			// 		}
+			// 	}
+			// });
 		};
 
 		/**
@@ -619,11 +612,64 @@ angular.module('emulvcApp')
 			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
 
+		/////////////////////////////////////////
+		// handle button clicks
 
+		// top menu:
+
+		//
+		$scope.addTierSegBtnClick = function () {
+
+			if (viewState.getPermission('addTierSegBtnClick')) {
+				alert('not implemented yet');
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.addTierPointBtnClick = function () {
+
+			if (viewState.getPermission('addTierSegBtnClick')) {
+				alert('not implemented yet');
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.renameSelTierBtnClick = function () {
+			if (viewState.getPermission('renameSelTierBtnClick')) {
+				if (viewState.getcurClickTierName() !== undefined) {
+					$scope.openModal('views/renameTier.html', 'dialog', true);
+				} else {
+					$scope.openModal('views/error.html', 'dialog', 'Rename Error', false, 'Please choose a Tier first !');
+				}
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		$scope.downloadTextGridBtnClick = function () {
+			if (viewState.getPermission('downloadTextGridBtnClick')) {
+				alert('not implemented yet');
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.spectSettingsBtnClick = function () {
+			if (viewState.getPermission('spectSettingsBtnClick')) {
+				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl');
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
 
 		//
 		$scope.connectBtnClick = function () {
-			if ($scope.connectBtnLabel === 'connect') {
+			if (viewState.getPermission('connectBtnClick')) {
 				// $scope.openModal('views/connectModal.html', 'dialog', false);
 				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
 			} else {
@@ -636,84 +682,139 @@ angular.module('emulvcApp')
 		};
 
 		//
-		$scope.openDemoDBclick = function () {
-			ConfigProviderService.vals.main.comMode = 'http:GET';
-			if (!$scope.dbLoaded) {
-				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
-					console.log(res.data);
-					$('#FileCtrl').scope().hideDropZone();
-					$scope.uttList = res.data;
-					Iohandlerservice.getUtt(res.data[0]);
-					// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
-					// $scope.curUtt = $scope.uttList[0];
-					$scope.dbLoaded = true;
-				});
-			}else{
-				// TODO: call unload DB function
+		$scope.openDemoDBbtnClick = function () {
+			if (viewState.getPermission('openDemoDBclick')) {
+				ConfigProviderService.vals.main.comMode = 'http:GET';
+				if (!$scope.dbLoaded) {
+					Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
+						console.log(res.data);
+						$('#FileCtrl').scope().hideDropZone();
+						$scope.uttList = res.data;
+						Iohandlerservice.getUtt(res.data[0]);
+						// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
+						// $scope.curUtt = $scope.uttList[0];
+						$scope.dbLoaded = true;
+					});
+				} else {
+					// TODO: call unload DB function
+				}
 			}
 		};
 
-		/**
-		 *
-		 */
+		//
+		$scope.aboutBtnClick = function () {
+			dialogService.open('views/about.html', 'AboutCtrl');
+		};
+
+
+		// bottom menu:
+
+		//
+		$scope.cmdZoomAll = function () {
+			if (viewState.getPermission('cmdZoomAll')) {
+				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
+				viewState.setViewPort(0, viewState.curViewPort.bufferLength);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdZoomIn = function () {
+			if (viewState.getPermission('cmdZoomIn')) {
+				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
+				viewState.zoomViewPort(true);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdZoomOut = function () {
+			if (viewState.getPermission('cmdZoomOut')) {
+				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.zoomViewPort(false);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdZoomLeft = function () {
+			if (viewState.getPermission('cmdZoomLeft')) {
+				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.shiftViewPort(false);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdZoomRight = function () {
+			if (viewState.getPermission('cmdZoomRight')) {
+				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.shiftViewPort(true);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdZoomSel = function () {
+			if (viewState.getPermission('cmdZoomSel')) {
+				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdPlayView = function () {
+			if (viewState.getPermission('cmdPlayView')) {
+				Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+				viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdPlaySel = function () {
+			if (viewState.getPermission('cmdPlaySel')) {
+				Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+				viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		//
+		$scope.cmdPlayAll = function () {
+			if (viewState.getPermission('cmdPlayAll')) {
+				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+				viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		// other
+
+		//
 		$scope.saveMetaData = function () {
 
 			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttList);
 			$scope.modifiedMetaData = false;
 		};
 
-
+		//
 		$scope.openFile = function () {
 			alert('code to open file');
 		};
 
+		//
 		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
 		};
-
-		$scope.cmdZoomAll = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.setViewPort(0, viewState.curViewPort.bufferLength);
-		};
-
-		$scope.cmdZoomSel = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-		};
-
-		$scope.cmdZoomIn = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.zoomViewPort(true);
-		};
-
-		$scope.cmdZoomOut = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.zoomViewPort(false);
-		};
-
-		$scope.cmdZoomLeft = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.shiftViewPort(false);
-		};
-
-		$scope.cmdZoomRight = function () {
-			$('#HandletiersCtrl').scope().deleteEditArea();
-			viewState.shiftViewPort(true);
-		};
-
-		$scope.cmdPlayView = function () {
-			Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
-			viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
-		};
-
-		$scope.cmdPlaySel = function () {
-			Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-			viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-		};
-
-		$scope.cmdPlayAll = function () {
-			Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-			viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
-		};
-
 	});

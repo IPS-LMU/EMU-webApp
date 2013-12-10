@@ -1,43 +1,42 @@
- 
- <h2>Settings</h2>
-    <!-- close button -->
-  <h3>
-      <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
-      <button ng-click="saveSpectroSettings();" id="dialogButton" class="mini-btn-dialog">Save</button>
-  </h3> 
- <div>&nbsp;</div>
+ <div class="modal-header">
+  <h3>Spectrogram Settings</h3>
+</div>
+<div class="modal-body">
  <div>
-    <p>View Range (Hz)</p>
-    <input type="text" name="rangeFrom" id="rangeFrom" value="{{rangeFrom}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
-    <input type="text" name="rangeTo" id="rangeTo" value="{{rangeTo}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+  <p>View Range (Hz)</p>
+  <input type="text" name="rangeFrom" id="rangeFrom" value="{{rangeFrom}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+  <input type="text" name="rangeTo" id="rangeTo" value="{{rangeTo}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 </div>
 <hr />
 <div>
-    <p>Window Length (samples)</p>
-    <input type="text" name="windowLength" id="windowLength" value="{{windowLength}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+  <p>Window Length (samples)</p>
+  <input type="text" name="windowLength" id="windowLength" value="{{windowLength}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 </div>
 <hr />
 <div>          
-    <p>Dynamic Range for Maximum (dB)</p>  
-    <input type="text" name="dynamicRange" id="dynamicRange" value="{{dynamicRange}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+  <p>Dynamic Range for Maximum (dB)</p>  
+  <input type="text" name="dynamicRange" id="dynamicRange" value="{{dynamicRange}}"  ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
 </div>
 <hr />
 <div>      
-    <p>Window Function</p>      
-    <select name="windowFunction" id="windowFunction">
-      <option value="BARTLETT" ng-selected="selected(1);">BARTLETT</option>
-      <option value="BARTLETTHANN" ng-selected="selected(2);">BARTLETTHANN</option>
-      <option value="BLACKMAN" ng-selected="selected(3);">BLACKMAN</option>
-      <option value="COSINE" ng-selected="selected(4);">COSINE</option>
-      <option value="GAUSS" ng-selected="selected(5);">GAUSS</option>
-      <option value="HAMMING" ng-selected="selected(6);">HAMMING</option>
-      <option value="HANN" ng-selected="selected(7);">HANN</option>
-      <option value="LANCZOS" ng-selected="selected(8);">LANCZOS</option>
-      <option value="RECTANGULAR" ng-selected="selected(9);">RECTANGULAR</option>
-      <option value="TRIANGULAR" ng-selected="selected(10);">TRIANGULAR</option>	
-    </select> 
- </div>
-<div> &nbsp;</div>
-<div> &nbsp;</div>
-<div> &nbsp;</div>
-  
+  <p>Window Function</p>      
+  <select name="windowFunction" id="windowFunction">
+    <option value="BARTLETT" ng-selected="selected(1);">BARTLETT</option>
+    <option value="BARTLETTHANN" ng-selected="selected(2);">BARTLETTHANN</option>
+    <option value="BLACKMAN" ng-selected="selected(3);">BLACKMAN</option>
+    <option value="COSINE" ng-selected="selected(4);">COSINE</option>
+    <option value="GAUSS" ng-selected="selected(5);">GAUSS</option>
+    <option value="HAMMING" ng-selected="selected(6);">HAMMING</option>
+    <option value="HANN" ng-selected="selected(7);">HANN</option>
+    <option value="LANCZOS" ng-selected="selected(8);">LANCZOS</option>
+    <option value="RECTANGULAR" ng-selected="selected(9);">RECTANGULAR</option>
+    <option value="TRIANGULAR" ng-selected="selected(10);">TRIANGULAR</option>	
+  </select> 
+</div>
+</div>
+
+<div class="modal-footer">
+  <button ng-click="cancel();" class="mini-btn-dialog">Cancel</button>
+  <button ng-click="saveSpectroSettings();" id="dialogButton" class="mini-btn-dialog">Save</button>
+</div>
+
