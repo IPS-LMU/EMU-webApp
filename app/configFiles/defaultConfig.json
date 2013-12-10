@@ -9,31 +9,31 @@
     "keyMappings": {
         "openFile": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "connect": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "addTierSeg": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "addTierPoint": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "renameTier": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NOE"
         },
         "downloadTextgrid": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "demoDB": {
             "code": -1,
-            "strRep": "?"
+            "strRep": "NONE"
         },
         "openSubmenu": {
             "code": 79,
@@ -41,7 +41,7 @@
         },
         "spectroSettings": {
             "code": 80,
-            "strRep": ""
+            "strRep": "P"
         },
         "zoomSel": {
             "code": 69,
@@ -81,7 +81,7 @@
         },
         "backspace": {
             "code": 8,
-            "strRep": "?"
+            "strRep": "BACKSPACE"
         },
         "tab": {
             "code": 9,
@@ -93,7 +93,7 @@
         },
         "shift": {
             "code": 16,
-            "strRep": "?"
+            "strRep": "SHIFT"
         },
         "alt": {
             "code": 18,
