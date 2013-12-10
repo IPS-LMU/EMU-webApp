@@ -17,7 +17,7 @@ angular.module('emulvcApp')
 					$scope.connectionError = 'ERROR trying to connect to ws-server';
 				} else if (val.type === 'open') {
 					viewState.focusInTextField = false;
-					dialogService.close();
+					$scope.cancel();
 				}
 			});
 			// $scope.openModal('views/login.html', 'dialog', true);

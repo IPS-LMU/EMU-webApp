@@ -135,8 +135,5 @@
         "resizeSpectro": true,
         "openDemoDB": true,
         "saveUtterance": false
-    },
-    "userManagment": {
-        "passcode": "1234"
     }
 }

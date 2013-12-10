@@ -2,30 +2,31 @@
 
 angular.module('emulvcApp')
 	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
-		$scope.username = '';
-		$scope.passcode = '';
-		$scope.loginError = '';
+
+		$scope.loginData = {
+			'username': '',
+			'accesscode': '',
+			'errorMsg': ''
+		};
 
 		$scope.tryLogin = function () {
-			console.log(ConfigProviderService.vals.userManagment.passcode);
-			console.log($scope.passcode);
-			if ($scope.passcode === ConfigProviderService.vals.userManagment.passcode) {
-				$scope.loginError = 'CORRECT PASSCODE!... getting users utterance list...';
-				// var filePath = 'testData/' + $scope.username + '.json';
-
-				Iohandlerservice.wsH.getUsrUttList($scope.username).then(function (usrRes) {
-					if (usrRes === 'USER NOT FOUND') {
-
-						$scope.loginError = usrRes;
-					} else {
-						$scope.loginError = 'USER FOUND';
-						$rootScope.$broadcast('newUserLoggedOn', $scope.username);
-						$scope.cancel();
-					}
-				});
-			} else {
-				$scope.loginError = 'WRONG PASSCODE!';
-			}
+			// bit strange to check pwd be4 username... but anyway
+			Iohandlerservice.wsH.checkAccessCode($scope.loginData.accesscode).then(function (codeRes) {
+				if (codeRes === 'CORRECT') {
+					console.log('u are the champion');
+					Iohandlerservice.wsH.getUsrUttList($scope.loginData.username).then(function (usrRes) {
+						if (usrRes === 'USER NOT FOUND') {
+							$scope.loginData.errorMsg = usrRes;
+						} else {
+							$scope.loginData.errorMsg = 'USER FOUND';
+							$rootScope.$broadcast('newUserLoggedOn', $scope.loginData.username);
+							$scope.cancel();
+						}
+					});
+				} else {
+					$scope.loginData.errorMsg = 'Error wrong access code!!';
+				}
+			});
 		};
 
 		//
@@ -39,9 +40,8 @@ angular.module('emulvcApp')
 			viewState.focusInTextField = false;
 		};
 
-
+		//
 		$scope.cancel = function () {
-			alert('should close connection also does not work on Esc. ... damn');
 			dialogService.close();
-		}
+		};
 	});

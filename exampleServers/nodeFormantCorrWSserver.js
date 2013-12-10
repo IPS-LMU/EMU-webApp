@@ -6,7 +6,10 @@ var labelData;
 
 var path2dataRoot = '../app/testData/';
 var path2configFile = '../app/testData/customConfig.json';
+var accessCode = '4321';
+
 var portNr = 8080;
+
 
 var curUttList = [];
 var curStrippedUttList = [];
@@ -18,9 +21,9 @@ var WebSocketServer = require('ws').Server,
 
 console.log('websocketserver running @: ws://' + os.hostname() + ':' + portNr);
 
-wss.on('connection', function(ws) {
+wss.on('connection', function (ws) {
 
-	ws.on('message', function(message) {
+	ws.on('message', function (message) {
 		// console.log('received: %s', message);
 		var mJSO = JSON.parse(message);
 
@@ -51,12 +54,34 @@ wss.on('connection', function(ws) {
 			}), undefined, 0);
 		}
 
+		if (mJSO.type === 'checkAccessCode') {
+			if (mJSO.data === accessCode) {
+				ws.send(JSON.stringify({
+					'callbackID': mJSO.callbackID,
+					'data': 'CORRECT',
+					'status': {
+						'type': 'SUCCESS',
+						'message': ''
+					}
+				}), undefined, 0);
+			} else {
+				ws.send(JSON.stringify({
+					'callbackID': mJSO.callbackID,
+					'data': 'INCORRECT',
+					'status': {
+						'type': 'SUCCESS',
+						'message': ''
+					}
+				}), undefined, 0);
+			}
+		}
+
 		// getUttList method
 		if (mJSO.type === 'getUttList') {
 			if (mJSO.usrName === '') {
 				mJSO.usrName = noUserJsonBasename;
 			}
-			fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function(err, data) {
+			fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function (err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
@@ -90,7 +115,7 @@ wss.on('connection', function(ws) {
 
 		// getConfigFile method
 		if (mJSO.type === 'getConfigFile') {
-			fs.readFile(path2configFile, 'utf8', function(err, data) {
+			fs.readFile(path2configFile, 'utf8', function (err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
@@ -124,7 +149,7 @@ wss.on('connection', function(ws) {
 		// method like static get file method
 		if (mJSO.type === 'getSSFFfile' || mJSO.type === 'getAudioFile') {
 			console.log(mJSO.fileName)
-			fs.readFile(path2dataRoot + mJSO.fileName, 'base64', function(err, data) {
+			fs.readFile(path2dataRoot + mJSO.fileName, 'base64', function (err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
@@ -154,7 +179,7 @@ wss.on('connection', function(ws) {
 		// method for getESPSfile
 		if (mJSO.type === 'getESPSfile') {
 			console.log(mJSO.fileName)
-			fs.readFile(path2dataRoot + mJSO.fileName, 'utf8', function(err, data) {
+			fs.readFile(path2dataRoot + mJSO.fileName, 'utf8', function (err, data) {
 				if (err) {
 					console.log('Error: ' + err);
 					ws.send(JSON.stringify({
@@ -187,7 +212,7 @@ wss.on('connection', function(ws) {
 			var outputPath = path2dataRoot + mJSO.usrName + '.json';
 			if (fs.existsSync(outputPath)) {
 				console.log('Writing to file: %s', outputPath);
-				fs.writeFile(outputPath, JSON.stringify(JSON.parse(mJSO.data), null, 2), function(err) {
+				fs.writeFile(outputPath, JSON.stringify(JSON.parse(mJSO.data), null, 2), function (err) {
 					if (err) {
 						console.log('ERROR while saving uttList')
 						console.log(err);
@@ -224,7 +249,7 @@ wss.on('connection', function(ws) {
 		if (mJSO.type === 'saveSSFFfile') {
 			var view = new Buffer(mJSO.data, 'base64');
 			console.log('Writing SSFF to file: ' + mJSO.fileURL)
-			fs.writeFile(path2dataRoot + mJSO.fileURL, view, function(err) {
+			fs.writeFile(path2dataRoot + mJSO.fileURL, view, function (err) {
 				if (err) {
 					console.log('ERROR while saving ssff file')
 					console.log(err);
@@ -255,8 +280,8 @@ wss.on('connection', function(ws) {
 
 function stripUttList(list) {
 	var sF; // stripped file
-	list.forEach(function(utt) {
-		utt.files.forEach(function(file, fIdx) {
+	list.forEach(function (utt) {
+		utt.files.forEach(function (file, fIdx) {
 			sF = file.split('/')[file.split('/').length - 1];
 			utt.files[fIdx] = sF;
 			console.log(sF);

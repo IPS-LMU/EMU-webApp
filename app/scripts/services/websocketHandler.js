@@ -74,7 +74,7 @@ angular.module('emulvcApp')
 			// If an object exists with callbackID in our callbacks object, resolve it
 			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
 				// console.log(callbacks[messageObj.callbackID]);
-				console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
+				// console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
 				case 'getESPSfile':
 					handleReceivedESPS(messageObj.fileName, messageObj.data);
@@ -87,10 +87,10 @@ angular.module('emulvcApp')
 				$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
 
 				delete callbacks[messageObj.callbackID];
-				if(viewState.curTaskPercCompl >= 100){
+				if (viewState.curTaskPercCompl >= 100) {
 					viewState.curTaskPercCompl = 0;
 					dialogService.close();
-				}else{
+				} else {
 					viewState.curTaskPercCompl += 1;
 				}
 			}
@@ -99,13 +99,6 @@ angular.module('emulvcApp')
 		// This creates a new callback ID for a request
 		function getCallbackId() {
 			var newUUID = uuid.new();
-			console.log(newUUID);
-
-			// currentCallbackId += 1;
-			// if (currentCallbackId > 10000) {
-			// 	currentCallbackId = 0;
-			// }
-			// return currentCallbackId;
 			return newUUID;
 		}
 
@@ -203,6 +196,17 @@ angular.module('emulvcApp')
 			return promise;
 		};
 
+		// ws checkAccessCode
+		sServObj.checkAccessCode = function (code) {
+			var request = {
+				type: 'checkAccessCode',
+				data: code
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
 		// ws request for saving uttList
 		sServObj.saveUsrUttList = function (usrName, uttList) {
 			var stripped = angular.toJson(uttList); // remove $$hash
@@ -281,17 +285,13 @@ angular.module('emulvcApp')
 		// ws save Utt to ws server
 		sServObj.saveUtt = function (utt) {
 
-			dialogService.open('views/waitDial.html')
-
 			var curFile;
 
 			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 				curFile = sServObj.findFileInUtt(utt, ext);
 				console.log(curFile);
-				for (var i = 0; i < 100; i++) {
-					sServObj.saveSSFFfile(curFile);
-				};
+				sServObj.saveSSFFfile(curFile);
 			});
 
 			// ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {

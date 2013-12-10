@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 		sServObj.open = function (templatefile, argCtrl) {
 			modalInstance = $modal.open({
 				backdrop: 'static',
-				keyboard: true,
+				keyboard: false,
 				templateUrl: templatefile,
 				controller: argCtrl
 			});

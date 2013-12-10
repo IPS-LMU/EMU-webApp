@@ -55,8 +55,5 @@
         "openDemoDB": false,
         "saveUtterance": true
 
-    },
-    "userManagment": {
-        "passcode": "0000"
     }
 }
