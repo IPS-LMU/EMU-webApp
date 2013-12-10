@@ -7,48 +7,172 @@
         "comType": "ws"
     },
     "keyMappings": {
-        "openFile": -1,
-        "connect": -1,
-        "addTierSeg": -1,
-        "addTierPoint": -1,
-        "renameTier": -1,
-        "downloadTextgrid": -1,
-        "demoDB": -1,
-        "openSubmenu": 79,
-        "spectroSettings": 80,
-        "zoomSel": 69,
-        "zoomAll": 81,
-        "zoomOut": 83,
-        "zoomIn": 87,
-        "shiftViewPortLeft": 65,
-        "shiftViewPortRight": 68,
-        "playEntireFile": 70,
-        "playAllInView": 32,
-        "playSelected": 82,
-        "backspace": 8,
-        "tab": 9,
-        "enter": 13,
-        "shift": 16,
-        "alt": 18,
-        "esc": 27,
-        "history": 90,
-        "selectFirstContourCorrectionTool": 49,
-        "selectSecondContourCorrectionTool": 50,
-        "selectThirdContourCorrectionTool": 51,
-        "selectFourthContourCorrectionTool": 52,
-        "selectNoContourCorrectionTool": 48,
-        "selectSegmentsInSelection": 71,
-        "tierUp": 38,
-        "tierDown": 40,
-        "snapAbove": 84,
-        "snapBelow": 66,
-        "snapZero": 88,
-        "plus": 187,
-        "plusShift": 221,
-        "minus": 189,
-        "snapBoundaryToTop": 84,
-        "snapBoundaryToBottom": 66
+        "openFile": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "connect": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "addTierSeg": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "addTierPoint": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "renameTier": {
+            "code": -1,
+            "strRep": "NOE"
+        },
+        "downloadTextgrid": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "demoDB": {
+            "code": -1,
+            "strRep": "NONE"
+        },
+        "openSubmenu": {
+            "code": 79,
+            "strRep": "O"
+        },
+        "spectroSettings": {
+            "code": 80,
+            "strRep": "P"
+        },
+        "zoomSel": {
+            "code": 69,
+            "strRep": "E"
+        },
+        "zoomAll": {
+            "code": 81,
+            "strRep": "Q"
+        },
+        "zoomOut": {
+            "code": 83,
+            "strRep": "A"
+        },
+        "zoomIn": {
+            "code": 87,
+            "strRep": "W"
+        },
+        "shiftViewPortLeft": {
+            "code": 65,
+            "strRep": "A"
+        },
+        "shiftViewPortRight": {
+            "code": 68,
+            "strRep": "D"
+        },
+        "playEntireFile": {
+            "code": 70,
+            "strRep": "F"
+        },
+        "playAllInView": {
+            "code": 32,
+            "strRep": "SPACE"
+        },
+        "playSelected": {
+            "code": 82,
+            "strRep": "R"
+        },
+        "backspace": {
+            "code": 8,
+            "strRep": "BACKSPACE"
+        },
+        "tab": {
+            "code": 9,
+            "strRep": "TAB"
+        },
+        "enter": {
+            "code": 13,
+            "strRep": "ENTER"
+        },
+        "shift": {
+            "code": 16,
+            "strRep": "SHIFT"
+        },
+        "alt": {
+            "code": 18,
+            "strRep": "?"
+        },
+        "esc": {
+            "code": 27,
+            "strRep": "?"
+        },
+        "history": {
+            "code": 90,
+            "strRep": "Z"
+        },
+        "selectFirstContourCorrectionTool": {
+            "code": 49,
+            "strRep": "1"
+        },
+        "selectSecondContourCorrectionTool": {
+            "code": 50,
+            "strRep": "2"
+        },
+        "selectThirdContourCorrectionTool": {
+            "code": 51,
+            "strRep": "3"
+        },
+        "selectFourthContourCorrectionTool": {
+            "code": 52,
+            "strRep": "4"
+        },
+        "selectNoContourCorrectionTool": {
+            "code": 48,
+            "strRep": "0"
+        },
+        "selectSegmentsInSelection": {
+            "code": 71,
+            "strRep": "G"
+        },
+        "tierUp": {
+            "code": 38,
+            "strRep": "?"
+        },
+        "tierDown": {
+            "code": 40,
+            "strRep": "?"
+        },
+        "snapAbove": {
+            "code": 84,
+            "strRep": "T"
+        },
+        "snapBelow": {
+            "code": 66,
+            "strRep": "B"
+        },
+        "snapZero": {
+            "code": 88,
+            "strRep": "?"
+        },
+        "plus": {
+            "code": 187,
+            "strRep": "?"
+        },
+        "plusShift": {
+            "code": 221,
+            "strRep": "?"
+        },
+        "minus": {
+            "code": 189,
+            "strRep": ""
+        },
+        "snapBoundaryToTop": {
+            "code": 84,
+            "strRep": "?"
+        },
+        "snapBoundaryToBottom": {
+            "code": 66,
+            "strRep": "?"
+        }
     },
+
     "colors": {
         "labelColor": "#000",
         "osciColor": "#000",
@@ -121,8 +245,8 @@
 
     },
     "activeButtons": {
-        "openMenu": true,
-        "addTierSeg": true,
+        "openMenu": false,
+        "addTierSeg": false,
         "addTierPoint": true,
         "renameSelTier": true,
         "downloadTextGrid": true,

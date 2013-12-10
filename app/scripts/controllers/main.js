@@ -201,7 +201,7 @@ angular.module('emulvcApp')
 				$scope.openSubmenu();
 			}
 			// for development
-			$scope.openDemoDBbtnClick();
+			// $scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
 			// SIC!! use ConfigProviderService.vals.keyMappings.strRep directly
