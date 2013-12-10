@@ -202,6 +202,7 @@ angular.module('emulvcApp')
 			}
 			// for development
 			$scope.openDemoDBbtnClick();
+			$scope.aboutBtnClick();
 
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
 			// convert int values to char for front end

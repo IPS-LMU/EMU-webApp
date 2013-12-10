@@ -37,7 +37,7 @@ angular.module('emulvcApp')
               // delegate keyboard keyMappings according to keyMappings of scope
 
               // zoomAll
-              if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
+              if (code === ConfigProviderService.vals.keyMappings.zoomAll.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.setViewPort(0, viewState.curViewPort.bufferLength);
                 } else {
@@ -46,7 +46,7 @@ angular.module('emulvcApp')
               }
 
               // zoomIn
-              if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
+              if (code === ConfigProviderService.vals.keyMappings.zoomIn.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.zoomViewPort(true);
                 } else {
@@ -55,7 +55,7 @@ angular.module('emulvcApp')
               }
 
               // zoomOut
-              if (code === ConfigProviderService.vals.keyMappings.zoomOut) {
+              if (code === ConfigProviderService.vals.keyMappings.zoomOut.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.zoomViewPort(false);
                 } else {
@@ -64,7 +64,7 @@ angular.module('emulvcApp')
               }
 
               // shiftViewPortLeft
-              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
+              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.shiftViewPort(false);
                 } else {
@@ -73,7 +73,7 @@ angular.module('emulvcApp')
               }
 
               // shiftViewPortRight
-              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
+              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.shiftViewPort(true);
                 } else {
@@ -82,7 +82,7 @@ angular.module('emulvcApp')
               }
 
               // zoomSel
-              if (code === ConfigProviderService.vals.keyMappings.zoomSel) {
+              if (code === ConfigProviderService.vals.keyMappings.zoomSel.code) {
                 if (viewState.getPermission('zoom')) {
                   viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
                 } else {
@@ -91,7 +91,7 @@ angular.module('emulvcApp')
               }
 
               // playEntireFile
-              if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
+              if (code === ConfigProviderService.vals.keyMappings.playEntireFile.code) {
                 if (viewState.getPermission('zoom')) {
                   if (ConfigProviderService.vals.restrictions.playback) {
                     Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
@@ -103,7 +103,7 @@ angular.module('emulvcApp')
               }
 
               // playAllInView
-              if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
+              if (code === ConfigProviderService.vals.keyMappings.playAllInView.code) {
                 if (viewState.getPermission('zoom')) {
                   if (ConfigProviderService.vals.restrictions.playback) {
                     Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
@@ -115,7 +115,7 @@ angular.module('emulvcApp')
               }
 
               // playSelected
-              if (code === ConfigProviderService.vals.keyMappings.playSelected) {
+              if (code === ConfigProviderService.vals.keyMappings.playSelected.code) {
                 if (viewState.getPermission('zoom')) {
                   if (ConfigProviderService.vals.restrictions.playback) {
                     Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
@@ -127,31 +127,31 @@ angular.module('emulvcApp')
               }
 
               // selectFirstContourCorrectionTool
-              if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool) {
+              if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool.code) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
                   viewState.curCorrectionToolNr = 1;
                 }
               }
               // selectSecondContourCorrectionTool
-              if (code === ConfigProviderService.vals.keyMappings.selectSecondContourCorrectionTool) {
+              if (code === ConfigProviderService.vals.keyMappings.selectSecondContourCorrectionTool.code) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
                   viewState.curCorrectionToolNr = 2;
                 }
               }
               // selectThirdContourCorrectionTool
-              if (code === ConfigProviderService.vals.keyMappings.selectThirdContourCorrectionTool) {
+              if (code === ConfigProviderService.vals.keyMappings.selectThirdContourCorrectionTool.code) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
                   viewState.curCorrectionToolNr = 3;
                 }
               }
               // selectFourthContourCorrectionTool
-              if (code === ConfigProviderService.vals.keyMappings.selectFourthContourCorrectionTool) {
+              if (code === ConfigProviderService.vals.keyMappings.selectFourthContourCorrectionTool.code) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
                   viewState.curCorrectionToolNr = 4;
                 }
               }
               // selectNOContourCorrectionTool
-              if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool) {
+              if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool.code) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
                   viewState.curCorrectionToolNr = undefined;
                 }
@@ -159,44 +159,44 @@ angular.module('emulvcApp')
 
 
               // tierUp
-              if (code === ConfigProviderService.vals.keyMappings.tierUp) {
+              if (code === ConfigProviderService.vals.keyMappings.tierUp.code) {
                 $('#HandletiersCtrl').scope().selectTier(false);
               }
               // tierDown
-              if (code === ConfigProviderService.vals.keyMappings.tierDown) {
+              if (code === ConfigProviderService.vals.keyMappings.tierDown.code) {
                 $('#HandletiersCtrl').scope().selectTier(true);
               }
 
               // preselected boundary snap to top
-              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop.code) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   $('#HandletiersCtrl').scope().snapBoundary(true);
                 }
               }
 
               // preselected boundary snap to bottom
-              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom.code) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   $('#HandletiersCtrl').scope().snapBoundary(false);
                 }
               }
 
               // expand Segment
-              if (code === ConfigProviderService.vals.keyMappings.plus) {
+              if (code === ConfigProviderService.vals.keyMappings.plus.code) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   $('#HandletiersCtrl').scope().expandSegment(true, true);
                 }
               }
 
               // expand Segment
-              if (code === ConfigProviderService.vals.keyMappings.plusShift) {
+              if (code === ConfigProviderService.vals.keyMappings.plusShift.code) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   $('#HandletiersCtrl').scope().expandSegment(true, false);
                 }
               }
 
               // expand Segment
-              if (code === ConfigProviderService.vals.keyMappings.minus) {
+              if (code === ConfigProviderService.vals.keyMappings.minus.code) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (e.shiftKey) {
                     $('#HandletiersCtrl').scope().expandSegment(false, false);
@@ -208,20 +208,20 @@ angular.module('emulvcApp')
 
 
               // openSubmenu
-              if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
+              if (code === ConfigProviderService.vals.keyMappings.openSubmenu.code) {
                 scope.openSubmenu();
               }
               // spectroSettings
-              if (code === ConfigProviderService.vals.keyMappings.spectroSettings) {
+              if (code === ConfigProviderService.vals.keyMappings.spectroSettings.code) {
                 scope.openModal('views/spectroSettings.html', 'dialog');
               }
               // select Segments in viewport selection
-              if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
+              if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection.code) {
                 $('#HandletiersCtrl').scope().selectSegmentsInSelection();
               }
 
               // tab
-              if (code === ConfigProviderService.vals.keyMappings.tab) {
+              if (code === ConfigProviderService.vals.keyMappings.tab.code) {
                 if (e.shiftKey) {
                   $('#HandletiersCtrl').scope().tabNext(true);
                 } else {
@@ -229,7 +229,7 @@ angular.module('emulvcApp')
                 }
               }
               // history
-              if (code === ConfigProviderService.vals.keyMappings.history) {
+              if (code === ConfigProviderService.vals.keyMappings.history.code) {
                 if (HistoryService.goBackHistory() === false) {
                   if (viewState.getmodalOpen() === false) {
                     scope.openModal('views/error.html', 'dialogSmall', false, 'History Error', 'No more history saved');
@@ -239,7 +239,7 @@ angular.module('emulvcApp')
 
               }
               // backspace
-              if (code === ConfigProviderService.vals.keyMappings.backspace) {
+              if (code === ConfigProviderService.vals.keyMappings.backspace.code) {
                 if (e.shiftKey) {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurMouseSegment();
