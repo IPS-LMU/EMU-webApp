@@ -116,7 +116,7 @@
         "deleteTier": true,
         "addItem": true,
         "drawCrossHairs": true,
-        "drawSampleNrs": true,
+        "drawSampleNrs": false,
         "drawZeroLine": true
 
     },

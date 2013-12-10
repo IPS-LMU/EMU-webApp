@@ -105,19 +105,19 @@ angular.module('emulvcApp')
 		/**
 		 * listen for dropped files
 		 */
-		$scope.$on('fileLoaded', function (evt, type, data) {
-			switch (type) {
-			case type.WAV:
-				$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
-				Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
-				break;
-			case type.TEXTGRID:
+		// $scope.$on('fileLoaded', function (evt, type, data) {
+		// 	switch (type) {
+		// 	case type.WAV:
+		// 		$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
+		// 		Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
+		// 		break;
+		// 	case type.TEXTGRID:
 
-				break;
-			}
-			console.log('data');
-			console.log(data);
-		});
+		// 		break;
+		// 	}
+		// 	console.log('data');
+		// 	console.log(data);
+		// });
 
 		/**
 		 * listen for newlyLoadedUttList
@@ -136,8 +136,11 @@ angular.module('emulvcApp')
 		 */
 		$scope.$on('newUserLoggedOn', function (evt, name) {
 			$scope.curUserName = name;
+			viewState.setState('loadingSaving');
 			Iohandlerservice.wsH.getUsrUttList(name).then(function (newVal) {
 				Iohandlerservice.getUtt(newVal[0]);
+				// should have then from getUtt
+				viewState.setState('labeling');
 				$scope.curUtt = newVal[0];
 				if (!viewState.getsubmenuOpen()) {
 					$scope.openSubmenu();
@@ -176,20 +179,20 @@ angular.module('emulvcApp')
 			$scope.curUtt = $scope.lastclickedutt;
 		});
 
-		/**
-		 * listen for newlyLoadedAudioFile
-		 */
-		$scope.$on('newlyLoadedAudioFile', function (evt, wavJSO, fileName) {
-			// for dev:
-			// viewState.curViewPort.sS = 28234;
-			// viewState.curViewPort.eS = 28570;
-			viewState.curViewPort.sS = 0;
-			viewState.curViewPort.eS = wavJSO.Data.length;
-			viewState.curViewPort.bufferLength = wavJSO.Data.length;
-			viewState.setscrollOpen(0);
-			Soundhandlerservice.wavJSO = wavJSO;
-			$scope.baseName = fileName.substr(0, fileName.lastIndexOf('.'));
-		});
+		// /**
+		//  * listen for newlyLoadedAudioFile
+		//  */
+		// $scope.$on('newlyLoadedAudioFile', function (evt, wavJSO, fileName) {
+		// 	// for dev:
+		// 	// viewState.curViewPort.sS = 28234;
+		// 	// viewState.curViewPort.eS = 28570;
+		// 	viewState.curViewPort.sS = 0;
+		// 	viewState.curViewPort.eS = wavJSO.Data.length;
+		// 	viewState.curViewPort.bufferLength = wavJSO.Data.length;
+		// 	viewState.setscrollOpen(0);
+		// 	Soundhandlerservice.wavJSO = wavJSO;
+		// 	$scope.baseName = fileName.substr(0, fileName.lastIndexOf('.'));
+		// });
 
 		// 
 		$scope.handleConfigLoaded = function () {
