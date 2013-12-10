@@ -660,7 +660,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.spectSettingsBtnClick = function () {
-			if (viewState.getPermission('spectSettingsBtnClick')) {
+			if (viewState.getPermission('spectSettingsChange')) {
 				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl');
 			} else {
 				console.log('action currently not allowed');
@@ -673,11 +673,12 @@ angular.module('emulvcApp')
 				// $scope.openModal('views/connectModal.html', 'dialog', false);
 				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
 			} else {
-				Iohandlerservice.wsH.closeConnect();
-				$scope.uttList = [];
-				$scope.showDropZone = true;
-				$scope.showSaveCommStaBtnDiv = false;
-				ConfigProviderService.httpGetConfig();
+				console.log('action currently not allowed');
+				// Iohandlerservice.wsH.closeConnect();
+				// $scope.uttList = [];
+				// $scope.showDropZone = true;
+				// $scope.showSaveCommStaBtnDiv = false;
+				// ConfigProviderService.httpGetConfig();
 			}
 		};
 
@@ -685,19 +686,17 @@ angular.module('emulvcApp')
 		$scope.openDemoDBbtnClick = function () {
 			if (viewState.getPermission('openDemoDBclick')) {
 				ConfigProviderService.vals.main.comMode = 'http:GET';
-				if (!$scope.dbLoaded) {
-					Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
-						console.log(res.data);
-						$('#FileCtrl').scope().hideDropZone();
-						$scope.uttList = res.data;
-						Iohandlerservice.getUtt(res.data[0]);
-						// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
-						// $scope.curUtt = $scope.uttList[0];
-						$scope.dbLoaded = true;
-					});
-				} else {
-					// TODO: call unload DB function
-				}
+				viewState.setState('loadingSaving');
+				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
+					console.log(res.data);
+					$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
+					$scope.uttList = res.data;
+					Iohandlerservice.getUtt(res.data[0]);
+					// should be then after get utt
+					viewState.setState('labeling');
+				});
+			} else {
+				console.log('action currently not allowed');
 			}
 		};
 
@@ -711,7 +710,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomAll = function () {
-			if (viewState.getPermission('cmdZoomAll')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
 				viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 			} else {
@@ -721,7 +720,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomIn = function () {
-			if (viewState.getPermission('cmdZoomIn')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
 				viewState.zoomViewPort(true);
 			} else {
@@ -731,7 +730,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomOut = function () {
-			if (viewState.getPermission('cmdZoomOut')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
@@ -741,7 +740,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomLeft = function () {
-			if (viewState.getPermission('cmdZoomLeft')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
@@ -751,7 +750,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomRight = function () {
-			if (viewState.getPermission('cmdZoomRight')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
@@ -761,7 +760,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdZoomSel = function () {
-			if (viewState.getPermission('cmdZoomSel')) {
+			if (viewState.getPermission('zoom')) {
 				$('#HandletiersCtrl').scope().deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
@@ -771,7 +770,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdPlayView = function () {
-			if (viewState.getPermission('cmdPlayView')) {
+			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
 				viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 			} else {
@@ -781,7 +780,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdPlaySel = function () {
-			if (viewState.getPermission('cmdPlaySel')) {
+			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 				viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
@@ -791,7 +790,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.cmdPlayAll = function () {
-			if (viewState.getPermission('cmdPlayAll')) {
+			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 				viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {

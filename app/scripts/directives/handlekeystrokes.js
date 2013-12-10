@@ -35,30 +35,97 @@ angular.module('emulvcApp')
               $('#HandletiersCtrl').scope().deleteEditArea();
 
               // delegate keyboard keyMappings according to keyMappings of scope
-              // shiftViewPortLeft
-              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
-                if (viewState.getPermission('cmdZoomLeft')) {
-                  viewState.shiftViewPort(false);
+
+              // zoomAll
+              if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
+                if (viewState.getPermission('zoom')) {
+                  viewState.setViewPort(0, viewState.curViewPort.bufferLength);
+                } else {
+                  console.log('action currently not allowed');
                 }
               }
-              // shiftViewPortRight
-              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
-                if (viewState.getPermission('cmdZoomRight')) {
-                  viewState.shiftViewPort(true);
+
+              // zoomIn
+              if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
+                if (viewState.getPermission('zoom')) {
+                  viewState.zoomViewPort(true);
+                } else {
+                  console.log('action currently not allowed');
                 }
               }
+
               // zoomOut
               if (code === ConfigProviderService.vals.keyMappings.zoomOut) {
-                if (viewState.getPermission('cmdZoomOut')) {
+                if (viewState.getPermission('zoom')) {
                   viewState.zoomViewPort(false);
+                } else {
+                  console.log('action currently not allowed');
                 }
               }
+
+              // shiftViewPortLeft
+              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
+                if (viewState.getPermission('zoom')) {
+                  viewState.shiftViewPort(false);
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+
+              // shiftViewPortRight
+              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
+                if (viewState.getPermission('zoom')) {
+                  viewState.shiftViewPort(true);
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+
               // zoomSel
               if (code === ConfigProviderService.vals.keyMappings.zoomSel) {
-                if (viewState.getPermission('cmdZoomSel')) {
+                if (viewState.getPermission('zoom')) {
                   viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                } else {
+                  console.log('action currently not allowed');
                 }
               }
+
+              // playEntireFile
+              if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
+                if (viewState.getPermission('zoom')) {
+                  if (ConfigProviderService.vals.restrictions.playback) {
+                    Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+                    viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+                  }
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+
+              // playAllInView
+              if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
+                if (viewState.getPermission('zoom')) {
+                  if (ConfigProviderService.vals.restrictions.playback) {
+                    Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                    viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+                  }
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+
+              // playSelected
+              if (code === ConfigProviderService.vals.keyMappings.playSelected) {
+                if (viewState.getPermission('zoom')) {
+                  if (ConfigProviderService.vals.restrictions.playback) {
+                    Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                    viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                  }
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+
               // selectFirstContourCorrectionTool
               if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool) {
                 if (ConfigProviderService.vals.restrictions.correctionTool) {
@@ -89,39 +156,8 @@ angular.module('emulvcApp')
                   viewState.curCorrectionToolNr = undefined;
                 }
               }
-              // zoomIn
-              if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
-                viewState.zoomViewPort(true);
-              }
-              // playEntireFile
-              if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
-                if (ConfigProviderService.vals.restrictions.playback) {
-                  Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-                  viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
-                }
-              }
-              // playAllInView
-              if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
-                if (ConfigProviderService.vals.restrictions.playback) {
-                  Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
-                  viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
-                }
-              }
-              // playSelected
-              if (code === ConfigProviderService.vals.keyMappings.playSelected) {
-                if (ConfigProviderService.vals.restrictions.playback) {
-                  Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-                  viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-                }
-              }
-              // shiftViewPortRight
-              if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
-                viewState.shiftViewPort(true);
-              }
-              // zoomAll
-              if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
-                viewState.setViewPort(0, viewState.curViewPort.bufferLength);
-              }
+
+
               // tierUp
               if (code === ConfigProviderService.vals.keyMappings.tierUp) {
                 $('#HandletiersCtrl').scope().selectTier(false);
@@ -224,7 +260,7 @@ angular.module('emulvcApp')
                       }
                       toDelete = toDelete.substring(0, toDelete.length - 1);
                       console.log(toDelete);
-                      if (viewState.getcurClickTierType() === "seg") {
+                      if (viewState.getcurClickTierType() === 'seg') {
                         scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
                       } else {
                         scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');

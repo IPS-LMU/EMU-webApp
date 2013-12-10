@@ -42,17 +42,6 @@ angular.module('emulvcApp')
     };
 
 
-    // possible general states of state machine
-    sServObj.states = {
-      'a': {
-        'name': 'noDBorFilesloaded',
-        'permittedActions': ['connectBtnClick', 'openDemoDBclick']
-      },
-      'b': 'modalShowing',
-      'c': 'labeling'
-    };
-
-    sServObj.curState = sServObj.states.a;
 
     sServObj.selected = [];
     sServObj.lasteditArea = null;
@@ -77,13 +66,32 @@ angular.module('emulvcApp')
 
     sServObj.curTaskPercCompl = 0;
 
+    // possible general states of state machine
+    sServObj.states = [];
+    sServObj.states.noDBorFilesloaded = {'permittedActions': ['connectBtnClick', 'openDemoDBclick']};
+    sServObj.states.loadingSaving = {'permittedActions': []};
+    sServObj.states.labeling = {'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange']};
+    sServObj.states.modalShowing = {'permittedActions': []};
+
+    sServObj.curState = sServObj.states.noDBorFilesloaded;
+
     /**
      * function to ask permission in current labeler state
      */
 
     sServObj.getPermission = function (actionName) {
+
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
-    }
+    };
+
+    /**
+     * set state
+     */
+
+    sServObj.setState = function (name) {
+
+      sServObj.curState = sServObj.states[name];
+    };
 
     /**
      */
