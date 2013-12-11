@@ -89,14 +89,16 @@ angular.module('emulvcApp')
 			}).then(function () {
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
-					sServObj.getSSFFfile(curFile);
+					curProm = sServObj.getSSFFfile(curFile);
+					promises.push(curProm);
 				});
 			}).then(function () {
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
 					console.log(curFile);
-					sServObj.getESPS(curFile);
+					curProm = sServObj.getESPS(curFile);
+					promises.push(curProm);
 				});
 			});
 
