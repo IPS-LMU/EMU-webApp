@@ -115,20 +115,21 @@
     line-height: 12px;
 
     text-align:center;
-    width: 9%;    
+    width: 9%;
 }
 
 .mini-btn {
     float:left;
 }
 
-.mini-btn:hover {
+.mini-btn:hover:enabled {
     background-color:white;
     color:#000;
 }
 
 .mini-btn:disabled {
-    background-color:#161616;
+    color:rgb(33,217,255);
+    border:1px solid rgb(33,217,255);
 }
 
 .mini-btn:active {
