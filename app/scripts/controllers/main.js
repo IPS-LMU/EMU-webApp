@@ -135,16 +135,17 @@ angular.module('emulvcApp')
 			$scope.curUserName = name;
 			viewState.setState('loadingSaving');
 			Iohandlerservice.getUsrUttList(name).then(function (newVal) {
-				Iohandlerservice.getUtt(newVal[0]);
-				// should have then from getUtt
-				viewState.setState('labeling');
-				$scope.curUtt = newVal[0];
-				$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
-				if (!viewState.getsubmenuOpen()) {
-					$scope.openSubmenu();
-				}
-				$scope.uttList = newVal;
-				$scope.curUtt = newVal[0];
+				Iohandlerservice.getUtt(newVal[0]).then(function (argument) {
+					console.log(argument);
+					viewState.setState('labeling');
+					$scope.curUtt = newVal[0];
+					$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
+					if (!viewState.getsubmenuOpen()) {
+						$scope.openSubmenu();
+					}
+					$scope.uttList = newVal;
+					$scope.curUtt = newVal[0];
+				});
 			});
 		});
 
@@ -308,10 +309,13 @@ angular.module('emulvcApp')
 				$scope.lastclickedutt = utt;
 				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
 			} else {
-				$scope.$broadcast('loadingNewUtt');
-				// Iohandlerservice.httpGetUtterence(utt);
-				Iohandlerservice.getUtt(utt);
-				$scope.curUtt = utt;
+				if (utt !== $scope.curUtt) {
+					$scope.$broadcast('loadingNewUtt');
+					Iohandlerservice.getUtt(utt).then(function (res) {
+						console.log(res);
+						$scope.curUtt = utt;
+					});
+				}
 			}
 		};
 
@@ -321,9 +325,11 @@ angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.saveUtt($scope.curUtt);
-			$scope.modifiedCurSSFF = false;
-			$scope.modifTierItems = false;
+			Iohandlerservice.saveUtt($scope.curUtt).then(function (arg) {
+				console.log(arg);
+				$scope.modifiedCurSSFF = false;
+				$scope.modifTierItems = false;
+			});
 		};
 
 		/**
@@ -481,12 +487,12 @@ angular.module('emulvcApp')
 			// });
 		};
 
-		/**
-		 *
-		 */
-		$scope.changingMetaData = function () {
-			$scope.modifiedMetaData = true;
-		};
+		// /**
+		//  *
+		//  */
+		// $scope.changingMetaData = function () {
+		// 	$scope.modifiedMetaData = true;
+		// };
 
 		/**
 		 *

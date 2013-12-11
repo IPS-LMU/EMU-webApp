@@ -41,7 +41,7 @@ angular.module('emulvcApp')
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				getProm = Httphandler.getUtt(utt);
 			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				Websockethandler.getUtt(utt); // should maybe also return promise???
+				getProm = Websockethandler.getUtt(utt);
 			}
 
 			return getProm;

@@ -22,12 +22,10 @@ angular.module('emulvcApp')
 		 */
 		sServObj.setVals = function (data) {
 			if ($.isEmptyObject(sServObj.vals)) {
-				console.log(data);
 				sServObj.vals = data;
 			} else {
-				console.log(data);
 				Object.keys(data).forEach(function (key1) {
-					console.log(key1 + ' : ' + data[key1]);
+					// console.log(key1 + ' : ' + data[key1]);
 					// sServObj.vals[key1] = data[key1];
 					Object.keys(data[key1]).forEach(function (key2) {
 						if (sServObj.vals[key1][key2] !== undefined) {

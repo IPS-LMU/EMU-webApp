@@ -5,7 +5,7 @@
 
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="FileCtrl" ng-controller="FileCtrl">
 
-      <h3>Utterances&nbsp;</h3>
+      <h3>Utterances</h3>
       <div id="submenu" class="submenu">
         <div class="utteranceOuter" ng-repeat="utt in uttList">
 
@@ -20,8 +20,8 @@
             <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
           </div>
         </div>
-        <div> &nbsp; </div>
-        <div> &nbsp; </div>
+        <!-- <div> &nbsp; </div> -->
+        <!-- <div> &nbsp; </div> -->
           <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="alert('not implemented yet');">
           <span>{{dropText}}</span>
           <div ng-show="files.length">
@@ -32,9 +32,9 @@
           </div>
         </div>      
         </div>
-        <div class="utteranceSaveMeta" ng-show="tmp.showSaveCommStaBtnDiv">
+<!--         <div class="utteranceSaveMeta" ng-show="tmp.showSaveCommStaBtnDiv">
           <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
-        </div>
+        </div> -->
       </div>
     </nav>
 

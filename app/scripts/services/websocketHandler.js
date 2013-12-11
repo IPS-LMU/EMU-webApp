@@ -232,9 +232,7 @@ angular.module('emulvcApp')
 
 		// ws request for saving ssff file
 		sServObj.saveSSFFfile = function (fName) {
-			console.log(fName)
 			var ssffJSO = Ssffdataservice.getDataOfFile(fName);
-			console.log(ssffJSO);
 			var buf = Ssffparserservice.jso2ssff(ssffJSO);
 			var base64 = Binarydatamaniphelper.arrayBufferToBase64(buf);
 
@@ -248,8 +246,16 @@ angular.module('emulvcApp')
 			return promise;
 		};
 
+		// ws request for saving esps file
+		sServObj.saveESPSfile = function (fName) {
+			console.log(fName);
+		};
+
 		// ws get Utt from ws server
 		sServObj.getUtt = function (utt) {
+			var promises = [];
+			var getUttPromise = $q.defer();
+			var curProm;
 			var curFile;
 
 			// load audio file first
@@ -272,80 +278,54 @@ angular.module('emulvcApp')
 				Soundhandlerservice.wavJSO = wavJSO;
 				$rootScope.$broadcast('cleanPreview');
 			}).then(function () {
+				// load signal files
 				ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 					curFile = sServObj.findFileInUtt(utt, ext);
-					sServObj.getSSFFfile(curFile);
+					curProm = sServObj.getSSFFfile(curFile);
+					promises.push(curProm);
 				});
-			}).then(function () {
 				// load label files
 				ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
-					var deferred = $q.defer();
 					curFile = sServObj.findFileInUtt(utt, ext);
-					var promise = sServObj.getESPSfile(curFile);
-					//promises.push(promise);
-					deferred.resolve(promise);
-
-					//console.log(curFile);
+					curProm = sServObj.getESPSfile(curFile);
+					promises.push(curProm);
 				});
-				//$q.all(promises).then(function () { HistoryService.history(); });
+
 			});
+
+			$q.all(promises).then(function () {
+				getUttPromise.resolve('finishedLoadingUtt');
+			});
+
+			return getUttPromise.promise;
 
 		};
 
 		// ws save Utt to ws server
 		sServObj.saveUtt = function (utt) {
-
+			var promises = [];
+			var saveUttPromise = $q.defer();
+			var curProm;
 			var curFile;
 
 			curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
 			ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
 				curFile = sServObj.findFileInUtt(utt, ext);
-				console.log(curFile);
-				sServObj.saveSSFFfile(curFile);
+				curProm = sServObj.saveSSFFfile(curFile);
+				promises.push(curProm);
 			});
 
-			// ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
-			// 	curFile = sServObj.findFileInUtt(utt, ext);
-			// 	console.log(curFile);
-			// });
+			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
+				curFile = sServObj.findFileInUtt(utt, ext);
+				curProm = sServObj.saveESPSfile(curFile);
+				promises.push(curProm);
+			});
 
-			// load audio file first
-			// curFile = sServObj.findFileInUtt(utt, ConfigProviderService.vals.signalsCanvasConfig.extensions.audio);
-			// //console.log(curFile)
-			// sServObj.getAudioFile(curFile).then(function (audioF) {
-			// 	// var arrBuff = stringToArrayBuffer(audioF);
-			// 	var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(audioF);
-			// 	console.log(typeof arrBuff);
+			$q.all(promises).then(function () {
+				saveUttPromise.resolve('finishedSavingUtt');
+			});
 
-			// 	var wavJSO = Wavparserservice.wav2jso(arrBuff);
-			// 	return wavJSO;
-			// }).then(function (wavJSO) {
-			// 	// set needed vals
-			// 	viewState.curViewPort.sS = 0;
-			// 	viewState.curViewPort.eS = wavJSO.Data.length;
-			// 	viewState.curViewPort.bufferLength = wavJSO.Data.length;
-			// 	viewState.setscrollOpen(0);
-			// 	viewState.resetSelect();
-			// 	Soundhandlerservice.wavJSO = wavJSO;
-			// 	$rootScope.$broadcast('cleanPreview');
-			// }).then(function () {
-			// 	ConfigProviderService.vals.signalsCanvasConfig.extensions.signals.forEach(function (ext) {
-			// 		curFile = sServObj.findFileInUtt(utt, ext);
-			// 		sServObj.getSSFFfile(curFile);
-			// 	});
-			// }).then(function () {
-			// 	// load label files
-			// 	ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (ext) {
-			// 		var deferred = $q.defer();
-			// 		curFile = sServObj.findFileInUtt(utt, ext);
-			// 		var promise = sServObj.getESPSfile(curFile);
-			// 		//promises.push(promise);
-			// 		deferred.resolve(promise);
-
-			// 		//console.log(curFile);
-			// 	});
-			// 	//$q.all(promises).then(function () { HistoryService.history(); });
-			// });
+			return saveUttPromise.promise;
 
 		};
 

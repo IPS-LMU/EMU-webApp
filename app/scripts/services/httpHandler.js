@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Httphandler', function Httphelper($rootScope, $http, HistoryService, viewState, ConfigProviderService, Soundhandlerservice, Ssffparserservice, Wavparserservice, Espsparserservice) {
+	.service('Httphandler', function Httphelper($rootScope, $http, $q, HistoryService, viewState, ConfigProviderService, Soundhandlerservice, Ssffparserservice, Wavparserservice, Espsparserservice) {
 		var sServObj = {};
 
 		/**
@@ -58,6 +58,9 @@ angular.module('emulvcApp')
 		 *
 		 */
 		sServObj.getUtt = function (utt) {
+			var promises = [];
+			var getUttPromise = $q.defer();
+			var curProm;
 			var curFile;
 
 			// load audio file first
@@ -77,7 +80,7 @@ angular.module('emulvcApp')
 				// for dev
 				// viewState.curViewPort.sS = 22136;
 				// viewState.curViewPort.eS = 22145;
-				
+
 				viewState.curViewPort.bufferLength = wavJSO.Data.length;
 				viewState.setscrollOpen(0);
 				viewState.resetSelect();
@@ -95,14 +98,20 @@ angular.module('emulvcApp')
 					console.log(curFile);
 					sServObj.getESPS(curFile);
 				});
-			}).then(function () {
+			});
+
+			$q.all(promises).then(function () {
 				console.log('history');
 				HistoryService.history();
+				getUttPromise.resolve('finishedLoadingUtt');
 			});
+
+			return getUttPromise.promise;
+
 		};
 
 		return sServObj;
-				// /**
+		// /**
 		//  *
 		//  */
 		// sServObj.postSaveSSFF = function() {
