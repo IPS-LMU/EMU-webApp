@@ -80,6 +80,9 @@ angular.module('emulvcApp')
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               redraw();
+            }else{
+              context.clearRect(0, 0, canvas0.width, canvas0.height);
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             }
           }
         });

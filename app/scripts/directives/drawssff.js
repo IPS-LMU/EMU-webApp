@@ -48,6 +48,9 @@ angular.module('emulvcApp')
               drawValues(scope.vs, canvas, scope.config, col);
               // console.log(scope.config);
             }
+          } else {
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
           }
         }
 

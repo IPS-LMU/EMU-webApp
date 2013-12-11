@@ -14,6 +14,8 @@ angular.module('emulvcApp')
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
 
+		var connected = false;
+
 		// var promises = [];
 
 		////////////////////////////
@@ -36,6 +38,7 @@ angular.module('emulvcApp')
 
 		// broadcast on open
 		function wsonopen(message) {
+			connected = true;
 			$rootScope.$broadcast('connectedToWSserver');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
@@ -51,6 +54,7 @@ angular.module('emulvcApp')
 		}
 
 		function wsonclose(message) {
+			connected = false;
 			console.log(message);
 			console.log('WEBSOCKET closed!!!!!');
 		}
@@ -115,6 +119,12 @@ angular.module('emulvcApp')
 			conPromise = defer;
 			return defer.promise;
 		};
+
+		//
+		sServObj.isConnected = function () {
+			return connected;
+		};
+
 		// close connection with ws
 		sServObj.closeConnect = function () {
 			ws.onclose = function () {};

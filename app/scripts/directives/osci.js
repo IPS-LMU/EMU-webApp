@@ -41,6 +41,11 @@ angular.module('emulvcApp')
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
+						}else{
+							var ctx = canvas.getContext('2d');
+							ctx.clearRect(0, 0, canvas.width, canvas.height);
+							ctx = markupCanvas.getContext('2d');
+							ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 						}
 					}
 				});

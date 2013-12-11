@@ -16,10 +16,14 @@ angular.module('emulvcApp')
      */
     $scope.dropText = droptext1;
 
-    
-	$scope.hideDropZone = function () {
-	    $scope.dropClass = 'hidden';
-	};    
+
+    $scope.hideDropZone = function () {
+      $scope.dropClass = 'hidden';
+    };
+
+    $scope.showDropZone = function () {
+      $scope.dropClass = '';
+    };
 
     function dragEnterLeave(evt) {
       evt.stopPropagation();

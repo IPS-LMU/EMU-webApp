@@ -252,6 +252,7 @@
         "downloadTextGrid": true,
         "specSettings": true,
         "connect": true,
+        "clear": false,
         "deleteSingleTier": true,
         "resizeSingleTier": true,
         "saveSingleTier": true,

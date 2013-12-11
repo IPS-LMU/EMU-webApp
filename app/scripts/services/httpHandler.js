@@ -102,4 +102,34 @@ angular.module('emulvcApp')
 		};
 
 		return sServObj;
+				// /**
+		//  *
+		//  */
+		// sServObj.postSaveSSFF = function() {
+
+		// 	var data = Ssffparserservice.jso2ssff(Ssffdataservice.data[0]); // SIC hardcoded [0];
+		// 	// console.log($location.absUrl());
+
+
+		// 	var binary = '';
+		// 	var bytes = new Uint8Array(data);
+		// 	var len = bytes.byteLength;
+		// 	for (var i = 0; i < len; i++) {
+		// 		binary += String.fromCharCode(bytes[i])
+		// 	}
+		// 	var base64 = window.btoa(binary);
+
+		// 	$http({
+		// 		url: 'index.html',
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json'
+		// 		},
+		// 		data: {
+		// 			method: 'saveSSFFfile',
+		// 			fileURL: Ssffdataservice.data[0].fileURL.split($location.absUrl())[1],
+		// 			data: base64
+		// 		}
+		// 	}) //.success(function() {});
+		// };
 	});

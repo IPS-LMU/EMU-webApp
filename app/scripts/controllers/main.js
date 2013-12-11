@@ -74,17 +74,15 @@ angular.module('emulvcApp')
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			// Check if server speaks emuLVC
-			Iohandlerservice.wsH.getProtocol().then(function (res) {
+			Iohandlerservice.getProtocol().then(function (res) {
 				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
-					//console.log('we speak the same protocol!!');
-					Iohandlerservice.wsH.getConfigFile().then(function (newVal) {
+					Iohandlerservice.getConfigFile().then(function (newVal) {
 						ConfigProviderService.setVals(newVal);
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
-						Iohandlerservice.wsH.getDoUserManagement().then(function (manageRes) {
+						Iohandlerservice.getDoUserManagement().then(function (manageRes) {
 							if (manageRes === 'YES') {
 								dialogService.open('views/login.html', 'LoginCtrl');
-								// Iohandlerservice.wsH.getUsrUttList('florian');
 							} else {
 								$scope.$broadcast('newUserLoggedOn', '');
 							}
@@ -136,11 +134,12 @@ angular.module('emulvcApp')
 		$scope.$on('newUserLoggedOn', function (evt, name) {
 			$scope.curUserName = name;
 			viewState.setState('loadingSaving');
-			Iohandlerservice.wsH.getUsrUttList(name).then(function (newVal) {
+			Iohandlerservice.getUsrUttList(name).then(function (newVal) {
 				Iohandlerservice.getUtt(newVal[0]);
 				// should have then from getUtt
 				viewState.setState('labeling');
 				$scope.curUtt = newVal[0];
+				$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
 				if (!viewState.getsubmenuOpen()) {
 					$scope.openSubmenu();
 				}
@@ -178,20 +177,6 @@ angular.module('emulvcApp')
 			$scope.curUtt = $scope.lastclickedutt;
 		});
 
-		// /**
-		//  * listen for newlyLoadedAudioFile
-		//  */
-		// $scope.$on('newlyLoadedAudioFile', function (evt, wavJSO, fileName) {
-		// 	// for dev:
-		// 	// viewState.curViewPort.sS = 28234;
-		// 	// viewState.curViewPort.eS = 28570;
-		// 	viewState.curViewPort.sS = 0;
-		// 	viewState.curViewPort.eS = wavJSO.Data.length;
-		// 	viewState.curViewPort.bufferLength = wavJSO.Data.length;
-		// 	viewState.setscrollOpen(0);
-		// 	Soundhandlerservice.wavJSO = wavJSO;
-		// 	$scope.baseName = fileName.substr(0, fileName.lastIndexOf('.'));
-		// });
 
 		// 
 		$scope.handleConfigLoaded = function () {
@@ -280,11 +265,6 @@ angular.module('emulvcApp')
 				// $('#allowSortable').sortable('enable');
 			}
 
-			// connect to ws server if it says so in config
-			// if (ConfigProviderService.vals.main.mode === 'server' && ConfigProviderService.vals.main.wsServerUrl !== undefined) {
-			// 	Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
-			// }
-
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
 			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
@@ -341,7 +321,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveUtt($scope.curUtt);
+			Iohandlerservice.saveUtt($scope.curUtt);
 			$scope.modifiedCurSSFF = false;
 			$scope.modifTierItems = false;
 		};
@@ -359,7 +339,6 @@ angular.module('emulvcApp')
 		$scope.dragEnd = function () {
 			viewState.setdragBarActive(false);
 		};
-
 
 
 		/**
@@ -634,7 +613,7 @@ angular.module('emulvcApp')
 		//
 		$scope.addTierPointBtnClick = function () {
 
-			if (viewState.getPermission('addTierSegBtnClick')) {
+			if (viewState.getPermission('addTierPointBtnClick')) {
 				alert('not implemented yet');
 			} else {
 				console.log('action currently not allowed');
@@ -689,7 +668,7 @@ angular.module('emulvcApp')
 
 		//
 		$scope.openDemoDBbtnClick = function () {
-			if (viewState.getPermission('openDemoDBclick')) {
+			if (viewState.getPermission('openDemoBtnDBclick')) {
 				ConfigProviderService.vals.main.comMode = 'http:GET';
 				viewState.setState('loadingSaving');
 				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
@@ -709,6 +688,25 @@ angular.module('emulvcApp')
 		$scope.aboutBtnClick = function () {
 			dialogService.open('views/about.html', 'AboutCtrl');
 		};
+
+		//
+		$scope.clearBtnClick = function () {
+			// viewState.setdragBarActive(false);
+			console.log('trying to clear labeller');
+			if (Iohandlerservice.wsH.isConnected()) {
+				Iohandlerservice.wsH.closeConnect();
+			}
+			$scope.uttList = [];
+			ConfigProviderService.httpGetConfig();
+			Soundhandlerservice.wavJSO = {};
+			Tierdataservice.data = {};
+			Ssffdataservice.data = [];
+			$('#FileCtrl').scope().showDropZone(); // SIC should be in service
+			$scope.$broadcast('refreshTimeline');
+
+			viewState.setState('noDBorFilesloaded');
+		};
+
 
 
 		// bottom menu:

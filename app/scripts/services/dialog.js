@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('dialogService', function dialogService($modal) {
+	.service('dialogService', function dialogService($modal, viewState) {
 		// shared service object
 		var sServObj = {};
 
@@ -16,39 +16,21 @@ angular.module('emulvcApp')
 			});
 		};
 
+		sServObj.openConfirm = function () {
+			modalInstance = $modal.open({
+				backdrop: 'static',
+				keyboard: false,
+				templateUrl: 'views/confirmModal.html',
+				controller: 'ConfirmmodalCtrl'
+			});
+		};
+
 		sServObj.close = function () {
+			viewState.focusInTextField = false;
+			viewState.setState(viewState.prevState);
 			modalInstance.dismiss('cancel');
 		};
 
 
 		return sServObj;
 	});
-
-// angular.module('emulvcApp')
-// 	.factory('dialogService', ['$modal',
-// 		function ($modal) {
-// 			return {
-
-// 				open: function (templatefile, myContent, myTitle) {
-// 					$modal.open({
-// 						backdrop: true,
-// 						keyboard: true,
-// 						backdropClick: true,
-// 						templateUrl: templatefile,
-// 						resolve: {
-// 							modalContent: function () {
-// 								return myContent;
-// 							},
-// 							modalTitle: function () {
-// 								return myTitle;
-// 							}
-// 						}
-// 					});
-// 				},
-// 				closeModal: function () {
-// 					// alert('Hier');
-// 					$modal.dismiss('cancel');
-// 				}
-// 			};
-// 		}
-// 	]);

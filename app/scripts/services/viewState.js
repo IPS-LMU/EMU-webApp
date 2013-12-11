@@ -69,17 +69,18 @@ angular.module('emulvcApp')
     // possible general states of state machine
     sServObj.states = [];
     sServObj.states.noDBorFilesloaded = {
-      'permittedActions': ['connectBtnClick', 'openDemoDBclick']
+      'permittedActions': ['connectBtnClick', 'openDemoBtnDBclick']
     };
     sServObj.states.loadingSaving = {
       'permittedActions': []
     };
     sServObj.states.labeling = {
-      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange']
+      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addTierSegBtnClick', 'addTierPointBtnClick', 'renameSelTierBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
     };
     sServObj.states.modalShowing = {
       'permittedActions': []
     };
+    sServObj.prevState = sServObj.states.noDBorFilesloaded;
 
     sServObj.curState = sServObj.states.noDBorFilesloaded;
 
@@ -96,9 +97,13 @@ angular.module('emulvcApp')
      * set state
      */
 
-    sServObj.setState = function (name) {
-
-      sServObj.curState = sServObj.states[name];
+    sServObj.setState = function (nameOrObj) {
+      sServObj.prevState = sServObj.curState;
+      if(typeof nameOrObj === 'string'){
+        sServObj.curState = sServObj.states[nameOrObj];
+      }else{
+        sServObj.curState = nameOrObj;
+      }
     };
 
     /**
