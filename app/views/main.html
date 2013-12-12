@@ -5,9 +5,13 @@
 
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="FileCtrl" ng-controller="FileCtrl">
 
-      <h3>Utterances</h3>
+      <h3>Utterances
+        <div class="uttFilter">
+        <input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+      </div>
+      </h3>
       <div id="submenu" class="submenu">
-        <div class="utteranceOuter" ng-repeat="utt in uttList">
+        <div class="utteranceOuter" ng-repeat="utt in uttList | filter:filterText">
 
           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
             <b>{{utt.name}}</b>

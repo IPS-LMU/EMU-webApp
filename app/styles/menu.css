@@ -1,3 +1,25 @@
+.uttFilter input[type="text"]{
+    background: url(http://www.bloggermint.com/demos/css3searchbox/search-dark.png) no-repeat 10px 6px #fff;
+    border: 0 none;
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    color: #777;
+    width: 50%;
+    height: 10px;
+    padding: 6px 15px 6px 35px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;
+}
+
+
 .submenu {
     width: 100%;
     height: 100%;
@@ -24,11 +46,12 @@
  
 .cbp-spmenu h3 {
     /*background: rgba(56,54,62,100);*/
-    background: rgb(64,62,70);
-    font-size: 16px;
-    height:40px;
-    margin: 0;
-    padding-left:10px;
+    /*background: rgb(64,62,70);*/
+    font-size: 12px;
+    /*height:40px;*/
+    /*margin: 0;*/
+    /*padding-left:10px;*/
+    border-bottom:thin solid white;
 }
  
 .cbp-spmenu-vertical {

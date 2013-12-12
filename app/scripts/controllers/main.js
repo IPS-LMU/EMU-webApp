@@ -28,6 +28,8 @@ angular.module('emulvcApp')
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
 
+		$scope.filterText = '';
+
 		$scope.windowWidth = $window.outerWidth;
 		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
