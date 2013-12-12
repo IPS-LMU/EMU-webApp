@@ -558,8 +558,8 @@ angular.module('emulvcApp')
     };
 
     sServObj.getPCMpp = function (event) {
-      var start = parseInt(this.curViewPort.sS, 10);
-      var end = parseInt(this.curViewPort.eS, 10);
+      var start = parseFloat(this.curViewPort.sS);
+      var end = parseFloat(this.curViewPort.eS);
       return (end - start) / event.originalEvent.srcElement.width;
     };
 

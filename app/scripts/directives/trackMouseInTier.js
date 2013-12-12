@@ -37,6 +37,23 @@ angular.module('emulvcApp')
         element.bind('mousemove', function (event) {
           var moveLine = true;
           thisPCM = getX(event) * viewState.getPCMpp(event);
+          var moveBy = 0;
+          if(viewState.getPCMpp(event)<=1) {
+            // relative movement in pcm below 1 pcm per pixel
+            moveBy = Math.round((thisPCM - lastPCM) * viewState.getPCMpp(event));
+          }
+          else if(viewState.getPCMpp(event)<=0.5) {
+            // relative movement in pcm below 0.5 pcm per pixel
+            moveBy = Math.round((thisPCM - lastPCM) * 2 * viewState.getPCMpp(event));
+          }
+          if(viewState.getPCMpp(event)<=0.1) {
+            // relative movement in pcm below 0.1 pcm per pixel
+            moveBy = Math.round((thisPCM - lastPCM)* 10 * viewState.getPCMpp(event));
+          }
+          else {
+              // relative movement in pcm above 1 pcm per pixel
+              moveBy = Math.round(thisPCM - lastPCM);
+          }
           switch (event.which) {
           case 1:
             //console.log('Left mouse button pressed');
@@ -51,7 +68,7 @@ angular.module('emulvcApp')
             if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
-                scope.moveBorder(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                scope.moveBorder(moveBy, scope.this.tier);
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 viewState.movingBoundary = true;
@@ -61,7 +78,7 @@ angular.module('emulvcApp')
               } 
               else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
-                scope.moveSegment(Math.floor(thisPCM - lastPCM), scope.this.tier);
+                scope.moveSegment(moveBy, scope.this.tier);
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.$apply();

@@ -443,7 +443,7 @@ angular.module('emulvcApp')
 		};
 
 		$scope.getNearest = function (x, tier) {
-			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
+			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var id = 0;
 			var ret = 0;
 			if(tier.type==="seg") {
@@ -483,7 +483,7 @@ angular.module('emulvcApp')
 		};
 
 		$scope.getEventId = function (x, tier) {
-			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
+			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var id = 0;
 			var ret = 0;
 			if(tier.type==="seg") {
@@ -521,7 +521,7 @@ angular.module('emulvcApp')
 
 
 		$scope.getEvent = function (x, tier) {
-			var pcm = parseInt($scope.vs.curViewPort.sS, 10) + x;
+			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var evtr = null;
 			if(tier.type==="seg") {
 			    angular.forEach(tier.events, function (evt, id) {
