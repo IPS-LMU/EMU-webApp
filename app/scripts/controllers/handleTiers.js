@@ -482,16 +482,26 @@ angular.module('emulvcApp')
 			return ret;
 		};
 
-		$scope.getEventId = function (x, tier) {
+		$scope.getEventId = function (x, tier, nearest) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var id = 0;
 			var ret = 0;
 			if(tier.type==="seg") {
-			    angular.forEach(tier.events, function (evt) {
-				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-					    ret = id;
-				    }
-				    ++id;
+			    angular.forEach(tier.events, function (evt, id) {
+			        if(nearest) {
+			    	    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+				    	    if (pcm - evt.startSample >= evt.sampleDur / 2) {
+					    	    ret = id + 1;
+        					} else {
+	        					ret = id;
+		        			}
+			        	}    
+			        }
+			        else {
+    				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+	    				    ret = id;
+		    		    }        
+			        }
 			    });
 			}
 			else {
@@ -520,18 +530,25 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.getEvent = function (x, tier) {
+		$scope.getEvent = function (x, tier, nearest) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var evtr = null;
 			if(tier.type==="seg") {
 			    angular.forEach(tier.events, function (evt, id) {
-			    	if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-				    	if (pcm - evt.startSample >= evt.sampleDur / 2) {
-					    	evtr = tier.events[id + 1];
-    					} else {
-	    					evtr = tier.events[id];
-		    			}
-			    	}
+			        if(nearest) {
+    			    	if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+	    			    	if (pcm - evt.startSample >= evt.sampleDur / 2) {
+		    			    	evtr = tier.events[id + 1];
+    		    			} else {
+	    		    			evtr = tier.events[id];
+		    		    	}
+    			    	}		        
+			        }
+			        else {
+    				    if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+	    				    evtr = tier.events[id];
+		    		    }   			        
+			        }
     			});
 
 			}

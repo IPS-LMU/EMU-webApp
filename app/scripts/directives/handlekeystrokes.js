@@ -16,7 +16,7 @@ angular.module('emulvcApp')
               // disable keys when focus is in comment text filed
 
               // enable enter and escape when in editing mode
-              if (viewState.isEditing()) {
+              //if (viewState.isEditing()) {
                 if (code === ConfigProviderService.vals.keyMappings.enter) {
                   $('#HandletiersCtrl').scope().renameLabel();
                 }
@@ -27,7 +27,7 @@ angular.module('emulvcApp')
                   e.preventDefault();
                   e.stopPropagation();
                 }
-              }
+              //}
 
 
             } else {
@@ -275,7 +275,7 @@ angular.module('emulvcApp')
                 e.stopPropagation();
               }
 
-              // console.log(code);
+               console.log(code);
 
             }
           });
