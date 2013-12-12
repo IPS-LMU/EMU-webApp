@@ -56,7 +56,7 @@ angular.module('emulvcApp')
 				// implicitly as it points to the manifest.
 				cacheProperties.totalFiles = (totalFiles + 1);
 				console.log('##########################');
-				alert(cacheProperties.totalFiles);
+				alert('INFO: appcache update of: ' + cacheProperties.totalFiles + ' files');
 			});
 
 		}
