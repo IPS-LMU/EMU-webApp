@@ -11,7 +11,7 @@
       </div>
       </h3>
       <div id="submenu" class="submenu">
-        <div class="utteranceOuter" ng-repeat="utt in uttList | filter:filterText">
+        <div class="utteranceOuter" ng-repeat="utt in uttList | regex:filterText">
 
           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
             <b>{{utt.name}}</b>
