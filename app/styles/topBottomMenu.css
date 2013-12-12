@@ -10,6 +10,7 @@
     background: #0DC5FF;
     -webkit-touch-callout: none;
     text-align:left;
+    overflow-x:hidden;
 }
 
 
