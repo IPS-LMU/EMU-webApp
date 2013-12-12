@@ -17,10 +17,13 @@ angular.module('emulvcApp')
 
               // enable enter and escape when in editing mode
               //if (viewState.isEditing()) {
-                if (code === ConfigProviderService.vals.keyMappings.enter) {
+                if (code === ConfigProviderService.vals.keyMappings.enter.code) {
+                  viewState.focusInTextField = false;
                   $('#HandletiersCtrl').scope().renameLabel();
+                  
                 }
-                if (code === ConfigProviderService.vals.keyMappings.esc) {
+                if (code === ConfigProviderService.vals.keyMappings.esc.code) {
+                  viewState.focusInTextField = false;
                   $('#HandletiersCtrl').scope().deleteEditArea();
                 }
                 if (code === 13) {
@@ -275,7 +278,7 @@ angular.module('emulvcApp')
                 e.stopPropagation();
               }
 
-               console.log(code);
+               
 
             }
           });
