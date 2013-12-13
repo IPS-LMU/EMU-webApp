@@ -16,7 +16,7 @@
           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
             <b>{{utt.name}}</b>
             <!-- <div class="utterance" title="{{utt.name}}">{{utt.name}}</div> -->
-            <button class="saveUtteranceButton" ng-disabled="true" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
+            <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
               <img />
             </button>
 
@@ -24,8 +24,9 @@
             <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
           </div>
         </div>
-        <!-- <div> &nbsp; </div> -->
-        <!-- <div> &nbsp; </div> -->
+        <div> &nbsp; </div><!-- hmmm...nicht scheee...  -->
+        <div> &nbsp; </div>
+        <div> &nbsp; </div>
           <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="alert('not implemented yet');">
           <span>{{dropText}}</span>
           <div ng-show="files.length">

@@ -39,10 +39,10 @@ angular.module('emulvcApp')
 		});
 
 		angular.element($window).bind('keyup', function (e) {
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift) {
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift.code) {
 				HistoryService.history();
 			}
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt.code) {
 				HistoryService.history();
 			}
 		});
@@ -188,7 +188,7 @@ angular.module('emulvcApp')
 				$scope.openSubmenu();
 			}
 			// for development
-			$scope.openDemoDBbtnClick();
+			// $scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
 			// SIC!! use ConfigProviderService.vals.keyMappings.strRep directly
@@ -830,7 +830,4 @@ angular.module('emulvcApp')
 			$scope.lastkeycode = c;
 		};
 
-		$scope.tmp = function () {
-			return false;
-		};
 	});
