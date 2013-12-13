@@ -89,6 +89,11 @@ angular.module('emulvcApp')
 
 		function handleUpdatereadyEvent(e) {
 			console.log('###### handleUpdatereadyEvent ##########');
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'New version available! Would you like to use it?').then(function (res) {
+				if (res) {
+					window.location.reload();
+				}
+			});
 			console.log(e);
 		}
 
