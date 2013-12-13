@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2013-12-13T11:02:44.148Z
+# rev 1 - 2013-12-13T11:19:30.198Z
 
 CACHE:
 404.html
@@ -859,8 +859,8 @@ favicon.ico
 index.html
 manifest.json
 robots.txt
+scripts/0b5f1dbd.emuLVC.min.js
 scripts/8a121660.plugins.js
-scripts/e527e8d5.emuLVC.min.js
 scripts/workers/spectroWorker.js
 styles/354b3a1d.main.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
