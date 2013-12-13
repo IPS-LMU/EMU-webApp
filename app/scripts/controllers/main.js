@@ -188,7 +188,7 @@ angular.module('emulvcApp')
 				$scope.openSubmenu();
 			}
 			// for development
-			// $scope.openDemoDBbtnClick();
+			$scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
 			// SIC!! use ConfigProviderService.vals.keyMappings.strRep directly
@@ -681,6 +681,7 @@ angular.module('emulvcApp')
 					$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
 					$scope.uttList = res.data;
 					Iohandlerservice.getUtt(res.data[0]);
+					$scope.curUtt = res.data[0];
 					// should be then after get utt
 					viewState.setState('labeling');
 				});
@@ -827,5 +828,9 @@ angular.module('emulvcApp')
 		//
 		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
+		};
+
+		$scope.tmp = function () {
+			return false;
 		};
 	});
