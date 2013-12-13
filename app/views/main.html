@@ -16,12 +16,12 @@
           <div class="saveUtterance" id="saveUtterance" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
             <b>{{utt.name}}</b>
             <!-- <div class="utterance" title="{{utt.name}}">{{utt.name}}</div> -->
-            <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
+            <button class="saveUtteranceButton" ng-disabled="true" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance">
               <img />
             </button>
 
-            <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
-            <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
+            <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-disabled="true" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
+            <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
           </div>
         </div>
         <!-- <div> &nbsp; </div> -->
