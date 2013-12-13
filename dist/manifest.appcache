@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2013-12-12T15:00:24.418Z
+# rev 1 - 2013-12-13T11:02:44.148Z
 
 CACHE:
 404.html
@@ -120,57 +120,6 @@ bower_components/angular/angular.js
 bower_components/angular/angular.min.js
 bower_components/angular/angular.min.js.map
 bower_components/angular/bower.json
-bower_components/hammerjs/Gruntfile.coffee
-bower_components/hammerjs/LICENSE
-bower_components/hammerjs/README.md
-bower_components/hammerjs/bower.json
-bower_components/hammerjs/component.json
-bower_components/hammerjs/dist/hammer.js
-bower_components/hammerjs/dist/hammer.min.js
-bower_components/hammerjs/dist/jquery.hammer.js
-bower_components/hammerjs/dist/jquery.hammer.min.js
-bower_components/hammerjs/examples/README.md
-bower_components/hammerjs/examples/assets/img/arrow.png
-bower_components/hammerjs/examples/assets/img/monalisa.jpg
-bower_components/hammerjs/examples/assets/img/spinner.png
-bower_components/hammerjs/examples/assets/js/ga.js
-bower_components/hammerjs/examples/assets/js/modernizr.js
-bower_components/hammerjs/examples/carousel.html
-bower_components/hammerjs/examples/drag.html
-bower_components/hammerjs/examples/events.html
-bower_components/hammerjs/examples/fastclick.html
-bower_components/hammerjs/examples/jquery.html
-bower_components/hammerjs/examples/no-jquery.html
-bower_components/hammerjs/examples/nodejs.js
-bower_components/hammerjs/examples/pinchzoom.html
-bower_components/hammerjs/examples/pull-to-refresh.html
-bower_components/hammerjs/examples/zepto.html
-bower_components/hammerjs/package.json
-bower_components/hammerjs/plugins/hammer.fakemultitouch.js
-bower_components/hammerjs/plugins/hammer.showtouches.js
-bower_components/hammerjs/plugins/jquery.hammer.js
-bower_components/hammerjs/src/core.js
-bower_components/hammerjs/src/detection.js
-bower_components/hammerjs/src/event.js
-bower_components/hammerjs/src/gestures.js
-bower_components/hammerjs/src/instance.js
-bower_components/hammerjs/src/intro.js
-bower_components/hammerjs/src/outro.js
-bower_components/hammerjs/src/pointerevent.js
-bower_components/hammerjs/src/setup.js
-bower_components/hammerjs/src/utils.js
-bower_components/hammerjs/tests/gestures.js
-bower_components/hammerjs/tests/libs/jquery.js
-bower_components/hammerjs/tests/libs/qunit.css
-bower_components/hammerjs/tests/libs/qunit.js
-bower_components/hammerjs/tests/libs/underscore.js
-bower_components/hammerjs/tests/mouseevents.html
-bower_components/hammerjs/tests/mousetouchevents.html
-bower_components/hammerjs/tests/pointerevents_mouse.html
-bower_components/hammerjs/tests/pointerevents_touch.html
-bower_components/hammerjs/tests/touchevents.html
-bower_components/hammerjs/tests/utils.html
-bower_components/hammerjs/tests/utils.js
 bower_components/jquery-ui/AUTHORS.txt
 bower_components/jquery-ui/MANIFEST
 bower_components/jquery-ui/MIT-LICENSE.txt
@@ -910,8 +859,8 @@ favicon.ico
 index.html
 manifest.json
 robots.txt
-scripts/55ed073a.emuLVC.min.js
-scripts/7d56b696.plugins.js
+scripts/8a121660.plugins.js
+scripts/e527e8d5.emuLVC.min.js
 scripts/workers/spectroWorker.js
 styles/354b3a1d.main.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
