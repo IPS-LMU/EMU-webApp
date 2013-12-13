@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .controller('ConfirmmodalCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+	.controller('ConfirmmodalCtrl', function ($scope, dialogService, passedInTxt) {
+		$scope.passedInTxt = passedInTxt;
+
+		$scope.confirm = function () {
+			dialogService.close(true);
+		};
+		$scope.cancel = function () {
+			dialogService.close(false);
+		};
+	});

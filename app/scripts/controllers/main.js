@@ -184,12 +184,11 @@ angular.module('emulvcApp')
 		// 
 		$scope.handleConfigLoaded = function () {
 
-			// for development
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}
 			// for development
-			// $scope.openDemoDBbtnClick();
+			$scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
 			// SIC!! use ConfigProviderService.vals.keyMappings.strRep directly
@@ -231,7 +230,7 @@ angular.module('emulvcApp')
 				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html','ErrormodalCtrl');
+						dialogService.open('views/error.html', 'ErrormodalCtrl', 'Could not connect to websocket server...');
 					}
 				});
 			}
@@ -666,15 +665,9 @@ angular.module('emulvcApp')
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
 				// $scope.openModal('views/connectModal.html', 'dialog', false);
-				viewState.setState('modalShowing');
 				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
 			} else {
 				console.log('action currently not allowed');
-				// Iohandlerservice.wsH.closeConnect();
-				// $scope.uttList = [];
-				// $scope.showDropZone = true;
-				// $scope.showSaveCommStaBtnDiv = false;
-				// ConfigProviderService.httpGetConfig();
 			}
 		};
 
@@ -705,18 +698,22 @@ angular.module('emulvcApp')
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
 			console.log('trying to clear labeller');
-			if (Iohandlerservice.wsH.isConnected()) {
-				Iohandlerservice.wsH.closeConnect();
-			}
-			$scope.uttList = [];
-			ConfigProviderService.httpGetConfig();
-			Soundhandlerservice.wavJSO = {};
-			Tierdataservice.data = {};
-			Ssffdataservice.data = [];
-			$('#FileCtrl').scope().showDropZone(); // SIC should be in service
-			$scope.$broadcast('refreshTimeline');
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data? This will also delete any unsaved changes...').then(function (res) {
+				if (res) {
+					if (Iohandlerservice.wsH.isConnected()) {
+						Iohandlerservice.wsH.closeConnect();
+					}
+					$scope.uttList = [];
+					ConfigProviderService.httpGetConfig();
+					Soundhandlerservice.wavJSO = {};
+					Tierdataservice.data = {};
+					Ssffdataservice.data = [];
+					$('#FileCtrl').scope().showDropZone(); // SIC should be in service
+					$scope.$broadcast('refreshTimeline');
 
-			viewState.setState('noDBorFilesloaded');
+					viewState.setState('noDBorFilesloaded');
+				}
+			});
 		};
 
 

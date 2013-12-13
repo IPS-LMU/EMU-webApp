@@ -7,28 +7,26 @@ angular.module('emulvcApp')
 
 		var modalInstance = {};
 
-		sServObj.open = function (templatefile, argCtrl) {
+		sServObj.open = function (templatefile, argCtrl, txt) {
+			viewState.setState('modalShowing');
 			modalInstance = $modal.open({
 				backdrop: 'static',
 				keyboard: false,
 				templateUrl: templatefile,
-				controller: argCtrl
+				controller: argCtrl,
+				resolve: {
+					passedInTxt: function () {
+						return txt;
+					}
+				}
 			});
+			return modalInstance.result;
 		};
 
-		sServObj.openConfirm = function () {
-			modalInstance = $modal.open({
-				backdrop: 'static',
-				keyboard: false,
-				templateUrl: 'views/confirmModal.html',
-				controller: 'ConfirmmodalCtrl'
-			});
-		};
-
-		sServObj.close = function () {
+		sServObj.close = function (res) {
 			viewState.focusInTextField = false;
 			viewState.setState(viewState.prevState);
-			modalInstance.dismiss('cancel');
+			modalInstance.close(res);
 		};
 
 
