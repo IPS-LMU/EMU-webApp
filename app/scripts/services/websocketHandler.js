@@ -48,14 +48,14 @@ angular.module('emulvcApp')
 		}
 
 		function wsonerror(message) {
-			console.log(message);
+			// console.log(message);
 			console.log('WEBSOCKET ERROR!!!!!');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
 
 		function wsonclose(message) {
 			connected = false;
-			console.log(message);
+			// console.log(message);
 			console.log('WEBSOCKET closed!!!!!');
 		}
 

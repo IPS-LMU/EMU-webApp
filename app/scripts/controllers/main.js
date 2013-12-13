@@ -229,7 +229,11 @@ angular.module('emulvcApp')
 
 			if (ConfigProviderService.vals.main.autoConnect) {
 				// console.log("DEVEL");
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl);
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
+					if (message.type === 'error') {
+						dialogService.open('views/error.html','ErrormodalCtrl');
+					}
+				});
 			}
 
 			// init loading of files for testing
