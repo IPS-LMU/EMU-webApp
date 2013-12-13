@@ -1,77 +1,34 @@
-/*.utterance {
-    display: block;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    height: 28px;
-}*/
 
-.saveUtterance b {
-    display: block;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    height: 28px;
-}
-
-.utteranceOuter {
-  margin: 0px;
-  padding: 0px;
-}
-
-
-.utteranceSaveMeta {
-    display: inline-block;
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 100% !important;
-    text-align: center;
-    height: 45px;
-    background: rgb(64,62,70);
-
-}
-
-.utteranceSaveMeta button {
-    text-align:center;
-    margin-top: 9px;
-    /*margin-left: 10px;*/
-    width: 205px;
-    height: 29px;
-    border-style:none;
-    border: 1px solid white;
-    background-color: rgb(56,54,62);
-}
-
-.utteranceSaveMeta button:hover {
-    background-color: white;
-}
-
-.saveUtterance{
+/*uttListItem*/
+.uttListItem{
     margin: 0px;
-    padding: 0px;
-    /*background-color:rgba(152, 152, 152, 0.25);*/
-    /*border-radius: 5px;    */
-    vertical-align: middle;
+    padding: 10px;
     margin-bottom: 10px;
-    /*border: 1px solid blue;*/
     border-style:none;
     border-bottom:thin solid rgba(152, 152, 152, 0.25);
     position: relative;
+    cursor: default;
 }
 
-.saveUtterance:hover {
+.uttListItem:hover {
     background-color:rgba(152, 152, 152, 0.28);
 }
 
-.saveUtterance input[type='text'] {
+
+.uttListItem input[type='text'] {
     width: 170px;
     height: 25px;
     font-size: 14px;
+}
+
+.uttListItem b {
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: default;
+    width: 100%;
+    height: 28px;
 }
 
 .saveUtteranceButton {
@@ -95,3 +52,43 @@
 .saveUtteranceButton img:hover{
     background-color:#0DC5FF;
 }
+/*.utteranceSaveMeta button:hover {
+    background-color: white;
+}*/
+
+/*.utterance {
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    height: 28px;
+}*/
+/*.utteranceSaveMeta {
+    display: inline-block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 100% !important;
+    text-align: center;
+    height: 45px;
+    background: rgb(64,62,70);
+
+}*/
+
+
+/*.utteranceOuter {
+  margin: 0px;
+  padding: 0px;
+}*/
+
+/*.utteranceSaveMeta button {
+    text-align:center;
+    margin-top: 9px;
+    width: 205px;
+    height: 29px;
+    border-style:none;
+    border: 1px solid white;
+    background-color: rgb(56,54,62);
+}*/
