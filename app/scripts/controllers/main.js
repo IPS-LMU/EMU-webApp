@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window,
+	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window, $document,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice, dialogService) {
 
 		$scope.cps = ConfigProviderService;
@@ -31,6 +31,7 @@ angular.module('emulvcApp')
 		$scope.filterText = '';
 
 		$scope.windowWidth = $window.outerWidth;
+
 		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
 			$('#HandletiersCtrl').scope().deleteEditArea();
@@ -38,14 +39,18 @@ angular.module('emulvcApp')
 			$scope.$apply('windowWidth');
 		});
 
+		// handle shift/alt keyups for history
 		angular.element($window).bind('keyup', function (e) {
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift.code) {
-				HistoryService.history();
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift) {
+				// HistoryService.history();
+				HistoryService.addCurChangeObjToUndoStack();
 			}
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt.code) {
-				HistoryService.history();
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
+				// HistoryService.history();
 			}
 		});
+
+
 
 		// init load of config files
 		ConfigProviderService.httpGetConfig();

@@ -2,7 +2,7 @@
 
 angular.module('emulvcApp')
 	.controller('TimelineCtrl', function ($scope, $http, $compile,
-		viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService, Ssffdataservice) {
+		viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService, Ssffdataservice, HistoryService) {
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
@@ -10,6 +10,7 @@ angular.module('emulvcApp')
 		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffds = Ssffdataservice;
+		$scope.hists = HistoryService;
 
 		$scope.showSSFFOsci = false;
 		$scope.showSSFFSpectro = false;

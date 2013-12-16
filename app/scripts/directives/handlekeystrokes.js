@@ -233,12 +233,16 @@ angular.module('emulvcApp')
               }
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
-                if (HistoryService.goBackHistory() === false) {
-                  if (viewState.getmodalOpen() === false) {
-                    scope.openModal('views/error.html', 'dialogSmall', false, 'History Error', 'No more history saved');
-                  }
-
+                if (!e.shiftKey) {
+                  HistoryService.undo();
+                } else {
+                  HistoryService.redo();
                 }
+                // if (HistoryService.goBackHistory() === false) {
+                // if (viewState.getmodalOpen() === false) {
+                // scope.openModal('views/error.html', 'dialogSmall', false, 'History Error', 'No more history saved');
+                // }
+                // }
 
               }
               // backspace
@@ -281,12 +285,14 @@ angular.module('emulvcApp')
           });
 
           // bind keyup events (only used for shift and alt)
-          $(document).bind('keyup', function (e) {
-            if (e.keyCode === 16 && viewState.movingBoundary) {
-              console.log('finished moving boundary?? Why is this increasing?');
-            }
+          // $(document).bind('keyup', function (e) {
+          //   if (e.keyCode === 16) {
+          //     // console.log('#################################');
+          //     // console.log(e);
+          //     console.log('finished moving boundary?? Why is this increasing?');
+          //   }
 
-          });
+          // });
 
 
         });
