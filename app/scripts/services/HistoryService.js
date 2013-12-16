@@ -54,24 +54,28 @@ angular.module('emulvcApp')
 		var redoStack = [];
 		var curChangeObj = {};
 
-		function undoChange(changeObj) {
+		function applyChange(changeObj, applyOldVal) {
 
 			Object.keys(changeObj).forEach(function (key) {
 				// console.log(key)
 				var cur = changeObj[key];
-				console.log(Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx]);
-				console.log(cur);
-				console.log(cur.oldValue);
-				Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
+				// console.log(Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx]);
+				// console.log(cur);
+				// console.log(cur.oldValue);
+				if (applyOldVal) {
+					Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
+				} else {
+					Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
+				}
 			});
 		}
 
 		// public API
 		sServObj.updateCurChangeObj = function (dataObj) {
 			var dataKey = String('SSFF' + '#' + dataObj.ssffIdx) + '#' + String(dataObj.colIdx) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
-			if(!curChangeObj[dataKey]){
+			if (!curChangeObj[dataKey]) {
 				curChangeObj[dataKey] = dataObj;
-			}else{
+			} else {
 				// keep init old value
 				dataObj.oldValue = curChangeObj[dataKey].oldValue;
 				curChangeObj[dataKey] = dataObj;
@@ -84,22 +88,24 @@ angular.module('emulvcApp')
 			// empty redo stack
 			redoStack = [];
 			// add to undoStack
-			undoStack.push(curChangeObj);
+			if (!$.isEmptyObject(curChangeObj)) {
+				undoStack.push(curChangeObj);
+			}
 			// reset curChangeObj
 			curChangeObj = {};
 
-			console.log(undoStack[undoStack.length - 1]);
+			// console.log(undoStack[undoStack.length - 1]);
 
 		};
 
 		// undo
 		sServObj.undo = function () {
 			if (undoStack.length > 0) {
-				console.log('##########UNDO');
+				// console.log('##########UNDO');
 				// add to redo stack
 				var oldChangeObj = angular.copy(undoStack[undoStack.length - 1]);
 				redoStack.push(oldChangeObj);
-				undoChange(oldChangeObj);
+				applyChange(oldChangeObj, true);
 				// remove old 
 				undoStack.pop();
 			}
@@ -108,12 +114,13 @@ angular.module('emulvcApp')
 
 		// redo
 		sServObj.redo = function () {
-			console.log('##########REDO')
-			// if (redoStack.length > 0) {
-				// TODO
-				// redoStack.pop();
-			// }
-
+			// console.log('##########REDO');
+			if (redoStack.length > 0) {
+				var oldChangeObj = angular.copy(redoStack[redoStack.length - 1]);
+				undoStack.push(oldChangeObj);
+				applyChange(oldChangeObj, false);
+				redoStack.pop();
+			}
 		};
 
 
