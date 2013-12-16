@@ -123,6 +123,12 @@ angular.module('emulvcApp')
 			}
 		};
 
+		// getNrOfPossibleUndos
+		sServObj.getNrOfPosibleUndos = function () {
+			return undoStack.length;
+		};
+
+
 
 
 		return sServObj;

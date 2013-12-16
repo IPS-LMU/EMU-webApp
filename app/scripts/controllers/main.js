@@ -536,7 +536,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.getUttColor = function (utt) {
 			var curColor;
-			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
+			if (HistoryService.getNrOfPosibleUndos() > 0) {
 				curColor = {
 					'background-color': '#f00',
 					'color': 'white'

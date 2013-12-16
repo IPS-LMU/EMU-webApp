@@ -41,7 +41,6 @@ angular.module('emulvcApp')
 								'oldValue': oldValue,
 								'newValue': newValue
 							});
-							scope.changingSSFFdata();
 						}
 						scope.$apply();
 					}
