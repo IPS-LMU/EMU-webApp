@@ -32,6 +32,7 @@ angular.module('emulvcApp')
 
 		$scope.windowWidth = $window.outerWidth;
 
+		// bind window resize event
 		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
 			$('#HandletiersCtrl').scope().deleteEditArea();
@@ -39,7 +40,7 @@ angular.module('emulvcApp')
 			$scope.$apply('windowWidth');
 		});
 
-		// handle shift/alt keyups for history
+		// bind shift/alt keyups for history
 		angular.element($window).bind('keyup', function (e) {
 			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift) {
 				// HistoryService.history();

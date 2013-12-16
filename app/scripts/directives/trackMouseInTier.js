@@ -38,21 +38,19 @@ angular.module('emulvcApp')
           var moveLine = true;
           thisPCM = getX(event) * viewState.getPCMpp(event);
           var moveBy = 0;
-          if(viewState.getPCMpp(event)<=1) {
+          if (viewState.getPCMpp(event) <= 1) {
             // relative movement in pcm below 1 pcm per pixel
             moveBy = Math.round((thisPCM - lastPCM) * viewState.getPCMpp(event));
-          }
-          else if(viewState.getPCMpp(event)<=0.5) {
+          } else if (viewState.getPCMpp(event) <= 0.5) {
             // relative movement in pcm below 0.5 pcm per pixel
             moveBy = Math.round((thisPCM - lastPCM) * 2 * viewState.getPCMpp(event));
           }
-          if(viewState.getPCMpp(event)<=0.1) {
+          if (viewState.getPCMpp(event) <= 0.1) {
             // relative movement in pcm below 0.1 pcm per pixel
-            moveBy = Math.round((thisPCM - lastPCM)* 10 * viewState.getPCMpp(event));
-          }
-          else {
-              // relative movement in pcm above 1 pcm per pixel
-              moveBy = Math.round(thisPCM - lastPCM);
+            moveBy = Math.round((thisPCM - lastPCM) * 10 * viewState.getPCMpp(event));
+          } else {
+            // relative movement in pcm above 1 pcm per pixel
+            moveBy = Math.round(thisPCM - lastPCM);
           }
           switch (event.which) {
           case 1:
@@ -69,21 +67,30 @@ angular.module('emulvcApp')
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
                 scope.moveBorder(moveBy, scope.this.tier);
-                lastPCM = thisPCM;
+                // console.log(lastPCM);
+                // console.log(scope.this.tier.TierName);
                 viewState.selectBoundry();
                 viewState.movingBoundary = true;
+                scope.hists.updateCurChangeObj({
+                  'type': 'ESPS',
+                  'action': 'moveBoundary',
+                  'tierName': scope.this.tier.TierName,
+                  'itemIdx': viewState.getcurMouseSegmentId(),
+                  'newValue': viewState.getcurMouseSegment(),
+                  'oldValue': angular.copy(viewState.getcurMouseSegment())
+                });
+
+                lastPCM = thisPCM;
                 scope.$apply();
                 moveLine = false;
                 // scope.modifTierItems();
-              } 
-              else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
+              } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 scope.moveSegment(moveBy, scope.this.tier);
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.$apply();
-              }
-              else {
+              } else {
                 viewState.movingBoundary = false;
               }
             }
@@ -181,7 +188,7 @@ angular.module('emulvcApp')
         }
 
         // function getY(e) {
-          // return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
+        // return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
         // }
       }
     };

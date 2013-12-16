@@ -54,28 +54,52 @@ angular.module('emulvcApp')
 		var redoStack = [];
 		var curChangeObj = {};
 
+		// applyChanges should be called by undo redo functions
 		function applyChange(changeObj, applyOldVal) {
-
 			Object.keys(changeObj).forEach(function (key) {
-				// console.log(key)
+				console.log(key);
 				var cur = changeObj[key];
-				// console.log(Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx]);
-				// console.log(cur);
-				// console.log(cur.oldValue);
-				if (applyOldVal) {
-					Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
-				} else {
-					Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
+				if (cur.type === 'SSFF') {
+					if (applyOldVal) {
+						Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
+					} else {
+						Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
+					}
+				} else if (cur.type === 'ESPS') {
+					console.log('###UNDOING esps change');
+					switch (cur.action) {
+					case 'moveBoundary':
+						console.log('#######UNDOING moveBoundary');
+						console.log(Tierdataservice.data.tiers[0].events[cur.itemIdx]);
+						console.log(cur.oldValue);
+
+						Tierdataservice.data.tiers[0].events[cur.itemIdx] = cur.oldValue;
+						break;
+					}
 				}
 			});
 		}
 
 		// public API
 		sServObj.updateCurChangeObj = function (dataObj) {
-			var dataKey = String('SSFF' + '#' + dataObj.ssffIdx) + '#' + String(dataObj.colIdx) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
+			console.log(dataObj);
+			var dataKey;
+			if (dataObj.type === 'SSFF') {
+				dataKey = String(dataObj.type + '#' + dataObj.ssffIdx) + '#' + String(dataObj.colIdx) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
+			} else if (dataObj.type === 'ESPS') {
+				switch (dataObj.action) {
+				case 'moveBoundary':
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
+					break;
+				}
+
+			}
+
+			// update curChangeObj
 			if (!curChangeObj[dataKey]) {
 				curChangeObj[dataKey] = dataObj;
 			} else {
+				console.log('here' + curChangeObj[dataKey].oldValue);
 				// keep init old value
 				dataObj.oldValue = curChangeObj[dataKey].oldValue;
 				curChangeObj[dataKey] = dataObj;
@@ -127,7 +151,6 @@ angular.module('emulvcApp')
 		sServObj.getNrOfPosibleUndos = function () {
 			return undoStack.length;
 		};
-
 
 
 

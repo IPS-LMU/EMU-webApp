@@ -34,6 +34,7 @@ angular.module('emulvcApp')
 							// console.log(newValue);
 							curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
 							scope.hists.updateCurChangeObj({
+								'type': 'SSFF',
 								'ssffIdx': 0,
 								'colIdx': 0,
 								'sampleBlockIdx': colStartSampleNr + scope.vs.curPreselColumnSample,
