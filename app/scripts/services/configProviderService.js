@@ -14,6 +14,11 @@ angular.module('emulvcApp')
 			$http.get('configFiles/defaultConfig.json').success(function (data) {
 				sServObj.setVals(data);
 				$rootScope.$broadcast('configLoaded', data);
+			}).error(function (data, status, header, config) {
+				console.log('################ERR');
+				console.log(status);
+				console.log(header);
+				console.log(config);
 			});
 		};
 
