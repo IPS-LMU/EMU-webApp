@@ -1,5 +1,5 @@
 .uttFilter input[type="text"]{
-    background: url(http://www.bloggermint.com/demos/css3searchbox/search-dark.png) no-repeat 10px 6px #fff;
+    background: url(../img/search-dark.png) no-repeat 10px 6px #fff;
     border: 0 none;
     font: bold 12px Arial,Helvetica,Sans-serif;
     color: #777;
