@@ -2,8 +2,13 @@
 
 angular.module('emulvcApp')
 	.service('HistoryService', function HistoryService(Ssffdataservice, Tierdataservice) {
+
+		var undoStack = [];
+		var redoStack = [];
+
 		// shared service object
 		var sServObj = {};
+
 
 		sServObj.myHistory = [];
 		sServObj.myHistoryCounter = 0;
@@ -42,6 +47,47 @@ angular.module('emulvcApp')
 				return false;
 			}
 		};
+
+		//////////////////////////////////////////
+		// new dual stack implementation
+
+		//private
+		function revertChange(changeObj) {
+			// TODO
+			console.log(changeObj);
+		}
+
+		// public API
+		sServObj.addToUndoStack = function (changeObj) {
+			// empty redo stack
+			redoStack = [];
+
+			undoStack.push(changeObj);
+		};
+
+		// undo
+		sServObj.undo = function () {
+			if (undoStack.length > 0) {
+				// add to redo stack
+				var oldChangeObj = angular.copy(undoStack[undoStack.length - 1]);
+				redoStack.push(oldChangeObj);
+				revertChange(oldChangeObj);
+				// remove old 
+				undoStack.pop();
+			}
+
+		};
+
+		// redo
+		sServObj.redo = function () {
+			if (redoStack.length > 0) {
+				// TODO
+				redoStack.pop();
+			}
+
+		};
+
+
 
 		return sServObj;
 	});

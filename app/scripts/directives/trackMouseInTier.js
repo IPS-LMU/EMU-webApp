@@ -74,7 +74,7 @@ angular.module('emulvcApp')
                 viewState.movingBoundary = true;
                 scope.$apply();
                 moveLine = false;
-                scope.modifTierItems();
+                // scope.modifTierItems();
               } 
               else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();

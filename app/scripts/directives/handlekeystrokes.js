@@ -17,19 +17,19 @@ angular.module('emulvcApp')
 
               // enable enter and escape when in editing mode
               //if (viewState.isEditing()) {
-                if (code === ConfigProviderService.vals.keyMappings.enter) {
-                  viewState.focusInTextField = false;
-                  $('#HandletiersCtrl').scope().renameLabel();
-                  
-                }
-                if (code === ConfigProviderService.vals.keyMappings.esc) {
-                  viewState.focusInTextField = false;
-                  $('#HandletiersCtrl').scope().deleteEditArea();
-                }
-                if (code === 13) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
+              if (code === ConfigProviderService.vals.keyMappings.enter) {
+                viewState.focusInTextField = false;
+                $('#HandletiersCtrl').scope().renameLabel();
+
+              }
+              if (code === ConfigProviderService.vals.keyMappings.esc) {
+                viewState.focusInTextField = false;
+                $('#HandletiersCtrl').scope().deleteEditArea();
+              }
+              if (code === 13) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
               //}
 
 
@@ -277,11 +277,18 @@ angular.module('emulvcApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
-
-               
-
             }
           });
+
+          // bind keyup events (only used for shift and alt)
+          $(document).bind('keyup', function (e) {
+            if (e.keyCode === 16 && viewState.movingBoundary) {
+              console.log('finished moving boundary?? Why is this increasing?');
+            }
+
+          });
+
+
         });
 
         //remove binding on destroy

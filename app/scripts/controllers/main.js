@@ -155,7 +155,7 @@ angular.module('emulvcApp')
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('saveSSFFb4load', function () {
+		$scope.$on('saveSSFFb4load', function () { // SIC switch to promises
 			console.log('saving utt');
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
@@ -170,7 +170,7 @@ angular.module('emulvcApp')
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('discardSSFFb4load', function () {
+		$scope.$on('discardSSFFb4load', function () { // SIC switch to promises
 			console.log('discarding ssff changes');
 			$scope.modifiedCurSSFF = false;
 			$scope.$broadcast('loadingNewUtt');
