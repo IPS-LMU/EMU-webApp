@@ -42,12 +42,9 @@ angular.module('emulvcApp')
 
 		// bind shift/alt keyups for history
 		angular.element($window).bind('keyup', function (e) {
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift) {
+			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift || e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
 				// HistoryService.history();
 				HistoryService.addCurChangeObjToUndoStack();
-			}
-			if (e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
-				// HistoryService.history();
 			}
 		});
 

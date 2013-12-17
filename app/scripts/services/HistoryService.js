@@ -69,12 +69,21 @@ angular.module('emulvcApp')
 					console.log('###UNDOING esps change');
 					switch (cur.action) {
 					case 'moveBoundary':
+					case 'moveSegment':
 						// console.log('#######UNDOING moveBoundary');
 						// console.log(cur);
 						if (applyOldVal) {
-							$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							if (cur.action === 'moveBoundary') {
+								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							} else {
+								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							}
 						} else {
-							$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							if (cur.action === 'moveBoundary') {
+								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							} else {
+								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+							}
 						}
 						break;
 					}
@@ -100,8 +109,9 @@ angular.module('emulvcApp')
 			} else if (dataObj.type === 'ESPS') {
 				switch (dataObj.action) {
 				case 'moveBoundary':
+				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
-					// console.log(dataKey)
+					console.log(dataKey)
 					// update curChangeObj
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -112,6 +122,8 @@ angular.module('emulvcApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
+
+
 				}
 			}
 			// console.log(curChangeObj);

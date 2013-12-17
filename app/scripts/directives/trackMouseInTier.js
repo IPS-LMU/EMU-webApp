@@ -88,6 +88,14 @@ angular.module('emulvcApp')
                 scope.moveSegment(moveBy, scope.this.tier);
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
+                scope.hists.updateCurChangeObj({
+                  'type': 'ESPS',
+                  'action': 'moveSegment',
+                  'tierName': scope.this.tier.TierName,
+                  'itemIdx': viewState.getselected().sort(),
+                  'movedBy': moveBy
+                });
+
                 scope.$apply();
               } else {
                 viewState.movingBoundary = false;
