@@ -86,6 +86,13 @@ angular.module('emulvcApp')
 							}
 						}
 						break;
+					case 'renameLabel':
+						if (applyOldVal) {
+							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.oldValue);
+						}else{
+							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
+						}
+						break;
 					}
 				}
 			});
@@ -111,7 +118,7 @@ angular.module('emulvcApp')
 				case 'moveBoundary':
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
-					console.log(dataKey)
+					console.log(dataKey);
 					// update curChangeObj
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -130,7 +137,7 @@ angular.module('emulvcApp')
 
 		};
 
-
+		// addCurChangeObjToUndoStack
 		sServObj.addCurChangeObjToUndoStack = function () {
 			// empty redo stack
 			redoStack = [];
@@ -141,7 +148,24 @@ angular.module('emulvcApp')
 			// reset curChangeObj
 			curChangeObj = {};
 
-			// console.log(undoStack);
+			console.log(undoStack);
+
+		};
+
+		// addCurChangeObjToUndoStack
+		sServObj.addObjToUndoStack = function (obj) {
+			// empty redo stack
+			redoStack = [];
+			var tmpObj = {};
+			tmpObj[String(obj.type) + '#' + String(obj.ssffIdx) + '#' + String(obj.itemIdx)] = obj;
+
+			// add to undoStack
+			if (!$.isEmptyObject(tmpObj)) {
+				undoStack.push(tmpObj);
+			}
+			// reset curChangeObj
+			curChangeObj = {};
+			console.log(undoStack);
 
 		};
 

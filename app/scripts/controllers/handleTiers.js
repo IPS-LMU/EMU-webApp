@@ -104,6 +104,17 @@ angular.module('emulvcApp')
 
 		$scope.renameLabel = function () {
 			if (viewState.isEditing()) {
+				console.log(viewState.getcurClickSegments()[0].label);
+				console.log($('.' + viewState.getlasteditArea()).val());
+				HistoryService.addObjToUndoStack({
+					'type': 'ESPS',
+					'action': 'renameLabel',
+					'tierName': viewState.getcurClickTierName(),
+					'itemIdx': viewState.getlastID(),
+					'oldValue': viewState.getcurClickSegments()[0].label,
+					'newValue': $('.' + viewState.getlasteditArea()).val()
+				});
+
 				$scope.rename(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
 				viewState.deleteEditArea();
 				viewState.focusInTextField = false;
@@ -342,7 +353,6 @@ angular.module('emulvcApp')
 					angular.forEach(t.events, function (evt, i) {
 						if (id == i) {
 							evt.label = name;
-							HistoryService.history();
 						}
 					});
 				}
