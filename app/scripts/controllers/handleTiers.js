@@ -211,7 +211,6 @@ angular.module('emulvcApp')
 						neighTd = $scope.tierDetails.data.tiers[tIdx - 1];
 						neighTdIdx = tIdx - 1;
 					} else if (tIdx < $scope.tierDetails.data.tiers.length - 1 && !toTop) {
-						console.log('to bottom');
 						neighTd = $scope.tierDetails.data.tiers[tIdx + 1];
 						neighTdIdx = tIdx + 1;
 					}
@@ -232,6 +231,14 @@ angular.module('emulvcApp')
 				this.moveBorder(minDist, td);
 
 			}
+			// add action to history stack
+			$scope.hists.addObjToUndoStack({
+				'type': 'ESPS',
+				'action': 'moveBoundary',
+				'tierName': td.TierName,
+				'itemIdx': viewState.getcurMouseSegmentId(),
+				'movedBy': minDist
+			});
 		};
 
 
@@ -415,7 +422,7 @@ angular.module('emulvcApp')
 					}
 				}
 			});
-			HistoryService.history();
+			// HistoryService.history();
 		};
 
 		$scope.deleteBoundary = function () {
@@ -438,7 +445,7 @@ angular.module('emulvcApp')
 					});
 				}
 			});
-			HistoryService.history();
+			// HistoryService.history();
 
 		};
 

@@ -89,8 +89,16 @@ angular.module('emulvcApp')
 					case 'renameLabel':
 						if (applyOldVal) {
 							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.oldValue);
-						}else{
+						} else {
 							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
+						}
+						break;
+					case 'deleteBoundary':
+						if (applyOldVal) {
+							alert(cur);
+							// $('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
+						} else {
+							alert('todo...')
 						}
 						break;
 					}
@@ -158,7 +166,6 @@ angular.module('emulvcApp')
 			redoStack = [];
 			var tmpObj = {};
 			tmpObj[String(obj.type) + '#' + String(obj.ssffIdx) + '#' + String(obj.itemIdx)] = obj;
-
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
 				undoStack.push(tmpObj);

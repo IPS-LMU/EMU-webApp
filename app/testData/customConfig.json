@@ -34,9 +34,9 @@
         "editItemSize": true,
         "editItemName": true,
         "deleteItemBoundary": false,
-        "deleteItem": false,
+        "deleteItem": true,
         "deleteTier": false,
-        "addItem": false,
+        "addItem": true,
         "drawCrossHairs": true
     },
     "activeButtons": {

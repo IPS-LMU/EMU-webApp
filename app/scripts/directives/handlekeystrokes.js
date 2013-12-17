@@ -247,14 +247,21 @@ angular.module('emulvcApp')
               }
               // backspace
               if (code === ConfigProviderService.vals.keyMappings.backspace) {
-                if (e.shiftKey) {
+                if (!e.shiftKey) {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurMouseSegment();
+                    console.log(seg);
                     var tn = viewState.getcurMouseTierName();
                     if (seg !== undefined) {
-                      scope.openModal('views/deleteBoundry.html', 'dialogSmall', false, 'Really Delete', seg.startSample + ' on Tier ' + tn);
+                      scope.hists.addObjToUndoStack({
+                        'type': 'ESPS',
+                        'action': 'deleteBoundary',
+                        'tierName': tn,
+                        'seg': seg
+                      });
+                      $('#HandletiersCtrl').scope().deleteBoundary(); //SIC should be in service!
                     } else {
-                      scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'Please select a Boundary first.');
+                      scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: Please select a Boundary first.');
                     }
                   }
                 } else {
@@ -268,7 +275,8 @@ angular.module('emulvcApp')
                       toDelete = toDelete.substring(0, toDelete.length - 1);
                       console.log(toDelete);
                       if (viewState.getcurClickTierType() === 'seg') {
-                        scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
+                        $('#HandletiersCtrl').scope().deleteSegments(); //SIC should be in service!
+                        // scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
                       } else {
                         scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');
                       }
@@ -283,17 +291,6 @@ angular.module('emulvcApp')
               }
             }
           });
-
-          // bind keyup events (only used for shift and alt)
-          // $(document).bind('keyup', function (e) {
-          //   if (e.keyCode === 16) {
-          //     // console.log('#################################');
-          //     // console.log(e);
-          //     console.log('finished moving boundary?? Why is this increasing?');
-          //   }
-
-          // });
-
 
         });
 

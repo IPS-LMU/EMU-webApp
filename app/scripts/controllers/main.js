@@ -5,10 +5,11 @@ angular.module('emulvcApp')
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice, dialogService) {
 
 		$scope.cps = ConfigProviderService;
-		$scope.history = HistoryService;
+		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.tds = Tierdataservice;
 		$scope.vs = viewState;
+		$scope.dials = dialogService;
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
 		$scope.tmp.showSaveCommStaBtnDiv = false;
@@ -43,7 +44,6 @@ angular.module('emulvcApp')
 		// bind shift/alt keyups for history
 		angular.element($window).bind('keyup', function (e) {
 			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift || e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
-				// HistoryService.history();
 				HistoryService.addCurChangeObjToUndoStack();
 			}
 		});
@@ -56,7 +56,7 @@ angular.module('emulvcApp')
 		// init history service
 
 		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
-		$scope.history.init();
+		$scope.hists.init();
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer');
