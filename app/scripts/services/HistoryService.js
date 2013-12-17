@@ -69,9 +69,8 @@ angular.module('emulvcApp')
 					console.log('###UNDOING esps change');
 					switch (cur.action) {
 					case 'moveBoundary':
-						console.log('#######UNDOING moveBoundary');
-						console.log(Tierdataservice.data.tiers[0].events[cur.itemIdx]);
-						console.log(cur.oldValue);
+						// console.log('#######UNDOING moveBoundary');
+						// console.log(cur);
 						if (applyOldVal) {
 							$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
 						} else {
@@ -85,7 +84,7 @@ angular.module('emulvcApp')
 
 		// public API
 		sServObj.updateCurChangeObj = function (dataObj) {
-			console.log(dataObj);
+			// console.log(dataObj);
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
 				dataKey = String(dataObj.type + '#' + dataObj.ssffIdx) + '#' + String(dataObj.colIdx) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
@@ -102,19 +101,20 @@ angular.module('emulvcApp')
 				switch (dataObj.action) {
 				case 'moveBoundary':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
+					// console.log(dataKey)
 					// update curChangeObj
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
-						console.log('here' + curChangeObj[dataKey].movedBy);
+						// console.log('here' + curChangeObj[dataKey].movedBy);
 						// update delta
 						dataObj.movedBy += curChangeObj[dataKey].movedBy;
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
 				}
-
 			}
+			// console.log(curChangeObj);
 
 		};
 
@@ -129,7 +129,7 @@ angular.module('emulvcApp')
 			// reset curChangeObj
 			curChangeObj = {};
 
-			// console.log(undoStack[undoStack.length - 1]);
+			// console.log(undoStack);
 
 		};
 

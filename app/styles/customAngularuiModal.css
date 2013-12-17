@@ -1,5 +1,16 @@
+.modal{
+	display: block;
+	margin: 50px;
+}
 .modal-header{
 	background-color: #0DC5FF;
+}
+
+.modal-body{
+	background-color: white;
+	height: 50%;
+	overflow-y: auto; 
+
 }
 
 
