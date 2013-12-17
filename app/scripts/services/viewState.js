@@ -99,9 +99,9 @@ angular.module('emulvcApp')
 
     sServObj.setState = function (nameOrObj) {
       sServObj.prevState = sServObj.curState;
-      if(typeof nameOrObj === 'string'){
+      if (typeof nameOrObj === 'string') {
         sServObj.curState = sServObj.states[nameOrObj];
-      }else{
+      } else {
         sServObj.curState = nameOrObj;
       }
     };
@@ -392,6 +392,20 @@ angular.module('emulvcApp')
     sServObj.getcurMouseTierDetails = function () {
       var tierName = this.getcurMouseTierName();
 
+      var curTier;
+      Tierdataservice.data.tiers.forEach(function (t) {
+        if (t.TierName === tierName) {
+          curTier = t;
+        }
+      });
+      return curTier;
+
+    };
+
+    /**
+     * gets tier details by passing in tierName
+     */
+    sServObj.getTierDetails = function (tierName) {
       var curTier;
       Tierdataservice.data.tiers.forEach(function (t) {
         if (t.TierName === tierName) {

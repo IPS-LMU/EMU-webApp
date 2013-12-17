@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService(Ssffdataservice, Tierdataservice) {
+	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierdataservice) {
 
 
 		// shared service object
@@ -72,8 +72,11 @@ angular.module('emulvcApp')
 						console.log('#######UNDOING moveBoundary');
 						console.log(Tierdataservice.data.tiers[0].events[cur.itemIdx]);
 						console.log(cur.oldValue);
-
-						Tierdataservice.data.tiers[0].events[cur.itemIdx] = cur.oldValue;
+						if (applyOldVal) {
+							$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+						} else {
+							$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+						}
 						break;
 					}
 				}
@@ -86,23 +89,31 @@ angular.module('emulvcApp')
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
 				dataKey = String(dataObj.type + '#' + dataObj.ssffIdx) + '#' + String(dataObj.colIdx) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
+				// update curChangeObj
+				if (!curChangeObj[dataKey]) {
+					curChangeObj[dataKey] = dataObj;
+				} else {
+					console.log('here' + curChangeObj[dataKey].oldValue);
+					// keep init old value
+					dataObj.oldValue = curChangeObj[dataKey].oldValue;
+					curChangeObj[dataKey] = dataObj;
+				}
 			} else if (dataObj.type === 'ESPS') {
 				switch (dataObj.action) {
 				case 'moveBoundary':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
+					// update curChangeObj
+					if (!curChangeObj[dataKey]) {
+						curChangeObj[dataKey] = dataObj;
+					} else {
+						console.log('here' + curChangeObj[dataKey].movedBy);
+						// update delta
+						dataObj.movedBy += curChangeObj[dataKey].movedBy;
+						curChangeObj[dataKey] = dataObj;
+					}
 					break;
 				}
 
-			}
-
-			// update curChangeObj
-			if (!curChangeObj[dataKey]) {
-				curChangeObj[dataKey] = dataObj;
-			} else {
-				console.log('here' + curChangeObj[dataKey].oldValue);
-				// keep init old value
-				dataObj.oldValue = curChangeObj[dataKey].oldValue;
-				curChangeObj[dataKey] = dataObj;
 			}
 
 		};

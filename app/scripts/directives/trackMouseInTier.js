@@ -76,8 +76,7 @@ angular.module('emulvcApp')
                   'action': 'moveBoundary',
                   'tierName': scope.this.tier.TierName,
                   'itemIdx': viewState.getcurMouseSegmentId(),
-                  'newValue': viewState.getcurMouseSegment(),
-                  'oldValue': angular.copy(viewState.getcurMouseSegment())
+                  'movedBy': moveBy
                 });
 
                 lastPCM = thisPCM;

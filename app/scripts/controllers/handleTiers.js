@@ -558,9 +558,14 @@ angular.module('emulvcApp')
 			return evtr;
 		};
 
-		$scope.moveBorder = function (changeTime, t) {
+		$scope.moveBorder = function (changeTime, t, segID) {
 			if (null !== t && t.TierName === viewState.getcurMouseTierName()) {
-				var seg = viewState.getcurMouseSegmentId();
+				var seg;
+				if (segID === undefined) {
+					seg = viewState.getcurMouseSegmentId();
+				} else {
+					seg = segID;
+				}
 				if (t.type === 'seg') {
 					if (seg > 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
 						t.events[seg - 1].sampleDur += changeTime;

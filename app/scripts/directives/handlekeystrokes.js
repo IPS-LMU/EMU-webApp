@@ -19,12 +19,12 @@ angular.module('emulvcApp')
               //if (viewState.isEditing()) {
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 viewState.focusInTextField = false;
-                $('#HandletiersCtrl').scope().renameLabel();
+                $('#HandletiersCtrl').scope().renameLabel(); //SIC should be in service!
 
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 viewState.focusInTextField = false;
-                $('#HandletiersCtrl').scope().deleteEditArea();
+                $('#HandletiersCtrl').scope().deleteEditArea(); //SIC should be in service!
               }
               if (code === 13) {
                 e.preventDefault();
@@ -35,7 +35,7 @@ angular.module('emulvcApp')
 
             } else {
 
-              $('#HandletiersCtrl').scope().deleteEditArea();
+              $('#HandletiersCtrl').scope().deleteEditArea(); //SIC should be in service!
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
@@ -163,38 +163,38 @@ angular.module('emulvcApp')
 
               // tierUp
               if (code === ConfigProviderService.vals.keyMappings.tierUp) {
-                $('#HandletiersCtrl').scope().selectTier(false);
+                $('#HandletiersCtrl').scope().selectTier(false); //SIC should be in service!
               }
               // tierDown
               if (code === ConfigProviderService.vals.keyMappings.tierDown) {
-                $('#HandletiersCtrl').scope().selectTier(true);
+                $('#HandletiersCtrl').scope().selectTier(true); //SIC should be in service!
               }
 
               // preselected boundary snap to top
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().snapBoundary(true);
+                  $('#HandletiersCtrl').scope().snapBoundary(true); //SIC should be in service!
                 }
               }
 
               // preselected boundary snap to bottom
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().snapBoundary(false);
+                  $('#HandletiersCtrl').scope().snapBoundary(false); //SIC should be in service!
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().expandSegment(true, true);
+                  $('#HandletiersCtrl').scope().expandSegment(true, true); //SIC should be in service!
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().expandSegment(true, false);
+                  $('#HandletiersCtrl').scope().expandSegment(true, false); //SIC should be in service!
                 }
               }
 
@@ -202,9 +202,9 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.minus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (e.shiftKey) {
-                    $('#HandletiersCtrl').scope().expandSegment(false, false);
+                    $('#HandletiersCtrl').scope().expandSegment(false, false); //SIC should be in service!
                   } else {
-                    $('#HandletiersCtrl').scope().expandSegment(false, true);
+                    $('#HandletiersCtrl').scope().expandSegment(false, true); //SIC should be in service!
                   }
                 }
               }
@@ -220,15 +220,15 @@ angular.module('emulvcApp')
               }
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
-                $('#HandletiersCtrl').scope().selectSegmentsInSelection();
+                $('#HandletiersCtrl').scope().selectSegmentsInSelection(); //SIC should be in service!
               }
 
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 if (e.shiftKey) {
-                  $('#HandletiersCtrl').scope().tabNext(true);
+                  $('#HandletiersCtrl').scope().tabNext(true); //SIC should be in service!
                 } else {
-                  $('#HandletiersCtrl').scope().tabNext(false);
+                  $('#HandletiersCtrl').scope().tabNext(false); //SIC should be in service!
                 }
               }
               // history
