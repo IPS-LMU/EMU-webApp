@@ -6,8 +6,8 @@
     	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse correctiontool></canvas>
     	
     	<div class="buttons" id="buttons">
-	    	<div ng-click="resizeSpectro();" class="resize" id="resize" ng-style="buttonstyle('resizeSpectro')">
-		    	<img />
+	    	<div class="resize" id="resize" ng-click="resizeSpectro();" ng-style="buttonstyle('resizeSpectro')">
+		    	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
     		</div>	
         </div>
 </div>
