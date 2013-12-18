@@ -190,10 +190,11 @@ angular.module('emulvcApp')
                   $('#HandletiersCtrl').scope().expandSegment(true, true); //SIC should be in service!
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'tierName': viewState.getcurMouseTierName(),
-                    'itemIdx': viewState.getselected()[0] + 1,
-                    'movedBy': parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                    'action': 'expandSegments',
+                    'tierName': viewState.getcurClickTierName(),
+                    'itemIdx': viewState.getselected().sort(),
+                    'expand': true,
+                    'rightSide': true
                   });
                 }
               }
@@ -204,10 +205,11 @@ angular.module('emulvcApp')
                   $('#HandletiersCtrl').scope().expandSegment(true, false); //SIC should be in service!
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'tierName': viewState.getcurMouseTierName(),
-                    'itemIdx': viewState.getselected()[0],
-                    'movedBy': -parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                    'action': 'expandSegments',
+                    'tierName': viewState.getcurClickTierName(),
+                    'itemIdx': viewState.getselected().sort(),
+                    'expand': true,
+                    'rightSide': false
                   });
                 }
               }
@@ -219,19 +221,21 @@ angular.module('emulvcApp')
                     $('#HandletiersCtrl').scope().expandSegment(false, false); //SIC should be in service!
                     scope.hists.addObjToUndoStack({
                       'type': 'ESPS',
-                      'action': 'moveBoundary',
-                      'tierName': viewState.getcurMouseTierName(),
-                      'itemIdx': viewState.getselected()[0],
-                      'movedBy': parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                      'action': 'expandSegments',
+                      'tierName': viewState.getcurClickTierName(),
+                      'itemIdx': viewState.getselected().sort(),
+                      'expand': false,
+                      'rightSide': false
                     });
                   } else {
                     $('#HandletiersCtrl').scope().expandSegment(false, true); //SIC should be in service!
                     scope.hists.addObjToUndoStack({
                       'type': 'ESPS',
-                      'action': 'moveBoundary',
-                      'tierName': viewState.getcurMouseTierName(),
-                      'itemIdx': viewState.getselected()[0] + 1,
-                      'movedBy': -parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                      'action': 'expandSegments',
+                      'tierName': viewState.getcurClickTierName(),
+                      'itemIdx': viewState.getselected().sort(),
+                      'expand': false,
+                      'rightSide': true
                     });
 
                   }

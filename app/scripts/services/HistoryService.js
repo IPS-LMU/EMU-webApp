@@ -101,6 +101,14 @@ angular.module('emulvcApp')
 							alert('todo...')
 						}
 						break;
+					case 'expandSegments':
+						if (applyOldVal) {
+							$('#HandletiersCtrl').scope().expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); //SIC should be in service!
+						} else {
+							$('#HandletiersCtrl').scope().expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); //SIC should be in service!
+						}
+						break;
+
 					}
 				}
 			});

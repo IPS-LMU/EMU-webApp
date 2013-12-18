@@ -242,7 +242,7 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.expandSegment = function (expand, rightSide) {
+		$scope.expandSegment = function (expand, rightSide, segIDs, tierName) {
 			if (viewState.getcurClickTierName() === undefined) {
 				dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
 			} else {
@@ -255,18 +255,32 @@ angular.module('emulvcApp')
 					} else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
 						changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
 					} else {
-						$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+						dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 					}
 
 					if (!expand) {
 						changeTime = 0 - changeTime;
 					}
-					var selected = viewState.getselected().sort();
+
+					var selected;
+					if (segIDs === undefined) {
+						selected = viewState.getselected().sort();
+					}else{
+						selected = segIDs;
+					}
+					
+					var tN;
+					if (tierName === undefined) {
+						tN = viewState.getcurClickTierName();
+					}else{
+						tN = tierName;
+					}
+
 					var startTime = 0;
 					var i;
 					if (rightSide) {
 						angular.forEach($scope.tierDetails.data.tiers, function (t) {
-							if (t.TierName === viewState.getcurClickTierName()) {
+							if (t.TierName === tN) {
 								if (t.events[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
 									if (t.events[selected[0]].sampleDur > -(selected.length * changeTime)) {
 
@@ -299,7 +313,7 @@ angular.module('emulvcApp')
 						});
 					} else {
 						angular.forEach($scope.tierDetails.data.tiers, function (t) {
-							if (t.TierName === viewState.getcurClickTierName()) {
+							if (t.TierName === tN) {
 								if (t.events[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
 									if (t.events[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
 
