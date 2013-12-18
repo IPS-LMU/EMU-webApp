@@ -4,7 +4,7 @@ var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({
   port: LIVERELOAD_PORT
 });
-var mountFolder = function(connect, dir) {
+var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
 
@@ -14,7 +14,7 @@ var mountFolder = function(connect, dir) {
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       },
       livereload: {
         options: {
-          middleware: function(connect) {
+          middleware: function (connect) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
-          middleware: function(connect) {
+          middleware: function (connect) {
             return [
               mountFolder(connect, '.tmp'),
               mountFolder(connect, 'test')
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          middleware: function(connect) {
+          middleware: function (connect) {
             return [
               mountFolder(connect, yeomanConfig.dist)
             ];
@@ -365,10 +365,30 @@ module.exports = function(grunt) {
         network: '*',
         fallback: 'index.html'
       }
+    },
+    replace: {
+      dist: {
+        options: {
+          patterns: [{
+            match: 'timestamp',
+            replacement: '<%= grunt.template.today() %>'
+          },{
+            match:'sha1',
+            replacement: '<%= gitinfo.local.branch.current.SHA %> - <%= gitinfo.local.branch.current.name %>'
+          }]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: ['dist/views/about.html'],
+          dest: 'dist/views/'
+        }]
+      }
     }
   });
 
-  grunt.registerTask('server', function(target) {
+
+  grunt.registerTask('server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
     }
@@ -382,6 +402,12 @@ module.exports = function(grunt) {
       'watch'
     ]);
   });
+
+
+  grunt.registerTask('repTest', [
+    'gitinfo',
+    'replace'
+  ]);
 
   grunt.registerTask('test', [
     'clean:server',
@@ -404,7 +430,9 @@ module.exports = function(grunt) {
     'uglify',
     'rev',
     'usemin',
-    'appcache'
+    'appcache',
+    'gitinfo',
+    'replace'
   ]);
 
   grunt.registerTask('default', [

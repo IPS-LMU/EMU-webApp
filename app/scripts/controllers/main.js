@@ -502,21 +502,21 @@ angular.module('emulvcApp')
 		// 	$scope.modifiedMetaData = true;
 		// };
 
-		/**
-		 *
-		 */
-		$scope.changingSSFFdata = function () {
-			// console.log('changingSSFFdata')
-			$scope.modifiedCurSSFF = true;
-		};
+		// /**
+		//  *
+		//  */
+		// $scope.changingSSFFdata = function () {
+		// 	// console.log('changingSSFFdata')
+		// 	$scope.modifiedCurSSFF = true;
+		// };
 
-		/**
-		 *
-		 */
-		$scope.modifTierItems = function () {
-			console.log('items labs changed');
-			$scope.modifiedCurTierItems = true;
-		};
+		// /**
+		//  *
+		//  */
+		// $scope.modifTierItems = function () {
+		// 	console.log('items labs changed');
+		// 	$scope.modifiedCurTierItems = true;
+		// };
 
 		/**
 		 *
