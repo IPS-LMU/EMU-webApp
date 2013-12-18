@@ -311,7 +311,7 @@ angular.module('emulvcApp')
                         $('#HandletiersCtrl').scope().deleteSegments(); //SIC should be in service!
                         // scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
                       } else {
-                        scope.openModal('views/error.html', 'dialogSmall', false, 'Delete Error', 'You can not delete Segments on Point Tiers.');
+                        scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
                       }
                     }
                   }
