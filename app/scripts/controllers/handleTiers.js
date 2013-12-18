@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService, Drawhelperservice) {
+	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;
 		$scope.hists = HistoryService;
@@ -244,10 +244,10 @@ angular.module('emulvcApp')
 
 		$scope.expandSegment = function (expand, rightSide) {
 			if (viewState.getcurClickTierName() === undefined) {
-				$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select a Tier first');
+				dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
 			} else {
 				if (viewState.getselected().length === 0) {
-					$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Please select one or more Segments first');
+					dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
 				} else {
 					var changeTime = 0;
 					if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
@@ -279,7 +279,7 @@ angular.module('emulvcApp')
 											}
 										}
 										if (found) {
-											$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+											dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: Cannot Expand/Shrink. Segment would be too small');
 										} else {
 											for (i = 1; i <= selected.length; i++) {
 												t.events[selected[i - 1]].startSample += startTime;
@@ -290,10 +290,10 @@ angular.module('emulvcApp')
 											t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
 										}
 									} else {
-										$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+										dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to decrease');
 									}
 								} else {
-									$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+									dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to increase');
 								}
 							}
 						});
