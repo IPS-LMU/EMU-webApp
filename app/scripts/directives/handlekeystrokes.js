@@ -187,14 +187,14 @@ angular.module('emulvcApp')
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
+                  $('#HandletiersCtrl').scope().expandSegment(true, true); //SIC should be in service!
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'moveBoundary',
                     'tierName': viewState.getcurMouseTierName(),
-                    'itemIdx': viewState.getcurMouseSegmentId(),
+                    'itemIdx': viewState.getselected()[0] + 1,
                     'movedBy': parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
                   });
-                  $('#HandletiersCtrl').scope().expandSegment(true, true); //SIC should be in service!
                 }
               }
 
@@ -202,23 +202,38 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   $('#HandletiersCtrl').scope().expandSegment(true, false); //SIC should be in service!
+                  scope.hists.addObjToUndoStack({
+                    'type': 'ESPS',
+                    'action': 'moveBoundary',
+                    'tierName': viewState.getcurMouseTierName(),
+                    'itemIdx': viewState.getselected()[0],
+                    'movedBy': -parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                  });
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.minus) {
-                scope.hists.addObjToUndoStack({
-                  'type': 'ESPS',
-                  'action': 'moveBoundary',
-                  'tierName': viewState.getcurMouseTierName(),
-                  'itemIdx': viewState.getcurMouseSegmentId(),
-                  'movedBy': -parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
-                });
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (e.shiftKey) {
                     $('#HandletiersCtrl').scope().expandSegment(false, false); //SIC should be in service!
+                    scope.hists.addObjToUndoStack({
+                      'type': 'ESPS',
+                      'action': 'moveBoundary',
+                      'tierName': viewState.getcurMouseTierName(),
+                      'itemIdx': viewState.getselected()[0],
+                      'movedBy': parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                    });
                   } else {
                     $('#HandletiersCtrl').scope().expandSegment(false, true); //SIC should be in service!
+                    scope.hists.addObjToUndoStack({
+                      'type': 'ESPS',
+                      'action': 'moveBoundary',
+                      'tierName': viewState.getcurMouseTierName(),
+                      'itemIdx': viewState.getselected()[0] + 1,
+                      'movedBy': -parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10)
+                    });
+
                   }
                 }
               }
