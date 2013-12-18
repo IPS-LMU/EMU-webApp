@@ -275,6 +275,35 @@ wss.on('connection', function (ws) {
 			});
 		}
 
+		// saveESPSfile
+		if (mJSO.type === 'saveESPSfile') {
+			console.log('Writing ESPS to file: ' + mJSO.fileURL)
+			fs.writeFile(path2dataRoot + mJSO.fileURL, mJSO.data, function (err) {
+				if (err) {
+					console.log('ERROR while saving esps file')
+					console.log(err);
+					ws.send(JSON.stringify({
+						'callbackID': mJSO.callbackID,
+						'type': mJSO.type,
+						'status': {
+							'type': 'ERROR',
+							'message': err
+						}
+					}), undefined, 0);
+				} else {
+					console.log('espsFile saved');
+					ws.send(JSON.stringify({
+						'callbackID': mJSO.callbackID,
+						'type': mJSO.type,
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						}
+					}), undefined, 0);
+				}
+			});
+		}
+
 	});
 });
 

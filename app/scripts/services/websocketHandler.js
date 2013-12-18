@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, Tierdataservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
 		// shared service object
 		var sServObj = {};
 		// Keep all pending requests here until they get responses
@@ -248,7 +248,35 @@ angular.module('emulvcApp')
 
 		// ws request for saving esps file
 		sServObj.saveESPSfile = function (fName) {
+			var espsJSO = Tierdataservice.getData();
+			var tNs;
 			console.log(fName);
+			espsJSO.fileInfos.forEach(function (fI) {
+				if (fI.fileURI === fName) {
+					tNs = fI.associatedTierNames;
+				}
+			});
+			if (tNs.length === 1) {
+				var foundT;
+				espsJSO.tiers.forEach(function (t) {
+					if (t.TierName === tNs[0]) {
+						foundT = t;
+					}
+				});
+				var espsStr = Espsparserservice.toESPS(foundT);
+				console.log(espsStr);
+				var request = {
+					type: 'saveESPSfile',
+					fileURL: fName,
+					data: espsStr
+				};
+				// Storing in a variable for clarity on what sendRequest returns
+				var promise = sendRequest(request);
+				return promise;
+			} else {
+				alert('more than one tier associated!!!! Not an ESPS file!!!');
+			}
+
 		};
 
 		// ws get Utt from ws server

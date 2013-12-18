@@ -8,7 +8,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.toJSO = function(string, filePath) {
+		sServObj.toJSO = function (string, filePath) {
 
 			var ext = '_' + filePath.split('.')[filePath.split('.').length - 1];
 
@@ -30,7 +30,7 @@ angular.module('emulvcApp')
 			//init empty labelJSO
 			var labelJSO = {
 				fileInfos: [{
-					fileURI: '',
+					fileURI: filePath,
 					fileType: 'esps',
 					associatedTierNames: [ext]
 				}],
@@ -82,6 +82,30 @@ angular.module('emulvcApp')
 
 			// console.log(JSON.stringify(labelJSO, undefined, 2));
 			return labelJSO;
+		};
+
+		/**
+		 *
+		 */
+		sServObj.toESPS = function (espsJSO) {
+			var fBaseN = espsJSO.TierName.substring(1);
+			var espsStr = '';
+			// construct header
+			espsStr += 'signal ' + fBaseN + '\n';
+			espsStr += 'nfields 1\n';
+			espsStr += '#\n';
+			var curLabel;
+			espsJSO.events.forEach(function (i, idx) {
+				if (i.label === '' && idx === 0) {
+					curLabel = 'H#';
+				} else {
+					curLabel = i.label;
+				}
+				espsStr += '\t' + String((i.startSample + i.sampleDur) / Soundhandlerservice.wavJSO.SampleRate) + '\t125\t' + curLabel + '\n';
+			});
+
+			// console.log(espsStr);
+			return espsStr;
 		};
 
 		return sServObj;
