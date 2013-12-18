@@ -237,7 +237,7 @@ angular.module('emulvcApp')
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
 									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
-									posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur + 1));
+									posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur));
 									ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
