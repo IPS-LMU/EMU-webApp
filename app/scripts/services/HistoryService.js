@@ -164,7 +164,7 @@ angular.module('emulvcApp')
 			// reset curChangeObj
 			curChangeObj = {};
 
-			console.log(undoStack);
+			// console.log(undoStack);
 
 		};
 
