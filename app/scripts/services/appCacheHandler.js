@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Appcachehandler', function Appcachehandler($http) {
+	.service('Appcachehandler', function Appcachehandler($http, dialogService) {
 		// shared service object
 		var sServObj = {};
 
@@ -55,8 +55,8 @@ angular.module('emulvcApp')
 				// adding one for *THIS* file, which is cached
 				// implicitly as it points to the manifest.
 				cacheProperties.totalFiles = (totalFiles + 1);
-				console.log('##########################');
-				alert('INFO: appcache update of: ' + cacheProperties.totalFiles + ' files');
+				// console.log('##########################');
+				// alert('INFO: appcache update of: ' + cacheProperties.totalFiles + ' files');
 			});
 
 		}
@@ -85,15 +85,15 @@ angular.module('emulvcApp')
 		function handleCachedEvent(e) {
 			console.log('###### handleCachedEvent ##########');
 			console.log(e);
-		}
-
-		function handleUpdatereadyEvent(e) {
-			console.log('###### handleUpdatereadyEvent ##########');
-			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'New version available! Would you like to use it?').then(function (res) {
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'A new version of the EMU-WebApp is available and has already been downloaded! Would you like to use it (CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-WebApp you will automatically use the updated version)?').then(function (res) {
 				if (res) {
 					window.location.reload();
 				}
 			});
+		}
+
+		function handleUpdatereadyEvent(e) {
+			console.log('###### handleUpdatereadyEvent ##########');
 			console.log(e);
 		}
 
