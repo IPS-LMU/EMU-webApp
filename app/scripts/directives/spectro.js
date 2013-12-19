@@ -197,14 +197,9 @@ angular.module('emulvcApp')
 
 
         function drawTimeLine(id) {
-          var image = new Image();
-          image.onload = function () {
-            scope.$apply(function () {
-              context.drawImage(image, 0, 0);
-              //drawSpectMarkup(); 
-            });
-          };
-          image.src = imageCache[id][3];
+          var imageData = context.createImageData(canvas0.width, canvas0.height);
+          imageData.data.set(imageCache[id][3]);
+          context.putImageData(imageData, 0, 0);
         }
 
 
@@ -221,22 +216,17 @@ angular.module('emulvcApp')
         }
 
         function setupEvent() {
-          //var deferred = $q.defer();
-
-          var myImage = new Image();
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          var imageData = context.createImageData(canvas0.width, canvas0.height);
           primeWorker.addEventListener('message', function (event) {
-            var workerImg = event.data.img;
-            myImage.onload = function () {
-              scope.$apply(function () {
-                if (pcmperpixel === event.data.myStep) {
-                  context.drawImage(myImage, 0, 0, canvas0.width, canvas0.height, 0, 0, canvas0.width, canvas0.height);
-                  buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, canvas0.toDataURL('image/png'));
-                  drawSpectMarkup();
-                }
-              });
-            };
-            myImage.src = workerImg;
+            if (pcmperpixel === event.data.myStep) {
+              imageData.data.set(event.data.img);
+              context.putImageData(imageData, 0, 0);
+              console.log(event.data);
+              console.log(event.data.img.length/4/canvas0.height);
+              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
+              drawSpectMarkup();
+            }
           });
 
         }
@@ -289,19 +279,11 @@ angular.module('emulvcApp')
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'cacheSide': 0
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
             'width': canvas0.width
           });
           primeWorker.postMessage({
             'cmd': 'config',
             'height': canvas0.height
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'cacheWidth': 0
           });
           primeWorker.postMessage({
             'cmd': 'config',
