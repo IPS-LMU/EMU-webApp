@@ -104,9 +104,7 @@ angular.module('emulvcApp')
 
 
 		$scope.selectSegmentsInSelection = function () {
-			if (viewState.getcurClickTierName() === undefined) {
-				$scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
-			} else {
+
 				var rangeStart = viewState.curViewPort.selectS;
 				var rangeEnd = viewState.curViewPort.selectE;
 				angular.forEach($scope.tierDetails.data.tiers, function (t) {
@@ -120,7 +118,7 @@ angular.module('emulvcApp')
 						});
 					}
 				});
-			}
+			
 		};
 
 
@@ -156,30 +154,6 @@ angular.module('emulvcApp')
 			}
 		};
 
-
-		$scope.deleteBoundary = function () {
-			var toDelete = viewState.getcurMouseSegment();
-			var tierName = viewState.getcurMouseTierName();
-			var tierType = viewState.getcurMouseTierType();
-			angular.forEach($scope.tierDetails.data.tiers, function (t) {
-				if (t.TierName === tierName) {
-					angular.forEach(t.events, function (evt, id) {
-						if (evt.startSample == toDelete.startSample) {
-							if (t.type === "point") {
-								t.events.splice(id, 1);
-							} else {
-								t.events[id - 1].label += t.events[id].label;
-								t.events[id - 1].sampleDur += t.events[id].sampleDur;
-								t.events.splice(id, 1);
-							}
-							console.log(evt);
-						}
-					});
-				}
-			});
-			// HistoryService.history();
-
-		};
 
 		$scope.getNearest = function (x, tier) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;

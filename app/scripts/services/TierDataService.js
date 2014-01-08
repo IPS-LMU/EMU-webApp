@@ -81,7 +81,7 @@ angular.module('emulvcApp')
 	
 	sServObj.deleteSegments = function (toDelete, tierName) {
 	    var ret = new Object();
-		angular.forEach($scope.tierDetails.data.tiers, function (t) {
+		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 				if (t.type === "seg") {
 					for (var x in toDelete) {
@@ -107,16 +107,35 @@ angular.module('emulvcApp')
 		});
 	};	
 	
+	sServObj.deleteBoundary = function (toDelete, tierName, tierType) {
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+				angular.forEach(t.events, function (evt, id) {
+					if (evt.startSample == toDelete.startSample) {
+						if (t.type === "point") {
+							t.events.splice(id, 1);
+						} else {
+							t.events[id - 1].label += t.events[id].label;
+							t.events[id - 1].sampleDur += t.events[id].sampleDur;
+							t.events.splice(id, 1);
+						}
+					}
+				});
+			}
+		});
+	};
+	
+	
 	sServObj.snapBoundary = function (toTop, preSelSS, td) {
 		var neighTd;
 		var neighTdIdx;
-		$scope.tierDetails.data.tiers.forEach(function (t, tIdx) {
+		sServObj.data.tiers.forEach(function (t, tIdx) {
 			if (t.TierName === td.TierName) {
 				if (tIdx >= 1 && toTop) {
-					neighTd = $scope.tierDetails.data.tiers[tIdx - 1];
+					neighTd = sServObj.data.tiers[tIdx - 1];
 					neighTdIdx = tIdx - 1;
-				} else if (tIdx < $scope.tierDetails.data.tiers.length - 1 && !toTop) {
-					neighTd = $scope.tierDetails.data.tiers[tIdx + 1];
+				} else if (tIdx < sServObj.data.tiers.length - 1 && !toTop) {
+					neighTd = sServObj.data.tiers[tIdx + 1];
 					neighTdIdx = tIdx + 1;
 				}
 			}

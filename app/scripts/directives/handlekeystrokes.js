@@ -323,7 +323,13 @@ angular.module('emulvcApp')
               }
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
+              	if (viewState.getcurClickTierName() === undefined) {
+				  scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
+			    } else {
+			    
+			    // still todo: refactor this 
                 $('#HandletiersCtrl').scope().selectSegmentsInSelection(); //SIC should be in service!
+                }
               }
 
               // tab
@@ -343,7 +349,6 @@ angular.module('emulvcApp')
                   var ret = Tierdataservice.tabNext(false, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
-                  
                 }
               }
               
@@ -384,7 +389,8 @@ angular.module('emulvcApp')
                         'tierName': tn,
                         'seg': seg
                       });
-                      $('#HandletiersCtrl').scope().deleteBoundary(); //SIC should be in service!
+                      
+                      Tierdataservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
                     } else {
                       scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: Please select a Boundary first.');
                     }
