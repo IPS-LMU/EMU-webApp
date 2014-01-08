@@ -6,17 +6,12 @@ angular.module('emulvcApp')
       restrict: 'A',
       link: function postLink(scope) {
 
-        // bind all keydown events
         $(document).bind('keydown', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
 
           scope.$apply(function () {
             scope.setlastkeycode(code, e.shiftKey);
             if (viewState.focusInTextField) {
-              // disable keys when focus is in comment text filed
-
-              // enable enter and escape when in editing mode
-              //if (viewState.isEditing()) {
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 if (viewState.isEditing()) {
                   HistoryService.addObjToUndoStack({
@@ -346,7 +341,6 @@ angular.module('emulvcApp')
 					--now;
 				  }
                   var ret = Tierdataservice.tabNext(false, now, viewState.getcurClickTierName());
-                  console.log(ret);
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
                   
@@ -404,10 +398,9 @@ angular.module('emulvcApp')
                         toDelete += seg[i].label + ',';
                       }
                       toDelete = toDelete.substring(0, toDelete.length - 1);
-                      console.log(toDelete);
                       if (viewState.getcurClickTierType() === 'seg') {
-                        $('#HandletiersCtrl').scope().deleteSegments(); //SIC should be in service!
-                        // scope.openModal('views/deleteSegment.html', 'dialogSmall', false, 'Really Delete', toDelete);
+                        var ret = Tierdataservice.deleteSegments(viewState.getselected(), viewState.getcurClickTierName());
+                        viewState.setcurClickSegment(ret.val1, ret.val2);
                       } else {
                         scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
                       }

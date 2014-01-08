@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Tierdataservice', function Tierdataservice() {
+	.service('Tierdataservice', function Tierdataservice($rootScope) {
 		// shared service object
 		var sServObj = {};
 
@@ -59,6 +59,9 @@ angular.module('emulvcApp')
 	  });
 	};	
 	
+    /**
+     * traverse through tiers an return next/prev event and id
+     */	
 	sServObj.tabNext = function (invers, now, tN) {
 	    var ret = new Object();
 		angular.forEach(sServObj.data.tiers, function (t) {
@@ -74,6 +77,34 @@ angular.module('emulvcApp')
 			}
 		});
 		return ret;
+	};
+	
+	sServObj.deleteSegments = function (toDelete, tierName) {
+	    var ret = new Object();
+		angular.forEach($scope.tierDetails.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+				if (t.type === "seg") {
+					for (var x in toDelete) {
+						var id = toDelete[x];
+						if (id > 0) {
+							var length = t.events[id].sampleDur;
+							t.events[id - 1].sampleDur += length / 2;
+							t.events[id + 1].sampleDur += length / 2;
+							t.events[id + 1].startSample -= length / 2;
+							t.events.splice(id, 1);
+						}
+					}
+				}
+				if (toDelete[0] - 1 > 0) {
+				    ret.val1 = t.events[toDelete[0] - 1];
+				    ret.val2 = toDelete[0] - 1;
+				} else {
+				    ret.val1 = t.events[0];
+				    ret.val2 = 0;
+				}
+				return ret;
+			}
+		});
 	};	
 	
 	sServObj.snapBoundary = function (toTop, preSelSS, td) {
@@ -101,7 +132,7 @@ angular.module('emulvcApp')
 					minDist = itm.startSample - preSelSS;
 				}
 			});
-			this.moveBorder(minDist, td);
+			//this.moveBorder(minDist, td);
 		}
 	};	
 	
@@ -123,6 +154,7 @@ angular.module('emulvcApp')
 								}
 							}
 							if (found) {
+								//  todo emit msg to $rootScope
 								//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: Cannot Expand/Shrink. Segment would be too small');
 							} else {
 								for (i = 1; i <= selected.length; i++) {
@@ -134,9 +166,11 @@ angular.module('emulvcApp')
 								t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
 							}
 				  		} else {
+				  		   // todo emit msg to $rootScope
 							//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to decrease');
 				  		}
 					} else {
+						//  todo emit msg to $rootScope
 				  		//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to increase');
 					}
 				}

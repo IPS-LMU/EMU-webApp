@@ -156,32 +156,6 @@ angular.module('emulvcApp')
 			}
 		};
 
-		$scope.deleteSegments = function () {
-			var toDelete = viewState.getselected();
-			var tierName = viewState.getcurClickTierName();
-			angular.forEach($scope.tierDetails.data.tiers, function (t) {
-				if (t.TierName === tierName) {
-					if (t.type === "seg") {
-						for (var x in toDelete) {
-							var id = toDelete[x];
-							if (id > 0) {
-								var length = t.events[id].sampleDur;
-								t.events[id - 1].sampleDur += length / 2;
-								t.events[id + 1].sampleDur += length / 2;
-								t.events[id + 1].startSample -= length / 2;
-								t.events.splice(id, 1);
-							}
-						}
-					}
-					if (toDelete[0] - 1 > 0) {
-						viewState.setcurClickSegment(t.events[toDelete[0] - 1], toDelete[0] - 1);
-					} else {
-						viewState.setcurClickSegment(t.events[0], 0);
-					}
-				}
-			});
-			// HistoryService.history();
-		};
 
 		$scope.deleteBoundary = function () {
 			var toDelete = viewState.getcurMouseSegment();
