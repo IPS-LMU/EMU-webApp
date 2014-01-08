@@ -1,221 +1,3 @@
-/** * A handy class to calculate color values.
- *
- * @version 1.0
- * @author Robert Eisele <robert@xarg.org>
- * @copyright Copyright (c) 2010, Robert Eisele
- * @link http://www.xarg.org/2010/03/generate-client-side-png-files-using-javascript/
- * @license http://www.opensource.org/licenses/bsd-license.php BSD License
- *
- */
-
-(function () {
-
-	// helper functions for that ctx
-	function write(buffer, offs) {
-		for (var i = 2; i < arguments.length; i++) {
-			for (var j = 0; j < arguments[i].length; j++) {
-				buffer[offs++] = arguments[i].charAt(j);
-			}
-		}
-	}
-
-	function byte2(w) {
-		return String.fromCharCode((w >> 8) & 255, w & 255);
-	}
-
-	function byte4(w) {
-		return String.fromCharCode((w >> 24) & 255, (w >> 16) & 255, (w >> 8) & 255, w & 255);
-	}
-
-	function byte2lsb(w) {
-		return String.fromCharCode(w & 255, (w >> 8) & 255);
-	}
-
-	PNGlib = function (width, height, depth) {
-		var i;
-		this.width = width;
-		this.height = height;
-		this.depth = depth;
-
-		// pixel data and row filter identifier size
-		this.pixSize = height * (width + 1);
-
-		// deflate header, pixSize, block headers, adler32 checksum
-		this.dataSize = 2 + this.pixSize + 5 * Math.floor((0xfffe + this.pixSize) / 0xffff) + 4;
-
-		// offsets and sizes of Png chunks
-		this.ihdrOffs = 0; // IHDR offset and size
-		this.ihdrSize = 4 + 4 + 13 + 4;
-		this.plteOffs = this.ihdrOffs + this.ihdrSize; // PLTE offset and size
-		this.plteSize = 4 + 4 + 3 * depth + 4;
-		this.trnsOffs = this.plteOffs + this.plteSize; // tRNS offset and size
-		this.trnsSize = 4 + 4 + depth + 4;
-		this.idatOffs = this.trnsOffs + this.trnsSize; // IDAT offset and size
-		this.idatSize = 4 + 4 + this.dataSize + 4;
-		this.iendOffs = this.idatOffs + this.idatSize; // IEND offset and size
-		this.iendSize = 4 + 4 + 4;
-		this.bufferSize = this.iendOffs + this.iendSize; // total PNG size
-
-		this.buffer = [];
-		this.palette = {};
-		this.pindex = 0;
-
-		var _crc32 = [];
-
-		// initialize buffer with zero bytes
-		for (i = 0; i < this.bufferSize; i++) {
-			this.buffer[i] = '\x00';
-		}
-
-		// initialize non-zero elements
-		write(this.buffer, this.ihdrOffs, byte4(this.ihdrSize - 12), 'IHDR', byte4(width), byte4(height), '\x08\x03');
-		write(this.buffer, this.plteOffs, byte4(this.plteSize - 12), 'PLTE');
-		write(this.buffer, this.trnsOffs, byte4(this.trnsSize - 12), 'tRNS');
-		write(this.buffer, this.idatOffs, byte4(this.idatSize - 12), 'IDAT');
-		write(this.buffer, this.iendOffs, byte4(this.iendSize - 12), 'IEND');
-
-		// initialize deflate header
-		var header = ((8 + (7 << 4)) << 8) | (3 << 6);
-		header += 31 - (header % 31);
-
-		write(this.buffer, this.idatOffs + 8, byte2(header));
-
-		// initialize deflate block headers
-		for (i = 0;
-			(i << 16) - 1 < this.pixSize; i++) {
-			var size, bits;
-			if (i + 0xffff < this.pixSize) {
-				size = 0xffff;
-				bits = '\x00';
-			} else {
-				size = this.pixSize - (i << 16) - i;
-				bits = '\x01';
-			}
-			write(this.buffer, this.idatOffs + 8 + 2 + (i << 16) + (i << 2), bits, byte2lsb(size), byte2lsb(~size));
-		}
-
-		/* Create crc32 lookup table */
-		for (i = 0; i < 256; i++) {
-			var c = i;
-			for (var j = 0; j < 8; j++) {
-				if (c & 1) {
-					c = -306674912 ^ ((c >> 1) & 0x7fffffff);
-				} else {
-					c = (c >> 1) & 0x7fffffff;
-				}
-			}
-			_crc32[i] = c;
-		}
-
-		// compute the index into a png for a given pixel
-		this.index = function (x, y) {
-			var i = y * (this.width + 1) + x + 1;
-			var j = this.idatOffs + 8 + 2 + 5 * Math.floor((i / 0xffff) + 1) + i;
-			return j;
-		};
-
-		// convert a color and build up the palette
-		this.color = function (red, green, blue, alpha) {
-
-			alpha = alpha >= 0 ? alpha : 255;
-			var color = (((((alpha << 8) | red) << 8) | green) << 8) | blue;
-
-			if (typeof this.palette[color] === 'undefined') {
-				if (this.pindex === this.depth) {
-					return '\x00';
-				}
-
-				var ndx = this.plteOffs + 8 + 3 * this.pindex;
-
-				this.buffer[ndx + 0] = String.fromCharCode(red);
-				this.buffer[ndx + 1] = String.fromCharCode(green);
-				this.buffer[ndx + 2] = String.fromCharCode(blue);
-				this.buffer[this.trnsOffs + 8 + this.pindex] = String.fromCharCode(alpha);
-
-				this.palette[color] = String.fromCharCode(this.pindex++);
-			}
-			return this.palette[color];
-		};
-
-		// output a PNG string, Base64 encoded
-		this.getBase64 = function () {
-
-			var s = this.getDump();
-
-			var ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-			var c1, c2, c3, e1, e2, e3, e4;
-			var l = s.length;
-			var i = 0;
-			var r = '';
-
-			do {
-				c1 = s.charCodeAt(i);
-				e1 = c1 >> 2;
-				c2 = s.charCodeAt(i + 1);
-				e2 = ((c1 & 3) << 4) | (c2 >> 4);
-				c3 = s.charCodeAt(i + 2);
-				if (l < i + 2) {
-					e3 = 64;
-				} else {
-					e3 = ((c2 & 0xf) << 2) | (c3 >> 6);
-				}
-				if (l < i + 3) {
-					e4 = 64;
-				} else {
-					e4 = c3 & 0x3f;
-				}
-				r += ch.charAt(e1) + ch.charAt(e2) + ch.charAt(e3) + ch.charAt(e4);
-			} while ((i += 3) < l);
-			return r;
-		};
-
-		// output a PNG string
-		this.getDump = function () {
-
-			// compute adler32 of output pixels + row filter bytes
-			var BASE = 65521; /* largest prime smaller than 65536 */
-			var NMAX = 5552; /* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
-			var s1 = 1;
-			var s2 = 0;
-			var n = NMAX;
-
-			for (var y = 0; y < this.height; y++) {
-				for (var x = -1; x < this.width; x++) {
-					s1 += this.buffer[this.index(x, y)].charCodeAt(0);
-					s2 += s1;
-					if ((n -= 1) === 0) {
-						s1 %= BASE;
-						s2 %= BASE;
-						n = NMAX;
-					}
-				}
-			}
-			s1 %= BASE;
-			s2 %= BASE;
-			write(this.buffer, this.idatOffs + this.idatSize - 8, byte4((s2 << 16) | s1));
-
-			// compute crc32 of the PNG chunks
-			function crc32(png, offs, size) {
-				var crc = -1;
-				for (var i = 4; i < size - 4; i += 1) {
-					crc = _crc32[(crc ^ png[offs + i].charCodeAt(0)) & 0xff] ^ ((crc >> 8) & 0x00ffffff);
-				}
-				write(png, offs + size - 4, byte4(crc ^ -1));
-			}
-
-			crc32(this.buffer, this.ihdrOffs, this.ihdrSize);
-			crc32(this.buffer, this.plteOffs, this.plteSize);
-			crc32(this.buffer, this.trnsOffs, this.trnsSize);
-			crc32(this.buffer, this.idatOffs, this.idatSize);
-			crc32(this.buffer, this.iendOffs, this.iendSize);
-
-			// convert PNG to string
-			return "\211PNG\r\n\032\n" + this.buffer.join('');
-		};
-	};
-
-})();
-
 /**
  * A handy class to draw a spectrom (calculate a fft)
  *
@@ -225,17 +7,42 @@
  * @link http://www.phonetik.uni-muenchen.de/
  *
  */
+var executed = false;
+var PI = 3.141592653589793; // value : Math.PI
+var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
+var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
+var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);	
+var sin, cos; // vars to hold sin and cos table	
+var internalalpha = 0.16;
+var totalMax = 0;
+var dynRangeInDB = 50;
+var myOffset = 0;
+var mywidth = 0;
+var myDrawOffset = 0;
+var pixelRatio = 1;
+var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight;
+var myWindow = {
+	BARTLETT: 1,
+	BARTLETTHANN: 2,
+	BLACKMAN: 3,
+	COSINE: 4,
+	GAUSS: 5,
+	HAMMING: 6,
+	HANN: 7,
+	LANCZOS: 8,
+	RECTANGULAR: 9,
+	TRIANGULAR: 10
+};
 
-var sin; // vars to hold sin table
-var cos; // vars to hold cos table
 
 function FFT(fftSize) {
 	var n, m, alpha, func, i;
-	n = fftSize;
-	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
 	if (n !== (1 << m)) { // Make sure n is a power of 2
 		self.postMessage('ERROR : FFT length must be power of 2');
 	}
+	n = fftSize;
+	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
+
 	if (sin === undefined || sin === undefined) { // SIC also do when n changes 
 		cos = new Float32Array(n / 2); // precompute cos table
 		sin = new Float32Array(n / 2); // precompute sin table
@@ -419,31 +226,7 @@ function FFT(fftSize) {
 
 
 
-var executed = false;
-var PI = 3.141592653589793; // value : Math.PI
-var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
-var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
-var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);		
-var internalalpha = 0.16;
-var totalMax = 0;
-var dynRangeInDB = 50;
-var myOffset = 0;
-var mywidth = 0;
-var myDrawOffset = 0;
-var pixelRatio = 1;
-var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight;
-var myWindow = {
-	BARTLETT: 1,
-	BARTLETTHANN: 2,
-	BLACKMAN: 3,
-	COSINE: 4,
-	GAUSS: 5,
-	HAMMING: 6,
-	HANN: 7,
-	LANCZOS: 8,
-	RECTANGULAR: 9,
-	TRIANGULAR: 10
-};
+
 /* 
 	// initial function call for calculating and drawing Spectrogram
 	// input PCM data is coming from the buffer "localSoundBuffer"
@@ -462,8 +245,8 @@ var myWindow = {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
-	return function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight, cacheWidth, cacheSide, pixelRatio) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
 
 		if (!executed) {
 			//cWidth *= pixelRatio;
@@ -475,30 +258,18 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight,
 			// instance of FFT with windowSize N
 			myFFT = new FFT(N);
 
-			renderWidth = cWidth - cacheWidth;
-			if (renderWidth < 0) {
-				renderWidth = 0;
-			}
-
 			// array holding FFT results paint[canvas width][canvas height]
 			paint = new Array(renderWidth);
 
-			// create new png picture from pnglib witth color depth=256
-			p = new PNGlib(cWidth, cHeight, 256);
 
 			// Hz per pixel height
-			HzStep = (sampleRate / 2) / cHeight;
+			HzStep = (sampleRate / 2) / renderHeight;
 
 			// uper Hz boundry to display
 			c = Math.floor(upperFreq / HzStep);
 
 			// lower Hz boundry to display
 			d = Math.floor(lowerFreq / HzStep); // -1 for value below display when lower>0
-
-			// offset in pcm stream if cache is on right side
-			if (cacheSide === 2) {
-				myOffset = cacheWidth * myStep;
-			}
 
 			// calculate i FFT runs, save result into paint and set maxPsd while doing so
 			for (var i = 0; i < renderWidth; i++) {
@@ -507,17 +278,15 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight,
 			}
 
 			// height between two interpolation points
-			pixelHeight = cHeight / (c - d - 2);
+			pixelHeight = renderHeight / (c - d - 2);
 
-			// offset if cache is on right side
-			if (cacheSide === 2) {
-				myDrawOffset = cacheWidth;
-			}
+			// create new picture
+			imageResult = new Uint8ClampedArray(renderWidth*renderHeight*4);
 
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
 			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, p, c, d, myDrawOffset);
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight);
 			}
 
 			// post generated image block with settings back
@@ -526,9 +295,9 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, cWidth, cHeight,
 				'start': start,
 				'end': end,
 				'myStep': myStep,
-				'cacheWidth': cacheWidth,
-				'cacheSide': cacheSide,
-				'img': 'data:image/png;base64,' + p.getBase64()
+				'renderWidth': renderWidth,
+				'renderHeight': renderHeight,
+				'img': imageResult
 			});
 
 			// free vars
@@ -601,7 +370,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 	//
 	*/
 
-function drawOfflineSpectogram(line, p, c, d, cacheOffet) {
+function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight) {
 
 	// set upper boundry for linear interpolation
 	var x1 = pixelHeight;
@@ -612,7 +381,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet) {
 	if (scaledVal > 1) {
 		scaledVal = 1;
 	}
-	if (scaledVal < 0) {
+	else if (scaledVal < 0) {
 		scaledVal = 0;
 	}
 
@@ -651,11 +420,15 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet) {
 				// calculate corresponding color value for interpolation point [0...255]
 				rgb = 255 - Math.round(255 * y2);
 
-				// calculate hex value of corresponding color value
-				rgb = '0x' + d2h(rgb);
-
 				// set internal image buffer to calculated & interpolated value
-				p.buffer[p.index(Math.floor(line + cacheOffet), Math.floor(myheight - ((pixelHeight * (i - 2)) + b)))] = p.color(rgb, rgb, rgb);
+				var px = Math.floor(line + cacheOffet);
+				var py = Math.floor(myheight - (pixelHeight * (i - 2) + b));
+				
+				var index = (px + (py * renderWidth)) * 4;
+				p[index+0] = rgb;
+				p[index+1] = rgb;
+				p[index+2] = rgb;
+				p[index+3] = '255';
 			}
 		} else {
 
@@ -803,17 +576,11 @@ self.addEventListener('message', function (e) {
 				break;
 			}
 		}
-		if (data.cacheSide !== undefined) {
-			cacheSide = data.cacheSide;
-		}
 		if (data.width !== undefined) {
 			mywidth = data.width;
 		}
 		if (data.height !== undefined) {
 			myheight = data.height;
-		}
-		if (data.cacheWidth !== undefined) {
-			cacheWidth = data.cacheWidth;
 		}
 		if (data.dynRangeInDB !== undefined) {
 			dynRangeInDB = data.dynRangeInDB;
@@ -834,7 +601,7 @@ self.addEventListener('message', function (e) {
 		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, cacheWidth, cacheSide, pixelRatio);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);
