@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('handleglobalkeystrokes', function (viewState, Soundhandlerservice, ConfigProviderService, HistoryService) {
+  .directive('handleglobalkeystrokes', function (viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Tierdataservice, dialogService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -18,13 +18,30 @@ angular.module('emulvcApp')
               // enable enter and escape when in editing mode
               //if (viewState.isEditing()) {
               if (code === ConfigProviderService.vals.keyMappings.enter) {
-                viewState.focusInTextField = false;
-                $('#HandletiersCtrl').scope().renameLabel(); //SIC should be in service!
-
+                if (viewState.isEditing()) {
+                  HistoryService.addObjToUndoStack({
+                    'type': 'ESPS',
+                    'action': 'renameLabel',
+                    'tierName': viewState.getcurClickTierName(),
+                    'itemIdx': viewState.getlastID(),
+                    'oldValue': viewState.getcurClickSegments()[0].label,
+                    'newValue': $('.' + viewState.getlasteditArea()).val()
+                  });
+                  Tierdataservice.rename(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
+                  viewState.deleteEditArea();
+                  viewState.focusInTextField = false;
+                } else {
+                  if (viewState.countSelected() === 0) {
+			        alert('please select a segement first!');
+			      } else {
+			        viewState.setEditing(true);
+			        viewState.openEditArea();
+		          }
+	            }                 
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 viewState.focusInTextField = false;
-                $('#HandletiersCtrl').scope().deleteEditArea(); //SIC should be in service!
+                viewState.deleteEditArea();
               }
               if (code === 13) {
                 e.preventDefault();
@@ -35,7 +52,7 @@ angular.module('emulvcApp')
 
             } else {
 
-              $('#HandletiersCtrl').scope().deleteEditArea(); //SIC should be in service!
+              viewState.deleteEditArea();
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
@@ -163,11 +180,11 @@ angular.module('emulvcApp')
 
               // tierUp
               if (code === ConfigProviderService.vals.keyMappings.tierUp) {
-                $('#HandletiersCtrl').scope().selectTier(false); //SIC should be in service!
+                viewState.selectTier(false);
               }
               // tierDown
               if (code === ConfigProviderService.vals.keyMappings.tierDown) {
-                $('#HandletiersCtrl').scope().selectTier(true); //SIC should be in service!
+                viewState.selectTier(true);
               }
 
               // preselected boundary snap to top
@@ -187,57 +204,101 @@ angular.module('emulvcApp')
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().expandSegment(true, true); //SIC should be in service!
-                  scope.hists.addObjToUndoStack({
-                    'type': 'ESPS',
-                    'action': 'expandSegments',
-                    'tierName': viewState.getcurClickTierName(),
-                    'itemIdx': viewState.getselected().sort(),
-                    'expand': true,
-                    'rightSide': true
-                  });
+                  if (viewState.getcurClickTierName() === undefined) {
+                    dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
+                  } else {
+                    if (viewState.getselected().length === 0) {
+                      dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                    } else {
+                      if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
+						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+					  } else {
+						dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+					  }
+                      scope.hists.addObjToUndoStack({
+                        'type': 'ESPS',
+                        'action': 'expandSegments',
+                        'tierName': viewState.getcurClickTierName(),
+                        'itemIdx': viewState.getselected().sort(),
+                        'expand': true,
+                        'rightSide': true
+                      });
+                      Tierdataservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime); 
+                    }
+                  }
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().expandSegment(true, false); //SIC should be in service!
-                  scope.hists.addObjToUndoStack({
-                    'type': 'ESPS',
-                    'action': 'expandSegments',
-                    'tierName': viewState.getcurClickTierName(),
-                    'itemIdx': viewState.getselected().sort(),
-                    'expand': true,
-                    'rightSide': false
-                  });
+                  if (viewState.getcurClickTierName() === undefined) {
+                    dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
+                  } else {
+                    if (viewState.getselected().length === 0) {
+                      dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                    } else {     
+                      if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
+						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+					  } else {
+						dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+					  }                                 
+                      scope.hists.addObjToUndoStack({
+                        'type': 'ESPS',
+                        'action': 'expandSegments',
+                        'tierName': viewState.getcurClickTierName(),
+                        'itemIdx': viewState.getselected().sort(),
+                        'expand': true,
+                        'rightSide': false
+                      });
+                      Tierdataservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                   }
+                  } 
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.minus) {
-                if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  if (e.shiftKey) {
-                    $('#HandletiersCtrl').scope().expandSegment(false, false); //SIC should be in service!
-                    scope.hists.addObjToUndoStack({
-                      'type': 'ESPS',
-                      'action': 'expandSegments',
-                      'tierName': viewState.getcurClickTierName(),
-                      'itemIdx': viewState.getselected().sort(),
-                      'expand': false,
-                      'rightSide': false
-                    });
+                if (ConfigProviderService.vals.restrictions.editItemSize) {           
+                  if (viewState.getcurClickTierName() === undefined) {
+                    dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
                   } else {
-                    $('#HandletiersCtrl').scope().expandSegment(false, true); //SIC should be in service!
-                    scope.hists.addObjToUndoStack({
-                      'type': 'ESPS',
-                      'action': 'expandSegments',
-                      'tierName': viewState.getcurClickTierName(),
-                      'itemIdx': viewState.getselected().sort(),
-                      'expand': false,
-                      'rightSide': true
-                    });
-
+                    if (viewState.getselected().length === 0) {
+                      dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                    } else {      
+                      if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
+						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+					  } else {
+						dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+					  }                                                                 
+                      if (e.shiftKey) {
+                        scope.hists.addObjToUndoStack({
+                          'type': 'ESPS',
+                          'action': 'expandSegments',
+                          'tierName': viewState.getcurClickTierName(),
+                          'itemIdx': viewState.getselected().sort(),
+                          'expand': false,
+                          'rightSide': false
+                        });
+                        Tierdataservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                      } else {
+                        scope.hists.addObjToUndoStack({
+                          'type': 'ESPS',
+                          'action': 'expandSegments',
+                          'tierName': viewState.getcurClickTierName(),
+                          'itemIdx': viewState.getselected().sort(),
+                          'expand': false,
+                          'rightSide': true
+                        });
+                        Tierdataservice.expandSegment(false, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                      }
+                    }
                   }
                 }
               }
@@ -264,6 +325,16 @@ angular.module('emulvcApp')
                   $('#HandletiersCtrl').scope().tabNext(false); //SIC should be in service!
                 }
               }
+              
+              // enter
+              if (code === ConfigProviderService.vals.keyMappings.enter) {
+                if (ConfigProviderService.vals.restrictions.addItem) {
+                  
+                } else {
+                  console.log('action currently not allowed');
+                }
+              }
+              
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
                 if (!e.shiftKey) {

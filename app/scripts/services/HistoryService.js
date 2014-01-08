@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierdataservice) {
+	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierdataservice, ConfigProviderService) {
 
 
 		// shared service object
@@ -74,15 +74,15 @@ angular.module('emulvcApp')
 						// console.log(cur);
 						if (applyOldVal) {
 							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
 							} else {
-								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
 							}
 						} else {
 							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
 							} else {
-								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, viewState.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
 							}
 						}
 						break;
@@ -102,10 +102,19 @@ angular.module('emulvcApp')
 						}
 						break;
 					case 'expandSegments':
+					
+                        if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
+						  var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+  					    } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+						  var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+					    } else {
+						  dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+					    }                                                                 
+			
 						if (applyOldVal) {
-							$('#HandletiersCtrl').scope().expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); //SIC should be in service!
+							Tierdataservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); 
 						} else {
-							$('#HandletiersCtrl').scope().expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); //SIC should be in service!
+							Tierdataservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName);
 						}
 						break;
 

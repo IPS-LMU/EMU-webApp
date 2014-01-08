@@ -222,8 +222,6 @@ angular.module('emulvcApp')
             if (pcmperpixel === event.data.myStep) {
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
-              console.log(event.data);
-              console.log(event.data.img.length/4/canvas0.height);
               buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
               drawSpectMarkup();
             }

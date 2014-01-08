@@ -196,6 +196,30 @@ angular.module('emulvcApp')
       }
     };
 
+    sServObj.selectTier = function (next) {
+	  var tag;
+	  var now = this.getcurClickTierName();
+	  if (now === undefined) {
+		this.setcurClickTierName($('li').children()[0].id);
+	  } else {
+		if (next) {
+		  tag = $('li.' + now).next().children()[0];
+		  if (tag === undefined) {
+			this.setcurClickTierName($('li').children()[0].id);
+		  } else {
+			this.setcurClickTierName(tag.id);
+		  }
+	    } else {
+		  tag = $('li.' + now).prev().children()[0];
+		  if (tag === undefined) {
+			this.setcurClickTierName($('li').children()[0].id);
+		  } else {
+			this.setcurClickTierName(tag.id);
+		  }
+		}
+	  }
+	};    
+
 
     /**
      * set the window Function for the Spectrogram
@@ -384,36 +408,6 @@ angular.module('emulvcApp')
      */
     sServObj.getcurMouseTierType = function () {
       return this.curMouseTierType;
-    };
-
-    /**
-     * gets the current (mousemove) Tier Name
-     */
-    sServObj.getcurMouseTierDetails = function () {
-      var tierName = this.getcurMouseTierName();
-
-      var curTier;
-      Tierdataservice.data.tiers.forEach(function (t) {
-        if (t.TierName === tierName) {
-          curTier = t;
-        }
-      });
-      return curTier;
-
-    };
-
-    /**
-     * gets tier details by passing in tierName
-     */
-    sServObj.getTierDetails = function (tierName) {
-      var curTier;
-      Tierdataservice.data.tiers.forEach(function (t) {
-        if (t.TierName === tierName) {
-          curTier = t;
-        }
-      });
-      return curTier;
-
     };
 
     /**
@@ -740,7 +734,7 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
-      var curTier = this.getcurMouseTierDetails();
+      var curTier = Tierdataservice.getcurMouseTierDetails();
       // Tierdataservice.data.tiers.forEach(function(t) {
       // if (t.TierName === tierName) {
       // curTier = t;
