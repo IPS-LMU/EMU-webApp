@@ -327,7 +327,7 @@ angular.module('emulvcApp')
 				  scope.openModal('views/error.html', 'dialogSmall', false, 'Selection Error', 'Please select a Tier first');
 			    } else {
 			    
-			    // still todo: refactor this 
+			    // still todo: refactor this / split function... better: dependency inversion
                 $('#HandletiersCtrl').scope().selectSegmentsInSelection(); //SIC should be in service!
                 }
               }
@@ -336,16 +336,16 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 var now = parseInt(viewState.getselected()[0], 10);          
                 if (e.shiftKey) {
-                  if (now < viewState.getTierLength() - 1) {
-					++now;
+                  if (now > 1) {
+					--now;
 				  }
                   var ret = Tierdataservice.tabNext(true, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
                 } else {
-                  if (now > 1) {
-					--now;
-				  }
+                  if (now < viewState.getTierLength() - 1) {
+					++now;
+				  }                
                   var ret = Tierdataservice.tabNext(false, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
