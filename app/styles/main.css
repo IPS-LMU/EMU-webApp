@@ -136,6 +136,11 @@ li {
     width: 100%;
 }
 
+.ng-hide {
+    display: none;
+}
+
+
 .controls {
     position: absolute;
     height: 100%;

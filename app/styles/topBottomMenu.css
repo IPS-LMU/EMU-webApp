@@ -98,7 +98,6 @@
 
 
 .mini-btn,.mini-btn-dialog {
-    display: inline-block;
     /*background: #353535;*/
     background: transparent;
     /*background-color:#ededed;*/
@@ -114,7 +113,6 @@
     padding: 1px;
     height: 30px;
     line-height: 12px;
-
     text-align:center;
     width: 9%;
 }
