@@ -59,6 +59,52 @@ angular.module('emulvcApp')
 	  });
 	};	
 	
+	sServObj.tabNext = function (invers, now, tN) {
+	    var ret = new Object();
+		angular.forEach(sServObj.data.tiers, function (t) {
+			var i = 0;
+			if (t.TierName === tN) {
+				angular.forEach(t.events, function (evt) {
+					if (i === now) {
+					    ret.event = evt;
+					    ret.id =now;
+					}
+					++i;
+				});
+			}
+		});
+		return ret;
+	};	
+	
+	sServObj.snapBoundary = function (toTop, preSelSS, td) {
+		var neighTd;
+		var neighTdIdx;
+		$scope.tierDetails.data.tiers.forEach(function (t, tIdx) {
+			if (t.TierName === td.TierName) {
+				if (tIdx >= 1 && toTop) {
+					neighTd = $scope.tierDetails.data.tiers[tIdx - 1];
+					neighTdIdx = tIdx - 1;
+				} else if (tIdx < $scope.tierDetails.data.tiers.length - 1 && !toTop) {
+					neighTd = $scope.tierDetails.data.tiers[tIdx + 1];
+					neighTdIdx = tIdx + 1;
+				}
+			}
+		});
+		var absMinDist = Infinity;
+		var absDist;
+		var minDist;
+		if (neighTd !== undefined) {
+			neighTd.events.forEach(function (itm) {
+				absDist = Math.abs(preSelSS - itm.startSample);
+				if (absDist < absMinDist) {
+					absMinDist = absDist;
+					minDist = itm.startSample - preSelSS;
+				}
+			});
+			this.moveBorder(minDist, td);
+		}
+	};	
+	
 	sServObj.expandSegment = function (expand, rightSide, selected, tN, changeTime) {
 		var startTime = 0;
 		var i;

@@ -190,14 +190,28 @@ angular.module('emulvcApp')
               // preselected boundary snap to top
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().snapBoundary(true); //SIC should be in service!
+                  Tierdataservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, Tierdataservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
+				  scope.hists.addObjToUndoStack({
+					'type': 'ESPS',
+					'action': 'moveBoundary',
+					'tierName': td.TierName,
+					'itemIdx': viewState.getcurMouseSegmentId(),
+					'movedBy': minDist
+	  			  });
                 }
               }
 
               // preselected boundary snap to bottom
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  $('#HandletiersCtrl').scope().snapBoundary(false); //SIC should be in service!
+                  Tierdataservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, Tierdataservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
+				  scope.hists.addObjToUndoStack({
+					'type': 'ESPS',
+					'action': 'moveBoundary',
+					'tierName': td.TierName,
+					'itemIdx': viewState.getcurMouseSegmentId(),
+					'movedBy': minDist
+	  			  });                  
                 }
               }
 
@@ -319,10 +333,23 @@ angular.module('emulvcApp')
 
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
+                var now = parseInt(viewState.getselected()[0], 10);          
                 if (e.shiftKey) {
-                  $('#HandletiersCtrl').scope().tabNext(true); //SIC should be in service!
+                  if (now < viewState.getTierLength() - 1) {
+					++now;
+				  }
+                  var ret = Tierdataservice.tabNext(true, now, viewState.getcurClickTierName());
+                  viewState.setcurClickSegment(ret.event, ret.id);
+				  viewState.setlasteditArea('_' + ret.id);
                 } else {
-                  $('#HandletiersCtrl').scope().tabNext(false); //SIC should be in service!
+                  if (now > 1) {
+					--now;
+				  }
+                  var ret = Tierdataservice.tabNext(false, now, viewState.getcurClickTierName());
+                  console.log(ret);
+                  viewState.setcurClickSegment(ret.event, ret.id);
+				  viewState.setlasteditArea('_' + ret.id);
+                  
                 }
               }
               
