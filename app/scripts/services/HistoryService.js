@@ -70,20 +70,12 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 					case 'moveSegment':
-						// console.log('#######UNDOING moveBoundary');
-						// console.log(cur);
 						if (applyOldVal) {
-							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
-							} else {
-								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
-							}
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveSegment(-cur.movedBy, res.tier, cur.selected);
 						} else {
-							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
-							} else {
-								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
-							}
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveSegment(cur.movedBy, res.tier, cur.selected);
 						}
 						break;
 					case 'renameLabel':

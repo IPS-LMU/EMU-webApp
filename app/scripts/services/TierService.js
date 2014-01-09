@@ -179,6 +179,19 @@ angular.module('emulvcApp')
 		}
 	};	
 	
+	sServObj.moveSegment = function (changeTime, t, selected) {
+		if (null !== t) { 
+			if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
+				t.events[selected[0] - 1].sampleDur += changeTime;
+				for (var i = 0; i < selected.length; i++) {
+					t.events[selected[i]].startSample += changeTime;
+				}
+				t.events[selected[selected.length - 1] + 1].startSample += changeTime;
+				t.events[selected[selected.length - 1] + 1].sampleDur -= changeTime;
+			}
+		}
+	};	
+	
 	sServObj.expandSegment = function (expand, rightSide, selected, tN, changeTime) {
 		var startTime = 0;
 		var i;

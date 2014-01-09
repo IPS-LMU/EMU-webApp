@@ -288,22 +288,4 @@ angular.module('emulvcApp')
 			}
 		};
 
-		$scope.moveSegment = function (changeTime, t, segIDs) {
-			if (null !== t) { // && t.TierName === viewState.getcurClickTierName()
-				var selected;
-				if (segIDs === undefined) {
-					selected = viewState.getselected().sort();
-				} else {
-					selected = segIDs;
-				}
-				if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
-					t.events[selected[0] - 1].sampleDur += changeTime;
-					for (var i = 0; i < selected.length; i++) {
-						t.events[selected[i]].startSample += changeTime;
-					}
-					t.events[selected[selected.length - 1] + 1].startSample += changeTime;
-					t.events[selected[selected.length - 1] + 1].sampleDur -= changeTime;
-				}
-			}
-		};
 	});

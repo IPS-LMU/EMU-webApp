@@ -85,7 +85,7 @@ angular.module('emulvcApp')
                 // scope.modifTierItems();
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
-                scope.moveSegment(moveBy, scope.this.tier);
+                scope.tierDetails.moveSegment(moveBy, scope.this.tier, viewState.getselected().sort());
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.hists.updateCurChangeObj({
@@ -93,7 +93,8 @@ angular.module('emulvcApp')
                   'action': 'moveSegment',
                   'tierName': scope.this.tier.TierName,
                   'itemIdx': viewState.getselected().sort(),
-                  'movedBy': moveBy
+                  'movedBy': moveBy,
+                  'selected': viewState.getselected().sort()
                 });
 
                 scope.$apply();
