@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierservice, ConfigProviderService) {
+	.service('HistoryService', function HistoryService(Ssffdataservice, Tierservice, ConfigProviderService) {
 
 
 		// shared service object
@@ -93,6 +93,16 @@ angular.module('emulvcApp')
 							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
 						}
 						break;
+					case 'renameTier':
+					    
+						if (applyOldVal) {
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+							res.tier.TierName = cur.oldName;
+						} else {
+						    var res = Tierservice.getTierDetails(cur.oldName);	
+							res.tier.TierName = cur.tierName;
+						}
+						break;						
 					case 'deleteTier':
 						if (applyOldVal) {
 							Tierservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
@@ -109,15 +119,13 @@ angular.module('emulvcApp')
 						}
 						break;
 					case 'expandSegments':
-					
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 						  var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
   					    } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-						  var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+						  var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (cur.bufferLength / 100);
 					    } else {
-						  dialogService.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+						  dialogService.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 					    }                                                                 
-			
 						if (applyOldVal) {
 							Tierservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); 
 						} else {

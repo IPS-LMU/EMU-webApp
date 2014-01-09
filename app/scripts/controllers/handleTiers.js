@@ -59,7 +59,7 @@ angular.module('emulvcApp')
 		
 		
 		$scope.$on('errorMessage', function(evt, data) {
-		    dialogService.open('views/error.html', 'ErrormodalCtrl', data);
+		    dialogService.open('views/error.html', 'ModalCtrl', data);
 		});
 		
 		
@@ -125,7 +125,7 @@ angular.module('emulvcApp')
 					}
 				});
 			} else {
-				dialogService.open('views/error.html', 'ErrormodalCtrl', 'Rename Error : This Tiername already exists ! Please choose another name !');
+				dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : This Tiername already exists ! Please choose another name !');
 			}
 		};
 

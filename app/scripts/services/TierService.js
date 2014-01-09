@@ -33,16 +33,29 @@ angular.module('emulvcApp')
      * gets tier details by passing in tierName
      */
     sServObj.getTierDetails = function (tierName) {
-      var curTier;
-      sServObj.data.tiers.forEach(function (t) {
+      var curTier = null;
+      var y = null;
+      sServObj.data.tiers.forEach(function (t, x) {
         if (t.TierName === tierName) {
           curTier = t;
+          y = x;
         }
       });
-      return curTier;
-
-    };		
+      return {tier: curTier, id: y};
+    };	
     
+    sServObj.deleteTier = function (tierName) { 
+        var y = 0; 
+        var curTier;
+		angular.forEach(sServObj.data.tiers, function (t, x) {
+			if (t.TierName === tierName) {
+			    curTier = t;
+			    y = x;
+				sServObj.data.tiers.splice(x, 1);
+			}
+		});	
+		return {tier: curTier, id: y, name: tierName};
+    };    
     /**
      * rename a tier by passing in oldName and id
      */    

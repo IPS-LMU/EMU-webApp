@@ -233,7 +233,7 @@ angular.module('emulvcApp')
 				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html', 'ErrormodalCtrl', 'Could not connect to websocket server...');
+						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server...');
 					}
 				});
 			}
@@ -497,9 +497,9 @@ angular.module('emulvcApp')
 		$scope.renameSelTierBtnClick = function () {
 			if (viewState.getPermission('renameSelTierBtnClick')) {
 				if (viewState.getcurClickTierName() !== undefined) {
-				    dialogService.open('views/renameTier.html', 'ErrormodalCtrl', viewState.getcurClickTierName());
+				    dialogService.open('views/renameTier.html', 'ModalCtrl', viewState.getcurClickTierName());
 				} else {
-				    dialogService.open('views/error.html', 'ErrormodalCtrl', 'Rename Error : Please choose a Tier first !');
+				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Tier first !');
 				}
 			} else {
 				console.log('action currently not allowed');

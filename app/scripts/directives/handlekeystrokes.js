@@ -214,23 +214,24 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.plus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickTierName() === undefined) {
-                    scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
                   } else {
                     if (viewState.getselected().length === 0) {
-                      scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
                     } else {
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
 						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
 					  } else {
-						scope.dials.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 					  }
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
                         'tierName': viewState.getcurClickTierName(),
                         'itemIdx': viewState.getselected().sort(),
+                        'bufferLength': viewState.curViewPort.bufferLength,
                         'expand': true,
                         'rightSide': true
                       });
@@ -244,17 +245,17 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickTierName() === undefined) {
-                    scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
                   } else {
                     if (viewState.getselected().length === 0) {
-                      scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
                     } else {     
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
 						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
 					  } else {
-						scope.dials.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 					  }                                 
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
@@ -274,17 +275,17 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.minus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {           
                   if (viewState.getcurClickTierName() === undefined) {
-                    scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
                   } else {
                     if (viewState.getselected().length === 0) {
-                      scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
                     } else {      
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
 						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
 					  } else {
-						scope.dials.open('views/error.html', 'ErrormodalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 					  }                                                                 
                       if (e.shiftKey) {
                         scope.hists.addObjToUndoStack({
@@ -324,7 +325,7 @@ angular.module('emulvcApp')
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
               	if (viewState.getcurClickTierName() === undefined) {
-				  scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Selection Error : Please select a Tier first');
+				  scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Tier first');
 			    } else {
 			      viewState.selectSegmentsInSelection();
                 }
@@ -384,7 +385,7 @@ angular.module('emulvcApp')
                       
                       Tierservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
                     } else {
-                      scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: Please select a Boundary first.');
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                     }
                   }
                 } else {
@@ -400,7 +401,7 @@ angular.module('emulvcApp')
                         var ret = Tierservice.deleteSegments(viewState.getselected(), viewState.getcurClickTierName());
                         viewState.setcurClickSegment(ret.val1, ret.val2);
                       } else {
-                        scope.dials.open('views/error.html', 'ErrormodalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
+                        scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
                       }
                     }
                   }
