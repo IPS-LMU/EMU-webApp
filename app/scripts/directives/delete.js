@@ -5,13 +5,11 @@ angular.module('emulvcApp')
     return {
       restrict: 'A',
       link: function (scope, element) {
-
-        // var elem = element[0];
         var id = scope.this.tier.TierName;
 
         element.bind('click', function () {
           scope.vs.setcurClickTierName(id);
-          scope.openModal('views/deleteTier.html', 'dialogSmall', true, id, id);
+          scope.dials.open('views/deleteTier.html', 'ErrormodalCtrl', id);
         });
 
       }

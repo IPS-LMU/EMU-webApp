@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Tierdataservice) {
+  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Tierservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -440,6 +440,25 @@ angular.module('emulvcApp')
       return this.curMouseSegmentId;
     };
 
+    /**
+     * selects all Segements on current tier which are inside the selected viewport
+     */
+    sServObj.selectSegmentsInSelection = function () {
+      var rangeStart = sServObj.curViewPort.selectS;
+	  var rangeEnd = sServObj.curViewPort.selectE;
+	  angular.forEach(Tierservice.data.tiers, function (t) {
+		var i = 0;
+		if (t.TierName === sServObj.getcurClickTierName()) {
+		  angular.forEach(t.events, function (evt) {
+			if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
+			  sServObj.setcurClickSegmentMultiple(evt, i);
+			}
+			++i;
+		  });
+		}
+	  });
+	};
+
 
     /**
      * sets the current (click) Segment
@@ -633,12 +652,13 @@ angular.module('emulvcApp')
         'position': 'absolute',
         'z-index': '5',
         'left': x + 2 + 'px',
-        'width': width - 1 + 'px',
-        'height': (height / 3 * 2) + 'px',
-        'padding-top': (height / 3) + 'px'
+        'width': Math.round(width - 1) + 'px',
+        'height': Math.round(height - 1) + 'px',
+        'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
       return textid;
     };
+    
 
     /**
      * calcs and returns start in secs
@@ -734,8 +754,8 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
-      var curTier = Tierdataservice.getcurMouseTierDetails();
-      // Tierdataservice.data.tiers.forEach(function(t) {
+      var curTier = Tierservice.getcurMouseTierDetails();
+      // Tierservice.data.tiers.forEach(function(t) {
       // if (t.TierName === tierName) {
       // curTier = t;
       // }

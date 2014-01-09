@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierdataservice, ConfigProviderService) {
+	.service('HistoryService', function HistoryService(viewState, Ssffdataservice, Tierservice, ConfigProviderService) {
 
 
 		// shared service object
@@ -20,7 +20,7 @@ angular.module('emulvcApp')
 		sServObj.history = function () {
 			var newClone = angular.copy({
 				ssff: Ssffdataservice.getData(),
-				tier: Tierdataservice.getData()
+				tier: Tierservice.getData()
 			});
 			if (sServObj.myHistoryCounter > 0) {
 				var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
@@ -38,7 +38,7 @@ angular.module('emulvcApp')
 		sServObj.goBackHistory = function () {
 			if (sServObj.myHistoryCounter > 1) {
 				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
-				Tierdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].tier);
+				Tierservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].tier);
 				--sServObj.myHistoryCounter;
 				return true;
 			} else {
@@ -74,15 +74,15 @@ angular.module('emulvcApp')
 						// console.log(cur);
 						if (applyOldVal) {
 							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveBorder(-cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
 							} else {
-								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveSegment(-cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
 							}
 						} else {
 							if (cur.action === 'moveBoundary') {
-								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveBorder(cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
 							} else {
-								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, Tierdataservice.getTierDetails(cur.tierName), cur.itemIdx);
+								$('#HandletiersCtrl').scope().moveSegment(cur.movedBy, Tierservice.getTierDetails(cur.tierName), cur.itemIdx);
 							}
 						}
 						break;
@@ -112,9 +112,9 @@ angular.module('emulvcApp')
 					    }                                                                 
 			
 						if (applyOldVal) {
-							Tierdataservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); 
+							Tierservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); 
 						} else {
-							Tierdataservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName);
+							Tierservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName);
 						}
 						break;
 

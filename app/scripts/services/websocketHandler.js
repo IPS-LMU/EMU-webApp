@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, Tierdataservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, Tierservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
 		// shared service object
 		var sServObj = {};
 		// Keep all pending requests here until they get responses
@@ -248,7 +248,7 @@ angular.module('emulvcApp')
 
 		// ws request for saving esps file
 		sServObj.saveESPSfile = function (fName) {
-			var espsJSO = Tierdataservice.getData();
+			var espsJSO = Tierservice.getData();
 			var tNs;
 			console.log(fName);
 			espsJSO.fileInfos.forEach(function (fI) {

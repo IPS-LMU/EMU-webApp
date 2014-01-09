@@ -1,7 +1,8 @@
 <!-- <div class="modal" id="appcachemodal">Updating to newer version...</div> -->
-
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl">
+
  <div handleglobalkeystrokes>
+ 
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="FileCtrl" ng-controller="FileCtrl">
    <h3><div class="uttFilter"><input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
    <div id="submenu" class="submenu">
@@ -59,7 +60,6 @@
   
   <div ng-controller="HandletiersCtrl" id="HandletiersCtrl" class="HandletiersCtrl">
     <!-- all tiers are listed here -->
-    <!-- <ul ui:sortable="sortableOptions" ng-model="tierDetails.tiers" id="allowSortable"> -->
     <ul ng-model="tierDetails.tiers" id="allowSortable">
       <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
         <tier id='{{tier.TierName}}' class="tier"></tier>
@@ -81,5 +81,6 @@
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlaySel();" ng-disabled="!vs.getPermission('playaudio')" class="mini-btn" id="cmd_playSelected" data-tooltip="Shortcut: {{shortcut.playSelected}}">play selected</button>
     <button ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" ng-disabled="!vs.getPermission('playaudio')" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
   </div>
-</div>
+  
+  </div>
 </div>

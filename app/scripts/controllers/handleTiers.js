@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierdataservice, fontScaleService, Drawhelperservice, dialogService) {
+	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;
 		$scope.hists = HistoryService;
@@ -9,11 +9,11 @@ angular.module('emulvcApp')
 		$scope.shs = Soundhandlerservice;
 		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
-
+		$scope.dials = dialogService;
 		$scope.testValue = '';
 		$scope.message = '';
 
-		$scope.tierDetails = Tierdataservice;
+		$scope.tierDetails = Tierservice;
 
 		$scope.sortableOptions = {
 			update: function (e, ui) {
@@ -24,8 +24,8 @@ angular.module('emulvcApp')
 			start: function () {
 				$scope.deleteEditArea();
 			},
-			create: function () {
-				// $('#allowSortable').sortable('disable');
+			create: function (e, ui) {
+				 //ui.item.sortable('enable');
 			},
 			axis: 'y',
 			placeholder: 'tierPlaceholder'
@@ -56,6 +56,13 @@ angular.module('emulvcApp')
 		$scope.$on('loadingNewUtt', function () {
 			$scope.tierDetails.data = {};
 		});
+		
+		
+		$scope.$on('errorMessage', function(evt, data) {
+		    dialogService.open('views/error.html', 'ErrormodalCtrl', data);
+		});
+		
+		
 
 		//
 		$scope.sortTiers = function () {
@@ -102,26 +109,6 @@ angular.module('emulvcApp')
 			return t;
 		};
 
-
-		$scope.selectSegmentsInSelection = function () {
-
-				var rangeStart = viewState.curViewPort.selectS;
-				var rangeEnd = viewState.curViewPort.selectE;
-				angular.forEach($scope.tierDetails.data.tiers, function (t) {
-					var i = 0;
-					if (t.TierName === viewState.getcurClickTierName()) {
-						angular.forEach(t.events, function (evt) {
-							if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
-								viewState.setcurClickSegmentMultiple(evt, i);
-							}
-							++i;
-						});
-					}
-				});
-			
-		};
-
-
 		$scope.deleteTier = function () {
 			var x = 0;
 			var id = viewState.getcurClickTierName();
@@ -131,7 +118,6 @@ angular.module('emulvcApp')
 				}
 				++x;
 			});
-			HistoryService.history();
 		};
 
 		$scope.renameTier = function (newName) {
@@ -148,9 +134,8 @@ angular.module('emulvcApp')
 						t.TierName = newName;
 					}
 				});
-				HistoryService.history();
 			} else {
-				$scope.openModal('views/error.html', 'dialog', false, 'Rename Error', 'This Tiername already exists ! Please choose another name !');
+				dialogService.open('views/error.html', 'ErrormodalCtrl', 'Rename Error : This Tiername already exists ! Please choose another name !');
 			}
 		};
 

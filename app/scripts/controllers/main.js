@@ -2,12 +2,12 @@
 
 angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierdataservice, dialogService) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierservice, dialogService) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
-		$scope.tds = Tierdataservice;
+		$scope.tds = Tierservice;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.connectBtnLabel = 'connect';
@@ -36,7 +36,7 @@ angular.module('emulvcApp')
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
-			$('#HandletiersCtrl').scope().deleteEditArea();
+			Tierservice.deleteEditArea();
 			$scope.windowWidth = $window.outerWidth;
 			$scope.$apply('windowWidth');
 		});
@@ -315,7 +315,7 @@ angular.module('emulvcApp')
 		$scope.menuUttClick = function (utt) {
 			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
 				$scope.lastclickedutt = utt;
-				$scope.openModal('views/saveChanges.html', 'dialog', 'Changes not Saved Warning', true, 'Changes made to: ' + utt.name + '. Do you wish to save them?');
+				dialogService.open('views/saveChanges.html', 'dialog', 'Changes made to: ' + utt.name + '. Do you wish to save them?');
 			} else {
 				if (utt !== $scope.curUtt) {
 					$scope.$broadcast('loadingNewUtt');
@@ -352,147 +352,6 @@ angular.module('emulvcApp')
 		 */
 		$scope.dragEnd = function () {
 			viewState.setdragBarActive(false);
-		};
-
-
-		/**
-		 *
-		 */
-		$scope.openModal = function (templatefile, cssStyle, blocking, title, content) {
-			var drop = true;
-			if (blocking) {
-				drop = 'static';
-			}
-			viewState.setmodalOpen(true);
-			alert('should use new dialogService');
-			// $modal.open({
-			// 	backdrop: drop,
-			// 	keyboard: true,
-			// 	backdropClick: true,
-			// 	templateUrl: templatefile,
-			// 	windowClass: cssStyle,
-			// 	controller: 'ModalInstanceCtrl',
-			// 	resolve: {
-			// 		modalContent: function () {
-			// 			return content;
-			// 		},
-			// 		modalTitle: function () {
-			// 			return title;
-			// 		},
-			// 		windowLength: function () {
-			// 			return viewState.spectroSettings.windowLength;
-			// 		},
-			// 		rangeFrom: function () {
-			// 			return viewState.spectroSettings.rangeFrom;
-			// 		},
-			// 		rangeTo: function () {
-			// 			return viewState.spectroSettings.rangeTo;
-			// 		},
-			// 		dynamicRange: function () {
-			// 			return viewState.spectroSettings.dynamicRange;
-			// 		},
-			// 		selectSegmentsInSelection: function () {
-			// 			return $scope.shortcut.selectSegmentsInSelection;
-			// 		},
-			// 		window: function () {
-			// 			return viewState.spectroSettings.window;
-			// 		},
-			// 		selectFirstContourCorrectionTool: function () {
-			// 			return $scope.shortcut.selectFirstContourCorrectionTool;
-			// 		},
-			// 		selectSecondContourCorrectionTool: function () {
-			// 			return $scope.shortcut.selectSecondContourCorrectionTool;
-			// 		},
-			// 		selectThirdContourCorrectionTool: function () {
-			// 			return $scope.shortcut.selectThirdContourCorrectionTool;
-			// 		},
-			// 		selectFourthContourCorrectionTool: function () {
-			// 			return $scope.shortcut.selectFourthContourCorrectionTool;
-			// 		},
-			// 		selectNoContourCorrectionTool: function () {
-			// 			return $scope.shortcut.selectNoContourCorrectionTool;
-			// 		},
-			// 		playAllInView: function () {
-			// 			return $scope.shortcut.playAllInView;
-			// 		},
-			// 		keyBackspace: function () {
-			// 			return $scope.shortcut.backspace;
-			// 		},
-			// 		snapAbove: function () {
-			// 			return $scope.shortcut.snapAbove;
-			// 		},
-			// 		snapBelow: function () {
-			// 			return $scope.shortcut.snapBelow;
-			// 		},
-			// 		plus: function () {
-			// 			return $scope.shortcut.plus;
-			// 		},
-			// 		minus: function () {
-			// 			return $scope.shortcut.minus;
-			// 		},
-			// 		snapZero: function () {
-			// 			return $scope.shortcut.snapZero;
-			// 		},
-			// 		snapBoundary: function () {
-			// 			return $scope.shortcut.snapBoundary;
-			// 		},
-			// 		keyAlt: function () {
-			// 			return $scope.shortcut.alt;
-			// 		},
-			// 		playSelected: function () {
-			// 			return $scope.shortcut.playSelected;
-			// 		},
-			// 		history: function () {
-			// 			return $scope.shortcut.history;
-			// 		},
-			// 		keyopenSubmenu: function () {
-			// 			return $scope.shortcut.openSubmenu;
-			// 		},
-			// 		playEntireFile: function () {
-			// 			return $scope.shortcut.playEntireFile;
-			// 		},
-			// 		keyTab: function () {
-			// 			return $scope.shortcut.tab;
-			// 		},
-			// 		tierUp: function () {
-			// 			return $scope.shortcut.tierUp;
-			// 		},
-			// 		tierDown: function () {
-			// 			return $scope.shortcut.tierDown;
-			// 		},
-			// 		keyShift: function () {
-			// 			return $scope.shortcut.shift;
-			// 		},
-			// 		keyEnter: function () {
-			// 			return $scope.shortcut.enter;
-			// 		},
-			// 		keyZoomIn: function () {
-			// 			return $scope.shortcut.zoomIn;
-			// 		},
-			// 		keyZoomOut: function () {
-			// 			return $scope.shortcut.zoomOut;
-			// 		},
-			// 		keyZoomAll: function () {
-			// 			return $scope.shortcut.zoomAll;
-			// 		},
-			// 		keyZoomSel: function () {
-			// 			return $scope.shortcut.zoomSel;
-			// 		},
-			// 		shiftViewPortLeft: function () {
-			// 			return $scope.shortcut.shiftViewPortLeft;
-			// 		},
-			// 		shiftViewPortRight: function () {
-			// 			return $scope.shortcut.shiftViewPortRight;
-			// 		},
-			// 		currentTier: function () {
-			// 			if (viewState.getcurClickTierName() !== '') {
-			// 				return viewState.getcurClickTierName();
-			// 			} else {
-			// 				return 'error';
-			// 			}
-			// 		}
-			// 	}
-			// });
 		};
 
 		// /**
@@ -638,9 +497,9 @@ angular.module('emulvcApp')
 		$scope.renameSelTierBtnClick = function () {
 			if (viewState.getPermission('renameSelTierBtnClick')) {
 				if (viewState.getcurClickTierName() !== undefined) {
-					$scope.openModal('views/renameTier.html', 'dialog', true);
+				    dialogService.open('views/renameTier.html', 'ErrormodalCtrl', viewState.getcurClickTierName());
 				} else {
-					$scope.openModal('views/error.html', 'dialog', 'Rename Error', false, 'Please choose a Tier first !');
+				    dialogService.open('views/error.html', 'ErrormodalCtrl', 'Rename Error : Please choose a Tier first !');
 				}
 			} else {
 				console.log('action currently not allowed');
@@ -710,7 +569,7 @@ angular.module('emulvcApp')
 					$scope.uttList = [];
 					ConfigProviderService.httpGetConfig();
 					Soundhandlerservice.wavJSO = {};
-					Tierdataservice.data = {};
+					Tierservice.data = {};
 					Ssffdataservice.data = [];
 					$('#FileCtrl').scope().showDropZone(); // SIC should be in service
 					$scope.$broadcast('refreshTimeline');

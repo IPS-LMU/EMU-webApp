@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Tierdataservice', function Tierdataservice($rootScope) {
+	.service('Tierservice', function Tierservice($rootScope) {
 		// shared service object
 		var sServObj = {};
 
@@ -173,8 +173,8 @@ angular.module('emulvcApp')
 								}
 							}
 							if (found) {
-								//  todo emit msg to $rootScope
-								//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: Cannot Expand/Shrink. Segment would be too small');
+								$rootScope.$broadcast('errorMessage','Expand Segements Error: Cannot Expand/Shrink. Segment would be too small');
+
 							} else {
 								for (i = 1; i <= selected.length; i++) {
 									t.events[selected[i - 1]].startSample += startTime;
@@ -185,12 +185,11 @@ angular.module('emulvcApp')
 								t.events[selected[selected.length - 1] + 1].sampleDur -= startTime;
 							}
 				  		} else {
-				  		   // todo emit msg to $rootScope
-							//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to decrease');
+							$rootScope.$broadcast('errorMessage','Expand Segements Error: No Space left to decrease');
+						
 				  		}
 					} else {
-						//  todo emit msg to $rootScope
-				  		//dialogService.open('views/error.html', 'ErrormodalCtrl', 'Expand Segements Error: No Space left to increase');
+				  		$rootScope.$broadcast('errorMessage', 'Expand Segements Error: No Space left to increase');
 					}
 				}
 			});
@@ -206,7 +205,7 @@ angular.module('emulvcApp')
 								}
 							}
 							if (found) {
-								//$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'Cannot Expand/Shrink. Segment would be too small');
+								$rootScope.$broadcast('errorMessage', 'Expand Segements Error : Cannot Expand/Shrink. Segment would be too small');
 							} 
 							else {
 								for (i = 0; i < selected.length; i++) {
@@ -217,11 +216,11 @@ angular.module('emulvcApp')
 							}
 						} 
 						else {
-							//$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to increase');
+							$rootScope.$broadcast('errorMessage', 'Expand Segements Error : No Space left to increase');
 						}
 					} 
 					else {
-						//$scope.openModal('views/error.html', 'dialogSmall', false, 'Expand Segements Error', 'No Space left to decrease');
+						$rootScope.$broadcast('errorMessage','Expand Segements Error : No Space left to decrease');
 					}
 				}
 			});
