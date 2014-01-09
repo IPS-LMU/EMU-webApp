@@ -508,7 +508,7 @@ angular.module('emulvcApp')
 
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-				alert('not implemented yet');
+				dialogService.open('views/export.html', 'ModalCtrl',Tierservice.data);
 			} else {
 				console.log('action currently not allowed');
 			}

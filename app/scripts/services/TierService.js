@@ -44,30 +44,41 @@ angular.module('emulvcApp')
       return {tier: curTier, id: y};
     };	
     
-    sServObj.deleteTier = function (tierName) { 
+    sServObj.deleteTier = function (tierName, id) { 
         var y = 0; 
         var curTier;
 		angular.forEach(sServObj.data.tiers, function (t, x) {
-			if (t.TierName === tierName) {
+			if (t.TierName === tierName && id == x) {
 			    curTier = t;
 			    y = x;
 				sServObj.data.tiers.splice(x, 1);
 			}
 		});	
 		return {tier: curTier, id: y, name: tierName};
-    };    
+    };
+        
     /**
-     * rename a tier by passing in oldName and id
+     * rename the label of a tier by passing in tiername and id
      */    
-    sServObj.rename = function (tiername, id, name) {
+    sServObj.renameLabel = function (tiername, id, newname) {
 	  angular.forEach(sServObj.data.tiers, function (t) {
-	    var i = 0;
 	    if (t.TierName === tiername) {
 		  angular.forEach(t.events, function (evt, i) {
 		    if (id == i) {
-			  evt.label = name;
+			  evt.label = newname;
 		    }
 	      });
+	    }
+	  });
+	};	
+	    
+    /**
+     * rename the label of a tier by passing in tiername and id
+     */    
+    sServObj.renameTier = function (oldname, newname) {
+	  angular.forEach(sServObj.data.tiers, function (t, i) {
+	    if (t.TierName === oldname) {
+			t.TierName = newname;
 	    }
 	  });
 	};	

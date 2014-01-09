@@ -4,6 +4,7 @@ angular.module('emulvcApp')
 	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Tierservice, HistoryService) {
 		
 		$scope.passedInTxt = passedInTxt;
+		$scope.exportData = undefined;
 		$scope.passedOutTxt = {
 		    'var': null,
 		};
@@ -30,15 +31,12 @@ angular.module('emulvcApp')
 		 *  Rename a tier
 		 */
 		$scope.renameTier = function () {
-		    var res = Tierservice.getTierDetails($scope.passedInTxt);	
-		    res.tier.TierName = $scope.passedOutTxt.var;
+		    Tierservice.renameTier($scope.passedInTxt,$scope.passedOutTxt.var);	
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'renameTier',
 			    'tierName': $scope.passedOutTxt.var,
-			    'oldName': $scope.passedInTxt,
-			    'itemIdx': res.id,
-		        'tier': res.tier
+			    'oldName': $scope.passedInTxt
 			});			    
 			dialogService.close();
 		};		
