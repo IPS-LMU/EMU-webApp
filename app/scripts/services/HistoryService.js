@@ -80,9 +80,9 @@ angular.module('emulvcApp')
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.oldValue);
+							Tierservice.renameLabel(cur.tierName, cur.itemIdx, cur.oldValue);
 						} else {
-							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
+							Tierservice.renameLabel(cur.tierName, cur.itemIdx, cur.newValue);
 						}
 						break;
 					case 'renameTier':

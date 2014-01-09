@@ -22,7 +22,7 @@ angular.module('emulvcApp')
                     'oldValue': viewState.getcurClickSegments()[0].label,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
-                  Tierservice.rename(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
+                  Tierservice.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
                 } else {

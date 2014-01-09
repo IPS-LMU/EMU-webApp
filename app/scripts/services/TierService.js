@@ -60,12 +60,12 @@ angular.module('emulvcApp')
     /**
      * rename the label of a tier by passing in tiername and id
      */    
-    sServObj.renameLabel = function (tiername, id, newname) {
+    sServObj.renameLabel = function (tiername, id, newLabelName) {
 	  angular.forEach(sServObj.data.tiers, function (t) {
 	    if (t.TierName === tiername) {
 		  angular.forEach(t.events, function (evt, i) {
 		    if (id == i) {
-			  evt.label = newname;
+			  evt.label = newLabelName;
 		    }
 	      });
 	    }
