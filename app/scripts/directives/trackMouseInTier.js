@@ -75,7 +75,7 @@ angular.module('emulvcApp')
                   'type': 'ESPS',
                   'action': 'moveBoundary',
                   'tierName': scope.this.tier.TierName,
-                  'itemIdx': viewState.getselected().sort(),
+                  'itemIdx': viewState.getcurMouseSegmentId(),
                   'movedBy': moveBy,
                   'selected': viewState.getcurMouseSegmentId()
                 });

@@ -95,11 +95,9 @@ angular.module('emulvcApp')
 						break;
 					case 'renameTier':
 						if (applyOldVal) {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-							res.tier.TierName = cur.oldName;
+						    Tierservice.renameTier(cur.tierName, cur.oldName);	
 						} else {
-						    var res = Tierservice.getTierDetails(cur.oldName);	
-							res.tier.TierName = cur.tierName;
+						    Tierservice.renameTier(cur.oldName, cur.tierName);	
 						}
 						break;						
 					case 'deleteTier':

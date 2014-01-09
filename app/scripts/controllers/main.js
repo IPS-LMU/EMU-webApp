@@ -36,7 +36,7 @@ angular.module('emulvcApp')
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
 			$scope.refreshTimeline();
-			Tierservice.deleteEditArea();
+			viewState.deleteEditArea();
 			$scope.windowWidth = $window.outerWidth;
 			$scope.$apply('windowWidth');
 		});
@@ -586,7 +586,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
+				viewState.deleteEditArea(); // SIC should be in service...
 				viewState.setViewPort(0, viewState.curViewPort.bufferLength);
 			} else {
 				console.log('action currently not allowed');
@@ -596,7 +596,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomIn = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea(); // SIC should be in service...
+				viewState.deleteEditArea(); // SIC should be in service...
 				viewState.zoomViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -606,7 +606,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomOut = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -616,7 +616,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomLeft = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -626,7 +626,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomRight = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -636,7 +636,7 @@ angular.module('emulvcApp')
 		//
 		$scope.cmdZoomSel = function () {
 			if (viewState.getPermission('zoom')) {
-				$('#HandletiersCtrl').scope().deleteEditArea();
+				viewState.deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
 				console.log('action currently not allowed');
