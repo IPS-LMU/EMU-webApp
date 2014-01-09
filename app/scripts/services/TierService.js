@@ -179,6 +179,33 @@ angular.module('emulvcApp')
 		}
 	};	
 	
+	sServObj.moveBoundry = function (changeTime, t, seg) {
+		if (null !== t) { // && t.TierName === viewState.getcurMouseTierName()
+			if (t.type === 'seg') {
+				if (seg > 1 && (t.events[seg - 1].sampleDur + changeTime) >= 1 && (t.events[seg].sampleDur - changeTime) >= 1) {
+					t.events[seg - 1].sampleDur += changeTime;
+					t.events[seg].startSample += changeTime;
+					t.events[seg].sampleDur -= changeTime;
+				}
+			} else {
+				if (seg > 0 && seg < t.events.length - 1) {
+					if (t.events[seg].startSample + changeTime >= t.events[seg - 1].startSample &&
+						t.events[seg].startSample + changeTime <= t.events[seg + 1].startSample)
+						t.events[seg].startSample += changeTime;
+				} else if (seg == 0) {
+					if (t.events[seg].startSample + changeTime >= 0 &&
+						t.events[seg].startSample + changeTime <= t.events[seg + 1].startSample)
+						t.events[seg].startSample += changeTime;
+				} else if (seg == t.events.length - 1) {
+					if (t.events[seg].startSample + changeTime >= t.events[seg - 1].startSample &&
+						t.events[seg].startSample + changeTime <= $scope.vs.curViewPort.bufferLength)
+						t.events[seg].startSample += changeTime;
+				}
+			}
+		}
+	};	
+	
+	
 	sServObj.moveSegment = function (changeTime, t, selected) {
 		if (null !== t) { 
 			if ((t.events[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.events[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {

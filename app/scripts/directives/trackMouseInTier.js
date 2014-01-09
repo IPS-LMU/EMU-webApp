@@ -66,7 +66,7 @@ angular.module('emulvcApp')
             if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
-                scope.moveBorder(moveBy, scope.this.tier);
+                scope.tierDetails.moveBoundry(moveBy, scope.this.tier, viewState.getcurMouseSegmentId());
                 // console.log(lastPCM);
                 // console.log(scope.this.tier.TierName);
                 viewState.selectBoundry();
@@ -75,8 +75,9 @@ angular.module('emulvcApp')
                   'type': 'ESPS',
                   'action': 'moveBoundary',
                   'tierName': scope.this.tier.TierName,
-                  'itemIdx': viewState.getcurMouseSegmentId(),
-                  'movedBy': moveBy
+                  'itemIdx': viewState.getselected().sort(),
+                  'movedBy': moveBy,
+                  'selected': viewState.getcurMouseSegmentId()
                 });
 
                 lastPCM = thisPCM;

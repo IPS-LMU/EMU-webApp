@@ -69,6 +69,14 @@ angular.module('emulvcApp')
 					console.log('###UNDOING esps change');
 					switch (cur.action) {
 					case 'moveBoundary':
+						if (applyOldVal) {
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.selected);
+						} else {
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.selected);
+						}
+						break;
 					case 'moveSegment':
 						if (applyOldVal) {
 						    var res = Tierservice.getTierDetails(cur.tierName);	
