@@ -93,6 +93,13 @@ angular.module('emulvcApp')
 							$('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
 						}
 						break;
+					case 'deleteTier':
+						if (applyOldVal) {
+							Tierservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
+						} else {
+							Tierservice.data.tiers.splice(cur.itemIdx, 1);
+						}
+						break;						
 					case 'deleteBoundary':
 						if (applyOldVal) {
 							alert(cur);

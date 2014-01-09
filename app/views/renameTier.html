@@ -7,7 +7,7 @@
    <p> Really <i>rename</i> tier "{{passedInTxt}}" ?</p>
 </div>
 <div>
-   <p><input type="text" name="newName" id="newName" class="newName" size="20" placeholder="{{passedInTxt}}" /></p>
+   <p><input type="text" name="newName" id="newName" class="newName" size="20" placeholder="{{passedInTxt}}" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" /></p>
 </div>
 
 

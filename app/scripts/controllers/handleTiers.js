@@ -12,8 +12,8 @@ angular.module('emulvcApp')
 		$scope.dials = dialogService;
 		$scope.testValue = '';
 		$scope.message = '';
-
 		$scope.tierDetails = Tierservice;
+			
 
 		$scope.sortableOptions = {
 			update: function (e, ui) {
@@ -109,16 +109,6 @@ angular.module('emulvcApp')
 			return t;
 		};
 
-		$scope.deleteTier = function () {
-			var x = 0;
-			var id = viewState.getcurClickTierName();
-			angular.forEach($scope.tierDetails.data.tiers, function (t) {
-				if (t.TierName === id) {
-					$scope.tierDetails.data.tiers.splice(x, 1);
-				}
-				++x;
-			});
-		};
 
 		$scope.renameTier = function (newName) {
 			// var x = 0;
