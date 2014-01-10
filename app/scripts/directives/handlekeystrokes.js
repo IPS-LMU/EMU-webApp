@@ -325,27 +325,32 @@ angular.module('emulvcApp')
               }
               
               if (code === ConfigProviderService.vals.keyMappings.left) {
-                var now = parseInt(viewState.getselected()[0], 10);          
+                if(viewState.getselected().length>0) {
+                  var now = parseInt(viewState.getselected()[0], 10);          
                   if (now > 1) {
 					--now;
 				  }
                   var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
+				}
               }
                             
               if (code === ConfigProviderService.vals.keyMappings.right) {
-                var now = parseInt(viewState.getselected()[0], 10);          
+                if(viewState.getselected().length>0) {
+                  var now = parseInt(viewState.getselected()[0], 10);          
                   if (now < viewState.getTierLength() - 1) {
 					++now;
 				  }                
                   var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
+				}
               }
               
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
+                if(viewState.getselected().length>0) {              
                 var now = parseInt(viewState.getselected()[0], 10);          
                 if (e.shiftKey) {
                   if (now > 1) {
@@ -362,6 +367,7 @@ angular.module('emulvcApp')
                   viewState.setcurClickSegment(ret.event, ret.id);
 				  viewState.setlasteditArea('_' + ret.id);
                 }
+                }
               }
               
               // enter
@@ -371,6 +377,13 @@ angular.module('emulvcApp')
                     if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
                     } else {
+                      if(viewState.getcurClickTierType()=="seg") {
+                        var ret = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName());
+                      }
+                      else {
+                        var ret = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName());
+                      }
+                      
                       
                     }
 			      } else {

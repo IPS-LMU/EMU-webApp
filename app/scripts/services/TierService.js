@@ -131,6 +131,29 @@ angular.module('emulvcApp')
 		return {segment: segm, id: segid};		
 	};	
 	
+	sServObj.insertSegment = function (start, end,  tierName) {
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+			    if(start==end) {
+				    angular.forEach(t.events, function (evt, id) {
+				    });			    
+			    }
+			    else {
+			    
+			    }
+			}
+		});
+	};	
+	
+	sServObj.insertPoint = function (start, tierName) {
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+				angular.forEach(t.events, function (evt, id) {
+				});
+			}
+		});	
+	};		
+	
 	sServObj.deleteBoundary = function (toDelete, tierName, tierType) {
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
