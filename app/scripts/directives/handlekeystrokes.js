@@ -372,40 +372,40 @@ angular.module('emulvcApp')
               
               // enter
               if (code === ConfigProviderService.vals.keyMappings.enter) {
-                if (ConfigProviderService.vals.restrictions.addItem) {
-                  if (viewState.countSelected() === 0) {
-                    if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
-                    } else {
-                      console.log(viewState.getselectedRange());
-                      if(viewState.getcurClickTierType()=="seg") {
-                        var ret = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName());
-                        console.log(ret);
-                      }
-                      else {
-                        var ret = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName());
-                      }
-                      
-                      
-                    }
-			      } else {
-			        if(viewState.getcurClickSegments().length==1) {
-			          if(viewState.getselected().length==1) {
-			            viewState.setEditing(true);
-			            viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
-			            scope.cursorInTextField();
-			          } else {
-			            scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+                  if (ConfigProviderService.vals.restrictions.addItem) {
+                      if(viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE ) {
+                          if(viewState.getcurClickSegments().length==1) {
+	       		              viewState.setEditing(true);
+			                  viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
+			                  scope.cursorInTextField();                     
+                          }
+                          else {
+			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+			              }
+			          } 
+			          else {
+			            if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) { 
+			              scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
+			            } 
+			            else {
+			              if(viewState.getcurClickTierType()=="seg") {
+			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName());
+   			                if(insSeg==false) {
+			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+			                }
+			              }
+			              else {
+			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName());
+   			                if(insPoint==false) {
+			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
+			                }			                
+			              }
+			            }
 			          }
-			        } else {
-			          scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
 			        }
-		          }
-
-                } else {
-                  console.log('action currently not allowed');
-                }
+			        else {}
               }
+
               
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {

@@ -200,10 +200,6 @@ angular.module('emulvcApp')
         function getX(e) {
           return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
         }
-
-        // function getY(e) {
-        // return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
-        // }
       }
     };
   });

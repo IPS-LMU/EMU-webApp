@@ -136,17 +136,53 @@ angular.module('emulvcApp')
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 			    if(start==end) {
+			        var startID = -1;
 				    angular.forEach(t.events, function (evt, id) {
+				     if(start >= evt.startSample && start <= (evt.startSample + evt.sampleDur)) {
+				         startID = id;
+				     }
 				     if(evt.startSample == start) {
 				         ret = false;
 				     }
 				     if(evt.startSample + evt.sampleDur == start) {
 				         ret = false;
 				     }				     
-				    });			    
+				    });
+				    if(ret) {
+				        var diff = start - t.events[startID].startSample;
+				        t.events.splice(startID, 0, angular.copy(t.events[startID]));
+				        t.events[startID+1].startSample = start;
+				        t.events[startID+1].sampleDur = t.events[startID].sampleDur - diff;
+				        t.events[startID+1].label = 'NEW';
+				        t.events[startID].sampleDur = diff;
+				    }			    
 			    }
 			    else {
-			    
+			        var startID = -1;
+			        var endID = -1;
+				    angular.forEach(t.events, function (evt, id) {
+				     if(start >= evt.startSample && start <= (evt.startSample + evt.sampleDur)) {
+				         startID = id;
+				     }
+				     if(end >= evt.startSample && end <= (evt.startSample + evt.sampleDur)) {
+				         endID = id;
+				     }
+				    });	
+				    ret = (startID === endID);	
+				    if(startID === endID) {
+				        var diff = start - t.events[startID].startSample;
+				        var diff2 = end - start;
+				        t.events.splice(startID, 0, angular.copy(t.events[startID]));
+				        t.events.splice(startID, 0, angular.copy(t.events[startID]));
+				        t.events[startID+1].startSample = start;
+				        t.events[startID+1].sampleDur = diff2;
+				        t.events[startID+1].label = 'NEW';
+				        t.events[startID+2].startSample = end;
+				        t.events[startID+2].sampleDur = t.events[startID].sampleDur - diff - diff2;
+				        t.events[startID+2].label = 'NEW';				        
+				        t.events[startID].sampleDur = diff;
+				        
+				    }   
 			    }
 			}
 		});

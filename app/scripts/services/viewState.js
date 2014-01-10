@@ -537,7 +537,7 @@ angular.module('emulvcApp')
     sServObj.getselectedRange = function () {
       if(this.curClickSegments.length>1) {
         return {start: this.curClickSegments[0].startSample, 
-                end: (this.curClickSegments[-1].startSample + this.curClickSegments[-1].sampleDur) };
+                end: (this.curClickSegments[this.curClickSegments.length-1].startSample + this.curClickSegments[this.curClickSegments.length-1].sampleDur) };
       }
       else if(this.curClickSegments.length == 1){
         return {start: this.curClickSegments[0].startSample, 
