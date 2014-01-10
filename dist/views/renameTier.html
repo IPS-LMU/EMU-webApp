@@ -1,8 +1,19 @@
-<h2>Rename {{currentTier}}</h2>
-   <h3>
+<div class="modal-header">
+  <h3>Rename Tier</h3>
+</div>
+<div class="modal-body">
+
+ <div>
+   <p> Really <i>rename</i> tier "{{passedInTxt}}" ?</p>
+</div>
+<div>
+   <p><input type="text" ng-model="passedOutTxt.var" placeholder="{{passedInTxt}}" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></p>
+</div>
+
+
+</div>
+
+<div class="modal-footer">
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
-   <button ng-click="renameTier();" id="dialogButton" class="mini-btn-dialog">Save</button>
- </h3> 
- <div> &nbsp;</div>
- <div> Rename Tier "{{currentTier}}" to</div>
- <div><input type="text" name="newName" id="newName" class="newName" size="10"></div>
+   <button ng-click="renameTier();" id="dialogButton" class="mini-btn-dialog">Rename</button>
+</div>

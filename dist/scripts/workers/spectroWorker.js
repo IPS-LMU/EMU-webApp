@@ -12,7 +12,7 @@ var PI = 3.141592653589793; // value : Math.PI
 var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
 var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
 var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);	
-var sin, cos; // vars to hold sin and cos table	
+var sin, cos, n; // vars to hold sin and cos table	
 var internalalpha = 0.16;
 var totalMax = 0;
 var dynRangeInDB = 50;
@@ -36,22 +36,35 @@ var myWindow = {
 
 
 function FFT(fftSize) {
-	var n, m, alpha, func, i;
+	var m, alpha, func, i;
 	if (n !== (1 << m)) { // Make sure n is a power of 2
 		self.postMessage('ERROR : FFT length must be power of 2');
 	}
 	n = fftSize;
 	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
 
-	if (sin === undefined || sin === undefined) { // SIC also do when n changes 
+	if (cos === undefined || n !== fftSize ) {
+
+	   // this means that if block is only executed 
+	   // when no COS table exists
+	   // or n changes 
+
 		cos = new Float32Array(n / 2); // precompute cos table
-		sin = new Float32Array(n / 2); // precompute sin table
 		for (var x = 0; x < n / 2; x++) {
 			cos[x] = Math.cos(-2 * PI * x / n);
+		}
+	}
+	if (sin === undefined || n !== fftSize) { 
+
+	   // this means that if block is only executed 
+	   // when no COS table exists
+	   // or n changes 
+	   
+	   	sin = new Float32Array(n / 2); // precompute sin table
+		for (var x = 0; x < n / 2; x++) {
 			sin[x] = Math.sin(-2 * PI * x / n);
 		}
-
-	}
+	}	
 
 	/*
     // choose window function set alpha and execute it on the buffer 
@@ -260,7 +273,6 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 
 			// array holding FFT results paint[canvas width][canvas height]
 			paint = new Array(renderWidth);
-
 
 			// Hz per pixel height
 			HzStep = (sampleRate / 2) / renderHeight;

@@ -38,7 +38,9 @@
         "selectFourthContourCorrectionTool": 52,
         "selectNoContourCorrectionTool": 48,
         "selectSegmentsInSelection": 71,
+        "left": 37,
         "tierUp": 38,
+        "right": 39,
         "tierDown": 40,
         "snapAbove": 84,
         "snapBelow": 66,
@@ -104,7 +106,8 @@
     "labelCanvasConfig": {
         "order": [".lab", ".tone"],
         "addTimeMode": "absolute",
-        "addTimeValue": 750
+        "addTimeValue": 750,
+        "newSegmentName": "new Segment"
     },
     "restrictions": {
         "playback": true,
@@ -124,8 +127,8 @@
     "activeButtons": {
         "openMenu": false,
         "addTierSeg": false,
-        "addTierPoint": true,
-        "renameSelTier": true,
+        "addTierPoint": false,
+        "renameSelTier": false,
         "downloadTextGrid": true,
         "specSettings": true,
         "connect": true,

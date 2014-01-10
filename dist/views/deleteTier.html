@@ -1,9 +1,15 @@
-<h2>Delete Tier</h2>
-  <h3>
+<div class="modal-header">
+  <h3>Delete Tier</h3>
+</div>
+<div class="modal-body">
+
+ <div>
+   <p> Really <i>delete</i> tier "{{passedInTxt}}" ?</p>
+</div>
+
+</div>
+
+<div class="modal-footer">
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
    <button ng-click="deleteTier();" id="dialogButton" class="mini-btn-dialog">Delete</button>
- </h3> 
- <div> &nbsp;</div>
- <div> &nbsp;</div>
- <div> &nbsp;</div>
- <div> Really <i>delete</i> tier "{{modalContent}}" ?</div>
+</div>
