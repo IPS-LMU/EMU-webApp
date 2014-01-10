@@ -109,10 +109,9 @@ angular.module('emulvcApp')
 						break;						
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							alert(cur);
-							// $('#HandletiersCtrl').scope().rename(cur.tierName, cur.itemIdx, cur.newValue);
+							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
-							alert('todo...')
+							Tierservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
 						}
 						break;
 					case 'expandSegments':

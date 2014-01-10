@@ -390,24 +390,34 @@ angular.module('emulvcApp')
 			            else {
 			              if(viewState.getcurClickTierType()=="seg") {
 			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-   			                if(insSeg==false) {
+   			                if(!insSeg) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
 			                }
 			                else {
 			                    scope.hists.addObjToUndoStack({ // todo 
 			                        'type': 'ESPS',
-			                        'action': 'insertSegment',
+			                        'action': 'insertSegments',
 			                        'tierName': viewState.getcurClickTierName(),
-			                        'itemIdx': viewState.getcurMouseSegmentId(),
-			                        'movedBy': minDist
+			                        'start': viewState.curViewPort.selectS,
+			                        'end': viewState.curViewPort.selectE,
+			                        'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
 			                    });    			                
 			                }
 			              }
 			              else {
 			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-   			                if(insPoint==false) {
+   			                if(!insPoint) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
-			                }			                
+			                }
+			                else {
+			                    scope.hists.addObjToUndoStack({ // todo 
+			                        'type': 'ESPS',
+			                        'action': 'insertPoint',
+			                        'tierName': viewState.getcurClickTierName(),
+			                        'start': viewState.curViewPort.selectS,
+			                        'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+			                    });    			                			                
+			                }                
 			              }
 			            }
 			          }
@@ -436,8 +446,8 @@ angular.module('emulvcApp')
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
                         'tierName': tn,
-                        'seg': seg,
-                        'segtype': viewState.getcurMouseTierType()
+                        'tierType': viewState.getcurMouseTierType(),
+                        'seg': seg
                       });
                       Tierservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
                     } else {
