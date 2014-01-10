@@ -25,14 +25,7 @@ angular.module('emulvcApp')
                   Tierservice.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
-                } else {
-                  if (viewState.countSelected() === 0) {
-			        alert('please select a segement first!');
-			      } else {
-			        viewState.setEditing(true);
-			        viewState.openEditArea();
-		          }
-	            }                 
+                } 
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 viewState.focusInTextField = false;
@@ -354,7 +347,21 @@ angular.module('emulvcApp')
               // enter
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 if (ConfigProviderService.vals.restrictions.addItem) {
-                  
+                  if (viewState.countSelected() === 0) {
+			        scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a Segment first.');
+			      } else {
+			        viewState.setEditing(true);
+			        if(viewState.getcurClickSegments().length==1) {
+			          if(viewState.getselected().length==1) {
+			            viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
+			          } else {
+			            scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+			          }
+			        } else {
+			          scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+			        }
+		          }
+
                 } else {
                   console.log('action currently not allowed');
                 }
