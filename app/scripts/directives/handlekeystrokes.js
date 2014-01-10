@@ -389,13 +389,22 @@ angular.module('emulvcApp')
 			            } 
 			            else {
 			              if(viewState.getcurClickTierType()=="seg") {
-			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName());
+			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
    			                if(insSeg==false) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
 			                }
+			                else {
+			                    scope.hists.addObjToUndoStack({ // todo 
+			                        'type': 'ESPS',
+			                        'action': 'insertSegment',
+			                        'tierName': viewState.getcurClickTierName(),
+			                        'itemIdx': viewState.getcurMouseSegmentId(),
+			                        'movedBy': minDist
+			                    });    			                
+			                }
 			              }
 			              else {
-			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName());
+			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
    			                if(insPoint==false) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
 			                }			                
@@ -406,7 +415,7 @@ angular.module('emulvcApp')
 			        else {}
               }
 
-              
+            
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
                 if (!e.shiftKey) {

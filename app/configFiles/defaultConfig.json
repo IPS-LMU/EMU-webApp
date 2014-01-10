@@ -106,7 +106,8 @@
     "labelCanvasConfig": {
         "order": [".lab", ".tone"],
         "addTimeMode": "absolute",
-        "addTimeValue": 750
+        "addTimeValue": 750,
+        "newSegmentName": "new Segment"
     },
     "restrictions": {
         "playback": true,

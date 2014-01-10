@@ -526,7 +526,6 @@ angular.module('emulvcApp')
 		//
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
-				// $scope.openModal('views/connectModal.html', 'dialog', false);
 				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
 			} else {
 				console.log('action currently not allowed');

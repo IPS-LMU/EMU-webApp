@@ -44,19 +44,18 @@ function FFT(fftSize) {
 	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
 
 	if (cos === undefined || n !== fftSize ) {
-	   // SIC also do when n changes - > 
-	   //
+
 	   // this means that if block is only executed 
 	   // when no COS table exists
 	   // or n changes 
+
 		cos = new Float32Array(n / 2); // precompute cos table
 		for (var x = 0; x < n / 2; x++) {
 			cos[x] = Math.cos(-2 * PI * x / n);
 		}
 	}
 	if (sin === undefined || n !== fftSize) { 
-	   // SIC also do when n changes --> 
-	   //
+
 	   // this means that if block is only executed 
 	   // when no COS table exists
 	   // or n changes 

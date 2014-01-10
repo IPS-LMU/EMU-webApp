@@ -131,7 +131,7 @@ angular.module('emulvcApp')
 		return {segment: segm, id: segid};		
 	};	
 	
-	sServObj.insertSegment = function (start, end,  tierName) {
+	sServObj.insertSegment = function (start, end,  tierName, newLabel) {
 	    var ret = true;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
@@ -176,10 +176,10 @@ angular.module('emulvcApp')
 				        t.events.splice(startID, 0, angular.copy(t.events[startID]));
 				        t.events[startID+1].startSample = start;
 				        t.events[startID+1].sampleDur = diff2;
-				        t.events[startID+1].label = 'NEW';
+				        t.events[startID+1].label = newLabel;
 				        t.events[startID+2].startSample = end;
 				        t.events[startID+2].sampleDur = t.events[startID].sampleDur - diff - diff2;
-				        t.events[startID+2].label = 'NEW';				        
+				        t.events[startID+2].label = newLabel;				        
 				        t.events[startID].sampleDur = diff;
 				        
 				    }   
