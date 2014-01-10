@@ -32,6 +32,9 @@ angular.module('emulvcApp')
           if (ConfigProviderService.vals.restrictions.editItemName) {
             setLastDblClick(event);
           }
+          else {
+            setLastClick(event);
+          }
         });
 
         element.bind('mousemove', function (event) {
@@ -126,6 +129,7 @@ angular.module('emulvcApp')
           var tierId = element.parent().parent().parent()[0].id;
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
+          viewState.setEditing(false);
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier, false);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier, false);
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier, false);

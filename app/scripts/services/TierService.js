@@ -104,7 +104,7 @@ angular.module('emulvcApp')
 	};
 	
 	sServObj.deleteSegments = function (toDelete, tierName) {
-	    var ret = new Object();
+	    var segm, segid;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 				if (t.type === "seg") {
@@ -120,15 +120,15 @@ angular.module('emulvcApp')
 					}
 				}
 				if (toDelete[0] - 1 > 0) {
-				    ret.val1 = t.events[toDelete[0] - 1];
-				    ret.val2 = toDelete[0] - 1;
+				    segm = t.events[toDelete[0] - 1];
+				    segid = toDelete[0] - 1;
 				} else {
-				    ret.val1 = t.events[0];
-				    ret.val2 = 0;
+				    segm = t.events[0];
+				    segid = 0;
 				}
-				return ret;
 			}
 		});
+		return {segment: segm, id: segid};		
 	};	
 	
 	sServObj.deleteBoundary = function (toDelete, tierName, tierType) {

@@ -323,7 +323,27 @@ angular.module('emulvcApp')
 			      viewState.selectSegmentsInSelection();
                 }
               }
-
+              
+              if (code === ConfigProviderService.vals.keyMappings.left) {
+                var now = parseInt(viewState.getselected()[0], 10);          
+                  if (now > 1) {
+					--now;
+				  }
+                  var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
+                  viewState.setcurClickSegment(ret.event, ret.id);
+				  viewState.setlasteditArea('_' + ret.id);
+              }
+                            
+              if (code === ConfigProviderService.vals.keyMappings.right) {
+                var now = parseInt(viewState.getselected()[0], 10);          
+                  if (now < viewState.getTierLength() - 1) {
+					++now;
+				  }                
+                  var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
+                  viewState.setcurClickSegment(ret.event, ret.id);
+				  viewState.setlasteditArea('_' + ret.id);
+              }
+              
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
                 var now = parseInt(viewState.getselected()[0], 10);          
@@ -348,12 +368,17 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 if (ConfigProviderService.vals.restrictions.addItem) {
                   if (viewState.countSelected() === 0) {
-			        scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a Segment first.');
+                    if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
+                    } else {
+                      
+                    }
 			      } else {
-			        viewState.setEditing(true);
 			        if(viewState.getcurClickSegments().length==1) {
 			          if(viewState.getselected().length==1) {
+			            viewState.setEditing(true);
 			            viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
+			            scope.cursorInTextField();
 			          } else {
 			            scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
 			          }
@@ -387,9 +412,9 @@ angular.module('emulvcApp')
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
                         'tierName': tn,
-                        'seg': seg
+                        'seg': seg,
+                        'segtype': viewState.getcurMouseTierType()
                       });
-                      
                       Tierservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -399,14 +424,17 @@ angular.module('emulvcApp')
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurClickSegments();
                     if (seg !== undefined) {
-                      var toDelete = '';
-                      for (var i = 0; i < seg.length; i++) {
-                        toDelete += seg[i].label + ',';
-                      }
-                      toDelete = toDelete.substring(0, toDelete.length - 1);
-                      if (viewState.getcurClickTierType() === 'seg') {
-                        var ret = Tierservice.deleteSegments(viewState.getselected(), viewState.getcurClickTierName());
-                        viewState.setcurClickSegment(ret.val1, ret.val2);
+                      var selected = viewState.getselected();
+                      if (viewState.getcurClickTierType() === 'seg') {                      
+                        var click = Tierservice.deleteSegments(selected, viewState.getcurClickTierName());
+                        viewState.setcurClickSegment(click.segment, click.id);
+                        scope.hists.addObjToUndoStack({
+                          'type': 'ESPS',
+                          'action': 'deleteSegments',
+                          'tierName': viewState.getcurClickTierName(),
+                          'seg': selected,
+                          'position': click.id
+                        });                        
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
                       }
@@ -414,7 +442,7 @@ angular.module('emulvcApp')
                   }
                 }
               }
-
+              console.log(code);
               if (!e.metaKey) {
                 e.preventDefault();
                 e.stopPropagation();
