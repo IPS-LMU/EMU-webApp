@@ -106,10 +106,10 @@
 
 \begin{itemize}
   \item $^{*1}$: the name of this folder specifies the name of the database. Is this a good idea? Or should this be defined by the name of $^{*2}$??? Or in a field in $^{*2}$???
-  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible views for the DB.
+  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible views for the DB (relevant for layout of labeler).
   \item $^{*3}$: Prefix of session folders must be \textbf{SES}. Following this prefix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called SES0000.
-  \item $^{*4}$: a bundle encapsulates what was used to be known as an utterance in a folder. This includes signal files (\textit{wav,SSFF}) and the new annotation file (see $^{*5}$)
-  \item $^{*5}$: annotation file containing label information as well as hierarchical information
+  \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored.
+  \item $^{*5}$: annotation file containing label and tier information as well as hierarchical information (see listing 1)
 \end{itemize}
 
 
@@ -117,28 +117,65 @@
 
 \section{File structure of json files (label+signal)}
 
+Until the labeler can also display the hierarchical structure of the annotation it will only 
+display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
-
-
-\begin{lstlisting}[caption=internal label representation, label=ilr, language=json,firstnumber=1]
+\begin{lstlisting}[caption=New annotation file example, label=ilr, language=json,firstnumber=1]
 {
-  "fileURL": "file:/path/to/msajc003.TextGrid",
-  "tiers": [
-  {"tierName": "Phonetic",
-    "type": "seg",
-    "events": [
-      {"label": "", "startSample": 0, "sampleDur": 8267}, 
-      {"label": "V", "startSample": 8268, "sampleDur": 3064}, 
-      {"label": "m", "startSample": 11333, "sampleDur": 3670}, 
-      ...
-    ]
-  }
+  "name": "msajc003",
+  "signalpaths": ["/path/to/msajc003.wav", "/path/to/msajc003.dft", "/path/2/msajc003.fms"],
+  "files": ["/path/to/msajc003.wav", "/path/to/msajc003.dft", "/path/to/msajc003.fms"],
+  "tiers": {
+    "Phonetic": {
+      "name": "Phonetic",
+      "type": "SEGMENT",
+      "sampleRate": 20000,
+      "elements": [{
+        "idAnnoScope": null,
+        "sampleStart": 3750,
+        "sampleDur": 1390,
+        "label": "V"
+      },...
+      ]
+    },
+    "Tone": {
+      "name": "Tone",
+      "type": "EVENT",
+      "sampleRate": 20000,
+      "elements": [{
+        "idAnnoScope": null,
+        "samplePoint": 8382,
+        "label": "H*"
+      },...
+      ]
+    },
+    "Syllable": {
+      "name": "Syllable",
+      "type": "ITEM",
+      "sampleRate": null,
+      "elements": [{
+        "idAnnoScope": 102,
+        "label": "W",
+        "labels": null
+      },...
+      ]
+    },
+  },
+  "links": [{
+    "from": {
+      "idAnnoScope": 2,
+    },
+    "to": {
+      "idAnnoScope": 102,
+    }
+  }, ...
+  ]
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=internal derived signal representation,label=idsr, language=json,firstnumber=1]
+\begin{lstlisting}[caption=EMU-webApp internal derived signal representation, label=idsr, language=json,firstnumber=1]
 {
-  "fileURL": "file:/path/to/msajc003.fms",
+  "filepath": "/path/to/msajc003.fms",
   "sampleRate" = 200,
   "origFreq" = 20000,
   "startTime" = 0.0025,
