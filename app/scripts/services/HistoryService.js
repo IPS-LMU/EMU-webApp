@@ -113,7 +113,31 @@ angular.module('emulvcApp')
 						} else {
 							Tierservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
 						}
+						break;					
+	//todo
+					case 'deleteSegments':
+						if (applyOldVal) {
+							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+						} else {
+							Tierservice.deleteSegments(cur.seg, cur.tierName);
+						}
 						break;
+	//todo
+					case 'insertSegments':
+						if (applyOldVal) {
+							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+						} else {
+							Tierservice.deleteSegments(cur.seg, cur.tierName);
+						}
+						break;
+	//todo
+					case 'insertPoint':
+						if (applyOldVal) {
+							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+						} else {
+							Tierservice.deleteSegments(cur.seg, cur.tierName);
+						}
+						break;												
 					case 'expandSegments':
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 						  var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);

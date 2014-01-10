@@ -466,8 +466,8 @@ angular.module('emulvcApp')
                           'type': 'ESPS',
                           'action': 'deleteSegments',
                           'tierName': viewState.getcurClickTierName(),
-                          'seg': selected,
-                          'position': click.id
+                          'tierType': viewState.getcurClickTierType(),
+                          'seg': selected
                         });                        
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
