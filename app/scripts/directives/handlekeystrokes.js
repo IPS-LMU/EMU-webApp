@@ -377,8 +377,10 @@ angular.module('emulvcApp')
                     if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
                     } else {
+                      console.log(viewState.getselectedRange());
                       if(viewState.getcurClickTierType()=="seg") {
                         var ret = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName());
+                        console.log(ret);
                       }
                       else {
                         var ret = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName());

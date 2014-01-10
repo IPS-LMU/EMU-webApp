@@ -132,10 +132,17 @@ angular.module('emulvcApp')
 	};	
 	
 	sServObj.insertSegment = function (start, end,  tierName) {
+	    var ret = true;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 			    if(start==end) {
 				    angular.forEach(t.events, function (evt, id) {
+				     if(evt.startSample == start) {
+				         ret = false;
+				     }
+				     if(evt.startSample + evt.sampleDur == start) {
+				         ret = false;
+				     }				     
 				    });			    
 			    }
 			    else {
@@ -143,6 +150,7 @@ angular.module('emulvcApp')
 			    }
 			}
 		});
+		return ret;
 	};	
 	
 	sServObj.insertPoint = function (start, tierName) {

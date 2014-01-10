@@ -130,6 +130,7 @@ angular.module('emulvcApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
           viewState.setEditing(false);
+          viewState.focusInTextField = false;
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier, false);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier, false);
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier, false);

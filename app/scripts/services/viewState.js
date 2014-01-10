@@ -44,6 +44,7 @@ angular.module('emulvcApp')
 
 
     sServObj.selected = [];
+    sServObj.curClickSegments = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
     sServObj.submenuOpen = false;
@@ -198,23 +199,23 @@ angular.module('emulvcApp')
 
     sServObj.selectTier = function (next) {
 	  var tag;
-	  var now = this.getcurClickTierName();
+	  var now = sServObj.getcurClickTierName();
 	  if (now === undefined) {
-		this.setcurClickTierName($('li').children()[0].id);
+		sServObj.setcurClickTierName($('li').children()[0].id);
 	  } else {
 		if (next) {
 		  tag = $('li.' + now).next().children()[0];
 		  if (tag === undefined) {
-			this.setcurClickTierName($('li').children()[0].id);
+			sServObj.setcurClickTierName($('li').children()[0].id);
 		  } else {
-			this.setcurClickTierName(tag.id);
+			sServObj.setcurClickTierName(tag.id);
 		  }
 	    } else {
 		  tag = $('li.' + now).prev().children()[0];
 		  if (tag === undefined) {
-			this.setcurClickTierName($('li').children()[0].id);
+			sServObj.setcurClickTierName($('li').children()[0].id);
 		  } else {
-			this.setcurClickTierName(tag.id);
+			sServObj.setcurClickTierName(tag.id);
 		  }
 		}
 	  }
@@ -528,6 +529,24 @@ angular.module('emulvcApp')
     sServObj.getselected = function () {
       return this.selected;
     };
+    
+
+    /**
+     * gets the current (click) Segment
+     */
+    sServObj.getselectedRange = function () {
+      if(this.curClickSegments.length>1) {
+        return {start: this.curClickSegments[0].startSample, 
+                end: (this.curClickSegments[-1].startSample + this.curClickSegments[-1].sampleDur) };
+      }
+      else if(this.curClickSegments.length == 1){
+        return {start: this.curClickSegments[0].startSample, 
+                end: (this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur) };
+      }
+      else {
+        return {start: -1, end: -1};
+      }
+    };    
 
     /**
      * gets the current (click) Segment
