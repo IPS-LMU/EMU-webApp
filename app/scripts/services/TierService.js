@@ -103,13 +103,15 @@ angular.module('emulvcApp')
 		return ret;
 	};
 	
-	sServObj.deleteSegments = function (toDelete, tierName) {
+	sServObj.deleteSegmentsInvers = function (toDelete, tierName) {
 	    var segm, segid;
+	    var start = toDelete[0].startSample;
+	    var end = toDelete[-1].startSample + toDelete[-1].sampleDur;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 				if (t.type === "seg") {
 					for (var x in toDelete) {
-						var id = toDelete[x];
+						var segment = toDelete[x];
 						if (id > 0) {
 							var length = t.events[id].sampleDur;
 							t.events[id - 1].sampleDur += length / 2;
@@ -125,6 +127,21 @@ angular.module('emulvcApp')
 				} else {
 				    segm = t.events[0];
 				    segid = 0;
+				}
+			}
+		});
+		return {segment: segm, id: segid};		
+	};
+	
+	sServObj.deleteSegments = function (segments, ids, tierName) {
+	    var segm, segid;
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+				if (t.type === "seg") {
+					for (var x in ids) {
+						console.log(ids[x]);
+						console.log(segments[x]);
+					}
 				}
 			}
 		});

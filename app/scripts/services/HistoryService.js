@@ -114,10 +114,9 @@ angular.module('emulvcApp')
 							Tierservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
 						}
 						break;					
-	//todo
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Tierservice.deleteSegmentsInvers(cur.seg, cur.tierName);
 						} else {
 							Tierservice.deleteSegments(cur.seg, cur.tierName);
 						}
@@ -125,9 +124,9 @@ angular.module('emulvcApp')
 	//todo
 					case 'insertSegments':
 						if (applyOldVal) {
-							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-						} else {
 							Tierservice.deleteSegments(cur.seg, cur.tierName);
+						} else {
+						    Tierservice.insertSegment(cur.seg.startSample, (cur.seg.startSample+cur.seg.sampleDur) ,cur.tierName, cur.name);
 						}
 						break;
 	//todo

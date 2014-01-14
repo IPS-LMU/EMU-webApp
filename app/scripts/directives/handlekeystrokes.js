@@ -389,6 +389,7 @@ angular.module('emulvcApp')
 			            } 
 			            else {
 			              if(viewState.getcurClickTierType()=="seg") {
+			                var selected = viewState.getselected();
 			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
    			                if(!insSeg) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
@@ -398,7 +399,7 @@ angular.module('emulvcApp')
 			                        'type': 'ESPS',
 			                        'action': 'insertSegments',
 			                        'tierName': viewState.getcurClickTierName(),
-			                        'start': viewState.curViewPort.selectS,
+			                        'seg': viewState.curViewPort.selectS,
 			                        'end': viewState.curViewPort.selectE,
 			                        'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
 			                    });    			                
@@ -439,7 +440,6 @@ angular.module('emulvcApp')
                 if (!e.shiftKey) {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurMouseSegment();
-                    console.log(seg);
                     var tn = viewState.getcurMouseTierName();
                     if (seg !== undefined) {
                       scope.hists.addObjToUndoStack({
@@ -458,16 +458,17 @@ angular.module('emulvcApp')
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurClickSegments();
                     if (seg !== undefined) {
-                      var selected = viewState.getselected();
+                      var selected = viewState.getcurClickSegments();
+                      var ids = viewState.getselected();
                       if (viewState.getcurClickTierType() === 'seg') {                      
-                        var click = Tierservice.deleteSegments(selected, viewState.getcurClickTierName());
-                        viewState.setcurClickSegment(click.segment, click.id);
+                        var click = Tierservice.deleteSegments(selected, ids, viewState.getcurClickTierName());
+                        //viewState.setcurClickSegment(click.segment, click.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
                           'tierName': viewState.getcurClickTierName(),
-                          'tierType': viewState.getcurClickTierType(),
-                          'seg': selected
+                          'selected': selected,
+                          'ids': ids
                         });                        
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
