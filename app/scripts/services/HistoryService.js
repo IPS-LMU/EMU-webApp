@@ -130,9 +130,9 @@ angular.module('emulvcApp')
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Tierservice.insertPointInvers(cur.start, cur.tierName ,cur.pointName);
 						} else {
-							Tierservice.deleteSegments(cur.seg, cur.tierName);
+							Tierservice.insertPoint(cur.start, cur.tierName, cur.pointName);
 						}
 						break;												
 					case 'expandSegments':

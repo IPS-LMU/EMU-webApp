@@ -291,6 +291,25 @@ angular.module('emulvcApp')
 			}
 		});	
 		return ret;
+	};	
+	
+	sServObj.insertPointInvers = function (startP, tierName, pointName) {
+	    var ret = false;
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName && t.type=="point") {
+			    var pid = 0;
+			    var last = 0;
+				angular.forEach(t.events, function (evt, id) {
+				 if(!ret) {
+				        if(startP == evt.startSample) {
+				            t.events.splice(id,1);
+				            ret = true;
+				        }
+				    }				    
+				});
+			}
+		});	
+		return ret;
 	};		
 	
 	sServObj.deleteBoundary = function (toDelete, tierName, tierType) {

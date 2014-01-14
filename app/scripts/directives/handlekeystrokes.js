@@ -415,7 +415,7 @@ angular.module('emulvcApp')
 			                        'action': 'insertPoint',
 			                        'tierName': viewState.getcurClickTierName(),
 			                        'start': viewState.curViewPort.selectS,
-			                        'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+			                        'pointName': ConfigProviderService.vals.labelCanvasConfig.newPointName
 			                    });    			                			                
 			                }                
 			              }
