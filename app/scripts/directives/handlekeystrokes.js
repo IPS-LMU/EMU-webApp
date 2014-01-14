@@ -389,19 +389,18 @@ angular.module('emulvcApp')
 			            } 
 			            else {
 			              if(viewState.getcurClickTierType()=="seg") {
-			                var selected = viewState.getselected();
 			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
    			                if(!insSeg) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
 			                }
 			                else {
-			                    scope.hists.addObjToUndoStack({ // todo 
+			                    scope.hists.addObjToUndoStack({
 			                        'type': 'ESPS',
 			                        'action': 'insertSegments',
 			                        'tierName': viewState.getcurClickTierName(),
-			                        'seg': viewState.curViewPort.selectS,
+			                        'start': viewState.curViewPort.selectS,
 			                        'end': viewState.curViewPort.selectE,
-			                        'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+			                        'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
 			                    });    			                
 			                }
 			              }

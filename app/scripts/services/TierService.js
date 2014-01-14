@@ -166,6 +166,44 @@ angular.module('emulvcApp')
 		return {segment: segm, id: segid};		
 	};	
 	
+	sServObj.insertSegmentInvers = function (start, end,  tierName, newLabel) {
+	    var ret = true;
+		angular.forEach(sServObj.data.tiers, function (t) {
+			if (t.TierName === tierName) {
+			    if(start==end) {
+			        var startID = -1;
+				    angular.forEach(t.events, function (evt, id) {
+				     if(start == evt.startSample) {
+				         startID = id;
+				         ret = true;
+				     }
+				    });
+				    if(ret) {
+				        var diff = t.events[startID].sampleDur;
+				        t.events[startID-1].sampleDur += diff;
+				        t.events.splice(startID, 1);
+				    }			    
+			    }
+			    else {
+			        var startID = -1;
+				    angular.forEach(t.events, function (evt, id) {
+				     if(start == evt.startSample) {
+				         startID = id;
+				         ret = true;
+				     }
+				    });	
+				    if(ret) {
+				        var diff = t.events[startID].sampleDur;
+				        var diff2 = t.events[startID+1].sampleDur;
+				        t.events[startID-1].sampleDur += (diff+diff2);
+				        t.events.splice(startID, 2);
+				    }   
+			    }
+			}
+		});
+		return ret;
+	};	
+	
 	sServObj.insertSegment = function (start, end,  tierName, newLabel) {
 	    var ret = true;
 		angular.forEach(sServObj.data.tiers, function (t) {
@@ -188,7 +226,7 @@ angular.module('emulvcApp')
 				        t.events.splice(startID, 0, angular.copy(t.events[startID]));
 				        t.events[startID+1].startSample = start;
 				        t.events[startID+1].sampleDur = t.events[startID].sampleDur - diff;
-				        t.events[startID+1].label = 'NEW';
+				        t.events[startID+1].label = newLabel;
 				        t.events[startID].sampleDur = diff;
 				    }			    
 			    }

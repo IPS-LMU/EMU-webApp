@@ -121,15 +121,14 @@ angular.module('emulvcApp')
 							Tierservice.deleteSegments(cur.selected, cur.ids, cur.tierName);
 						}
 						break;
-	//todo
 					case 'insertSegments':
 						if (applyOldVal) {
-							Tierservice.deleteSegments(cur.seg, cur.tierName);
+							Tierservice.insertSegmentInvers(cur.start, cur.end,cur.tierName, cur.segname);
 						} else {
-						    Tierservice.insertSegment(cur.seg.startSample, (cur.seg.startSample+cur.seg.sampleDur) ,cur.tierName, cur.name);
+						    Tierservice.insertSegment(cur.start, cur.end,cur.tierName, cur.segname);
 						}
 						break;
-	//todo
+	//todo !!!
 					case 'insertPoint':
 						if (applyOldVal) {
 							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
