@@ -116,9 +116,9 @@ angular.module('emulvcApp')
 						break;					
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Tierservice.deleteSegmentsInvers(cur.seg, cur.tierName);
+							Tierservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.tierName);
 						} else {
-							Tierservice.deleteSegments(cur.seg, cur.tierName);
+							Tierservice.deleteSegments(cur.selected, cur.ids, cur.tierName);
 						}
 						break;
 	//todo

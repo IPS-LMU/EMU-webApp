@@ -103,30 +103,33 @@ angular.module('emulvcApp')
 		return ret;
 	};
 	
-	sServObj.deleteSegmentsInvers = function (toDelete, tierName) {
+	sServObj.deleteSegmentsInvers = function (segments, ids, tierName) {
 	    var segm, segid;
-	    var start = toDelete[0].startSample;
-	    var end = toDelete[-1].startSample + toDelete[-1].sampleDur;
+		var start = ids[0] - 1;
+		var end = ids[ids.length-1] + 1;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 				if (t.type === "seg") {
-					for (var x in toDelete) {
-						var segment = toDelete[x];
-						if (id > 0) {
-							var length = t.events[id].sampleDur;
-							t.events[id - 1].sampleDur += length / 2;
-							t.events[id + 1].sampleDur += length / 2;
-							t.events[id + 1].startSample -= length / 2;
-							t.events.splice(id, 1);
-						}
+				    var length = 0;
+					for (var x in segments) {
+					    length += segments[x].sampleDur;
 					}
-				}
-				if (toDelete[0] - 1 > 0) {
-				    segm = t.events[toDelete[0] - 1];
-				    segid = toDelete[0] - 1;
-				} else {
-				    segm = t.events[0];
-				    segid = 0;
+					if (start >= 0) {
+					    t.events[start].sampleDur -=  length/2;
+						t.events[start+1].sampleDur -= length/2;
+						t.events[start+1].startSample += length/2;
+					    for (var x in ids) {
+					        t.events.splice(ids[x], 0, segments[x]); 
+					    }
+	    			    
+	    			    segm = t.events[start];
+		    		    segid = start;
+						
+					}
+			    	else {
+				        segm = t.events[0];
+				        segid = 0;
+    				}				
 				}
 			}
 		});
@@ -135,13 +138,28 @@ angular.module('emulvcApp')
 	
 	sServObj.deleteSegments = function (segments, ids, tierName) {
 	    var segm, segid;
+		var start = ids[0] - 1;
+		var end = ids[ids.length-1] + 1;
 		angular.forEach(sServObj.data.tiers, function (t) {
 			if (t.TierName === tierName) {
 				if (t.type === "seg") {
-					for (var x in ids) {
-						console.log(ids[x]);
-						console.log(segments[x]);
+				    var length = 0;
+					for (var x in segments) {
+					    length += segments[x].sampleDur;
 					}
+					if (start >= 0) {
+					    t.events[start].sampleDur +=  length/2;
+						t.events[end].sampleDur += length/2;
+						t.events[end].startSample -= length/2;
+	    			    t.events.splice(ids[0], ids.length);
+	    			    segm = t.events[start];
+		    		    segid = start;
+						
+					}
+			    	else {
+				        segm = t.events[0];
+				        segid = 0;
+    				}				
 				}
 			}
 		});

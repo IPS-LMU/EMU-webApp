@@ -462,7 +462,7 @@ angular.module('emulvcApp')
                       var ids = viewState.getselected();
                       if (viewState.getcurClickTierType() === 'seg') {                      
                         var click = Tierservice.deleteSegments(selected, ids, viewState.getcurClickTierName());
-                        //viewState.setcurClickSegment(click.segment, click.id);
+                        viewState.setcurClickSegment(click.segment, click.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
