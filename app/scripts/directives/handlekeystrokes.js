@@ -405,7 +405,7 @@ angular.module('emulvcApp')
 			                }
 			              }
 			              else {
-			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newPointName);
    			                if(!insPoint) {
 			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
 			                }

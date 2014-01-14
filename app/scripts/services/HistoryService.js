@@ -128,7 +128,6 @@ angular.module('emulvcApp')
 						    Tierservice.insertSegment(cur.start, cur.end,cur.tierName, cur.segname);
 						}
 						break;
-	//todo !!!
 					case 'insertPoint':
 						if (applyOldVal) {
 							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);

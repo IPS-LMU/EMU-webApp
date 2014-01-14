@@ -107,7 +107,8 @@
         "order": [".lab", ".tone"],
         "addTimeMode": "absolute",
         "addTimeValue": 750,
-        "newSegmentName": "new Segment"
+        "newSegmentName": "Segment",
+        "newPointName": "P"
     },
     "restrictions": {
         "playback": true,
