@@ -6,15 +6,12 @@
  <div>
    <p> Do you want to <i>export</i> "{{exportName}}" ?</p>
 </div>
-   <pre class="modal-exportdata">
-   {{exportData}}
-   </pre>
-
+   <pre class="modal-exportdata">{{exportData}}</pre>
 </div>
 
 <div class="modal-footer">
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
-   <export id="export" get-data="getBlob()" />
+   <export class="mini-btn-export" filename="{{exportName}}" get-data="getBlob()" />
 </div>
 
 

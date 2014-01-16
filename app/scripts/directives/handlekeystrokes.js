@@ -226,7 +226,8 @@ angular.module('emulvcApp')
                         'itemIdx': viewState.getselected().sort(),
                         'bufferLength': viewState.curViewPort.bufferLength,
                         'expand': true,
-                        'rightSide': true
+                        'rightSide': true,
+                        'changeTime': changeTime
                       });
                       Tierservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime); 
                     }
@@ -256,7 +257,8 @@ angular.module('emulvcApp')
                         'tierName': viewState.getcurClickTierName(),
                         'itemIdx': viewState.getselected().sort(),
                         'expand': true,
-                        'rightSide': false
+                        'rightSide': false,
+                        'changeTime': changeTime
                       });
                       Tierservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                    }
@@ -287,7 +289,8 @@ angular.module('emulvcApp')
                           'tierName': viewState.getcurClickTierName(),
                           'itemIdx': viewState.getselected().sort(),
                           'expand': false,
-                          'rightSide': false
+                          'rightSide': false,
+                        'changeTime': changeTime
                         });
                         Tierservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                       } else {
@@ -297,7 +300,8 @@ angular.module('emulvcApp')
                           'tierName': viewState.getcurClickTierName(),
                           'itemIdx': viewState.getselected().sort(),
                           'expand': false,
-                          'rightSide': true
+                          'rightSide': true,
+                          'changeTime': changeTime
                         });
                         Tierservice.expandSegment(false, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                       }

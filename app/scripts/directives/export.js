@@ -7,11 +7,9 @@ angular.module('emulvcApp')
         scope:{ getUrlData:'&getData'},
         link:function (scope, elm, attrs) {
             var url = URL.createObjectURL(scope.getUrlData());
+            console.log(attrs);
             elm.append($compile(
-                '<a class="mini-btn-dialog" download="export.txt"' +
-                    'href="' + url + '">' +
-                    'Export' +
-                    '</a>'
+                '<a id="dialogExport" download="' + attrs.filename + '" href="' + url + '">Export</a>'
             )(scope));
         }
     };

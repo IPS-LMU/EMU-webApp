@@ -114,8 +114,26 @@
     height: 30px;
     line-height: 12px;
     text-align:center;
-    width: 9%;
+    width: 120px;
+    height: 30px;
 }
+
+.mini-btn-export a {
+    border:1px solid white;
+    color:white;  
+    font-size:10px;    
+    min-width: 120px !important;
+    min-height: 30px !important;    
+    width: 120px !important;
+    height: 30px !important;    
+    text-decoration: none;  
+}
+
+.mini-btn-export a:hover {
+    text-decoration: none;  
+    color:white;  
+}
+
 
 .mini-btn {
     float:left;

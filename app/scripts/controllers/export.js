@@ -13,7 +13,7 @@ angular.module('emulvcApp')
 		$scope.getBlob = function(){
 		    return new Blob([$scope.exportData], {type: "text/plain"});    
 		}		
-		
+			
 		/**
 		 *
 		 */

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('save', function () {
+  .directive('save', function (dialogService, Espsparserservice) {
     return {
       restrict: 'A',
       link: function (scope, element) {
@@ -9,7 +9,7 @@ angular.module('emulvcApp')
 
         element.bind('click', function () {
           scope.vs.setcurClickTierName(id);
-          scope.dials.open('views/export.html', 'ModalCtrl', JSON.stringify(scope.this.tier));
+          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.tier),'tier.txt');
         });
 
       }

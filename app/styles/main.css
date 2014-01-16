@@ -129,6 +129,10 @@ li {
 #dialogButton {
     width: 120px;
 }
+#dialogExport {
+    width: 120px !important;
+    min-width: 120px !important;
+}
 
 .ng-scope {
     margin: 0px;

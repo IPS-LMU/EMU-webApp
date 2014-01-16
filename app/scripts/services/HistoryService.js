@@ -136,17 +136,10 @@ angular.module('emulvcApp')
 						}
 						break;												
 					case 'expandSegments':
-                        if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
-						  var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-  					    } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-						  var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (cur.bufferLength / 100);
-					    } else {
-						  dialogService.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-					    }                                                                 
 						if (applyOldVal) {
-							Tierservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName); 
+							Tierservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime); 
 						} else {
-							Tierservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName);
+							Tierservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime);
 						}
 						break;
 
@@ -175,13 +168,9 @@ angular.module('emulvcApp')
 				case 'moveBoundary':
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
-					console.log(dataKey);
-					// update curChangeObj
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
-						// console.log('here' + curChangeObj[dataKey].movedBy);
-						// update delta
 						dataObj.movedBy += curChangeObj[dataKey].movedBy;
 						curChangeObj[dataKey] = dataObj;
 					}

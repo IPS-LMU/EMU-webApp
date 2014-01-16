@@ -480,7 +480,7 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.selectBoundry = function () {
-      if (this.curClickSegments !== undefined) {
+      if (this.curClickSegments.length > 0) {
         var left = this.curClickSegments[0].startSample;
         var right = this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur;
         this.curClickSegments.forEach(function (entry) {
