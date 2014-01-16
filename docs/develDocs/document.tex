@@ -88,6 +88,7 @@
 \begin{tikzpicture}
 \treeroot{\textbf{dbRootFolder/$^{*1}$}}
 \altentry{\textit{globalDBconfig.json$^{*2}$}}{1}
+\altentry{\textit{validTreeTpl.json}}{1}
 \altentry{\textbf{SES0001/$^{*3}$}}{1}
 \altentry{\textbf{SES0002/}}{1}
 \altentry{\textbf{bundle1/$^{*4}$}}{2}
@@ -115,10 +116,32 @@
 
 
 
-\section{File structure of json files (label+signal)}
+\section{File structure of json files }
 
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
+
+\begin{lstlisting}[caption=valid tree representation, label=idsr, language=json,firstnumber=1]
+{
+  "tiers": [
+  {"name": "Phonetic", "type": "SEGMENT", "tierId": 1},
+  {"name": "Tone", "type": "EVENT", "tierId": 2},
+  {"name": "Syllable", "type": "ITEM", "tierId": 3},
+  ...
+  ],
+  "links": [{
+    "from": {
+      "tierId": 3,
+    },
+    "to": {
+      "tierId": 1,
+    },
+    "type": "1-n"
+  }, ...
+  ]
+}
+\end{lstlisting}
+
 
 \begin{lstlisting}[caption=New annotation file example, label=ilr, language=json,firstnumber=1]
 {
@@ -172,6 +195,11 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
   ]
 }
 \end{lstlisting}
+
+\begin{itemize}
+  \item Shouldn't the tiers field be an array?
+  \item Should tiers be called tiers? Levels is the old term and is more generic and less confusing in my opinion.
+\end{itemize}
 
 \begin{lstlisting}[caption=EMU-webApp internal derived signal representation, label=idsr, language=json,firstnumber=1]
 {
