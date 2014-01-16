@@ -4,19 +4,17 @@
 <div class="modal-body">
 
  <div>
-   <p> Do you want to <i>export</i> ?</p>
-   <hr />   
-   <p style="align:left;"> 
-   {{passedInTxt}}
-   </p>
+   <p> Do you want to <i>export</i> "{{exportName}}" ?</p>
 </div>
-
+   <pre class="modal-exportdata">
+   {{exportData}}
+   </pre>
 
 </div>
 
 <div class="modal-footer">
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
-   <button ng-click="exportTier();" id="dialogButton" class="mini-btn-dialog">Export</button>
+   <export id="export" get-data="getBlob()" />
 </div>
 
 

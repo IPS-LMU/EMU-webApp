@@ -5,16 +5,17 @@ angular.module('emulvcApp')
     viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
 
     var dropzone = document.getElementById('dropzone');
-    var droptext1 = 'Drop your files here or click here to open a file';
-    var droptext2 = 'File is not allowed';
-    var droptext3 = 'Parsing started';
+    var dropDefault = 'Drop your files here or click here to open a file';
+    var dropNotAllowed = 'File is not allowed';
+    var dropAllowed = 'Drop your file @ to load it';
+    var dropParsingStarted = 'Parsing started';
     // var parsingFile;
     // var parsingFileType;
 
     /**
      * listen for configLoaded
      */
-    $scope.dropText = droptext1;
+    $scope.dropText = dropDefault;
 
 
     $scope.hideDropZone = function () {
@@ -29,7 +30,7 @@ angular.module('emulvcApp')
       evt.stopPropagation();
       evt.preventDefault();
       $scope.$apply(function () {
-        $scope.dropText = droptext1;
+        $scope.dropText = dropDefault;
         $scope.dropClass = '';
       });
     }
@@ -41,7 +42,11 @@ angular.module('emulvcApp')
       // var clazz = 'not-available';
       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
       $scope.$apply(function () {
-        $scope.dropText = ok ? droptext1 : droptext2;
+        var items = evt.dataTransfer.items;
+        for (var i = 0; i < items.length; i++) {
+          console.log(items[i]);
+        }
+        $scope.dropText = ok ? dropAllowed : dropNotAllowed;
         $scope.dropClass = ok ? 'over' : 'not-available';
       });
     }, false);
@@ -50,7 +55,7 @@ angular.module('emulvcApp')
       evt.stopPropagation();
       evt.preventDefault();
       $scope.$apply(function () {
-        $scope.dropText = droptext3;
+        $scope.dropText = dropParsingStarted;
         $scope.dropClass = '';
       });
       var items = evt.dataTransfer.items;

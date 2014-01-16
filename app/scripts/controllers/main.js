@@ -2,7 +2,7 @@
 
 angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierservice, dialogService) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierservice, dialogService, Textgridparserservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -508,7 +508,7 @@ angular.module('emulvcApp')
 
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-				dialogService.open('views/export.html', 'ModalCtrl',Tierservice.data);
+				dialogService.openExport('views/export.html', 'ExportCtrl',Textgridparserservice.toTextGrid(Tierservice.data),'textgrid.txt');
 			} else {
 				console.log('action currently not allowed');
 			}

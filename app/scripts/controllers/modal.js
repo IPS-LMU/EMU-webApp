@@ -4,7 +4,6 @@ angular.module('emulvcApp')
 	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Tierservice, HistoryService) {
 		
 		$scope.passedInTxt = passedInTxt;
-		$scope.exportData = undefined;
 		$scope.passedOutTxt = {
 		    'var': null,
 		};
@@ -39,7 +38,8 @@ angular.module('emulvcApp')
 			    'oldName': $scope.passedInTxt
 			});			    
 			dialogService.close();
-		};		
+		};					
+	
 		
 		
 		/**
