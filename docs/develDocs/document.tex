@@ -123,19 +123,15 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
 \begin{lstlisting}[caption=valid tree representation, label=idsr, language=json,firstnumber=1]
 {
-  "tiers": [
-  {"name": "Phonetic", "type": "SEGMENT", "tierId": 1},
-  {"name": "Tone", "type": "EVENT", "tierId": 2},
-  {"name": "Syllable", "type": "ITEM", "tierId": 3},
+  "levelDefinitions": [
+  {"name": "Phonetic", "type": "SEGMENT", "atrributeDefinitions":[{"name":"x", "type":"txt"},...]},
+  {"name": "Tone", "type": "EVENT"},
+  {"name": "Syllable", "type": "ELEMENT"},
   ...
   ],
   "links": [{
-    "from": {
-      "tierId": 3,
-    },
-    "to": {
-      "tierId": 1,
-    },
+    "from": "Syllable",
+    "to": "Tone",
     "type": "1-n"
   }, ...
   ]
