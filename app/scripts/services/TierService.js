@@ -43,6 +43,23 @@ angular.module('emulvcApp')
       });
       return {tier: curTier, id: y};
     };	
+
+    /**
+     * gets element details by passing in tierName and elemtentid
+     */
+    sServObj.getElementDetails = function (tierName, elementid) {
+      var details = null;
+      sServObj.data.tiers.forEach(function (t) {
+        if (t.TierName === tierName) {
+          t.elements.forEach(function (element, y) {
+            if(y==elementid) {
+                details = element;
+            }
+          });
+        }
+      });
+      return details;
+    };	
     
     sServObj.deleteTier = function (tierName, id) { 
         var y = 0; 

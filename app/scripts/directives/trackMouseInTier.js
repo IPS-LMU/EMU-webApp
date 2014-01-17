@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('trackmouseintier', function (ConfigProviderService, viewState) {
+  .directive('trackmouseintier', function (ConfigProviderService, viewState,Tierservice) {
     return {
       restrict: 'A',
       link: function (scope, element) {
@@ -39,18 +39,13 @@ angular.module('emulvcApp')
 
         element.bind('mousemove', function (event) {
           var moveLine = true;
-          thisPCM = getX(event) * viewState.getPCMpp(event);
-          var moveBy = 0;
-          if (viewState.getPCMpp(event) <= 1) {
-            // relative movement in pcm below 1 pcm per pixel
-            moveBy = Math.round((thisPCM - lastPCM) * viewState.getPCMpp(event));
-          } else if (viewState.getPCMpp(event) <= 0.5) {
-            // relative movement in pcm below 0.5 pcm per pixel
-            moveBy = Math.round((thisPCM - lastPCM) * 2 * viewState.getPCMpp(event));
-          }
-          if (viewState.getPCMpp(event) <= 0.1) {
-            // relative movement in pcm below 0.1 pcm per pixel
-            moveBy = Math.round((thisPCM - lastPCM) * 10 * viewState.getPCMpp(event));
+          var zoom = viewState.getPCMpp(event);
+          thisPCM = getX(event) * zoom;
+          var moveBy = (thisPCM - lastPCM);
+          
+          if (zoom<= 1) {
+              // ansolute movement in pcm below 1 pcm per pixel
+              moveBy = Math.floor((thisPCM+viewState.curViewPort.sS) - Tierservice.getElementDetails(scope.this.tier.TierName,viewState.getcurMouseSegmentId()).startSample);
           } else {
             // relative movement in pcm above 1 pcm per pixel
             moveBy = Math.round(thisPCM - lastPCM);
