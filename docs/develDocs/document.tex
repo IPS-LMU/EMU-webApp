@@ -86,9 +86,8 @@
 \section{Schematic DB file structure on disc}
 
 \begin{tikzpicture}
-\treeroot{\textbf{dbRootFolder/$^{*1}$}}
+\treeroot{\textbf{dbRootFolder/}}
 \altentry{\textit{globalDBconfig.json$^{*2}$}}{1}
-\altentry{\textit{validTreeTpl.json}}{1}
 \altentry{\textbf{SES0001/$^{*3}$}}{1}
 \altentry{\textbf{SES0002/}}{1}
 \altentry{\textbf{bundle1/$^{*4}$}}{2}
@@ -106,8 +105,7 @@
 
 
 \begin{itemize}
-  \item $^{*1}$: the name of this folder specifies the name of the database. Is this a good idea? Or should this be defined by the name of $^{*2}$??? Or in a field in $^{*2}$???
-  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible views for the DB (relevant for layout of labeler).
+  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible perspectives to look at the DB (relevant for layout of labeler).
   \item $^{*3}$: Prefix of session folders must be \textbf{SES}. Following this prefix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called SES0000.
   \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored.
   \item $^{*5}$: annotation file containing label and tier information as well as hierarchical information (see listing 1)
@@ -121,12 +119,24 @@
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
-\begin{lstlisting}[caption=valid tree representation, label=idsr, language=json,firstnumber=1]
-{
+\begin{lstlisting}[caption=globalDBconfig, label=idsr, language=json,firstnumber=1]
+{ "dbName": "ae",
   "levelDefinitions": [
-  {"name": "Phonetic", "type": "SEGMENT", "atrributeDefinitions":[{"name":"x", "type":"txt"},...]},
-  {"name": "Tone", "type": "EVENT"},
-  {"name": "Syllable", "type": "ELEMENT"},
+  {"name": "Phonetic", "type": "SEGMENT", 
+    "atrributeDefinitions":[
+      {"Phonetic":"x", "type":"txt"},
+      ...]
+  },
+  {"name": "Tone", "type": "EVENT", 
+    "atrributeDefinitions":[
+    {"name":"x", "type":"txt"}
+    ,...]
+  },
+  {"name": "Syllable", "type": "ELEMENT", 
+    "atrributeDefinitions":[
+      {"name":"Syllable", "type":"txt"},
+      ...]
+  },
   ...
   ],
   "links": [{
@@ -134,7 +144,12 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
     "to": "Tone",
     "type": "1-n"
   }, ...
-  ]
+  ],
+
+  "perspectives": [{
+
+    }, ...]
+
 }
 \end{lstlisting}
 
@@ -170,7 +185,7 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
     },
     "Syllable": {
       "name": "Syllable",
-      "type": "ITEM",
+      "type": "ELEMENT",
       "sampleRate": null,
       "elements": [{
         "idAnnoScope": 102,
