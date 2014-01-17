@@ -2,20 +2,20 @@
 
 angular.module('emulvcApp')
   .controller('FileCtrl', function ($scope,
-    viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,dialogService) {
+    viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,dialogService,Wavparserservice) {
 
-    var dropzone = document.getElementById('dropzone');
-    var dropDefault = 'Drop your files here or click here to open a file';
-    var dropNotAllowed = 'File is not allowed';
-    var dropAllowed = 'Drop files to start loading';
-    var dropParsingStarted = 'Parsing started';
-    // var parsingFile;
-    // var parsingFileType;
-
+    $scope.dropzone = document.getElementById('dropzone');
+    $scope.dropDefault = 'Drop your files here or click here to open a file';
+    $scope.dropNotAllowed = 'File is not allowed';
+    $scope.dropAllowed = 'Drop files to start loading';
+    $scope.dropParsingStarted = 'Parsing started';
+    $scope.wavLoaded = 0;
+    $scope.txtGridLoaded = 0;
+    $scope.labelLoaded = 0;
     /**
      * listen for configLoaded
      */
-    $scope.dropText = dropDefault;
+    $scope.dropText = $scope.dropDefault;
 
 
     $scope.hideDropZone = function () {
@@ -29,62 +29,89 @@ angular.module('emulvcApp')
     $scope.showDropZone = function () {
       $scope.dropClass = '';
     };
+    
+	$scope.$watch('wavLoaded', function () {
+		console.log($scope.wavLoaded);
+	}, true);    
 
     function dragEnterLeave(evt) {
       evt.stopPropagation();
       evt.preventDefault();
       $scope.$apply(function () {
-        $scope.dropText = dropDefault;
+        $scope.dropText = $scope.dropDefault;
         $scope.dropClass = '';
       });
     }
-    dropzone.addEventListener('dragenter', dragEnterLeave, false);
-    dropzone.addEventListener('dragleave', dragEnterLeave, false);
-    dropzone.addEventListener('dragover', function (evt) {
+    $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
+    $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
+    $scope.dropzone.addEventListener('dragover', function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
       $scope.$apply(function () {
-        $scope.dropText = ok ? dropAllowed : dropNotAllowed;
+        $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
         $scope.dropClass = ok ? 'over' : 'not-available';
+        $scope.wavLoaded = 0;
+        $scope.txtGridLoaded = 0;
+        $scope.labelLoaded = 0;
       });
     }, false);
 
-    dropzone.addEventListener('drop', function (evt) {
+    $scope.dropzone.addEventListener('drop', function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
       $scope.$apply(function () {
-        $scope.dropText = dropParsingStarted;
-        $scope.dropClass = '';
+        $scope.dropText = $scope.dropParsingStarted;
+        $scope.dropClass = '';        
       });
       var items = evt.dataTransfer.items;
       for (var i = 0; i < items.length; i++) {
         var item = items[i].webkitGetAsEntry();
         if (item) {
-          traverseFileTree(item);
+          $scope.traverseFileTree(item);       
         }
-      }
+      }        
+      
     }, false);
 
-    function traverseFileTree(item, path) {
+    $scope.traverseFileTree = function (item, path) {
       path = path || '';
       if (item.isFile) {
         item.file(function (file) {
           var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
           if (extension === 'WAV') {
-            // $rootScope.$broadcast('fileLoaded', fileType.WAV, file);
+            if (file.type.match('audio/wav')) {
+              if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var reader = new FileReader();
+                reader.readAsArrayBuffer(file);
+                reader.onloadend = function(evt) {
+                 if (evt.target.readyState == FileReader.DONE) { 
+                  console.log(Wavparserservice.wav2jso(evt.target.result));
+                 }
+                };
+                ++$scope.wavLoaded;
+                $scope.$apply();
+              } else {
+                //alert('The File APIs are not fully supported in this browser.');
+              } 
+            }
           }
           if (extension === 'TEXTGRID') {
-            // $rootScope.$broadcast('fileLoaded', fileType.TEXTGRID, file);
+            ++$scope.txtGridLoaded;
+            $scope.$apply();     
           }
+          if (extension === 'LAB' || extension === 'TONE') {
+            ++$scope.labelLoaded;  
+            $scope.$apply();
+          }          
         });
       } else if (item.isDirectory) {
         var dirReader = item.createReader();
         dirReader.readEntries(function (entries) {
           for (var i = 0; i < entries.length; i++) {
-            traverseFileTree(entries[i], path + item.name + '/');
+            $scope.traverseFileTree(entries[i], path + item.name + '/');
           }
         });
       }
-    }
+    };
   });
