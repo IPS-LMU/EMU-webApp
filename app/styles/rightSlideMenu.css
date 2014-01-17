@@ -1,14 +1,14 @@
 
 
 /* minimal CSS */
- #popout {
-    position: fixed;                /* fix the popout to the left side of the screen */
+ .righSideMenu {
+    position: fixed;
     top: 90px;
-    right: -1px;                    /* use a negative margin to pull the icon area of the popout off the edge of the page */
+    right: -1px;
     height: 20px;
     width: 20px;
     background-color: white;
-    box-shadow: 0px 0px 5px 2px #ccc;
+    box-shadow: 0 0 5px 2px #ccc;
     color: gray;
     border-radius: 2px;
     z-index: 1000;
