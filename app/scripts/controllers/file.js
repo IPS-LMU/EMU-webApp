@@ -2,12 +2,12 @@
 
 angular.module('emulvcApp')
   .controller('FileCtrl', function ($scope,
-    viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService) {
+    viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,dialogService) {
 
     var dropzone = document.getElementById('dropzone');
     var dropDefault = 'Drop your files here or click here to open a file';
     var dropNotAllowed = 'File is not allowed';
-    var dropAllowed = 'Drop your file @ to load it';
+    var dropAllowed = 'Drop files to start loading';
     var dropParsingStarted = 'Parsing started';
     // var parsingFile;
     // var parsingFileType;
@@ -20,6 +20,10 @@ angular.module('emulvcApp')
 
     $scope.hideDropZone = function () {
       $scope.dropClass = 'hidden';
+    };
+    
+    $scope.loadFiles = function () {
+      dialogService.open('views/loadFiles.html', 'ModalCtrl', '');
     };
 
     $scope.showDropZone = function () {
@@ -39,13 +43,8 @@ angular.module('emulvcApp')
     dropzone.addEventListener('dragover', function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
-      // var clazz = 'not-available';
       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
       $scope.$apply(function () {
-        var items = evt.dataTransfer.items;
-        for (var i = 0; i < items.length; i++) {
-          console.log(items[i]);
-        }
         $scope.dropText = ok ? dropAllowed : dropNotAllowed;
         $scope.dropClass = ok ? 'over' : 'not-available';
       });
