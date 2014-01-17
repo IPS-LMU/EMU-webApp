@@ -81,7 +81,7 @@ angular.module('emulvcApp')
 					if (tierDetails.type === 'seg') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
-						var e = tierDetails.events;
+						var e = tierDetails.elements;
 
 						e.forEach(function (curEvt) {
 							++curID;
@@ -171,7 +171,7 @@ angular.module('emulvcApp')
 						// predef. vars
 						var perc;
 
-						tierDetails.events.forEach(function (curEvt) {
+						tierDetails.elements.forEach(function (curEvt) {
 
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
@@ -181,9 +181,9 @@ angular.module('emulvcApp')
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
 									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-									// 		tW = ctx.measureText(tierDetails.events[k].label).width;
+									// 		tW = ctx.measureText(tierDetails.elements[k].label).width;
 									// 		ctx.fillStyle = this.params.labelColor;
-									// 		ctx.fillText(tierDetails.events[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+									// 		ctx.fillText(tierDetails.elements[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
 								} else {
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
@@ -247,7 +247,7 @@ angular.module('emulvcApp')
 					}
 
 					// draw preselected boundary
-					curEvt = tierDetails.events[segMId];
+					curEvt = tierDetails.elements[segMId];
 					if (curEvt !== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));

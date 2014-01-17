@@ -57,7 +57,7 @@ angular.module('emulvcApp')
 						labelJSO.tiers.push({
 							TierName: tN,
 							type: tT,
-							events: []
+							elements: []
 						});
 					}
 					if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type === 'seg' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
@@ -71,7 +71,7 @@ angular.module('emulvcApp')
 							eSt = eSt + 1; // for start first sample is 1
 						}
 
-						labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
+						labelJSO.tiers[labelJSO.tiers.length - 1].elements.push({
 							label: lab,
 							startSample: eSt - 1, // correct so starts at 0
 							sampleDur: eEt - eSt
@@ -81,7 +81,7 @@ angular.module('emulvcApp')
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
-						labelJSO.tiers[labelJSO.tiers.length - 1].events.push({
+						labelJSO.tiers[labelJSO.tiers.length - 1].elements.push({
 							label: lab,
 							startSample: Math.round(eT)
 						});
@@ -132,30 +132,30 @@ angular.module('emulvcApp')
 				tG = tG + t + t + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
 				tG = tG + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
 				if (curTier.type === 'seg') {
-					tG = tG + t + t + 'intervals: size = ' + curTier.events.length + nl;
+					tG = tG + t + t + 'intervals: size = ' + curTier.elements.length + nl;
 				} else if (curTier.type === 'point') {
-					tG = tG + t + t + 'points: size = ' + curTier.events.length + nl;
+					tG = tG + t + t + 'points: size = ' + curTier.elements.length + nl;
 				}
-				for (var j = 0; j < curTier.events.length; j++) {
+				for (var j = 0; j < curTier.elements.length; j++) {
 					var evtNr = j + 1;
 					if (curTier.type === 'seg') {
 						tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
-						if (curTier.events[j].startSample !== 0) {
-							tG = tG + t + t + t + t + 'xmin = ' + ((curTier.events[j].startSample) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+						if (curTier.elements[j].startSample !== 0) {
+							tG = tG + t + t + t + t + 'xmin = ' + ((curTier.elements[j].startSample) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
 						} else {
 							tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 						}
-						if (j < curTier.events.length - 1) {
-							tG = tG + t + t + t + t + 'xmax = ' + ((curTier.events[j].startSample + curTier.events[j].sampleDur + 1) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+						if (j < curTier.elements.length - 1) {
+							tG = tG + t + t + t + t + 'xmax = ' + ((curTier.elements[j].startSample + curTier.elements[j].sampleDur + 1) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
 						} else {
 							tG = tG + t + t + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
 						}
 
-						tG = tG + t + t + t + t + 'text = "' + curTier.events[j].label + '"' + nl;
+						tG = tG + t + t + t + t + 'text = "' + curTier.elements[j].label + '"' + nl;
 					} else if (curTier.type === 'point') {
 						tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
-						tG = tG + t + t + t + t + 'time = ' + curTier.events[j].startSample / Soundhandlerservice.wavJSO.SampleRate + nl;
-						tG = tG + t + t + t + t + 'mark = "' + curTier.events[j].label + '"' + nl;
+						tG = tG + t + t + t + t + 'time = ' + curTier.elements[j].startSample / Soundhandlerservice.wavJSO.SampleRate + nl;
+						tG = tG + t + t + t + t + 'mark = "' + curTier.elements[j].label + '"' + nl;
 					}
 				}
 			});
@@ -186,8 +186,8 @@ angular.module('emulvcApp')
 			var counter = 0;
 			for (var i = 0; i < labelJSO.tiers.length; i++) {
 				if (labelJSO.tiers[i].type === 'seg') {
-					for (var j = 0; j < labelJSO.tiers[i].events.length - 1; j++) {
-						if (labelJSO.tiers[i].events[j].startSample + labelJSO.tiers[i].events[j].sampleDur + 1 !== labelJSO.tiers[i].events[j + 1].startSample) {
+					for (var j = 0; j < labelJSO.tiers[i].elements.length - 1; j++) {
+						if (labelJSO.tiers[i].elements[j].startSample + labelJSO.tiers[i].elements[j].sampleDur + 1 !== labelJSO.tiers[i].elements[j + 1].startSample) {
 							counter = counter + 1;
 						}
 					}

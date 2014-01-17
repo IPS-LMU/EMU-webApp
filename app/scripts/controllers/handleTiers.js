@@ -135,7 +135,7 @@ angular.module('emulvcApp')
 			var id = 0;
 			var ret = 0;
 			if (tier.type === "seg") {
-				angular.forEach(tier.events, function (evt) {
+				angular.forEach(tier.elements, function (evt) {
 					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 						if (pcm - evt.startSample >= evt.sampleDur / 2) {
 							ret = id + 1;
@@ -148,15 +148,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.events, function (evt, key) {
-					if (key < tier.events.length - 1) {
-						spaceHigher = evt.startSample + (tier.events[key + 1].startSample - tier.events[key].startSample) / 2;
+				angular.forEach(tier.elements, function (evt, key) {
+					if (key < tier.elements.length - 1) {
+						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.events[key].startSample - tier.events[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
@@ -173,7 +173,7 @@ angular.module('emulvcApp')
 			var id = 0;
 			var ret = 0;
 			if (tier.type === "seg") {
-				angular.forEach(tier.events, function (evt, id) {
+				angular.forEach(tier.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 							if (pcm - evt.startSample >= evt.sampleDur / 2) {
@@ -191,15 +191,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.events, function (evt, key) {
-					if (key < tier.events.length - 1) {
-						spaceHigher = evt.startSample + (tier.events[key + 1].startSample - tier.events[key].startSample) / 2;
+				angular.forEach(tier.elements, function (evt, key) {
+					if (key < tier.elements.length - 1) {
+						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.events[key].startSample - tier.events[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
@@ -217,18 +217,18 @@ angular.module('emulvcApp')
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var evtr = null;
 			if (tier.type === "seg") {
-				angular.forEach(tier.events, function (evt, id) {
+				angular.forEach(tier.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 							if (pcm - evt.startSample >= evt.sampleDur / 2) {
-								evtr = tier.events[id + 1];
+								evtr = tier.elements[id + 1];
 							} else {
-								evtr = tier.events[id];
+								evtr = tier.elements[id];
 							}
 						}
 					} else {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-							evtr = tier.events[id];
+							evtr = tier.elements[id];
 						}
 					}
 				});
@@ -236,15 +236,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.events, function (evt, key) {
-					if (key < tier.events.length - 1) {
-						spaceHigher = evt.startSample + (tier.events[key + 1].startSample - tier.events[key].startSample) / 2;
+				angular.forEach(tier.elements, function (evt, key) {
+					if (key < tier.elements.length - 1) {
+						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.events[key].startSample - tier.events[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {

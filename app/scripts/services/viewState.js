@@ -450,7 +450,7 @@ angular.module('emulvcApp')
 	  angular.forEach(Tierservice.data.tiers, function (t) {
 		var i = 0;
 		if (t.TierName === sServObj.getcurClickTierName()) {
-		  angular.forEach(t.events, function (evt) {
+		  angular.forEach(t.elements, function (evt) {
 			if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
 			  sServObj.setcurClickSegmentMultiple(evt, i);
 			}
@@ -783,7 +783,7 @@ angular.module('emulvcApp')
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       if (curTier && segMId) {
-        var curMouseMoveSegmentStart = curTier.events[segMId].startSample;
+        var curMouseMoveSegmentStart = curTier.elements[segMId].startSample;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;

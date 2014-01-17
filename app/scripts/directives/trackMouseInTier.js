@@ -139,7 +139,7 @@ angular.module('emulvcApp')
           viewState.setcurClickTierName(tierId);
           viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
-          viewState.setTierLength(scope.this.tier.events.length);
+          viewState.setTierLength(scope.this.tier.elements.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -159,7 +159,7 @@ angular.module('emulvcApp')
           viewState.setcurClickTierName(tierId);
           viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
-          viewState.setTierLength(scope.this.tier.events.length);
+          viewState.setTierLength(scope.this.tier.elements.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -174,7 +174,7 @@ angular.module('emulvcApp')
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
           viewState.setEditing(true);
-          viewState.setTierLength(scope.this.tier.events.length);
+          viewState.setTierLength(scope.this.tier.elements.length);
           viewState.openEditArea(lastEventClick, lastEventClickId, scope.this.tier.type);
           scope.cursorInTextField();
           lastPCM = thisPCM;
