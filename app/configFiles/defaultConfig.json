@@ -87,6 +87,26 @@
         "dynamicRange": 70,
         "window": "GAUSS"
     },
+    "perspectives": [{
+        "perspectivename": "default",
+        "signalsCanvasesPersp": {
+            "order": ["osci", "spec"],
+            "assign": {
+                "spec": "fms:fm"
+            },
+            "extensions": {
+                "audio": ".wav",
+                "signals": [".fms"]
+            },
+            "contourLims": {
+                "fm": {
+                    "min": 0,
+                    "max": 1
+                }
+            }
+        }
+    }],
+
     "signalsCanvasConfig": {
         "order": ["osci", "spec"],
         "assign": {
