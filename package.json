@@ -1,14 +1,14 @@
 {
-  "name": "emulvc",
+  "name": "EMU-webApp",
   "version": "0.0.0",
-  "description": "emuLVC is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
+  "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "grunt server"
   },
   "author": "Raphael Winkelmann, Georg Raess",
-  "license": "BSD",
+  "license": "MIT",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
