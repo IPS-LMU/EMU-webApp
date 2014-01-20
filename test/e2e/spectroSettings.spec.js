@@ -94,29 +94,6 @@ describe('spectrogram settings', function () {
 	// 	// expect(ptor.isElementPresent(ele)).toBe(true);
 	// });
 
-	function selectOption(selector, item) {
-		var selectList, desiredOption;
-
-		selectList = this.findElement(selector);
-		selectList.click();
-
-		selectList.findElements(protractor.By.tagName('option'))
-			.then(function findMatchingOption(options) {
-				options.some(function (option) {
-					option.getText().then(function doesOptionMatch(text) {
-						if (item === text) {
-							desiredOption = option;
-							return true;
-						}
-					});
-				});
-			})
-			.then(function clickOption() {
-				if (desiredOption) {
-					desiredOption.click();
-				}
-			});
-	}
 
 
 });
