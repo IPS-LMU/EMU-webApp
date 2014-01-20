@@ -3,10 +3,10 @@ describe('utterence filter', function () {
 
 	var ptor;
 
-		browser.get('http://127.0.0.1:9000/');
-		// load demo
-		element(by.id('openDemoDBbtn')).click();
-	
+	browser.get('http://127.0.0.1:9000/');
+	// load demo
+	element(by.id('openDemoDBbtn')).click();
+
 	// beforeEach it
 	beforeEach(function () {
 		ptor = protractor.getInstance();
