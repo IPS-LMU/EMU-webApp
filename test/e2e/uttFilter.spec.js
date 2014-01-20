@@ -2,12 +2,14 @@
 describe('E2E: Utterence filter', function () {
 
 	var ptor;
+	
+	browser.get('http://127.0.0.1:9000/');
 
 	beforeEach(function () {
-		browser.get('http://127.0.0.1:9000/');
 		ptor = protractor.getInstance();
 		// load demo
 		element(by.id('openDemoDBbtn')).click();
+		element(by.input('filterText')).clear();
 	});
 
 	it('should find only 1 utt searching for 003', function () {
