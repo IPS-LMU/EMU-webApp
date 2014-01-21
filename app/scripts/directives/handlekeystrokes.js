@@ -25,7 +25,7 @@ angular.module('emulvcApp')
                   Tierservice.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
-                } 
+                }
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 viewState.focusInTextField = false;
@@ -179,13 +179,13 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   Tierservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, Tierservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
-				  scope.hists.addObjToUndoStack({
-					'type': 'ESPS',
-					'action': 'moveBoundary',
-					'tierName': td.TierName,
-					'itemIdx': viewState.getcurMouseSegmentId(),
-					'movedBy': minDist
-	  			  });
+                  scope.hists.addObjToUndoStack({
+                    'type': 'ESPS',
+                    'action': 'moveBoundary',
+                    'tierName': viewState.getcurMouseTierName(),
+                    'itemIdx': viewState.getcurMouseSegmentId(),
+                    'movedBy': minDist
+                  });
                 }
               }
 
@@ -193,13 +193,13 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   Tierservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, Tierservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
-				  scope.hists.addObjToUndoStack({
-					'type': 'ESPS',
-					'action': 'moveBoundary',
-					'tierName': td.TierName,
-					'itemIdx': viewState.getcurMouseSegmentId(),
-					'movedBy': minDist
-	  			  });                  
+                  scope.hists.addObjToUndoStack({
+                    'type': 'ESPS',
+                    'action': 'moveBoundary',
+                    'tierName': viewState.getcurMouseTierName(),
+                    'itemIdx': viewState.getcurMouseSegmentId(),
+                    'movedBy': minDist
+                  });
                 }
               }
 
@@ -213,12 +213,12 @@ angular.module('emulvcApp')
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
                     } else {
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
-						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
-					  } else {
-						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-					  }
+                        var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+                      } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                      } else {
+                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                      }
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
@@ -229,7 +229,7 @@ angular.module('emulvcApp')
                         'rightSide': true,
                         'changeTime': changeTime
                       });
-                      Tierservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime); 
+                      Tierservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                     }
                   }
                 }
@@ -243,14 +243,14 @@ angular.module('emulvcApp')
                   } else {
                     if (viewState.getselected().length === 0) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
-                    } else {     
+                    } else {
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
-						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
-					  } else {
-						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-					  }                                 
+                        var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+                      } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                      } else {
+                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                      }
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
@@ -261,27 +261,27 @@ angular.module('emulvcApp')
                         'changeTime': changeTime
                       });
                       Tierservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
-                   }
-                  } 
+                    }
+                  }
                 }
               }
 
               // expand Segment
               if (code === ConfigProviderService.vals.keyMappings.minus) {
-                if (ConfigProviderService.vals.restrictions.editItemSize) {           
+                if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickTierName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
                   } else {
                     if (viewState.getselected().length === 0) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
-                    } else {      
+                    } else {
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
-						var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-					  } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-						var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
-					  } else {
-						scope.dials.open('views/error.html', 'ModalCtrl','Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-					  }                                                                 
+                        var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+                      } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                      } else {
+                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                      }
                       if (e.shiftKey) {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -290,7 +290,7 @@ angular.module('emulvcApp')
                           'itemIdx': viewState.getselected().sort(),
                           'expand': false,
                           'rightSide': false,
-                        'changeTime': changeTime
+                          'changeTime': changeTime
                         });
                         Tierservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                       } else {
@@ -321,115 +321,108 @@ angular.module('emulvcApp')
               }
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
-              	if (viewState.getcurClickTierName() === undefined) {
-				  scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Tier first');
-			    } else {
-			      viewState.selectSegmentsInSelection();
-                }
-              }
-              
-              if (code === ConfigProviderService.vals.keyMappings.left) {
-                if(viewState.getselected().length>0) {
-                  var now = parseInt(viewState.getselected()[0], 10);          
-                  if (now > 1) {
-					--now;
-				  }
-                  var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-				  viewState.setlasteditArea('_' + ret.id);
-				}
-              }
-                            
-              if (code === ConfigProviderService.vals.keyMappings.right) {
-                if(viewState.getselected().length>0) {
-                  var now = parseInt(viewState.getselected()[0], 10);          
-                  if (now < viewState.getTierLength() - 1) {
-					++now;
-				  }                
-                  var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-				  viewState.setlasteditArea('_' + ret.id);
-				}
-              }
-              
-              // tab
-              if (code === ConfigProviderService.vals.keyMappings.tab) {
-                if(viewState.getselected().length>0) {              
-                var now = parseInt(viewState.getselected()[0], 10);          
-                if (e.shiftKey) {
-                  if (now > 1) {
-					--now;
-				  }
-                  var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-				  viewState.setlasteditArea('_' + ret.id);
+                if (viewState.getcurClickTierName() === undefined) {
+                  scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Tier first');
                 } else {
-                  if (now < viewState.getTierLength() - 1) {
-					++now;
-				  }                
-                  var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-				  viewState.setlasteditArea('_' + ret.id);
+                  viewState.selectSegmentsInSelection();
                 }
-                }
-              }
-              
-              // enter
-              if (code === ConfigProviderService.vals.keyMappings.enter) {
-                  if (ConfigProviderService.vals.restrictions.addItem) {
-                      if(viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE ) {
-                          if(viewState.getcurClickSegments().length==1) {
-	       		              viewState.setEditing(true);
-			                  viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
-			                  scope.cursorInTextField();                     
-                          }
-                          else {
-			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
-			              }
-			          } 
-			          else {
-			            if(viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) { 
-			              scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
-			            } 
-			            else {
-			              if(viewState.getcurClickTierType()=="seg") {
-			                var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-   			                if(!insSeg) {
-			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
-			                }
-			                else {
-			                    scope.hists.addObjToUndoStack({
-			                        'type': 'ESPS',
-			                        'action': 'insertSegments',
-			                        'tierName': viewState.getcurClickTierName(),
-			                        'start': viewState.curViewPort.selectS,
-			                        'end': viewState.curViewPort.selectE,
-			                        'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-			                    });    			                
-			                }
-			              }
-			              else {
-			                var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS,viewState.getcurClickTierName(),ConfigProviderService.vals.labelCanvasConfig.newPointName);
-   			                if(!insPoint) {
-			                  scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
-			                }
-			                else {
-			                    scope.hists.addObjToUndoStack({ // todo 
-			                        'type': 'ESPS',
-			                        'action': 'insertPoint',
-			                        'tierName': viewState.getcurClickTierName(),
-			                        'start': viewState.curViewPort.selectS,
-			                        'pointName': ConfigProviderService.vals.labelCanvasConfig.newPointName
-			                    });    			                			                
-			                }                
-			              }
-			            }
-			          }
-			        }
-			        else {}
               }
 
-            
+              if (code === ConfigProviderService.vals.keyMappings.left) {
+                if (viewState.getselected().length > 0) {
+                  var now = parseInt(viewState.getselected()[0], 10);
+                  if (now > 1) {
+                    --now;
+                  }
+                  var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
+                  viewState.setcurClickSegment(ret.event, ret.id);
+                  viewState.setlasteditArea('_' + ret.id);
+                }
+              }
+
+              if (code === ConfigProviderService.vals.keyMappings.right) {
+                if (viewState.getselected().length > 0) {
+                  var now = parseInt(viewState.getselected()[0], 10);
+                  if (now < viewState.getTierLength() - 1) {
+                    ++now;
+                  }
+                  var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
+                  viewState.setcurClickSegment(ret.event, ret.id);
+                  viewState.setlasteditArea('_' + ret.id);
+                }
+              }
+
+              // tab
+              if (code === ConfigProviderService.vals.keyMappings.tab) {
+                if (viewState.getselected().length > 0) {
+                  var now = parseInt(viewState.getselected()[0], 10);
+                  if (e.shiftKey) {
+                    if (now > 1) {
+                      --now;
+                    }
+                    var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
+                    viewState.setcurClickSegment(ret.event, ret.id);
+                    viewState.setlasteditArea('_' + ret.id);
+                  } else {
+                    if (now < viewState.getTierLength() - 1) {
+                      ++now;
+                    }
+                    var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
+                    viewState.setcurClickSegment(ret.event, ret.id);
+                    viewState.setlasteditArea('_' + ret.id);
+                  }
+                }
+              }
+
+              // enter
+              if (code === ConfigProviderService.vals.keyMappings.enter) {
+                if (ConfigProviderService.vals.restrictions.addItem) {
+                  if (viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE) {
+                    if (viewState.getcurClickSegments().length == 1) {
+                      viewState.setEditing(true);
+                      viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
+                      scope.cursorInTextField();
+                    } else {
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+                    }
+                  } else {
+                    if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
+                    } else {
+                      if (viewState.getcurClickTierType() == "seg") {
+                        var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                        if (!insSeg) {
+                          scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+                        } else {
+                          scope.hists.addObjToUndoStack({
+                            'type': 'ESPS',
+                            'action': 'insertSegments',
+                            'tierName': viewState.getcurClickTierName(),
+                            'start': viewState.curViewPort.selectS,
+                            'end': viewState.curViewPort.selectE,
+                            'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+                          });
+                        }
+                      } else {
+                        var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newPointName);
+                        if (!insPoint) {
+                          scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
+                        } else {
+                          scope.hists.addObjToUndoStack({ // todo 
+                            'type': 'ESPS',
+                            'action': 'insertPoint',
+                            'tierName': viewState.getcurClickTierName(),
+                            'start': viewState.curViewPort.selectS,
+                            'pointName': ConfigProviderService.vals.labelCanvasConfig.newPointName
+                          });
+                        }
+                      }
+                    }
+                  }
+                } else {}
+              }
+
+
               // history
               if (code === ConfigProviderService.vals.keyMappings.history) {
                 if (!e.shiftKey) {
@@ -463,7 +456,7 @@ angular.module('emulvcApp')
                     if (seg !== undefined) {
                       var selected = viewState.getcurClickSegments();
                       var ids = viewState.getselected();
-                      if (viewState.getcurClickTierType() === 'seg') {                      
+                      if (viewState.getcurClickTierType() === 'seg') {
                         var click = Tierservice.deleteSegments(selected, ids, viewState.getcurClickTierName());
                         viewState.setcurClickSegment(click.segment, click.id);
                         scope.hists.addObjToUndoStack({
@@ -472,7 +465,7 @@ angular.module('emulvcApp')
                           'tierName': viewState.getcurClickTierName(),
                           'selected': selected,
                           'ids': ids
-                        });                        
+                        });
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
                       }
