@@ -1,8 +1,8 @@
 'use strict';
 
 describe("Unit Testing: regex filters", function () {
-  var filt;
 
+  var filt;
 
   var dummyList = [{
     'name': 'msajc003'
@@ -28,11 +28,15 @@ describe("Unit Testing: regex filters", function () {
     filt = $filter('regex');
   }));
 
-  // test regex filter
-  it('should filter dummyarray with regex: ', function () {
+  it('should have a regex filter: ', function () {
     expect(filt).not.toEqual(null);
+  })
+
+  // test regex filter
+  it('should filter dummyarray with regex properly: ', function () {
+    expect(filt(dummyList, '').length).toEqual(7);
     expect(filt(dummyList, '01').length).toEqual(3);
     expect(filt(dummyList, 'msajc003').length).toEqual(1);
     expect(filt(dummyList, 'asdf').length).toEqual(0);
-  })
+  });
 });
