@@ -36,6 +36,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText'); // see if filtertext input filed exists SIC... but maybe not so bad
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	it('should be able to set view range of spectrogram settings bottom limit to 2000 Hz', function () {
@@ -45,6 +46,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText');
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	it('should be able to set window length to 512 Samples', function () {
@@ -54,6 +56,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText');
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	it('should be able to set window length to 128 Samples', function () {
@@ -63,6 +66,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText');
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	it('should be able to set dynamic range to 50', function () {
@@ -72,6 +76,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText');
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	it('should be able to set dynamic range to 90', function () {
@@ -81,6 +86,7 @@ describe('spectrogram settings', function () {
 		element(by.id('dialogSaveButton')).click();
 		var ele = by.input('filterText');
 		expect(ptor.isElementPresent(ele)).toBe(true);
+		ptor.sleep(1000);
 	});
 
 	// it('should be able window function to BARLETT', function () {
