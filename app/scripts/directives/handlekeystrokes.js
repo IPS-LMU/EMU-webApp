@@ -317,8 +317,16 @@ angular.module('emulvcApp')
 
               // openSubmenu
               if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
-                scope.openSubmenu();
+                if(e.shiftKey) {
+                    scope.openRightSubmenu();
+                }
+                else {
+                    scope.openSubmenu();
+                }
               }
+              if (code === ConfigProviderService.vals.keyMappings.openRightSubmenu) {
+                scope.openRightSubmenu();
+              }              
               // spectroSettings
               if (code === ConfigProviderService.vals.keyMappings.spectroSettings) {
                 scope.dials.open('views/spectroSettings.html', 'dialog');

@@ -44,6 +44,14 @@
     color: #fff;
     border: 0px;
 }
+
+.cbp-spmenu-right {
+    position: fixed;
+    width:238px;  
+    background: rgb(56,54,62);
+    color: #fff;
+    border: 0px;
+}
  
 .cbp-spmenu h3 {
     /*background: rgba(56,54,62,100);*/
@@ -70,9 +78,18 @@
     left: -240px;
 
 }
+
+.cbp-spmenu-right {
+    right: -240px;
+
+}
  
 .cbp-spmenu-left.cbp-spmenu-open {
     left: 0px;
+}
+
+.cbp-spmenu-right.cbp-spmenu-open {
+    right: 0px;
 }
  
 .cbp-spmenu-push {
@@ -81,15 +98,26 @@
     left: 0;
 }
  
-.cbp-spmenu-push-toright {
+.cbp-spmenu-left-toright {
     left: 240px;
     width: -moz-calc(100% - 240px);
     width: -webkit-calc(100% - 240px);
     width: calc(100% - 240px);
 }
  
-.cbp-spmenu-push-toleft {
+.cbp-spmenu-left-toleft {
     left: 0px;
+}
+
+.cbp-spmenu-right-toright {
+    right: 240px;
+    width: -moz-calc(100% - 240px);
+    width: -webkit-calc(100% - 240px);
+    width: calc(100% - 240px);
+}
+ 
+.cbp-spmenu-right-toleft {
+    right: 0px;
 }
 
  
