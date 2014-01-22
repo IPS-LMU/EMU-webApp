@@ -61,6 +61,90 @@ angular.module('emulvcApp')
       return details;
     };	
     
+    
+    
+    sServObj.getEvent = function (pcm, level, nearest) {
+		var evtr = null;
+		if (level.type === "seg") {
+			angular.forEach(level.elements, function (evt, id) {
+				if (nearest) {
+					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						if (pcm - evt.startSample >= evt.sampleDur / 2) {
+							evtr = level.elements[id + 1];
+						} else {
+							evtr = level.elements[id];
+						}
+					}
+				} else {
+					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						evtr = level.elements[id];
+					}
+				}
+			});
+		} else {
+			var spaceLower = 0;
+			var spaceHigher = 0;
+			angular.forEach(level.elements, function (evt, key) {
+				if (key < level.elements.length - 1) {
+					spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
+				} else {
+					spaceHigher = $scope.vs.curViewPort.bufferLength;
+				}
+				if (key > 0) {
+					spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
+				}
+				if (pcm <= spaceHigher && pcm >= spaceLower) {
+					evtr = evt;
+				}
+			});
+		}
+		return evtr;
+	};  
+	
+
+    sServObj.getEventId = function (pcm, level, nearest) {
+		var id = 0;
+		var ret = 0;
+		if (level.type === "seg") {
+			angular.forEach(level.elements, function (evt, id) {
+				if (nearest) {
+					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						if (pcm - evt.startSample >= evt.sampleDur / 2) {
+							ret = id + 1;
+						} else {
+							ret = id;
+						}
+					}
+				} else {
+					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						ret = id;
+					}
+				}
+			});
+		} else {
+			var spaceLower = 0;
+			var spaceHigher = 0;
+			angular.forEach(level.elements, function (evt, key) {
+				if (key < level.elements.length - 1) {
+					spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
+				} else {
+					spaceHigher = $scope.vs.curViewPort.bufferLength;
+				}
+				if (key > 0) {
+					spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
+				}
+				if (pcm <= spaceHigher && pcm >= spaceLower) {
+					ret = id;
+				}
+				++id;
+			});
+		}
+		return ret;
+	};
+	  
+    
+    
+    
     sServObj.deleteLevel = function (levelName) { 
         var y = 0; 
         var curLevel;

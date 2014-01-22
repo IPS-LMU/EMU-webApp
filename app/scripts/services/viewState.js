@@ -162,6 +162,13 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = -1;
       sServObj.curViewPort.selectE = -1;
     };
+    
+    /**
+     * gets the current Viewport
+     */
+    sServObj.getViewPort = function () {
+      return sServObj.curViewPort;
+    };
 
     /**
      * setspectroSettings
@@ -199,25 +206,42 @@ angular.module('emulvcApp')
     };
 
     sServObj.selectLevel = function (next) {
-	  var tag;
+	  var tag;	  
 	  var now = sServObj.getcurClickLevelName();
+	  var name = $('li').children()[0].id;
 	  if (now === undefined) {
-		sServObj.setcurClickLevelName($('li').children()[0].id);
+		sServObj.setcurClickLevelName(name);
 	  } else {
 		if (next) {
 		  tag = $('li.' + now).next().children()[0];
 		  if (tag === undefined) {
-			sServObj.setcurClickLevelName($('li').children()[0].id);
+			sServObj.setcurClickLevelName(name);
 		  } else {
-			sServObj.setcurClickLevelName(tag.id);
+		    name = tag.id;
+			sServObj.setcurClickLevelName(name);
 		  }
 	    } else {
 		  tag = $('li.' + now).prev().children()[0];
 		  if (tag === undefined) {
-			sServObj.setcurClickLevelName($('li').children()[0].id);
+			sServObj.setcurClickLevelName(name);
 		  } else {
-			sServObj.setcurClickLevelName(tag.id);
+		    name = tag.id;
+			sServObj.setcurClickLevelName(name);
 		  }
+		}
+		var segs = sServObj.getcurClickSegments();
+		if(segs!==undefined) {
+		    if(segs.length>0) {
+		        var pcm = segs[0].startSample + (segs[0].sampleDur/2);
+		        var ld = Levelservice.getLevelDetails(name);
+		        var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
+		        var lastEventClickId = Levelservice.getEventId(pcm, ld.level, false);
+		        console.log(lastEventClick);
+		        sServObj.setlasteditArea('_' + lastEventClickId);
+		        sServObj.setcurClickLevelType(ld.level.type);
+		        sServObj.setcurClickSegment(lastEventClick, lastEventClickId);
+		        sServObj.setLevelLength(ld.level.elements.length);
+		    }
 		}
 	  }
 	};    
@@ -529,7 +553,7 @@ angular.module('emulvcApp')
      */
     sServObj.getselected = function () {
       return this.selected;
-    };
+    };  
     
 
     /**
