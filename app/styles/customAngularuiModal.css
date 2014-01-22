@@ -9,8 +9,9 @@
 .modal-body{
 	background-color: white;
 	height: 50%;
-	overflow-y: auto; 
-
+	overflow-y: auto;
+	padding: 10%;
+	text-align: justify;
 }
 
 .modal-exportdata {
