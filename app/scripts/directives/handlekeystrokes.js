@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('handleglobalkeystrokes', function (viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Tierservice) {
+  .directive('handleglobalkeystrokes', function (viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Levelservice) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -22,7 +22,7 @@ angular.module('emulvcApp')
                     'oldValue': viewState.getcurClickSegments()[0].label,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
-                  Tierservice.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
+                  Levelservice.renameLabel(viewState.getcurClickTierName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
                 }
@@ -180,7 +180,7 @@ angular.module('emulvcApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
                   var tierName = viewState.getcurMouseTierName();
-                  var minDist = Tierservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
+                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
@@ -196,7 +196,7 @@ angular.module('emulvcApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
                   var tierName = viewState.getcurMouseTierName();
-                  var minDist = Tierservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
+                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
@@ -233,7 +233,7 @@ angular.module('emulvcApp')
                         'rightSide': true,
                         'changeTime': changeTime
                       });
-                      Tierservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                      Levelservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                     }
                   }
                 }
@@ -264,7 +264,7 @@ angular.module('emulvcApp')
                         'rightSide': false,
                         'changeTime': changeTime
                       });
-                      Tierservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                      Levelservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                     }
                   }
                 }
@@ -296,7 +296,7 @@ angular.module('emulvcApp')
                           'rightSide': false,
                           'changeTime': changeTime
                         });
-                        Tierservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                        Levelservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                       } else {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -307,7 +307,7 @@ angular.module('emulvcApp')
                           'rightSide': true,
                           'changeTime': changeTime
                         });
-                        Tierservice.expandSegment(false, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
+                        Levelservice.expandSegment(false, true, viewState.getselected().sort(), viewState.getcurClickTierName(), changeTime);
                       }
                     }
                   }
@@ -338,7 +338,7 @@ angular.module('emulvcApp')
                   if (now > 1) {
                     --now;
                   }
-                  var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
+                  var ret = Levelservice.tabNext(true, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
                   viewState.setlasteditArea('_' + ret.id);
                 }
@@ -350,7 +350,7 @@ angular.module('emulvcApp')
                   if (now < viewState.getTierLength() - 1) {
                     ++now;
                   }
-                  var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
+                  var ret = Levelservice.tabNext(false, now, viewState.getcurClickTierName());
                   viewState.setcurClickSegment(ret.event, ret.id);
                   viewState.setlasteditArea('_' + ret.id);
                 }
@@ -364,14 +364,14 @@ angular.module('emulvcApp')
                     if (now > 1) {
                       --now;
                     }
-                    var ret = Tierservice.tabNext(true, now, viewState.getcurClickTierName());
+                    var ret = Levelservice.tabNext(true, now, viewState.getcurClickTierName());
                     viewState.setcurClickSegment(ret.event, ret.id);
                     viewState.setlasteditArea('_' + ret.id);
                   } else {
                     if (now < viewState.getTierLength() - 1) {
                       ++now;
                     }
-                    var ret = Tierservice.tabNext(false, now, viewState.getcurClickTierName());
+                    var ret = Levelservice.tabNext(false, now, viewState.getcurClickTierName());
                     viewState.setcurClickSegment(ret.event, ret.id);
                     viewState.setlasteditArea('_' + ret.id);
                   }
@@ -394,7 +394,7 @@ angular.module('emulvcApp')
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
                     } else {
                       if (viewState.getcurClickTierType() == "seg") {
-                        var insSeg = Tierservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                        var insSeg = Levelservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                         if (!insSeg) {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
                         } else {
@@ -408,7 +408,7 @@ angular.module('emulvcApp')
                           });
                         }
                       } else {
-                        var insPoint = Tierservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newPointName);
+                        var insPoint = Levelservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickTierName(), ConfigProviderService.vals.labelCanvasConfig.newPointName);
                         if (!insPoint) {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
                         } else {
@@ -449,7 +449,7 @@ angular.module('emulvcApp')
                         'tierType': viewState.getcurMouseTierType(),
                         'seg': seg
                       });
-                      Tierservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
+                      Levelservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseTierName(), viewState.getcurMouseTierType());
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                     }
@@ -461,7 +461,7 @@ angular.module('emulvcApp')
                       var selected = viewState.getcurClickSegments();
                       var ids = viewState.getselected();
                       if (viewState.getcurClickTierType() === 'seg') {
-                        var click = Tierservice.deleteSegments(selected, ids, viewState.getcurClickTierName());
+                        var click = Levelservice.deleteSegments(selected, ids, viewState.getcurClickTierName());
                         viewState.setcurClickSegment(click.segment, click.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',

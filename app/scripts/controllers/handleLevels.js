@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierservice, fontScaleService, Drawhelperservice, dialogService) {
+	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Levelservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;
 		$scope.hists = HistoryService;
@@ -12,7 +12,7 @@ angular.module('emulvcApp')
 		$scope.dials = dialogService;
 		$scope.testValue = '';
 		$scope.message = '';
-		$scope.tierDetails = Tierservice;
+		$scope.tierDetails = Levelservice;
 			
 
 		$scope.sortableOptions = {

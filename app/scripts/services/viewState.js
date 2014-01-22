@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Tierservice) {
+  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Levelservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -447,7 +447,7 @@ angular.module('emulvcApp')
     sServObj.selectSegmentsInSelection = function () {
       var rangeStart = sServObj.curViewPort.selectS;
 	  var rangeEnd = sServObj.curViewPort.selectE;
-	  angular.forEach(Tierservice.data.tiers, function (t) {
+	  angular.forEach(Levelservice.data.tiers, function (t) {
 		var i = 0;
 		if (t.TierName === sServObj.getcurClickTierName()) {
 		  angular.forEach(t.elements, function (evt) {
@@ -773,8 +773,8 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
-      var curTier = Tierservice.getcurMouseTierDetails();
-      // Tierservice.data.tiers.forEach(function(t) {
+      var curTier = Levelservice.getcurMouseTierDetails();
+      // Levelservice.data.tiers.forEach(function(t) {
       // if (t.TierName === tierName) {
       // curTier = t;
       // }

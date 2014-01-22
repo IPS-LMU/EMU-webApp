@@ -62,7 +62,7 @@ $(function() {
         height: X
       });
       $('.MainCtrl').scope().refreshTimeline();
-      $('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
+      $('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
     }
     return false;
   }

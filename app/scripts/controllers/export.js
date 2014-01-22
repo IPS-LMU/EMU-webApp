@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, Tierservice, HistoryService) {
+	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, Levelservice, HistoryService) {
 		
 		$scope.exportData = exportData;
 		$scope.exportName = exportName;

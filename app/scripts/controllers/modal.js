@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Tierservice, HistoryService) {
+	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Levelservice, HistoryService) {
 		
 		$scope.passedInTxt = passedInTxt;
 		$scope.passedOutTxt = {
@@ -30,7 +30,7 @@ angular.module('emulvcApp')
 		 *  Rename a tier
 		 */
 		$scope.renameTier = function () {
-		    Tierservice.renameTier($scope.passedInTxt,$scope.passedOutTxt.var);	
+		    Levelservice.renameTier($scope.passedInTxt,$scope.passedOutTxt.var);	
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'renameTier',
@@ -55,7 +55,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.discardChanges = function (name) {
 		    dialogService.close();
-		    Tierservice.data.tiers.forEach(function (t, tIdx) {
+		    Levelservice.data.tiers.forEach(function (t, tIdx) {
 		        if(t.tierName = name) {
 		        
 		        }
@@ -63,11 +63,11 @@ angular.module('emulvcApp')
 		};			
 		
 		/**
-		 *  Delete a complete tier from Tierservice
+		 *  Delete a complete tier from Levelservice
 		 */
 		$scope.deleteTier = function () {
 		    var res;	
-			res = Tierservice.deleteTier(viewState.getcurClickTierName());
+			res = Levelservice.deleteTier(viewState.getcurClickTierName());
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'deleteTier',

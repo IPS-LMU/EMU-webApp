@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Tierservice', function Tierservice($rootScope) {
+	.service('Levelservice', function Levelservice($rootScope) {
 		// shared service object
 		var sServObj = {};
 

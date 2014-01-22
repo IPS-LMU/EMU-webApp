@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Tierservice) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Levelservice) {
 
 		//shared service object to be returned
 		var sServObj = {};
@@ -270,7 +270,7 @@ angular.module('emulvcApp')
 
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
-				var tD = Tierservice.getcurMouseTierDetails(viewState.getcurMouseTierName());
+				var tD = Levelservice.getcurMouseTierDetails(viewState.getcurMouseTierName());
 				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.elements[viewState.getcurMouseSegmentId()].startSample));
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 			}

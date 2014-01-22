@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('HistoryService', function HistoryService(Ssffdataservice, Tierservice, ConfigProviderService) {
+	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService) {
 
 
 		// shared service object
@@ -20,7 +20,7 @@ angular.module('emulvcApp')
 		sServObj.history = function () {
 			var newClone = angular.copy({
 				ssff: Ssffdataservice.getData(),
-				tier: Tierservice.getData()
+				tier: Levelservice.getData()
 			});
 			if (sServObj.myHistoryCounter > 0) {
 				var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
@@ -38,7 +38,7 @@ angular.module('emulvcApp')
 		sServObj.goBackHistory = function () {
 			if (sServObj.myHistoryCounter > 1) {
 				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
-				Tierservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].tier);
+				Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].tier);
 				--sServObj.myHistoryCounter;
 				return true;
 			} else {
@@ -70,86 +70,86 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
 						} else {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
 						    
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
 						} else {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
 						}
 						break;						
 					case 'moveSegment':
 						if (applyOldVal) {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveSegment(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveSegment(-cur.movedBy, res.tier, cur.itemIdx);
 						} else {
-						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveSegment(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getTierDetails(cur.tierName);	
+						    Levelservice.moveSegment(cur.movedBy, res.tier, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							Tierservice.renameLabel(cur.tierName, cur.itemIdx, cur.oldValue);
+							Levelservice.renameLabel(cur.tierName, cur.itemIdx, cur.oldValue);
 						} else {
-							Tierservice.renameLabel(cur.tierName, cur.itemIdx, cur.newValue);
+							Levelservice.renameLabel(cur.tierName, cur.itemIdx, cur.newValue);
 						}
 						break;
 					case 'renameTier':
 						if (applyOldVal) {
-						    Tierservice.renameTier(cur.tierName, cur.oldName);	
+						    Levelservice.renameTier(cur.tierName, cur.oldName);	
 						} else {
-						    Tierservice.renameTier(cur.oldName, cur.tierName);	
+						    Levelservice.renameTier(cur.oldName, cur.tierName);	
 						}
 						break;						
 					case 'deleteTier':
 						if (applyOldVal) {
-							Tierservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
+							Levelservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
 						} else {
-							Tierservice.data.tiers.splice(cur.itemIdx, 1);
+							Levelservice.data.tiers.splice(cur.itemIdx, 1);
 						}
 						break;						
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							Tierservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Levelservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
-							Tierservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
+							Levelservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
 						}
 						break;					
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Tierservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.tierName);
+							Levelservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.tierName);
 						} else {
-							Tierservice.deleteSegments(cur.selected, cur.ids, cur.tierName);
+							Levelservice.deleteSegments(cur.selected, cur.ids, cur.tierName);
 						}
 						break;
 					case 'insertSegments':
 						if (applyOldVal) {
-							Tierservice.insertSegmentInvers(cur.start, cur.end,cur.tierName, cur.segname);
+							Levelservice.insertSegmentInvers(cur.start, cur.end,cur.tierName, cur.segname);
 						} else {
-						    Tierservice.insertSegment(cur.start, cur.end,cur.tierName, cur.segname);
+						    Levelservice.insertSegment(cur.start, cur.end,cur.tierName, cur.segname);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Tierservice.insertPointInvers(cur.start, cur.tierName ,cur.pointName);
+							Levelservice.insertPointInvers(cur.start, cur.tierName ,cur.pointName);
 						} else {
-							Tierservice.insertPoint(cur.start, cur.tierName, cur.pointName);
+							Levelservice.insertPoint(cur.start, cur.tierName, cur.pointName);
 						}
 						break;												
 					case 'expandSegments':
 						if (applyOldVal) {
-							Tierservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime); 
+							Levelservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime); 
 						} else {
-							Tierservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime);
+							Levelservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime);
 						}
 						break;
 

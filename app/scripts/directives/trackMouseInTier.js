@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('trackmouseintier', function (ConfigProviderService, viewState,Tierservice) {
+  .directive('trackmouseintier', function (ConfigProviderService, viewState,Levelservice) {
     return {
       restrict: 'A',
       link: function (scope, element) {
@@ -45,7 +45,7 @@ angular.module('emulvcApp')
           
           if (zoom<= 1) {
               // ansolute movement in pcm below 1 pcm per pixel
-              moveBy = Math.floor((thisPCM+viewState.curViewPort.sS) - Tierservice.getElementDetails(scope.this.tier.TierName,viewState.getcurMouseSegmentId()).startSample);
+              moveBy = Math.floor((thisPCM+viewState.curViewPort.sS) - Levelservice.getElementDetails(scope.this.tier.TierName,viewState.getcurMouseSegmentId()).startSample);
           } else {
             // relative movement in pcm above 1 pcm per pixel
             moveBy = Math.round(thisPCM - lastPCM);

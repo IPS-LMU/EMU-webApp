@@ -2,12 +2,12 @@
 
 angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Tierservice, dialogService, Textgridparserservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
-		$scope.tds = Tierservice;
+		$scope.tds = Levelservice;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.connectBtnLabel = 'connect';
@@ -517,7 +517,7 @@ angular.module('emulvcApp')
 
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-				dialogService.openExport('views/export.html', 'ExportCtrl',Textgridparserservice.toTextGrid(Tierservice.data),'textgrid.txt');
+				dialogService.openExport('views/export.html', 'ExportCtrl',Textgridparserservice.toTextGrid(Levelservice.data),'textgrid.txt');
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -577,7 +577,7 @@ angular.module('emulvcApp')
 					$scope.uttList = [];
 					ConfigProviderService.httpGetConfig();
 					Soundhandlerservice.wavJSO = {};
-					Tierservice.data = {};
+					Levelservice.data = {};
 					Ssffdataservice.data = [];
 					$('#FileCtrl').scope().showDropZone(); // SIC should be in service
 					$scope.$broadcast('refreshTimeline');
