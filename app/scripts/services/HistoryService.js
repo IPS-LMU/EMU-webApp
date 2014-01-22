@@ -70,86 +70,86 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
 						    
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;						
 					case 'moveSegment':
 						if (applyOldVal) {
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveSegment(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    var res = Levelservice.getLevelDetails(cur.levelName);	
 						    Levelservice.moveSegment(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							Levelservice.renameLabel(cur.tierName, cur.itemIdx, cur.oldValue);
+							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.oldValue);
 						} else {
-							Levelservice.renameLabel(cur.tierName, cur.itemIdx, cur.newValue);
+							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.newValue);
 						}
 						break;
 					case 'renameLevel':
 						if (applyOldVal) {
-						    Levelservice.renameLevel(cur.tierName, cur.oldName);	
+						    Levelservice.renameLevel(cur.levelName, cur.oldName);	
 						} else {
-						    Levelservice.renameLevel(cur.oldName, cur.tierName);	
+						    Levelservice.renameLevel(cur.oldName, cur.levelName);	
 						}
 						break;						
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
+							Levelservice.data.levels.splice(cur.itemIdx, 0, cur.tier);
 						} else {
-							Levelservice.data.tiers.splice(cur.itemIdx, 1);
+							Levelservice.data.levels.splice(cur.itemIdx, 1);
 						}
 						break;						
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							Levelservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.tierName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Levelservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
-							Levelservice.deleteBoundary(cur.seg, cur.tierName, cur.tierType);
+							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.tierType);
 						}
 						break;					
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Levelservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.tierName);
+							Levelservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.levelName);
 						} else {
-							Levelservice.deleteSegments(cur.selected, cur.ids, cur.tierName);
+							Levelservice.deleteSegments(cur.selected, cur.ids, cur.levelName);
 						}
 						break;
 					case 'insertSegments':
 						if (applyOldVal) {
-							Levelservice.insertSegmentInvers(cur.start, cur.end,cur.tierName, cur.segname);
+							Levelservice.insertSegmentInvers(cur.start, cur.end,cur.levelName, cur.segname);
 						} else {
-						    Levelservice.insertSegment(cur.start, cur.end,cur.tierName, cur.segname);
+						    Levelservice.insertSegment(cur.start, cur.end,cur.levelName, cur.segname);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Levelservice.insertPointInvers(cur.start, cur.tierName ,cur.pointName);
+							Levelservice.insertPointInvers(cur.start, cur.levelName ,cur.pointName);
 						} else {
-							Levelservice.insertPoint(cur.start, cur.tierName, cur.pointName);
+							Levelservice.insertPoint(cur.start, cur.levelName, cur.pointName);
 						}
 						break;												
 					case 'expandSegments':
 						if (applyOldVal) {
-							Levelservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime); 
+							Levelservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime); 
 						} else {
-							Levelservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.tierName, cur.changeTime);
+							Levelservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime);
 						}
 						break;
 
@@ -177,7 +177,7 @@ angular.module('emulvcApp')
 				switch (dataObj.action) {
 				case 'moveBoundary':
 				case 'moveSegment':
-					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.tierName + '#' + dataObj.itemIdx);
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.itemIdx);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {

@@ -5,7 +5,7 @@ angular.module('emulvcApp')
     return {
       restrict: 'A',
       link: function (scope, element) {
-        var id = scope.this.tier.TierName;
+        var id = scope.this.level.LevelName;
 
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(id);

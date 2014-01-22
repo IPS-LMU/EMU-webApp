@@ -54,13 +54,13 @@ angular.module('emulvcApp')
 						tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
 						// adding new tier
-						labelJSO.tiers.push({
-							TierName: tN,
+						labelJSO.levels.push({
+							LevelName: tN,
 							type: tT,
 							elements: []
 						});
 					}
-					if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type === 'seg' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
+					if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'seg' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 						// parse seg tiers event
 						var eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
@@ -71,17 +71,17 @@ angular.module('emulvcApp')
 							eSt = eSt + 1; // for start first sample is 1
 						}
 
-						labelJSO.tiers[labelJSO.tiers.length - 1].elements.push({
+						labelJSO.levels[labelJSO.levels.length - 1].elements.push({
 							label: lab,
 							startSample: eSt - 1, // correct so starts at 0
 							sampleDur: eEt - eSt
 						});
-					} else if (labelJSO.tiers.length > 0 && labelJSO.tiers[labelJSO.tiers.length - 1].type === 'point' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
+					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'point' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 						// parse point tier event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
-						labelJSO.tiers[labelJSO.tiers.length - 1].elements.push({
+						labelJSO.levels[labelJSO.levels.length - 1].elements.push({
 							label: lab,
 							startSample: Math.round(eT)
 						});
@@ -128,7 +128,7 @@ angular.module('emulvcApp')
 				} else if (curTier.type === 'point') {
 					tG = tG + t + t + 'class = "TextTier"' + nl;
 				}
-				tG = tG + t + t + 'name = "' + curTier.TierName + '"' + nl;
+				tG = tG + t + t + 'name = "' + curTier.LevelName + '"' + nl;
 				tG = tG + t + t + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
 				tG = tG + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
 				if (curTier.type === 'seg') {
@@ -184,10 +184,10 @@ angular.module('emulvcApp')
 		 */
 		sServObj.testForGapsInLabelJSO = function(labelJSO) {
 			var counter = 0;
-			for (var i = 0; i < labelJSO.tiers.length; i++) {
-				if (labelJSO.tiers[i].type === 'seg') {
-					for (var j = 0; j < labelJSO.tiers[i].elements.length - 1; j++) {
-						if (labelJSO.tiers[i].elements[j].startSample + labelJSO.tiers[i].elements[j].sampleDur + 1 !== labelJSO.tiers[i].elements[j + 1].startSample) {
+			for (var i = 0; i < labelJSO.levels.length; i++) {
+				if (labelJSO.levels[i].type === 'seg') {
+					for (var j = 0; j < labelJSO.levels[i].elements.length - 1; j++) {
+						if (labelJSO.levels[i].elements[j].startSample + labelJSO.levels[i].elements[j].sampleDur + 1 !== labelJSO.levels[i].elements[j + 1].startSample) {
 							counter = counter + 1;
 						}
 					}

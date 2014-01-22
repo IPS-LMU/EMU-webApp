@@ -32,13 +32,13 @@ angular.module('emulvcApp')
 				fileInfos: [{
 					fileURI: filePath,
 					fileType: 'esps',
-					associatedTierNames: [ext]
+					associatedLevelNames: [ext]
 				}],
-				tiers: []
+				levels: []
 			};
 
-			labelJSO.tiers.push({
-				TierName: ext,
+			labelJSO.levels.push({
+				LevelName: ext,
 				type: '',
 				elements: []
 			});
@@ -47,15 +47,15 @@ angular.module('emulvcApp')
 			var prevLineArr;
 			var curLineArr = lines[headEndIdx + 1].split(/\s+/);
 			if (curLineArr[curLineArr.length - 1] !== 'H#') {
-				labelJSO.tiers[0].type = 'point';
+				labelJSO.levels[0].type = 'point';
 			} else {
-				labelJSO.tiers[0].type = 'seg';
+				labelJSO.levels[0].type = 'seg';
 			}
 
-			if (labelJSO.tiers[0].type === 'point') {
+			if (labelJSO.levels[0].type === 'point') {
 				for (i = headEndIdx + 1; i < lines.length - 1; i++) {
 					curLineArr = lines[i].split(/\s+/);
-					labelJSO.tiers[0].elements.push({
+					labelJSO.levels[0].elements.push({
 						label: curLineArr[curLineArr.length - 1],
 						startSample: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
 					});
@@ -63,7 +63,7 @@ angular.module('emulvcApp')
 			} else {
 				// take care of H#
 				curLineArr = lines[headEndIdx + 1].split(/\s+/);
-				labelJSO.tiers[0].elements.push({
+				labelJSO.levels[0].elements.push({
 					label: '',
 					startSample: 0,
 					sampleDur: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
@@ -71,7 +71,7 @@ angular.module('emulvcApp')
 				for (i = headEndIdx + 2; i < lines.length - 1; i++) {
 					curLineArr = lines[i].split(/\s+/);
 					prevLineArr = lines[i - 1].split(/\s+/);
-					labelJSO.tiers[0].elements.push({
+					labelJSO.levels[0].elements.push({
 						label: curLineArr[curLineArr.length - 1],
 						startSample: Math.round(prevLineArr[1] * Soundhandlerservice.wavJSO.SampleRate),
 						sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * Soundhandlerservice.wavJSO.SampleRate)
@@ -88,7 +88,7 @@ angular.module('emulvcApp')
 		 *
 		 */
 		sServObj.toESPS = function (espsJSO) {
-			var fBaseN = espsJSO.TierName.substring(1);
+			var fBaseN = espsJSO.LevelName.substring(1);
 			var espsStr = '';
 			// construct header
 			espsStr += 'signal ' + fBaseN + '\n';

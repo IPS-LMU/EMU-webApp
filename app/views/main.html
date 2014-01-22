@@ -63,9 +63,9 @@
       
       <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
         <!-- all levels are listed here -->
-        <ul ng-model="tierDetails.tiers" id="allowSortable">
-          <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
-            <level id='{{tier.TierName}}' class="tier"></level>
+        <ul ng-model="levelDetails.levels" id="allowSortable">
+          <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Tier sort">
+            <level id='{{level.LevelName}}' class="tier"></level>
           </li>
         </ul>
       </div>

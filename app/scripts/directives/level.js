@@ -10,45 +10,45 @@ angular.module('emulvcApp')
 				// select the needed DOM elements from the template
 				var canvas = element.find('canvas');
 
-				scope.$watch('tierDetails.data', function () {
-					drawTierDetails(scope.tier, scope.vs, scope.config);
+				scope.$watch('levelDetails.data', function () {
+					drawLevelDetails(scope.tier, scope.vs, scope.config);
 				}, true);
 
 				scope.$watch('vs', function () {
-					drawTierDetails(scope.tier, scope.vs, scope.config);
-					drawTierMarkup(scope.tier, scope.vs, scope.config);
+					drawLevelDetails(scope.level, scope.vs, scope.config);
+					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				}, true);
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
 					scope.vs.setcurMouseSegmentId(undefined);
-					drawTierMarkup(scope.tier, scope.vs, scope.config);
+					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				});
 
 				scope.$on('refreshTimeline', function () {
 					if (!$.isEmptyObject(scope.tier)) {
 						if (!$.isEmptyObject(scope.vs)) {
-							drawTierDetails(scope.tier, scope.vs, scope.config);
+							drawLevelDetails(scope.tier, scope.vs, scope.config);
 						}
 					}
 				});
 
 
 				scope.updateView = function () {
-					drawTierDetails(scope.tier, scope.vs, scope.config);
+					drawLevelDetails(scope.tier, scope.vs, scope.config);
 				};
 
 				/**
 				 * draw tier details
-				 * @param tierDetails
+				 * @param levelDetails
 				 * @param viewState
 				 * @param cps
 				 */
 
-				function drawTierDetails(tierDetails, viewState, config) {
+				function drawLevelDetails(levelDetails, viewState, config) {
 
-					if ($.isEmptyObject(tierDetails)) {
-						//console.log("undef tierDetails");
+					if ($.isEmptyObject(levelDetails)) {
+						//console.log("undef levelDetails");
 						return;
 					}
 					if ($.isEmptyObject(viewState)) {
@@ -69,7 +69,7 @@ angular.module('emulvcApp')
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
 
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, tierDetails.TierName, '(' + tierDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.LevelName, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
 					var segMId = viewState.getcurMouseSegmentId();
@@ -78,10 +78,10 @@ angular.module('emulvcApp')
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
-					if (tierDetails.type === 'seg') {
+					if (levelDetails.type === 'seg') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
-						var e = tierDetails.elements;
+						var e = levelDetails.elements;
 
 						e.forEach(function (curEvt) {
 							++curID;
@@ -166,24 +166,24 @@ angular.module('emulvcApp')
 								}
 							}
 						});
-					} else if (tierDetails.type === 'point') {
+					} else if (levelDetails.type === 'point') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
 						var perc;
 
-						tierDetails.elements.forEach(function (curEvt) {
+						levelDetails.elements.forEach(function (curEvt) {
 
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
-								if (tierDetails.TierName === viewState.curMouseMoveTierName && segMId === viewState.curMouseMoveSegmentName) {
+								if (levelDetails.LevelName === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
 									//console.log('this is the selected boundary');
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
 									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-									// 		tW = ctx.measureText(tierDetails.elements[k].label).width;
+									// 		tW = ctx.measureText(levelDetails.elements[k].label).width;
 									// 		ctx.fillStyle = this.params.labelColor;
-									// 		ctx.fillText(tierDetails.elements[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+									// 		ctx.fillText(levelDetails.elements[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
 								} else {
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
@@ -206,10 +206,10 @@ angular.module('emulvcApp')
 				 *
 				 */
 
-				function drawTierMarkup(tierDetails, viewState, config) {
+				function drawLevelMarkup(levelDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
-					if (tierDetails.TierName === viewState.curClickTierName) {
+					if (levelDetails.LevelName === viewState.getcurClickLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedTierColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
@@ -233,7 +233,7 @@ angular.module('emulvcApp')
 					var tierId = viewState.getcurClickLevelName();
 					if (segCId !== undefined) {
 						// draw clicked on selected areas
-						if (tierDetails.TierName === tierId && segCId.length > 0) {
+						if (levelDetails.LevelName === tierId && segCId.length > 0) {
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
 									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
@@ -247,8 +247,8 @@ angular.module('emulvcApp')
 					}
 
 					// draw preselected boundary
-					curEvt = tierDetails.elements[segMId];
-					if (curEvt !== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseLevelName()) {
+					curEvt = levelDetails.elements[segMId];
+					if (curEvt !== undefined && segMId !== undefined && levelDetails.LevelName === viewState.getcurMouseLevelName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 

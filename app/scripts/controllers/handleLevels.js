@@ -12,7 +12,7 @@ angular.module('emulvcApp')
 		$scope.dials = dialogService;
 		$scope.testValue = '';
 		$scope.message = '';
-		$scope.tierDetails = Levelservice;
+		$scope.levelDetails = Levelservice;
 			
 
 		$scope.sortableOptions = {
@@ -28,33 +28,33 @@ angular.module('emulvcApp')
 				 //ui.item.sortable('enable');
 			},
 			axis: 'y',
-			placeholder: 'tierPlaceholder'
+			placeholder: 'levelPlaceholder'
 		};
 
 		/**
 		 * listen for newlyLoadedLabelJson broadcast
-		 * update tierDetails if heard
+		 * update levelDetails if heard
 		 */
 		$scope.$on('newlyLoadedLabelJson', function (evt, data) {
-			if ($.isEmptyObject($scope.tierDetails.data)) {
-				$scope.tierDetails.data = data;
+			if ($.isEmptyObject($scope.levelDetails.data)) {
+				$scope.levelDetails.data = data;
 			} else {
-				data.tiers.forEach(function (tier) {
-					$scope.tierDetails.data.tiers.push(tier);
+				data.levels.forEach(function (level) {
+					$scope.levelDetails.data.levels.push(level);
 				});
 				data.fileInfos.forEach(function (fInf) {
-					$scope.tierDetails.data.fileInfos.push(fInf);
+					$scope.levelDetails.data.fileInfos.push(fInf);
 				});
-				// console.log(JSON.stringify($scope.tierDetails, undefined, 2));
+				// console.log(JSON.stringify($scope.levelDetails, undefined, 2));
 			}
 			$scope.sortTiers();
 		});
 
 		/**
-		 * clear tierDetails when new utt is loaded
+		 * clear levelDetails when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function () {
-			$scope.tierDetails.data = {};
+			$scope.levelDetails.data = {};
 		});
 		
 		
@@ -74,15 +74,15 @@ angular.module('emulvcApp')
 			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (curOrd) {
 				// console.log(curOrdIdx)
 				searchOrd = curOrd.split('.')[1];
-				$scope.tierDetails.data.tiers.forEach(function (t, tIdx) {
-					if (t.TierName.split('_')[1] === searchOrd) {
+				$scope.levelDetails.data.levels.forEach(function (t, tIdx) {
+					if (t.LevelName.split('_')[1] === searchOrd) {
 						sortedTiers.push(t);
-						sortedFileInfos.push($scope.tierDetails.data.fileInfos[tIdx]);
+						sortedFileInfos.push($scope.levelDetails.data.fileInfos[tIdx]);
 					}
 				});
 			});
-			$scope.tierDetails.data.tiers = sortedTiers;
-			$scope.tierDetails.data.fileInfos = sortedFileInfos;
+			$scope.levelDetails.data.levels = sortedTiers;
+			$scope.levelDetails.data.fileInfos = sortedFileInfos;
 		};
 
 
@@ -96,14 +96,14 @@ angular.module('emulvcApp')
 
 
 		$scope.getTierLength = function () {
-			return $scope.tierDetails.data.tiers.length;
+			return $scope.levelDetails.data.levels.length;
 		};
 
 		$scope.getTier = function (id) {
 			var t;
-			angular.forEach($scope.tierDetails.data.tiers, function (tier) {
-				if (tier.TierName === id) {
-					t = tier;
+			angular.forEach($scope.levelDetails.data.levels, function (level) {
+				if (level.LevelName === id) {
+					t = level;
 				}
 			});
 			return t;
@@ -113,15 +113,15 @@ angular.module('emulvcApp')
 		$scope.renameLevel = function (newName) {
 			// var x = 0;
 			var found = false;
-			angular.forEach($scope.tierDetails.data.tiers, function (t) {
-				if (t.TierName === newName) {
+			angular.forEach($scope.levelDetails.data.levels, function (t) {
+				if (t.LevelName === newName) {
 					found = true;
 				}
 			});
 			if (!found) {
-				angular.forEach($scope.tierDetails.data.tiers, function (t) {
-					if (t.TierName === viewState.getcurClickLevelName()) {
-						t.TierName = newName;
+				angular.forEach($scope.levelDetails.data.levels, function (t) {
+					if (t.LevelName === viewState.getcurClickLevelName()) {
+						t.LevelName = newName;
 					}
 				});
 			} else {
@@ -130,12 +130,12 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.getNearest = function (x, tier) {
+		$scope.getNearest = function (x, level) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var id = 0;
 			var ret = 0;
-			if (tier.type === "seg") {
-				angular.forEach(tier.elements, function (evt) {
+			if (level.type === "seg") {
+				angular.forEach(level.elements, function (evt) {
 					if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 						if (pcm - evt.startSample >= evt.sampleDur / 2) {
 							ret = id + 1;
@@ -148,15 +148,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.elements, function (evt, key) {
-					if (key < tier.elements.length - 1) {
-						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
+				angular.forEach(level.elements, function (evt, key) {
+					if (key < level.elements.length - 1) {
+						spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
@@ -168,12 +168,12 @@ angular.module('emulvcApp')
 			return ret;
 		};
 
-		$scope.getEventId = function (x, tier, nearest) {
+		$scope.getEventId = function (x, level, nearest) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var id = 0;
 			var ret = 0;
-			if (tier.type === "seg") {
-				angular.forEach(tier.elements, function (evt, id) {
+			if (level.type === "seg") {
+				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 							if (pcm - evt.startSample >= evt.sampleDur / 2) {
@@ -191,15 +191,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.elements, function (evt, key) {
-					if (key < tier.elements.length - 1) {
-						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
+				angular.forEach(level.elements, function (evt, key) {
+					if (key < level.elements.length - 1) {
+						spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
@@ -213,22 +213,22 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.getEvent = function (x, tier, nearest) {
+		$scope.getEvent = function (x, level, nearest) {
 			var pcm = parseFloat($scope.vs.curViewPort.sS) + x;
 			var evtr = null;
-			if (tier.type === "seg") {
-				angular.forEach(tier.elements, function (evt, id) {
+			if (level.type === "seg") {
+				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
 							if (pcm - evt.startSample >= evt.sampleDur / 2) {
-								evtr = tier.elements[id + 1];
+								evtr = level.elements[id + 1];
 							} else {
-								evtr = tier.elements[id];
+								evtr = level.elements[id];
 							}
 						}
 					} else {
 						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-							evtr = tier.elements[id];
+							evtr = level.elements[id];
 						}
 					}
 				});
@@ -236,15 +236,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(tier.elements, function (evt, key) {
-					if (key < tier.elements.length - 1) {
-						spaceHigher = evt.startSample + (tier.elements[key + 1].startSample - tier.elements[key].startSample) / 2;
+				angular.forEach(level.elements, function (evt, key) {
+					if (key < level.elements.length - 1) {
+						spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.startSample - (tier.elements[key].startSample - tier.elements[key - 1].startSample) / 2;
+						spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {

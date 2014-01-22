@@ -253,13 +253,13 @@ angular.module('emulvcApp')
 			console.log(fName);
 			espsJSO.fileInfos.forEach(function (fI) {
 				if (fI.fileURI === fName) {
-					tNs = fI.associatedTierNames;
+					tNs = fI.associatedLevelNames;
 				}
 			});
 			if (tNs.length === 1) {
 				var foundT;
-				espsJSO.tiers.forEach(function (t) {
-					if (t.TierName === tNs[0]) {
+				espsJSO.levels.forEach(function (t) {
+					if (t.LevelName === tNs[0]) {
 						foundT = t;
 					}
 				});

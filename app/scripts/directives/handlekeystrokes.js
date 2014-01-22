@@ -17,7 +17,7 @@ angular.module('emulvcApp')
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
-                    'tierName': viewState.getcurClickLevelName(),
+                    'levelName': viewState.getcurClickLevelName(),
                     'itemIdx': viewState.getlastID(),
                     'oldValue': viewState.getcurClickSegments()[0].label,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
@@ -168,23 +168,23 @@ angular.module('emulvcApp')
 
               // tierUp
               if (code === ConfigProviderService.vals.keyMappings.tierUp) {
-                viewState.selectTier(false);
+                viewState.selectLevel(false);
               }
               // tierDown
               if (code === ConfigProviderService.vals.keyMappings.tierDown) {
-                viewState.selectTier(true);
+                viewState.selectLevel(true);
               }
 
               // preselected boundary snap to top
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
-                  var tierName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
+                  var levelName = viewState.getcurMouseLevelName();
+                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, levelName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
-                    'tierName': tierName,
+                    'levelName': levelName,
                     'itemIdx': mousSegID,
                     'movedBy': minDist
                   });
@@ -195,12 +195,12 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
-                  var tierName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
+                  var levelName = viewState.getcurMouseLevelName();
+                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, levelName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
-                    'tierName': tierName,
+                    'levelName': levelName,
                     'itemIdx': mousSegID,
                     'movedBy': minDist
                   });
@@ -226,7 +226,7 @@ angular.module('emulvcApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'tierName': viewState.getcurClickLevelName(),
+                        'levelName': viewState.getcurClickLevelName(),
                         'itemIdx': viewState.getselected().sort(),
                         'bufferLength': viewState.curViewPort.bufferLength,
                         'expand': true,
@@ -258,7 +258,7 @@ angular.module('emulvcApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'tierName': viewState.getcurClickLevelName(),
+                        'levelName': viewState.getcurClickLevelName(),
                         'itemIdx': viewState.getselected().sort(),
                         'expand': true,
                         'rightSide': false,
@@ -290,7 +290,7 @@ angular.module('emulvcApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'tierName': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getselected().sort(),
                           'expand': false,
                           'rightSide': false,
@@ -301,7 +301,7 @@ angular.module('emulvcApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'tierName': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getselected().sort(),
                           'expand': false,
                           'rightSide': true,
@@ -401,7 +401,7 @@ angular.module('emulvcApp')
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
                             'action': 'insertSegments',
-                            'tierName': viewState.getcurClickLevelName(),
+                            'levelName': viewState.getcurClickLevelName(),
                             'start': viewState.curViewPort.selectS,
                             'end': viewState.curViewPort.selectE,
                             'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
@@ -415,7 +415,7 @@ angular.module('emulvcApp')
                           scope.hists.addObjToUndoStack({ // todo 
                             'type': 'ESPS',
                             'action': 'insertPoint',
-                            'tierName': viewState.getcurClickLevelName(),
+                            'levelName': viewState.getcurClickLevelName(),
                             'start': viewState.curViewPort.selectS,
                             'pointName': ConfigProviderService.vals.labelCanvasConfig.newPointName
                           });
@@ -445,7 +445,7 @@ angular.module('emulvcApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
-                        'tierName': tn,
+                        'levelName': tn,
                         'tierType': viewState.getcurMouseLevelType(),
                         'seg': seg
                       });
@@ -466,7 +466,7 @@ angular.module('emulvcApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
-                          'tierName': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'selected': selected,
                           'ids': ids
                         });

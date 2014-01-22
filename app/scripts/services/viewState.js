@@ -197,7 +197,7 @@ angular.module('emulvcApp')
       }
     };
 
-    sServObj.selectTier = function (next) {
+    sServObj.selectLevel = function (next) {
 	  var tag;
 	  var now = sServObj.getcurClickLevelName();
 	  if (now === undefined) {
@@ -350,15 +350,15 @@ angular.module('emulvcApp')
 
 
     /**
-     * sets the current (clicked) Tier Name
-     * @param name is name of tier
+     * sets the current (clicked) Level Name
+     * @param name is name of level
      */
     sServObj.setcurClickLevelType = function (name) {
       this.curClickLevelType = name;
     };
 
     /**
-     * gets the current (clicked) Tier Name
+     * gets the current (clicked) Level Name
      */
     sServObj.getcurClickLevelType = function () {
       return this.curClickLevelType;
@@ -366,30 +366,30 @@ angular.module('emulvcApp')
 
 
     /**
-     * sets the current (clicked) Tier Name
-     * @param name is name of tier
+     * sets the current (clicked) Level Name
+     * @param name is name of level
      */
     sServObj.setcurClickLevelName = function (name) {
       this.curClickLevelName = name;
     };
 
     /**
-     * gets the current (clicked) Tier Name
+     * gets the current (clicked) Level Name
      */
     sServObj.getcurClickLevelName = function () {
       return this.curClickLevelName;
     };
 
     /**
-     * sets the current (mousemove) Tier Name
-     * @param name is name of tier
+     * sets the current (mousemove) Level Name
+     * @param name is name of level
      */
     sServObj.setcurMouseLevelName = function (name) {
       this.curMouseLevelName = name;
     };
 
     /**
-     * gets the current (mousemove) Tier Name
+     * gets the current (mousemove) Level Name
      */
     sServObj.getcurMouseLevelName = function () {
       return this.curMouseLevelName;
@@ -397,15 +397,15 @@ angular.module('emulvcApp')
 
 
     /**
-     * sets the current (mousemove) Tier Name
-     * @param name is name of tier
+     * sets the current (mousemove) Level Name
+     * @param name is name of level
      */
     sServObj.setcurMouseLevelType = function (name) {
       this.curMouseLevelType = name;
     };
 
     /**
-     * gets the current (mousemove) Tier Name
+     * gets the current (mousemove) Level Name
      */
     sServObj.getcurMouseLevelType = function () {
       return this.curMouseLevelType;
@@ -413,7 +413,7 @@ angular.module('emulvcApp')
 
     /**
      * sets the current (mousemove) Segment
-     * @param name is name of tier
+     * @param name is name of segment
      */
     sServObj.setcurMouseSegment = function (segment) {
       this.curMouseSegment = segment;
@@ -428,7 +428,7 @@ angular.module('emulvcApp')
 
     /**
      * sets the current (mousemove) Segment
-     * @param name is name of tier
+     * @param id is if of segment
      */
     sServObj.setcurMouseSegmentId = function (id) {
       this.curMouseSegmentId = id;
@@ -442,14 +442,14 @@ angular.module('emulvcApp')
     };
 
     /**
-     * selects all Segements on current tier which are inside the selected viewport
+     * selects all Segements on current level which are inside the selected viewport
      */
     sServObj.selectSegmentsInSelection = function () {
       var rangeStart = sServObj.curViewPort.selectS;
 	  var rangeEnd = sServObj.curViewPort.selectE;
-	  angular.forEach(Levelservice.data.tiers, function (t) {
+	  angular.forEach(Levelservice.data.levels, function (t) {
 		var i = 0;
-		if (t.TierName === sServObj.getcurClickLevelName()) {
+		if (t.LevelName === sServObj.getcurClickLevelName()) {
 		  angular.forEach(t.elements, function (evt) {
 			if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
 			  sServObj.setcurClickSegmentMultiple(evt, i);
@@ -587,7 +587,7 @@ angular.module('emulvcApp')
       return this.selected.length;
     };
 
-    sServObj.setTierLength = function (length) {
+    sServObj.setLevelLength = function (length) {
       this.tierLength = length;
     };
 
@@ -769,13 +769,13 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function (zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      // var tierName = this.getcurMouseLevelName();
+      // var levelName = this.getcurMouseLevelName();
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
       var curTier = Levelservice.getcurMouseLevelDetails();
-      // Levelservice.data.tiers.forEach(function(t) {
-      // if (t.TierName === tierName) {
+      // Levelservice.data.levels.forEach(function(t) {
+      // if (t.LevelName === levelName) {
       // curTier = t;
       // }
       // });

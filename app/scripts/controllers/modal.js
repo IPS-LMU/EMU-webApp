@@ -34,7 +34,7 @@ angular.module('emulvcApp')
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'renameLevel',
-			    'tierName': $scope.passedOutTxt.var,
+			    'levelName': $scope.passedOutTxt.var,
 			    'oldName': $scope.passedInTxt
 			});			    
 			dialogService.close();
@@ -65,7 +65,7 @@ angular.module('emulvcApp')
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'deleteLevel',
-			    'tierName': res.name,
+			    'levelName': res.name,
 			    'itemIdx': res.id,
 		        'tier': res.tier
 			});				
