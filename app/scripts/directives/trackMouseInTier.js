@@ -74,8 +74,7 @@ angular.module('emulvcApp')
                   'action': 'moveBoundary',
                   'tierName': scope.this.tier.TierName,
                   'itemIdx': viewState.getcurMouseSegmentId(),
-                  'movedBy': moveBy,
-                  'selected': viewState.getcurMouseSegmentId()
+                  'movedBy': moveBy
                 });
 
                 lastPCM = thisPCM;
@@ -92,8 +91,7 @@ angular.module('emulvcApp')
                   'action': 'moveSegment',
                   'tierName': scope.this.tier.TierName,
                   'itemIdx': viewState.getselected().sort(),
-                  'movedBy': moveBy,
-                  'selected': viewState.getselected().sort()
+                  'movedBy': moveBy
                 });
 
                 scope.$apply();

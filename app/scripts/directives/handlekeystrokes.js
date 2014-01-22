@@ -178,12 +178,14 @@ angular.module('emulvcApp')
               // preselected boundary snap to top
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  Tierservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, Tierservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
+                  var mousSegID = viewState.getcurMouseSegmentId();
+                  var tierName = viewState.getcurMouseTierName();
+                  var minDist = Tierservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'tierName': viewState.getcurMouseTierName(),
-                    'itemIdx': viewState.getcurMouseSegmentId(),
+                    'action': 'snapBoundary',
+                    'tierName': tierName,
+                    'itemIdx': mousSegID,
                     'movedBy': minDist
                   });
                 }
@@ -192,12 +194,14 @@ angular.module('emulvcApp')
               // preselected boundary snap to bottom
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  Tierservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, Tierservice.getcurMouseTierDetails(viewState.getcurMouseTierName()));
+                  var mousSegID = viewState.getcurMouseSegmentId();
+                  var tierName = viewState.getcurMouseTierName();
+                  var minDist = Tierservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, tierName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'tierName': viewState.getcurMouseTierName(),
-                    'itemIdx': viewState.getcurMouseSegmentId(),
+                    'action': 'snapBoundary',
+                    'tierName': tierName,
+                    'itemIdx': mousSegID,
                     'movedBy': minDist
                   });
                 }

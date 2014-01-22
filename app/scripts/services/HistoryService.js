@@ -57,7 +57,6 @@ angular.module('emulvcApp')
 		// applyChanges should be called by undo redo functions
 		function applyChange(changeObj, applyOldVal) {
 			Object.keys(changeObj).forEach(function (key) {
-				console.log(key);
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
@@ -67,16 +66,27 @@ angular.module('emulvcApp')
 					}
 				} else if (cur.type === 'ESPS') {
 					console.log('###UNDOING esps change');
+					console.log(cur);
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
 						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.selected);
+						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
 						} else {
 						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.selected);
+						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
 						}
 						break;
+					case 'snapBoundary':
+						if (applyOldVal) {
+						    
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
+						} else {
+						    var res = Tierservice.getTierDetails(cur.tierName);	
+						    Tierservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
+						}
+						break;						
 					case 'moveSegment':
 						if (applyOldVal) {
 						    var res = Tierservice.getTierDetails(cur.tierName);	

@@ -348,32 +348,49 @@ angular.module('emulvcApp')
 	};
 	
 	
-	sServObj.snapBoundary = function (toTop, preSelSS, td) {
+	sServObj.snapBoundary = function (toTop, sample, tierName, segID) {
 		var neighTd;
+		var thisTd;
 		var neighTdIdx;
-		sServObj.data.tiers.forEach(function (t, tIdx) {
-			if (t.TierName === td.TierName) {
-				if (tIdx >= 1 && toTop) {
-					neighTd = sServObj.data.tiers[tIdx - 1];
-					neighTdIdx = tIdx - 1;
-				} else if (tIdx < sServObj.data.tiers.length - 1 && !toTop) {
-					neighTd = sServObj.data.tiers[tIdx + 1];
-					neighTdIdx = tIdx + 1;
-				}
-			}
-		});
 		var absMinDist = Infinity;
 		var absDist;
-		var minDist;
-		if (neighTd !== undefined) {
-			neighTd.elements.forEach(function (itm) {
-				absDist = Math.abs(preSelSS - itm.startSample);
-				if (absDist < absMinDist) {
-					absMinDist = absDist;
-					minDist = itm.startSample - preSelSS;
-				}
-			});
-			//this.moveBorder(minDist, td);
+		var minDist;		
+		sServObj.data.tiers.forEach(function (t, tIdx) {
+			if (t.TierName === tierName) {
+			    thisTd = t;
+			    if(toTop) {
+			        if (tIdx >= 1) {
+			            neighTd = sServObj.data.tiers[tIdx - 1];
+			        }
+			        else {
+			            return false;
+			        }
+			    }
+			    else {
+			        if (tIdx < sServObj.data.tiers.length - 1) {
+			            neighTd = sServObj.data.tiers[tIdx + 1];
+			        }
+			        else {
+			            return false;
+			        }			    
+			    }
+			    neighTd.elements.forEach(function (itm) {
+				    absDist = Math.abs(sample - itm.startSample);
+				    if (absDist < absMinDist) {
+					    absMinDist = absDist;
+					    minDist = itm.startSample - sample;
+				    }
+			    });
+			}
+		});
+
+
+		if (minDist !== undefined) {
+			this.moveBoundry(minDist, thisTd, segID);
+			return minDist;
+		}
+		else {
+		    return false;
 		}
 	};	
 	
