@@ -50,10 +50,10 @@ angular.module('emulvcApp')
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.scrollOpen = 0;
-    sServObj.curMouseTierName = undefined;
-    sServObj.curMouseTierType = undefined;
-    sServObj.curClickTierName = undefined;
-    sServObj.curClickTierType = undefined;
+    sServObj.curMouseLevelName = undefined;
+    sServObj.curMouseLevelType = undefined;
+    sServObj.curClickLevelName = undefined;
+    sServObj.curClickLevelType = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = undefined;
     sServObj.start = null;
@@ -199,23 +199,23 @@ angular.module('emulvcApp')
 
     sServObj.selectTier = function (next) {
 	  var tag;
-	  var now = sServObj.getcurClickTierName();
+	  var now = sServObj.getcurClickLevelName();
 	  if (now === undefined) {
-		sServObj.setcurClickTierName($('li').children()[0].id);
+		sServObj.setcurClickLevelName($('li').children()[0].id);
 	  } else {
 		if (next) {
 		  tag = $('li.' + now).next().children()[0];
 		  if (tag === undefined) {
-			sServObj.setcurClickTierName($('li').children()[0].id);
+			sServObj.setcurClickLevelName($('li').children()[0].id);
 		  } else {
-			sServObj.setcurClickTierName(tag.id);
+			sServObj.setcurClickLevelName(tag.id);
 		  }
 	    } else {
 		  tag = $('li.' + now).prev().children()[0];
 		  if (tag === undefined) {
-			sServObj.setcurClickTierName($('li').children()[0].id);
+			sServObj.setcurClickLevelName($('li').children()[0].id);
 		  } else {
-			sServObj.setcurClickTierName(tag.id);
+			sServObj.setcurClickLevelName(tag.id);
 		  }
 		}
 	  }
@@ -353,15 +353,15 @@ angular.module('emulvcApp')
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurClickTierType = function (name) {
-      this.curClickTierType = name;
+    sServObj.setcurClickLevelType = function (name) {
+      this.curClickLevelType = name;
     };
 
     /**
      * gets the current (clicked) Tier Name
      */
-    sServObj.getcurClickTierType = function () {
-      return this.curClickTierType;
+    sServObj.getcurClickLevelType = function () {
+      return this.curClickLevelType;
     };
 
 
@@ -369,30 +369,30 @@ angular.module('emulvcApp')
      * sets the current (clicked) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurClickTierName = function (name) {
-      this.curClickTierName = name;
+    sServObj.setcurClickLevelName = function (name) {
+      this.curClickLevelName = name;
     };
 
     /**
      * gets the current (clicked) Tier Name
      */
-    sServObj.getcurClickTierName = function () {
-      return this.curClickTierName;
+    sServObj.getcurClickLevelName = function () {
+      return this.curClickLevelName;
     };
 
     /**
      * sets the current (mousemove) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurMouseTierName = function (name) {
-      this.curMouseTierName = name;
+    sServObj.setcurMouseLevelName = function (name) {
+      this.curMouseLevelName = name;
     };
 
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServObj.getcurMouseTierName = function () {
-      return this.curMouseTierName;
+    sServObj.getcurMouseLevelName = function () {
+      return this.curMouseLevelName;
     };
 
 
@@ -400,15 +400,15 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Tier Name
      * @param name is name of tier
      */
-    sServObj.setcurMouseTierType = function (name) {
-      this.curMouseTierType = name;
+    sServObj.setcurMouseLevelType = function (name) {
+      this.curMouseLevelType = name;
     };
 
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServObj.getcurMouseTierType = function () {
-      return this.curMouseTierType;
+    sServObj.getcurMouseLevelType = function () {
+      return this.curMouseLevelType;
     };
 
     /**
@@ -449,7 +449,7 @@ angular.module('emulvcApp')
 	  var rangeEnd = sServObj.curViewPort.selectE;
 	  angular.forEach(Levelservice.data.tiers, function (t) {
 		var i = 0;
-		if (t.TierName === sServObj.getcurClickTierName()) {
+		if (t.TierName === sServObj.getcurClickLevelName()) {
 		  angular.forEach(t.elements, function (evt) {
 			if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
 			  sServObj.setcurClickSegmentMultiple(evt, i);
@@ -629,7 +629,7 @@ angular.module('emulvcApp')
 
     sServObj.openEditArea = function (lastEventClick, lastEventClickId, type) {
       console.log(lastEventClick, lastEventClickId);
-      var elem = $('#' + this.getcurClickTierName()).find('canvas')[0];
+      var elem = $('#' + this.getcurClickLevelName()).find('canvas')[0];
       if (type === "seg") {
         var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
         var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
@@ -639,7 +639,7 @@ angular.module('emulvcApp')
       }
       var top = elem.offsetTop + 1;
       var height = elem.clientHeight + 1;
-      var myid = this.createEditArea(this.getcurClickTierName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
+      var myid = this.createEditArea(this.getcurClickLevelName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
       this.createSelection($('#' + myid)[0], 0, $('#' + myid).val().length);
       return myid;
     };
@@ -769,7 +769,7 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function (zoomIn) {
       // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
-      // var tierName = this.getcurMouseTierName();
+      // var tierName = this.getcurMouseLevelName();
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details

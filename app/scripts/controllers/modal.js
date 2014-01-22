@@ -61,7 +61,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.deleteLevel = function () {
 		    var res;	
-			res = Levelservice.deleteLevel(viewState.getcurClickTierName());
+			res = Levelservice.deleteLevel(viewState.getcurClickLevelName());
 			HistoryService.addObjToUndoStack({
 			    'type': 'ESPS',
 			    'action': 'deleteLevel',

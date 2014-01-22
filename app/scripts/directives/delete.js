@@ -8,7 +8,7 @@ angular.module('emulvcApp')
         var id = scope.this.tier.TierName;
 
         element.bind('click', function () {
-          scope.vs.setcurClickTierName(id);
+          scope.vs.setcurClickLevelName(id);
           scope.dials.open('views/deleteLevel.html', 'ModalCtrl', id);
         });
 

@@ -8,8 +8,8 @@ angular.module('emulvcApp')
         var id = scope.this.tier.TierName;
 
         element.bind('click', function () {
-          scope.vs.setcurClickTierName(id);
-          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.tier),'tier.txt');
+          scope.vs.setcurClickLevelName(id);
+          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.level),'tier.txt');
         });
 
       }

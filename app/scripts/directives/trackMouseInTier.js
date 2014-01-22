@@ -129,7 +129,7 @@ angular.module('emulvcApp')
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier, false);
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier, false);
           viewState.setlasteditArea('_' + lastEventClickId);
-          viewState.setcurClickTierName(tierId);
+          viewState.setcurClickLevelName(tierId);
           viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
           viewState.setTierLength(scope.this.tier.elements.length);
@@ -139,9 +139,9 @@ angular.module('emulvcApp')
 
         function setLastRightClick(x) {
           var tierId = element.parent().parent().parent()[0].id;
-          if (viewState.getcurClickTierName() !== tierId) {
+          if (viewState.getcurClickLevelName() !== tierId) {
             setLastClick(x);
-            //console.log(viewState.getcurClickTierName(),tierId);
+            //console.log(viewState.getcurClickLevelName(),tierId);
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
@@ -149,7 +149,7 @@ angular.module('emulvcApp')
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier, false);
           lastEventRightClick = scope.getEvent(thisPCM, scope.this.tier, false);
           lastEventRightClickId = scope.getEventId(thisPCM, scope.this.tier, false);
-          viewState.setcurClickTierName(tierId);
+          viewState.setcurClickLevelName(tierId);
           viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
           viewState.setTierLength(scope.this.tier.elements.length);
@@ -162,7 +162,7 @@ angular.module('emulvcApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = scope.getEvent(thisPCM, scope.this.tier, false);
           lastEventClickId = scope.getEventId(thisPCM, scope.this.tier, false);
-          viewState.setcurClickTierName(tierId);
+          viewState.setcurClickLevelName(tierId);
           viewState.setcurClickTierType(scope.this.tier.type);
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
@@ -179,13 +179,13 @@ angular.module('emulvcApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = scope.getEvent(thisPCM, scope.this.tier, true);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.tier, true);
-          viewState.setcurMouseTierName(tierId);
+          viewState.setcurMouseLevelName(tierId);
           if (doChange) {
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMoveId);
           }
-          viewState.setcurMouseTierName(tierId);
-          viewState.setcurMouseTierType(scope.this.tier.type);
+          viewState.setcurMouseLevelName(tierId);
+          viewState.setcurMouseLevelType(scope.this.tier.type);
           lastPCM = thisPCM;
           scope.$apply();
         }

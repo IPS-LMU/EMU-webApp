@@ -395,7 +395,7 @@ angular.module('emulvcApp')
 	};	
 	
 	sServObj.moveBoundry = function (changeTime, t, seg) {
-		if (null !== t) { // && t.TierName === viewState.getcurMouseTierName()
+		if (null !== t) { // && t.TierName === viewState.getcurMouseLevelName()
 			if (t.type === 'seg') {
 				if (seg > 1 && (t.elements[seg - 1].sampleDur + changeTime) >= 1 && (t.elements[seg].sampleDur - changeTime) >= 1) {
 					t.elements[seg - 1].sampleDur += changeTime;

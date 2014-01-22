@@ -120,7 +120,7 @@ angular.module('emulvcApp')
 			});
 			if (!found) {
 				angular.forEach($scope.tierDetails.data.tiers, function (t) {
-					if (t.TierName === viewState.getcurClickTierName()) {
+					if (t.TierName === viewState.getcurClickLevelName()) {
 						t.TierName = newName;
 					}
 				});

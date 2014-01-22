@@ -262,7 +262,7 @@ angular.module('emulvcApp')
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
 			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-			if (viewState.getcurMouseTierType() === 'seg') {
+			if (viewState.getcurMouseLevelType() === 'seg') {
 				xOffset = 0;
 			} else {
 				xOffset = (sDist / 2);
@@ -270,7 +270,7 @@ angular.module('emulvcApp')
 
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
-				var tD = Levelservice.getcurMouseLevelDetails(viewState.getcurMouseTierName());
+				var tD = Levelservice.getcurMouseLevelDetails(viewState.getcurMouseLevelName());
 				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.elements[viewState.getcurMouseSegmentId()].startSample));
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 			}
@@ -288,7 +288,7 @@ angular.module('emulvcApp')
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
 			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
-			if (viewState.getcurMouseTierType() === 'seg') {
+			if (viewState.getcurMouseLevelType() === 'seg') {
 				xOffset = 0;
 			} else {
 				xOffset = (sDist / 2);

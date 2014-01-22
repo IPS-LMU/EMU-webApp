@@ -159,7 +159,7 @@ angular.module('emulvcApp')
 		 */
 		$scope.$on('loadingNewUtt', function () {
 			viewState.resetSelect();
-			viewState.setcurClickTierName(undefined);
+			viewState.setcurClickLevelName(undefined);
 		});
 
 		/**
@@ -505,8 +505,8 @@ angular.module('emulvcApp')
 		//
 		$scope.renameSelTierBtnClick = function () {
 			if (viewState.getPermission('renameSelTierBtnClick')) {
-				if (viewState.getcurClickTierName() !== undefined) {
-				    dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickTierName());
+				if (viewState.getcurClickLevelName() !== undefined) {
+				    dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickLevelName());
 				} else {
 				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Tier first !');
 				}

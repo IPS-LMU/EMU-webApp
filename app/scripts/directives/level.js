@@ -74,7 +74,7 @@ angular.module('emulvcApp')
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
-					var tierId = viewState.getcurClickTierName();
+					var tierId = viewState.getcurClickLevelName();
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
@@ -230,7 +230,7 @@ angular.module('emulvcApp')
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
-					var tierId = viewState.getcurClickTierName();
+					var tierId = viewState.getcurClickLevelName();
 					if (segCId !== undefined) {
 						// draw clicked on selected areas
 						if (tierDetails.TierName === tierId && segCId.length > 0) {
@@ -248,12 +248,12 @@ angular.module('emulvcApp')
 
 					// draw preselected boundary
 					curEvt = tierDetails.elements[segMId];
-					if (curEvt !== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseTierName()) {
+					if (curEvt !== undefined && segMId !== undefined && tierDetails.TierName === viewState.getcurMouseLevelName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						if (viewState.getcurMouseTierType() === 'seg') {
+						if (viewState.getcurMouseLevelType() === 'seg') {
 							ctx.fillRect(posS, 0, 3, canvas[1].height);
 						} else {
 							xOffset = (sDist / 2);
