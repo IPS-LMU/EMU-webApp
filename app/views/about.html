@@ -23,11 +23,11 @@
   <b>General usage:</b><br />&nbsp;<br />
   Moving the mouse over segment and event levels automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
-  preselects it (marked blue).
+  preselects it (indicated by marking it blue).
   <span ng-show="cps.vals.restrictions.editItemSize">
     To move the currently preselected boundary hold down the <b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
     move the mouse to the desired position. The boundary will then track the
-    mouse movement. If a segment is selected (marked yellow), holding down 
+    mouse movement. If a segment is selected (indicated by marking it yellow), holding down 
     <b>{{getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire segment.
   </span>
 </div>
@@ -44,20 +44,20 @@
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomIn)}}:</b></td><td>Zoom in<sup>1</sup></td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomOut)}}:</b></td><td>Zoom out<sup>1</sup></td></tr>
       
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shiftViewPortLeft)}}:</b></td><td>Move view right</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shiftViewPortRight)}}:</b></td><td>Move view left</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shiftViewPortLeft)}}:</b></td><td>Move view left</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shiftViewPortRight)}}:</b></td><td>Move view right</td></tr>
       
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomAll)}}:</b></td><td>View all</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomSel)}}:</b></td><td>Zoom in to selected</td></tr>
       
 
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.tab)}}:</b></td><td>Select next event</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} + {{getStrRep(cps.vals.keyMappings.tab)}}:</b></td><td>Select previous event</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} and {{getStrRep(cps.vals.keyMappings.tab)}}:</b></td><td>Select previous event</td></tr>
       
       
     </tbody>
   </table>
-  <small>1.) Zooming while a Boundary is preselected will keep the position of that boundary fixed</small>
+  <small>1.) Zooming while a boundary is preselected will keep the position of that boundary fixed</small>
 </div>
 
 <hr class="aboutHr" />
@@ -69,21 +69,20 @@
   <table class="aboutTable">
     <tbody>
       <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.history)}}:</b></td><td>Go back in history</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} and {{getStrRep(cps.vals.keyMappings.history)}}:</b></td><td>Go forward in history</td></tr>
       <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{getStrRep(cps.vals.keyMappings.enter)}}:</b></td><td>Add event / boundary at selected position</td></tr>
       <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{getStrRep(cps.vals.keyMappings.backspace)}}:</b></td><td>Deleted selected Segments</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} + {{getStrRep(cps.vals.keyMappings.backspace)}}:</b></td><td>Deleted current Segment Boundary</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapAbove)}}:</b></td><td>Snap selected boundary to closest boundary in tier above</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBelow)}}:</b></td><td>Snap selected boundary to closest boundary in tier below</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} and {{getStrRep(cps.vals.keyMappings.backspace)}}:</b></td><td>Deleted current Segment Boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapAbove)}}:</b></td><td>Snap selected boundary to closest boundary in level above</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBelow)}}:</b></td><td>Snap selected boundary to closest boundary in level below</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapZero)}}:</b></td><td>Snap to nearest zero crossing</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.plus)}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.minus)}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} and {{getStrRep(cps.vals.keyMappings.plus)}}:</b></td><td>Add time to selected segments (expand to left)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} and {{getStrRep(cps.vals.keyMappings.minus)}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.tierUp)}}:</b></td><td>Move tier selection up</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.tierDown)}}:</b></td><td>Move tier selection down</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectSegmentsInSelection)}}:</b></td><td>Select all Segments in current Viewport Selection</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundary)}}:</b></td><td>Move selection to currently selected boundary</td></tr>
-      <!-- <tr ng-show="cps.vals.restrictions.sortLabels"><td><b>MOUSE DRAG</b></td><td>You can sort Tiers by dragging them up and down</td></tr> -->
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.tierUp)}}:</b></td><td>Select level above</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.tierDown)}}:</b></td><td>Select level above</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectSegmentsInSelection)}}:</b></td><td>Select all segments in current viewport selection</td></tr>
     </tbody>
   </table>
 </div>
