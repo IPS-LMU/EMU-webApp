@@ -254,7 +254,7 @@ angular.module('emulvcApp')
 
 			// set timeline height according to config settings "colors.timelineHeight"
 			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
-			$('.HandletiersCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
+			$('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
 
 			// setting transition values
 			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
@@ -266,7 +266,7 @@ angular.module('emulvcApp')
 				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out'
 			};
 			$('.menu').css(transcss);
-			$('.HandletiersCtrl').css(transcss);
+			$('.HandleLevelsCtrl').css(transcss);
 			$('.OsciDiv').css(transcss);
 			$('.SpectroDiv').css(transcss);
 			$('.menu-bottom').css(transcss);
@@ -462,7 +462,7 @@ angular.module('emulvcApp')
 				// $('#submenuOpen').html('☰');
 				$('#FileCtrl').removeClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
-				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
 				$('#menu').removeClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').removeClass('cbp-spmenu-push-toright');
 			} else {
@@ -470,7 +470,7 @@ angular.module('emulvcApp')
 				// $('#submenuOpen').html('☰');
 				$('#FileCtrl').addClass('cbp-spmenu-open');
 				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
-				$('#HandletiersCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
 				$('#menu').addClass('cbp-spmenu-push-toright');
 				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
 			}

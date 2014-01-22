@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('HandletiersCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierservice, fontScaleService, Drawhelperservice, dialogService) {
+	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Tierservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;
 		$scope.hists = HistoryService;

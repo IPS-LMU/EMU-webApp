@@ -2,9 +2,9 @@
 
 
 angular.module('emulvcApp')
-	.directive('tier', function () {
+	.directive('level', function () {
 		return {
-			templateUrl: 'views/tier.html',
+			templateUrl: 'views/level.html',
 			restrict: 'E',
 			link: function postLink(scope, element) {
 				// select the needed DOM elements from the template

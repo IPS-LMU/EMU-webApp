@@ -264,7 +264,7 @@ li {
     height: 48%;
 }
 
- .tier {
+ .level {
     position: relative;
 }
 
@@ -364,7 +364,7 @@ div.center {
     min-height: 40px;
 }
 
-.HandletiersCtrl {
+.HandleLevelsCtrl {
     z-index:0;
     text-align:left;
     margin: 5px;

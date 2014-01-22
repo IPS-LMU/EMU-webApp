@@ -61,11 +61,11 @@
         </div>
       </div>
       
-      <div ng-controller="HandletiersCtrl" id="HandletiersCtrl" class="HandletiersCtrl">
-        <!-- all tiers are listed here -->
+      <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
+        <!-- all levels are listed here -->
         <ul ng-model="tierDetails.tiers" id="allowSortable">
           <li ng-repeat="tier in tierDetails.data.tiers" class="{{tier.TierName}} Tier sort">
-            <tier id='{{tier.TierName}}' class="tier"></tier>
+            <level id='{{tier.TierName}}' class="tier"></level>
           </li>
         </ul>
       </div>
