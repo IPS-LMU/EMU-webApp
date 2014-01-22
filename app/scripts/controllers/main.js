@@ -506,7 +506,7 @@ angular.module('emulvcApp')
 		$scope.renameSelTierBtnClick = function () {
 			if (viewState.getPermission('renameSelTierBtnClick')) {
 				if (viewState.getcurClickTierName() !== undefined) {
-				    dialogService.open('views/renameTier.html', 'ModalCtrl', viewState.getcurClickTierName());
+				    dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickTierName());
 				} else {
 				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Tier first !');
 				}

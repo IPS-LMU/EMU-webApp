@@ -110,7 +110,7 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.renameTier = function (newName) {
+		$scope.renameLevel = function (newName) {
 			// var x = 0;
 			var found = false;
 			angular.forEach($scope.tierDetails.data.tiers, function (t) {

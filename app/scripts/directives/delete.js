@@ -9,7 +9,7 @@ angular.module('emulvcApp')
 
         element.bind('click', function () {
           scope.vs.setcurClickTierName(id);
-          scope.dials.open('views/deleteTier.html', 'ModalCtrl', id);
+          scope.dials.open('views/deleteLevel.html', 'ModalCtrl', id);
         });
 
       }

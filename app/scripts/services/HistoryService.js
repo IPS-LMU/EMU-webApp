@@ -70,30 +70,30 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
 						    
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveBoundry(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveBoundry(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;						
 					case 'moveSegment':
 						if (applyOldVal) {
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveSegment(-cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveSegment(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getTierDetails(cur.tierName);	
-						    Levelservice.moveSegment(cur.movedBy, res.tier, cur.itemIdx);
+						    var res = Levelservice.getLevelDetails(cur.tierName);	
+						    Levelservice.moveSegment(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
@@ -103,14 +103,14 @@ angular.module('emulvcApp')
 							Levelservice.renameLabel(cur.tierName, cur.itemIdx, cur.newValue);
 						}
 						break;
-					case 'renameTier':
+					case 'renameLevel':
 						if (applyOldVal) {
-						    Levelservice.renameTier(cur.tierName, cur.oldName);	
+						    Levelservice.renameLevel(cur.tierName, cur.oldName);	
 						} else {
-						    Levelservice.renameTier(cur.oldName, cur.tierName);	
+						    Levelservice.renameLevel(cur.oldName, cur.tierName);	
 						}
 						break;						
-					case 'deleteTier':
+					case 'deleteLevel':
 						if (applyOldVal) {
 							Levelservice.data.tiers.splice(cur.itemIdx, 0, cur.tier);
 						} else {

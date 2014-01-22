@@ -18,39 +18,39 @@ angular.module('emulvcApp')
     /**
      * gets the current (mousemove) Tier Name
      */
-    sServObj.getcurMouseTierDetails = function (tierName) {
-      var curTier;
+    sServObj.getcurMouseLevelDetails = function (levelName) {
+      var curLevel = null;
       sServObj.data.tiers.forEach(function (t) {
-        if (t.TierName === tierName) {
-          curTier = t;
+        if (t.TierName === levelName) {
+          curLevel = t;
         }
       });
-      return curTier;
+      return curLevel;
 
     };
 
     /**
      * gets tier details by passing in tierName
      */
-    sServObj.getTierDetails = function (tierName) {
-      var curTier = null;
+    sServObj.getLevelDetails = function (levelName) {
+      var curLevel = null;
       var y = null;
       sServObj.data.tiers.forEach(function (t, x) {
-        if (t.TierName === tierName) {
-          curTier = t;
+        if (t.TierName === levelName) {
+          curLevel = t;
           y = x;
         }
       });
-      return {tier: curTier, id: y};
+      return {level: curLevel, id: y};
     };	
 
     /**
-     * gets element details by passing in tierName and elemtentid
+     * gets element details by passing in levelName and elemtentid
      */
-    sServObj.getElementDetails = function (tierName, elementid) {
+    sServObj.getElementDetails = function (levelName, elementid) {
       var details = null;
       sServObj.data.tiers.forEach(function (t) {
-        if (t.TierName === tierName) {
+        if (t.TierName === levelName) {
           t.elements.forEach(function (element, y) {
             if(y==elementid) {
                 details = element;
@@ -61,11 +61,11 @@ angular.module('emulvcApp')
       return details;
     };	
     
-    sServObj.deleteTier = function (tierName, id) { 
+    sServObj.deleteLevel = function (levelName, id) { 
         var y = 0; 
         var curTier;
 		angular.forEach(sServObj.data.tiers, function (t, x) {
-			if (t.TierName === tierName && id == x) {
+			if (t.TierName === levelName && id == x) {
 			    curTier = t;
 			    y = x;
 				sServObj.data.tiers.splice(x, 1);
@@ -77,9 +77,9 @@ angular.module('emulvcApp')
     /**
      * rename the label of a tier by passing in tiername and id
      */    
-    sServObj.renameLabel = function (tiername, id, newLabelName) {
+    sServObj.renameLabel = function (levelName, id, newLabelName) {
 	  angular.forEach(sServObj.data.tiers, function (t) {
-	    if (t.TierName === tiername) {
+	    if (t.TierName === levelName) {
 		  angular.forEach(t.elements, function (evt, i) {
 		    if (id == i) {
 			  evt.label = newLabelName;
@@ -92,7 +92,7 @@ angular.module('emulvcApp')
     /**
      * rename the label of a tier by passing in tiername and id
      */    
-    sServObj.renameTier = function (oldname, newname) {
+    sServObj.renameLevel = function (oldname, newname) {
 	  angular.forEach(sServObj.data.tiers, function (t, i) {
 	    if (t.TierName === oldname) {
 			t.TierName = newname;

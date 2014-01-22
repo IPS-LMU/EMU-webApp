@@ -773,7 +773,7 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegmentId();
 
       // get cur mouse move tier details
-      var curTier = Levelservice.getcurMouseTierDetails();
+      var curTier = Levelservice.getcurMouseLevelDetails();
       // Levelservice.data.tiers.forEach(function(t) {
       // if (t.TierName === tierName) {
       // curTier = t;
