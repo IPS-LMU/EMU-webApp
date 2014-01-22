@@ -404,17 +404,12 @@ div.center {
     float:right;
     padding: 0px;
     vertical-align:top;
-    width: 20px;
+    width: 20px !important;
     z-index: 0; 
+    padding-right: 2px;
+    margin-right: 4px;
 }
 
-.buttonsTiers {
-padding-right: 8px;
-}
-
-.buttons {
-padding-right: 4px;
-}
 
 
 .resize, .delete, .save{
