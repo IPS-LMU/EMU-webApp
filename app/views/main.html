@@ -30,12 +30,10 @@
           <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
         </div> -->
 
-        <div class="righSideMenu" id="righSideMenu">
-         <button class="rightSideMenuOpenBtn" ng-click="openRightSubmenu();"><img></button> 
-       </div>
-       <nav class="cbp-spmenu-right cbp-spmenu-vertical cbp-spmenu-right ViewCtrl" id="ViewCtrl">
-       		Submenu Nr2
-       </nav>
+ <nav class="cbp-spmenu-right cbp-spmenu-vertical cbp-spmenu-right" id="ViewCtrl">
+    <h3>view Menu</h3>
+ </nav>
+      
 
 
        <div class="menu" id="menu">
@@ -58,6 +56,7 @@
         <div class="controls">
           <osci id="osci" class="osci"></osci>  
           <spectro id="spec" class="spec"></spectro>
+          <button class="rightSideMenuOpenBtn" ng-click="openRightSubmenu();"><img></button> 
           <div id="resizer" class="resizer">
             <span id="resizeIcon" class="resizeIcon"> </span>
           </div>

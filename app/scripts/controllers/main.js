@@ -259,11 +259,11 @@ angular.module('emulvcApp')
 			// setting transition values
 			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
 			var transcss = {
-				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out'
+				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
 			};
 			$('.menu').css(transcss);
 			$('.HandleLevelsCtrl').css(transcss);
@@ -271,7 +271,7 @@ angular.module('emulvcApp')
 			$('.SpectroDiv').css(transcss);
 			$('.menu-bottom').css(transcss);
 			$('.cbp-spmenu').css(transcss);
-			$('.righSideMenu').css(transcss);
+			$('.cbp-spmenu-right').css(transcss);
 			$('.cbp-spmenu-push').css(transcss);
 			$('.cbp-spmenu-left-toleft').css(transcss);
 			$('.cbp-spmenu-left-toright').css(transcss);

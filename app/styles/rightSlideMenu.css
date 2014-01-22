@@ -1,11 +1,11 @@
 
 
 /* minimal CSS */
- .righSideMenu {
-    position: fixed;
-    top: 90px;
+.rightSideMenuOpenBtn {
+    position: absolute;
+    top: 40px;
     right: -1px;
-    height: 20px;
+    height: 25px;
     width: 15px;
     background-color: #0DC5FF;
     box-shadow: 0 0 5px 2px #ccc;
@@ -20,7 +20,6 @@
   width: 80%;
   padding-top: 2px;
   padding-bottom: 2px;
-  /*height: 70%;*/
   border-style: none;
   border: 0px;
   border-radius: 0px;
