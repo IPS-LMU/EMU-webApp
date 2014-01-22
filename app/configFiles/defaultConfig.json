@@ -9,9 +9,9 @@
     "keyMappings": {
         "openFile": -1,
         "connect": -1,
-        "addTierSeg": -1,
-        "addTierPoint": -1,
-        "renameTier": -1,
+        "addLevelSeg": -1,
+        "addLevelPoint": -1,
+        "renameLevel": -1,
         "downloadTextgrid": -1,
         "demoDB": -1,
         "openSubmenu": 79,

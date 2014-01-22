@@ -483,9 +483,9 @@ angular.module('emulvcApp')
 		// top menu:
 
 		//
-		$scope.addTierSegBtnClick = function () {
+		$scope.addLevelSegBtnClick = function () {
 
-			if (viewState.getPermission('addTierSegBtnClick')) {
+			if (viewState.getPermission('addLevelSegBtnClick')) {
 				alert('not implemented yet');
 			} else {
 				console.log('action currently not allowed');
@@ -493,9 +493,9 @@ angular.module('emulvcApp')
 		};
 
 		//
-		$scope.addTierPointBtnClick = function () {
+		$scope.addLevelPointBtnClick = function () {
 
-			if (viewState.getPermission('addTierPointBtnClick')) {
+			if (viewState.getPermission('addLevelPointBtnClick')) {
 				alert('not implemented yet');
 			} else {
 				console.log('action currently not allowed');
@@ -503,12 +503,12 @@ angular.module('emulvcApp')
 		};
 
 		//
-		$scope.renameSelTierBtnClick = function () {
-			if (viewState.getPermission('renameSelTierBtnClick')) {
+		$scope.renameSelLevelBtnClick = function () {
+			if (viewState.getPermission('renameSelLevelBtnClick')) {
 				if (viewState.getcurClickLevelName() !== undefined) {
 				    dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickLevelName());
 				} else {
-				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Tier first !');
+				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Level first !');
 				}
 			} else {
 				console.log('action currently not allowed');
