@@ -61,11 +61,11 @@ angular.module('emulvcApp')
       return details;
     };	
     
-    sServObj.deleteLevel = function (levelName, id) { 
+    sServObj.deleteLevel = function (levelName) { 
         var y = 0; 
         var curLevel;
 		angular.forEach(sServObj.data.levels, function (t, x) {
-			if (t.LevelName === levelName && id == x) {
+			if (t.LevelName === levelName) {
 			    curLevel = t;
 			    y = x;
 				sServObj.data.levels.splice(x, 1);
