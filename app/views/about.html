@@ -2,40 +2,41 @@
   <h3 id="modalHeading">EMU-webApp</h3>
 </div>
 <div class="modal-body">
-  <h4>Version: 0.0.1</h4>
-  <h5 style="font-size:8pt">Build time stamp: @@timestamp</h5>
-  <h5 style="font-size:8pt">Build GIT SHA-1: @@sha1</h5>
+  <h4 style="text-align:center;">Version: 0.0.1</h4>
+  <h5 style="font-size:8pt; text-align:center;">Build time stamp: @@timestamp</h5>
+  <h5 style="font-size:8pt; text-align:center;">Build GIT SHA-1: @@sha1</h5>
+  <div class="alert alert-danger"><b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please post an issue on the GitHub project page.</div>
 
- <hr class="aboutHr" />
+  <hr class="aboutHr" />
 
- <b>About:</b><br />&nbsp;<br />
- <div class="aboutDiv">
-  The EMU-webApp is an online and offline Web-App for labeling, visualizing
-  and correcting speech and derived speech data. (still in alpha!!)
+  <div class="aboutDiv">
+   <b>About:</b><br />&nbsp;<br />
+   The EMU-webApp is an online and offline Web-App for labeling, visualizing
+   and correcting speech and derived speech data.
  </div>
  
  <hr class="aboutHr" />
 
  <!-- general usage -->
  
+ <div class="aboutDiv">
   <b>General usage:</b><br />&nbsp;<br />
-  <div class="aboutDiv">
-  Moving the mouse over tiers automatically tracks the mouse movement
+  Moving the mouse over segment and events levels automatically tracks the mouses movement
   and calculates the nearest boundary to the current mouse position and
   preselects it.
   <span ng-show="cps.vals.restrictions.editItemSize">
-  To move the currently preselected boundary hold down the <b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
-  move the mouse to the desired position. The boundary will then track the
-  mouse movement. If a segment is selected (= marked yellow), holding down 
-  <b>{{keyAlt}}</b> will move the entire segment
+    To move the currently preselected boundary hold down the <b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
+    move the mouse to the desired position. The boundary will then track the
+    mouse movement. If a segment is selected (= marked yellow), holding down 
+    <b>{{keyAlt}}</b> will move the entire segment
   </span>
- </div>
- 
- <hr class="aboutHr" />
+</div>
 
- <!-- navigation shortcuts -->
-  <b><u>Main Navigation Shortcuts:</u></b><br />&nbsp;<br />
-  <div class="aboutDiv">
+<hr class="aboutHr" />
+
+<!-- navigation shortcuts -->
+<div class="aboutDiv">
+<b>Main Navigation Shortcuts:</b><br />&nbsp;<br />
   <table class="aboutTable">
     <tbody>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.openSubmenu)}}:</b></td><td>Open Submenu</td></tr>
@@ -57,14 +58,14 @@
     </tbody>
   </table>
   <small>1.) Zooming while a Boundary is preselected will keep the position of that boundary fixed</small>
- </div>
- 
- <hr class="aboutHr" />
+</div>
 
- <!-- labeling shortcuts -->
- 
-  <b><u>Labeling shortcuts:</u></b><br />&nbsp;<br />
-  <div class="aboutDiv">
+<hr class="aboutHr" />
+
+<!-- labeling shortcuts -->
+
+<div class="aboutDiv">
+<b>Labeling shortcuts:</b><br />&nbsp;<br />
   <table class="aboutTable">
     <tbody>
       <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.history)}}:</b></td><td>Go back in history</td></tr>
@@ -85,13 +86,13 @@
       <!-- <tr ng-show="cps.vals.restrictions.sortLabels"><td><b>MOUSE DRAG</b></td><td>You can sort Tiers by dragging them up and down</td></tr> -->
     </tbody>
   </table>
-  </div>
-  
-  <hr class="aboutHr" ng-show="cps.vals.restrictions.playback"/>
+</div>
 
-  <!-- playback shortcuts -->
-  <b ng-show="cps.vals.restrictions.playback"><u>Playback shortcuts:</u></b><br />&nbsp;<br />
-  <div class="aboutDiv" ng-show="cps.vals.restrictions.playback">
+<hr class="aboutHr" ng-show="cps.vals.restrictions.playback"/>
+
+<!-- playback shortcuts -->
+<div class="aboutDiv" ng-show="cps.vals.restrictions.playback">
+<b ng-show="cps.vals.restrictions.playback">Playback shortcuts:</b><br />&nbsp;<br />
   <table class="aboutTable">
     <tbody>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.playEntireFile)}}:</b></td><td>Play entire file</td></tr>
@@ -99,14 +100,14 @@
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.playAllInView)}}:</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
     </tbody>
   </table>
-  </div>
-  
-  <hr class="aboutHr" ng-show="cps.vals.restrictions.correctionTool"/>
+</div>
 
-  <!-- correction shortcuts -->
-  
-  <b ng-show="cps.vals.restrictions.correctionTool"><u>Correction Tool shortcuts:</u></b><br />&nbsp;<br />
-  <div class="aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
+<hr class="aboutHr" ng-show="cps.vals.restrictions.correctionTool"/>
+
+<!-- correction shortcuts -->
+
+<div class="aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
+<b ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts:</b><br />&nbsp;<br />
   <table class="aboutTable">
     <tbody>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}:</b></td><td>Choose first correction tool</td></tr>
@@ -116,10 +117,7 @@
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}:</b></td><td>Choose NO correction tool (choose when not correcting)</td></tr>
     </tbody>
   </table>
-  </div>
-  <div> &nbsp;</div>
-<div> &nbsp;</div>
-<div> &nbsp;</div>
+</div>
 </div>
 <div class="modal-footer">
   <button id="modalCancelBtn" ng-click="cancel();" class="mini-btn-dialog">Cancel</button>

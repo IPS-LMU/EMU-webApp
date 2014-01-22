@@ -5,6 +5,7 @@ angular.module('emulvcApp')
 		$scope.cps = ConfigProviderService;
 
 		$scope.getStrRep = function (code) {
+			
 			return String.fromCharCode(code);
 		};
 
