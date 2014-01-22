@@ -155,12 +155,11 @@ angular.module('emulvcApp')
 		});
 
 		/**
-		 * clear ssff data when new utt is loaded
+		 * clear view when new utt is loaded
 		 */
 		$scope.$on('loadingNewUtt', function () {
 			viewState.resetSelect();
 			viewState.setcurClickTierName(undefined);
-			console.log(viewState.getSelect());
 		});
 
 		/**

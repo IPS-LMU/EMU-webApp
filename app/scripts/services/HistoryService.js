@@ -90,10 +90,10 @@ angular.module('emulvcApp')
 					case 'moveSegment':
 						if (applyOldVal) {
 						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveSegment(-cur.movedBy, res.tier, cur.selected);
+						    Tierservice.moveSegment(-cur.movedBy, res.tier, cur.itemIdx);
 						} else {
 						    var res = Tierservice.getTierDetails(cur.tierName);	
-						    Tierservice.moveSegment(cur.movedBy, res.tier, cur.selected);
+						    Tierservice.moveSegment(cur.movedBy, res.tier, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
