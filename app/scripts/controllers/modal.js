@@ -41,6 +41,26 @@ angular.module('emulvcApp')
 		};					
 	
 		
+		/**
+		 *  Save changes made on SSFF
+		 */
+		$scope.saveChanges = function (name) {
+		    	    
+			dialogService.close();
+		};					
+	
+		
+		/**
+		 *  Save changes made on SSFF
+		 */
+		$scope.discardChanges = function (name) {
+		    dialogService.close();
+		    Tierservice.data.tiers.forEach(function (t, tIdx) {
+		        if(t.tierName = name) {
+		        
+		        }
+		    }
+		};			
 		
 		/**
 		 *  Delete a complete tier from Tierservice

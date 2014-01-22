@@ -154,6 +154,14 @@ angular.module('emulvcApp')
 			});
 		});
 
+		/**
+		 * clear ssff data when new utt is loaded
+		 */
+		$scope.$on('loadingNewUtt', function () {
+			viewState.resetSelect();
+			viewState.setcurClickTierName(undefined);
+			console.log(viewState.getSelect());
+		});
 
 		/**
 		 * listen for saveSSFFb4load
@@ -313,9 +321,12 @@ angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function (utt) {
+		    if(HistoryService.getNrOfPosibleUndos()>0) {
+		        $scope.modifiedCurSSFF = true;
+		    }
 			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
 				$scope.lastclickedutt = utt;
-				dialogService.open('views/saveChanges.html', 'dialog', 'Changes made to: ' + utt.name + '. Do you wish to save them?');
+				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
 			} else {
 				if (utt !== $scope.curUtt) {
 					$scope.$broadcast('loadingNewUtt');
@@ -334,7 +345,6 @@ angular.module('emulvcApp')
 		$scope.menuUttSave = function () {
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.saveUtt($scope.curUtt).then(function (arg) {
-				console.log(arg);
 				$scope.modifiedCurSSFF = false;
 				$scope.modifTierItems = false;
 			});
