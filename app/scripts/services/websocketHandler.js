@@ -274,7 +274,7 @@ angular.module('emulvcApp')
 				var promise = sendRequest(request);
 				return promise;
 			} else {
-				alert('more than one tier associated!!!! Not an ESPS file!!!');
+				alert('more than one level associated!!!! Not an ESPS file!!!');
 			}
 
 		};

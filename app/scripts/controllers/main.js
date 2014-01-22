@@ -23,7 +23,7 @@ angular.module('emulvcApp')
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
-		$scope.modifiedCurTierItems = false;
+		$scope.modifiedCurLevelItems = false;
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
@@ -323,7 +323,7 @@ angular.module('emulvcApp')
 		    if(HistoryService.getNrOfPosibleUndos()>0) {
 		        $scope.modifiedCurSSFF = true;
 		    }
-			if ($scope.modifiedCurSSFF || $scope.modifiedCurTierItems) {
+			if ($scope.modifiedCurSSFF || $scope.modifiedCurLevelItems) {
 				$scope.lastclickedutt = utt;
 				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
 			} else {
@@ -345,7 +345,7 @@ angular.module('emulvcApp')
 			// Iohandlerservice.postSaveSSFF();
 			Iohandlerservice.saveUtt($scope.curUtt).then(function (arg) {
 				$scope.modifiedCurSSFF = false;
-				$scope.modifTierItems = false;
+				$scope.modifLevelItems = false;
 			});
 		};
 
@@ -381,9 +381,9 @@ angular.module('emulvcApp')
 		// /**
 		//  *
 		//  */
-		// $scope.modifTierItems = function () {
+		// $scope.modifLevelItems = function () {
 		// 	console.log('items labs changed');
-		// 	$scope.modifiedCurTierItems = true;
+		// 	$scope.modifiedCurLevelItems = true;
 		// };
 
 		/**

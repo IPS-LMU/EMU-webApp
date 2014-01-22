@@ -9,7 +9,7 @@ angular.module('emulvcApp')
 
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(id);
-          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.level),'tier.txt');
+          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.level),'level.txt');
         });
 
       }

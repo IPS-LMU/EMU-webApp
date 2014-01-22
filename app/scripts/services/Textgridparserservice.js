@@ -29,7 +29,7 @@ angular.module('emulvcApp')
 			var labelJSO = {
 				origSamplerate: this.shs.wavJSO.SampleRate,
 				fileURI: '',
-				tiers: []
+				levels: []
 			};
 
 			if (lines[0].replace(/\s+/g, '') === this.l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === this.l2.replace(/\s+/g, '')) {
@@ -44,16 +44,16 @@ angular.module('emulvcApp')
 					}
 
 					if (cL.indexOf('item[') === 0) {
-						// get tier type
-						if (lines[i + 1].split(/=/)[1] === '\"IntervalTier\"') {
+						// get level type
+						if (lines[i + 1].split(/=/)[1] === '\"IntervalLevel\"') {
 							tT = 'seg';
 						} else {
 							tT = 'point';
 						}
-						// get tier name
+						// get level name
 						tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
-						// adding new tier
+						// adding new level
 						labelJSO.levels.push({
 							LevelName: tN,
 							type: tT,
@@ -61,7 +61,7 @@ angular.module('emulvcApp')
 						});
 					}
 					if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'seg' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
-						// parse seg tiers event
+						// parse seg levels event
 						var eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
@@ -77,7 +77,7 @@ angular.module('emulvcApp')
 							sampleDur: eEt - eSt
 						});
 					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'point' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
-						// parse point tier event
+						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
@@ -99,7 +99,7 @@ angular.module('emulvcApp')
 		};
 
 		/**
-		 * converts the internal tiers format returned from tierHandler.getTiers
+		 * converts the internal levels format returned from levelHandler.getLevels
 		 * to a string containing a TextGrid file
 		 */
 		sServObj.toTextGrid = function() {
@@ -114,48 +114,48 @@ angular.module('emulvcApp')
 			tG = tG + l1 + nl + l2 + nl + nl;
 			tG = tG + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
 			tG = tG + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
-			tG = tG + 'tiers? <exists>' + nl;
-			tG = tG + 'size = ' + $('#HandletiersCtrl').scope().getTierLength() + nl;
+			tG = tG + 'levels? <exists>' + nl;
+			tG = tG + 'size = ' + $('#HandleLevelsCtrl').scope().getLevelLength() + nl;
 			tG = tG + 'item []:' + nl;
-			var tierNr = 0;
-			$('#HandletiersCtrl tier').each(function() {
-				var curTier = $('#HandletiersCtrl').scope().getTier($(this).attr('id'));
-				//write tier items
-				tierNr = tierNr + 1;
-				tG = tG + t + 'item [' + tierNr + ']:' + nl;
-				if (curTier.type === 'seg') {
-					tG = tG + t + t + 'class = "IntervalTier"' + nl;
-				} else if (curTier.type === 'point') {
-					tG = tG + t + t + 'class = "TextTier"' + nl;
+			var levelNr = 0;
+			$('#HandleLevelsCtrl level').each(function() {
+				var curLevel = $('#HandleLevelsCtrl').scope().getLevel($(this).attr('id'));
+				//write level items
+				levelNr = levelNr + 1;
+				tG = tG + t + 'item [' + levelNr + ']:' + nl;
+				if (curLevel.type === 'seg') {
+					tG = tG + t + t + 'class = "IntervalLevel"' + nl;
+				} else if (curLevel.type === 'point') {
+					tG = tG + t + t + 'class = "TextLevel"' + nl;
 				}
-				tG = tG + t + t + 'name = "' + curTier.LevelName + '"' + nl;
+				tG = tG + t + t + 'name = "' + curLevel.LevelName + '"' + nl;
 				tG = tG + t + t + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
 				tG = tG + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
-				if (curTier.type === 'seg') {
-					tG = tG + t + t + 'intervals: size = ' + curTier.elements.length + nl;
-				} else if (curTier.type === 'point') {
-					tG = tG + t + t + 'points: size = ' + curTier.elements.length + nl;
+				if (curLevel.type === 'seg') {
+					tG = tG + t + t + 'intervals: size = ' + curLevel.elements.length + nl;
+				} else if (curLevel.type === 'point') {
+					tG = tG + t + t + 'points: size = ' + curLevel.elements.length + nl;
 				}
-				for (var j = 0; j < curTier.elements.length; j++) {
+				for (var j = 0; j < curLevel.elements.length; j++) {
 					var evtNr = j + 1;
-					if (curTier.type === 'seg') {
+					if (curLevel.type === 'seg') {
 						tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
-						if (curTier.elements[j].startSample !== 0) {
-							tG = tG + t + t + t + t + 'xmin = ' + ((curTier.elements[j].startSample) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+						if (curLevel.elements[j].startSample !== 0) {
+							tG = tG + t + t + t + t + 'xmin = ' + ((curLevel.elements[j].startSample) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
 						} else {
 							tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 						}
-						if (j < curTier.elements.length - 1) {
-							tG = tG + t + t + t + t + 'xmax = ' + ((curTier.elements[j].startSample + curTier.elements[j].sampleDur + 1) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+						if (j < curLevel.elements.length - 1) {
+							tG = tG + t + t + t + t + 'xmax = ' + ((curLevel.elements[j].startSample + curLevel.elements[j].sampleDur + 1) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
 						} else {
 							tG = tG + t + t + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
 						}
 
-						tG = tG + t + t + t + t + 'text = "' + curTier.elements[j].label + '"' + nl;
-					} else if (curTier.type === 'point') {
+						tG = tG + t + t + t + t + 'text = "' + curLevel.elements[j].label + '"' + nl;
+					} else if (curLevel.type === 'point') {
 						tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
-						tG = tG + t + t + t + t + 'time = ' + curTier.elements[j].startSample / Soundhandlerservice.wavJSO.SampleRate + nl;
-						tG = tG + t + t + t + t + 'mark = "' + curTier.elements[j].label + '"' + nl;
+						tG = tG + t + t + t + t + 'time = ' + curLevel.elements[j].startSample / Soundhandlerservice.wavJSO.SampleRate + nl;
+						tG = tG + t + t + t + t + 'mark = "' + curLevel.elements[j].label + '"' + nl;
 					}
 				}
 			});
@@ -179,7 +179,7 @@ angular.module('emulvcApp')
 
 
 		/**
-		 * test to see if all the segments in seg tiers
+		 * test to see if all the segments in seg levels
 		 * are "snapped" -> startSample+dur+1 = startSample of next Segment
 		 */
 		sServObj.testForGapsInLabelJSO = function(labelJSO) {

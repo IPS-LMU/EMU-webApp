@@ -27,7 +27,7 @@ angular.module('emulvcApp')
 		};
 		
 		/**
-		 *  Rename a tier
+		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
 		    Levelservice.renameLevel($scope.passedInTxt,$scope.passedOutTxt.var);	
@@ -57,7 +57,7 @@ angular.module('emulvcApp')
 		};			
 		
 		/**
-		 *  Delete a complete tier from Levelservice
+		 *  Delete a complete level from Levelservice
 		 */
 		$scope.deleteLevel = function () {
 		    var res;	
@@ -67,7 +67,7 @@ angular.module('emulvcApp')
 			    'action': 'deleteLevel',
 			    'levelName': res.name,
 			    'itemIdx': res.id,
-		        'tier': res.tier
+		        'level': res.level
 			});				
 			dialogService.close();
 		};				

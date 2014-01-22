@@ -50,6 +50,7 @@ angular.module('emulvcApp')
     sServObj.submenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.scrollOpen = 0;
+    sServObj.levelLength = 0;
     sServObj.curMouseLevelName = undefined;
     sServObj.curMouseLevelType = undefined;
     sServObj.curClickLevelName = undefined;
@@ -76,7 +77,7 @@ angular.module('emulvcApp')
       'permittedActions': []
     };
     sServObj.states.labeling = {
-      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addTierSegBtnClick', 'addTierPointBtnClick', 'renameSelTierBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
+      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
     };
     sServObj.states.modalShowing = {
       'permittedActions': []
@@ -588,11 +589,11 @@ angular.module('emulvcApp')
     };
 
     sServObj.setLevelLength = function (length) {
-      this.tierLength = length;
+      this.levelLength = length;
     };
 
-    sServObj.getTierLength = function () {
-      return this.tierLength;
+    sServObj.getLevelLength = function () {
+      return this.levelLength;
     };
 
     sServObj.getCurrentSample = function (perc) {
@@ -767,23 +768,16 @@ angular.module('emulvcApp')
      * if set to false -> zoom out
      */
     sServObj.zoomViewPort = function (zoomIn) {
-      // this.tierHandler.removeLabelDoubleClick();
       var newStartS, newEndS;
       // var levelName = this.getcurMouseLevelName();
       var segMId = this.getcurMouseSegmentId();
 
-      // get cur mouse move tier details
-      var curTier = Levelservice.getcurMouseLevelDetails();
-      // Levelservice.data.levels.forEach(function(t) {
-      // if (t.LevelName === levelName) {
-      // curTier = t;
-      // }
-      // });
-
+      // get cur mouse move level details
+      var curLevel = Levelservice.getcurMouseLevelDetails();
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
-      if (curTier && segMId) {
-        var curMouseMoveSegmentStart = curTier.elements[segMId].startSample;
+      if (curLevel && segMId) {
+        var curMouseMoveSegmentStart = curLevel.elements[segMId].startSample;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;

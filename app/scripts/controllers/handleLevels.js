@@ -47,7 +47,7 @@ angular.module('emulvcApp')
 				});
 				// console.log(JSON.stringify($scope.levelDetails, undefined, 2));
 			}
-			$scope.sortTiers();
+			$scope.sortLevels();
 		});
 
 		/**
@@ -65,8 +65,8 @@ angular.module('emulvcApp')
 		
 
 		//
-		$scope.sortTiers = function () {
-			var sortedTiers = [];
+		$scope.sortLevels = function () {
+			var sortedLevels = [];
 			var sortedFileInfos = [];
 			var searchOrd;
 
@@ -76,12 +76,12 @@ angular.module('emulvcApp')
 				searchOrd = curOrd.split('.')[1];
 				$scope.levelDetails.data.levels.forEach(function (t, tIdx) {
 					if (t.LevelName.split('_')[1] === searchOrd) {
-						sortedTiers.push(t);
+						sortedLevels.push(t);
 						sortedFileInfos.push($scope.levelDetails.data.fileInfos[tIdx]);
 					}
 				});
 			});
-			$scope.levelDetails.data.levels = sortedTiers;
+			$scope.levelDetails.data.levels = sortedLevels;
 			$scope.levelDetails.data.fileInfos = sortedFileInfos;
 		};
 
@@ -95,11 +95,11 @@ angular.module('emulvcApp')
 		};
 
 
-		$scope.getTierLength = function () {
+		$scope.getLevelLength = function () {
 			return $scope.levelDetails.data.levels.length;
 		};
 
-		$scope.getTier = function (id) {
+		$scope.getLevel = function (id) {
 			var t;
 			angular.forEach($scope.levelDetails.data.levels, function (level) {
 				if (level.LevelName === id) {
@@ -125,7 +125,7 @@ angular.module('emulvcApp')
 					}
 				});
 			} else {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : This Tiername already exists ! Please choose another name !');
+				dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : This Level name already exists ! Please choose another name !');
 			}
 		};
 

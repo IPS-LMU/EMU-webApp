@@ -40,9 +40,9 @@
          <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
          <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
          <!-- <button ng-show="cps.vals.activeButtons.openFile" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openFile}}">open file</button>  -->
-         <button ng-show="cps.vals.activeButtons.addTierSeg" ng-disabled="!vs.getPermission('addTierSegBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierSeg}}" ng-click="addTierSegBtnClick();">add tier (seg)</button> 
-         <button ng-show="cps.vals.activeButtons.addTierPoint" ng-disabled="!vs.getPermission('addTierPointBtnClick')" class="mini-btn" ng-click="addTierPointBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addTierPoint}}">add tier (point)</button> 
-         <button ng-show="cps.vals.activeButtons.renameSelTier" ng-disabled="!vs.getPermission('renameSelTierBtnClick')" class="mini-btn" ng-click="renameSelTierBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameTier}}">rename sel. tier</button> 
+         <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addLevelSeg}}" ng-click="addLevelSegBtnClick();">add level (seg)</button> 
+         <button ng-show="cps.vals.activeButtons.addLevelPoint" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="mini-btn" ng-click="addLevelPointBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addLevelPoint}}">add level (point)</button> 
+         <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="mini-btn" ng-click="renameSelLevelBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameLevel}}">rename sel. level</button> 
          <button ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="mini-btn" ng-click="downloadTextGridBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.downloadTextgrid}}">download TextGrid</button> 
          <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="spectSettingsBtnClick();">spec. settings</button>
          <button id="openDemoDBbtn" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.demoDB}}" ng-click="openDemoDBbtnClick();">open demo DB</button>
@@ -64,8 +64,8 @@
       <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
         <!-- all levels are listed here -->
         <ul ng-model="levelDetails.levels" id="allowSortable">
-          <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Tier sort">
-            <level id='{{level.LevelName}}' class="tier"></level>
+          <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Level sort">
+            <level id='{{level.LevelName}}' class="level"></level>
           </li>
         </ul>
       </div>

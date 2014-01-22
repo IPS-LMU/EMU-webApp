@@ -13,33 +13,33 @@ angular.module('emulvcApp')
         var bDelete = elem.find(del);
         var bSave = elem.find(sav);
         var open = true;
-        var cssTier = 'Tier';
-        var cssSmallTier = 'smallTier';
-        var cssTierCanvas = 'TierCanvas';
-        var cssTierMarkupCanvas = 'TierMarkupCanvas';
+        var cssLevel = 'Level';
+        var cssSmallLevel = 'smallLevel';
+        var cssLevelCanvas = 'LevelCanvas';
+        var cssLevelMarkupCanvas = 'LevelMarkupCanvas';
         var cssSmallCanvas = 'smallCanvas';
 
         element.bind('click', function () {
           if (open) {
             open = false;
-            elem.parent().parent()[0].className = cssSmallTier + ' ng-scope';
-            canvas[0].className = cssTierCanvas + ' ' + cssSmallCanvas;
-            canvas[1].className = cssTierMarkupCanvas + ' ' + cssSmallCanvas;
-            if (scope.config.vals.activeButtons.deleteSingleTier) {
+            elem.parent().parent()[0].className = cssSmallLevel + ' ng-scope';
+            canvas[0].className = cssLevelCanvas + ' ' + cssSmallCanvas;
+            canvas[1].className = cssLevelMarkupCanvas + ' ' + cssSmallCanvas;
+            if (scope.config.vals.activeButtons.deleteSingleLevel) {
               bDelete.hide();
             }
-            if (scope.config.vals.activeButtons.saveSingleTier) {
+            if (scope.config.vals.activeButtons.saveSingleLevel) {
               bSave.hide();
             }
           } else {
             open = true;
-            elem.parent().parent()[0].className = cssTier + ' ng-scope';
-            canvas[0].className = cssTierCanvas;
-            canvas[1].className = cssTierMarkupCanvas;
-            if (scope.config.vals.activeButtons.deleteSingleTier) {
+            elem.parent().parent()[0].className = cssLevel + ' ng-scope';
+            canvas[0].className = cssLevelCanvas;
+            canvas[1].className = cssLevelMarkupCanvas;
+            if (scope.config.vals.activeButtons.deleteSingleLevel) {
               bDelete.show();
             }
-            if (scope.config.vals.activeButtons.saveSingleTier) {
+            if (scope.config.vals.activeButtons.saveSingleLevel) {
               bSave.show();
             }
           }

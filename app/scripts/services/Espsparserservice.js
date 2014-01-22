@@ -43,7 +43,7 @@ angular.module('emulvcApp')
 				elements: []
 			});
 
-			// set tier type
+			// set level type
 			var prevLineArr;
 			var curLineArr = lines[headEndIdx + 1].split(/\s+/);
 			if (curLineArr[curLineArr.length - 1] !== 'H#') {

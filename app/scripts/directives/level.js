@@ -11,7 +11,7 @@ angular.module('emulvcApp')
 				var canvas = element.find('canvas');
 
 				scope.$watch('levelDetails.data', function () {
-					drawLevelDetails(scope.tier, scope.vs, scope.config);
+					drawLevelDetails(scope.level, scope.vs, scope.config);
 				}, true);
 
 				scope.$watch('vs', function () {
@@ -26,20 +26,20 @@ angular.module('emulvcApp')
 				});
 
 				scope.$on('refreshTimeline', function () {
-					if (!$.isEmptyObject(scope.tier)) {
+					if (!$.isEmptyObject(scope.level)) {
 						if (!$.isEmptyObject(scope.vs)) {
-							drawLevelDetails(scope.tier, scope.vs, scope.config);
+							drawLevelDetails(scope.level, scope.vs, scope.config);
 						}
 					}
 				});
 
 
 				scope.updateView = function () {
-					drawLevelDetails(scope.tier, scope.vs, scope.config);
+					drawLevelDetails(scope.level, scope.vs, scope.config);
 				};
 
 				/**
-				 * draw tier details
+				 * draw level details
 				 * @param levelDetails
 				 * @param viewState
 				 * @param cps
@@ -74,7 +74,7 @@ angular.module('emulvcApp')
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
-					var tierId = viewState.getcurClickLevelName();
+					var levelId = viewState.getcurClickLevelName();
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
@@ -210,7 +210,7 @@ angular.module('emulvcApp')
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 					if (levelDetails.LevelName === viewState.getcurClickLevelName()) {
-						ctx.fillStyle = config.vals.colors.selectedTierColor;
+						ctx.fillStyle = config.vals.colors.selectedLevelColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
@@ -230,10 +230,10 @@ angular.module('emulvcApp')
 
 					var segMId = viewState.getcurMouseSegmentId();
 					var segCId = viewState.getcurClickSegments();
-					var tierId = viewState.getcurClickLevelName();
+					var levelId = viewState.getcurClickLevelName();
 					if (segCId !== undefined) {
 						// draw clicked on selected areas
-						if (levelDetails.LevelName === tierId && segCId.length > 0) {
+						if (levelDetails.LevelName === levelId && segCId.length > 0) {
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
 									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));

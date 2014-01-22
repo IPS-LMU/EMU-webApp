@@ -20,7 +20,7 @@ angular.module('emulvcApp')
 		sServObj.history = function () {
 			var newClone = angular.copy({
 				ssff: Ssffdataservice.getData(),
-				tier: Levelservice.getData()
+				level: Levelservice.getData()
 			});
 			if (sServObj.myHistoryCounter > 0) {
 				var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
@@ -38,7 +38,7 @@ angular.module('emulvcApp')
 		sServObj.goBackHistory = function () {
 			if (sServObj.myHistoryCounter > 1) {
 				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
-				Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].tier);
+				Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].level);
 				--sServObj.myHistoryCounter;
 				return true;
 			} else {
@@ -112,7 +112,7 @@ angular.module('emulvcApp')
 						break;						
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.data.levels.splice(cur.itemIdx, 0, cur.tier);
+							Levelservice.data.levels.splice(cur.itemIdx, 0, cur.level);
 						} else {
 							Levelservice.data.levels.splice(cur.itemIdx, 1);
 						}
@@ -121,7 +121,7 @@ angular.module('emulvcApp')
 						if (applyOldVal) {
 							Levelservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
-							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.tierType);
+							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.levelType);
 						}
 						break;					
 					case 'deleteSegments':

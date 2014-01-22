@@ -261,7 +261,7 @@ angular.module('emulvcApp')
 			var xOffset, sDist;
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
-			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+			// calc. offset dependant on type of level of mousemove  -> default is sample exact
 			if (viewState.getcurMouseLevelType() === 'seg') {
 				xOffset = 0;
 			} else {
@@ -287,7 +287,7 @@ angular.module('emulvcApp')
 			var xOffset, sDist;
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
-			// calc. offset dependant on type of tier of mousemove  -> default is sample exact
+			// calc. offset dependant on type of level of mousemove  -> default is sample exact
 			if (viewState.getcurMouseLevelType() === 'seg') {
 				xOffset = 0;
 			} else {

@@ -166,12 +166,12 @@ angular.module('emulvcApp')
               }
 
 
-              // tierUp
-              if (code === ConfigProviderService.vals.keyMappings.tierUp) {
+              // LevelUp
+              if (code === ConfigProviderService.vals.keyMappings.levelUp) {
                 viewState.selectLevel(false);
               }
-              // tierDown
-              if (code === ConfigProviderService.vals.keyMappings.tierDown) {
+              // levelDown
+              if (code === ConfigProviderService.vals.keyMappings.levelDown) {
                 viewState.selectLevel(true);
               }
 
@@ -211,7 +211,7 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.plus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
-                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
                   } else {
                     if (viewState.getselected().length === 0) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
@@ -243,7 +243,7 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
-                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
                   } else {
                     if (viewState.getselected().length === 0) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
@@ -274,7 +274,7 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.minus) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
-                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Tier first');
+                    scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
                   } else {
                     if (viewState.getselected().length === 0) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
@@ -326,7 +326,7 @@ angular.module('emulvcApp')
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
                 if (viewState.getcurClickLevelName() === undefined) {
-                  scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Tier first');
+                  scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                 } else {
                   viewState.selectSegmentsInSelection();
                 }
@@ -347,7 +347,7 @@ angular.module('emulvcApp')
               if (code === ConfigProviderService.vals.keyMappings.right) {
                 if (viewState.getselected().length > 0) {
                   var now = parseInt(viewState.getselected()[0], 10);
-                  if (now < viewState.getTierLength() - 1) {
+                  if (now < viewState.getLevelLength() - 1) {
                     ++now;
                   }
                   var ret = Levelservice.tabNext(false, now, viewState.getcurClickLevelName());
@@ -368,7 +368,7 @@ angular.module('emulvcApp')
                     viewState.setcurClickSegment(ret.event, ret.id);
                     viewState.setlasteditArea('_' + ret.id);
                   } else {
-                    if (now < viewState.getTierLength() - 1) {
+                    if (now < viewState.getLevelLength() - 1) {
                       ++now;
                     }
                     var ret = Levelservice.tabNext(false, now, viewState.getcurClickLevelName());
@@ -384,16 +384,16 @@ angular.module('emulvcApp')
                   if (viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE) {
                     if (viewState.getcurClickSegments().length == 1) {
                       viewState.setEditing(true);
-                      viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickTierType());
+                      viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickLevelType());
                       scope.cursorInTextField();
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
                     }
                   } else {
                     if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a tier plus a range in the viewport in order to insert a new Segment.');
+                      scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                     } else {
-                      if (viewState.getcurClickTierType() == "seg") {
+                      if (viewState.getcurClickLevelType() == "seg") {
                         var insSeg = Levelservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                         if (!insSeg) {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
@@ -446,7 +446,7 @@ angular.module('emulvcApp')
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
                         'levelName': tn,
-                        'tierType': viewState.getcurMouseLevelType(),
+                        'levelType': viewState.getcurMouseLevelType(),
                         'seg': seg
                       });
                       Levelservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseLevelName(), viewState.getcurMouseLevelType());
@@ -460,7 +460,7 @@ angular.module('emulvcApp')
                     if (seg !== undefined) {
                       var selected = viewState.getcurClickSegments();
                       var ids = viewState.getselected();
-                      if (viewState.getcurClickTierType() === 'seg') {
+                      if (viewState.getcurClickLevelType() === 'seg') {
                         var click = Levelservice.deleteSegments(selected, ids, viewState.getcurClickLevelName());
                         viewState.setcurClickSegment(click.segment, click.id);
                         scope.hists.addObjToUndoStack({
@@ -471,7 +471,7 @@ angular.module('emulvcApp')
                           'ids': ids
                         });
                       } else {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Tiers.');
+                        scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                       }
                     }
                   }
