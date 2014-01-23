@@ -1,7 +1,5 @@
 <!-- <div class="modal" id="appcachemodal">Updating to newer version...</div> -->
-<div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl">
-
- <div handleglobalkeystrokes>
+<div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
   <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="FileCtrl" ng-controller="FileCtrl">
    <h3><div class="uttFilter"><input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
@@ -56,7 +54,7 @@
         <div class="controls">
           <osci id="osci" class="osci"></osci>  
           <spectro id="spec" class="spec"></spectro>
-          <button class="rightSideMenuOpenBtn" ng-click="openRightSubmenu();"><img></button> 
+          <button class="rightSideMenuOpenBtn" id="rightSideMenuOpenBtn" ng-click="openRightSubmenu();"><img></button> 
           <div id="resizer" class="resizer">
             <span id="resizeIcon" class="resizeIcon"> </span>
           </div>
@@ -87,5 +85,4 @@
         <button id="playAllBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" ng-disabled="!vs.getPermission('playaudio')" class="mini-btn" id="cmd_playAll" data-tooltip="Shortcut: {{shortcut.playEntireFile}}">play entire file</button>
       </div>
       
-    </div>
-  </div>
+</div>
