@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-  .directive('trackmouseinlevel', function (ConfigProviderService, viewState,Levelservice) {
+  .directive('trackmouseinlevel', function (ConfigProviderService, viewState, Levelservice) {
     return {
       restrict: 'A',
       link: function (scope, element) {
@@ -119,14 +119,15 @@ angular.module('emulvcApp')
 
         function setLastClick(x) {
           var levelId = element.parent().parent().parent()[0].id;
+          var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
-          lastEventClick = scope.getEvent(thisPCM, scope.this.level, false);
-          lastEventClickId = scope.getEventId(thisPCM, scope.this.level, false);
-          lastEventRightClick = scope.getEvent(thisPCM, scope.this.level, false);
-          lastEventRightClickId = scope.getEventId(thisPCM, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
+          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
+          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
@@ -138,15 +139,16 @@ angular.module('emulvcApp')
 
         function setLastRightClick(x) {
           var levelId = element.parent().parent().parent()[0].id;
+          var vp = viewState.getViewPort();
           if (viewState.getcurClickLevelName() !== levelId) {
             setLastClick(x);
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
-          lastEventClick = scope.getEvent(thisPCM, scope.this.level, false);
-          lastEventClickId = scope.getEventId(thisPCM, scope.this.level, false);
-          lastEventRightClick = scope.getEvent(thisPCM, scope.this.level, false);
-          lastEventRightClickId = scope.getEventId(thisPCM, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
+          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
+          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
@@ -157,9 +159,10 @@ angular.module('emulvcApp')
 
         function setLastDblClick(x) {
           var levelId = element.parent().parent().parent()[0].id;
+          var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventClick = scope.getEvent(thisPCM, scope.this.level, false);
-          lastEventClickId = scope.getEventId(thisPCM, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
           viewState.setlasteditArea('_' + lastEventClickId);
@@ -174,8 +177,9 @@ angular.module('emulvcApp')
 
         function setLastMove(x, doChange) {
           var levelId = element.parent().parent().parent()[0].id;
+          var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventMove = scope.getEvent(thisPCM, scope.this.level, true);
+          lastEventMove = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, true);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.level, true);
           viewState.setcurMouseLevelName(levelId);
           if (doChange) {

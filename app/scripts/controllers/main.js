@@ -259,11 +259,11 @@ angular.module('emulvcApp')
 			// setting transition values
 			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
 			var transcss = {
-				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out',
-				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out'
+				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
 			};
 			$('.menu').css(transcss);
 			$('.HandleLevelsCtrl').css(transcss);
@@ -271,9 +271,12 @@ angular.module('emulvcApp')
 			$('.SpectroDiv').css(transcss);
 			$('.menu-bottom').css(transcss);
 			$('.cbp-spmenu').css(transcss);
+			$('.cbp-spmenu-right').css(transcss);
 			$('.cbp-spmenu-push').css(transcss);
-			$('.cbp-spmenu-push-toleft').css(transcss);
-			$('.cbp-spmenu-push-toright').css(transcss);
+			$('.cbp-spmenu-left-toleft').css(transcss);
+			$('.cbp-spmenu-left-toright').css(transcss);
+			$('.cbp-spmenu-right-toleft').css(transcss);
+			$('.cbp-spmenu-right-toright').css(transcss);
 
 
 
@@ -456,23 +459,51 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.openSubmenu = function () {
+		$scope.openSubmenu = function () {	
+		    if (viewState.getRightsubmenuOpen()) {
+		        $scope.openRightSubmenu();
+		    }			
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
-				// $('#submenuOpen').html('☰');
 				$('#FileCtrl').removeClass('cbp-spmenu-open');
-				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
-				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-push-toright').addClass('cbp-spmenu-push-toleft');
-				$('#menu').removeClass('cbp-spmenu-push-toright');
-				$('#menu-bottom').removeClass('cbp-spmenu-push-toright');
+				$('#TimelineCtrl').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
+				$('#menu').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
+				$('#menu-bottom').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
 			} else {
 				viewState.setsubmenuOpen(true);
-				// $('#submenuOpen').html('☰');
 				$('#FileCtrl').addClass('cbp-spmenu-open');
-				$('#TimelineCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
-				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-push-toleft').addClass('cbp-spmenu-push-toright');
-				$('#menu').addClass('cbp-spmenu-push-toright');
-				$('#menu-bottom').addClass('cbp-spmenu-push-toright');
+				$('#TimelineCtrl').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
+				$('#menu').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
+				$('#menu-bottom').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
+			}
+			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
+		};
+
+		/**
+		 *
+		 */
+		$scope.openRightSubmenu = function () {
+		    if (viewState.getsubmenuOpen()) {
+		        $scope.openSubmenu();
+		    }
+			if (viewState.getRightsubmenuOpen()) {
+				viewState.setRightsubmenuOpen(false);
+				$('#ViewCtrl').removeClass('cbp-spmenu-open');
+				$('#TimelineCtrl').removeClass('cbp-spmenu-right-toright').addClass('cbp-spmenu-right-toleft');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-right-toright').addClass('cbp-spmenu-right-toleft');
+				$('#menu').removeClass('cbp-spmenu-right-toright').addClass('cbp-spmenu-right-toleft');
+				$('#righSideMenu').removeClass('cbp-spmenu-right-toright').addClass('cbp-spmenu-right-toleft');
+				$('#menu-bottom').removeClass('cbp-spmenu-right-toright').addClass('cbp-spmenu-right-toleft');
+			} else {
+				viewState.setRightsubmenuOpen(true);
+				$('#ViewCtrl').addClass('cbp-spmenu-open');
+				$('#TimelineCtrl').removeClass('cbp-spmenu-right-toleft').addClass('cbp-spmenu-right-toright');
+				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-right-toleft').addClass('cbp-spmenu-right-toright');
+				$('#menu').removeClass('cbp-spmenu-right-toleft').addClass('cbp-spmenu-right-toright');
+				$('#righSideMenu').removeClass('cbp-spmenu-right-toleft').addClass('cbp-spmenu-right-toright');
+				$('#menu-bottom').removeClass('cbp-spmenu-right-toleft').addClass('cbp-spmenu-right-toright');
 			}
 			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
