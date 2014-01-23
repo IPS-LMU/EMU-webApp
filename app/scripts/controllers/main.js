@@ -482,7 +482,7 @@ angular.module('emulvcApp')
 			}
 			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
 		};
-
+ 
 		/**
 		 *
 		 */

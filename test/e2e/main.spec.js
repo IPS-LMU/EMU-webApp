@@ -11,6 +11,7 @@ describe('E2E: main page', function () {
 		});
 
 		it('should load about modal', function () {
+		    expect(ptor.isElementPresent(by.id('aboutBtn'))).toBe(true);
 			element(by.id('aboutBtn')).click();
 			heading = ptor.findElement(protractor.By.id('modalHeading'));
 			// console.log('#########################')
