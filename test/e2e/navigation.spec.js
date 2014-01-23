@@ -40,8 +40,12 @@ describe('navigation', function () {
 	    expect(element(by.id('TimelineCtrl')).getAttribute('class')).toMatch(/cbp-spmenu-right-toleft/);
 	});
 
-			
 	
+	it('should select a range in the viewport', function() {
+	   var handle = $(".OsciMarkupCanvas")
+	   ptor.actions().dragAndDrop(handle.find(), {x:-250, y:0}).perform();
+	   
+	});	
 
 
 	it('should overzoom to check boundaries for in and out', function () {
