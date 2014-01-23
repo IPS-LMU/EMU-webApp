@@ -323,9 +323,9 @@ angular.module('emulvcApp')
 		 *
 		 */
 		$scope.menuUttClick = function (utt) {
-		    if(HistoryService.getNrOfPosibleUndos()>0) {
-		        $scope.modifiedCurSSFF = true;
-		    }
+			if (HistoryService.getNrOfPosibleUndos() > 0) {
+				$scope.modifiedCurSSFF = true;
+			}
 			if ($scope.modifiedCurSSFF || $scope.modifiedCurLevelItems) {
 				$scope.lastclickedutt = utt;
 				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
@@ -537,9 +537,9 @@ angular.module('emulvcApp')
 		$scope.renameSelLevelBtnClick = function () {
 			if (viewState.getPermission('renameSelLevelBtnClick')) {
 				if (viewState.getcurClickLevelName() !== undefined) {
-				    dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickLevelName());
+					dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickLevelName());
 				} else {
-				    dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Level first !');
+					dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Level first !');
 				}
 			} else {
 				console.log('action currently not allowed');
@@ -548,7 +548,7 @@ angular.module('emulvcApp')
 
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-				dialogService.openExport('views/export.html', 'ExportCtrl',Textgridparserservice.toTextGrid(Levelservice.data),'textgrid.txt');
+				dialogService.openExport('views/export.html', 'ExportCtrl', Textgridparserservice.toTextGrid(Levelservice.data), 'textgrid.txt');
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -729,6 +729,11 @@ angular.module('emulvcApp')
 		//
 		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
+		};
+
+		//
+		$scope.toggleRightSideMenuHidden = function () {
+			this.isRightSideMenuHidden = !this.isRightSideMenuHidden;
 		};
 
 	});

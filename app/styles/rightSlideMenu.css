@@ -1,17 +1,17 @@
-
-
 /* minimal CSS */
 .rightSideMenuOpenBtn {
     position: absolute;
-    top: 40px;
+    top: 80px;
     right: -1px;
     height: 25px;
     width: 15px;
-    background-color: #0DC5FF;
+    background-color: #FFF;
     box-shadow: 0 0 5px 2px #ccc;
-    color: gray;
+    /*color: gray;*/
     border-radius: 2px;
     z-index: 1000;
+
+
 }
 
 
@@ -23,4 +23,8 @@
   border-style: none;
   border: 0px;
   border-radius: 0px;
+}
+
+.slideLeftTestClass{
+  background-color: red;
 }
