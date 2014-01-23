@@ -146,14 +146,13 @@
 
     },
     "activeButtons": {
-        "openMenu": false,
-        "addLevelSeg": false,
-        "addLevelPoint": false,
-        "renameSelLevel": false,
+        "addLevelSeg": true,
+        "addLevelPoint": true,
+        "renameSelLevel": true,
         "downloadTextGrid": true,
         "specSettings": true,
         "connect": true,
-        "clear": false,
+        "clear": true,
         "deleteSingleLevel": true,
         "resizeSingleLevel": true,
         "saveSingleLevel": true,
