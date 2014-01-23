@@ -16,6 +16,8 @@ angular.module('emulvcApp')
 		$scope.showDropZone = false;
 		$scope.dbLoaded = false;
 
+		$scope.isRightSideMenuHidden = false;
+
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
 
@@ -733,7 +735,13 @@ angular.module('emulvcApp')
 
 		//
 		$scope.toggleRightSideMenuHidden = function () {
-			this.isRightSideMenuHidden = !this.isRightSideMenuHidden;
+			$scope.isRightSideMenuHidden = !$scope.isRightSideMenuHidden;
 		};
+
+		//
+		$scope.changePerspective = function () {
+			alert('not implemented yet')
+		};
+
 
 	});

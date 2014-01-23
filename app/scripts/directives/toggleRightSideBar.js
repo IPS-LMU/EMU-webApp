@@ -17,21 +17,14 @@ angular.module('emulvcApp')
 		};
 	});
 
-
+// simple animation to add slideLeft class
 angular.module('emulvcApp').animation(".slideInMenu", function () {
 	return {
 		addClass: function (element, className) {
-			element.addClass('slideLeftTestClass');
-			// console.log(element)
-			// TweenMax.to(element, 1, {
-			// 	opacity: 0
-			// });
+			element.addClass('slideLeft');
 		},
 		removeClass: function (element, className) {
-			// TweenMax.to(element, 1, {
-			// 	opacity: 1
-			// });
-			elements.removeClass('slideLeftTestClass');
+			element.removeClass('slideLeft');
 		}
 	}
 });
