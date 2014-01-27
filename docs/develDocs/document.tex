@@ -108,34 +108,46 @@
   \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible perspectives to look at the DB (relevant for layout of labeler).
   \item $^{*3}$: Prefix of session folders must be \textbf{SES}. Following this prefix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called SES0000.
   \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored.
-  \item $^{*5}$: annotation file containing label and tier information as well as hierarchical information (see listing 1)
+  \item $^{*5}$: annotation file containing label and level information as well as hierarchical information (see listing 1)
 \end{itemize}
 
 
 
 
-\section{File structure of json files }
+\section{File structure of json files}
 
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
 \begin{lstlisting}[caption=globalDBconfig, label=idsr, language=json,firstnumber=1]
-{ "dbName": "ae",
+{ "name": "ae",
   "levelDefinitions": [
-  {"name": "Phonetic", "type": "SEGMENT", 
-    "atrributeDefinitions":[
-      {"Phonetic":"x", "type":"txt"},
-      ...]
+  {"name": "Phonetic", 
+   "type": "SEGMENT", 
+   "attributeDefinitions":[
+      {"name":"Phonetic", 
+       "type":"txt", 
+       "allowedValues":["a","b","c"]
+      }, ...
+    ]
   },
-  {"name": "Tone", "type": "EVENT", 
-    "atrributeDefinitions":[
-    {"name":"x", "type":"txt"}
-    ,...]
+  {"name": "Tone", 
+   "type": "EVENT", 
+   "attributeDefinitions":[
+      {"name":"Tone", 
+       "type":"txt",
+       "allowedValues":[]
+      }, ...
+    ]
   },
-  {"name": "Syllable", "type": "ELEMENT", 
-    "atrributeDefinitions":[
-      {"name":"Syllable", "type":"txt"},
-      ...]
+  {"name": "Syllable", 
+   "type": "ELEMENT", 
+   "attributeDefinitions":[
+      {"name":"Syllable", 
+       "type":"txt",
+       "allowedValues":[]
+      }, ...
+    ]
   },
   ...
   ],
@@ -152,6 +164,12 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
 }
 \end{lstlisting}
+
+\begin{itemize}
+  \item \texttt{dbName + levelName +...} specific like that or just \texttt{name}?
+  \item \texttt{allowedValues} specifies the possible entries that are allowed. For example \texttt{["a","b","c"]} would only allow the labels a, b and c to be used. If undefined or empty $\rightarrow$ no restrictions. Good idea?? Or should it always be set?
+  \item \texttt{"type":"txt"} what types are supported? Should we support anything else but \texttt{"txt"}. If no then why specify a field for it?
+\end{itemize}
 
 
 \begin{lstlisting}[caption=New annotation file example, label=ilr, language=json,firstnumber=1]
