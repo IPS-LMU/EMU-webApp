@@ -1,0 +1,23 @@
+{
+	"id": "/AttributeDefinitions",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"required": true
+		},
+		"type": {
+			"type": {
+				"enum": ["TEXT"]
+			},
+			"required": true
+		},
+		"legalValues": {
+			"type": "array",
+			"required": true,
+			"items": {
+				"type": "string"
+			}
+		}
+	}
+}

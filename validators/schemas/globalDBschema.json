@@ -1,0 +1,39 @@
+{
+	"id": "/GlobalDBschema",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"levelDefinitions": {
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"type": {
+					"$ref": "/LevelDefinition"
+				}
+			},
+			"uniqueItems": true
+		},
+		"constraints": {
+			"type": "array",
+			"items": {
+				"type": {
+					"$ref": "/ConstraintDefinition"
+				}
+			}
+		},
+		"audiofileExtention": {
+			"type": {
+				"enum": ["wav"]
+			}
+		},
+		"tracks": {
+			"type": "array"
+		},
+		"perspectives": {
+			"type": "array"
+		}
+	},
+	"required": ["name", "levelDefinitions", "constraints", "audiofileExtention", "tracks", "perspectives"]
+}

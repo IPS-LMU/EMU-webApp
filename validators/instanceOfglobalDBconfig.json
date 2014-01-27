@@ -1,0 +1,20 @@
+{
+	"name": "ae",
+	"levelDefinitions": [{
+		"name": "Phonetic",
+		"type": "ELEMENT",
+		"attributeDefinitions": [{
+			"name": "Phonetic",
+			"type": "TEXT",
+			"legalValues": []
+		}]
+	}],
+	"constraints": [{
+		"supertierName": "Syllable",
+		"subtierName": "Tone",
+		"type": "ONE_TO_MANY"
+	}],
+	"audiofileExtention": "wav",
+	"tracks": [],
+	"perspectives": []
+}
