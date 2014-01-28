@@ -119,78 +119,14 @@
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
-\begin{lstlisting}[caption=globalDBconfig, label=idsr, language=json,firstnumber=1]
-{ "name": "ae",
-  "levelDefinitions": [
-    { "name": "Phonetic", 
-      "type": "SEGMENT", 
-      "attributeDefinitions":[
-        { "name": "Phonetic", 
-          "type": "TEXT", 
-          "legalValues": ["a","b","c"]
-        }, ...
-      ]
-    },
-    { "name": "Tone", 
-      "type": "EVENT", 
-      "attributeDefinitions":[
-        { "name": "Tone", 
-          "type": "TEXT",
-          "legalValues": []
-        }, ...
-      ]
-    },
-    { "name": "Syllable", 
-      "type": "ELEMENT", 
-      "attributeDefinitions":[
-        { "name": "Syllable", 
-          "type": "TEXT",
-          "legalValues": []
-        }, ...
-      ]
-    },
-    ...
-  ],
-  "constaints": [
-    { "supertierName": "Syllable",
-      "subtierName": "Tone",
-      "type": "ONE_TO_MANY"
-    }, ...
-  ],
-  "audiofileExtention": "wav",
-  "tracks": [
-    { "name": "formats",
-      "fileExtension": "fms",
-      "columnName": "fm"
-    }, ...
-  ],
-  "perspectives": [
-    { "name": "default",
-      "signalCanvases": {
-        "order": ["OSCI", "SPEC"],
-        "assign": [{
-          "SPEC": "formants"
-        }],
-        "contourLims": {
-          "formants": {
-            "min": 0,
-            "max": 1
-          }
-        }
-     },
-     "levelCanvases": {
-        "order": ["Phonetic", "Tone"]
-      }
-    }, ...
-  ]
-}
-\end{lstlisting}
+\lstinputlisting[caption=globalDBconfig, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfglobalDBconfig.json}
+
 
 \begin{itemize}
   \item \texttt{dbName + levelName +...} specific like that or just \texttt{name}?
   \item \texttt{legalValues} specifies the possible entries that are legal. For example \texttt{["a","b","c"]} would only allow the labels a, b and c to be used. If undefined or empty $\rightarrow$ no restrictions. Good idea?? Or should it always be set?
   \item \texttt{"type":"txt"} what types are supported? Should we support anything else but \texttt{"TEXT"}. If no then why specify a field for it?
-  \item \texttt{constaints[0].type} can be \texttt{"ONE\_TO\_ONE"}, \texttt{"ONE\_TO\_MANY"}or \texttt{"MANY\_TO\_MANY"}}
+  \item \texttt{constaints[0].type} can be \texttt{"ONE\_TO\_ONE"}, \texttt{"ONE\_TO\_MANY"}or \texttt{"MANY\_TO\_MANY"}
   \item should we rename \texttt{constaints} to \texttt{links}?? This would make it parallel to the data rep.
   \item should restrictions/key commands also be defined in perspectives?
   \item \texttt{perspectives.signalCanvases.order} \texttt{"OSCI"} and \texttt{"SPEC"} are always available! Other entries have to be predefined in tracks 
