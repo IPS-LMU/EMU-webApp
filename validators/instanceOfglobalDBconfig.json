@@ -8,6 +8,22 @@
 			"type": "TEXT",
 			"legalValues": []
 		}]
+	}, {
+		"name": "Tone",
+		"type": "EVENT",
+		"attributeDefinitions": [{
+			"name": "Tone",
+			"type": "TEXT",
+			"legalValues": []
+		}]
+	}, {
+		"name": "Syllable",
+		"type": "ELEMENT",
+		"attributeDefinitions": [{
+			"name": "Syllable",
+			"type": "TEXT",
+			"legalValues": []
+		}]
 	}],
 	"constraints": [{
 		"supertierName": "Syllable",
