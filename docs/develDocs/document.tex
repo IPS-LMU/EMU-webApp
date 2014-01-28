@@ -119,7 +119,7 @@
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
-\lstinputlisting[caption=globalDBconfig, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfglobalDBconfig.json}
+\lstinputlisting[caption=instanceOfglobalDBconfig.json, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfglobalDBconfig.json}
 
 
 \begin{itemize}
@@ -134,58 +134,7 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 \end{itemize}
 
 
-\begin{lstlisting}[caption=New annotation file example, label=ilr, language=json,firstnumber=1]
-{
-  "name": "msajc003",
-  "signalpaths": ["/path/to/msajc003.wav", "/path/to/msajc003.dft", "/path/2/msajc003.fms"],
-  "files": ["/path/to/msajc003.wav", "/path/to/msajc003.dft", "/path/to/msajc003.fms"],
-  "tiers": {
-    "Phonetic": {
-      "name": "Phonetic",
-      "type": "SEGMENT",
-      "sampleRate": 20000,
-      "elements": [{
-        "idAnnoScope": null,
-        "sampleStart": 3750,
-        "sampleDur": 1390,
-        "label": "V"
-      },...
-      ]
-    },
-    "Tone": {
-      "name": "Tone",
-      "type": "EVENT",
-      "sampleRate": 20000,
-      "elements": [{
-        "idAnnoScope": null,
-        "samplePoint": 8382,
-        "label": "H*"
-      },...
-      ]
-    },
-    "Syllable": {
-      "name": "Syllable",
-      "type": "ELEMENT",
-      "sampleRate": null,
-      "elements": [{
-        "idAnnoScope": 102,
-        "label": "W",
-        "labels": null
-      },...
-      ]
-    },
-  },
-  "links": [{
-    "from": {
-      "idAnnoScope": 2,
-    },
-    "to": {
-      "idAnnoScope": 102,
-    }
-  }, ...
-  ]
-}
-\end{lstlisting}
+\lstinputlisting[caption=instanceOfAnnotationFile.json, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfAnnotationFile.json}
 
 \begin{itemize}
   \item Shouldn't the tiers field be an array?

@@ -1,0 +1,34 @@
+{
+  "name": "msajc003",
+  "annotates": "SES000/msajc003/msajc003.wav",
+  "sampleRate": 20000,
+  "levels": [{
+    "name": "Phonetic",
+    "type": "SEGMENT",
+    "elements": [{
+      "UUID": "a5142d50-8824-11e3-baa7-0800200c9a66",
+      "label": "V",
+      "sampleStart": 3750,
+      "sampleDur": 1390
+    }]
+  }, {
+    "name": "Tone",
+    "type": "EVENT",
+    "elements": [{
+      "UUID": "de812560-8825-11e3-baa7-0800200c9a66",
+      "samplePoint": 8382,
+      "label": "H*"
+    }]
+  }, {
+    "name": "Syllable",
+    "type": "ELEMENT",
+    "elements": [{
+      "UUID": "aaa4f900-8826-11e3-baa7-0800200c9a66",
+      "label": "W"
+    }]
+  }],
+  "links": [{
+    "from": "aaa4f900-8826-11e3-baa7-0800200c9a66",
+    "to": "a5142d50-8824-11e3-baa7-0800200c9a66"
+  }]
+}

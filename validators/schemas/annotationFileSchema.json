@@ -1,0 +1,70 @@
+{
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"minLength": 1,
+			"required": true
+		},
+		"annotates": {
+			"type": "string",
+			"required": true
+		},
+		"levels": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"required": true
+					},
+					"type": {
+						"type": {
+							"enum": ["ELEMENT", "EVENT", "SEGMENT"]
+						}
+					},
+					"elements": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"UUID": {
+									"type": "string",
+									"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+									"required": true
+								},
+								"sampleStart": {
+									"type": "integer"
+								},
+								"sampleDur": {
+									"type": "integer"
+								},
+								"label": {
+									"type": "string",
+									"required": true
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"from": {
+						"type": "string",
+						"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+					},
+					"to": {
+						"type": "string",
+						"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+					}
+				}
+			}
+		}
+	}
+}

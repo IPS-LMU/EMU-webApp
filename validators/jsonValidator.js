@@ -13,6 +13,7 @@ var v = new Validator();
 fs.readFile(process.argv[2], 'utf8', function (instanceErr, instanceData) {
 
 	fs.readFile(process.argv[3], 'utf8', function (globErr, globData) {
+		JSON.parse(instanceData)
 		var validationErrs = v.validate(JSON.parse(instanceData), JSON.parse(globData)).errors;
 		if (validationErrs.length === 0) {
 			console.log(process.argv[2] + ' SUCCESSFULLY VALIDATED against: ' + process.argv[3]);
