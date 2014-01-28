@@ -15,6 +15,27 @@
 		"type": "ONE_TO_MANY"
 	}],
 	"audiofileExtention": "wav",
-	"tracks": [],
-	"perspectives": []
+	"tracks": [{
+		"name": "formants",
+		"fileExtension": "fms",
+		"columnName": "fm"
+	}],
+	"perspectives": [{
+		"name": "default",
+		"signalCanvases": {
+			"order": ["OSCI", "SPEC"],
+			"assign": [{
+				"SPEC": "formants"
+			}],
+			"contourLims": [{
+				"formants": {
+					"min": 0,
+					"max": 1
+				}
+			}]
+		},
+		"levelCanvases": {
+			"order": ["Phonetic", "Tone"]
+		}
+	}]
 }

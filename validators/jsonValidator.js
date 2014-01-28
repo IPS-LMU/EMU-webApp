@@ -1,32 +1,24 @@
+// simple validation script that uses: https://npmjs.org/package/jsonschema
+// make sure that you install it first!
+
+// example usage: node jsonValidator.js instanceOfglobalDBconfig.json schemas/globalDBschema.json
+
 'use strict';
 
 var fs = require('fs');
-var os = require('os');
 
 var Validator = require('jsonschema').Validator;
 var v = new Validator();
 
-
-
 fs.readFile(process.argv[2], 'utf8', function (instanceErr, instanceData) {
 
-	fs.readFile('schemas/levelDefinitionSchema.json', 'utf8', function (levErr, levData) {
-		var curJson = JSON.parse(levData);
-		v.addSchema(curJson, curJson.id);
-
-		fs.readFile('schemas/attributeDefinitionSchema.json', 'utf8', function (attErr, attData) {
-			var curJson = JSON.parse(attData);
-			v.addSchema(curJson, curJson.id);
-
-			fs.readFile('schemas/constaintDefinitionSchema.json', 'utf8', function (conErr, conData) {
-				var curJson = JSON.parse(conData);
-				v.addSchema(curJson, curJson.id);
-
-				fs.readFile('schemas/globalDBschema.json', 'utf8', function (globErr, globData) {
-					console.log(v.validate(JSON.parse(instanceData), JSON.parse(globData)).errors);
-				});
-			});
-		});
+	fs.readFile(process.argv[3], 'utf8', function (globErr, globData) {
+		var validationErrs = v.validate(JSON.parse(instanceData), JSON.parse(globData)).errors;
+		if (validationErrs.length === 0) {
+			console.log(process.argv[2] + ' SUCCESSFULLY VALIDATED against: ' + process.argv[3]);
+		}else{
+			console.log('VALIDATION ERRORS:');
+			console.log(validationErrs);
+		}
 	});
-
 });
