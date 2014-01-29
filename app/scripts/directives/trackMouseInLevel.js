@@ -64,7 +64,7 @@ angular.module('emulvcApp')
             if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
-                scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegmentId());
+                scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegmentId(), viewState.curViewPort.bufferLength);
                 // console.log(lastPCM);
                 // console.log(scope.this.level.LevelName);
                 viewState.selectBoundry();
@@ -74,6 +74,7 @@ angular.module('emulvcApp')
                   'action': 'moveBoundary',
                   'levelName': scope.this.level.LevelName,
                   'itemIdx': viewState.getcurMouseSegmentId(),
+                  'max': viewState.curViewPort.bufferLength,
                   'movedBy': moveBy
                 });
 
@@ -124,10 +125,10 @@ angular.module('emulvcApp')
           viewState.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
-          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
-          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
-          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
-          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
@@ -145,10 +146,10 @@ angular.module('emulvcApp')
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
-          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
-          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
-          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
-          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
@@ -161,8 +162,8 @@ angular.module('emulvcApp')
           var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false);
-          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false);
+          lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
+          lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           viewState.setcurClickLevelName(levelId);
           viewState.setcurClickLevelType(scope.this.level.type);
           viewState.setlasteditArea('_' + lastEventClickId);
@@ -179,8 +180,8 @@ angular.module('emulvcApp')
           var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventMove = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, true);
-          lastEventMoveId = scope.getNearest(thisPCM, scope.this.level, true);
+          lastEventMove = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, true, viewState.curViewPort.bufferLength);
+          lastEventMoveId = scope.getNearest(thisPCM, scope.this.level, true, viewState.curViewPort.bufferLength);
           viewState.setcurMouseLevelName(levelId);
           if (doChange) {
             viewState.setcurMouseSegment(lastEventMove);

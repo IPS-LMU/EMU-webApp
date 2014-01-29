@@ -79,12 +79,11 @@ angular.module('emulvcApp')
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
-						    
 						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
+						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
 						} else {
 						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
+						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
 						}
 						break;						
 					case 'moveSegment':

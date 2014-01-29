@@ -63,7 +63,7 @@ angular.module('emulvcApp')
     
     
     
-    sServObj.getEvent = function (pcm, level, nearest) {
+    sServObj.getEvent = function (pcm, level, nearest, maximum) {
 		var evtr = null;
 		if (level.type === "seg") {
 			angular.forEach(level.elements, function (evt, id) {
@@ -88,7 +88,7 @@ angular.module('emulvcApp')
 				if (key < level.elements.length - 1) {
 					spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
 				} else {
-					spaceHigher = $scope.vs.curViewPort.bufferLength;
+					spaceHigher = maximum;
 				}
 				if (key > 0) {
 					spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
@@ -102,7 +102,7 @@ angular.module('emulvcApp')
 	};  
 	
 
-    sServObj.getEventId = function (pcm, level, nearest) {
+    sServObj.getEventId = function (pcm, level, nearest, maximum) {
 		var id = 0;
 		var ret = 0;
 		if (level.type === "seg") {
@@ -128,7 +128,7 @@ angular.module('emulvcApp')
 				if (key < level.elements.length - 1) {
 					spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
 				} else {
-					spaceHigher = $scope.vs.curViewPort.bufferLength;
+					spaceHigher = maximum;
 				}
 				if (key > 0) {
 					spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
@@ -478,7 +478,7 @@ angular.module('emulvcApp')
 		}
 	};	
 	
-	sServObj.moveBoundry = function (changeTime, t, seg) {
+	sServObj.moveBoundry = function (changeTime, t, seg, maximum) {
 		if (null !== t) { // && t.LevelName === viewState.getcurMouseLevelName()
 			if (t.type === 'seg') {
 				if (seg > 1 && (t.elements[seg - 1].sampleDur + changeTime) >= 1 && (t.elements[seg].sampleDur - changeTime) >= 1) {
@@ -497,7 +497,7 @@ angular.module('emulvcApp')
 						t.elements[seg].startSample += changeTime;
 				} else if (seg == t.elements.length - 1) {
 					if (t.elements[seg].startSample + changeTime >= t.elements[seg - 1].startSample &&
-						t.elements[seg].startSample + changeTime <= $scope.vs.curViewPort.bufferLength)
+						t.elements[seg].startSample + changeTime <= maximum)
 						t.elements[seg].startSample += changeTime;
 				}
 			}
