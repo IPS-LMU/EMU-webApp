@@ -58,11 +58,11 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"supertierName": {
+					"superlevelName": {
 						"type": "string",
 						"required": true
 					},
-					"subtierName": {
+					"sublevelName": {
 						"type": "string",
 						"required": true
 					},

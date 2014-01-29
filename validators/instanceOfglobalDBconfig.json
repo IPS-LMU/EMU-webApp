@@ -26,8 +26,8 @@
 		}]
 	}],
 	"constraints": [{
-		"supertierName": "Syllable",
-		"subtierName": "Tone",
+		"superlevelName": "Syllable",
+		"sublevelName": "Tone",
 		"type": "ONE_TO_MANY"
 	}],
 	"audiofileExtention": "wav",
