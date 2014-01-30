@@ -269,6 +269,7 @@ angular.module('emulvcApp')
 			};
 			$('.menu').css(transcss);
 			$('.HandleLevelsCtrl').css(transcss);
+			$('.TimelineCtrl').css(transcss);
 			$('.OsciDiv').css(transcss);
 			$('.SpectroDiv').css(transcss);
 			$('.menu-bottom').css(transcss);
@@ -461,26 +462,13 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.openSubmenu = function () {	
-		    if (viewState.getRightsubmenuOpen()) {
-		        $scope.openRightSubmenu();
-		    }			
+		$scope.openSubmenu = function () {			
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
-				$('#FileCtrl').removeClass('cbp-spmenu-open');
-				$('#TimelineCtrl').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
-				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
-				$('#menu').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
-				$('#menu-bottom').removeClass('cbp-spmenu-left-toright').addClass('cbp-spmenu-left-toleft');
 			} else {
 				viewState.setsubmenuOpen(true);
-				$('#FileCtrl').addClass('cbp-spmenu-open');
-				$('#TimelineCtrl').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
-				$('#HandleLevelsCtrl').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
-				$('#menu').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
-				$('#menu-bottom').removeClass('cbp-spmenu-left-toleft').addClass('cbp-spmenu-left-toright');
 			}
-			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime); // SIC !! has to be according to css transition... maybe read out value of css or set in conf
+			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
 		};
  
 		/**

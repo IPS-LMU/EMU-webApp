@@ -1,49 +1,19 @@
 <!-- <div class="modal" id="appcachemodal">Updating to newer version...</div> -->
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
-  <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="FileCtrl" ng-controller="FileCtrl">
-   <h3><div class="uttFilter"><input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
-   <div id="submenu" class="submenu">
-    <div class="utteranceOuter" ng-repeat="utt in uttList | regex:filterText">
-     <div class="uttListItem" id="uttListItem" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
-      <b>{{utt.name}}</b>
-      <!-- <div class="utterance" title="{{utt.name}}">{{utt.name}}</div> -->
-      <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
-      <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-disabled="true" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
-      <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
-    </div>
-  </div>
-  <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="loadFiles();">
-   <span>{{dropText}}</span>
-   <div ng-show="files.length">
-    <div ng-repeat="file in files.slice(0)">
-     <span>{{file.webkitRelativePath || file.name}}</span>
-     <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
-   </div>
- </div>
-</div>      
-</div>
-</nav>
-<!--         <div class="utteranceSaveMeta" ng-show="tmp.showSaveCommStaBtnDiv">
-          <button ng-style="getMetaBtnColor();" ng-click="saveMetaData();">Save Comments/Status</button>
-        </div> -->
-
+  <submenu class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"></submenu>
+  <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
 
         <nav class="righSideMenu" show-menu="isRightSideMenuHidden">
-          <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
+          
           <h3>Perspectives</h3>
           <ul ng-repeat="persp in cps.vals.perspectives">
             <li ng-click="changePerspective();">{{persp.name}}</li>
           </ul>
         </nav>
 
-<!--  <nav class="cbp-spmenu-right cbp-spmenu-vertical cbp-spmenu-right" id="ViewCtrl">
-    <h3>view Menu</h3>
- </nav>
--->      
 
-
-       <div class="menu" id="menu">
+       <div class="menu moveLeftSubmenu" id="menu">
          <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></button> 
          <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
          <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
@@ -59,7 +29,7 @@
          <a id="aboutBtn" class="SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></a>
        </div>
 
-       <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
+       <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl moveLeftSubmenu">
         <div class="controls">
           <osci id="osci" class="osci"></osci>  
           <spectro id="spec" class="spec"></spectro>
@@ -70,7 +40,7 @@
         </div>
       </div>
       
-      <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
+      <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl moveLeftSubmenu">
         <!-- all levels are listed here -->
         <ul ng-model="levelDetails.levels" id="allowSortable">
           <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Level sort">
@@ -79,7 +49,7 @@
         </ul>
       </div>
 
-      <div class="menu-bottom" id="menu-bottom">
+      <div class="menu-bottom moveLeftSubmenu" id="menu-bottom">
         <div ng-controller="TimelineCtrl">
           <preview id="preview" class="preview"></preview>  
         </div>
