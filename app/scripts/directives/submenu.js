@@ -11,6 +11,7 @@ angular.module('emulvcApp')
         scope.$watch('vs.submenuOpen', function () {
         
             var dotMs = scope.vs.getTransitionTime();
+        
 			var transcss = {
 				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
 				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
@@ -18,24 +19,31 @@ angular.module('emulvcApp')
 				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
 				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
 			};
-			$('.moveLeftSubmenu').css(transcss);
 			element.css(transcss);
-        
-        
+			$('#menu-bottom').css(transcss);
+			$('#menu').css(transcss);			
+			$('#TimelineCtrl').css(transcss);
+            $('#HandleLevelsCtrl').css(transcss);
+            
            if(scope.vs.submenuOpen) {
                $animate.addClass(element, '.slideInSubmenu');
-               $('.moveLeftSubmenu').addClass('cbp-spmenu-left-toright');
+               $animate.addClass($('#menu'), '.slideInBody');
+               $animate.addClass($('#menu-bottom'), '.slideInBody');
+               $animate.addClass($('#TimelineCtrl'), '.slideInBody');
+               $animate.addClass($('#HandleLevelsCtrl'), '.slideInBody');
            }
            else {
                $animate.removeClass(element, '.slideInSubmenu');
-               $('.moveLeftSubmenu').removeClass('cbp-spmenu-left-toright');
+               $animate.removeClass($('#menu-bottom'), '.slideInBody');
+               $animate.removeClass($('#menu'), '.slideInBody');
+               $animate.removeClass($('#TimelineCtrl'), '.slideInBody');
+               $animate.removeClass($('#HandleLevelsCtrl'), '.slideInBody');
            }
         }, true);
       }
     };
   });
-
-  
+ 
 // simple animation to add slideLeft class
 angular.module('emulvcApp').animation(".slideInSubmenu", function () {
 	return {
@@ -44,6 +52,18 @@ angular.module('emulvcApp').animation(".slideInSubmenu", function () {
 		},
 		removeClass: function (element, className) {
 			element.removeClass('cbp-spmenu-open');
+		}
+	}
+});
+ 
+// simple animation to add slideLeft class
+angular.module('emulvcApp').animation(".slideInBody", function () {
+	return {
+		addClass: function (element, className) {
+			element.addClass('cbp-spmenu-left-toright');
+		},
+		removeClass: function (element, className) {
+			element.removeClass('cbp-spmenu-left-toright');
 		}
 	}
 });

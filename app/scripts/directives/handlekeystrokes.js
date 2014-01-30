@@ -318,7 +318,7 @@ angular.module('emulvcApp')
               // openSubmenu
               if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
                 if(e.shiftKey) {
-                    scope.openRightSubmenu();
+                    scope.toggleRightSideMenuHidden();
                 }
                 else {
                     scope.openSubmenu();

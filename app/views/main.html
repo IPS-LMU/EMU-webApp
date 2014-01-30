@@ -13,7 +13,7 @@
         </nav>
 
 
-       <div class="menu moveLeftSubmenu" id="menu">
+       <div class="menu" id="menu">
          <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></button> 
          <!-- <button class="mini-btn" id="cmd_dropBoxOpen">Dropbox Open</button> -->
          <!-- <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.openSubmenu}}">☰</button>  -->
@@ -29,18 +29,17 @@
          <a id="aboutBtn" class="SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></a>
        </div>
 
-       <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl moveLeftSubmenu">
+       <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
         <div class="controls">
           <osci id="osci" class="osci"></osci>  
           <spectro id="spec" class="spec"></spectro>
-          <button class="rightSideMenuOpenBtn" id="rightSideMenuOpenBtn" ng-click="openRightSubmenu();"><img></button> 
           <div id="resizer" class="resizer">
             <span id="resizeIcon" class="resizeIcon"> </span>
           </div>
         </div>
       </div>
       
-      <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl moveLeftSubmenu">
+      <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
         <!-- all levels are listed here -->
         <ul ng-model="levelDetails.levels" id="allowSortable">
           <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Level sort">
@@ -49,7 +48,7 @@
         </ul>
       </div>
 
-      <div class="menu-bottom moveLeftSubmenu" id="menu-bottom">
+      <div class="menu-bottom" id="menu-bottom">
         <div ng-controller="TimelineCtrl">
           <preview id="preview" class="preview"></preview>  
         </div>
