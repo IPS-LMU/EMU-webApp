@@ -16,29 +16,6 @@ describe('navigation', function () {
 	    var elems = element.all(by.repeater('utt in uttList | regex:filterText'));
 	    expect(elems.count()).toBe(7);
 	});
-	
-	it('should close left submenu', function() {
-	    // expect to be open on load
-	    expect(element(by.id('TimelineCtrl')).getAttribute('class')).toMatch(/cbp-spmenu-left-toright/);
-	    // close the left submenu
-	    element(by.id('submenuOpen')).click();
-	    // expect to be closed
-	    expect(element(by.id('TimelineCtrl')).getAttribute('class')).toMatch(/cbp-spmenu-left-toleft/);
-	});	
-	
-	it('should open right submenu', function() {
-	    // open the right submenu
-	    element(by.id('rightSideMenuOpenBtn')).click();
-	    // expect to be open
-	    expect(element(by.id('TimelineCtrl')).getAttribute('class')).toMatch(/cbp-spmenu-right-toright/);
-	});
-	
-	it('should close right submenu', function() {
-	    // open the right submenu
-	    element(by.id('rightSideMenuOpenBtn')).click();
-	    // expect to be closed
-	    expect(element(by.id('TimelineCtrl')).getAttribute('class')).toMatch(/cbp-spmenu-right-toleft/);
-	});
 
 	
 	it('should select a range in the viewport', function() {

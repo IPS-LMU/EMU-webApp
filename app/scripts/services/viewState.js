@@ -62,6 +62,7 @@ angular.module('emulvcApp')
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
+    sServObj.showDropZone = undefined;
 
     sServObj.dragBarActive = false;
     sServObj.movingBoundary = false;
@@ -361,7 +362,6 @@ angular.module('emulvcApp')
     sServObj.setTransitionTime = function (s) {
       this.TransitionTime = s;
     };
- 
     
     /**
      * get the height of the osci

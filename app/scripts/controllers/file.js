@@ -30,9 +30,6 @@ angular.module('emulvcApp')
       $scope.dropClass = '';
     };
     
-	$scope.$watch('wavLoaded', function () {
-		console.log($scope.wavLoaded);
-	}, true);    
 
     function dragEnterLeave(evt) {
       evt.stopPropagation();

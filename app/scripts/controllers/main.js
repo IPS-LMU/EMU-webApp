@@ -13,15 +13,12 @@ angular.module('emulvcApp')
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
 		$scope.tmp.showSaveCommStaBtnDiv = false;
-		$scope.showDropZone = false;
 		$scope.dbLoaded = false;
-
 		$scope.isRightSideMenuHidden = false;
+		$scope.showDropZone = true;
 
 		$scope.lastkeycode = 'N/A';
 		$scope.uttList = [];
-
-		$scope.showDropZone = true;
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
@@ -520,7 +517,7 @@ angular.module('emulvcApp')
 				viewState.setState('loadingSaving');
 				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
 					console.log(res.data);
-					$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
+					$scope.showDropZone = false;
 					$scope.uttList = res.data;
 					Iohandlerservice.getUtt(res.data[0]);
 					$scope.curUtt = res.data[0];
@@ -551,7 +548,7 @@ angular.module('emulvcApp')
 					Soundhandlerservice.wavJSO = {};
 					Levelservice.data = {};
 					Ssffdataservice.data = [];
-					$('#FileCtrl').scope().showDropZone(); // SIC should be in service
+					$scope.showDropZone = true;
 					$scope.$broadcast('refreshTimeline');
 
 					viewState.setState('noDBorFilesloaded');

@@ -1,23 +1,26 @@
-<nav id="FileCtrl" ng-controller="FileCtrl">
-   <h3><div class="uttFilter"><input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
-   <div id="submenu" class="submenu">
-    <div class="utteranceOuter" ng-repeat="utt in uttList | regex:filterText">
-     <div class="uttListItem" id="uttListItem" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
-      <b>{{utt.name}}</b>
-      <!-- <div class="utterance" title="{{utt.name}}">{{utt.name}}</div> -->
-      <button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
-      <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-disabled="true" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
-      <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
+<div>
+    <h3><div class="uttFilter"><input type="text" ng-model="filterText" placeholder="Utterance Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
+    <div id="submenu" class="submenu">
+        <div class="utteranceOuter" ng-repeat="utt in uttList | regex:filterText">
+            <div class="uttListItem" id="uttListItem" ng-style="getUttColor(utt);" ng-click="menuUttClick(utt);">
+                <b>{{utt.name}}</b><button class="saveUtteranceButton" ng-click="menuUttSave(utt);" ng-disabled="uttIsDisabled(utt)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
+                <div ng-show="utt.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-disabled="true" ng-model="utt.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
+                <div ng-show="utt.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="utt.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div ng-show="showDropZone" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="loadFiles();">
-   <span>{{dropText}}</span>
-   <div ng-show="files.length">
-    <div ng-repeat="file in files.slice(0)">
-     <span>{{file.webkitRelativePath || file.name}}</span>
-     <span ng-switch="file.size > 1024*1024"><span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span><span ng-switch-default>{{file.size / 1024 | number:2}} kB</span></span>
-   </div>
- </div>
-</div>      
+    <div ng-show="showDropZone">
+        <div ng-controller="FileCtrl" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="loadFiles();">
+            <span>{{dropText}}</span>
+            <div ng-show="files.length">
+                <div ng-repeat="file in files.slice(0)">
+                    <span>{{file.webkitRelativePath || file.name}}</span>
+                    <span ng-switch="file.size > 1024*1024">
+                        <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+                        <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</nav>
