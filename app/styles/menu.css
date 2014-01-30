@@ -100,7 +100,9 @@
  
 .cbp-spmenu-left-toright {
     left: 240px;
-
+    width: -moz-calc(100% - 240px);
+    width: -webkit-calc(100% - 240px);
+    width: calc(100% - 240px);
 }
  
 .cbp-spmenu-left-toleft {
