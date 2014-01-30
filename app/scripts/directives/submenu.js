@@ -9,6 +9,19 @@ angular.module('emulvcApp')
       link: function postLink(scope, element, attr) {
 
         scope.$watch('vs.submenuOpen', function () {
+        
+            var dotMs = scope.vs.getTransitionTime();
+			var transcss = {
+				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
+			};
+			$('.moveLeftSubmenu').css(transcss);
+			element.css(transcss);
+        
+        
            if(scope.vs.submenuOpen) {
                $animate.addClass(element, '.slideInSubmenu');
                $('.moveLeftSubmenu').addClass('cbp-spmenu-left-toright');

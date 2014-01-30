@@ -259,29 +259,7 @@ angular.module('emulvcApp')
 			$('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
 
 			// setting transition values
-			var dotMs = ConfigProviderService.vals.colors.transitionTime / 1000;
-			var transcss = {
-				'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-				'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-				'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-				'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-				'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
-			};
-			$('.menu').css(transcss);
-			$('.HandleLevelsCtrl').css(transcss);
-			$('.TimelineCtrl').css(transcss);
-			$('.OsciDiv').css(transcss);
-			$('.SpectroDiv').css(transcss);
-			$('.menu-bottom').css(transcss);
-			$('.cbp-spmenu').css(transcss);
-			$('.cbp-spmenu-right').css(transcss);
-			$('.cbp-spmenu-push').css(transcss);
-			$('.cbp-spmenu-left-toleft').css(transcss);
-			$('.cbp-spmenu-left-toright').css(transcss);
-			$('.cbp-spmenu-right-toleft').css(transcss);
-			$('.cbp-spmenu-right-toright').css(transcss);
-
-
+			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
 
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				// $('#allowSortable').sortable('enable');

@@ -61,6 +61,7 @@ angular.module('emulvcApp')
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;
+    sServObj.TransitionTime = undefined;
 
     sServObj.dragBarActive = false;
     sServObj.movingBoundary = false;
@@ -342,16 +343,34 @@ angular.module('emulvcApp')
     /**
      * get the height of the osci
      */
-    sServObj.getRightsubmenuOpen = function () {
-      return this.rightSubmenuOpen;
+    sServObj.setsubmenuOpen = function (s) {
+      this.submenuOpen = s;
+    };
+ 
+
+    /**
+     * get the height of the osci
+     */
+    sServObj.getTransitionTime = function () {
+      return this.TransitionTime;
     };
 
     /**
      * get the height of the osci
      */
-    sServObj.setsubmenuOpen = function (s) {
-      this.submenuOpen = s;
+    sServObj.setTransitionTime = function (s) {
+      this.TransitionTime = s;
     };
+ 
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getRightsubmenuOpen = function () {
+      return this.rightSubmenuOpen;
+    };
+
+
 
     /**
      * get the height of the osci
