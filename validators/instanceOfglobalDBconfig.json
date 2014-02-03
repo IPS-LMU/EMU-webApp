@@ -37,22 +37,24 @@
 		"fileExtension": "fms",
 		"columnName": "fm"
 	}],
-	"perspectives": [{
-		"name": "default",
-		"signalCanvases": {
-			"order": ["OSCI", "SPEC"],
-			"assign": [{
-				"SPEC": "formants"
-			}],
-			"contourLims": [{
-				"formants": {
-					"min": 0,
-					"max": 1
-				}
-			}]
-		},
-		"levelCanvases": {
-			"order": ["Phonetic", "Tone"]
-		}
-	}]
+	"EMU-webAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [{
+					"SPEC": "formants"
+				}],
+				"contourLims": [{
+					"formants": {
+						"min": 0,
+						"max": 1
+					}
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Phonetic", "Tone"]
+			}
+		}]
+	}
 }

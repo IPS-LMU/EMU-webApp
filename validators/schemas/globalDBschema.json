@@ -109,65 +109,68 @@
 			"uniqueItems": true,
 			"required": true
 		},
-		"perspectives": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string",
-						"required": true
-					},
-					"signalCanvases": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"order": {
-								"type": "array",
-								"required": true,
-								"minItems": 1,
-								"items": {
-									"type": "string"
-								}
-							},
-							"assign": {
-								"type": "array",
-								"required": true,
-								"items": {
-									"type": "object",
-									"properties": {
-										"SPEC": {
-											"type": "string"
-										},
-										"OSCI": {
-											"type": "string"
+		"EMU-webAppConfig": {
+			"perspectives": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string",
+							"required": true
+						},
+						"signalCanvases": {
+							"type": "object",
+							"required": true,
+							"properties": {
+								"order": {
+									"type": "array",
+									"required": true,
+									"minItems": 1,
+									"items": {
+										"type": "string"
+									}
+								},
+								"assign": {
+									"type": "array",
+									"required": true,
+									"items": {
+										"type": "object",
+										"properties": {
+											"SPEC": {
+												"type": "string"
+											},
+											"OSCI": {
+												"type": "string"
+											}
 										}
 									}
-								}
-							},
-							"contourLims": {
-								"type": "array",
-								"required": true,
-								"items": {
-									"type": "object"
+								},
+								"contourLims": {
+									"type": "array",
+									"required": true,
+									"items": {
+										"type": "object"
+									}
 								}
 							}
-						}
-					},
-					"levelCanvases": {
-						"type": "object",
-						"properties": {
-							"order": {
-								"type": "array",
-								"items": {
-									"type": "string"
+						},
+						"levelCanvases": {
+							"type": "object",
+							"properties": {
+								"order": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
 								}
 							}
 						}
 					}
-				}
+				},
+				"minItems": 1,
+				"required": true
 			},
-			"minItems": 1,
 			"required": true
 		}
 	}

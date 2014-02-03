@@ -117,7 +117,7 @@
 \section{File structure of json files}
 
 Until the labeler can also display the hierarchical structure of the annotation it will only 
-display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
+display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
 
 \lstinputlisting[caption=instanceOfglobalDBconfig.json, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfglobalDBconfig.json}
 
@@ -136,10 +136,6 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 
 \lstinputlisting[caption=instanceOfAnnotationFile.json, label=idsr, language=json,firstnumber=1]{../../validators/instanceOfAnnotationFile.json}
 
-\begin{itemize}
-  \item Shouldn't the tiers field be an array?
-  \item Should tiers be called tiers? Levels is the old term and is more generic and less confusing in my opinion.
-\end{itemize}
 
 \begin{lstlisting}[caption=EMU-webApp internal derived signal representation, label=idsr, language=json,firstnumber=1]
 {
@@ -166,99 +162,161 @@ display a subset of the tiers namely \textbf{SEGMENT} and \textbf{EVENT}
 }
 \end{lstlisting}
 
-% \printbibliography
+\clearpage
 
-% \begin{figure}[h]
-%   \tikzstyle{rootscope}=[rectangle, fill=black!50, thick,
-%                  inner sep=0.1cm, rounded corners]
-%   \tikzstyle{ctrl}=[rectangle, fill=red!50, thick,
-%                  inner sep=0.1cm, rounded corners]
-%   \tikzstyle{service}=[rectangle, fill=green!50, thick,
-%                  inner sep=0.1cm]
-%   \tikzstyle{directive}=[rectangle, fill=blue!50, thick,
-%                  inner sep=0.1cm, rounded corners]
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Websocket protocol definition (read-only and no user management for now...)}
 
-%   \tikzstyle{jso}=[rectangle, fill=yellow, thick,
-%                  inner sep=0.1cm]
+All notation in nodejs / javascript syntax. The \texttt{request.callbackID} variable is a UUID that is echoed by the server on every request to remap the reply to the request on the client. \texttt{xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx} is used as a placeholder for all UUIDs.
 
 
-%   \begin{tikzpicture}
-%   \node (rootscope) at ( 0, 7) [rootscope] {\small{rootscope}};
+\subsection{The Protocol}
 
-%     \node (configServ) at ( -6, 2) [service] {\small{ConfigProviderService}};
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETPROTOCOL}}
+\begin{center}
+  \line(1,0){250}
 
-%     \node (mainCtrl) at ( 0, 5) [ctrl] {\small{mainCtl}};
-%     \node (viewState) at ( -4, 5) [service] {\small{viewState}};
-%     \node (ioHandler) at ( 4, 6) [service] {\small{Iohandlerservice}};
-%     \node (soundHandler) at ( 4, 5) [service] {\small{Soundhandlerservice}};
-%       \node (SSFFparser) at ( 7, 7.5) [service] {\small{ssffparserservice}};
-%       \node (TextGridParser) at ( 7, 7) [service] {\small{TGParser}};
-%       \node (labFileParser) at ( 7, 6.5) [service] {\small{labParser}};
-%       \node (Dropbox) at ( 7, 6) [service] {\small{DBHandler}};
-%       \node (Socket) at ( 7, 5.5) [service] {\small{Sockethandler}};
+  \textit{Initial request to see if client and server speak the same protocol.}
+
+  \line(1,0){250}
+\end{center}
 
 
-%     \node (keys) at ( 0, 4) [ctrl] {\small{handleglobalkeystrokes}};
+\begin{lstlisting}[caption=Request content, language=json]
+JSON.stringify({
+  'type': 'GETPROTOCOL', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+})
+\end{lstlisting}
 
-%     % oscispec ctrl
-%     \draw (-1, 3) rectangle (7, -1.5);
+\begin{lstlisting}[caption=Reply content, language=json]
+JSON.stringify({
+  'callbackID': request.callbackID,
+  'data': {
+    'protocol': 'EMU-webApp-websocket-protocol',
+    'version': '0.0.1'
+  },¡
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+})
+\end{lstlisting}
 
-%     \node (osciSpecCtrl) at ( 0, 3) [ctrl] {\small{timelineCtrl}};
 
-%     \node (spect) at ( 1, 2) [directive] {\small{$<$spectrogram$>$}};
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETGLOBALDBCONFIG}}
+\begin{center}
+  \line(1,0){250}
 
-%           \node (canspect) at (4 , 1) [directive] {\small{$<$canvas handlemouseinspect$>$}};
-    
-%     \node (osci) at ( 1, 0) [directive] {\small{$<$oscii$>$}};
+  \textit{Next the globalDBconfig.json is requested from the DB. This is needed for the level definitions (future version) $+$ the legal values of each level $+$ the custom config specified in the field EMU-webAppConfig}
 
-%           \node (canosci) at (4 , -1) [directive] {\small{$<$canvas handlemouseinosci$>$}};
+  \line(1,0){250}
+\end{center}
 
 
-%     \node (Drawhelperservice) at (8 , 4) [service] {Drawhelperservice};
+\begin{lstlisting}[caption=Request content, language=json]
+JSON.stringify({
+  'type': 'GETGLOBALDBCONFIG', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+})
+\end{lstlisting}
 
-%     % tiers
-%     \draw (-1, -2) rectangle (7, -4.5);
-%     \node (ssffData) at ( -4, 3) [jso] {\small{ssffData(model)}};
-%     \node (model) at ( -4, -2) [jso] {\small{tierInfos(model)}};
-%     \node (tierCtrl) at ( 0, -2) [ctrl] {\small{handletiersCtl}};
+\begin{lstlisting}[caption=Reply content, language=json]
+JSON.stringify({
+  'callbackID': request.callbackID,
+  'data': configData,
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+})
+\end{lstlisting}
+Where \texttt{configData} is the javascript object representing \texttt{globalDBconfig.json}
 
-%     \node (tier) at ( 1, -3) [directive] {\small{$<$tier$>$}};
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETBUNDLELIST}}
+\begin{center}
+  \line(1,0){250}
 
-%           \node (cantier) at (4 , -4) [directive] {\small{$<$canvas handlemouseintier$>$}};
+  \textit{Next a bundlelist is requested.}
 
-%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     %connections
-%     \draw [-] (mainCtrl) -- (keys);
-%     \draw [-] (keys) -- (osciSpecCtrl);
-%     \draw [-] (osciSpecCtrl.west) -- (tierCtrl.west);
-%     \draw [<->] (osciSpecCtrl.west) -- (ssffData);
-%     \draw [<->] (tierCtrl.west) -- (model);
+  \line(1,0){250}
+\end{center}
 
-%     \draw [->, dotted] (ioHandler) -- (mainCtrl);
-%     \draw [->, dotted] (soundHandler) -- (mainCtrl);
 
-%     \draw [<-, dotted] (ioHandler) -- (SSFFparser);
-%     \draw [<-, dotted] (ioHandler) -- (TextGridParser);
-%     \draw [<-, dotted] (ioHandler) -- (labFileParser);
-%     \draw [<-, dotted] (ioHandler) -- (Dropbox);
-%     \draw [<-, dotted] (ioHandler) -- (Socket);
+\begin{lstlisting}[caption=Request content, language=json]
+JSON.stringify({
+  'type': 'GETBUNDLELIST', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+})
+\end{lstlisting}
 
-%     %viewstate
-%     \draw [->, dotted] (viewState) -- (mainCtrl);
-%     \draw [->, dotted] (viewState) -- (osciSpecCtrl);
-%     \draw [->, dotted] (viewState) -- (tierCtrl.west);
+\begin{lstlisting}[caption=Reply content, language=json]
+JSON.stringify({
+  'callbackID': request.callbackID,
+  'data': bundleList,
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+})
+\end{lstlisting}
 
-%     %configproviderservice
-%     \draw [->, dotted] (configServ) -- (osciSpecCtrl.west);
-%     \draw [->, dotted] (configServ) -- (tierCtrl.west);
-%     \draw [->, dotted] (configServ) -- (keys.west);
-%     \draw [->, dotted] (configServ) -- (mainCtrl.west);
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETBUNDLE}}
+\begin{center}
+  \line(1,0){250}
 
-%     %Drawhelperservice
+  \textit{After receiving the bundleList by default the first bundle in the bundleList is requested. This request is also sent when the user clicks a bundle in the bundleList}
 
-%     \draw [->, dotted] (Drawhelperservice) -- (osciSpecCtrl.east);
-%     \draw [->, dotted] (Drawhelperservice) -- (tierCtrl.east);
+  \line(1,0){250}
+\end{center}
 
-%   \end{tikzpicture}
-% \end{figure}
+
+\begin{lstlisting}[caption=Request content, language=json]
+JSON.stringify({
+  'type': 'GETBUNDLE',
+  'name': 'msajc003',
+  'perspectiveIdx': 0,
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+})
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Reply content, language=json]
+JSON.stringify({
+  'callbackID': request.callbackID,
+  'data': bundleData,
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+})
+\end{lstlisting}
+Where \texttt{bundleData} is the javascript object containing all the values for the according perspective in the DB.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Error handling}
+
+If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.
+
+\begin{lstlisting}[caption=ERROR reply content, language=json]
+JSON.stringify({
+  'callbackID': request.callbackID,
+  'status': {
+    'type': 'ERROR',
+    'message': 'An error occured trying to read a file from disk. Please make sure: /path/to/file exists or check the config...
+  }
+})
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Example bundle JSON}
+
+\lstinputlisting[caption=instanceOfglobalDBconfig.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
+
+
 \end{document}
