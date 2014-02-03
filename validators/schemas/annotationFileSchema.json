@@ -30,9 +30,8 @@
 						"items": {
 							"type": "object",
 							"properties": {
-								"UUID": {
-									"type": "string",
-									"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+								"id": {
+									"type": "integer",
 									"required": true
 								},
 								"sampleStart": {
@@ -57,12 +56,10 @@
 				"type": "object",
 				"properties": {
 					"from": {
-						"type": "string",
-						"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+						"type": "integer"
 					},
 					"to": {
-						"type": "string",
-						"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+						"type": "integer"
 					}
 				}
 			}

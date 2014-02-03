@@ -1,0 +1,12 @@
+[
+  {
+    "userID": "user1",
+    "finishedEditing": false,
+    "comment": ""
+  },
+  {
+    "userID": "user2",
+    "finishedEditing": false,
+    "comment": ""
+  }
+]

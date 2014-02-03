@@ -3,35 +3,32 @@
   "annotates": "SES000/msajc003/msajc003.wav",
   "sampleRate": 20000,
   "levels": [{
-    "UUID": "940eb980-8824-11e3-baa7-0800200c9a66",
     "name": "Phonetic",
     "type": "SEGMENT",
     "elements": [{
-      "UUID": "a5142d50-8824-11e3-baa7-0800200c9a66",
+      "id": 1,
       "label": "V",
       "sampleStart": 3750,
       "sampleDur": 1390
     }]
   }, {
-    "UUID": "a060e900-8825-11e3-baa7-0800200c9a66",
     "name": "Tone",
     "type": "EVENT",
     "elements": [{
-      "UUID": "de812560-8825-11e3-baa7-0800200c9a66",
+      "id": 2,
       "samplePoint": 8382,
       "label": "H*"
     }]
   }, {
-    "UUID": "9e5014f0-8826-11e3-baa7-0800200c9a66",
     "name": "Syllable",
     "type": "ELEMENT",
     "elements": [{
-      "UUID": "aaa4f900-8826-11e3-baa7-0800200c9a66",
+      "id": 5,
       "label": "W"
     }]
   }],
   "links": [{
-    "from": "aaa4f900-8826-11e3-baa7-0800200c9a66",
-    "to": "a5142d50-8824-11e3-baa7-0800200c9a66",
+    "from": 2,
+    "to": 3
   }]
 }

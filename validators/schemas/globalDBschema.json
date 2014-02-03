@@ -5,6 +5,11 @@
 			"type": "string",
 			"required": true
 		},
+		"UUID": {
+			"type": "string",
+			"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+			"required": true
+		},
 		"levelDefinitions": {
 			"type": "array",
 			"minItems": 1,
@@ -53,7 +58,7 @@
 			"uniqueItems": true,
 			"required": true
 		},
-		"constraints": {
+		"linkDefinition": {
 			"type": "array",
 			"items": {
 				"type": "object",
@@ -76,13 +81,13 @@
 			},
 			"required": true
 		},
-		"audiofileExtention": {
+		"mediafileExtension": {
 			"type": {
 				"enum": ["wav"]
 			},
 			"required": true
 		},
-		"tracks": {
+		"ssffTracks": {
 			"type": "array",
 			"items": {
 				"type": "object",

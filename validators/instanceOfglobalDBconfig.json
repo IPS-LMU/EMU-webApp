@@ -1,5 +1,6 @@
 {
 	"name": "ae",
+	"UUID": "940eb980-8824-11e3-baa7-0800200c9a66",
 	"levelDefinitions": [{
 		"name": "Phonetic",
 		"type": "ELEMENT",
@@ -25,13 +26,13 @@
 			"legalValues": []
 		}]
 	}],
-	"constraints": [{
+	"linkDefinition": [{
 		"superlevelName": "Syllable",
 		"sublevelName": "Tone",
 		"type": "ONE_TO_MANY"
 	}],
-	"audiofileExtention": "wav",
-	"tracks": [{
+	"mediafileExtension": "wav",
+	"ssffTracks": [{
 		"name": "formants",
 		"fileExtension": "fms",
 		"columnName": "fm"
