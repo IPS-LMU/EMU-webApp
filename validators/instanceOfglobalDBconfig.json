@@ -6,7 +6,6 @@
 		"type": "ELEMENT",
 		"attributeDefinitions": [{
 			"name": "Phonetic",
-			"type": "TEXT",
 			"legalValues": []
 		}]
 	}, {
@@ -14,7 +13,6 @@
 		"type": "EVENT",
 		"attributeDefinitions": [{
 			"name": "Tone",
-			"type": "TEXT",
 			"legalValues": []
 		}]
 	}, {
@@ -22,7 +20,6 @@
 		"type": "ELEMENT",
 		"attributeDefinitions": [{
 			"name": "Syllable",
-			"type": "TEXT",
 			"legalValues": []
 		}]
 	}],
