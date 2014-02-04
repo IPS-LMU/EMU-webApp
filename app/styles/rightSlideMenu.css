@@ -47,7 +47,7 @@
   background-color: #FFF;
   box-shadow: 0 0 5px 2px #ccc;
   border-radius: 2px;
-  z-index: 9999;
+  z-index: 1001;
 }
 
 .rightSideMenuOpenBtn img{
