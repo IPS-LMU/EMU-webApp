@@ -40,7 +40,6 @@
         "drawCrossHairs": true
     },
     "activeButtons": {
-        "openMenu": true,
         "addLevelSeg": true,
         "addLevelPoint": true,
         "renameSelLevel": true,
