@@ -9,9 +9,8 @@ var configName = 'ae.json';
 
 var portNr = 8080;
 
+var dbConfig = {};
 
-var curUttList = [];
-var curStrippedUttList = [];
 
 var WebSocketServer = require('ws').Server,
   wss = new WebSocketServer({
@@ -58,13 +57,13 @@ wss.on('connection', function (ws) {
           }), undefined, 0);
           return;
         } else {
-          var configData = JSON.parse(data);
-          curUttList = configData;
-          // curStrippedUttList = stripUttList(configData);
+          dbConfig = JSON.parse(data);
+          // curUttList = dbConfig;
+          // curStrippedUttList = stripUttList(dbConfig);
 
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
-            'data': configData,
+            'data': dbConfig,
             'status': {
               'type': 'SUCCESS',
               'message': ''
@@ -111,7 +110,70 @@ wss.on('connection', function (ws) {
 
       // GETBUNDLE method
     case 'GETBUNDLE':
+      console.log(mJSO.name);
 
+      var bundle = {};
+      filewalker(pathToDbRoot)
+        .on('dir', function (p) {}).on('file', function (p) {
+          var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
+          var pattAnnot = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + 'json' + '$');
+
+          // read media file
+          if (pattMedia.test(p)) {
+            console.log(p);
+            bundle.mediaFile = {};
+            bundle.mediaFile.encoding = 'BASE64';
+            bundle.mediaFile.filePath = p;
+          }
+          // read annotation file
+          if (pattAnnot.test(p)) {
+            bundle.annotation = {};
+            bundle.annotation.filePath = p;
+          }
+          // read ssffTracks
+          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
+            var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
+            if (pattTrack.test(p)) {
+              bundle.ssffFiles = [];
+              bundle.ssffFiles.push({
+                ssffTrackName: dbConfig.ssffTracks[i].name,
+                encoding: 'BASE64',
+                filePath: p
+              });
+            }
+          }
+
+        }).on('error', function (err) {
+          ws.send(JSON.stringify({
+            'callbackID': mJSO.callbackID,
+            'status': {
+              'type': 'ERROR',
+              'message': 'Error getting bundle! Request type was: ' + mJSO.type + ' Error is: ' + err
+            }
+          }), undefined, 0);
+        }).on('done', function () {
+          bundle.mediaFile.data = fs.readFileSync(pathToDbRoot + bundle.mediaFile.filePath, 'base64');
+          delete bundle.mediaFile.filePath;
+
+          bundle.annotation = JSON.parse(fs.readFileSync(pathToDbRoot + bundle.annotation.filePath, 'utf8'));
+          // delete bundle.annotation.filePath;
+
+          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
+            bundle.ssffFiles[i].data = fs.readFileSync(pathToDbRoot + bundle.ssffFiles[i].filePath, 'base64');
+            delete bundle.ssffFiles[i].filePath;
+          }
+          console.log('##########################');
+          console.log('done');
+          ws.send(JSON.stringify({
+            'callbackID': mJSO.callbackID,
+            'data': bundle,
+            'status': {
+              'type': 'SUCCESS',
+              'message': ''
+            }
+          }), undefined, 0);
+
+        }).walk();
       break;
 
     default:
@@ -131,3 +193,10 @@ wss.on('connection', function (ws) {
     console.log('INFO: client disconnected');
   });
 });
+
+/**
+ *
+ */
+function sendBundle(ws, bundle) {
+  console.log(bundle);
+}

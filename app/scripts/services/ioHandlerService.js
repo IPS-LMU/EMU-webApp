@@ -48,6 +48,10 @@ angular.module('emulvcApp')
 			return getProm;
 		};
 
+    ////////////////////////////
+    // new protocol begins here
+    //
+
 		//
 		sServObj.getProtocol = function () {
 			var getProm;
@@ -86,6 +90,24 @@ angular.module('emulvcApp')
 
 			return getProm;
 		};
+
+    //
+    sServObj.getBundle = function (name, perspectiveIdx) {
+      var getProm;
+
+      if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+        alert('http:GET version of getBundle not implemented');
+      } else if (ConfigProviderService.vals.main.comMode === 'ws') {
+        getProm = Websockethandler.getBundle(name, perspectiveIdx);
+      }
+
+      return getProm;
+    };
+
+
+    //
+    // new protocol ends here
+    ////////////////////////////
 
 		//
 		sServObj.getDoUserManagement = function () {

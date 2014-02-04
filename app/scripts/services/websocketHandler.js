@@ -171,6 +171,18 @@ angular.module('emulvcApp')
 			return promise;
 		};
 
+		// ws  getBundle
+		sServObj.getBundle = function (name, perspectiveIdx) {
+			var request = {
+				type: 'GETBUNDLE',
+				name: name,
+				perspectiveIdx: perspectiveIdx
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
 		//
 		// new protocol ends here
 		////////////////////////////

@@ -50,7 +50,7 @@ angular.module('emulvcApp')
 
 
 		// init load of config files
-		ConfigProviderService.httpGetConfig();
+		ConfigProviderService.httpGetDefaultConfig();
 
 		// init history service
 
@@ -193,6 +193,14 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
+		$scope.loadBundle = function () {
+			viewState.setState('loadingSaving');
+		}
+
+
+		/**
+		 *
+		 */
 		$scope.handleConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
@@ -289,8 +297,11 @@ angular.module('emulvcApp')
 						ConfigProviderService.setVals(data.EMUwebAppConfig);
 						// then get the DBconfigFile
 						Iohandlerservice.getBundleList().then(function (bdata) {
-							console.log(bdata);
-
+							$scope.bundleList = bdata;
+							// then load first bundle in list
+							Iohandlerservice.getBundle($scope.bundleList[0].name).then(function (bundleData) {
+								console.log(bundleData);
+							});
 						});
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
@@ -355,10 +366,10 @@ angular.module('emulvcApp')
 			} else {
 				if (utt !== $scope.curUtt) {
 					$scope.$broadcast('loadingNewUtt');
-					Iohandlerservice.getUtt(utt).then(function (res) {
-						console.log(res);
-						$scope.curUtt = utt;
-					});
+					// Iohandlerservice.getUtt(utt).then(function (res) {
+					// 	console.log(res);
+					// 	$scope.curUtt = utt;
+					// });
 				}
 			}
 		};

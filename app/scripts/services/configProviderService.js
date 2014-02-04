@@ -10,7 +10,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.httpGetConfig = function () { // SIC SIC SIC...
+		sServObj.httpGetDefaultConfig = function () { // SIC SIC SIC...
 			$http.get('configFiles/defaultConfig.json').success(function (data) {
 				sServObj.setVals(data);
 				$rootScope.$broadcast('configLoaded', data);
