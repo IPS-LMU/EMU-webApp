@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('MainCtrl', function ($scope, $modal, $log, $compile, $timeout, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice) {
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -299,9 +299,7 @@ angular.module('emulvcApp')
 						Iohandlerservice.getBundleList().then(function (bdata) {
 							$scope.bundleList = bdata;
 							// then load first bundle in list
-							Iohandlerservice.getBundle($scope.bundleList[0].name).then(function (bundleData) {
-								console.log(bundleData);
-							});
+							$scope.menuUttClick($scope.bundleList[0]);
 						});
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
@@ -366,10 +364,25 @@ angular.module('emulvcApp')
 			} else {
 				if (utt !== $scope.curUtt) {
 					$scope.$broadcast('loadingNewUtt');
-					// Iohandlerservice.getUtt(utt).then(function (res) {
-					// 	console.log(res);
-					// 	$scope.curUtt = utt;
-					// });
+					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
+						// set wav file
+						var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
+						var wavJSO = Wavparserservice.wav2jso(arrBuff);
+						viewState.curViewPort.sS = 0;
+						viewState.curViewPort.eS = wavJSO.Data.length;
+						// for development:
+						// viewState.curViewPort.sS = 110678;
+						// viewState.curViewPort.eS = 110703;
+						viewState.curViewPort.bufferLength = wavJSO.Data.length;
+						viewState.setscrollOpen(0);
+						viewState.resetSelect();
+						Soundhandlerservice.wavJSO = wavJSO;
+						$rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
+
+
+						//
+						$scope.curUtt = utt;
+					});
 				}
 			}
 		};
