@@ -1,12 +1,11 @@
 var fs = require('fs');
-var noUserJsonBasename = 'user6';
 var os = require('os');
+var filewalker = require('filewalker');
 
 var labelData;
 
-var path2dataRoot = '../app/testData/';
-var path2configFile = '../app/testData/customConfig.json';
-var accessCode = '4321';
+var pathToDbRoot = '../app/testData/newAE/';
+var configName = 'ae.json';
 
 var portNr = 8080;
 
@@ -23,14 +22,15 @@ console.log('websocketserver running @: ws://' + os.hostname() + ':' + portNr);
 
 wss.on('connection', function (ws) {
 
+  console.log('INFO: client connected');
+
   ws.on('message', function (message) {
     // console.log('received: %s', message);
     var mJSO = JSON.parse(message);
 
     switch (mJSO.type) {
-      // getProtocolType method
+      // GETPROTOCOL method
     case 'GETPROTOCOL':
-      console.log('aaaaah')
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
         'data': {
@@ -44,9 +44,9 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
 
-      // getConfigFile method
+      // GETGLOBALDBCONFIG method
     case 'GETGLOBALDBCONFIG':
-      fs.readFile(path2configFile, 'utf8', function (err, data) {
+      fs.readFile(pathToDbRoot + configName, 'utf8', function (err, data) {
         if (err) {
           console.log('Error: ' + err);
           ws.send(JSON.stringify({
@@ -75,44 +75,46 @@ wss.on('connection', function (ws) {
       });
       break;
 
-      // getUttList method
-    case 'getUttList':
-      if (mJSO.usrName === '') {
-        mJSO.usrName = noUserJsonBasename;
-      }
-      fs.readFile(path2dataRoot + mJSO.usrName + '.json', 'utf8', function (err, data) {
-        if (err) {
-          console.log('Error: ' + err);
+      // GETBUNDLELIST method
+      // file walks through DB to get all the bundles
+    case 'GETBUNDLELIST':
+      var bundleList = [];
+      filewalker(pathToDbRoot)
+        .on('dir', function (p) {
+          var patt = new RegExp('^SES[^/]+/[^/]+$');
+
+          if (patt.test(p)) {
+            var arr = p.split('/');
+            bundleList.push({
+              'name': arr[arr.length - 1]
+            });
+          }
+        }).on('error', function (err) {
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
-            'data': 'USER NOT FOUND',
             'status': {
               'type': 'ERROR',
-              'message': err
+              'message': 'Error creating bundleList! Request type was: ' + mJSO.type + ' Error is: ' + err
             }
           }), undefined, 0);
-          return;
-        } else {
-          var labelData = JSON.parse(data);
-          curUttList = labelData;
-          // curStrippedUttList = stripUttList(labelData);
-
+        }).on('done', function () {
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
-            'dataType': 'uttList',
-            'data': labelData,
+            'data': bundleList,
             'status': {
               'type': 'SUCCESS',
               'message': ''
             }
           }), undefined, 0);
-          // ws.send(labelData);
-        }
-      });
+        }).walk();
+      break;
+
+      // GETBUNDLE method
+    case 'GETBUNDLE':
+
       break;
 
     default:
-      console.error("here sdfhsdfasd")
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
         'status': {
@@ -122,5 +124,10 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
     }
 
+  });
+
+  // display that client has disconnected
+  ws.on('close', function () {
+    console.log('INFO: client disconnected');
   });
 });

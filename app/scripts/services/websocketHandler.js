@@ -137,6 +137,10 @@ angular.module('emulvcApp')
 
 		};
 
+		////////////////////////////
+		// new protocol begins here
+		//
+
 		// ws getProtocol
 		sServObj.getProtocol = function () {
 			var request = {
@@ -148,7 +152,7 @@ angular.module('emulvcApp')
 		};
 
 		// ws getConfigFile
-		sServObj.getConfigFile = function () {
+		sServObj.getDBconfigFile = function () {
 			var request = {
 				type: 'GETGLOBALDBCONFIG'
 			};
@@ -156,6 +160,21 @@ angular.module('emulvcApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
+
+		// ws getConfigFile
+		sServObj.getBundleList = function () {
+			var request = {
+				type: 'GETBUNDLELIST'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
+		//
+		// new protocol ends here
+		////////////////////////////
+
 		// ws getDoUserManagement
 		sServObj.getDoUserManagement = function () {
 			var request = {

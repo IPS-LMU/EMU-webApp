@@ -103,7 +103,7 @@
 			"uniqueItems": true,
 			"required": true
 		},
-		"EMU-webAppConfig": {
+		"EMUwebAppConfig": {
 			"perspectives": {
 				"type": "array",
 				"items": {

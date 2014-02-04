@@ -18,7 +18,7 @@ angular.module('emulvcApp')
 		$scope.showDropZone = true;
 
 		$scope.lastkeycode = 'N/A';
-		$scope.uttList = [];
+		$scope.bundleList = [];
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
@@ -109,8 +109,8 @@ angular.module('emulvcApp')
 		// $scope.$on('fileLoaded', function (evt, type, data) {
 		// 	switch (type) {
 		// 	case type.WAV:
-		// 		$scope.uttList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
-		// 		Iohandlerservice.httpGetUtterence($scope.uttList[0], 'testData/' + $scope.uttList[0] + '/');
+		// 		$scope.bundleList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
+		// 		Iohandlerservice.httpGetUtterence($scope.bundleList[0], 'testData/' + $scope.bundleList[0] + '/');
 		// 		break;
 		// 	case type.TEXTGRID:
 
@@ -124,9 +124,9 @@ angular.module('emulvcApp')
 		 * listen for newlyLoadedUttList
 		 */
 		// $scope.$on('newlyLoadedUttList', function(evt, uttList) {
-		// 	$scope.uttList = uttList;
-		// 	// Iohandlerservice.httpGetUtterence($scope.uttList[0]);
-		// 	$scope.curUtt = $scope.uttList[0];
+		// 	$scope.bundleList = uttList;
+		// 	// Iohandlerservice.httpGetUtterence($scope.bundleList[0]);
+		// 	$scope.curUtt = $scope.bundleList[0];
 		// 	if (!viewState.getsubmenuOpen()) {
 		// 		$scope.openSubmenu();
 		// 	}
@@ -147,7 +147,7 @@ angular.module('emulvcApp')
 					if (!viewState.getsubmenuOpen()) {
 						$scope.openSubmenu();
 					}
-					$scope.uttList = newVal;
+					$scope.bundleList = newVal;
 					$scope.curUtt = newVal[0];
 				});
 			});
@@ -242,7 +242,7 @@ angular.module('emulvcApp')
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
 					if (message.type === 'error') {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
-					}else{
+					} else {
 						$scope.handleConnectedToWSserver();
 					}
 				});
@@ -284,25 +284,32 @@ angular.module('emulvcApp')
 			// Check if server speaks the same protocol
 			Iohandlerservice.getProtocol().then(function (res) {
 				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
-					Iohandlerservice.getConfigFile().then(function (newVal) {
-						ConfigProviderService.setVals(newVal);
+					// then get the DBconfigFile
+					Iohandlerservice.getDBconfigFile().then(function (data) {
+						ConfigProviderService.setVals(data.EMUwebAppConfig);
+						// then get the DBconfigFile
+						Iohandlerservice.getBundleList().then(function (bdata) {
+							console.log(bdata);
+
+						});
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
-						Iohandlerservice.getDoUserManagement().then(function (manageRes) {
-							if (manageRes === 'YES') {
-								dialogService.open('views/login.html', 'LoginCtrl');
-							} else {
-								$scope.$broadcast('newUserLoggedOn', '');
-							}
-						});
+						// Iohandlerservice.getDoUserManagement().then(function (manageRes) {
+						// 	if (manageRes === 'YES') {
+						// 		dialogService.open('views/login.html', 'LoginCtrl');
+						// 	} else {
+						// 		$scope.$broadcast('newUserLoggedOn', '');
+						// 	}
+						// });
 					} else {
 						$scope.connectBtnLabel = 'disconnect';
-						$scope.$broadcast('newUserLoggedOn', '');
+						// $scope.$broadcast('newUserLoggedOn', '');
 
 					}
 				} else {
-					// disconnect from server and reopen connect dialog
-
+					// show protocol error and disconnect from server
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"');
+					Iohandlerservice.wsH.closeConnect();
 				}
 			});
 		};
@@ -556,7 +563,7 @@ angular.module('emulvcApp')
 				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
 					console.log(res.data);
 					$scope.showDropZone = false;
-					$scope.uttList = res.data;
+					$scope.bundleList = res.data;
 					Iohandlerservice.getUtt(res.data[0]);
 					$scope.curUtt = res.data[0];
 					// should be then after get utt
@@ -581,7 +588,7 @@ angular.module('emulvcApp')
 					if (Iohandlerservice.wsH.isConnected()) {
 						Iohandlerservice.wsH.closeConnect();
 					}
-					$scope.uttList = [];
+					$scope.bundleList = [];
 					ConfigProviderService.httpGetConfig();
 					Soundhandlerservice.wavJSO = {};
 					Levelservice.data = {};
@@ -693,7 +700,7 @@ angular.module('emulvcApp')
 		//
 		$scope.saveMetaData = function () {
 
-			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.uttList);
+			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.bundleList);
 			$scope.modifiedMetaData = false;
 		};
 

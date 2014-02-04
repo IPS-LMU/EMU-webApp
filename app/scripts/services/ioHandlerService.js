@@ -62,13 +62,26 @@ angular.module('emulvcApp')
 		};
 
 		//
-		sServObj.getConfigFile = function () {
+		sServObj.getDBconfigFile = function () {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				alert('http:GET version of getProtocol not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				getProm = Websockethandler.getConfigFile();
+				getProm = Websockethandler.getDBconfigFile();
+			}
+
+			return getProm;
+		};
+
+		//
+		sServObj.getBundleList = function () {
+			var getProm;
+
+			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+				alert('http:GET version of getProtocol not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+				getProm = Websockethandler.getBundleList();
 			}
 
 			return getProm;
