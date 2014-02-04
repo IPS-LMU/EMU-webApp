@@ -193,14 +193,6 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.loadBundle = function () {
-			viewState.setState('loadingSaving');
-		}
-
-
-		/**
-		 *
-		 */
 		$scope.handleConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
@@ -378,7 +370,6 @@ angular.module('emulvcApp')
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
 						$rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
-
 
 						//
 						$scope.curUtt = utt;
