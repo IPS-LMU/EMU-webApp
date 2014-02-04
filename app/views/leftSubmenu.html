@@ -3,7 +3,7 @@
     <div id="submenu" class="submenu">
         <div class="utteranceOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="bundleListItem" id="uttListItem" ng-style="getUttColor(bundle);" ng-click="menuUttClick(bundle);">
-                <b>{{bundle.name}}</b><button class="saveUtteranceButton" ng-click="menuUttSave(bundle);" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
+                <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuUttSave(bundle);" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
                 <div ng-show="bundle.finishedEditing!==undefined">Finished editing: <input type="checkbox" ng-disabled="true" ng-model="bundle.finishedEditing" ng-click="changingMetaData();" /> <br /></div>
                 <div ng-show="bundle.comment!==undefined">Comment:<input type="text" ng-disabled="true" ng-model="bundle.comment" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
             </div>

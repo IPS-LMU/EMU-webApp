@@ -1,27 +1,26 @@
-
-/*uttListItem*/
-.uttListItem{
+/*bundleListItem*/
+.bundleListItem{
     margin: 0px;
     padding: 10px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     border-style:none;
     border-bottom:thin solid rgba(152, 152, 152, 0.25);
     position: relative;
     cursor: default;
 }
 
-.uttListItem:hover {
+.bundleListItem:hover {
     background-color:rgba(152, 152, 152, 0.28);
 }
 
 
-.uttListItem input[type='text'] {
+.bundleListItem input[type='text'] {
     width: 170px;
     height: 25px;
     font-size: 14px;
 }
 
-.uttListItem b {
+.bundleListItem b {
     display: block;
     color: #fff;
     font-size: 14px;
@@ -31,7 +30,7 @@
     height: 28px;
 }
 
-.saveUtteranceButton {
+.saveBundleButton {
    position: absolute;
    /*background-color:rgb(56,54,62);*/
    background-color:transparent;
@@ -40,7 +39,7 @@
    right: 2px;
 }
 
-.saveUtteranceButton img {
+.saveBundleButton img {
     height: 25px;
     width:  25px;
     border-radius: 12.5px;
@@ -49,7 +48,7 @@
     vertical-align: middle;
 }
 
-.saveUtteranceButton img:hover{
+.saveBundleButton img:hover{
     background-color:#0DC5FF;
 }
 /*.utteranceSaveMeta button:hover {
