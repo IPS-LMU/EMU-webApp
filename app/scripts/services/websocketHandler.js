@@ -87,15 +87,21 @@ angular.module('emulvcApp')
 					break;
 				}
 
-				$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
+				// resolve promise with data only
+				if(messageObj.status.type === 'SUCCESS'){
+					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
+				}else{
+					// show protocol error and disconnect from server
+					dialogService.open('views/error.html', 'ModalCtrl', 'Communication error with server! Error message is: ' + messageObj.status.message);
+				}
 
 				delete callbacks[messageObj.callbackID];
-				if (viewState.curTaskPercCompl >= 100) {
-					viewState.curTaskPercCompl = 0;
-					dialogService.close();
-				} else {
-					viewState.curTaskPercCompl += 1;
-				}
+				// if (viewState.curTaskPercCompl >= 100) {
+				// 	viewState.curTaskPercCompl = 0;
+				// 	dialogService.close();
+				// } else {
+				// 	viewState.curTaskPercCompl += 1;
+				// }
 			}
 		}
 
