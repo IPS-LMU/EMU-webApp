@@ -39,7 +39,6 @@ angular.module('emulvcApp')
 		// broadcast on open
 		function wsonopen(message) {
 			connected = true;
-			$rootScope.$broadcast('connectedToWSserver');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
 
@@ -49,7 +48,7 @@ angular.module('emulvcApp')
 
 		function wsonerror(message) {
 			// console.log(message);
-			console.log('WEBSOCKET ERROR!!!!!');
+			console.error('WEBSOCKET ERROR!!!!!');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
 
@@ -135,13 +134,22 @@ angular.module('emulvcApp')
 		// ws getProtocol
 		sServObj.getProtocol = function () {
 			var request = {
-				type: 'getProtocol'
+				type: 'GETPROTOCOL'
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
 			return promise;
 		};
 
+		// ws getConfigFile
+		sServObj.getConfigFile = function () {
+			var request = {
+				type: 'GETGLOBALDBCONFIG'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
 		// ws getDoUserManagement
 		sServObj.getDoUserManagement = function () {
 			var request = {
@@ -152,15 +160,6 @@ angular.module('emulvcApp')
 			return promise;
 		};
 
-		// ws getConfigFile
-		sServObj.getConfigFile = function () {
-			var request = {
-				type: 'getConfigFile'
-			};
-			// Storing in a variable for clarity on what sendRequest returns
-			var promise = sendRequest(request);
-			return promise;
-		};
 
 		// ws getUsrUttList
 		sServObj.getUsrUttList = function (usrName) {

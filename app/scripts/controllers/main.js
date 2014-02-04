@@ -71,37 +71,37 @@ angular.module('emulvcApp')
 		/**
 		 * listen for connectedToWSserver
 		 */
-		$scope.$on('connectedToWSserver', function () {
-			// TODO hardcode removal of save / load/ manipulation buttons 
-			$scope.showDropZone = false;
-			ConfigProviderService.vals.main.comMode = 'ws';
-			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
+		// $scope.$on('connectedToWSserver', function () {
+		// 	// TODO hardcode removal of save / load/ manipulation buttons 
+		// 	$scope.showDropZone = false;
+		// 	ConfigProviderService.vals.main.comMode = 'ws';
+		// 	$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
-			// Check if server speaks emuLVC
-			Iohandlerservice.getProtocol().then(function (res) {
-				if (res.protocol === 'emuLVC-websocket-protocol' && res.version === '0.0.1') {
-					Iohandlerservice.getConfigFile().then(function (newVal) {
-						ConfigProviderService.setVals(newVal);
-					});
-					if (!ConfigProviderService.vals.main.autoConnect) {
-						Iohandlerservice.getDoUserManagement().then(function (manageRes) {
-							if (manageRes === 'YES') {
-								dialogService.open('views/login.html', 'LoginCtrl');
-							} else {
-								$scope.$broadcast('newUserLoggedOn', '');
-							}
-						});
-					} else {
-						$scope.connectBtnLabel = 'disconnect';
-						$scope.$broadcast('newUserLoggedOn', '');
+		// 	// Check if server speaks the same protocol
+		// 	Iohandlerservice.getProtocol().then(function (res) {
+		// 		if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+		// 			Iohandlerservice.getConfigFile().then(function (newVal) {
+		// 				ConfigProviderService.setVals(newVal);
+		// 			});
+		// 			if (!ConfigProviderService.vals.main.autoConnect) {
+		// 				Iohandlerservice.getDoUserManagement().then(function (manageRes) {
+		// 					if (manageRes === 'YES') {
+		// 						dialogService.open('views/login.html', 'LoginCtrl');
+		// 					} else {
+		// 						$scope.$broadcast('newUserLoggedOn', '');
+		// 					}
+		// 				});
+		// 			} else {
+		// 				$scope.connectBtnLabel = 'disconnect';
+		// 				$scope.$broadcast('newUserLoggedOn', '');
 
-					}
-				} else {
-					// disconnect from server and reopen connect dialog
+		// 			}
+		// 		} else {
+		// 			// disconnect from server and reopen connect dialog
 
-				}
-			});
-		});
+		// 		}
+		// 	});
+		// });
 
 		/**
 		 * listen for dropped files
@@ -190,7 +190,9 @@ angular.module('emulvcApp')
 		});
 
 
-		// 
+		/**
+		 *
+		 */
 		$scope.handleConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
@@ -239,7 +241,9 @@ angular.module('emulvcApp')
 				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server...');
+						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
+					}else{
+						$scope.handleConnectedToWSserver();
 					}
 				});
 			}
@@ -268,6 +272,40 @@ angular.module('emulvcApp')
 
 		};
 
+		/**
+		 *
+		 */
+		$scope.handleConnectedToWSserver = function () {
+			// TODO hardcode removal of save / load/ manipulation buttons 
+			$scope.showDropZone = false;
+			ConfigProviderService.vals.main.comMode = 'ws';
+			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
+
+			// Check if server speaks the same protocol
+			Iohandlerservice.getProtocol().then(function (res) {
+				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+					Iohandlerservice.getConfigFile().then(function (newVal) {
+						ConfigProviderService.setVals(newVal);
+					});
+					if (!ConfigProviderService.vals.main.autoConnect) {
+						Iohandlerservice.getDoUserManagement().then(function (manageRes) {
+							if (manageRes === 'YES') {
+								dialogService.open('views/login.html', 'LoginCtrl');
+							} else {
+								$scope.$broadcast('newUserLoggedOn', '');
+							}
+						});
+					} else {
+						$scope.connectBtnLabel = 'disconnect';
+						$scope.$broadcast('newUserLoggedOn', '');
+
+					}
+				} else {
+					// disconnect from server and reopen connect dialog
+
+				}
+			});
+		};
 
 		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
@@ -437,7 +475,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.openSubmenu = function () {			
+		$scope.openSubmenu = function () {
 			if (viewState.getsubmenuOpen()) {
 				viewState.setsubmenuOpen(false);
 			} else {
