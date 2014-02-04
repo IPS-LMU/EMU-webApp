@@ -22,6 +22,7 @@ angular.module('emulvcApp')
 			return getProm;
 		};
 
+		//
 		sServObj.getUsrUttList = function (name) {
 			var getProm;
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
