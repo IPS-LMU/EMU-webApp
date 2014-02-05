@@ -86,19 +86,19 @@ angular.module('emulvcApp')
 						e.forEach(function (curEvt) {
 							++curID;
 
-							if (curEvt.startSample >= viewState.curViewPort.sS &&
-								curEvt.startSample <= viewState.curViewPort.eS || //within segment
-								curEvt.startSample + curEvt.sampleDur > viewState.curViewPort.sS &&
-								curEvt.startSample + curEvt.sampleDur < viewState.curViewPort.eS || //end in segment
-								curEvt.startSample < viewState.curViewPort.sS &&
-								curEvt.startSample + curEvt.sampleDur > viewState.curViewPort.eS // within sample
+							if (curEvt.sampleStart >= viewState.curViewPort.sS &&
+								curEvt.sampleStart <= viewState.curViewPort.eS || //within segment
+								curEvt.sampleStart + curEvt.sampleDur > viewState.curViewPort.sS &&
+								curEvt.sampleStart + curEvt.sampleDur < viewState.curViewPort.eS || //end in segment
+								curEvt.sampleStart < viewState.curViewPort.sS &&
+								curEvt.sampleStart + curEvt.sampleDur > viewState.curViewPort.eS // within sample
 							) {
 
 								// draw segment start
-								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample));
-								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur+1));
-								posS = viewState.getPos(canvas[0].width, curEvt.startSample);
-								posE = viewState.getPos(canvas[0].width, curEvt.startSample + curEvt.sampleDur);
+								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart));
+								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur+1));
+								posS = viewState.getPos(canvas[0].width, curEvt.sampleStart);
+								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur);
 
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
@@ -116,7 +116,7 @@ angular.module('emulvcApp')
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (config.vals.font.fontPxSize), horizontalText.width, horizontalText.height);
 								}
 
-								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.startSample, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								var hst1 = scope.fontImage.getLastImageWidth();
 								var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
 								var horizontalSubText2 = scope.fontImage.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
@@ -173,8 +173,8 @@ angular.module('emulvcApp')
 
 						levelDetails.elements.forEach(function (curEvt) {
 
-							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
-								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
+							if (curEvt.sampleStart > viewState.curViewPort.sS && curEvt.sampleStart < viewState.curViewPort.eS) {
+								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart) + (sDist / 2));
 
 								if (levelDetails.name === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
 									//console.log('this is the selected boundary');
@@ -192,7 +192,7 @@ angular.module('emulvcApp')
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								}
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.startSample, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
+								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
@@ -236,8 +236,8 @@ angular.module('emulvcApp')
 						if (levelDetails.name === levelId && segCId.length > 0) {
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
-									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
-									posE = Math.round(viewState.getPos(canvas[0].width, entry.startSample + entry.sampleDur));
+									posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
+									posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
 									ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
@@ -249,8 +249,8 @@ angular.module('emulvcApp')
 					// draw preselected boundary
 					curEvt = levelDetails.elements[segMId];
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
-						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
-						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
+						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
+						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart + curEvt.sampleDur + 1));
 
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						if (viewState.getcurMouseLevelType() === 'SEGMENT') {
