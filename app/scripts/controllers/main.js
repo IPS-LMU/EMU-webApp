@@ -2,7 +2,7 @@
 
 angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -357,8 +357,9 @@ angular.module('emulvcApp')
 				if (utt !== $scope.curUtt) {
 					$scope.$broadcast('loadingNewUtt');
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
+						var arrBuff;
 						// set wav file
-						var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
+						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 						var wavJSO = Wavparserservice.wav2jso(arrBuff);
 						viewState.curViewPort.sS = 0;
 						viewState.curViewPort.eS = wavJSO.Data.length;
@@ -371,7 +372,13 @@ angular.module('emulvcApp')
 						Soundhandlerservice.wavJSO = wavJSO;
 						$rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
-						//
+						// set ssff files
+						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data);
+						var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
+						$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso); // SIC SIC SIC
+
+						// set annotation
+						$rootScope.$broadcast('newlyLoadedLabelJson', bundleData.annotation); // SIC SIC SIC
 						$scope.curUtt = utt;
 					});
 				}

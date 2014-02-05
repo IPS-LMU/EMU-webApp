@@ -13,7 +13,7 @@ angular.module('emulvcApp')
 		$scope.testValue = '';
 		$scope.message = '';
 		$scope.levelDetails = Levelservice;
-			
+
 
 		$scope.sortableOptions = {
 			update: function (e, ui) {
@@ -25,7 +25,7 @@ angular.module('emulvcApp')
 				$scope.deleteEditArea();
 			},
 			create: function (e, ui) {
-				 //ui.item.sortable('enable');
+				//ui.item.sortable('enable');
 			},
 			axis: 'y',
 			placeholder: 'levelPlaceholder'
@@ -39,15 +39,17 @@ angular.module('emulvcApp')
 			if ($.isEmptyObject($scope.levelDetails.data)) {
 				$scope.levelDetails.data = data;
 			} else {
-				data.levels.forEach(function (level) {
-					$scope.levelDetails.data.levels.push(level);
-				});
-				data.fileInfos.forEach(function (fInf) {
-					$scope.levelDetails.data.fileInfos.push(fInf);
-				});
+				// data.levels.forEach(function (level) {
+				// 	if (level.type === 'EVENT' || level.type === 'SEGMENT') {
+				// 		$scope.levelDetails.data.levels.push(level);
+				// 	}
+				// });
+				// data.fileInfos.forEach(function (fInf) {
+				// 	$scope.levelDetails.data.fileInfos.push(fInf);
+				// });
 				// console.log(JSON.stringify($scope.levelDetails, undefined, 2));
 			}
-			$scope.sortLevels();
+			// $scope.sortLevels();
 		});
 
 		/**
@@ -56,34 +58,34 @@ angular.module('emulvcApp')
 		$scope.$on('loadingNewUtt', function () {
 			$scope.levelDetails.data = {};
 		});
-		
-		
-		$scope.$on('errorMessage', function(evt, data) {
-		    dialogService.open('views/error.html', 'ModalCtrl', data);
+
+
+		$scope.$on('errorMessage', function (evt, data) {
+			dialogService.open('views/error.html', 'ModalCtrl', data);
 		});
-		
-		
 
-		//
-		$scope.sortLevels = function () {
-			var sortedLevels = [];
-			var sortedFileInfos = [];
-			var searchOrd;
 
-			// ConfigProviderService.vals
-			ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (curOrd) {
-				// console.log(curOrdIdx)
-				searchOrd = curOrd.split('.')[1];
-				$scope.levelDetails.data.levels.forEach(function (t, tIdx) {
-					if (t.LevelName.split('_')[1] === searchOrd) {
-						sortedLevels.push(t);
-						sortedFileInfos.push($scope.levelDetails.data.fileInfos[tIdx]);
-					}
-				});
-			});
-			$scope.levelDetails.data.levels = sortedLevels;
-			$scope.levelDetails.data.fileInfos = sortedFileInfos;
-		};
+
+		// //
+		// $scope.sortLevels = function () {
+		// 	var sortedLevels = [];
+		// 	var sortedFileInfos = [];
+		// 	var searchOrd;
+
+		// 	// ConfigProviderService.vals
+		// 	ConfigProviderService.vals.labelCanvasConfig.order.forEach(function (curOrd) {
+		// 		// console.log(curOrdIdx)
+		// 		searchOrd = curOrd.split('.')[1];
+		// 		$scope.levelDetails.data.levels.forEach(function (t, tIdx) {
+		// 			if (t.LevelName.split('_')[1] === searchOrd) {
+		// 				sortedLevels.push(t);
+		// 				sortedFileInfos.push($scope.levelDetails.data.fileInfos[tIdx]);
+		// 			}
+		// 		});
+		// 	});
+		// 	$scope.levelDetails.data.levels = sortedLevels;
+		// 	$scope.levelDetails.data.fileInfos = sortedFileInfos;
+		// };
 
 
 		$scope.cursorInTextField = function () {
