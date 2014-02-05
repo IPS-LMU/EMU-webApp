@@ -470,7 +470,7 @@
     }]
   }, {
     "name": "Intermediate",
-    "type": "SEGMENT",
+    "type": "ELEMENT",
     "elements": [{
       "id": 101,
       "label": "L-",
