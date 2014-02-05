@@ -4,12 +4,15 @@ angular.module('emulvcApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice) {
 
+		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.tds = Levelservice;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
+
+		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
 		$scope.tmp.showSaveCommStaBtnDiv = false;
@@ -27,10 +30,11 @@ angular.module('emulvcApp')
 		$scope.modifiedMetaData = false;
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
-
 		$scope.filterText = '';
-
 		$scope.windowWidth = $window.outerWidth;
+
+		//////////////
+		// bindings
 
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
@@ -48,7 +52,6 @@ angular.module('emulvcApp')
 		});
 
 
-
 		// init load of config files
 		Iohandlerservice.httpGetDefaultConfig().success(function (data) {
 			ConfigProviderService.setVals(data);
@@ -62,72 +65,9 @@ angular.module('emulvcApp')
 		$scope.hists.init();
 
 		// init pure jquery dragbar
-		$('.TimelineCtrl').ownResize('.resizer');
+		$('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
 
 
-		/**
-		 * listen for connectedToWSserver
-		 */
-		// $scope.$on('connectedToWSserver', function () {
-		// 	// TODO hardcode removal of save / load/ manipulation buttons 
-		// 	$scope.showDropZone = false;
-		// 	ConfigProviderService.vals.main.comMode = 'ws';
-		// 	$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
-
-		// 	// Check if server speaks the same protocol
-		// 	Iohandlerservice.getProtocol().then(function (res) {
-		// 		if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
-		// 			Iohandlerservice.getConfigFile().then(function (newVal) {
-		// 				ConfigProviderService.setVals(newVal);
-		// 			});
-		// 			if (!ConfigProviderService.vals.main.autoConnect) {
-		// 				Iohandlerservice.getDoUserManagement().then(function (manageRes) {
-		// 					if (manageRes === 'YES') {
-		// 						dialogService.open('views/login.html', 'LoginCtrl');
-		// 					} else {
-		// 						$scope.$broadcast('newUserLoggedOn', '');
-		// 					}
-		// 				});
-		// 			} else {
-		// 				$scope.connectBtnLabel = 'disconnect';
-		// 				$scope.$broadcast('newUserLoggedOn', '');
-
-		// 			}
-		// 		} else {
-		// 			// disconnect from server and reopen connect dialog
-
-		// 		}
-		// 	});
-		// });
-
-		/**
-		 * listen for dropped files
-		 */
-		// $scope.$on('fileLoaded', function (evt, type, data) {
-		// 	switch (type) {
-		// 	case type.WAV:
-		// 		$scope.bundleList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
-		// 		Iohandlerservice.httpGetUtterence($scope.bundleList[0], 'testData/' + $scope.bundleList[0] + '/');
-		// 		break;
-		// 	case type.TEXTGRID:
-
-		// 		break;
-		// 	}
-		// 	console.log('data');
-		// 	console.log(data);
-		// });
-
-		/**
-		 * listen for newlyLoadedUttList
-		 */
-		// $scope.$on('newlyLoadedUttList', function(evt, uttList) {
-		// 	$scope.bundleList = uttList;
-		// 	// Iohandlerservice.httpGetUtterence($scope.bundleList[0]);
-		// 	$scope.curUtt = $scope.bundleList[0];
-		// 	if (!viewState.getsubmenuOpen()) {
-		// 		$scope.openSubmenu();
-		// 	}
-		// });
 
 		/**
 		 * listen for newUserLoggedOn (also called for no user on auto connect)
@@ -409,28 +349,6 @@ angular.module('emulvcApp')
 			viewState.setdragBarActive(false);
 		};
 
-		// /**
-		//  *
-		//  */
-		// $scope.changingMetaData = function () {
-		// 	$scope.modifiedMetaData = true;
-		// };
-
-		// /**
-		//  *
-		//  */
-		// $scope.changingSSFFdata = function () {
-		// 	// console.log('changingSSFFdata')
-		// 	$scope.modifiedCurSSFF = true;
-		// };
-
-		// /**
-		//  *
-		//  */
-		// $scope.modifLevelItems = function () {
-		// 	console.log('items labs changed');
-		// 	$scope.modifiedCurLevelItems = true;
-		// };
 
 		/**
 		 *
@@ -746,3 +664,90 @@ angular.module('emulvcApp')
 
 
 	});
+///////////////////////////////////////
+/// old functions... might still need...
+// /**
+//  *
+//  */
+// $scope.changingMetaData = function () {
+// 	$scope.modifiedMetaData = true;
+// };
+
+// /**
+//  *
+//  */
+// $scope.changingSSFFdata = function () {
+// 	// console.log('changingSSFFdata')
+// 	$scope.modifiedCurSSFF = true;
+// };
+
+// /**
+//  *
+//  */
+// $scope.modifLevelItems = function () {
+// 	console.log('items labs changed');
+// 	$scope.modifiedCurLevelItems = true;
+// };
+/**
+ * listen for connectedToWSserver
+ */
+// $scope.$on('connectedToWSserver', function () {
+// 	// TODO hardcode removal of save / load/ manipulation buttons 
+// 	$scope.showDropZone = false;
+// 	ConfigProviderService.vals.main.comMode = 'ws';
+// 	$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
+
+// 	// Check if server speaks the same protocol
+// 	Iohandlerservice.getProtocol().then(function (res) {
+// 		if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+// 			Iohandlerservice.getConfigFile().then(function (newVal) {
+// 				ConfigProviderService.setVals(newVal);
+// 			});
+// 			if (!ConfigProviderService.vals.main.autoConnect) {
+// 				Iohandlerservice.getDoUserManagement().then(function (manageRes) {
+// 					if (manageRes === 'YES') {
+// 						dialogService.open('views/login.html', 'LoginCtrl');
+// 					} else {
+// 						$scope.$broadcast('newUserLoggedOn', '');
+// 					}
+// 				});
+// 			} else {
+// 				$scope.connectBtnLabel = 'disconnect';
+// 				$scope.$broadcast('newUserLoggedOn', '');
+
+// 			}
+// 		} else {
+// 			// disconnect from server and reopen connect dialog
+
+// 		}
+// 	});
+// });
+
+/**
+ * listen for dropped files
+ */
+// $scope.$on('fileLoaded', function (evt, type, data) {
+// 	switch (type) {
+// 	case type.WAV:
+// 		$scope.bundleList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
+// 		Iohandlerservice.httpGetUtterence($scope.bundleList[0], 'testData/' + $scope.bundleList[0] + '/');
+// 		break;
+// 	case type.TEXTGRID:
+
+// 		break;
+// 	}
+// 	console.log('data');
+// 	console.log(data);
+// });
+
+/**
+ * listen for newlyLoadedUttList
+ */
+// $scope.$on('newlyLoadedUttList', function(evt, uttList) {
+// 	$scope.bundleList = uttList;
+// 	// Iohandlerservice.httpGetUtterence($scope.bundleList[0]);
+// 	$scope.curUtt = $scope.bundleList[0];
+// 	if (!viewState.getsubmenuOpen()) {
+// 		$scope.openSubmenu();
+// 	}
+// });
