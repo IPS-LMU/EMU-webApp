@@ -291,7 +291,7 @@ angular.module('emulvcApp')
 						Iohandlerservice.getBundleList().then(function (bdata) {
 							$scope.bundleList = bdata;
 							// then load first bundle in list
-							$scope.menuUttClick($scope.bundleList[0]);
+							$scope.menuBundleClick($scope.bundleList[0]);
 						});
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
@@ -346,7 +346,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.menuUttClick = function (utt) {
+		$scope.menuBundleClick = function (utt) {
 			if (HistoryService.getNrOfPosibleUndos() > 0) {
 				$scope.modifiedCurSSFF = true;
 			}
