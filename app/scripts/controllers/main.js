@@ -355,7 +355,7 @@ angular.module('emulvcApp')
 				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
 			} else {
 				if (utt !== $scope.curUtt) {
-					$scope.$broadcast('loadingNewUtt');
+					$scope.$broadcast('loadingNewUtt'); // SIC SIC SIC
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
 						var arrBuff;
 						// set wav file
@@ -380,6 +380,7 @@ angular.module('emulvcApp')
 						// set annotation
 						$rootScope.$broadcast('newlyLoadedLabelJson', bundleData.annotation); // SIC SIC SIC
 						$scope.curUtt = utt;
+						viewState.setState('labeling');
 					});
 				}
 			}
