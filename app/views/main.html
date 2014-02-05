@@ -42,7 +42,7 @@
       <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
         <!-- all levels are listed here -->
         <ul ng-model="levelDetails.levels" id="allowSortable">
-          <li ng-repeat="level in levelDetails.data.levels" class="{{level.LevelName}} Level sort">
+          <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.LevelName}} Level sort">
             <level id='{{level.LevelName}}' class="level"></level>
           </li>
         </ul>
