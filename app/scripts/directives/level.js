@@ -15,6 +15,7 @@ angular.module('emulvcApp')
 				}, true);
 
 				scope.$watch('vs', function () {
+					console.log(scope.level)
 					drawLevelDetails(scope.level, scope.vs, scope.config);
 					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				}, true);
@@ -59,7 +60,6 @@ angular.module('emulvcApp')
 						//console.log("undef config");
 						return;
 					}
-
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
@@ -69,7 +69,7 @@ angular.module('emulvcApp')
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
 
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.LevelName, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
 					var segMId = viewState.getcurMouseSegmentId();
@@ -78,7 +78,7 @@ angular.module('emulvcApp')
 					var curID = -1;
 					// var curPoS = selection[0];
 					// var curPoE = selection[1];
-					if (levelDetails.type === 'seg') {
+					if (levelDetails.type === 'SEGMENT') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
 						var e = levelDetails.elements;
@@ -166,7 +166,7 @@ angular.module('emulvcApp')
 								}
 							}
 						});
-					} else if (levelDetails.type === 'point') {
+					} else if (levelDetails.type === 'EVENT') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// predef. vars
 						var perc;
@@ -176,7 +176,7 @@ angular.module('emulvcApp')
 							if (curEvt.startSample > viewState.curViewPort.sS && curEvt.startSample < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.startSample) + (sDist / 2));
 
-								if (levelDetails.LevelName === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
+								if (levelDetails.name === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
 									//console.log('this is the selected boundary');
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
@@ -209,7 +209,7 @@ angular.module('emulvcApp')
 				function drawLevelMarkup(levelDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
-					if (levelDetails.LevelName === viewState.getcurClickLevelName()) {
+					if (levelDetails.name === viewState.getcurClickLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedLevelColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
@@ -233,7 +233,7 @@ angular.module('emulvcApp')
 					var levelId = viewState.getcurClickLevelName();
 					if (segCId !== undefined) {
 						// draw clicked on selected areas
-						if (levelDetails.LevelName === levelId && segCId.length > 0) {
+						if (levelDetails.name === levelId && segCId.length > 0) {
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
 									posS = Math.round(viewState.getPos(canvas[0].width, entry.startSample));
@@ -248,12 +248,12 @@ angular.module('emulvcApp')
 
 					// draw preselected boundary
 					curEvt = levelDetails.elements[segMId];
-					if (curEvt !== undefined && segMId !== undefined && levelDetails.LevelName === viewState.getcurMouseLevelName()) {
+					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.startSample + curEvt.sampleDur + 1));
 
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						if (viewState.getcurMouseLevelType() === 'seg') {
+						if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 							ctx.fillRect(posS, 0, 3, canvas[1].height);
 						} else {
 							xOffset = (sDist / 2);

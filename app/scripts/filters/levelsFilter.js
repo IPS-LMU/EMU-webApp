@@ -12,6 +12,7 @@ angular.module('emulvcApp')
 						out.push(input[i]);
 					}
 				}
+				// TODO: order by cps.vals.perspective
 				return out;
 			}
 		};
