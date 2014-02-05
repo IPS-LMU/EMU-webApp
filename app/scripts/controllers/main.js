@@ -135,7 +135,7 @@ angular.module('emulvcApp')
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}
-			// for development
+			// FOR DEVELOPMENT:
 			// $scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
@@ -300,7 +300,7 @@ angular.module('emulvcApp')
 						var wavJSO = Wavparserservice.wav2jso(arrBuff);
 						viewState.curViewPort.sS = 0;
 						viewState.curViewPort.eS = wavJSO.Data.length;
-						// for development:
+						// FOR DEVELOPMENT:
 						// viewState.curViewPort.sS = 110678;
 						// viewState.curViewPort.eS = 110703;
 						viewState.curViewPort.bufferLength = wavJSO.Data.length;

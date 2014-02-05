@@ -71,6 +71,8 @@ angular.module('emulvcApp')
 
     sServObj.curTaskPercCompl = 0;
 
+    sServObj.curPerspectiveIdx = 0;
+
     // possible general states of state machine
     sServObj.states = [];
     sServObj.states.noDBorFilesloaded = {
