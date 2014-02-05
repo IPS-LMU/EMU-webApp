@@ -19,7 +19,7 @@ angular.module('emulvcApp')
 						if (sServObj.vals[key1][key2] !== undefined) {
 							sServObj.vals[key1][key2] = data[key1][key2];
 						} else {
-							console.error('BAD ENTRY IN CONFIG');
+							console.error('BAD ENTRY IN CONFIG! Key1: ' + key1 + ' key2: ' + key2);
 						}
 					});
 

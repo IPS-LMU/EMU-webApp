@@ -89,7 +89,7 @@
     },
     "perspectives": [{
         "name": "default",
-        "signalsCanvasesPersp": {
+        "signalCanvases": {
             "order": ["osci", "spec"],
             "assign": {
                 "spec": "fms:fm"
