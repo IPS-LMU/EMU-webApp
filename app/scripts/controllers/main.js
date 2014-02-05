@@ -50,22 +50,19 @@ angular.module('emulvcApp')
 
 
 		// init load of config files
-		ConfigProviderService.httpGetDefaultConfig();
+		Iohandlerservice.httpGetDefaultConfig().success(function (data) {
+			ConfigProviderService.setVals(data);
+			$scope.handleDefaultConfigLoaded();
+		}).error(function (data, status, header, config) {
+			dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
+		});
 
 		// init history service
-
 		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
 		$scope.hists.init();
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer');
-
-		/**
-		 * listen for configLoaded
-		 */
-		$scope.$on('configLoaded', function () {
-			$scope.handleConfigLoaded();
-		});
 
 
 		/**
@@ -193,7 +190,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		$scope.handleConfigLoaded = function () {
+		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();

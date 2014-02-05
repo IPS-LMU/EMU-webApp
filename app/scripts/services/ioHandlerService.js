@@ -10,7 +10,18 @@ angular.module('emulvcApp')
 
 		Appcachehandler.checkForNewVersion();
 
-		//
+
+		/**
+		 *
+		 */
+		sServObj.httpGetDefaultConfig = function () {
+			var prom = $http.get('configFiles/defaultConfig.json');
+			return prom;
+		};
+
+		/**
+		 *
+		 */
 		sServObj.getUttList = function (filePath) {
 			var getProm;
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
@@ -22,7 +33,9 @@ angular.module('emulvcApp')
 			return getProm;
 		};
 
-		//
+		/**
+		 *
+		 */
 		sServObj.getUsrUttList = function (name) {
 			var getProm;
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
@@ -35,7 +48,9 @@ angular.module('emulvcApp')
 		};
 
 
-		//
+		/**
+		 *
+		 */
 		sServObj.getUtt = function (utt) {
 			var getProm;
 

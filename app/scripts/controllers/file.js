@@ -12,9 +12,8 @@ angular.module('emulvcApp')
     $scope.wavLoaded = 0;
     $scope.txtGridLoaded = 0;
     $scope.labelLoaded = 0;
-    /**
-     * listen for configLoaded
-     */
+
+
     $scope.dropText = $scope.dropDefault;
 
 
