@@ -149,7 +149,7 @@ angular.module('emulvcApp')
 									ctx.stroke();
 								}
 
-								// draw startSample numbers
+								// draw sampleStart numbers
 								//check for enough space to stroke text
 								if (posE - posS > hst1) {
 									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);

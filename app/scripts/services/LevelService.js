@@ -71,15 +71,15 @@ angular.module('emulvcApp')
 			if (level.type === "seg") {
 				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
-						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-							if (pcm - evt.startSample >= evt.sampleDur / 2) {
+						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
+							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
 								evtr = level.elements[id + 1];
 							} else {
 								evtr = level.elements[id];
 							}
 						}
 					} else {
-						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							evtr = level.elements[id];
 						}
 					}
@@ -89,12 +89,12 @@ angular.module('emulvcApp')
 				var spaceHigher = 0;
 				angular.forEach(level.elements, function (evt, key) {
 					if (key < level.elements.length - 1) {
-						spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
+						spaceHigher = evt.sampleStart + (level.elements[key + 1].sampleStart - level.elements[key].sampleStart) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
 					if (key > 0) {
-						spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
+						spaceLower = evt.sampleStart - (level.elements[key].sampleStart - level.elements[key - 1].sampleStart) / 2;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						evtr = evt;
@@ -111,15 +111,15 @@ angular.module('emulvcApp')
 			if (level.type === "seg") {
 				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
-						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
-							if (pcm - evt.startSample >= evt.sampleDur / 2) {
+						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
+							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
 								ret = id + 1;
 							} else {
 								ret = id;
 							}
 						}
 					} else {
-						if (pcm >= evt.startSample && pcm <= (evt.startSample + evt.sampleDur)) {
+						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							ret = id;
 						}
 					}
@@ -129,12 +129,12 @@ angular.module('emulvcApp')
 				var spaceHigher = 0;
 				angular.forEach(level.elements, function (evt, key) {
 					if (key < level.elements.length - 1) {
-						spaceHigher = evt.startSample + (level.elements[key + 1].startSample - level.elements[key].startSample) / 2;
+						spaceHigher = evt.sampleStart + (level.elements[key + 1].sampleStart - level.elements[key].sampleStart) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
 					if (key > 0) {
-						spaceLower = evt.startSample - (level.elements[key].startSample - level.elements[key - 1].startSample) / 2;
+						spaceLower = evt.sampleStart - (level.elements[key].sampleStart - level.elements[key - 1].sampleStart) / 2;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						ret = id;
@@ -224,7 +224,7 @@ angular.module('emulvcApp')
 						if (start >= 0) {
 							t.elements[start].sampleDur -= length / 2;
 							t.elements[start + 1].sampleDur -= length / 2;
-							t.elements[start + 1].startSample += length / 2;
+							t.elements[start + 1].sampleStart += length / 2;
 							for (var x in ids) {
 								t.elements.splice(ids[x], 0, segments[x]);
 							}
@@ -259,7 +259,7 @@ angular.module('emulvcApp')
 						if (start >= 0) {
 							t.elements[start].sampleDur += length / 2;
 							t.elements[end].sampleDur += length / 2;
-							t.elements[end].startSample -= length / 2;
+							t.elements[end].sampleStart -= length / 2;
 							t.elements.splice(ids[0], ids.length);
 							segm = t.elements[start];
 							segid = start;
@@ -284,7 +284,7 @@ angular.module('emulvcApp')
 					if (start == end) {
 						var startID = -1;
 						angular.forEach(t.elements, function (evt, id) {
-							if (start == evt.startSample) {
+							if (start == evt.sampleStart) {
 								startID = id;
 								ret = true;
 							}
@@ -297,7 +297,7 @@ angular.module('emulvcApp')
 					} else {
 						var startID = -1;
 						angular.forEach(t.elements, function (evt, id) {
-							if (start == evt.startSample) {
+							if (start == evt.sampleStart) {
 								startID = id;
 								ret = true;
 							}
@@ -321,20 +321,20 @@ angular.module('emulvcApp')
 					if (start == end) {
 						var startID = -1;
 						angular.forEach(t.elements, function (evt, id) {
-							if (start >= evt.startSample && start <= (evt.startSample + evt.sampleDur)) {
+							if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
 								startID = id;
 							}
-							if (evt.startSample == start) {
+							if (evt.sampleStart == start) {
 								ret = false;
 							}
-							if (evt.startSample + evt.sampleDur == start) {
+							if (evt.sampleStart + evt.sampleDur == start) {
 								ret = false;
 							}
 						});
 						if (ret) {
-							var diff = start - t.elements[startID].startSample;
+							var diff = start - t.elements[startID].sampleStart;
 							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
-							t.elements[startID + 1].startSample = start;
+							t.elements[startID + 1].sampleStart = start;
 							t.elements[startID + 1].sampleDur = t.elements[startID].sampleDur - diff;
 							t.elements[startID + 1].label = newLabel;
 							t.elements[startID].sampleDur = diff;
@@ -343,23 +343,23 @@ angular.module('emulvcApp')
 						var startID = -1;
 						var endID = -1;
 						angular.forEach(t.elements, function (evt, id) {
-							if (start >= evt.startSample && start <= (evt.startSample + evt.sampleDur)) {
+							if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
 								startID = id;
 							}
-							if (end >= evt.startSample && end <= (evt.startSample + evt.sampleDur)) {
+							if (end >= evt.sampleStart && end <= (evt.sampleStart + evt.sampleDur)) {
 								endID = id;
 							}
 						});
 						ret = (startID === endID);
 						if (startID === endID) {
-							var diff = start - t.elements[startID].startSample;
+							var diff = start - t.elements[startID].sampleStart;
 							var diff2 = end - start;
 							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
 							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
-							t.elements[startID + 1].startSample = start;
+							t.elements[startID + 1].sampleStart = start;
 							t.elements[startID + 1].sampleDur = diff2;
 							t.elements[startID + 1].label = newLabel;
-							t.elements[startID + 2].startSample = end;
+							t.elements[startID + 2].sampleStart = end;
 							t.elements[startID + 2].sampleDur = t.elements[startID].sampleDur - diff - diff2;
 							t.elements[startID + 2].label = newLabel;
 							t.elements[startID].sampleDur = diff;
@@ -379,7 +379,7 @@ angular.module('emulvcApp')
 					var last = 0;
 					angular.forEach(t.elements, function (evt, id) {
 						if (!ret) {
-							if (startP > last && startP < evt.startSample && (Math.floor(startP) != Math.floor(evt.startSample))) {
+							if (startP > last && startP < evt.sampleStart && (Math.floor(startP) != Math.floor(evt.sampleStart))) {
 
 								console.log(t.elements);
 								console.log(id);
@@ -389,11 +389,11 @@ angular.module('emulvcApp')
 
 								console.log(t.elements);
 
-								t.elements[id].startSample = startP;
+								t.elements[id].sampleStart = startP;
 								t.elements[id].label = pointName;
 								ret = true;
 							}
-							last = evt.startSample;
+							last = evt.sampleStart;
 						}
 
 					});
@@ -410,7 +410,7 @@ angular.module('emulvcApp')
 					var last = 0;
 					angular.forEach(t.elements, function (evt, id) {
 						if (!ret) {
-							if (startP == evt.startSample) {
+							if (startP == evt.sampleStart) {
 								t.elements.splice(id, 1);
 								ret = true;
 							}
@@ -425,7 +425,7 @@ angular.module('emulvcApp')
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.LevelName === levelName) {
 					angular.forEach(t.elements, function (evt, id) {
-						if (evt.startSample == toDelete.startSample) {
+						if (evt.sampleStart == toDelete.sampleStart) {
 							if (t.type === "point") {
 								t.elements.splice(id, 1);
 							} else {
@@ -464,10 +464,10 @@ angular.module('emulvcApp')
 						}
 					}
 					neighTd.elements.forEach(function (itm) {
-						absDist = Math.abs(sample - itm.startSample);
+						absDist = Math.abs(sample - itm.sampleStart);
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
-							minDist = itm.startSample - sample;
+							minDist = itm.sampleStart - sample;
 						}
 					});
 				}
@@ -487,22 +487,22 @@ angular.module('emulvcApp')
 				if (t.type === 'seg') {
 					if (seg > 1 && (t.elements[seg - 1].sampleDur + changeTime) >= 1 && (t.elements[seg].sampleDur - changeTime) >= 1) {
 						t.elements[seg - 1].sampleDur += changeTime;
-						t.elements[seg].startSample += changeTime;
+						t.elements[seg].sampleStart += changeTime;
 						t.elements[seg].sampleDur -= changeTime;
 					}
 				} else {
 					if (seg > 0 && seg < t.elements.length - 1) {
-						if (t.elements[seg].startSample + changeTime >= t.elements[seg - 1].startSample &&
-							t.elements[seg].startSample + changeTime <= t.elements[seg + 1].startSample)
-							t.elements[seg].startSample += changeTime;
+						if (t.elements[seg].sampleStart + changeTime >= t.elements[seg - 1].sampleStart &&
+							t.elements[seg].sampleStart + changeTime <= t.elements[seg + 1].sampleStart)
+							t.elements[seg].sampleStart += changeTime;
 					} else if (seg == 0) {
-						if (t.elements[seg].startSample + changeTime >= 0 &&
-							t.elements[seg].startSample + changeTime <= t.elements[seg + 1].startSample)
-							t.elements[seg].startSample += changeTime;
+						if (t.elements[seg].sampleStart + changeTime >= 0 &&
+							t.elements[seg].sampleStart + changeTime <= t.elements[seg + 1].sampleStart)
+							t.elements[seg].sampleStart += changeTime;
 					} else if (seg == t.elements.length - 1) {
-						if (t.elements[seg].startSample + changeTime >= t.elements[seg - 1].startSample &&
-							t.elements[seg].startSample + changeTime <= maximum)
-							t.elements[seg].startSample += changeTime;
+						if (t.elements[seg].sampleStart + changeTime >= t.elements[seg - 1].sampleStart &&
+							t.elements[seg].sampleStart + changeTime <= maximum)
+							t.elements[seg].sampleStart += changeTime;
 					}
 				}
 			}
@@ -514,9 +514,9 @@ angular.module('emulvcApp')
 				if ((t.elements[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.elements[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.elements[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
-						t.elements[selected[i]].startSample += changeTime;
+						t.elements[selected[i]].sampleStart += changeTime;
 					}
-					t.elements[selected[selected.length - 1] + 1].startSample += changeTime;
+					t.elements[selected[selected.length - 1] + 1].sampleStart += changeTime;
 					t.elements[selected[selected.length - 1] + 1].sampleDur -= changeTime;
 				}
 			}
@@ -544,11 +544,11 @@ angular.module('emulvcApp')
 
 								} else {
 									for (i = 1; i <= selected.length; i++) {
-										t.elements[selected[i - 1]].startSample += startTime;
+										t.elements[selected[i - 1]].sampleStart += startTime;
 										t.elements[selected[i - 1]].sampleDur += changeTime;
 										startTime = i * changeTime;
 									}
-									t.elements[selected[selected.length - 1] + 1].startSample += startTime;
+									t.elements[selected[selected.length - 1] + 1].sampleStart += startTime;
 									t.elements[selected[selected.length - 1] + 1].sampleDur -= startTime;
 								}
 							} else {
@@ -575,7 +575,7 @@ angular.module('emulvcApp')
 									$rootScope.$broadcast('errorMessage', 'Expand Segements Error : Cannot Expand/Shrink. Segment would be too small');
 								} else {
 									for (i = 0; i < selected.length; i++) {
-										t.elements[selected[i]].startSample -= (changeTime * (selected.length - i));
+										t.elements[selected[i]].sampleStart -= (changeTime * (selected.length - i));
 										t.elements[selected[i]].sampleDur += changeTime;
 									}
 									t.elements[selected[0] - 1].sampleDur -= changeTime * selected.length;

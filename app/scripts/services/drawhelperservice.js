@@ -271,7 +271,7 @@ angular.module('emulvcApp')
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var tD = Levelservice.getcurMouseLevelDetails(viewState.getcurMouseLevelName());
-				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.elements[viewState.getcurMouseSegmentId()].startSample));
+				var p = Math.round(viewState.getPos(ctx.canvas.width, tD.elements[viewState.getcurMouseSegmentId()].sampleStart));
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 			}
 

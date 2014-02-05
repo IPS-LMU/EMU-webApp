@@ -31,8 +31,7 @@ angular.module('emulvcApp')
           setLastMove(event, true);
           if (ConfigProviderService.vals.restrictions.editItemName) {
             setLastDblClick(event);
-          }
-          else {
+          } else {
             setLastClick(event);
           }
         });
@@ -42,10 +41,10 @@ angular.module('emulvcApp')
           var zoom = viewState.getPCMpp(event);
           thisPCM = getX(event) * zoom;
           var moveBy = (thisPCM - lastPCM);
-          
-          if (zoom<= 1) {
-              // ansolute movement in pcm below 1 pcm per pixel
-              moveBy = Math.floor((thisPCM+viewState.curViewPort.sS) - Levelservice.getElementDetails(scope.this.level.LevelName,viewState.getcurMouseSegmentId()).startSample);
+
+          if (zoom <= 1) {
+            // ansolute movement in pcm below 1 pcm per pixel
+            moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetails(scope.this.level.LevelName, viewState.getcurMouseSegmentId()).sampleStart);
           } else {
             // relative movement in pcm above 1 pcm per pixel
             moveBy = Math.round(thisPCM - lastPCM);

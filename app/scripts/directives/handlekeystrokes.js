@@ -180,7 +180,7 @@ angular.module('emulvcApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
                   var levelName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().startSample, levelName, mousSegID);
+                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
@@ -196,7 +196,7 @@ angular.module('emulvcApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
                   var levelName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().startSample, levelName, mousSegID);
+                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',

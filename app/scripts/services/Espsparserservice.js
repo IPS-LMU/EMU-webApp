@@ -57,7 +57,7 @@ angular.module('emulvcApp')
 					curLineArr = lines[i].split(/\s+/);
 					labelJSO.levels[0].elements.push({
 						label: curLineArr[curLineArr.length - 1],
-						startSample: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
+						sampleStart: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
 					});
 				}
 			} else {
@@ -65,7 +65,7 @@ angular.module('emulvcApp')
 				curLineArr = lines[headEndIdx + 1].split(/\s+/);
 				labelJSO.levels[0].elements.push({
 					label: '',
-					startSample: 0,
+					sampleStart: 0,
 					sampleDur: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
 				});
 				for (i = headEndIdx + 2; i < lines.length - 1; i++) {
@@ -73,7 +73,7 @@ angular.module('emulvcApp')
 					prevLineArr = lines[i - 1].split(/\s+/);
 					labelJSO.levels[0].elements.push({
 						label: curLineArr[curLineArr.length - 1],
-						startSample: Math.round(prevLineArr[1] * Soundhandlerservice.wavJSO.SampleRate),
+						sampleStart: Math.round(prevLineArr[1] * Soundhandlerservice.wavJSO.SampleRate),
 						sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * Soundhandlerservice.wavJSO.SampleRate)
 					});
 				}
@@ -101,7 +101,7 @@ angular.module('emulvcApp')
 				} else {
 					curLabel = i.label;
 				}
-				espsStr += '\t' + String((i.startSample + i.sampleDur) / Soundhandlerservice.wavJSO.SampleRate) + '\t125\t' + curLabel + '\n';
+				espsStr += '\t' + String((i.sampleStart + i.sampleDur) / Soundhandlerservice.wavJSO.SampleRate) + '\t125\t' + curLabel + '\n';
 			});
 
 			// console.log(espsStr);

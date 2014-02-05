@@ -118,7 +118,7 @@ angular.module('emulvcApp')
 						break;						
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							Levelservice.insertSegment(cur.seg.startSample, cur.seg.startSample ,cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Levelservice.insertSegment(cur.seg.sampleStart, cur.seg.sampleStart ,cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
 							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.levelType);
 						}

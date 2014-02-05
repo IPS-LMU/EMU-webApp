@@ -165,7 +165,7 @@ angular.module('emulvcApp')
       sServObj.curViewPort.selectS = -1;
       sServObj.curViewPort.selectE = -1;
     };
-    
+
     /**
      * gets the current Viewport
      */
@@ -209,45 +209,45 @@ angular.module('emulvcApp')
     };
 
     sServObj.selectLevel = function (next) {
-	  var tag;	  
-	  var now = sServObj.getcurClickLevelName();
-	  var name = $('li').children()[0].id;
-	  if (now === undefined) {
-		sServObj.setcurClickLevelName(name);
-	  } else {
-		if (next) {
-		  tag = $('li.' + now).next().children()[0];
-		  if (tag === undefined) {
-			sServObj.setcurClickLevelName(name);
-		  } else {
-		    name = tag.id;
-			sServObj.setcurClickLevelName(name);
-		  }
-	    } else {
-		  tag = $('li.' + now).prev().children()[0];
-		  if (tag === undefined) {
-			sServObj.setcurClickLevelName(name);
-		  } else {
-		    name = tag.id;
-			sServObj.setcurClickLevelName(name);
-		  }
-		}
-		var segs = sServObj.getcurClickSegments();
-		if(segs!==undefined) {
-		    if(segs.length>0) {
-		        var pcm = segs[0].startSample + (segs[0].sampleDur/2);
-		        var ld = Levelservice.getLevelDetails(name);
-		        var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
-		        var lastEventClickId = Levelservice.getEventId(pcm, ld.level, false);
-		        console.log(lastEventClick);
-		        sServObj.setlasteditArea('_' + lastEventClickId);
-		        sServObj.setcurClickLevelType(ld.level.type);
-		        sServObj.setcurClickSegment(lastEventClick, lastEventClickId);
-		        sServObj.setLevelLength(ld.level.elements.length);
-		    }
-		}
-	  }
-	};    
+      var tag;
+      var now = sServObj.getcurClickLevelName();
+      var name = $('li').children()[0].id;
+      if (now === undefined) {
+        sServObj.setcurClickLevelName(name);
+      } else {
+        if (next) {
+          tag = $('li.' + now).next().children()[0];
+          if (tag === undefined) {
+            sServObj.setcurClickLevelName(name);
+          } else {
+            name = tag.id;
+            sServObj.setcurClickLevelName(name);
+          }
+        } else {
+          tag = $('li.' + now).prev().children()[0];
+          if (tag === undefined) {
+            sServObj.setcurClickLevelName(name);
+          } else {
+            name = tag.id;
+            sServObj.setcurClickLevelName(name);
+          }
+        }
+        var segs = sServObj.getcurClickSegments();
+        if (segs !== undefined) {
+          if (segs.length > 0) {
+            var pcm = segs[0].sampleStart + (segs[0].sampleDur / 2);
+            var ld = Levelservice.getLevelDetails(name);
+            var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
+            var lastEventClickId = Levelservice.getEventId(pcm, ld.level, false);
+            console.log(lastEventClick);
+            sServObj.setlasteditArea('_' + lastEventClickId);
+            sServObj.setcurClickLevelType(ld.level.type);
+            sServObj.setcurClickSegment(lastEventClick, lastEventClickId);
+            sServObj.setLevelLength(ld.level.elements.length);
+          }
+        }
+      }
+    };
 
 
     /**
@@ -347,7 +347,7 @@ angular.module('emulvcApp')
     sServObj.setsubmenuOpen = function (s) {
       this.submenuOpen = s;
     };
- 
+
 
     /**
      * get the height of the osci
@@ -362,7 +362,7 @@ angular.module('emulvcApp')
     sServObj.setTransitionTime = function (s) {
       this.TransitionTime = s;
     };
-    
+
     /**
      * get the height of the osci
      */
@@ -505,19 +505,19 @@ angular.module('emulvcApp')
      */
     sServObj.selectSegmentsInSelection = function () {
       var rangeStart = sServObj.curViewPort.selectS;
-	  var rangeEnd = sServObj.curViewPort.selectE;
-	  angular.forEach(Levelservice.data.levels, function (t) {
-		var i = 0;
-		if (t.LevelName === sServObj.getcurClickLevelName()) {
-		  angular.forEach(t.elements, function (evt) {
-			if (evt.startSample >= rangeStart && (evt.startSample + evt.sampleDur) <= rangeEnd) {
-			  sServObj.setcurClickSegmentMultiple(evt, i);
-			}
-			++i;
-		  });
-		}
-	  });
-	};
+      var rangeEnd = sServObj.curViewPort.selectE;
+      angular.forEach(Levelservice.data.levels, function (t) {
+        var i = 0;
+        if (t.LevelName === sServObj.getcurClickLevelName()) {
+          angular.forEach(t.elements, function (evt) {
+            if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
+              sServObj.setcurClickSegmentMultiple(evt, i);
+            }
+            ++i;
+          });
+        }
+      });
+    };
 
 
     /**
@@ -526,7 +526,7 @@ angular.module('emulvcApp')
      */
     sServObj.setcurClickSegment = function (segment, id) {
       if (segment !== null) {
-        this.select(segment.startSample, segment.startSample + segment.sampleDur);
+        this.select(segment.sampleStart, segment.sampleStart + segment.sampleDur);
         this.curClickSegments = [];
         this.curClickSegments.push(segment);
         this.selected = [];
@@ -540,14 +540,14 @@ angular.module('emulvcApp')
      */
     sServObj.selectBoundry = function () {
       if (this.curClickSegments.length > 0) {
-        var left = this.curClickSegments[0].startSample;
-        var right = this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur;
+        var left = this.curClickSegments[0].sampleStart;
+        var right = this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur;
         this.curClickSegments.forEach(function (entry) {
-          if (entry.startSample <= left) {
-            left = entry.startSample;
+          if (entry.sampleStart <= left) {
+            left = entry.sampleStart;
           }
-          if (entry.startSample + entry.sampleDur >= right) {
-            right = entry.startSample + entry.sampleDur;
+          if (entry.sampleStart + entry.sampleDur >= right) {
+            right = entry.sampleStart + entry.sampleDur;
           }
         });
         this.select(left, right);
@@ -587,25 +587,30 @@ angular.module('emulvcApp')
      */
     sServObj.getselected = function () {
       return this.selected;
-    };  
-    
+    };
+
 
     /**
      * gets the current (click) Segment
      */
     sServObj.getselectedRange = function () {
-      if(this.curClickSegments.length>1) {
-        return {start: this.curClickSegments[0].startSample, 
-                end: (this.curClickSegments[this.curClickSegments.length-1].startSample + this.curClickSegments[this.curClickSegments.length-1].sampleDur) };
+      if (this.curClickSegments.length > 1) {
+        return {
+          start: this.curClickSegments[0].sampleStart,
+          end: (this.curClickSegments[this.curClickSegments.length - 1].sampleStart + this.curClickSegments[this.curClickSegments.length - 1].sampleDur)
+        };
+      } else if (this.curClickSegments.length == 1) {
+        return {
+          start: this.curClickSegments[0].sampleStart,
+          end: (this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur)
+        };
+      } else {
+        return {
+          start: -1,
+          end: -1
+        };
       }
-      else if(this.curClickSegments.length == 1){
-        return {start: this.curClickSegments[0].startSample, 
-                end: (this.curClickSegments[0].startSample + this.curClickSegments[0].sampleDur) };
-      }
-      else {
-        return {start: -1, end: -1};
-      }
-    };    
+    };
 
     /**
      * gets the current (click) Segment
@@ -690,11 +695,11 @@ angular.module('emulvcApp')
       console.log(lastEventClick, lastEventClickId);
       var elem = $('#' + this.getcurClickLevelName()).find('canvas')[0];
       if (type === "seg") {
-        var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft;
-        var end = this.getPos(elem.clientWidth, (lastEventClick.startSample + lastEventClick.sampleDur)) + elem.offsetLeft;
+        var start = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft;
+        var end = this.getPos(elem.clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + elem.offsetLeft;
       } else {
-        var start = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft - (elem.clientWidth / 50);
-        var end = this.getPos(elem.clientWidth, lastEventClick.startSample) + elem.offsetLeft + (elem.clientWidth / 50);
+        var start = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft - (elem.clientWidth / 50);
+        var end = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft + (elem.clientWidth / 50);
       }
       var top = elem.offsetTop + 1;
       var height = elem.clientHeight + 1;
@@ -736,7 +741,7 @@ angular.module('emulvcApp')
       }).text(label));
       return textid;
     };
-    
+
 
     /**
      * calcs and returns start in secs
@@ -835,7 +840,7 @@ angular.module('emulvcApp')
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       if (curLevel && segMId) {
-        var curMouseMoveSegmentStart = curLevel.elements[segMId].startSample;
+        var curMouseMoveSegmentStart = curLevel.elements[segMId].sampleStart;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
