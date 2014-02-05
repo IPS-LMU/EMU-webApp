@@ -15,7 +15,6 @@ angular.module('emulvcApp')
 				}, true);
 
 				scope.$watch('vs', function () {
-					console.log(scope.level)
 					drawLevelDetails(scope.level, scope.vs, scope.config);
 					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				}, true);
@@ -173,7 +172,6 @@ angular.module('emulvcApp')
 
 						levelDetails.elements.forEach(function (curEvt) {
 							if (curEvt.samplePoint > viewState.curViewPort.sS && curEvt.samplePoint < viewState.curViewPort.eS) {
-							console.log('sdfsdf')
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.samplePoint) + (sDist / 2));
 
 								if (levelDetails.name === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
@@ -221,7 +219,7 @@ angular.module('emulvcApp')
 					// draw current viewport selected
 					scope.dhs.drawCurViewPortSelected(ctx);
 
-					
+
 					var posS, posE, sDist, xOffset, curEvt;
 					posS = viewState.getPos(canvas[1].width, viewState.curViewPort.selectS);
 					posE = viewState.getPos(canvas[1].width, viewState.curViewPort.selectE);
