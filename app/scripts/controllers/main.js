@@ -204,8 +204,9 @@ angular.module('emulvcApp')
 			}
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
-			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]);
-			$('#' + ConfigProviderService.vals.signalsCanvasConfig.order[0]).insertBefore('#' + ConfigProviderService.vals.signalsCanvasConfig.order[1]);
+			console.log();
+			$('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]);
+			$('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]);
 
 		};
 
@@ -659,11 +660,30 @@ angular.module('emulvcApp')
 
 		//
 		$scope.changePerspective = function () {
-			alert('not implemented yet')
+			alert('not implemented yet');
 		};
 
+		//
+		$scope.getPerspectiveColor = function (persp) {
+			var curColor;
+			if (persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {
+				curColor = {
+					'background-color': '#999',
+					'color': 'white'
+				};
+			} else {
+				curColor = {
+					'background-color': 'white',
+					'color': 'black'
+				};
+			}
+			return curColor;
+		};
 
 	});
+
+
+
 ///////////////////////////////////////
 /// old functions... might still need...
 // /**

@@ -50,7 +50,7 @@
 				}]
 			},
 			"levelCanvases": {
-				"order": ["Tone", "Phonetic"]
+				"order": ["Phonetic", "Tone"]
 			}
 		}]
 	}

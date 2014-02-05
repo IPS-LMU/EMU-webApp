@@ -90,7 +90,7 @@
     "perspectives": [{
         "name": "default",
         "signalCanvases": {
-            "order": ["osci", "spec"],
+            "order": ["OSCI", "SPEC"],
             "assign": {
                 "spec": "fms:fm"
             },
@@ -104,25 +104,11 @@
                     "max": 1
                 }
             }
+        },
+        "labelCanvases": {
+            "order": [".lab", ".tone"]
         }
     }],
-
-    "signalsCanvasConfig": {
-        "order": ["osci", "spec"],
-        "assign": {
-            "spec": "fms:fm"
-        },
-        "extensions": {
-            "audio": ".wav",
-            "signals": [".fms"]
-        },
-        "contourLims": {
-            "fm": {
-                "min": 0,
-                "max": 1
-            }
-        }
-    },
     "labelCanvasConfig": {
         "order": [".lab", ".tone"],
         "addTimeMode": "absolute",

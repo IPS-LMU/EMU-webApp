@@ -23,12 +23,13 @@ angular.module('emulvcApp')
 			// $scope.vs.curViewPort.sS = 0;
 			$scope.ssffds.data = []; // SIC HACK! NO idea why event is fired twice...
 			$scope.ssffds.data.push(data);
-			for (var key in ConfigProviderService.vals.signalsCanvasConfig.assign) {
-				if (ConfigProviderService.vals.signalsCanvasConfig.assign[key] === 'fms:fm') {
-					if (key === 'osci') {
+			for (var key in ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign[0]) {
+				console.log(key);
+				if (ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign[key] === 'formants') {
+					if (key === 'OSCI') {
 						$scope.showSSFFOsci = true;
 					}
-					if (key === 'spec') {
+					if (key === 'SPEC') {
 						$scope.showSSFFSpectro = true;
 					}
 				}
