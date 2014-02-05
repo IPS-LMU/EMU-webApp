@@ -172,9 +172,9 @@ angular.module('emulvcApp')
 						var perc;
 
 						levelDetails.elements.forEach(function (curEvt) {
-
-							if (curEvt.sampleStart > viewState.curViewPort.sS && curEvt.sampleStart < viewState.curViewPort.eS) {
-								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart) + (sDist / 2));
+							if (curEvt.samplePoint > viewState.curViewPort.sS && curEvt.samplePoint < viewState.curViewPort.eS) {
+							console.log('sdfsdf')
+								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.samplePoint) + (sDist / 2));
 
 								if (levelDetails.name === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
 									//console.log('this is the selected boundary');
@@ -192,7 +192,7 @@ angular.module('emulvcApp')
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								}
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
+								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
