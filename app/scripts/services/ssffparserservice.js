@@ -33,7 +33,15 @@ angular.module('emulvcApp')
 			// console.log('SSFF loaded');
 
 			var uIntBuffView = new Uint8Array(buf);
-			var buffStr = String.fromCharCode.apply(null, uIntBuffView);
+
+			// Causes "RangeError: Maximum call stack size exceeded"
+			// with some browsers (?)(Chrome/Chromium on Ubuntu)
+			//var buffStr = String.fromCharCode.apply(null, uIntBuffView);
+			var buffStr='';
+			var i;
+			for(i=0;i<uIntBuffView.length;i++){
+			    buffStr=buffStr+String.fromCharCode(uIntBuffView[i]);		
+			}
 			// console.log(buffStr);
 
 			var newLsep = buffStr.split(/^/m);
