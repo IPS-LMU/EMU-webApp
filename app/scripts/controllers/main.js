@@ -316,7 +316,7 @@ angular.module('emulvcApp')
 						$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso); // SIC SIC SIC
 
 						// set annotation
-						$rootScope.$broadcast('newlyLoadedLabelJson', bundleData.annotation); // SIC SIC SIC
+						Levelservice.data = bundleData.annotation;
 						$scope.curUtt = utt;
 						viewState.setState('labeling');
 					});

@@ -35,10 +35,10 @@ angular.module('emulvcApp')
 		 * listen for newlyLoadedLabelJson broadcast
 		 * update levelDetails if heard
 		 */
-		$scope.$on('newlyLoadedLabelJson', function (evt, data) {
-			if ($.isEmptyObject($scope.levelDetails.data)) {
-				$scope.levelDetails.data = data;
-			} else {
+		// $scope.$on('newlyLoadedLabelJson', function (evt, data) {
+			// if ($.isEmptyObject($scope.levelDetails.data)) {
+				// $scope.levelDetails.data = data;
+			// } else {
 				// data.levels.forEach(function (level) {
 				// 	if (level.type === 'EVENT' || level.type === 'SEGMENT') {
 				// 		$scope.levelDetails.data.levels.push(level);
@@ -48,9 +48,9 @@ angular.module('emulvcApp')
 				// 	$scope.levelDetails.data.fileInfos.push(fInf);
 				// });
 				// console.log(JSON.stringify($scope.levelDetails, undefined, 2));
-			}
+			// }
 			// $scope.sortLevels();
-		});
+		// });
 
 		/**
 		 * clear levelDetails when new utt is loaded
