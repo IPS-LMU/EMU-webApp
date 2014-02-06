@@ -7,7 +7,7 @@
   <nav class="righSideMenu" show-menu="isRightSideMenuHidden">
     <h3>Perspectives</h3>
     <ul ng-repeat="persp in cps.vals.perspectives">
-      <li ng-click="changePerspective();" ng-style="getPerspectiveColor(persp);">{{persp.name}}</li>
+      <li ng-click="changePerspective(persp);" ng-style="getPerspectiveColor(persp);">{{persp.name}}</li>
     </ul>
   </nav>
 

@@ -15,13 +15,22 @@ angular.module('emulvcApp')
 				sServObj.vals = data;
 			} else {
 				Object.keys(data).forEach(function (key1) {
-					Object.keys(data[key1]).forEach(function (key2) {
-						if (sServObj.vals[key1][key2] !== undefined) {
-							sServObj.vals[key1][key2] = data[key1][key2];
-						} else {
-							console.error('BAD ENTRY IN CONFIG! Key1: ' + key1 + ' key2: ' + key2);
-						}
-					});
+					// if array... overwrite entire thing!
+					if (angular.isArray(sServObj.vals[key1])) {
+						//empty array
+						sServObj.vals[key1] = [];
+						data[key1].forEach(function (itm) {
+							sServObj.vals[key1].push(itm);
+						});
+					} else {
+						Object.keys(data[key1]).forEach(function (key2) {
+							if (sServObj.vals[key1][key2] !== undefined) {
+								sServObj.vals[key1][key2] = data[key1][key2];
+							} else {
+								console.error('BAD ENTRY IN CONFIG! Key1: ' + key1 + ' key2: ' + key2);
+							}
+						});
+					}
 
 				});
 			}

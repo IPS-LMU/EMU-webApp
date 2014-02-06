@@ -52,6 +52,23 @@
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]
 			}
+		}, {
+			"name": "switchedLevels",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [{
+					"SPEC": "formants"
+				}],
+				"contourLims": [{
+					"formants": {
+						"min": 0,
+						"max": 1
+					}
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Tone"]
+			}
 		}]
 	}
 }

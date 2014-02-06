@@ -659,8 +659,20 @@ angular.module('emulvcApp')
 		};
 
 		//
-		$scope.changePerspective = function () {
-			alert('not implemented yet');
+		$scope.changePerspective = function (persp) {
+			// alert('not implemented yet');
+			var newIdx;
+			// for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
+			// console.log(ConfigProviderService.vals.perspectives[i].name);
+			// if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
+			// newIdx = i;
+			// }
+			// };
+			if (viewState.curPerspectiveIdx === 1) {
+				viewState.curPerspectiveIdx = 0;
+			}else{
+				viewState.curPerspectiveIdx = 1;
+			}
 		};
 
 		//
