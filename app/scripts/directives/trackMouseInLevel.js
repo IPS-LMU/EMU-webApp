@@ -4,7 +4,7 @@ angular.module('emulvcApp')
   .directive('trackmouseinlevel', function (ConfigProviderService, viewState, Levelservice) {
     return {
       restrict: 'A',
-      link: function (scope, element) {
+      link: function (scope, element, attr) {
 
         var lastEventClick;
         var lastEventClickId;
@@ -14,6 +14,8 @@ angular.module('emulvcApp')
         var lastEventMoveId;
         var lastPCM;
         var thisPCM;
+        var levelID = scope.level.name;
+        var levelType = scope.level.type;
 
         element.bind('click', function (event) {
           setLastMove(event, true);
@@ -116,9 +118,9 @@ angular.module('emulvcApp')
           viewState.movingBoundary = false;
           setLastMove(event, true);
         });
+        //levelID
 
         function setLastClick(x) {
-          var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
@@ -129,18 +131,15 @@ angular.module('emulvcApp')
           lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           viewState.setlasteditArea('_' + lastEventClickId);
-          viewState.setcurClickLevelName(levelId);
-          viewState.setcurClickLevelType(scope.this.level.type);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
-          viewState.setLevelLength(scope.this.level.elements.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastRightClick(x) {
-          var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
-          if (viewState.getcurClickLevelName() !== levelId) {
+          if (viewState.getcurClickLevelName() !== levelID) {
             setLastClick(x);
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
@@ -149,45 +148,39 @@ angular.module('emulvcApp')
           lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           lastEventRightClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           lastEventRightClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
-          viewState.setcurClickLevelName(levelId);
-          viewState.setcurClickLevelType(scope.this.level.type);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClickId);
-          viewState.setLevelLength(scope.this.level.elements.length);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastDblClick(x) {
-          var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
           lastEventClickId = Levelservice.getEventId(thisPCM + vp.sS, scope.this.level, false, viewState.curViewPort.bufferLength);
-          viewState.setcurClickLevelName(levelId);
-          viewState.setcurClickLevelType(scope.this.level.type);
-          viewState.setlasteditArea('_' + lastEventClickId);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
           viewState.setcurClickSegment(lastEventClick, lastEventClickId);
+          viewState.setlasteditArea('_' + lastEventClickId);
           viewState.setEditing(true);
-          viewState.setLevelLength(scope.this.level.elements.length);
-          viewState.openEditArea(lastEventClick, lastEventClickId, scope.this.level.type);
+          viewState.openEditArea(lastEventClick, lastEventClickId, levelType, element);
           scope.cursorInTextField();
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastMove(x, doChange) {
-          var levelId = element.parent().parent().parent()[0].id;
           var vp = viewState.getViewPort();
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = Levelservice.getEvent(thisPCM + vp.sS, scope.this.level, true, viewState.curViewPort.bufferLength);
           lastEventMoveId = scope.getNearest(thisPCM, scope.this.level, true, viewState.curViewPort.bufferLength);
-          viewState.setcurMouseLevelName(levelId);
+          viewState.setcurMouseLevelName(levelID);
           if (doChange) {
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMoveId);
           }
-          viewState.setcurMouseLevelName(levelId);
-          viewState.setcurMouseLevelType(scope.this.level.type);
+          viewState.setcurMouseLevelName(levelID);
+          viewState.setcurMouseLevelType(levelType);
           lastPCM = thisPCM;
           scope.$apply();
         }

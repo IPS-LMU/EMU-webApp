@@ -58,6 +58,7 @@ angular.module('emulvcApp')
     sServObj.curClickLevelType = undefined;
     sServObj.curPreselColumnSample = 2;
     sServObj.curCorrectionToolNr = undefined;
+    sServObj.curClickLevelIndex = undefined;
     sServObj.start = null;
     sServObj.loadingUtt = false;
     sServObj.curMouseSegmentId = undefined;
@@ -410,6 +411,15 @@ angular.module('emulvcApp')
     };
 
 
+    sServObj.setcurClickLevel = function (levelID, levelType, levelIndex, elementsLength) {
+      this.setLevelLength(elementsLength);
+      this.setcurClickLevelName(levelID, levelIndex);
+      this.setcurClickLevelType(levelType);
+      this.setLevelLength(elementsLength);
+    };
+
+
+
     /**
      * sets the current (clicked) Level Name
      * @param name is name of level
@@ -430,8 +440,9 @@ angular.module('emulvcApp')
      * sets the current (clicked) Level Name
      * @param name is name of level
      */
-    sServObj.setcurClickLevelName = function (name) {
+    sServObj.setcurClickLevelName = function (name, index) {
       this.curClickLevelName = name;
+      this.curClickLevelIndex = index;
     };
 
     /**
@@ -693,21 +704,23 @@ angular.module('emulvcApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServObj.openEditArea = function (lastEventClick, lastEventClickId, type) {
-      console.log(lastEventClick, lastEventClickId);
-      var elem = $('#' + this.getcurClickLevelName()).find('canvas')[0];
+    sServObj.openEditArea = function (lastEventClick, lastEventClickId, type, element) {
+      var elem = element.find('canvas').context.getContext('2d');
+      var clientWidth = elem.canvas.clientWidth;
+      var clientOffset = elem.canvas.offsetLeft;
+      
+      console.log(elem.canvas.clientWidth);
       if (type === "seg") {
-        var start = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft;
-        var end = this.getPos(elem.clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + elem.offsetLeft;
+        var start = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
+        var end = this.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
       } else {
-        var start = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft - (elem.clientWidth / 50);
-        var end = this.getPos(elem.clientWidth, lastEventClick.sampleStart) + elem.offsetLeft + (elem.clientWidth / 50);
+        var start = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset - (clientWidth / 50);
+        var end = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset + (clientWidth / 50);
       }
-      var top = elem.offsetTop + 1;
-      var height = elem.clientHeight + 1;
-      var myid = this.createEditArea(this.getcurClickLevelName(), start, top, end - start, height, lastEventClick.label, lastEventClickId);
-      this.createSelection($('#' + myid)[0], 0, $('#' + myid).val().length);
-      return myid;
+      var top = elem.canvas.offsetTop + 1;
+      var height = elem.canvas.clientHeight + 1;
+      this.createEditArea(element, start, top, end - start, height, lastEventClick.label, lastEventClickId);
+      //this.createSelection(element[0], 0, element.val().length);
     };
 
     sServObj.createSelection = function (field, start, end) {
@@ -726,9 +739,9 @@ angular.module('emulvcApp')
       field.focus();
     };
 
-    sServObj.createEditArea = function (id, x, y, width, height, label, labelid) {
+    sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
       var textid = '_' + labelid;
-      $('#' + id).prepend($('<textarea>').attr({
+      element.prepend($('<textarea>').attr({
         id: textid,
         'class': textid + ' Label_Edit',
         'ng-model': 'message',
@@ -741,7 +754,6 @@ angular.module('emulvcApp')
         'height': Math.round(height - 1) + 'px',
         'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
-      return textid;
     };
 
 
@@ -840,9 +852,12 @@ angular.module('emulvcApp')
       // get cur mouse move level details
       var curLevel = Levelservice.getcurMouseLevelDetails();
       var d = this.curViewPort.eS - this.curViewPort.sS;
+      var index = this.curClickLevelIndex;
 
       if (curLevel && segMId) {
-        var curMouseMoveSegmentStart = curLevel.elements[segMId].sampleStart;
+        console.log(curLevel);
+        console.log(index);
+        var curMouseMoveSegmentStart = curLevel.elements[index][segMId].sampleStart;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
