@@ -68,19 +68,19 @@ angular.module('emulvcApp')
 
 		sServObj.getEvent = function (pcm, level, nearest, maximum) {
 			var evtr = null;
-			if (level.type === "seg") {
+			if (level.type === "SEGMENT") {
 				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
-								evtr = level.elements[id + 1];
-							} else {
+							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
 								evtr = level.elements[id];
+							} else {
+								evtr = level.elements[id-1];
 							}
 						}
 					} else {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							evtr = level.elements[id];
+							evtr = evt;
 						}
 					}
 				});
@@ -108,7 +108,7 @@ angular.module('emulvcApp')
 		sServObj.getEventId = function (pcm, level, nearest, maximum) {
 			var id = 0;
 			var ret = 0;
-			if (level.type === "seg") {
+			if (level.type === "SEGMENT") {
 				angular.forEach(level.elements, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
@@ -216,7 +216,7 @@ angular.module('emulvcApp')
 			var end = ids[ids.length - 1] + 1;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.LevelName === levelName) {
-					if (t.type === "seg") {
+					if (t.type === "SEGMENT") {
 						var length = 0;
 						for (var x in segments) {
 							length += segments[x].sampleDur;
@@ -251,7 +251,7 @@ angular.module('emulvcApp')
 			var end = ids[ids.length - 1] + 1;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.LevelName === levelName) {
-					if (t.type === "seg") {
+					if (t.type === "SEGMENT") {
 						var length = 0;
 						for (var x in segments) {
 							length += segments[x].sampleDur;
