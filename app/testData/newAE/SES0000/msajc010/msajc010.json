@@ -5,7 +5,7 @@
   "levels": [{
     "name": "Phonetic",
     "type": "SEGMENT",
-    "elements": [{
+    "items": [{
       "id": 1,
       "sampleStart": 3750,
       "sampleDur": 1390,
@@ -179,7 +179,7 @@
   }, {
     "name": "Tone",
     "type": "EVENT",
-    "elements": [{
+    "items": [{
       "id": 35,
       "samplePoint": 8382,
       "label": "H*"
@@ -210,8 +210,8 @@
     }]
   }, {
     "name": "Syllable",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 42,
       "label": "W",
       "labels": null
@@ -262,8 +262,8 @@
     }]
   }, {
     "name": "Word",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 54,
       "label": "C",
       "labels": ["C", "S", "amongst"]
@@ -294,8 +294,8 @@
     }]
   }, {
     "name": "Foot",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 61,
       "label": "F",
       "labels": null
@@ -318,8 +318,8 @@
     }]
   }, {
     "name": "Phoneme",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 66,
       "label": "V",
       "labels": null
@@ -454,24 +454,24 @@
     }]
   }, {
     "name": "Utterance",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 99,
       "label": "",
       "labels": null
     }]
   }, {
     "name": "Intonational",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 100,
       "label": "L%",
       "labels": null
     }]
   }, {
     "name": "Intermediate",
-    "type": "ELEMENT",
-    "elements": [{
+    "type": "ITEM",
+    "items": [{
       "id": 101,
       "label": "L-",
       "labels": null
