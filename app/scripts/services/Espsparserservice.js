@@ -40,7 +40,7 @@ angular.module('emulvcApp')
 			labelJSO.levels.push({
 				LevelName: ext,
 				type: '',
-				elements: []
+				items: []
 			});
 
 			// set level type
@@ -55,7 +55,7 @@ angular.module('emulvcApp')
 			if (labelJSO.levels[0].type === 'point') {
 				for (i = headEndIdx + 1; i < lines.length - 1; i++) {
 					curLineArr = lines[i].split(/\s+/);
-					labelJSO.levels[0].elements.push({
+					labelJSO.levels[0].items.push({
 						label: curLineArr[curLineArr.length - 1],
 						sampleStart: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
 					});
@@ -63,7 +63,7 @@ angular.module('emulvcApp')
 			} else {
 				// take care of H#
 				curLineArr = lines[headEndIdx + 1].split(/\s+/);
-				labelJSO.levels[0].elements.push({
+				labelJSO.levels[0].items.push({
 					label: '',
 					sampleStart: 0,
 					sampleDur: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
@@ -71,7 +71,7 @@ angular.module('emulvcApp')
 				for (i = headEndIdx + 2; i < lines.length - 1; i++) {
 					curLineArr = lines[i].split(/\s+/);
 					prevLineArr = lines[i - 1].split(/\s+/);
-					labelJSO.levels[0].elements.push({
+					labelJSO.levels[0].items.push({
 						label: curLineArr[curLineArr.length - 1],
 						sampleStart: Math.round(prevLineArr[1] * Soundhandlerservice.wavJSO.SampleRate),
 						sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * Soundhandlerservice.wavJSO.SampleRate)
@@ -95,7 +95,7 @@ angular.module('emulvcApp')
 			espsStr += 'nfields 1\n';
 			espsStr += '#\n';
 			var curLabel;
-			espsJSO.elements.forEach(function (i, idx) {
+			espsJSO.items.forEach(function (i, idx) {
 				if (i.label === '' && idx === 0) {
 					curLabel = 'H#';
 				} else {

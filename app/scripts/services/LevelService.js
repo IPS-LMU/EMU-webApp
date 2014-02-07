@@ -54,7 +54,7 @@ angular.module('emulvcApp')
 			var details = null;
 			sServObj.data.levels.forEach(function (t) {
 				if (t.LevelName === levelName) {
-					t.elements.forEach(function (element, y) {
+					t.items.forEach(function (element, y) {
 						if (y == elementid) {
 							details = element;
 						}
@@ -69,13 +69,13 @@ angular.module('emulvcApp')
 		sServObj.getEvent = function (pcm, level, nearest, maximum) {
 			var evtr = null;
 			if (level.type === "SEGMENT") {
-				angular.forEach(level.elements, function (evt, id) {
+				angular.forEach(level.items, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
-								evtr = level.elements[id];
+								evtr = level.items[id];
 							} else {
-								evtr = level.elements[id-1];
+								evtr = level.items[id-1];
 							}
 						}
 					} else {
@@ -87,14 +87,14 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(level.elements, function (evt, key) {
-					if (key < level.elements.length - 1) {
-						spaceHigher = evt.sampleStart + (level.elements[key + 1].sampleStart - level.elements[key].sampleStart) / 2;
+				angular.forEach(level.items, function (evt, key) {
+					if (key < level.items.length - 1) {
+						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
 					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.elements[key].sampleStart - level.elements[key - 1].sampleStart) / 2;
+						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						evtr = evt;
@@ -109,7 +109,7 @@ angular.module('emulvcApp')
 			var id = 0;
 			var ret = 0;
 			if (level.type === "SEGMENT") {
-				angular.forEach(level.elements, function (evt, id) {
+				angular.forEach(level.items, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
@@ -127,14 +127,14 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(level.elements, function (evt, key) {
-					if (key < level.elements.length - 1) {
-						spaceHigher = evt.sampleStart + (level.elements[key + 1].sampleStart - level.elements[key].sampleStart) / 2;
+				angular.forEach(level.items, function (evt, key) {
+					if (key < level.items.length - 1) {
+						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
 					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.elements[key].sampleStart - level.elements[key - 1].sampleStart) / 2;
+						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						ret = id;
@@ -170,7 +170,7 @@ angular.module('emulvcApp')
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.LevelName === levelName) {
-					angular.forEach(t.elements, function (evt, i) {
+					angular.forEach(t.items, function (evt, i) {
 						if (id == i) {
 							evt.label = newLabelName;
 						}
@@ -198,7 +198,7 @@ angular.module('emulvcApp')
 			angular.forEach(sServObj.data.levels, function (t) {
 				var i = 0;
 				if (t.LevelName === tN) {
-					angular.forEach(t.elements, function (evt) {
+					angular.forEach(t.items, function (evt) {
 						if (i === now) {
 							ret.event = evt;
 							ret.id = now;
@@ -222,18 +222,18 @@ angular.module('emulvcApp')
 							length += segments[x].sampleDur;
 						}
 						if (start >= 0) {
-							t.elements[start].sampleDur -= length / 2;
-							t.elements[start + 1].sampleDur -= length / 2;
-							t.elements[start + 1].sampleStart += length / 2;
+							t.items[start].sampleDur -= length / 2;
+							t.items[start + 1].sampleDur -= length / 2;
+							t.items[start + 1].sampleStart += length / 2;
 							for (var x in ids) {
-								t.elements.splice(ids[x], 0, segments[x]);
+								t.items.splice(ids[x], 0, segments[x]);
 							}
 
-							segm = t.elements[start];
+							segm = t.items[start];
 							segid = start;
 
 						} else {
-							segm = t.elements[0];
+							segm = t.items[0];
 							segid = 0;
 						}
 					}
@@ -257,15 +257,15 @@ angular.module('emulvcApp')
 							length += segments[x].sampleDur;
 						}
 						if (start >= 0) {
-							t.elements[start].sampleDur += length / 2;
-							t.elements[end].sampleDur += length / 2;
-							t.elements[end].sampleStart -= length / 2;
-							t.elements.splice(ids[0], ids.length);
-							segm = t.elements[start];
+							t.items[start].sampleDur += length / 2;
+							t.items[end].sampleDur += length / 2;
+							t.items[end].sampleStart -= length / 2;
+							t.items.splice(ids[0], ids.length);
+							segm = t.items[start];
 							segid = start;
 
 						} else {
-							segm = t.elements[0];
+							segm = t.items[0];
 							segid = 0;
 						}
 					}
@@ -283,30 +283,30 @@ angular.module('emulvcApp')
 				if (t.LevelName === levelName) {
 					if (start == end) {
 						var startID = -1;
-						angular.forEach(t.elements, function (evt, id) {
+						angular.forEach(t.items, function (evt, id) {
 							if (start == evt.sampleStart) {
 								startID = id;
 								ret = true;
 							}
 						});
 						if (ret) {
-							var diff = t.elements[startID].sampleDur;
-							t.elements[startID - 1].sampleDur += diff;
-							t.elements.splice(startID, 1);
+							var diff = t.items[startID].sampleDur;
+							t.items[startID - 1].sampleDur += diff;
+							t.items.splice(startID, 1);
 						}
 					} else {
 						var startID = -1;
-						angular.forEach(t.elements, function (evt, id) {
+						angular.forEach(t.items, function (evt, id) {
 							if (start == evt.sampleStart) {
 								startID = id;
 								ret = true;
 							}
 						});
 						if (ret) {
-							var diff = t.elements[startID].sampleDur;
-							var diff2 = t.elements[startID + 1].sampleDur;
-							t.elements[startID - 1].sampleDur += (diff + diff2);
-							t.elements.splice(startID, 2);
+							var diff = t.items[startID].sampleDur;
+							var diff2 = t.items[startID + 1].sampleDur;
+							t.items[startID - 1].sampleDur += (diff + diff2);
+							t.items.splice(startID, 2);
 						}
 					}
 				}
@@ -320,7 +320,7 @@ angular.module('emulvcApp')
 				if (t.LevelName === levelName) {
 					if (start == end) {
 						var startID = -1;
-						angular.forEach(t.elements, function (evt, id) {
+						angular.forEach(t.items, function (evt, id) {
 							if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
 								startID = id;
 							}
@@ -332,17 +332,17 @@ angular.module('emulvcApp')
 							}
 						});
 						if (ret) {
-							var diff = start - t.elements[startID].sampleStart;
-							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
-							t.elements[startID + 1].sampleStart = start;
-							t.elements[startID + 1].sampleDur = t.elements[startID].sampleDur - diff;
-							t.elements[startID + 1].label = newLabel;
-							t.elements[startID].sampleDur = diff;
+							var diff = start - t.items[startID].sampleStart;
+							t.items.splice(startID, 0, angular.copy(t.items[startID]));
+							t.items[startID + 1].sampleStart = start;
+							t.items[startID + 1].sampleDur = t.items[startID].sampleDur - diff;
+							t.items[startID + 1].label = newLabel;
+							t.items[startID].sampleDur = diff;
 						}
 					} else {
 						var startID = -1;
 						var endID = -1;
-						angular.forEach(t.elements, function (evt, id) {
+						angular.forEach(t.items, function (evt, id) {
 							if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
 								startID = id;
 							}
@@ -352,17 +352,17 @@ angular.module('emulvcApp')
 						});
 						ret = (startID === endID);
 						if (startID === endID) {
-							var diff = start - t.elements[startID].sampleStart;
+							var diff = start - t.items[startID].sampleStart;
 							var diff2 = end - start;
-							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
-							t.elements.splice(startID, 0, angular.copy(t.elements[startID]));
-							t.elements[startID + 1].sampleStart = start;
-							t.elements[startID + 1].sampleDur = diff2;
-							t.elements[startID + 1].label = newLabel;
-							t.elements[startID + 2].sampleStart = end;
-							t.elements[startID + 2].sampleDur = t.elements[startID].sampleDur - diff - diff2;
-							t.elements[startID + 2].label = newLabel;
-							t.elements[startID].sampleDur = diff;
+							t.items.splice(startID, 0, angular.copy(t.items[startID]));
+							t.items.splice(startID, 0, angular.copy(t.items[startID]));
+							t.items[startID + 1].sampleStart = start;
+							t.items[startID + 1].sampleDur = diff2;
+							t.items[startID + 1].label = newLabel;
+							t.items[startID + 2].sampleStart = end;
+							t.items[startID + 2].sampleDur = t.items[startID].sampleDur - diff - diff2;
+							t.items[startID + 2].label = newLabel;
+							t.items[startID].sampleDur = diff;
 
 						}
 					}
@@ -377,20 +377,20 @@ angular.module('emulvcApp')
 				if (t.LevelName === levelName && t.type == "point") {
 					var pid = 0;
 					var last = 0;
-					angular.forEach(t.elements, function (evt, id) {
+					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
 							if (startP > last && startP < evt.sampleStart && (Math.floor(startP) != Math.floor(evt.sampleStart))) {
 
-								console.log(t.elements);
+								console.log(t.items);
 								console.log(id);
 
 
-								t.elements.splice(id - 1, 0, angular.copy(t.elements[id - 1]));
+								t.items.splice(id - 1, 0, angular.copy(t.items[id - 1]));
 
-								console.log(t.elements);
+								console.log(t.items);
 
-								t.elements[id].sampleStart = startP;
-								t.elements[id].label = pointName;
+								t.items[id].sampleStart = startP;
+								t.items[id].label = pointName;
 								ret = true;
 							}
 							last = evt.sampleStart;
@@ -408,10 +408,10 @@ angular.module('emulvcApp')
 				if (t.LevelName === levelName && t.type == "point") {
 					var pid = 0;
 					var last = 0;
-					angular.forEach(t.elements, function (evt, id) {
+					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
 							if (startP == evt.sampleStart) {
-								t.elements.splice(id, 1);
+								t.items.splice(id, 1);
 								ret = true;
 							}
 						}
@@ -424,14 +424,14 @@ angular.module('emulvcApp')
 		sServObj.deleteBoundary = function (toDelete, levelName, levelType) {
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.LevelName === levelName) {
-					angular.forEach(t.elements, function (evt, id) {
+					angular.forEach(t.items, function (evt, id) {
 						if (evt.sampleStart == toDelete.sampleStart) {
 							if (t.type === "point") {
-								t.elements.splice(id, 1);
+								t.items.splice(id, 1);
 							} else {
-								t.elements[id - 1].label += t.elements[id].label;
-								t.elements[id - 1].sampleDur += t.elements[id].sampleDur;
-								t.elements.splice(id, 1);
+								t.items[id - 1].label += t.items[id].label;
+								t.items[id - 1].sampleDur += t.items[id].sampleDur;
+								t.items.splice(id, 1);
 							}
 						}
 					});
@@ -463,7 +463,7 @@ angular.module('emulvcApp')
 							return false;
 						}
 					}
-					neighTd.elements.forEach(function (itm) {
+					neighTd.items.forEach(function (itm) {
 						absDist = Math.abs(sample - itm.sampleStart);
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
@@ -485,24 +485,24 @@ angular.module('emulvcApp')
 		sServObj.moveBoundry = function (changeTime, t, seg, maximum) {
 			if (null !== t) { // && t.LevelName === viewState.getcurMouseLevelName()
 				if (t.type === 'seg') {
-					if (seg > 1 && (t.elements[seg - 1].sampleDur + changeTime) >= 1 && (t.elements[seg].sampleDur - changeTime) >= 1) {
-						t.elements[seg - 1].sampleDur += changeTime;
-						t.elements[seg].sampleStart += changeTime;
-						t.elements[seg].sampleDur -= changeTime;
+					if (seg > 1 && (t.items[seg - 1].sampleDur + changeTime) >= 1 && (t.items[seg].sampleDur - changeTime) >= 1) {
+						t.items[seg - 1].sampleDur += changeTime;
+						t.items[seg].sampleStart += changeTime;
+						t.items[seg].sampleDur -= changeTime;
 					}
 				} else {
-					if (seg > 0 && seg < t.elements.length - 1) {
-						if (t.elements[seg].sampleStart + changeTime >= t.elements[seg - 1].sampleStart &&
-							t.elements[seg].sampleStart + changeTime <= t.elements[seg + 1].sampleStart)
-							t.elements[seg].sampleStart += changeTime;
+					if (seg > 0 && seg < t.items.length - 1) {
+						if (t.items[seg].sampleStart + changeTime >= t.items[seg - 1].sampleStart &&
+							t.items[seg].sampleStart + changeTime <= t.items[seg + 1].sampleStart)
+							t.items[seg].sampleStart += changeTime;
 					} else if (seg == 0) {
-						if (t.elements[seg].sampleStart + changeTime >= 0 &&
-							t.elements[seg].sampleStart + changeTime <= t.elements[seg + 1].sampleStart)
-							t.elements[seg].sampleStart += changeTime;
-					} else if (seg == t.elements.length - 1) {
-						if (t.elements[seg].sampleStart + changeTime >= t.elements[seg - 1].sampleStart &&
-							t.elements[seg].sampleStart + changeTime <= maximum)
-							t.elements[seg].sampleStart += changeTime;
+						if (t.items[seg].sampleStart + changeTime >= 0 &&
+							t.items[seg].sampleStart + changeTime <= t.items[seg + 1].sampleStart)
+							t.items[seg].sampleStart += changeTime;
+					} else if (seg == t.items.length - 1) {
+						if (t.items[seg].sampleStart + changeTime >= t.items[seg - 1].sampleStart &&
+							t.items[seg].sampleStart + changeTime <= maximum)
+							t.items[seg].sampleStart += changeTime;
 					}
 				}
 			}
@@ -511,13 +511,13 @@ angular.module('emulvcApp')
 
 		sServObj.moveSegment = function (changeTime, t, selected) {
 			if (null !== t) {
-				if ((t.elements[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.elements[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
-					t.elements[selected[0] - 1].sampleDur += changeTime;
+				if ((t.items[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
+					t.items[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
-						t.elements[selected[i]].sampleStart += changeTime;
+						t.items[selected[i]].sampleStart += changeTime;
 					}
-					t.elements[selected[selected.length - 1] + 1].sampleStart += changeTime;
-					t.elements[selected[selected.length - 1] + 1].sampleDur -= changeTime;
+					t.items[selected[selected.length - 1] + 1].sampleStart += changeTime;
+					t.items[selected[selected.length - 1] + 1].sampleDur -= changeTime;
 				}
 			}
 		};
@@ -531,11 +531,11 @@ angular.module('emulvcApp')
 			if (rightSide) {
 				angular.forEach(sServObj.data.levels, function (t) {
 					if (t.LevelName === tN) {
-						if (t.elements[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
-							if (t.elements[selected[0]].sampleDur > -(selected.length * changeTime)) {
+						if (t.items[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
+							if (t.items[selected[0]].sampleDur > -(selected.length * changeTime)) {
 								var found = false;
 								for (i = 1; i <= selected.length; i++) {
-									if (t.elements[selected[i - 1]].sampleDur + changeTime <= 0) {
+									if (t.items[selected[i - 1]].sampleDur + changeTime <= 0) {
 										found = true;
 									}
 								}
@@ -544,12 +544,12 @@ angular.module('emulvcApp')
 
 								} else {
 									for (i = 1; i <= selected.length; i++) {
-										t.elements[selected[i - 1]].sampleStart += startTime;
-										t.elements[selected[i - 1]].sampleDur += changeTime;
+										t.items[selected[i - 1]].sampleStart += startTime;
+										t.items[selected[i - 1]].sampleDur += changeTime;
 										startTime = i * changeTime;
 									}
-									t.elements[selected[selected.length - 1] + 1].sampleStart += startTime;
-									t.elements[selected[selected.length - 1] + 1].sampleDur -= startTime;
+									t.items[selected[selected.length - 1] + 1].sampleStart += startTime;
+									t.items[selected[selected.length - 1] + 1].sampleDur -= startTime;
 								}
 							} else {
 								$rootScope.$broadcast('errorMessage', 'Expand Segements Error: No Space left to decrease');
@@ -563,11 +563,11 @@ angular.module('emulvcApp')
 			} else {
 				angular.forEach(sServObj.data.levels, function (t) {
 					if (t.LevelName === tN) {
-						if (t.elements[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
-							if (t.elements[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
+						if (t.items[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
+							if (t.items[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
 								var found = false;
 								for (i = 1; i <= selected.length; i++) {
-									if (t.elements[selected[i - 1]].sampleDur + changeTime <= 0) {
+									if (t.items[selected[i - 1]].sampleDur + changeTime <= 0) {
 										found = true;
 									}
 								}
@@ -575,10 +575,10 @@ angular.module('emulvcApp')
 									$rootScope.$broadcast('errorMessage', 'Expand Segements Error : Cannot Expand/Shrink. Segment would be too small');
 								} else {
 									for (i = 0; i < selected.length; i++) {
-										t.elements[selected[i]].sampleStart -= (changeTime * (selected.length - i));
-										t.elements[selected[i]].sampleDur += changeTime;
+										t.items[selected[i]].sampleStart -= (changeTime * (selected.length - i));
+										t.items[selected[i]].sampleDur += changeTime;
 									}
-									t.elements[selected[0] - 1].sampleDur -= changeTime * selected.length;
+									t.items[selected[0] - 1].sampleDur -= changeTime * selected.length;
 								}
 							} else {
 								$rootScope.$broadcast('errorMessage', 'Expand Segements Error : No Space left to increase');

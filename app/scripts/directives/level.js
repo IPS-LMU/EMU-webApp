@@ -7,7 +7,7 @@ angular.module('emulvcApp')
 			templateUrl: 'views/level.html',
 			restrict: 'E',
 			link: function postLink(scope, element) {
-				// select the needed DOM elements from the template
+				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
 
 				scope.$watch('levelDetails.data', function () {
@@ -80,7 +80,7 @@ angular.module('emulvcApp')
 					if (levelDetails.type === 'SEGMENT') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
-						var e = levelDetails.elements;
+						var e = levelDetails.items;
 
 						e.forEach(function (curEvt) {
 							++curID;
@@ -170,7 +170,7 @@ angular.module('emulvcApp')
 						// predef. vars
 						var perc;
 
-						levelDetails.elements.forEach(function (curEvt) {
+						levelDetails.items.forEach(function (curEvt) {
 							if (curEvt.samplePoint > viewState.curViewPort.sS && curEvt.samplePoint < viewState.curViewPort.eS) {
 								perc = Math.round(viewState.getPos(canvas[0].width, curEvt.samplePoint) + (sDist / 2));
 
@@ -179,9 +179,9 @@ angular.module('emulvcApp')
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
 									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-									// 		tW = ctx.measureText(levelDetails.elements[k].label).width;
+									// 		tW = ctx.measureText(levelDetails.items[k].label).width;
 									// 		ctx.fillStyle = this.params.labelColor;
-									// 		ctx.fillText(levelDetails.elements[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+									// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
 								} else {
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
@@ -245,7 +245,7 @@ angular.module('emulvcApp')
 					}
 
 					// draw preselected boundary
-					curEvt = levelDetails.elements[segMId];
+					curEvt = levelDetails.items[segMId];
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
 						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart + curEvt.sampleDur + 1));

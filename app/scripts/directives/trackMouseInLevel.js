@@ -129,7 +129,7 @@ angular.module('emulvcApp')
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
           lastEventRightClick = lastEventClick;
           viewState.setlasteditArea('_' + lastEventClick.id);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick, lastEventClick.id);
           lastPCM = thisPCM;
           scope.$apply();
@@ -142,7 +142,7 @@ angular.module('emulvcApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClick.id);
           lastPCM = thisPCM;
           scope.$apply();
@@ -151,7 +151,7 @@ angular.module('emulvcApp')
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.elements.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick, lastEventClick.id);
           viewState.setlasteditArea('_' + lastEventClick.id);
           viewState.setEditing(true);

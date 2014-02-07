@@ -137,7 +137,7 @@ angular.module('emulvcApp')
 			var id = 0;
 			var ret = 0;
 			if (level.type === "seg") {
-				angular.forEach(level.elements, function (evt) {
+				angular.forEach(level.items, function (evt) {
 					if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 						if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
 							ret = id + 1;
@@ -150,15 +150,15 @@ angular.module('emulvcApp')
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(level.elements, function (evt, key) {
-					if (key < level.elements.length - 1) {
-						spaceHigher = evt.sampleStart + (level.elements[key + 1].sampleStart - level.elements[key].sampleStart) / 2;
+				angular.forEach(level.items, function (evt, key) {
+					if (key < level.items.length - 1) {
+						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
 					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.elements[key].sampleStart - level.elements[key - 1].sampleStart) / 2;
+						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
 					}
 
 					if (pcm <= spaceHigher && pcm >= spaceLower) {

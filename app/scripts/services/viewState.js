@@ -246,7 +246,7 @@ angular.module('emulvcApp')
             sServObj.setlasteditArea('_' + lastEventClickId);
             sServObj.setcurClickLevelType(ld.level.type);
             sServObj.setcurClickSegment(lastEventClick, lastEventClickId);
-            sServObj.setLevelLength(ld.level.elements.length);
+            sServObj.setLevelLength(ld.level.items.length);
           }
         }
       }
@@ -411,11 +411,11 @@ angular.module('emulvcApp')
     };
 
 
-    sServObj.setcurClickLevel = function (levelID, levelType, levelIndex, elementsLength) {
-      this.setLevelLength(elementsLength);
+    sServObj.setcurClickLevel = function (levelID, levelType, levelIndex, itemsLength) {
+      this.setLevelLength(itemsLength);
       this.setcurClickLevelName(levelID, levelIndex);
       this.setcurClickLevelType(levelType);
-      this.setLevelLength(elementsLength);
+      this.setLevelLength(itemsLength);
     };
 
 
@@ -522,7 +522,7 @@ angular.module('emulvcApp')
       angular.forEach(Levelservice.data.levels, function (t) {
         var i = 0;
         if (t.LevelName === sServObj.getcurClickLevelName()) {
-          angular.forEach(t.elements, function (evt) {
+          angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
               sServObj.setcurClickSegmentMultiple(evt, i);
             }
@@ -857,7 +857,7 @@ angular.module('emulvcApp')
       if (curLevel && segMId) {
         console.log(curLevel);
         console.log(index);
-        var curMouseMoveSegmentStart = curLevel.elements[index][segMId].sampleStart;
+        var curMouseMoveSegmentStart = curLevel.items[index][segMId].sampleStart;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
