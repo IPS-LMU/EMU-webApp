@@ -1,0 +1,57 @@
+{
+  "name": "ae",
+  "UUID": "940eb980-8824-11e3-baa7-0800200c9a66",
+  "levelDefinitions": [{
+    "name": "Phonetic",
+    "type": "ELEMENT",
+    "attributeDefinitions": [{
+      "name": "Phonetic",
+      "legalValues": []
+    }]
+  }, {
+    "name": "Tone",
+    "type": "EVENT",
+    "attributeDefinitions": [{
+      "name": "Tone",
+      "legalValues": []
+    }]
+  }, {
+    "name": "Syllable",
+    "type": "ELEMENT",
+    "attributeDefinitions": [{
+      "name": "Syllable",
+      "legalValues": []
+    }]
+  }],
+  "linkDefinition": [{
+    "superlevelName": "Syllable",
+    "sublevelName": "Tone",
+    "type": "ONE_TO_MANY"
+  }],
+  "mediafileExtension": "wav",
+  "ssffTracks": [{
+    "name": "formants",
+    "fileExtension": "fms",
+    "columnName": "fm"
+  }],
+  "EMUwebAppConfig": {
+    "perspectives": [{
+      "name": "default",
+      "signalCanvases": {
+        "order": ["OSCI", "SPEC"],
+        "assign": [{
+          "SPEC": "formants"
+        }],
+        "contourLims": [{
+          "formants": {
+            "min": 0,
+            "max": 1
+          }
+        }]
+      },
+      "levelCanvases": {
+        "order": ["Phonetic", "Tone"]
+      }
+    }]
+  }
+}

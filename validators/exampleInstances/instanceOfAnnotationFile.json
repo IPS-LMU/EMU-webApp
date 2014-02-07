@@ -21,7 +21,7 @@
     }]
   }, {
     "name": "Syllable",
-    "type": "ELEMENT",
+    "type": "ITEM",
     "elements": [{
       "id": 5,
       "label": "W"

@@ -22,7 +22,7 @@
 					},
 					"type": {
 						"type": {
-							"enum": ["ELEMENT", "EVENT", "SEGMENT"]
+							"enum": ["ITEM", "EVENT", "SEGMENT"]
 						}
 					},
 					"elements": {
