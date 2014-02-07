@@ -43,6 +43,18 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
 
+      // GETDOUSERMANAGEMENT method
+    case 'GETDOUSERMANAGEMENT':
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': 'NO',
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+
       // GETGLOBALDBCONFIG method
     case 'GETGLOBALDBCONFIG':
       fs.readFile(pathToDbRoot + configName, 'utf8', function (err, data) {

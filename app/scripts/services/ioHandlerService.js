@@ -81,6 +81,19 @@ angular.module('emulvcApp')
 		};
 
 		//
+		sServObj.getDoUserManagement = function () {
+			var getProm;
+
+			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+				alert('http:GET version of getProtocol not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+				getProm = Websockethandler.getDoUserManagement();
+			}
+
+			return getProm;
+		};
+
+		//
 		sServObj.getDBconfigFile = function () {
 			var getProm;
 
@@ -124,29 +137,29 @@ angular.module('emulvcApp')
     // new protocol ends here
     ////////////////////////////
 
-		//
-		sServObj.getDoUserManagement = function () {
-			var getProm;
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of getProtocol not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				getProm = Websockethandler.getDoUserManagement();
-			}
+		// //
+		// sServObj.getDoUserManagement = function () {
+		// 	var getProm;
+		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+		// 		alert('http:GET version of getProtocol not implemented');
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+		// 		getProm = Websockethandler.getDoUserManagement();
+		// 	}
 
-			return getProm;
-		};
+		// 	return getProm;
+		// };
 
-		//
-		sServObj.saveUtt = function (utt) {
-			var getProm;
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of saveUtt not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				getProm = Websockethandler.saveUtt(utt);
-			}
+		// //
+		// sServObj.saveUtt = function (utt) {
+		// 	var getProm;
+		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+		// 		alert('http:GET version of saveUtt not implemented');
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+		// 		getProm = Websockethandler.saveUtt(utt);
+		// 	}
 
-			return getProm;
-		};
+		// 	return getProm;
+		// };
 
 
 		/**

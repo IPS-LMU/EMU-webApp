@@ -186,25 +186,55 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 
 
 \begin{lstlisting}[caption=Request content, language=json]
-JSON.stringify({
+{
   'type': 'GETPROTOCOL', 
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-})
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Reply content, language=json]
-JSON.stringify({
+{
   'callbackID': request.callbackID,
   'data': {
     'protocol': 'EMU-webApp-websocket-protocol',
     'version': '0.0.1'
-  },¡
+  },
   'status': {
     'type': 'SUCCESS',
     'message': ''
   }
-})
+}
 \end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETDOUSERMANAGEMENT}}
+\begin{center}
+  \line(1,0){250}
+
+  \textit{Ask server if a it wishes to perform user management (will toggle login dialog if YES)}
+
+  \line(1,0){250}
+\end{center}
+
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'GETDOUSERMANAGEMENT', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Reply content, language=json]
+{
+  'callbackID': request.callbackID,
+  'data': 'NO'
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -219,21 +249,21 @@ JSON.stringify({
 
 
 \begin{lstlisting}[caption=Request content, language=json]
-JSON.stringify({
+{
   'type': 'GETGLOBALDBCONFIG', 
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-})
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Reply content, language=json]
-JSON.stringify({
+{
   'callbackID': request.callbackID,
   'data': configData,
   'status': {
     'type': 'SUCCESS',
     'message': ''
   }
-})
+}
 \end{lstlisting}
 Where \texttt{configData} is the javascript object representing \texttt{globalDBconfig.json}
 
@@ -249,21 +279,21 @@ Where \texttt{configData} is the javascript object representing \texttt{globalDB
 
 
 \begin{lstlisting}[caption=Request content, language=json]
-JSON.stringify({
+{
   'type': 'GETBUNDLELIST', 
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-})
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Reply content, language=json]
-JSON.stringify({
+{
   'callbackID': request.callbackID,
   'data': bundleList,
   'status': {
     'type': 'SUCCESS',
     'message': ''
   }
-})
+}
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -278,22 +308,22 @@ JSON.stringify({
 
 
 \begin{lstlisting}[caption=Request content, language=json]
-JSON.stringify({
+{
   'type': 'GETBUNDLE',
   'name': 'msajc003',
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-})
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Reply content, language=json]
-JSON.stringify({
+{
   'callbackID': request.callbackID,
   'data': bundleData,
   'status': {
     'type': 'SUCCESS',
     'message': ''
   }
-})
+}
 \end{lstlisting}
 Where \texttt{bundleData} is the javascript object containing all the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details).
 
@@ -303,13 +333,13 @@ Where \texttt{bundleData} is the javascript object containing all the values of 
 If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.
 
 \begin{lstlisting}[caption=ERROR reply content, language=json]
-JSON.stringify({
+{
   'callbackID': request.callbackID,
   'status': {
     'type': 'ERROR',
     'message': 'An error occured trying to read a file from disk. Please make sure: /path/to/file exists or check the config...
   }
-})
+}
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%

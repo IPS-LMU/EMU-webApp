@@ -222,15 +222,22 @@ angular.module('emulvcApp')
 			// Check if server speaks the same protocol
 			Iohandlerservice.getProtocol().then(function (res) {
 				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
-					// then get the DBconfigFile
-					Iohandlerservice.getDBconfigFile().then(function (data) {
-						ConfigProviderService.setVals(data.EMUwebAppConfig);
-						// then get the DBconfigFile
-						Iohandlerservice.getBundleList().then(function (bdata) {
-							$scope.bundleList = bdata;
-							// then load first bundle in list
-							$scope.menuBundleClick($scope.bundleList[0]);
-						});
+					// then ask if server does user management
+					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
+						if (doUsrData === 'NO') {
+							// then get the DBconfigFile
+							Iohandlerservice.getDBconfigFile().then(function (data) {
+								ConfigProviderService.setVals(data.EMUwebAppConfig);
+								// then get the DBconfigFile
+								Iohandlerservice.getBundleList().then(function (bdata) {
+									$scope.bundleList = bdata;
+									// then load first bundle in list
+									$scope.menuBundleClick($scope.bundleList[0]);
+								});
+							});
+						} else{
+							dialogService.open('views/error.html', 'ModalCtrl', 'We are sorry but the EMU-webApp does not support user management yet...');
+						}
 					});
 					if (!ConfigProviderService.vals.main.autoConnect) {
 						// Iohandlerservice.getDoUserManagement().then(function (manageRes) {
@@ -670,7 +677,7 @@ angular.module('emulvcApp')
 			// };
 			if (viewState.curPerspectiveIdx === 1) {
 				viewState.curPerspectiveIdx = 0;
-			}else{
+			} else {
 				viewState.curPerspectiveIdx = 1;
 			}
 		};
