@@ -18,6 +18,7 @@ angular.module('emulvcApp')
 		$scope.tmp.showSaveCommStaBtnDiv = false;
 		$scope.dbLoaded = false;
 		$scope.isRightSideMenuHidden = false;
+		$scope.is2dCancasesHidden = false;
 		$scope.showDropZone = true;
 
 		$scope.lastkeycode = 'N/A';
@@ -663,6 +664,11 @@ angular.module('emulvcApp')
 		//
 		$scope.toggleRightSideMenuHidden = function () {
 			$scope.isRightSideMenuHidden = !$scope.isRightSideMenuHidden;
+		};
+
+		//
+		$scope.toggle2dCancases = function () {
+			$scope.is2dCancasesHidden = !$scope.is2dCancasesHidden;
 		};
 
 		//
