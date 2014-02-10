@@ -65,7 +65,7 @@ angular.module('emulvcApp')
             if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
-                scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegmentId(), scope.vs.curViewPort.bufferLength);
+                scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegment().id-1, scope.vs.curViewPort.bufferLength);
                 viewState.selectBoundry();
                 viewState.movingBoundary = true;
                 scope.hists.updateCurChangeObj({

@@ -21,12 +21,11 @@ angular.module('emulvcApp')
 		sServObj.getcurMouseLevelDetails = function (levelName) {
 			var curLevel = null;
 			sServObj.data.levels.forEach(function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					curLevel = t;
 				}
 			});
 			return curLevel;
-
 		};
 
 		/**
@@ -36,7 +35,7 @@ angular.module('emulvcApp')
 			var curLevel = null;
 			var y = null;
 			sServObj.data.levels.forEach(function (t, x) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					curLevel = t;
 					y = x;
 				}
@@ -53,9 +52,9 @@ angular.module('emulvcApp')
 		sServObj.getElementDetails = function (levelName, elementid) {
 			var details = null;
 			sServObj.data.levels.forEach(function (t) {
-				if (t.LevelName === levelName) {
-					t.items.forEach(function (element, y) {
-						if (y == elementid) {
+				if (t.name === levelName) {
+					t.items.forEach(function (element) {
+						if (element.id == elementid) {
 							details = element;
 						}
 					});
@@ -153,7 +152,7 @@ angular.module('emulvcApp')
 			var y = 0;
 			var curLevel;
 			angular.forEach(sServObj.data.levels, function (t, x) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					curLevel = t;
 					y = x;
 					sServObj.data.levels.splice(x, 1);
@@ -171,7 +170,7 @@ angular.module('emulvcApp')
 		 */
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					angular.forEach(t.items, function (evt, i) {
 						if (id == i) {
 							evt.label = newLabelName;
@@ -186,8 +185,8 @@ angular.module('emulvcApp')
 		 */
 		sServObj.renameLevel = function (oldname, newname) {
 			angular.forEach(sServObj.data.levels, function (t, i) {
-				if (t.LevelName === oldname) {
-					t.LevelName = newname;
+				if (t.name === oldname) {
+					t.name = newname;
 				}
 			});
 		};
@@ -199,7 +198,7 @@ angular.module('emulvcApp')
 			var ret = new Object();
 			angular.forEach(sServObj.data.levels, function (t) {
 				var i = 0;
-				if (t.LevelName === tN) {
+				if (t.name === tN) {
 					angular.forEach(t.items, function (evt) {
 						if (i === now) {
 							ret.event = evt;
@@ -217,7 +216,7 @@ angular.module('emulvcApp')
 			var start = ids[0] - 1;
 			var end = ids[ids.length - 1] + 1;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					if (t.type === "SEGMENT") {
 						var length = 0;
 						for (var x in segments) {
@@ -252,7 +251,7 @@ angular.module('emulvcApp')
 			var start = ids[0] - 1;
 			var end = ids[ids.length - 1] + 1;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					if (t.type === "SEGMENT") {
 						var length = 0;
 						for (var x in segments) {
@@ -282,7 +281,7 @@ angular.module('emulvcApp')
 		sServObj.insertSegmentInvers = function (start, end, levelName, newLabel) {
 			var ret = true;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					if (start == end) {
 						var startID = -1;
 						angular.forEach(t.items, function (evt, id) {
@@ -319,7 +318,7 @@ angular.module('emulvcApp')
 		sServObj.insertSegment = function (start, end, levelName, newLabel) {
 			var ret = true;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					if (start == end) {
 						var startID = -1;
 						angular.forEach(t.items, function (evt, id) {
@@ -376,7 +375,7 @@ angular.module('emulvcApp')
 		sServObj.insertPoint = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName && t.type == "point") {
+				if (t.name === levelName && t.type == "point") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
@@ -407,7 +406,7 @@ angular.module('emulvcApp')
 		sServObj.insertPointInvers = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName && t.type == "point") {
+				if (t.name === levelName && t.type == "point") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
@@ -425,7 +424,7 @@ angular.module('emulvcApp')
 
 		sServObj.deleteBoundary = function (toDelete, levelName, levelType) {
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					angular.forEach(t.items, function (evt, id) {
 						if (evt.sampleStart == toDelete.sampleStart) {
 							if (t.type === "point") {
@@ -450,7 +449,7 @@ angular.module('emulvcApp')
 			var absDist;
 			var minDist;
 			sServObj.data.levels.forEach(function (t, tIdx) {
-				if (t.LevelName === levelName) {
+				if (t.name === levelName) {
 					thisTd = t;
 					if (toTop) {
 						if (tIdx >= 1) {
@@ -485,10 +484,10 @@ angular.module('emulvcApp')
 		};
 
 		sServObj.moveBoundry = function (changeTime, t, seg, maximum) {
-			if (null !== t) { // && t.LevelName === viewState.getcurMouseLevelName()
-				if (t.type === 'seg') {
-					if (seg > 1 && (t.items[seg - 1].sampleDur + changeTime) >= 1 && (t.items[seg].sampleDur - changeTime) >= 1) {
-						t.items[seg - 1].sampleDur += changeTime;
+			if (null !== t) { // && t.name === viewState.getcurMouseLevelName()
+				if (t.type === 'SEGMENT') {
+					if (seg > 0 && (t.items[seg-1].sampleDur + changeTime) >= 1 && (t.items[seg].sampleDur - changeTime) >= 1) {
+						t.items[seg-1].sampleDur += changeTime;
 						t.items[seg].sampleStart += changeTime;
 						t.items[seg].sampleDur -= changeTime;
 					}
@@ -513,6 +512,7 @@ angular.module('emulvcApp')
 
 		sServObj.moveSegment = function (changeTime, t, selected) {
 			if (null !== t) {
+			    console.log(selected);
 				if ((t.items[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.items[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
@@ -532,7 +532,7 @@ angular.module('emulvcApp')
 			}
 			if (rightSide) {
 				angular.forEach(sServObj.data.levels, function (t) {
-					if (t.LevelName === tN) {
+					if (t.name === tN) {
 						if (t.items[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
 							if (t.items[selected[0]].sampleDur > -(selected.length * changeTime)) {
 								var found = false;
@@ -564,7 +564,7 @@ angular.module('emulvcApp')
 				});
 			} else {
 				angular.forEach(sServObj.data.levels, function (t) {
-					if (t.LevelName === tN) {
+					if (t.name === tN) {
 						if (t.items[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
 							if (t.items[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
 								var found = false;
