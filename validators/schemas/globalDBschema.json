@@ -159,7 +159,15 @@
 									}
 								}
 							}
-						}
+						},
+            "twoDcanvases":{
+              "type": "object",
+              "properties":{
+                "show":{
+                  "type": "boolean"
+                }
+              }
+            }
 					}
 				},
 				"minItems": 1,
