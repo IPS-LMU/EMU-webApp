@@ -66,8 +66,6 @@ angular.module('emulvcApp')
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
                 scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegmentId(), scope.vs.curViewPort.bufferLength);
-                // console.log(lastPCM);
-                // console.log(scope.this.level.LevelName);
                 viewState.selectBoundry();
                 viewState.movingBoundary = true;
                 scope.hists.updateCurChangeObj({
@@ -164,7 +162,6 @@ angular.module('emulvcApp')
         function setLastMove(x, doChange) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, true, scope.vs.curViewPort.bufferLength);
-          viewState.setcurMouseLevelName(levelID);
           if (doChange && (lastEventMove != undefined)) {
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMove.id);

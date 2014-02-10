@@ -73,9 +73,9 @@ angular.module('emulvcApp')
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
-								evtr = level.items[id];
+								evtr = level.items[id+1];
 							} else {
-								evtr = level.items[id-1];
+								evtr = level.items[id];
 							}
 						}
 					} else {
@@ -89,12 +89,14 @@ angular.module('emulvcApp')
 				var spaceHigher = 0;
 				angular.forEach(level.items, function (evt, key) {
 					if (key < level.items.length - 1) {
-						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
+						spaceHigher = evt.samplePoint + (level.items[key + 1].samplePoint - level.items[key].samplePoint) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
 					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
+						spaceLower = evt.samplePoint - (level.items[key].samplePoint - level.items[key - 1].samplePoint) / 2;
+					} else {
+					    spaceLower = 0;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						evtr = evt;

@@ -243,18 +243,28 @@ angular.module('emulvcApp')
 							});
 						}
 					}
+					
+					
+					
+					
+					
 
 					// draw preselected boundary
-					curEvt = levelDetails.items[segMId];
+					curEvt = viewState.getcurMouseSegment();
+					console.log(curEvt);
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
-						posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
-						posE = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart + curEvt.sampleDur + 1));
-
+					    
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-							ctx.fillRect(posS, 0, 3, canvas[1].height);
-						} else {
+						    posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
+						    posE = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart + curEvt.sampleDur + 1));
+						    ctx.fillRect(posS, 0, 3, canvas[1].height);
+						}
+						else {
+						    posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
+						    posE = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint + 20));						
 							xOffset = (sDist / 2);
+							console.log(posS + xOffset);
 							ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
 						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
