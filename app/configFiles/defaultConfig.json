@@ -106,6 +106,9 @@
         },
         "labelCanvases": {
             "order": [".lab", ".tone"]
+        },
+        "twoDcanvases": {
+            "show": false
         }
     }],
     "labelCanvasConfig": {

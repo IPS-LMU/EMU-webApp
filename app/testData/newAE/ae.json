@@ -51,6 +51,9 @@
 			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]
+			},
+			"twoDcanvases": {
+				"show": false
 			}
 		}, {
 			"name": "switchedLevels",
@@ -68,6 +71,9 @@
 			},
 			"levelCanvases": {
 				"order": ["Tone"]
+			},
+			"twoDcanvases": {
+				"show": true
 			}
 		}],
 		"activeButtons": {
