@@ -4,7 +4,7 @@
   
   <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
 
-  <nav class="righSideMenu" show-menu="isRightSideMenuHidden">
+  <nav class="righSideMenu" show-menu="!isRightSideMenuHidden">
     <h3>Perspectives</h3>
     <ul ng-repeat="persp in cps.vals.perspectives">
       <li ng-click="changePerspective(persp);" ng-style="getPerspectiveColor(persp);">{{persp.name}}</li>
@@ -48,7 +48,7 @@
 </div>
 
 <!-- for 2D over time canvases like EPG/EMA/... -->
-<div class="twoDcanvases" show-twod="is2dCancasesHidden">
+<div class="twoDcanvases" show-twod="!is2dCancasesHidden">
   <button class="twoDcanvasesOpenBtn" ng-click="toggle2dCancases();"><span class="glyphicon glyphicon-resize-full"></span></button>
 </div>
 

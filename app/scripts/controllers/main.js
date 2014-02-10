@@ -17,8 +17,8 @@ angular.module('emulvcApp')
 		$scope.tmp = {};
 		$scope.tmp.showSaveCommStaBtnDiv = false;
 		$scope.dbLoaded = false;
-		$scope.isRightSideMenuHidden = false;
-		$scope.is2dCancasesHidden = false;
+		$scope.isRightSideMenuHidden = true;
+		$scope.is2dCancasesHidden = true;
 		$scope.showDropZone = true;
 
 		$scope.lastkeycode = 'N/A';

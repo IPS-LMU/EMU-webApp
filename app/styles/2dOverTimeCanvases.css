@@ -23,9 +23,9 @@
 
 .twoDcanvases {
   position: fixed;
-  top: -webkit-calc(100% - 187px);
-  top: calc(100% - 187px);
-  right: 0px;
+  right: -85px;
+  top: -webkit-calc(100% - 100px);
+  top: calc(100% - 100px);
   height: 100px;
   width: 100px;
   background-color: #fff;
@@ -38,9 +38,9 @@
 
 
 .slide2dCanvases {
-  right: -85px;
-  top: -webkit-calc(100% - 100px);
-  top: calc(100% - 100px);
+  top: -webkit-calc(100% - 187px);
+  top: calc(100% - 187px);
+  right: 0px;
   -webkit-transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out, top 0.4s ease-in-out;
   transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out, top 0.4s ease-in-out;
 }
