@@ -492,18 +492,15 @@ angular.module('emulvcApp')
 						t.items[seg].sampleDur -= changeTime;
 					}
 				} else {
-					if (seg > 0 && seg < t.items.length - 1) {
-						if (t.items[seg].sampleStart + changeTime >= t.items[seg - 1].sampleStart &&
-							t.items[seg].sampleStart + changeTime <= t.items[seg + 1].sampleStart)
-							t.items[seg].sampleStart += changeTime;
-					} else if (seg == 0) {
-						if (t.items[seg].sampleStart + changeTime >= 0 &&
-							t.items[seg].sampleStart + changeTime <= t.items[seg + 1].sampleStart)
-							t.items[seg].sampleStart += changeTime;
-					} else if (seg == t.items.length - 1) {
-						if (t.items[seg].sampleStart + changeTime >= t.items[seg - 1].sampleStart &&
-							t.items[seg].sampleStart + changeTime <= maximum)
-							t.items[seg].sampleStart += changeTime;
+				    var item = sServObj.getElementDetails(t.name,seg+1);
+				    var itemnext = sServObj.getElementDetails(t.name,seg+2);
+				    var itemprev = sServObj.getElementDetails(t.name,seg);
+					if (item !== undefined && itemnext !== undefined && itemprev !== undefined) {
+							item.samplePoint += changeTime;
+					} else if (item !== undefined && itemnext !== undefined) {
+							item.samplePoint += changeTime;
+					} else if (item !== undefined && itemprev !== undefined) {
+							item.samplePoint += changeTime;
 					}
 				}
 			}

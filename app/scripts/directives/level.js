@@ -263,7 +263,6 @@ angular.module('emulvcApp')
 						    posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
 						    posE = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint + 20));						
 							xOffset = (sDist / 2);
-							console.log(posS + xOffset);
 							ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
 						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
