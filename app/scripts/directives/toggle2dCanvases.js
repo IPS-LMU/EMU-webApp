@@ -23,11 +23,9 @@ angular.module('emulvcApp').animation(".slideIn2dCanvases", function () {
 	return {
 		addClass: function (element, className) {
 			element.addClass('slide2dCanvases');
-			console.log('plus');
 		},
 		removeClass: function (element, className) {
 			element.removeClass('slide2dCanvases');
-			console.log('minus');
 		}
 	}
 });
