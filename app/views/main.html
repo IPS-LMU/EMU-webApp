@@ -2,9 +2,9 @@
 
   <submenu class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"></submenu>
   
-  <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
 
   <nav class="righSideMenu" show-menu="!isRightSideMenuHidden">
+    <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
     <h3>Perspectives</h3>
     <ul ng-repeat="persp in cps.vals.perspectives">
       <li ng-click="changePerspective(persp);" ng-style="getPerspectiveColor(persp);">{{persp.name}}</li>
@@ -28,6 +28,7 @@
    <a id="aboutBtn" class="SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></a>
  </div>
 
+ <!-- All signals are listed here (audio + SSFF files) -->
  <div ng-controller="TimelineCtrl" id="TimelineCtrl" class="TimelineCtrl">
   <div class="controls">
     <osci id="osci" class="osci"></osci>  
@@ -38,8 +39,8 @@
   </div>
 </div>
 
+<!-- levels that have time infos (SEGMENTS+EVENTS) -->
 <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
-  <!-- all levels are listed here -->
   <ul ng-model="levelDetails.levels" id="allowSortable">
     <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.LevelName}} Level sort" id="{{$index}}">
       <level id='{{level.LevelName}}' class="level"></level>

@@ -39,22 +39,24 @@
 
 
 .rightSideMenuOpenBtn {
-  position: fixed;
+  position: absolute;
   top: 80px;
-  right: 0px;
+  left: -15px;
   height: 25px;
   width: 15px;
   background-color: #FFF;
-  box-shadow: 0 0 5px 2px #ccc;
-  border-radius: 2px;
+  box-shadow: -3px 0 5px 1px #ccc;
+  /*border-radius: 2px;*/
+  border-style: none;
   z-index: 1001;
 }
 
 .rightSideMenuOpenBtn img{
   content:url(images/rightSideMenuBtn.png);
   width: 80%;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  /*padding-top: 2px;*/
+  /*padding-bottom: 2px;*/
+  padding: 2px  ;
   border-style: none;
   border: 0px;
   border-radius: 0px;
