@@ -1,6 +1,5 @@
 {
     "main": {
-        "mode": "standalone",
         "osciSpectroZoomFactor": 2,
         "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080",

@@ -1,7 +1,7 @@
-<!-- <div class="modal" id="appcachemodal">Updating to newer version...</div> -->
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
   <submenu class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"></submenu>
+  
   <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();";><img></button>
 
   <nav class="righSideMenu" show-menu="isRightSideMenuHidden">
@@ -47,6 +47,12 @@
   </ul>
 </div>
 
+<!-- for 2D over time canvases like EPG/EMA/... -->
+<div class="twoDcanvases">
+  <button class="twoDcanvasesOpenBtn"><span class="glyphicon glyphicon-resize-full"></span></button>
+</div>
+
+<!-- bottom menu bar -->
 <div class="menu-bottom" id="menu-bottom">
   <div ng-controller="TimelineCtrl">
     <preview id="preview" class="preview"></preview>  

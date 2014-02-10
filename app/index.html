@@ -21,6 +21,7 @@
     
     <!-- build:css styles/external.min.css -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="bower_components/ngprogress-lite/ngprogress-lite.css" rel="stylesheet">
     <!-- endbuild -->
 
     <!-- build:css(.tmp) styles/emuLVC.min.css -->
@@ -32,11 +33,12 @@
     <link rel="stylesheet" href="styles/drop.css">
     <link rel="stylesheet" href="styles/customAngularuiModal.css">
     <link rel="stylesheet" href="styles/responsive.css">
-    <link rel="stylesheet" href="styles/rightSlideMenu.css">
-	<!-- endbuild -->
+    <link rel="stylesheet" href="styles/rightSideMenu.css">
+    <link rel="stylesheet" href="styles/2dOverTimeCanvases.css">
+    <!-- endbuild -->
 
-	<!-- set basedir for angular app change if not running in root of server-->
-	<base href="/"/>
+    <!-- set basedir for angular app change if not running in root of server-->
+    <base href="/"/>
 </head>
 <body ng-app="emulvcApp">
 	
@@ -51,7 +53,8 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui/build/angular-ui.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-	<!-- endbuild -->
+    <script src="bower_components/ngprogress-lite/ngprogress-lite.js"></script>
+    <!-- endbuild -->
 
     <!-- build:js scripts/emuLVC.min.js -->
     <script src="scripts/prototypeexpansions.js"></script>

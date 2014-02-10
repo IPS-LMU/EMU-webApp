@@ -235,7 +235,7 @@ angular.module('emulvcApp')
 									$scope.menuBundleClick($scope.bundleList[0]);
 								});
 							});
-						} else{
+						} else {
 							dialogService.open('views/error.html', 'ModalCtrl', 'We are sorry but the EMU-webApp does not support user management yet...');
 						}
 					});
@@ -667,19 +667,17 @@ angular.module('emulvcApp')
 
 		//
 		$scope.changePerspective = function (persp) {
-			// alert('not implemented yet');
+
 			var newIdx;
-			// for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
-			// console.log(ConfigProviderService.vals.perspectives[i].name);
-			// if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
-			// newIdx = i;
-			// }
-			// };
-			if (viewState.curPerspectiveIdx === 1) {
-				viewState.curPerspectiveIdx = 0;
-			} else {
-				viewState.curPerspectiveIdx = 1;
-			}
+			for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
+				console.log(ConfigProviderService.vals.perspectives[i].name);
+				if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
+					newIdx = i;
+				}
+			};
+			viewState.curPerspectiveIdx = newIdx;
+			// close submenu
+			$scope.toggleRightSideMenuHidden();
 		};
 
 		//
