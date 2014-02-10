@@ -704,23 +704,23 @@ angular.module('emulvcApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServObj.openEditArea = function (lastEventClick, lastEventClickId, type, element) {
+    sServObj.openEditArea = function (lastEventClick, type, element) {
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
-      
-      console.log(elem.canvas.clientWidth);
-      if (type === "seg") {
-        var start = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
-        var end = this.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
+            
+      if (type === "SEGMENT") {
+        var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
+        var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
       } else {
-        var start = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset - (clientWidth / 50);
-        var end = this.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset + (clientWidth / 50);
+        var start = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (clientWidth / 50);
+        var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (clientWidth / 50);
       }
+
       var top = elem.canvas.offsetTop + 1;
       var height = elem.canvas.clientHeight + 1;
-      this.createEditArea(element, start, top, end - start, height, lastEventClick.label, lastEventClickId);
-      //this.createSelection(element[0], 0, element.val().length);
+      sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.label, lastEventClick.id);
+      sServObj.createSelection(element[0], 0, element.val().length);
     };
 
     sServObj.createSelection = function (field, start, end) {
@@ -741,6 +741,7 @@ angular.module('emulvcApp')
 
     sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
       var textid = '_' + labelid;
+      console.log(element);
       element.prepend($('<textarea>').attr({
         id: textid,
         'class': textid + ' Label_Edit',
@@ -748,12 +749,13 @@ angular.module('emulvcApp')
         'autofocus': 'true'
       }).css({
         'position': 'absolute',
-        'z-index': '5',
+        'z-index': '9999',
         'left': x + 2 + 'px',
         'width': Math.round(width - 1) + 'px',
         'height': Math.round(height - 1) + 'px',
         'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
+      console.log(element);
     };
 
 

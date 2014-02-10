@@ -251,7 +251,6 @@ angular.module('emulvcApp')
 
 					// draw preselected boundary
 					curEvt = viewState.getcurMouseSegment();
-					console.log(curEvt);
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 					    
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
