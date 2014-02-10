@@ -51,6 +51,9 @@
       },
       "levelCanvases": {
         "order": ["Phonetic", "Tone"]
+      },
+      "twoDcanvases": {
+        "show": true
       }
     }]
   }
