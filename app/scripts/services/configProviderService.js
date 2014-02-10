@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('ConfigProviderService', function ConfigProviderService() {
+	.service('ConfigProviderService', function ConfigProviderService(viewState) {
 
 		// shared service object
 		var sServObj = {};
 		sServObj.vals = {};
+		sServObj.curDbConfig = {};
 
 		/**
 		 * depth of 2 = max
@@ -34,6 +35,34 @@ angular.module('emulvcApp')
 
 				});
 			}
+		};
+
+		/**
+		 *
+		 */
+		sServObj.getSsffTrackConfig = function (name) {
+			var res;
+			sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
+				if (tr.name === name) {
+					res = tr;
+				}
+			})
+			return res;
+		};
+
+		/**
+		 *
+		 */
+		sServObj.getLimsOfTrack = function (trackName) {
+			var res = {};
+			sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims.forEach(function (cL) {
+				if (cL.ssffTrackName === trackName) {
+					res.min = cL.min;
+					res.max = cL.max;
+				}
+			});
+
+			return res;
 		};
 
 		return sServObj;

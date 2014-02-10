@@ -63,7 +63,7 @@ angular.module('emulvcApp')
 
 		// init history service
 		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
-		$scope.hists.init();
+		// $scope.hists.init();
 
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
@@ -229,6 +229,8 @@ angular.module('emulvcApp')
 							// then get the DBconfigFile
 							Iohandlerservice.getDBconfigFile().then(function (data) {
 								ConfigProviderService.setVals(data.EMUwebAppConfig);
+								delete data.EMUwebAppConfig; // delete to avoid duplicate
+								ConfigProviderService.curDbConfig = data;
 								// then get the DBconfigFile
 								Iohandlerservice.getBundleList().then(function (bdata) {
 									$scope.bundleList = bdata;
@@ -301,7 +303,8 @@ angular.module('emulvcApp')
 				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
 			} else {
 				if (utt !== $scope.curUtt) {
-					$scope.$broadcast('loadingNewUtt'); // SIC SIC SIC
+					// empty ssff files
+					Ssffdataservice.data = [];
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
 						var arrBuff;
 						// set wav file
@@ -319,9 +322,10 @@ angular.module('emulvcApp')
 						$rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
 						// set ssff files
-						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data);
-						var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
-						$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso); // SIC SIC SIC
+						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data); // SIC SIC SIC hardcoded!!!
+						var ssffJso = Ssffparserservice.ssff2jso(arrBuff, bundleData.ssffFiles[0].ssffTrackName);
+						Ssffdataservice.data.push(ssffJso)
+						console.log(Ssffdataservice.data)
 
 						// set annotation
 						Levelservice.data = bundleData.annotation;

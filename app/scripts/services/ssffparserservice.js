@@ -14,7 +14,7 @@ angular.module('emulvcApp')
 		sServObj.machineID = 'Machine IBM-PC\n';
 		sServObj.sepString = '-----------------\n';
 
-		sServObj.ssffData.fileURL = '';
+		sServObj.ssffData.ssffTrackName = '';
 		sServObj.ssffData.sampleRate = -1;
 		sServObj.ssffData.startTime = -1;
 		sServObj.ssffData.origFreq = -1;
@@ -25,10 +25,12 @@ angular.module('emulvcApp')
 		 * convert arraybuffer containing a ssff file
 		 * to a javascript object
 		 * @param buf arraybuffer containing ssff file
+		 * @param name is ssffTrackName
 		 * @returns ssff javascript object
 		 */
-		sServObj.ssff2jso = function(buf) {
+		sServObj.ssff2jso = function (buf, name) {
 			var my = this;
+			sServObj.ssffData.ssffTrackName = name;
 			sServObj.ssffData.Columns = [];
 			// console.log('SSFF loaded');
 
@@ -37,10 +39,10 @@ angular.module('emulvcApp')
 			// Causes "RangeError: Maximum call stack size exceeded"
 			// with some browsers (?)(Chrome/Chromium on Ubuntu)
 			//var buffStr = String.fromCharCode.apply(null, uIntBuffView);
-			var buffStr='';
+			var buffStr = '';
 			var i;
-			for(i=0;i<uIntBuffView.length;i++){
-			    buffStr=buffStr+String.fromCharCode(uIntBuffView[i]);		
+			for (i = 0; i < uIntBuffView.length; i++) {
+				buffStr = buffStr + String.fromCharCode(uIntBuffView[i]);
 			}
 			// console.log(buffStr);
 
@@ -124,14 +126,14 @@ angular.module('emulvcApp')
 		 * @param ssff javascipt object
 		 * @returns ssff arraybuffer
 		 */
-		sServObj.jso2ssff = function(jso) {
+		sServObj.jso2ssff = function (jso) {
 			var my = this;
 			// create header
 			var headerStr = this.headID + this.machineID;
 			headerStr += 'Record_Freq ' + this.vs.round(jso.sampleRate, 1) + '\n';
 			headerStr += 'Start_Time ' + jso.startTime + '\n';
 
-			jso.Columns.forEach(function(col) {
+			jso.Columns.forEach(function (col) {
 				// console.log(col.name)
 				headerStr += 'Column ' + col.name + ' ' + col.ssffdatatype + ' ' + col.length + '\n';
 			});
@@ -148,11 +150,11 @@ angular.module('emulvcApp')
 			curArray = jso.Columns[0].values[0];
 
 			// loop through vals and append array of each column to ssffBufView
-			jso.Columns[0].values.forEach(function(curArray, curArrayIDX) {
-				jso.Columns.forEach(function(curCol) {
+			jso.Columns[0].values.forEach(function (curArray, curArrayIDX) {
+				jso.Columns.forEach(function (curCol) {
 					if (curCol.ssffdatatype === 'SHORT') {
 						curBufferView = new Uint16Array(curCol.length);
-						curCol.values[curArrayIDX].forEach(function(val, valIDX) {
+						curCol.values[curArrayIDX].forEach(function (val, valIDX) {
 							curBufferView[valIDX] = val;
 						});
 						var tmp = new Uint8Array(curBufferView.buffer);
@@ -172,7 +174,7 @@ angular.module('emulvcApp')
 		 * helper function to convert string to Uint8Array
 		 * @param string
 		 */
-		sServObj.stringToUint = function(string) {
+		sServObj.stringToUint = function (string) {
 			// var string = btoa(unescape(encodeURIComponent(string)));
 			var charList = string.split('');
 			var uintArray = [];
@@ -185,7 +187,7 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.Uint8Concat = function(first, second) {
+		sServObj.Uint8Concat = function (first, second) {
 			var firstLength = first.length;
 			var result = new Uint8Array(firstLength + second.length);
 

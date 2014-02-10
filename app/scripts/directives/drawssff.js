@@ -4,8 +4,14 @@ angular.module('emulvcApp')
   .directive('drawssff', function () {
     return {
       restrict: 'A',
-      link: function postLink(scope, element) {
+      link: function postLink(scope, element, atts) {
         var canvas = element[0];
+        var trackName;
+
+        // observe attribute
+        atts.$observe('ssffTrackname', function (val) {
+          trackName = val;
+        });
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -38,15 +44,19 @@ angular.module('emulvcApp')
         function handleUpdate() {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
-              var extAndCol = scope.config.vals.signalsCanvasConfig.assign.spec.split(':');
-              //TODO get file:
 
-              // get name of column to be drawn
-              var colName = extAndCol[1]; // find according field in scope.ssffds.data
-              var col = findColumn(scope.ssffds.data, colName);
-              // draw values  
-              drawValues(scope.vs, canvas, scope.config, col);
-              // console.log(scope.config);
+              scope.config.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass) {
+                if (Object.keys(ass)[0] === trackName) {
+                  var tr = scope.config.getSsffTrackConfig(ass[Object.keys(ass)[0]]);
+                  var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+                  var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+                  
+                  var minMaxLims = scope.config.getLimsOfTrack(tr.name);
+                  
+                  // draw values  
+                  drawValues(scope.vs, canvas, scope.config, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                }
+              });
             }
           } else {
             var ctx = canvas.getContext('2d');
@@ -55,30 +65,10 @@ angular.module('emulvcApp')
         }
 
         /**
-         * find a certain column in ssffds.data array
-         * and append meta data of file to that col
-         * for drawing
-         */
-        function findColumn(data, colName) {
-          // console.log(scope.ssffds.data);
-          var col;
-          data.forEach(function (fileRep) {
-            fileRep.Columns.forEach(function (colRep) {
-              if (colRep.name === colName) {
-                col = colRep;
-                col.sampleRate = fileRep.sampleRate;
-                col.startTime = fileRep.startTime;
-              }
-            });
-          });
-          return col;
-        }
-
-        /**
          * draw values onto canvas
          */
 
-        function drawValues(viewState, canvas, config, col) {
+        function drawValues(viewState, canvas, config, col, sR, sT, minMaxLims) {
           var ctx = canvas.getContext('2d');
           // create a destination canvas. Here the altered image will be placed
 
@@ -93,8 +83,8 @@ angular.module('emulvcApp')
           var endTimeVP = viewState.getViewPortEndTime();
 
 
-          var colStartSampleNr = Math.round(startTimeVP * col.sampleRate + col.startTime);
-          var colEndSampleNr = Math.round(endTimeVP * col.sampleRate + col.startTime);
+          var colStartSampleNr = Math.round(startTimeVP * sR + sT);
+          var colEndSampleNr = Math.round(endTimeVP * sR + sT);
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
@@ -107,9 +97,9 @@ angular.module('emulvcApp')
 
             curSampleArrs.forEach(function (valRep, valIdx) {
               valRep.forEach(function (val, idx) {
-                if (idx >= scope.config.vals.signalsCanvasConfig.contourLims.fm.min && idx <= scope.config.vals.signalsCanvasConfig.contourLims.fm.max) { // SIC fm hardcoded
+                if (idx >= minMaxLims.min && idx <= minMaxLims.max) {
                   curSampleInCol = colStartSampleNr + valIdx;
-                  curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+                  curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
                   x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                   y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
@@ -133,7 +123,7 @@ angular.module('emulvcApp')
 
                   if (valIdx !== 0) {
                     curSampleInCol = colStartSampleNr + valIdx - 1;
-                    curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+                    curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
                     prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                     prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
@@ -160,7 +150,7 @@ angular.module('emulvcApp')
                         val = rightBorder[idx];
 
                         curSampleInCol = colEndSampleNr + 1;
-                        curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+                        curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
                         var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                         var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
@@ -180,7 +170,7 @@ angular.module('emulvcApp')
                       val = leftBorder[idx];
 
                       curSampleInCol = colStartSampleNr - 1;
-                      curSampleInColTime = (1 / col.sampleRate * curSampleInCol) + col.startTime;
+                      curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
                       prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                       prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);

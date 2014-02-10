@@ -7,26 +7,38 @@ angular.module('emulvcApp')
 
 		sServObj.data = [];
 
-		sServObj.getData = function () {
-			return sServObj.data;
-		};
-
-		sServObj.setData = function (data) {
-			angular.copy(data, sServObj.data);
-		};
-
-		sServObj.getDataOfFile = function (fName) {
-			var splArr, curName, sName, resIdx;
-			splArr = fName.split('/');
-			sName = splArr[splArr.length - 1];
-			sServObj.data.forEach(function (ssffObj, idx) {
-				splArr = ssffObj.fileURL.split('/');
-				curName = splArr[splArr.length - 1];
-				if(curName === sName){
-					resIdx = idx;
+		/**
+		 *
+		 */
+		sServObj.getColumnOfTrack = function (trackName, columnName) {
+			var res;
+			sServObj.data.forEach(function (tr) {
+				if (tr.ssffTrackName === trackName) {
+					tr.Columns.forEach(function (col) {
+						if (col.name === columnName) {
+							res = col;
+						}
+					});
 				}
 			});
-			return sServObj.data[resIdx];
+
+			return res;
+		};
+
+
+		/**
+		 *
+		 */
+		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
+			var res = {};
+			sServObj.data.forEach(function (tr) {
+				if (tr.ssffTrackName === trackName) {
+					res.sampleRate = tr.sampleRate;
+					res.startTime = tr.startTime;
+				}
+			});
+
+			return res;
 		};
 
 		return sServObj;

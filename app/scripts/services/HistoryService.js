@@ -8,43 +8,43 @@ angular.module('emulvcApp')
 		var sServObj = {};
 
 
-		sServObj.myHistory = [];
-		sServObj.myHistoryCounter = 0;
-		sServObj.session = undefined;
+		// sServObj.myHistory = [];
+		// sServObj.myHistoryCounter = 0;
+		// sServObj.session = undefined;
 
 
-		sServObj.init = function () {
-			sServObj.history();
-		};
+		// sServObj.init = function () {
+		// 	sServObj.history();
+		// };
 
-		sServObj.history = function () {
-			var newClone = angular.copy({
-				ssff: Ssffdataservice.getData(),
-				level: Levelservice.getData()
-			});
-			if (sServObj.myHistoryCounter > 0) {
-				var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
-				if (angular.equals(newClone, oldClone) === false) {
-					sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
-					++sServObj.myHistoryCounter;
-				}
-			} else {
-				sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
-				++sServObj.myHistoryCounter;
-			}
+		// sServObj.history = function () {
+		// 	var newClone = angular.copy({
+		// 		ssff: Ssffdataservice.getData(),
+		// 		level: Levelservice.getData()
+		// 	});
+		// 	if (sServObj.myHistoryCounter > 0) {
+		// 		var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
+		// 		if (angular.equals(newClone, oldClone) === false) {
+		// 			sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
+		// 			++sServObj.myHistoryCounter;
+		// 		}
+		// 	} else {
+		// 		sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
+		// 		++sServObj.myHistoryCounter;
+		// 	}
 
-		};
+		// };
 
-		sServObj.goBackHistory = function () {
-			if (sServObj.myHistoryCounter > 1) {
-				Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
-				Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].level);
-				--sServObj.myHistoryCounter;
-				return true;
-			} else {
-				return false;
-			}
-		};
+		// sServObj.goBackHistory = function () {
+		// 	if (sServObj.myHistoryCounter > 1) {
+		// 		Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
+		// 		Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].level);
+		// 		--sServObj.myHistoryCounter;
+		// 		return true;
+		// 	} else {
+		// 		return false;
+		// 	}
+		// };
 
 		//////////////////////////////////////////
 		// new dual stack implementation
@@ -70,29 +70,29 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
 						}
-						break;						
+						break;
 					case 'moveSegment':
 						if (applyOldVal) {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveSegment(-cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveSegment(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-						    var res = Levelservice.getLevelDetails(cur.levelName);	
-						    Levelservice.moveSegment(cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.levelName);
+							Levelservice.moveSegment(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
@@ -104,25 +104,25 @@ angular.module('emulvcApp')
 						break;
 					case 'renameLevel':
 						if (applyOldVal) {
-						    Levelservice.renameLevel(cur.levelName, cur.oldName);	
+							Levelservice.renameLevel(cur.levelName, cur.oldName);
 						} else {
-						    Levelservice.renameLevel(cur.oldName, cur.levelName);	
+							Levelservice.renameLevel(cur.oldName, cur.levelName);
 						}
-						break;						
+						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
 							Levelservice.data.levels.splice(cur.itemIdx, 0, cur.level);
 						} else {
 							Levelservice.data.levels.splice(cur.itemIdx, 1);
 						}
-						break;						
+						break;
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							Levelservice.insertSegment(cur.seg.sampleStart, cur.seg.sampleStart ,cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							Levelservice.insertSegment(cur.seg.sampleStart, cur.seg.sampleStart, cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
 						} else {
 							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.levelType);
 						}
-						break;					
+						break;
 					case 'deleteSegments':
 						if (applyOldVal) {
 							Levelservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.levelName);
@@ -132,21 +132,21 @@ angular.module('emulvcApp')
 						break;
 					case 'insertSegments':
 						if (applyOldVal) {
-							Levelservice.insertSegmentInvers(cur.start, cur.end,cur.levelName, cur.segname);
+							Levelservice.insertSegmentInvers(cur.start, cur.end, cur.levelName, cur.segname);
 						} else {
-						    Levelservice.insertSegment(cur.start, cur.end,cur.levelName, cur.segname);
+							Levelservice.insertSegment(cur.start, cur.end, cur.levelName, cur.segname);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Levelservice.insertPointInvers(cur.start, cur.levelName ,cur.pointName);
+							Levelservice.insertPointInvers(cur.start, cur.levelName, cur.pointName);
 						} else {
 							Levelservice.insertPoint(cur.start, cur.levelName, cur.pointName);
 						}
-						break;												
+						break;
 					case 'expandSegments':
 						if (applyOldVal) {
-							Levelservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime); 
+							Levelservice.expandSegment(!cur.expand, cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime);
 						} else {
 							Levelservice.expandSegment(cur.expand, cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime);
 						}
