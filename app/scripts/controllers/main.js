@@ -52,15 +52,6 @@ angular.module('emulvcApp')
 			}
 		});
 
-
-		// init load of config files
-		Iohandlerservice.httpGetDefaultConfig().success(function (data) {
-			ConfigProviderService.setVals(data);
-			$scope.handleDefaultConfigLoaded();
-		}).error(function (data, status, header, config) {
-			dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
-		});
-
 		// init history service
 		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
 		// $scope.hists.init();
@@ -127,6 +118,22 @@ angular.module('emulvcApp')
 			$scope.curUtt = $scope.lastclickedutt;
 		});
 
+
+		/**
+		 * init load of config files
+		 */
+		$scope.handleDefaultConfigLoaded = function () {
+
+			Iohandlerservice.httpGetDefaultConfig().success(function (data) {
+				ConfigProviderService.setVals(data);
+				$scope.handleDefaultConfigLoaded();
+			}).error(function (data, status, header, config) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
+			});
+
+		};
+		// call function on init
+		$scope.handleDefaultConfigLoaded();
 
 		/**
 		 *
@@ -308,7 +315,7 @@ angular.module('emulvcApp')
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
 						//update progress bar
 						ngProgressLite.done();
-						
+
 						var arrBuff;
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
@@ -322,13 +329,13 @@ angular.module('emulvcApp')
 						viewState.setscrollOpen(0);
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
-						$rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
+						// $rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
 						// set ssff files
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data); // SIC SIC SIC hardcoded!!!
 						var ssffJso = Ssffparserservice.ssff2jso(arrBuff, bundleData.ssffFiles[0].ssffTrackName);
-						Ssffdataservice.data.push(ssffJso)
-						console.log(Ssffdataservice.data)
+						Ssffdataservice.data.push(ssffJso);
+						console.log(Ssffdataservice.data);
 
 						// set annotation
 						Levelservice.data = bundleData.annotation;
@@ -449,7 +456,6 @@ angular.module('emulvcApp')
 		// handle button clicks
 
 		// top menu:
-
 		//
 		$scope.addLevelSegBtnClick = function () {
 
@@ -503,7 +509,17 @@ angular.module('emulvcApp')
 		//
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
-				dialogService.open('views/connectModal.html', 'WsconnectionCtrl');
+				dialogService.open('views/connectModal.html', 'WsconnectionCtrl').then(function (url) {
+					if (url) {
+						Iohandlerservice.wsH.initConnect(url).then(function (message) {
+							if (message.type === 'error') {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
+							} else {
+								$scope.handleConnectedToWSserver();
+							}
+						});
+					}
+				});
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -537,18 +553,20 @@ angular.module('emulvcApp')
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
 			console.log('trying to clear labeller');
-			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data? This will also delete any unsaved changes...').then(function (res) {
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? This will also delete any unsaved changes...').then(function (res) {
 				if (res) {
 					if (Iohandlerservice.wsH.isConnected()) {
 						Iohandlerservice.wsH.closeConnect();
 					}
 					$scope.bundleList = [];
-					ConfigProviderService.httpGetConfig();
+					$scope.handleDefaultConfigLoaded();
+
 					Soundhandlerservice.wavJSO = {};
 					Levelservice.data = {};
 					Ssffdataservice.data = [];
 					$scope.showDropZone = true;
-					$scope.$broadcast('refreshTimeline');
+					$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
+					// $rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
 					viewState.setState('noDBorFilesloaded');
 				}

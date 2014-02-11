@@ -328,6 +328,37 @@ Where \texttt{configData} is the javascript object representing \texttt{globalDB
 Where \texttt{bundleData} is the javascript object containing all the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details).
 
 %%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{SAVEBUNDLE}}
+\begin{center}
+  \line(1,0){250}
+
+  \textit{Function to be called if the user saves a loaded bundle (by pushing the save button).}
+
+  \line(1,0){250}
+\end{center}
+
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'SAVEBUNDLE',
+  'data': bundleData,
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+Where \texttt{bundleData} is the javascript object containing all the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details).
+
+\begin{lstlisting}[caption=Reply content, language=json]
+{
+  'callbackID': request.callbackID,
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Error handling}
 
 If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.

@@ -9,22 +9,11 @@ angular.module('emulvcApp')
 		viewState.focusInTextField = true;
 
 		$scope.tryConnection = function () {
-			console.log($scope.wsServerUrl);
-			var conProm = Iohandlerservice.wsH.initConnect($scope.wsServerUrl); // SIC don't use wsH directly
-			conProm.then(function (val) {
-				// console.log(val)
-				if (val.type === 'error') {
-					$scope.connectionError = 'ERROR trying to connect to ws-server';
-				} else if (val.type === 'open') {
-					viewState.focusInTextField = false;
-					$scope.cancel();
-				}
-			});
-			// $scope.openModal('views/login.html', 'dialog', true);
+			dialogService.close($scope.wsServerUrl);
 		};
 
 		$scope.cancel = function () {
-			dialogService.close();
+			dialogService.close(false);
 		};
 
 	});

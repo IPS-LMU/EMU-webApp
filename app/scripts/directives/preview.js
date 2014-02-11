@@ -19,10 +19,17 @@ angular.module('emulvcApp')
 					}
 				}, true);
 
+				scope.$watch('shs.wavJSO', function () {
+					if ($.isEmptyObject(scope.shs.wavJSO)) {
+						var ctx = canvas.getContext('2d');
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-				scope.$on('cleanPreview', function () {
-					initialized = false;
-				});
+					}
+				}, true);
+
+				// scope.$on('cleanPreview', function () {
+				// 	initialized = false;
+				// });
 
 				function drawPreview() {
 					if (!initialized) {

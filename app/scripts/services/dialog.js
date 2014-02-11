@@ -22,7 +22,7 @@ angular.module('emulvcApp')
 			});
 			return modalInstance.result;
 		};
-		
+
 		sServObj.openExport = function (templatefile, argCtrl, data, txt) {
 			viewState.setState('modalShowing');
 			modalInstance = $modal.open({
@@ -36,11 +36,11 @@ angular.module('emulvcApp')
 					},
 					exportName: function () {
 						return txt;
-					}					
+					}
 				}
 			});
 			return modalInstance.result;
-		};		
+		};
 
 		sServObj.close = function (res) {
 			viewState.focusInTextField = false;
