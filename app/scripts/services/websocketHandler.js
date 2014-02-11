@@ -73,7 +73,7 @@ angular.module('emulvcApp')
 					'callbackID': callbackId,
 					'status': {
 						'type': 'ERROR:TIMEOUT',
-						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.wsTimeoutInterval +'ms!  Please check the server...'
+						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.wsTimeoutInterval + 'ms!  Please check the server...'
 					}
 				};
 
@@ -108,11 +108,11 @@ angular.module('emulvcApp')
 				}
 
 				delete callbacks[messageObj.callbackID];
-			}else{
-				if(messageObj.status.type === 'ERROR:TIMEOUT'){
+			} else {
+				if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
-				}else{
-					dialogService.open('views/error.html', 'ModalCtrl', 'What just happened? You should not be here...');	
+				} else {
+					dialogService.open('views/error.html', 'ModalCtrl', 'What just happened? You should not be here...');
 				}
 			}
 		}
