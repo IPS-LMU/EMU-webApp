@@ -22,7 +22,8 @@ angular.module('emulvcApp')
     };
     
     $scope.loadFiles = function () {
-      dialogService.open('views/loadFiles.html', 'ModalCtrl', '');
+      dialogService.open('views/error.html', 'ModalCtrl', 'Currently the EMU-webApp does not support this feature! Sorry... ');
+      // dialogService.open('views/loadFiles.html', 'ModalCtrl', '');
     };
 
     $scope.showDropZone = function () {
@@ -38,37 +39,37 @@ angular.module('emulvcApp')
         $scope.dropClass = '';
       });
     }
-    $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
-    $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
-    $scope.dropzone.addEventListener('dragover', function (evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-      var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
-      $scope.$apply(function () {
-        $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
-        $scope.dropClass = ok ? 'over' : 'not-available';
-        $scope.wavLoaded = 0;
-        $scope.txtGridLoaded = 0;
-        $scope.labelLoaded = 0;
-      });
-    }, false);
+    // $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
+    // $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
+    // $scope.dropzone.addEventListener('dragover', function (evt) {
+    //   evt.stopPropagation();
+    //   evt.preventDefault();
+    //   var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
+    //   $scope.$apply(function () {
+    //     $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
+    //     $scope.dropClass = ok ? 'over' : 'not-available';
+    //     $scope.wavLoaded = 0;
+    //     $scope.txtGridLoaded = 0;
+    //     $scope.labelLoaded = 0;
+    //   });
+    // }, false);
 
-    $scope.dropzone.addEventListener('drop', function (evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-      $scope.$apply(function () {
-        $scope.dropText = $scope.dropParsingStarted;
-        $scope.dropClass = '';        
-      });
-      var items = evt.dataTransfer.items;
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i].webkitGetAsEntry();
-        if (item) {
-          $scope.traverseFileTree(item);       
-        }
-      }        
+    // $scope.dropzone.addEventListener('drop', function (evt) {
+    //   evt.stopPropagation();
+    //   evt.preventDefault();
+    //   $scope.$apply(function () {
+    //     $scope.dropText = $scope.dropParsingStarted;
+    //     $scope.dropClass = '';        
+    //   });
+    //   var items = evt.dataTransfer.items;
+    //   for (var i = 0; i < items.length; i++) {
+    //     var item = items[i].webkitGetAsEntry();
+    //     if (item) {
+    //       $scope.traverseFileTree(item);       
+    //     }
+    //   }        
       
-    }, false);
+    // }, false);
 
     $scope.traverseFileTree = function (item, path) {
       path = path || '';
