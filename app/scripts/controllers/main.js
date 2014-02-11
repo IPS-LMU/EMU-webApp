@@ -52,10 +52,6 @@ angular.module('emulvcApp')
 			}
 		});
 
-		// init history service
-		// HAS TO BE DONE WHEN NEW UTT DATA ARE READY !! TODO !!
-		// $scope.hists.init();
-
 		// init pure jquery dragbar
 		$('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
 
@@ -136,7 +132,7 @@ angular.module('emulvcApp')
 		$scope.loadDefaultConfig();
 
 		/**
-		 *
+		 * function called after default config was loaded
 		 */
 		$scope.handleDefaultConfigLoaded = function () {
 
