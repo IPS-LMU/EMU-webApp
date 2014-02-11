@@ -10,10 +10,14 @@
   "author": "Raphael Winkelmann, Georg Raess",
   "license": "MIT",
   "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raphywink/emuLVC.git"
+  },
   "dependencies": {
+    "ws": "~0.4.31"
   },
   "devDependencies": {
-    "ws": "~0.4.31"
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
