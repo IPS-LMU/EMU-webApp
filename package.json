@@ -1,6 +1,6 @@
 {
   "name": "EMU-webApp",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/js/main.js",
   "scripts": {
@@ -10,14 +10,10 @@
   "author": "Raphael Winkelmann, Georg Raess",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/raphywink/emuLVC.git"
-  },
   "dependencies": {
-    "ws": "~0.4.31"
   },
   "devDependencies": {
+    "ws": "~0.4.31"
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
@@ -61,7 +57,8 @@
     "grunt-appcache": "~0.1.2",
     "grunt-replace": "~0.5.1",
     "grunt-gitinfo": "~0.1.1",
-    "protractor": "~0.16.1"
+    "protractor": "~0.16.1",
+    "filewalker": "~0.1.2"
   },
   "engines": {
     "node": ">=0.8.0"
