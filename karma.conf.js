@@ -18,6 +18,7 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/angular-ui/build/angular-ui.js',
+      'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
