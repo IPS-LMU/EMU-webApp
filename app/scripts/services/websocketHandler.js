@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, HistoryService, Ssffparserservice, Levelservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, Levelservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
 		// shared service object
 		var sServObj = {};
 		// Keep all pending requests here until they get responses
@@ -21,17 +21,17 @@ angular.module('emulvcApp')
 		////////////////////////////
 		// handle received functions
 
-		function handleReceivedESPS(fileName, data) {
-			var labelJSO = Espsparserservice.toJSO(data, fileName);
-			$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
-		}
+		// function handleReceivedESPS(fileName, data) {
+		// 	var labelJSO = Espsparserservice.toJSO(data, fileName);
+		// 	$rootScope.$broadcast('newlyLoadedLabelJson', labelJSO);
+		// }
 
-		function handleReceivedSSFF(fileName, data) {
-			var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(data);
-			var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
-			ssffJso.fileURL = document.URL + fileName;
-			$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
-		}
+		// function handleReceivedSSFF(fileName, data) {
+		// 	var arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(data);
+		// 	var ssffJso = Ssffparserservice.ssff2jso(arrBuff);
+		// 	ssffJso.fileURL = document.URL + fileName;
+		// 	$rootScope.$broadcast('newlyLoadedSSFFfile', ssffJso, fileName.replace(/^.*[\\\/]/, ''));
+		// }
 
 		////////////////////////////
 		// ws function
@@ -66,8 +66,20 @@ angular.module('emulvcApp')
 				cb: defer
 			};
 			request.callbackID = callbackId;
-			// console.log('Sending request', request);
 			ws.send(JSON.stringify(request));
+			// timeout request if not answered
+			$timeout(function () {
+				var tOutResp = {
+					'callbackID': callbackId,
+					'status': {
+						'type': 'ERROR:TIMEOUT',
+						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.wsTimeoutInterval +'ms!  Please check the server...'
+					}
+				};
+
+				listener(tOutResp);
+			}, ConfigProviderService.vals.main.wsTimeoutInterval);
+
 			return defer.promise;
 		}
 
@@ -88,20 +100,20 @@ angular.module('emulvcApp')
 				}
 
 				// resolve promise with data only
-				if(messageObj.status.type === 'SUCCESS'){
+				if (messageObj.status.type === 'SUCCESS') {
 					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
-				}else{
+				} else {
 					// show protocol error and disconnect from server
 					dialogService.open('views/error.html', 'ModalCtrl', 'Communication error with server! Error message is: ' + messageObj.status.message);
 				}
 
 				delete callbacks[messageObj.callbackID];
-				// if (viewState.curTaskPercCompl >= 100) {
-				// 	viewState.curTaskPercCompl = 0;
-				// 	dialogService.close();
-				// } else {
-				// 	viewState.curTaskPercCompl += 1;
-				// }
+			}else{
+				if(messageObj.status.type === 'ERROR:TIMEOUT'){
+					// do nothing
+				}else{
+					dialogService.open('views/error.html', 'ModalCtrl', 'What just happened? You should not be here...');	
+				}
 			}
 		}
 

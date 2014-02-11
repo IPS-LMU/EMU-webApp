@@ -3,6 +3,7 @@
         "osciSpectroZoomFactor": 2,
         "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080",
+        "wsTimeoutInterval": 5000,
         "comType": "ws"
     },
     "keyMappings": {
@@ -50,7 +51,6 @@
         "snapBoundaryToTop": 84,
         "snapBoundaryToBottom": 66
     },
-
     "colors": {
         "labelColor": "#000",
         "osciColor": "#000",
