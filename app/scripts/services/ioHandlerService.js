@@ -15,28 +15,6 @@ angular.module('emulvcApp')
 			return prom;
 		};
 
-		////////////////////////////
-		// for demo
-		//
-
-		// /**
-		//  *
-		//  */
-		// sServObj.httpGetDemoDbConfig = function () {
-		// 	var prom = $http.get('testData/newAE/ae.json');
-		// 	return prom;
-		// };
-
-
-		// /**
-		//  *
-		//  */
-		// sServObj.httpGetDemoBundleList = function () {
-		// 	var prom = $http.get('testData/demoUttList.json');
-		// 	return prom;
-		// };
-
-
 
 		////////////////////////////
 		// defined protocol begins here

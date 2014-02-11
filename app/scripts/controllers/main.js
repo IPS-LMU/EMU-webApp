@@ -122,7 +122,7 @@ angular.module('emulvcApp')
 		/**
 		 * init load of config files
 		 */
-		$scope.handleDefaultConfigLoaded = function () {
+		$scope.loadDefaultConfig = function () {
 
 			Iohandlerservice.httpGetDefaultConfig().success(function (data) {
 				ConfigProviderService.setVals(data);
@@ -133,7 +133,7 @@ angular.module('emulvcApp')
 
 		};
 		// call function on init
-		$scope.handleDefaultConfigLoaded();
+		$scope.loadDefaultConfig();
 
 		/**
 		 *
@@ -561,21 +561,20 @@ angular.module('emulvcApp')
 		//
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
-			console.log('trying to clear labeller');
 			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? This will also delete any unsaved changes...').then(function (res) {
 				if (res) {
 					if (Iohandlerservice.wsH.isConnected()) {
 						Iohandlerservice.wsH.closeConnect();
 					}
 					$scope.bundleList = [];
-					$scope.handleDefaultConfigLoaded();
 
 					Soundhandlerservice.wavJSO = {};
 					Levelservice.data = {};
 					Ssffdataservice.data = [];
 					$scope.showDropZone = true;
+					$scope.loadDefaultConfig();
+					
 					$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
-					// $rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
 					viewState.setState('noDBorFilesloaded');
 				}
@@ -714,7 +713,7 @@ angular.module('emulvcApp')
 				if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
 					newIdx = i;
 				}
-			};
+			}
 			viewState.curPerspectiveIdx = newIdx;
 			// close submenu
 			$scope.toggleRightSideMenuHidden();
