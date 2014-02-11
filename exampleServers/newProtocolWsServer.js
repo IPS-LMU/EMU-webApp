@@ -176,7 +176,7 @@ wss.on('connection', function (ws) {
           }
           console.log('##########################');
           console.log('done');
-          fs.writeFileSync('/Users/raphaelwinkelmann/Desktop/bundle.json', JSON.stringify(bundle, undefined, 0));
+          // fs.writeFileSync('/Users/raphaelwinkelmann/Desktop/bundle.json', JSON.stringify(bundle, undefined, 0));
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
             'data': bundle,
