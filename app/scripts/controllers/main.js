@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document, ngProgressLite,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice) {
 
 		// hook up services to use abbreviated forms
@@ -306,6 +306,9 @@ angular.module('emulvcApp')
 					// empty ssff files
 					Ssffdataservice.data = [];
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
+						//update progress bar
+						ngProgressLite.done();
+						
 						var arrBuff;
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, Levelservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, ngProgressLite, HistoryService, Ssffparserservice, Levelservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
 		// shared service object
 		var sServObj = {};
 		// Keep all pending requests here until they get responses
@@ -195,6 +195,9 @@ angular.module('emulvcApp')
 
 		// ws  getBundle
 		sServObj.getBundle = function (name, perspectiveIdx) {
+			ngProgressLite.start();
+			ngProgressLite.set(0.5);
+
 			var request = {
 				type: 'GETBUNDLE',
 				name: name,
