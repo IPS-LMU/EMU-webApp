@@ -17,7 +17,7 @@ angular.module('emulvcApp')
 
 
 		////////////////////////////
-		// defined protocol begins here
+		// EMU-webApp protocol begins here
 		//
 
 		/**
@@ -104,7 +104,7 @@ angular.module('emulvcApp')
 
 
 		//
-		// defined protocol ends here
+		// EMU-webApp protocol ends here
 		////////////////////////////
 
 		/**

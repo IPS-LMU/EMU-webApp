@@ -150,7 +150,7 @@ angular.module('emulvcApp')
 		};
 
 		////////////////////////////
-		// new protocol begins here
+		// EMU-webApp protocol begins here
 		//
 
 		// ws getProtocol
@@ -208,7 +208,7 @@ angular.module('emulvcApp')
 		};
 
 		//
-		// new protocol ends here
+		// EMU-webApp protocol ends here
 		////////////////////////////
 
 		// ws getDoUserManagement
