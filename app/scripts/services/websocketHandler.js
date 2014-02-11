@@ -194,14 +194,13 @@ angular.module('emulvcApp')
 		};
 
 		// ws  getBundle
-		sServObj.getBundle = function (name, perspectiveIdx) {
+		sServObj.getBundle = function (name) {
 			ngProgressLite.start();
 			ngProgressLite.set(0.5);
 
 			var request = {
 				type: 'GETBUNDLE',
-				name: name,
-				perspectiveIdx: perspectiveIdx
+				name: name
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);

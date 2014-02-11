@@ -8,67 +8,48 @@ angular.module('emulvcApp')
 		sServObj.wsH = Websockethandler;
 
 		/**
-		 *
+		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetDefaultConfig = function () {
 			var prom = $http.get('configFiles/defaultConfig.json');
 			return prom;
 		};
 
+		////////////////////////////
+		// for demo
+		//
+
+		// /**
+		//  *
+		//  */
+		// sServObj.httpGetDemoDbConfig = function () {
+		// 	var prom = $http.get('testData/newAE/ae.json');
+		// 	return prom;
+		// };
+
+
+		// /**
+		//  *
+		//  */
+		// sServObj.httpGetDemoBundleList = function () {
+		// 	var prom = $http.get('testData/demoUttList.json');
+		// 	return prom;
+		// };
+
+
+
+		////////////////////////////
+		// defined protocol begins here
+		//
+
 		/**
 		 *
 		 */
-		// sServObj.getUttList = function (filePath) {
-		// 	var getProm;
-		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-		// 		getProm = Httphandler.getUttList(filePath);
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-		// 		alert('handle WS case for get utt list');
-		// 	}
-
-		// 	return getProm;
-		// };
-
-		// /**
-		//  *
-		//  */
-		// sServObj.getUsrUttList = function (name) {
-		// 	var getProm;
-		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-		// 		alert('handle WS case for get utt list');
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-		// 		getProm = Websockethandler.getUsrUttList(name);
-		// 	}
-
-		// 	return getProm;
-		// };
-
-
-		// /**
-		//  *
-		//  */
-		// sServObj.getUtt = function (utt) {
-		// 	var getProm;
-
-		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-		// 		getProm = Httphandler.getUtt(utt);
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-		// 		getProm = Websockethandler.getUtt(utt);
-		// 	}
-
-		// 	return getProm;
-		// };
-
-    ////////////////////////////
-    // new protocol begins here
-    //
-
-		//
 		sServObj.getProtocol = function () {
 			var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of getProtocol not implemented');
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of getProtocol not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getProtocol();
 			}
@@ -76,12 +57,14 @@ angular.module('emulvcApp')
 			return getProm;
 		};
 
-		//
+		/**
+		 *
+		 */
 		sServObj.getDoUserManagement = function () {
 			var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of getProtocol not implemented');
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of getDoUserManagement not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDoUserManagement();
 			}
@@ -89,74 +72,62 @@ angular.module('emulvcApp')
 			return getProm;
 		};
 
-		//
+		/**
+		 *
+		 */
 		sServObj.getDBconfigFile = function () {
 			var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of getProtocol not implemented');
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of getDBconfigFile not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDBconfigFile();
+			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
+				getProm = $http.get('testData/newAE/ae.json');
 			}
 
 			return getProm;
 		};
 
-		//
+		/**
+		 *
+		 */
 		sServObj.getBundleList = function () {
 			var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('http:GET version of getProtocol not implemented');
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of getBundleList not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundleList();
+			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
+				getProm = $http.get('testData/demoUttList.json');
 			}
 
 			return getProm;
 		};
 
-    //
-    sServObj.getBundle = function (name, perspectiveIdx) {
-      var getProm;
+		/**
+		 *
+		 */
+		sServObj.getBundle = function (name) {
+			var getProm;
 
-      if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-        alert('http:GET version of getBundle not implemented');
-      } else if (ConfigProviderService.vals.main.comMode === 'WS') {
-        getProm = Websockethandler.getBundle(name, perspectiveIdx);
-      }
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of getBundle not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+				getProm = Websockethandler.getBundle(name);
+			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
+				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
+				getProm = $http.get('testData/testAeBundle.json'); // SIC SIC SIC HARDCODED -> name is ignored
+			}
 
-      return getProm;
-    };
+			return getProm;
+		};
 
 
-    //
-    // new protocol ends here
-    ////////////////////////////
-
-		// //
-		// sServObj.getDoUserManagement = function () {
-		// 	var getProm;
-		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-		// 		alert('http:GET version of getProtocol not implemented');
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-		// 		getProm = Websockethandler.getDoUserManagement();
-		// 	}
-
-		// 	return getProm;
-		// };
-
-		// //
-		// sServObj.saveUtt = function (utt) {
-		// 	var getProm;
-		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-		// 		alert('http:GET version of saveUtt not implemented');
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-		// 		getProm = Websockethandler.saveUtt(utt);
-		// 	}
-
-		// 	return getProm;
-		// };
-
+		//
+		// defined protocol ends here
+		////////////////////////////
 
 		/**
 		 * pass through to Textgridparserservice

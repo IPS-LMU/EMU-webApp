@@ -313,6 +313,11 @@ angular.module('emulvcApp')
 					// empty ssff files
 					Ssffdataservice.data = [];
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
+						// check if response from http request
+						if (bundleData.status === 200) {
+							bundleData = bundleData.data;
+						}
+						console.log(bundleData);
 						//update progress bar
 						ngProgressLite.done();
 
@@ -329,13 +334,11 @@ angular.module('emulvcApp')
 						viewState.setscrollOpen(0);
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
-						// $rootScope.$broadcast('cleanPreview'); // SIC SIC SIC
 
 						// set ssff files
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data); // SIC SIC SIC hardcoded!!!
 						var ssffJso = Ssffparserservice.ssff2jso(arrBuff, bundleData.ssffFiles[0].ssffTrackName);
 						Ssffdataservice.data.push(ssffJso);
-						console.log(Ssffdataservice.data);
 
 						// set annotation
 						Levelservice.data = bundleData.annotation;
@@ -528,16 +531,22 @@ angular.module('emulvcApp')
 		//
 		$scope.openDemoDBbtnClick = function () {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
-				ConfigProviderService.vals.main.comMode = 'http:GET';
+				ConfigProviderService.vals.main.comMode = 'DEMO';
 				viewState.setState('loadingSaving');
-				Iohandlerservice.getUttList('testData/demoUttList.json').then(function (res) {
-					console.log(res.data);
-					$scope.showDropZone = false;
-					$scope.bundleList = res.data;
-					Iohandlerservice.getUtt(res.data[0]);
-					$scope.curUtt = res.data[0];
-					// should be then after get utt
-					viewState.setState('labeling');
+				Iohandlerservice.getDBconfigFile().then(function (dbConfig) {
+					ConfigProviderService.setVals(dbConfig.data.EMUwebAppConfig);
+					delete dbConfig.data.EMUwebAppConfig; // delete to avoid duplicate
+					ConfigProviderService.curDbConfig = dbConfig.data;
+
+					Iohandlerservice.getBundleList().then(function (res) {
+						$scope.showDropZone = false;
+						$scope.bundleList = res.data;
+						$scope.menuBundleClick($scope.bundleList[0]);
+						// 	// Iohandlerservice.getUtt(res.data[0]);
+						// 	// $scope.curUtt = res.data[0];
+						// 	// should be then after get utt
+						viewState.setState('labeling');
+					});
 				});
 			} else {
 				console.log('action currently not allowed');
@@ -729,93 +738,3 @@ angular.module('emulvcApp')
 		};
 
 	});
-
-
-
-///////////////////////////////////////
-/// old functions... might still need...
-// /**
-//  *
-//  */
-// $scope.changingMetaData = function () {
-// 	$scope.modifiedMetaData = true;
-// };
-
-// /**
-//  *
-//  */
-// $scope.changingSSFFdata = function () {
-// 	// console.log('changingSSFFdata')
-// 	$scope.modifiedCurSSFF = true;
-// };
-
-// /**
-//  *
-//  */
-// $scope.modifLevelItems = function () {
-// 	console.log('items labs changed');
-// 	$scope.modifiedCurLevelItems = true;
-// };
-/**
- * listen for connectedToWSserver
- */
-// $scope.$on('connectedToWSserver', function () {
-// 	// TODO hardcode removal of save / load/ manipulation buttons 
-// 	$scope.showDropZone = false;
-// 	ConfigProviderService.vals.main.comMode = 'ws';
-// 	$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
-
-// 	// Check if server speaks the same protocol
-// 	Iohandlerservice.getProtocol().then(function (res) {
-// 		if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
-// 			Iohandlerservice.getConfigFile().then(function (newVal) {
-// 				ConfigProviderService.setVals(newVal);
-// 			});
-// 			if (!ConfigProviderService.vals.main.autoConnect) {
-// 				Iohandlerservice.getDoUserManagement().then(function (manageRes) {
-// 					if (manageRes === 'YES') {
-// 						dialogService.open('views/login.html', 'LoginCtrl');
-// 					} else {
-// 						$scope.$broadcast('newUserLoggedOn', '');
-// 					}
-// 				});
-// 			} else {
-// 				$scope.connectBtnLabel = 'disconnect';
-// 				$scope.$broadcast('newUserLoggedOn', '');
-
-// 			}
-// 		} else {
-// 			// disconnect from server and reopen connect dialog
-
-// 		}
-// 	});
-// });
-
-/**
- * listen for dropped files
- */
-// $scope.$on('fileLoaded', function (evt, type, data) {
-// 	switch (type) {
-// 	case type.WAV:
-// 		$scope.bundleList[0].name = data.name.substr(0, data.name.lastIndexOf('.'));
-// 		Iohandlerservice.httpGetUtterence($scope.bundleList[0], 'testData/' + $scope.bundleList[0] + '/');
-// 		break;
-// 	case type.TEXTGRID:
-
-// 		break;
-// 	}
-// 	console.log('data');
-// 	console.log(data);
-// });
-
-/**
- * listen for newlyLoadedUttList
- */
-// $scope.$on('newlyLoadedUttList', function(evt, uttList) {
-// 	$scope.bundleList = uttList;
-// 	// Iohandlerservice.httpGetUtterence($scope.bundleList[0]);
-// 	$scope.curUtt = $scope.bundleList[0];
-// 	if (!viewState.getsubmenuOpen()) {
-// 		$scope.openSubmenu();
-// 	}
-// });
