@@ -1,15 +1,11 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, Httphandler, Appcachehandler) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, Httphandler) {
 		// shared service object
 		var sServObj = {};
 
 		sServObj.wsH = Websockethandler;
-
-
-		Appcachehandler.checkForNewVersion();
-
 
 		/**
 		 *
@@ -22,46 +18,46 @@ angular.module('emulvcApp')
 		/**
 		 *
 		 */
-		sServObj.getUttList = function (filePath) {
-			var getProm;
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				getProm = Httphandler.getUttList(filePath);
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				alert('handle ws case for get utt list');
-			}
+		// sServObj.getUttList = function (filePath) {
+		// 	var getProm;
+		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+		// 		getProm = Httphandler.getUttList(filePath);
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+		// 		alert('handle WS case for get utt list');
+		// 	}
 
-			return getProm;
-		};
+		// 	return getProm;
+		// };
 
-		/**
-		 *
-		 */
-		sServObj.getUsrUttList = function (name) {
-			var getProm;
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				alert('handle ws case for get utt list');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				getProm = Websockethandler.getUsrUttList(name);
-			}
+		// /**
+		//  *
+		//  */
+		// sServObj.getUsrUttList = function (name) {
+		// 	var getProm;
+		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+		// 		alert('handle WS case for get utt list');
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+		// 		getProm = Websockethandler.getUsrUttList(name);
+		// 	}
 
-			return getProm;
-		};
+		// 	return getProm;
+		// };
 
 
-		/**
-		 *
-		 */
-		sServObj.getUtt = function (utt) {
-			var getProm;
+		// /**
+		//  *
+		//  */
+		// sServObj.getUtt = function (utt) {
+		// 	var getProm;
 
-			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
-				getProm = Httphandler.getUtt(utt);
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
-				getProm = Websockethandler.getUtt(utt);
-			}
+		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
+		// 		getProm = Httphandler.getUtt(utt);
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+		// 		getProm = Websockethandler.getUtt(utt);
+		// 	}
 
-			return getProm;
-		};
+		// 	return getProm;
+		// };
 
     ////////////////////////////
     // new protocol begins here
@@ -73,7 +69,7 @@ angular.module('emulvcApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				alert('http:GET version of getProtocol not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getProtocol();
 			}
 
@@ -86,7 +82,7 @@ angular.module('emulvcApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				alert('http:GET version of getProtocol not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDoUserManagement();
 			}
 
@@ -99,7 +95,7 @@ angular.module('emulvcApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				alert('http:GET version of getProtocol not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDBconfigFile();
 			}
 
@@ -112,7 +108,7 @@ angular.module('emulvcApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 				alert('http:GET version of getProtocol not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundleList();
 			}
 
@@ -125,7 +121,7 @@ angular.module('emulvcApp')
 
       if (ConfigProviderService.vals.main.comMode === 'http:GET') {
         alert('http:GET version of getBundle not implemented');
-      } else if (ConfigProviderService.vals.main.comMode === 'ws') {
+      } else if (ConfigProviderService.vals.main.comMode === 'WS') {
         getProm = Websockethandler.getBundle(name, perspectiveIdx);
       }
 
@@ -142,7 +138,7 @@ angular.module('emulvcApp')
 		// 	var getProm;
 		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 		// 		alert('http:GET version of getProtocol not implemented');
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 		// 		getProm = Websockethandler.getDoUserManagement();
 		// 	}
 
@@ -154,7 +150,7 @@ angular.module('emulvcApp')
 		// 	var getProm;
 		// 	if (ConfigProviderService.vals.main.comMode === 'http:GET') {
 		// 		alert('http:GET version of saveUtt not implemented');
-		// 	} else if (ConfigProviderService.vals.main.comMode === 'ws') {
+		// 	} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 		// 		getProm = Websockethandler.saveUtt(utt);
 		// 	}
 

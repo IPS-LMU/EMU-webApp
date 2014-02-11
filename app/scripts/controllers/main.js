@@ -224,7 +224,7 @@ angular.module('emulvcApp')
 		$scope.handleConnectedToWSserver = function () {
 			// TODO hardcode removal of save / load/ manipulation buttons 
 			$scope.showDropZone = false;
-			ConfigProviderService.vals.main.comMode = 'ws';
+			ConfigProviderService.vals.main.comMode = 'WS';
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			// Check if server speaks the same protocol
