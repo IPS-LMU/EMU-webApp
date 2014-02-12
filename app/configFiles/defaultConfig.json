@@ -129,8 +129,9 @@
         "addItem": true,
         "drawCrossHairs": true,
         "drawSampleNrs": false,
-        "drawZeroLine": true
-
+        "drawZeroLine": true,
+        "bundleComments": true,
+        "bundleFinishedEditing": true
     },
     "activeButtons": {
         "addLevelSeg": false,

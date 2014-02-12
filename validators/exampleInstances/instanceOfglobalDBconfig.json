@@ -3,7 +3,7 @@
   "UUID": "940eb980-8824-11e3-baa7-0800200c9a66",
   "levelDefinitions": [{
     "name": "Phonetic",
-    "type": "ELEMENT",
+    "type": "SEGMENT",
     "labelDefinitions": [{
       "name": "Phonetic",
       "legalValues": []
@@ -17,7 +17,7 @@
     }]
   }, {
     "name": "Syllable",
-    "type": "ELEMENT",
+    "type": "ITEM",
     "labelDefinitions": [{
       "name": "Syllable",
       "legalValues": []
@@ -55,5 +55,14 @@
         "show": true
       }
     }]
-  }
+  },
+  "queryGroupDefinitions": [{
+    "name": "vowel",
+    "levelName": "Phonetic",
+    "values": ["A", "E", "EC", "I", "O", "V", "U", "ai", "ei", "oi", "i@", "u@", "au", "@u", "@:", "@", "=", "a:", "e:", "i:", "o:", "u:"]
+  }, {
+    "name": "stop",
+    "levelName": "Phonetic",
+    "values": ["p", "tS", "dZ", "t", "k", "b", "d", "g"]
+  }]
 }

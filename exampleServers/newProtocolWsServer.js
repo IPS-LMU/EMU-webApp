@@ -5,7 +5,7 @@ var filewalker = require('filewalker');
 var labelData;
 
 var pathToDbRoot = '../app/testData/newAE/';
-var configName = 'ae.json';
+var configName = 'ae_DBconfig.json';
 
 var portNr = 8080;
 
@@ -125,6 +125,7 @@ wss.on('connection', function (ws) {
       console.log(mJSO.name);
 
       var bundle = {};
+      bundle.ssffFiles = [];
       filewalker(pathToDbRoot)
         .on('dir', function (p) {}).on('file', function (p) {
           var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
@@ -143,10 +144,10 @@ wss.on('connection', function (ws) {
             bundle.annotation.filePath = p;
           }
           // read ssffTracks
+          
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
             var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
             if (pattTrack.test(p)) {
-              bundle.ssffFiles = [];
               bundle.ssffFiles.push({
                 ssffTrackName: dbConfig.ssffTracks[i].name,
                 encoding: 'BASE64',
@@ -154,6 +155,7 @@ wss.on('connection', function (ws) {
               });
             }
           }
+          
 
         }).on('error', function (err) {
           ws.send(JSON.stringify({
@@ -164,12 +166,14 @@ wss.on('connection', function (ws) {
             }
           }), undefined, 0);
         }).on('done', function () {
+          console.log(bundle);
+
           bundle.mediaFile.data = fs.readFileSync(pathToDbRoot + bundle.mediaFile.filePath, 'base64');
           delete bundle.mediaFile.filePath;
 
           bundle.annotation = JSON.parse(fs.readFileSync(pathToDbRoot + bundle.annotation.filePath, 'utf8'));
           // delete bundle.annotation.filePath;
-
+          console.log(bundle.ssffFiles)
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
             bundle.ssffFiles[i].data = fs.readFileSync(pathToDbRoot + bundle.ssffFiles[i].filePath, 'base64');
             delete bundle.ssffFiles[i].filePath;
