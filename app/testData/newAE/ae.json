@@ -4,26 +4,26 @@
 	"levelDefinitions": [{
 		"name": "Phonetic",
 		"type": "ELEMENT",
-		"attributeDefinitions": [{
+		"labelDefinitions": [{
 			"name": "Phonetic",
 			"legalValues": []
 		}]
 	}, {
 		"name": "Tone",
 		"type": "EVENT",
-		"attributeDefinitions": [{
+		"labelDefinitions": [{
 			"name": "Tone",
 			"legalValues": []
 		}]
 	}, {
 		"name": "Syllable",
 		"type": "ELEMENT",
-		"attributeDefinitions": [{
+		"labelDefinitions": [{
 			"name": "Syllable",
 			"legalValues": []
 		}]
 	}],
-	"linkDefinition": [{
+	"linkDefinitions": [{
 		"superlevelName": "Syllable",
 		"sublevelName": "Tone",
 		"type": "ONE_TO_MANY"

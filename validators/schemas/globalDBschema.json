@@ -52,7 +52,7 @@
 			"uniqueItems": true,
 			"required": true
 		},
-		"linkDefinition": {
+		"linkDefinitions": {
 			"type": "array",
 			"items": {
 				"type": "object",

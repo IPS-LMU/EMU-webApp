@@ -87,13 +87,13 @@
 
 \begin{tikzpicture}
 \treeroot{\textbf{dbRootFolder/}}
-\altentry{\textit{globalDBconfig.json$^{*2}$}}{1}
+\altentry{\textit{global\_DBconfig.json$^{*2}$}}{1}
 \altentry{\textbf{SES0001/$^{*3}$}}{1}
 \altentry{\textbf{SES0002/}}{1}
 \altentry{\textbf{bundle1/$^{*4}$}}{2}
 \altentry{\textbf{bundle2/}}{2}
 \altentry{\textit{bundle2.wav}}{3}
-\altentry{\textit{bundle2.json$^{*5}$}}{3}
+\altentry{\textit{bundle2\_annot.json$^{*5}$}}{3}
 \altentry{\textit{bundle2.fms}}{3}
 \altentry{\textit{bundle2.f0}}{3}
 \altentry{\dots}{3}
@@ -105,10 +105,10 @@
 
 
 \begin{itemize}
-  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old emu). Specifies things like structure of hierarchy and possible perspectives to look at the DB (relevant for layout of labeler).
+  \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old EMU). Specifies things like structure of hierarchy and possible perspectives to look at the DB (relevant for layout of labeler). \textit{\_DBconfig.json} is a fix suffix and the prefix should be the same as the database name field in the file itself.
   \item $^{*3}$: Prefix of session folders must be \textbf{SES}. Following this prefix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called SES0000.
   \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored.
-  \item $^{*5}$: annotation file containing label and level information as well as hierarchical information (see listing 1)
+  \item $^{*5}$: annotation file containing label and level information as well as hierarchical information (see listing 1). \textit{\_annot.json} is a fix suffix and the prefix should be the same as the bundle name.
 \end{itemize}
 
 
