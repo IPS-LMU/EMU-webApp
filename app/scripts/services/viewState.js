@@ -686,10 +686,11 @@ angular.module('emulvcApp')
         var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (clientWidth / 50);
       }
 
-      var top = elem.canvas.offsetTop + 1;
-      var height = elem.canvas.clientHeight + 1;
-      sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.label, lastEventClick.id);
-      sServObj.createSelection(element[0], 0, element.val().length);
+      var top = elem.canvas.offsetTop;
+      var height = elem.canvas.clientHeight;
+      console.log(lastEventClick);
+      sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
+      sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
     };
 
     sServObj.createSelection = function (field, start, end) {
@@ -710,7 +711,6 @@ angular.module('emulvcApp')
 
     sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
       var textid = '_' + labelid;
-      console.log(element);
       element.prepend($('<textarea>').attr({
         id: textid,
         'class': textid + ' Label_Edit',
@@ -720,11 +720,11 @@ angular.module('emulvcApp')
         'position': 'absolute',
         'z-index': '9999',
         'left': x + 2 + 'px',
-        'width': Math.round(width - 1) + 'px',
-        'height': Math.round(height - 1) + 'px',
+        'top': y + 1 + 'px',
+        'width': Math.round(width) + 'px',
+        'height': Math.round(height) + 'px',
         'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
-      console.log(element);
     };
 
 

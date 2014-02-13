@@ -134,9 +134,9 @@ angular.module('emulvcApp')
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === levelName) {
-					angular.forEach(t.items, function (evt, i) {
-						if (id == i) {
-							evt.label = newLabelName;
+					angular.forEach(t.items, function (evt) {
+						if (evt.id==id) {
+							evt.labels[0].value = newLabelName;
 						}
 					});
 				}
