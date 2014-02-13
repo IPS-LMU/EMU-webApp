@@ -497,21 +497,6 @@ angular.module('emulvcApp')
     };
 
     /**
-     * sets the current (mousemove) Segment
-     * @param id is if of segment
-     */
-    sServObj.setcurMouseSegmentId = function (id) {
-      this.curMouseSegmentId = id;
-    };
-
-    /**
-     * gets the current (mousemove) Segment
-     */
-    sServObj.getcurMouseSegmentId = function () {
-      return this.curMouseSegmentId;
-    };
-
-    /**
      * selects all Segements on current level which are inside the selected viewport
      */
     sServObj.selectSegmentsInSelection = function () {

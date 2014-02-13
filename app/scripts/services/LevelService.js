@@ -67,19 +67,23 @@ angular.module('emulvcApp')
 
 		sServObj.getEvent = function (pcm, level, nearest, maximum) {
 			var evtr = null;
+			var id = 0;
 			if (level.type === "SEGMENT") {
 				angular.forEach(level.items, function (evt, id) {
 					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
 								evtr = level.items[id+1];
+								evtr.id = id+1;
 							} else {
 								evtr = level.items[id];
+								evtr.id = id;
 							}
 						}
 					} else {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							evtr = evt;
+							evtr.id = id;
 						}
 					}
 				});
@@ -99,53 +103,12 @@ angular.module('emulvcApp')
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						evtr = evt;
+						evtr.id = key;
 					}
 				});
 			}
 			return evtr;
 		};
-
-
-		sServObj.getEventId = function (pcm, level, nearest, maximum) {
-			var id = 0;
-			var ret = 0;
-			if (level.type === "SEGMENT") {
-				angular.forEach(level.items, function (evt, id) {
-					if (nearest) {
-						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
-								ret = id + 1;
-							} else {
-								ret = id;
-							}
-						}
-					} else {
-						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							ret = id;
-						}
-					}
-				});
-			} else {
-				var spaceLower = 0;
-				var spaceHigher = 0;
-				angular.forEach(level.items, function (evt, key) {
-					if (key < level.items.length - 1) {
-						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
-					} else {
-						spaceHigher = maximum;
-					}
-					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
-					}
-					if (pcm <= spaceHigher && pcm >= spaceLower) {
-						ret = id;
-					}
-					++id;
-				});
-			}
-			return ret;
-		};
-
 
 
 		sServObj.deleteLevel = function (levelName) {
@@ -509,7 +472,10 @@ angular.module('emulvcApp')
 
 		sServObj.moveSegment = function (changeTime, t, selected) {
 			if (null !== t) {
-			    console.log(selected);
+			    console.log(selected);			    
+			    
+			    
+			    
 				if ((t.items[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
 					t.items[selected[0] - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {

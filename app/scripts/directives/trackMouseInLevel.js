@@ -82,8 +82,7 @@ angular.module('emulvcApp')
                 moveLine = false;
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
-                //scope.levelDetails.moveSegment(moveBy, scope.this.level, viewState.getselected().sort());
-                console.log(viewState.getselected().sort());
+                scope.levelDetails.moveSegment(moveBy, scope.this.level, viewState.getcurClickSegments());
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.hists.updateCurChangeObj({
@@ -161,9 +160,9 @@ angular.module('emulvcApp')
         function setLastMove(x, doChange) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
+          lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, true, scope.vs.curViewPort.bufferLength);
           if (doChange && (lastEventMove != undefined)) {
-            viewState.setcurMouseSegment(lastEventMove);
-            viewState.setcurMouseSegmentId(lastEventMove.id);
+            viewState.setcurMouseSegment(lastEventClick);
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);

@@ -21,7 +21,7 @@ angular.module('emulvcApp')
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
-					scope.vs.setcurMouseSegmentId(undefined);
+					scope.vs.setcurMouseSegment(undefined);
 					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				});
 
@@ -71,7 +71,7 @@ angular.module('emulvcApp')
 					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
-					var segMId = viewState.getcurMouseSegmentId();
+					var segMId = viewState.getcurMouseSegment();
 					var segCId = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
 					var curID = -1;
@@ -188,7 +188,7 @@ angular.module('emulvcApp')
 									}
 								});
 
-								if (levelDetails.name === viewState.curMouseMoveLevelName && segMId === viewState.curMouseMoveSegmentName) {
+								//if (segMId !=== undefined && levelDetails.name === viewState.curMouseMoveLevelName && segMId.id === viewState.curMouseMoveSegmentName) {
 									//console.log('this is the selected boundary');
 									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
@@ -196,13 +196,13 @@ angular.module('emulvcApp')
 									// 		tW = ctx.measureText(levelDetails.items[k].label).width;
 									// 		ctx.fillStyle = this.params.labelColor;
 									// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
-								} else {
+								//} else {
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
 									horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
-								}
+								//}
 
 								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
@@ -240,7 +240,7 @@ angular.module('emulvcApp')
 					sDist = viewState.getSampleDist(canvas[1].width);
 
 
-					var segMId = viewState.getcurMouseSegmentId();
+					var segMId = viewState.getcurMouseSegment();
 					var segCId = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
 					if (segCId !== undefined) {
