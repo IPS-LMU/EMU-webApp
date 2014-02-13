@@ -472,13 +472,25 @@ angular.module('emulvcApp')
 
 		sServObj.moveSegment = function (changeTime, t, selected) {
 			if (null !== t) {
+			    var low = Number.MAX_VALUE;
+			    var high = -1;
+			
+			
 				if ((t.items[selected[0].id - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1].id + 1].sampleDur - changeTime) >= 1) {
-					t.items[selected[0].id - 1].sampleDur += changeTime;
+					
 					for (var i = 0; i < selected.length; i++) {
+					    if(selected[i].id>high) {
+					        high = selected[i].id;
+					    }
+					    if(selected[i].id<low) {
+					        low = selected[i].id;
+					    }
 						t.items[selected[i].id].sampleStart += changeTime;
 					}
-					t.items[selected[selected.length - 1].id + 1].sampleStart += changeTime;
-					t.items[selected[selected.length - 1].id + 1].sampleDur -= changeTime;
+					
+					t.items[low - 1].sampleDur += changeTime;
+					t.items[high + 1].sampleStart += changeTime;
+					t.items[high + 1].sampleDur -= changeTime;
 				}
 			}
 		};

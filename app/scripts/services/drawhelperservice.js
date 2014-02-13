@@ -11,8 +11,6 @@ angular.module('emulvcApp')
 		}
 
 		function getScaleWidth(ctx, str1, str2, scaleX) {
-		    console.log(str1);
-		    console.log(str2);
 			if (str1.toString().length > str2.toString().length) {
 				return getScale(ctx, str1, scaleX);
 			} else {
