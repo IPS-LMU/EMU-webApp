@@ -65,27 +65,25 @@ angular.module('emulvcApp')
 
 
 
-		sServObj.getEvent = function (pcm, level, nearest, maximum) {
+		sServObj.getEvent = function (pcm, level, maximum) {
 			var evtr = null;
+			var evtrNearest = null;
 			var id = 0;
 			if (level.type === "SEGMENT") {
 				angular.forEach(level.items, function (evt, id) {
-					if (nearest) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
-								evtr = level.items[id+1];
-								evtr.id = id+1;
+								evtrNearest = level.items[id+1];
+								evtrNearest.id = id+1;
 							} else {
-								evtr = level.items[id];
-								evtr.id = id;
+								evtrNearest = level.items[id];
+								evtrNearest.id = id;
 							}
 						}
-					} else {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							evtr = evt;
 							evtr.id = id;
 						}
-					}
 				});
 			} else {
 				var spaceLower = 0;
@@ -103,11 +101,13 @@ angular.module('emulvcApp')
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
 						evtr = evt;
-						evtr.id = key;
+						evtr.id = key;					
+						evtrNearest = evt;
+						evtrNearest.id = key;
 					}
 				});
 			}
-			return evtr;
+			return {evtr:evtr, nearest: evtrNearest};
 		};
 
 

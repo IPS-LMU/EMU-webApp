@@ -521,10 +521,9 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function (segment) {
-      this.select(segment.sampleStart, segment.sampleStart + segment.sampleDur);
-      this.curClickSegments = [];
-      this.curClickSegments.push(segment);
-      this.selectBoundry();
+      sServObj.curClickSegments = [];
+      sServObj.curClickSegments.push(segment);
+      sServObj.selectBoundry();
     };
 
     /**
@@ -532,10 +531,10 @@ angular.module('emulvcApp')
      * @param segment
      */
     sServObj.selectBoundry = function () {
-      if (this.curClickSegments.length > 0) {
-        var left = this.curClickSegments[0].sampleStart;
-        var right = this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur;
-        this.curClickSegments.forEach(function (entry) {
+      if (sServObj.curClickSegments.length > 0) {
+        var left = this.curClickSegments[0].sampleStart || this.curClickSegments[0].samplePoint ;
+        var right = this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur || this.curClickSegments[0].samplePoint;
+        sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
           }
@@ -543,7 +542,7 @@ angular.module('emulvcApp')
             right = entry.sampleStart + entry.sampleDur;
           }
         });
-        this.select(left, right);
+        sServObj.select(left, right);
       }
     };
 
@@ -568,7 +567,7 @@ angular.module('emulvcApp')
         this.curClickSegments = [];
         this.curClickSegments.push(segment);
       }
-      this.selectBoundry();
+      sServObj.selectBoundry();
     };
 
 
