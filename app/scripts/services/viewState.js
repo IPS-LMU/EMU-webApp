@@ -817,17 +817,17 @@ angular.module('emulvcApp')
     sServObj.zoomViewPort = function (zoomIn) {
       var newStartS, newEndS;
       // var levelName = this.getcurMouseLevelName();
-      var segMId = this.getcurMouseSegmentId();
+      var segMId = this.getcurMouseSegment();
 
       // get cur mouse move level details
       var curLevel = Levelservice.getcurMouseLevelDetails();
       var d = this.curViewPort.eS - this.curViewPort.sS;
       var index = this.curClickLevelIndex;
 
-      if (curLevel && segMId) {
+      if (curLevel && segMId.id) {
         console.log(curLevel);
         console.log(index);
-        var curMouseMoveSegmentStart = curLevel.items[index][segMId].sampleStart;
+        var curMouseMoveSegmentStart = curLevel.items[index][segMId.id].sampleStart;
         // console.log(curMouseMoveSegmentStart)
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;

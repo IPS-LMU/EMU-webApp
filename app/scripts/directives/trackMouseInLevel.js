@@ -65,21 +65,22 @@ angular.module('emulvcApp')
             if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
-                scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegment().id-1, scope.vs.curViewPort.bufferLength);
-                viewState.selectBoundry();
-                viewState.movingBoundary = true;
-                scope.hists.updateCurChangeObj({
-                  'type': 'ESPS',
-                  'action': 'moveBoundary',
-                  'levelName': scope.this.level.LevelName,
-                  'itemIdx': viewState.getcurMouseSegment().id,
-                  'max': scope.vs.curViewPort.bufferLength,
-                  'movedBy': moveBy
-                });
-
-                lastPCM = thisPCM;
-                scope.$apply();
-                moveLine = false;
+                if(viewState.getcurMouseSegment()!==undefined) {
+                  scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegment().id-1, scope.vs.curViewPort.bufferLength);
+                  viewState.selectBoundry();
+                  viewState.movingBoundary = true;
+                  scope.hists.updateCurChangeObj({
+                    'type': 'ESPS',
+                    'action': 'moveBoundary',
+                    'levelName': scope.this.level.LevelName,
+                    'itemIdx': viewState.getcurMouseSegment().id,
+                    'max': scope.vs.curViewPort.bufferLength,
+                    'movedBy': moveBy
+                  });
+                  lastPCM = thisPCM;
+                  scope.$apply();
+                  moveLine = false;
+                }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if(scope.this.level.type == "SEGMENT") {
