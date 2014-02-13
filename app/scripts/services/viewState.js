@@ -43,7 +43,6 @@ angular.module('emulvcApp')
 
 
 
-    sServObj.selected = [];
     sServObj.curClickSegments = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
@@ -241,11 +240,10 @@ angular.module('emulvcApp')
             var pcm = segs[0].sampleStart + (segs[0].sampleDur / 2);
             var ld = Levelservice.getLevelDetails(name);
             var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
-            var lastEventClickId = Levelservice.getEventId(pcm, ld.level, false);
             console.log(lastEventClick);
             sServObj.setlasteditArea('_' + lastEventClickId);
             sServObj.setcurClickLevelType(ld.level.type);
-            sServObj.setcurClickSegment(lastEventClick, lastEventClickId);
+            sServObj.setcurClickSegment(lastEventClick);
             sServObj.setLevelLength(ld.level.items.length);
           }
         }
@@ -524,7 +522,7 @@ angular.module('emulvcApp')
         if (t.LevelName === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
-              sServObj.setcurClickSegmentMultiple(evt, i);
+              sServObj.setcurClickSegmentMultiple(evt);
             }
             ++i;
           });
@@ -537,14 +535,11 @@ angular.module('emulvcApp')
      * sets the current (click) Segment
      * @param segment
      */
-    sServObj.setcurClickSegment = function (segment, id) {
-      if (segment !== null) {
-        this.select(segment.sampleStart, segment.sampleStart + segment.sampleDur);
-        this.curClickSegments = [];
-        this.curClickSegments.push(segment);
-        this.selected = [];
-        this.selected.push(id);
-      }
+    sServObj.setcurClickSegment = function (segment) {
+      this.select(segment.sampleStart, segment.sampleStart + segment.sampleDur);
+      this.curClickSegments = [];
+      this.curClickSegments.push(segment);
+      this.selectBoundry();
     };
 
     /**
@@ -571,17 +566,15 @@ angular.module('emulvcApp')
      * sets a multiple select (click) Segment
      * @param segment
      */
-    sServObj.setcurClickSegmentMultiple = function (segment, id) {
+    sServObj.setcurClickSegmentMultiple = function (segment) {
       var empty = true;
       var my = this;
-      this.selected.forEach(function (entry) {
-        if (my.selected.indexOf(id) === -1 && (entry - 1 === id)) {
-          my.selected.push(id);
-          my.curClickSegments.push(segment);
-          empty = false;
-        }
-        if (my.selected.indexOf(id) === -1 && (entry + 1 === id)) {
-          my.selected.push(id);
+      var start = segment.sampleStart;
+      var end = start + segment.sampleDur;
+      this.curClickSegments.forEach(function (entry) {
+        var front = (entry.sampleStart == end) ? true: false;
+        var back = ((entry.sampleStart + entry.sampleDur) == start) ? true: false;  
+        if (front || back) {
           my.curClickSegments.push(segment);
           empty = false;
         }
@@ -589,17 +582,8 @@ angular.module('emulvcApp')
       if (empty) {
         this.curClickSegments = [];
         this.curClickSegments.push(segment);
-        this.selected = [];
-        this.selected.push(id);
       }
       this.selectBoundry();
-    };
-
-    /**
-     * gets the current (click) Segment
-     */
-    sServObj.getselected = function () {
-      return this.selected;
     };
 
 
@@ -661,7 +645,7 @@ angular.module('emulvcApp')
 
 
     sServObj.countSelected = function () {
-      return this.selected.length;
+      return this.curClickSegments.length;
     };
 
     sServObj.setLevelLength = function (length) {

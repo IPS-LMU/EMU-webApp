@@ -61,7 +61,7 @@ angular.module('emulvcApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDBconfigFile();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
-				getProm = $http.get('testData/newAE/ae.json');
+				getProm = $http.get('testData/newAE/ae_DBconfig.json');
 			}
 
 			return getProm;

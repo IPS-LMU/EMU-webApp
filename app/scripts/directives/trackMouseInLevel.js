@@ -82,7 +82,8 @@ angular.module('emulvcApp')
                 moveLine = false;
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
-                scope.levelDetails.moveSegment(moveBy, scope.this.level, viewState.getselected().sort());
+                //scope.levelDetails.moveSegment(moveBy, scope.this.level, viewState.getselected().sort());
+                console.log(viewState.getselected().sort());
                 lastPCM = thisPCM;
                 viewState.selectBoundry();
                 scope.hists.updateCurChangeObj({
@@ -120,15 +121,13 @@ angular.module('emulvcApp')
 
         function setLastClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          console.log(thisPCM);
           viewState.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
-          lastEventRightClick = lastEventClick;
           viewState.setlasteditArea('_' + lastEventClick.id);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-          viewState.setcurClickSegment(lastEventClick, lastEventClick.id);
+          viewState.setcurClickSegment(lastEventClick);
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -141,7 +140,7 @@ angular.module('emulvcApp')
           viewState.deleteEditArea();
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-          viewState.setcurClickSegmentMultiple(lastEventClick, lastEventClick.id);
+          viewState.setcurClickSegmentMultiple(lastEventClick);
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -161,7 +160,7 @@ angular.module('emulvcApp')
 
         function setLastMove(x, doChange) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, true, scope.vs.curViewPort.bufferLength);
+          lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, false, scope.vs.curViewPort.bufferLength);
           if (doChange && (lastEventMove != undefined)) {
             viewState.setcurMouseSegment(lastEventMove);
             viewState.setcurMouseSegmentId(lastEventMove.id);
