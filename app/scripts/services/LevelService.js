@@ -449,10 +449,10 @@ angular.module('emulvcApp')
 		sServObj.moveBoundry = function (changeTime, t, seg, maximum) {
 			if (null !== t) { // && t.name === viewState.getcurMouseLevelName()
 				if (t.type === 'SEGMENT') {
-					if (seg > 0 && (t.items[seg-1].sampleDur + changeTime) >= 1 && (t.items[seg].sampleDur - changeTime) >= 1) {
-						t.items[seg-1].sampleDur += changeTime;
-						t.items[seg].sampleStart += changeTime;
-						t.items[seg].sampleDur -= changeTime;
+					if (seg > 0 && (t.items[seg].sampleDur + changeTime) >= 1 && (t.items[seg+1].sampleDur - changeTime) >= 1) {
+						t.items[seg].sampleDur += changeTime;
+						t.items[seg+1].sampleStart += changeTime;
+						t.items[seg+1].sampleDur -= changeTime;
 					}
 				} else {
 				    var item = sServObj.getElementDetails(t.name,seg+1);
@@ -472,17 +472,13 @@ angular.module('emulvcApp')
 
 		sServObj.moveSegment = function (changeTime, t, selected) {
 			if (null !== t) {
-			    console.log(selected);			    
-			    
-			    
-			    
-				if ((t.items[selected[0] - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1] + 1].sampleDur - changeTime) >= 1) {
-					t.items[selected[0] - 1].sampleDur += changeTime;
+				if ((t.items[selected[0].id - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1].id + 1].sampleDur - changeTime) >= 1) {
+					t.items[selected[0].id - 1].sampleDur += changeTime;
 					for (var i = 0; i < selected.length; i++) {
-						t.items[selected[i]].sampleStart += changeTime;
+						t.items[selected[i].id].sampleStart += changeTime;
 					}
-					t.items[selected[selected.length - 1] + 1].sampleStart += changeTime;
-					t.items[selected[selected.length - 1] + 1].sampleDur -= changeTime;
+					t.items[selected[selected.length - 1].id + 1].sampleStart += changeTime;
+					t.items[selected[selected.length - 1].id + 1].sampleDur -= changeTime;
 				}
 			}
 		};

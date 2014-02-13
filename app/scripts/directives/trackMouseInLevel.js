@@ -72,7 +72,7 @@ angular.module('emulvcApp')
                   'type': 'ESPS',
                   'action': 'moveBoundary',
                   'levelName': scope.this.level.LevelName,
-                  'itemIdx': viewState.getcurMouseSegmentId(),
+                  'itemIdx': viewState.getcurMouseSegment().id,
                   'max': scope.vs.curViewPort.bufferLength,
                   'movedBy': moveBy
                 });
@@ -89,7 +89,7 @@ angular.module('emulvcApp')
                   'type': 'ESPS',
                   'action': 'moveSegment',
                   'levelName': scope.this.level.LevelName,
-                  'itemIdx': viewState.getselected().sort(),
+                  'itemIdx': viewState.getcurClickSegments(),
                   'movedBy': moveBy
                 });
 
