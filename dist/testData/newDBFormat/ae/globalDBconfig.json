@@ -1,0 +1,198 @@
+{
+	"name" : "ae",
+	"UUID" : "cd45b08a-3a13-4e42-b566-585844efabd4",
+	"mediafileExtension" : "wav",
+	"ssffTracks" : [
+		{
+			"name" : "dft",
+			"columnName" : "dft",
+			"fileExtension" : "dft"
+		},
+		{
+			"name" : "fm",
+			"columnName" : "fm",
+			"fileExtension" : "fms"
+		}
+	],
+	"levelDefinitions" : [
+		{
+			"name" : "Utterance",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Utterance",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Intonational",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Intonational",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Intermediate",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Intermediate",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Word",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Word",
+					"type" : "string"
+				},
+				{
+					"name" : "Accent",
+					"type" : "string"
+				},
+				{
+					"name" : "Text",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Syllable",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Syllable",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Phoneme",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Phoneme",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Phonetic",
+			"type" : "SEGMENT",
+			"attributeDefinitions" : [
+				{
+					"name" : "Phonetic",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Tone",
+			"type" : "EVENT",
+			"attributeDefinitions" : [
+				{
+					"name" : "Tone",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Foot",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Foot",
+					"type" : "string"
+				}
+			]
+		},
+		{
+			"name" : "Syllable",
+			"type" : "ITEM",
+			"attributeDefinitions" : [
+				{
+					"name" : "Syllable",
+					"type" : "string"
+				}
+			]
+		}
+	],
+	"linkDefinitions" : [
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Utterance",
+			"sublevelName" : "Intonational"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Intonational",
+			"sublevelName" : "Intermediate"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Intermediate",
+			"sublevelName" : "Word"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Word",
+			"sublevelName" : "Syllable"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Syllable",
+			"sublevelName" : "Phoneme"
+		},
+		{
+			"type" : "MANY_TO_MANY",
+			"superlevelName" : "Phoneme",
+			"sublevelName" : "Phonetic"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Syllable",
+			"sublevelName" : "Tone"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Intonational",
+			"sublevelName" : "Foot"
+		},
+		{
+			"type" : "ONE_TO_MANY",
+			"superlevelName" : "Foot",
+			"sublevelName" : "Syllable"
+		}
+	],
+	"EMUwebAppConfig" : {
+		"perspectives" : [
+			{
+				"name" : "default",
+				"signalCanvases" : {
+					"order" : [
+						"OSCI",
+						"SPEC"
+					],
+					"assign" : [
+						{
+							"SPEC" : "dft"
+						}
+					]
+				},
+				"levelCanvases" : {
+					"order" : [
+						"Phonetic",
+						"Tone"
+					]
+				}
+			}
+		]
+	}
+}
