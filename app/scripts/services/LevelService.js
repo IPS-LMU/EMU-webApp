@@ -495,15 +495,28 @@ angular.module('emulvcApp')
 		};
 
 
-		sServObj.moveSegment = function (changeTime, level, selected, lastNeighbours) {
+		sServObj.moveSegment = function (changeTime, levelName, selected, lastNeighbours) {
 			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) { 
-			    angular.forEach(selected, function (item) {
-				    item.sampleStart += changeTime;
-        		});
-	        	lastNeighbours.left.sampleDur += changeTime;
-		        lastNeighbours.right.sampleStart += changeTime;
-			    lastNeighbours.right.sampleDur -= changeTime;
-    			console.log("hier");
+			    
+			    angular.forEach(sServObj.data.levels, function (level) {
+			        if (level.name === levelName) {
+			            angular.forEach(level.items, function (item) {
+			                if(item.id == lastNeighbours.left.id) {
+			                    item.sampleDur += changeTime;
+			                }
+			                if(item.id == lastNeighbours.right.id) {
+			                    item.sampleStart += changeTime;
+			                    item.sampleDur -= changeTime;
+			                }
+			                
+			                angular.forEach(selected, function (s) {
+			                    if(item.id==s.id) {
+			                        item.sampleStart += changeTime;
+			                    }
+			                });		                
+			            });
+			        }
+			    });
 			}
 		};
 

@@ -88,9 +88,9 @@ angular.module('emulvcApp')
 						break;
 					case 'moveSegment':
 						if (applyOldVal) {
-							Levelservice.moveSegment(cur.movedBy, cur.name, cur.itemIdx, cur.neighbours);
-						} else {
 							Levelservice.moveSegment(-cur.movedBy, cur.name, cur.itemIdx, cur.neighbours);
+						} else {
+							Levelservice.moveSegment(cur.movedBy, cur.name, cur.itemIdx, cur.neighbours);
 						}
 						break;
 					case 'renameLabel':
