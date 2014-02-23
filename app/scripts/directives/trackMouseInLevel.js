@@ -72,8 +72,8 @@ angular.module('emulvcApp')
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveBoundary',
-                    'levelName': scope.this.level.LevelName,
-                    'itemIdx': viewState.getcurMouseSegment().id,
+                    'name': scope.this.level.name,
+                    'itemIdx': viewState.getcurMouseSegment().id-1,
                     'max': scope.vs.curViewPort.bufferLength,
                     'movedBy': moveBy
                   });
@@ -90,7 +90,7 @@ angular.module('emulvcApp')
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
-                    'levelName': scope.this.level.LevelName,
+                    'name': scope.this.level.name,
                     'itemIdx': viewState.getcurClickSegments(),
                     'movedBy': moveBy
                   });

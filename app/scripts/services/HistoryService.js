@@ -70,43 +70,43 @@ angular.module('emulvcApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.name);
+							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
 						} else {
-							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx);
+							var res = Levelservice.getLevelDetails(cur.name);
+							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
-							var res = Levelservice.getLevelDetails(cur.levelName);
+							var res = Levelservice.getLevelDetails(cur.name);
 							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
 						} else {
-							var res = Levelservice.getLevelDetails(cur.levelName);
+							var res = Levelservice.getLevelDetails(cur.name);
 							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
 						}
 						break;
 					case 'moveSegment':
 						if (applyOldVal) {
-							var res = Levelservice.getLevelDetails(cur.levelName);
+							var res = Levelservice.getLevelDetails(cur.name);
 							Levelservice.moveSegment(-cur.movedBy, res.level, cur.itemIdx);
 						} else {
-							var res = Levelservice.getLevelDetails(cur.levelName);
+							var res = Levelservice.getLevelDetails(cur.name);
 							Levelservice.moveSegment(cur.movedBy, res.level, cur.itemIdx);
 						}
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.oldValue);
+							Levelservice.renameLabel(cur.name, cur.itemIdx, cur.oldValue);
 						} else {
-							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.newValue);
+							Levelservice.renameLabel(cur.name, cur.itemIdx, cur.newValue);
 						}
 						break;
 					case 'renameLevel':
 						if (applyOldVal) {
-							Levelservice.renameLevel(cur.levelName, cur.oldName);
+							Levelservice.renameLevel(cur.name, cur.oldName);
 						} else {
-							Levelservice.renameLevel(cur.oldName, cur.levelName);
+							Levelservice.renameLevel(cur.oldName, cur.name);
 						}
 						break;
 					case 'deleteLevel':

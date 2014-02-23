@@ -18,7 +18,7 @@ angular.module('emulvcApp')
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
-                    'levelName': viewState.getcurClickLevelName(),
+                    'name': viewState.getcurClickLevelName(),
                     'itemIdx': viewState.getlastID(),
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
