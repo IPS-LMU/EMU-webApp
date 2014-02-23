@@ -96,7 +96,6 @@ angular.module('emulvcApp')
      */
 
     sServObj.getPermission = function (actionName) {
-
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
     };
 
@@ -820,7 +819,7 @@ angular.module('emulvcApp')
       var segMId = this.getcurMouseSegment();
 
       // get cur mouse move level details
-      var curLevel = Levelservice.getcurMouseLevelDetails();
+      var curLevel = Levelservice.getLevelDetails().level;
       var d = this.curViewPort.eS - this.curViewPort.sS;
       var index = this.curClickLevelIndex;
 

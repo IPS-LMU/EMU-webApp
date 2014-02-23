@@ -314,7 +314,6 @@ angular.module('emulvcApp')
 							bundleData = bundleData.data;
 						}
 						console.log(bundleData);
-						//update progress bar
 						ngProgressLite.done();
 
 						var arrBuff;
@@ -337,7 +336,7 @@ angular.module('emulvcApp')
 						Ssffdataservice.data.push(ssffJso);
 
 						// set annotation
-						Levelservice.data = bundleData.annotation;
+						Levelservice.setData(bundleData.annotation);
 						$scope.curUtt = utt;
 						viewState.setState('labeling');
 					});

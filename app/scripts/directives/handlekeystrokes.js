@@ -468,7 +468,7 @@ angular.module('emulvcApp')
                     var seg = viewState.getcurClickSegments();
                     if (seg !== undefined) {
                       var selected = viewState.getcurClickSegments();
-                      var ids = viewState.getselected();
+                      var ids = viewState.getcurClickSegments();
                       if (viewState.getcurClickLevelType() === 'seg') {
                         var click = Levelservice.deleteSegments(selected, ids, viewState.getcurClickLevelName());
                         viewState.setcurClickSegment(click.segment, click.id);

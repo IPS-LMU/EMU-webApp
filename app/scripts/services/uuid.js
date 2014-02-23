@@ -10,13 +10,14 @@ angular.module('emulvcApp')
       return s ? '-' + p.substr(0, 4) + '-' + p.substr(4, 4) : p;
     }
 
-    ///////////////////////////////////////////
-    // public api
-
     //
     sServObj.new = function () {
       return rand() + rand(true) + rand(true) + rand();
     };
+    
+    sServObj.newHash = function () {
+      return rand() + rand(true) + rand(true) + rand();
+    };    
 
     //
     sServObj.empty = function () {

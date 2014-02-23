@@ -42,8 +42,8 @@
 <!-- levels that have time infos (SEGMENTS+EVENTS) -->
 <div ng-controller="HandleLevelsCtrl" id="HandleLevelsCtrl" class="HandleLevelsCtrl">
   <ul ng-model="levelDetails.levels" id="allowSortable">
-    <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.LevelName}} Level sort" id="{{$index}}">
-      <level id='{{level.LevelName}}' class="level"></level>
+    <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.type}} Level sort" id="{{$index}}">
+      <level id='{{level.name}}' class="level"></level>
     </li>
   </ul>
 </div>

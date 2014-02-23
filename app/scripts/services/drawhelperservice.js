@@ -270,7 +270,7 @@ angular.module('emulvcApp')
 
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
-				var tD = Levelservice.getcurMouseLevelDetails(viewState.getcurMouseLevelName());
+				var tD = Levelservice.getLevelDetails(viewState.getcurMouseLevelName()).level;
 				var curM = viewState.getcurMouseSegment();
 				var item = Levelservice.getElementDetails(viewState.getcurMouseLevelName(),curM.id);
 				if(tD.type=="SEGMENT") {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emulvcApp')
-	.service('Levelservice', function Levelservice($rootScope) {
+	.service('Levelservice', function Levelservice($rootScope, uuid) {
 		// shared service object
 		var sServObj = {};
 
@@ -11,38 +11,46 @@ angular.module('emulvcApp')
 			return sServObj.data;
 		};
 
-		sServObj.setData = function (data) {
-			angular.copy(data, sServObj.data);
-		};
-
 		/**
-		 * gets the current (mousemove) Level Name
+		 * sets annotation data and generates unique uuid if id in element is not set
 		 */
-		sServObj.getcurMouseLevelDetails = function (levelName) {
-			var curLevel = null;
-			sServObj.data.levels.forEach(function (t) {
-				if (t.name === levelName) {
-					curLevel = t;
+		sServObj.setData = function (data) {
+		    console.log(data);
+			data.levels.forEach(function (level, lid) {
+				if (level.type === 'SEGMENT') {
+				    level.items.forEach(function (item, iid) {
+				        if(item.id===undefined) {
+				            item.id = uuid.new();
+				        }
+				    });
 				}
-			});
-			return curLevel;
+				if (level.type === 'EVENT') {
+				    level.items.forEach(function (item, iid) {
+				        if(item.id===undefined) {
+				            item.id = uuid.new();
+				        }				    
+				    });
+				}
+			});		    
+			angular.copy(data, sServObj.data);
+			
 		};
 
 		/**
-		 * get's level details by passing in level Name
+		 * returns level details (level object and sorting id) by passing in level Name
 		 */
 		sServObj.getLevelDetails = function (levelName) {
 			var curLevel = null;
-			var y = null;
-			sServObj.data.levels.forEach(function (t, x) {
+			var id = null;
+			sServObj.data.levels.forEach(function (t, num) {
 				if (t.name === levelName) {
 					curLevel = t;
-					y = x;
+					id = num;
 				}
 			});
 			return {
 				level: curLevel,
-				id: y
+				id: id
 			};
 		};
 
@@ -53,7 +61,7 @@ angular.module('emulvcApp')
 			var details = null;
 			sServObj.data.levels.forEach(function (t) {
 				if (t.name === levelName) {
-					t.items.forEach(function (element) {
+					t.items.forEach(function (element, num) {
 						if (element.id == elementid) {
 							details = element;
 						}
@@ -62,27 +70,46 @@ angular.module('emulvcApp')
 			});
 			return details;
 		};
+		
+		/**
+		 * get's element details by passing in levelName and elemtentid
+		 */
+		sServObj.getElementNeighbourDetails = function (levelName, firstid, lastid) {
+			var left = null;
+			var right = null;
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === levelName) {
+					level.items.forEach(function (element, num) {
+						if (element.id == firstid) {
+							left = level.items[num-1];
+						}
+						if (element.id == lastid) {
+							right = level.items[num+1];
+						}						
+					});
+				}
+			});
+			return {left: left, right: right};
+		};		
 
 
-
+		/**
+		 * get's element details by passing in level, pcm position and maximum pcm
+		 */
 		sServObj.getEvent = function (pcm, level, maximum) {
 			var evtr = null;
 			var evtrNearest = null;
-			var id = 0;
 			if (level.type === "SEGMENT") {
 				angular.forEach(level.items, function (evt, id) {
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
 								evtrNearest = level.items[id+1];
-								evtrNearest.id = id+1;
 							} else {
 								evtrNearest = level.items[id];
-								evtrNearest.id = id;
 							}
 						}
 						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
 							evtr = evt;
-							evtr.id = id;
 						}
 				});
 			} else {
@@ -100,17 +127,17 @@ angular.module('emulvcApp')
 					    spaceLower = 0;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
-						evtr = evt;
-						evtr.id = key;					
+						evtr = evt;				
 						evtrNearest = evt;
-						evtrNearest.id = key;
 					}
 				});
 			}
 			return {evtr:evtr, nearest: evtrNearest};
 		};
 
-
+		/**
+		 * deletes a level by its name
+		 */
 		sServObj.deleteLevel = function (levelName) {
 			var y = 0;
 			var curLevel;
@@ -157,11 +184,11 @@ angular.module('emulvcApp')
 		/**
 		 * traverse through lavels an return next/prev event and id
 		 */
-		sServObj.tabNext = function (invers, now, tN) {
+		sServObj.tabNext = function (invers, now, levelName) {
 			var ret = new Object();
 			angular.forEach(sServObj.data.levels, function (t) {
 				var i = 0;
-				if (t.name === tN) {
+				if (t.name === levelName) {
 					angular.forEach(t.items, function (evt) {
 						if (i === now) {
 							ret.event = evt;
@@ -209,10 +236,8 @@ angular.module('emulvcApp')
 			};
 		};
 
-		sServObj.deleteSegments = function (segments, ids, levelName) {
+		sServObj.deleteSegments = function (segments, levelName) {
 			var segm, segid;
-			var start = ids[0] - 1;
-			var end = ids[ids.length - 1] + 1;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === levelName) {
 					if (t.type === "SEGMENT") {
@@ -470,28 +495,15 @@ angular.module('emulvcApp')
 		};
 
 
-		sServObj.moveSegment = function (changeTime, t, selected) {
-			if (null !== t) {
-			    var low = Number.MAX_VALUE;
-			    var high = -1;
-			
-			
-				if ((t.items[selected[0].id - 1].sampleDur + changeTime) >= 1 && (t.items[selected[selected.length - 1].id + 1].sampleDur - changeTime) >= 1) {
-					
-					for (var i = 0; i < selected.length; i++) {
-					    if(selected[i].id>high) {
-					        high = selected[i].id;
-					    }
-					    if(selected[i].id<low) {
-					        low = selected[i].id;
-					    }
-						t.items[selected[i].id].sampleStart += changeTime;
-					}
-					
-					t.items[low - 1].sampleDur += changeTime;
-					t.items[high + 1].sampleStart += changeTime;
-					t.items[high + 1].sampleDur -= changeTime;
-				}
+		sServObj.moveSegment = function (changeTime, level, selected, lastNeighbours) {
+			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) { 
+			    angular.forEach(selected, function (item) {
+				    item.sampleStart += changeTime;
+        		});
+	        	lastNeighbours.left.sampleDur += changeTime;
+		        lastNeighbours.right.sampleStart += changeTime;
+			    lastNeighbours.right.sampleDur -= changeTime;
+    			console.log("hier");
 			}
 		};
 

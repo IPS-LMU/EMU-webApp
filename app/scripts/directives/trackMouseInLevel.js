@@ -12,6 +12,7 @@ angular.module('emulvcApp')
         var lastEventRightClickId;
         var lastEventMove;
         var lastEventMoveId;
+        var lastNeighbours;
         var lastPCM;
         var thisPCM;
         var levelID = scope.level.name;
@@ -84,16 +85,17 @@ angular.module('emulvcApp')
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if(scope.this.level.type == "SEGMENT") {
-                  scope.levelDetails.moveSegment(moveBy, scope.this.level, viewState.getcurClickSegments());
+                  scope.levelDetails.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), lastNeighbours);
                   lastPCM = thisPCM;
-                  viewState.selectBoundry();
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'name': scope.this.level.name,
                     'itemIdx': viewState.getcurClickSegments(),
+                    'neighbours': lastNeighbours,
                     'movedBy': moveBy
                   });
+                  viewState.selectBoundry();                  
                   scope.$apply();
                 }
               } else {
@@ -126,9 +128,11 @@ angular.module('emulvcApp')
           viewState.setEditing(false);
           viewState.focusInTextField = false;
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
+          lastNeighbours = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventClick.evtr.id, lastEventClick.evtr.id);
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick.evtr);
+          
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -142,6 +146,8 @@ angular.module('emulvcApp')
           lastEventClick = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
+          var clicks = viewState.getcurClickSegments();
+          lastNeighbours = Levelservice.getElementNeighbourDetails(scope.this.level.name, clicks[0].id, clicks[clicks.length-1].id);          
           lastPCM = thisPCM;
           scope.$apply();
         }
