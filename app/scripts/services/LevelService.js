@@ -471,28 +471,29 @@ angular.module('emulvcApp')
 			}
 		};
 
-		sServObj.moveBoundry = function (changeTime, levelType, seg, lastNeighbours) {
-			if (levelType==='SEGMENT') { // && t.name === viewState.getcurMouseLevelName()
-				if ((seg.sampleDur - changeTime) >= 0 && (lastNeighbours.left.sampleDur + changeTime) >= 0 ) {
-    				seg.sampleStart += changeTime;
-	    			seg.sampleDur -= changeTime;
-	    			lastNeighbours.left.sampleDur += changeTime;
-				}
-			} else {
-			    if (seg.samplePoint >= 0 ) {
-    				seg.samplePoint += changeTime;
-				}			
-				 /*   var item = sServObj.getElementDetails(t.name,seg+1);
-				    var itemnext = sServObj.getElementDetails(t.name,seg+2);
-				    var itemprev = sServObj.getElementDetails(t.name,seg);
-					if (item !== undefined && itemnext !== undefined && itemprev !== undefined) {
-							item.samplePoint += changeTime;
-					} else if (item !== undefined && itemnext !== undefined) {
-							item.samplePoint += changeTime;
-					} else if (item !== undefined && itemprev !== undefined) {
-							item.samplePoint += changeTime;
-					}*/
-			}
+		sServObj.moveBoundry = function (changeTime, levelName, seg) {
+		    var last = 0;
+		    angular.forEach(sServObj.data.levels, function (level) {
+			    if (level.name === levelName && level.type === 'SEGMENT') {
+			        angular.forEach(level.items, function (item) {
+			          if(item.sampleStart + changeTime > last.sampleStart && item.sampleDur - changeTime > 0) {
+			            if(item.id === seg.id) {
+			                last.sampleDur += changeTime;
+			                item.sampleStart += changeTime;
+			                item.sampleDur -= changeTime;
+			            }
+			          }  
+			          last = item;
+			        });
+			    }
+			    else if (level.name === levelName) {
+			        angular.forEach(level.items, function (item) {
+			          if(item.id == seg.id && item.samplePoint > 0) {
+			            item.samplePoint += changeTime;
+			          }  
+			        });
+			    }
+			});		
 		};
 
 
