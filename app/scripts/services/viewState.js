@@ -502,13 +502,11 @@ angular.module('emulvcApp')
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
       angular.forEach(Levelservice.data.levels, function (t) {
-        var i = 0;
-        if (t.LevelName === sServObj.getcurClickLevelName()) {
+        if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
               sServObj.setcurClickSegmentMultiple(evt);
             }
-            ++i;
           });
         }
       });
@@ -596,6 +594,10 @@ angular.module('emulvcApp')
      * gets the current (click) Segment
      */
     sServObj.getcurClickSegments = function () {
+      return this.curClickSegments;
+    };
+    
+    sServObj.getselected = function () {
       return this.curClickSegments;
     };
 
