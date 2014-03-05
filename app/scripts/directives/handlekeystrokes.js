@@ -227,14 +227,13 @@ angular.module('emulvcApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'levelName': viewState.getcurClickLevelName(),
-                        'itemIdx': viewState.getselected().sort(),
+                        'name': viewState.getcurClickLevelName(),
+                        'itemIdx': viewState.getcurClickSegments(),
                         'bufferLength': viewState.curViewPort.bufferLength,
-                        'expand': true,
                         'rightSide': true,
                         'changeTime': changeTime
                       });
-                      Levelservice.expandSegment(true, true, viewState.getselected().sort(), viewState.getcurClickLevelName(), changeTime);
+                      Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                     }
                   }
                 }
@@ -259,13 +258,12 @@ angular.module('emulvcApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'levelName': viewState.getcurClickLevelName(),
-                        'itemIdx': viewState.getselected().sort(),
-                        'expand': true,
+                        'name': viewState.getcurClickLevelName(),
+                        'itemIdx': viewState.getcurClickSegments(),
                         'rightSide': false,
                         'changeTime': changeTime
                       });
-                      Levelservice.expandSegment(true, false, viewState.getselected().sort(), viewState.getcurClickLevelName(), changeTime);
+                      Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                     }
                   }
                 }
@@ -291,24 +289,22 @@ angular.module('emulvcApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'levelName': viewState.getcurClickLevelName(),
-                          'itemIdx': viewState.getselected().sort(),
-                          'expand': false,
+                          'name': viewState.getcurClickLevelName(),
+                          'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': false,
-                          'changeTime': changeTime
+                          'changeTime': 0 - changeTime
                         });
-                        Levelservice.expandSegment(false, false, viewState.getselected().sort(), viewState.getcurClickLevelName(), changeTime);
+                        Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), 0 - changeTime);
                       } else {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'levelName': viewState.getcurClickLevelName(),
-                          'itemIdx': viewState.getselected().sort(),
-                          'expand': false,
+                          'name': viewState.getcurClickLevelName(),
+                          'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': true,
-                          'changeTime': changeTime
+                          'changeTime': 0 - changeTime
                         });
-                        Levelservice.expandSegment(false, true, viewState.getselected().sort(), viewState.getcurClickLevelName(), changeTime);
+                        Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), 0 - changeTime);
                       }
                     }
                   }

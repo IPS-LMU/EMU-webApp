@@ -71,6 +71,30 @@ angular.module('emulvcApp')
 			return details;
 		};
 		
+
+		/**
+		 * get's element details by passing in levelName and elemtentid
+		 */
+		sServObj.setElementDetails = function (levelname, id, labelname, start, duration) {
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === levelname) {
+					level.items.forEach(function (element) {
+						if (element.id == id) {
+						    if(start!==undefined) {
+						        element.sampleStart = start;
+						    }
+						    if(duration!==undefined) {
+						        element.sampleDur = duration;
+						    }
+						    if(labelname!==undefined) {
+						        element.labels[0].value = labelname;
+						    }
+						}
+					});
+				}
+			});
+		};		
+		
 		/**
 		 * get's element details by passing in levelName and elemtentid
 		 */
@@ -159,15 +183,7 @@ angular.module('emulvcApp')
 		 * rename the label of a level by passing in level name and id
 		 */
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
-			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName) {
-					angular.forEach(t.items, function (evt) {
-						if (evt.id==id) {
-							evt.labels[0].value = newLabelName;
-						}
-					});
-				}
-			});
+			sServObj.setElementDetails(levelName, id, newLabelName);
 		};
 
 		/**
@@ -452,66 +468,46 @@ angular.module('emulvcApp')
 			}
 		};
 
-		sServObj.moveBoundry = function (changeTime, levelName, seg) {
-		    var last = 0;
-		    angular.forEach(sServObj.data.levels, function (level) {
-			    if (level.name === levelName && level.type === 'SEGMENT') {
-			        angular.forEach(level.items, function (item) {
-			          if(item.sampleStart + changeTime > last.sampleStart && item.sampleDur - changeTime > 0) {
-			            if(item.id === seg.id) {
-			                last.sampleDur += changeTime;
-			                item.sampleStart += changeTime;
-			                item.sampleDur -= changeTime;
-			            }
-			          }  
-			          last = item;
-			        });
-			    }
-			    else if (level.name === levelName) {
-			        angular.forEach(level.items, function (item) {
-			          if(item.id == seg.id && item.samplePoint > 0) {
-			            item.samplePoint += changeTime;
-			          }  
-			        });
-			    }
-			});		
+		sServObj.moveBoundry = function (changeTime, name, seg, left) {
+		  if((left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		    sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur+changeTime));
+		    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, (seg.sampleStart+changeTime), (seg.sampleDur-changeTime));
+		  }
 		};
 
 
-		sServObj.moveSegment = function (changeTime, levelName, selected, lastNeighbours) {
-			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) { 
-			    
-			    angular.forEach(sServObj.data.levels, function (level) {
-			        if (level.name === levelName) {
-			            angular.forEach(level.items, function (item) {
-			                if(item.id == lastNeighbours.left.id) {
-			                    item.sampleDur += changeTime;
-			                }
-			                if(item.id == lastNeighbours.right.id) {
-			                    item.sampleStart += changeTime;
-			                    item.sampleDur -= changeTime;
-			                }
-			                
-			                angular.forEach(selected, function (s) {
-			                    if(item.id==s.id) {
-			                        item.sampleStart += changeTime;
-			                    }
-			                });		                
-			            });
-			        }
-			    });
+		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
+			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
+    		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur+changeTime));
+	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart+changeTime), (lastNeighbours.right.sampleDur-changeTime));
+		        angular.forEach(selected, function (s) {
+		            sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart+changeTime), s.sampleDur);
+    		    });	    
 			}
 		};
 
-		sServObj.expandSegment = function (expand, rightSide, selected, tN, changeTime) {
+		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
 			var i;
-			if (!expand) {
-				changeTime = 0 - changeTime;
-			}
 			if (rightSide) {
-				angular.forEach(sServObj.data.levels, function (t) {
-					if (t.name === tN) {
+			
+				angular.forEach(segments, function (seg) {
+					sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, seg.sampleDur+changeTime);
+			    });
+						
+			
+			
+			
+			
+			
+				/*angular.forEach(sServObj.data.levels, function (level) {
+					if (level.name === name && level.type === 'SEGMENT') {
+					
+					    angular.forEach(segments, function (seg) {
+					        var exp = segments.get({id: item.id});
+					        console.log();
+					    });
+						
 						if (t.items[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
 							if (t.items[selected[0]].sampleDur > -(selected.length * changeTime)) {
 								var found = false;
@@ -539,8 +535,10 @@ angular.module('emulvcApp')
 						} else {
 							$rootScope.$broadcast('errorMessage', 'Expand Segements Error: No Space left to increase');
 						}
+						
+						
 					}
-				});
+				});*/
 			} else {
 				angular.forEach(sServObj.data.levels, function (t) {
 					if (t.name === tN) {
