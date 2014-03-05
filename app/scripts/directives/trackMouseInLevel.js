@@ -132,7 +132,6 @@ angular.module('emulvcApp')
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick.evtr);
-          
           lastPCM = thisPCM;
           scope.$apply();
         }

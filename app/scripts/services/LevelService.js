@@ -181,25 +181,6 @@ angular.module('emulvcApp')
 			});
 		};
 
-		/**
-		 * traverse through lavels an return next/prev event and id
-		 */
-		sServObj.tabNext = function (invers, now, levelName) {
-			var ret = new Object();
-			angular.forEach(sServObj.data.levels, function (t) {
-				var i = 0;
-				if (t.name === levelName) {
-					angular.forEach(t.items, function (evt) {
-						if (i === now) {
-							ret.event = evt;
-							ret.id = now;
-						}
-						++i;
-					});
-				}
-			});
-			return ret;
-		};
 
 		sServObj.deleteSegmentsInvers = function (segments, ids, levelName) {
 			var segm, segid;

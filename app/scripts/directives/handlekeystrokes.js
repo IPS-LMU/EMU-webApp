@@ -342,47 +342,47 @@ angular.module('emulvcApp')
               }
 
               if (code === ConfigProviderService.vals.keyMappings.left) {
-                if (viewState.getselected().length > 0) {
-                  var now = parseInt(viewState.getselected()[0], 10);
-                  if (now > 1) {
-                    --now;
-                  }
-                  var ret = Levelservice.tabNext(true, now, viewState.getcurClickLevelName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-                  viewState.setlasteditArea('_' + ret.id);
+                if (viewState.getcurClickSegments().length > 0) {
+                  var idLeft = viewState.getcurClickSegments()[0].id;
+                  var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length-1].id;
+                  var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                  if (lastNeighboursMove.left !== undefined) {
+                    viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                    viewState.setlasteditArea('_' + lastNeighboursMove.left.id);                  
+                    
+                  } 
                 }
               }
 
               if (code === ConfigProviderService.vals.keyMappings.right) {
-                if (viewState.getselected().length > 0) {
-                  var now = parseInt(viewState.getselected()[0], 10);
-                  if (now < viewState.getLevelLength() - 1) {
-                    ++now;
-                  }
-                  var ret = Levelservice.tabNext(false, now, viewState.getcurClickLevelName());
-                  viewState.setcurClickSegment(ret.event, ret.id);
-                  viewState.setlasteditArea('_' + ret.id);
+                if (viewState.getcurClickSegments().length > 0) {
+                  var idLeft = viewState.getcurClickSegments()[0].id;
+                  var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length-1].id;
+                  var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                  if (lastNeighboursMove.right !== undefined) {
+                      viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                      viewState.setlasteditArea('_' + lastNeighboursMove.right.id);                                      
+                  } 
                 }
               }
 
               // tab
               if (code === ConfigProviderService.vals.keyMappings.tab) {
-                if (viewState.getselected().length > 0) {
-                  var now = parseInt(viewState.getselected()[0], 10);
+                if (viewState.getcurClickSegments().length > 0) {
+                  var idLeft = viewState.getcurClickSegments()[0].id;
+                  var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length-1].id;
+                  var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                   if (e.shiftKey) {
-                    if (now > 1) {
-                      --now;
+                    if(lastNeighboursMove.left !== undefined) {
+                      viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                      viewState.setlasteditArea('_' + lastNeighboursMove.left.id);                  
                     }
-                    var ret = Levelservice.tabNext(true, now, viewState.getcurClickLevelName());
-                    viewState.setcurClickSegment(ret.event, ret.id);
-                    viewState.setlasteditArea('_' + ret.id);
+                    
                   } else {
-                    if (now < viewState.getLevelLength() - 1) {
-                      ++now;
-                    }
-                    var ret = Levelservice.tabNext(false, now, viewState.getcurClickLevelName());
-                    viewState.setcurClickSegment(ret.event, ret.id);
-                    viewState.setlasteditArea('_' + ret.id);
+                    if (lastNeighboursMove.right !== undefined) {
+                      viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                      viewState.setlasteditArea('_' + lastNeighboursMove.right.id);                                      
+                    } 
                   }
                 }
               }
