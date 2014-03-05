@@ -471,16 +471,18 @@ angular.module('emulvcApp')
 			}
 		};
 
-		sServObj.moveBoundry = function (changeTime, t, seg, maximum) {
-			if (null !== t) { // && t.name === viewState.getcurMouseLevelName()
-				if (t.type === 'SEGMENT') {
-					if (seg > 0 && (t.items[seg].sampleDur + changeTime) >= 1 && (t.items[seg+1].sampleDur - changeTime) >= 1) {
-						t.items[seg].sampleDur += changeTime;
-						t.items[seg+1].sampleStart += changeTime;
-						t.items[seg+1].sampleDur -= changeTime;
-					}
-				} else {
-				    var item = sServObj.getElementDetails(t.name,seg+1);
+		sServObj.moveBoundry = function (changeTime, levelType, seg, lastNeighbours) {
+			if (levelType==='SEGMENT') { // && t.name === viewState.getcurMouseLevelName()
+				if ((seg.sampleDur - changeTime) >= 0 && (lastNeighbours.left.sampleDur + changeTime) >= 0 ) {
+    				seg.sampleStart += changeTime;
+	    			seg.sampleDur -= changeTime;
+	    			lastNeighbours.left.sampleDur += changeTime;
+				}
+			} else {
+			    if (seg.samplePoint >= 0 ) {
+    				seg.samplePoint += changeTime;
+				}			
+				 /*   var item = sServObj.getElementDetails(t.name,seg+1);
 				    var itemnext = sServObj.getElementDetails(t.name,seg+2);
 				    var itemprev = sServObj.getElementDetails(t.name,seg);
 					if (item !== undefined && itemnext !== undefined && itemprev !== undefined) {
@@ -489,8 +491,7 @@ angular.module('emulvcApp')
 							item.samplePoint += changeTime;
 					} else if (item !== undefined && itemprev !== undefined) {
 							item.samplePoint += changeTime;
-					}
-				}
+					}*/
 			}
 		};
 

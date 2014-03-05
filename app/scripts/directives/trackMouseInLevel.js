@@ -13,6 +13,7 @@ angular.module('emulvcApp')
         var lastEventMove;
         var lastEventMoveId;
         var lastNeighbours;
+        var lastNeighboursMove;
         var lastPCM;
         var thisPCM;
         var levelID = scope.level.name;
@@ -67,15 +68,15 @@ angular.module('emulvcApp')
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
                 if(viewState.getcurMouseSegment()!==undefined) {
-                  scope.levelDetails.moveBoundry(moveBy, scope.this.level, viewState.getcurMouseSegment().id-1, scope.vs.curViewPort.bufferLength);
+                  scope.levelDetails.moveBoundry(moveBy, scope.this.level.type, viewState.getcurMouseSegment(), lastNeighboursMove);
                   viewState.selectBoundry();
                   viewState.movingBoundary = true;
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveBoundary',
-                    'name': scope.this.level.name,
-                    'itemIdx': viewState.getcurMouseSegment().id-1,
-                    'max': scope.vs.curViewPort.bufferLength,
+                    'levelType': scope.this.level.type,
+                    'itemIdx': viewState.getcurMouseSegment(),
+                    'lastNeighboursMove': lastNeighboursMove,
                     'movedBy': moveBy
                   });
                   lastPCM = thisPCM;
@@ -169,6 +170,7 @@ angular.module('emulvcApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           if (doChange && (lastEventMove.nearest != undefined)) {
+            lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
             viewState.setcurMouseSegment(lastEventMove.nearest);
           }
           viewState.setcurMouseLevelName(levelID);
