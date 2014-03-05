@@ -103,13 +103,13 @@ angular.module('emulvcApp')
 			var right = null;
 			sServObj.data.levels.forEach(function (level) {
 				if (level.name === levelName) {
-					level.items.forEach(function (element, num) {
+					level.items.forEach(function (element,num) {
 						if (element.id == firstid) {
 							left = level.items[num-1];
 						}
 						if (element.id == lastid) {
 							right = level.items[num+1];
-						}						
+						}			
 					});
 				}
 			});
@@ -468,15 +468,16 @@ angular.module('emulvcApp')
 			}
 		};
 
-		sServObj.moveBoundry = function (changeTime, name, seg, left) {
-		  if((left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
-		    sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur+changeTime));
+		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
+		  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur+changeTime));
 		    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, (seg.sampleStart+changeTime), (seg.sampleDur-changeTime));
 		  }
 		};
 
 
-		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
+		sServObj.moveSegment = function (changeTime, name, selected) {
+		    var lastNeighbours = sServObj.getElementNeighbourDetails(name, selected[0].id, selected[selected.length-1].id);
 			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
     		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur+changeTime));
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart+changeTime), (lastNeighbours.right.sampleDur-changeTime));

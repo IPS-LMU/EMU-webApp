@@ -484,8 +484,9 @@ angular.module('emulvcApp')
      * sets the current (mousemove) Segment
      * @param name is name of segment
      */
-    sServObj.setcurMouseSegment = function (segment) {
+    sServObj.setcurMouseSegment = function (segment, neighbour) {
       this.curMouseSegment = segment;
+      this.curMouseNeighbours = neighbour;
     };
 
     /**
@@ -494,6 +495,13 @@ angular.module('emulvcApp')
     sServObj.getcurMouseSegment = function () {
       return this.curMouseSegment;
     };
+    
+    /**
+     * gets the current (mousemove) Segment
+     */
+    sServObj.getcurMouseNeighbours = function () {
+      return this.curMouseNeighbours;
+    };    
 
     /**
      * selects all Segements on current level which are inside the selected viewport
@@ -530,7 +538,7 @@ angular.module('emulvcApp')
     sServObj.selectBoundry = function () {
       if (sServObj.curClickSegments.length > 0) {
         var left = this.curClickSegments[0].sampleStart || this.curClickSegments[0].samplePoint ;
-        var right = this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur || this.curClickSegments[0].samplePoint;
+        var right = this.curClickSegments[this.curClickSegments.length-1].sampleStart + this.curClickSegments[this.curClickSegments.length-1].sampleDur || this.curClickSegments[0].samplePoint;
         sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -555,7 +563,7 @@ angular.module('emulvcApp')
       this.curClickSegments.forEach(function (entry) {
         var front = (entry.sampleStart == end) ? true: false;
         var back = ((entry.sampleStart + entry.sampleDur) == start) ? true: false;  
-        if (front || back) {
+        if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           my.curClickSegments.push(segment);
           empty = false;
         }
@@ -565,6 +573,7 @@ angular.module('emulvcApp')
         this.curClickSegments.push(segment);
       }
       sServObj.selectBoundry();
+      
     };
 
 
@@ -595,7 +604,7 @@ angular.module('emulvcApp')
      */
     sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
-    };
+    };    
     
     sServObj.getselected = function () {
       return this.curClickSegments;
