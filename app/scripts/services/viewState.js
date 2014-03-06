@@ -240,7 +240,7 @@ angular.module('emulvcApp')
             var ld = Levelservice.getLevelDetails(name);
             var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
             console.log(lastEventClick);
-            sServObj.setlasteditArea('_' + lastEventClickId);
+            sServObj.setlasteditArea('_' + lastEventClick.id);
             sServObj.setcurClickLevelType(ld.level.type);
             sServObj.setcurClickSegment(lastEventClick);
             sServObj.setLevelLength(ld.level.items.length);

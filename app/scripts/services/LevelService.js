@@ -418,18 +418,23 @@ angular.module('emulvcApp')
 		};
 
 		sServObj.deleteBoundary = function (toDelete, levelName, levelType) {
+		    var last = null;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === levelName) {
 					angular.forEach(t.items, function (evt, id) {
-						if (evt.sampleStart == toDelete.sampleStart) {
-							if (t.type === "point") {
-								t.items.splice(id, 1);
-							} else {
-								t.items[id - 1].labels[0].value += t.items[id].labels[0].value;
-								t.items[id - 1].sampleDur += t.items[id].sampleDur;
+					    if(t.type === 'SEGMENT') {
+					      	if (evt.id == toDelete.id) {
+								last.labels[0].value += evt.labels[0].value;
+								last.sampleDur += evt.sampleDur;
 								t.items.splice(id, 1);
 							}
-						}
+					    }
+					    else {
+					        if (evt.samplePoint == toDelete.samplePoint) {
+					            t.items.splice(id, 1);
+					        }
+					    }
+						last = evt;
 					});
 				}
 			});
