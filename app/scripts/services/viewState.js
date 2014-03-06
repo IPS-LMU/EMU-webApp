@@ -450,6 +450,15 @@ angular.module('emulvcApp')
     };
 
     /**
+     * gets the current (clicked) Level Name
+     */
+    sServObj.getcurClickNeighbours = function () {
+      return this.curClickNeighbours;
+    };
+    
+    
+
+    /**
      * sets the current (mousemove) Level Name
      * @param name is name of level
      */

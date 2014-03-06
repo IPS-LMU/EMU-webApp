@@ -48,7 +48,7 @@ angular.module('emulvcApp')
 
           if (zoom <= 1) {
             // ansolute movement in pcm below 1 pcm per pixel
-            moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - Levelservice.getElementDetails(scope.this.level.LevelName, viewState.getcurMouseSegmentId()).sampleStart);
+            moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - Levelservice.getElementDetails(scope.this.level.name, viewState.getcurMouseSegment().id).sampleStart);
           } else {
             // relative movement in pcm above 1 pcm per pixel
             moveBy = Math.round(thisPCM - lastPCM);
@@ -78,7 +78,7 @@ angular.module('emulvcApp')
                     'itemIdx': viewState.getcurMouseSegment(),
                     'movedBy': moveBy
                   });
-
+                  
                   viewState.selectBoundry();
                   lastPCM = thisPCM;
                   scope.$apply();
@@ -87,16 +87,19 @@ angular.module('emulvcApp')
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if(scope.this.level.type == "SEGMENT") {
-                  scope.levelDetails.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments());
-                  lastPCM = thisPCM;
+                  var neighbours = scope.levelDetails.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length-1].id);
+                  scope.levelDetails.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neighbours);
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'name': scope.this.level.name,
-                    'itemIdx': viewState.getcurClickSegments(),
+                    'neighbours': angular.copy(neighbours),
+                    'itemIdx': angular.copy(viewState.getcurClickSegments()),
                     'movedBy': moveBy
                   });
-                  viewState.selectBoundry();                  
+                  
+                  viewState.selectBoundry();  
+                  lastPCM = thisPCM;                
                   scope.$apply();
                 }
               } else {
