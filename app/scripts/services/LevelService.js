@@ -15,7 +15,6 @@ angular.module('emulvcApp')
 		 * sets annotation data and generates unique uuid if id in element is not set
 		 */
 		sServObj.setData = function (data) {
-		    console.log(data);
 			data.levels.forEach(function (level, lid) {
 				if (level.type === 'SEGMENT') {
 				    level.items.forEach(function (item, iid) {
@@ -33,7 +32,6 @@ angular.module('emulvcApp')
 				}
 			});		    
 			angular.copy(data, sServObj.data);
-			
 		};
 
 		/**
@@ -82,6 +80,22 @@ angular.module('emulvcApp')
 						if (element.id == id) {
 						    element.sampleStart = start;
 						    element.sampleDur = duration;
+					        element.labels[0].value = labelname;
+						}
+					});
+				}
+			});
+		};
+
+		/**
+		 * get's element details by passing in levelName and elemtentid
+		 */
+		sServObj.setPointDetails = function (levelname, id, labelname, start) {
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === levelname) {
+					level.items.forEach(function (element) {
+						if (element.id == id) {
+						    element.samplePoint = start;
 					        element.labels[0].value = labelname;
 						}
 					});
@@ -233,8 +247,10 @@ angular.module('emulvcApp')
 				if (t.name === levelName) {
 					if (t.type === "SEGMENT") {
 						var length = 0;
+						var text = '';
 						for (var x in segments) {
 							length += segments[x].sampleDur;
+							text += segments[x].labels[0].value;
 						}
 						if (start >= 0) {
 							t.items[start].sampleDur += length / 2;
@@ -409,7 +425,7 @@ angular.module('emulvcApp')
 							if (t.type === "point") {
 								t.items.splice(id, 1);
 							} else {
-								t.items[id - 1].label += t.items[id].label;
+								t.items[id - 1].labels[0].value += t.items[id].labels[0].value;
 								t.items[id - 1].sampleDur += t.items[id].sampleDur;
 								t.items.splice(id, 1);
 							}
@@ -469,6 +485,11 @@ angular.module('emulvcApp')
 		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
 		    sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
 		  }
+		};
+
+		sServObj.movePoint = function (changeTime, name, seg) {
+		  var orig = sServObj.getElementDetails(name, seg.id);
+		  sServObj.setPointDetails(name, seg.id, orig.labels[0].value, (orig.samplePoint+changeTime));
 		};
 
 

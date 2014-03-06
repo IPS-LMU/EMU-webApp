@@ -91,6 +91,13 @@ angular.module('emulvcApp')
 							Levelservice.moveSegment(cur.movedBy, cur.name, cur.itemIdx, cur.neighbours);
 						}
 						break;
+					case 'movePoint':
+						if (applyOldVal) {
+							Levelservice.movePoint(-cur.movedBy, cur.name, cur.itemIdx);
+						} else {
+							Levelservice.movePoint(cur.movedBy, cur.name, cur.itemIdx);
+						}
+						break;
 					case 'renameLabel':
 						if (applyOldVal) {
 							Levelservice.renameLabel(cur.name, cur.itemIdx, cur.oldValue);
@@ -171,6 +178,7 @@ angular.module('emulvcApp')
 			} else if (dataObj.type === 'ESPS') {
 				switch (dataObj.action) {
 				case 'moveBoundary':
+				case 'movePoint':
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.itemIdx);
 					if (!curChangeObj[dataKey]) {

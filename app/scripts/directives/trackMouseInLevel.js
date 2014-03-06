@@ -69,16 +69,27 @@ angular.module('emulvcApp')
                 viewState.deleteEditArea();
                 if(viewState.getcurMouseSegment()!==undefined) {
                   viewState.movingBoundary = true;
-                  scope.levelDetails.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
-                  scope.hists.updateCurChangeObj({
-                    'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'name': scope.this.level.name,
-                    'neighbours': viewState.getcurMouseNeighbours(),
-                    'itemIdx': viewState.getcurMouseSegment(),
-                    'movedBy': moveBy
-                  });
-                  
+                  if(scope.this.level.type == "SEGMENT") {
+                    scope.levelDetails.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
+                    scope.hists.updateCurChangeObj({
+                      'type': 'ESPS',
+                      'action': 'moveBoundary',
+                      'name': scope.this.level.name,
+                      'neighbours': viewState.getcurMouseNeighbours(),
+                      'itemIdx': viewState.getcurMouseSegment(),
+                      'movedBy': moveBy
+                    });
+                  }
+                  else {
+                    scope.levelDetails.movePoint(moveBy, scope.this.level.name, viewState.getcurMouseSegment());
+                    scope.hists.updateCurChangeObj({
+                      'type': 'ESPS',
+                      'action': 'movePoint',
+                      'name': scope.this.level.name,
+                      'itemIdx': viewState.getcurMouseSegment(),
+                      'movedBy': moveBy
+                    });                    
+                  }                  
                   viewState.selectBoundry();
                   lastPCM = thisPCM;
                   scope.$apply();

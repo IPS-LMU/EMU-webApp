@@ -313,7 +313,6 @@ angular.module('emulvcApp')
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
 						}
-						console.log(bundleData);
 						ngProgressLite.done();
 
 						var arrBuff;
