@@ -97,7 +97,7 @@ angular.module('emulvcApp')
 
             curSampleArrs.forEach(function (valRep, valIdx) {
               valRep.forEach(function (val, idx) {
-                if (idx >= minMaxLims.min && idx <= minMaxLims.max) {
+                if ($.isEmptyObject(minMaxLims) || (idx >= minMaxLims.min && idx <= minMaxLims.max)) {
                   curSampleInCol = colStartSampleNr + valIdx;
                   curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
