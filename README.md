@@ -1,5 +1,4 @@
-
-# EMU-webApp 
+# EMU-webApp
 
 The EMU-webApp is an online and offline web application for labeling, visualizing and correcting speech and derived speech data. 
 
