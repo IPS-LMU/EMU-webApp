@@ -3,7 +3,7 @@
 
 The EMU-webApp is an online and offline web application for labeling, visualizing and correcting speech and derived speech data. 
 
-To see it in action visit [this URL](http://ips-lmu.github.io/EMU-webApp/).General information about the next iteration of the EMU speech database management system can be found [here](http://ips-lmu.github.io/EMU.html).
+To see it in action visit [this URL](http://ips-lmu.github.io/EMU-webApp/). General information about the next iteration of the EMU speech database management system can be found [here](http://ips-lmu.github.io/EMU.html).
 
 
 ## Quick start
