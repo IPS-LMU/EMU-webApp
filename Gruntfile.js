@@ -288,7 +288,8 @@ module.exports = function (grunt) {
             'background.js',
             'manifest.json',
             'assets/icon.png',
-            'styles/external/bootstrap-combined.min.css'
+            'styles/external/bootstrap-combined.min.css',
+            'styles/images/rightSideMenuBtn.png'
           ]
         }, {
           expand: true,

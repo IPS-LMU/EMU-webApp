@@ -1,10 +1,10 @@
 <div class="modal-header">
-  <h3>Rename Tier</h3>
+  <h3>Load Files</h3>
 </div>
 <div class="modal-body">
 
  <div>
-   <p> Really <i>rename</i> tier "{{passedInTxt}}" ?</p>
+   <p> Load files</p>
 </div>
 <div>
    <p><input type="text" ng-model="passedOutTxt.var" placeholder="{{passedInTxt}}" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></p>
@@ -15,5 +15,5 @@
 
 <div class="modal-footer">
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
-   <button ng-click="renameTier();" id="dialogButton" class="mini-btn-dialog">Rename</button>
+   <button ng-click="renameFile();" id="dialogButton" class="mini-btn-dialog">Rename</button>
 </div>

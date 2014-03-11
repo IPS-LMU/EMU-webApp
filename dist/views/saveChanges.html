@@ -1,8 +1,17 @@
-<h2>{{modalTitle}}</h2>
-    <h3>
-    <button ng-click="saveSSFF();" id="dialogButton" class="mini-btn-dialog">Save Changes</button>
-   <button ng-click="discardSSFF();" id="dialogButton" class="mini-btn-dialog">Discard Changes</button>
+<div class="modal-header">
+  <h3>Save changes</h3>
+</div>
+<div class="modal-body">
+
+ <div>
+   <p>Changes made to: "{{passedInTxt}}". Do you wish to save them ?</p>
+</div>
+
+
+</div>
+
+<div class="modal-footer">
+    <button ng-click="saveChanges(passedInTxt);" id="dialogButton" class="mini-btn-dialog">Save Changes</button>
+   <button ng-click="discardChanges(passedInTxt);" id="dialogButton" class="mini-btn-dialog">Discard Changes</button>
    <button ng-click="cancel();" id="dialogButton" class="mini-btn-dialog">Cancel</button>
- </h3> 
- <div> &nbsp;</div>
- <div>{{modalContent}}</div>
+</div>

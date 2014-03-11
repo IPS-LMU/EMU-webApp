@@ -1,17 +1,17 @@
 {
     "main": {
-        "mode": "standalone",
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
         "wsServerUrl": "ws://localhost:8080",
-        "comType": "ws"
+        "wsTimeoutInterval": 30000,
+        "comType": "WS"
     },
     "keyMappings": {
         "openFile": -1,
         "connect": -1,
-        "addTierSeg": -1,
-        "addTierPoint": -1,
-        "renameTier": -1,
+        "addLevelSeg": -1,
+        "addLevelPoint": -1,
+        "renameLevel": -1,
         "downloadTextgrid": -1,
         "demoDB": -1,
         "openSubmenu": 79,
@@ -39,9 +39,9 @@
         "selectNoContourCorrectionTool": 48,
         "selectSegmentsInSelection": 71,
         "left": 37,
-        "tierUp": 38,
+        "levelUp": 38,
         "right": 39,
-        "tierDown": 40,
+        "levelDown": 40,
         "snapAbove": 84,
         "snapBelow": 66,
         "snapZero": 88,
@@ -51,7 +51,6 @@
         "snapBoundaryToTop": 84,
         "snapBoundaryToBottom": 66
     },
-
     "colors": {
         "labelColor": "#000",
         "osciColor": "#000",
@@ -64,7 +63,7 @@
         "selectedAreaColor": "rgba(22, 22, 22, 0.1)",
         "selectedBorderColor": "rgba(0, 0, 0, 0.7)",
         "selectedBoundaryColor": "#0DC5FF",
-        "selectedTierColor": "rgba(22, 22, 22, 0.1)",
+        "selectedLevelColor": "rgba(22, 22, 22, 0.1)",
         "selectedSegmentColor": "rgba(255, 255, 22, 0.5)",
         "selectedMinimapColor": "rgba(0, 0, 0, 0.2)",
         "startBoundaryColor": "#000",
@@ -87,27 +86,36 @@
         "dynamicRange": 70,
         "window": "GAUSS"
     },
-    "signalsCanvasConfig": {
-        "order": ["osci", "spec"],
-        "assign": {
-            "spec": "fms:fm"
-        },
-        "extensions": {
-            "audio": ".wav",
-            "signals": [".fms"]
-        },
-        "contourLims": {
-            "fm": {
-                "min": 0,
-                "max": 1
+    "perspectives": [{
+        "name": "default",
+        "signalCanvases": {
+            "order": ["OSCI", "SPEC"],
+            "assign": {
+                "spec": "fms:fm"
+            },
+            "extensions": {
+                "audio": ".wav",
+                "signals": [".fms"]
+            },
+            "contourLims": {
+                "fm": {
+                    "min": 0,
+                    "max": 1
+                }
             }
+        },
+        "labelCanvases": {
+            "order": [".lab", ".tone"]
+        },
+        "twoDcanvases": {
+            "show": false
         }
-    },
+    }],
     "labelCanvasConfig": {
-        "order": [".lab", ".tone"],
         "addTimeMode": "absolute",
         "addTimeValue": 750,
-        "newSegmentName": "new Segment"
+        "newSegmentName": "Segment",
+        "newPointName": "P"
     },
     "restrictions": {
         "playback": true,
@@ -117,25 +125,25 @@
         "editItemName": true,
         "deleteItemBoundary": true,
         "deleteItem": true,
-        "deleteTier": true,
+        "deleteLevel": true,
         "addItem": true,
         "drawCrossHairs": true,
         "drawSampleNrs": false,
-        "drawZeroLine": true
-
+        "drawZeroLine": true,
+        "bundleComments": true,
+        "bundleFinishedEditing": true
     },
     "activeButtons": {
-        "openMenu": false,
-        "addTierSeg": false,
-        "addTierPoint": false,
-        "renameSelTier": false,
-        "downloadTextGrid": true,
+        "addLevelSeg": false,
+        "addLevelEvent": false,
+        "renameSelLevel": false,
+        "downloadTextGrid": false,
         "specSettings": true,
         "connect": true,
-        "clear": false,
-        "deleteSingleTier": true,
-        "resizeSingleTier": true,
-        "saveSingleTier": true,
+        "clear": true,
+        "deleteSingleLevel": false,
+        "resizeSingleLevel": true,
+        "saveSingleLevel": false,
         "resizeOsci": true,
         "resizeSpectro": true,
         "openDemoDB": true,
