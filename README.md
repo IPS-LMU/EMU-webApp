@@ -5,7 +5,7 @@ The EMU-webApp is an online and offline web application for labeling, visualizin
 
 ## Quick start
 
-Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo DB` button in the top menu to load a demo database.
+Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo DB` button in the top menu to load a small example database.
 
 ## Tools for development
 
