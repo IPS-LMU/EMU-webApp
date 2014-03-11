@@ -18,7 +18,7 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * for livereload use the `livereload` browser plugin
 * a small websocket data provider server can be found under `exampleServers/nodeFormantCorrWSserver.js`
 
-## Authors
+## Main authors
 
 **Raphael Winkelmann**
 
