@@ -7,7 +7,7 @@ To see it in action visit [this URL](http://ips-lmu.github.io/EMU-webApp/). Gene
 
 ## Quick start
 
-Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click `open demo DB` to load a demo database.
+Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo DB` button in the top menu to load a demo database.
 
 ## Tools for development
 
