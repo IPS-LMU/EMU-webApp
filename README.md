@@ -13,7 +13,7 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * install `bower` with `npm install -g bower`
 * install `grunt` with `npm install -g grunt`
 * clone this repo with `git clone https://github.com/IPS-LMU/EMU-webApp.git`
-* install dependencies (in `EMU-webApp` folder) with the command `bower install` and `npm install`
+* navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the commands `bower install` and `npm install`
 * run static file server at `http://localhost:9000`  with `grunt server`
 * for livereload use the `livereload` browser plugin
 * a small websocket data provider server can be found under `exampleServers/nodeFormantCorrWSserver.js`
