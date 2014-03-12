@@ -137,34 +137,36 @@ angular.module('emuwebApp')
 			var id = 0;
 			var ret = 0;
 			if (level.type === "seg") {
-				angular.forEach(level.items, function (evt) {
-					if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
+				angular.forEach(level.items, function (evt, index) {
+					if (pcm >= evt.sampleStart) { 
+					  if(pcm <= (evt.sampleStart + evt.sampleDur)) {
 						if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
-							ret = id + 1;
+							ret = index + 1;
 						} else {
-							ret = id;
+							ret = index;
 						}
+					  }
 					}
-					++id;
 				});
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(level.items, function (evt, key) {
-					if (key < level.items.length - 1) {
-						spaceHigher = evt.sampleStart + (level.items[key + 1].sampleStart - level.items[key].sampleStart) / 2;
+				angular.forEach(level.items, function (evt, index) {
+					if (index < level.items.length - 1) {
+						spaceHigher = evt.sampleStart + (level.items[index + 1].sampleStart - level.items[index].sampleStart) / 2;
 					} else {
 						spaceHigher = $scope.vs.curViewPort.bufferLength;
 					}
 
-					if (key > 0) {
-						spaceLower = evt.sampleStart - (level.items[key].sampleStart - level.items[key - 1].sampleStart) / 2;
+					if (index > 0) {
+						spaceLower = evt.sampleStart - (level.items[index].sampleStart - level.items[index - 1].sampleStart) / 2;
 					}
 
-					if (pcm <= spaceHigher && pcm >= spaceLower) {
-						ret = id;
+					if (pcm <= spaceHigher) {
+					  if(pcm >= spaceLower) {
+						ret = index;
+					  }
 					}
-					++id;
 				});
 			}
 			return ret;

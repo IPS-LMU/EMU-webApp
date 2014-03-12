@@ -132,29 +132,33 @@ angular.module('emuwebApp')
 			var evtr = null;
 			var evtrNearest = null;
 			if (level.type === "SEGMENT") {
-				angular.forEach(level.items, function (evt, id) {
-						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							if (pcm - evt.sampleStart >= evt.sampleDur / 2 && (id-1) >= 0) {
-								evtrNearest = level.items[id+1];
+				angular.forEach(level.items, function (evt, index) {
+				    if (pcm >= evt.sampleStart) {
+					    if(pcm <= (evt.sampleStart + evt.sampleDur)) {
+							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
+								evtrNearest = level.items[index+1];
 							} else {
-								evtrNearest = level.items[id];
+								evtrNearest = level.items[index];
 							}
 						}
-						if (pcm >= evt.sampleStart && pcm <= (evt.sampleStart + evt.sampleDur)) {
-							evtr = evt;
-						}
+					}
+					if (pcm >= evt.sampleStart) {
+					    if(pcm <= (evt.sampleStart + evt.sampleDur)) {
+						    evtr = evt;
+					    }
+					}
 				});
 			} else {
 				var spaceLower = 0;
 				var spaceHigher = 0;
-				angular.forEach(level.items, function (evt, key) {
-					if (key < level.items.length - 1) {
-						spaceHigher = evt.samplePoint + (level.items[key + 1].samplePoint - level.items[key].samplePoint) / 2;
+				angular.forEach(level.items, function (evt, index) {
+					if (index < level.items.length - 1) {
+						spaceHigher = evt.samplePoint + (level.items[index + 1].samplePoint - level.items[index].samplePoint) / 2;
 					} else {
 						spaceHigher = maximum;
 					}
-					if (key > 0) {
-						spaceLower = evt.samplePoint - (level.items[key].samplePoint - level.items[key - 1].samplePoint) / 2;
+					if (index > 0) {
+						spaceLower = evt.samplePoint - (level.items[index].samplePoint - level.items[index - 1].samplePoint) / 2;
 					} else {
 					    spaceLower = 0;
 					}
@@ -485,10 +489,17 @@ angular.module('emuwebApp')
 
 		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
 		  var orig = sServObj.getElementDetails(name, seg.id);
-		  var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
-		  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
-		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
-		    sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
+		  if(lastNeighbours.left !== undefined) {
+    		  var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
+	    	  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		          sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+		          sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
+		      }
+		  }
+		  else {
+		      if((seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		          sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
+		      }
 		  }
 		};
 
