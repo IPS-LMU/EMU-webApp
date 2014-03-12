@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
-		$scope.cps = ConfigProviderService.vals.colors;
+		$scope.cps = ConfigProviderService.vals.colors; // SIC bad bad name!!!!
 		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffds = Ssffdataservice;
