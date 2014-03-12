@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .directive('resize', function () {
     return {
       restrict: 'A',

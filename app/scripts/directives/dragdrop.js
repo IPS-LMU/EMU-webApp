@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('draggable', ['$rootScope', 'uuid',
 		function ($rootScope, uuid) {
 			return {
@@ -26,7 +26,7 @@ angular.module('emulvcApp')
 		}
 	]);
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('dropable', ['$rootScope', 'uuid',
 		function ($rootScope, uuid) {
 			return {

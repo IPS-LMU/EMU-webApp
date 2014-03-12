@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('fontScaleService', function fontScaleService() {
 		// shared service object
 		var sServObj = {};

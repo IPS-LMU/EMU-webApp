@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .directive('trackmouseinlevel', function (ConfigProviderService, viewState, Levelservice) {
     return {
       restrict: 'A',

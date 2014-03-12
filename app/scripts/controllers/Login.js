@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
 
 		$scope.loginData = {

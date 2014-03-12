@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .factory('uuid', function () {
     // shared service object
     var sServObj = {};

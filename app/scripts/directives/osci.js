@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('osci', function () {
 		return {
 			templateUrl: 'views/osci.html',

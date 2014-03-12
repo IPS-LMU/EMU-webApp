@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.filter('regex', function () {
 		return function (input, regex) {
 			var patt = new RegExp(regex.toLowerCase());

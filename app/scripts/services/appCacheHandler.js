@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Appcachehandler', function Appcachehandler($http, dialogService) {
 		// shared service object
 		var sServObj = {};

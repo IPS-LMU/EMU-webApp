@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Soundhandlerservice', function Soundhandlerservice($document, Binarydatamaniphelper) {
 		// shared service object
 		var sServObj = {};

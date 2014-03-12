@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .directive('submenu', function ($animate) {
     return {
       templateUrl: 'views/leftSubmenu.html',
@@ -45,7 +45,7 @@ angular.module('emulvcApp')
   });
  
 // simple animation to add slideLeft class
-angular.module('emulvcApp').animation(".slideInSubmenu", function () {
+angular.module('emuwebApp').animation(".slideInSubmenu", function () {
 	return {
 		addClass: function (element, className) {
 			element.addClass('cbp-spmenu-open');
@@ -57,7 +57,7 @@ angular.module('emulvcApp').animation(".slideInSubmenu", function () {
 });
  
 // simple animation to add slideLeft class
-angular.module('emulvcApp').animation(".slideInBody", function () {
+angular.module('emuwebApp').animation(".slideInBody", function () {
 	return {
 		addClass: function (element, className) {
 			element.addClass('cbp-spmenu-left-toright');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .directive('delete', function () {
     return {
       restrict: 'A',

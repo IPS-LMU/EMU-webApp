@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Wavparserservice', function Wavparserservice(viewState) {
 		// AngularJS will instantiate a singleton by calling "new" on this function
 		// shared service object

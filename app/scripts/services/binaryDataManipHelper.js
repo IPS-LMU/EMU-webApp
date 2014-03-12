@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Binarydatamaniphelper', function Binarydatamaniphelper() {
 
 		// shared service object

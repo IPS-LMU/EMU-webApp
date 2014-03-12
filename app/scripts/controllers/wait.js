@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .controller('WaitCtrl', function ($scope, viewState) {
     $scope.vs = viewState;
 

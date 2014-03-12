@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('AboutCtrl', function ($scope, ConfigProviderService, dialogService) {
 		$scope.cps = ConfigProviderService;
 

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .directive('spectro', function ($q) {
     return {
       templateUrl: 'views/spectro.html',

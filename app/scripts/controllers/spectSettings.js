@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('SpectsettingsCtrl', function ($scope, dialogService, viewState) {
 
 		$scope.vs = viewState;

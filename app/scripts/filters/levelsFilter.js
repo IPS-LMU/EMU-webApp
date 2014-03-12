@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.filter('levelsFilter', function (ConfigProviderService, viewState) {
 		return function (input) {
 			if (input) {

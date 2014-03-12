@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Ssffdataservice', function Ssffdataservice() {
 		// shared service object
 		var sServObj = {};

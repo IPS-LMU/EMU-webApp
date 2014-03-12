@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Httphandler', function Httphelper($rootScope, $http, $q, HistoryService, viewState, ConfigProviderService, Soundhandlerservice, Ssffparserservice, Wavparserservice, Espsparserservice) {
 		var sServObj = {};
 

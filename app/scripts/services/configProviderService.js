@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('ConfigProviderService', function ConfigProviderService(viewState) {
 
 		// shared service object

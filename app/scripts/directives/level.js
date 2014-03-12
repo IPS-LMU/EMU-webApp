@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('level', function () {
 		return {
 			templateUrl: 'views/level.html',

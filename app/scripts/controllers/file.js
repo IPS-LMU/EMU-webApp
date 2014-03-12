@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .controller('FileCtrl', function ($scope,
     viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,dialogService,Wavparserservice) {
 

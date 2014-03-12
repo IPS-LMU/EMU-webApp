@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Levelservice', function Levelservice($rootScope, uuid) {
 		// shared service object
 		var sServObj = {};

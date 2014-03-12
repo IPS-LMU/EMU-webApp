@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Levelservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;

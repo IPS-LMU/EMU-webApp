@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate', 'ngProgressLite'])
+angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate', 'ngProgressLite'])
   .config(function($routeProvider, $locationProvider, ngProgressLiteProvider) {
     $routeProvider
       .when('/', {

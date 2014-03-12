@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('TimelineCtrl', function ($scope, $http, $compile,
 		viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService, Ssffdataservice, HistoryService) {
 

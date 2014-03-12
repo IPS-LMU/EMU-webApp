@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('preview', function () {
 		return {
 			templateUrl: 'views/preview.html',

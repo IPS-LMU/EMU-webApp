@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService) {
 
 

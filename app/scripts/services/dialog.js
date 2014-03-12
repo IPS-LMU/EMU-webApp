@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('dialogService', function dialogService($modal, viewState) {
 		// shared service object
 		var sServObj = {};

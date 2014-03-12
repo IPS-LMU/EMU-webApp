@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Ssffparserservice', function Ssffparserservice(viewState) {
 
 		// shared service object

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('showTwod', function ($animate) {
 		return {
 			restrict: 'A',
@@ -19,7 +19,7 @@ angular.module('emulvcApp')
 	});
 
 // simple animation to add slideLeft class
-angular.module('emulvcApp').animation(".slideIn2dCanvases", function () {
+angular.module('emuwebApp').animation(".slideIn2dCanvases", function () {
 	return {
 		addClass: function (element, className) {
 			element.addClass('slide2dCanvases');

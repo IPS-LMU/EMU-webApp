@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
   .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Levelservice) {
 
     //shared service object to be returned

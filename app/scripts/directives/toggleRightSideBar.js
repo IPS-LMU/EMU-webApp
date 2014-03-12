@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.directive('showMenu', function ($animate) {
 		return {
 			restrict: 'A',
@@ -18,7 +18,7 @@ angular.module('emulvcApp')
 	});
 
 // simple animation to add slideLeft class
-angular.module('emulvcApp').animation(".slideInMenu", function () {
+angular.module('emuwebApp').animation(".slideInMenu", function () {
 	return {
 		addClass: function (element, className) {
 			element.addClass('slideLeft');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Textgridparserservice', function Textgridparserservice(Soundhandlerservice, viewState) {
 		// shared service object
 		var sServObj = {};

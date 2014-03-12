@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.service('Espsparserservice', function Espsparserservice(Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};

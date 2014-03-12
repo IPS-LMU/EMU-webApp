@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emulvcApp')
+angular.module('emuwebApp')
 	.controller('ConfirmmodalCtrl', function ($scope, dialogService, passedInTxt) {
 		$scope.passedInTxt = passedInTxt;
 
