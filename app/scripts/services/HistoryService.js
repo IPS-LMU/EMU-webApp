@@ -128,9 +128,9 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Levelservice.deleteSegmentsInvers(cur.selected, cur.ids, cur.levelName);
+							Levelservice.deleteSegmentsInvers(cur.name, cur.selected, cur.neighbours);
 						} else {
-							Levelservice.deleteSegments(cur.selected, cur.ids, cur.levelName);
+							Levelservice.deleteSegments(cur.name, cur.selected, cur.neighbours);
 						}
 						break;
 					case 'insertSegments':

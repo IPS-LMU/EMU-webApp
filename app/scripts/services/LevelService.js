@@ -218,56 +218,57 @@ angular.module('emuwebApp')
 		};
 
 
-		sServObj.deleteSegmentsInvers = function (segments, levelName) {
-			var segm, segid;
-			var start = ids[0] - 1;
-			var end = ids[ids.length - 1] + 1;
-			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName) {
-					if (t.type === "SEGMENT") {
-						var length = 0;
-						for (var x in segments) {
-							length += segments[x].sampleDur;
-						}
-						if (start >= 0) {
-							t.items[start].sampleDur -= length / 2;
-							t.items[start + 1].sampleDur -= length / 2;
-							t.items[start + 1].sampleStart += length / 2;
-							for (var x in ids) {
-								t.items.splice(ids[x], 0, segments[x]);
-							}
-
-							segm = t.items[start];
-							segid = start;
-
-						} else {
-							segm = t.items[0];
-							segid = 0;
-						}
-					}
-				}
-			});
-			return {
-				segment: segm,
-				id: segid
-			};
-		};
-
-		sServObj.deleteSegments = function (levelname, segments, neighbours) {
+		sServObj.deleteSegmentsInvers = function (levelname, segments, neighbours) {
 			var length1 = 0;
 			var length2 = 0;
-			var text = '';
 			for (var x in segments) {
 				length1 += segments[x].sampleDur;
-				text += segments[x].labels[0].value;
 			}
 			if(length1%2==0) {
 			  length1 /= 2;
 			  length2 = length1;
 			}
 			else {
-			  length1 = Math.floor(length1/2);
-			  length2 = length1+1;
+			  length1 = Math.ceil(length1/2);
+			  length2 = length1-1;
+			}
+			sServObj.setElementDetails(levelname, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, (neighbours.left.sampleDur-length1));
+			sServObj.setElementDetails(levelname, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart+length2, (neighbours.right.sampleDur-length2));			
+			var insertPoint = 0;
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === levelname) {
+					if (level.type === "SEGMENT") {
+					    angular.forEach(level.items, function (evt, num) {
+					        if (evt.id == neighbours.left.id) {
+					            insertPoint = num + 1;								
+					        }
+					    });
+					    for(x in segments) {
+					        level.items.splice(insertPoint++, 0, segments[x]);
+					    }
+					    
+					}
+				}
+			});
+			
+			
+		};
+
+		sServObj.deleteSegments = function (levelname, segments, neighbours) {
+			var length1 = 0;
+			var length2 = 0;
+			var length = 0;
+			var text = '';
+			for (var x in segments) {
+				length += segments[x].sampleDur;
+			}
+			if(length1%2==0) {
+			  length1 = length / 2;
+			  length2 = length1;
+			}
+			else {
+			  length1 = Math.ceil(length/2);
+			  length2 = length1-1;
 			}
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
@@ -278,9 +279,13 @@ angular.module('emuwebApp')
 				});
 				}
 			});
+			if(neighbours.left!==undefined) {
+			  sServObj.setElementDetails(levelname, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, (neighbours.left.sampleDur+length1));
+			}
+			if(neighbours.right!==undefined) {
+			  sServObj.setElementDetails(levelname, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart - length2, (neighbours.right.sampleDur+length2));
+			}
 			
-			sServObj.setElementDetails(levelname, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, (neighbours.left.sampleDur+length1));
-			sServObj.setElementDetails(levelname, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart - length2, (neighbours.right.sampleDur+length2));
 		};
 
 		sServObj.insertSegmentInvers = function (start, end, levelName, newLabel) {

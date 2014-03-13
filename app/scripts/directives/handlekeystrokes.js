@@ -450,7 +450,7 @@ angular.module('emuwebApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
-                        'levelName': tn,
+                        'name': tn,
                         'levelType': viewState.getcurMouseLevelType(),
                         'seg': seg
                       });
@@ -471,7 +471,7 @@ angular.module('emuwebApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
-                          'levelname': viewState.getcurClickLevelName(),
+                          'name': viewState.getcurClickLevelName(),
                           'selected': selected,
                           'neighbours': neighbour
                         });
