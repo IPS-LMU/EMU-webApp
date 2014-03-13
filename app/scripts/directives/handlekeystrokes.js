@@ -464,16 +464,16 @@ angular.module('emuwebApp')
                     var seg = viewState.getcurClickSegments();
                     if (seg !== undefined) {
                       var selected = viewState.getcurClickSegments();
-                      var ids = viewState.getcurClickSegments();
-                      if (viewState.getcurClickLevelType() === 'seg') {
-                        var click = Levelservice.deleteSegments(selected, ids, viewState.getcurClickLevelName());
-                        viewState.setcurClickSegment(click.segment, click.id);
+                      var neighbour = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(),selected[0].id,selected[selected.length-1].id);
+                      if (viewState.getcurClickLevelType() === 'SEGMENT') {
+                        Levelservice.deleteSegments(viewState.getcurClickLevelName(), selected, neighbour);
+                        viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
-                          'levelName': viewState.getcurClickLevelName(),
+                          'levelname': viewState.getcurClickLevelName(),
                           'selected': selected,
-                          'ids': ids
+                          'neighbours': neighbour
                         });
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
