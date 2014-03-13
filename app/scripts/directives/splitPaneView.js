@@ -1,5 +1,5 @@
 angular.module('bgDirectives', [])
-  .directive('bgSplitter', function() {
+  .directive('bgSplitter', function(viewState) {
     return {
       restrict: 'E',
       replace: true,
@@ -41,7 +41,7 @@ angular.module('bgDirectives', [])
             pos = ev.clientY - bounds.top;
             // perc = pos/height * 100;
             // console.log(perc);
-            
+
             if (pos < pane1Min) return;
             if (height - pos < pane2Min) return;
 
@@ -65,11 +65,13 @@ angular.module('bgDirectives', [])
     
         handler.bind('mousedown', function (ev) { 
           ev.preventDefault();
-          drag = true; 
+          drag = true;
+          viewState.setdragBarActive(drag);
         });
     
         angular.element(document).bind('mouseup', function (ev) {
           drag = false;
+          viewState.setdragBarActive(drag);
         });
       }
     };

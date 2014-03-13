@@ -31,7 +31,9 @@ angular.module('emuwebApp')
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
               drawSpectMarkup();
-              drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);
+              if (!scope.vs.getdragBarActive()) {
+                drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);
+              }
             }
           }
         });
