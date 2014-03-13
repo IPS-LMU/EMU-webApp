@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Levelservice', function Levelservice($rootScope, uuid) {
+	.service('Levelservice', function Levelservice($rootScope, uuid, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -68,6 +68,7 @@ angular.module('emuwebApp')
 			});
 			return details;
 		};
+	
 		
 
 		/**
@@ -510,16 +511,41 @@ angular.module('emuwebApp')
 
 
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
-		  var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
-		  var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
-			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
-    		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+		  if(lastNeighbours.left === undefined ) {
+		    var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
+			if( ( (0 + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
-		        angular.forEach(selected, function (s) {
+  		        angular.forEach(selected, function (s) {
 		            var orig = sServObj.getElementDetails(name, s.id);
 		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
     		    });	    
-			}
+			}		  	  
+		  }
+		  else if(lastNeighbours.right === undefined ) {
+		    var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
+		    var origRight = sServObj.getElementDetails(name, selected[selected.length-1].id);
+			if((lastNeighbours.left.sampleDur + changeTime) >= 1) {
+			  if((origRight.sampleStart + origRight.sampleDur + changeTime ) < Soundhandlerservice.wavJSO.Data.length ) {  
+    		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+  		        angular.forEach(selected, function (s) {
+		            var orig = sServObj.getElementDetails(name, s.id);
+		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
+    		    });	    			  
+			  }
+			}		  		  
+		  }
+		  else {
+		    var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
+		    var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
+			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
+    		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
+  		        angular.forEach(selected, function (s) {
+		            var orig = sServObj.getElementDetails(name, s.id);
+		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
+    		    });	    
+			}		  
+		  }
 		};
 
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
