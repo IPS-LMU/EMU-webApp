@@ -1,3 +1,7 @@
+/** 
+    ###################################
+    global CSS
+*/
 * {
     text-rendering: optimizeLegibility;
     margin: 0;
@@ -23,7 +27,6 @@ html, body{
     text-align:center;
 }
 
-
 ul {
     list-style-type: none;
     margin: 0pt;
@@ -34,6 +37,56 @@ li {
     margin: 0pt;
     padding: 0pt;
 }
+
+/** 
+    ###################################
+    MainCtrl CSS
+    see: main.html
+    is meant for the basic layout (top/bottom/right side menus + split panes +...)
+*/
+.MainCtrl{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.mainWindow {
+    position:relative;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+
+.allCans {
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 127px);
+    background-color: white;
+}
+
+.topPane {
+    overflow: auto;
+    /*background-color: green;*/
+    background-color: white;
+    text-align: left;
+}
+
+.bottomPane {
+    color: white;
+    margin-top: 20px;
+    /*background-color: blue;*/
+    background-color: white;
+    text-align: right;
+    overflow: auto;
+}
+
+/**###############################*/
 
 .dialog {
     position: absolute;
@@ -280,51 +333,7 @@ li {
 }*/
 
 
-/** 
-    ###################################
-    MainCtrl CSS
-    see: main.html
-    is meant for the basic layout (top/bottom/right side menus + split panes +...)
-*/
-.MainCtrl{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
 
-.mainWindow {
-    position:relative;
-    top: 40px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: red;
-}
-
-.allCans {
-    position:absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 127px);
-    background-color: white;
-}
-
-.topPane {
-    overflow: auto;
-    background-color: green;
-    text-align: left;
-    height:100%;
-}
-
-.bottomPane {
-    color: white;
-    background-color: blue;
-    text-align: right;
-    overflow: auto;
-}
 
 /**#####################################*/
 
