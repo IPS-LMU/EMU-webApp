@@ -18,7 +18,7 @@
     float:left;
     width: calc(100% - 30px);
     height: 100%;
-    padding: 4px;
+    padding: 5px;
     background-color: #aaf;
 }
 
@@ -40,8 +40,8 @@
     left: 4px;
     border: 1px solid red;
     background-color: transparent;
-    width:calc(100% - 8px);
-    height: calc(100% - 8px);
+    width:calc(100% - 10px);
+    height: calc(100% - 10px);
     z-index: 2; 
 }
 
