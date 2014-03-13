@@ -1,16 +1,12 @@
 <div id="osciOuter" class="osciOuter">
     <div class="osciCanvasContainer">
-        <canvas width="2048" height="128" class="osciCanvas" id="osciCanvas"></canvas>
-<!-- 	<span ng-switch="showSSFFOsci">
-        <canvas ng-switch-when="true" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff></canvas>
-    </span>	 -->
-
-    <!-- <canvas width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff ssff-trackname="OSCI"></canvas> -->
-    <!-- <canvas width="2048" height="128" trackmouse class="OsciMarkupCanvas" id="OsciMarkupCanvas"></canvas> -->
-    <!-- <div class="buttons" id="buttons"> -->
-    	<!-- <div class="resize" id="resize" ng-click="resizeOsci();" ng-style="buttonstyle('resizeOsci')"> -->
-    		<!-- <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize"> -->
-    	<!-- </div>	 -->
+        <canvas class="osciCanvas" id="osciCanvas" width="2048" height="128"></canvas>
+        <canvas class="osciSsffTrackCanvas" id="osciSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="OSCI"></canvas>
+        <canvas class="osciMarkupCanvas" id="osciMarkupCanvas" width="2048" height="128" trackmouse></canvas>
     </div>
-</div>
+    <div class="osciButtonsContainer" id="osciButtonsContainer">
+        <div class="osciResizeBtn" id="osciResizeBtn" ng-click="resizeOsci();" ng-style="buttonstyle('resizeOsci')">
+            <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
+        </div> 
+    </div>
 </div>
