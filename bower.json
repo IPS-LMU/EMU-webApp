@@ -1,8 +1,7 @@
 {
   "name": "EMU-webApp",
   "version": "0.0.1",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "jquery": "~1.10.2",
     "angular": "~1.2.0-rc.2",
@@ -12,6 +11,7 @@
     "angular-animate": "~1.2.9",
     "bootstrap": "~3.0.3",
     "ngprogress-lite": "~1.0.4",
-    "angular-ui-layout": "bower"
+    "angular-ui-layout": "bower",
+    "bg-splitter": "*"
   }
 }

@@ -53,7 +53,7 @@ angular.module('emuwebApp')
 		});
 
 		// init pure jquery dragbar
-		$('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
+		// $('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
 
 
 
@@ -197,8 +197,8 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.window);
 
 			// set timeline height according to config settings "colors.timelineHeight"
-			$('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
-			$('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
+			// $('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
+			// $('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
@@ -208,9 +208,8 @@ angular.module('emuwebApp')
 			}
 
 			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
-			console.log();
-			$('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]);
-			$('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]);
+			// $('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]);
+			// $('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]);
 
 		};
 

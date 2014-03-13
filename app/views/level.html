@@ -1,19 +1,19 @@
- <div class="LevelOuter">
-  <div class="LevelTop">
-    <canvas width="1280" height="64" id="LevelCanvas" class="LevelCanvas"></canvas>
-    <canvas trackmouseinlevel width="1280" height="64" class="LevelMarkupCanvas" id="LevelMarkupCanvas"></canvas>
+ <div class="levelOuter">
+  <div class="levelCanvasContainer">
+    <canvas id="levelCanvas" class="levelCanvas"></canvas>
+    <canvas id="levelMarkupCanvas" class="levelMarkupCanvas" trackmouseinlevel ></canvas>
   </div>
- <div class="buttonsLevels" id="buttonsLevels">
-   <div delete class="delete" id="delete" ng-show="cps.vals.activeButtons.deleteSingleLevel" >
-	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="delete">
+  <div class="levelButtonsContainer">
+   <div class="levelDeleteBtn" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete>
+     <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="delete">
    </div>
-   <div resize class="resize" id="resize" ng-show="cps.vals.activeButtons.resizeSingleLevel" >
-	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="resize">
+   <div class="levelResizeBtn" ng-show="cps.vals.activeButtons.resizeSingleLevel" resize>
+     <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="resize">
    </div>
-   <div save class="save" id="save" ng-show="cps.vals.activeButtons.saveSingleLevel" >
-	<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="export">
+   <div class="levelSaveBtn" ng-show="cps.vals.activeButtons.saveSingleLevel" save>
+     <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="export">
    </div> 
  </div>
- </div>
+</div>
 
 
