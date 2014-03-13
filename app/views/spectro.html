@@ -1,15 +1,12 @@
-<div class="SpectroDiv" id="SpectroDiv">
-	<canvas width="2048" height="128" class="SpectroCanvas" id="SpectroCanvas"></canvas>
-<!-- 	    <span ng-switch="showSSFFSpectro">
-	        <canvas ng-switch-when="true" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff ssff-trackname="SPEC"></canvas>
-		</span>
-	-->    	
-	<canvas width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff ssff-trackname="SPEC"></canvas>
+<div class="spectroOuter" id="spectroOuter">
+	<div class="spectroCanvasContainer">
+		<canvas class="spectroCanvas" id="spectroCanvas" width="2048" height="128"></canvas>
+		<canvas class="spectroSsffTrackCanvas" id="spectroSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="SPEC"></canvas>
 
-	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse correctiontool></canvas>
-
-	<div class="buttons" id="buttons">
-		<div class="resize" id="resize" ng-click="resizeSpectro();" ng-style="buttonstyle('resizeSpectro')">
+		<canvas class="spectroMarkupCanvas" id="spectroMarkupCanvas" width="2048" height="128" trackmouse correctiontool></canvas>
+	</div>
+	<div class="spectroButtonsContainer" id="spectroButtonsContainer">
+		<div class="spectroResizeBtn" id="spectroResizeBtn" ng-click="resizeSpectro();" ng-style="buttonstyle('resizeSpectro')">
 			<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
 		</div>	
 	</div>
