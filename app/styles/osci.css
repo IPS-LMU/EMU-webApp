@@ -6,9 +6,9 @@
 
 .osciOuter {
     width: 100%;
-    height: 64px;
+    height: 128px;
     background-color: white;
-    border: 1px solid gray;
+    /*border: 1px solid gray;*/
 }
 
 .osciCanvasContainer {
@@ -17,7 +17,7 @@
     width: calc(100% - 30px);
     height: 100%;
     padding: 5px;
-    background-color: #aaf;
+    /*background-color: #aaf;*/
 }
 
 .osciCanvas {
@@ -34,7 +34,7 @@
     position: absolute;
     top: 5px; 
     left: 5px;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     background-color: transparent;
     width:calc(100% - 10px);
     height: calc(100% - 10px);
@@ -45,7 +45,7 @@
     position: absolute;
     top: 5px; 
     left: 5px;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     background-color: transparent;
     width:calc(100% - 10px);
     height: calc(100% - 10px);
@@ -57,7 +57,7 @@
     float: left;
     width: 30px;
     height: 100%;
-    background-color: #0a0;
+    /*background-color: #0a0;*/
 }
 
 /*osciButtons*/
@@ -68,7 +68,7 @@
     width: 20px;
     height: calc(100%/3);
     background-color: white;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .osciResizeBtn img {
