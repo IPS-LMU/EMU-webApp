@@ -378,9 +378,11 @@ angular.module('emuwebApp')
 							t.items[startID + 1].sampleStart = start;
 							t.items[startID + 1].sampleDur = diff2;
 							t.items[startID + 1].label = newLabel;
+							t.items[startID + 1].id = uuid.new();
 							t.items[startID + 2].sampleStart = end;
 							t.items[startID + 2].sampleDur = t.items[startID].sampleDur - diff - diff2;
 							t.items[startID + 2].label = newLabel;
+							t.items[startID + 2].id = uuid.new();
 							t.items[startID].sampleDur = diff;
 
 						}
