@@ -392,9 +392,10 @@ angular.module('emuwebApp')
 							if (startP < last && (Math.floor(startP) != Math.floor(evt.samplePoint))) {
 							   console.log("hier");
 								t.items.splice(id - 1, 0, angular.copy(t.items[id - 1]));
-								t.items[id].samplePoint = startP;
-								t.items[id].labels[0].value = pointName;
+								t.items[id-1].samplePoint = startP;
+								t.items[id-1].labels[0].value = pointName;
 								ret = true;
+								console.log(t.items);
 							}
 							last = evt.samplePoint;
 						}
