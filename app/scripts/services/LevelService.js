@@ -385,27 +385,18 @@ angular.module('emuwebApp')
 		sServObj.insertPoint = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-			    console.log(t.type);
-				if (t.name === levelName && t.type == "ITEM") {
-					var pid = 0;
-					var last = 0;
+				if (t.name === levelName && t.type == "EVENT") {
+					var last = t.items[0].samplePoint;
 					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
-							if (startP > last && startP < evt.sampleStart && (Math.floor(startP) != Math.floor(evt.sampleStart))) {
-
-								console.log(t.items);
-								console.log(id);
-
-
+							if (startP < last && (Math.floor(startP) != Math.floor(evt.samplePoint))) {
+							   console.log("hier");
 								t.items.splice(id - 1, 0, angular.copy(t.items[id - 1]));
-
-								console.log(t.items);
-
-								t.items[id].sampleStart = startP;
-								t.items[id].label = pointName;
+								t.items[id].samplePoint = startP;
+								t.items[id].labels[0].value = pointName;
 								ret = true;
 							}
-							last = evt.sampleStart;
+							last = evt.samplePoint;
 						}
 
 					});
