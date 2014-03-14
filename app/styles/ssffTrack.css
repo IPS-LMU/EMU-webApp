@@ -1,0 +1,22 @@
+/** 
+    ###################################
+    Osci CSS
+    see: osci directive and template
+*/
+
+.ssffTrackOuter {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 25%;
+    border: 1px solid gray;
+}
+
+.ssffTrackCanvasContainer {
+    position: relative;
+    float:left;
+    width: calc(100% - 30px);
+    height: 100%;
+    padding: 5px;
+    background-color: #aaf;
+}

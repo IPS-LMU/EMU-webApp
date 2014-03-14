@@ -3,10 +3,11 @@
 angular.module('emuwebApp')
   .directive('ssffTrack', function () {
     return {
-      template: '<div></div>',
+      templateUrl: 'views/ssffTrack.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-        element.text('this is the ssffTrack directive');
+        // element.text('this is the ssffTrack directive');
+        // alert("duuude");
       }
     };
   });
