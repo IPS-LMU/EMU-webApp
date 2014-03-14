@@ -23,7 +23,7 @@ angular.module('emuwebApp')
 				        }
 				    });
 				}
-				if (level.type === 'EVENT') {
+				if (level.type === 'ITEM') {
 				    level.items.forEach(function (item, iid) {
 				        if(item.id===undefined) {
 				            item.id = uuid.new();
@@ -385,7 +385,8 @@ angular.module('emuwebApp')
 		sServObj.insertPoint = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "POINT") {
+			    console.log(t.type);
+				if (t.name === levelName && t.type == "ITEM") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
@@ -416,7 +417,7 @@ angular.module('emuwebApp')
 		sServObj.insertPointInvers = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "EVENT") {
+				if (t.name === levelName && t.type == "ITEM") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
