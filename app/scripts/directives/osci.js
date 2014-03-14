@@ -5,6 +5,7 @@ angular.module('emuwebApp')
 	.directive('osci', function () {
 		return {
 			templateUrl: 'views/osci.html',
+			replace: true,
 			restrict: 'E',
 			link: function postLink(scope, element) {
 				// select the needed DOM elements from the template
@@ -41,7 +42,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
-						}else{
+						} else {
 							var ctx = canvas.getContext('2d');
 							ctx.clearRect(0, 0, canvas.width, canvas.height);
 							ctx = markupCanvas.getContext('2d');
