@@ -400,6 +400,7 @@ angular.module('emuwebApp')
 							   console.log("hier");
 								t.items.splice(id - 1, 0, angular.copy(t.items[id - 1]));
 								t.items[id-1].samplePoint = startP;
+								t.items[id-1].id = uuid.new();
 								t.items[id-1].labels[0].value = pointName;
 								ret = true;
 								console.log(t.items);
