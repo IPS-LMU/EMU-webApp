@@ -30,6 +30,13 @@ angular.module('emuwebApp')
 				        }				    
 				    });
 				}
+				if (level.type === 'EVENT') {
+				    level.items.forEach(function (item, iid) {
+				        if(item.id===undefined) {
+				            item.id = uuid.new();
+				        }				    
+				    });
+				}	
 			});		    
 			angular.copy(data, sServObj.data);
 		};
@@ -508,8 +515,8 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.movePoint = function (changeTime, name, seg) {
-		  var orig = sServObj.getElementDetails(name, seg.id);
-		  sServObj.setPointDetails(name, seg.id, orig.labels[0].value, (orig.samplePoint+changeTime));
+		  console.log(seg);	
+		  sServObj.setPointDetails(name, seg.id, seg.labels[0].value, (seg.samplePoint+changeTime));
 		};
 
 
