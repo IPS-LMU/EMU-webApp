@@ -397,13 +397,11 @@ angular.module('emuwebApp')
 					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
 							if (startP < last && (Math.floor(startP) != Math.floor(evt.samplePoint))) {
-							   console.log("hier");
 								t.items.splice(id - 1, 0, angular.copy(t.items[id - 1]));
 								t.items[id-1].samplePoint = startP;
 								t.items[id-1].id = uuid.new();
 								t.items[id-1].labels[0].value = pointName;
 								ret = true;
-								console.log(t.items);
 							}
 							last = evt.samplePoint;
 						}
@@ -417,12 +415,11 @@ angular.module('emuwebApp')
 		sServObj.insertPointInvers = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "ITEM") {
-					var pid = 0;
+				if (t.name === levelName && t.type == "EVENT") {
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
-							if (startP == evt.sampleStart) {
+							if (startP == evt.samplePoint) {
 								t.items.splice(id, 1);
 								ret = true;
 							}
