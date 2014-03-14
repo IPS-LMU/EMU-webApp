@@ -8,9 +8,11 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attrs) {
 				scope.$watch(attrs.showMenu, function (newVal) {
 					if (newVal) {
-						$animate.addClass(element, '.slideInMenu');
+						// $animate.addClass(element, '.slideInMenu');
+						$animate.addClass(element, 'slideLeft');
 					} else {
-						$animate.removeClass(element, '.slideInMenu');
+						// $animate.removeClass(element, '.slideInMenu');
+						$animate.removeClass(element, 'slideLeft');
 					}
 				})
 			}
@@ -21,6 +23,7 @@ angular.module('emuwebApp')
 angular.module('emuwebApp').animation(".slideInMenu", function () {
 	return {
 		addClass: function (element, className) {
+			alert("sdfsdf")
 			element.addClass('slideLeft');
 		},
 		removeClass: function (element, className) {
