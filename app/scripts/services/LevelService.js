@@ -385,7 +385,7 @@ angular.module('emuwebApp')
 		sServObj.insertPoint = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "point") {
+				if (t.name === levelName && t.type == "POINT") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
@@ -416,7 +416,7 @@ angular.module('emuwebApp')
 		sServObj.insertPointInvers = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "point") {
+				if (t.name === levelName && t.type == "EVENT") {
 					var pid = 0;
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {

@@ -398,7 +398,7 @@ angular.module('emuwebApp')
                     if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                     } else {
-                      if (viewState.getcurClickLevelType() == "seg") {
+                      if (viewState.getcurClickLevelType() == "SEGMENT") {
                         var insSeg = Levelservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                         if (!insSeg) {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
