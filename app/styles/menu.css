@@ -1,3 +1,34 @@
+/** 
+    ###################################
+    submenu CSS
+    see: level directive and template
+*/
+
+.bundleListOuter {
+    width:238px;  
+    height: 50%;
+    position: fixed;
+    background: rgb(56,54,62);
+    color: #fff;
+    min-height: 100%;
+    /*padding-right: 10px;*/
+    /*overflow-y:auto;*/
+    /*border: 1px solid red;*/
+}
+
+.bundleListOuter h3 {
+    /*background: rgba(56,54,62,100);*/
+    /*background: rgb(64,62,70);*/
+    font-size: 12px;
+    /*height:40px;*/
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 0;
+    /*padding-left:10px;*/
+    /*border: 2px solid green;*/
+    border-bottom:thin solid white;
+}
+
 .bundleFilter input[type="text"]{
     background: url(../img/search-dark.png) no-repeat 10px 6px #fff;
     border: 0 none;
@@ -20,57 +51,53 @@
 }
 
 
-.submenu {
+.bundleListContainer {
+
     width: 100%;
-    height: 100%;
-    min-height: 100%;
+    height: calc(100% - 40px);
+    /*height: 180px;*/
+    /*min-height: 100%;*/
     overflow-y:auto;
     text-align: left;
-    padding: 0px;
-    padding-bottom: 40px;
+    /*padding: 0px;*/
+    /*padding-bottom: 40px;*/
+    padding: 10px;
+    /*padding-right: 10px;*/
+    /*border: 1px solid red;*/
+    font-size: 80%;
+
 }
 
-.submenu div{
+/*.bundleListContainer div{
     width: 200px;
     text-align: left;
     padding-left: 10px;
-    font-size: 90%;
 }
+*/
+/*.cbp-spmenu {
+    position: fixed;
+    width:238px;  
+    background: rgb(56,54,62);
+    color: #fff;
+    border: 0px;
+}*/
 
-.cbp-spmenu {
+/*.cbp-spmenu-right {
     position: fixed;
     width:238px;  
     background: rgb(56,54,62);
     color: #fff;
     border: 0px;
 }
+*/ 
 
-.cbp-spmenu-right {
-    position: fixed;
-    width:238px;  
-    background: rgb(56,54,62);
-    color: #fff;
-    border: 0px;
-}
  
-.cbp-spmenu h3 {
-    /*background: rgba(56,54,62,100);*/
-    /*background: rgb(64,62,70);*/
-    font-size: 12px;
-    /*height:40px;*/
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin: 0;
-    /*padding-left:10px;*/
-    border-bottom:thin solid white;
-}
- 
-.cbp-spmenu-vertical {
+/*.cbp-spmenu-vertical {
     width: 240px;
     height: 100%;
     top: 0;
     z-index: 1000;
-}
+}*/
  
 /* Vertical menu that slides from the left or right */
  

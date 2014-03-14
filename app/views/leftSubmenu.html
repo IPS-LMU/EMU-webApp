@@ -1,7 +1,7 @@
-<div>
+<div class="bundleListOuter">
     <h3><div class="bundleFilter"><input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
-    <div id="submenu" class="submenu">
-        <div class="utteranceOuter" ng-repeat="bundle in bundleList | regex:filterText">
+    <div id="bundleListContainer" class="bundleListContainer">
+        <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="bundleListItem" id="uttListItem" ng-style="getUttColor(bundle);" ng-click="menuBundleClick(bundle);">
                 <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuUttSave(bundle);" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
                 <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
