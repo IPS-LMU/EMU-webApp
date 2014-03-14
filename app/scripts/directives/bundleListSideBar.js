@@ -2,9 +2,9 @@
 
 
 angular.module('emuwebApp')
-.directive('submenu', function ($animate) {
+.directive('bundleListSideBar', function ($animate) {
 	return {
-		templateUrl: 'views/leftSubmenu.html',
+		templateUrl: 'views/bundleListSideBar.html',
 		restrict: 'E',
 		link: function postLink(scope, element, attr) {
 

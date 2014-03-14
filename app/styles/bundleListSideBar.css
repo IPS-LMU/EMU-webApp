@@ -4,7 +4,7 @@
     see: level directive and template
 */
 
-.bundleListOuter {
+.bundleListMenuOuter {
     width:238px;  
     height: 50%;
     position: fixed;
@@ -16,7 +16,7 @@
     /*border: 1px solid red;*/
 }
 
-.bundleListOuter h3 {
+.bundleListMenuOuter h3 {
     /*background: rgba(56,54,62,100);*/
     /*background: rgb(64,62,70);*/
     font-size: 12px;
