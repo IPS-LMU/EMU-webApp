@@ -22,26 +22,34 @@ angular.module('emuwebApp')
         element.bind('click', function () {
           if (open) {
             open = false;
-            elem.parent().parent()[0].className = cssSmallLevel + ' ng-scope';
-            canvas[0].className = cssLevelCanvas + ' ' + cssSmallCanvas;
-            canvas[1].className = cssLevelMarkupCanvas + ' ' + cssSmallCanvas;
-            if (scope.config.vals.activeButtons.deleteSingleLevel) {
-              bDelete.hide();
-            }
-            if (scope.config.vals.activeButtons.saveSingleLevel) {
-              bSave.hide();
-            }
+            var small = {'height': '32px'};
+            elem.css(small)
+
+            // elem.parent().parent()[0].className = cssSmallLevel + ' ng-scope';
+            // canvas[0].className = cssLevelCanvas + ' ' + cssSmallCanvas;
+            // canvas[1].className = cssLevelMarkupCanvas + ' ' + cssSmallCanvas;
+            // if (scope.config.vals.activeButtons.deleteSingleLevel) {
+            //   bDelete.hide();
+            // }
+            // if (scope.config.vals.activeButtons.saveSingleLevel) {
+            //   bSave.hide();
+            // }
           } else {
             open = true;
-            elem.parent().parent()[0].className = cssLevel + ' ng-scope';
-            canvas[0].className = cssLevelCanvas;
-            canvas[1].className = cssLevelMarkupCanvas;
-            if (scope.config.vals.activeButtons.deleteSingleLevel) {
-              bDelete.show();
-            }
-            if (scope.config.vals.activeButtons.saveSingleLevel) {
-              bSave.show();
-            }
+            var big = {'height': '64px'};
+            elem.css(big)
+            // console.log(elem);
+
+
+            // elem.parent().parent()[0].className = cssLevel + ' ng-scope';
+            // canvas[0].className = cssLevelCanvas;
+            // canvas[1].className = cssLevelMarkupCanvas;
+            // if (scope.config.vals.activeButtons.deleteSingleLevel) {
+            //   bDelete.show();
+            // }
+            // if (scope.config.vals.activeButtons.saveSingleLevel) {
+            //   bSave.show();
+            // }
           }
           scope.updateView();
 
