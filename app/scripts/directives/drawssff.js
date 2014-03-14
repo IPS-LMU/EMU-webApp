@@ -18,6 +18,11 @@ angular.module('emuwebApp')
           handleUpdate(newValue, oldValue);
         }, true);
 
+        //watch perspective change
+        scope.$watch('vs.curPerspectiveIdx', function (newValue, oldValue) {
+          handleUpdate(newValue, oldValue);
+        }, true);
+
         //watch vs.curPreselColumnSample change
         scope.$watch('vs.curPreselColumnSample', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
