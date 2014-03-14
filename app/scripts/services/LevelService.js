@@ -355,6 +355,7 @@ angular.module('emuwebApp')
 							t.items[startID + 1].sampleStart = start;
 							t.items[startID + 1].sampleDur = t.items[startID].sampleDur - diff;
 							t.items[startID + 1].label = newLabel;
+							t.items[startID + 1].id = uuid.new();
 							t.items[startID].sampleDur = diff;
 						}
 					} else {
@@ -513,7 +514,6 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.movePoint = function (changeTime, name, seg) {
-		  console.log(seg);	
 		  sServObj.setPointDetails(name, seg.id, seg.labels[0].value, (seg.samplePoint+changeTime));
 		};
 
