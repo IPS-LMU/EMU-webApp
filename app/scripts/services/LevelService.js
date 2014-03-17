@@ -15,7 +15,7 @@ angular.module('emuwebApp')
 		 * sets annotation data and generates unique uuid if id in element is not set
 		 */
 		sServObj.setData = function (data) {
-			data.levels.forEach(function (level, lid) {
+			/*data.levels.forEach(function (level, lid) {
 				if (level.type === 'SEGMENT') {
 				    level.items.forEach(function (item, iid) {
 				        if(item.id===undefined) {
@@ -37,7 +37,7 @@ angular.module('emuwebApp')
 				        }				    
 				    });
 				}	
-			});		    
+			});	*/	    
 			angular.copy(data, sServObj.data);
 		};
 
@@ -143,22 +143,35 @@ angular.module('emuwebApp')
 		 * get's element details by passing in level, pcm position and maximum pcm
 		 */
 		sServObj.getEvent = function (pcm, level, maximum) {
-			var evtr = null;
-			var evtrNearest = null;
+			var event = null;
+			var nearest = false;
 			if (level.type === "SEGMENT") {
 				angular.forEach(level.items, function (evt, index) {
+				    if (pcm <=evt.sampleStart) {
+						event = level.items[0];
+				    }
 				    if (pcm >= evt.sampleStart) {
 					    if(pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
-								evtrNearest = level.items[index+1];
+							    if(level.items[index+1] !== undefined) {
+								    nearest = level.items[index+1];
+								}
+								else {
+								    nearest = true;
+								    event = level.items[level.items.length-1];
+								}
 							} else {
-								evtrNearest = level.items[index];
+								nearest = level.items[index];
 							}
 						}
 					}
 					if (pcm >= evt.sampleStart) {
 					    if(pcm <= (evt.sampleStart + evt.sampleDur)) {
-						    evtr = evt;
+						    event = evt;
+					    }
+					    else {
+					        nearest = true;
+					        event = level.items[level.items.length-1];
 					    }
 					}
 				});
@@ -177,12 +190,12 @@ angular.module('emuwebApp')
 					    spaceLower = 0;
 					}
 					if (pcm <= spaceHigher && pcm >= spaceLower) {
-						evtr = evt;				
-						evtrNearest = evt;
+						event = evt;				
+						nearest = evt;
 					}
 				});
 			}
-			return {evtr:evtr, nearest: evtrNearest};
+			return {evtr:event, nearest: nearest};
 		};
 
 		/**

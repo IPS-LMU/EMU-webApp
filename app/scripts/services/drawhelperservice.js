@@ -262,7 +262,7 @@ angular.module('emuwebApp')
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
 			// calc. offset dependant on type of level of mousemove  -> default is sample exact
-			if (viewState.getcurMouseLevelType() === 'seg') {
+			if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 				xOffset = 0;
 			} else {
 				xOffset = (sDist / 2);
