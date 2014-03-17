@@ -171,28 +171,48 @@
 			"sublevelName" : "Syllable"
 		}
 	],
-	"EMUwebAppConfig" : {
-		"perspectives" : [
-			{
-				"name" : "default",
-				"signalCanvases" : {
-					"order" : [
-						"OSCI",
-						"SPEC"
-					],
-					"assign" : [
-						{
-							"SPEC" : "dft"
-						}
-					]
-				},
-				"levelCanvases" : {
-					"order" : [
-						"Phonetic",
-						"Tone"
-					]
-				}
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [{
+					"SPEC": "FORMANTS"
+				}],
+				"contourLims": [{
+					"ssffTrackName": "FORMANTS",
+					"min": 0,
+					"max": 1
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Phonetic", "Tone"]
+			},
+			"twoDcanvases": {
+				"show": false
 			}
-		]
+		}, {
+			"name": "switchedLevels",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [{
+					"SPEC": "FORMANTS"
+				}],
+				"contourLims": [{
+					"ssffTrackName": "FORMANTS",
+					"min": 0,
+					"max": 3
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Tone", "Phonetic"]
+			},
+			"twoDcanvases": {
+				"show": true
+			}
+		}],
+		"activeButtons": {
+			"saveBundle": true
+		}
 	}
 }

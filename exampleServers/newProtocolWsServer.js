@@ -5,7 +5,7 @@ var filewalker = require('filewalker');
 var labelData;
 
 var pathToDbRoot = '../app/testData/newFormat/ae/';
-var configName = 'globalDBconfig.json';
+var configName = 'ae_DBconfig.json';
 
 var portNr = 8080;
 
