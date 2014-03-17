@@ -66,7 +66,7 @@ angular.module('emuwebApp')
 				cb: defer
 			};
 			request.callbackID = callbackId;
-			ws.send(JSON.stringify(request));
+			ws.send(angular.toJson(request));
 			// timeout request if not answered
 			$timeout(function () {
 				var tOutResp = {
@@ -207,7 +207,7 @@ angular.module('emuwebApp')
 			return promise;
 		};
 
-		// ws  getBundle
+		// ws  saveBundle
 		sServObj.saveBundle = function (bundleData) {
 			ngProgressLite.start();
 			ngProgressLite.set(0.5);

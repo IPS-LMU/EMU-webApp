@@ -144,7 +144,7 @@ wss.on('connection', function (ws) {
             bundle.annotation.filePath = p;
           }
           // read ssffTracks
-          
+
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
             var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
             if (pattTrack.test(p)) {
@@ -155,7 +155,7 @@ wss.on('connection', function (ws) {
               });
             }
           }
-          
+
 
         }).on('error', function (err) {
           ws.send(JSON.stringify({
@@ -195,14 +195,15 @@ wss.on('connection', function (ws) {
 
       // SAVEBUNDLE method
     case 'SAVEBUNDLE':
-          console.log("### Pretending to save bundle...")
-          ws.send(JSON.stringify({
-            'callbackID': mJSO.callbackID,
-            'status': {
-              'type': 'SUCCESS',
-              'message': 'Pst... I did not really do anything. Please do not tell anyone...'
-            }
-          }), undefined, 0);
+      console.log('### Pretending to save bundle...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'status': {
+          'type': 'SUCCESS',
+          'message': 'Pst... I did not really do anything. Please do not tell anyone...'
+        }
+      }), undefined, 0);
       break;
 
     default:

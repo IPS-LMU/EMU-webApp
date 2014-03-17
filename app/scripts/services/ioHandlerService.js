@@ -106,13 +106,13 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.saveBundle = function (name) {
+		sServObj.saveBundle = function (bundleData) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
 				alert('CORS version of saveBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-				getProm = Websockethandler.saveBundle(name);
+				getProm = Websockethandler.saveBundle(bundleData);
 			} 
 			// else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');

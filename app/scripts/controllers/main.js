@@ -348,40 +348,33 @@ angular.module('emuwebApp')
 		 */
 		$scope.menuBundleSaveBtnClick = function () {
 
-			// if ($scope.modifiedCurSSFF || $scope.modifiedCurLevelItems) {
 
 			//create bundle json
 			var bundleData = {};
 
-			// media file
-			// bundleData.mediaFile = {};
-			// bundleData.mediaFile.encoding = 'BASE64';
-			// bundleData.mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(Soundhandlerservice.wavJSO.origArrBuf);
+			// ssffFiles (only FORMANTS are allowed to be manipulated)
+			// if ($scope.modifiedCurSSFF) {
+				bundleData.ssffFiles = [];
+				Ssffdataservice.data.forEach(function (el, idx) {
 
-			// ssffFiles
-			// SIC have to check what file was modified and not send them all back
-			bundleData.ssffFiles = [];
-			Ssffdataservice.data.forEach(function (el, idx) {
-
-				bundleData.ssffFiles.push({
-					'ssffTrackName': el.ssffTrackName,
-					'encoding': 'BASE64',
-					'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
+					if (el.ssffTrackName === 'FORMANTS') {
+						bundleData.ssffFiles.push({
+							'ssffTrackName': el.ssffTrackName,
+							'encoding': 'BASE64',
+							'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
+						});
+					}
 				});
+			// }
+			// annotation
+			// if ($scope.modifiedCurLevelItems) {
+				bundleData.annotation = Levelservice.getData();
 
-				// var data = Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el));
-				console.log(el.ssffTrackName);
-			})
-
-			console.log($scope.curUtt.name);
-			Iohandlerservice.saveBundle($scope.curUtt.name).then(function (arg) {
-				ngProgressLite.done();
-				// $scope.modifiedCurSSFF = false;
-				// $scope.modifLevelItems = false;
-			});
-
-			// } else {
-			// 	alert("nothing to save");
+				Iohandlerservice.saveBundle(bundleData).then(function (arg) {
+					ngProgressLite.done();
+					$scope.modifiedCurSSFF = false;
+					$scope.modifLevelItems = false;
+				});
 			// }
 		};
 
