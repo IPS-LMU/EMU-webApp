@@ -2,12 +2,12 @@
 	<div class="spectroCanvasContainer">
 		<canvas class="spectroCanvas" id="spectroCanvas" width="2048" height="128"></canvas>
 		<canvas class="spectroSsffTrackCanvas" id="spectroSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="SPEC"></canvas>
-
 		<canvas class="spectroMarkupCanvas" id="spectroMarkupCanvas" width="2048" height="128" trackmouse correctiontool></canvas>
 	</div>
-	<div class="spectroButtonsContainer" id="spectroButtonsContainer">
-		<div class="spectroResizeBtn" id="spectroResizeBtn" ng-click="resizeSpectro();" ng-style="buttonstyle('resizeSpectro')">
-			<img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
-		</div>	
-	</div>
+    <div class="osciButtonsContainer" id="osciButtonsContainer">
+        <div class="osciResizeBtn" id="osciResizeBtn" enlarge>
+            <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
+        </div> 
+    </div>
+
 </div>

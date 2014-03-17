@@ -104,8 +104,8 @@ angular.module('emuwebApp')
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'name': scope.this.level.name,
-                    'neighbours': angular.copy(neighbours),
-                    'itemIdx': angular.copy(viewState.getcurClickSegments()),
+                    'neighbours': neighbours,
+                    'itemIdx': viewState.getcurClickSegments(),
                     'movedBy': moveBy
                   });
                   

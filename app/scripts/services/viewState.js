@@ -49,7 +49,6 @@ angular.module('emuwebApp')
     sServObj.submenuOpen = false;
     sServObj.rightSubmenuOpen = false;
     sServObj.modalOpen = false;
-    sServObj.scrollOpen = 0;
     sServObj.levelLength = 0;
     sServObj.curMouseLevelName = undefined;
     sServObj.curMouseLevelType = undefined;
@@ -391,20 +390,6 @@ angular.module('emuwebApp')
      */
     sServObj.setmodalOpen = function (s) {
       this.modalOpen = s;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.getscrollOpen = function () {
-      return this.scrollOpen;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setscrollOpen = function (s) {
-      this.scrollOpen = s;
     };
 
 

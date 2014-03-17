@@ -43,28 +43,4 @@ angular.module('emuwebApp')
 		// 	$scope.ssffds.data = [];
 		// });
 
-
-		/**
-		 *
-		 */
-		$scope.resizeSpectro = function () {
-			if (viewState.getscrollOpen() === 0) {
-				viewState.setscrollOpen(1);
-			} else {
-				viewState.setscrollOpen(0);
-			}
-		};
-
-
-		/**
-		 *
-		 */
-		$scope.resizeOsci = function () {
-			if (viewState.getscrollOpen() === 0) {
-				viewState.setscrollOpen(2);
-			} else {
-				viewState.setscrollOpen(0);
-			}
-		};
-
 	});

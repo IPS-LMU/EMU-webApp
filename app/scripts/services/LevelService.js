@@ -547,7 +547,7 @@ angular.module('emuwebApp')
 		  else {
 		    var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
 		    var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
-			if( ( (lastNeighbours.left.sampleDur + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
+			if( ( (origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0) ) {  
     		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {

@@ -8,7 +8,6 @@ angular.module('emuwebApp')
 
         var elem = element.parent().parent();
         var elemHeight = 0;
-        var canvas = element.parent().parent().find('canvas');
         var deleteButton = elem.find(element.parent().children()[0]);
         var resizeButton = elem.find(element.parent().children()[1]);
         var saveButton = elem.find(element.parent().children()[2]);
@@ -17,14 +16,14 @@ angular.module('emuwebApp')
         element.bind('click', function () {
           if (open) {
             open = false;
-            elemHeight = canvas.css('height');
-            canvas.css({'height': '32px'});
-            resizeButton.css({'margin-top': '12px'});
+            elemHeight = elem.css('height');
+            elem.css({'height': '32px'});
+            resizeButton.css({'margin-top': '5px'});
             deleteButton.hide();
             saveButton.hide();
           } else {
             open = true;
-            canvas.css({'height': elemHeight});
+            elem.css({'height': elemHeight});
             resizeButton.css({'margin-top': '0px'});
             deleteButton.show();
             saveButton.show();

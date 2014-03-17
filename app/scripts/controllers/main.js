@@ -324,7 +324,6 @@ angular.module('emuwebApp')
 						// viewState.curViewPort.sS = 110678;
 						// viewState.curViewPort.eS = 110703;
 						viewState.curViewPort.bufferLength = wavJSO.Data.length;
-						viewState.setscrollOpen(0);
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
 
