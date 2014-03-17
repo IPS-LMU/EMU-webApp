@@ -5,7 +5,7 @@
   "levels": [{
     "name": "Phonetic",
     "type": "SEGMENT",
-    "elements": [{
+    "items": [{
       "id": 1,
       "label": "V",
       "sampleStart": 3750,
@@ -14,7 +14,7 @@
   }, {
     "name": "Tone",
     "type": "EVENT",
-    "elements": [{
+    "items": [{
       "id": 2,
       "samplePoint": 8382,
       "label": "H*"
@@ -22,7 +22,7 @@
   }, {
     "name": "Syllable",
     "type": "ITEM",
-    "elements": [{
+    "items": [{
       "id": 5,
       "label": "W"
     }]
