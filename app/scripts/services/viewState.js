@@ -50,6 +50,7 @@ angular.module('emuwebApp')
     sServObj.rightSubmenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.levelLength = 0;
+    sServObj.enlarge = -1;
     sServObj.curMouseLevelName = undefined;
     sServObj.curMouseLevelType = undefined;
     sServObj.curClickLevelName = undefined;
@@ -347,6 +348,21 @@ angular.module('emuwebApp')
       this.submenuOpen = s;
     };
 
+
+    /**
+     * get the height of the osci
+     */
+    sServObj.setenlarge = function (s) {
+      this.enlarge = s;
+    };
+    
+    
+    /**
+     * get the height of the osci
+     */
+    sServObj.getenlarge = function () {
+      return this.enlarge;
+    };
 
     /**
      * get the height of the osci

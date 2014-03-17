@@ -6,15 +6,14 @@ angular.module('emuwebApp')
 
 		$scope.vs = viewState;
 		$scope.shs = Soundhandlerservice;
-		$scope.cps = ConfigProviderService.vals.colors; // SIC bad bad name!!!!
 		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.ssffds = Ssffdataservice;
 		$scope.hists = HistoryService;
-
-		// $scope.showSSFFOsci = false;
-		// $scope.showSSFFSpectro = true; // SIC SIC SIC
-
+		
+		$scope.curPerspective = function(cur, index) {
+		    return {'height': 100/$scope.config.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/$scope.config.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
+		};
 
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast

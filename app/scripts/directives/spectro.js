@@ -7,7 +7,8 @@ angular.module('emuwebApp')
       templateUrl: 'views/spectro.html',
       restrict: 'E',
       replace: true,
-      link: function postLink(scope, element) {
+      link: function postLink(scope, element, attrs) {
+        scope.order = attrs.order;
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];

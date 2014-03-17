@@ -7,12 +7,12 @@ angular.module('emuwebApp')
 			templateUrl: 'views/osci.html',
 			replace: true,
 			restrict: 'E',
-			link: function postLink(scope, element) {
+			link: function postLink(scope, element, attrs) {
+			    scope.order = attrs.order;
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
-
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {

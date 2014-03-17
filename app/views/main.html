@@ -31,9 +31,9 @@
       <div ng-controller="TimelineCtrl" class="timeline">
         <ul>
           <li ng-repeat="curTrack in config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
-            <osci ng-switch-when="OSCI" id="osci" class="osci" ng-style="{'height': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length * $index+'%'}"></osci>
-            <spectro ng-switch-when="SPEC" id="osci" class="osci" ng-style="{'height': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length * $index+'%'}"></spectro>
-            <ssff-track ng-switch-default ng-style="{'height': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length * $index+'%'}"></ssff-track>
+            <osci ng-switch-when="OSCI" id="osci" class="osci" order="{{$index}}" ng-style="curPerspective(vs.curPerspectiveIdx, $index)"></osci>
+            <spectro ng-switch-when="SPEC" id="osci" class="osci" order="{{$index}}" ng-style="curPerspective(vs.curPerspectiveIdx, $index)"></spectro>
+            <ssff-track ng-switch-default id="osci" class="osci"  order="{{$index}}" ng-style="curPerspective(vs.curPerspectiveIdx, $index)"></ssff-track>
           </li>
         </ul>
       </div>
