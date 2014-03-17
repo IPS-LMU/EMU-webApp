@@ -346,27 +346,58 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.menuUttSave = function () {
-			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.saveUtt($scope.curUtt).then(function (arg) {
-				$scope.modifiedCurSSFF = false;
-				$scope.modifLevelItems = false;
+		$scope.menuBundleSaveBtnClick = function () {
+
+			// if ($scope.modifiedCurSSFF || $scope.modifiedCurLevelItems) {
+
+			//create bundle json
+			var bundleData = {};
+
+			// media file
+			// bundleData.mediaFile = {};
+			// bundleData.mediaFile.encoding = 'BASE64';
+			// bundleData.mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(Soundhandlerservice.wavJSO.origArrBuf);
+
+			// ssffFiles
+			// SIC have to check what file was modified and not send them all back
+			bundleData.ssffFiles = [];
+			Ssffdataservice.data.forEach(function (el, idx) {
+
+				bundleData.ssffFiles.push({
+					'ssffTrackName': el.ssffTrackName,
+					'encoding': 'BASE64',
+					'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
+				});
+
+				// var data = Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el));
+				console.log(el.ssffTrackName);
+			})
+
+			console.log($scope.curUtt.name);
+			Iohandlerservice.saveBundle($scope.curUtt.name).then(function (arg) {
+				ngProgressLite.done();
+				// $scope.modifiedCurSSFF = false;
+				// $scope.modifLevelItems = false;
 			});
+
+			// } else {
+			// 	alert("nothing to save");
+			// }
 		};
 
 		/**
 		 *
 		 */
-		$scope.dragStart = function () {
-			viewState.setdragBarActive(true);
-		};
+		// $scope.dragStart = function () {
+		// 	viewState.setdragBarActive(true);
+		// };
 
 		/**
 		 *
 		 */
-		$scope.dragEnd = function () {
-			viewState.setdragBarActive(false);
-		};
+		// $scope.dragEnd = function () {
+		// 	viewState.setdragBarActive(false);
+		// };
 
 
 		/**
@@ -566,7 +597,7 @@ angular.module('emuwebApp')
 					Ssffdataservice.data = [];
 					$scope.showDropZone = true;
 					$scope.loadDefaultConfig();
-					
+
 					$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
 
 					viewState.setState('noDBorFilesloaded');

@@ -348,7 +348,7 @@ Where \texttt{bundleData} is the javascript object containing all the values of 
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
 }
 \end{lstlisting}
-Where \texttt{bundleData} is the javascript object containing all the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details).
+Where \texttt{bundleData} is the javascript object OPTIONALLY containing the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details). It only sends the data that has been altered.
 
 \begin{lstlisting}[caption=Reply content, language=json]
 {

@@ -3,7 +3,7 @@
     <div id="bundleListContainer" class="bundleListContainer">
         <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="bundleListItem" id="uttListItem" ng-style="getUttColor(bundle);" ng-click="menuBundleClick(bundle);">
-                <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuUttSave(bundle);" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveUtterance"><img /></button>
+                <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img /></button>
                 <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
                 <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
             </div>

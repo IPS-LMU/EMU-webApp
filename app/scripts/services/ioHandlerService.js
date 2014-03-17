@@ -103,6 +103,25 @@ angular.module('emuwebApp')
 		};
 
 
+		/**
+		 *
+		 */
+		sServObj.saveBundle = function (name) {
+			var getProm;
+
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of saveBundle not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+				getProm = Websockethandler.saveBundle(name);
+			} 
+			// else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
+				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
+			// 	getProm = $http.get('testData/testAeBundle.json'); // SIC SIC SIC HARDCODED -> name is ignored
+			// }
+
+			return getProm;
+		};
+
 		//
 		// EMU-webApp protocol ends here
 		////////////////////////////

@@ -207,6 +207,20 @@ angular.module('emuwebApp')
 			return promise;
 		};
 
+		// ws  getBundle
+		sServObj.saveBundle = function (bundleData) {
+			ngProgressLite.start();
+			ngProgressLite.set(0.5);
+
+			var request = {
+				type: 'SAVEBUNDLE',
+				data: bundleData
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
 		//
 		// EMU-webApp protocol ends here
 		////////////////////////////

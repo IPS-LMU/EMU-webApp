@@ -193,6 +193,18 @@ wss.on('connection', function (ws) {
         }).walk();
       break;
 
+      // SAVEBUNDLE method
+    case 'SAVEBUNDLE':
+          console.log("### Pretending to save bundle...")
+          ws.send(JSON.stringify({
+            'callbackID': mJSO.callbackID,
+            'status': {
+              'type': 'SUCCESS',
+              'message': 'Pst... I did not really do anything. Please do not tell anyone...'
+            }
+          }), undefined, 0);
+      break;
+
     default:
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,

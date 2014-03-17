@@ -68,14 +68,14 @@
 				}]
 			},
 			"levelCanvases": {
-				"order": ["Tone"]
+				"order": ["Tone", "Phonetic"]
 			},
 			"twoDcanvases": {
 				"show": true
 			}
 		}],
 		"activeButtons": {
-			"saveUtterance": true
+			"saveBundle": true
 		}
 	}
 }
