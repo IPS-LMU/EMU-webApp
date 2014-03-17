@@ -14,11 +14,7 @@
 							"name" : "Utterance",
 							"value" : ""
 						}
-					],
-					"label" : {
-						"name" : "Utterance",
-						"value" : ""
-					}
+					]
 				}
 			]
 		},
@@ -33,11 +29,7 @@
 							"name" : "Intonational",
 							"value" : "L%"
 						}
-					],
-					"label" : {
-						"name" : "Intonational",
-						"value" : "L%"
-					}
+					]
 				}
 			]
 		},
@@ -52,11 +44,7 @@
 							"name" : "Intermediate",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Intermediate",
-						"value" : "L-"
-					}
+					]
 				},
 				{
 					"id" : 39,
@@ -65,11 +53,7 @@
 							"name" : "Intermediate",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Intermediate",
-						"value" : "L-"
-					}
+					]
 				},
 				{
 					"id" : 63,
@@ -78,11 +62,7 @@
 							"name" : "Intermediate",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Intermediate",
-						"value" : "L-"
-					}
+					]
 				}
 			]
 		},
@@ -105,11 +85,7 @@
 							"name" : "Text",
 							"value" : "the"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 13,
@@ -126,11 +102,7 @@
 							"name" : "Text",
 							"value" : "chill"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "C"
-					}
+					]
 				},
 				{
 					"id" : 23,
@@ -147,11 +119,7 @@
 							"name" : "Text",
 							"value" : "wind"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "C"
-					}
+					]
 				},
 				{
 					"id" : 36,
@@ -168,11 +136,7 @@
 							"name" : "Text",
 							"value" : "caused"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "C"
-					}
+					]
 				},
 				{
 					"id" : 51,
@@ -189,11 +153,7 @@
 							"name" : "Text",
 							"value" : "them"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 60,
@@ -210,11 +170,7 @@
 							"name" : "Text",
 							"value" : "to"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 70,
@@ -231,11 +187,7 @@
 							"name" : "Text",
 							"value" : "shiver"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "C"
-					}
+					]
 				},
 				{
 					"id" : 82,
@@ -252,11 +204,7 @@
 							"name" : "Text",
 							"value" : "violently"
 						}
-					],
-					"label" : {
-						"name" : "Word",
-						"value" : "C"
-					}
+					]
 				}
 			]
 		},
@@ -271,11 +219,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 108,
@@ -284,11 +228,7 @@
 							"name" : "Syllable",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 109,
@@ -297,11 +237,7 @@
 							"name" : "Syllable",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 110,
@@ -310,11 +246,7 @@
 							"name" : "Syllable",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 111,
@@ -323,11 +255,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 112,
@@ -336,11 +264,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 113,
@@ -349,11 +273,7 @@
 							"name" : "Syllable",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 114,
@@ -362,11 +282,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 115,
@@ -375,11 +291,7 @@
 							"name" : "Syllable",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 116,
@@ -388,11 +300,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 117,
@@ -401,11 +309,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				},
 				{
 					"id" : 118,
@@ -414,11 +318,7 @@
 							"name" : "Syllable",
 							"value" : "W"
 						}
-					],
-					"label" : {
-						"name" : "Syllable",
-						"value" : "W"
-					}
+					]
 				}
 			]
 		},
@@ -433,11 +333,7 @@
 							"name" : "Phoneme",
 							"value" : "D"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "D"
-					}
+					]
 				},
 				{
 					"id" : 120,
@@ -446,11 +342,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 121,
@@ -459,11 +351,7 @@
 							"name" : "Phoneme",
 							"value" : "tS"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "tS"
-					}
+					]
 				},
 				{
 					"id" : 122,
@@ -472,11 +360,7 @@
 							"name" : "Phoneme",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 123,
@@ -485,11 +369,7 @@
 							"name" : "Phoneme",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 124,
@@ -498,11 +378,7 @@
 							"name" : "Phoneme",
 							"value" : "w"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "w"
-					}
+					]
 				},
 				{
 					"id" : 125,
@@ -511,11 +387,7 @@
 							"name" : "Phoneme",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 126,
@@ -524,11 +396,7 @@
 							"name" : "Phoneme",
 							"value" : "n"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "n"
-					}
+					]
 				},
 				{
 					"id" : 127,
@@ -537,11 +405,7 @@
 							"name" : "Phoneme",
 							"value" : "d"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "d"
-					}
+					]
 				},
 				{
 					"id" : 128,
@@ -550,11 +414,7 @@
 							"name" : "Phoneme",
 							"value" : "k"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "k"
-					}
+					]
 				},
 				{
 					"id" : 129,
@@ -563,11 +423,7 @@
 							"name" : "Phoneme",
 							"value" : "o:"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "o:"
-					}
+					]
 				},
 				{
 					"id" : 130,
@@ -576,11 +432,7 @@
 							"name" : "Phoneme",
 							"value" : "z"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "z"
-					}
+					]
 				},
 				{
 					"id" : 131,
@@ -589,11 +441,7 @@
 							"name" : "Phoneme",
 							"value" : "d"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "d"
-					}
+					]
 				},
 				{
 					"id" : 132,
@@ -602,11 +450,7 @@
 							"name" : "Phoneme",
 							"value" : "D"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "D"
-					}
+					]
 				},
 				{
 					"id" : 133,
@@ -615,11 +459,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 134,
@@ -628,11 +468,7 @@
 							"name" : "Phoneme",
 							"value" : "m"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "m"
-					}
+					]
 				},
 				{
 					"id" : 135,
@@ -641,11 +477,7 @@
 							"name" : "Phoneme",
 							"value" : "t"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "t"
-					}
+					]
 				},
 				{
 					"id" : 136,
@@ -654,11 +486,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 137,
@@ -667,11 +495,7 @@
 							"name" : "Phoneme",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 138,
@@ -680,11 +504,7 @@
 							"name" : "Phoneme",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 139,
@@ -693,11 +513,7 @@
 							"name" : "Phoneme",
 							"value" : "v"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "v"
-					}
+					]
 				},
 				{
 					"id" : 140,
@@ -706,11 +522,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 141,
@@ -719,11 +531,7 @@
 							"name" : "Phoneme",
 							"value" : "v"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "v"
-					}
+					]
 				},
 				{
 					"id" : 142,
@@ -732,11 +540,7 @@
 							"name" : "Phoneme",
 							"value" : "ai"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "ai"
-					}
+					]
 				},
 				{
 					"id" : 143,
@@ -745,11 +549,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 144,
@@ -758,11 +558,7 @@
 							"name" : "Phoneme",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 145,
@@ -771,11 +567,7 @@
 							"name" : "Phoneme",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 146,
@@ -784,11 +576,7 @@
 							"name" : "Phoneme",
 							"value" : "n"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "n"
-					}
+					]
 				},
 				{
 					"id" : 147,
@@ -797,11 +585,7 @@
 							"name" : "Phoneme",
 							"value" : "t"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "t"
-					}
+					]
 				},
 				{
 					"id" : 148,
@@ -810,11 +594,7 @@
 							"name" : "Phoneme",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 149,
@@ -823,11 +603,7 @@
 							"name" : "Phoneme",
 							"value" : "i:"
 						}
-					],
-					"label" : {
-						"name" : "Phoneme",
-						"value" : "i:"
-					}
+					]
 				}
 			]
 		},
@@ -845,11 +621,7 @@
 							"name" : "Phonetic",
 							"value" : "D"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "D"
-					}
+					]
 				},
 				{
 					"id" : 151,
@@ -860,11 +632,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 152,
@@ -875,11 +643,7 @@
 							"name" : "Phonetic",
 							"value" : "t"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "t"
-					}
+					]
 				},
 				{
 					"id" : 153,
@@ -890,11 +654,7 @@
 							"name" : "Phonetic",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 154,
@@ -905,11 +665,7 @@
 							"name" : "Phonetic",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 155,
@@ -920,11 +676,7 @@
 							"name" : "Phonetic",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 156,
@@ -935,11 +687,7 @@
 							"name" : "Phonetic",
 							"value" : "w"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "w"
-					}
+					]
 				},
 				{
 					"id" : 157,
@@ -950,11 +698,7 @@
 							"name" : "Phonetic",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 158,
@@ -965,11 +709,7 @@
 							"name" : "Phonetic",
 							"value" : "n"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "n"
-					}
+					]
 				},
 				{
 					"id" : 159,
@@ -980,11 +720,7 @@
 							"name" : "Phonetic",
 							"value" : "d"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "d"
-					}
+					]
 				},
 				{
 					"id" : 160,
@@ -995,11 +731,7 @@
 							"name" : "Phonetic",
 							"value" : "H"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "H"
-					}
+					]
 				},
 				{
 					"id" : 161,
@@ -1010,11 +742,7 @@
 							"name" : "Phonetic",
 							"value" : "k"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "k"
-					}
+					]
 				},
 				{
 					"id" : 162,
@@ -1025,11 +753,7 @@
 							"name" : "Phonetic",
 							"value" : "H"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "H"
-					}
+					]
 				},
 				{
 					"id" : 163,
@@ -1040,11 +764,7 @@
 							"name" : "Phonetic",
 							"value" : "o:"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "o:"
-					}
+					]
 				},
 				{
 					"id" : 164,
@@ -1055,11 +775,7 @@
 							"name" : "Phonetic",
 							"value" : "z"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "z"
-					}
+					]
 				},
 				{
 					"id" : 165,
@@ -1070,11 +786,7 @@
 							"name" : "Phonetic",
 							"value" : "d"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "d"
-					}
+					]
 				},
 				{
 					"id" : 166,
@@ -1085,11 +797,7 @@
 							"name" : "Phonetic",
 							"value" : "H"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "H"
-					}
+					]
 				},
 				{
 					"id" : 167,
@@ -1100,11 +808,7 @@
 							"name" : "Phonetic",
 							"value" : "D"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "D"
-					}
+					]
 				},
 				{
 					"id" : 168,
@@ -1115,11 +819,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 169,
@@ -1130,11 +830,7 @@
 							"name" : "Phonetic",
 							"value" : "m"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "m"
-					}
+					]
 				},
 				{
 					"id" : 170,
@@ -1145,11 +841,7 @@
 							"name" : "Phonetic",
 							"value" : "t"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "t"
-					}
+					]
 				},
 				{
 					"id" : 171,
@@ -1160,11 +852,7 @@
 							"name" : "Phonetic",
 							"value" : "H"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "H"
-					}
+					]
 				},
 				{
 					"id" : 172,
@@ -1175,11 +863,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 173,
@@ -1190,11 +874,7 @@
 							"name" : "Phonetic",
 							"value" : "S"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "S"
-					}
+					]
 				},
 				{
 					"id" : 174,
@@ -1205,11 +885,7 @@
 							"name" : "Phonetic",
 							"value" : "I"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "I"
-					}
+					]
 				},
 				{
 					"id" : 175,
@@ -1220,11 +896,7 @@
 							"name" : "Phonetic",
 							"value" : "v"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "v"
-					}
+					]
 				},
 				{
 					"id" : 176,
@@ -1235,11 +907,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 177,
@@ -1250,11 +918,7 @@
 							"name" : "Phonetic",
 							"value" : "v"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "v"
-					}
+					]
 				},
 				{
 					"id" : 178,
@@ -1265,11 +929,7 @@
 							"name" : "Phonetic",
 							"value" : "ai"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "ai"
-					}
+					]
 				},
 				{
 					"id" : 179,
@@ -1280,11 +940,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 180,
@@ -1295,11 +951,7 @@
 							"name" : "Phonetic",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 181,
@@ -1310,11 +962,7 @@
 							"name" : "Phonetic",
 							"value" : "@"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "@"
-					}
+					]
 				},
 				{
 					"id" : 182,
@@ -1325,11 +973,7 @@
 							"name" : "Phonetic",
 							"value" : "n"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "n"
-					}
+					]
 				},
 				{
 					"id" : 183,
@@ -1340,11 +984,7 @@
 							"name" : "Phonetic",
 							"value" : "t"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "t"
-					}
+					]
 				},
 				{
 					"id" : 184,
@@ -1355,11 +995,7 @@
 							"name" : "Phonetic",
 							"value" : "H"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "H"
-					}
+					]
 				},
 				{
 					"id" : 185,
@@ -1370,11 +1006,7 @@
 							"name" : "Phonetic",
 							"value" : "l"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "l"
-					}
+					]
 				},
 				{
 					"id" : 186,
@@ -1385,11 +1017,7 @@
 							"name" : "Phonetic",
 							"value" : "i:"
 						}
-					],
-					"label" : {
-						"name" : "Phonetic",
-						"value" : "i:"
-					}
+					]
 				}
 			]
 		},
@@ -1406,11 +1034,7 @@
 							"name" : "Tone",
 							"value" : "H*"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "H*"
-					}
+					]
 				},
 				{
 					"id" : 188,
@@ -1420,11 +1044,7 @@
 							"name" : "Tone",
 							"value" : "!H*"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "!H*"
-					}
+					]
 				},
 				{
 					"id" : 189,
@@ -1434,11 +1054,7 @@
 							"name" : "Tone",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "L-"
-					}
+					]
 				},
 				{
 					"id" : 190,
@@ -1448,11 +1064,7 @@
 							"name" : "Tone",
 							"value" : "H*"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "H*"
-					}
+					]
 				},
 				{
 					"id" : 191,
@@ -1462,11 +1074,7 @@
 							"name" : "Tone",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "L-"
-					}
+					]
 				},
 				{
 					"id" : 192,
@@ -1476,11 +1084,7 @@
 							"name" : "Tone",
 							"value" : "H*"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "H*"
-					}
+					]
 				},
 				{
 					"id" : 193,
@@ -1490,11 +1094,7 @@
 							"name" : "Tone",
 							"value" : "!H*"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "!H*"
-					}
+					]
 				},
 				{
 					"id" : 194,
@@ -1504,11 +1104,7 @@
 							"name" : "Tone",
 							"value" : "L-"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "L-"
-					}
+					]
 				},
 				{
 					"id" : 195,
@@ -1518,11 +1114,7 @@
 							"name" : "Tone",
 							"value" : "L%"
 						}
-					],
-					"label" : {
-						"name" : "Tone",
-						"value" : "L%"
-					}
+					]
 				}
 			]
 		},
@@ -1537,11 +1129,7 @@
 							"name" : "Foot",
 							"value" : "F"
 						}
-					],
-					"label" : {
-						"name" : "Foot",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 71,
@@ -1550,11 +1138,7 @@
 							"name" : "Foot",
 							"value" : "F"
 						}
-					],
-					"label" : {
-						"name" : "Foot",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 83,
@@ -1563,11 +1147,7 @@
 							"name" : "Foot",
 							"value" : "F"
 						}
-					],
-					"label" : {
-						"name" : "Foot",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 85,
@@ -1576,11 +1156,7 @@
 							"name" : "Foot",
 							"value" : "F"
 						}
-					],
-					"label" : {
-						"name" : "Foot",
-						"value" : "F"
-					}
+					]
 				},
 				{
 					"id" : 106,
@@ -1589,11 +1165,7 @@
 							"name" : "Foot",
 							"value" : "F"
 						}
-					],
-					"label" : {
-						"name" : "Foot",
-						"value" : "F"
-					}
+					]
 				}
 			]
 		}
