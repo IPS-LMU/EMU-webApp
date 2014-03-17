@@ -5,18 +5,16 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function (scope, element) {
-
-        var elem = element.parent().parent();
-        var elemHeight = elem.clientHeight;
-        var open = false;
+        var elem = element.parent().parent().children();
+        var elemHeight = elem.height();
+        var open = true;
 
         element.bind('click', function () {
-          console.log(elem[0]);
           if (open) {
-            elem.css({'height': '/=2'});          
+            elem.css({'height': '70%'});          
             open = false;
           } else {
-            elem.css({'height': '*=2'});
+            elem.css({'height': '100%'});
             open = true;
           }
           scope.refreshTimeline();

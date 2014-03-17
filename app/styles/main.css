@@ -75,6 +75,7 @@ li {
     /*background-color: green;*/
     background-color: white;
     text-align: left;
+    height: 100%;
 }
 
 .bottomPane {

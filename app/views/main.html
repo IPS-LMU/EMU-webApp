@@ -28,7 +28,7 @@
       <bg-splitter orientation="vertical">
       <bg-pane min-size="50" class="topPane">
 
-      <div ng-controller="TimelineCtrl">
+      <div ng-controller="TimelineCtrl" class="timeline">
         <ul>
           <li ng-repeat="curTrack in config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
             <osci ng-switch-when="OSCI" id="osci" class="osci" ng-style="{'height': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order.length * $index+'%'}"></osci>
