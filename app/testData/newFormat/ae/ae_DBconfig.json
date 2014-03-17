@@ -4,12 +4,7 @@
 	"mediafileExtension" : "wav",
 	"ssffTracks" : [
 		{
-			"name" : "dft",
-			"columnName" : "dft",
-			"fileExtension" : "dft"
-		},
-		{
-			"name" : "fm",
+			"name" : "FORMANTS",
 			"columnName" : "fm",
 			"fileExtension" : "fms"
 		}
