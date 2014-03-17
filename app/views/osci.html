@@ -1,11 +1,11 @@
-<div id="timelineCanvasOuter" class="spectroOuter">
+<div id="osciOuter" class="timelineCanvasOuter">
     <div class="timelineCanvasContainer">
-        <canvas class="osciCanvas" id="osciCanvas" width="2048" height="128"></canvas>
-        <canvas class="osciSsffTrackCanvas" id="osciSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="OSCI"></canvas>
-        <canvas class="osciMarkupCanvas" id="osciMarkupCanvas" width="2048" height="128" trackmouse></canvas>
+        <canvas class="timelineCanvasMain" id="osciCanvas" width="2048" height="128"></canvas>
+        <canvas class="timelineCanvasSSFF" id="osciSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="OSCI"></canvas>
+        <canvas class="timelineCanvasMarkup" width="2048" height="128" trackmouse></canvas>
     </div>
     <div class="timelineCanvasButtons" id="osciButtonsContainer">
-        <div class="timelineCanvasResizeBtn" id="osciResizeBtn" enlarge>
+        <div class="timelineCanvasResizeBtn" id="osciResizeBtn" timelineResize>
             <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
         </div> 
     </div>

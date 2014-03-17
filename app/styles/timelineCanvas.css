@@ -5,9 +5,12 @@
     see: osci directive and template
 */
 
+.timeline {
+    height: 100%
+}
+
 .timelineCanvasOuter {
     position: absolute;
-    top: 25%;
     width: 100%;
     height: 100%;
     background-color: white;
@@ -18,23 +21,35 @@
     position: relative;
     float:left;
     width: calc(100% - 30px);
-    height: 128px;
+    height: 100%;
     padding: 5px;
     /*background-color: #aaf;*/
 }
 
 .timelineCanvasContainer div {
-    margin-bottom: 5px;
+    width: 100%;
+    height: 100%;    
 }
 
 .timelineCanvasContainer canvas {
     float: left;
     margin: 0px;
     border: 1px solid gray;
-    height: 100%;
-    z-index: 1;    
+    z-index: 1;   
+    width: 100%;
+    height: 100%;         
 }
 
+.timelineCanvasMarkup {
+    position: absolute;
+    top: 5px; 
+    left: 5px;
+    /*border: 1px solid red;*/
+    background-color: transparent;
+    z-index: 2; 
+    width: calc(100% - 10px) !important;
+    height: calc(100% - 10px) !important;        
+}
 
 .timelineCanvasButtons {
     /*position: relative;*/
@@ -44,68 +59,20 @@
     /*background-color: #0a0;*/
 }
 
-.osciCanvas {
-    width:calc(100%);
-    background: #E7E7E7;
-}
-.spectroCanvas {
-    width:calc(100%);
+.timelineCanvasMain {
     background: #E7E7E7;
 }
 
-.spectroSsffTrackCanvas {
+.timelineCanvasSSFF {
     position: absolute;
     top: 5px; 
     left: 5px;
     /*border: 1px solid red;*/
     background-color: transparent;
-    width:calc(100% - 10px);
-    height: calc(100% - 10px);
+    width: calc(100% - 10px) !important;
+    height: calc(100% - 10px) !important;   
     z-index: 2; 
 }
-
-.spectroMarkupCanvas {
-    position: absolute;
-    top: 5px; 
-    left: 5px;
-    /*border: 1px solid red;*/
-    background-color: transparent;
-    width:calc(100% - 10px);
-    height: calc(100% - 10px);
-    z-index: 2; 
-}
-
-.spectroButtonsContainer {
-    /*position: relative;*/
-    float: left;
-    width: 30px;
-    height: 100%;
-    /*background-color: #0a0;*/
-}
-
-
-.osciSsffTrackCanvas {
-    position: absolute;
-    top: 5px; 
-    left: 5px;
-    /*border: 1px solid red;*/
-    background-color: transparent;
-    width:calc(100% - 10px);
-    height: calc(100% - 10px);
-    z-index: 2; 
-}
-
-.osciMarkupCanvas {
-    position: absolute;
-    top: 5px; 
-    left: 5px;
-    /*border: 1px solid red;*/
-    background-color: transparent;
-    width:calc(100% - 10px);
-    height: calc(100% - 10px);
-    z-index: 2; 
-}
-
 
 .timelineCanvasResizeBtn {
     float:left;

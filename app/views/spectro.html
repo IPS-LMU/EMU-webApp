@@ -1,13 +1,12 @@
-<div class="timelineCanvasOuter" id="spectroOuter">
+<div id="spectroOuter" class="timelineCanvasOuter">
 	<div class="timelineCanvasContainer">
-		<canvas class="spectroCanvas" id="spectroCanvas" width="2048" height="128"></canvas>
-		<canvas class="spectroSsffTrackCanvas" id="spectroSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="SPEC"></canvas>
-		<canvas class="spectroMarkupCanvas" id="spectroMarkupCanvas" width="2048" height="128" trackmouse correctiontool></canvas>
+		<canvas class="timelineCanvasMain" id="spectroCanvas" width="2048" height="128"></canvas>
+		<canvas class="timelineCanvasSSFF" id="spectroSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="SPEC"></canvas>
+		<canvas class="timelineCanvasMarkup" width="2048" height="128" trackmouse correctiontool></canvas>
 	</div>
     <div class="timelineCanvasButtons" id="osciButtonsContainer">
-        <div class="timelineCanvasResizeBtn" id="osciResizeBtn" enlarge>
+        <div class="timelineCanvasResizeBtn" id="osciResizeBtn" timelineResize>
             <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
         </div> 
     </div>
-
 </div>
