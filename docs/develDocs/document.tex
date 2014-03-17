@@ -91,26 +91,26 @@
 \begin{tikzpicture}
 \treeroot{\textbf{dbRootFolder/}}
 \altentry{\textit{global\_DBconfig.json$^{*2}$}}{1}
-\altentry{\textbf{SES0001/$^{*3}$}}{1}
-\altentry{\textbf{SES0002/}}{1}
-\altentry{\textbf{bundle1/$^{*4}$}}{2}
-\altentry{\textbf{bundle2/}}{2}
+\altentry{\textbf{0001\_ses/$^{*3}$}}{1}
+\altentry{\textbf{SES0002\_ses/}}{1}
+\altentry{\textbf{bundle1\_bndl/$^{*4}$}}{2}
+\altentry{\textbf{bundle2\_bndl/}}{2}
 \altentry{\textit{bundle2.wav}}{3}
 \altentry{\textit{bundle2\_annot.json$^{*5}$}}{3}
 \altentry{\textit{bundle2.fms}}{3}
 \altentry{\textit{bundle2.f0}}{3}
 \altentry{\dots}{3}
-\altentry{\textbf{bundle3/}}{2}
+\altentry{\textbf{bundle3\_bndl/}}{2}
 \altentry{\dots}{2}
-\altentry{\textbf{SES0003/}}{1}
+\altentry{\textbf{0003\_ses/}}{1}
 \altentry{\dots}{1}
 \end{tikzpicture}
 
 
 \begin{itemize}
   \item $^{*2}$: global config information file (similar to \textit{.tpl} file of old EMU). Specifies things like structure of hierarchy and possible perspectives to look at the DB (relevant for layout of labeler). \textit{\_DBconfig.json} is a fix suffix and the prefix should be the same as the database name field in the file itself.
-  \item $^{*3}$: Prefix of session folders must be \textbf{SES}. Following this prefix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called SES0000.
-  \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored.
+  \item $^{*3}$: \textit{\_ses} is a fix suffix specifying the folder as being a session folder. Preceding this suffix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called 0000\_ses.
+  \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored. \textit{\_bndl} is a fix suffix specifying the folder as being a bundle folder.
   \item $^{*5}$: annotation file containing label and level information as well as hierarchical information (see listing 1). \textit{\_annot.json} is a fix suffix and the prefix should be the same as the bundle name.
 \end{itemize}
 
