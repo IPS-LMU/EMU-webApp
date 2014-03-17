@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function () {
+	.directive('osci', function (ConfigProviderService) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
@@ -13,6 +13,10 @@ angular.module('emuwebApp')
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
+				
+				scope.curPerspective = function(cur, index) {
+				    return {'height': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
+				};				
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {

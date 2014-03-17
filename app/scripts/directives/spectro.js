@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function ($q) {
+  .directive('spectro', function (ConfigProviderService) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -100,6 +100,11 @@ angular.module('emuwebApp')
             }
           }
         }, true);
+        
+		scope.curPerspective = function(cur, index) {
+		    return {'height': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
+		};
+        
 
         scope.$watch('vs.scrollOpen', function () {
           if (!$.isEmptyObject(scope.config)) {

@@ -11,10 +11,6 @@ angular.module('emuwebApp')
 		$scope.ssffds = Ssffdataservice;
 		$scope.hists = HistoryService;
 		
-		$scope.curPerspective = function(cur, index) {
-		    return {'height': 100/$scope.config.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/$scope.config.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
-		};
-
 		/**
 		 * listen for newlyLoadedSSFFfile broadcast
 		 */
