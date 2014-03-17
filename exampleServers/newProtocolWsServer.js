@@ -92,9 +92,13 @@ wss.on('connection', function (ws) {
       var bundleList = [];
       filewalker(pathToDbRoot)
         .on('dir', function (p) {
-          var patt = new RegExp('^SES[^/]+/[^/]+$');
+
+          var patt = new RegExp('^.+_ses+/.+_bndl$');
+          // var patt = new RegExp('^SES[^/]+/[^/]+$');
 
           if (patt.test(p)) {
+            console.log('###########')
+            console.log(p)
             var arr = p.split('/');
             bundleList.push({
               'name': arr[arr.length - 1]
@@ -128,8 +132,11 @@ wss.on('connection', function (ws) {
       bundle.ssffFiles = [];
       filewalker(pathToDbRoot)
         .on('dir', function (p) {}).on('file', function (p) {
-          var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
-          var pattAnnot = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + 'json' + '$');
+          // var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
+          var pattMedia = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
+          
+          // var pattAnnot = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + 'json' + '$');
+          var pattAnnot = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + 'json' + '$');
 
           // read media file
           if (pattMedia.test(p)) {
@@ -146,7 +153,8 @@ wss.on('connection', function (ws) {
           // read ssffTracks
 
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
-            var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
+            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
+            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
             if (pattTrack.test(p)) {
               bundle.ssffFiles.push({
                 ssffTrackName: dbConfig.ssffTracks[i].name,
