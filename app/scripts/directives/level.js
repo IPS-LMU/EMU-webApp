@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 					sDist = viewState.getSampleDist(canvas[0].width);
 					// var selection = viewState.getSelect();
 
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 
 					var segMId = viewState.getcurMouseSegment();
@@ -113,19 +113,19 @@ angular.module('emuwebApp')
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
+								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, config.vals.font.fontPxSize-2, config.vals.font.fontType, config.vals.colors.labelColor);
 								var tW = scope.fontImage.getLastImageWidth();
 								var tX = posS + (posE - posS) / 2 - tW / 2;
 
 								// 			//check for enough space to stroke text
 								if (posE - posS > (tW)) {
-									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (config.vals.font.fontPxSize), horizontalText.width, horizontalText.height);
+									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (config.vals.font.fontPxSize-2), horizontalText.width, horizontalText.height);
 								}
 
-								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, config.vals.font.fontPxSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								var hst1 = scope.fontImage.getLastImageWidth();
 								var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
-								var horizontalSubText2 = scope.fontImage.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								var horizontalSubText2 = scope.fontImage.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, config.vals.font.fontPxSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								var hst2 = scope.fontImage.getLastImageWidth();
 								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
@@ -158,7 +158,7 @@ angular.module('emuwebApp')
 								// draw sampleStart numbers
 								//check for enough space to stroke text
 								if (posE - posS > hst1) {
-									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
+									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, -5, horizontalText.width, horizontalText.height);
 								}
 								// draw sampleDur numbers.
 
@@ -200,12 +200,12 @@ angular.module('emuwebApp')
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
 									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-									horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor);
+									horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								//}
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, config.vals.font.fontPxSize - 2, config.vals.font.fontType, config.vals.colors.startBoundaryColor);
-								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
+								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, config.vals.font.fontPxSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								ctx.drawImage(horizontalText , 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
 							}

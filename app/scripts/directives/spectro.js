@@ -2,13 +2,14 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function (ConfigProviderService) {
+  .directive('spectro', function (ConfigProviderService, viewState) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
       replace: true,
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
+		scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length * scope.order+'%'};
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
@@ -26,6 +27,7 @@ angular.module('emuwebApp')
         var imageCache = null;
         var imageCacheCounter = 0;
         var cache;
+        
 
         // on mouse move
         element.bind('mousemove', function (event) {
@@ -100,60 +102,6 @@ angular.module('emuwebApp')
             }
           }
         }, true);
-        
-		scope.curPerspective = function(cur, index) {
-		    return {'height': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
-		};
-        
-
-        scope.$watch('vs.scrollOpen', function () {
-          if (!$.isEmptyObject(scope.config)) {
-            if (!$.isEmptyObject(scope.config.vals)) {
-              var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
-              var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
-              if (scope.vs.scrollOpen === 0) {
-                $('.OsciDiv').css({
-                  height: '50%'
-                });
-                $('.OsciDiv canvas').css({
-                  height: '48%'
-                });
-                $('.SpectroDiv').css({
-                  height: '50%'
-                });
-                $('.SpectroDiv canvas').css({
-                  height: '48%'
-                });
-              } else if (scope.vs.scrollOpen === 1) {
-                $('.OsciDiv').css({
-                  height: per + '%'
-                });
-                $('.OsciDiv canvas').css({
-                  height: per + '%'
-                });
-                $('.SpectroDiv').css({
-                  height: perInvers + '%'
-                });
-                $('.SpectroDiv canvas').css({
-                  height: perInvers + '%'
-                });
-              } else if (scope.vs.scrollOpen === 2) {
-                $('.OsciDiv').css({
-                  height: perInvers + '%'
-                });
-                $('.OsciDiv canvas').css({
-                  height: perInvers + '%'
-                });
-                $('.SpectroDiv').css({
-                  height: per + '%'
-                });
-                $('.SpectroDiv canvas').css({
-                  height: per + '%'
-                });
-              }
-            }
-          }
-        }, true);
 
         function redraw() {
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
@@ -202,7 +150,6 @@ angular.module('emuwebApp')
           scope.dhs.drawCurViewPortSelected(markupCtx, false);
 
         }
-
 
 
         function drawTimeLine(id) {

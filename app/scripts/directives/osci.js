@@ -2,21 +2,19 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function (ConfigProviderService) {
+	.directive('osci', function (ConfigProviderService, viewState) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 			    scope.order = attrs.order;
+			    scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length * scope.order+'%'};
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 				
-				scope.curPerspective = function(cur, index) {
-				    return {'height': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[cur].signalCanvases.order.length * index+'%'};
-				};				
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {

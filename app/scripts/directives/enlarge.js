@@ -6,7 +6,6 @@ angular.module('emuwebApp')
       restrict: 'A',
       link: function (scope, element, attrs) {
         var open = true;
-
         element.bind('click', function () {
           if (open) {
             open = false;
