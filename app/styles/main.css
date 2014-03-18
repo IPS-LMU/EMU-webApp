@@ -44,9 +44,17 @@ li {
     Background Pane Splitter CSS
 */
 
+.split-panes.vertical {
+    z-index: 0 !important;
+}
+
 .split-panes.vertical > .split-handler {
-    height: 16px !important;
+    height: 14px !important;
     text-align: center;
+    border-top: 1px solid #111;
+    border-bottom: 1px solid #111;
+    border-left: 0px;
+    border-right: 0px;
 }
 
 .split-panes.vertical > .split-handler:before {
@@ -98,23 +106,21 @@ li {
     width: 100%;
     height: 100%;
     background-color: white;
+    z-index:1;
 }
 
 .topPane {
-    overflow: auto;
+    /*overflow: auto;*/
     /*background-color: green;*/
-    background-color: white;
     text-align: left;
     height: 100%;
 }
 
 .bottomPane {
-    color: white;
     margin-top: 20px;
     /*background-color: blue;*/
-    background-color: white;
-    text-align: right;
-    overflow: auto;
+    text-align: left;
+    /*overflow: auto;*/
 }
 
 /**###############################*/

@@ -9,11 +9,12 @@
     filter:alpha(opacity=0);
     transition: opacity 0.7s ease-in-out;
     color: #333;
+    z-index:0 !important;    
 }
 .tooltip.in{
+    z-index:9999 !important;    
     opacity:.8;
     filter:alpha(opacity=80);
-    z-index:9999;
 }
 .tooltip.top{
     margin-top:-2px
