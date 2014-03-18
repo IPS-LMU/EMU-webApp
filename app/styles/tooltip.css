@@ -1,6 +1,5 @@
 .tooltip{
     position:absolute;
-    z-index:1020;
     display:block;
     visibility:visible;
     padding:10px;
@@ -12,8 +11,9 @@
     color: #333;
 }
 .tooltip.in{
-    opacity:.9;
-    filter:alpha(opacity=90)
+    opacity:.8;
+    filter:alpha(opacity=80);
+    z-index:9999;
 }
 .tooltip.top{
     margin-top:-2px
