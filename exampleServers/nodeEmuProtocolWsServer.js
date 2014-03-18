@@ -101,7 +101,7 @@ wss.on('connection', function (ws) {
             console.log(p)
             var arr = p.split('/');
             bundleList.push({
-              'name': arr[arr.length - 1]
+              'name': arr[arr.length - 1].split('_')[0]
             });
           }
         }).on('error', function (err) {
@@ -133,10 +133,10 @@ wss.on('connection', function (ws) {
       filewalker(pathToDbRoot)
         .on('dir', function (p) {}).on('file', function (p) {
           // var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
-          var pattMedia = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
-          
+          var pattMedia = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.mediafileExtension + '$');
+
           // var pattAnnot = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + 'json' + '$');
-          var pattAnnot = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + 'json' + '$');
+          var pattAnnot = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + 'json' + '$');
 
           // read media file
           if (pattMedia.test(p)) {
@@ -154,7 +154,7 @@ wss.on('connection', function (ws) {
 
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
             // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
-            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
+            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
             if (pattTrack.test(p)) {
               bundle.ssffFiles.push({
                 ssffTrackName: dbConfig.ssffTracks[i].name,
