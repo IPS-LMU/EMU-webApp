@@ -130,8 +130,8 @@
         "drawCrossHairs": true,
         "drawSampleNrs": false,
         "drawZeroLine": true,
-        "bundleComments": true,
-        "bundleFinishedEditing": true
+        "bundleComments": false,
+        "bundleFinishedEditing": false
     },
     "activeButtons": {
         "addLevelSeg": false,
@@ -141,9 +141,9 @@
         "specSettings": true,
         "connect": true,
         "clear": true,
-        "deleteSingleLevel": true,
+        "deleteSingleLevel": false,
         "resizeSingleLevel": true,
-        "saveSingleLevel": true,
+        "saveSingleLevel": false,
         "resizeOsci": true,
         "resizeSpectro": true,
         "openDemoDB": true,
