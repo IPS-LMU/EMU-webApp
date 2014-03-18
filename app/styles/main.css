@@ -38,6 +38,36 @@ li {
     padding: 0pt;
 }
 
+
+/** 
+    ###################################
+    Background Pane Splitter CSS
+*/
+
+.split-panes.vertical > .split-handler {
+    height: 16px !important;
+    text-align: center;
+}
+
+.split-panes.vertical > .split-handler:before {
+  content: "";
+  position: absolute;
+  left: calc(50%-20px);
+  top: 0.21em;
+  bottom: 0.21em;
+  width: 20px;
+  background: linear-gradient(
+    top, 
+    black, black 20%, 
+    white 20%, white 40%, 
+    black 40%, black 60%, 
+    white 60%, white 80%, 
+    black 80%, black 100%
+  );
+}
+
+
+
 /** 
     ###################################
     MainCtrl CSS
