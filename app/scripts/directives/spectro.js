@@ -9,7 +9,7 @@ angular.module('emuwebApp')
       replace: true,
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
-		scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length * scope.order+'%'};
+        scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%'};
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
@@ -28,7 +28,23 @@ angular.module('emuwebApp')
         var imageCacheCounter = 0;
         var cache;
         
-
+				
+		scope.updateCSS = function() {
+		    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+		    if(viewState.getenlarge() == -1) {
+		        scope.enlargeCanvas = {'height': 100/parts +'%'};
+		    }
+		    else {
+		        if(viewState.getenlarge() == scope.order) {
+	                scope.enlargeCanvas = {'height': 2*100/(parts+1) +'%'};
+    		    }
+    		    else {
+	                scope.enlargeCanvas = {'height': 100/(parts+1) +'%'};
+	            }				
+		    }
+		    scope.$apply();
+		};
+		
         // on mouse move
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
@@ -55,7 +71,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              redraw();
+              scope.redraw();
             }
           }
         }, true);
@@ -63,7 +79,7 @@ angular.module('emuwebApp')
         scope.$watch('tds.data', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              redraw();
+              scope.redraw();
             }
           }
         }, true);
@@ -71,7 +87,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              redraw();
+              scope.redraw();
             }
           }
         }, true);
@@ -85,7 +101,8 @@ angular.module('emuwebApp')
         scope.$on('refreshTimeline', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              redraw();
+              scope.redraw();
+              scope.updateCSS();              
             }else{
               context.clearRect(0, 0, canvas0.width, canvas0.height);
               markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -103,7 +120,7 @@ angular.module('emuwebApp')
           }
         }, true);
 
-        function redraw() {
+        scope.redraw = function() {
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
           if (cache !== null) {
@@ -113,7 +130,7 @@ angular.module('emuwebApp')
           } else {
             drawOsci(scope.vs, scope.shs.wavJSO.Data);
           }
-        }
+        };
 
         function clearImageCache() {
           imageCache = null;

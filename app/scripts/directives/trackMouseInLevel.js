@@ -180,7 +180,6 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           if (doChange) {
-            console.log(lastEventMove)
             lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
             viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);    
           }

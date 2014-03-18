@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('enlarge', function (viewState) {
+  .directive('enlarge', function ($rootScope, viewState) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-        var open = true;
+        var open = false;
         element.bind('click', function () {
           if (open) {
             open = false;
-            viewState.setenlarge(attrs.enlarge);
+            viewState.setenlarge(-1);
           } else {
             open = true;
             viewState.setenlarge(attrs.enlarge);
-          }
-          scope.refreshTimeline();
+          } 
+          $rootScope.$broadcast("refreshTimeline");     
         });
       }
     };

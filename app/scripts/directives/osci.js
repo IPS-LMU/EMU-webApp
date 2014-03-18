@@ -9,11 +9,28 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 			    scope.order = attrs.order;
-			    scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%', 'top': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length * scope.order+'%'};
+			    scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%'};
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
+				
+				
+		scope.updateCSS = function() {
+		    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+		    if(viewState.getenlarge() == -1) {
+		        scope.enlargeCanvas = {'height': 100/parts +'%'};
+		    }
+		    else {
+		        if(viewState.getenlarge() == scope.order) {
+	                scope.enlargeCanvas = {'height': 2*100/(parts+1) +'%'};
+    		    }
+    		    else {
+	                scope.enlargeCanvas = {'height': 100/(parts+1) +'%'};
+	            }				
+		    }
+		    scope.$apply();
+		};
 				
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
@@ -44,6 +61,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
+							scope.updateCSS();  
 						} else {
 							var ctx = canvas.getContext('2d');
 							ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -61,56 +79,6 @@ angular.module('emuwebApp')
 								var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 								scope.dhs.osciPeaks = allPeakVals;
 								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
-							}
-							drawVpOsciMarkup(scope, scope.config, true);
-						}
-					}
-				}, true);
-
-				scope.$watch('vs.scrollOpen', function () {
-					if (!$.isEmptyObject(scope.config)) {
-						if (!$.isEmptyObject(scope.config.vals)) {
-							var per = scope.config.vals.main.osciSpectroZoomFactor * 10;
-							var perInvers = 100 - (scope.config.vals.main.osciSpectroZoomFactor * 10);
-							if (scope.vs.scrollOpen === 0) {
-								$('.OsciDiv').css({
-									height: '50%'
-								});
-								$('.OsciDiv canvas').css({
-									height: '48%'
-								});
-								$('.SpectroDiv').css({
-									height: '50%'
-								});
-								$('.SpectroDiv canvas').css({
-									height: '48%'
-								});
-							} else if (scope.vs.scrollOpen === 1) {
-								$('.OsciDiv').css({
-									height: per + '%'
-								});
-								$('.OsciDiv canvas').css({
-									height: per + '%'
-								});
-								$('.SpectroDiv').css({
-									height: perInvers + '%'
-								});
-								$('.SpectroDiv canvas').css({
-									height: perInvers + '%'
-								});
-							} else if (scope.vs.scrollOpen === 2) {
-								$('.OsciDiv').css({
-									height: perInvers + '%'
-								});
-								$('.OsciDiv canvas').css({
-									height: perInvers + '%'
-								});
-								$('.SpectroDiv').css({
-									height: per + '%'
-								});
-								$('.SpectroDiv canvas').css({
-									height: per + '%'
-								});
 							}
 							drawVpOsciMarkup(scope, scope.config, true);
 						}
