@@ -143,13 +143,10 @@ angular.module('emuwebApp')
 		 * get's element details by passing in level, pcm position and maximum pcm
 		 */
 		sServObj.getEvent = function (pcm, level, maximum) {
-			var event = null;
+			var event = level.items[0];
 			var nearest = false;
 			if (level.type === "SEGMENT") {
 				angular.forEach(level.items, function (evt, index) {
-				    if (pcm <=evt.sampleStart) {
-						event = level.items[0];
-				    }
 				    if (pcm >= evt.sampleStart) {
 					    if(pcm <= (evt.sampleStart + evt.sampleDur)) {
 							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {

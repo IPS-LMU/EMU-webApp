@@ -15,22 +15,21 @@ angular.module('emuwebApp')
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 				
-				
-		scope.updateCSS = function() {
-		    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-		    if(viewState.getenlarge() == -1) {
-		        scope.enlargeCanvas = {'height': 100/parts +'%'};
-		    }
-		    else {
-		        if(viewState.getenlarge() == scope.order) {
-	                scope.enlargeCanvas = {'height': 2*100/(parts+1) +'%'};
-    		    }
-    		    else {
-	                scope.enlargeCanvas = {'height': 100/(parts+1) +'%'};
-	            }				
-		    }
-		    scope.$apply();
-		};
+				scope.updateCSS = function() {
+				    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+				    if(viewState.getenlarge() == -1) {
+				        scope.enlargeCanvas = {'height': 100/parts +'%'};
+				    }
+				    else {
+				        if(viewState.getenlarge() == scope.order) {
+				            scope.enlargeCanvas = {'height': 3*100/(parts+2) +'%'};
+				        }
+				        else {
+				            scope.enlargeCanvas = {'height': 100/(parts+2) +'%'};
+				        }				
+				    }
+				    scope.$apply();
+				};
 				
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {

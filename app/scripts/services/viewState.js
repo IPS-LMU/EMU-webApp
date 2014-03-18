@@ -838,18 +838,10 @@ angular.module('emuwebApp')
       var newStartS, newEndS;
       // var levelName = this.getcurMouseLevelName();
       var segMId = this.getcurMouseSegment();
-
-      // get cur mouse move level details
-      var curLevel = Levelservice.getLevelDetails().level;
       var d = this.curViewPort.eS - this.curViewPort.sS;
-      var index = this.curClickLevelIndex;
 
-      if (curLevel && segMId.id) {
-        console.log(curLevel);
-        console.log(index);
-        var curMouseMoveSegmentStart = curLevel.items[index][segMId.id].sampleStart;
-        // console.log(curMouseMoveSegmentStart)
-
+      if (segMId !== undefined) {
+        var curMouseMoveSegmentStart = segMId.sampleStart;
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
         var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
 

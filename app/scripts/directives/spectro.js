@@ -36,10 +36,10 @@ angular.module('emuwebApp')
 		    }
 		    else {
 		        if(viewState.getenlarge() == scope.order) {
-	                scope.enlargeCanvas = {'height': 2*100/(parts+1) +'%'};
+	                scope.enlargeCanvas = {'height': 3*100/(parts+2) +'%'};
     		    }
     		    else {
-	                scope.enlargeCanvas = {'height': 100/(parts+1) +'%'};
+	                scope.enlargeCanvas = {'height': 100/(parts+2) +'%'};
 	            }				
 		    }
 		    scope.$apply();

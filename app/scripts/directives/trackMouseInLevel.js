@@ -146,6 +146,7 @@ angular.module('emuwebApp')
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick.evtr);
+          console.log(lastEventClick);
           lastPCM = thisPCM;
           scope.$apply();
         }
