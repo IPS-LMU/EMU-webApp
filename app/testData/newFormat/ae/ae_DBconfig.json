@@ -7,6 +7,11 @@
 			"name" : "FORMANTS",
 			"columnName" : "fm",
 			"fileExtension" : "fms"
+		},
+		{
+			"name" : "fundFreq",
+			"columnName" : "F0",
+			"fileExtension" : "f0"
 		}
 	],
 	"levelDefinitions" : [
@@ -170,7 +175,7 @@
 		"perspectives": [{
 			"name": "default",
 			"signalCanvases": {
-				"order": ["OSCI", "SPEC"],
+				"order": ["OSCI", "SPEC", "fundFreq"],
 				"assign": [{
 					"SPEC": "FORMANTS"
 				}],

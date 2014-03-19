@@ -1,10 +1,10 @@
-<div id="ssffTrackOuter" class="ssffTrackOuter">
-    <div class="ssffTrackCanvasContainer">
-        <canvas class="ssffTrackSsffTrackCanvas" id="ssffTrackSsffTrackCanvas" width="2048" height="128" drawssff></canvas>
-        <canvas class="ssffTrackMarkupCanvas" id="ssffTrackMarkupCanvas" width="2048" height="128" trackmouse></canvas>
+<div class="timelineCanvasOuter">
+    <div class="timelineCanvasContainer">
+        <canvas ng-style="enlargeCanvas" class="ssffTrackSsffTrackCanvas" width="2048" height="128" drawssff ssff-trackname="OSCI"></canvas>
+        <canvas ng-style="enlargeCanvas" class="ssffTrackMarkupCanvas" width="2048" height="128" trackmouse></canvas>
      </div>
-    <div class="ssffTrackButtonsContainer" id="ssffTrackButtonsContainer">
-        <div class="ssffTrackResizeBtn" id="ssffTrackResizeBtn" ng-click="resizeOsci();" ng-style="buttonstyle('resizeOsci')">
+    <div class="timelineCanvasButtons">
+        <div class="timelineCanvasResizeBtn" enlarge="{{order}}">
             <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
         </div> 
     </div>

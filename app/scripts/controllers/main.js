@@ -328,9 +328,12 @@ angular.module('emuwebApp')
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set ssff files
-						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.ssffFiles[0].data); // SIC SIC SIC hardcoded!!!
-						var ssffJso = Ssffparserservice.ssff2jso(arrBuff, bundleData.ssffFiles[0].ssffTrackName);
-						Ssffdataservice.data.push(ssffJso);
+						bundleData.ssffFiles.forEach(function (ssffFile) {
+							// body...
+							arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(ssffFile.data); // SIC SIC SIC hardcoded!!!
+							var ssffJso = Ssffparserservice.ssff2jso(arrBuff, ssffFile.ssffTrackName);
+							Ssffdataservice.data.push(ssffJso);
+						});
 
 						// set annotation
 						Levelservice.setData(bundleData.annotation);
