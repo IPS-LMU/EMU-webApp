@@ -6,39 +6,23 @@ angular.module('emuwebApp')
 		var sServObj = {};
 
 		sServObj.data = {};
+		
+		sServObj.maxElementID = 0;  // max currently loaded Id
 
 		sServObj.getData = function () {
 			return sServObj.data;
 		};
 
 		/**
-		 * sets annotation data and generates unique uuid if id in element is not set
+		 * sets annotation data and sets maxElementID by parsing id in elements 
 		 */
-		sServObj.setData = function (data) {
-			/*data.levels.forEach(function (level, lid) {
-				if (level.type === 'SEGMENT') {
-				    level.items.forEach(function (item, iid) {
-				        if(item.id===undefined) {
-				            item.id = uuid.new();
-				        }
-				    });
-				}
-				if (level.type === 'ITEM') {
-				    level.items.forEach(function (item, iid) {
-				        if(item.id===undefined) {
-				            item.id = uuid.new();
-				        }				    
-				    });
-				}
-				if (level.type === 'EVENT') {
-				    level.items.forEach(function (item, iid) {
-				        if(item.id===undefined) {
-				            item.id = uuid.new();
-				        }				    
-				    });
-				}	
-			});	*/	    
+		sServObj.setData = function (data) {    
 			angular.copy(data, sServObj.data);
+			sServObj.data.levels.forEach(function (level) {
+			    level.items.forEach(function (item) {
+			        sServObj.maxElementID = item.id;
+			    });			    
+			});
 		};
 
 		/**
@@ -76,7 +60,21 @@ angular.module('emuwebApp')
 			return details;
 		};
 	
-		
+		/**
+		 * insert a new Segment at position
+		 */
+		sServObj.insertSegmentDetails = function (levelname, position, labelname, start, duration) {
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === levelname) {
+					var newElement = angular.copy(level.items[0]);
+					newElement.id = start;
+					newElement.sampleStart = start;
+					newElement.sampleDur = duration;
+					newElement.labels[0].value = labelname;
+					level.items.splice(position, 0, newElement);
+				}
+			});
+		};		
 
 		/**
 		 * get's element details by passing in levelName and elemtentid
@@ -342,32 +340,38 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
-		sServObj.insertSegment = function (start, end, levelName, newLabel) {
+		sServObj.insertSegment = function (start, end, name, newLabel) {
 			var ret = true;
-			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName) {
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
 					if (start == end) {
-						var startID = -1;
-						angular.forEach(t.items, function (evt, id) {
-							if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
-								startID = id;
-							}
-							if (evt.sampleStart == start) {
-								ret = false;
-							}
-							if (evt.sampleStart + evt.sampleDur == start) {
-								ret = false;
-							}
-						});
-						if (ret) {
-							var diff = start - t.items[startID].sampleStart;
-							t.items.splice(startID, 0, angular.copy(t.items[startID]));
-							t.items[startID + 1].sampleStart = start;
-							t.items[startID + 1].sampleDur = t.items[startID].sampleDur - diff;
-							t.items[startID + 1].label = newLabel;
-							t.items[startID + 1].id = uuid.new();
-							t.items[startID].sampleDur = diff;
-						}
+					    var startID = -1;
+					    if(start<level.items[0].sampleStart) { // before first segment
+					        var diff = start;
+					        sServObj.insertSegmentDetails(name,0, newLabel, start, diff);
+					    
+					    }
+					    else if(start>level.items[level.items.length-1].sampleStart) { // after last segment
+					        var diff = start - level.items[startID].sampleStart;
+					    }
+					    else {
+    						angular.forEach(level.items, function (evt, id) {
+	    						if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
+		    						startID = id;
+			    				}
+				    			if (evt.sampleStart == start) {
+					    			ret = false;
+						    	}
+							    if (evt.sampleStart + evt.sampleDur == start) {
+    								ret = false;
+	    						}
+		    				});
+			    			if (ret) {
+				    		    var diff = start - level.items[startID].sampleStart;
+				    		    sServObj.insertSegmentDetails(name, startID + 1, newLabel, start, level.items[startID].sampleDur - diff);
+		    					level.items[startID].sampleDur = diff;
+			    			}
+			    		}
 					} else {
 						var startID = -1;
 						var endID = -1;
