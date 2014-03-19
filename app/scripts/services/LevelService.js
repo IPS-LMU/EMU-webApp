@@ -361,7 +361,8 @@ angular.module('emuwebApp')
 					    
 					    }
 					    else if(start>(level.items[level.items.length-1].sampleStart + level.items[level.items.length-1].sampleDur)) { // after last segment
-					        var diff = start - (level.items[level.items.length-1].sampleStart + level.items[level.items.length-1].sampleDur);
+					        var newStart = (level.items[level.items.length-1].sampleStart + level.items[level.items.length-1].sampleDur) + 1;
+					        sServObj.insertElementDetails(name, level.items.length, newLabel, newStart, start - newStart);
 					    }
 					    else {
     						angular.forEach(level.items, function (evt, id) {
