@@ -8,29 +8,35 @@ angular.module('emuwebApp')
 			replace: true,
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
-			    scope.order = attrs.order;
-			    scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%'};
+				scope.order = attrs.order;
+				scope.enlargeCanvas = {
+					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+				};
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
-				
-				scope.updateCSS = function() {
-				    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-				    if(viewState.getenlarge() == -1) {
-				        scope.enlargeCanvas = {'height': 100/parts +'%'};
-				    }
-				    else {
-				        if(viewState.getenlarge() == scope.order) {
-				            scope.enlargeCanvas = {'height': 3*100/(parts+2) +'%'};
-				        }
-				        else {
-				            scope.enlargeCanvas = {'height': 100/(parts+2) +'%'};
-				        }				
-				    }
-				    scope.$apply();
+
+				scope.updateCSS = function () {
+					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+					if (viewState.getenlarge() == -1) {
+						scope.enlargeCanvas = {
+							'height': 100 / parts + '%'
+						};
+					} else {
+						if (viewState.getenlarge() == scope.order) {
+							scope.enlargeCanvas = {
+								'height': 3 * 100 / (parts + 2) + '%'
+							};
+						} else {
+							scope.enlargeCanvas = {
+								'height': 100 / (parts + 2) + '%'
+							};
+						}
+					}
+					scope.$apply();
 				};
-				
+
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {
@@ -60,7 +66,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
-							scope.updateCSS();  
+							scope.updateCSS();
 						} else {
 							var ctx = canvas.getContext('2d');
 							ctx.clearRect(0, 0, canvas.width, canvas.height);
