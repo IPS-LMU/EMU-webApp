@@ -19,14 +19,23 @@ angular.module('emuwebApp')
             elemHeight = elem.css('height');
             elem.css({'height': '32px'});
             resizeButton.css({'margin-top': '5px'});
-            deleteButton.hide();
-            saveButton.hide();
+            if(scope.config.vals.activeButtons.deleteSingleLevel) {
+                deleteButton.hide();
+            }
+            if(scope.config.vals.activeButtons.saveSingleLevel) {
+                saveButton.hide();
+            }
+            
           } else {
             open = true;
             elem.css({'height': elemHeight});
             resizeButton.css({'margin-top': '0px'});
-            deleteButton.show();
-            saveButton.show();
+            if(scope.config.vals.activeButtons.deleteSingleLevel) {
+                deleteButton.show();
+            }
+            if(scope.config.vals.activeButtons.saveSingleLevel) {
+                saveButton.show();
+            }
           }
           scope.updateView();
 
