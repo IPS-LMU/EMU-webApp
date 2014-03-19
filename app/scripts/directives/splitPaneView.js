@@ -1,5 +1,5 @@
 angular.module('bgDirectives', [])
-  .directive('bgSplitter', function(viewState) {
+  .directive('bgSplitter', function($rootScope, viewState) {
     return {
       restrict: 'E',
       replace: true,
@@ -48,7 +48,8 @@ angular.module('bgDirectives', [])
             handler.css('top', pos + 'px');
             pane1.elem.css('height', pos + 'px');
             pane2.elem.css('top', pos + 'px');
-      
+            //$rootScope.$broadcast('refreshTimeline');  updating timeline while draging possible... but slows down process
+            
           } else {
 
             // var width = bounds.right - bounds.left;
@@ -72,6 +73,7 @@ angular.module('bgDirectives', [])
         angular.element(document).bind('mouseup', function (ev) {
           drag = false;
           viewState.setdragBarActive(drag);
+          $rootScope.$broadcast('refreshTimeline'); 
         });
       }
     };
