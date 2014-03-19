@@ -570,20 +570,30 @@ angular.module('emuwebApp')
       var my = this;
       var start = segment.sampleStart;
       var end = start + segment.sampleDur;
-      this.curClickSegments.forEach(function (entry) {
+      sServObj.curClickSegments.forEach(function (entry) {
         var front = (entry.sampleStart == end) ? true: false;
         var back = ((entry.sampleStart + entry.sampleDur) == start) ? true: false;  
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
-          my.curClickSegments.push(segment);
+          sServObj.curClickSegments.push(segment);
           empty = false;
         }
       });
       if (empty) {
-        this.curClickSegments = [];
-        this.curClickSegments.push(segment);
+        sServObj.curClickSegments = [];
+        sServObj.curClickSegments.push(segment);
+      }
+      else {
+         sServObj.curClickSegments.sort(sServObj.sortbyid);
       }
       sServObj.selectBoundry();
       
+    };
+    
+    sServObj.sortbyid = function (a, b){
+        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+        if(a.id>b.id) return 1;
+        if(a.id<b.id) return -1;
+        return 0;
     };
 
 

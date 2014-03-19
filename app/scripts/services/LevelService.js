@@ -226,7 +226,6 @@ angular.module('emuwebApp')
 		 * rename the label of a level by passing in level name and id
 		 */
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
-		console.log(levelName, id, newLabelName);
 			sServObj.setElementDetails(levelName, id, newLabelName);
 		};
 
@@ -234,9 +233,9 @@ angular.module('emuwebApp')
 		 * rename the label of a level by passing in level name and id
 		 */
 		sServObj.renameLevel = function (oldname, newname) {
-			angular.forEach(sServObj.data.levels, function (t, i) {
-				if (t.name === oldname) {
-					t.name = newname;
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === oldname) {
+					level.name = newname;
 				}
 			});
 		};
@@ -358,7 +357,6 @@ angular.module('emuwebApp')
 					    if(start<level.items[0].sampleStart) { // before first segment
 					        var diff = level.items[0].sampleStart - start;
 					        sServObj.insertElementDetails(name, 0, newLabel, start, diff);
-					    
 					    }
 					    else if(start>(level.items[level.items.length-1].sampleStart + level.items[level.items.length-1].sampleDur)) { // after last segment
 					        var newStart = (level.items[level.items.length-1].sampleStart + level.items[level.items.length-1].sampleDur) + 1;
@@ -461,21 +459,21 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
-		sServObj.deleteBoundary = function (toDelete, levelName, levelType) {
+		sServObj.deleteBoundary = function (toDelete, name, levelType) {
 		    var last = null;
-			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName) {
-					angular.forEach(t.items, function (evt, id) {
-					    if(t.type === 'SEGMENT') {
-					      	if (evt.id == toDelete.id) {
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
+					angular.forEach(level.items, function (evt, id) {
+					    if(level.type === 'SEGMENT') {
+					      	if (toDelete.sampleStart == evt.sampleStart && toDelete.sampleDur == evt.sampleDur ) {
 								last.labels[0].value += evt.labels[0].value;
 								last.sampleDur += evt.sampleDur;
-								t.items.splice(id, 1);
+								level.items.splice(id, 1);
 							}
 					    }
 					    else {
 					        if (evt.samplePoint == toDelete.samplePoint) {
-					            t.items.splice(id, 1);
+					            level.items.splice(id, 1);
 					        }
 					    }
 						last = evt;
@@ -588,58 +586,52 @@ angular.module('emuwebApp')
 
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
-			var i;
+			var lastID = segments[segments.length-1].id;
+			var firstID = segments[0].id;
 			if (rightSide) {
-			
-				angular.forEach(segments, function (seg) {
-					sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, seg.sampleDur+changeTime);
-			    });
-						
-			
-			
-			
-			
-			
-				/*angular.forEach(sServObj.data.levels, function (level) {
-					if (level.name === name && level.type === 'SEGMENT') {
-					
-					    angular.forEach(segments, function (seg) {
-					        var exp = segments.get({id: item.id});
-					        console.log();
-					    });
-						
-						if (t.items[selected[selected.length - 1] + 1].sampleDur > (selected.length * changeTime)) {
-							if (t.items[selected[0]].sampleDur > -(selected.length * changeTime)) {
-								var found = false;
-								for (i = 1; i <= selected.length; i++) {
-									if (t.items[selected[i - 1]].sampleDur + changeTime <= 0) {
-										found = true;
-									}
-								}
-								if (found) {
-									$rootScope.$broadcast('errorMessage', 'Expand Segements Error: Cannot Expand/Shrink. Segment would be too small');
-
-								} else {
-									for (i = 1; i <= selected.length; i++) {
-										t.items[selected[i - 1]].sampleStart += startTime;
-										t.items[selected[i - 1]].sampleDur += changeTime;
-										startTime = i * changeTime;
-									}
-									t.items[selected[selected.length - 1] + 1].sampleStart += startTime;
-									t.items[selected[selected.length - 1] + 1].sampleDur -= startTime;
-								}
-							} else {
-								$rootScope.$broadcast('errorMessage', 'Expand Segements Error: No Space left to decrease');
-
-							}
-						} else {
-							$rootScope.$broadcast('errorMessage', 'Expand Segements Error: No Space left to increase');
-						}
-						
-						
-					}
-				});*/
+				var last = sServObj.getElementDetails(name, lastID+1);
+				if(last===null) { // last element
+				    var lastLength = segments[segments.length-1].sampleStart + segments[segments.length-1].sampleDur + (changeTime * segments.length); 
+				    if(lastLength < Soundhandlerservice.wavJSO.Data.length) {
+    				    angular.forEach(segments, function (seg) {
+	    			        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur+changeTime);
+            				startTime += changeTime;
+	            	    });				    
+				    }
+				}
+				else {
+				    if(last.sampleDur - (changeTime * segments.length) > 0) {
+				        angular.forEach(segments, function (seg) {
+					        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur+changeTime);
+        					startTime += changeTime;
+	    	    	    });    
+    	    		    sServObj.setElementDetails(name, last.id, last.labels[0].value, last.sampleStart + startTime, last.sampleDur - startTime);				
+			    	}
+				}
 			} else {
+			    var first = sServObj.getElementDetails(name, firstID-1);
+			    if(first===null) { // first element
+			        var first = sServObj.getElementDetails(name, segments[0].id);
+			        if(first.sampleStart + (changeTime * segments.length) < 0) {
+    				    angular.forEach(segments, function (seg) {
+	    			        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur+changeTime);
+            				startTime += changeTime;
+	            	    });				    			        
+			        }
+			    }
+			    else {
+    				if(first.sampleDur - (changeTime * segments.length) > 0) {
+	    			    angular.forEach(segments, function (seg) {
+	    			        startTime -= changeTime;
+		    			    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);		    			
+    	    			    		    			    
+		    	        });    
+    			        sServObj.setElementDetails(name, first.id, first.labels[0].value, first.sampleStart, first.sampleDur + startTime);				
+    				}		    
+			    }
+			    
+/*			    
+			    
 				angular.forEach(sServObj.data.levels, function (t) {
 					if (t.name === tN) {
 						if (t.items[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
@@ -666,7 +658,7 @@ angular.module('emuwebApp')
 							$rootScope.$broadcast('errorMessage', 'Expand Segements Error : No Space left to decrease');
 						}
 					}
-				});
+				});*/
 			}
 		};
 

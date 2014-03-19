@@ -294,7 +294,7 @@ angular.module('emuwebApp')
                           'rightSide': false,
                           'changeTime': 0 - changeTime
                         });
-                        Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), 0 - changeTime);
+                        Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                       } else {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -304,7 +304,7 @@ angular.module('emuwebApp')
                           'rightSide': true,
                           'changeTime': 0 - changeTime
                         });
-                        Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), 0 - changeTime);
+                        Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                       }
                     }
                   }
