@@ -1,12 +1,13 @@
 <div class="timelineCanvasOuter">
     <div class="timelineCanvasContainer">
-        <canvas ng-style="enlargeCanvas" class="timelineCanvasMain" width="2048" height="256"></canvas>
-        <canvas ng-style="enlargeCanvas" class="timelineCanvasSSFF" width="2048" height="256" drawssff ssff-trackname="OSCI"></canvas>
-        <canvas ng-style="enlargeCanvas" class="timelineCanvasMarkup" width="2048" height="256" trackmouse></canvas>
-    </div>
+        <canvas ng-style="enlargeCanvas" class="timelineCanvasMain" width="2048" height="128"></canvas>
+        <canvas ng-style="enlargeCanvas" class="timelineCanvasSSFF" width="2048" height="128" drawssff ssff-trackname="fundFreq"></canvas>
+        <canvas ng-style="enlargeCanvas" class="timelineCanvasMarkup" width="2048" height="128" trackmouse></canvas>
+     </div>
     <div class="timelineCanvasButtons">
         <div class="timelineCanvasResizeBtn" enlarge="{{order}}">
             <img style="cursor: pointer;" tooltip-placement="left" data-tooltip="Resize">
         </div> 
     </div>
+
 </div>

@@ -328,10 +328,11 @@ angular.module('emuwebApp')
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files
+						// var ssffJso;
 						bundleData.ssffFiles.forEach(function (ssffFile) {
 							arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(ssffFile.data);
 							var ssffJso = Ssffparserservice.ssff2jso(arrBuff, ssffFile.ssffTrackName);
-							Ssffdataservice.data.push(ssffJso);
+							Ssffdataservice.data.push(angular.copy(ssffJso));
 						});
 
 						// set annotation

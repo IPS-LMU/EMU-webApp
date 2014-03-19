@@ -49,19 +49,31 @@ angular.module('emuwebApp')
         function handleUpdate() {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
-
+              // check assignments (= overlays)
               scope.config.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass) {
-                if (Object.keys(ass)[0] === trackName) {
-                  var tr = scope.config.getSsffTrackConfig(ass[Object.keys(ass)[0]]);
+                if (ass.signalCanvasName === trackName) {
+                  var tr = scope.config.getSsffTrackConfig(ass.ssffTrackName);
                   var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-                  
+
                   var minMaxLims = scope.config.getLimsOfTrack(tr.name);
-                  
+
                   // draw values  
                   drawValues(scope.vs, canvas, scope.config, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
+              // draw ssffTrack onto own canvas
+              if (trackName !== 'OSCI' && trackName !== 'SPEC') {
+                var tr = scope.config.getSsffTrackConfig(trackName);
+                var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+                var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+
+                var minMaxLims = scope.config.getLimsOfTrack(tr.name);
+
+                // draw values  
+                drawValues(scope.vs, canvas, scope.config, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+              }
+
             }
           } else {
             var ctx = canvas.getContext('2d');
@@ -79,6 +91,11 @@ angular.module('emuwebApp')
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // draw ssffTrackName
+          ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+          var trackNameImg = scope.fontImage.getTextImage(ctx, trackName, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+          ctx.drawImage(trackNameImg, 0, 0, trackNameImg.width, trackNameImg.height, 5, 5, trackNameImg.width, trackNameImg.height);
 
           // hardcode min max display for now
           var minVal = viewState.spectroSettings.rangeFrom;
