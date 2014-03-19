@@ -28,36 +28,80 @@ angular.module('emuwebApp')
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name
 		 */
-		sServObj.getLevelDetails = function (levelName) {
+		sServObj.getLevelDetails = function (name) {
 			var curLevel = null;
 			var id = null;
-			sServObj.data.levels.forEach(function (t, num) {
-				if (t.name === levelName) {
-					curLevel = t;
-					id = num;
+			sServObj.data.levels.forEach(function (level, num) {
+				if (level.name === name) {
+					return {
+					    level: level,
+					    id: num
+					};
 				}
 			});
-			return {
-				level: curLevel,
-				id: id
-			};
+
 		};
+		
+		/**
+		 * get's element order by passing in elemtent id
+		 */
+		sServObj.getOrderById = function (name, id) {
+		    var ret = null;
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element, num) {
+						if (element.id == id) {
+							ret = num;
+						}
+					});
+				}
+			});
+			return ret;
+		};
+		
+		
+		/**
+		 * get's element id by passing in element order
+		 */
+		sServObj.getIdByOrder = function (name, order) {
+		    var ret = null;
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element, num) {
+						if (num == order) {
+							details = element.id;
+						}
+					});
+				}
+			});
+			return ret;
+		};				
+		
+		
 
 		/**
-		 * get's element details by passing in levelName and elemtentid
+		 * get's element details by passing in levelName and elemtent order
 		 */
-		sServObj.getElementDetails = function (levelName, elementid) {
+		sServObj.getElementDetails = function (name, order) {
 			var details = null;
-			sServObj.data.levels.forEach(function (t) {
-				if (t.name === levelName) {
-					t.items.forEach(function (element, num) {
-						if (element.id == elementid) {
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element, num) {
+						if (num == order) {
 							details = element;
 						}
 					});
 				}
 			});
 			return details;
+		};
+		
+
+		/**
+		 * get's element details by passing in levelName and elemtent id
+		 */
+		sServObj.getElementDetailsById = function (name, id) {
+			return sServObj.getElementDetails(name, sServObj.getOrderById(id));
 		};
 	
 		/**
@@ -86,7 +130,7 @@ angular.module('emuwebApp')
 		};		
 
 		/**
-		 * get's element details by passing in levelName and elemtentid
+		 * get's element details by passing in levelName and elemtent id
 		 */
 		sServObj.setElementDetails = function (levelname, id, labelname, start, duration) {
 			sServObj.data.levels.forEach(function (level) {
@@ -109,7 +153,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element details by passing in levelName and elemtentid
+		 * get's element details by passing in levelName and elemtent id
 		 */
 		sServObj.setPointDetails = function (levelname, id, labelname, start) {
 			sServObj.data.levels.forEach(function (level) {
@@ -125,14 +169,14 @@ angular.module('emuwebApp')
 		};		
 		
 		/**
-		 * get's element details by passing in levelName and elemtentid
+		 * get's element details by passing in levelName and element id's
 		 */
-		sServObj.getElementNeighbourDetails = function (levelName, firstid, lastid) {
+		sServObj.getElementNeighbourDetails = function (name, firstid, lastid) {
 			var left = null;
 			var right = null;
 			sServObj.data.levels.forEach(function (level) {
-				if (level.name === levelName) {
-					level.items.forEach(function (element,num) {
+				if (level.name === name) {
+					level.items.forEach(function (element, num) {
 						if (element.id == firstid) {
 							left = level.items[num-1];
 						}
@@ -586,11 +630,10 @@ angular.module('emuwebApp')
 
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
-			var lastID = segments[segments.length-1].id;
-			var firstID = segments[0].id;
-			if (rightSide) {
-				var last = sServObj.getElementDetails(name, lastID+1);
-				if(last===null) { // last element
+			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length-1].id);
+			console.log();
+			if (rightSide) { // if expand or shrink on RIGHT side
+				if(neighbours.right===null) { // last element
 				    var lastLength = segments[segments.length-1].sampleStart + segments[segments.length-1].sampleDur + (changeTime * segments.length); 
 				    if(lastLength < Soundhandlerservice.wavJSO.Data.length) {
     				    angular.forEach(segments, function (seg) {
@@ -600,65 +643,33 @@ angular.module('emuwebApp')
 				    }
 				}
 				else {
-				    if(last.sampleDur - (changeTime * segments.length) > 0) {
+				    if(neighbours.right.sampleDur - (changeTime * segments.length) > 0) {
 				        angular.forEach(segments, function (seg) {
 					        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur+changeTime);
         					startTime += changeTime;
 	    	    	    });    
-    	    		    sServObj.setElementDetails(name, last.id, last.labels[0].value, last.sampleStart + startTime, last.sampleDur - startTime);				
+    	    		    sServObj.setElementDetails(name, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart + startTime, neighbours.right.sampleDur - startTime);				
 			    	}
 				}
-			} else {
-			    var first = sServObj.getElementDetails(name, firstID-1);
-			    if(first===null) { // first element
-			        var first = sServObj.getElementDetails(name, segments[0].id);
-			        if(first.sampleStart + (changeTime * segments.length) < 0) {
+			} else {// if expand or shrink on LEFT side
+			    if(neighbours.left===undefined) { // first element
+			        var first = sServObj.getElementDetails(name, 0);
+			        if(first.sampleStart + (changeTime * (segments.length+1)) > 0) {
     				    angular.forEach(segments, function (seg) {
-	    			        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur+changeTime);
-            				startTime += changeTime;
+	    			        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart - changeTime, seg.sampleDur+changeTime);
 	            	    });				    			        
 			        }
 			    }
 			    else {
-    				if(first.sampleDur - (changeTime * segments.length) > 0) {
+    				if(neighbours.left.sampleDur - (changeTime * segments.length) > 0) {
 	    			    angular.forEach(segments, function (seg) {
 	    			        startTime -= changeTime;
 		    			    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);		    			
     	    			    		    			    
 		    	        });    
-    			        sServObj.setElementDetails(name, first.id, first.labels[0].value, first.sampleStart, first.sampleDur + startTime);				
+    			        sServObj.setElementDetails(name, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur + startTime);				
     				}		    
 			    }
-			    
-/*			    
-			    
-				angular.forEach(sServObj.data.levels, function (t) {
-					if (t.name === tN) {
-						if (t.items[selected[0] - 1].sampleDur > (selected.length * changeTime)) {
-							if (t.items[selected[selected.length - 1]].sampleDur > (selected.length * changeTime)) {
-								var found = false;
-								for (i = 1; i <= selected.length; i++) {
-									if (t.items[selected[i - 1]].sampleDur + changeTime <= 0) {
-										found = true;
-									}
-								}
-								if (found) {
-									$rootScope.$broadcast('errorMessage', 'Expand Segements Error : Cannot Expand/Shrink. Segment would be too small');
-								} else {
-									for (i = 0; i < selected.length; i++) {
-										t.items[selected[i]].sampleStart -= (changeTime * (selected.length - i));
-										t.items[selected[i]].sampleDur += changeTime;
-									}
-									t.items[selected[0] - 1].sampleDur -= changeTime * selected.length;
-								}
-							} else {
-								$rootScope.$broadcast('errorMessage', 'Expand Segements Error : No Space left to increase');
-							}
-						} else {
-							$rootScope.$broadcast('errorMessage', 'Expand Segements Error : No Space left to decrease');
-						}
-					}
-				});*/
 			}
 		};
 
