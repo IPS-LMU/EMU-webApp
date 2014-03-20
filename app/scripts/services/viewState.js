@@ -25,7 +25,6 @@ angular.module('emuwebApp')
       selectS: -1,
       selectE: -1,
       bufferLength: -1,
-      enlargeTimeline: -1
     };
 
     sServObj.spectroSettings = {
@@ -51,6 +50,7 @@ angular.module('emuwebApp')
     sServObj.rightSubmenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.levelLength = 0;
+    sServObj.enlarge = -1;
     sServObj.curMouseLevelName = undefined;
     sServObj.curMouseLevelType = undefined;
     sServObj.curClickLevelName = undefined;
@@ -98,7 +98,6 @@ angular.module('emuwebApp')
     sServObj.getPermission = function (actionName) {
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
     };
-
 
     /**
      * set state
@@ -354,7 +353,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.setenlarge = function (s) {
-      this.curViewPort.enlargeTimeline = s;
+      this.enlarge = s;
     };
     
     
@@ -362,7 +361,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.getenlarge = function () {
-      return this.curViewPort.enlargeTimeline;
+      return this.enlarge;
     };
 
     /**
