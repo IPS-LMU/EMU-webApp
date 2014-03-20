@@ -160,6 +160,7 @@ angular.module('emuwebApp')
     sServObj.select = function (start, end) {
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
+      $rootScope.$digest();
     };
 
 

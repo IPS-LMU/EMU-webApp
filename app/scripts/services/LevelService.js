@@ -97,6 +97,19 @@ angular.module('emuwebApp')
 			return details;
 		};
 		
+		/**
+		 * get's element details by passing in levelName and elemtent order
+		 */
+		sServObj.getLastElement = function (name) {
+			var details = null;
+			sServObj.data.levels.forEach(function (level) {
+				if (level.name === name) {
+				    details = level.items[level.items.length-1];
+				}
+			});
+			return details;
+		};
+		
 
 		/**
 		 * get's element details by passing in levelName and elemtent id
@@ -571,18 +584,28 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
-		  var orig = sServObj.getElementDetailsById(name, seg.id);
-		  if(lastNeighbours.left !== undefined) {
-    		  var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-	    	  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
-		          sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
-		          sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
-		      }
+		  if(seg===false) { // before first element
+		    seg = sServObj.getElementDetails(name, 0);
+		    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, (seg.sampleStart+changeTime), (seg.sampleDur-changeTime));
+		  }
+		  else if(seg===true) {
+		    seg = sServObj.getLastElement(name);
+		    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, (seg.sampleDur + changeTime));	  
 		  }
 		  else {
-		      if((seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
-		          sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
-		      }
+		      var orig = sServObj.getElementDetailsById(name, seg.id);
+    		  if(lastNeighbours.left !== undefined) {
+        		  var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+	        	  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		              sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+		              sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
+    		      }
+	    	  }
+		      else {
+		          if((seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
+		              sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
+    		      }
+	    	  }		  
 		  }
 		};
 

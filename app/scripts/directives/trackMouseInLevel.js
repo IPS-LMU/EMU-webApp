@@ -93,7 +93,7 @@ angular.module('emuwebApp')
                   
                   lastPCM = thisPCM;
                   viewState.selectBoundry();
-                  scope.$apply();
+                  scope.$digest();
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
@@ -109,10 +109,9 @@ angular.module('emuwebApp')
                     'itemIdx': viewState.getcurClickSegments(),
                     'movedBy': moveBy
                   });
-                  
                   viewState.selectBoundry();  
                   lastPCM = thisPCM;                
-                  scope.$apply();
+                  scope.$digest();
                 }
               } else {
                 viewState.movingBoundary = false;
@@ -149,7 +148,7 @@ angular.module('emuwebApp')
           viewState.setcurClickSegment(lastEventClick.evtr);
           console.log(lastEventClick);
           lastPCM = thisPCM;
-          scope.$apply();
+          scope.$digest();
         }
 
         function setLastRightClick(x) {
@@ -162,7 +161,7 @@ angular.module('emuwebApp')
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
-          scope.$apply();
+          scope.$digest();
         }
 
         function setLastDblClick(x) {
@@ -175,7 +174,7 @@ angular.module('emuwebApp')
           viewState.openEditArea(lastEventClick.evtr, levelType, element.parent());
           scope.cursorInTextField();
           lastPCM = thisPCM;
-          scope.$apply();
+          scope.$digest();
         }
 
         function setLastMove(x, doChange) {
