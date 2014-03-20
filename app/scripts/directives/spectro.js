@@ -71,6 +71,11 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               scope.redraw();
+              scope.updateCSS(); 
+            }
+            else{
+              context.clearRect(0, 0, canvas0.width, canvas0.height);
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             }
           }
         }, true);
@@ -95,18 +100,6 @@ angular.module('emuwebApp')
         scope.$on('newlyLoadedAudioFile', function () {
           console.log('clearing spectro image cache...');
           clearImageCache();
-        });
-
-        scope.$watch('vs.refreshView', function (newValue, oldValue) {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
-              scope.updateCSS();              
-            }else{
-              context.clearRect(0, 0, canvas0.width, canvas0.height);
-              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-            }
-          }
         });
 
         scope.$watch('vs.spectroSettings', function () {

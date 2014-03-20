@@ -269,16 +269,6 @@ angular.module('emuwebApp')
 			console.log(Iohandlerservice.toTextGrid());
 		};
 
-		$scope.refreshTimeline = function () {
-		    //console.log($scope);
-			//$scope.TimelineCtrl.refreshTimeline();
-			viewState.updateView();
-		};
-
-		$scope.refreshScope = function () {
-			$scope.$digest();
-		};
-
 		$scope.getShortCut = function (name) {
 			if ($scope.shortcut !== null) {
 				if ($scope.shortcut[name] !== null) {

@@ -25,6 +25,7 @@ angular.module('emuwebApp')
       selectS: -1,
       selectE: -1,
       bufferLength: -1,
+      enlargeTimeline: -1
     };
 
     sServObj.spectroSettings = {
@@ -50,7 +51,6 @@ angular.module('emuwebApp')
     sServObj.rightSubmenuOpen = false;
     sServObj.modalOpen = false;
     sServObj.levelLength = 0;
-    sServObj.enlarge = -1;
     sServObj.curMouseLevelName = undefined;
     sServObj.curMouseLevelType = undefined;
     sServObj.curClickLevelName = undefined;
@@ -63,7 +63,6 @@ angular.module('emuwebApp')
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
     sServObj.showDropZone = undefined;
-    sServObj.refreshView = 0;
 
     sServObj.dragBarActive = false;
     sServObj.movingBoundary = false;
@@ -98,14 +97,6 @@ angular.module('emuwebApp')
 
     sServObj.getPermission = function (actionName) {
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
-    };
-
-    /**
-     * refresh views in watching directives
-     */
-
-    sServObj.updateView = function () {
-      ++sServObj.refreshView;
     };
 
 
@@ -363,7 +354,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.setenlarge = function (s) {
-      this.enlarge = s;
+      this.curViewPort.enlargeTimeline = s;
     };
     
     
@@ -371,7 +362,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.getenlarge = function () {
-      return this.enlarge;
+      return this.curViewPort.enlargeTimeline;
     };
 
     /**

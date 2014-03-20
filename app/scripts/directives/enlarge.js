@@ -14,7 +14,6 @@ angular.module('emuwebApp')
             open = true;
             viewState.setenlarge(attrs.enlarge);
           } 
-          viewState.updateView();  
           $rootScope.$digest();   
         });
       }
