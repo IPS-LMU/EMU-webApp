@@ -102,9 +102,20 @@ angular.module('emuwebApp')
             var minVal = viewState.spectroSettings.rangeFrom;
             var maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
           } else {
-            console.log(col)
-            var minVal = 0;
-            var maxVal = 200;
+            var min = Infinity;
+            var max = -Infinity;
+            col.values.forEach(function (rec) {
+              rec.forEach(function (samp) {
+                if (samp < min) {
+                  min = samp;
+                }
+                if (samp > max) {
+                  max = samp;
+                }
+              })
+            })
+            var minVal = min;
+            var maxVal = max;
           }
 
           var startTimeVP = viewState.getViewPortStartTime();
