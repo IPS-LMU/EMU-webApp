@@ -97,25 +97,33 @@ angular.module('emuwebApp')
           var trackNameImg = scope.fontImage.getTextImage(ctx, trackName, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
           ctx.drawImage(trackNameImg, 0, 0, trackNameImg.width, trackNameImg.height, 5, 5, trackNameImg.width, trackNameImg.height);
 
+
           // set range
+          var minVal, maxVal;
+
           if (trackName === 'SPEC') {
-            var minVal = viewState.spectroSettings.rangeFrom;
-            var maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
+            minVal = viewState.spectroSettings.rangeFrom;
+            maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
           } else {
-            var min = Infinity;
-            var max = -Infinity;
-            col.values.forEach(function (rec) {
-              rec.forEach(function (samp) {
-                if (samp < min) {
-                  min = samp;
-                }
-                if (samp > max) {
-                  max = samp;
-                }
-              })
-            })
-            var minVal = min;
-            var maxVal = max;
+            if (typeof col.minVal === 'undefined' && typeof col.maxVal === 'undefined') {
+              minVal = Infinity;
+              maxVal = -Infinity;
+              col.values.forEach(function (rec) {
+                rec.forEach(function (samp) {
+                  if (samp < minVal) {
+                    minVal = samp;
+                  }
+                  if (samp > maxVal) {
+                    maxVal = samp;
+                  }
+                });
+              });
+              col.minVal = minVal;
+              col.maxVal = maxVal;
+            } else {
+              minVal = col.minVal;
+              maxVal = col.maxVal;
+            }
           }
 
           var startTimeVP = viewState.getViewPortStartTime();
