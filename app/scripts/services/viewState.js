@@ -63,6 +63,7 @@ angular.module('emuwebApp')
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
     sServObj.showDropZone = undefined;
+    sServObj.refreshView = 0;
 
     sServObj.dragBarActive = false;
     sServObj.movingBoundary = false;
@@ -98,6 +99,15 @@ angular.module('emuwebApp')
     sServObj.getPermission = function (actionName) {
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
     };
+
+    /**
+     * refresh views in watching directives
+     */
+
+    sServObj.updateView = function () {
+      ++sServObj.refreshView;
+    };
+
 
     /**
      * set state

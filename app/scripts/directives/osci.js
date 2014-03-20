@@ -17,27 +17,6 @@ angular.module('emuwebApp')
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 
-				scope.updateCSS = function () {
-					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-					if (viewState.getenlarge() == -1) {
-						scope.enlargeCanvas = {
-							'height': 100 / parts + '%'
-						};
-					} else {
-						if (viewState.getenlarge() == scope.order) {
-							scope.enlargeCanvas = {
-								'height': 3 * 100 / (parts + 2) + '%'
-							};
-						} else {
-							scope.enlargeCanvas = {
-								'height': 100 / (parts + 2) + '%'
-							};
-						}
-					}
-					scope.$apply();
-				};
-
-
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -62,7 +41,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$on('refreshTimeline', function () {
+				scope.$watch('vs.refreshView', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
 							drawVpOsciMarkup(scope, scope.config, true);
@@ -86,9 +65,30 @@ angular.module('emuwebApp')
 								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 							}
 							drawVpOsciMarkup(scope, scope.config, true);
+							scope.updateCSS();
 						}
 					}
 				}, true);
+				
+				scope.updateCSS = function () {
+					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+					if (viewState.getenlarge() == -1) {
+						scope.enlargeCanvas = {
+							'height': 100 / parts + '%'
+						};
+					} else {
+						if (viewState.getenlarge() == scope.order) {
+							scope.enlargeCanvas = {
+								'height': 3 * 100 / (parts + 2) + '%'
+							};
+						} else {
+							scope.enlargeCanvas = {
+								'height': 100 / (parts + 2) + '%'
+							};
+						}
+					}
+				};
+				
 
 				/**
 				 *

@@ -14,7 +14,8 @@ angular.module('emuwebApp')
             open = true;
             viewState.setenlarge(attrs.enlarge);
           } 
-          $rootScope.$broadcast("refreshTimeline");     
+          viewState.updateView();  
+          $rootScope.$digest();   
         });
       }
     };

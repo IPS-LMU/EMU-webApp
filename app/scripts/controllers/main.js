@@ -270,7 +270,9 @@ angular.module('emuwebApp')
 		};
 
 		$scope.refreshTimeline = function () {
-			$scope.$broadcast('refreshTimeline');
+		    //console.log($scope);
+			//$scope.TimelineCtrl.refreshTimeline();
+			viewState.updateView();
 		};
 
 		$scope.refreshScope = function () {

@@ -42,7 +42,6 @@ angular.module('emuwebApp')
 	                scope.enlargeCanvas = {'height': 100/(parts+2) +'%'};
 	            }				
 		    }
-		    scope.$apply();
 		};
 		
         // on mouse move
@@ -98,7 +97,7 @@ angular.module('emuwebApp')
           clearImageCache();
         });
 
-        scope.$on('refreshTimeline', function () {
+        scope.$watch('vs.refreshView', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               scope.redraw();
