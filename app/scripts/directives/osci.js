@@ -34,7 +34,6 @@ angular.module('emuwebApp')
 							};
 						}
 					}
-					scope.$apply();
 				};
 
 
@@ -62,20 +61,6 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$on('refreshTimeline', function () {
-					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawVpOsciMarkup(scope, scope.config, true);
-							scope.updateCSS();
-						} else {
-							var ctx = canvas.getContext('2d');
-							ctx.clearRect(0, 0, canvas.width, canvas.height);
-							ctx = markupCanvas.getContext('2d');
-							ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-						}
-					}
-				});
-
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -86,6 +71,7 @@ angular.module('emuwebApp')
 								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
 							}
 							drawVpOsciMarkup(scope, scope.config, true);
+							scope.updateCSS();
 						}
 					}
 				}, true);

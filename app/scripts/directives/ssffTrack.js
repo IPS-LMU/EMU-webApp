@@ -24,8 +24,8 @@ angular.module('emuwebApp')
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              // scope.redraw();
               drawSpectMarkup();
+              scope.updateCSS();
             }
           }
         }, true);
@@ -47,13 +47,8 @@ angular.module('emuwebApp')
               };
             }
           }
-          scope.$apply();
         };
-
-        scope.$on('refreshTimeline', function () {
-          scope.updateCSS();
-        });
-
+        
         function drawSpectMarkup() {
 
           markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);

@@ -39,7 +39,6 @@ angular.module('emuwebApp')
 
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
-			$scope.refreshTimeline();
 			viewState.deleteEditArea();
 			$scope.windowWidth = $window.outerWidth;
 			$scope.$apply('windowWidth');
@@ -268,15 +267,7 @@ angular.module('emuwebApp')
 		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
 		};
-
-		$scope.refreshTimeline = function () {
-			$scope.$broadcast('refreshTimeline');
-		};
-
-		$scope.refreshScope = function () {
-			$scope.$digest();
-		};
-
+	
 		$scope.getShortCut = function (name) {
 			if ($scope.shortcut !== null) {
 				if ($scope.shortcut[name] !== null) {
@@ -471,7 +462,7 @@ angular.module('emuwebApp')
 			} else {
 				viewState.setsubmenuOpen(true);
 			}
-			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
+			//$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
 		};
 
 		/////////////////////////////////////////
@@ -593,7 +584,7 @@ angular.module('emuwebApp')
 					$scope.showDropZone = true;
 					$scope.loadDefaultConfig();
 
-					$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
+					//$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
 
 					viewState.setState('noDBorFilesloaded');
 				}
