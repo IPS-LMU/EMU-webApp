@@ -26,6 +26,7 @@ angular.module('emuwebApp')
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               // scope.redraw();
               drawSpectMarkup();
+              scope.updateCSS();
             }
           }
         }, true);
@@ -47,12 +48,7 @@ angular.module('emuwebApp')
               };
             }
           }
-          scope.$apply();
         };
-
-        scope.$on('refreshTimeline', function () {
-          scope.updateCSS();
-        });
 
         function drawSpectMarkup() {
 
