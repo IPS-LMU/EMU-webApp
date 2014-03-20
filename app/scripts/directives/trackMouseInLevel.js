@@ -90,8 +90,9 @@ angular.module('emuwebApp')
                       'movedBy': moveBy
                     });                    
                   }                  
-                  viewState.selectBoundry();
+                  
                   lastPCM = thisPCM;
+                  viewState.selectBoundry();
                   scope.$apply();
                   moveLine = false;
                 }
@@ -183,12 +184,11 @@ angular.module('emuwebApp')
           if (doChange) {
             lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
             viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove); 
-            console.log(lastEventMove.nearest);   
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
           lastPCM = thisPCM;
-          scope.$apply();
+          scope.$digest();
         }
 
         function getX(e) {

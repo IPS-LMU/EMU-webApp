@@ -25,14 +25,6 @@ angular.module('emuwebApp')
 					drawLevelMarkup(scope.level, scope.vs, scope.config);
 				});
 
-				scope.$on('refreshTimeline', function () {
-					if (!$.isEmptyObject(scope.level)) {
-						if (!$.isEmptyObject(scope.vs)) {
-							drawLevelDetails(scope.level, scope.vs, scope.config);
-						}
-					}
-				});
-
 
 				scope.updateView = function () {
 					drawLevelDetails(scope.level, scope.vs, scope.config);

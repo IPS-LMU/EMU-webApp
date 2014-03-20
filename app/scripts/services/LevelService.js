@@ -33,13 +33,14 @@ angular.module('emuwebApp')
 			var id = null;
 			sServObj.data.levels.forEach(function (level, num) {
 				if (level.name === name) {
-					return {
-					    level: level,
-					    id: num
-					};
+				    curLevel = level;
+				    id = num;
 				}
 			});
-
+			return {
+				level: curLevel,
+			    id: id
+			};
 		};
 		
 		/**
@@ -101,7 +102,7 @@ angular.module('emuwebApp')
 		 * get's element details by passing in levelName and elemtent id
 		 */
 		sServObj.getElementDetailsById = function (name, id) {
-			return sServObj.getElementDetails(name, sServObj.getOrderById(id));
+			return sServObj.getElementDetails(name, sServObj.getOrderById(name, id));
 		};
 	
 		/**
@@ -570,9 +571,9 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
-		  var orig = sServObj.getElementDetails(name, seg.id);
+		  var orig = sServObj.getElementDetailsById(name, seg.id);
 		  if(lastNeighbours.left !== undefined) {
-    		  var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
+    		  var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 	    	  if((lastNeighbours.left.sampleDur+changeTime > 0) && (seg.sampleStart+changeTime > 0 ) && (seg.sampleDur-changeTime>0)) {
 		          sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
 		          sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart+changeTime), (orig.sampleDur-changeTime));
@@ -615,13 +616,13 @@ angular.module('emuwebApp')
 			}		  		  
 		  }
 		  else {
-		    var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
-		    var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
+		    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+		    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);		
 			if( ( (origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0) ) {  
     		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {
-		            var orig = sServObj.getElementDetails(name, s.id);
+		            var orig = sServObj.getElementDetailsById(name, s.id);
 		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
     		    });	    
 			}		  

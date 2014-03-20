@@ -272,7 +272,7 @@ angular.module('emuwebApp')
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var tD = Levelservice.getLevelDetails(viewState.getcurMouseLevelName()).level;
 				var curM = viewState.getcurMouseSegment();
-				var item = Levelservice.getElementDetails(viewState.getcurMouseLevelName(),curM.id);
+				var item = Levelservice.getElementDetailsById(viewState.getcurMouseLevelName(),curM.id);
 				if(tD.type=="SEGMENT") {
 				  var p = Math.round(viewState.getPos(ctx.canvas.width, item.sampleStart));
 				}
