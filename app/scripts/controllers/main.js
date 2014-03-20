@@ -40,8 +40,8 @@ angular.module('emuwebApp')
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
 			viewState.deleteEditArea();
-			$scope.windowWidth = $window.outerWidth;
-			$scope.$apply('windowWidth');
+			viewState.setWindowWidth($window.outerWidth);
+			$scope.$digest();
 		});
 
 		// bind shift/alt keyups for history

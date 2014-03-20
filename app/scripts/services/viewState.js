@@ -26,6 +26,9 @@ angular.module('emuwebApp')
       selectE: -1,
       bufferLength: -1,
       enlargeTimeline: -1,
+      dragBarActive: -1,
+      dragBarHeight: -1,
+      windowWidth: undefined,
     };
 
     sServObj.spectroSettings = {
@@ -63,8 +66,6 @@ angular.module('emuwebApp')
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
     sServObj.showDropZone = undefined;
-
-    sServObj.dragBarActive = false;
     sServObj.movingBoundary = false;
 
     sServObj.focusInTextField = false;
@@ -94,9 +95,13 @@ angular.module('emuwebApp')
     /**
      * function to ask permission in current labeler state
      */
-
     sServObj.getPermission = function (actionName) {
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
+    };
+
+
+    sServObj.setWindowWidth = function (b) {
+      this.curViewPort.windowWidth = b;
     };
 
     /**
@@ -300,12 +305,11 @@ angular.module('emuwebApp')
     };
 
 
-
     /**
      * set if user is dragging dragbar
      */
     sServObj.getdragBarActive = function () {
-      return this.dragBarActive;
+      return this.curViewPort.dragBarActive;
     };
 
 
@@ -313,7 +317,22 @@ angular.module('emuwebApp')
      * set if user is dragging dragbar
      */
     sServObj.setdragBarActive = function (b) {
-      this.dragBarActive = b;
+      this.curViewPort.dragBarActive = b;
+    };
+
+    /**
+     * set if user is dragging dragbar
+     */
+    sServObj.getdragBarHeight = function () {
+      return this.curViewPort.dragBarHeight;
+    };
+
+
+    /**
+     * set if user is dragging dragbar
+     */
+    sServObj.setdragBarHeight = function (b) {
+      this.curViewPort.dragBarHeight = b;
     };
 
 
