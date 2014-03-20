@@ -40,7 +40,8 @@
       "signalCanvases": {
         "order": ["OSCI", "SPEC"],
         "assign": [{
-          "SPEC": "FORMANTS"
+          "signalCanvasName": "SPEC",
+          "ssffTrackName": "FORMANTS"
         }],
         "contourLims": [{
           "ssffTrackName": "FORMANTS",

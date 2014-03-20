@@ -18,7 +18,8 @@
 \usepackage{todonotes}
 \usepackage{dirtree}
 \usepackage{pdflscape}
-
+\usepackage{csquotes}
+\MakeOuterQuote{"}
 
 
 \newcommand{\tinytodo}[2][]
@@ -92,9 +93,11 @@
 \treeroot{\textbf{dbRootFolder/}}
 \altentry{\textit{global\_DBconfig.json$^{*2}$}}{1}
 \altentry{\textbf{0001\_ses/$^{*3}$}}{1}
-\altentry{\textbf{SES0002\_ses/}}{1}
+\altentry{\textbf{0002\_ses/}}{1}
+\altentry{\textit{0002\_sesmeta$^{*6}$}}{2}
 \altentry{\textbf{bundle1\_bndl/$^{*4}$}}{2}
 \altentry{\textbf{bundle2\_bndl/}}{2}
+\altentry{\textit{bundle2\_bndlmeta.json$^{*7}$}}{3}
 \altentry{\textit{bundle2.wav}}{3}
 \altentry{\textit{bundle2\_annot.json$^{*5}$}}{3}
 \altentry{\textit{bundle2.fms}}{3}
@@ -112,6 +115,8 @@
   \item $^{*3}$: \textit{\_ses} is a fix suffix specifying the folder as being a session folder. Preceding this suffix can be anything as long it is unique on a session level (OS won't let you name two folders the same anyway...). If no session is required a dummy session is used called 0000\_ses.
   \item $^{*4}$: a bundle encapsulates what used to be known as an utterance in a folder. This includes signal files (\textit{wav, SSFF}) and the new annotation file (see $^{*5}$). Unknown file extensions are ignored. \textit{\_bndl} is a fix suffix specifying the folder as being a bundle folder.
   \item $^{*5}$: annotation file containing label and level information as well as hierarchical information (see listing 1). \textit{\_annot.json} is a fix suffix and the prefix should be the same as the bundle name.
+  \item $^{*6}$: Optional session meta information file. Simple key-value json of the form \{"key1":"value1", "key2":"value2"\}
+  \item $^{*7}$: Optional bundle meta information file. Simple key-value json of the form \{"key1":"value1", "key2":"value2"\}
 \end{itemize}
 
 
@@ -239,7 +244,21 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 }
 \end{lstlisting}
 
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{LOGONUSER}}
 
+\todo[inline]{Write LOGONUSER!!!}
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'LOGONUSER',
+  'data': {
+    'userName': 'smith', 
+    'userPwd':'mySecretPwd'
+  },
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{GETGLOBALDBCONFIG}}
@@ -383,97 +402,97 @@ If an error occurs with any of the request types above a response should still b
 \lstinputlisting[caption=exampleBundle.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
 
 %%%%%%%%%%%%%%%%%%%%%%
-\begin{landscape}
-\section{In memory representation of DB (C++ graph)}
+% \begin{landscape}
+% \section{In memory representation of DB (C++ graph)}
 
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
-                    semithick]
-  \tikzstyle{every state}=[fill=white,text=black]
+% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+%                     semithick]
+%   \tikzstyle{every state}=[fill=white,text=black]
 
-  \node[initial,state] (A)                    {0};
-  \node[state]         (B) [below left of=A] {1};
-  \node[state]         (C) [below right of=A] {2};
-  \node[state]         (D) [below left of=B] {3};
-  \node[state]         (E) [right of=D] {4};
-  \node[state]         (F) [below left of=C] {5};
-  \node[state]         (G) [right of=F] {6};
+%   \node[initial,state] (A)                    {0};
+%   \node[state]         (B) [below left of=A] {1};
+%   \node[state]         (C) [below right of=A] {2};
+%   \node[state]         (D) [below left of=B] {3};
+%   \node[state]         (E) [right of=D] {4};
+%   \node[state]         (F) [below left of=C] {5};
+%   \node[state]         (G) [right of=F] {6};
 
-  %first level
-  \node[state]         (H) [below left of=D] {7};
-  \node[state, fill=black!20]         (I) [right of=H] {8};
-  \node[state, fill=black!20]         (J) [right of=I] {9};
+%   %first level
+%   \node[state]         (H) [below left of=D] {7};
+%   \node[state, fill=black!20]         (I) [right of=H] {8};
+%   \node[state, fill=black!20]         (J) [right of=I] {9};
 
-  % second level
-  \node[state]         (K) [below of=H] {10};
-  \node[state, fill=black!20]         (L) [right of=K] {11};
-  \node[state, fill=black!20]         (M) [right of=L] {12};
-  \node[state, fill=black!20]         (N) [right of=M] {13};
-  \node[state, fill=black!20]         (O) [right of=N] {14};
+%   % second level
+%   \node[state]         (K) [below of=H] {10};
+%   \node[state, fill=black!20]         (L) [right of=K] {11};
+%   \node[state, fill=black!20]         (M) [right of=L] {12};
+%   \node[state, fill=black!20]         (N) [right of=M] {13};
+%   \node[state, fill=black!20]         (O) [right of=N] {14};
 
-  %third level
-  \node[state]         (P) [below of=K] {15};
-  \node[state, fill=black!20]         (Q) [right of=P] {16};
-  \node[state, fill=black!20]         (R) [right of=Q] {17};
-  \node[state, fill=black!20]         (S) [right of=R] {18};
-  \node[state, fill=black!20]         (T) [right of=S] {19};
-  \node[state, fill=black!20]         (U) [right of=T] {20};
-  \node[state, fill=black!20]         (V) [right of=U] {21};
-  \node[state, fill=black!20]         (W) [right of=V] {22};
-  \node[state, fill=black!20]         (X) [right of=W] {23};
+%   %third level
+%   \node[state]         (P) [below of=K] {15};
+%   \node[state, fill=black!20]         (Q) [right of=P] {16};
+%   \node[state, fill=black!20]         (R) [right of=Q] {17};
+%   \node[state, fill=black!20]         (S) [right of=R] {18};
+%   \node[state, fill=black!20]         (T) [right of=S] {19};
+%   \node[state, fill=black!20]         (U) [right of=T] {20};
+%   \node[state, fill=black!20]         (V) [right of=U] {21};
+%   \node[state, fill=black!20]         (W) [right of=V] {22};
+%   \node[state, fill=black!20]         (X) [right of=W] {23};
 
-  \path (A) edge              node {SES:1} (B)
-            edge              node {SES:2} (C)
-        (B) edge              node {BNDL:1} (D)
-            edge              node {BNDL:2} (E)
-        (C) edge              node {BNDL:3} (F)
-            edge              node {BNDL:4} (G)
-        (D) edge              node {LEV:1} (H)
-            edge              node {LEV:2} (K)
-            edge              node {LEV:3} (P)
-        (H) edge              node {FIRST} (I)
-        (K) edge              node {FIRST} (L)
-        (P) edge              node {FIRST} (Q)
-        % item lists
-        %first level
-        (I) edge [bend left]  node {NEXT} (J)
-        (J) edge [bend left]  node {PREV} (I)
-        %second level
-        (L) edge [bend left]  node {NEXT} (M)
-        (M) edge [bend left]  node {PREV} (L)
-        (M) edge [bend left]  node {NEXT} (N)
-        (N) edge [bend left]  node {PREV} (M)
-        (N) edge [bend left]  node {NEXT} (O)
-        (O) edge [bend left]  node {PREV} (N)
-        %third level
-        (Q) edge [bend left]  node {NEXT} (R)
-        (R) edge [bend left]  node {PREV} (Q)
-        (R) edge [bend left]  node {NEXT} (S)
-        (S) edge [bend left]  node {PREV} (R)
-        (S) edge [bend left]  node {NEXT} (T)
-        (T) edge [bend left]  node {PREV} (S)
-        (T) edge [bend left]  node {NEXT} (U)
-        (U) edge [bend left]  node {PREV} (T)
-        (U) edge [bend left]  node {NEXT} (V)
-        (V) edge [bend left]  node {PREV} (U)
-        (V) edge [bend left]  node {NEXT} (W)
-        (W) edge [bend left]  node {PREV} (V)
-        (W) edge [bend left]  node {NEXT} (X)
-        (X) edge [bend left]  node {PREV} (W)
-        % hierarchy
-        (I) edge [<->,dotted] node {} (L)
-        (I) edge [<->,dotted] node {} (M)
-        (J) edge [<->,dotted] node {} (N)
-        (J) edge [<->,dotted] node {} (O)
-        (L) edge [<->,dotted] node {} (Q)
-        (L) edge [<->,dotted] node {} (R)
-        (M) edge [<->,dotted] node {} (S)
-        (M) edge [<->,dotted] node {} (T)
-        (N) edge [<->,dotted] node {} (U)
-        (N) edge [<->,dotted] node {} (V)
-        (O) edge [<->,dotted] node {} (W)
-        (O) edge [<->,dotted] node {} (X);
+%   \path (A) edge              node {SES:1} (B)
+%             edge              node {SES:2} (C)
+%         (B) edge              node {BNDL:1} (D)
+%             edge              node {BNDL:2} (E)
+%         (C) edge              node {BNDL:3} (F)
+%             edge              node {BNDL:4} (G)
+%         (D) edge              node {LEV:1} (H)
+%             edge              node {LEV:2} (K)
+%             edge              node {LEV:3} (P)
+%         (H) edge              node {FIRST} (I)
+%         (K) edge              node {FIRST} (L)
+%         (P) edge              node {FIRST} (Q)
+%         % item lists
+%         %first level
+%         (I) edge [bend left]  node {NEXT} (J)
+%         (J) edge [bend left]  node {PREV} (I)
+%         %second level
+%         (L) edge [bend left]  node {NEXT} (M)
+%         (M) edge [bend left]  node {PREV} (L)
+%         (M) edge [bend left]  node {NEXT} (N)
+%         (N) edge [bend left]  node {PREV} (M)
+%         (N) edge [bend left]  node {NEXT} (O)
+%         (O) edge [bend left]  node {PREV} (N)
+%         %third level
+%         (Q) edge [bend left]  node {NEXT} (R)
+%         (R) edge [bend left]  node {PREV} (Q)
+%         (R) edge [bend left]  node {NEXT} (S)
+%         (S) edge [bend left]  node {PREV} (R)
+%         (S) edge [bend left]  node {NEXT} (T)
+%         (T) edge [bend left]  node {PREV} (S)
+%         (T) edge [bend left]  node {NEXT} (U)
+%         (U) edge [bend left]  node {PREV} (T)
+%         (U) edge [bend left]  node {NEXT} (V)
+%         (V) edge [bend left]  node {PREV} (U)
+%         (V) edge [bend left]  node {NEXT} (W)
+%         (W) edge [bend left]  node {PREV} (V)
+%         (W) edge [bend left]  node {NEXT} (X)
+%         (X) edge [bend left]  node {PREV} (W)
+%         % hierarchy
+%         (I) edge [<->,dotted] node {} (L)
+%         (I) edge [<->,dotted] node {} (M)
+%         (J) edge [<->,dotted] node {} (N)
+%         (J) edge [<->,dotted] node {} (O)
+%         (L) edge [<->,dotted] node {} (Q)
+%         (L) edge [<->,dotted] node {} (R)
+%         (M) edge [<->,dotted] node {} (S)
+%         (M) edge [<->,dotted] node {} (T)
+%         (N) edge [<->,dotted] node {} (U)
+%         (N) edge [<->,dotted] node {} (V)
+%         (O) edge [<->,dotted] node {} (W)
+%         (O) edge [<->,dotted] node {} (X);
 
-\end{tikzpicture}
-\end{landscape}
+% \end{tikzpicture}
+% \end{landscape}
 
 \end{document}
