@@ -182,7 +182,8 @@ angular.module('emuwebApp')
           lastEventMove = Levelservice.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           if (doChange) {
             lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);    
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove); 
+            console.log(lastEventMove.nearest);   
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
