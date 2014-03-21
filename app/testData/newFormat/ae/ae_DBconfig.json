@@ -10,6 +10,10 @@
 		"name": "fundFreq",
 		"columnName": "F0",
 		"fileExtension": "f0"
+	}, {
+		"name": "dftSpec",
+		"columnName": "dft",
+		"fileExtension": "dft"
 	}],
 	"levelDefinitions": [{
 		"name": "Utterance",
@@ -129,7 +133,7 @@
 		"perspectives": [{
 			"name": "default",
 			"signalCanvases": {
-				"order": ["OSCI", "SPEC", "fundFreq"],
+				"order": ["OSCI", "SPEC", "fundFreq", "dftSpec"],
 				"assign": [{
 					"signalCanvasName": "SPEC",
 					"ssffTrackName": "FORMANTS"
@@ -138,6 +142,10 @@
 					"ssffTrackName": "FORMANTS",
 					"min": 0,
 					"max": 1
+				}, {
+					"ssffTrackName": "dftSpec",
+					"min": 0,
+					"max": 11
 				}]
 			},
 			"levelCanvases": {

@@ -105,6 +105,7 @@ angular.module('emuwebApp')
             minVal = viewState.spectroSettings.rangeFrom;
             maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
           } else {
+            // console.log(col.name)
             if (typeof col.minVal === 'undefined' && typeof col.maxVal === 'undefined') {
               minVal = Infinity;
               maxVal = -Infinity;
