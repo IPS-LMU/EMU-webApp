@@ -19,7 +19,10 @@ angular.module('emuwebApp')
         scope.enlargeCanvas = {
           'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
-
+        
+        scope.$watch('cps.vals.perspectives', function () {
+          scope.updateCSS();
+        }, true);
 
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {

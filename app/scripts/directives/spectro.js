@@ -73,6 +73,10 @@ angular.module('emuwebApp')
           }
         });
 
+        scope.$watch('cps.vals.perspectives', function () {
+          scope.updateCSS();
+        }, true);
+
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {

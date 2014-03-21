@@ -19,11 +19,9 @@ angular.module('emuwebApp')
 				scope.enlargeCanvas = {
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
-				console.log(scope.enlargeCanvas)
 
-				scope.$watch('vs.cps.vals.perspectives', function () {
-					console.log(ConfigProviderService.vals.perspectives)
-
+				scope.$watch('cps.vals.perspectives', function () {
+					scope.updateCSS();
 				}, true);
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
@@ -83,7 +81,6 @@ angular.module('emuwebApp')
 							};
 						}
 					}
-					console.log(ConfigProviderService.vals.perspectives)
 				};
 
 				/**
