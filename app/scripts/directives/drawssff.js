@@ -103,12 +103,14 @@ angular.module('emuwebApp')
               minVal = Infinity;
               maxVal = -Infinity;
               col.values.forEach(function (rec) {
-                rec.forEach(function (samp) {
-                  if (samp < minVal) {
-                    minVal = samp;
-                  }
-                  if (samp > maxVal) {
-                    maxVal = samp;
+                rec.forEach(function (samp, sidx) {
+                  if ($.isEmptyObject(minMaxLims) || (sidx >= minMaxLims.min && sidx <= minMaxLims.max)) {
+                    if (samp < minVal) {
+                      minVal = samp;
+                    }
+                    if (samp > maxVal) {
+                      maxVal = samp;
+                    }
                   }
                 });
               });
