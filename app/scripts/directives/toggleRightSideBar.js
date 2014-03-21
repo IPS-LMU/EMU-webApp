@@ -8,13 +8,13 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attrs) {
 				scope.$watch(attrs.showMenu, function (newVal) {
 					if (newVal) {
-						alert("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
-						$animate.addClass(element, '.slideInMenu');
-						// $animate.addClass(element, 'slideLeft');
+						// alert("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
+						// $animate.addClass(element, '.slideInMenu');
+						$animate.addClass(element, 'slideLeft');
 					} else {
-						alert("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
-						$animate.removeClass(element, '.slideInMenu');
-						// $animate.removeClass(element, 'slideLeft');
+						// alert("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
+						// $animate.removeClass(element, '.slideInMenu');
+						$animate.removeClass(element, 'slideLeft');
 					}
 				})
 			}
