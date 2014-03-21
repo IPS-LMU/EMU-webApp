@@ -267,7 +267,7 @@ angular.module('emuwebApp')
 		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
 		};
-	
+
 		$scope.getShortCut = function (name) {
 			if ($scope.shortcut !== null) {
 				if ($scope.shortcut[name] !== null) {
@@ -347,27 +347,27 @@ angular.module('emuwebApp')
 
 			// ssffFiles (only FORMANTS are allowed to be manipulated)
 			// if ($scope.modifiedCurSSFF) {
-				bundleData.ssffFiles = [];
-				Ssffdataservice.data.forEach(function (el, idx) {
+			bundleData.ssffFiles = [];
+			Ssffdataservice.data.forEach(function (el, idx) {
 
-					if (el.ssffTrackName === 'FORMANTS') {
-						bundleData.ssffFiles.push({
-							'ssffTrackName': el.ssffTrackName,
-							'encoding': 'BASE64',
-							'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
-						});
-					}
-				});
+				if (el.ssffTrackName === 'FORMANTS') {
+					bundleData.ssffFiles.push({
+						'ssffTrackName': el.ssffTrackName,
+						'encoding': 'BASE64',
+						'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
+					});
+				}
+			});
 			// }
 			// annotation
 			// if ($scope.modifiedCurLevelItems) {
-				bundleData.annotation = Levelservice.getData();
+			bundleData.annotation = Levelservice.getData();
 
-				Iohandlerservice.saveBundle(bundleData).then(function (arg) {
-					ngProgressLite.done();
-					$scope.modifiedCurSSFF = false;
-					$scope.modifLevelItems = false;
-				});
+			Iohandlerservice.saveBundle(bundleData).then(function (arg) {
+				ngProgressLite.done();
+				$scope.modifiedCurSSFF = false;
+				$scope.modifLevelItems = false;
+			});
 			// }
 		};
 

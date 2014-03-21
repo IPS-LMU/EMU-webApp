@@ -8,7 +8,7 @@ angular.module('emuwebApp')
 			replace: true,
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
-				
+
 
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
@@ -16,6 +16,15 @@ angular.module('emuwebApp')
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 				scope.order = attrs.order;
 
+				scope.enlargeCanvas = {
+					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+				};
+				console.log(scope.enlargeCanvas)
+
+				scope.$watch('vs.cps.vals.perspectives', function () {
+					console.log(ConfigProviderService.vals.perspectives)
+
+				}, true);
 
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {
@@ -56,10 +65,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.enlargeCanvas = {
-					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
-				};
-				
+
 				scope.updateCSS = function () {
 					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
@@ -77,8 +83,8 @@ angular.module('emuwebApp')
 							};
 						}
 					}
+					console.log(ConfigProviderService.vals.perspectives)
 				};
-
 
 				/**
 				 *

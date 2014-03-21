@@ -9,7 +9,9 @@ angular.module('emuwebApp')
       replace: true,
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
-        scope.enlargeCanvas = {'height': 100/ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length +'%'};
+        scope.enlargeCanvas = {
+          'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+        };
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
@@ -27,23 +29,27 @@ angular.module('emuwebApp')
         var imageCache = null;
         var imageCacheCounter = 0;
         var cache;
-        
-				
-		scope.updateCSS = function() {
-		    var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-		    if(viewState.getenlarge() == -1) {
-		        scope.enlargeCanvas = {'height': 100/parts +'%'};
-		    }
-		    else {
-		        if(viewState.getenlarge() == scope.order) {
-	                scope.enlargeCanvas = {'height': 3*100/(parts+2) +'%'};
-    		    }
-    		    else {
-	                scope.enlargeCanvas = {'height': 100/(parts+2) +'%'};
-	            }				
-		    }
-		};
-		
+
+
+        scope.updateCSS = function () {
+          var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+          if (viewState.getenlarge() == -1) {
+            scope.enlargeCanvas = {
+              'height': 100 / parts + '%'
+            };
+          } else {
+            if (viewState.getenlarge() == scope.order) {
+              scope.enlargeCanvas = {
+                'height': 3 * 100 / (parts + 2) + '%'
+              };
+            } else {
+              scope.enlargeCanvas = {
+                'height': 100 / (parts + 2) + '%'
+              };
+            }
+          }
+        };
+
         // on mouse move
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
@@ -108,7 +114,7 @@ angular.module('emuwebApp')
           }
         }, true);
 
-        scope.redraw = function() {
+        scope.redraw = function () {
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
           if (cache !== null) {
