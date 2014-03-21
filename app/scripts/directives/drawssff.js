@@ -50,7 +50,7 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
               // check assignments (= overlays)
-              scope.config.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass) {
+              scope.config.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
                 if (ass.signalCanvasName === trackName) {
                   var tr = scope.config.getSsffTrackConfig(ass.ssffTrackName);
                   var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
@@ -94,7 +94,6 @@ angular.module('emuwebApp')
 
           // set range
           var minVal, maxVal;
-
           if (trackName === 'SPEC') {
             minVal = viewState.spectroSettings.rangeFrom;
             maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
