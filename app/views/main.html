@@ -1,13 +1,15 @@
 <!-- container for everything -->
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
+  <progress-thing ng-show="vs.somethingInProgress"></progress-thing>
+  
   <!-- left side menu bar -->
   <bundle-list-side-bar></bundle-list-side-bar>
   
   <!-- container for everything (top + bottom menu and all cans) but left sub-menu -->
   <div class="mainWindow" id="mainWindow">
-    
 
+    
     <!-- top menu bar -->
     <div class="menuBarTop">
       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></img></button>
