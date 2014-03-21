@@ -57,6 +57,7 @@ module.exports = function (grunt) {
           'exampleServers/*.js',
           'app/configFiles/defaultConfig.json',
           'app/testData/customConfig.json',
+          'app/testData/newFormat/ae/ae_DBconfig.json',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
