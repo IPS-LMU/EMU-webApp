@@ -1,4 +1,4 @@
-angular.module('bgDirectives', [])
+angular.module('emuwebApp')
   .directive('bgSplitter', function($rootScope, viewState) {
     return {
       restrict: 'E',
