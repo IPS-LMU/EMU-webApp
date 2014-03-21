@@ -182,10 +182,6 @@ li {
     -moz-animation:move 2s linear infinite;
     -ms-animation:move 2s linear infinite;
     animation:move 2s linear infinite;
-    -webkit-border-radius:20px;
-    -moz-border-radius:20px;
-    -ms-border-radius:20px;
-    border-radius:20px;
     overflow: hidden;
     -webkit-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
     -moz-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
