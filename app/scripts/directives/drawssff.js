@@ -92,12 +92,6 @@ angular.module('emuwebApp')
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // draw ssffTrackName
-          ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
-          var trackNameImg = scope.fontImage.getTextImage(ctx, trackName, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-          ctx.drawImage(trackNameImg, 0, 0, trackNameImg.width, trackNameImg.height, 5, 5, trackNameImg.width, trackNameImg.height);
-
-
           // set range
           var minVal, maxVal;
 
@@ -157,8 +151,14 @@ angular.module('emuwebApp')
                     ctx.strokeStyle = 'white';
                     ctx.fillStyle = 'white';
                   } else {
-                    ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                    ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                    if ($.isEmptyObject(minMaxLims)) {
+                      ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                      ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                    } else {
+                      var l = (minMaxLims.max - minMaxLims.min) + 1;
+                      ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
+                      ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
+                    }
                   }
 
 
@@ -258,6 +258,11 @@ angular.module('emuwebApp')
 
             }
           }
+          // draw ssffTrackName
+          ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+          var trackNameImg = scope.fontImage.getTextImage(ctx, trackName, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+          ctx.drawImage(trackNameImg, 0, 0, trackNameImg.width, trackNameImg.height, 5, 5, trackNameImg.width, trackNameImg.height);
+
         } //function
       }
     };
