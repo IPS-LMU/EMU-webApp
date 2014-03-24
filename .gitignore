@@ -61,6 +61,6 @@ emuLVC.min.css
 
 # data dir # 
 #########
-app/testData/bigDB
+app/testData/ignoredData
 
 *.out
