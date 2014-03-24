@@ -150,6 +150,8 @@ angular.module('emuwebApp')
 
         angular.element(document).bind('mouseup', function (ev) {
           drag = false;
+          dragSplitPaneResizer = false;
+
           dragTwoDimTopResizer = false;
           dragTwoDimLeftResizer = false;
           dragTwoDimCornerResizer = false
