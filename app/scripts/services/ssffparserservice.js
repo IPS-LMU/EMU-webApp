@@ -49,15 +49,22 @@ angular.module('emuwebApp')
 			var newLsep = buffStr.split(/^/m);
 
 			//check if header has headID and machineID
-			if (newLsep[0] !== my.headID || newLsep[1] !== my.machineID) {
-				alert('no ssff file... or missing fields');
+			if (newLsep[0] !== my.headID) {
+				alert('SSFF parse error: first line != SSFF -- (c) SHLRC');
+				return;
 			}
+			if (newLsep[1] !== my.machineID) {
+				alert('SSFF parse error: machineID != Machine IBM-PC');
+				return;
+			}
+
+
 			// check if Record_Freq+Start_Time is there
 			if (newLsep[2].split(/[ ,]+/)[0] !== 'Record_Freq ' || newLsep[3].split(/[ ,]+/)[0] !== 'Start_Time ') {
 				this.ssffData.sampleRate = parseFloat(newLsep[2].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
 				this.ssffData.startTime = parseFloat(newLsep[3].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
 			} else {
-				alert('no ssff file... or missing fields ');
+				alert('SSFF parse error: Required fields Record_Freq or Start_Time not set!');
 			}
 
 			for (var i = 4; i < newLsep.length; i++) {
@@ -108,8 +115,15 @@ angular.module('emuwebApp')
 						this.ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 						curBinIdx += curLen;
 
+					} else if (this.ssffData.Columns[i].ssffdatatype === 'BYTE') {
+						curLen = 1 * this.ssffData.Columns[i].length;
+						curBuffer = buf.subarray(curBinIdx, curLen);
+						curBufferView = new Uint8Array(curBuffer);
+						this.ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
+						curBinIdx += curLen;
 					} else {
 						alert('not supported... only doubles, floats, short  column types and for now');
+						return;
 					}
 
 				} //for

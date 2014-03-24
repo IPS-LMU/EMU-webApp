@@ -19,6 +19,9 @@ angular.module('emuwebApp')
         };
       },
       link: function(scope, element, attrs) {
+        var twoDimCans = angular.element('<div class="twoDcanvases" show-twod="!is2dCancasesHidden" ng-show="cps.vals.perspectives[vs.curPerspectiveIdx].twoDcanvases.order.length > 0">howdy</div>');
+
+
         var handler = angular.element('<div class="split-handler"><span></span></div>');
         var pane1 = scope.panes[0];
         var pane2 = scope.panes[1];
