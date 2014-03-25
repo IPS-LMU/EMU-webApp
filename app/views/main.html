@@ -27,8 +27,8 @@
     <!-- vertical split layout that contains top and bottom pane -->
     <div class="allCans">
 
-      <bg-splitter orientation="vertical">
-        <bg-pane min-size="80" max-size="500" class="topPane">
+      <bg-splitter show-two-dim-cans="true" two-dim-track-name="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order[0]}}"> 
+        <bg-pane type="topPane" min-size="80" max-size="500" class="topPane">
           <div ng-controller="TimelineCtrl" class="timeline">
             <ul>
               <li ng-repeat="curTrack in config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
@@ -39,7 +39,7 @@
             </ul>
           </div>
         </bg-pane>
-        <bg-pane min-size="80" class="bottomPane">
+        <bg-pane type="bottomPane" min-size="80" class="bottomPane">
           <div ng-controller="HandleLevelsCtrl">
             <ul ng-model="levelDetails.levels">
               <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
@@ -47,6 +47,9 @@
               </li>
             </ul>
           </div>
+        </bg-pane>
+        <bg-pane type="bottomRightResizePane">
+          <epg></epg>
         </bg-pane>
       </bg-splitter>
       

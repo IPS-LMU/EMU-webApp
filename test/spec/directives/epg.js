@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: twoDcanvases', function () {
+describe('Directive: epg', function () {
 
   // load the directive's module
   beforeEach(module('EMUWebAppApp'));
@@ -13,8 +13,8 @@ describe('Directive: twoDcanvases', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<two-dcanvases></two-dcanvases>');
+    element = angular.element('<epg></epg>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the twoDcanvases directive');
+    expect(element.text()).toBe('this is the epg directive');
   }));
 });

@@ -1,6 +1,6 @@
 /*2D + overtime canvases*/
 
-.twoDcanvases {
+.bottomRightResizePane {
   position: absolute;
   left: calc(100% - 100px);
   top: calc(100% - 100px);
@@ -13,7 +13,7 @@
   z-index: 1000000;
 }
 
-.twoDimCanvasesCornerResizer{
+.bottomRightResizePaneCornerResizer{
     position: absolute;
     height: 10px;
     width: 10px;
@@ -23,7 +23,7 @@
     cursor: nwse-resize;
 }
 
-.twoDimCanvasesTopResizer{
+.bottomRightResizePaneTopResizer{
     position: absolute;
     left: 10px;
     height: 10px;
@@ -34,7 +34,7 @@
     cursor: ns-resize;
 }
 
-.twoDimCanvasesLeftResizer{
+.bottomRightResizePaneLeftResizer{
     position: absolute;
     height: calc(100% - 10px);
     top: 10px;

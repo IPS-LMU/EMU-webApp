@@ -11,6 +11,7 @@ angular.module('emuwebApp')
 		$scope.tds = Levelservice;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
+		$scope.ssffds = Ssffdataservice;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
