@@ -23,9 +23,9 @@ angular.module('emuwebApp')
 
 				function drawEpgGrid(scope) {
 
-					var tr = scope.cps.getSsffTrackConfig("EPG");
-					// var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-					// var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+					var tr = scope.cps.getSsffTrackConfig("EPG"); // SIC SIC SIC hardcoded for now
+					var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+					var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 
 
 					var ctx = canvas.getContext('2d');
@@ -35,13 +35,27 @@ angular.module('emuwebApp')
 					ctx.strokeStyle = scope.cps.vals.colors.osciColor;
 
 					// lines to corners
-					ctx.beginPath();
-					ctx.moveTo(0, 0);
-					ctx.lineTo(5, 5);
-					ctx.moveTo(canvas.width, 0);
-					ctx.lineTo(canvas.width - 5, 5);
-					ctx.closePath();
-					ctx.stroke();
+
+
+					var gridWidth = canvas.width / 8;
+					var gridHeight = canvas.height / 8;
+
+					col.values[0].forEach(function (el, elIdx) {
+						var binValStrArr = el.toString(2).split('').reverse();
+						
+						while (binValStrArr.length < 8) {
+							binValStrArr.push('0');
+						}
+
+						binValStrArr.forEach(function (binStr, binStrIdx) {
+							// 	console.log(binStr)
+							if (binStr === '1') {
+								ctx.rect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
+								ctx.fill();
+								ctx.stroke();
+							}
+						})
+					});
 				}
 			}
 		};
