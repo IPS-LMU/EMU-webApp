@@ -55,7 +55,7 @@
   left: 0px;
   right: 0px;
   cursor: ns-resize;
-  border: 1px solid gray;
+  /*border: 1px solid gray;*/
   vertical-align: middle;
 }
 /*SIC changes for emu in bower package*/
