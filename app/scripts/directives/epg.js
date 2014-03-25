@@ -23,7 +23,7 @@ angular.module('emuwebApp')
 
 				function drawEpgGrid(scope) {
 
-					var tr = scope.cps.getSsffTrackConfig("EPG"); // SIC SIC SIC hardcoded for now
+					var tr = scope.cps.getSsffTrackConfig("EPG"); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
 					var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
 					var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 
