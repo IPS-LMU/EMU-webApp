@@ -14,35 +14,35 @@
 }
 
 .bottomRightResizePaneCornerResizer{
-    position: absolute;
-    height: 10px;
-    width: 10px;
-    background-color: #fff;
-    border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    cursor: nwse-resize;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  background-color: #fff;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  cursor: nwse-resize;
 }
 
 .bottomRightResizePaneTopResizer{
-    position: absolute;
-    left: 10px;
-    height: 10px;
-    width: calc(100% - 10px);
-    background-color: #fff;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
-    cursor: ns-resize;
+  position: absolute;
+  left: 10px;
+  height: 10px;
+  width: calc(100% - 10px);
+  background-color: #fff;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  cursor: ns-resize;
 }
 
 .bottomRightResizePaneLeftResizer{
-    position: absolute;
-    height: calc(100% - 10px);
-    top: 10px;
-    width: 10px;
-    background-color: #fff;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    cursor: ew-resize;
+  position: absolute;
+  height: calc(100% - 10px);
+  top: 10px;
+  width: 10px;
+  background-color: #fff;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  cursor: ew-resize;
 }
 
 

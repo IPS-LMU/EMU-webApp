@@ -188,8 +188,8 @@ angular.module('emuwebApp')
           var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
           var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
           var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
-          element.prepend(bottomRightResizePaneTopResizer);
           element.prepend(bottomRightResizePaneLeftResizer);
+          element.prepend(bottomRightResizePaneTopResizer);
           element.prepend(bottomRightResizePaneCornerResizer);
 
           // element.append(twoDimCans);
