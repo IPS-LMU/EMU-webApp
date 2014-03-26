@@ -44,7 +44,6 @@ angular.module('emuwebApp')
 			for (i = 0; i < uIntBuffView.length; i++) {
 				buffStr = buffStr + String.fromCharCode(uIntBuffView[i]);
 			}
-			// console.log(buffStr);
 
 			var newLsep = buffStr.split(/^/m);
 
@@ -58,14 +57,27 @@ angular.module('emuwebApp')
 				return;
 			}
 
+			// search header for Record_Freq and Start_Time
+			this.ssffData.sampleRate = undefined;
+			this.ssffData.startTime = undefined;
+			var counter = 0;
+			while(newLsep[counter] !== this.sepString){
+				if (newLsep[counter].split(/[ ,]+/)[0] === 'Record_Freq'){
+					// console.log("FOUND Record_Freq")
+					this.ssffData.sampleRate = parseFloat(newLsep[counter].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
+				}
+				if (newLsep[counter].split(/[ ,]+/)[0] === 'Start_Time'){
+					// console.log("FOUND Start_Time")
+					this.ssffData.startTime = parseFloat(newLsep[counter].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
+				}
+				counter += 1;
+			}
 
-			// check if Record_Freq+Start_Time is there
-			if (newLsep[2].split(/[ ,]+/)[0] !== 'Record_Freq ' || newLsep[3].split(/[ ,]+/)[0] !== 'Start_Time ') {
-				this.ssffData.sampleRate = parseFloat(newLsep[2].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
-				this.ssffData.startTime = parseFloat(newLsep[3].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
-			} else {
+			// check if found Record_Freq and Start_Time
+			if(this.ssffData.sampleRate === undefined || this.ssffData.startTime === undefined){
 				alert('SSFF parse error: Required fields Record_Freq or Start_Time not set!');
 			}
+
 
 			for (var i = 4; i < newLsep.length; i++) {
 				if (newLsep[i].split(/[ ,]+/)[0] === 'Original_Freq') {
