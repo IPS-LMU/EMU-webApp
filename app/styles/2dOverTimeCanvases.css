@@ -17,10 +17,19 @@
   position: absolute;
   height: 10px;
   width: 10px;
-  background-color: #fff;
   border-top: 1px solid gray;
   border-left: 1px solid gray;
   cursor: nwse-resize;
+
+  background: linear-gradient(135deg,
+    white 30%,
+    black 30%, black 40%,
+    white 40%, white 50%,
+    black 50%, black 60%,
+    white 60%, white 70%,
+    black 70%, black 80%,
+    white 80%
+    );
 }
 
 .bottomRightResizePaneTopResizer{
