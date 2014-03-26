@@ -19,6 +19,15 @@ angular.module('emuwebApp')
 
         element.bind('mousemove', function (event) {
           switch (event.which) {
+          case 0:
+            if (!scope.vs.getdragBarActive()) {
+              // console.log(event);
+              var mouseX = scope.dhs.getX(event);
+              scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
+              scope.$apply();
+            }
+            break;
+
           case 1:
             if (!scope.vs.getdragBarActive()) {
               setSelectDrag(event);

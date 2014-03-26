@@ -8,8 +8,9 @@ angular.module('emuwebApp')
 			replace: true,
 			link: function postLink(scope, element, attrs) {
 				// element.text('this is the epg directive');
-				var canvas = element.find('canvas')[0]
+				var canvas = element.find('canvas')[0];
 
+				var tr, col, sRaSt;
 
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.cps.vals)) {
@@ -21,41 +22,58 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				scope.$watch('vs.curMousePosSample', function (newValue, oldValue) {
+					if (!$.isEmptyObject(scope.cps.vals)) {
+						if (!$.isEmptyObject(scope.ssffds.data)) {
+							if (scope.ssffds.data.length !== 0) {
+								// console.log('deine mutter')
+								drawEpgGrid(scope);
+							}
+						}
+					}
+				}, true);
+
 				function drawEpgGrid(scope) {
 
-					var tr = scope.cps.getSsffTrackConfig("EPG"); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
-					var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-					var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-
+					tr = scope.cps.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
+					col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+					sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-					ctx.fillStyle = scope.cps.vals.colors.osciColor;
+					ctx.fillStyle = 'green';
 					ctx.strokeStyle = scope.cps.vals.colors.osciColor;
-
-					// lines to corners
-
+					ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
 
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;
 
-					col.values[0].forEach(function (el, elIdx) {
-						var binValStrArr = el.toString(2).split('').reverse();
-						
+					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
+					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
+
+
+					var binValStrArr;
+					col.values[curFrame].forEach(function (el, elIdx) {
+						binValStrArr = el.toString(2).split('').reverse();
 						while (binValStrArr.length < 8) {
 							binValStrArr.push('0');
 						}
 
 						binValStrArr.forEach(function (binStr, binStrIdx) {
-							// 	console.log(binStr)
 							if (binStr === '1') {
-								ctx.rect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
-								ctx.fill();
-								ctx.stroke();
+								ctx.fillStyle = 'grey';
+								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
+							}else{
+								ctx.fillStyle = 'white';
+								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);								
 							}
 						})
 					});
+
+					// draw labels
+					var horizontalText = scope.fontImage.getTextImageTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 				}
 			}
 		};

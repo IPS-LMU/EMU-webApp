@@ -12,6 +12,7 @@ angular.module('emuwebApp')
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
+		$scope.shs = Soundhandlerservice;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
