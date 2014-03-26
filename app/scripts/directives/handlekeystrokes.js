@@ -482,7 +482,7 @@ angular.module('emuwebApp')
                   }
                 }
               }
-              console.log(code);
+              // console.log(code);
               if (!e.metaKey) {
                 e.preventDefault();
                 e.stopPropagation();
