@@ -131,6 +131,14 @@ angular.module('emuwebApp')
 
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
+          // console.log('###################################');
+          // console.log(col.name);
+          // console.log(sR);
+          // console.log(sT);
+          // console.log(startTimeVP);
+          // console.log(endTimeVP);
+          // console.log(colStartSampleNr);
+          // console.log(colEndSampleNr);
 
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
@@ -250,13 +258,12 @@ angular.module('emuwebApp')
             var tW;
             if (nrOfSamples <= 2) {
               txt = 'Zoom out to see contour(s)';
-              tW = ctx.measureText(txt).width;
-              ctx.strokeText(txt, canvas.width / 2 - tW / 2, canvas.height / 2);
+              var horizontalText = scope.fontImage.getTextImage(ctx, txt, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, 'red');
+              ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
             } else {
               txt = 'Zoom in to see contour(s)';
-              tW = ctx.measureText(txt).width;
-              ctx.strokeText(txt, canvas.width / 2 - tW / 2, canvas.height / 2);
-
+              var horizontalText = scope.fontImage.getTextImage(ctx, txt, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, 'red');
+              ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
             }
           }
           // draw ssffTrackName
