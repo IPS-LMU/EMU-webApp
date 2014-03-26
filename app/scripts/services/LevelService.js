@@ -615,34 +615,29 @@ angular.module('emuwebApp')
 
 
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
-		  if(lastNeighbours.left === undefined ) {
-		    var origRight = lastNeighbours.right;		
-			if( ( (0 + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
-	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
+		  if(lastNeighbours.left === undefined ) {		
+			if( ( (selected[0].sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
+	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart+changeTime), (lastNeighbours.right.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {
-		            var orig = sServObj.getElementDetails(name, s.id);
-		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
+		            sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart+changeTime), s.sampleDur);
     		    });	    
 			}		  	  
 		  }
 		  else if(lastNeighbours.right === undefined ) {
-		    var origLeft = lastNeighbours.left;
 			if((lastNeighbours.left.sampleDur + changeTime) >= 1) {
-			  if((origRight.sampleStart + origRight.sampleDur + changeTime ) < Soundhandlerservice.wavJSO.Data.length ) {  
-    		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
+			  if((selected[selected.length-1].sampleStart + selected[selected.length-1].sampleDur + changeTime ) < Soundhandlerservice.wavJSO.Data.length ) {  
+    		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur+changeTime));
   		        angular.forEach(selected, function (s) {
 		            var orig = sServObj.getElementDetails(name, s.id);
-		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
+		            sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart+changeTime), s.sampleDur);
     		    });	    			  
 			  }
 			}		  		  
 		  }
 		  else {
-		    var origLeft = lastNeighbours.left;
-		    var origRight = lastNeighbours.right;		
-			if( ( (origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0) ) {  
-    		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
-	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
+			if( ( (lastNeighbours.left.sampleDur + changeTime) > 0) && ((lastNeighbours.right.sampleDur - changeTime) > 0) ) {  
+    		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur+changeTime));
+	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart+changeTime), (lastNeighbours.right.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {
 		            sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart+changeTime), s.sampleDur);
     		    });	    
@@ -653,7 +648,6 @@ angular.module('emuwebApp')
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
 			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length-1].id);
-			console.log();
 			if (rightSide) { // if expand or shrink on RIGHT side
 				if(neighbours.right===null) { // last element
 				    var lastLength = segments[segments.length-1].sampleStart + segments[segments.length-1].sampleDur + (changeTime * segments.length); 
@@ -684,12 +678,12 @@ angular.module('emuwebApp')
 			    }
 			    else {
     				if(neighbours.left.sampleDur - (changeTime * segments.length) > 0) {
-	    			    angular.forEach(segments, function (seg) {
-	    			        startTime -= changeTime;
-		    			    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);		    			
-    	    			    		    			    
+    				    startTime = 0;
+	    			    angular.forEach(segments, function (seg, i) {
+		    			    startTime = - (segments.length-i) * changeTime;
+		    			    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);		    			    
 		    	        });    
-    			        sServObj.setElementDetails(name, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur + startTime);				
+    			        sServObj.setElementDetails(name, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur - (segments.length * changeTime));				
     				}		    
 			    }
 			}
