@@ -33,6 +33,10 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				/**
+				 * drawing method to drawEpgGrid
+				 */
+
 				function drawEpgGrid(scope) {
 
 					tr = scope.cps.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
@@ -64,9 +68,9 @@ angular.module('emuwebApp')
 							if (binStr === '1') {
 								ctx.fillStyle = 'grey';
 								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
-							}else{
+							} else {
 								ctx.fillStyle = 'white';
-								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);								
+								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
 							}
 						})
 					});
