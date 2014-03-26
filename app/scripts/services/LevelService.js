@@ -616,7 +616,7 @@ angular.module('emuwebApp')
 
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
 		  if(lastNeighbours.left === undefined ) {
-		    var origRight = sServObj.getElementDetails(name, lastNeighbours.right.id);		
+		    var origRight = lastNeighbours.right;		
 			if( ( (0 + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1) ) {  
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {
@@ -626,8 +626,7 @@ angular.module('emuwebApp')
 			}		  	  
 		  }
 		  else if(lastNeighbours.right === undefined ) {
-		    var origLeft = sServObj.getElementDetails(name, lastNeighbours.left.id);
-		    var origRight = sServObj.getElementDetails(name, selected[selected.length-1].id);
+		    var origLeft = lastNeighbours.left;
 			if((lastNeighbours.left.sampleDur + changeTime) >= 1) {
 			  if((origRight.sampleStart + origRight.sampleDur + changeTime ) < Soundhandlerservice.wavJSO.Data.length ) {  
     		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
@@ -639,14 +638,13 @@ angular.module('emuwebApp')
 			}		  		  
 		  }
 		  else {
-		    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-		    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);		
+		    var origLeft = lastNeighbours.left;
+		    var origRight = lastNeighbours.right;		
 			if( ( (origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0) ) {  
     		    sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur+changeTime));
 	    	    sServObj.setElementDetails(name, lastNeighbours.right.id, origRight.labels[0].value, (origRight.sampleStart+changeTime), (origRight.sampleDur-changeTime));
   		        angular.forEach(selected, function (s) {
-		            var orig = sServObj.getElementDetailsById(name, s.id);
-		            sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart+changeTime), orig.sampleDur);
+		            sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart+changeTime), s.sampleDur);
     		    });	    
 			}		  
 		  }

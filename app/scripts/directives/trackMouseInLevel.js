@@ -64,11 +64,15 @@ angular.module('emuwebApp')
             //console.log('Right mouse button pressed');
             break;
           default:
-            if (viewState.getdragBarActive() === false) {
+            //if (viewState.getdragBarActive() === false) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
+                if(viewState.getcurClickLevelName() === undefined) {
+                    setLastClick(event);
+                }              
                 viewState.deleteEditArea();
                 if(viewState.getcurMouseSegment()!==undefined) {
                   viewState.movingBoundary = true;
+                  
                   if(scope.this.level.type == "SEGMENT") {
                     scope.levelDetails.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
@@ -116,7 +120,7 @@ angular.module('emuwebApp')
               } else {
                 viewState.movingBoundary = false;
               }
-            }
+            //}
             break;
           }
           setLastMove(event, moveLine);
@@ -146,7 +150,6 @@ angular.module('emuwebApp')
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick.evtr);
-          console.log(lastEventClick);
           lastPCM = thisPCM;
           scope.$digest();
         }
