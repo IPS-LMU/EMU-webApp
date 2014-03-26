@@ -590,7 +590,9 @@ angular.module('emuwebApp')
 		  }
 		  else if(seg===true) {
 		    seg = sServObj.getLastElement(name);
-		    sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, (seg.sampleDur + changeTime));	  
+		    if((seg.sampleDur+ changeTime) >= 1 && (seg.sampleDur + seg.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+		        sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, (seg.sampleDur + changeTime));	  
+		    }
 		  }
 		  else {
 		      var orig = sServObj.getElementDetailsById(name, seg.id);
@@ -648,8 +650,9 @@ angular.module('emuwebApp')
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
 			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length-1].id);
+			
 			if (rightSide) { // if expand or shrink on RIGHT side
-				if(neighbours.right===null) { // last element
+				if(neighbours.right===undefined) { // last element
 				    var lastLength = segments[segments.length-1].sampleStart + segments[segments.length-1].sampleDur + (changeTime * segments.length); 
 				    if(lastLength < Soundhandlerservice.wavJSO.Data.length) {
     				    angular.forEach(segments, function (seg) {
