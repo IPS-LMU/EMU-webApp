@@ -80,7 +80,6 @@ angular.module('emuwebApp')
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              console.log('update');
               scope.redraw();
               scope.updateCSS();
             }

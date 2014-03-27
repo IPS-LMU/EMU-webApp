@@ -2,7 +2,7 @@
 
 angular.module('emuwebApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document, ngProgressLite,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice) {
 
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
@@ -13,6 +13,7 @@ angular.module('emuwebApp')
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
 		$scope.shs = Soundhandlerservice;
+		$scope.dhs = Drawhelperservice;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
@@ -53,11 +54,7 @@ angular.module('emuwebApp')
 			}
 		});
 
-		// init pure jquery dragbar
-		// $('.TimelineCtrl').ownResize('.resizer'); // SIC! not the angular way
-
-
-
+		
 		/**
 		 * listen for newUserLoggedOn (also called for no user on auto connect)
 		 */
@@ -196,11 +193,7 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-
-			// set timeline height according to config settings "colors.timelineHeight"
-			// $('.TimelineCtrl').css('height', ConfigProviderService.vals.colors.timelineHeight);
-			// $('.HandleLevelsCtrl').css('padding-top', $('.TimelineCtrl').height() + 2 * $('.menu').height() + 'px');
-
+				
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
 

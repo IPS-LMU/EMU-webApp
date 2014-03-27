@@ -162,6 +162,7 @@ angular.module('emuwebApp')
     sServObj.select = function (start, end) {
       sServObj.curViewPort.selectS = start;
       sServObj.curViewPort.selectE = end;
+      //$rootScope.$digest();
     };
 
 
@@ -562,6 +563,7 @@ angular.module('emuwebApp')
       sServObj.selectBoundry();
     };
 
+
     /**
      * sets a multiple select (click) Segment
      * @param segment
@@ -579,7 +581,7 @@ angular.module('emuwebApp')
           }
         });
         sServObj.select(left, right);
-        $rootScope.$digest();
+        //$rootScope.$digest();
       }
     };
 
@@ -607,8 +609,6 @@ angular.module('emuwebApp')
       else {
          sServObj.curClickSegments.sort(sServObj.sortbyid);
       }
-      sServObj.selectBoundry();
-      
     };
     
     sServObj.sortbyid = function (a, b){

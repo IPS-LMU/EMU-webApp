@@ -55,7 +55,7 @@ angular.module('emuwebApp')
 						return;
 					}
 					if(!scope.open) {
-					    fontSize -= 2;
+					    fontSize -= 1;
 					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);

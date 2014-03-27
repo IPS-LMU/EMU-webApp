@@ -22,27 +22,16 @@ angular.module('emuwebApp')
 
 				// alert("sdfsdf")
 				element.css(transcss);
-			// $('#menu-bottom').css(transcss);
-			// $('#menu').css(transcss);			
-			// $('#TimelineCtrl').css(transcss);
-            // $('#HandleLevelsCtrl').css(transcss);
             $('#mainWindow').css(transcss);            
             if(scope.vs.submenuOpen) {
 
                $animate.addClass($('#mainWindow'), '.slideInBody');
                $animate.addClass(element, '.slideInSubmenu');
-               // $animate.addClass($('#menu-bottom'), '.slideInBody');
-               // $animate.addClass($('#TimelineCtrl'), '.slideInBody');
-               // $animate.addClass($('#HandleLevelsCtrl'), '.slideInBody');
            }
            else {
            		$animate.removeClass($('#mainWindow'), '.slideInBody');
-           		// alert("else");
+
                $animate.removeClass(element, '.slideInSubmenu');
-               // $animate.removeClass($('#menu-bottom'), '.slideInBody');
-               // $animate.removeClass($('#menu'), '.slideInBody');
-               // $animate.removeClass($('#TimelineCtrl'), '.slideInBody');
-               // $animate.removeClass($('#HandleLevelsCtrl'), '.slideInBody');
            }
        }, true);
 }

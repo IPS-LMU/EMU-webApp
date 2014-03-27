@@ -144,7 +144,7 @@ angular.module('emuwebApp')
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
-          scope.$digest();  
+          scope.$apply();
         }
 
         function setLastRightClick(x) {
@@ -157,7 +157,7 @@ angular.module('emuwebApp')
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
-          scope.$digest();  
+          scope.$apply();
         }
 
         function setLastDblClick(x) {
@@ -170,7 +170,7 @@ angular.module('emuwebApp')
           scope.vs.openEditArea(lastEventClick.evtr, levelType, element.parent());
           scope.cursorInTextField();
           lastPCM = thisPCM;
-          scope.$digest();  
+          scope.$apply();
         }
 
         function setLastMove(x, doChange) {
@@ -184,7 +184,7 @@ angular.module('emuwebApp')
           scope.vs.setcurMouseLevelType(levelType);
           scope.vs.selectBoundry();
           lastPCM = thisPCM;
-          scope.$digest();          
+          scope.$apply();          
         }
 
         function getX(e) {

@@ -29,7 +29,7 @@
 
       <bg-splitter show-two-dim-cans="true" two-dim-track-name="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order[0]}}"> 
         <bg-pane type="topPane" min-size="80" max-size="500" class="topPane">
-          <div ng-controller="TimelineCtrl" class="timeline">
+          <div class="timeline">
             <ul>
               <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
                 <osci ng-switch-when="OSCI" order="{{$index}}"></osci>
