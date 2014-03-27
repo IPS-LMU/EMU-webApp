@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, ConfigProviderService, Soundhandlerservice, Levelservice, fontScaleService, Drawhelperservice, dialogService) {
+	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, viewState, HistoryService, Soundhandlerservice, Levelservice, fontScaleService, Drawhelperservice, dialogService) {
 
 		$scope.vs = viewState;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.shs = Soundhandlerservice;
-		$scope.config = ConfigProviderService;
 		$scope.dhs = Drawhelperservice;
 		$scope.dials = dialogService;
 		$scope.testValue = '';

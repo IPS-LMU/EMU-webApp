@@ -11,29 +11,26 @@ angular.module('emuwebApp')
         var deleteButton = elem.find(element.parent().children()[0]);
         var resizeButton = elem.find(element.parent().children()[1]);
         var saveButton = elem.find(element.parent().children()[2]);
-        var open = true;
 
         element.bind('click', function () {
-          if (open) {
-            open = false;
+          if (scope.open) {
+            scope.open = false;
             elemHeight = elem.css('height');
-            elem.css({'height': '32px'});
-            resizeButton.css({'margin-top': '5px'});
-            if(scope.config.vals.activeButtons.deleteSingleLevel) {
+            elem.css({'height': '30px'});
+            if(scope.cps.vals.activeButtons.deleteSingleLevel) {
                 deleteButton.hide();
             }
-            if(scope.config.vals.activeButtons.saveSingleLevel) {
+            if(scope.cps.vals.activeButtons.saveSingleLevel) {
                 saveButton.hide();
             }
             
           } else {
-            open = true;
+            scope.open = true;
             elem.css({'height': elemHeight});
-            resizeButton.css({'margin-top': '0px'});
-            if(scope.config.vals.activeButtons.deleteSingleLevel) {
+            if(scope.cps.vals.activeButtons.deleteSingleLevel) {
                 deleteButton.show();
             }
-            if(scope.config.vals.activeButtons.saveSingleLevel) {
+            if(scope.cps.vals.activeButtons.saveSingleLevel) {
                 saveButton.show();
             }
           }

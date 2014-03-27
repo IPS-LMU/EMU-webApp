@@ -31,7 +31,7 @@
         <bg-pane type="topPane" min-size="80" max-size="500" class="topPane">
           <div ng-controller="TimelineCtrl" class="timeline">
             <ul>
-              <li ng-repeat="curTrack in config.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
+              <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
                 <osci ng-switch-when="OSCI" order="{{$index}}"></osci>
                 <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
                 <ssff-track ng-switch-default order="{{$index}}"></ssff-track>
@@ -43,7 +43,7 @@
           <div ng-controller="HandleLevelsCtrl">
             <ul ng-model="levelDetails.levels">
               <li ng-repeat="level in levelDetails.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
-                <level id='{{level.name}}'></level>
+                <level id='{{level.name}}' open='true'></level>
               </li>
             </ul>
           </div>

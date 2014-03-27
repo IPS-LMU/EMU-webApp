@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function (ConfigProviderService, viewState) {
+	.directive('osci', function (viewState) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 				scope.order = attrs.order;
 
 				scope.enlargeCanvas = {
-					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+					'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
 
 				scope.$watch('cps.vals.perspectives', function () {
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 				scope.$watch('vs.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawPlayHead(scope, scope.config);
+							drawPlayHead(scope, scope.cps);
 						}
 					}
 				}, true);
@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 				scope.$watch('tds.data', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawVpOsciMarkup(scope, scope.config, true);
+							drawVpOsciMarkup(scope, scope.cps, true);
 						}
 					}
 				}, true);
@@ -43,7 +43,7 @@ angular.module('emuwebApp')
 				scope.$watch('vs.movingBoundary', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawVpOsciMarkup(scope, scope.config, true);
+							drawVpOsciMarkup(scope, scope.cps, true);
 						}
 					}
 				}, true);
@@ -55,9 +55,9 @@ angular.module('emuwebApp')
 							if (oldValue.sS !== newValue.sS || oldValue.sE !== newValue.sE || newValue.selectS === -1) { // SIC -1 check not that clean...
 								var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 								scope.dhs.osciPeaks = allPeakVals;
-								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
+								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.cps);
 							}
-							drawVpOsciMarkup(scope, scope.config, true);
+							drawVpOsciMarkup(scope, scope.cps, true);
 							scope.updateCSS();
 						}
 					}
@@ -65,7 +65,7 @@ angular.module('emuwebApp')
 
 
 				scope.updateCSS = function () {
-					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+					var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
 						scope.enlargeCanvas = {
 							'height': 100 / parts + '%'
@@ -96,7 +96,7 @@ angular.module('emuwebApp')
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
 					// console.log(viewState.playHeadAnimationInfos.curS)
 
-					ctx.fillStyle = scope.config.vals.colors.selectedAreaColor;
+					ctx.fillStyle = scope.cps.vals.colors.selectedAreaColor;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
 
 					//console.log(posS,posCur);

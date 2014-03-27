@@ -50,28 +50,28 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
               // check assignments (= overlays)
-              scope.config.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
+              scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
                 if (ass.signalCanvasName === trackName) {
-                  var tr = scope.config.getSsffTrackConfig(ass.ssffTrackName);
+                  var tr = scope.cps.getSsffTrackConfig(ass.ssffTrackName);
                   var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 
-                  var minMaxLims = scope.config.getLimsOfTrack(tr.name);
+                  var minMaxLims = scope.cps.getLimsOfTrack(tr.name);
 
                   // draw values  
-                  drawValues(scope.vs, canvas, scope.config, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                  drawValues(scope.vs, canvas, scope.cps, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
               // draw ssffTrack onto own canvas
               if (trackName !== 'OSCI' && trackName !== 'SPEC') {
-                var tr = scope.config.getSsffTrackConfig(trackName);
+                var tr = scope.cps.getSsffTrackConfig(trackName);
                 var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
                 var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 
-                var minMaxLims = scope.config.getLimsOfTrack(tr.name);
+                var minMaxLims = scope.cps.getLimsOfTrack(tr.name);
 
                 // draw values  
-                drawValues(scope.vs, canvas, scope.config, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                drawValues(scope.vs, canvas, scope.cps, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
               }
 
             }

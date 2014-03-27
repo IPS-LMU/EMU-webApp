@@ -34,12 +34,12 @@ angular.module('emuwebApp')
 				function drawPreview() {
 					if (!initialized) {
 						// var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
-						scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.config);
+						scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.cps);
 						cacheImage.src = canvas.toDataURL('image/png');
 						initialized = true;
-						drawVpOsciMarkup(scope.vs, canvas, scope.config, cacheImage);
+						drawVpOsciMarkup(scope.vs, canvas, scope.cps, cacheImage);
 					} else {
-						drawVpOsciMarkup(scope.vs, canvas, scope.config, cacheImage);
+						drawVpOsciMarkup(scope.vs, canvas, scope.cps, cacheImage);
 					}
 				}
 

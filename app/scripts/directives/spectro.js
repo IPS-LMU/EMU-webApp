@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function (ConfigProviderService, viewState) {
+  .directive('spectro', function (viewState) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -10,7 +10,7 @@ angular.module('emuwebApp')
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
         scope.enlargeCanvas = {
-          'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+          'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
@@ -32,7 +32,7 @@ angular.module('emuwebApp')
 
 
         scope.updateCSS = function () {
-          var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+          var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
           if (viewState.getenlarge() == -1) {
             scope.enlargeCanvas = {
               'height': 100 / parts + '%'
@@ -57,7 +57,7 @@ angular.module('emuwebApp')
               //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
               drawSpectMarkup();
               if (!scope.vs.getdragBarActive()) {
-                drawCrossHairs(scope.vs, canvas0, scope.config, scope.dhs, event);
+                drawCrossHairs(scope.vs, canvas0, scope.cps, scope.dhs, event);
               }
             }
           }
@@ -177,7 +177,7 @@ angular.module('emuwebApp')
         function killSpectroRenderingThread() {
           context.fillStyle = '#222';
           context.fillRect(0, 0, canvas0.width, canvas0.height);
-          context.font = (scope.config.vals.font.fontPxSize + 'px' + ' ' + scope.config.vals.font.fontType);
+          context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
           context.fillStyle = '#333';
           context.fillText('loading...', 10, 25);
           if (primeWorker !== null) {
