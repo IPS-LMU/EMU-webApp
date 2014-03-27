@@ -22,13 +22,14 @@ angular.module('emuwebApp')
         element.bind('click', function (event) {
           setLastMove(event, true);
           setLastClick(event);
+          scope.$digest();
         });
 
         element.bind('contextmenu', function (event) {
           event.preventDefault();
           setLastMove(event, true);
           setLastRightClick(event);
-
+          scope.$digest();
         });
 
         element.bind('dblclick', function (event) {
@@ -38,6 +39,7 @@ angular.module('emuwebApp')
           } else {
             setLastClick(event);
           }
+          scope.$digest();
         });
 
         element.bind('mousemove', function (event) {
@@ -74,7 +76,7 @@ angular.module('emuwebApp')
                   scope.vs.movingBoundary = true;
                   
                   if(scope.this.level.type == "SEGMENT") {
-                    scope.levelDetails.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
+                    scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
@@ -85,7 +87,7 @@ angular.module('emuwebApp')
                     });
                   }
                   else {
-                    scope.levelDetails.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
+                    scope.tds.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
@@ -97,14 +99,13 @@ angular.module('emuwebApp')
                   
                   lastPCM = thisPCM;
                   scope.vs.selectBoundry();
-                  scope.$digest();
                   moveLine = false;
                 }
               } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
                 scope.vs.deleteEditArea();
                 if(scope.this.level.type == "SEGMENT") {
-                  var neighbours = scope.levelDetails.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length-1].id);
-                  scope.levelDetails.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
+                  var neighbours = scope.tds.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length-1].id);
+                  scope.tds.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
@@ -115,7 +116,6 @@ angular.module('emuwebApp')
                   });
                   scope.vs.selectBoundry();  
                   lastPCM = thisPCM;                
-                  scope.$digest();
                 }
               } else {
                 scope.vs.movingBoundary = false;
@@ -124,20 +124,25 @@ angular.module('emuwebApp')
             break;
           }
           setLastMove(event, moveLine);
+          scope.$digest();
         });
 
         element.bind('mousedown', function (event) {
           setLastMove(event, true);
+          scope.$digest();
         });
 
 
         element.bind('mouseup', function (event) {
+          scope.vs.movingBoundary = false;
           setLastMove(event, true);
+          scope.$digest();
         });
 
         element.bind('mouseout', function (event) {
           scope.vs.movingBoundary = false;
           setLastMove(event, true);
+          scope.$digest();
         });
         //levelID
 
@@ -151,7 +156,7 @@ angular.module('emuwebApp')
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
-          scope.$digest();
+          
         }
 
         function setLastRightClick(x) {
@@ -164,7 +169,7 @@ angular.module('emuwebApp')
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
-          scope.$digest();
+          
         }
 
         function setLastDblClick(x) {
@@ -177,7 +182,7 @@ angular.module('emuwebApp')
           scope.vs.openEditArea(lastEventClick.evtr, levelType, element.parent());
           scope.cursorInTextField();
           lastPCM = thisPCM;
-          scope.$digest();
+          
         }
 
         function setLastMove(x, doChange) {
@@ -190,7 +195,6 @@ angular.module('emuwebApp')
           scope.vs.setcurMouseLevelName(levelID);
           scope.vs.setcurMouseLevelType(levelType);
           lastPCM = thisPCM;
-          scope.$digest();
         }
 
         function getX(e) {
