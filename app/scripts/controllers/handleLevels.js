@@ -5,9 +5,6 @@ angular.module('emuwebApp')
 
 		$scope.dhs = Drawhelperservice;
 
-		/**
-		 * clear levelDetails when new utt is loaded
-		 */
 		$scope.$on('loadingNewUtt', function () {
 			$scope.tds.data = {};
 		});
@@ -17,11 +14,11 @@ angular.module('emuwebApp')
 		});
 
 		$scope.cursorInTextField = function () {
-			viewState.focusInTextField = true;
+			$scope.vs.focusInTextField = true;
 		};
 
 		$scope.cursorOutOfTextField = function () {
-			viewState.focusInTextField = false;
+			$scope.vs.focusInTextField = false;
 		};
 
 	});

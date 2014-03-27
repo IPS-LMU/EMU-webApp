@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function (viewState) {
+  .directive('spectro', function () {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -10,7 +10,7 @@ angular.module('emuwebApp')
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
         scope.enlargeCanvas = {
-          'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+          'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
@@ -32,13 +32,13 @@ angular.module('emuwebApp')
 
 
         scope.updateCSS = function () {
-          var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-          if (viewState.getenlarge() == -1) {
+          var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
+          if (scope.vs.getenlarge() == -1) {
             scope.enlargeCanvas = {
               'height': 100 / parts + '%'
             };
           } else {
-            if (viewState.getenlarge() == scope.order) {
+            if (scope.vs.getenlarge() == scope.order) {
               scope.enlargeCanvas = {
                 'height': 3 * 100 / (parts + 2) + '%'
               };
@@ -54,10 +54,10 @@ angular.module('emuwebApp')
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
               drawSpectMarkup();
               if (!scope.vs.getdragBarActive()) {
-                drawCrossHairs(scope.vs, canvas0, scope.cps, scope.dhs, event);
+                drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
               }
             }
           }
@@ -80,6 +80,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              console.log('update');
               scope.redraw();
               scope.updateCSS();
             }
@@ -113,7 +114,7 @@ angular.module('emuwebApp')
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               setupEvent();
               clearImageCache();
-              drawOsci(scope.vs, scope.shs.wavJSO.Data);
+              drawSpectro(scope.vs, scope.shs.wavJSO.Data);
             }
           }
         }, true);
@@ -126,7 +127,7 @@ angular.module('emuwebApp')
             drawTimeLine(cache);
             drawSpectMarkup();
           } else {
-            drawOsci(scope.vs, scope.shs.wavJSO.Data);
+            drawSpectro(scope.shs.wavJSO.Data);
           }
         };
 
@@ -200,23 +201,23 @@ angular.module('emuwebApp')
 
         }
 
-        function drawOsci(viewState, buffer) {
+        function drawSpectro(buffer) {
           killSpectroRenderingThread();
           //markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-          startSpectroRenderingThread(viewState, buffer);
+          startSpectroRenderingThread(buffer);
         }
 
-        function startSpectroRenderingThread(viewState, buffer) {
-          pcmperpixel = Math.round((viewState.curViewPort.eS - viewState.curViewPort.sS) / canvas0.width);
+        function startSpectroRenderingThread(buffer) {
+          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           primeWorker = new Worker(spectroWorker);
-          var x = buffer.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + (pcmperpixel * 3 * viewState.spectroSettings.windowLength));
+          var x = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + (pcmperpixel * 3 * scope.vs.spectroSettings.windowLength));
           var parseData = new Float32Array(x);
 
           setupEvent();
 
           primeWorker.postMessage({
             'cmd': 'config',
-            'N': viewState.spectroSettings.windowLength
+            'N': scope.vs.spectroSettings.windowLength
           });
           primeWorker.postMessage({
             'cmd': 'config',
@@ -224,19 +225,19 @@ angular.module('emuwebApp')
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'freq': viewState.spectroSettings.rangeTo
+            'freq': scope.vs.spectroSettings.rangeTo
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'freqLow': viewState.spectroSettings.rangeFrom
+            'freqLow': scope.vs.spectroSettings.rangeFrom
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'start': Math.round(viewState.curViewPort.sS)
+            'start': Math.round(scope.vs.curViewPort.sS)
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'end': Math.round(viewState.curViewPort.eS)
+            'end': Math.round(scope.vs.curViewPort.eS)
           });
           primeWorker.postMessage({
             'cmd': 'config',
@@ -244,7 +245,7 @@ angular.module('emuwebApp')
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'window': viewState.spectroSettings.window
+            'window': scope.vs.spectroSettings.window
           });
           primeWorker.postMessage({
             'cmd': 'config',
@@ -256,7 +257,7 @@ angular.module('emuwebApp')
           });
           primeWorker.postMessage({
             'cmd': 'config',
-            'dynRangeInDB': viewState.spectroSettings.dynamicRange
+            'dynRangeInDB': scope.vs.spectroSettings.dynamicRange
           });
           primeWorker.postMessage({
             'cmd': 'config',
@@ -280,7 +281,7 @@ angular.module('emuwebApp')
           });
         }
 
-        function drawCrossHairs(viewState, canvas, config, dhs, mouseEvt) {
+        function drawCrossHairs(canvas, config, dhs, mouseEvt) {
           if (config.vals.restrictions.drawCrossHairs) {
             markupCtx.clearRect(0, 0, canvas.width, canvas.height);
             markupCtx.strokeStyle = config.vals.colors.crossHairsColor;
@@ -307,11 +308,11 @@ angular.module('emuwebApp')
             // draw frequency / sample / time
             markupCtx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
 
-            var mouseFreq = viewState.round(viewState.spectroSettings.rangeTo - mouseY / canvas.height * viewState.spectroSettings.rangeTo, 2);
+            var mouseFreq = scope.vs.round(scope.vs.spectroSettings.rangeTo - mouseY / canvas.height * scope.vs.spectroSettings.rangeTo, 2);
 
             var tW = markupCtx.measureText(mouseFreq + ' Hz').width;
-            var s1 = Math.round(viewState.curViewPort.sS + mouseX / canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
-            var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
+            var s1 = Math.round(scope.vs.curViewPort.sS + mouseX / canvas.width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
+            var s2 = scope.vs.round(scope.vs.getViewPortStartTime() + mouseX / canvas.width * (scope.vs.getViewPortEndTime() - scope.vs.getViewPortStartTime()), 6);
             var horizontalText = scope.fontImage.getTextImage(context, mouseFreq + ' Hz', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
             var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, false);
 

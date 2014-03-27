@@ -20,7 +20,6 @@ angular.module('emuwebApp')
           return $scope.panes.length;
         };
         this.setBottomRightResizePane = function (pane) {
-          console.log("asdfasf")
           $scope.bottomRightResizePane = pane;
         };
       },
