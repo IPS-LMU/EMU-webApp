@@ -27,7 +27,7 @@
     <!-- vertical split layout that contains top and bottom pane -->
     <div class="allCans">
 
-      <bg-splitter show-two-dim-cans="true" two-dim-track-name="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order[0]}}"> 
+      <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
         <bg-pane type="topPane" min-size="80" max-size="500" class="topPane">
           <div class="timeline">
             <ul>
@@ -49,21 +49,16 @@
           </div>
         </bg-pane>
         <bg-pane type="bottomRightResizePane">
-          <epg></epg>
+          <ul>
+            <li ng-repeat="cur2dTrack in cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order" ng-switch on="cur2dTrack">
+              <epg ng-switch-when="EPG"></epg>
+            </li>
+          </ul>
         </bg-pane>
       </bg-splitter>
-      
 
-
-      <!-- <two-dim-canvases></two-dim-canvases> -->
-      <!-- <div class="twoDcanvases" show-twod="!is2dCancasesHidden" ng-show="cps.vals.perspectives[vs.curPerspectiveIdx].twoDcanvases.order.length > 0"> -->
-        <!-- for 2D over time canvases like EPG/EMA/... -->
-<!--         <button class="twoDcanvasesOpenBtn" ng-click="toggle2dCancases();">
-          <span class="glyphicon glyphicon-resize-full"></span>
-        </button> -->
-      <!-- </div> -->
-    
     </div>
+    
       
     <!-- bottom menu bar -->
     <div class="menuBarBottom">

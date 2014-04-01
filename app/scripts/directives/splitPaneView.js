@@ -5,8 +5,7 @@ angular.module('emuwebApp')
       replace: true,
       transclude: true,
       scope: {
-        showTwoDimCans: '@',
-        twoDimTrackName: '@'
+        showTwoDimCans: '@'
       },
       template: '<div class="split-panes vertical" ng-transclude></div>',
       controller: function ($scope) {
@@ -25,6 +24,7 @@ angular.module('emuwebApp')
       },
       link: function (scope, element, attrs) {
 
+
         var dragBottomRightResizePaneTopResizer = false;
         var dragBottomRightResizePaneLeftResizer = false;
         var dragBottomRightResizePaneCornerResizer = false;
@@ -35,6 +35,14 @@ angular.module('emuwebApp')
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;
 
+        var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
+        var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
+        var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
+        pane3.elem.prepend(bottomRightResizePaneLeftResizer);
+        pane3.elem.prepend(bottomRightResizePaneTopResizer);
+        pane3.elem.prepend(bottomRightResizePaneCornerResizer);
+
+
         var pane1Min = pane1.minSize || 0;
         var pane2Min = pane2.minSize || 0;
         var dragSplitPaneResizer = false;
@@ -43,7 +51,15 @@ angular.module('emuwebApp')
 
         pane1.elem.after(handler);
 
-        // element.append(twoDimCans);
+        attrs.$observe('showTwoDimCans', function (val) {
+          if (val === 'false') {
+            console.log("should HIDE 2dcans now...");
+          } else {
+            console.log("should SHOW 2dcans now...");
+          }
+        });
+        ////////////////////
+        // bindings
 
         element.bind('mousemove', function (ev) {
           if (!drag) return;
@@ -122,32 +138,31 @@ angular.module('emuwebApp')
           $rootScope.$digest();
         });
 
-        if (scope.showTwoDimCans === "true") {
-          pane3.elem.bind('mousedown', function (ev) {
-            ev.preventDefault();
-            drag = true;
-            dragBottomRightResizePaneTopResizer = true;
-            viewState.setdragBarActive(drag);
-            $rootScope.$digest();
+        bottomRightResizePaneTopResizer.bind('mousedown', function (ev) {
+          console.log(pane3.elem.children()[1])
+          ev.preventDefault();
+          drag = true;
+          dragBottomRightResizePaneTopResizer = true;
+          viewState.setdragBarActive(drag);
+          $rootScope.$digest();
 
-          });
+        });
 
-          pane3.elem.bind('mousedown', function (ev) {
-            ev.preventDefault();
-            drag = true;
-            dragBottomRightResizePaneLeftResizer = true;
-            viewState.setdragBarActive(drag);
-            $rootScope.$digest();
-          });
+        bottomRightResizePaneLeftResizer.bind('mousedown', function (ev) {
+          ev.preventDefault();
+          drag = true;
+          dragBottomRightResizePaneLeftResizer = true;
+          viewState.setdragBarActive(drag);
+          $rootScope.$digest();
+        });
 
-          pane3.elem.bind('mousedown', function (ev) {
-            ev.preventDefault();
-            drag = true;
-            dragBottomRightResizePaneCornerResizer = true;
-            viewState.setdragBarActive(drag);
-            $rootScope.$digest();
-          });
-        }
+        bottomRightResizePaneCornerResizer.bind('mousedown', function (ev) {
+          ev.preventDefault();
+          drag = true;
+          dragBottomRightResizePaneCornerResizer = true;
+          viewState.setdragBarActive(drag);
+          $rootScope.$digest();
+        });
 
         angular.element(document).bind('mouseup', function (ev) {
           drag = false;
@@ -170,7 +185,8 @@ angular.module('emuwebApp')
       transclude: true,
       scope: {
         minSize: '=',
-        type: '@'
+        type: '@',
+        showTwoDimCans: '@'
       },
       template: '<div class="{{typeclass}}" ng-transclude></div>',
 
@@ -184,12 +200,12 @@ angular.module('emuwebApp')
         } else {
           // element.toggleClass('alert-box alert')
           // var twoDimCans = angular.element('<div class="bottomRightResizePane"></div>');
-          var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
-          var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
-          var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
-          element.prepend(bottomRightResizePaneLeftResizer);
-          element.prepend(bottomRightResizePaneTopResizer);
-          element.prepend(bottomRightResizePaneCornerResizer);
+          // var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
+          // var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
+          // var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
+          // element.prepend(bottomRightResizePaneLeftResizer);
+          // element.prepend(bottomRightResizePaneTopResizer);
+          // element.prepend(bottomRightResizePaneCornerResizer);
 
           // element.append(twoDimCans);
 
@@ -197,6 +213,7 @@ angular.module('emuwebApp')
           scope.index = 3;
           scope.typeclass = 'bottomRightResizePane';
           bgSplitterCtrl.setBottomRightResizePane(scope);
+
         }
       }
     };
