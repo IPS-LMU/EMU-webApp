@@ -4,8 +4,8 @@ var filewalker = require('filewalker');
 
 var labelData;
 
-var pathToDbRoot = '../app/testData/ignoredData/epgdorsal/';
-var configName = 'epgdorsal_DBconfig.json';
+var pathToDbRoot = '../app/testData/ignoredData/ema/';
+var configName = 'ema_DBconfig.json';
 
 var portNr = 8080;
 
@@ -100,8 +100,10 @@ wss.on('connection', function (ws) {
             console.log('###########')
             console.log(p)
             var arr = p.split('/');
+            var nArr = arr[arr.length - 1].split('_');
+            nArr.pop();
             bundleList.push({
-              'name': arr[arr.length - 1].split('_')[0]
+              'name': nArr.join('_')
             });
           }
         }).on('error', function (err) {

@@ -3,7 +3,7 @@
         "osciSpectroZoomFactor": 2,
         "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080",
-        "wsTimeoutInterval": 30000,
+        "wsTimeoutInterval": 5000,
         "comType": "WS"
     },
     "keyMappings": {
