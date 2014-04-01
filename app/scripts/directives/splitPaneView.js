@@ -53,9 +53,9 @@ angular.module('emuwebApp')
 
         attrs.$observe('showTwoDimCans', function (val) {
           if (val === 'false') {
-            console.log("should HIDE 2dcans now...");
+            scope.bottomRightResizePane.elem.hide();
           } else {
-            console.log("should SHOW 2dcans now...");
+            scope.bottomRightResizePane.elem.show();
           }
         });
         ////////////////////
@@ -139,7 +139,6 @@ angular.module('emuwebApp')
         });
 
         bottomRightResizePaneTopResizer.bind('mousedown', function (ev) {
-          console.log(pane3.elem.children()[1])
           ev.preventDefault();
           drag = true;
           dragBottomRightResizePaneTopResizer = true;
