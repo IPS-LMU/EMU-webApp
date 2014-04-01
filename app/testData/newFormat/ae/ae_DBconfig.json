@@ -172,7 +172,7 @@
 				"order": ["Tone", "Phonetic"]
 			},
 			"twoDcanvases": {
-				"show": true
+				"order": []
 			}
 		}],
 		"activeButtons": {
