@@ -53,7 +53,7 @@
         "order": ["Phonetic", "Tone"]
       },
       "twoDcanvases": {
-        "show": true
+        "order": []
       }
     }]
   },
