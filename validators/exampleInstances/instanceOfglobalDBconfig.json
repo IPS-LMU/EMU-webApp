@@ -52,7 +52,7 @@
       "levelCanvases": {
         "order": ["Phonetic", "Tone"]
       },
-      "twoDcanvases": {
+      "twoDimCanvases": {
         "order": []
       }
     }]

@@ -22,7 +22,11 @@ angular.module('emuwebApp')
 				}
 			});
 
-			return res;
+			if(res !== undefined){
+				return res;
+			}else{
+				alert("could not getColumnOfTrack of trackname: " + trackName)
+			}
 		};
 
 
@@ -37,8 +41,11 @@ angular.module('emuwebApp')
 					res.startTime = tr.startTime;
 				}
 			});
-
-			return res;
+			if(res !== undefined){
+				return res;
+			}else{
+				alert("could not getSampleRateAndStartTimeOfTrack of trackname: " + trackName)
+			}
 		};
 
 		return sServObj;
