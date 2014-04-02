@@ -14,7 +14,7 @@ angular.module('emuwebApp')
 				var globalMaxX = -Infinity;
 				var globalMinY = Infinity;
 				var globalMaxY = -Infinity;
-				
+
 				var tr, col, sRaSt;
 
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -103,6 +103,7 @@ angular.module('emuwebApp')
 
 						var startPoint = (Math.PI / 180) * 0;
 						var endPoint = (Math.PI / 180) * 360;
+						ctx.strokeStyle = dD.dots[i].color;
 						ctx.beginPath();
 						ctx.arc(x, y, 20, startPoint, endPoint, true);
 						ctx.stroke();
