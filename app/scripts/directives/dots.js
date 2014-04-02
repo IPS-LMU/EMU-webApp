@@ -47,6 +47,8 @@ angular.module('emuwebApp')
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 
+					var allDots = [];
+
 					for (var i = 0; i < dD.dots.length; i++) {
 
 						// get xCol
@@ -113,38 +115,46 @@ angular.module('emuwebApp')
 						ctx.arc(x, y, 2, startPoint, endPoint, true);
 						ctx.fill();
 						ctx.closePath();
+
+
+
+						// draw labels
+						// ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
+						// var horizontalText = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+						// ctx.drawImage(horizontalText, 50, 50 , horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
+
+						// append to all dots
+						allDots.push({
+							'name': dD.dots[i].name,
+							'x': x,
+							'y': y
+						});
+
 					}
 
-					// ctx.fillStyle = 'green';
-					// ctx.strokeStyle = scope.cps.vals.colors.osciColor;
-					// ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-
-					// var gridWidth = canvas.width / 8;
-					// var gridHeight = canvas.height / 8;
-
-
-
-					// var binValStrArr;
-					// col.values[curFrame].forEach(function (el, elIdx) {
-					// 	binValStrArr = el.toString(2).split('').reverse();
-					// 	while (binValStrArr.length < 8) {
-					// 		binValStrArr.push('0');
-					// 	}
-
-					// 	binValStrArr.forEach(function (binStr, binStrIdx) {
-					// 		if (binStr === '1') {
-					// 			ctx.fillStyle = 'grey';
-					// 			ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
-					// 		} else {
-					// 			ctx.fillStyle = 'white';
-					// 			ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
-					// 		}
-					// 	})
-					// });
-
-					// draw labels
-					// var horizontalText = scope.fontImage.getTextImageTwoLines(ctx, 'DOTS', 'Frame:' + '???', scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-					// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
+					var f, t;
+					dD.connectLines.forEach(function (c) {
+						console.log(c);
+						allDots.forEach(function (d) {
+							console.log(d);
+							if (d.name === c.fromDot) {
+								f = d;
+							}
+							if (d.name === c.toDot) {
+								t = d;
+							}
+						});
+						console.log('#################');
+						console.log(f);
+						console.log(t);
+						
+						// draw line
+                        ctx.beginPath();
+                        ctx.moveTo(f.x, f.y);
+                        ctx.lineTo(t.x, t.y);
+                        ctx.stroke();
+                        ctx.closePath();
+					});
 				}
 			}
 		};
