@@ -20,7 +20,7 @@ angular.module('emuwebApp')
           'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
         
-        scope.$watch('cps.vals.perspectives', function () {
+        scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
 
@@ -60,6 +60,24 @@ angular.module('emuwebApp')
 
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(markupCtx, false);
+
+          // draw corner pointers
+          markupCtx.beginPath();
+          markupCtx.moveTo(0, 0);
+          markupCtx.lineTo(5, 5);
+          markupCtx.moveTo(0, canvas1.height);
+          markupCtx.lineTo(5, canvas1.height - 5);
+          markupCtx.stroke();
+          markupCtx.closePath();
+
+          // draw min/max vals
+          var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + '???', scope.cps.vals.font.fontPxSize * 3/4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+          markupCtx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+
+          // draw min/max vals
+          labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + '???', scope.cps.vals.font.fontPxSize * 3/4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+          markupCtx.drawImage(labelTxtImg, 5, canvas1.height-50, labelTxtImg.width, labelTxtImg.height);
+
 
         }
 
