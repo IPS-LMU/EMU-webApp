@@ -43,7 +43,7 @@ angular.module('emuwebApp')
 		}
 
 		function wsonmessage(message) {
-			listener(JSON.parse(message.data));
+			listener(angular.fromJson(message.data));
 		}
 
 		function wsonerror(message) {
@@ -95,6 +95,7 @@ angular.module('emuwebApp')
 					handleReceivedESPS(messageObj.fileName, messageObj.data);
 					break;
 				case 'getSSFFfile':
+					alert("esps")
 					handleReceivedSSFF(messageObj.fileName, messageObj.data);
 					break;
 				}
