@@ -26,7 +26,7 @@ angular.module('emuwebApp')
       selectE: -1,
       bufferLength: -1,
       enlargeTimeline: -1,
-      dragBarActive: -1,
+      dragBarActive: false,
       dragBarHeight: -1,
       windowWidth: undefined,
     };

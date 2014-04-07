@@ -7,7 +7,10 @@ angular.module('emuwebApp')
 
 		sServObj.lastTextWidth = null;
 		sServObj.spaceTop = 5;
-
+		
+		/**
+		 *
+		 */
 		sServObj.getTextImage = function (ctxOriginal, text, fontPxSize, fontType, color) {
 			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
@@ -20,9 +23,16 @@ angular.module('emuwebApp')
 			sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
 			return img;
 		};
+		/**
+		 *
+		 */
 		sServObj.getLastImageWidth = function () {
 			return sServObj.lastTextWidth;
 		};
+
+		/**
+		 *
+		 */
 		sServObj.getTextImageTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, color, alignLeft) {
 			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;

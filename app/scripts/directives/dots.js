@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('dots', function (viewState) {
 		return {
-			template: '<div class="twoDimCanvasContainer"><canvas width="256" height="256"></canvas></div>',
+			template: '<div class="twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {
@@ -40,7 +40,6 @@ angular.module('emuwebApp')
 				/**
 				 * drawing method to drawDots
 				 */
-
 				function drawDots(scope) {
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -96,11 +95,11 @@ angular.module('emuwebApp')
 							globalMaxY = maxY;
 						}
 
-						console.log(xCol.values[curFrame]);
-						console.log(yCol.values[curFrame]);
+						// console.log(xCol.values[curFrame]);
+						// console.log(yCol.values[curFrame]);
 
-						var x = canvas.width - ((xCol.values[curFrame] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
-						var y = ((yCol.values[curFrame] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
+						var x = ((xCol.values[curFrame] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
+						var y = canvas.height - ((yCol.values[curFrame] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
 
 						var startPoint = (Math.PI / 180) * 0;
@@ -116,12 +115,11 @@ angular.module('emuwebApp')
 						ctx.fill();
 						ctx.closePath();
 
-
-
 						// draw labels
-						// ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-						// var horizontalText = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-						// ctx.drawImage(horizontalText, 50, 50 , horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
+						var labelTxtImg = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+						ctx.drawImage(labelTxtImg, x, y - 5, labelTxtImg.width, labelTxtImg.height);
+
+
 
 						// append to all dots
 						allDots.push({
@@ -134,9 +132,7 @@ angular.module('emuwebApp')
 
 					var f, t;
 					dD.connectLines.forEach(function (c) {
-						console.log(c);
 						allDots.forEach(function (d) {
-							console.log(d);
 							if (d.name === c.fromDot) {
 								f = d;
 							}
@@ -144,17 +140,40 @@ angular.module('emuwebApp')
 								t = d;
 							}
 						});
-						console.log('#################');
-						console.log(f);
-						console.log(t);
-						
+
 						// draw line
-                        ctx.beginPath();
-                        ctx.moveTo(f.x, f.y);
-                        ctx.lineTo(t.x, t.y);
-                        ctx.stroke();
-                        ctx.closePath();
+						ctx.strokeStyle = c.color;
+						ctx.beginPath();
+						ctx.moveTo(f.x, f.y);
+						ctx.lineTo(t.x, t.y);
+						ctx.stroke();
+						ctx.closePath();
 					});
+
+					// draw rulers
+					ctx.beginPath();
+					ctx.moveTo(0, 0);
+					ctx.lineTo(5, 5);
+					ctx.moveTo(0, canvas.height);
+					ctx.lineTo(5, canvas.height - 5);
+					ctx.moveTo(canvas.width, canvas.height);
+					ctx.lineTo(canvas.width - 5, canvas.height - 5);
+					ctx.stroke();
+					ctx.closePath();
+
+					// ymax
+					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.vs.round(globalMaxY, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+
+					// xmin + y min
+					// scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 6), 'xMin' + scope.vs.round(globalMinX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+					ctx.drawImage(labelTxtImg, 5, canvas.height - 150, labelTxtImg.width, labelTxtImg.height);
+
+					// xmax
+					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+					ctx.drawImage(labelTxtImg, canvas.height - 150, labelTxtImg.width - 150, labelTxtImg.width, labelTxtImg.height);
+
 				}
 			}
 		};
