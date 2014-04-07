@@ -24,7 +24,7 @@ angular.module('emuwebApp')
               // console.log(event);
               var mouseX = scope.dhs.getX(event);
               scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
-              scope.$digest();
+              scope.$apply();
             }
             break;
 
