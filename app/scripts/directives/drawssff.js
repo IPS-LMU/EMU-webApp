@@ -34,7 +34,7 @@ angular.module('emuwebApp')
         }, true);
 
         // watch ssffds.data change
-        scope.$watch('ssffds.data', function (newValue, oldValue) {
+        scope.$watch('ssffds.data.length', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
@@ -252,7 +252,6 @@ angular.module('emuwebApp')
             var txt;
             var tW;
             if (nrOfSamples <= 2) {
-              console.log("what?")
               txt = 'Zoom out to see contour(s)';
               var horizontalText = scope.fontImage.getTextImage(ctx, txt, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, 'red');
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
