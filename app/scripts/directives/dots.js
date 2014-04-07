@@ -150,7 +150,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 					});
 
-					// draw rulers
+					// draw corner pointers
 					ctx.beginPath();
 					ctx.moveTo(0, 0);
 					ctx.lineTo(5, 5);
@@ -171,7 +171,7 @@ angular.module('emuwebApp')
 					ctx.drawImage(labelTxtImg, 5, canvas.height - 150, labelTxtImg.width, labelTxtImg.height);
 
 					// xmax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
 					ctx.drawImage(labelTxtImg, canvas.height - 150, labelTxtImg.width - 150, labelTxtImg.width, labelTxtImg.height);
 
 				}
