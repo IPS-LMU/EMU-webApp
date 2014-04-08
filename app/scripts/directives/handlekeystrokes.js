@@ -224,16 +224,16 @@ angular.module('emuwebApp')
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }
+                      Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
                         'name': viewState.getcurClickLevelName(),
                         'itemIdx': viewState.getcurClickSegments(),
-                        'bufferLength': viewState.curViewPort.bufferLength,
                         'rightSide': true,
                         'changeTime': changeTime
                       });
-                      Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                      
                     }
                   }
                 }
@@ -255,6 +255,7 @@ angular.module('emuwebApp')
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }
+                      Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
@@ -263,7 +264,7 @@ angular.module('emuwebApp')
                         'rightSide': false,
                         'changeTime': changeTime
                       });
-                      Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                      
                     }
                   }
                 }
@@ -292,7 +293,7 @@ angular.module('emuwebApp')
                           'name': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': false,
-                          'changeTime': 0 - changeTime
+                          'changeTime':  -changeTime
                         });
                         Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                       } else {
@@ -302,7 +303,7 @@ angular.module('emuwebApp')
                           'name': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': true,
-                          'changeTime': 0 - changeTime
+                          'changeTime': -changeTime
                         });
                         Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                       }

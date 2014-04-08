@@ -40,6 +40,7 @@ angular.module('emuwebApp')
         });
 
         element.bind('mousemove', function (event) {
+          if(!scope.vs.getdragBarActive()) {
           var moveLine = true;
           var zoom = scope.vs.getPCMpp(event);
           thisPCM = getX(event) * zoom;
@@ -52,6 +53,7 @@ angular.module('emuwebApp')
             // relative movement in pcm above 1 pcm per pixel
             moveBy = Math.round(thisPCM - lastPCM);
           }
+          }
           switch (event.which) {
           case 1:
             //console.log('Left mouse button pressed');
@@ -63,7 +65,7 @@ angular.module('emuwebApp')
             //console.log('Right mouse button pressed');
             break;
           default:
-            console.log(scope.vs.getdragBarActive())
+            if(!scope.vs.getdragBarActive()) {
             if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
               if (scope.vs.getcurClickLevelName() === undefined) {
                 setLastClick(event);
@@ -113,9 +115,12 @@ angular.module('emuwebApp')
             } else {
               scope.vs.movingBoundary = false;
             }
+            }
             break;
           }
-          setLastMove(event, moveLine);
+          if(!scope.vs.getdragBarActive()) {
+            setLastMove(event, moveLine);
+          }
         });
 
         element.bind('mousedown', function (event) {

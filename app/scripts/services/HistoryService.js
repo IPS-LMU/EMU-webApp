@@ -149,7 +149,7 @@ angular.module('emuwebApp')
 						break;
 					case 'expandSegments':
 						if (applyOldVal) {
-						    Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, cur.changeTime);
+						    Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, -cur.changeTime);
 						} else {
 						    Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, cur.changeTime);
 						}

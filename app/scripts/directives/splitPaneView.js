@@ -134,7 +134,7 @@ angular.module('emuwebApp')
           ev.preventDefault();
           drag = true;
           dragSplitPaneResizer = true;
-          viewState.setdragBarActive(drag);
+          viewState.setdragBarActive(true);
           $rootScope.$digest();
         });
 
@@ -142,7 +142,7 @@ angular.module('emuwebApp')
           ev.preventDefault();
           drag = true;
           dragBottomRightResizePaneTopResizer = true;
-          viewState.setdragBarActive(drag);
+          viewState.setdragBarActive(true);
           $rootScope.$digest();
 
         });
@@ -151,7 +151,7 @@ angular.module('emuwebApp')
           ev.preventDefault();
           drag = true;
           dragBottomRightResizePaneLeftResizer = true;
-          viewState.setdragBarActive(drag);
+          viewState.setdragBarActive(true);
           $rootScope.$digest();
         });
 
@@ -159,18 +159,17 @@ angular.module('emuwebApp')
           ev.preventDefault();
           drag = true;
           dragBottomRightResizePaneCornerResizer = true;
-          viewState.setdragBarActive(drag);
+          viewState.setdragBarActive(true);
           $rootScope.$digest();
         });
 
         angular.element(document).bind('mouseup', function (ev) {
           drag = false;
           dragSplitPaneResizer = false;
-
           dragBottomRightResizePaneTopResizer = false;
           dragBottomRightResizePaneLeftResizer = false;
           dragBottomRightResizePaneCornerResizer = false
-          viewState.setdragBarActive(drag);
+          viewState.setdragBarActive(false);
           $rootScope.$digest();
         });
       }
