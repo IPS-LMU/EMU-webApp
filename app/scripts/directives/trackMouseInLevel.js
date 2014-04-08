@@ -65,15 +65,12 @@ angular.module('emuwebApp')
             //console.log('Right mouse button pressed');
             break;
           default:
+
             if(!scope.vs.getdragBarActive()) {
             if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
-              if (scope.vs.getcurClickLevelName() === undefined) {
-                setLastClick(event);
-              }
               scope.vs.deleteEditArea();
               if (scope.vs.getcurMouseSegment() !== undefined) {
                 scope.vs.movingBoundary = true;
-
                 if (scope.this.level.type == "SEGMENT") {
                   scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                   scope.hists.updateCurChangeObj({
@@ -124,6 +121,7 @@ angular.module('emuwebApp')
         });
 
         element.bind('mousedown', function (event) {
+          scope.vs.movingBoundary = true;
           setLastMove(event, true);
         });
 

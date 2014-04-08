@@ -62,8 +62,12 @@ angular.module('emuwebApp')
 						}
 					}
 				}, true);
-
-
+				
+				scope.redraw = function () {
+				    drawVpOsciMarkup(scope, scope.cps, true);
+				    scope.updateCSS();
+				};				
+				
 				scope.updateCSS = function () {
 					var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
