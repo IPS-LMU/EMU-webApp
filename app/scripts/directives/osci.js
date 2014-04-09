@@ -171,12 +171,13 @@ angular.module('emuwebApp')
 						sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
 						eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
 
-						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
+						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, "deine mutti", config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+						// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0);
 
-						space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
+						// space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+						// horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+						// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
 					}
 				}

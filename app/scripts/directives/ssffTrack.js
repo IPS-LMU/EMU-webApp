@@ -5,14 +5,21 @@ angular.module('emuwebApp')
     return {
       templateUrl: 'views/ssffTrack.html',
       restrict: 'E',
-      replace: true,
       link: function postLink(scope, element, attrs) {
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
-        var canvas0 = element.find('canvas')[0];
-        var canvas1 = element.find('canvas')[canvasLength - 1];
-        var context = canvas0.getContext('2d');
-        var markupCtx = canvas1.getContext('2d');
+        var ssffCanvas = element.find('canvas')[1];
+        var markupCanvas = element.find('canvas')[canvasLength - 1];
+        // var context = canvas0.getContext('2d');
+        var markupCtx = markupCanvas.getContext('2d');
+
+        var trackName;
+
+        attrs.$observe('trackName', function (val) {
+          if (val) {
+            trackName = val;
+          }
+        });
 
 
         scope.order = attrs.order;
@@ -54,7 +61,7 @@ angular.module('emuwebApp')
 
         function drawSsffTrackMarkup() {
 
-          markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+          markupCtx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
           // draw moving boundary line if moving
           scope.dhs.drawMovingBoundaryLine(markupCtx);
 
@@ -65,8 +72,8 @@ angular.module('emuwebApp')
           markupCtx.beginPath();
           markupCtx.moveTo(0, 0);
           markupCtx.lineTo(5, 5);
-          markupCtx.moveTo(0, canvas1.height);
-          markupCtx.lineTo(5, canvas1.height - 5);
+          markupCtx.moveTo(0, markupCanvas.height);
+          markupCtx.lineTo(5, markupCanvas.height - 5);
           markupCtx.stroke();
           markupCtx.closePath();
 
@@ -76,12 +83,12 @@ angular.module('emuwebApp')
 
           // draw min/max vals
           labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + '???', scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-          markupCtx.drawImage(labelTxtImg, 5, canvas1.height - 50, labelTxtImg.width, labelTxtImg.height);
+          markupCtx.drawImage(labelTxtImg, 5, markupCanvas.height - 75, labelTxtImg.width, labelTxtImg.height);
 
           // draw ssffTrackName
           markupCtx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          var trackNameImg = scope.fontImage.getTextImage(markupCtx, 'NAME', scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-          markupCtx.drawImage(trackNameImg, 0, canvas1.height / 2 - trackNameImg.height / 2, trackNameImg.width, trackNameImg.height);
+          var trackNameImg = scope.fontImage.getTextImage(markupCtx, trackName, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          markupCtx.drawImage(trackNameImg, 0, markupCanvas.height / 2);
 
 
         }

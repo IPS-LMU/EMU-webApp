@@ -34,7 +34,7 @@
               <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
                 <osci ng-switch-when="OSCI" order="{{$index}}"></osci>
                 <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
-                <ssff-track ng-switch-default order="{{$index}}"></ssff-track>
+                <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
               </li>
             </ul>
           </div>
