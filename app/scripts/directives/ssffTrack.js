@@ -19,7 +19,7 @@ angular.module('emuwebApp')
         scope.enlargeCanvas = {
           'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
-        
+
         scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSpectMarkup();
+              drawSsffTrackMarkup();
               scope.updateCSS();
             }
           }
@@ -51,8 +51,8 @@ angular.module('emuwebApp')
             }
           }
         };
-        
-        function drawSpectMarkup() {
+
+        function drawSsffTrackMarkup() {
 
           markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
           // draw moving boundary line if moving
@@ -71,12 +71,17 @@ angular.module('emuwebApp')
           markupCtx.closePath();
 
           // draw min/max vals
-          var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + '???', scope.cps.vals.font.fontPxSize * 3/4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+          var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + '???', scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
           markupCtx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
 
           // draw min/max vals
-          labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + '???', scope.cps.vals.font.fontPxSize * 3/4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-          markupCtx.drawImage(labelTxtImg, 5, canvas1.height-50, labelTxtImg.width, labelTxtImg.height);
+          labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + '???', scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+          markupCtx.drawImage(labelTxtImg, 5, canvas1.height - 50, labelTxtImg.width, labelTxtImg.height);
+
+          // draw ssffTrackName
+          markupCtx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
+          var trackNameImg = scope.fontImage.getTextImage(markupCtx, 'NAME', scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          markupCtx.drawImage(trackNameImg, 0, canvas1.height / 2 - trackNameImg.height / 2, trackNameImg.width, trackNameImg.height);
 
 
         }

@@ -261,11 +261,6 @@ angular.module('emuwebApp')
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
             }
           }
-          // draw ssffTrackName
-          ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
-          var trackNameImg = scope.fontImage.getTextImage(ctx, trackName, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-          ctx.drawImage(trackNameImg, 0, 0, trackNameImg.width, trackNameImg.height, 5, 5, trackNameImg.width, trackNameImg.height);
-
         } //function
       }
     };
