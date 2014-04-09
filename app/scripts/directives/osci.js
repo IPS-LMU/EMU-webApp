@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 					'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
 
-				scope.$watch('cps.vals.perspectives', function () {
+				scope.$watch('vs.curPerspectiveIdx', function () {
 					scope.updateCSS();
 				}, true);
 

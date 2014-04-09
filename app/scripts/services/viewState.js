@@ -74,7 +74,7 @@ angular.module('emuwebApp')
 
     sServObj.curTaskPercCompl = 0;
 
-    sServObj.curPerspectiveIdx = 0;
+    sServObj.curPerspectiveIdx = -1;
 
     // possible general states of state machine
     sServObj.states = [];

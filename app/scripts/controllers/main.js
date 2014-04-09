@@ -224,6 +224,7 @@ angular.module('emuwebApp')
 						if (doUsrData === 'NO') {
 							// then get the DBconfigFile
 							Iohandlerservice.getDBconfigFile().then(function (data) {
+								viewState.curPerspectiveIdx = 0;
 								ConfigProviderService.setVals(data.EMUwebAppConfig);
 								delete data.EMUwebAppConfig; // delete to avoid duplicate
 								ConfigProviderService.curDbConfig = data;
@@ -727,7 +728,7 @@ angular.module('emuwebApp')
 		//
 		$scope.getPerspectiveColor = function (persp) {
 			var curColor;
-			if (persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {
+			if (viewState.curPerspectiveIdx === -1 || persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {
 				curColor = {
 					'background-color': '#999',
 					'color': 'white'
