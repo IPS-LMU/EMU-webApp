@@ -73,7 +73,7 @@ angular.module('emuwebApp')
           }
         });
 
-        scope.$watch('cps.vals.perspectives', function () {
+        scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
 
@@ -86,13 +86,14 @@ angular.module('emuwebApp')
           }
         }, true);
 
-        scope.$watch('tds.data', function () {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
-            }
-          }
-        }, true);
+        // do we need this?
+        // scope.$watch('tds.data', function () {
+        //   if (!$.isEmptyObject(scope.shs)) {
+        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
+        //       scope.redraw();
+        //     }
+        //   }
+        // }, true);
 
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
