@@ -1,25 +1,12 @@
 <div class="bundleListSideBarOuter">
     <h3><div class="bundleFilter"><input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
+    <my-Drop-Zone ng-show="showDropZone"></my-Drop-Zone>
     <div id="bundleListContainer" class="bundleListContainer">
         <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="bundleListItem" id="uttListItem" ng-style="getUttColor(bundle);" ng-click="menuBundleClick(bundle);">
                 <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img /></button>
                 <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
                 <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" ></div>
-            </div>
-        </div>
-    </div>
-    <div ng-show="showDropZone">
-        <div ng-controller="FileCtrl" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="loadFiles();">
-            <span>{{dropText}}</span>
-            <div ng-show="files.length">
-                <div ng-repeat="file in files.slice(0)">
-                    <span>{{file.webkitRelativePath || file.name}}</span>
-                    <span ng-switch="file.size > 1024*1024">
-                        <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-                        <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-                    </span>
-                </div>
             </div>
         </div>
     </div>

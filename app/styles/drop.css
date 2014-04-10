@@ -29,12 +29,13 @@ table {
     border-image: initial;
 }
 .dropzone {
-    height: 600px;
+    height: 80%;
+    width: 80%;
     border: 1px dashed white;
     border-radius: 4px;
     text-align: center;
     color: #BBB;
-    padding: 0px;
+    padding: 15px;
     margin: 15px;
 }
 .dropzone.not-available {

@@ -39,43 +39,47 @@ angular.module('emuwebApp')
         $scope.dropClass = '';
       });
     }
-    // $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
-    // $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
-    // $scope.dropzone.addEventListener('dragover', function (evt) {
-    //   evt.stopPropagation();
-    //   evt.preventDefault();
-    //   var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
-    //   $scope.$apply(function () {
-    //     $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
-    //     $scope.dropClass = ok ? 'over' : 'not-available';
-    //     $scope.wavLoaded = 0;
-    //     $scope.txtGridLoaded = 0;
-    //     $scope.labelLoaded = 0;
-    //   });
-    // }, false);
+     $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
+     $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
+     $scope.dropzone.addEventListener('dragover', function (evt) {
+       evt.stopPropagation();
+       evt.preventDefault();
+       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
+       var files = evt.dataTransfer.files;
+       console.log(files);
+       
+       $scope.$apply(function () {
+         $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
+         $scope.dropClass = ok ? 'over' : 'not-available';
+         $scope.wavLoaded = 0;
+         $scope.txtGridLoaded = 0;
+         $scope.labelLoaded = 0;
+       });
+     }, false);
 
-    // $scope.dropzone.addEventListener('drop', function (evt) {
-    //   evt.stopPropagation();
-    //   evt.preventDefault();
-    //   $scope.$apply(function () {
-    //     $scope.dropText = $scope.dropParsingStarted;
-    //     $scope.dropClass = '';        
-    //   });
-    //   var items = evt.dataTransfer.items;
-    //   for (var i = 0; i < items.length; i++) {
-    //     var item = items[i].webkitGetAsEntry();
-    //     if (item) {
-    //       $scope.traverseFileTree(item);       
-    //     }
-    //   }        
+     $scope.dropzone.addEventListener('drop', function (evt) {
+       evt.stopPropagation();
+       evt.preventDefault();
+       $scope.$apply(function () {
+         $scope.dropText = $scope.dropParsingStarted;
+         $scope.dropClass = '';        
+       });
+       var items = evt.dataTransfer.items;
+       for (var i = 0; i < items.length; i++) {
+         var item = items[i].webkitGetAsEntry();
+         if (item) {
+           $scope.traverseFileTree(item);       
+         }
+       }        
       
-    // }, false);
+     }, false);
 
     $scope.traverseFileTree = function (item, path) {
       path = path || '';
       if (item.isFile) {
         item.file(function (file) {
           var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+          console.log(extension);
           if (extension === 'WAV') {
             if (file.type.match('audio/wav')) {
               if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -89,7 +93,7 @@ angular.module('emuwebApp')
                 ++$scope.wavLoaded;
                 $scope.$apply();
               } else {
-                //alert('The File APIs are not fully supported in this browser.');
+                alert('The File APIs are not fully supported in this browser.');
               } 
             }
           }
