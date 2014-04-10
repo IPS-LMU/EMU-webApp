@@ -55,6 +55,74 @@
       "twoDimCanvases": {
         "order": []
       }
+    }, {
+      "name": "emaView",
+      "signalCanvases": {
+        "order": [
+          "OSCI",
+          "SPEC",
+          "tt_posz"
+        ],
+        "assign": [],
+        "contourLims": []
+      },
+      "levelCanvases": {
+        "order": [
+          "Segment",
+          "TT",
+          "TB"
+        ]
+      },
+      "twoDimCanvases": {
+        "order": ["DOTS"],
+        "twoDimDrawingDefinitions": [{
+          "name": "DOTS",
+          "dots": [{
+            "name": "tt",
+            "xSsffTrack": "tt_posy",
+            "ySsffTrack": "tt_posz",
+            "color": "rgb(255,0,0)"
+          }, {
+            "name": "tm",
+            "xSsffTrack": "tm_posy",
+            "ySsffTrack": "tm_posz",
+            "color": "rgb(0,0,0)"
+          }, {
+            "name": "tb",
+            "xSsffTrack": "tb_posy",
+            "ySsffTrack": "tb_posz",
+            "color": "rgb(0,0,0)"
+          }, {
+            "name": "ul",
+            "xSsffTrack": "ul_posy",
+            "ySsffTrack": "ul_posz",
+            "color": "rgb(0,0,0)"
+          }, {
+            "name": "ll",
+            "xSsffTrack": "ll_posy",
+            "ySsffTrack": "ll_posz",
+            "color": "rgb(0,0,0)"
+          }, {
+            "name": "jw",
+            "xSsffTrack": "jw_posy",
+            "ySsffTrack": "jw_posz",
+            "color": "rgb(0,0,0)"
+          }],
+          "connectLines": [{
+            "fromDot": "tt",
+            "toDot": "tm",
+            "color": "rgb(0,0,0)"
+          }, {
+            "fromDot": "tm",
+            "toDot": "tb",
+            "color": "rgb(0,0,0)"
+          }, {
+            "fromDot": "ul",
+            "toDot": "ll",
+            "color": "rgb(0,0,0)"
+          }]
+        }]
+      }
     }]
   },
   "queryGroupDefinitions": [{
