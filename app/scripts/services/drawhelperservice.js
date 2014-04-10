@@ -272,15 +272,14 @@ angular.module('emuwebApp')
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var tD = Levelservice.getLevelDetails(viewState.getcurMouseLevelName()).level;
 				var curM = viewState.getcurMouseSegment();
-				var item = Levelservice.getElementDetailsById(viewState.getcurMouseLevelName(),curM.id);
-				if(curM!==false && curM!==true) {
-				    if(tD.type=="SEGMENT") {
-				      var p = Math.round(viewState.getPos(ctx.canvas.width, item.sampleStart));
-				    }
-    				else {
-	    			  var p = Math.round(viewState.getPos(ctx.canvas.width, item.samplePoint));
-		    		}
-			    	ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);				
+				var item = Levelservice.getElementDetailsById(viewState.getcurMouseLevelName(), curM.id);
+				if (curM !== false && curM !== true) {
+					if (tD.type == "SEGMENT") {
+						var p = Math.round(viewState.getPos(ctx.canvas.width, item.sampleStart));
+					} else {
+						var p = Math.round(viewState.getPos(ctx.canvas.width, item.samplePoint));
+					}
+					ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 				}
 			}
 
@@ -293,7 +292,7 @@ angular.module('emuwebApp')
 
 		sServObj.drawCurViewPortSelected = function (ctx, drawTimeAndSamples) {
 
-			var xOffset, sDist;
+			var xOffset, sDist, space, horizontalText, scaleX;
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 
 			// calc. offset dependant on type of level of mousemove  -> default is sample exact
@@ -309,7 +308,16 @@ angular.module('emuwebApp')
 			if (posS === posE) {
 
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBorderColor;
-				ctx.fillRect(posS + xOffset, 0, 1, ctx.canvas.height);
+				ctx.fillRect(posS + xOffset, 0, 2, ctx.canvas.height);
+
+				if (drawTimeAndSamples) {
+					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+					
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width, horizontalText.height);
+
+				}
 			} else {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
 				ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
@@ -324,9 +332,9 @@ angular.module('emuwebApp')
 
 				if (drawTimeAndSamples) {
 					// start values
-					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					var space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
-					var horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
+					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width, horizontalText.height);
 
 					// end values

@@ -314,7 +314,7 @@ angular.module('emuwebApp')
             var s1 = Math.round(scope.vs.curViewPort.sS + mouseX / canvas.width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
             var s2 = scope.vs.round(scope.vs.getViewPortStartTime() + mouseX / canvas.width * (scope.vs.getViewPortEndTime() - scope.vs.getViewPortStartTime()), 6);
             var horizontalText = scope.fontImage.getTextImage(context, mouseFreq + ' Hz', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
-            var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, false);
+            var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
 
             markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
             markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW * (context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
