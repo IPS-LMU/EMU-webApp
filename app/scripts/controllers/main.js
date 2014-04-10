@@ -54,7 +54,7 @@ angular.module('emuwebApp')
 			}
 		});
 
-		
+
 		/**
 		 * listen for newUserLoggedOn (also called for no user on auto connect)
 		 */
@@ -193,7 +193,7 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window);
-				
+
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
 
@@ -315,17 +315,27 @@ angular.module('emuwebApp')
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files
-						// var ssffJso;
-						bundleData.ssffFiles.forEach(function (ssffFile) {
-							arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(ssffFile.data);
-							var ssffJso = Ssffparserservice.ssff2jso(arrBuff, ssffFile.ssffTrackName);
-							Ssffdataservice.data.push(angular.copy(ssffJso));
+						var ssffJso;
+						Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
+							Ssffdataservice.data = ssffJson.data;
+							
+							// set annotation
+							Levelservice.setData(bundleData.annotation);
+							$scope.curUtt = utt;
+							viewState.setState('labeling');
 						});
 
-						// set annotation
-						Levelservice.setData(bundleData.annotation);
-						$scope.curUtt = utt;
-						viewState.setState('labeling');
+						// bundleData.ssffFiles.forEach(function (ssffFile, idx) {
+						// 	console.log(idx);
+						// 	arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(ssffFile.data);
+						// 	var ssffJso = Ssffparserservice.ssff2jso(arrBuff, ssffFile.ssffTrackName);
+						// 	Ssffdataservice.data.push(angular.copy(ssffJso));
+						// });
+
+						// // set annotation
+						// Levelservice.setData(bundleData.annotation);
+						// $scope.curUtt = utt;
+						// viewState.setState('labeling');
 					});
 				}
 			}
