@@ -141,7 +141,7 @@ angular.module('emuwebApp')
 
           if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
-            var x, y, prevX, prevY, curSampleInCol, curSampleInColTime;
+            var x, y, prevX, prevY, prevVal, curSampleInCol, curSampleInColTime;
 
             curSampleArrs.forEach(function (valRep, valIdx) {
               valRep.forEach(function (val, idx) {
@@ -169,11 +169,13 @@ angular.module('emuwebApp')
 
 
                   // draw dot
-                  ctx.beginPath();
-                  ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                  ctx.closePath();
-                  ctx.stroke();
-                  ctx.fill();
+                  if (val !== null) {
+                    ctx.beginPath();
+                    ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.fill();
+                  }
 
                   if (valIdx !== 0) {
                     curSampleInCol = colStartSampleNr + valIdx - 1;
@@ -182,7 +184,6 @@ angular.module('emuwebApp')
                     prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                     prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
 
-
                     // mark selected
                     if (viewState.curCorrectionToolNr - 1 === idx) {
                       ctx.strokeStyle = 'white';
@@ -190,11 +191,15 @@ angular.module('emuwebApp')
                     }
 
                     // draw line
-                    ctx.beginPath();
-                    ctx.moveTo(prevX, prevY);
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-                    ctx.fill();
+                    if (val !== null && prevVal !== null) {
+                      ctx.beginPath();
+                      ctx.moveTo(prevX, prevY);
+                      ctx.lineTo(x, y);
+                      ctx.stroke();
+                      ctx.fill();
+                    }
+                    
+                    prevVal = val;
 
                     //check if last sample
                     if (valIdx === curSampleArrs.length - 1) {
