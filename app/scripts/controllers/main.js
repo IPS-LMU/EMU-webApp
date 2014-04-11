@@ -248,7 +248,7 @@ angular.module('emuwebApp')
 						// 	}
 						// });
 					} else {
-						$scope.connectBtnLabel = 'disconnect';
+						// $scope.connectBtnLabel = 'disconnect';
 						// $scope.$broadcast('newUserLoggedOn', '');
 
 					}
