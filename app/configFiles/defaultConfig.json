@@ -147,6 +147,7 @@
         "resizeOsci": true,
         "resizeSpectro": true,
         "openDemoDB": true,
-        "saveBundle": false
+        "saveBundle": false,
+        "openMenu": false
     }
 }
