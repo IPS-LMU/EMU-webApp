@@ -197,7 +197,7 @@ function ssff2jso(buf, name) {
 				ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 				curBinIdx += curLen;
 			} else {
-				alert('not supported... only doubles, floats, short  column types and for now');
+				alert('Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported');
 				return;
 			}
 
@@ -266,7 +266,7 @@ function parseArr(ssffArr) {
 	var ssffJso;
 	ssffArr.forEach(function (ssffFile) {
 		ssffJso = {};
-		var arrBuff = undefined;
+		var arrBuff;
 		arrBuff = base64ToArrayBuffer(ssffFile.data);
 		ssffJso = ssff2jso(arrBuff, ssffFile.ssffTrackName);
 		resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
