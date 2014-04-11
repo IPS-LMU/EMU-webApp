@@ -311,7 +311,7 @@ angular.module('emuwebApp')
 				ctx.fillRect(posS + xOffset, 0, 2, ctx.canvas.height);
 
 				if (drawTimeAndSamples) {
-					if (viewState.curViewPort.sS !== 0) {
+					if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
 						scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 						space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
 						horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
