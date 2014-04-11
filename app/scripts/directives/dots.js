@@ -17,6 +17,16 @@ angular.module('emuwebApp')
 
 				var tr, col, sRaSt;
 
+				scope.$watch('ssffds.data.length', function (newValue, oldValue) {
+					if (!$.isEmptyObject(scope.cps.vals)) {
+						if (!$.isEmptyObject(scope.ssffds.data)) {
+							if (scope.ssffds.data.length !== 0) {
+								drawDots(scope);
+							}
+						}
+					}
+				}, true);
+
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
