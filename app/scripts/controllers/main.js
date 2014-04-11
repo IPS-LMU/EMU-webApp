@@ -315,10 +315,9 @@ angular.module('emuwebApp')
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files
-						var ssffJso;
+						// var ssffJso;
 						Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
 							Ssffdataservice.data = ssffJson.data;
-							
 							// set annotation
 							Levelservice.setData(bundleData.annotation);
 							$scope.curUtt = utt;
