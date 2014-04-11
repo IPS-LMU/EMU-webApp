@@ -15,7 +15,6 @@ ssffData.Columns = [];
 /**
  *
  */
-
 ArrayBuffer.prototype.subarray = function (offset, length) {
 	var sub = new ArrayBuffer(length);
 	var subView = new Int8Array(sub);
@@ -112,12 +111,22 @@ function ssff2jso(buf, name) {
 
 	//check if header has headID and machineID
 	if (newLsep[0] !== headID) {
-		alert('SSFF parse error: first line != SSFF -- (c) SHLRC');
-		return;
+		// alert('SSFF parse error: first line != SSFF -- (c) SHLRC');
+		return ({
+			'status': {
+				'type': 'ERROR',
+				'message': 'SSFF parse error: first line != SSFF -- (c) SHLRC in ssffTrackName ' + name
+			}
+		});
 	}
 	if (newLsep[1] !== machineID) {
-		alert('SSFF parse error: machineID != Machine IBM-PC');
-		return;
+		// alert('SSFF parse error: machineID != Machine IBM-PC');
+		return ({
+			'status': {
+				'type': 'ERROR',
+				'message': 'SSFF parse error: machineID != Machine IBM-PC in ssffTrackName ' + name
+			}
+		});
 	}
 
 	// search header for Record_Freq and Start_Time
@@ -138,7 +147,13 @@ function ssff2jso(buf, name) {
 
 	// check if found Record_Freq and Start_Time
 	if (ssffData.sampleRate === undefined || ssffData.startTime === undefined) {
-		alert('SSFF parse error: Required fields Record_Freq or Start_Time not set!');
+		// alert('SSFF parse error: Required fields Record_Freq or Start_Time not set!');
+		return ({
+			'status': {
+				'type': 'ERROR',
+				'message': 'SSFF parse error: Required fields Record_Freq or Start_Time not set in ssffTrackName ' + name
+			}
+		});
 	}
 
 
@@ -197,14 +212,18 @@ function ssff2jso(buf, name) {
 				ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 				curBinIdx += curLen;
 			} else {
-				alert('Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported');
-				return;
+				// alert('Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported');
+				return ({
+					'status': {
+						'type': 'ERROR',
+						'message': 'Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported in ssffTrackName ' + name
+					}
+				});
 			}
 
 		} //for
 	} //while
-	// console.log(ssffData);
-	// console.log(JSON.stringify(ssffData, undefined, 2));
+
 	return ssffData;
 
 }
@@ -258,29 +277,44 @@ function jso2ssff(jso) {
 	return ssffBufView.buffer;
 }
 
+
 /**
  * loop over ssff files in ssffArr and create a ssffJsoArr
  */
 function parseArr(ssffArr) {
+	var noError = true;
 	var resArr = [];
 	var ssffJso;
-	ssffArr.forEach(function (ssffFile) {
+
+	for (var i = 0; i < ssffArr.length; i++) {
+
 		ssffJso = {};
 		var arrBuff;
-		arrBuff = base64ToArrayBuffer(ssffFile.data);
-		ssffJso = ssff2jso(arrBuff, ssffFile.ssffTrackName);
-		resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
-	});
-
-	self.postMessage({
-		'status': {
-			'type': 'SUCCESS',
-			'message': ''
-		},
-		'data': resArr
-	});
+		arrBuff = base64ToArrayBuffer(ssffArr[i].data);
+		ssffJso = ssff2jso(arrBuff, ssffArr[i].ssffTrackName);
+		if (ssffJso.status === undefined) {
+			resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
+		} else {
+			console.error(ssffJso.status.message)
+			self.postMessage(ssffJso);
+			noError = false;
+			break;
+		}
+	};
+	if (noError) {
+		self.postMessage({
+			'status': {
+				'type': 'SUCCESS',
+				'message': ''
+			},
+			'data': resArr
+		});
+	}
 }
 
+/**
+ * add event listener to webworker
+ */
 self.addEventListener('message', function (e) {
 	var data = e.data;
 	switch (data.cmd) {

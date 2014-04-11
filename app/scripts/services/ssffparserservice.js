@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Ssffparserservice', function Ssffparserservice($q, viewState) {
+	.service('Ssffparserservice', function Ssffparserservice($q) {
 
 		// shared service object
 		var sServObj = {};
@@ -10,8 +10,12 @@ angular.module('emuwebApp')
 		var defer;
 
 		worker.addEventListener('message', function (e) {
-			// console.log('Worker said: ', e.data);
-			defer.resolve(e.data);
+			console.log('Worker said: ', e.data.status.type);
+			if(e.data.status.type === 'SUCCESS'){
+				defer.resolve(e.data);
+			}else{
+				defer.reject(e.data);
+			}
 		}, false);
 
 		sServObj.parseSsffArr = function (ssffArray) {
@@ -19,7 +23,7 @@ angular.module('emuwebApp')
 			worker.postMessage({
 				'cmd': 'parseArr',
 				'ssffArr': ssffArray
-			}); // Send data to our worker. 
+			}); // Send data to our worker.
 			return defer.promise;
 		};
 

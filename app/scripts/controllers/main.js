@@ -304,25 +304,40 @@ angular.module('emuwebApp')
 						var arrBuff;
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
-						var wavJSO = Wavparserservice.wav2jso(arrBuff);
-						viewState.curViewPort.sS = 0;
-						viewState.curViewPort.eS = wavJSO.Data.length;
-						// FOR DEVELOPMENT:
-						// viewState.curViewPort.sS = 110678;
-						// viewState.curViewPort.eS = 110703;
-						viewState.curViewPort.bufferLength = wavJSO.Data.length;
-						viewState.resetSelect();
-						Soundhandlerservice.wavJSO = wavJSO;
 
-						// set all ssff files
-						// var ssffJso;
-						Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
-							Ssffdataservice.data = ssffJson.data;
+						// var wavJSO = Wavparserservice.wav2jso(arrBuff);
+						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
+							var wavJSO = messWavParser;
+							viewState.curViewPort.sS = 0;
+							viewState.curViewPort.eS = wavJSO.Data.length;
+							// FOR DEVELOPMENT:
+							// viewState.curViewPort.sS = 110678;
+							// viewState.curViewPort.eS = 110703;
+							viewState.curViewPort.bufferLength = wavJSO.Data.length;
+							viewState.resetSelect();
+							Soundhandlerservice.wavJSO = wavJSO;
+
+							// set all ssff files
+							// var ssffJso;
+							Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
+								Ssffdataservice.data = ssffJson.data;
+								// set annotation
+								Levelservice.setData(bundleData.annotation);
+								$scope.curUtt = utt;
+								viewState.setState('labeling');
+							}, function (errMess) {
+								console.error(errMess)
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
+							});
 							// set annotation
 							Levelservice.setData(bundleData.annotation);
 							$scope.curUtt = utt;
 							viewState.setState('labeling');
+						}, function (errMess) {
+							console.error(errMess)
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 						});
+
 
 						// bundleData.ssffFiles.forEach(function (ssffFile, idx) {
 						// 	console.log(idx);
@@ -331,10 +346,6 @@ angular.module('emuwebApp')
 						// 	Ssffdataservice.data.push(angular.copy(ssffJso));
 						// });
 
-						// // set annotation
-						// Levelservice.setData(bundleData.annotation);
-						// $scope.curUtt = utt;
-						// viewState.setState('labeling');
 					});
 				}
 			}
