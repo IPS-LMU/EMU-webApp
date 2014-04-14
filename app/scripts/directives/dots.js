@@ -195,6 +195,9 @@ angular.module('emuwebApp')
 						ctx.closePath();
 					});
 
+					//////////////////////////////
+					// markup
+
 					// draw corner pointers
 					ctx.beginPath();
 					ctx.moveTo(0, 0);
