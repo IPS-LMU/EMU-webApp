@@ -71,10 +71,6 @@ angular.module('emuwebApp')
 							globalMaxY = yCol._maxVal;
 						}
 					}
-					console.log(globalMinX);
-					console.log(globalMaxX);
-					console.log(globalMinY);
-					console.log(globalMaxY);
 				}
 
 				/**
