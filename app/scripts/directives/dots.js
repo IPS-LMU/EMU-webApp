@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 
 				var tr, col, sRaSt;
 
-				scope.$watch('ssffds.data.length', function (newValue, oldValue) {
+				scope.$watch('ssffds.data.length', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+				scope.$watch('vs.curViewPort', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -37,7 +37,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('vs.curMousePosSample', function (newValue, oldValue) {
+				scope.$watch('vs.curMousePosSample', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -46,11 +46,45 @@ angular.module('emuwebApp')
 						}
 					}
 				}, true);
+
+				function setGlobalMinMaxVals() {
+					// body...
+					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
+					for (var i = 0; i < dD.dots.length; i++) {
+						// get xCol
+						var trConf = scope.cps.getSsffTrackConfig(dD.dots[i].xSsffTrack);
+						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+						if (xCol._minVal < globalMinX) {
+							globalMinX = xCol._minVal;
+						}
+						if (xCol._maxVal > globalMaxX) {
+							globalMaxX = xCol._maxVal;
+						}
+
+						// get yCol
+						trConf = scope.cps.getSsffTrackConfig(dD.dots[i].ySsffTrack);
+						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+						if (yCol._minVal < globalMinY) {
+							globalMinY = yCol._minVal;
+						}
+						if (yCol._maxVal > globalMaxY) {
+							globalMaxY = yCol._maxVal;
+						}
+					}
+					console.log(globalMinX);
+					console.log(globalMaxX);
+					console.log(globalMinY);
+					console.log(globalMaxY);
+				}
 
 				/**
 				 * drawing method to drawDots
 				 */
-				function drawDots(scope) {
+				function drawDots() {
+					if (globalMinX === Infinity) {
+						setGlobalMinMaxVals();
+					}
+
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -86,24 +120,25 @@ angular.module('emuwebApp')
 						var sInterv = 1 / xsRaSt.sampleRate - xsRaSt.startTime;
 						var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
 
-						var minX = Math.min.apply(Math, xCol.values);
-						var maxX = Math.max.apply(Math, xCol.values);
+						// 
+						// var minX = Math.min.apply(Math, xCol.values);
+						// var maxX = Math.max.apply(Math, xCol.values);
 
-						var minY = Math.min.apply(Math, yCol.values);
-						var maxY = Math.max.apply(Math, yCol.values);
+						// var minY = Math.min.apply(Math, yCol.values);
+						// var maxY = Math.max.apply(Math, yCol.values);
 
-						if (minX < globalMinX) {
-							globalMinX = minX;
-						}
-						if (maxX > globalMaxX) {
-							globalMaxX = maxX;
-						}
-						if (minY < globalMinY) {
-							globalMinY = minY;
-						}
-						if (maxY > globalMaxY) {
-							globalMaxY = maxY;
-						}
+						// if (minX < globalMinX) {
+						// 	globalMinX = minX;
+						// }
+						// if (maxX > globalMaxX) {
+						// 	globalMaxX = maxX;
+						// }
+						// if (minY < globalMinY) {
+						// 	globalMinY = minY;
+						// }
+						// if (maxY > globalMaxY) {
+						// 	globalMaxY = maxY;
+						// }
 
 						// console.log(xCol.values[curFrame]);
 						// console.log(yCol.values[curFrame]);
