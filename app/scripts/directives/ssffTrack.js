@@ -40,14 +40,24 @@ angular.module('emuwebApp')
           }
         }, true);
 
+        scope.$watch('ssffds.data.length', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              drawSsffTrackMarkup();
+              scope.updateCSS();
+            }
+          }
+        }, true);
+
+
         scope.updateCSS = function () {
           var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-          if (viewState.getenlarge() == -1) {
+          if (viewState.getenlarge() === -1) {
             scope.enlargeCanvas = {
               'height': 100 / parts + '%'
             };
           } else {
-            if (viewState.getenlarge() == scope.order) {
+            if (viewState.getenlarge() === scope.order) {
               scope.enlargeCanvas = {
                 'height': 3 * 100 / (parts + 2) + '%'
               };
@@ -60,6 +70,7 @@ angular.module('emuwebApp')
         };
 
         function drawSsffTrackMarkup() {
+
 
           markupCtx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
           // draw moving boundary line if moving
@@ -77,19 +88,27 @@ angular.module('emuwebApp')
           markupCtx.stroke();
           markupCtx.closePath();
 
-          // draw min/max vals
-          var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + '???', scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-          markupCtx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
-          // draw min/max vals
-          labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + '???', scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-          markupCtx.drawImage(labelTxtImg, 5, markupCanvas.height - 75, labelTxtImg.width, labelTxtImg.height);
 
           // draw ssffTrackName
           markupCtx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
           var trackNameImg = scope.fontImage.getTextImage(markupCtx, trackName, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
           markupCtx.drawImage(trackNameImg, 0, markupCanvas.height / 2);
 
+          if (!$.isEmptyObject(scope.ssffds.data)) {
+            if (scope.ssffds.data.length !== 0) {
+
+              var tr = scope.cps.getSsffTrackConfig(trackName);
+              var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+
+              // draw min/max vals
+              var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + viewState.round(col._maxVal, 6), scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+              markupCtx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+
+              // draw min/max vals
+              labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + viewState.round(col._minVal, 6), scope.cps.vals.font.fontPxSize * 3 / 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+              markupCtx.drawImage(labelTxtImg, 5, markupCanvas.height - 75, labelTxtImg.width, labelTxtImg.height);
+            }
+          }
 
         }
 
