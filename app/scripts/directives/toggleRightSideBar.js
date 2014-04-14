@@ -10,11 +10,13 @@ angular.module('emuwebApp')
 					if (newVal) {
 						// alert("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.addClass(element, '.slideInMenu');
+						$animate.removeClass(element, 'slideRight');
 						$animate.addClass(element, 'slideLeft');
 					} else {
 						// alert("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.removeClass(element, '.slideInMenu');
 						$animate.removeClass(element, 'slideLeft');
+						$animate.addClass(element, 'slideRight');
 					}
 				})
 			}
