@@ -69,11 +69,12 @@ angular.module('emuwebApp')
 					ctx.fillText(text2, 0, 2 * (fontPxSize) + sServObj.spaceTop);
 				}
 			}
+
 			// draw frame to see size
 			ctx.restore();
 
-			ctx.fillStyle = "red";
-			ctx.strokeStyle = "red";
+			ctx.fillStyle = 'red';
+			ctx.strokeStyle = 'red';
 			ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
 			ctx.stroke();
 

@@ -62,12 +62,12 @@ angular.module('emuwebApp')
 						}
 					}
 				}, true);
-				
+
 				scope.redraw = function () {
-				    drawVpOsciMarkup(scope, scope.cps, true);
-				    scope.updateCSS();
-				};				
-				
+					drawVpOsciMarkup(scope, scope.cps, true);
+					scope.updateCSS();
+				};
+
 				scope.updateCSS = function () {
 					var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
@@ -109,15 +109,20 @@ angular.module('emuwebApp')
 
 				}
 
-				function getScale(ctx, str, scale) {
+				function getScaleW(ctx, str, scale) {
+					return ctx.measureText(str).width * scale;
+				}
+
+				function getScaleH(ctx, str, scale) {
+					console.log(ctx.measureText(str));
 					return ctx.measureText(str).width * scale;
 				}
 
 				function getScaleWidth(ctx, str1, str2, scaleX) {
 					if (str1.toString().length > str2.toString().length) {
-						return getScale(ctx, str1, scaleX);
+						return getScaleW(ctx, str1, scaleX);
 					} else {
-						return getScale(ctx, str2, scaleX);
+						return getScaleW(ctx, str2, scaleX);
 					}
 				}
 
@@ -158,7 +163,7 @@ angular.module('emuwebApp')
 					ctx.stroke();
 
 					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					// var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					var sTime;
 					var eTime;
@@ -178,6 +183,19 @@ angular.module('emuwebApp')
 						space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
 						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
+
+
+						//testw
+						console.log(config.vals.font.fontPxSize * 2 * scaleY);
+
+						var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+						var startPoint = (Math.PI / 180) * 0;
+						var endPoint = (Math.PI / 180) * 360;
+						ctx.beginPath();
+						ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
+						ctx.fill();
+						ctx.closePath();
+
 
 					}
 				}

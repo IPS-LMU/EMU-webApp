@@ -73,6 +73,19 @@ angular.module('emuwebApp')
 					}
 				}
 
+				function getScale(ctx, str, scale) {
+					return ctx.measureText(str).width * scale;
+				}
+
+				function getScaleWidth(ctx, str1, str2, scaleX) {
+					if (str1.toString().length > str2.toString().length) {
+						return getScale(ctx, str1, scaleX);
+					} else {
+						return getScale(ctx, str2, scaleX);
+					}
+				}
+
+
 				/**
 				 * drawing method to drawDots
 				 */
@@ -194,6 +207,9 @@ angular.module('emuwebApp')
 					//////////////////////////////
 					// markup
 
+					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+
 					// draw corner pointers
 					ctx.beginPath();
 					ctx.moveTo(0, 0);
@@ -210,13 +226,13 @@ angular.module('emuwebApp')
 					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
 
 					// xmin + y min
-					// scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 6), 'xMin' + scope.vs.round(globalMinX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-					ctx.drawImage(labelTxtImg, 5, canvas.height - 150, labelTxtImg.width, labelTxtImg.height);
+
+					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 6), 'xMin: ' + scope.vs.round(globalMinX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+					ctx.drawImage(labelTxtImg, 5, canvas.height - scope.cps.vals.font.fontPxSize * scaleY * 2, labelTxtImg.width, labelTxtImg.height);
 
 					// xmax
 					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-					ctx.drawImage(labelTxtImg, canvas.height - 150, labelTxtImg.width - 150, labelTxtImg.width, labelTxtImg.height);
+					ctx.drawImage(labelTxtImg, canvas.width - 150, canvas.height - scope.cps.vals.font.fontPxSize * scaleY, labelTxtImg.width, labelTxtImg.height);
 
 				}
 			}
