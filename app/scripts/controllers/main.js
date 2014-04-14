@@ -320,13 +320,14 @@ angular.module('emuwebApp')
 							// set all ssff files
 							// var ssffJso;
 							Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
+								console.log(ssffJson.data)
 								Ssffdataservice.data = ssffJson.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
 								$scope.curUtt = utt;
 								viewState.setState('labeling');
 							}, function (errMess) {
-								console.error(errMess)
+								// console.error(errMess)
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
 							});
 							// set annotation
@@ -334,7 +335,7 @@ angular.module('emuwebApp')
 							$scope.curUtt = utt;
 							viewState.setState('labeling');
 						}, function (errMess) {
-							console.error(errMess)
+							// console.error(errMess)
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 						});
 

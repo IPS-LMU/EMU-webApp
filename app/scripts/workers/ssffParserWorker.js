@@ -171,18 +171,21 @@ function ssff2jso(buf, name) {
 				'name': lSpl[1],
 				'ssffdatatype': lSpl[2],
 				'length': parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm, ''), 10),
-				'values': []
+				'values': [],
+				'_minVal': Infinity,
+				'_maxVal': -Infinity
 			});
 		}
 	}
 
 	var curBinIdx = newLsep.slice(0, i + 1).join('').length;
 
-	var curBufferView, curBuffer, curLen;
+	var curBufferView, curBuffer, curLen, curMin, curMax;
 
 	while (curBinIdx <= uIntBuffView.length) {
 
 		for (i = 0; i < ssffData.Columns.length; i++) {
+
 			//console.log(ssffData.Columns[i].length);
 			if (ssffData.Columns[i].ssffdatatype === 'DOUBLE') {
 				curLen = 8 * ssffData.Columns[i].length;
@@ -191,12 +194,32 @@ function ssff2jso(buf, name) {
 				ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 				curBinIdx += curLen;
 
+				// set _minVal and _maxVal
+				curMin = Math.min.apply(null, Array.prototype.slice.call(curBufferView));
+				curMax = Math.max.apply(null, Array.prototype.slice.call(curBufferView));
+				if (curMin < ssffData.Columns[i]._minVal) {
+					ssffData.Columns[i]._minVal = curMin;
+				}
+				if (curMax > ssffData.Columns[i]._maxVal) {
+					ssffData.Columns[i]._maxVal = curMax;
+				}
+
 			} else if (ssffData.Columns[i].ssffdatatype === 'FLOAT') {
 				curLen = 4 * ssffData.Columns[i].length;
 				curBuffer = buf.subarray(curBinIdx, curLen);
 				curBufferView = new Float32Array(curBuffer);
 				ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 				curBinIdx += curLen;
+
+				// set _minVal and _maxVal
+				curMin = Math.min.apply(null, Array.prototype.slice.call(curBufferView));
+				curMax = Math.max.apply(null, Array.prototype.slice.call(curBufferView));
+				if (curMin < ssffData.Columns[i]._minVal) {
+					ssffData.Columns[i]._minVal = curMin;
+				}
+				if (curMax > ssffData.Columns[i]._maxVal) {
+					ssffData.Columns[i]._maxVal = curMax;
+				}
 
 			} else if (ssffData.Columns[i].ssffdatatype === 'SHORT') {
 				curLen = 2 * ssffData.Columns[i].length;
@@ -205,6 +228,16 @@ function ssff2jso(buf, name) {
 				ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 				curBinIdx += curLen;
 
+				// set _minVal and _maxVal
+				curMin = Math.min.apply(null, Array.prototype.slice.call(curBufferView));
+				curMax = Math.max.apply(null, Array.prototype.slice.call(curBufferView));
+				if (curMin < ssffData.Columns[i]._minVal) {
+					ssffData.Columns[i]._minVal = curMin;
+				}
+				if (curMax > ssffData.Columns[i]._maxVal) {
+					ssffData.Columns[i]._maxVal = curMax;
+				}
+				
 			} else if (ssffData.Columns[i].ssffdatatype === 'BYTE') {
 				curLen = 1 * ssffData.Columns[i].length;
 				curBuffer = buf.subarray(curBinIdx, curLen);
