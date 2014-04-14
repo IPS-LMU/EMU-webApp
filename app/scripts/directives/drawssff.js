@@ -92,35 +92,38 @@ angular.module('emuwebApp')
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // set range
-          var minVal, maxVal;
-          if (trackName === 'SPEC') {
-            minVal = viewState.spectroSettings.rangeFrom;
-            maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
-          } else {
-            // console.log(col.name)
-            if (typeof col.minVal === 'undefined' && typeof col.maxVal === 'undefined') {
-              minVal = Infinity;
-              maxVal = -Infinity;
-              col.values.forEach(function (rec) {
-                rec.forEach(function (samp, sidx) {
-                  if ($.isEmptyObject(minMaxLims) || (sidx >= minMaxLims.min && sidx <= minMaxLims.max)) {
-                    if (samp < minVal) {
-                      minVal = samp;
-                    }
-                    if (samp > maxVal) {
-                      maxVal = samp;
-                    }
-                  }
-                });
-              });
-              col.minVal = minVal;
-              col.maxVal = maxVal;
-            } else {
-              minVal = col.minVal;
-              maxVal = col.maxVal;
-            }
-          }
+          // set range !!! SIC !!! use predefined vals...
+          // var minVal, maxVal;
+          // if (trackName === 'SPEC') {
+          //   minVal = viewState.spectroSettings.rangeFrom;
+          //   maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
+          // } else {
+          //   // console.log(col.name)
+          //   if (typeof col.minVal === 'undefined' && typeof col.maxVal === 'undefined') {
+          //     minVal = Infinity;
+          //     maxVal = -Infinity;
+          //     col.values.forEach(function (rec) {
+          //       rec.forEach(function (samp, sidx) {
+          //         if ($.isEmptyObject(minMaxLims) || (sidx >= minMaxLims.min && sidx <= minMaxLims.max)) {
+          //           if (samp < minVal) {
+          //             minVal = samp;
+          //           }
+          //           if (samp > maxVal) {
+          //             maxVal = samp;
+          //           }
+          //         }
+          //       });
+          //     });
+          //     col.minVal = minVal;
+          //     col.maxVal = maxVal;
+          //   } else {
+          //     minVal = col.minVal;
+          //     maxVal = col.maxVal;
+          //   }
+          // }
+
+          var minVal = col._minVal;
+          var maxVal = col._maxVal;
 
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
