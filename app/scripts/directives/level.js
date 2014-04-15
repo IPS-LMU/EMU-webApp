@@ -9,14 +9,19 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
-				
+
 				scope.open = attr.open;
 
-				scope.$watch('levelDetails.data', function () {
+				// scope.$watch('levelDetails.data', function () {
+				// 	drawLevelDetails(scope.level, scope.vs, scope.cps);
+				// }, true);
+
+				scope.$watch('vs.curViewPort', function () {
 					drawLevelDetails(scope.level, scope.vs, scope.cps);
+					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
 
-				scope.$watch('vs', function () {
+				scope.$watch('vs.curMouseSegment', function () {
 					drawLevelDetails(scope.level, scope.vs, scope.cps);
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
@@ -39,8 +44,8 @@ angular.module('emuwebApp')
 				 */
 
 				function drawLevelDetails(levelDetails, viewState, config) {
-				
-				    var fontSize = config.vals.font.fontPxSize;
+
+					var fontSize = config.vals.font.fontPxSize;
 
 					if ($.isEmptyObject(levelDetails)) {
 						//console.log("undef levelDetails");
@@ -54,8 +59,8 @@ angular.module('emuwebApp')
 						//console.log("undef config");
 						return;
 					}
-					if(!scope.open) {
-					    fontSize -= 1;
+					if (!scope.open) {
+						fontSize -= 1;
 					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
@@ -111,17 +116,16 @@ angular.module('emuwebApp')
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize-2, config.vals.font.fontType, config.vals.colors.labelColor);
+								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 								var tW = scope.fontImage.getLastImageWidth();
 								var tX = posS + (posE - posS) / 2 - tW / 2;
 
 								//check for enough space to stroke text
 								if (posE - posS > (tW)) {
-								    if(scope.open) {
-									    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize-2), horizontalText.width, horizontalText.height);
-									}
-									else {
-									    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, 0, horizontalText.width, horizontalText.height);
+									if (scope.open) {
+										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize - 2), horizontalText.width, horizontalText.height);
+									} else {
+										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, 0, horizontalText.width, horizontalText.height);
 									}
 								}
 
@@ -133,7 +137,7 @@ angular.module('emuwebApp')
 								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
 
-								if(scope.open) {
+								if (scope.open) {
 									// start helper line
 									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
@@ -193,23 +197,23 @@ angular.module('emuwebApp')
 								});
 
 								//if (segMId !=== undefined && levelDetails.name === viewState.curMouseMoveLevelName && segMId.id === viewState.curMouseMoveSegmentName) {
-									//console.log('this is the selected boundary');
-									// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-									// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
-									// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-									// 		tW = ctx.measureText(levelDetails.items[k].label).width;
-									// 		ctx.fillStyle = this.params.labelColor;
-									// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
+								//console.log('this is the selected boundary');
+								// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+								// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
+								// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
+								// 		tW = ctx.measureText(levelDetails.items[k].label).width;
+								// 		ctx.fillStyle = this.params.labelColor;
+								// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
 								//} else {
-									ctx.fillStyle = config.vals.colors.startBoundaryColor;
-									ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
-									ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-									horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
-									ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
+								ctx.fillStyle = config.vals.colors.startBoundaryColor;
+								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
+								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
+								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
+								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								//}
 
 								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
-								ctx.drawImage(horizontalText , 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
+								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
 							}
@@ -268,30 +272,28 @@ angular.module('emuwebApp')
 					curEvt = viewState.getcurMouseSegment();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-    					if(segMId===false) { // before first segment
-						    if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-						        curEvt = levelDetails.items[0];
-    							posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
-		    					ctx.fillRect(posS, 0, 3, canvas[1].height);
-			    			}					
-	    				}
-		    			else if(segMId===true) { // after last segment
-						    if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-						        curEvt = levelDetails.items[levelDetails.items.length-1];
-    							posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur)));
-		    					ctx.fillRect(posS, 0, 3, canvas[1].height);
-			    			}					
-			    		}
-				    	else { // in the middle
-						    if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-    							posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
-		    					ctx.fillRect(posS, 0, 3, canvas[1].height);
-			    			} else {
-				    			posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
-						    	xOffset = (sDist / 2);
-							    ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
-    						}					
-					    }
+						if (segMId === false) { // before first segment
+							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+								curEvt = levelDetails.items[0];
+								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
+								ctx.fillRect(posS, 0, 3, canvas[1].height);
+							}
+						} else if (segMId === true) { // after last segment
+							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+								curEvt = levelDetails.items[levelDetails.items.length - 1];
+								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur)));
+								ctx.fillRect(posS, 0, 3, canvas[1].height);
+							}
+						} else { // in the middle
+							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
+								ctx.fillRect(posS, 0, 3, canvas[1].height);
+							} else {
+								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
+								xOffset = (sDist / 2);
+								ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
+							}
+						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 
 					}
