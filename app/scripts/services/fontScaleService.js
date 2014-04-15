@@ -26,10 +26,10 @@ angular.module('emuwebApp')
 			// draw frame to see size
 			ctx.restore();
 
-			ctx.fillStyle = "red";
-			ctx.strokeStyle = "red";
-			ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			ctx.stroke();
+			// ctx.fillStyle = "red";
+			// ctx.strokeStyle = "red";
+			// ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			// ctx.stroke();
 			return img;
 		};
 		/**
@@ -73,10 +73,10 @@ angular.module('emuwebApp')
 			// draw frame to see size
 			ctx.restore();
 
-			ctx.fillStyle = 'red';
-			ctx.strokeStyle = 'red';
-			ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			ctx.stroke();
+			// ctx.fillStyle = 'red';
+			// ctx.strokeStyle = 'red';
+			// ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			// ctx.stroke();
 
 			return img;
 
