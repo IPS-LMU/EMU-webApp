@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate', 'ngProgressLite'])
-  .config(function($routeProvider, $locationProvider, ngProgressLiteProvider) {
+angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate'])
+  .config(function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html'
@@ -12,7 +12,6 @@ angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate', 'ngPr
       });
     $locationProvider.html5Mode(true);
 
-    ngProgressLiteProvider.settings.speed = 1500;
   });
   
   

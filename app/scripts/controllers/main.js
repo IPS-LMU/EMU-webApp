@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document, ngProgressLite,
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice) {
 
 		// hook up services to use abbreviated forms
@@ -58,31 +58,32 @@ angular.module('emuwebApp')
 		/**
 		 * listen for newUserLoggedOn (also called for no user on auto connect)
 		 */
-		$scope.$on('newUserLoggedOn', function (evt, name) {
-			$scope.curUserName = name;
-			viewState.setState('loadingSaving');
-			Iohandlerservice.getUsrUttList(name).then(function (newVal) {
-				Iohandlerservice.getUtt(newVal[0]).then(function (argument) {
-					console.log(argument);
-					viewState.setState('labeling');
-					$scope.curUtt = newVal[0];
-					$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
-					if (!viewState.getsubmenuOpen()) {
-						$scope.openSubmenu();
-					}
-					$scope.bundleList = newVal;
-					$scope.curUtt = newVal[0];
-				});
-			});
-		});
+		// $scope.$on('newUserLoggedOn', function (evt, name) {
+		// 	alert("$scope.$on newUserLoggedOn")
+		// 	$scope.curUserName = name;
+		// 	viewState.setState('loadingSaving');
+		// 	Iohandlerservice.getUsrUttList(name).then(function (newVal) {
+		// 		Iohandlerservice.getUtt(newVal[0]).then(function (argument) {
+		// 			console.log(argument);
+		// 			viewState.setState('labeling');
+		// 			$scope.curUtt = newVal[0];
+		// 			$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
+		// 			if (!viewState.getsubmenuOpen()) {
+		// 				$scope.openSubmenu();
+		// 			}
+		// 			$scope.bundleList = newVal;
+		// 			$scope.curUtt = newVal[0];
+		// 		});
+		// 	});
+		// });
 
 		/**
 		 * clear view when new utt is loaded
 		 */
-		$scope.$on('loadingNewUtt', function () {
-			viewState.resetSelect();
-			viewState.setcurClickLevelName(undefined);
-		});
+		// $scope.$on('loadingNewUtt', function () {
+		// 	viewState.resetSelect();
+		// 	viewState.setcurClickLevelName(undefined);
+		// });
 
 		/**
 		 * listen for saveSSFFb4load
@@ -225,7 +226,7 @@ angular.module('emuwebApp')
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
 						if (doUsrData === 'NO') {
-							viewState.somethingInProgressTxt = 'Getting DB config...';
+							viewState.somethingInProgressTxt = 'Loading DB config...';
 							// then get the DBconfigFile
 							Iohandlerservice.getDBconfigFile().then(function (data) {
 								viewState.curPerspectiveIdx = 0;
@@ -233,7 +234,7 @@ angular.module('emuwebApp')
 								delete data.EMUwebAppConfig; // delete to avoid duplicate
 								ConfigProviderService.curDbConfig = data;
 								// then get the DBconfigFile
-								viewState.somethingInProgressTxt = 'Getting bundle list...';
+								viewState.somethingInProgressTxt = 'Loading bundle list...';
 								Iohandlerservice.getBundleList().then(function (bdata) {
 									$scope.bundleList = bdata;
 									// then load first bundle in list
@@ -265,10 +266,16 @@ angular.module('emuwebApp')
 			});
 		};
 
+		/**
+		 *
+		 */
 		$scope.downloadTextGrid = function () {
 			console.log(Iohandlerservice.toTextGrid());
 		};
 
+		/**
+		 *
+		 */
 		$scope.getShortCut = function (name) {
 			if ($scope.shortcut !== null) {
 				if ($scope.shortcut[name] !== null) {
@@ -298,7 +305,7 @@ angular.module('emuwebApp')
 			} else {
 				if (utt !== $scope.curUtt) {
 					viewState.somethingInProgress = true;
-					viewState.somethingInProgressTxt = 'Getting bundle: ' + utt.name;
+					viewState.somethingInProgressTxt = 'Loading bundle: ' + utt.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
@@ -306,7 +313,7 @@ angular.module('emuwebApp')
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
 						}
-						ngProgressLite.done();
+						// ngProgressLite.done();
 
 						var arrBuff;
 						// set wav file
@@ -329,33 +336,21 @@ angular.module('emuwebApp')
 							// var ssffJso;
 							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 							Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
-								console.log(ssffJson.data)
 								Ssffdataservice.data = ssffJson.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
 								$scope.curUtt = utt;
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;
+								viewState.somethingInProgressTxt = 'Done!';
 							}, function (errMess) {
 								// console.error(errMess)
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
 							});
-							// set annotation
-							Levelservice.setData(bundleData.annotation);
-							$scope.curUtt = utt;
-							viewState.setState('labeling');
 						}, function (errMess) {
 							// console.error(errMess)
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 						});
-
-
-						// bundleData.ssffFiles.forEach(function (ssffFile, idx) {
-						// 	console.log(idx);
-						// 	arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(ssffFile.data);
-						// 	var ssffJso = Ssffparserservice.ssff2jso(arrBuff, ssffFile.ssffTrackName);
-						// 	Ssffdataservice.data.push(angular.copy(ssffJso));
-						// });
 
 					});
 				}
@@ -397,20 +392,6 @@ angular.module('emuwebApp')
 			});
 			// }
 		};
-
-		/**
-		 *
-		 */
-		// $scope.dragStart = function () {
-		// 	viewState.setdragBarActive(true);
-		// };
-
-		/**
-		 *
-		 */
-		// $scope.dragEnd = function () {
-		// 	viewState.setdragBarActive(false);
-		// };
 
 
 		/**
@@ -496,7 +477,9 @@ angular.module('emuwebApp')
 		// handle button clicks
 
 		// top menu:
-		//
+		/**
+		 *
+		 */
 		$scope.addLevelSegBtnClick = function () {
 
 			if (viewState.getPermission('addLevelSegBtnClick')) {
@@ -506,7 +489,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
@@ -516,7 +501,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.renameSelLevelBtnClick = function () {
 			if (viewState.getPermission('renameSelLevelBtnClick')) {
 				if (viewState.getcurClickLevelName() !== undefined) {
@@ -529,6 +516,9 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 *
+		 */
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				dialogService.openExport('views/export.html', 'ExportCtrl', Textgridparserservice.toTextGrid(Levelservice.data), 'textgrid.txt');
@@ -537,7 +527,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
 				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl');
@@ -546,7 +538,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
 				dialogService.open('views/connectModal.html', 'WsconnectionCtrl').then(function (url) {
@@ -565,7 +559,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.openDemoDBbtnClick = function () {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
 				ConfigProviderService.vals.main.comMode = 'DEMO';
@@ -590,12 +586,16 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.aboutBtnClick = function () {
 			dialogService.open('views/about.html', 'AboutCtrl');
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
 			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? This will also delete any unsaved changes...').then(function (res) {
@@ -622,7 +622,9 @@ angular.module('emuwebApp')
 
 		// bottom menu:
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea(); // SIC should be in service...
@@ -632,7 +634,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomIn = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea(); // SIC should be in service...
@@ -642,7 +646,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomOut = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea();
@@ -652,7 +658,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomLeft = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea();
@@ -662,7 +670,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomRight = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea();
@@ -672,7 +682,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdZoomSel = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea();
@@ -682,7 +694,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdPlayView = function () {
 			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
@@ -692,7 +706,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdPlaySel = function () {
 			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
@@ -702,7 +718,9 @@ angular.module('emuwebApp')
 			}
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cmdPlayAll = function () {
 			if (viewState.getPermission('playaudio')) {
 				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
@@ -714,34 +732,46 @@ angular.module('emuwebApp')
 
 		// other
 
-		//
+		/**
+		 *
+		 */
 		$scope.saveMetaData = function () {
 
 			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.bundleList);
 			$scope.modifiedMetaData = false;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.openFile = function () {
 			alert('code to open file');
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.toggleRightSideMenuHidden = function () {
 			$scope.isRightSideMenuHidden = !$scope.isRightSideMenuHidden;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.toggle2dCancases = function () {
 			$scope.is2dCancasesHidden = !$scope.is2dCancasesHidden;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.changePerspective = function (persp) {
 
 			var newIdx;
@@ -756,7 +786,9 @@ angular.module('emuwebApp')
 			$scope.toggleRightSideMenuHidden();
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.getPerspectiveColor = function (persp) {
 			var curColor;
 			if (viewState.curPerspectiveIdx === -1 || persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {

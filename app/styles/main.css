@@ -125,6 +125,10 @@ li {
 
 /**###############################*/
 
+.hideProgressThing {
+    display: none;
+}
+
 .progressThing {
     background-color: black;
     color: white;
