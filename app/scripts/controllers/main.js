@@ -216,12 +216,16 @@ angular.module('emuwebApp')
 			ConfigProviderService.vals.main.comMode = 'WS';
 			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
+			viewState.somethingInProgress = true;
+			viewState.somethingInProgressTxt = 'Checking protocol...';
 			// Check if server speaks the same protocol
 			Iohandlerservice.getProtocol().then(function (res) {
 				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+					viewState.somethingInProgressTxt = 'Checking user management...';
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
 						if (doUsrData === 'NO') {
+							viewState.somethingInProgressTxt = 'Getting DB config...';
 							// then get the DBconfigFile
 							Iohandlerservice.getDBconfigFile().then(function (data) {
 								viewState.curPerspectiveIdx = 0;
@@ -229,6 +233,7 @@ angular.module('emuwebApp')
 								delete data.EMUwebAppConfig; // delete to avoid duplicate
 								ConfigProviderService.curDbConfig = data;
 								// then get the DBconfigFile
+								viewState.somethingInProgressTxt = 'Getting bundle list...';
 								Iohandlerservice.getBundleList().then(function (bdata) {
 									$scope.bundleList = bdata;
 									// then load first bundle in list
@@ -292,6 +297,8 @@ angular.module('emuwebApp')
 				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
 			} else {
 				if (utt !== $scope.curUtt) {
+					viewState.somethingInProgress = true;
+					viewState.somethingInProgressTxt = 'Getting bundle: ' + utt.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
 					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
@@ -305,6 +312,7 @@ angular.module('emuwebApp')
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 
+						viewState.somethingInProgressTxt = 'Parsing WAV file...';
 						// var wavJSO = Wavparserservice.wav2jso(arrBuff);
 						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
 							var wavJSO = messWavParser;
@@ -319,6 +327,7 @@ angular.module('emuwebApp')
 
 							// set all ssff files
 							// var ssffJso;
+							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 							Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
 								console.log(ssffJson.data)
 								Ssffdataservice.data = ssffJson.data;
@@ -326,6 +335,7 @@ angular.module('emuwebApp')
 								Levelservice.setData(bundleData.annotation);
 								$scope.curUtt = utt;
 								viewState.setState('labeling');
+								viewState.somethingInProgress = false;
 							}, function (errMess) {
 								// console.error(errMess)
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
