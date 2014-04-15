@@ -114,7 +114,6 @@ angular.module('emuwebApp')
 				}
 
 				function getScaleH(ctx, str, scale) {
-					console.log(ctx.measureText(str));
 					return ctx.measureText(str).width * scale;
 				}
 
@@ -186,7 +185,7 @@ angular.module('emuwebApp')
 
 
 						//testw
-						console.log(config.vals.font.fontPxSize * 2 * scaleY);
+						// console.log(config.vals.font.fontPxSize * 2 * scaleY);
 
 						var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
 						var startPoint = (Math.PI / 180) * 0;
