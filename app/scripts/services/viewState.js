@@ -47,6 +47,7 @@ angular.module('emuwebApp')
 
 
     sServObj.somethingInProgress = true;
+    sServObj.somethingInProgressTxt = 'Loading...';
     
     sServObj.curClickSegments = [];
     sServObj.lasteditArea = null;
