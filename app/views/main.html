@@ -78,7 +78,7 @@
     </div>
 
 <!-- right side menu bar -->
-<nav class="rightSideMenu" show-menu="!isRightSideMenuHidden">
+<nav class="rightSideMenu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="!isRightSideMenuHidden">
   <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();"><img></button>
   <h3>Perspectives</h3>
   <ul>

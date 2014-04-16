@@ -2,41 +2,51 @@
 
 
 angular.module('emuwebApp')
-.directive('bundleListSideBar', function ($animate) {
-	return {
-		templateUrl: 'views/bundleListSideBar.html',
-		restrict: 'E',
-		link: function postLink(scope, element, attr) {
+	.directive('bundleListSideBar', function ($animate) {
+		return {
+			templateUrl: 'views/bundleListSideBar.html',
+			restrict: 'E',
+			link: function postLink(scope, element, attr) {
 
-			scope.$watch('vs.submenuOpen', function () {
+				scope.$watch('vs.submenuOpen', function () {
 
-				var dotMs = scope.vs.getTransitionTime();
+				// 	if (scope.vs.submenuOpen) {
 
-				var transcss = {
-					'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-					'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-					'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-					'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-					'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
-				};
+				// 		// $animate.removeClass(element, 'shrinkWidthTo0px');
+				// 		// $animate.addClass(element, 'expandWidthTo200px');
 
-				// alert("sdfsdf")
-				element.css(transcss);
-            $('#mainWindow').css(transcss);            
-            if(scope.vs.submenuOpen) {
+				// 	} else {
+				// 		// $animate.removeClass(element, 'expandWidthTo200px');
+				// 		// $animate.addClass(element, 'shrinkWidthTo0px');
+				// 	}
+				// }, true);
 
-               $animate.addClass($('#mainWindow'), '.slideInBody');
-               $animate.addClass(element, '.slideInSubmenu');
-           }
-           else {
-           		$animate.removeClass($('#mainWindow'), '.slideInBody');
+					var dotMs = scope.vs.getTransitionTime();
 
-               $animate.removeClass(element, '.slideInSubmenu');
-           }
-       }, true);
-}
-};
-});
+					var transcss = {
+						'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+						'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+						'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+						'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+						'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
+					};
+
+					// alert("sdfsdf")
+					element.css(transcss);
+					$('#mainWindow').css(transcss);
+					if (scope.vs.submenuOpen) {
+
+						$animate.addClass($('#mainWindow'), '.slideInBody');
+						$animate.addClass(element, '.slideInSubmenu');
+					} else {
+						$animate.removeClass($('#mainWindow'), '.slideInBody');
+
+						$animate.removeClass(element, '.slideInSubmenu');
+					}
+				}, true);
+			}
+		};
+	});
 
 // simple animation to add slideLeft class
 angular.module('emuwebApp').animation(".slideInSubmenu", function () {

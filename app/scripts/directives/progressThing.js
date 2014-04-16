@@ -11,9 +11,13 @@ angular.module('emuwebApp')
 
 				attrs.$observe('showThing', function (newVal) {
 					if (newVal==='true') {
-						$animate.removeClass(element, 'hideProgressThing');
+						// $animate.removeClass(element, 'hideProgressThing');
+						$animate.removeClass(element, 'shrinkHeightTo0px');
+						$animate.addClass(element, 'expandHeightTo20px');
 					} else {
-						$animate.addClass(element, 'hideProgressThing');
+						// $animate.addClass(element, 'hideProgressThing');
+						$animate.removeClass(element, 'expandHeightTo20px');
+						$animate.addClass(element, 'shrinkHeightTo0px');
 					}
 				});
 

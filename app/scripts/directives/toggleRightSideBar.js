@@ -11,16 +11,16 @@ angular.module('emuwebApp')
 						// console.log("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.addClass(element, '.slideInMenu');
 
-						$animate.removeClass(element, 'shrinkTo0px');
-						$animate.addClass(element, 'expandTo200px');
+						$animate.removeClass(element, 'shrinkWidthTo0px');
+						$animate.addClass(element, 'expandWidthTo200px');
 					} else {
 						// console.log("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.removeClass(element, '.slideInMenu');
 
-						$animate.removeClass(element, 'expandTo200px');
-						$animate.addClass(element, 'shrinkTo0px');
+						$animate.removeClass(element, 'expandWidthTo200px');
+						$animate.addClass(element, 'shrinkWidthTo0px');
 					}
-				})
+				});
 			}
 		};
 	});
