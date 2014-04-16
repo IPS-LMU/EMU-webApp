@@ -184,16 +184,14 @@ angular.module('emuwebApp')
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
 
-						//testw
-						// console.log(config.vals.font.fontPxSize * 2 * scaleY);
-
-						var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-						var startPoint = (Math.PI / 180) * 0;
-						var endPoint = (Math.PI / 180) * 360;
-						ctx.beginPath();
-						ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
-						ctx.fill();
-						ctx.closePath();
+						//draw dot at edge of image
+						// var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+						// var startPoint = (Math.PI / 180) * 0;
+						// var endPoint = (Math.PI / 180) * 360;
+						// ctx.beginPath();
+						// ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
+						// ctx.fill();
+						// ctx.closePath();
 
 
 					}
