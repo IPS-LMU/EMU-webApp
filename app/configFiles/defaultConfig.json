@@ -131,7 +131,8 @@
         "drawSampleNrs": false,
         "drawZeroLine": true,
         "bundleComments": false,
-        "bundleFinishedEditing": false
+        "bundleFinishedEditing": false,
+        "showPerspectivesSidebar": true
     },
     "activeButtons": {
         "addLevelSeg": false,
