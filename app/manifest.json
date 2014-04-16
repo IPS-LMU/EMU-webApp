@@ -1,9 +1,9 @@
 {
-    "name": "emuLVC",
+    "name": "EMU-webApp",
     "version": "0.0.1",
     "manifest_version": 2,
     "minimum_chrome_version": "23",
-    "description": "emu: (L)abel (V)isualize and (C)orrect audio and derived speech audio signals",
+    "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
     "icons": {
         "128": "assets/icon.png"
     },
