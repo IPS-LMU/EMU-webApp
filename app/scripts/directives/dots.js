@@ -97,7 +97,58 @@ angular.module('emuwebApp')
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+					//////////////////////////////
+					// markup to improve visualization 
+
+					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+
+					// draw corner pointers
+					ctx.beginPath();
+					ctx.moveTo(0, 0);
+					ctx.lineTo(5, 5);
+					ctx.moveTo(0, canvas.height);
+					ctx.lineTo(5, canvas.height - 5);
+					ctx.moveTo(canvas.width, canvas.height);
+					ctx.lineTo(canvas.width - 5, canvas.height - 5);
+					ctx.stroke();
+					ctx.closePath();
+
+					var smallFontSize = scope.cps.vals.font.fontPxSize * 3 / 4;
+					// ymax
+					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.vs.round(globalMaxY, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+
+					// xmin + y min
+					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 2), 'xMin: ' + scope.vs.round(globalMinX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor, true);
+					ctx.drawImage(labelTxtImg, 5, canvas.height - smallFontSize * scaleY * 2 - 5, labelTxtImg.width, labelTxtImg.height);
+
+					// xmax
+					var tw = ctx.measureText('xMax: ' + scope.vs.round(globalMaxX, 5)).width * scaleX; // SIC why 5???
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					ctx.drawImage(labelTxtImg, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, labelTxtImg.width, labelTxtImg.height);
+
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
+
+					// frame nr
+					var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].xSsffTrack); // use first track for sample numbers
+					var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
+
+					var sInterv = 1 / xsRaSt.sampleRate - xsRaSt.startTime;
+					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
+
+
+					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					var degrees = 90;
+					ctx.save();
+					ctx.rotate(degrees * Math.PI / 180);
+					ctx.drawImage(labelTxtImg, canvas.width / 2 - tw / 2, -canvas.height);
+					ctx.restore();
+
+					//////////////////////////////
+					// draw dots
+
 
 					var allDots = [];
 
@@ -203,37 +254,6 @@ angular.module('emuwebApp')
 						ctx.stroke();
 						ctx.closePath();
 					});
-
-					//////////////////////////////
-					// markup
-
-					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-
-					// draw corner pointers
-					ctx.beginPath();
-					ctx.moveTo(0, 0);
-					ctx.lineTo(5, 5);
-					ctx.moveTo(0, canvas.height);
-					ctx.lineTo(5, canvas.height - 5);
-					ctx.moveTo(canvas.width, canvas.height);
-					ctx.lineTo(canvas.width - 5, canvas.height - 5);
-					ctx.stroke();
-					ctx.closePath();
-
-					// ymax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.vs.round(globalMaxY, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
-					// xmin + y min
-
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 6), 'xMin: ' + scope.vs.round(globalMinX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-					ctx.drawImage(labelTxtImg, 5, canvas.height - scope.cps.vals.font.fontPxSize * scaleY * 2, labelTxtImg.width, labelTxtImg.height);
-
-					// xmax
-					var tw = ctx.measureText('xMax: ' + scope.vs.round(globalMaxX, 6)).width * scaleX;
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-					ctx.drawImage(labelTxtImg, canvas.width - tw, canvas.height - scope.cps.vals.font.fontPxSize * scaleY, labelTxtImg.width, labelTxtImg.height);
 
 				}
 			}
