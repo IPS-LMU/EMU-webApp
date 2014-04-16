@@ -231,8 +231,9 @@ angular.module('emuwebApp')
 					ctx.drawImage(labelTxtImg, 5, canvas.height - scope.cps.vals.font.fontPxSize * scaleY * 2, labelTxtImg.width, labelTxtImg.height);
 
 					// xmax
+					var tw = ctx.measureText('xMax: ' + scope.vs.round(globalMaxX, 6)).width * scaleX;
 					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 6), scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
-					ctx.drawImage(labelTxtImg, canvas.width - 150, canvas.height - scope.cps.vals.font.fontPxSize * scaleY, labelTxtImg.width, labelTxtImg.height);
+					ctx.drawImage(labelTxtImg, canvas.width - tw, canvas.height - scope.cps.vals.font.fontPxSize * scaleY, labelTxtImg.width, labelTxtImg.height);
 
 				}
 			}
