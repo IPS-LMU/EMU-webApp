@@ -69,17 +69,18 @@ angular.module('emuwebApp')
 					var sDist, posS, posE, horizontalText;
 
 					sDist = viewState.getSampleDist(canvas[0].width);
-					// var selection = viewState.getSelect();
+
+					// draw name of level and type
+					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
+					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
 					var segMId = viewState.getcurMouseSegment();
 					var segCId = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
 					var curID = -1;
-					// var curPoS = selection[0];
-					// var curPoE = selection[1];
+
 					if (levelDetails.type === 'SEGMENT') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
