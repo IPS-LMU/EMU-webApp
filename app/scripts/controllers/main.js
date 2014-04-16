@@ -14,6 +14,7 @@ angular.module('emuwebApp')
 		$scope.ssffds = Ssffdataservice;
 		$scope.shs = Soundhandlerservice;
 		$scope.dhs = Drawhelperservice;
+		$scope.wps = Wavparserservice;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';

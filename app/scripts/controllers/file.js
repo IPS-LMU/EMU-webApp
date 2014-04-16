@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .controller('FileCtrl', function ($scope,
-    viewState, Iohandlerservice, Soundhandlerservice, ConfigProviderService,dialogService,Wavparserservice) {
+  .controller('FileCtrl', function ($scope) {
 
     $scope.dropzone = document.getElementById('dropzone');
     $scope.dropDefault = 'Drop your files here or click here to open a file';
@@ -15,15 +14,16 @@ angular.module('emuwebApp')
 
 
     $scope.dropText = $scope.dropDefault;
-
+    
+    $scope.files = [];
+    $scope.percentage = 0;
 
     $scope.hideDropZone = function () {
       $scope.dropClass = 'hidden';
     };
     
     $scope.loadFiles = function () {
-      dialogService.open('views/error.html', 'ModalCtrl', 'Currently the EMU-webApp does not support this feature! Sorry... ');
-      // dialogService.open('views/loadFiles.html', 'ModalCtrl', '');
+       
     };
 
     $scope.showDropZone = function () {
@@ -87,7 +87,28 @@ angular.module('emuwebApp')
                 reader.readAsArrayBuffer(file);
                 reader.onloadend = function(evt) {
                  if (evt.target.readyState == FileReader.DONE) { 
-                  console.log(Wavparserservice.wav2jso(evt.target.result));
+
+
+$scope.wps.parseWavArrBuf(evt.target.result).then(function (messWavParser) {
+							var wavJSO = messWavParser;
+							$scope.vs.curViewPort.sS = 0;
+							$scope.vs.curViewPort.eS = wavJSO.Data.length;
+							// FOR DEVELOPMENT:
+							// viewState.curViewPort.sS = 110678;
+							// $scope.vs.curViewPort.eS = 110703;
+							$scope.vs.curViewPort.bufferLength = wavJSO.Data.length;
+							$scope.vs.resetSelect();
+							$scope.shs.wavJSO = wavJSO;
+
+							// set all ssff files
+							// var ssffJso;
+							
+						}, function (errMess) {
+							// console.error(errMess)
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+						});
+
+                  //console.log($scope.wps.wav2jso(evt.target.result));
                  }
                 };
                 ++$scope.wavLoaded;
