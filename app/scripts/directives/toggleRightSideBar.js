@@ -8,20 +8,23 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attrs) {
 				scope.$watch(attrs.showMenu, function (newVal) {
 					if (newVal) {
-						// alert("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
+						// console.log("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.addClass(element, '.slideInMenu');
-						$animate.removeClass(element, 'slideRight');
-						$animate.addClass(element, 'slideLeft');
+
+						$animate.removeClass(element, 'shrinkTo0px');
+						$animate.addClass(element, 'expandTo200px');
 					} else {
-						// alert("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
+						// console.log("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.removeClass(element, '.slideInMenu');
-						$animate.removeClass(element, 'slideLeft');
-						$animate.addClass(element, 'slideRight');
+
+						$animate.removeClass(element, 'expandTo200px');
+						$animate.addClass(element, 'shrinkTo0px');
 					}
 				})
 			}
 		};
 	});
+
 
 // simple animation to add slideLeft class
 angular.module('emuwebApp').animation('.slideInMenu', function () {

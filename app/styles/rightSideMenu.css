@@ -3,11 +3,11 @@
 .rightSideMenu {
   position: fixed;
   top: 40px;
-  right: -200px;
+  right: 0px;
   height: -moz-calc(100% - 127px);
   height: -webkit-calc(100% - 127px);
   height: calc(100% - 127px);
-  width: 200px;
+  width: 0;
   background-color: #fff;
   color: #000;
   box-shadow: 0 0 5px 2px #ccc;
@@ -71,7 +71,7 @@
 }
 
 
-.slideLeft{
+/*.slideLeft{
   right: 0px;
   -webkit-transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out;
   -moz-transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out;
@@ -83,5 +83,18 @@
   -webkit-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
   -moz-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
   transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+}*/
+
+.expandTo200px{
+  width: 200px;
+  -webkit-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+  -moz-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
 }
 
+.shrinkTo0px{
+  width: 0px;
+  -webkit-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+  -moz-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
+}
