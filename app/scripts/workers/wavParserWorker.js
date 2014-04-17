@@ -222,7 +222,7 @@ self.addEventListener('message', function (e) {
 	var data = e.data;
 	switch (data.cmd) {
 	case 'parseBuf':
-		console.log(e)
+		// console.log(e)
 		var parserRes = wav2jso(data.buffer);
 		if (parserRes.status === undefined) {
 			self.postMessage({
