@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 						// console.log("asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.addClass(element, '.slideInMenu');
 
-						$animate.removeClass(element, 'shrinkWidthTo0px');
+						// $animate.removeClass(element, 'shrinkWidthTo0px');
 						$animate.addClass(element, 'expandWidthTo200px');
 					} else {
 						// console.log("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
