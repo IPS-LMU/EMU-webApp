@@ -2,48 +2,63 @@
 
 
 angular.module('emuwebApp')
-	.directive('bundleListSideBar', function ($animate) {
+	.directive('bundleListSideBar', function ($animate, viewState) {
 		return {
 			templateUrl: 'views/bundleListSideBar.html',
 			restrict: 'E',
+			replace: true,
+			// scope:{},
 			link: function postLink(scope, element, attr) {
 
 				scope.$watch('vs.submenuOpen', function () {
-
-				// 	if (scope.vs.submenuOpen) {
-
-				// 		// $animate.removeClass(element, 'shrinkWidthTo0px');
-				// 		// $animate.addClass(element, 'expandWidthTo200px');
-
-				// 	} else {
-				// 		// $animate.removeClass(element, 'expandWidthTo200px');
-				// 		// $animate.addClass(element, 'shrinkWidthTo0px');
-				// 	}
-				// }, true);
-
-					var dotMs = scope.vs.getTransitionTime();
-
-					var transcss = {
-						'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-						'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-						'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-						'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
-						'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
-					};
-
-					// alert("sdfsdf")
-					element.css(transcss);
-					$('#mainWindow').css(transcss);
+					// scope.updateCSS();
 					if (scope.vs.submenuOpen) {
-
-						$animate.addClass($('#mainWindow'), '.slideInBody');
-						$animate.addClass(element, '.slideInSubmenu');
+						$animate.removeClass(element, 'shrinkWidthTo0px');
+						$animate.addClass(element, 'expandWidthTo240px');
 					} else {
-						$animate.removeClass($('#mainWindow'), '.slideInBody');
 
-						$animate.removeClass(element, '.slideInSubmenu');
+						$animate.addClass(element, 'shrinkWidthTo0px');
+						// $animate.removeClass(element, 'expandWidthTo240px');
 					}
 				}, true);
+
+
+				// scope.$watch('vs.submenuOpen', function () {
+
+				// // 	if (scope.vs.submenuOpen) {
+
+				// // 		// $animate.removeClass(element, 'shrinkWidthTo0px');
+				// // 		// $animate.addClass(element, 'expandWidthTo200px');
+
+				// // 	} else {
+				// // 		// $animate.removeClass(element, 'expandWidthTo200px');
+				// // 		// $animate.addClass(element, 'shrinkWidthTo0px');
+				// // 	}
+				// // }, true);
+
+				// 	var dotMs = scope.vs.getTransitionTime();
+
+				// 	var transcss = {
+				// 		'-webkit-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				// 		'-moz-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				// 		'-ms-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				// 		'-o-transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out',
+				// 		'transition': 'width ' + dotMs + 's ease-in-out, left ' + dotMs + 's ease-in-out,right ' + dotMs + 's ease-in-out'
+				// 	};
+
+				// 	// alert("sdfsdf")
+				// 	element.css(transcss);
+				// 	$('#mainWindow').css(transcss);
+				// 	if (scope.vs.submenuOpen) {
+
+				// 		$animate.addClass($('#mainWindow'), '.slideInBody');
+				// 		$animate.addClass(element, '.slideInSubmenu');
+				// 	} else {
+				// 		$animate.removeClass($('#mainWindow'), '.slideInBody');
+
+				// 		$animate.removeClass(element, '.slideInSubmenu');
+				// 	}
+				// }, true);
 			}
 		};
 	});

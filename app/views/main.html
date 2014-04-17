@@ -1,7 +1,7 @@
 <!-- container for everything -->
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
-  <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
+  <!-- <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing> -->
   
   <!-- left side menu bar -->
   <bundle-list-side-bar></bundle-list-side-bar>
@@ -26,7 +26,6 @@
 
     <!-- vertical split layout that contains top and bottom pane -->
     <div class="allCans">
-
       <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
         <bg-pane type="topPane" min-size="80" max-size="500" class="topPane">
           <div class="timeline">

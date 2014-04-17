@@ -2,7 +2,7 @@
     ###################################
     global CSS
 */
-* {
+/** {
     text-rendering: optimizeLegibility;
     margin: 0;
     padding: 0;
@@ -36,7 +36,7 @@ ul {
 li {
     margin: 0pt;
     padding: 0pt;
-}
+}*/
 
 
 /** 
@@ -82,29 +82,37 @@ li {
     see: main.html
     is meant for the basic layout (top/bottom/right side menus + split panes +...)
 */
+
 .MainCtrl{
+    display: flex;
+    /*flex-direction: row;*/
+    background-color: pink;
     position: fixed;
-    top: 0;
-    left: 0;
+    /*top: 0;*/
+    /*left: 0;*/
     width: 100%;
     height: 100%;
 }
 
 .mainWindow {
-    position:relative;
-    top: 40px;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /*position:relative;*/
+    /*top: 40px;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*height: 50%;*/
     background-color: red;
 }
 
 .allCans {
-    position:absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 127px);
+    flex: 1;
+    position:relative;
+    /*top: 0;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*min-height: 100%;*/
     background-color: white;
     z-index:1;
 }
@@ -113,7 +121,7 @@ li {
     /*overflow: auto;*/
     /*background-color: green;*/
     text-align: left;
-    height: 100%;
+    /*height: 100%;*/
 }
 
 .bottomPane {

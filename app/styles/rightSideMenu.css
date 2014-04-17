@@ -93,9 +93,9 @@
   transition: width 0.4s;
 }
 
-.shrinkWidthTo0px{
+/*.shrinkWidthTo0px{
   width: 0px;
   -webkit-transition: width 0.4s;
   -moz-transition: width 0.4s;
   transition: width 0.4s;
-}
+}*/

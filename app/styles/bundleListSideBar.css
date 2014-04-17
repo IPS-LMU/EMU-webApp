@@ -5,12 +5,14 @@
 */
 
 .bundleListSideBarOuter {
+    /*flex: 0 0 30%;*/
     width:240px;
-    height: 50%;
-    position: fixed;
+    /*min-width:100px;*/
+    height: 100%;
+    /*position: fixed;*/
     background: rgb(56,54,62);
     color: #fff;
-    min-height: 100%;
+    /*min-height: 100%;*/
     /*padding-right: 10px;*/
     /*overflow-y:auto;*/
     /*border: 1px solid red;*/
@@ -202,4 +204,17 @@
     background-color:#0DC5FF;
 }
 
- 
+
+.expandWidthTo240px{
+  width: 240px;
+  -webkit-transition: width 0.4s;
+  -moz-transition: width 0.4s;
+  transition: width 0.4s;
+}
+
+.shrinkWidthTo0px{
+  width: 0px;
+  -webkit-transition: width 0.4s;
+  -moz-transition: width 0.4s;
+  transition: width 0.4s;
+}
