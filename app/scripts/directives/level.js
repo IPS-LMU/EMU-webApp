@@ -167,7 +167,7 @@ angular.module('emuwebApp')
 								// draw sampleStart numbers
 								//check for enough space to stroke text
 								if (posE - posS > hst1) {
-									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, -5, horizontalText.width, horizontalText.height);
+									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
 								}
 								// draw sampleDur numbers.
 
@@ -176,7 +176,7 @@ angular.module('emuwebApp')
 								//ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								//check for enough space to stroke text
 								if (posE - posS > hst2) {
-									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3 - 5, horizontalText.width, horizontalText.height);
+									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
 									//ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
