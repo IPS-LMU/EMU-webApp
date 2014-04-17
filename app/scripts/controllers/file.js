@@ -17,7 +17,6 @@ angular.module('emuwebApp')
     $scope.dropText = $scope.dropDefault;
     
     $scope.files = [];
-    $scope.percentage = 0;
 
     $scope.hideDropZone = function () {
       $scope.dropClass = 'hidden';
@@ -28,11 +27,15 @@ angular.module('emuwebApp')
             $scope.fileInput.click();
         }, 0);    
     };
-
+    
     $scope.showDropZone = function () {
       $scope.dropClass = '';
     };
     
+    
+    function handleFiles(evt) {
+      console.log(evt);
+    }
 
     function dragEnterLeave(evt) {
       evt.stopPropagation();
@@ -42,6 +45,9 @@ angular.module('emuwebApp')
         $scope.dropClass = '';
       });
     }
+     $scope.fileInput.addEventListener('change', handleFiles, false);
+     
+      
      $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
      $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
      $scope.dropzone.addEventListener('dragover', function (evt) {
