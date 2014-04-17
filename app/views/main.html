@@ -1,13 +1,14 @@
 <!-- container for everything -->
 <div ng-controller="MainCtrl" class="MainCtrl" id="MainCtrl" handleglobalkeystrokes>
 
-  <!-- <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing> -->
   
   <!-- left side menu bar -->
   <bundle-list-side-bar></bundle-list-side-bar>
   
   <!-- container for everything (top + bottom menu and all cans) but left sub-menu -->
   <div class="mainWindow" id="mainWindow">
+  
+    <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
 
     
     <!-- top menu bar -->

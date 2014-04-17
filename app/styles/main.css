@@ -87,8 +87,8 @@ li {
     display: flex;
     /*flex-direction: row;*/
     background-color: pink;
-    position: fixed;
-    /*top: 0;*/
+    position: absolute;
+    /*top: 100px;*/
     /*left: 0;*/
     width: 100%;
     height: 100%;
