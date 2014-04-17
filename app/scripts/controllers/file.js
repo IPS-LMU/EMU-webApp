@@ -4,6 +4,7 @@ angular.module('emuwebApp')
   .controller('FileCtrl', function ($scope) {
 
     $scope.dropzone = document.getElementById('dropzone');
+    $scope.fileInput = document.getElementById('fileDialog');
     $scope.dropDefault = 'Drop your files here or click here to open a file';
     $scope.dropNotAllowed = 'File is not allowed';
     $scope.dropAllowed = 'Drop files to start loading';
@@ -23,7 +24,9 @@ angular.module('emuwebApp')
     };
     
     $scope.loadFiles = function () {
-       
+        setTimeout(function() {
+            $scope.fileInput.click();
+        }, 0);    
     };
 
     $scope.showDropZone = function () {

@@ -7,7 +7,6 @@ angular.module('emuwebApp')
 		templateUrl: 'views/myDropZone.html',
 		restrict: 'E',
 		link: function postLink(scope, element, attr) {
-		
 		}
 	};
 });
