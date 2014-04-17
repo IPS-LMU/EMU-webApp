@@ -2,7 +2,7 @@
 
 .rightSideMenu {
   position: absolute;
-  top: 0px;
+  top: 40px;
   right: 0px;
   height: -moz-calc(100% - 127px);
   height: -webkit-calc(100% - 127px);
