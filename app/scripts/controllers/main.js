@@ -736,11 +736,11 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.saveMetaData = function () {
+		// $scope.saveMetaData = function () {
 
-			Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.bundleList);
-			$scope.modifiedMetaData = false;
-		};
+		// 	Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.bundleList);
+		// 	$scope.modifiedMetaData = false;
+		// };
 
 		/**
 		 *
