@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $window, $document,
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice) {
 
 		// hook up services to use abbreviated forms
@@ -100,6 +100,7 @@ angular.module('emuwebApp')
 			});
 
 		};
+
 		// call function on init
 		$scope.loadDefaultConfig();
 
@@ -264,17 +265,29 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.menuBundleClick = function (bndl) {
-			// if (HistoryService.getNrOfPossibleUndos() > 0) {
-			// 	$scope.modifiedCurSSFF = true;
-			// }
+
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
 				if (bndl !== $scope.curUtt) {
 					$scope.lastclickedutt = bndl;
-					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name);
+					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
+						if (messModal === 'saveChanges') {
+							$scope.menuBundleSaveBtnClick().then(function () {
+								$scope.menuBundleClick(bndl);
+							});
+						} else if (messModal === 'discardChanges') {
+							// reset history
+							HistoryService.resetToInitState();
+							// load new bundle
+							$scope.menuBundleClick(bndl);
+						}
+					});
 				}
 			} else {
 				if (bndl !== $scope.curUtt) {
+					// reset history
+					HistoryService.resetToInitState();
+
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
@@ -284,17 +297,18 @@ angular.module('emuwebApp')
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
 						}
-
+						
 						var arrBuff;
+						
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
-
 						viewState.somethingInProgressTxt = 'Parsing WAV file...';
-						// var wavJSO = Wavparserservice.wav2jso(arrBuff);
+
 						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
 							var wavJSO = messWavParser;
 							viewState.curViewPort.sS = 0;
 							viewState.curViewPort.eS = wavJSO.Data.length;
+							
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 110678;
 							// viewState.curViewPort.eS = 110703;
@@ -303,7 +317,6 @@ angular.module('emuwebApp')
 							Soundhandlerservice.wavJSO = wavJSO;
 
 							// set all ssff files
-							// var ssffJso;
 							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
 								Ssffdataservice.data = ssffJson.data;
@@ -334,43 +347,47 @@ angular.module('emuwebApp')
 		 */
 		$scope.menuBundleSaveBtnClick = function () {
 			// check if something has changed
-			if (HistoryService.movesAwayFromLastSave !== 0) {
-				viewState.somethingInProgress = true;
-				//create bundle json
-				var bundleData = {};
-				viewState.somethingInProgressTxt = 'Creating bundle json...';
-				bundleData.ssffFiles = [];
-				Ssffdataservice.data.forEach(function (el) {
+			// if (HistoryService.movesAwayFromLastSave !== 0) {
+			var defer = $q.defer();
+			viewState.somethingInProgress = true;
+			//create bundle json
+			var bundleData = {};
+			viewState.somethingInProgressTxt = 'Creating bundle json...';
+			bundleData.ssffFiles = [];
+			Ssffdataservice.data.forEach(function (el) {
 
-					// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-					if (el.ssffTrackName === 'FORMANTS') {
-						Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
-							bundleData.ssffFiles.push({
-								'ssffTrackName': el.ssffTrackName,
-								'encoding': 'BASE64',
-								'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
-							});
-
-							// annotation
-							bundleData.annotation = Levelservice.getData();
-							viewState.somethingInProgressTxt = 'Saving bundle...';
-							Iohandlerservice.saveBundle(bundleData).then(function (arg) {
-								viewState.somethingInProgressTxt = 'Done!';
-								// $scope.modifiedCurSSFF = false;
-								// $scope.modifLevelItems = false;
-								viewState.somethingInProgress = false;
-								HistoryService.movesAwayFromLastSave = 0;
-							}, function (errMess) {
-								// console.log(mess);
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
-							});
-						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
+				if (el.ssffTrackName === 'FORMANTS') {
+					Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
+						bundleData.ssffFiles.push({
+							'ssffTrackName': el.ssffTrackName,
+							'encoding': 'BASE64',
+							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 						});
 
-					}
-				});
-			}
+						// annotation
+						bundleData.annotation = Levelservice.getData();
+						viewState.somethingInProgressTxt = 'Saving bundle...';
+						Iohandlerservice.saveBundle(bundleData).then(function () {
+							viewState.somethingInProgressTxt = 'Done!';
+							viewState.somethingInProgress = false;
+							HistoryService.movesAwayFromLastSave = 0;
+							defer.resolve();
+						}, function (errMess) {
+							// console.log(mess);
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
+							defer.reject();
+						});
+					}, function (errMess) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+						defer.reject();
+					});
+
+				}
+			});
+			return defer.promise;
+			// }
+
 		};
 
 

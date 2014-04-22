@@ -2,16 +2,16 @@
 
 angular.module('emuwebApp')
 	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Levelservice, HistoryService) {
-		
+
 		$scope.passedInTxt = passedInTxt;
 		$scope.passedOutTxt = {
-		    'var': null,
+			'var': null,
 		};
-		
+
 		$scope.cancel = function () {
 			dialogService.close();
 		};
-		
+
 		/**
 		 *
 		 */
@@ -25,51 +25,52 @@ angular.module('emuwebApp')
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
-		
+
 		/**
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
-		    Levelservice.renameLevel($scope.passedInTxt,$scope.passedOutTxt.var);	
+			Levelservice.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var);
 			HistoryService.addObjToUndoStack({
-			    'type': 'ESPS',
-			    'action': 'renameLevel',
-			    'levelName': $scope.passedOutTxt.var,
-			    'oldName': $scope.passedInTxt
-			});			    
+				'type': 'ESPS',
+				'action': 'renameLevel',
+				'levelName': $scope.passedOutTxt.
+				var,
+						'oldName': $scope.passedInTxt
+			});
 			dialogService.close();
-		};					
-	
-		
+		};
+
+
 		/**
 		 *  Save changes made on SSFF
 		 */
-		$scope.saveChanges = function (name) { 
-			dialogService.close();
-		};					
-	
-		
+		$scope.saveChanges = function (name) {
+			dialogService.close('saveChanges');
+		};
+
+
 		/**
 		 *  Save changes made on SSFF
 		 */
 		$scope.discardChanges = function (name) {
-		    dialogService.close();
-		};			
-		
+			dialogService.close('discardChanges');
+		};
+
 		/**
 		 *  Delete a complete level from Levelservice
 		 */
 		$scope.deleteLevel = function () {
-		    var res;	
+			var res;
 			res = Levelservice.deleteLevel(viewState.getcurClickLevelName());
 			HistoryService.addObjToUndoStack({
-			    'type': 'ESPS',
-			    'action': 'deleteLevel',
-			    'levelName': res.name,
-			    'itemIdx': res.id,
-		        'level': res.level
-			});				
+				'type': 'ESPS',
+				'action': 'deleteLevel',
+				'levelName': res.name,
+				'itemIdx': res.id,
+				'level': res.level
+			});
 			dialogService.close();
-		};				
+		};
 
 	});

@@ -26,8 +26,8 @@ angular.module('emuwebApp')
 						Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'ESPS') {
-					console.log('###UNDOING esps change');
-					console.log(cur);
+					// console.log('###UNDOING esps change');
+					// console.log(cur);
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
@@ -110,9 +110,9 @@ angular.module('emuwebApp')
 						break;
 					case 'expandSegments':
 						if (applyOldVal) {
-						    Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, -cur.changeTime);
+							Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, -cur.changeTime);
 						} else {
-						    Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, cur.changeTime);
+							Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.name, cur.changeTime);
 						}
 						break;
 
@@ -164,12 +164,11 @@ angular.module('emuwebApp')
 			// add to undoStack
 			if (!$.isEmptyObject(curChangeObj)) {
 				undoStack.push(curChangeObj);
-				
+
 				sServObj.movesAwayFromLastSave += 1;
 			}
 			// reset curChangeObj
 			curChangeObj = {};
-
 
 
 
@@ -223,7 +222,13 @@ angular.module('emuwebApp')
 			return undoStack.length;
 		};
 
-
+		// resetToInitState
+		sServObj.resetToInitState = function () {
+			undoStack = [];
+			redoStack = [];
+			curChangeObj = {};
+			sServObj.movesAwayFromLastSave = 0;
+		};
 
 		return sServObj;
 	});
