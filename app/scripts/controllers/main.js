@@ -30,10 +30,10 @@ angular.module('emuwebApp')
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
-		// SIC moved to viewState.gotUnsavedDataChanges 
-		$scope.modifiedCurLevelItems = false;
-		$scope.modifiedCurSSFF = false;
-		$scope.modifiedMetaData = false;
+
+		// $scope.modifiedCurLevelItems = false;
+		// $scope.modifiedCurSSFF = false;
+		// $scope.modifiedMetaData = false;
 
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
@@ -263,27 +263,27 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.menuBundleClick = function (utt) {
-			if (HistoryService.getNrOfPossibleUndos() > 0) {
-				$scope.modifiedCurSSFF = true;
-			}
+		$scope.menuBundleClick = function (bndl) {
+			// if (HistoryService.getNrOfPossibleUndos() > 0) {
+			// 	$scope.modifiedCurSSFF = true;
+			// }
+			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
-				if (utt !== $scope.curUtt) {
-					$scope.lastclickedutt = utt;
-					dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
+				if (bndl !== $scope.curUtt) {
+					$scope.lastclickedutt = bndl;
+					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name);
 				}
 			} else {
-				if (utt !== $scope.curUtt) {
+				if (bndl !== $scope.curUtt) {
 					viewState.somethingInProgress = true;
-					viewState.somethingInProgressTxt = 'Loading bundle: ' + utt.name;
+					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
-					Iohandlerservice.getBundle(utt.name).then(function (bundleData) {
+					Iohandlerservice.getBundle(bndl.name).then(function (bundleData) {
 						// check if response from http request
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
 						}
-						// ngProgressLite.done();
 
 						var arrBuff;
 						// set wav file
@@ -309,7 +309,7 @@ angular.module('emuwebApp')
 								Ssffdataservice.data = ssffJson.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
-								$scope.curUtt = utt;
+								$scope.curUtt = bndl;
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;
 								viewState.somethingInProgressTxt = 'Done!';
@@ -317,11 +317,9 @@ angular.module('emuwebApp')
 								// $scope.modifiedCurSSFF = true; // for testing save button
 								// $scope.menuBundleSaveBtnClick(); // for testing save button
 							}, function (errMess) {
-								// console.error(errMess)
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
 							});
 						}, function (errMess) {
-							// console.error(errMess)
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 						});
 
@@ -358,8 +356,8 @@ angular.module('emuwebApp')
 							viewState.somethingInProgressTxt = 'Saving bundle...';
 							Iohandlerservice.saveBundle(bundleData).then(function (arg) {
 								viewState.somethingInProgressTxt = 'Done!';
-								$scope.modifiedCurSSFF = false;
-								$scope.modifLevelItems = false;
+								// $scope.modifiedCurSSFF = false;
+								// $scope.modifLevelItems = false;
 								viewState.somethingInProgress = false;
 								HistoryService.movesAwayFromLastSave = 0;
 							}, function (errMess) {
@@ -413,20 +411,20 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.getMetaBtnColor = function () {
-			var curColor;
-			if (!$scope.modifiedMetaData) {
-				curColor = {
-					'color': 'rgb(128,230,25)'
-				};
+		// $scope.getMetaBtnColor = function () {
+		// 	var curColor;
+		// 	if (!$scope.modifiedMetaData) {
+		// 		curColor = {
+		// 			'color': 'rgb(128,230,25)'
+		// 		};
 
-			} else {
-				curColor = {
-					'color': 'red'
-				};
-			}
-			return curColor;
-		};
+		// 	} else {
+		// 		curColor = {
+		// 			'color': 'red'
+		// 		};
+		// 	}
+		// 	return curColor;
+		// };
 
 		/**
 		 *
