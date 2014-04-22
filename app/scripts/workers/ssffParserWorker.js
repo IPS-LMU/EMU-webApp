@@ -237,7 +237,7 @@ function ssff2jso(buf, name) {
 				if (curMax > ssffData.Columns[i]._maxVal) {
 					ssffData.Columns[i]._maxVal = curMax;
 				}
-				
+
 			} else if (ssffData.Columns[i].ssffdatatype === 'BYTE') {
 				curLen = 1 * ssffData.Columns[i].length;
 				curBuffer = buf.subarray(curBinIdx, curLen);
@@ -300,8 +300,13 @@ function jso2ssff(jso) {
 				var tmp = new Uint8Array(curBufferView.buffer);
 				ssffBufView = Uint8Concat(ssffBufView, tmp);
 			} else {
-				alert('Only SHORT columns supported for now!!!');
-				return;
+				// alert('Only SHORT columns supported for now!!!');
+				return ({
+					'status': {
+						'type': 'ERROR',
+						'message': 'Unsupported column type! Only SHORT columns supported for now!'
+					}
+				});
 			}
 		});
 	});
@@ -333,7 +338,7 @@ function parseArr(ssffArr) {
 			noError = false;
 			break;
 		}
-	};
+	}
 	if (noError) {
 		self.postMessage({
 			'status': {
@@ -353,6 +358,21 @@ self.addEventListener('message', function (e) {
 	switch (data.cmd) {
 	case 'parseArr':
 		parseArr(data.ssffArr);
+		break;
+	case 'jso2ssff':
+		var retVal = jso2ssff(data.jso);
+		if (retVal.type === undefined) {
+			self.postMessage({
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				},
+				'data': retVal
+			});
+		} else {
+			self.postMessage(retVal);
+		}
+
 		break;
 	}
 });

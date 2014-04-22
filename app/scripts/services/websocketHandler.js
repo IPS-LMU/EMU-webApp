@@ -180,8 +180,6 @@ angular.module('emuwebApp')
 
 		// ws  getBundle
 		sServObj.getBundle = function (name) {
-			// ngProgressLite.start();
-			// ngProgressLite.set(0.5);
 
 			var request = {
 				type: 'GETBUNDLE',
@@ -194,8 +192,6 @@ angular.module('emuwebApp')
 
 		// ws  saveBundle
 		sServObj.saveBundle = function (bundleData) {
-			// ngProgressLite.start();
-			// ngProgressLite.set(0.5);
 
 			var request = {
 				type: 'SAVEBUNDLE',

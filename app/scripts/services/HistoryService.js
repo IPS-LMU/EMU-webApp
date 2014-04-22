@@ -3,48 +3,9 @@
 angular.module('emuwebApp')
 	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService) {
 
-
 		// shared service object
 		var sServObj = {};
-
-
-		// sServObj.myHistory = [];
-		// sServObj.myHistoryCounter = 0;
-		// sServObj.session = undefined;
-
-
-		// sServObj.init = function () {
-		// 	sServObj.history();
-		// };
-
-		// sServObj.history = function () {
-		// 	var newClone = angular.copy({
-		// 		ssff: Ssffdataservice.getData(),
-		// 		level: Levelservice.getData()
-		// 	});
-		// 	if (sServObj.myHistoryCounter > 0) {
-		// 		var oldClone = angular.copy(sServObj.myHistory[sServObj.myHistoryCounter - 1]);
-		// 		if (angular.equals(newClone, oldClone) === false) {
-		// 			sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
-		// 			++sServObj.myHistoryCounter;
-		// 		}
-		// 	} else {
-		// 		sServObj.myHistory[sServObj.myHistoryCounter] = newClone;
-		// 		++sServObj.myHistoryCounter;
-		// 	}
-
-		// };
-
-		// sServObj.goBackHistory = function () {
-		// 	if (sServObj.myHistoryCounter > 1) {
-		// 		Ssffdataservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].ssff);
-		// 		Levelservice.setData(sServObj.myHistory[sServObj.myHistoryCounter - 2].level);
-		// 		--sServObj.myHistoryCounter;
-		// 		return true;
-		// 	} else {
-		// 		return false;
-		// 	}
-		// };
+		sServObj.movesAwayFromLastSave = 0;
 
 		//////////////////////////////////////////
 		// new dual stack implementation
@@ -203,11 +164,14 @@ angular.module('emuwebApp')
 			// add to undoStack
 			if (!$.isEmptyObject(curChangeObj)) {
 				undoStack.push(curChangeObj);
+				
+				sServObj.movesAwayFromLastSave += 1;
 			}
 			// reset curChangeObj
 			curChangeObj = {};
 
-			// console.log(undoStack);
+
+
 
 		};
 
@@ -223,7 +187,7 @@ angular.module('emuwebApp')
 			}
 			// reset curChangeObj
 			curChangeObj = {};
-			console.log(undoStack);
+			// console.log(undoStack);
 
 		};
 
@@ -237,6 +201,7 @@ angular.module('emuwebApp')
 				applyChange(oldChangeObj, true);
 				// remove old 
 				undoStack.pop();
+				sServObj.movesAwayFromLastSave -= 1;
 			}
 
 		};
@@ -249,11 +214,12 @@ angular.module('emuwebApp')
 				undoStack.push(oldChangeObj);
 				applyChange(oldChangeObj, false);
 				redoStack.pop();
+				sServObj.movesAwayFromLastSave += 1;
 			}
 		};
 
 		// getNrOfPossibleUndos
-		sServObj.getNrOfPosibleUndos = function () {
+		sServObj.getNrOfPossibleUndos = function () {
 			return undoStack.length;
 		};
 

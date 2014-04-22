@@ -71,11 +71,15 @@ angular.module('emuwebApp')
     sServObj.showDropZone = undefined;
     sServObj.movingBoundary = false;
 
+    sServObj.gotUnsavedDataChanges = false;
+
     sServObj.focusInTextField = false;
 
     sServObj.curTaskPercCompl = 0;
 
     sServObj.curPerspectiveIdx = -1;
+
+    sServObj.movingBoundary = false;
 
     // possible general states of state machine
     sServObj.states = [];

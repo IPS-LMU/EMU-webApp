@@ -30,9 +30,11 @@ angular.module('emuwebApp')
 
 		$scope.curUserName = '';
 		$scope.curUtt = {};
+		// SIC moved to viewState.gotUnsavedDataChanges 
 		$scope.modifiedCurLevelItems = false;
 		$scope.modifiedCurSSFF = false;
 		$scope.modifiedMetaData = false;
+
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
 		$scope.filterText = '';
@@ -57,62 +59,32 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * listen for newUserLoggedOn (also called for no user on auto connect)
+		 * listen for saveSSFFb4load
 		 */
-		// $scope.$on('newUserLoggedOn', function (evt, name) {
-		// 	alert("$scope.$on newUserLoggedOn")
-		// 	$scope.curUserName = name;
-		// 	viewState.setState('loadingSaving');
-		// 	Iohandlerservice.getUsrUttList(name).then(function (newVal) {
-		// 		Iohandlerservice.getUtt(newVal[0]).then(function (argument) {
-		// 			console.log(argument);
-		// 			viewState.setState('labeling');
-		// 			$scope.curUtt = newVal[0];
-		// 			$('#FileCtrl').scope().hideDropZone(); // SIC should be in service
-		// 			if (!viewState.getsubmenuOpen()) {
-		// 				$scope.openSubmenu();
-		// 			}
-		// 			$scope.bundleList = newVal;
-		// 			$scope.curUtt = newVal[0];
-		// 		});
-		// 	});
-		// });
-
-		/**
-		 * clear view when new utt is loaded
-		 */
-		// $scope.$on('loadingNewUtt', function () {
-		// 	viewState.resetSelect();
-		// 	viewState.setcurClickLevelName(undefined);
+		// $scope.$on('saveSSFFb4load', function () { // SIC switch to promises
+		// 	alert('saving utt');
+		// 	// Iohandlerservice.postSaveSSFF();
+		// 	Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
+		// 	$scope.modifiedCurSSFF = false;
+		// 	$scope.$broadcast('loadingNewUtt');
+		// 	console.log($scope.lastclickedutt);
+		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
+		// 	$scope.curUtt = $scope.lastclickedutt;
 		// });
 
 		/**
 		 * listen for saveSSFFb4load
 		 */
-		$scope.$on('saveSSFFb4load', function () { // SIC switch to promises
-			console.log('saving utt');
-			// Iohandlerservice.postSaveSSFF();
-			Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
-			$scope.modifiedCurSSFF = false;
-			$scope.$broadcast('loadingNewUtt');
-			console.log($scope.lastclickedutt);
-			// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
-			Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-			$scope.curUtt = $scope.lastclickedutt;
-		});
-
-		/**
-		 * listen for saveSSFFb4load
-		 */
-		$scope.$on('discardSSFFb4load', function () { // SIC switch to promises
-			console.log('discarding ssff changes');
-			$scope.modifiedCurSSFF = false;
-			$scope.$broadcast('loadingNewUtt');
-			console.log($scope.lastclickedutt);
-			// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
-			Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-			$scope.curUtt = $scope.lastclickedutt;
-		});
+		// $scope.$on('discardSSFFb4load', function () { // SIC switch to promises
+		// 	alert('discarding ssff changes');
+		// 	$scope.modifiedCurSSFF = false;
+		// 	$scope.$broadcast('loadingNewUtt');
+		// 	console.log($scope.lastclickedutt);
+		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
+		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
+		// 	$scope.curUtt = $scope.lastclickedutt;
+		// });
 
 
 		/**
@@ -202,11 +174,6 @@ angular.module('emuwebApp')
 			if (ConfigProviderService.vals.restrictions.sortLabels) {
 				// $('#allowSortable').sortable('enable');
 			}
-
-			// swap osci and spectro depending on config settings "signalsCanvasConfig.order"
-			// $('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]);
-			// $('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[0]).insertBefore('#' + ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order[1]);
-
 		};
 
 		/**
@@ -297,12 +264,14 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.menuBundleClick = function (utt) {
-			if (HistoryService.getNrOfPosibleUndos() > 0) {
+			if (HistoryService.getNrOfPossibleUndos() > 0) {
 				$scope.modifiedCurSSFF = true;
 			}
-			if ($scope.modifiedCurSSFF || $scope.modifiedCurLevelItems) {
-				$scope.lastclickedutt = utt;
-				dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
+			if ((HistoryService.movesAwayFromLastSave !== 0)) {
+				if (utt !== $scope.curUtt) {
+					$scope.lastclickedutt = utt;
+					dialogService.open('views/saveChanges.html', 'ModalCtrl', utt.name);
+				}
 			} else {
 				if (utt !== $scope.curUtt) {
 					viewState.somethingInProgress = true;
@@ -336,7 +305,7 @@ angular.module('emuwebApp')
 							// set all ssff files
 							// var ssffJso;
 							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-							Ssffparserservice.parseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
+							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
 								Ssffdataservice.data = ssffJson.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
@@ -344,6 +313,9 @@ angular.module('emuwebApp')
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;
 								viewState.somethingInProgressTxt = 'Done!';
+								// FOR DEVELOPMENT:
+								// $scope.modifiedCurSSFF = true; // for testing save button
+								// $scope.menuBundleSaveBtnClick(); // for testing save button
 							}, function (errMess) {
 								// console.error(errMess)
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
@@ -363,35 +335,44 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.menuBundleSaveBtnClick = function () {
+			// check if something has changed
+			if (HistoryService.movesAwayFromLastSave !== 0) {
+				viewState.somethingInProgress = true;
+				//create bundle json
+				var bundleData = {};
+				viewState.somethingInProgressTxt = 'Creating bundle json...';
+				bundleData.ssffFiles = [];
+				Ssffdataservice.data.forEach(function (el) {
 
+					// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
+					if (el.ssffTrackName === 'FORMANTS') {
+						Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
+							bundleData.ssffFiles.push({
+								'ssffTrackName': el.ssffTrackName,
+								'encoding': 'BASE64',
+								'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
+							});
 
-			//create bundle json
-			var bundleData = {};
+							// annotation
+							bundleData.annotation = Levelservice.getData();
+							viewState.somethingInProgressTxt = 'Saving bundle...';
+							Iohandlerservice.saveBundle(bundleData).then(function (arg) {
+								viewState.somethingInProgressTxt = 'Done!';
+								$scope.modifiedCurSSFF = false;
+								$scope.modifLevelItems = false;
+								viewState.somethingInProgress = false;
+								HistoryService.movesAwayFromLastSave = 0;
+							}, function (errMess) {
+								// console.log(mess);
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
+							});
+						}, function (errMess) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+						});
 
-			// ssffFiles (only FORMANTS are allowed to be manipulated)
-			// if ($scope.modifiedCurSSFF) {
-			bundleData.ssffFiles = [];
-			Ssffdataservice.data.forEach(function (el, idx) {
-
-				if (el.ssffTrackName === 'FORMANTS') {
-					bundleData.ssffFiles.push({
-						'ssffTrackName': el.ssffTrackName,
-						'encoding': 'BASE64',
-						'data': Binarydatamaniphelper.arrayBufferToBase64(Ssffparserservice.jso2ssff(el))
-					});
-				}
-			});
-			// }
-			// annotation
-			// if ($scope.modifiedCurLevelItems) {
-			bundleData.annotation = Levelservice.getData();
-
-			Iohandlerservice.saveBundle(bundleData).then(function (arg) {
-				ngProgressLite.done();
-				$scope.modifiedCurSSFF = false;
-				$scope.modifLevelItems = false;
-			});
-			// }
+					}
+				});
+			}
 		};
 
 
@@ -409,9 +390,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.getUttColor = function (utt) {
+		$scope.getBndlColor = function (utt) {
 			var curColor;
-			if (HistoryService.getNrOfPosibleUndos() > 0) {
+			if (HistoryService.movesAwayFromLastSave !== 0) {
 				curColor = {
 					'background-color': '#f00',
 					'color': 'white'

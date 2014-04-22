@@ -40,19 +40,19 @@ angular.module('emuwebApp')
         });
 
         element.bind('mousemove', function (event) {
-          if(!scope.vs.getdragBarActive()) {
-          var moveLine = true;
-          var zoom = scope.vs.getPCMpp(event);
-          thisPCM = getX(event) * zoom;
-          var moveBy = (thisPCM - lastPCM);
+          if (!scope.vs.getdragBarActive()) {
+            var moveLine = true;
+            var zoom = scope.vs.getPCMpp(event);
+            thisPCM = getX(event) * zoom;
+            var moveBy = (thisPCM - lastPCM);
 
-          if (zoom <= 1) {
-            // ansolute movement in pcm below 1 pcm per pixel
-            moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetails(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
-          } else {
-            // relative movement in pcm above 1 pcm per pixel
-            moveBy = Math.round(thisPCM - lastPCM);
-          }
+            if (zoom <= 1) {
+              // ansolute movement in pcm below 1 pcm per pixel
+              moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetails(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
+            } else {
+              // relative movement in pcm above 1 pcm per pixel
+              moveBy = Math.round(thisPCM - lastPCM);
+            }
           }
           switch (event.which) {
           case 1:
@@ -66,56 +66,56 @@ angular.module('emuwebApp')
             break;
           default:
 
-            if(!scope.vs.getdragBarActive()) {
-            if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
-              scope.vs.deleteEditArea();
-              if (scope.vs.getcurMouseSegment() !== undefined) {
-                scope.vs.movingBoundary = true;
-                if (scope.this.level.type == "SEGMENT") {
-                  scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
-                  scope.hists.updateCurChangeObj({
-                    'type': 'ESPS',
-                    'action': 'moveBoundary',
-                    'name': scope.this.level.name,
-                    'neighbours': scope.vs.getcurMouseNeighbours(),
-                    'itemIdx': scope.vs.getcurMouseSegment(),
-                    'movedBy': moveBy
-                  });
-                } else {
-                  scope.tds.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
-                  scope.hists.updateCurChangeObj({
-                    'type': 'ESPS',
-                    'action': 'movePoint',
-                    'name': scope.this.level.name,
-                    'itemIdx': scope.vs.getcurMouseSegment(),
-                    'movedBy': moveBy
-                  });
+            if (!scope.vs.getdragBarActive()) {
+              if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
+                scope.vs.deleteEditArea();
+                if (scope.vs.getcurMouseSegment() !== undefined) {
+                  scope.vs.movingBoundary = true;
+                  if (scope.this.level.type == "SEGMENT") {
+                    scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
+                    scope.hists.updateCurChangeObj({
+                      'type': 'ESPS',
+                      'action': 'moveBoundary',
+                      'name': scope.this.level.name,
+                      'neighbours': scope.vs.getcurMouseNeighbours(),
+                      'itemIdx': scope.vs.getcurMouseSegment(),
+                      'movedBy': moveBy
+                    });
+                  } else {
+                    scope.tds.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
+                    scope.hists.updateCurChangeObj({
+                      'type': 'ESPS',
+                      'action': 'movePoint',
+                      'name': scope.this.level.name,
+                      'itemIdx': scope.vs.getcurMouseSegment(),
+                      'movedBy': moveBy
+                    });
+                  }
+                  lastPCM = thisPCM;
+                  moveLine = false;
                 }
-                lastPCM = thisPCM;
-                moveLine = false;
+              } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
+                scope.vs.deleteEditArea();
+                if (scope.this.level.type == "SEGMENT") {
+                  var neighbours = scope.tds.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length - 1].id);
+                  scope.tds.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
+                  scope.hists.updateCurChangeObj({
+                    'type': 'ESPS',
+                    'action': 'moveSegment',
+                    'name': scope.this.level.name,
+                    'neighbours': neighbours,
+                    'itemIdx': scope.vs.getcurClickSegments(),
+                    'movedBy': moveBy
+                  });
+                  lastPCM = thisPCM;
+                }
+              } else {
+                scope.vs.movingBoundary = false;
               }
-            } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
-              scope.vs.deleteEditArea();
-              if (scope.this.level.type == "SEGMENT") {
-                var neighbours = scope.tds.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length - 1].id);
-                scope.tds.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
-                scope.hists.updateCurChangeObj({
-                  'type': 'ESPS',
-                  'action': 'moveSegment',
-                  'name': scope.this.level.name,
-                  'neighbours': neighbours,
-                  'itemIdx': scope.vs.getcurClickSegments(),
-                  'movedBy': moveBy
-                });
-                lastPCM = thisPCM;
-              }
-            } else {
-              scope.vs.movingBoundary = false;
-            }
             }
             break;
           }
-          if(!scope.vs.getdragBarActive()) {
+          if (!scope.vs.getdragBarActive()) {
             setLastMove(event, moveLine);
           }
         });
