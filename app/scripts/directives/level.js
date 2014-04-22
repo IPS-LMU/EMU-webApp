@@ -26,6 +26,12 @@ angular.module('emuwebApp')
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
 
+				scope.$watch('hists.movesAwayFromLastSave', function () {
+					drawLevelDetails(scope.level, scope.vs, scope.cps);
+					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+				}, true);
+
+
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
 					scope.vs.setcurMouseSegment(undefined);

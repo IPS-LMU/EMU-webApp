@@ -591,8 +591,6 @@ angular.module('emuwebApp')
 					$scope.showDropZone = true;
 					$scope.loadDefaultConfig();
 
-					//$scope.$broadcast('refreshTimeline'); // SIC SIC SIC
-
 					viewState.setState('noDBorFilesloaded');
 				}
 			});
