@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 		$scope.bundleList = [];
 
 		$scope.curUserName = '';
-		$scope.curUtt = {};
+		$scope.curBndl = {};
 
 		// $scope.modifiedCurLevelItems = false;
 		// $scope.modifiedCurSSFF = false;
@@ -70,7 +70,7 @@ angular.module('emuwebApp')
 		// 	console.log($scope.lastclickedutt);
 		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
 		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-		// 	$scope.curUtt = $scope.lastclickedutt;
+		// 	$scope.curBndl = $scope.lastclickedutt;
 		// });
 
 		/**
@@ -83,7 +83,7 @@ angular.module('emuwebApp')
 		// 	console.log($scope.lastclickedutt);
 		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
 		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-		// 	$scope.curUtt = $scope.lastclickedutt;
+		// 	$scope.curBndl = $scope.lastclickedutt;
 		// });
 
 
@@ -262,13 +262,15 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * Handle click on bundle in side menu. It is 
+		 * also used as a general loadBundle method.
+		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
 		$scope.menuBundleClick = function (bndl) {
 
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
-				if (bndl !== $scope.curUtt) {
+				if (bndl !== $scope.curBndl) {
 					$scope.lastclickedutt = bndl;
 					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
 						if (messModal === 'saveChanges') {
@@ -284,7 +286,7 @@ angular.module('emuwebApp')
 					});
 				}
 			} else {
-				if (bndl !== $scope.curUtt) {
+				if (bndl !== $scope.curBndl) {
 					// reset history
 					HistoryService.resetToInitState();
 
@@ -322,7 +324,7 @@ angular.module('emuwebApp')
 								Ssffdataservice.data = ssffJson.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
-								$scope.curUtt = bndl;
+								$scope.curBndl = bndl;
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;
 								viewState.somethingInProgressTxt = 'Done!';
@@ -347,7 +349,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.menuBundleSaveBtnClick = function () {
 			// check if something has changed
-			// if (HistoryService.movesAwayFromLastSave !== 0) {
+			// if (HistoryService.movesAwayFromLastSave !== 0) { // Commented out FOR DEVELOPMENT!
 			var defer = $q.defer();
 			viewState.somethingInProgress = true;
 			//create bundle json
@@ -386,7 +388,7 @@ angular.module('emuwebApp')
 				}
 			});
 			return defer.promise;
-			// }
+			// } // Commented out FOR DEVELOPMENT!
 
 		};
 
@@ -395,7 +397,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.uttIsDisabled = function (utt) {
-			if (utt.name === $scope.curUtt.name) {
+			if (utt.name === $scope.curBndl.name) {
 				return false;
 			} else {
 				return true;
@@ -420,7 +422,7 @@ angular.module('emuwebApp')
 			}
 
 			// console.log(utt.name)
-			if (utt.name === $scope.curUtt.name) {
+			if (utt.name === $scope.curBndl.name) {
 				return curColor;
 			}
 		};
@@ -573,7 +575,7 @@ angular.module('emuwebApp')
 						$scope.bundleList = res.data;
 						$scope.menuBundleClick($scope.bundleList[0]);
 						// 	// Iohandlerservice.getUtt(res.data[0]);
-						// 	// $scope.curUtt = res.data[0];
+						// 	// $scope.curBndl = res.data[0];
 						// 	// should be then after get utt
 						viewState.setState('labeling');
 					});
