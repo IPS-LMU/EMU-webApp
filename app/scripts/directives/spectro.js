@@ -54,11 +54,11 @@ angular.module('emuwebApp')
         element.bind('mousemove', function (event) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawSpectMarkup();
-              if (!scope.vs.getdragBarActive()) {
-                drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
-              }
+              // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              // drawSpectMarkup();
+              // if (!scope.vs.getdragBarActive()) {
+              //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
+              // }
             }
           }
         });

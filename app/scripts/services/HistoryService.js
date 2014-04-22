@@ -120,8 +120,12 @@ angular.module('emuwebApp')
 				}
 			});
 		}
-
+		/////////////////////////////////////
 		// public API
+		
+		/**
+		 *
+		 */
 		sServObj.updateCurChangeObj = function (dataObj) {
 			// console.log(dataObj);
 			var dataKey;
@@ -131,7 +135,7 @@ angular.module('emuwebApp')
 				if (!curChangeObj[dataKey]) {
 					curChangeObj[dataKey] = dataObj;
 				} else {
-					console.log('here' + curChangeObj[dataKey].oldValue);
+					// console.log('here' + curChangeObj[dataKey].oldValue);
 					// keep init old value
 					dataObj.oldValue = curChangeObj[dataKey].oldValue;
 					curChangeObj[dataKey] = dataObj;
@@ -153,7 +157,7 @@ angular.module('emuwebApp')
 
 				}
 			}
-			// console.log(curChangeObj);
+			return(curChangeObj);
 
 		};
 

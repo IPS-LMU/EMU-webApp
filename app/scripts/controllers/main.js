@@ -302,8 +302,9 @@ angular.module('emuwebApp')
 							viewState.curViewPort.eS = wavJSO.Data.length;
 
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 110678;
-							// viewState.curViewPort.eS = 110703;
+							// viewState.curViewPort.sS = 2000;
+							// viewState.curViewPort.eS = 3000;
+							
 							viewState.curViewPort.bufferLength = wavJSO.Data.length;
 							viewState.resetSelect();
 							Soundhandlerservice.wavJSO = wavJSO;
@@ -319,7 +320,6 @@ angular.module('emuwebApp')
 								viewState.somethingInProgress = false;
 								viewState.somethingInProgressTxt = 'Done!';
 								// FOR DEVELOPMENT:
-								// $scope.modifiedCurSSFF = true; // for testing save button
 								// $scope.menuBundleSaveBtnClick(); // for testing save button
 							}, function (errMess) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);

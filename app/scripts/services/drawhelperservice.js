@@ -361,6 +361,58 @@ angular.module('emuwebApp')
 
 		};
 
+		/**
+		 * drawing method to drawCurViewPortSelected
+		 */
+
+		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max) {
+			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
+
+				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+				ctx.strokeStyle = ConfigProviderService.vals.colors.crossHairsColor;
+				ctx.fillStyle = ConfigProviderService.vals.colors.crossHairsColor;
+
+				// see if Chrome -> dashed line
+				if (navigator.vendor === 'Google Inc.') {
+					ctx.setLineDash([2]);
+				}
+
+				// draw lines
+				var mouseX = sServObj.getX(mouseEvt);
+				var mouseY = sServObj.getY(mouseEvt);
+
+				ctx.beginPath();
+				ctx.moveTo(0, mouseY);
+				ctx.lineTo(5, mouseY + 5);
+				ctx.moveTo(0, mouseY);
+				ctx.lineTo(ctx.canvas.width, mouseY);
+				ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+				ctx.moveTo(mouseX, 0);
+				ctx.lineTo(mouseX, ctx.canvas.height);
+				ctx.stroke();
+				// draw frequency / sample / time
+				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
+
+				var mouseFreq = viewState.round(max - mouseY / ctx.canvas.height * max, 2); // SIC only uses max
+
+				var tW = ctx.measureText(mouseFreq + ' Hz').width;
+				var s1 = Math.round(viewState.curViewPort.sS + mouseX / ctx.canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
+				var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
+				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + ' Hz', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+
+				ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+				ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
+
+
+				if (navigator.vendor === 'Google Inc.') {
+					ctx.setLineDash([0]);
+				}
+				// drawSpectMarkup();
+			}
+		};
+
 
 		return sServObj;
 	});

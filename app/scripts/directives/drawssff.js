@@ -24,8 +24,8 @@ angular.module('emuwebApp')
           handleUpdate(newValue, oldValue);
         }, true);
 
-        //watch vs.curPreselColumnSample change
-        scope.$watch('vs.curPreselColumnSample', function (newValue, oldValue) {
+        //watch hists.
+        scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
