@@ -201,7 +201,7 @@ angular.module('emuwebApp')
                       ctx.stroke();
                       ctx.fill();
                     }
-                    
+
                     prevVal = val;
 
                     //check if last sample

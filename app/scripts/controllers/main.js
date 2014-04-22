@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
-		$scope.tmp.showSaveCommStaBtnDiv = false;
+		// $scope.tmp.showSaveCommStaBtnDiv = false;
 		$scope.dbLoaded = false;
 		$scope.isRightSideMenuHidden = true;
 		$scope.is2dCancasesHidden = true;
@@ -116,8 +116,8 @@ angular.module('emuwebApp')
 			// $scope.openDemoDBbtnClick();
 			// $scope.aboutBtnClick();
 
-			// SIC!! use ConfigProviderService.vals.keyMappings.strRep directly
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
+
 			// convert int values to char for front end
 			for (var i in $scope.shortcut) {
 				// sonderzeichen space
@@ -152,7 +152,6 @@ angular.module('emuwebApp')
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
-				// console.log("DEVEL");
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
 					if (message.type === 'error') {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
@@ -178,13 +177,14 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * function is called after websocket connection 
+		 * has been established. It executes the protocol 
+		 * and loads the first bundle in the bundle list (= default behavior).
 		 */
 		$scope.handleConnectedToWSserver = function () {
-			// TODO hardcode removal of save / load/ manipulation buttons 
+			// hide drop zone 
 			$scope.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
-			$scope.showSaveCommStaBtnDiv = true; // SIC should not hardcode... should check if in json 
 
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Checking protocol...';
@@ -198,6 +198,7 @@ angular.module('emuwebApp')
 							viewState.somethingInProgressTxt = 'Loading DB config...';
 							// then get the DBconfigFile
 							Iohandlerservice.getDBconfigFile().then(function (data) {
+								// first element of perspectives is default perspective
 								viewState.curPerspectiveIdx = 0;
 								ConfigProviderService.setVals(data.EMUwebAppConfig);
 								delete data.EMUwebAppConfig; // delete to avoid duplicate
@@ -211,26 +212,17 @@ angular.module('emuwebApp')
 								});
 							});
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'We are sorry but the EMU-webApp does not support user management yet...');
+							// show user management error 
+							dialogService.open('views/error.html', 'ModalCtrl', 'We are sorry but the EMU-webApp does not support user management yet...').then(function () {
+								$scope.resetToInitState();
+							});
 						}
 					});
-					if (!ConfigProviderService.vals.main.autoConnect) {
-						// Iohandlerservice.getDoUserManagement().then(function (manageRes) {
-						// 	if (manageRes === 'YES') {
-						// 		dialogService.open('views/login.html', 'LoginCtrl');
-						// 	} else {
-						// 		$scope.$broadcast('newUserLoggedOn', '');
-						// 	}
-						// });
-					} else {
-						// $scope.connectBtnLabel = 'disconnect';
-						// $scope.$broadcast('newUserLoggedOn', '');
-
-					}
 				} else {
 					// show protocol error and disconnect from server
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"');
-					Iohandlerservice.wsH.closeConnect();
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+						$scope.resetToInitState();
+					});
 				}
 			});
 		};
@@ -262,7 +254,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Handle click on bundle in side menu. It is 
+		 * Handle click on bundle in side menu. It is
 		 * also used as a general loadBundle method.
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
@@ -299,9 +291,9 @@ angular.module('emuwebApp')
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
 						}
-						
+
 						var arrBuff;
-						
+
 						// set wav file
 						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 						viewState.somethingInProgressTxt = 'Parsing WAV file...';
@@ -310,7 +302,7 @@ angular.module('emuwebApp')
 							var wavJSO = messWavParser;
 							viewState.curViewPort.sS = 0;
 							viewState.curViewPort.eS = wavJSO.Data.length;
-							
+
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 110678;
 							// viewState.curViewPort.eS = 110703;
@@ -599,22 +591,32 @@ angular.module('emuwebApp')
 			// viewState.setdragBarActive(false);
 			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? This will also delete any unsaved changes...').then(function (res) {
 				if (res) {
-					if (Iohandlerservice.wsH.isConnected()) {
-						Iohandlerservice.wsH.closeConnect();
-					}
-					$scope.bundleList = [];
-
-					Soundhandlerservice.wavJSO = {};
-					Levelservice.data = {};
-					Ssffdataservice.data = [];
-					$scope.showDropZone = true;
-					$scope.loadDefaultConfig();
-
-					viewState.setState('noDBorFilesloaded');
+					$scope.resetToInitState();
 				}
 			});
 		};
 
+		/**
+		 *
+		 */
+		$scope.resetToInitState = function () {
+			if (Iohandlerservice.wsH.isConnected()) {
+				Iohandlerservice.wsH.closeConnect();
+			}
+			$scope.bundleList = [];
+			Soundhandlerservice.wavJSO = {};
+			Levelservice.data = {};
+			Ssffdataservice.data = [];
+			HistoryService.resetToInitState();
+
+			viewState.somethingInProgress = false;
+
+			$scope.showDropZone = true;
+			$scope.loadDefaultConfig();
+
+			viewState.setState('noDBorFilesloaded');
+
+		};
 
 
 		// bottom menu:
