@@ -4,8 +4,8 @@ var filewalker = require('filewalker');
 
 var labelData;
 
-var pathToDbRoot = '../app/testData/ignoredData/ema/';
-var configName = 'ema_DBconfig.json';
+var pathToDbRoot = '../app/testData/newFormat/ae/';
+var configName = 'ae_DBconfig.json';
 
 var portNr = 8080;
 

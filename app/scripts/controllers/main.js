@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
-		// $scope.tmp.showSaveCommStaBtnDiv = false;
+		
 		$scope.dbLoaded = false;
 		$scope.isRightSideMenuHidden = true;
 		$scope.is2dCancasesHidden = true;
@@ -30,10 +30,6 @@ angular.module('emuwebApp')
 
 		$scope.curUserName = '';
 		$scope.curBndl = {};
-
-		// $scope.modifiedCurLevelItems = false;
-		// $scope.modifiedCurSSFF = false;
-		// $scope.modifiedMetaData = false;
 
 		$scope.lastclickedutt = null;
 		$scope.shortcut = null;
@@ -266,7 +262,9 @@ angular.module('emuwebApp')
 					$scope.lastclickedutt = bndl;
 					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
 						if (messModal === 'saveChanges') {
+							// save current bundle
 							$scope.menuBundleSaveBtnClick().then(function () {
+								// load new bundle
 								$scope.menuBundleClick(bndl);
 							});
 						} else if (messModal === 'discardChanges') {
@@ -337,7 +335,9 @@ angular.module('emuwebApp')
 
 
 		/**
-		 *
+		 * Handle save bundle button click. The function is also used
+		 * as a gerneral purpose save bundle function.
+		 * @return promise that is resolved after completion (rejected on error)
 		 */
 		$scope.menuBundleSaveBtnClick = function () {
 			// check if something has changed
@@ -388,8 +388,8 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.uttIsDisabled = function (utt) {
-			if (utt.name === $scope.curBndl.name) {
+		$scope.uttIsDisabled = function (bndl) {
+			if (bndl.name === $scope.curBndl.name) {
 				return false;
 			} else {
 				return true;
@@ -397,9 +397,13 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * returns jso with css defining color dependent 
+		 * on if changes have been made that have not been saved
+		 * @param bndl object containing name attribute of bundle item 
+		 * requesting color
+		 * @returns color as jso object used by ng-style
 		 */
-		$scope.getBndlColor = function (utt) {
+		$scope.getBndlColor = function (bndl) {
 			var curColor;
 			if (HistoryService.movesAwayFromLastSave !== 0) {
 				curColor = {
@@ -413,8 +417,8 @@ angular.module('emuwebApp')
 				};
 			}
 
-			// console.log(utt.name)
-			if (utt.name === $scope.curBndl.name) {
+			// console.log(bndl.name)
+			if (bndl.name === $scope.curBndl.name) {
 				return curColor;
 			}
 		};

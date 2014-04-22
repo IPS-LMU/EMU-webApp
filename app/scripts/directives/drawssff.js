@@ -7,6 +7,7 @@ angular.module('emuwebApp')
       link: function postLink(scope, element, atts) {
         var canvas = element[0];
         var trackName;
+        var assTrackName = '';
 
         // observe attribute
         atts.$observe('ssffTrackname', function (val) {
@@ -49,19 +50,22 @@ angular.module('emuwebApp')
         function handleUpdate() {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
+
+              assTrackName = '';
               // check assignments (= overlays)
               scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
                 if (ass.signalCanvasName === trackName) {
+                  assTrackName = ass.ssffTrackName;
                   var tr = scope.cps.getSsffTrackConfig(ass.ssffTrackName);
                   var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-
                   var minMaxLims = scope.cps.getLimsOfTrack(tr.name);
 
                   // draw values  
                   drawValues(scope.vs, canvas, scope.cps, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
+              assTrackName = '';
               // draw ssffTrack onto own canvas
               if (trackName !== 'OSCI' && trackName !== 'SPEC') {
                 var tr = scope.cps.getSsffTrackConfig(trackName);
@@ -86,41 +90,12 @@ angular.module('emuwebApp')
          */
 
         function drawValues(viewState, canvas, config, col, sR, sT, minMaxLims) {
+
           var ctx = canvas.getContext('2d');
           // create a destination canvas. Here the altered image will be placed
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          // set range !!! SIC !!! use predefined vals...
-          // var minVal, maxVal;
-          // if (trackName === 'SPEC') {
-          //   minVal = viewState.spectroSettings.rangeFrom;
-          //   maxVal = viewState.spectroSettings.rangeTo; //Hz in the case of formants
-          // } else {
-          //   // console.log(col.name)
-          //   if (typeof col.minVal === 'undefined' && typeof col.maxVal === 'undefined') {
-          //     minVal = Infinity;
-          //     maxVal = -Infinity;
-          //     col.values.forEach(function (rec) {
-          //       rec.forEach(function (samp, sidx) {
-          //         if ($.isEmptyObject(minMaxLims) || (sidx >= minMaxLims.min && sidx <= minMaxLims.max)) {
-          //           if (samp < minVal) {
-          //             minVal = samp;
-          //           }
-          //           if (samp > maxVal) {
-          //             maxVal = samp;
-          //           }
-          //         }
-          //       });
-          //     });
-          //     col.minVal = minVal;
-          //     col.maxVal = maxVal;
-          //   } else {
-          //     minVal = col.minVal;
-          //     maxVal = col.maxVal;
-          //   }
-          // }
 
           var minVal = col._minVal;
           var maxVal = col._maxVal;

@@ -62,7 +62,7 @@ angular.module('emuwebApp')
     sServObj.curClickLevelName = undefined;
     sServObj.curClickLevelType = undefined;
     sServObj.curPreselColumnSample = 2;
-    sServObj.curCorrectionToolNr = undefined;
+    sServObj.curCorrectionToolNr = 1; // SIC reset to undefined
     sServObj.curClickLevelIndex = undefined;
     sServObj.start = null;
     sServObj.loadingUtt = false;
@@ -910,7 +910,7 @@ angular.module('emuwebApp')
      *
      * @param shiftRight bool to specify direction
      * if set to true -> shift right
-     * if set to falce -> shift left
+     * if set to false -> shift left
      */
     sServObj.shiftViewPort = function (shiftRight) {
       // my.removeLabelDoubleClick();
