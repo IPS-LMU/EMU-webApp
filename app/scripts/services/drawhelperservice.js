@@ -362,7 +362,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * drawing method to drawCurViewPortSelected
+		 * drawing method to drawCrossHairs
 		 */
 
 		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max) {
@@ -411,6 +411,53 @@ angular.module('emuwebApp')
 				}
 				// drawSpectMarkup();
 			}
+		};
+
+		/**
+		 * drawing method to drawMinMaxAndName
+		 * @param ctx is context to be drawn on
+		 * @param trackName name of track to be drawn in the center of the canvas (left aligned)
+		 * @param min value to be drawn at the bottom of the canvas (left aligned)
+		 * @param max value to be drawn at the top of the canvas (left aligned)
+		 * @param round value to round to for min/max values (== digits after comma)
+		 */
+
+		sServObj.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
+
+			// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+			// var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+			var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+
+			var smallFontSize = ConfigProviderService.vals.font.fontPxSize * 3 / 4;
+			var th = smallFontSize * scaleY;
+
+			// draw corner pointers
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.lineTo(5, 5);
+			ctx.moveTo(0, ctx.canvas.height);
+			ctx.lineTo(5, ctx.canvas.height - 5);
+			ctx.stroke();
+			ctx.closePath();
+
+
+			// draw ssffTrackName
+			if (trackName !== '') {
+				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
+				var trackNameImg = fontScaleService.getTextImage(ctx, trackName, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+				ctx.drawImage(trackNameImg, 0, ctx.canvas.height / 2 - ConfigProviderService.vals.font.fontPxSize * scaleY / 2);
+			}
+
+
+
+			// draw min/max vals
+			var labelTxtImg = fontScaleService.getTextImage(ctx, 'max: ' + viewState.round(max, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+			ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+
+			// draw min/max vals
+			labelTxtImg = fontScaleService.getTextImage(ctx, 'min: ' + viewState.round(min, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+			ctx.drawImage(labelTxtImg, 5, ctx.canvas.height - th - 5, labelTxtImg.width, labelTxtImg.height);
 		};
 
 

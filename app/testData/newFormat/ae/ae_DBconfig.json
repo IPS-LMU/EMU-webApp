@@ -133,7 +133,7 @@
 		"perspectives": [{
 			"name": "switchedLevels",
 			"signalCanvases": {
-				"order": ["OSCI", "SPEC"],
+				"order": ["OSCI", "SPEC", "fundFreq"],
 				"assign": [{
 					"signalCanvasName": "SPEC",
 					"ssffTrackName": "FORMANTS"

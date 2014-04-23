@@ -55,35 +55,6 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * listen for saveSSFFb4load
-		 */
-		// $scope.$on('saveSSFFb4load', function () { // SIC switch to promises
-		// 	alert('saving utt');
-		// 	// Iohandlerservice.postSaveSSFF();
-		// 	Iohandlerservice.wsH.saveSSFFfile($scope.curUserName, Ssffdataservice.data[0]); // SIC hardcoded
-		// 	$scope.modifiedCurSSFF = false;
-		// 	$scope.$broadcast('loadingNewUtt');
-		// 	console.log($scope.lastclickedutt);
-		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
-		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-		// 	$scope.curBndl = $scope.lastclickedutt;
-		// });
-
-		/**
-		 * listen for saveSSFFb4load
-		 */
-		// $scope.$on('discardSSFFb4load', function () { // SIC switch to promises
-		// 	alert('discarding ssff changes');
-		// 	$scope.modifiedCurSSFF = false;
-		// 	$scope.$broadcast('loadingNewUtt');
-		// 	console.log($scope.lastclickedutt);
-		// 	// Iohandlerservice.httpGetUtterence($scope.lastclickedutt);
-		// 	Iohandlerservice.wsH.getUtt($scope.curUserName, $scope.lastclickedutt);
-		// 	$scope.curBndl = $scope.lastclickedutt;
-		// });
-
-
-		/**
 		 * init load of config files
 		 */
 		$scope.loadDefaultConfig = function () {
@@ -302,8 +273,8 @@ angular.module('emuwebApp')
 							viewState.curViewPort.eS = wavJSO.Data.length;
 
 							// FOR DEVELOPMENT:
-							viewState.curViewPort.sS = 2000;
-							viewState.curViewPort.eS = 3000;
+							viewState.curViewPort.sS = 4000;
+							viewState.curViewPort.eS = 5000;
 							
 							viewState.curViewPort.bufferLength = wavJSO.Data.length;
 							viewState.resetSelect();
@@ -423,23 +394,6 @@ angular.module('emuwebApp')
 			}
 		};
 
-		/**
-		 *
-		 */
-		// $scope.getMetaBtnColor = function () {
-		// 	var curColor;
-		// 	if (!$scope.modifiedMetaData) {
-		// 		curColor = {
-		// 			'color': 'rgb(128,230,25)'
-		// 		};
-
-		// 	} else {
-		// 		curColor = {
-		// 			'color': 'red'
-		// 		};
-		// 	}
-		// 	return curColor;
-		// };
 
 		/**
 		 *
@@ -734,15 +688,6 @@ angular.module('emuwebApp')
 		};
 
 		// other
-
-		/**
-		 *
-		 */
-		// $scope.saveMetaData = function () {
-
-		// 	Iohandlerservice.wsH.saveUsrUttList($scope.curUserName, $scope.bundleList);
-		// 	$scope.modifiedMetaData = false;
-		// };
 
 		/**
 		 *

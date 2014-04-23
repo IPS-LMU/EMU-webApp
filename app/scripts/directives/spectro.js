@@ -165,6 +165,8 @@ angular.module('emuwebApp')
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(markupCtx, false);
 
+          // draw min max vals and name of track
+          scope.dhs.drawMinMaxAndName(markupCtx, '', scope.vs.spectroSettings.rangeFrom,scope.vs.spectroSettings.rangeTo, 2);
         }
 
 

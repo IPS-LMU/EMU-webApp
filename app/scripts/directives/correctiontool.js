@@ -25,6 +25,10 @@ angular.module('emuwebApp')
 					// draw current viewport selected
 					scope.dhs.drawCurViewPortSelected(ctx, false);
 
+					// draw min max vals and name of track
+					scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
+
+
 
 					if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive()) {
 						// var col = scope.ssffds.data[0].Columns[0];
