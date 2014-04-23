@@ -78,11 +78,8 @@ angular.module('emuwebApp')
         function drawSsffTrackMarkup() {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
-              
-              markupCtx.clearRect(0, 0, markupCtx.canvas.width, markupCtx.canvas.height);
 
-              var tr = scope.cps.getSsffTrackConfig(trackName);
-              var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+              markupCtx.clearRect(0, 0, markupCtx.canvas.width, markupCtx.canvas.height);
 
               // draw moving boundary line if moving
               scope.dhs.drawMovingBoundaryLine(markupCtx);
@@ -91,6 +88,8 @@ angular.module('emuwebApp')
               scope.dhs.drawCurViewPortSelected(markupCtx, false);
 
               // draw min max an name of track
+              var tr = scope.cps.getSsffTrackConfig(trackName);
+              var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
               scope.dhs.drawMinMaxAndName(markupCtx, trackName, col._minVal, col._maxVal, 2);
             }
           }
