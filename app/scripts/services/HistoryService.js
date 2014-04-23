@@ -21,9 +21,15 @@ angular.module('emuwebApp')
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
-						Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
+						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
+						// Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
-						Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
+						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
+						// Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'ESPS') {
 					// console.log('###UNDOING esps change');
@@ -122,7 +128,7 @@ angular.module('emuwebApp')
 		}
 		/////////////////////////////////////
 		// public API
-		
+
 		/**
 		 *
 		 */
@@ -157,7 +163,7 @@ angular.module('emuwebApp')
 
 				}
 			}
-			return(curChangeObj);
+			return (curChangeObj);
 
 		};
 
