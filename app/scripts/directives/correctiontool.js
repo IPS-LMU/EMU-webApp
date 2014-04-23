@@ -54,6 +54,7 @@ angular.module('emuwebApp')
 									col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
 									sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 								}
+
 								var startTimeVP = scope.vs.getViewPortStartTime();
 								var endTimeVP = scope.vs.getViewPortEndTime();
 
@@ -77,44 +78,27 @@ angular.module('emuwebApp')
 								}
 
 								scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr;
-								// console.log('--------------');
-								// console.log(curMouseSample);
-								// console.log(curMouseSampleTime);
-								// console.log(scope.vs.curPreselColumnSample);
 
-								// console.log(curSampleArrs.length)
-
-								// draw preselected sample
-								// var half = (1 / curSampleArrs.length) * canvas.width / 2;
 								var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-
 								var y = canvas.height - curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
 
 								// draw sample
 								ctx.strokeStyle = '#0DC5FF';
 								ctx.fillStyle = 'white';
-								// ctx.lineWidth = 4;
 								ctx.beginPath();
 								ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
 								ctx.closePath();
 								ctx.stroke();
 								ctx.fill();
 
-								// console.log(scope.vs.curPreselColumnSample);
-
 								if (event.shiftKey) {
 									var oldValue = angular.copy(curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1]);
 									var newValue = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo; // SIC only using rangeTo
-									// 	// console.log('##########################');
-									// 	// console.log(colStartSampleNr + scope.vs.curPreselColumnSample);
-									// 	// console.log(scope.vs.curCorrectionToolNr - 1);
-									// 	// console.log(oldValue);
-									// 	// console.log(newValue);
+
 									curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
 									var updateObj = scope.hists.updateCurChangeObj({
 										'type': 'SSFF',
-										'ssffIdx': 0, // SIC hardcoded
-										'colIdx': 0, // SIC hardcoded
+										'trackName': tr.name,
 										'sampleBlockIdx': colStartSampleNr + scope.vs.curPreselColumnSample,
 										'sampleIdx': scope.vs.curCorrectionToolNr - 1,
 										'oldValue': oldValue,
@@ -140,7 +124,6 @@ angular.module('emuwebApp')
 
 
 								}
-								scope.$apply();
 							}
 						}
 						break;
@@ -150,6 +133,7 @@ angular.module('emuwebApp')
 						}
 						break;
 					}
+					scope.$apply();
 				});
 
 				element.bind('mouseup', function (event) {
