@@ -148,53 +148,56 @@ angular.module('emuwebApp')
 					// draw current viewport selected
 					scope.dhs.drawCurViewPortSelected(ctx, true);
 
-					ctx.strokeStyle = config.vals.colors.labelColor;
-					ctx.fillStyle = config.vals.colors.labelColor;
-					ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
+					// draw view port times
+					scope.dhs.drawViewPortTimes(ctx, true);
 
-					// lines to corners
-					ctx.beginPath();
-					ctx.moveTo(0, 0);
-					ctx.lineTo(5, 5);
-					ctx.moveTo(markupCanvas.width, 0);
-					ctx.lineTo(markupCanvas.width - 5, 5);
-					ctx.closePath();
-					ctx.stroke();
+					// ctx.strokeStyle = config.vals.colors.labelColor;
+					// ctx.fillStyle = config.vals.colors.labelColor;
+					// ctx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
 
-					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+					// // lines to corners
+					// ctx.beginPath();
+					// ctx.moveTo(0, 0);
+					// ctx.lineTo(5, 5);
+					// ctx.moveTo(markupCanvas.width, 0);
+					// ctx.lineTo(markupCanvas.width - 5, 5);
+					// ctx.closePath();
+					// ctx.stroke();
 
-					var sTime;
-					var eTime;
-					var horizontalText;
-					var space;
+					// var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+					// var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
-					if (viewState.curViewPort) {
-						//draw time and sample nr
+					// var sTime;
+					// var eTime;
+					// var horizontalText;
+					// var space;
 
-						sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
-						eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
+					// if (viewState.curViewPort) {
+					// 	//draw time and sample nr
 
-						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
-						// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
-						ctx.drawImage(horizontalText, 5, 5);
+					// 	sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
+					// 	eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
 
-						space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-						horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
-						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
+					// 	horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					// 	// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
+					// 	ctx.drawImage(horizontalText, 5, 5);
 
-
-						//draw dot at edge of image
-						// var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-						// var startPoint = (Math.PI / 180) * 0;
-						// var endPoint = (Math.PI / 180) * 360;
-						// ctx.beginPath();
-						// ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
-						// ctx.fill();
-						// ctx.closePath();
+					// 	space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+					// 	horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, false);
+					// 	ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, markupCanvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 
 
-					}
+					// 	//draw dot at edge of image
+					// 	// var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+					// 	// var startPoint = (Math.PI / 180) * 0;
+					// 	// var endPoint = (Math.PI / 180) * 360;
+					// 	// ctx.beginPath();
+					// 	// ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
+					// 	// ctx.fill();
+					// 	// ctx.closePath();
+
+
+					// }
 				}
 			}
 		};

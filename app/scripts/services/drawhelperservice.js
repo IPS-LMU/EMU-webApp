@@ -365,7 +365,7 @@ angular.module('emuwebApp')
 		 * drawing method to drawCrossHairs
 		 */
 
-		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max) {
+		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit) {
 			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
 
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -395,14 +395,16 @@ angular.module('emuwebApp')
 
 				var mouseFreq = viewState.round(max - mouseY / ctx.canvas.height * max, 2); // SIC only uses max
 
-				var tW = ctx.measureText(mouseFreq + ' Hz').width;
+				var tW = ctx.measureText(mouseFreq + unit).width;
 				var s1 = Math.round(viewState.curViewPort.sS + mouseX / ctx.canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 				var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
-				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + ' Hz', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 
-				ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-				ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+				if (max !== undefined || min !== undefined) {
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+				}
 				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
 
 
@@ -450,14 +452,70 @@ angular.module('emuwebApp')
 			}
 
 
-
 			// draw min/max vals
-			var labelTxtImg = fontScaleService.getTextImage(ctx, 'max: ' + viewState.round(max, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
-			ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
+			if (max !== undefined) {
+				var labelTxtImg = fontScaleService.getTextImage(ctx, 'max: ' + viewState.round(max, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+				ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
+			}
 			// draw min/max vals
-			labelTxtImg = fontScaleService.getTextImage(ctx, 'min: ' + viewState.round(min, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
-			ctx.drawImage(labelTxtImg, 5, ctx.canvas.height - th - 5, labelTxtImg.width, labelTxtImg.height);
+			if (min !== undefined) {
+				labelTxtImg = fontScaleService.getTextImage(ctx, 'min: ' + viewState.round(min, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+				ctx.drawImage(labelTxtImg, 5, ctx.canvas.height - th - 5, labelTxtImg.width, labelTxtImg.height);
+			}
+		};
+
+		/**
+		 *
+		 */
+		sServObj.drawViewPortTimes = function (ctx, drawSideTimes) {
+			ctx.strokeStyle = ConfigProviderService.vals.colors.labelColor;
+			ctx.fillStyle = ConfigProviderService.vals.colors.labelColor;
+			ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
+
+			// lines to corners
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.lineTo(5, 5);
+			ctx.moveTo(ctx.canvas.width, 0);
+			ctx.lineTo(ctx.canvas.width - 5, 5);
+			ctx.closePath();
+			ctx.stroke();
+
+			var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
+			var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+
+			var sTime;
+			var eTime;
+			var horizontalText;
+			var space;
+
+			if (viewState.curViewPort) {
+				//draw time and sample nr
+
+				sTime = viewState.round(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
+				eTime = viewState.round(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
+
+				horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+				// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
+				ctx.drawImage(horizontalText, 5, 5);
+
+				space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+				horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
+				ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
+
+
+				//draw dot at edge of image
+				// var spaceW = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
+				// var startPoint = (Math.PI / 180) * 0;
+				// var endPoint = (Math.PI / 180) * 360;
+				// ctx.beginPath();
+				// ctx.arc(spaceW, config.vals.font.fontPxSize * 2 * scaleY, 10, startPoint, endPoint, true);
+				// ctx.fill();
+				// ctx.closePath();
+
+
+			}
+
 		};
 
 

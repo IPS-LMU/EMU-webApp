@@ -22,7 +22,7 @@ angular.module('emuwebApp')
 						ctx.clearRect(0, 0, canvas.width, canvas.height);
 						// draw crossHairs
 						if (scope.cps.vals.restrictions.drawCrossHairs) {
-							scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo);
+							scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 'Hz');
 						}
 						// draw moving boundary line if moving
 						scope.dhs.drawMovingBoundaryLine(ctx);

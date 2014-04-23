@@ -2,7 +2,7 @@
     <div class="timelineCanvasContainer">
         <canvas ng-style="enlargeCanvas" class="timelineCanvasMain" width="2048" height="256"></canvas>
         <canvas ng-style="enlargeCanvas" class="timelineCanvasSSFF" width="2048" height="256" drawssff ssff-trackname="{{curTrack}}"></canvas>
-        <canvas ng-style="enlargeCanvas" class="timelineCanvasMarkup" width="2048" height="256" trackmouse></canvas>
+        <canvas ng-style="enlargeCanvas" class="timelineCanvasMarkup" width="2048" height="256" trackmouse ssff-trackname="{{curTrack}}"></canvas>
     </div>
     <div class="timelineCanvasButtons">
         <div class="timelineCanvasResizeBtn" enlarge="{{order}}">
