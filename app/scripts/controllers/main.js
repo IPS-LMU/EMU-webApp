@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
-		
+
 		$scope.dbLoaded = false;
 		$scope.isRightSideMenuHidden = true;
 		$scope.is2dCancasesHidden = true;
@@ -50,6 +50,7 @@ angular.module('emuwebApp')
 		angular.element($window).bind('keyup', function (e) {
 			if (e.keyCode === ConfigProviderService.vals.keyMappings.shift || e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
 				HistoryService.addCurChangeObjToUndoStack();
+				$scope.$digest();
 			}
 		});
 
@@ -144,8 +145,8 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * function is called after websocket connection 
-		 * has been established. It executes the protocol 
+		 * function is called after websocket connection
+		 * has been established. It executes the protocol
 		 * and loads the first bundle in the bundle list (= default behavior).
 		 */
 		$scope.handleConnectedToWSserver = function () {
@@ -275,7 +276,7 @@ angular.module('emuwebApp')
 							// FOR DEVELOPMENT:
 							viewState.curViewPort.sS = 4000;
 							viewState.curViewPort.eS = 5000;
-							
+
 							viewState.curViewPort.bufferLength = wavJSO.Data.length;
 							viewState.resetSelect();
 							Soundhandlerservice.wavJSO = wavJSO;
@@ -368,9 +369,9 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * returns jso with css defining color dependent 
+		 * returns jso with css defining color dependent
 		 * on if changes have been made that have not been saved
-		 * @param bndl object containing name attribute of bundle item 
+		 * @param bndl object containing name attribute of bundle item
 		 * requesting color
 		 * @returns color as jso object used by ng-style
 		 */
