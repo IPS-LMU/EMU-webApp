@@ -99,8 +99,15 @@ angular.module('emuwebApp')
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          var minVal = col._minVal;
-          var maxVal = col._maxVal;
+          var minVal, maxVal;
+
+          if (trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+            minVal = scope.vs.spectroSettings.rangeFrom;
+            maxVal = scope.vs.spectroSettings.rangeTo;
+          } else {
+            minVal = col._minVal;
+            maxVal = col._maxVal;
+          }
 
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
@@ -132,20 +139,20 @@ angular.module('emuwebApp')
                   x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                   y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
-                  // mark selected
-                  if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
-                    ctx.strokeStyle = 'white';
-                    ctx.fillStyle = 'white';
+                  // set color
+                  // if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
+                  //   ctx.strokeStyle = 'white';
+                  //   ctx.fillStyle = 'white';
+                  // } else {
+                  if ($.isEmptyObject(minMaxLims)) {
+                    ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+                    ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
                   } else {
-                    if ($.isEmptyObject(minMaxLims)) {
-                      ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                      ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                    } else {
-                      var l = (minMaxLims.max - minMaxLims.min) + 1;
-                      ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-                      ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-                    }
+                    var l = (minMaxLims.max - minMaxLims.min) + 1;
+                    ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
+                    ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
                   }
+                  // }
 
 
                   // draw dot
@@ -165,7 +172,7 @@ angular.module('emuwebApp')
                     prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
 
                     // mark selected
-                    if (viewState.curCorrectionToolNr - 1 === idx) {
+                    if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
                       ctx.strokeStyle = 'white';
                       ctx.fillStyle = 'white';
                     }
@@ -215,7 +222,7 @@ angular.module('emuwebApp')
                       prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
 
                       // mark selected
-                      if (viewState.curCorrectionToolNr - 1 === idx) {
+                      if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
                         ctx.strokeStyle = 'white';
                         ctx.fillStyle = 'white';
                       }
