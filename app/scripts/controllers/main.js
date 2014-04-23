@@ -302,8 +302,8 @@ angular.module('emuwebApp')
 							viewState.curViewPort.eS = wavJSO.Data.length;
 
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 2000;
-							// viewState.curViewPort.eS = 3000;
+							viewState.curViewPort.sS = 2000;
+							viewState.curViewPort.eS = 3000;
 							
 							viewState.curViewPort.bufferLength = wavJSO.Data.length;
 							viewState.resetSelect();
