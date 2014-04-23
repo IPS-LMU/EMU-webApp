@@ -467,7 +467,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.drawViewPortTimes = function (ctx, drawSideTimes) {
+		sServObj.drawViewPortTimes = function (ctx) {
 			ctx.strokeStyle = ConfigProviderService.vals.colors.labelColor;
 			ctx.fillStyle = ConfigProviderService.vals.colors.labelColor;
 			ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);

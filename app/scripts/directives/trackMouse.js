@@ -11,7 +11,7 @@ angular.module('emuwebApp')
         var dragEndSample;
         var trackName;
         var tr, col, sRaSt;
-        var min, max, unit, drawTimes;
+        var min, max, unit, drawTimes, tN;
 
         var canvas = element[0];
         var ctx = canvas.getContext('2d');
@@ -48,18 +48,21 @@ angular.module('emuwebApp')
                     max = undefined;
                     unit = undefined;
                     drawTimes = true;
+                    tN = '';
                     break;
                   case 'SPEC':
                     min = scope.vs.spectroSettings.rangeFrom;
                     max = scope.vs.spectroSettings.rangeTo;
                     unit = 'Hz';
                     drawTimes = false;
+                    tN = trackName;
                     break;
                   default:
                     min = col._minVal;
                     max = col._maxVal;
                     unit = '';
                     drawTimes = false;
+                    tN = trackName;
                     break;
                   }
 
@@ -81,7 +84,7 @@ angular.module('emuwebApp')
                   scope.dhs.drawCurViewPortSelected(ctx, drawTimes);
 
                   // draw min max vals and name of track
-                  scope.dhs.drawMinMaxAndName(ctx, '', min, max, 2);
+                  scope.dhs.drawMinMaxAndName(ctx, tN, min, max, 2);
 
                   // draw view port times
                   if (drawTimes) {
@@ -113,7 +116,7 @@ angular.module('emuwebApp')
           scope.dhs.drawCurViewPortSelected(ctx, drawTimes);
 
           // draw min max vals and name of track
-          scope.dhs.drawMinMaxAndName(ctx, '', min, max, 2);
+          scope.dhs.drawMinMaxAndName(ctx, tN, min, max, 2);
 
           // draw view port times
           if (drawTimes) {
