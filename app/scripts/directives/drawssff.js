@@ -16,7 +16,9 @@ angular.module('emuwebApp')
 
         //watch viewPort change
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          if (!(newValue.sS === oldValue.sS && newValue.eS === oldValue.eS)) {
+            handleUpdate(newValue, oldValue);
+          }
         }, true);
 
         //watch perspective change

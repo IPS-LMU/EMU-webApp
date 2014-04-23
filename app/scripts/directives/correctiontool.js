@@ -12,12 +12,20 @@ angular.module('emuwebApp')
 				var tr, col, sRaSt;
 
 				element.bind('mousemove', function (event) {
-					
+
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					
+
 					// draw crossHairs
-					scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo);
-					
+					if (scope.cps.vals.restrictions.drawCrossHairs) {
+						scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo);
+					}
+					// draw moving boundary line if moving
+					scope.dhs.drawMovingBoundaryLine(ctx);
+
+					// draw current viewport selected
+					scope.dhs.drawCurViewPortSelected(ctx, false);
+
+
 					if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive()) {
 						// var col = scope.ssffds.data[0].Columns[0];
 						if (tr === undefined) {
