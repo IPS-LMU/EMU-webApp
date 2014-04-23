@@ -23,7 +23,6 @@ angular.module('emuwebApp')
 				});
 
 				element.bind('mousemove', function (event) {
-					console.log(event.which);
 					switch (event.which) {
 					case 0:
 						if (!scope.vs.getdragBarActive()) {
@@ -63,23 +62,31 @@ angular.module('emuwebApp')
 								var nrOfSamples = colEndSampleNr - colStartSampleNr;
 								var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
+								// console.log(colStartSampleNr)
+
 
 								var curMouseTime = startTimeVP + (scope.dhs.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
-								var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate);
+								var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
+
+								var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
 
 
-								if (curMouseSample - colStartSampleNr <= 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
+								if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
+									console.log('early return');
 									return;
 								}
 
-								scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr; //-1 for in view correction
-
+								scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr;
+								// console.log('--------------');
+								// console.log(curMouseSample);
+								// console.log(curMouseSampleTime);
 								// console.log(scope.vs.curPreselColumnSample);
+
 								// console.log(curSampleArrs.length)
 
 								// draw preselected sample
-								var half = (1 / curSampleArrs.length) * canvas.width / 2;
-								var x = (scope.vs.curPreselColumnSample / curSampleArrs.length) * canvas.width - half;
+								// var half = (1 / curSampleArrs.length) * canvas.width / 2;
+								var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
 
 								var y = canvas.height - curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
 
@@ -88,7 +95,7 @@ angular.module('emuwebApp')
 								ctx.fillStyle = 'white';
 								// ctx.lineWidth = 4;
 								ctx.beginPath();
-								ctx.arc(x, y - 2, 4, 0, 2 * Math.PI, false);
+								ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
 								ctx.closePath();
 								ctx.stroke();
 								ctx.fill();
@@ -114,10 +121,21 @@ angular.module('emuwebApp')
 										'newValue': newValue
 									});
 
-									console.log('###############');
 									//draw updateObj as overlay
 									for (var key in updateObj) {
-										console.log(updateObj[key].newValue);
+										curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
+										x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+										y = canvas.height - updateObj[key].newValue / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
+
+										// draw sample
+										ctx.strokeStyle = '#0DC5FF';
+										ctx.fillStyle = '#0DC5FF';
+										// ctx.lineWidth = 4;
+										ctx.beginPath();
+										ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+										ctx.closePath();
+										ctx.stroke();
+										ctx.fill();
 									}
 
 
