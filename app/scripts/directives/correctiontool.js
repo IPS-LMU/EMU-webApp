@@ -59,7 +59,7 @@ angular.module('emuwebApp')
 								return;
 							}
 
-							scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr - 1; //-1 for in view correction
+							scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr; //-1 for in view correction
 
 							// console.log(scope.vs.curPreselColumnSample);
 							// console.log(curSampleArrs.length)
@@ -100,9 +100,13 @@ angular.module('emuwebApp')
 									'oldValue': oldValue,
 									'newValue': newValue
 								});
-								console.log(updateObj);
 
-								//TODO draw updateObject as overlay
+								console.log('###############')
+								//draw updateObj as overlay
+								for(var key in updateObj){
+									console.log(updateObj[key].newValue);
+								}
+
 
 							}
 							scope.$apply();
