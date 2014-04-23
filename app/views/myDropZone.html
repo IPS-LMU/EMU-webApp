@@ -1,7 +1,7 @@
 <div ng-controller="FileCtrl" id="dropzone" class="dropzone" ng-class="dropClass" ng-click="loadFiles();">
   <span>{{dropText}}</span>
   
-  <input style="display:none;" id="fileDialog" ng-model="files" ng-change="handleFiles();" type="file" multiple accept="audio/wav, text/plain" />
+  <input style="display:none;" id="fileDialog" ng-model="files" type="file" multiple accept="audio/wav, text/plain" />
 
   <div ng-show="files.length">
       <div ng-repeat="file in files.slice(0)">

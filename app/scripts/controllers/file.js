@@ -33,8 +33,14 @@ angular.module('emuwebApp')
     };
     
     
-    function handleFiles(evt) {
-      console.log(evt);
+    function handleFilesonChange(f) {
+      var loadedFiles = $scope.fileInput;
+       for (var i = 0; i < loadedFiles.files.length; i++) {
+         if (loadedFiles.files[i]) {
+           console.log(loadedFiles.files[i]);
+           $scope.traverseFileTree(loadedFiles.files[i]);       
+         }
+       }
     }
 
     function dragEnterLeave(evt) {
@@ -45,9 +51,8 @@ angular.module('emuwebApp')
         $scope.dropClass = '';
       });
     }
-     $scope.fileInput.addEventListener('change', handleFiles, false);
+     $scope.fileInput.addEventListener('change', handleFilesonChange, false);
      
-      
      $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
      $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
      $scope.dropzone.addEventListener('dragover', function (evt) {
@@ -55,7 +60,7 @@ angular.module('emuwebApp')
        evt.preventDefault();
        var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
        var files = evt.dataTransfer.files;
-       console.log(files);
+       console.log(evt.dataTransfer);
        
        $scope.$apply(function () {
          $scope.dropText = ok ? $scope.dropAllowed : $scope.dropNotAllowed;
@@ -96,9 +101,10 @@ angular.module('emuwebApp')
                 reader.readAsArrayBuffer(file);
                 reader.onloadend = function(evt) {
                  if (evt.target.readyState == FileReader.DONE) { 
-
-
-$scope.wps.parseWavArrBuf(evt.target.result).then(function (messWavParser) {
+                 
+                  console.log(evt.target.result);
+                 
+                        /*$scope.wps.parseWavArrBuf(evt.target.result).then(function (messWavParser) {
 							var wavJSO = messWavParser;
 							$scope.vs.curViewPort.sS = 0;
 							$scope.vs.curViewPort.eS = wavJSO.Data.length;
@@ -115,7 +121,7 @@ $scope.wps.parseWavArrBuf(evt.target.result).then(function (messWavParser) {
 						}, function (errMess) {
 							// console.error(errMess)
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
-						});
+						});*/
 
                   //console.log($scope.wps.wav2jso(evt.target.result));
                  }
