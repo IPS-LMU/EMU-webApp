@@ -21,19 +21,16 @@
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="spectSettingsBtnClick();">spec. settings</button>
       
       <li class="dropdown">
-<!--         <a class="dropdown-toggle">
-          Click me for a dropdown, yo!
+        <a class="dropdown-toggle">
+          <button id="openDemoDBbtn" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')" class="mini-btn">open demo DB</button>
         </a>
- -->      <button id="openDemoDBbtn" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')" class="mini-btn dropdown-toggle" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.demoDB}}" ng-click="openDemoDBbtnClick();">open demo DB</button>
         <ul class="dropdown-menu">
-          <li>
-            <a>BLA</a>
-            <a>BLI</a>
-            <a>BLUP</a>
+          <li>Choose DB:</li>
+          <li ng-repeat="curDB in cps.vals.demoDBs">
+            <a ng-click="openDemoDBbtnClick(curDB);">{{curDB}}</a>
           </li>
         </ul>
       </li>
-      
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.connect}}" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button ng-show="cps.vals.activeButtons.clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.clear}}" ng-click="clearBtnClick();">clear</button>
       <a id="aboutBtn" class="SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></img></a>

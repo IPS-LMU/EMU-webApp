@@ -150,5 +150,6 @@
         "openDemoDB": true,
         "saveBundle": false,
         "openMenu": false
-    }
+    },
+    "demoDBs": ["ae", "epgdorsal", "ema"]
 }

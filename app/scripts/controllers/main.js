@@ -512,28 +512,29 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.openDemoDBbtnClick = function () {
+		$scope.openDemoDBbtnClick = function (nameOfDB) {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
-				ConfigProviderService.vals.main.comMode = 'DEMO';
+				// alert(nameOfDB);
 				viewState.setState('loadingSaving');
+				ConfigProviderService.vals.main.comMode = 'DEMO';
 				Iohandlerservice.getDBconfigFile().then(function (dbConfig) {
-					ConfigProviderService.setVals(dbConfig.data.EMUwebAppConfig);
-					delete dbConfig.data.EMUwebAppConfig; // delete to avoid duplicate
-					ConfigProviderService.curDbConfig = dbConfig.data;
+					// 		ConfigProviderService.setVals(dbConfig.data.EMUwebAppConfig);
+					// 		delete dbConfig.data.EMUwebAppConfig; // delete to avoid duplicate
+					// 		ConfigProviderService.curDbConfig = dbConfig.data;
 
-					Iohandlerservice.getBundleList().then(function (res) {
-						$scope.showDropZone = false;
-						$scope.bundleList = res.data;
-						$scope.menuBundleClick($scope.bundleList[0]);
-						// 	// Iohandlerservice.getUtt(res.data[0]);
-						// 	// $scope.curBndl = res.data[0];
-						// 	// should be then after get utt
-						viewState.setState('labeling');
-					});
+					// 		Iohandlerservice.getBundleList().then(function (res) {
+					// 			$scope.showDropZone = false;
+					// 			$scope.bundleList = res.data;
+					// 			$scope.menuBundleClick($scope.bundleList[0]);
+					// 			// 	// Iohandlerservice.getUtt(res.data[0]);
+					// 			// 	// $scope.curBndl = res.data[0];
+					// 			// 	// should be then after get utt
+					// 			viewState.setState('labeling');
+					// 		});
 				});
-			} else {
-				console.log('action currently not allowed');
-			}
+			} //else {
+			// 	console.log('action currently not allowed');
+			// }
 		};
 
 		/**

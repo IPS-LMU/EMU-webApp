@@ -492,3 +492,8 @@ li {
 	user-select: none;
 	cursor: move;
 }
+
+/*---------------------**/
+.dropdown {
+    list-style: none;
+}
