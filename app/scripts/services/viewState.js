@@ -79,7 +79,7 @@ angular.module('emuwebApp')
 
     sServObj.curPerspectiveIdx = -1;
 
-    sServObj.movingBoundary = false;
+    sServObj.mouseInEmuWebApp = false;
 
     // possible general states of state machine
     sServObj.states = [];

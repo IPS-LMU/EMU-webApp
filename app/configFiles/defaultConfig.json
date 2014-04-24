@@ -1,10 +1,11 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "wsServerUrl": "ws://localhost:8080",
         "wsTimeoutInterval": 5000,
-        "comType": "WS"
+        "comType": "WS",
+        "catchMouseForKeyBinding": false
     },
     "keyMappings": {
         "openFile": -1,
