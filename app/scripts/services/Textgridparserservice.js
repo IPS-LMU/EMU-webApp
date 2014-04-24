@@ -45,22 +45,22 @@ angular.module('emuwebApp')
 
 					if (cL.indexOf('item[') === 0) {
 						// get level type
-						if (lines[i + 1].split(/=/)[1] === '\"IntervalLevel\"') {
-							tT = 'seg';
+						if (lines[i + 1].split(/=/)[1] === '\"IntervalTier\"') {
+							tT = 'SEGMENT';
 						} else {
-							tT = 'point';
+							tT = 'EVENT';
 						}
 						// get level name
 						tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
 						// adding new level
 						labelJSO.levels.push({
-							LevelName: tN,
+							name: tN,
 							type: tT,
 							items: []
 						});
 					}
-					if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'seg' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
+					if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 						// parse seg levels event
 						var eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
@@ -76,14 +76,14 @@ angular.module('emuwebApp')
 							sampleStart: eSt - 1, // correct so starts at 0
 							sampleDur: eEt - eSt
 						});
-					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'point' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
+					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
 							label: lab,
-							sampleStart: Math.round(eT)
+							samplePoint: Math.round(eT)
 						});
 					}
 
@@ -123,22 +123,22 @@ angular.module('emuwebApp')
 				//write level items
 				levelNr = levelNr + 1;
 				tG = tG + t + 'item [' + levelNr + ']:' + nl;
-				if (curLevel.type === 'seg') {
+				if (curLevel.type === 'SEGMENT') {
 					tG = tG + t + t + 'class = "IntervalLevel"' + nl;
-				} else if (curLevel.type === 'point') {
+				} else if (curLevel.type === 'EVENT') {
 					tG = tG + t + t + 'class = "TextLevel"' + nl;
 				}
 				tG = tG + t + t + 'name = "' + curLevel.LevelName + '"' + nl;
 				tG = tG + t + t + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
 				tG = tG + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
-				if (curLevel.type === 'seg') {
+				if (curLevel.type === 'SEGMENT') {
 					tG = tG + t + t + 'intervals: size = ' + curLevel.items.length + nl;
-				} else if (curLevel.type === 'point') {
+				} else if (curLevel.type === 'EVENT') {
 					tG = tG + t + t + 'points: size = ' + curLevel.items.length + nl;
 				}
 				for (var j = 0; j < curLevel.items.length; j++) {
 					var evtNr = j + 1;
-					if (curLevel.type === 'seg') {
+					if (curLevel.type === 'SEGMENT') {
 						tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
 						if (curLevel.items[j].sampleStart !== 0) {
 							tG = tG + t + t + t + t + 'xmin = ' + ((curLevel.items[j].sampleStart) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
@@ -152,7 +152,7 @@ angular.module('emuwebApp')
 						}
 
 						tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].label + '"' + nl;
-					} else if (curLevel.type === 'point') {
+					} else if (curLevel.type === 'EVENT') {
 						tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
 						tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].sampleStart / Soundhandlerservice.wavJSO.SampleRate + nl;
 						tG = tG + t + t + t + t + 'mark = "' + curLevel.items[j].label + '"' + nl;
@@ -185,7 +185,7 @@ angular.module('emuwebApp')
 		sServObj.testForGapsInLabelJSO = function(labelJSO) {
 			var counter = 0;
 			for (var i = 0; i < labelJSO.levels.length; i++) {
-				if (labelJSO.levels[i].type === 'seg') {
+				if (labelJSO.levels[i].type === 'SEGMENT') {
 					for (var j = 0; j < labelJSO.levels[i].items.length - 1; j++) {
 						if (labelJSO.levels[i].items[j].sampleStart + labelJSO.levels[i].items[j].sampleDur + 1 !== labelJSO.levels[i].items[j + 1].sampleStart) {
 							counter = counter + 1;

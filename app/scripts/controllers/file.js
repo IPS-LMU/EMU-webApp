@@ -65,9 +65,6 @@ angular.module('emuwebApp')
        var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
        $scope.$apply(function () {
          $scope.dropClass = ok ? 'over' : 'not-available';
-         $scope.wavLoaded = 0;
-         $scope.txtGridLoaded = 0;
-         $scope.labelLoaded = 0;
        });
     }
     
@@ -114,6 +111,7 @@ angular.module('emuwebApp')
 		    	        if (evt.target.readyState == FileReader.DONE) { 
 			                var textgrid = Textgridparserservice.toJSO(evt.currentTarget.result);
 			                $scope.$parent.tds.setData(textgrid);
+			                console.log(textgrid);
     			        }
 	    		    }, function (errMess) {
 		    	        $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
@@ -166,17 +164,15 @@ angular.module('emuwebApp')
             if (file.type.match('audio/wav')) {
                 $scope.newfiles.wav = file;  
                 doLoad = true
-                ++$scope.wavLoaded;
                 $scope.$apply();
             }
           }
           if (extension === 'TEXTGRID') {
             $scope.newfiles.textgrid = file;  
-            ++$scope.txtGridLoaded;
             $scope.$apply();     
           }
           if (extension === 'LAB' || extension === 'TONE') {
-            ++$scope.labelLoaded;  
+            $scope.newfiles.lab = file;    
             $scope.$apply();
           }                    
         });
