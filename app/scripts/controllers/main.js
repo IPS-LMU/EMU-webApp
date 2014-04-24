@@ -302,6 +302,13 @@ angular.module('emuwebApp')
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 						});
 
+					}, function (errMess) {
+						// check for http vs websocket response
+						if (errMess.data) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data);
+						} else {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message);
+						}
 					});
 				}
 			}
@@ -540,10 +547,12 @@ angular.module('emuwebApp')
 						$scope.bundleList = bdata;
 						// then load first bundle in list
 						$scope.menuBundleClick($scope.bundleList[0]);
+					}, function (err) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status);
 					});
 
 				}, function (err) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Error opening demoDBs ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status);
+					dialogService.open('views/error.html', 'ModalCtrl', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status);
 				});
 			} //else {
 			// 	console.log('action currently not allowed');
