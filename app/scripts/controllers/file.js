@@ -142,6 +142,7 @@ angular.module('emuwebApp')
 
     $scope.traverseFileTree = function (item, path) {
       path = path || '';
+      var doLoad = false;
       var newfiles = {};
       if (item.isFile) {
         item.file(function (file) {
@@ -149,18 +150,12 @@ angular.module('emuwebApp')
           if (extension === 'WAV') {
             if (file.type.match('audio/wav')) {
               if (window.File && window.FileReader && window.FileList && window.Blob) {
-                //var reader = new FileReader();
-                //reader.readAsArrayBuffer(file);
-                //reader.onloadend = function(evt) {
-                // if (evt.target.readyState == FileReader.DONE) { 
-                //  $scope.handleLocalFiles(evt);                   
-                // }
-                //};
                 newfiles.wav = file;  
+                doLoad = true
                 ++$scope.wavLoaded;
                 $scope.$apply();
               } else {
-                alert('The File APIs are not fully supported in this browser.');
+                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Sorry ! The File APIs are not fully supported in your browser.');
               } 
             }
           }
@@ -173,8 +168,12 @@ angular.module('emuwebApp')
             ++$scope.labelLoaded;  
             $scope.$apply();
           }   
-          
-          $scope.handleLocalFiles(newfiles); 
+          if(doLoad) {
+              $scope.handleLocalFiles(newfiles); 
+          }
+          else {
+              $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Could not parse file.\nYou can drop multiple files, but you have to select at least one WAVE file. The following file types are supported: .WAV .TEXTGRID');
+          }
                  
         });
       } else if (item.isDirectory) {
