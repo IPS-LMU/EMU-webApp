@@ -29,14 +29,18 @@ angular.module('emuwebApp')
     function handleFilesonChange() {
         var doLoad = false;
         var loadedFiles = $scope.fileInput;
-        var newfiles = [];
+        var newfiles = {};
         for (var i = 0; i < loadedFiles.files.length; i++) {
             var file = loadedFiles.files[i];
             var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
             if(extension==="WAV" && file.type.match('audio/wav') ) {
                 doLoad = true;
+                newfiles.wav = file;
             }
-            newfiles.push(file);
+            if(extension==="TEXTGRID" ) {
+                newfiles.textgrid = file;
+            }            
+            
         }
         if(doLoad) {
             $scope.handleLocalFiles(newfiles);
@@ -51,51 +55,38 @@ angular.module('emuwebApp')
         $scope.$parent.cps.vals.main.comMode = 'FILE';
         $scope.$parent.vs.setState('loadingSaving');
         // reset history
-		$scope.$parent.hists.resetToInitState();
-		$scope.$parent.vs.somethingInProgress = true;
-		
-		$scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + files[0].name;
-		// empty ssff files
-		$scope.$parent.ssffds.data = [];
-
-		// set wav file
-		//arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
+        $scope.$parent.hists.resetToInitState();
+        $scope.$parent.vs.somethingInProgress = true;
+        $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + files.wav.name;
+        // empty ssff files
+        $scope.$parent.ssffds.data = [];
+        
+        //arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 		$scope.$parent.vs.somethingInProgressTxt = 'Parsing WAV file...';
 		
-		console.log(files);
-
-		/*Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
-			var wavJSO = messWavParser;
-			viewState.curViewPort.sS = 0;
-			viewState.curViewPort.eS = wavJSO.Data.length;
-
-			// FOR DEVELOPMENT:
-			viewState.curViewPort.sS = 4000;
-			viewState.curViewPort.eS = 5000;
-							
-			viewState.curViewPort.bufferLength = wavJSO.Data.length;
-			viewState.resetSelect();
-			Soundhandlerservice.wavJSO = wavJSO;
-
-							// set all ssff files
-							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
-								Ssffdataservice.data = ssffJson.data;
-								// set annotation
-								Levelservice.setData(bundleData.annotation);
-								$scope.curBndl = bndl;
-								viewState.setState('labeling');
-								viewState.somethingInProgress = false;
-								viewState.somethingInProgressTxt = 'Done!';
-								// FOR DEVELOPMENT:
-								// $scope.menuBundleSaveBtnClick(); // for testing save button
-							}, function (errMess) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
-							});
-						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
-						});*/
-
+		var reader = new FileReader();
+		reader.readAsArrayBuffer(files.wav);
+		reader.onloadend = function(evt) {
+		    if (evt.target.readyState == FileReader.DONE) { 
+		        //console.log(evt.currentTarget.result);
+    		    $scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (messWavParser) {
+	    		var wavJSO = messWavParser;
+		    	$scope.$parent.vs.curViewPort.sS = 0;
+			    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
+    			$scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
+	    		$scope.$parent.vs.resetSelect();
+		    	$scope.$parent.shs.wavJSO = wavJSO;
+			    // set all ssff 
+    			$scope.$parent.vs.somethingInProgressTxt = 'Parsing SSFF files...';
+	    		$scope.$parent.vs.setState('labeling');
+		    	$scope.$parent.vs.somethingInProgress = false;
+			    $scope.$parent.vs.somethingInProgressTxt = 'Done!';
+			}, function (errMess) {
+			    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+			});
+               
+            }
+        };
     };
     
     
@@ -150,7 +141,7 @@ angular.module('emuwebApp')
 
     $scope.traverseFileTree = function (item, path) {
       path = path || '';
-      var newfiles = [];
+      var newfiles = {};
       if (item.isFile) {
         item.file(function (file) {
           var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
@@ -164,8 +155,7 @@ angular.module('emuwebApp')
                 //  $scope.handleLocalFiles(evt);                   
                 // }
                 //};
-                newfiles.push(file);  
-                $scope.handleLocalFiles(newfiles); 
+                newfiles.wav = file;  
                 ++$scope.wavLoaded;
                 $scope.$apply();
               } else {
@@ -174,13 +164,17 @@ angular.module('emuwebApp')
             }
           }
           if (extension === 'TEXTGRID') {
+            newfiles.textgrid = file;  
             ++$scope.txtGridLoaded;
             $scope.$apply();     
           }
           if (extension === 'LAB' || extension === 'TONE') {
             ++$scope.labelLoaded;  
             $scope.$apply();
-          }          
+          }   
+          
+          $scope.handleLocalFiles(newfiles); 
+                 
         });
       } else if (item.isDirectory) {
         var dirReader = item.createReader();
