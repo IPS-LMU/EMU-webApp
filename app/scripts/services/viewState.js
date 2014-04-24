@@ -744,7 +744,6 @@ angular.module('emuwebApp')
 
       var top = elem.canvas.offsetTop;
       var height = elem.canvas.clientHeight;
-      console.log(lastEventClick);
       sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
       sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
     };

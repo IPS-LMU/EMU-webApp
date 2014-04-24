@@ -14,7 +14,7 @@ angular.module('emuwebApp')
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.enter) {
                 if (viewState.isEditing()) {
-                  var editingElement = Levelservice.getElementDetails(viewState.getcurClickLevelName(),viewState.getlastID());
+                  var editingElement = Levelservice.getElementDetailsById(viewState.getcurClickLevelName(),viewState.getlastID());
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
