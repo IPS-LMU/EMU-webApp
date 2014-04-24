@@ -42,11 +42,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSsffTrackConfig = function (name) {
 			var res;
-			sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
-				if (tr.name === name) {
-					res = tr;
-				}
-			})
+			if(sServObj.curDbConfig.ssffTracks !== undefined) {
+    			sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
+	    			if (tr.name === name) {
+		    			res = tr;
+			    	}
+     			});
+     		}
 			return res;
 		};
 

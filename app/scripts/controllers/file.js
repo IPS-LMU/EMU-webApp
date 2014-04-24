@@ -82,6 +82,7 @@ angular.module('emuwebApp')
 	    		$scope.$parent.vs.setState('labeling');
 		    	$scope.$parent.vs.somethingInProgress = false;
 			    $scope.$parent.vs.somethingInProgressTxt = 'Done!';
+			    $scope.$parent.openSubmenu();
 			}, function (errMess) {
 			    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 			});
@@ -130,14 +131,18 @@ angular.module('emuwebApp')
          $scope.dropText = $scope.dropParsingStarted;
          $scope.dropClass = '';        
        });
-       var items = evt.dataTransfer.items;
-       for (var i = 0; i < items.length; i++) {
-         var item = items[i].webkitGetAsEntry();
-         if (item) {
-           $scope.traverseFileTree(item);       
-         }
-       }        
-      
+       if (window.File && window.FileReader && window.FileList && window.Blob) {
+           var items = evt.dataTransfer.items;
+           for (var i = 0; i < items.length; i++) {
+             var item = items[i].webkitGetAsEntry();
+             if (item) {
+               $scope.traverseFileTree(item);       
+             }
+           }         
+        }
+        else {
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Sorry ! The File APIs are not fully supported in your browser.');
+        }
      }, false);
 
     $scope.traverseFileTree = function (item, path) {
@@ -149,14 +154,10 @@ angular.module('emuwebApp')
           var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
           if (extension === 'WAV') {
             if (file.type.match('audio/wav')) {
-              if (window.File && window.FileReader && window.FileList && window.Blob) {
                 newfiles.wav = file;  
                 doLoad = true
                 ++$scope.wavLoaded;
                 $scope.$apply();
-              } else {
-                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Sorry ! The File APIs are not fully supported in your browser.');
-              } 
             }
           }
           if (extension === 'TEXTGRID') {
