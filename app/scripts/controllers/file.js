@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .controller('FileCtrl', function ($scope, Binarydatamaniphelper) {
+  .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice) {
 
     $scope.dropzone = document.getElementById('dropzone');
     $scope.fileInput = document.getElementById('fileDialog');
@@ -55,14 +55,15 @@ angular.module('emuwebApp')
         //}
     }
     
-    $scope.handleLocalFiles = function (files) {
+    $scope.handleLocalFiles = function () {
+        console.log($scope.newfiles);
         $scope.$parent.showDropZone = false;
         $scope.$parent.cps.vals.main.comMode = 'FILE';
         $scope.$parent.vs.setState('loadingSaving');
         // reset history
         $scope.$parent.hists.resetToInitState();
         $scope.$parent.vs.somethingInProgress = true;
-        $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + files.wav.name;
+        $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + $scope.newfiles.wav.name;
         // empty ssff files
         $scope.$parent.ssffds.data = [];
         
@@ -70,7 +71,7 @@ angular.module('emuwebApp')
 		$scope.$parent.vs.somethingInProgressTxt = 'Parsing WAV file...';
 		
 		var reader = new FileReader();
-		reader.readAsArrayBuffer(files.wav);
+		reader.readAsArrayBuffer($scope.newfiles.wav);
 		reader.onloadend = function(evt) {
 		    if (evt.target.readyState == FileReader.DONE) { 
 		        //console.log(evt.currentTarget.result);
@@ -82,11 +83,28 @@ angular.module('emuwebApp')
 	    		$scope.$parent.vs.resetSelect();
 	    		$scope.$parent.vs.curPerspectiveIdx = 0;
 		    	$scope.$parent.shs.wavJSO = wavJSO;
-			    // set all ssff 
-    			$scope.$parent.vs.somethingInProgressTxt = 'Parsing SSFF files...';
 	    		$scope.$parent.vs.setState('labeling');
 		    	$scope.$parent.vs.somethingInProgress = false;
 			    $scope.$parent.vs.somethingInProgressTxt = 'Done!';
+			    
+			    // parsing of Textgrid Data
+			    var reader = new FileReader();
+			    reader.readAsText($scope.newfiles.textgrid);
+			    reader.onloadend = function(evt) {
+			        if (evt.target.readyState == FileReader.DONE) { 
+			            
+			            console.log(Textgridparserservice.toJSO(evt.currentTarget.result));
+			            $scope.$parent.tds.setData(Textgridparserservice.toJSO(evt.currentTarget.result));
+			        }
+			    }, function (errMess) {
+			        $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
+			    };
+			    
+			    
+			    
+			    //Levelservice.setData(bundleData.annotation);
+			    
+			    
 			    $scope.$parent.openSubmenu();
 			}, function (errMess) {
 			    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
@@ -122,8 +140,8 @@ angular.module('emuwebApp')
     
     
         $scope.$watch('newfiles', function () {
-          if (!$.isEmptyObject($scope.newfiles)) {
-              $scope.handleLocalFiles($scope.newfiles);
+          if (!$.isEmptyObject($scope.newfiles.wav)) {
+              $scope.handleLocalFiles();
           }
         }, true);    
 
