@@ -6,18 +6,23 @@ angular.module('emuwebApp')
     $scope.dropzone = document.getElementById('dropzone');
     $scope.fileInput = document.getElementById('fileDialog');
     $scope.dropDefault = 'Drop your files here or click here to open a file';
+    $scope.dropErrorFileType = 'Error: Could not parse file. You can drop multiple files, but you have to select at least one .WAV file. The following file types are supported: .WAV .TEXTGRID';
+    $scope.dropErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
     $scope.dropNotAllowed = 'File is not allowed';
     $scope.dropAllowed = 'Drop files to start loading';
     $scope.dropParsingStarted = 'Parsing started';
     $scope.wavLoaded = 0;
     $scope.txtGridLoaded = 0;
     $scope.labelLoaded = 0;
+    $scope.files = [];
     
-    $scope.fileInput.addEventListener('change', handleFilesonChange, false);
-
     $scope.dropText = $scope.dropDefault;
     
-    $scope.files = [];
+    $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
+    $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
+    $scope.dropzone.addEventListener('dragover', handleDragOver, false);
+    $scope.fileInput.addEventListener('change', handleFilesonChange, false);
+
 
     $scope.loadFiles = function () {
         setTimeout(function() {
@@ -46,7 +51,8 @@ angular.module('emuwebApp')
             $scope.handleLocalFiles(newfiles);
         }
         else {
-           $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'You have to select one WAV file at least.'); 
+           $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorFileType); 
+           $scope.dropText = $scope.dropDefault;
         }
     }
     
@@ -119,10 +125,7 @@ angular.module('emuwebApp')
        });
     }
     
-     $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
-     $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
-     $scope.dropzone.addEventListener('dragover', handleDragOver, false);
-     
+
 
      $scope.dropzone.addEventListener('drop', function (evt) {
        evt.stopPropagation();
@@ -141,7 +144,7 @@ angular.module('emuwebApp')
            }         
         }
         else {
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Sorry ! The File APIs are not fully supported in your browser.');
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
         }
      }, false);
 
@@ -173,7 +176,7 @@ angular.module('emuwebApp')
               $scope.handleLocalFiles(newfiles); 
           }
           else {
-              $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Could not parse file.\nYou can drop multiple files, but you have to select at least one WAVE file. The following file types are supported: .WAV .TEXTGRID');
+              $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorFileType);
           }
                  
         });
