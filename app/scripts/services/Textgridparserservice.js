@@ -7,6 +7,8 @@ angular.module('emuwebApp')
 		sServObj.shs = Soundhandlerservice;
 		sServObj.l1 = 'File type = \"ooTextFile\"';
 		sServObj.l2 = 'Object class = \"TextGrid\"';
+		
+		var localID = 0;
 
 		/**
 		 * parse a textgrid string to the specified json format
@@ -14,7 +16,7 @@ angular.module('emuwebApp')
 		 * @param string TextGrid file string to be parsed
 		 * @returns a label java script object
 		 */
-		sServObj.toJSO = function(string) {
+		sServObj.toJSO = function(string, myFile, myName) {
 
 			// remove all empty lines from string
 			string = string.replace(/([ \t]*\r?\n)+/g, '\n');
@@ -24,11 +26,12 @@ angular.module('emuwebApp')
 
 			var tT, tN, eT, lab;
 			var inHeader = true;
-
+			
 			//meta info for labelJSO
 			var labelJSO = {
-				origSamplerate: this.shs.wavJSO.SampleRate,
-				fileURI: '',
+			    name: myName,
+			    annotates: myFile,
+				sampleRate: this.shs.wavJSO.SampleRate,
 				levels: []
 			};
 
@@ -72,19 +75,26 @@ angular.module('emuwebApp')
 						}
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
+						    id: localID,
 							label: lab,
 							sampleStart: eSt - 1, // correct so starts at 0
 							sampleDur: eEt - eSt
 						});
+						
+						++localID;
+						
 					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
+							id: localID,
 							label: lab,
 							samplePoint: Math.round(eT)
 						});
+						
+						++localID;
 					}
 
 				}

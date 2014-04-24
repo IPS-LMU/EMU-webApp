@@ -102,14 +102,15 @@ angular.module('emuwebApp')
     			$scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
 	    		$scope.$parent.vs.resetSelect();
 	    		$scope.$parent.vs.curPerspectiveIdx = 0;
-		    	$scope.$parent.shs.wavJSO = wavJSO;			    
+		    	$scope.$parent.shs.wavJSO = wavJSO;	
+		    	var extension = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));		    
 			    // parsing of Textgrid Data
 			    if($scope.newfiles.textgrid !== undefined) {
 			        var reader = new FileReader();
     			    reader.readAsText($scope.newfiles.textgrid);
 	    		    reader.onloadend = function(evt) {
 		    	        if (evt.target.readyState == FileReader.DONE) { 
-			                var textgrid = Textgridparserservice.toJSO(evt.currentTarget.result);
+			                var textgrid = Textgridparserservice.toJSO(evt.currentTarget.result, $scope.newfiles.wav.name, extension);
 			                $scope.$parent.tds.setData(textgrid);
 			                console.log(textgrid);
     			        }
