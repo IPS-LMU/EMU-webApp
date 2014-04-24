@@ -36,6 +36,8 @@ angular.module('emuwebApp')
 		$scope.filterText = '';
 		$scope.windowWidth = $window.outerWidth;
 
+		$scope.demoDbName = '';
+
 		//////////////
 		// bindings
 
@@ -256,7 +258,7 @@ angular.module('emuwebApp')
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
-					Iohandlerservice.getBundle(bndl.name).then(function (bundleData) {
+					Iohandlerservice.getBundle(bndl.name, $scope.demoDbName).then(function (bundleData) {
 						// check if response from http request
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
@@ -514,23 +516,34 @@ angular.module('emuwebApp')
 		 */
 		$scope.openDemoDBbtnClick = function (nameOfDB) {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
+				$scope.demoDbName = nameOfDB;
+				// hide drop zone 
+				$scope.showDropZone = false;
+
+				viewState.somethingInProgress = true;
 				// alert(nameOfDB);
 				viewState.setState('loadingSaving');
 				ConfigProviderService.vals.main.comMode = 'DEMO';
-				Iohandlerservice.getDBconfigFile().then(function (dbConfig) {
-					// 		ConfigProviderService.setVals(dbConfig.data.EMUwebAppConfig);
-					// 		delete dbConfig.data.EMUwebAppConfig; // delete to avoid duplicate
-					// 		ConfigProviderService.curDbConfig = dbConfig.data;
+				viewState.somethingInProgressTxt = 'Loading DB config...';
+				Iohandlerservice.getDBconfigFile(nameOfDB).then(function (res) {
+					var data = res.data;
+					// first element of perspectives is default perspective
+					viewState.curPerspectiveIdx = 0;
+					ConfigProviderService.setVals(data.EMUwebAppConfig);
+					delete data.EMUwebAppConfig; // delete to avoid duplicate
+					ConfigProviderService.curDbConfig = data;
+					// then get the DBconfigFile
+					viewState.somethingInProgressTxt = 'Loading bundle list...';
 
-					// 		Iohandlerservice.getBundleList().then(function (res) {
-					// 			$scope.showDropZone = false;
-					// 			$scope.bundleList = res.data;
-					// 			$scope.menuBundleClick($scope.bundleList[0]);
-					// 			// 	// Iohandlerservice.getUtt(res.data[0]);
-					// 			// 	// $scope.curBndl = res.data[0];
-					// 			// 	// should be then after get utt
-					// 			viewState.setState('labeling');
-					// 		});
+					Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
+						var bdata = res.data;
+						$scope.bundleList = bdata;
+						// then load first bundle in list
+						$scope.menuBundleClick($scope.bundleList[0]);
+					});
+
+				}, function (err) {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Error opening demoDBs ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status);
 				});
 			} //else {
 			// 	console.log('action currently not allowed');

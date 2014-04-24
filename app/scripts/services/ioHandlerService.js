@@ -53,7 +53,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getDBconfigFile = function () {
+		sServObj.getDBconfigFile = function (nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -61,7 +61,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDBconfigFile();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
-				getProm = $http.get('testData/newAE/ae_DBconfig.json');
+				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
 			}
 
 			return getProm;
@@ -70,7 +70,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBundleList = function () {
+		sServObj.getBundleList = function (nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -78,7 +78,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundleList();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
-				getProm = $http.get('testData/demoUttList.json');
+				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 			}
 
 			return getProm;
@@ -87,7 +87,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBundle = function (name) {
+		sServObj.getBundle = function (name, nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -96,7 +96,7 @@ angular.module('emuwebApp')
 				getProm = Websockethandler.getBundle(name);
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
-				getProm = $http.get('testData/testAeBundle.json'); // SIC SIC SIC HARDCODED -> name is ignored
+				getProm = $http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');
 			}
 
 			return getProm;
@@ -113,9 +113,9 @@ angular.module('emuwebApp')
 				alert('CORS version of saveBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.saveBundle(bundleData);
-			} 
+			}
 			// else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
-				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
+			// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
 			// 	getProm = $http.get('testData/testAeBundle.json'); // SIC SIC SIC HARDCODED -> name is ignored
 			// }
 
