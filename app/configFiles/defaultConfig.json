@@ -89,26 +89,15 @@
     "perspectives": [{
         "name": "default",
         "signalCanvases": {
-            "order": ["OSCI", "SPEC"],
-            "assign": {
-                "spec": "fms:fm"
-            },
-            "extensions": {
-                "audio": ".wav",
-                "signals": [".fms"]
-            },
-            "contourLims": {
-                "fm": {
-                    "min": 0,
-                    "max": 1
-                }
-            }
+            "order": [],
+            "assign": {},
+            "contourLims": {}
         },
         "labelCanvases": {
-            "order": [".lab", ".tone"]
+            "order": []
         },
-        "twoDcanvases": {
-            "show": false
+        "twoDimCanvases": {
+            "order": []
         }
     }],
     "labelCanvasConfig": {
@@ -151,5 +140,5 @@
         "saveBundle": false,
         "openMenu": false
     },
-    "demoDBs": ["ae", "epgdorsal", "ema"]
+    "demoDBs": ["ae", "ema", "epgdorsal"]
 }
