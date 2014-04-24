@@ -112,8 +112,8 @@ angular.module('emuwebApp')
 										y = canvas.height - updateObj[key].newValue / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
 
 										// draw sample
-										ctx.strokeStyle = '#0DC5FF';
-										ctx.fillStyle = '#0DC5FF';
+										ctx.strokeStyle = 'red';
+										ctx.fillStyle = 'red';
 										// ctx.lineWidth = 4;
 										ctx.beginPath();
 										ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
