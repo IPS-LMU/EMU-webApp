@@ -75,6 +75,7 @@ angular.module('emuwebApp')
 			    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
     			$scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
 	    		$scope.$parent.vs.resetSelect();
+	    		$scope.$parent.vs.curPerspectiveIdx = 0;
 		    	$scope.$parent.shs.wavJSO = wavJSO;
 			    // set all ssff 
     			$scope.$parent.vs.somethingInProgressTxt = 'Parsing SSFF files...';

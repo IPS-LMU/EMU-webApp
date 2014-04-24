@@ -114,7 +114,9 @@ angular.module('emuwebApp')
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               setupEvent();
               clearImageCache();
-              drawSpectro(scope.vs, scope.shs.wavJSO.Data);
+              scope.redraw();
+              //console.log(scope.shs.wavJSO);
+              //drawSpectro(scope.vs, scope.shs.wavJSO.Data);
             }
           }
         }, true);
