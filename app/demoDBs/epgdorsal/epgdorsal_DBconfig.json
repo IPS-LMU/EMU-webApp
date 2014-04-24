@@ -46,9 +46,7 @@
 			"signalCanvases": {
 				"order": [
 					"OSCI",
-					"fm",
 					"SPEC"
-
 				],
 				"assign": [],
 				"contourLims": []
