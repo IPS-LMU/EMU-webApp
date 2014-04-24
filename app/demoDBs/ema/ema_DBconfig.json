@@ -1,0 +1,232 @@
+{
+	"name": "ema",
+	"UUID": "6e384990-91cf-481a-8a81-e31da0832d64",
+	"mediafileExtension": "wav",
+	"ssffTracks": [{
+		"name": "tt_posz",
+		"columnName": "tt_posz",
+		"fileExtension": "t_tip"
+	}, {
+		"name": "tt_posy",
+		"columnName": "tt_posy",
+		"fileExtension": "t_tip"
+	}, {
+		"name": "tb_posz",
+		"columnName": "tb_posz",
+		"fileExtension": "t_back"
+	}, {
+		"name": "tb_posy",
+		"columnName": "tb_posy",
+		"fileExtension": "t_back"
+	}, {
+		"name": "tm_posz",
+		"columnName": "tm_posz",
+		"fileExtension": "t_mid"
+	}, {
+		"name": "tm_posy",
+		"columnName": "tm_posy",
+		"fileExtension": "t_mid"
+	}, {
+		"name": "ul_posz",
+		"columnName": "ul_posz",
+		"fileExtension": "upper_lip"
+	}, {
+		"name": "ul_posy",
+		"columnName": "ul_posy",
+		"fileExtension": "upper_lip"
+	}, {
+		"name": "ll_posz",
+		"columnName": "ll_posz",
+		"fileExtension": "lower_lip"
+	}, {
+		"name": "ll_posy",
+		"columnName": "ll_posy",
+		"fileExtension": "lower_lip"
+	}, {
+		"name": "jw_posz",
+		"columnName": "jw_posz",
+		"fileExtension": "jaw"
+	}, {
+		"name": "jw_posy",
+		"columnName": "jw_posy",
+		"fileExtension": "jaw"
+	}, {
+		"name": "FORMANTS",
+		"columnName": "fm",
+		"fileExtension": "fms"
+	}],
+	"levelDefinitions": [{
+		"name": "Word",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Word",
+			"type": "string"
+		}]
+	}, {
+		"name": "Segment",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "Segment",
+			"type": "string"
+		}]
+	}, {
+		"name": "TT",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "TT",
+			"type": "string"
+		}]
+	}, {
+		"name": "TB",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "TB",
+			"type": "string"
+		}]
+	}],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Word",
+		"sublevelName": "Segment"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Segment",
+		"sublevelName": "TT"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "TT",
+		"sublevelName": "TB"
+	}],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": [
+					"OSCI",
+					"SPEC",
+					"tt_posz"
+				],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": [
+					"Segment",
+					"TT",
+					"TB"
+				]
+			},
+			"twoDimCanvases": {
+				"order": ["DOTS"],
+				"twoDimDrawingDefinitions": [{
+					"name": "DOTS",
+					"dots": [{
+						"name": "tt",
+						"xSsffTrack": "tt_posy",
+						"ySsffTrack": "tt_posz",
+						"color": "rgb(255,0,0)"
+					}, {
+						"name": "tm",
+						"xSsffTrack": "tm_posy",
+						"ySsffTrack": "tm_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "tb",
+						"xSsffTrack": "tb_posy",
+						"ySsffTrack": "tb_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "ul",
+						"xSsffTrack": "ul_posy",
+						"ySsffTrack": "ul_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "ll",
+						"xSsffTrack": "ll_posy",
+						"ySsffTrack": "ll_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "jw",
+						"xSsffTrack": "jw_posy",
+						"ySsffTrack": "jw_posz",
+						"color": "rgb(0,0,0)"
+					}],
+					"connectLines": [{
+						"fromDot": "tt",
+						"toDot": "tm",
+						"color": "rgb(0,0,0)"
+					}, {
+						"fromDot": "tm",
+						"toDot": "tb",
+						"color": "rgb(0,0,0)"
+					}, {
+						"fromDot": "ul",
+						"toDot": "ll",
+						"color": "rgb(0,0,0)"
+					}]
+				}]
+			}
+		}, {
+			"name": "showFormants",
+			"signalCanvases": {
+				"order": [
+					"OSCI",
+					"SPEC"
+				],
+				"assign": [{
+					"signalCanvasName": "SPEC",
+					"ssffTrackName": "FORMANTS"
+				}],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": [
+					"Segment",
+					"TT",
+					"TB"
+				]
+			},
+			"twoDimCanvases": {
+				"order": ["DOTS"],
+				"twoDimDrawingDefinitions": [{
+					"name": "DOTS",
+					"dots": [{
+						"name": "f1-f2",
+						"xSsffTrack": "tt_posy",
+						"ySsffTrack": "tt_posz",
+						"color": "rgb(255,0,0)"
+					}, {
+						"name": "tm",
+						"xSsffTrack": "tm_posy",
+						"ySsffTrack": "tm_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "tb",
+						"xSsffTrack": "tb_posy",
+						"ySsffTrack": "tb_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "ul",
+						"xSsffTrack": "ul_posy",
+						"ySsffTrack": "ul_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "ll",
+						"xSsffTrack": "ll_posy",
+						"ySsffTrack": "ll_posz",
+						"color": "rgb(0,0,0)"
+					}, {
+						"name": "jw",
+						"xSsffTrack": "jw_posy",
+						"ySsffTrack": "jw_posz",
+						"color": "rgb(0,0,0)"
+					}],
+					"connectLines": []
+				}]
+			}
+		}],
+		"activeButtons": {
+			"saveBundle": false
+		}
+	}
+}

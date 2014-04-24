@@ -1,0 +1,69 @@
+{
+	"name": "epgdorsal",
+	"UUID": "92d08e8f-d12e-4d18-847b-dde40318c407",
+	"mediafileExtension": "wav",
+	"ssffTracks": [{
+		"name": "EPG",
+		"columnName": "epg",
+		"fileExtension": "epg"
+	}, {
+		"name": "fm",
+		"columnName": "fm",
+		"fileExtension": "sfb"
+	}],
+	"levelDefinitions": [{
+		"name": "Word",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Word",
+			"type": "string"
+		}, {
+			"name": "Kommentar",
+			"type": "string"
+		}]
+	}, {
+		"name": "Phonetic",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "Phonetic",
+			"type": "string"
+		}, {
+			"name": "Links",
+			"type": "string"
+		}, {
+			"name": "Rechts",
+			"type": "string"
+		}]
+	}],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Word",
+		"sublevelName": "Phonetic"
+	}],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": [
+					"OSCI",
+					"fm",
+					"SPEC"
+
+				],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": [
+					"Phonetic"
+				]
+			},
+			"twoDimCanvases": {
+				"order": ["EPG"]
+			}
+		}],
+		"activeButtons": {
+			"saveBundle": true
+		}
+	}
+}
