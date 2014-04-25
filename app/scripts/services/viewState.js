@@ -48,7 +48,7 @@ angular.module('emuwebApp')
 
     sServObj.somethingInProgress = false;
     sServObj.somethingInProgressTxt = '';
-    
+
     sServObj.curClickSegments = [];
     sServObj.lasteditArea = null;
     sServObj.editing = false;
@@ -382,8 +382,8 @@ angular.module('emuwebApp')
     sServObj.setenlarge = function (s) {
       this.curViewPort.enlargeTimeline = s;
     };
-    
-    
+
+
     /**
      * get the height of the osci
      */
@@ -483,8 +483,8 @@ angular.module('emuwebApp')
     sServObj.getcurClickNeighbours = function () {
       return this.curClickNeighbours;
     };
-    
-    
+
+
 
     /**
      * sets the current (mousemove) Level Name
@@ -532,13 +532,13 @@ angular.module('emuwebApp')
     sServObj.getcurMouseSegment = function () {
       return this.curMouseSegment;
     };
-    
+
     /**
      * gets the current (mousemove) Segment
      */
     sServObj.getcurMouseNeighbours = function () {
       return this.curMouseNeighbours;
-    };    
+    };
 
     /**
      * selects all Segements on current level which are inside the selected viewport
@@ -575,8 +575,8 @@ angular.module('emuwebApp')
      */
     sServObj.selectBoundry = function () {
       if (sServObj.curClickSegments.length > 0) {
-        var left = this.curClickSegments[0].sampleStart || this.curClickSegments[0].samplePoint ;
-        var right = this.curClickSegments[this.curClickSegments.length-1].sampleStart + this.curClickSegments[this.curClickSegments.length-1].sampleDur || this.curClickSegments[0].samplePoint;
+        var left = this.curClickSegments[0].sampleStart || this.curClickSegments[0].samplePoint;
+        var right = this.curClickSegments[this.curClickSegments.length - 1].sampleStart + this.curClickSegments[this.curClickSegments.length - 1].sampleDur ||  this.curClickSegments[0].samplePoint;
         sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -600,8 +600,8 @@ angular.module('emuwebApp')
       var start = segment.sampleStart;
       var end = start + segment.sampleDur;
       sServObj.curClickSegments.forEach(function (entry) {
-        var front = (entry.sampleStart == end) ? true: false;
-        var back = ((entry.sampleStart + entry.sampleDur) == start) ? true: false;  
+        var front = (entry.sampleStart == end) ? true : false;
+        var back = ((entry.sampleStart + entry.sampleDur) == start) ? true : false;
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           sServObj.curClickSegments.push(segment);
           empty = false;
@@ -610,17 +610,16 @@ angular.module('emuwebApp')
       if (empty) {
         sServObj.curClickSegments = [];
         sServObj.curClickSegments.push(segment);
-      }
-      else {
-         sServObj.curClickSegments.sort(sServObj.sortbyid);
+      } else {
+        sServObj.curClickSegments.sort(sServObj.sortbyid);
       }
     };
-    
-    sServObj.sortbyid = function (a, b){
-        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if(a.id>b.id) return 1;
-        if(a.id<b.id) return -1;
-        return 0;
+
+    sServObj.sortbyid = function (a, b) {
+      //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+      if (a.id > b.id) return 1;
+      if (a.id < b.id) return -1;
+      return 0;
     };
 
 
@@ -651,8 +650,8 @@ angular.module('emuwebApp')
      */
     sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
-    };    
-    
+    };
+
     sServObj.getselected = function () {
       return this.curClickSegments;
     };
@@ -733,7 +732,7 @@ angular.module('emuwebApp')
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
-            
+
       if (type === "SEGMENT") {
         var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
         var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
@@ -923,6 +922,92 @@ angular.module('emuwebApp')
       }
 
       this.setViewPort(newStartS, newEndS);
+    };
+
+
+    /**
+     *
+     */
+    sServObj.resetToInitState = function (shiftRight) {
+      myWindow = {
+        BARTLETT: 1,
+        BARTLETTHANN: 2,
+        BLACKMAN: 3,
+        COSINE: 4,
+        GAUSS: 5,
+        HAMMING: 6,
+        HANN: 7,
+        LANCZOS: 8,
+        RECTANGULAR: 9,
+        TRIANGULAR: 10
+      };
+
+      sServObj.curViewPort = {
+        sS: 0,
+        eS: 0,
+        selectS: -1,
+        selectE: -1,
+        bufferLength: -1,
+        enlargeTimeline: -1,
+        dragBarActive: false,
+        dragBarHeight: -1,
+        windowWidth: undefined,
+      };
+
+      sServObj.spectroSettings = {
+        windowLength: -1,
+        rangeFrom: -1,
+        rangeTo: -1,
+        dynamicRange: -1,
+        window: -1,
+      };
+
+      sServObj.playHeadAnimationInfos = {
+        sS: -1,
+        eS: -1,
+        curS: null,
+      };
+
+
+      sServObj.somethingInProgress = false;
+      sServObj.somethingInProgressTxt = '';
+
+      sServObj.curClickSegments = [];
+      sServObj.lasteditArea = null;
+      sServObj.editing = false;
+      sServObj.submenuOpen = false;
+      sServObj.rightSubmenuOpen = false;
+      sServObj.modalOpen = false;
+      sServObj.levelLength = 0;
+      sServObj.curMousePosSample = 0;
+      sServObj.curMouseLevelName = undefined;
+      sServObj.curMouseLevelType = undefined;
+      sServObj.curClickLevelName = undefined;
+      sServObj.curClickLevelType = undefined;
+      sServObj.curPreselColumnSample = 2;
+      sServObj.curCorrectionToolNr = 1; // SIC reset to undefined
+      sServObj.curClickLevelIndex = undefined;
+      sServObj.start = null;
+      sServObj.loadingUtt = false;
+      sServObj.curMouseSegmentId = undefined;
+      sServObj.TransitionTime = undefined;
+      sServObj.showDropZone = undefined;
+      sServObj.movingBoundary = false;
+
+      sServObj.gotUnsavedDataChanges = false;
+
+      sServObj.focusInTextField = false;
+
+      sServObj.curTaskPercCompl = 0;
+
+      sServObj.curPerspectiveIdx = -1;
+
+      sServObj.mouseInEmuWebApp = false;
+
+      sServObj.prevState = sServObj.states.noDBorFilesloaded;
+
+      sServObj.curState = sServObj.states.noDBorFilesloaded;
+
     };
 
     return sServObj;

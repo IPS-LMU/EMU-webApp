@@ -253,6 +253,7 @@ angular.module('emuwebApp')
 				if (bndl !== $scope.curBndl) {
 					// reset history
 					HistoryService.resetToInitState();
+					// reset viewstate
 
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
@@ -274,6 +275,12 @@ angular.module('emuwebApp')
 							var wavJSO = messWavParser;
 							viewState.curViewPort.sS = 0;
 							viewState.curViewPort.eS = wavJSO.Data.length;
+							viewState.curViewPort.selectS = -1;
+							viewState.curViewPort.selectE = -1;
+							viewState.curClickSegments = [];
+							viewState.curClickLevelName = undefined;
+							viewState.curClickLevelType = undefined;
+							console.log(viewState.curViewPort)
 
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 4000;
@@ -592,6 +599,7 @@ angular.module('emuwebApp')
 			HistoryService.resetToInitState();
 
 			viewState.somethingInProgress = false;
+			viewState.resetToInitState();
 
 			$scope.showDropZone = true;
 			$scope.loadDefaultConfig();
