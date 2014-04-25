@@ -47,7 +47,11 @@
 </head>
 <body ng-app="emuwebApp">
 	<!-- Add your site or application content here -->
-	<div class="container" id="container" ng-view=""></div>
+	<!-- <div class="container" id="container" ng-view=""></div> -->
+
+    <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid"></emuwebapp>
+
+
     <!-- build:js scripts/plugins.min.js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
