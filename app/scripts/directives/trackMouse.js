@@ -16,6 +16,7 @@ angular.module('emuwebApp')
         var canvas = element[0];
         var ctx = canvas.getContext('2d');
 
+        /////////////////////////////
         // observe attribute
         atts.$observe('ssffTrackname', function (val) {
           if (val) {
@@ -23,6 +24,9 @@ angular.module('emuwebApp')
           }
         });
 
+
+        /////////////////////////////
+        // Bindings
         element.bind('mousedown', function (event) {
           dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
           dragEndSample = dragStartSample;

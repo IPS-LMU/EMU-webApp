@@ -42,13 +42,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSsffTrackConfig = function (name) {
 			var res;
-			if(sServObj.curDbConfig.ssffTracks !== undefined) {
-    			sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
-	    			if (tr.name === name) {
-		    			res = tr;
-			    	}
-     			});
-     		}
+			if (sServObj.curDbConfig.ssffTracks !== undefined) {
+				sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
+					if (tr.name === name) {
+						res = tr;
+					}
+				});
+			}
 			return res;
 		};
 
@@ -61,6 +61,20 @@ angular.module('emuwebApp')
 				if (cL.ssffTrackName === trackName) {
 					res.min = cL.min;
 					res.max = cL.max;
+				}
+			});
+
+			return res;
+		};
+
+		/**
+		 *
+		 */
+		sServObj.getAssignment = function (signalName) {
+			var res = {};
+			sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (a) {
+				if (a.signalCanvasName === signalName) {
+					res = a;
 				}
 			});
 

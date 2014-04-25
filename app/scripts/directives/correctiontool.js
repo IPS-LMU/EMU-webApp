@@ -4,7 +4,7 @@ angular.module('emuwebApp')
 	.directive('correctiontool', function () {
 		return {
 			restrict: 'A',
-			link: function (scope, element) {
+			link: function (scope, element, atts) {
 
 				var curMouseSample;
 				var dragStartSample;
@@ -14,7 +14,18 @@ angular.module('emuwebApp')
 				var ctx = canvas.getContext('2d');
 				// var elem = element[0];
 				var tr, col, sRaSt;
+				var trackName;
 
+				/////////////////////////////
+				// observe attribute
+				atts.$observe('ssffTrackname', function (val) {
+					if (val) {
+						trackName = val;
+					}
+				});
+
+				/////////////////////////////
+				// Bindings
 				element.bind('mousedown', function (event) {
 					dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
 					dragEndSample = dragStartSample;
@@ -45,9 +56,7 @@ angular.module('emuwebApp')
 							// draw min max vals and name of track
 							scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
 
-
-
-							if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive()) {
+							if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive() && !$.isEmptyObject(scope.cps.getAssignment(trackName))) {
 								// var col = scope.ssffds.data[0].Columns[0];
 								if (tr === undefined) {
 									tr = scope.cps.getSsffTrackConfig('FORMANTS');
