@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('emuwebapp', function (viewState) {
+	.directive('emuwebapp', function (viewState, Iohandlerservice, ConfigProviderService) {
 		return {
 			templateUrl: 'views/emuwebapp.html',
 			restrict: 'E',
@@ -11,6 +11,7 @@ angular.module('emuwebApp')
 				labelDataType: '@'
 			},
 			link: function postLink(scope, element, attrs) {
+
 				////////////////////////
 				// Bindings
 				element.bind('mouseenter', function (event) {
