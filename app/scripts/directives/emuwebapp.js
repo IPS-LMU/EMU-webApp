@@ -6,8 +6,8 @@ angular.module('emuwebApp')
 			templateUrl: 'views/emuwebapp.html',
 			restrict: 'E',
 			scope: {
-				audioData: '@',
-				labelData: '@',
+				audioGetUrl: '@',
+				labelGetUrl: '@',
 				labelDataType: '@'
 			},
 			link: function postLink(scope, element, attrs) {
@@ -30,14 +30,14 @@ angular.module('emuwebApp')
 					}
 				});
 
-				attrs.$observe('audioData', function (val) {
+				attrs.$observe('audioGetUrl', function (val) {
 					if (val !== undefined && val !== '') {
 						console.log("VALUE!!!!! audioData");
 						console.log(val);
 					}
 				});
 
-				attrs.$observe('labelData', function (val) {
+				attrs.$observe('labelGetUrl', function (val) {
 					if (val !== undefined && val !== '') {
 						console.log("VALUE!!!!! labelData");
 						console.log(val);
