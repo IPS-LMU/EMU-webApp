@@ -15,6 +15,13 @@ angular.module('emuwebApp')
 			return prom;
 		};
 
+		/**
+		 * default config is always loaded from same origin
+		 */
+		sServObj.httpGetPath = function (path, respType) {
+			var prom = $http.get(path, {responseType: respType});
+			return prom;
+		};
 
 		////////////////////////////
 		// EMU-webApp protocol begins here

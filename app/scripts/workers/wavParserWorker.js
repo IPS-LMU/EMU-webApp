@@ -1,11 +1,5 @@
 'use strict';
 
-
-
-var headID = 'SSFF -- (c) SHLRC\n';
-var machineID = 'Machine IBM-PC\n';
-var sepString = '-----------------\n';
-
 var ssffData = {};
 ssffData.fileURL = '';
 ssffData.sampleRate = -1;

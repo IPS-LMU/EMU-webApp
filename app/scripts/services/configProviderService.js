@@ -8,6 +8,12 @@ angular.module('emuwebApp')
 		sServObj.vals = {};
 		sServObj.curDbConfig = {};
 
+		// embedded values -> if these are set this overrides the normal config  
+		sServObj.embeddedVals = {
+			audioGetUrl: '',
+			labelGetUrl: ''
+		};
+
 		/**
 		 * depth of 2 = max
 		 */

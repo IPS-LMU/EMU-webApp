@@ -56,6 +56,54 @@ angular.module('emuwebApp')
 			}
 		});
 
+		//////////////
+		// watches
+		// watch if embedded override (if attributes are set on emuwebapp tag)
+		$scope.$watch(ConfigProviderService.embeddedVals.audioGetUrl, function () {
+			// check if both are set
+			$scope.loadFilesForEmbeddedApp();
+
+		}, true);
+
+		/**
+		 *
+		 */
+		$scope.loadFilesForEmbeddedApp = function () {
+			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
+				console.log(data.data);
+				viewState.showDropZone = false;
+				// var arrBuff;
+
+				// set wav file
+				// arrBuff = Binarydatamaniphelper.stringToArrayBuffer(data.data);
+				viewState.somethingInProgress = true;
+				viewState.somethingInProgressTxt = 'Parsing WAV file...';
+
+				// console.log(arrBuff);
+
+				Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
+					var wavJSO = messWavParser;
+					viewState.curViewPort.sS = 0;
+					viewState.curViewPort.eS = wavJSO.Data.length;
+					viewState.curViewPort.selectS = -1;
+					viewState.curViewPort.selectE = -1;
+					viewState.curClickSegments = [];
+					viewState.curClickLevelName = undefined;
+					viewState.curClickLevelType = undefined;
+
+					// FOR DEVELOPMENT:
+					// viewState.curViewPort.sS = 4000;
+					// viewState.curViewPort.eS = 5000;
+
+					viewState.curViewPort.bufferLength = wavJSO.Data.length;
+					viewState.resetSelect();
+					Soundhandlerservice.wavJSO = wavJSO;
+					ConfigProviderService.vals.perspectives[0].signalCanvases.order = ["OSCI", "SPEC"];
+					console.log(wavJSO)
+				})
+			});
+
+		};
 
 		/**
 		 * init load of config files

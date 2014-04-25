@@ -35,13 +35,13 @@ angular.module('emuwebApp')
 					if (val !== undefined && val !== '') {
 						console.log("VALUE!!!!! audioData");
 						console.log(val);
+						ConfigProviderService.embeddedVals.audioGetUrl = val;
 					}
 				});
 
 				attrs.$observe('labelGetUrl', function (val) {
 					if (val !== undefined && val !== '') {
-						console.log("VALUE!!!!! labelData");
-						console.log(val);
+						ConfigProviderService.embeddedVals.labelGetUrl = val;
 					}
 				});
 			}
