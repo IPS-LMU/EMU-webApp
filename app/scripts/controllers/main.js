@@ -280,7 +280,6 @@ angular.module('emuwebApp')
 							viewState.curClickSegments = [];
 							viewState.curClickLevelName = undefined;
 							viewState.curClickLevelType = undefined;
-							console.log(viewState.curViewPort)
 
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 4000;
@@ -336,42 +335,55 @@ angular.module('emuwebApp')
 			var bundleData = {};
 			viewState.somethingInProgressTxt = 'Creating bundle json...';
 			bundleData.ssffFiles = [];
+			var formants = {};
+			// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
 			Ssffdataservice.data.forEach(function (el) {
 
-				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
 				if (el.ssffTrackName === 'FORMANTS') {
-					Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
-						bundleData.ssffFiles.push({
-							'ssffTrackName': el.ssffTrackName,
-							'encoding': 'BASE64',
-							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
-						});
-
-						// annotation
-						bundleData.annotation = Levelservice.getData();
-						viewState.somethingInProgressTxt = 'Saving bundle...';
-						Iohandlerservice.saveBundle(bundleData).then(function () {
-							viewState.somethingInProgressTxt = 'Done!';
-							viewState.somethingInProgress = false;
-							HistoryService.movesAwayFromLastSave = 0;
-							defer.resolve();
-						}, function (errMess) {
-							// console.log(mess);
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
-							defer.reject();
-						});
-					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
-						defer.reject();
-					});
-
+					formants = el;
 				}
 			});
+			if (!$.isEmptyObject()) {
+				Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
+					bundleData.ssffFiles.push({
+						'ssffTrackName': el.ssffTrackName,
+						'encoding': 'BASE64',
+						'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
+					});
+					$scope.getAnnotationAndSaveBndl(bundleData, defer);
+
+				}, function (errMess) {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+					defer.reject();
+				});
+			} else {
+				$scope.getAnnotationAndSaveBndl(bundleData, defer);
+			}
+
 			return defer.promise;
 			// } // Commented out FOR DEVELOPMENT!
 
 		};
 
+
+		/**
+		 *
+		 */
+		$scope.getAnnotationAndSaveBndl = function (bundleData, defer) {
+			// annotation
+			bundleData.annotation = Levelservice.getData();
+			viewState.somethingInProgressTxt = 'Saving bundle...';
+			Iohandlerservice.saveBundle(bundleData).then(function () {
+				viewState.somethingInProgressTxt = 'Done!';
+				viewState.somethingInProgress = false;
+				HistoryService.movesAwayFromLastSave = 0;
+				defer.resolve();
+			}, function (errMess) {
+				// console.log(mess);
+				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
+				defer.reject();
+			});
+		};
 
 		/**
 		 *
