@@ -32,7 +32,8 @@ angular.module('emuwebApp')
 			    name: myName,
 			    annotates: myFile,
 				sampleRate: this.shs.wavJSO.SampleRate,
-				levels: []
+				levels: [],
+				links: []
 			};
 
 			if (lines[0].replace(/\s+/g, '') === this.l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === this.l2.replace(/\s+/g, '')) {
@@ -59,8 +60,19 @@ angular.module('emuwebApp')
     							sampleRate: this.shs.wavJSO.SampleRate,
 	    						items: []
 		    				});							
-						} else {
+						} 
+						else if(lines[i + 1].split(/=/)[1] === '\"TextTier\"') {
 							tT = 'EVENT';
+						    // adding new level
+						    labelJSO.levels.push({
+							    name: tN,
+    							type: tT,
+    							sampleRate: this.shs.wavJSO.SampleRate,
+	    						items: []
+		    				});													
+						}
+						else {
+							tT = 'ITEM';
 						    // adding new level
 						    labelJSO.levels.push({
 							    name: tN,
@@ -76,7 +88,6 @@ angular.module('emuwebApp')
 						var eSt = Math.floor(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate) + 1;
 						var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
-
 
 						var labs = [];
 						labs.push({
@@ -97,11 +108,16 @@ angular.module('emuwebApp')
 						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
+						var labs = [];
+						labs.push({
+						    name: labelJSO.levels[labelJSO.levels.length - 1].name,
+						    value: lab
+						});
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
 							id: localID,
-							label: lab,
-							samplePoint: Math.round(eT)
+							samplePoint: Math.round(eT),
+							labels: labs
 						});
 						
 						++localID;

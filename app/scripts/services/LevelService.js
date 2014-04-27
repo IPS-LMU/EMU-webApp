@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.setData = function (data) {
 			angular.copy(data, sServObj.data);
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				level.items.forEach(function (item) {
 					sServObj.maxElementID = item.id;
 				});
@@ -31,7 +31,7 @@ angular.module('emuwebApp')
 		sServObj.getLevelDetails = function (name) {
 			var curLevel = null;
 			var id = null;
-			sServObj.data.levels.forEach(function (level, num) {
+			angular.forEach(sServObj.data.levels, function (level, num) {
 				if (level.name === name) {
 					curLevel = level;
 					id = num;
@@ -48,7 +48,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getOrderById = function (name, id) {
 			var ret = null;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
 						if (element.id == id) {
@@ -66,7 +66,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getIdByOrder = function (name, order) {
 			var ret = null;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
 						if (num == order) {
@@ -85,7 +85,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getElementDetails = function (name, order) {
 			var details = null;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
 						if (num == order) {
@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLastElement = function (name) {
 			var details = null;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					details = level.items[level.items.length - 1];
 				}
@@ -123,7 +123,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertElementDetails = function (levelname, position, labelname, start, duration) {
 			var myID = ++sServObj.maxElementID;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					var newElement = angular.copy(level.items[0]);
 					if (level.type == "SEGMENT") {
@@ -146,7 +146,7 @@ angular.module('emuwebApp')
 		 * get's element details by passing in levelName and elemtent id
 		 */
 		sServObj.setElementDetails = function (levelname, id, labelname, start, duration) {
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					level.items.forEach(function (element) {
 						if (element.id == id) {
@@ -169,7 +169,7 @@ angular.module('emuwebApp')
 		 * get's element details by passing in levelName and elemtent id
 		 */
 		sServObj.setPointDetails = function (levelname, id, labelname, start) {
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					level.items.forEach(function (element) {
 						if (element.id == id) {
@@ -187,7 +187,7 @@ angular.module('emuwebApp')
 		sServObj.getElementNeighbourDetails = function (name, firstid, lastid) {
 			var left = null;
 			var right = null;
-			sServObj.data.levels.forEach(function (level) {
+			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
 						if (element.id == firstid) {
@@ -544,7 +544,7 @@ angular.module('emuwebApp')
 			var absMinDist = Infinity;
 			var absDist;
 			var minDist;
-			sServObj.data.levels.forEach(function (t, tIdx) {
+			angular.forEach(sServObj.data.levels, function (t, tIdx) {
 				if (t.name === levelName) {
 					thisTd = t;
 					if (toTop) {
