@@ -47,38 +47,48 @@ angular.module('emuwebApp')
 					}
 
 					if (cL.indexOf('item[') === 0) {
+						// get level name
+						tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 						// get level type
 						if (lines[i + 1].split(/=/)[1] === '\"IntervalTier\"') {
 							tT = 'SEGMENT';
+						    // adding new level
+						    labelJSO.levels.push({
+							    name: tN,
+    							type: tT,
+    							sampleRate: this.shs.wavJSO.SampleRate,
+	    						items: []
+		    				});							
 						} else {
 							tT = 'EVENT';
+						    // adding new level
+						    labelJSO.levels.push({
+							    name: tN,
+    							type: tT,
+	    						items: []
+		    				});							
 						}
-						// get level name
-						tN = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 
-						// adding new level
-						labelJSO.levels.push({
-							name: tN,
-							type: tT,
-							items: []
-						});
+
 					}
 					if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 						// parse seg levels event
-						var eSt = Math.ceil(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate);
+						var eSt = Math.floor(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate) + 1;
 						var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
 						lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 
-						// var correctFact = 0;
-						if (eSt === 0) {
-							eSt = eSt + 1; // for start first sample is 1
-						}
+
+						var labs = [];
+						labs.push({
+						    name: labelJSO.levels[labelJSO.levels.length - 1].name,
+						    value: lab
+						});
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
 						    id: localID,
-							label: lab,
-							sampleStart: eSt - 1, // correct so starts at 0
-							sampleDur: eEt - eSt
+							sampleStart: eSt,
+							sampleDur: eEt - eSt + 1,
+							labels: labs
 						});
 						
 						++localID;
