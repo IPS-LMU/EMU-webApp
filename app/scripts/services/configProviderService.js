@@ -21,16 +21,16 @@ angular.module('emuwebApp')
 			if ($.isEmptyObject(sServObj.vals)) {
 				sServObj.vals = data;
 			} else {
-				Object.keys(data).forEach(function (key1) {
+				angular.forEach(Object.keys(data), function (key1) {
 					// if array... overwrite entire thing!
 					if (angular.isArray(sServObj.vals[key1])) {
 						//empty array
 						sServObj.vals[key1] = [];
-						data[key1].forEach(function (itm) {
+						angular.forEach(data[key1], function (itm) {
 							sServObj.vals[key1].push(itm);
 						});
 					} else {
-						Object.keys(data[key1]).forEach(function (key2) {
+						angular.forEach(Object.keys(data[key1]), function (key2) {
 							if (sServObj.vals[key1][key2] !== undefined) {
 								sServObj.vals[key1][key2] = data[key1][key2];
 							} else {
@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 		sServObj.getSsffTrackConfig = function (name) {
 			var res;
 			if (sServObj.curDbConfig.ssffTracks !== undefined) {
-				sServObj.curDbConfig.ssffTracks.forEach(function (tr) {
+				angular.forEach(sServObj.curDbConfig.ssffTracks, function (tr) {
 					if (tr.name === name) {
 						res = tr;
 					}
@@ -63,7 +63,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLimsOfTrack = function (trackName) {
 			var res = {};
-			sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims.forEach(function (cL) {
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
 				if (cL.ssffTrackName === trackName) {
 					res.min = cL.min;
 					res.max = cL.max;
@@ -78,7 +78,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getAssignment = function (signalName) {
 			var res = {};
-			sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (a) {
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign, function (a) {
 				if (a.signalCanvasName === signalName) {
 					res = a;
 				}
