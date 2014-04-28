@@ -817,14 +817,8 @@ angular.module('emuwebApp')
 			}
 		};
 
+		///////////////////////////
 		// other
-
-		/**
-		 *
-		 */
-		$scope.openFile = function () {
-			alert('code to open file');
-		};
 
 		/**
 		 *
@@ -834,21 +828,15 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * SIC should move into viewstate.rightSubmenuOpen variable
 		 */
 		$scope.toggleRightSideMenuHidden = function () {
 			$scope.isRightSideMenuHidden = !$scope.isRightSideMenuHidden;
 		};
 
 		/**
-		 *
-		 */
-		$scope.toggle2dCancases = function () {
-			$scope.is2dCancasesHidden = !$scope.is2dCancasesHidden;
-		};
-
-		/**
-		 *
+		 * function used to change perspective
+		 * @param persp json object of current perspective containing name attribute
 		 */
 		$scope.changePerspective = function (persp) {
 
@@ -865,7 +853,8 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * function used by right side menu to get color of current perspecitve in ul
+		 * @param persp json object of current perspective containing name attribute
 		 */
 		$scope.getPerspectiveColor = function (persp) {
 			var cl;
