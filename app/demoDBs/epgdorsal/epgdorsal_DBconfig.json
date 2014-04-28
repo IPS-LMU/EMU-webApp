@@ -61,7 +61,7 @@
 			}
 		}],
 		"activeButtons": {
-			"saveBundle": true
+			"saveBundle": false
 		}
 	}
 }
