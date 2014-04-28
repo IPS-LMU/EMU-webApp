@@ -2,7 +2,9 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" manifest="manifest.appcache" ng-csp=""> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-csp=""> <!--<![endif]-->
+
+<!-- manifest="manifest.appcache"  removed from html for now-->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,23 +19,31 @@
 
 
     <!-- <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"> -->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.2/TweenMax.min.js"></script>
+    <!-- // <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.2/TweenMax.min.js"></script> -->
     
-    <link rel="stylesheet" href="styles/e619487b.external.min.css">
+    <link rel="stylesheet" href="styles/dfc57042.external.min.css"/>
+    
+    <!-- <link href="bower_components/ngprogress-lite/ngprogress-lite.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="styles/2d922f9a.emuLVC.min.css">
+    <link rel="stylesheet" href="styles/98250e51.emuwebApp.min.css"/>
 
     <!-- set basedir for angular app change if not running in root of server-->
-    <base href="http://ips-lmu.github.io/EMU-webApp/">
+    <base href="/">
 </head>
-<body ng-app="emulvcApp">
-	
-
-	<!-- Add your site or application content here -->
+<body ng-app="emuwebApp">
 	<div class="container" id="container" ng-view=""></div>
 
-    <script src="scripts/0303cfb2.plugins.js"></script>
+    <!-- <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid"></emuwebapp> -->
 
-    <script src="scripts/c76c3193.emuLVC.min.js"></script>
+    <emuwebapp class="emuwebapp"></emuwebapp>
+
+
+    <script src="scripts/c65a3ebf.plugins.min.js"></script>
+
+    <!-- // <script src="bower_components/ngprogress-lite/ngprogress-lite.js"></script> -->
+
+    <script src="scripts/c950d781.emuwebApp.min.js"></script>
+
+    <!-- // <script src="scripts/appcacheUpdate.js"></script> -->
 </body>
 </html>

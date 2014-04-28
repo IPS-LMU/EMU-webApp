@@ -1,16 +1,12 @@
-<div class="SpectroDiv" id="SpectroDiv">
-	<canvas width="2048" height="128" class="SpectroCanvas" id="SpectroCanvas"></canvas>
-<!-- 	    <span ng-switch="showSSFFSpectro">
-	        <canvas ng-switch-when="true" width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff ssff-trackname="SPEC"></canvas>
-		</span>
-	-->    	
-	<canvas width="2048" height="128" class="SSFFCanvas" id="SSFFCanvas" drawssff="" ssff-trackname="SPEC"></canvas>
-
-	<canvas width="2048" height="128" class="SpectroMarkupCanvas" id="SpectroMarkupCanvas" trackmouse="" correctiontool=""></canvas>
-
-	<div class="buttons" id="buttons">
-		<div class="resize" id="resize" ng-click="resizeSpectro();" ng-style="buttonstyle('resizeSpectro')">
-			<img style="cursor: pointer" tooltip-placement="left" data-tooltip="Resize">
-		</div>	
+<div class="timelineCanvasOuter">
+	<div class="timelineCanvasContainer">
+		<canvas ng-style="enlargeCanvas" class="timelineCanvasMain" width="2048" height="128"></canvas>
+		<canvas ng-style="enlargeCanvas" class="timelineCanvasSSFF" width="2048" height="128" drawssff="" ssff-trackname="{{curTrack}}"></canvas>
+		<canvas ng-style="enlargeCanvas" class="timelineCanvasMarkup" width="2048" height="128" correctiontool="" ssff-trackname="SPEC"></canvas>
 	</div>
+    <div class="timelineCanvasButtons">
+        <div class="timelineCanvasResizeBtn" enlarge="{{order}}">
+            <img style="cursor: pointer" tooltip-placement="left" data-tooltip="Resize">
+        </div> 
+    </div>
 </div>

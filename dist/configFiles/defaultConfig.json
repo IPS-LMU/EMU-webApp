@@ -3,8 +3,9 @@
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
         "wsServerUrl": "ws://localhost:8080",
-        "wsTimeoutInterval": 30000,
-        "comType": "WS"
+        "wsTimeoutInterval": 5000,
+        "comType": "WS",
+        "catchMouseForKeyBinding": false
     },
     "keyMappings": {
         "openFile": -1,
@@ -77,7 +78,7 @@
     },
     "font": {
         "fontType": "Verdana",
-        "fontPxSize": 11
+        "fontPxSize": 14
     },
     "spectrogramSettings": {
         "N": 256,
@@ -89,26 +90,15 @@
     "perspectives": [{
         "name": "default",
         "signalCanvases": {
-            "order": ["OSCI", "SPEC"],
-            "assign": {
-                "spec": "fms:fm"
-            },
-            "extensions": {
-                "audio": ".wav",
-                "signals": [".fms"]
-            },
-            "contourLims": {
-                "fm": {
-                    "min": 0,
-                    "max": 1
-                }
-            }
+            "order": [],
+            "assign": {},
+            "contourLims": {}
         },
         "labelCanvases": {
-            "order": [".lab", ".tone"]
+            "order": []
         },
-        "twoDcanvases": {
-            "show": false
+        "twoDimCanvases": {
+            "order": []
         }
     }],
     "labelCanvasConfig": {
@@ -130,8 +120,9 @@
         "drawCrossHairs": true,
         "drawSampleNrs": false,
         "drawZeroLine": true,
-        "bundleComments": true,
-        "bundleFinishedEditing": true
+        "bundleComments": false,
+        "bundleFinishedEditing": false,
+        "showPerspectivesSidebar": true
     },
     "activeButtons": {
         "addLevelSeg": false,
@@ -147,6 +138,8 @@
         "resizeOsci": true,
         "resizeSpectro": true,
         "openDemoDB": true,
-        "saveUtterance": false
-    }
+        "saveBundle": false,
+        "openMenu": false
+    },
+    "demoDBs": ["ae", "ema", "epgdorsal"]
 }

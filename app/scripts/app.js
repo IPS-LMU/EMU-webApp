@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngRoute', 'ngAnimate'])
-  .config(function($routeProvider, $locationProvider) {
+angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngAnimate'])
+  .config(function($locationProvider) {
     // $routeProvider
     //   .when('/', {
     //     templateUrl: 'views/main.html'
