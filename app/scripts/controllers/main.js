@@ -65,59 +65,74 @@ angular.module('emuwebApp')
 
 		}, true);
 
+		//
+		//////////////
+
 		/**
 		 *
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
-				console.log(data.data);
+				// check if file extension is correct 
+				if (ConfigProviderService.embeddedVals.labelGetUrl.split('.')[1] !== 'TextGrid') {
+					alert("File extention of embedded mode has to be .TextGrid")
+					return;
+				}
+
 				viewState.showDropZone = false;
-				// var arrBuff;
+
+				//hide menu
+				if (viewState.getsubmenuOpen()) {
+					$scope.openSubmenu();
+				}
 
 				viewState.somethingInProgressTxt = 'Loading DB config...';
 				// then get the DBconfigFile
 				Iohandlerservice.httpGetPath('configFiles/embedded_config.json').then(function (resp) {
-					console.log(resp.data)
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
 					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 					ConfigProviderService.curDbConfig = resp.data;
 					// then get the DBconfigFile
-					viewState.somethingInProgressTxt = 'Loading bundle list...';
-
 
 					// set wav file
-					// arrBuff = Binarydatamaniphelper.stringToArrayBuffer(data.data);
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Parsing WAV file...';
-
-
-					// console.log(arrBuff);
 
 					Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
 						var wavJSO = messWavParser;
 						viewState.curViewPort.sS = 0;
 						viewState.curViewPort.eS = wavJSO.Data.length;
-						viewState.curViewPort.selectS = -1;
-						viewState.curViewPort.selectE = -1;
-						viewState.curClickSegments = [];
-						viewState.curClickLevelName = undefined;
-						viewState.curClickLevelType = undefined;
-
-						// FOR DEVELOPMENT:
-						// viewState.curViewPort.sS = 4000;
-						// viewState.curViewPort.eS = 5000;
+						// viewState.curViewPort.selectS = -1;
+						// viewState.curViewPort.selectE = -1;
+						// viewState.curClickSegments = [];
+						// viewState.curClickLevelName = undefined;
+						// viewState.curClickLevelType = undefined;
 
 						viewState.curViewPort.bufferLength = wavJSO.Data.length;
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
-						// ConfigProviderService.vals.perspectives[0].signalCanvases.order = ["OSCI", "SPEC"];
-						console.log(wavJSO)
-						ConfigProviderService.vals.curPerspectiveIdx = 0;
-						viewState.somethingInProgress = true;
+
+						// get + parse textgrid
+						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
+							var annot = Textgridparserservice.toJSO(data2.data);
+							Levelservice.setData(annot);
+							// console.log(JSON.stringify(l, undefined, 2));
+							var lNames = [];
+							annot.levels.forEach(function (l) {
+								lNames.push(l.name);
+							})
+							console.log(lNames)
+							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+							viewState.somethingInProgressTxt = 'Done!';
+							viewState.somethingInProgress = false;
+							viewState.setState('labeling');
+						});
+
+
 					})
-				},function (errMess) {
+				}, function (errMess) {
 					alert(errMess)
 				});
 			});

@@ -6,6 +6,10 @@
 	"levelDefinitions": [],
 	"linkDefinitions": [],
 	"EMUwebAppConfig": {
+		"main": {
+			"comType": "embedded",
+			"catchMouseForKeyBinding": false
+		},
 		"perspectives": [{
 			"name": "default",
 			"signalCanvases": {
@@ -20,8 +24,25 @@
 				"order": []
 			}
 		}],
+		"restrictions": {
+			"showPerspectivesSidebar": false
+		},
 		"activeButtons": {
-			"saveBundle": false
+			"addLevelSeg": false,
+			"addLevelEvent": false,
+			"renameSelLevel": false,
+			"downloadTextGrid": false,
+			"specSettings": true,
+			"connect": false,
+			"clear": false,
+			"deleteSingleLevel": false,
+			"resizeSingleLevel": true,
+			"saveSingleLevel": false,
+			"resizeOsci": true,
+			"resizeSpectro": true,
+			"openDemoDB": false,
+			"saveBundle": false,
+			"openMenu": false
 		}
 	}
 }

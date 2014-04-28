@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 		sServObj.shs = Soundhandlerservice;
 		sServObj.l1 = 'File type = \"ooTextFile\"';
 		sServObj.l2 = 'Object class = \"TextGrid\"';
-		
+
 		var localID = 0;
 
 		/**
@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 		 * @param string TextGrid file string to be parsed
 		 * @returns a label java script object
 		 */
-		sServObj.toJSO = function(string, myFile, myName) {
+		sServObj.toJSO = function (string, myFile, myName) {
 
 			// remove all empty lines from string
 			string = string.replace(/([ \t]*\r?\n)+/g, '\n');
@@ -26,11 +26,11 @@ angular.module('emuwebApp')
 
 			var tT, tN, eT, lab;
 			var inHeader = true;
-			
+
 			//meta info for labelJSO
 			var labelJSO = {
-			    name: myName,
-			    annotates: myFile,
+				name: myName,
+				annotates: myFile,
 				sampleRate: this.shs.wavJSO.SampleRate,
 				levels: [],
 				links: []
@@ -53,32 +53,30 @@ angular.module('emuwebApp')
 						// get level type
 						if (lines[i + 1].split(/=/)[1] === '\"IntervalTier\"') {
 							tT = 'SEGMENT';
-						    // adding new level
-						    labelJSO.levels.push({
-							    name: tN,
-    							type: tT,
-    							sampleRate: this.shs.wavJSO.SampleRate,
-	    						items: []
-		    				});							
-						} 
-						else if(lines[i + 1].split(/=/)[1] === '\"TextTier\"') {
+							// adding new level
+							labelJSO.levels.push({
+								name: tN,
+								type: tT,
+								sampleRate: this.shs.wavJSO.SampleRate,
+								items: []
+							});
+						} else if (lines[i + 1].split(/=/)[1] === '\"TextTier\"') {
 							tT = 'EVENT';
-						    // adding new level
-						    labelJSO.levels.push({
-							    name: tN,
-    							type: tT,
-    							sampleRate: this.shs.wavJSO.SampleRate,
-	    						items: []
-		    				});													
-						}
-						else {
+							// adding new level
+							labelJSO.levels.push({
+								name: tN,
+								type: tT,
+								sampleRate: this.shs.wavJSO.SampleRate,
+								items: []
+							});
+						} else {
 							tT = 'ITEM';
-						    // adding new level
-						    labelJSO.levels.push({
-							    name: tN,
-    							type: tT,
-	    						items: []
-		    				});							
+							// adding new level
+							labelJSO.levels.push({
+								name: tN,
+								type: tT,
+								items: []
+							});
 						}
 
 
@@ -91,27 +89,27 @@ angular.module('emuwebApp')
 
 						var labs = [];
 						labs.push({
-						    name: labelJSO.levels[labelJSO.levels.length - 1].name,
-						    value: lab
+							name: labelJSO.levels[labelJSO.levels.length - 1].name,
+							value: lab
 						});
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
-						    id: localID,
+							id: localID,
 							sampleStart: eSt,
 							sampleDur: eEt - eSt + 1,
 							labels: labs
 						});
-						
+
 						++localID;
-						
+
 					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
 						lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 						var labs = [];
 						labs.push({
-						    name: labelJSO.levels[labelJSO.levels.length - 1].name,
-						    value: lab
+							name: labelJSO.levels[labelJSO.levels.length - 1].name,
+							value: lab
 						});
 
 						labelJSO.levels[labelJSO.levels.length - 1].items.push({
@@ -119,7 +117,7 @@ angular.module('emuwebApp')
 							samplePoint: Math.round(eT),
 							labels: labs
 						});
-						
+
 						++localID;
 					}
 
@@ -138,7 +136,7 @@ angular.module('emuwebApp')
 		 * converts the internal levels format returned from levelHandler.getLevels
 		 * to a string containing a TextGrid file
 		 */
-		sServObj.toTextGrid = function() {
+		sServObj.toTextGrid = function () {
 
 			var l1 = 'File type = \"ooTextFile\"';
 			var l2 = 'Object class = \"TextGrid\"';
@@ -154,7 +152,7 @@ angular.module('emuwebApp')
 			tG = tG + 'size = ' + $('#HandleLevelsCtrl').scope().getLevelLength() + nl;
 			tG = tG + 'item []:' + nl;
 			var levelNr = 0;
-			$('#HandleLevelsCtrl level').each(function() {
+			$('#HandleLevelsCtrl level').each(function () {
 				var curLevel = $('#HandleLevelsCtrl').scope().getLevel($(this).attr('id'));
 				//write level items
 				levelNr = levelNr + 1;
@@ -202,14 +200,14 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.findTimeOfMinSample = function() {
+		sServObj.findTimeOfMinSample = function () {
 			return 0.000000; // maybe needed at some point...
 		};
 
 		/**
 		 *
 		 */
-		sServObj.findTimeOfMaxSample = function() {
+		sServObj.findTimeOfMaxSample = function () {
 			return viewState.curViewPort.bufferLength / Soundhandlerservice.wavJSO.SampleRate;
 		};
 
@@ -218,7 +216,7 @@ angular.module('emuwebApp')
 		 * test to see if all the segments in seg levels
 		 * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
 		 */
-		sServObj.testForGapsInLabelJSO = function(labelJSO) {
+		sServObj.testForGapsInLabelJSO = function (labelJSO) {
 			var counter = 0;
 			for (var i = 0; i < labelJSO.levels.length; i++) {
 				if (labelJSO.levels[i].type === 'SEGMENT') {
