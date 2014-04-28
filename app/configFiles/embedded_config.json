@@ -1,0 +1,27 @@
+{
+	"name": "embedded",
+	"UUID": "cd45b08a-3a13-4e42-b566-585844efabd5",
+	"mediafileExtension": "wav",
+	"ssffTracks": [],
+	"levelDefinitions": [],
+	"linkDefinitions": [],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": []
+			},
+			"twoDcanvases": {
+				"order": []
+			}
+		}],
+		"activeButtons": {
+			"saveBundle": false
+		}
+	}
+}
