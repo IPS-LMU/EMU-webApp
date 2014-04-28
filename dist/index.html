@@ -4,7 +4,10 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
+<!-- add ng-csp to html tag if you wish to use as chrome app -> slows everything down quite a bit(~ 30%) -->
+
 <!-- manifest="manifest.appcache"  removed from html for now-->
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,7 +30,6 @@
     <base href="/EMU-webApp/">
 </head>
 <body ng-app="emuwebApp">
-	<div class="container" id="container" ng-view=""></div>
 
     <!-- <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid"></emuwebapp> -->
 
