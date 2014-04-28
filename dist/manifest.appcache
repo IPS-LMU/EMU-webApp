@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-04-28T13:34:19.701Z
+# rev 1 - 2014-04-28T14:06:25.543Z
 
 CACHE:
 404.html
@@ -21,17 +21,21 @@ demoDBs/epgdorsal/JDR11_bndl.json
 demoDBs/epgdorsal/epgdorsal_DBconfig.json
 demoDBs/epgdorsal/epgdorsal_bundleList.json
 favicon.ico
+img/glyphicons-halflings-white.png
+img/glyphicons-halflings.png
+img/handle-vert.png
+img/saveBtn.png
 img/search-dark.png
 index.html
 manifest.json
 robots.txt
-scripts/c65a3ebf.plugins.min.js
-scripts/c950d781.emuwebApp.min.js
+scripts/5f00f75a.emuwebAppExtLibs.min.js
+scripts/8f9cefde.emuwebApp.min.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js
 scripts/workers/wavParserWorker.js
-styles/98250e51.emuwebApp.min.css
-styles/dfc57042.external.min.css
+styles/559235a2.emuwebApp.min.css
+styles/973611cc.external.min.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
 views/about.html

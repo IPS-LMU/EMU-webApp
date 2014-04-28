@@ -280,7 +280,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'images/{,*/}*.{gif,webp}',
-            'img/search-dark.png',
+            'img/*.png',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
             'scripts/workers/*.js',

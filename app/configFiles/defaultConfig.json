@@ -139,7 +139,7 @@
         "resizeSpectro": true,
         "openDemoDB": true,
         "saveBundle": false,
-        "openMenu": false
+        "openMenu": true
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }
