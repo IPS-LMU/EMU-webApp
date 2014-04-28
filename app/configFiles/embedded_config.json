@@ -25,7 +25,14 @@
 			}
 		}],
 		"restrictions": {
-			"showPerspectivesSidebar": false
+			"showPerspectivesSidebar": false,
+			"sortLabels": false,
+			"editItemSize": false,
+			"editItemName": false,
+			"deleteItemBoundary": false,
+			"deleteItem": false,
+			"deleteLevel": false,
+			"addItem": false
 		},
 		"activeButtons": {
 			"addLevelSeg": false,

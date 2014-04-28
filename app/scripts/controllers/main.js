@@ -59,9 +59,11 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 		// watch if embedded override (if attributes are set on emuwebapp tag)
-		$scope.$watch(ConfigProviderService.embeddedVals.audioGetUrl, function () {
-			// check if both are set
-			$scope.loadFilesForEmbeddedApp();
+		$scope.$watch(ConfigProviderService.embeddedVals.audioGetUrl, function (val) {
+			if (val) {
+				// check if both are set
+				$scope.loadFilesForEmbeddedApp();
+			}
 
 		}, true);
 
@@ -123,7 +125,7 @@ angular.module('emuwebApp')
 							annot.levels.forEach(function (l) {
 								lNames.push(l.name);
 							})
-							console.log(lNames)
+
 							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
 							viewState.somethingInProgressTxt = 'Done!';
 							viewState.somethingInProgress = false;

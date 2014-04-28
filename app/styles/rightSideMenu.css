@@ -21,17 +21,20 @@
   font-size: 16px;
   padding-bottom: 15px;
   border-bottom:thin solid black;
+  overflow: hidden;
 }
 
 .rightSideMenu ul{
-  padding-left: 10px;
-  padding-right: 10px;
+  /*padding-left: 10px;*/
+  /*padding-right: 10px;*/
   text-align: left;
+  overflow: hidden;
 }
 
 .rightSideMenu li{
   border-bottom:thin solid rgba(152, 152, 152, 0.25);;
-  padding: 5px;
+  padding: 15px;
+  overflow: hidden;
 }
 
 .rightSideMenu li:hover{
