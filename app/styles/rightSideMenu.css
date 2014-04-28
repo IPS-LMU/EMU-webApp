@@ -32,18 +32,20 @@
   overflow: hidden;
 }
 
-.rightSideMenu li{
+.curSelPerspLi{
+  border-bottom:thin solid rgba(152, 152, 152, 0.25);;
+  padding: 15px;
+  background-color: #999;
+}
+
+.perspLi{
   border-bottom:thin solid rgba(152, 152, 152, 0.25);;
   padding: 15px;
   overflow: hidden;
 }
 
-.curPersp{
-  background-color: #999;
-}
 
-
-.rightSideMenu li:hover{
+.perspLi:hover{
   background-color: rgba(152, 152, 152, 0.28);
 }
 
