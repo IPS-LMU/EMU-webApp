@@ -868,19 +868,13 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.getPerspectiveColor = function (persp) {
-			var curColor;
+			var cl;
 			if (viewState.curPerspectiveIdx === -1 || persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {
-				curColor = {
-					'background-color': '#999',
-					'color': 'white'
-				};
+				cl = 'curPersp';
 			} else {
-				curColor = {
-					'background-color': 'white',
-					'color': 'black'
-				};
+				cl = undefined;
 			}
-			return curColor;
+			return cl;
 		};
 
 	});
