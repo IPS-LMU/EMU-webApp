@@ -1,7 +1,7 @@
 <div class="bundleListSideBarOuter">
     <h3><div class="bundleFilter"><input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div></h3>
     <my-Drop-Zone ng-show="showDropZone"></my-Drop-Zone>
-    <div id="bundleListContainer" class="bundleListContainer">
+    <div id="bundleListContainer" class="bundleListContainer" ng-show="!showDropZone">
         <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="menuBundleClick(bundle);">
                 <b>{{bundle.name}}</b><button class="saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img /></button>
