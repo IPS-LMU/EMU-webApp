@@ -74,34 +74,54 @@ angular.module('emuwebApp')
 				viewState.showDropZone = false;
 				// var arrBuff;
 
-				// set wav file
-				// arrBuff = Binarydatamaniphelper.stringToArrayBuffer(data.data);
-				viewState.somethingInProgress = true;
-				viewState.somethingInProgressTxt = 'Parsing WAV file...';
+				viewState.somethingInProgressTxt = 'Loading DB config...';
+				// then get the DBconfigFile
+				Iohandlerservice.httpGetPath('configFiles/embedded_config.json').then(function (resp) {
+					console.log(resp.data)
+					// first element of perspectives is default perspective
+					viewState.curPerspectiveIdx = 0;
+					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
+					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
+					ConfigProviderService.curDbConfig = resp.data;
+					// then get the DBconfigFile
+					viewState.somethingInProgressTxt = 'Loading bundle list...';
 
-				// console.log(arrBuff);
 
-				Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
-					var wavJSO = messWavParser;
-					viewState.curViewPort.sS = 0;
-					viewState.curViewPort.eS = wavJSO.Data.length;
-					viewState.curViewPort.selectS = -1;
-					viewState.curViewPort.selectE = -1;
-					viewState.curClickSegments = [];
-					viewState.curClickLevelName = undefined;
-					viewState.curClickLevelType = undefined;
+					// set wav file
+					// arrBuff = Binarydatamaniphelper.stringToArrayBuffer(data.data);
+					viewState.somethingInProgress = true;
+					viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-					// FOR DEVELOPMENT:
-					// viewState.curViewPort.sS = 4000;
-					// viewState.curViewPort.eS = 5000;
 
-					viewState.curViewPort.bufferLength = wavJSO.Data.length;
-					viewState.resetSelect();
-					Soundhandlerservice.wavJSO = wavJSO;
-					ConfigProviderService.vals.perspectives[0].signalCanvases.order = ["OSCI", "SPEC"];
-					console.log(wavJSO)
-				})
+					// console.log(arrBuff);
+
+					Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
+						var wavJSO = messWavParser;
+						viewState.curViewPort.sS = 0;
+						viewState.curViewPort.eS = wavJSO.Data.length;
+						viewState.curViewPort.selectS = -1;
+						viewState.curViewPort.selectE = -1;
+						viewState.curClickSegments = [];
+						viewState.curClickLevelName = undefined;
+						viewState.curClickLevelType = undefined;
+
+						// FOR DEVELOPMENT:
+						// viewState.curViewPort.sS = 4000;
+						// viewState.curViewPort.eS = 5000;
+
+						viewState.curViewPort.bufferLength = wavJSO.Data.length;
+						viewState.resetSelect();
+						Soundhandlerservice.wavJSO = wavJSO;
+						// ConfigProviderService.vals.perspectives[0].signalCanvases.order = ["OSCI", "SPEC"];
+						console.log(wavJSO)
+						ConfigProviderService.vals.curPerspectiveIdx = 0;
+						viewState.somethingInProgress = true;
+					})
+				},function (errMess) {
+					alert(errMess)
+				});
 			});
+
 
 		};
 
