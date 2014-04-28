@@ -13,11 +13,11 @@
     <!-- top menu bar -->
     <div class="menuBarTop">
       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="SideMenuBtn left"><img></img></button>
-      <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addLevelSeg}}" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
-      <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="mini-btn" ng-click="addLevelPointBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.addLevelPoint}}">add level (EVENT)</button> 
-      <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="mini-btn" ng-click="renameSelLevelBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.renameLevel}}">rename sel. level</button> 
-      <button ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="mini-btn" ng-click="downloadTextGridBtnClick();" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.downloadTextgrid}}">download TextGrid</button> 
-      <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.spectroSettings}}" ng-click="spectSettingsBtnClick();">spec. settings</button>
+      <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="mini-btn" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
+      <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
+      <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
+      <button ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
+      <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
       
       <li class="dropdown">
         <a class="dropdown-toggle">
@@ -30,8 +30,9 @@
           </li>
         </ul>
       </li>
-      <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.connect}}" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
-      <button ng-show="cps.vals.activeButtons.clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="mini-btn" tooltip-placement="bottom" data-tooltip="Shortcut: {{shortcut.clear}}" ng-click="clearBtnClick();">clear</button>
+
+      <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
+      <button ng-show="cps.vals.activeButtons.clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="mini-btn" ng-click="clearBtnClick();">clear</button>
       <a id="aboutBtn" class="SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></img></a>
     </div>
 
@@ -92,7 +93,7 @@
   <button class="rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();"><img></button>
   <h3>Perspectives</h3>
   <ul>
-    <li ng-repeat="persp in cps.vals.perspectives" ng-click="changePerspective(persp);" ng-style="getPerspectiveColor(persp);">{{persp.name}}</li>
+    <li ng-repeat="persp in cps.vals.perspectives" ng-click="changePerspective(persp);" ng-class="getPerspectiveColor(persp);">{{persp.name}}</li>
   </ul>
 </nav>
 
