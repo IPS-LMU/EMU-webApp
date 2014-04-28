@@ -2,11 +2,12 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function (viewState) {
+	.directive('osci', function (viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
 			restrict: 'E',
+			// scope: {},
 			link: function postLink(scope, element, attrs) {
 
 
@@ -17,56 +18,61 @@ angular.module('emuwebApp')
 				scope.order = attrs.order;
 
 				scope.enlargeCanvas = {
-					'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
+					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
+
+				scope.cpi = viewState.curPerspectiveIdx;
+				scope.phai = viewState.playHeadAnimationInfos;
+				scope.cvp = viewState.curViewPort;
+				scope.mb = viewState.movingBoundary;
 
 				///////////////
 				// watches
 
-				scope.$watch('vs.curPerspectiveIdx', function () {
+				scope.$watch('cpi', function () {
 					scope.updateCSS();
 				}, true);
 
-				scope.$watch('vs.playHeadAnimationInfos', function () {
-					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawPlayHead(scope, scope.cps);
+				scope.$watch('phai', function () {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+							drawPlayHead(scope, ConfigProviderService);
 						}
 					}
 				}, true);
 
 				// scope.$watch('tds.data', function () {
-				// 	if (!$.isEmptyObject(scope.shs)) {
-				// 		if (!$.isEmptyObject(scope.shs.wavJSO)) {
+				// 	if (!$.isEmptyObject(Soundhandlerservice)) {
+				// 		if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 				// 			console.log(scope.tds.data)
-				// 			drawVpOsciMarkup(scope, scope.cps, true);
+				// 			drawVpOsciMarkup(scope, ConfigProviderService, true);
 				// 		}
 				// 	}
 				// }, true);
 
-				scope.$watch('vs.movingBoundary', function () {
-					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawVpOsciMarkup(scope, scope.cps, true);
+				scope.$watch('mb', function () {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+							drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
 
-				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+				scope.$watch('cvp', function (newValue, oldValue) {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							// check for changed zoom
 							if (oldValue.sS !== newValue.sS || oldValue.sE !== newValue.sE || newValue.selectS === -1) { // SIC -1 check not that clean...
-								var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
-								scope.dhs.osciPeaks = allPeakVals;
-								scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.cps);
+								var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
+								Drawhelperservice.osciPeaks = allPeakVals;
+								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 							}
-							drawVpOsciMarkup(scope, scope.cps, true);
+							drawVpOsciMarkup(scope, ConfigProviderService, true);
 							scope.updateCSS();
 						}
 					}
 				}, true);
-				
+
 				//
 				/////////////////////////
 
@@ -74,7 +80,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.redraw = function () {
-					drawVpOsciMarkup(scope, scope.cps, true);
+					drawVpOsciMarkup(scope, ConfigProviderService, true);
 					scope.updateCSS();
 				};
 
@@ -82,7 +88,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.updateCSS = function () {
-					var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
 						scope.enlargeCanvas = {
 							'height': 100 / parts + '%'
@@ -105,7 +111,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				function drawPlayHead(scope, config) {
-					var viewState = scope.vs;
+					var viewState = viewState;
 					var ctx = markupCanvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -113,7 +119,7 @@ angular.module('emuwebApp')
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
 					// console.log(viewState.playHeadAnimationInfos.curS)
 
-					ctx.fillStyle = scope.cps.vals.colors.selectedAreaColor;
+					ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
 
 					//console.log(posS,posCur);
@@ -146,7 +152,6 @@ angular.module('emuwebApp')
 
 				function drawVpOsciMarkup(scope, config, reset) {
 
-					var viewState = scope.vs;
 					var ctx = markupCanvas.getContext('2d');
 					if (reset) {
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
@@ -156,13 +161,13 @@ angular.module('emuwebApp')
 					sDist = viewState.getSampleDist(markupCanvas.width);
 
 					// draw moving boundary line if moving
-					scope.dhs.drawMovingBoundaryLine(ctx);
+					Drawhelperservice.drawMovingBoundaryLine(ctx);
 
 					// draw current viewport selected
-					scope.dhs.drawCurViewPortSelected(ctx, true);
+					Drawhelperservice.drawCurViewPortSelected(ctx, true);
 
 					// draw view port times
-					scope.dhs.drawViewPortTimes(ctx, true);
+					Drawhelperservice.drawViewPortTimes(ctx, true);
 
 					// ctx.strokeStyle = config.vals.colors.labelColor;
 					// ctx.fillStyle = config.vals.colors.labelColor;
@@ -188,8 +193,8 @@ angular.module('emuwebApp')
 					// if (viewState.curViewPort) {
 					// 	//draw time and sample nr
 
-					// 	sTime = viewState.round(viewState.curViewPort.sS / scope.shs.wavJSO.SampleRate, 6);
-					// 	eTime = viewState.round(viewState.curViewPort.eS / scope.shs.wavJSO.SampleRate, 6);
+					// 	sTime = viewState.round(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
+					// 	eTime = viewState.round(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
 
 					// 	horizontalText = scope.fontImage.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 					// 	// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
