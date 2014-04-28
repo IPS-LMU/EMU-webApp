@@ -20,6 +20,9 @@ angular.module('emuwebApp')
 					'height': 100 / scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
 
+				///////////////
+				// watches
+
 				scope.$watch('vs.curPerspectiveIdx', function () {
 					scope.updateCSS();
 				}, true);
@@ -32,13 +35,14 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('tds.data', function () {
-					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
-							drawVpOsciMarkup(scope, scope.cps, true);
-						}
-					}
-				}, true);
+				// scope.$watch('tds.data', function () {
+				// 	if (!$.isEmptyObject(scope.shs)) {
+				// 		if (!$.isEmptyObject(scope.shs.wavJSO)) {
+				// 			console.log(scope.tds.data)
+				// 			drawVpOsciMarkup(scope, scope.cps, true);
+				// 		}
+				// 	}
+				// }, true);
 
 				scope.$watch('vs.movingBoundary', function () {
 					if (!$.isEmptyObject(scope.shs)) {
@@ -62,12 +66,21 @@ angular.module('emuwebApp')
 						}
 					}
 				}, true);
+				
+				//
+				/////////////////////////
 
+				/**
+				 *
+				 */
 				scope.redraw = function () {
 					drawVpOsciMarkup(scope, scope.cps, true);
 					scope.updateCSS();
 				};
 
+				/**
+				 *
+				 */
 				scope.updateCSS = function () {
 					var parts = scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 					if (viewState.getenlarge() == -1) {
@@ -87,10 +100,10 @@ angular.module('emuwebApp')
 					}
 				};
 
+
 				/**
 				 *
 				 */
-
 				function drawPlayHead(scope, config) {
 					var viewState = scope.vs;
 					var ctx = markupCanvas.getContext('2d');
