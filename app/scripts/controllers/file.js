@@ -131,6 +131,7 @@ angular.module('emuwebApp')
 								$scope.$parent.vs.somethingInProgressTxt = 'Done!';
 								$scope.$parent.vs.somethingInProgress = false;
 								$scope.$parent.vs.setState('labeling');
+								$scope.$parent.openSubmenu();
 			                });
     			        }
 	    		    }, function (errMess) {
