@@ -28,28 +28,28 @@
 			"showPerspectivesSidebar": false,
 			"sortLabels": false,
 			"editItemSize": false,
-			"editItemName": false,
-			"deleteItemBoundary": false,
-			"deleteItem": false,
-			"deleteLevel": false,
-			"addItem": false
+			"editItemName": true,
+			"deleteItemBoundary": true,
+			"deleteItem": true,
+			"deleteLevel": true,
+			"addItem": true
 		},
 		"activeButtons": {
-			"addLevelSeg": false,
-			"addLevelEvent": false,
-			"renameSelLevel": false,
-			"downloadTextGrid": false,
+			"addLevelSeg": true,
+			"addLevelEvent": true,
+			"renameSelLevel": true,
+			"downloadTextGrid": true,
 			"specSettings": true,
 			"connect": false,
-			"clear": false,
-			"deleteSingleLevel": false,
+			"clear": true,
+			"deleteSingleLevel": true,
 			"resizeSingleLevel": true,
 			"saveSingleLevel": false,
 			"resizeOsci": true,
 			"resizeSpectro": true,
 			"openDemoDB": false,
 			"saveBundle": false,
-			"openMenu": false
+			"openMenu": true
 		}
 	}
 }

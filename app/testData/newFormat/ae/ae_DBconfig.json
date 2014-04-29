@@ -168,6 +168,9 @@
 				"show": false
 			}
 		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
 		"activeButtons": {
 			"saveBundle": true
 		}

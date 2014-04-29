@@ -168,6 +168,9 @@
 				"order": []
 			}
 		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
 		"activeButtons": {
 			"saveBundle": false
 		}
