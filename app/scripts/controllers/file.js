@@ -94,7 +94,7 @@ angular.module('emuwebApp')
 		reader.readAsArrayBuffer($scope.newfiles.wav);
 		reader.onloadend = function(evt) {
 		  if (evt.target.readyState == FileReader.DONE) { 
-		    $scope.$parent.io.httpGetPath('configFiles/embedded_config.json').then(function (resp) {
+		    $scope.$parent.io.httpGetPath('configFiles/standalone_config.json').then(function (resp) {
 					// first element of perspectives is default perspective
 					$scope.$parent.vs.curPerspectiveIdx = 0;
 					$scope.$parent.cps.setVals(resp.data.EMUwebAppConfig);
