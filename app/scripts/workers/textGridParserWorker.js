@@ -123,7 +123,7 @@ function toJSO(string, myFile, myName) {
 		return labelJSO;
 
 	} else {
-		alert('bad header in TextGrid file!!! The header has to be: ', l1, '\n', l2);
+		// alert('bad header in TextGrid file!!! The header has to be: ', l1, '\n', l2);
 		return ({
 			'status': {
 				'type': 'ERROR',
