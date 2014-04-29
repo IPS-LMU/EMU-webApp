@@ -111,7 +111,6 @@ angular.module('emuwebApp')
 				 *
 				 */
 				function drawPlayHead(scope, config) {
-					var viewState = viewState;
 					var ctx = markupCanvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 
