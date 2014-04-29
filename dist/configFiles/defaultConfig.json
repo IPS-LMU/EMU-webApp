@@ -122,7 +122,7 @@
         "drawZeroLine": true,
         "bundleComments": false,
         "bundleFinishedEditing": false,
-        "showPerspectivesSidebar": true
+        "showPerspectivesSidebar": false
     },
     "activeButtons": {
         "addLevelSeg": false,

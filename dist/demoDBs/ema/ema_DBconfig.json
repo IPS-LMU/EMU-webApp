@@ -227,6 +227,9 @@
 		}],
 		"activeButtons": {
 			"saveBundle": false
+		},
+		"restrictions": {
+			"showPerspectivesSidebar": true
 		}
 	}
 }

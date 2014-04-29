@@ -131,7 +131,7 @@
 	}],
 	"EMUwebAppConfig": {
 		"perspectives": [{
-			"name": "switchedLevels",
+			"name": "default",
 			"signalCanvases": {
 				"order": ["OSCI", "SPEC", "fundFreq"],
 				"assign": [{
@@ -145,36 +145,32 @@
 				}]
 			},
 			"levelCanvases": {
-				"order": ["Tone", "Phonetic"]
+				"order": ["Phonetic", "Tone"]
 			},
 			"twoDcanvases": {
 				"order": []
 			}
 		}, {
-			"name": "default",
+			"name": "phonetic+10DftCoeffs",
 			"signalCanvases": {
 				"order": ["OSCI", "SPEC", "fundFreq", "dftSpec"],
-				"assign": [{
-					"signalCanvasName": "SPEC",
-					"ssffTrackName": "FORMANTS"
-				}],
+				"assign": [],
 				"contourLims": [{
-					"ssffTrackName": "FORMANTS",
-					"min": 0,
-					"max": 1
-				}, {
 					"ssffTrackName": "dftSpec",
 					"min": 0,
 					"max": 11
 				}]
 			},
 			"levelCanvases": {
-				"order": ["Phonetic", "Tone"]
+				"order": ["Phonetic"]
 			},
-			"twoDcanvases": {
-				"show": false
+			"twoDimCanvases": {
+				"order": []
 			}
 		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
 		"activeButtons": {
 			"saveBundle": false
 		}

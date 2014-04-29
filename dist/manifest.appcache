@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-04-29T09:50:41.538Z
+# rev 1 - 2014-04-29T13:23:43.750Z
 
 CACHE:
 404.html
@@ -8,6 +8,7 @@ assets/icon.png
 background.js
 configFiles/defaultConfig.json
 configFiles/embedded_config.json
+configFiles/standalone_config.json
 demoDBs/ae/ae_DBconfig.json
 demoDBs/ae/ae_bundleList.json
 demoDBs/ae/msajc003_bndl.json
@@ -29,7 +30,7 @@ img/search-dark.png
 index.html
 manifest.json
 robots.txt
-scripts/05da0faa.emuwebApp.min.js
+scripts/1b043acb.emuwebApp.min.js
 scripts/5f00f75a.emuwebAppExtLibs.min.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js

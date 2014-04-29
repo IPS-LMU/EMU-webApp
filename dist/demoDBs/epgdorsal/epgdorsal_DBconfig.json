@@ -60,6 +60,9 @@
 				"order": ["EPG"]
 			}
 		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
 		"activeButtons": {
 			"saveBundle": false
 		}

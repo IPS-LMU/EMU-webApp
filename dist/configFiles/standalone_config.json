@@ -1,0 +1,55 @@
+{
+	"name": "embedded",
+	"UUID": "cd45b08a-3a13-4e42-b566-585844efabd5",
+	"mediafileExtension": "wav",
+	"ssffTracks": [],
+	"levelDefinitions": [],
+	"linkDefinitions": [],
+	"EMUwebAppConfig": {
+		"main": {
+			"comType": "embedded",
+			"catchMouseForKeyBinding": false
+		},
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC"],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": []
+			},
+			"twoDcanvases": {
+				"order": []
+			}
+		}],
+		"restrictions": {
+			"showPerspectivesSidebar": false,
+			"sortLabels": false,
+			"editItemSize": false,
+			"editItemName": true,
+			"deleteItemBoundary": true,
+			"deleteItem": true,
+			"deleteLevel": true,
+			"addItem": true
+		},
+		"activeButtons": {
+			"addLevelSeg": true,
+			"addLevelEvent": true,
+			"renameSelLevel": true,
+			"downloadTextGrid": true,
+			"specSettings": true,
+			"connect": false,
+			"clear": true,
+			"deleteSingleLevel": true,
+			"resizeSingleLevel": true,
+			"saveSingleLevel": false,
+			"resizeOsci": true,
+			"resizeSpectro": true,
+			"openDemoDB": false,
+			"saveBundle": false,
+			"openMenu": true
+		}
+	}
+}
