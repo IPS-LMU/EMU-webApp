@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackmouse', function () {
+  .directive('trackmouse', function (viewState, ConfigProviderService, Ssffdataservice, Drawhelperservice) {
     return {
       restrict: 'A',
+      scope: {},
       link: function (scope, element, atts) {
 
         var curMouseSample;
@@ -28,22 +29,22 @@ angular.module('emuwebApp')
         /////////////////////////////
         // Bindings
         element.bind('mousedown', function (event) {
-          dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+          dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
           dragEndSample = dragStartSample;
-          scope.vs.select(dragStartSample, dragStartSample);
+          viewState.select(dragStartSample, dragStartSample);
           scope.$apply();
         });
 
         element.bind('mousemove', function (event) {
           switch (event.which) {
           case 0:
-            if (!$.isEmptyObject(scope.ssffds.data)) {
-              if (scope.ssffds.data.length !== 0) {
-                if (!scope.vs.getdragBarActive()) {
+            if (!$.isEmptyObject(Ssffdataservice.data)) {
+              if (Ssffdataservice.data.length !== 0) {
+                if (!viewState.getdragBarActive()) {
                   if (tr === undefined && trackName !== 'OSCI') {
-                    tr = scope.cps.getSsffTrackConfig(trackName);
-                    col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-                    sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+                    tr = ConfigProviderService.getSsffTrackConfig(trackName);
+                    col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+                    sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
                   }
 
                   switch (trackName) {
@@ -55,8 +56,8 @@ angular.module('emuwebApp')
                     tN = '';
                     break;
                   case 'SPEC':
-                    min = scope.vs.spectroSettings.rangeFrom;
-                    max = scope.vs.spectroSettings.rangeTo;
+                    min = viewState.spectroSettings.rangeFrom;
+                    max = viewState.spectroSettings.rangeTo;
                     unit = 'Hz';
                     drawTimes = false;
                     tN = trackName;
@@ -71,28 +72,28 @@ angular.module('emuwebApp')
                   }
 
                   // console.log(event);
-                  var mouseX = scope.dhs.getX(event);
-                  scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
+                  var mouseX = Drawhelperservice.getX(event);
+                  viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
                   // drawing stuff on mouse move 
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                   // draw crossHairs
-                  if (scope.cps.vals.restrictions.drawCrossHairs) {
-                    scope.dhs.drawCrossHairs(ctx, event, min, max, unit);
+                  if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
+                    Drawhelperservice.drawCrossHairs(ctx, event, min, max, unit);
                   }
                   // draw moving boundary line if moving
-                  scope.dhs.drawMovingBoundaryLine(ctx);
+                  Drawhelperservice.drawMovingBoundaryLine(ctx);
 
                   // draw current viewport selected
-                  scope.dhs.drawCurViewPortSelected(ctx, drawTimes);
+                  Drawhelperservice.drawCurViewPortSelected(ctx, drawTimes);
 
                   // draw min max vals and name of track
-                  scope.dhs.drawMinMaxAndName(ctx, tN, min, max, 2);
+                  Drawhelperservice.drawMinMaxAndName(ctx, tN, min, max, 2);
 
                   // draw view port times
                   if (drawTimes) {
-                    scope.dhs.drawViewPortTimes(ctx);
+                    Drawhelperservice.drawViewPortTimes(ctx);
                   }
 
 
@@ -103,7 +104,7 @@ angular.module('emuwebApp')
             break;
 
           case 1:
-            if (!scope.vs.getdragBarActive()) {
+            if (!viewState.getdragBarActive()) {
               setSelectDrag(event);
             }
             break;
@@ -114,34 +115,37 @@ angular.module('emuwebApp')
         element.bind('mouseleave', function (event) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           // draw moving boundary line if moving
-          scope.dhs.drawMovingBoundaryLine(ctx);
+          Drawhelperservice.drawMovingBoundaryLine(ctx);
 
           // draw current viewport selected
-          scope.dhs.drawCurViewPortSelected(ctx, drawTimes);
+          Drawhelperservice.drawCurViewPortSelected(ctx, drawTimes);
 
           // draw min max vals and name of track
-          scope.dhs.drawMinMaxAndName(ctx, tN, min, max, 2);
+          Drawhelperservice.drawMinMaxAndName(ctx, tN, min, max, 2);
 
           // draw view port times
           if (drawTimes) {
-            scope.dhs.drawViewPortTimes(ctx);
+            Drawhelperservice.drawViewPortTimes(ctx);
           }
         })
 
         element.bind('mouseup', function (event) {
-          if (!scope.vs.getdragBarActive()) {
+          if (!viewState.getdragBarActive()) {
             setSelectDrag(event);
           }
         });
 
+        //
+        //////////////////////
+
         function setSelectDrag(event) {
-          curMouseSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+          curMouseSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
           if (curMouseSample > dragStartSample) {
             dragEndSample = curMouseSample;
-            scope.vs.select(dragStartSample, dragEndSample);
+            viewState.select(dragStartSample, dragEndSample);
           } else {
             dragStartSample = curMouseSample;
-            scope.vs.select(dragStartSample, dragEndSample);
+            viewState.select(dragStartSample, dragEndSample);
           }
           scope.$apply();
         }
