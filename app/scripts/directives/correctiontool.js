@@ -36,102 +36,107 @@ angular.module('emuwebApp')
 				element.bind('mousemove', function (event) {
 					switch (event.which) {
 					case 0:
-						if (!scope.vs.getdragBarActive()) {
-							// perform mouse tracking
-							var mouseX = scope.dhs.getX(event);
-							scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
+						if (!$.isEmptyObject(scope.ssffds.data)) {
+							if (scope.ssffds.data.length !== 0) {
+
+								if (!scope.vs.getdragBarActive()) {
+									// perform mouse tracking
+									var mouseX = scope.dhs.getX(event);
+									scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
 
 
-							ctx.clearRect(0, 0, canvas.width, canvas.height);
-							// draw crossHairs
-							if (scope.cps.vals.restrictions.drawCrossHairs) {
-								scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 'Hz');
-							}
-							// draw moving boundary line if moving
-							scope.dhs.drawMovingBoundaryLine(ctx);
+									ctx.clearRect(0, 0, canvas.width, canvas.height);
+									// draw crossHairs
+									if (scope.cps.vals.restrictions.drawCrossHairs) {
+										scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 'Hz');
+									}
+									// draw moving boundary line if moving
+									scope.dhs.drawMovingBoundaryLine(ctx);
 
-							// draw current viewport selected
-							scope.dhs.drawCurViewPortSelected(ctx, false);
+									// draw current viewport selected
+									scope.dhs.drawCurViewPortSelected(ctx, false);
 
-							// draw min max vals and name of track
-							scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
+									// draw min max vals and name of track
+									scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
 
-							if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive() && !$.isEmptyObject(scope.cps.getAssignment(trackName))) {
-								// var col = scope.ssffds.data[0].Columns[0];
-								if (tr === undefined) {
-									tr = scope.cps.getSsffTrackConfig('FORMANTS');
-									col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-									sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-								}
+									if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive() && !$.isEmptyObject(scope.cps.getAssignment(trackName))) {
+										// var col = scope.ssffds.data[0].Columns[0];
+										if (tr === undefined) {
+											tr = scope.cps.getSsffTrackConfig('FORMANTS');
+											col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+											sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+										}
 
-								var startTimeVP = scope.vs.getViewPortStartTime();
-								var endTimeVP = scope.vs.getViewPortEndTime();
+										var startTimeVP = scope.vs.getViewPortStartTime();
+										var endTimeVP = scope.vs.getViewPortEndTime();
 
-								var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-								var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-								var nrOfSamples = colEndSampleNr - colStartSampleNr;
-								var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+										var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
+										var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
+										var nrOfSamples = colEndSampleNr - colStartSampleNr;
+										var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
-								// console.log(colStartSampleNr)
-
-
-								var curMouseTime = startTimeVP + (scope.dhs.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
-								var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-
-								var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
+										// console.log(colStartSampleNr)
 
 
-								if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
-									console.log('early return');
-									return;
-								}
+										var curMouseTime = startTimeVP + (scope.dhs.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
+										var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
 
-								scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr;
+										var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
 
-								var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-								var y = canvas.height - curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
 
-								// draw sample
-								ctx.strokeStyle = '#0DC5FF';
-								ctx.fillStyle = 'white';
-								ctx.beginPath();
-								ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-								ctx.closePath();
-								ctx.stroke();
-								ctx.fill();
+										if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
+											console.log('early return');
+											return;
+										}
 
-								if (event.shiftKey) {
-									var oldValue = angular.copy(curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1]);
-									var newValue = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo; // SIC only using rangeTo
+										scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr;
 
-									curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
-									var updateObj = scope.hists.updateCurChangeObj({
-										'type': 'SSFF',
-										'trackName': tr.name,
-										'sampleBlockIdx': colStartSampleNr + scope.vs.curPreselColumnSample,
-										'sampleIdx': scope.vs.curCorrectionToolNr - 1,
-										'oldValue': oldValue,
-										'newValue': newValue
-									});
-
-									//draw updateObj as overlay
-									for (var key in updateObj) {
-										curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
-										x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-										y = canvas.height - updateObj[key].newValue / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
+										var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+										var y = canvas.height - curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
 
 										// draw sample
-										ctx.strokeStyle = 'red';
-										ctx.fillStyle = 'red';
-										// ctx.lineWidth = 4;
+										ctx.strokeStyle = '#0DC5FF';
+										ctx.fillStyle = 'white';
 										ctx.beginPath();
 										ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
 										ctx.closePath();
 										ctx.stroke();
 										ctx.fill();
+
+										if (event.shiftKey) {
+											var oldValue = angular.copy(curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1]);
+											var newValue = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo; // SIC only using rangeTo
+
+											curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
+											var updateObj = scope.hists.updateCurChangeObj({
+												'type': 'SSFF',
+												'trackName': tr.name,
+												'sampleBlockIdx': colStartSampleNr + scope.vs.curPreselColumnSample,
+												'sampleIdx': scope.vs.curCorrectionToolNr - 1,
+												'oldValue': oldValue,
+												'newValue': newValue
+											});
+
+											//draw updateObj as overlay
+											for (var key in updateObj) {
+												curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
+												x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+												y = canvas.height - updateObj[key].newValue / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
+
+												// draw sample
+												ctx.strokeStyle = 'red';
+												ctx.fillStyle = 'red';
+												// ctx.lineWidth = 4;
+												ctx.beginPath();
+												ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+												ctx.closePath();
+												ctx.stroke();
+												ctx.fill();
+											}
+
+
+										}
 									}
-
-
 								}
 							}
 						}
