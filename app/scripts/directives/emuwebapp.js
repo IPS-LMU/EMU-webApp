@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 					viewState.mouseInEmuWebApp = true;
 
 				});
+				
 				element.bind('mouseleave', function (event) {
 					viewState.mouseInEmuWebApp = false;
 				});

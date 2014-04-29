@@ -8,7 +8,7 @@
 	"EMUwebAppConfig": {
 		"main": {
 			"comType": "embedded",
-			"catchMouseForKeyBinding": false
+			"catchMouseForKeyBinding": true
 		},
 		"perspectives": [{
 			"name": "default",

@@ -13,7 +13,7 @@ angular.module('emuwebApp')
           scope.$apply(function () {
             // check if mouse has to be in labeler for key mappings
             if (ConfigProviderService.vals.main.catchMouseForKeyBinding) {
-              if (viewState.mouseInEmuWebApp) {
+              if (!viewState.mouseInEmuWebApp) {
                 return;
               }
             }
