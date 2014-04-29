@@ -374,5 +374,15 @@ self.addEventListener('message', function (e) {
 		}
 
 		break;
+	default:
+		self.postMessage({
+			'status': {
+				'type': 'ERROR',
+				'message': 'Unknown command sent to ssffParserWorker'
+			}
+		});
+
+		break;
+
 	}
 });
