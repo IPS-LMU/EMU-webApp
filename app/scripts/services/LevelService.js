@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Levelservice', function Levelservice($rootScope, uuid, Soundhandlerservice) {
+	.service('Levelservice', function Levelservice(uuid, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -649,6 +649,7 @@ angular.module('emuwebApp')
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
+							
 						});
 					}
 				} else {
@@ -679,8 +680,6 @@ angular.module('emuwebApp')
 					}
 				}
 			}
-
-
 		};
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function (viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Levelservice) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Levelservice) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -241,7 +241,13 @@ angular.module('emuwebApp')
                         'rightSide': true,
                         'changeTime': changeTime
                       });
-
+                      var l = viewState.getcurClickSegments().length;
+                      if(l==1) {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                      }
+                      else {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                      }
                     }
                   }
                 }
@@ -272,7 +278,13 @@ angular.module('emuwebApp')
                         'rightSide': false,
                         'changeTime': changeTime
                       });
-
+                      var l = viewState.getcurClickSegments().length;
+                      if(l==1) {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                      }
+                      else {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                      }
                     }
                   }
                 }
@@ -304,6 +316,13 @@ angular.module('emuwebApp')
                           'changeTime': -changeTime
                         });
                         Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        var l = viewState.getcurClickSegments().length;
+                        if(l==1) {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        }
+                        else {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                        }                        
                       } else {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -314,6 +333,13 @@ angular.module('emuwebApp')
                           'changeTime': -changeTime
                         });
                         Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        var l = viewState.getcurClickSegments().length;
+                        if(l==1) {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        }
+                        else {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                        }                        
                       }
                     }
                   }
@@ -499,6 +525,17 @@ angular.module('emuwebApp')
           });
 
         });
+        
+        scope.safeApply = function(fn) {
+          var phase = this.$root.$$phase;
+          if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+              fn();
+            }
+          } else {
+            this.$apply(fn);
+          }
+        };
 
         //remove binding on destroy
         scope.$on(
