@@ -31,6 +31,13 @@ angular.module('emuwebApp')
         scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
+        
+        
+        scope.redraw = function () {
+          drawSsffTrackMarkup(true);
+          scope.updateCSS();
+        };
+        
 
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
