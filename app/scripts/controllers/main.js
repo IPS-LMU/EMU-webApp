@@ -59,8 +59,10 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 		// watch if embedded override (if attributes are set on emuwebapp tag)
-		$scope.$watch(ConfigProviderService.embeddedVals.audioGetUrl, function (val) {
-			if (val) {
+		$scope.$watch('cps.embeddedVals.audioGetUrl', function (val) {
+			if (val !== undefined && val !== '') {
+				console.log("fasdkfjadsklfjasldkfj");
+				console.log(val);
 				// check if both are set
 				$scope.loadFilesForEmbeddedApp();
 			}
@@ -118,18 +120,25 @@ angular.module('emuwebApp')
 
 						// get + parse textgrid
 						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
-							var annot = Textgridparserservice.toJSO(data2.data);
-							Levelservice.setData(annot);
-							// console.log(JSON.stringify(l, undefined, 2));
-							var lNames = [];
-							annot.levels.forEach(function (l) {
-								lNames.push(l.name);
-							})
+							viewState.somethingInProgressTxt = 'Parsing TextGrid file...';
+							Textgridparserservice.asyncParseTextGrid(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid').then(function (parseMess) {
+								var annot = parseMess.data;
+								Levelservice.setData(annot);
+								// console.log(JSON.stringify(l, undefined, 2));
+								var lNames = [];
+								annot.levels.forEach(function (l) {
+									lNames.push(l.name);
+								})
 
-							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-							viewState.somethingInProgressTxt = 'Done!';
-							viewState.somethingInProgress = false;
-							viewState.setState('labeling');
+								ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+								viewState.somethingInProgressTxt = 'Done!';
+								viewState.somethingInProgress = false;
+								viewState.setState('labeling');
+							}, function (errMess) {
+								console.error(errMess);
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+							});
+
 						}, function (errMess) {
 							dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + errMess);
 						});

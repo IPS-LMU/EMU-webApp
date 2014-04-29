@@ -1,6 +1,6 @@
 'use strict';
 
-var shs = Soundhandlerservice;
+var sampleRate;
 var l1 = 'File type = \"ooTextFile\"';
 var l2 = 'Object class = \"TextGrid\"';
 
@@ -27,12 +27,12 @@ function toJSO(string, myFile, myName) {
 	var labelJSO = {
 		name: myName,
 		annotates: myFile,
-		sampleRate: this.shs.wavJSO.SampleRate,
+		sampleRate: sampleRate,
 		levels: [],
 		links: []
 	};
 
-	if (lines[0].replace(/\s+/g, '') === this.l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === this.l2.replace(/\s+/g, '')) {
+	if (lines[0].replace(/\s+/g, '') === l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === l2.replace(/\s+/g, '')) {
 		for (var i = 2; i < lines.length; i++) {
 			var cL = lines[i];
 			if (cL === 'item[]:') {
@@ -53,7 +53,7 @@ function toJSO(string, myFile, myName) {
 					labelJSO.levels.push({
 						name: tN,
 						type: tT,
-						sampleRate: this.shs.wavJSO.SampleRate,
+						sampleRate: sampleRate,
 						items: []
 					});
 				} else if (lines[i + 1].split(/=/)[1] === '\"TextTier\"') {
@@ -62,7 +62,7 @@ function toJSO(string, myFile, myName) {
 					labelJSO.levels.push({
 						name: tN,
 						type: tT,
-						sampleRate: this.shs.wavJSO.SampleRate,
+						sampleRate: sampleRate,
 						items: []
 					});
 				} else {
@@ -79,8 +79,8 @@ function toJSO(string, myFile, myName) {
 			}
 			if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 				// parse seg levels event
-				var eSt = Math.floor(lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate) + 1;
-				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * this.shs.wavJSO.SampleRate);
+				var eSt = Math.floor(lines[i + 1].split(/=/)[1] * sampleRate) + 1;
+				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 				lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 
 				var labs = [];
@@ -100,7 +100,7 @@ function toJSO(string, myFile, myName) {
 
 			} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 				// parse point level event
-				eT = lines[i + 1].split(/=/)[1] * this.shs.wavJSO.SampleRate;
+				eT = lines[i + 1].split(/=/)[1] * sampleRate;
 				lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
 				var labs = [];
 				labs.push({
@@ -119,11 +119,17 @@ function toJSO(string, myFile, myName) {
 
 		}
 		// console.log(JSON.stringify(labelJSO, undefined, 2));
-		this.testForGapsInLabelJSO(labelJSO);
+		testForGapsInLabelJSO(labelJSO);
 		return labelJSO;
 
 	} else {
-		alert('bad header in TextGrid file!!! The header has to be: ', this.l1, '\n', this.l2);
+		alert('bad header in TextGrid file!!! The header has to be: ', l1, '\n', l2);
+		return ({
+			'status': {
+				'type': 'ERROR',
+				'message': 'bad header in TextGrid file!!! The header has to be: ' + l1 + '\n' + l2
+			}
+		});
 	}
 
 };
@@ -230,11 +236,32 @@ function testForGapsInLabelJSO(labelJSO) {
  * add event listener to webworker
  */
 self.addEventListener('message', function (e) {
-		var data = e.data;
-		switch (data.cmd) {
-		case 'parseTG':
-			console.log('howdy')
-			self.postMessage('yo mumma smells');
-			break;
+	var data = e.data;
+	switch (data.cmd) {
+	case 'parseTG':
+		sampleRate = data.sampleRate;
+		var retVal = toJSO(data.textGrid, data.annotates, data.name)
+		if (retVal.type === undefined) {
+			self.postMessage({
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				},
+				'data': retVal
+			});
+		} else {
+			self.postMessage(retVal);
 		}
-		})
+		// self.postMessage('yo mumma smells');
+		break;
+	default:
+		self.postMessage({
+			'status': {
+				'type': 'ERROR',
+				'message': 'Unknown command sent to textGridParserWorker'
+			}
+		});
+
+		break;
+	}
+})
