@@ -130,13 +130,19 @@ angular.module('emuwebApp')
 							viewState.somethingInProgressTxt = 'Done!';
 							viewState.somethingInProgress = false;
 							viewState.setState('labeling');
+						}, function (errMess) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + errMess);
 						});
 
 
+					}, function (errMess) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 					})
 				}, function (errMess) {
-					alert(errMess)
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
 				});
+			}, function (errMess) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + errMess);
 			});
 
 
