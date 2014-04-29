@@ -230,5 +230,15 @@ self.addEventListener('message', function (e) {
 			self.postMessage(parserRes);
 		}
 		break;
+	default:
+		self.postMessage({
+			'status': {
+				'type': 'ERROR',
+				'message': 'Unknown command sent to wavParserWorker'
+			}
+		});
+
+		break;
+
 	}
 });
