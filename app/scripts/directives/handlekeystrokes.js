@@ -397,7 +397,7 @@ angular.module('emuwebApp')
                   if (viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE) {
                     if (viewState.getcurClickSegments().length == 1) {
                       viewState.setEditing(true);
-                      viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getselected()[0], viewState.getcurClickLevelType());
+                      viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
                       scope.cursorInTextField();
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');

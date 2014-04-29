@@ -655,6 +655,10 @@ angular.module('emuwebApp')
     sServObj.getselected = function () {
       return this.curClickSegments;
     };
+    
+    sServObj.getlasteditAreaElem = function () {
+      return this.lasteditAreaElem;
+    };
 
     sServObj.isEditing = function () {
       return this.editing;
@@ -664,8 +668,9 @@ angular.module('emuwebApp')
       this.editing = n;
     };
 
-    sServObj.setlasteditArea = function (name) {
+    sServObj.setlasteditArea = function (name, elem) {
       this.lasteditArea = name;
+      this.lasteditAreaElem = elem;
     };
 
     sServObj.getlastID = function () {
@@ -728,7 +733,9 @@ angular.module('emuwebApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
-    sServObj.openEditArea = function (lastEventClick, type, element) {
+    sServObj.openEditArea = function (lastEventClick, element, type) {
+      console.log(lastEventClick);
+      console.log(element);
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
