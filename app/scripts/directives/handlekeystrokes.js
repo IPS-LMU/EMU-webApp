@@ -242,11 +242,10 @@ angular.module('emuwebApp')
                         'changeTime': changeTime
                       });
                       var l = viewState.getcurClickSegments().length;
-                      if(l==1) {
-                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                      }
-                      else {
-                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                      if (l == 1) {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                      } else {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
                       }
                     }
                   }
@@ -279,11 +278,10 @@ angular.module('emuwebApp')
                         'changeTime': changeTime
                       });
                       var l = viewState.getcurClickSegments().length;
-                      if(l==1) {
-                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                      }
-                      else {
-                        viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
+                      if (l == 1) {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                      } else {
+                        viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
                       }
                     }
                   }
@@ -317,12 +315,11 @@ angular.module('emuwebApp')
                         });
                         Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         var l = viewState.getcurClickSegments().length;
-                        if(l==1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        if (l == 1) {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        } else {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
                         }
-                        else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
-                        }                        
                       } else {
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -334,12 +331,11 @@ angular.module('emuwebApp')
                         });
                         Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         var l = viewState.getcurClickSegments().length;
-                        if(l==1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        if (l == 1) {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
+                        } else {
+                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
                         }
-                        else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart,viewState.getcurClickSegments()[l-1].sampleStart + viewState.getcurClickSegments()[l-1].sampleDur);
-                        }                        
                       }
                     }
                   }
@@ -349,10 +345,13 @@ angular.module('emuwebApp')
 
               // openSubmenu
               if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
-                if (e.shiftKey) {
-                  scope.toggleRightSideMenuHidden();
-                } else {
-                  scope.openSubmenu();
+                // check if menu button in showing -> if not -> no submenu open
+                if (ConfigProviderService.vals.activeButtons.openMenu) {
+                  if (e.shiftKey) {
+                    scope.toggleRightSideMenuHidden();
+                  } else {
+                    scope.openSubmenu();
+                  }
                 }
               }
               if (code === ConfigProviderService.vals.keyMappings.openRightSubmenu) {
@@ -525,11 +524,11 @@ angular.module('emuwebApp')
           });
 
         });
-        
-        scope.safeApply = function(fn) {
+
+        scope.safeApply = function (fn) {
           var phase = this.$root.$$phase;
-          if(phase == '$apply' || phase == '$digest') {
-            if(fn && (typeof(fn) === 'function')) {
+          if (phase == '$apply' || phase == '$digest') {
+            if (fn && (typeof (fn) === 'function')) {
               fn();
             }
           } else {
