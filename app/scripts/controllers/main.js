@@ -392,10 +392,9 @@ angular.module('emuwebApp')
 
 							// set all ssff files
 							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJson) {
-								Ssffdataservice.data = ssffJson.data;
+							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
+								Ssffdataservice.data = ssffJso.data;
 								// set annotation
-								console.log(bundleData);
 								Levelservice.setData(bundleData.annotation);
 								$scope.curBndl = bndl;
 								viewState.setState('labeling');

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('drawssff', function () {
+  .directive('drawssff', function (viewState, ConfigProviderService, Ssffdataservice, HistoryService) {
     return {
       restrict: 'A',
+      scope: {},
       link: function postLink(scope, element, atts) {
         var canvas = element[0];
         var trackName;
@@ -14,35 +15,43 @@ angular.module('emuwebApp')
           trackName = val;
         });
 
+        // add watch vars to scope
+        scope.curViewPort = viewState.curViewPort;
+        scope.curPerspectiveIdx = viewState.curPerspectiveIdx;
+        scope.movesAwayFromLastSave = HistoryService.movesAwayFromLastSave;
+        scope.curCorrectionToolNr = viewState.curCorrectionToolNr;
+        scope.ssffds = Ssffdataservice; // don't know why assigning and watching Ssffdataservice.data does not work???
+        scope.spectroSettings = viewState.spectroSettings;
+
         //watch viewPort change
-        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+        scope.$watch('curViewPort', function (newValue, oldValue) {
           if (!(newValue.sS === oldValue.sS && newValue.eS === oldValue.eS)) {
             handleUpdate(newValue, oldValue);
           }
         }, true);
 
         //watch perspective change
-        scope.$watch('vs.curPerspectiveIdx', function (newValue, oldValue) {
+        scope.$watch('curPerspectiveIdx', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch hists.
-        scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
+        scope.$watch('movesAwayFromLastSave', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curCorrectionToolNr change
-        scope.$watch('vs.curCorrectionToolNr', function (newValue, oldValue) {
+        scope.$watch('curCorrectionToolNr', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         // watch ssffds.data change
-        scope.$watch('ssffds.data.length', function (newValue, oldValue) {
+        scope.$watch('ssffds.data', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         // watch viewState.spectroSettings change
-        scope.$watch('viewState.spectroSettings', function (newValue, oldValue) {
+        scope.$watch('spectroSettings', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
@@ -50,34 +59,33 @@ angular.module('emuwebApp')
          *
          */
         function handleUpdate() {
-          if (!$.isEmptyObject(scope.ssffds.data)) {
-            if (scope.ssffds.data.length !== 0) {
-
+          if (!$.isEmptyObject(Ssffdataservice.data)) {
+            if (Ssffdataservice.data.length !== 0) {
               assTrackName = '';
               // check assignments (= overlays)
-              scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
+              ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
                 if (ass.signalCanvasName === trackName) {
                   assTrackName = ass.ssffTrackName;
-                  var tr = scope.cps.getSsffTrackConfig(ass.ssffTrackName);
-                  var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-                  var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-                  var minMaxLims = scope.cps.getLimsOfTrack(tr.name);
+                  var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
+                  var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+                  var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+                  var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
 
                   // draw values  
-                  drawValues(scope.vs, canvas, scope.cps, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                  drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
               assTrackName = '';
               // draw ssffTrack onto own canvas
               if (trackName !== 'OSCI' && trackName !== 'SPEC') {
-                var tr = scope.cps.getSsffTrackConfig(trackName);
-                var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-                var sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+                var tr = ConfigProviderService.getSsffTrackConfig(trackName);
+                var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+                var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
-                var minMaxLims = scope.cps.getLimsOfTrack(tr.name);
+                var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
 
                 // draw values  
-                drawValues(scope.vs, canvas, scope.cps, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
               }
 
             }
@@ -102,8 +110,8 @@ angular.module('emuwebApp')
           var minVal, maxVal;
 
           if (trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-            minVal = scope.vs.spectroSettings.rangeFrom;
-            maxVal = scope.vs.spectroSettings.rangeTo;
+            minVal = viewState.spectroSettings.rangeFrom;
+            maxVal = viewState.spectroSettings.rangeTo;
           } else {
             minVal = col._minVal;
             maxVal = col._maxVal;
@@ -245,11 +253,11 @@ angular.module('emuwebApp')
             var tW;
             if (nrOfSamples <= 2) {
               txt = 'Zoom out to see contour(s)';
-              var horizontalText = scope.fontImage.getTextImage(ctx, txt, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, 'red');
+              var horizontalText = scope.fontImage.getTextImage(ctx, txt, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, 'red');
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
             } else {
               txt = 'Zoom in to see contour(s)';
-              var horizontalText = scope.fontImage.getTextImage(ctx, txt, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, 'red');
+              var horizontalText = scope.fontImage.getTextImage(ctx, txt, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, 'red');
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, canvas.height / 2 - horizontalText.height / 2, horizontalText.width, horizontalText.height);
             }
           }
