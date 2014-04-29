@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice) {
+  .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice, ConfigProviderService) {
 
     $scope.dropzone = document.getElementById('dropzone');
     $scope.fileInput = document.getElementById('fileDialog');
@@ -93,50 +93,64 @@ angular.module('emuwebApp')
 		var reader = new FileReader();
 		reader.readAsArrayBuffer($scope.newfiles.wav);
 		reader.onloadend = function(evt) {
-		    if (evt.target.readyState == FileReader.DONE) { 
+		  if (evt.target.readyState == FileReader.DONE) { 
+		    $scope.$parent.io.httpGetPath('configFiles/embedded_config.json').then(function (resp) {
+					// first element of perspectives is default perspective
+					$scope.$parent.vs.curPerspectiveIdx = 0;
+					$scope.$parent.cps.setVals(resp.data.EMUwebAppConfig);
+					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
+					$scope.$parent.cps.curDbConfig = resp.data;
+					// then get the DBconfigFile
+		    
 		        
-    		    $scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (messWavParser) {
-	    		console.log(messWavParser);
-	    		var wavJSO = messWavParser;
-		    	$scope.$parent.vs.curViewPort.sS = 0;
-			    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
-    			$scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
-	    		$scope.$parent.vs.resetSelect();
-	    		$scope.$parent.vs.curPerspectiveIdx = 0;
-		    	$scope.$parent.shs.wavJSO = wavJSO;	
-			    // parsing of Textgrid Data
-			    if($scope.newfiles.textgrid !== undefined) {
+    		    $scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
+    		      console.log(wavJSO);
+		    	  $scope.$parent.vs.curViewPort.sS = 0;
+			      $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
+    			  $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
+  	    		  $scope.$parent.vs.resetSelect();
+	    		  $scope.$parent.vs.curPerspectiveIdx = 0;
+		    	  $scope.$parent.shs.wavJSO = wavJSO;	
+			      // parsing of Textgrid Data
+			      if($scope.newfiles.textgrid !== undefined) {
 			        var reader = new FileReader();
     			    reader.readAsText($scope.newfiles.textgrid);
 	    		    reader.onloadend = function(evt) {
 		    	        if (evt.target.readyState == FileReader.DONE) { 
 		    	            var extension = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
-		    	            var textgrid = Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.newfiles.wav.name, extension);
-		    	            //var textgrid = Textgridparserservice.toJSO(evt.currentTarget.result, $scope.newfiles.wav.name, extension);
-			                console.log(textgrid);
-			                $scope.$parent.tds.setData(textgrid);
-			                $scope.$parent.vs.setState('labeling');
-			                $scope.$parent.vs.somethingInProgress = false;
-			                $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
-			                $scope.$parent.openSubmenu();
-			                $scope.$apply();
+		    	            Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.newfiles.wav.name, extension).then(function (parseMess) {
+								var annot = parseMess.data;
+								$scope.$parent.tds.setData(annot);
+								// console.log(JSON.stringify(l, undefined, 2));
+								var lNames = [];
+								annot.levels.forEach(function (l) {
+									lNames.push(l.name);
+								});
+								console.log($scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx]);
+								$scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
+								$scope.$parent.vs.somethingInProgressTxt = 'Done!';
+								$scope.$parent.vs.somethingInProgress = false;
+								$scope.$parent.vs.setState('labeling');
+			                });
     			        }
 	    		    }, function (errMess) {
 		    	        $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
 			        };
-			    }
-			    else {
+			      }
+			      else {
 			        $scope.$parent.vs.setState('labeling');
 			        $scope.$parent.vs.somethingInProgress = false;
 			        $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
 	                $scope.$parent.openSubmenu();		    
-			    }
-			    
+			      }
+			      
+        });
 			}, function (errMess) {
 			    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 			});
                
             }
+            
         };
     };
     
