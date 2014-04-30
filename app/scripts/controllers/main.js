@@ -718,6 +718,8 @@ angular.module('emuwebApp')
 			$scope.loadDefaultConfig();
 
 			viewState.setState('noDBorFilesloaded');
+			
+			$scope.$broadcast('resetToInitState');
 
 		};
 

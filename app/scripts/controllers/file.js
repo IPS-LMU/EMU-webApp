@@ -73,7 +73,13 @@ angular.module('emuwebApp')
          if (!$.isEmptyObject($scope.newfiles.wav)) {
              $scope.handleLocalFiles();
           }
-     }, true);    
+     }, true);   
+     
+     $scope.$on('resetToInitState', function () {
+         console.log('clearing drag n drop file cache...');
+         $scope.newfiles = {};
+         $scope.dropText = $scope.dropDefault;
+    });      
 
 
     $scope.handleLocalFiles = function () {
