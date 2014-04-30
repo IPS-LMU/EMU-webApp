@@ -10,48 +10,54 @@ angular.module('emuwebApp')
         var trackName;
         var assTrackName = '';
 
+        var lastDraw = Date.now();
+
+
         // observe attribute
         atts.$observe('ssffTrackname', function (val) {
           trackName = val;
         });
 
         // add watch vars to scope
-        scope.curViewPort = viewState.curViewPort;
-        scope.curPerspectiveIdx = viewState.curPerspectiveIdx;
-        scope.movesAwayFromLastSave = HistoryService.movesAwayFromLastSave;
-        scope.curCorrectionToolNr = viewState.curCorrectionToolNr;
-        scope.ssffds = Ssffdataservice; // don't know why assigning and watching Ssffdataservice.data does not work???
-        scope.spectroSettings = viewState.spectroSettings;
+        // scope.curViewPort = viewState.curViewPort;
+        // scope.curPerspectiveIdx = viewState.curPerspectiveIdx;
+        // scope.curCorrectionToolNr = viewState.curCorrectionToolNr;
+        // scope.spectroSettings = viewState.spectroSettings;
+        
+        scope.viewState = viewState;
+        scope.HistoryService = HistoryService;
+        scope.Ssffdataservice = Ssffdataservice;
 
         //watch viewPort change
-        scope.$watch('curViewPort', function (newValue, oldValue) {
+        scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
           if (!(newValue.sS === oldValue.sS && newValue.eS === oldValue.eS)) {
             handleUpdate(newValue, oldValue);
           }
         }, true);
 
         //watch perspective change
-        scope.$watch('curPerspectiveIdx', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
-        }, true);
-
-        //watch hists.
-        scope.$watch('movesAwayFromLastSave', function (newValue, oldValue) {
+        scope.$watch('viewState.curPerspectiveIdx', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curCorrectionToolNr change
-        scope.$watch('curCorrectionToolNr', function (newValue, oldValue) {
+        scope.$watch('viewState.curCorrectionToolNr', function (newValue, oldValue) {
+          handleUpdate(newValue, oldValue);
+        }, true);
+        
+        //watch hists.
+        scope.$watch('HistoryService.movesAwayFromLastSave', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
+
         // watch ssffds.data change
-        scope.$watch('ssffds.data', function (newValue, oldValue) {
+        scope.$watch('Ssffdataservice.data', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         // watch viewState.spectroSettings change
-        scope.$watch('spectroSettings', function (newValue, oldValue) {
+        scope.$watch('viewState.spectroSettings', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
@@ -59,6 +65,12 @@ angular.module('emuwebApp')
          *
          */
         function handleUpdate() {
+          console.log('#################');
+          console.log(trackName);
+          console.log(Date.now());
+          var ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
           if (!$.isEmptyObject(Ssffdataservice.data)) {
             if (Ssffdataservice.data.length !== 0) {
               assTrackName = '';
@@ -70,7 +82,6 @@ angular.module('emuwebApp')
                   var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
                   var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
-
                   // draw values  
                   drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
@@ -83,11 +94,9 @@ angular.module('emuwebApp')
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
                 var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
-
                 // draw values  
                 drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
               }
-
             }
           } else {
             var ctx = canvas.getContext('2d');
@@ -105,7 +114,7 @@ angular.module('emuwebApp')
           // create a destination canvas. Here the altered image will be placed
 
           // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           var minVal, maxVal;
 

@@ -718,7 +718,7 @@ angular.module('emuwebApp')
 			$scope.loadDefaultConfig();
 
 			viewState.setState('noDBorFilesloaded');
-			
+
 			$scope.$broadcast('resetToInitState');
 
 		};
@@ -856,10 +856,13 @@ angular.module('emuwebApp')
 		 * @param persp json object of current perspective containing name attribute
 		 */
 		$scope.changePerspective = function (persp) {
+			console.log('-----------------------------------------')
+			// viewState.somethingInProgress = true;
+			// alert(nameOfDB);
+			// viewState.somethingInProgressTxt = 'Changing perspective...';
 
 			var newIdx;
 			for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
-				console.log(ConfigProviderService.vals.perspectives[i].name);
 				if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
 					newIdx = i;
 				}
@@ -867,6 +870,8 @@ angular.module('emuwebApp')
 			viewState.curPerspectiveIdx = newIdx;
 			// close submenu
 			$scope.toggleRightSideMenuHidden();
+			// viewState.somethingInProgressTxt = 'Done!';
+			// viewState.somethingInProgress = false;
 		};
 
 		/**
