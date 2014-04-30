@@ -774,7 +774,7 @@ angular.module('emuwebApp')
       var textid = '_' + labelid;
       element.prepend($('<textarea>').attr({
         id: textid,
-        'class': textid + ' Label_Edit',
+        'class': textid + ' emuwebapp-labelEdit',
         'ng-model': 'message',
         'autofocus': 'true'
       }).css({

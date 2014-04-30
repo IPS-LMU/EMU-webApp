@@ -2,6 +2,7 @@
     ###################################
     global CSS
 */
+
 .emuwebapp * {
     text-rendering: optimizeLegibility;
     margin: 0;
@@ -29,14 +30,19 @@ html, body{
 
 ul {
     list-style-type: none;
-    margin: 0pt;
-    padding: 0pt;
 }
 
-li {
-    margin: 0pt;
-    padding: 0pt;
+
+.ng-scope {
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
+
+.dropdown {
+    list-style: none;
+}
+
 
 /** 
     ###################################
@@ -101,125 +107,16 @@ li {
     overflow: auto;
 }
 
-/*#############################*/
-.dialog {
-    position: absolute;
-    display: inline-block;
-    overflow-y:auto;
-    width: 60%;
-    height: 350px;
-    margin-left: -30%;
-}
-
-.dialogSmall {
-    position: absolute;
-    display: block;
-    overflow-x:hidden;
-    overflow-y:auto;
-    width: 38%;
-    max-width: 38%;
-    height: 200px;
-    margin-left: -19%;
-}
-
-.dialog div, .dialogSmall div {
-    /*margin-top: 15px;*/
-}
-
-.dialog i, .dialogSmall i {
-    color: #ff0000;
-}
-
-
-.dialog h2 {
-    position: fixed;
-    width: 60%;
-    font-size: 15px;
-    background: #0DC5FF;
-    /*box-shadow: 0px 3px 5px #000;*/
-    color: #353535;    
-}
-
-.dialog h3 {
-    position: fixed;
-    width: 60%;
-    height: 75px;
-    font-size: 15px;
-    background: #0DC5FF;
-    /*box-shadow: 0px -3px 5px #000;*/
-    color: #353535;  
-    margin-top: 300px;  
-}
-
-.dialogSmall h2 {
-    position: fixed;
-    width: 38%;
-    font-size: 15px;
-    background: #0DC5FF;
-    /*box-shadow: 0px 3px 5px #000;*/
-    color: #353535;    
-}
-
-
-.dialogSmall h3 {
-    position: fixed;
-    width: 38%;
-    height: 45px;
-    font-size: 15px;
-    background: #0DC5FF;
-    /*box-shadow: 0px -3px 5px #000;*/
-    color: #353535;  
-    margin-top: 155px;  
-}
-
-
-@media (max-width: 767px) {
-  .dialog {
-    position: absolute;
-    display: inline-block;
-    overflow-y:auto;
-    width: 75%;
-    height: 80%;
-    margin-left: 7%;  
-  }
-  .dialog h2 {
-    position: fixed;
-    width: 85%;
-    font-size: 15px;
-    background: #0DC5FF;
-    /*box-shadow: 0px 3px 5px #000;*/
-    color: #353535;    
-  }
-}
-
-
-#dialogButton {
+.emuwebapp-dialogButton {
     width: 120px;
 }
-#dialogExport {
+
+.emuwebapp-dialogExport {
     width: 120px !important;
     min-width: 120px !important;
 }
 
-.ng-scope {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-
-.ng-hide {
-    display: none;
-}
-
-
-.controls {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    margin-top: 5px;
-}
-
-.PreviewCanvas {
+.emuwebapp-previewCanvas {
     border: 1px solid gray;
     background: #E7E7E7;
     /*box-shadow: 0px 1px 2px #000;*/
@@ -229,16 +126,7 @@ li {
     margin-top:5px;
 }
 
-
-.LevelMain {
-    margin: 0px;
-    padding: 0px;
-    width:100%;
-    height:100%;
-    z-index: 0;
-}
-
-.Label_Edit {
+.emuwebapp-labelEdit {
     z-index:1;
     text-align:center;
     padding:0;
@@ -252,104 +140,39 @@ li {
     vertical-align: middle !important;   
 }
 
-
-/**#####################################*/
-
-.TimelineCtrl {
-    z-index:1;
-    position: fixed;
-    left:0px;
-    top: 40px;
-    background:#fff;
-    /*-webkit-touch-callout: none;    */
-    width: 100%;
-    text-align:left;
-    height: 200px;
-    border-bottom: 10px solid #aaa;
-    /*min-height: 40px;*/
-}
-
-
-
-.LevelCtrl {
-    z-index:0;
-    margin: 0px;
-    padding: 0px;
-    width: 100%; 
-}
-
-
-.TimelineSub {
-    position:relative;
-}
-
-
-.dragOver {
-    border: 2px dashed black !important;
-    background-color: #0DC5FF;
-    opacity: 0.3;
-}
-
-.dragDragging {
-   width:25px;
-   height:25px;
-   background:#0DC5FF;
-   margin:0;
-   padding:0;
-}
-
-.dragOver > div {
-    opacity: 1;
-}
-
-.dragTarget > div  {
-	background-color: #0DC5FF;
-	opacity: 0.8;
-}
-
-.aboutDiv {
+.emuwebapp-aboutDiv {
     text-align:justify;
     margin-left: 10px;
     margin-right: 10px;
     width: 90%;
 }
 
-.aboutHr {
+.emuwebapp-aboutHr {
     margin-top: 30px;
     padding-bottom: 30px;
     width: 100%;
 }
 
-.aboutTable {
+.emuwebapp-aboutTable {
     width: 100%;
     padding-left: 40px;
     padding-right: 40px;
 
 }
 
-.aboutTable tr {
+.emuwebapp-aboutTable tr {
     border: 0px;
     border-bottom: 1px dotted #999;
     margin-bottom: 12px;
     margin-top: 12px;
 }
 
-.aboutTable tr td:first-child {
+.emuwebapp-aboutTable tr td:first-child {
     width: 40%;
 }
-.aboutTable tr td {
+
+.emuwebapp-aboutTable tr td {
     width: 60%;
 }
 
-[draggable] {
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	cursor: move;
-}
 
-/*---------------------**/
-.dropdown {
-    list-style: none;
-}

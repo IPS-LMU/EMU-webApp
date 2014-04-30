@@ -9,7 +9,7 @@ angular.module('emuwebApp')
             var url = URL.createObjectURL(scope.getUrlData());
             console.log(attrs);
             elm.append($compile(
-                '<a id="dialogExport" download="' + attrs.filename + '" href="' + url + '">Export</a>'
+                '<a class="emuwebapp-dialogExport" download="' + attrs.filename + '" href="' + url + '">Export</a>'
             )(scope));
         }
     };
