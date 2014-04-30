@@ -21,6 +21,7 @@ angular.module('emuwebApp')
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
 
+				// SIC SIC! FIX watches for isolated scopes...
 				scope.cpi = viewState.curPerspectiveIdx;
 				scope.phai = viewState.playHeadAnimationInfos;
 				scope.cvp = viewState.curViewPort;

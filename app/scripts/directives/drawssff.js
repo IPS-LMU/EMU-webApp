@@ -12,21 +12,21 @@ angular.module('emuwebApp')
 
         var lastDraw = Date.now();
 
+        // add watch vars to scope
+        scope.viewState = viewState;
+        scope.HistoryService = HistoryService;
+        scope.Ssffdataservice = Ssffdataservice;
+
+        ////////////////////
+        // observes
 
         // observe attribute
         atts.$observe('ssffTrackname', function (val) {
           trackName = val;
         });
 
-        // add watch vars to scope
-        // scope.curViewPort = viewState.curViewPort;
-        // scope.curPerspectiveIdx = viewState.curPerspectiveIdx;
-        // scope.curCorrectionToolNr = viewState.curCorrectionToolNr;
-        // scope.spectroSettings = viewState.spectroSettings;
-        
-        scope.viewState = viewState;
-        scope.HistoryService = HistoryService;
-        scope.Ssffdataservice = Ssffdataservice;
+        ////////////////////
+        // watches
 
         //watch viewPort change
         scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
@@ -60,6 +60,9 @@ angular.module('emuwebApp')
         scope.$watch('viewState.spectroSettings', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
+
+        //
+        //////////////////////
 
         /**
          *
