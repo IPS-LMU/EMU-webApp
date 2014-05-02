@@ -205,14 +205,14 @@
 }
 
 
-.expandWidthTo240px{
+.emuwebapp-expandWidthTo240px{
   width: 240px;
   -webkit-transition: width 0.4s;
   -moz-transition: width 0.4s;
   transition: width 0.4s;
 }
 
-.shrinkWidthTo0px{
+.emuwebapp-shrinkWidthTo0px{
   width: 0px;
   -webkit-transition: width 0.4s;
   -moz-transition: width 0.4s;

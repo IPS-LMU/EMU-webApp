@@ -1,6 +1,6 @@
 /* rightSideMenu CSS */
 
-.rightSideMenu {
+.emuwebapp-rightSideMenu {
   position: absolute;
   top: 40px;
   right: 0px;
@@ -17,14 +17,14 @@
 }
 
 
-.rightSideMenu h3{
+.emuwebapp-rightSideMenu h3{
   font-size: 16px;
   padding-bottom: 15px;
   border-bottom:thin solid black;
   overflow: hidden;
 }
 
-.rightSideMenu ul{
+.emuwebapp-rightSideMenu ul{
   margin: 10px;
   /*padding-left: 10px;*/
   /*padding-right: 10px;*/
@@ -32,25 +32,25 @@
   overflow: hidden;
 }
 
-.curSelPerspLi{
+.emuwebapp-curSelPerspLi{
   border-bottom:thin solid rgba(152, 152, 152, 0.25);;
   padding: 15px;
   background-color: #999;
 }
 
-.perspLi{
+.emuwebapp-perspLi{
   border-bottom:thin solid rgba(152, 152, 152, 0.25);;
   padding: 15px;
   overflow: hidden;
 }
 
 
-.perspLi:hover{
+.emuwebapp-perspLi:hover{
   background-color: rgba(152, 152, 152, 0.28);
 }
 
 
-.rightSideMenuOpenBtn {
+.emuwebapp-rightSideMenuOpenBtn {
   position: absolute;
   top: 120px;
   left: -15px;
@@ -63,7 +63,7 @@
   z-index: 1001;
 }
 
-.rightSideMenuOpenBtn img{
+.emuwebapp-rightSideMenuOpenBtn img{
   content:url(images/rightSideMenuBtn.png);
   width: 80%;
   /*padding-top: 2px;*/
@@ -74,39 +74,18 @@
   border-radius: 0px;
 }
 
-.rightSideMenuOpenBtn:active {
+.emuwebapp-rightSideMenuOpenBtn:active {
   background: #fff;
 }
 
-.rightSideMenuOpenBtn:focus {
+.emuwebapp-rightSideMenuOpenBtn:focus {
   outline: none;
 }
 
-
-/*.slideLeft{
-  right: 0px;
-  -webkit-transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out;
-  -moz-transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out, left 0.4s ease-in-out,right 0.4s ease-in-out;
-}
-
-.slideRight{
-  right: -200px;
-  -webkit-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
-  -moz-transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out, right 0.4s ease-in-out,left 0.4s ease-in-out;
-}*/
-
-.expandWidthTo200px{
+.emuwebapp-expandWidthTo200px{
   width: 200px;
   -webkit-transition: width 0.4s;
   -moz-transition: width 0.4s;
   transition: width 0.4s;
 }
 
-/*.shrinkWidthTo0px{
-  width: 0px;
-  -webkit-transition: width 0.4s;
-  -moz-transition: width 0.4s;
-  transition: width 0.4s;
-}*/

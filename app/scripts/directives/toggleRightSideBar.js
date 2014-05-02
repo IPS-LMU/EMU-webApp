@@ -12,13 +12,13 @@ angular.module('emuwebApp')
 						// $animate.addClass(element, '.slideInMenu');
 
 						// $animate.removeClass(element, 'shrinkWidthTo0px');
-						$animate.addClass(element, 'expandWidthTo200px');
+						$animate.addClass(element, 'emuwebapp-expandWidthTo200px');
 					} else {
 						// console.log("123412345345asdfadsfadsgfadsfgafgadfgadfg!!!!!!!!!")
 						// $animate.removeClass(element, '.slideInMenu');
 
-						$animate.removeClass(element, 'expandWidthTo200px');
-						$animate.addClass(element, 'shrinkWidthTo0px');
+						$animate.removeClass(element, 'emuwebapp-expandWidthTo200px');
+						$animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');
 					}
 				});
 			}

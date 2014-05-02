@@ -881,9 +881,9 @@ angular.module('emuwebApp')
 		$scope.getPerspectiveColor = function (persp) {
 			var cl;
 			if (viewState.curPerspectiveIdx === -1 || persp.name === ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].name) {
-				cl = 'curSelPerspLi';
+				cl = 'emuwebapp-curSelPerspLi';
 			} else {
-				cl = 'perspLi';
+				cl = 'emuwebapp-perspLi';
 			}
 			return cl;
 		};
