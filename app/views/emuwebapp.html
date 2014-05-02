@@ -18,18 +18,6 @@
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
       <button ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
-      
-<!--       <li class="dropdown">
-        <a class="dropdown-toggle">
-          <button id="openDemoDBbtn" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')" class="emuwebapp-mini-btn">open demo DB</button>
-        </a>
-        <ul class="dropdown-menu">
-          <li>Choose DB:</li>
-          <li ng-repeat="curDB in cps.vals.demoDBs">
-            <a ng-click="openDemoDBbtnClick(curDB);">{{curDB}}</a>
-          </li>
-        </ul>
-      </li> -->
 
       <div class="btn-group emuwebapp-mini-btn-group" dropdown is-open="status.isopen">
         <button type="button" class="dropdown-toggle" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
