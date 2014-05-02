@@ -14,7 +14,9 @@ angular.module('emuwebApp')
     $scope.wavLoaded = 0;
     $scope.txtGridLoaded = 0;
     $scope.labelLoaded = 0;
-    $scope.newfiles = {};
+    $scope.newfiles = [];
+    $scope.wav = {};
+    $scope.grid = {};
     $scope.curBndl = {};
     
     $scope.dropText = $scope.dropDefault;
@@ -33,24 +35,22 @@ angular.module('emuwebApp')
 
     
     function handleFilesonChange() {
-        var doLoad = false;
         var loadedFiles = $scope.fileInput;
         for (var i = 0; i < loadedFiles.files.length; i++) {
             var file = loadedFiles.files[i];
             var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
             if(extension==="WAV" && file.type.match('audio/wav') ) {
-                doLoad = true;
-                $scope.newfiles.wav = file;
+                $scope.wav = file;
             }
             else if(extension==="TEXTGRID" ) {
-                $scope.newfiles.textgrid = file;
+                $scope.grid = file;
             }            
             // TODO: LAB and TONE files
             //else if(extension === 'LAB' || extension === 'TONE') {
-            //    $scope.newfiles.textgrid = file;
+            //    $scope.grid = file;
             //} 
             else  {
-                $scope.newfiles.other = file;
+                $scope.other = file;
             }                         
         }
     }
@@ -81,29 +81,19 @@ angular.module('emuwebApp')
          $scope.dropText = $scope.dropDefault;    
     };
     
-    $scope.$watch('newfiles.wav', function () {
-        if (!$.isEmptyObject($scope.newfiles.wav)) {
+    $scope.$watch('wav', function () {
+        if (!$.isEmptyObject($scope.wav)) {
             $scope.handleLocalFiles();	
-        }
-     }, true);   
-     
-    $scope.$watch('newfiles.textgrid', function () {
-        if (!$.isEmptyObject($scope.newfiles.wav)) {
-            $scope.handleLocalFiles();	
-        }
-        else if(!$.isEmptyObject($scope.newfiles.textgrid) && $.isEmptyObject($scope.newfiles.wav)){
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Wav file missing !');
-            $scope.resetToInitState();        
         }
      }, true);        
      
-    $scope.$watch('newfiles.other', function () {
+    $scope.$watch('other', function () {
         if (!$.isEmptyObject($scope.newfiles.other)) {
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unkown File type !');
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type');
             $scope.resetToInitState();
         }
      }, true);        
-     
+          
      
      $scope.$on('resetToInitState', function () {
          console.log('clearing drag n drop file cache...');
@@ -118,7 +108,7 @@ angular.module('emuwebApp')
         // reset history
         $scope.$parent.hists.resetToInitState();
         $scope.$parent.vs.somethingInProgress = true;
-        $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + $scope.newfiles.wav.name;
+        $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + $scope.wav.name;
         // empty ssff files
         $scope.$parent.ssffds.data = [];
         $scope.$parent.tds.data = {};
@@ -126,7 +116,7 @@ angular.module('emuwebApp')
 		$scope.$parent.vs.somethingInProgressTxt = 'Parsing WAV file...';
 		
 		var reader = new FileReader();
-		reader.readAsArrayBuffer($scope.newfiles.wav);
+		reader.readAsArrayBuffer($scope.wav);
 		reader.onloadend = function(evt) {
 		    if (evt.target.readyState == FileReader.DONE) { 
 		        $scope.$parent.io.httpGetPath('configFiles/standalone_config.json').then(function (resp) {
@@ -136,7 +126,7 @@ angular.module('emuwebApp')
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 					$scope.$parent.cps.curDbConfig = resp.data;
 					$scope.curBndl = {};
-					$scope.curBndl.name = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
+					$scope.curBndl.name = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
 					$scope.$parent.bundleList.push($scope.curBndl);
 					// then get the DBconfigFile
 					
@@ -148,13 +138,13 @@ angular.module('emuwebApp')
 					    $scope.$parent.vs.curPerspectiveIdx = 0;
 					    $scope.$parent.shs.wavJSO = wavJSO;	
 					    // parsing of Textgrid Data
-					    if($scope.newfiles.textgrid !== undefined) {
+					    if(!$.isEmptyObject($scope.grid)) {
 					        var reader = new FileReader();
-					        reader.readAsText($scope.newfiles.textgrid);
+					        reader.readAsText($scope.grid);
 					        reader.onloadend = function(evt) {
 					            if (evt.target.readyState == FileReader.DONE) {
-					                var extension = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
-					                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.newfiles.wav.name, extension).then(function (parseMess) {
+					                var extension = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
+					                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
 					                var annot = parseMess.data;
 					                $scope.$parent.tds.setData(annot);
 					                // console.log(JSON.stringify(l, undefined, 2));
@@ -202,28 +192,32 @@ angular.module('emuwebApp')
            for (var i = 0; i < items.length; i++) {
              var item = items[i].webkitGetAsEntry();
              if (item) {
-               $scope.traverseFileTree(item);       
+               $scope.traverseFileTree(item); 
+               $scope.$apply();       
              }
-           }       
+           } 
+                
         }
         else {
             $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
             $scope.dropText = $scope.dropDefault;
         }
      }, false);
-
-    $scope.traverseFileTree = function (item, path) {
-      path = path || '';
-      if (item.isFile) {
-        item.file(function (file) {
-          var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-          if (extension === 'WAV') {
-                $scope.newfiles.wav = file;  
-                $scope.$apply();
-          }
+     
+     $scope.traverseFileTree = function (item, path) {
+         path = path || '';
+         if (item.isFile) {
+             item.file(function (file) {
+             var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+              if (extension === 'WAV') {
+                  $scope.wav = file;
+                  $scope.$apply();   
+                  
+              }
           else if (extension === 'TEXTGRID') {
-            $scope.newfiles.textgrid = file;  
-            $scope.$apply();     
+            $scope.grid = file;  
+            $scope.$apply();   
+               
           }
          // TODO : LAB & TONE Files
          // else if (extension === 'LAB' || extension === 'TONE') {
@@ -231,8 +225,9 @@ angular.module('emuwebApp')
          //   $scope.$apply();
          // } 
           else {
-            $scope.newfiles.other = file;    
-            $scope.$apply();          
+            $scope.other = file; 
+            $scope.$apply();      
+                  
           }                
         });
       } else if (item.isDirectory) {
