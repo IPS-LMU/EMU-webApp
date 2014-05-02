@@ -330,6 +330,8 @@ angular.module('emuwebApp')
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
 		$scope.menuBundleClick = function (bndl) {
+	
+	        
 
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
@@ -396,6 +398,10 @@ angular.module('emuwebApp')
 								Ssffdataservice.data = ssffJso.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
+								
+								
+								console.log(bndl);
+								
 								$scope.curBndl = bndl;
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;

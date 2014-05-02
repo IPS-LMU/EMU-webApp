@@ -13,11 +13,11 @@ angular.module('emuwebApp')
 				scope.$watch('vs.submenuOpen', function () {
 					// scope.updateCSS();
 					if (scope.vs.submenuOpen) {
-						$animate.removeClass(element, 'shrinkWidthTo0px');
-						$animate.addClass(element, 'expandWidthTo240px');
+						$animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
+						$animate.addClass(element, 'emuwebapp-expandWidthTo240px');
 					} else {
 
-						$animate.addClass(element, 'shrinkWidthTo0px');
+						$animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');
 						// $animate.removeClass(element, 'expandWidthTo240px');
 					}
 				}, true);

@@ -132,7 +132,8 @@ angular.module('emuwebApp')
 								annot.levels.forEach(function (l) {
 									lNames.push(l.name);
 								});
-								console.log($scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx]);
+								$scope.$parent.curBndl = {};
+								$scope.$parent.curBndl.name = 'test';
 								$scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
 								$scope.$parent.vs.somethingInProgressTxt = 'Done!';
 								$scope.$parent.vs.somethingInProgress = false;

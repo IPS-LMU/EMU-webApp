@@ -4,34 +4,22 @@
     see: level directive and template
 */
 
-.bundleListSideBarOuter {
-    /*flex: 0 0 30%;*/
+.emuwebapp-bundleListSideBarOuter {
     width:240px;
-    /*min-width:100px;*/
     height: 100%;
-    /*position: fixed;*/
     background: rgb(56,54,62);
     color: #fff;
-    /*min-height: 100%;*/
-    /*padding-right: 10px;*/
-    /*overflow-y:auto;*/
-    /*border: 1px solid red;*/
 }
 
-.bundleListSideBarOuter h3 {
-    /*background: rgba(56,54,62,100);*/
-    /*background: rgb(64,62,70);*/
+.emuwebapp-bundleListSideBarOuter h3 {
     font-size: 12px;
-    /*height:40px;*/
     padding-top: 5px;
     padding-bottom: 5px;
     margin: 0;
-    /*padding-left:10px;*/
-    /*border: 2px solid green;*/
     border-bottom:thin solid white;
 }
 
-.bundleFilter input[type="text"]{
+.emuwebapp-bundleFilter input[type="text"]{
     background: url(../img/search-dark.png) no-repeat 10px 6px #fff;
     border: 0 none;
     font: bold 12px Arial,Helvetica,Sans-serif;
@@ -53,55 +41,16 @@
 }
 
 
-.bundleListContainer {
-
+.emuwebapp-bundleListContainer {
     width: 100%;
     height: calc(100% - 40px);
-    /*height: 180px;*/
-    /*min-height: 100%;*/
     overflow-y:auto;
     text-align: left;
-    /*padding: 0px;*/
-    /*padding-bottom: 40px;*/
     padding: 10px;
-    /*padding-right: 10px;*/
-    /*border: 1px solid red;*/
     font-size: 80%;
-
 }
 
-/*.bundleListContainer div{
-    width: 200px;
-    text-align: left;
-    padding-left: 10px;
-}
-*/
-/*.cbp-spmenu {
-    position: fixed;
-    width:238px;  
-    background: rgb(56,54,62);
-    color: #fff;
-    border: 0px;
-}*/
-
-/*.cbp-spmenu-right {
-    position: fixed;
-    width:238px;  
-    background: rgb(56,54,62);
-    color: #fff;
-    border: 0px;
-}
-*/ 
-
- 
-/*.cbp-spmenu-vertical {
-    width: 240px;
-    height: 100%;
-    top: 0;
-    z-index: 1000;
-}*/
- 
-/* Vertical menu that slides from the left or right */
+/* Vertical menu that slides from the left or right 
  
 .cbp-spmenu-left {
     left: -240px;
@@ -147,32 +96,29 @@
  
 .cbp-spmenu-right-toleft {
     right: 0px;
-}
+}*/
 
-/*##################################*/
-/*bundleListItem*/
-.bundleListItem{
+.emuwebapp-bundleListItem{
     margin: 0px;
     padding: 10px;
-    /*margin-bottom: 10px;*/
     border-style:none;
     border-bottom:thin solid rgba(152, 152, 152, 0.25);
     position: relative;
     cursor: default;
 }
 
-.bundleListItem:hover {
+.emuwebapp-bundleListItem:hover {
     background-color:rgba(152, 152, 152, 0.28);
 }
 
 
-.bundleListItem input[type='text'] {
+.emuwebapp-bundleListItem input[type='text'] {
     width: 170px;
     height: 25px;
     font-size: 14px;
 }
 
-.bundleListItem b {
+.emuwebapp-bundleListItem b {
     display: block;
     color: #fff;
     font-size: 14px;
@@ -182,7 +128,7 @@
     height: 28px;
 }
 
-.saveBundleButton {
+.emuwebapp-saveBundleButton {
    position: absolute;
    /*background-color:rgb(56,54,62);*/
    background-color:transparent;
@@ -191,7 +137,7 @@
    right: 2px;
 }
 
-.saveBundleButton img {
+.emuwebapp-saveBundleButton img {
     height: 25px;
     width:  25px;
     border-radius: 12.5px;
@@ -200,7 +146,7 @@
     vertical-align: middle;
 }
 
-.saveBundleButton img:hover{
+.emuwebapp-saveBundleButton img:hover{
     background-color:#0DC5FF;
 }
 
