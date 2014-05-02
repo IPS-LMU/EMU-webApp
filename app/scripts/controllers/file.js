@@ -81,21 +81,29 @@ angular.module('emuwebApp')
          $scope.dropText = $scope.dropDefault;    
     };
     
-    $scope.$watch('newfiles', function () {
+    $scope.$watch('newfiles.wav', function () {
+        if (!$.isEmptyObject($scope.newfiles.wav)) {
+            $scope.handleLocalFiles();	
+        }
+     }, true);   
+     
+    $scope.$watch('newfiles.textgrid', function () {
+        if (!$.isEmptyObject($scope.newfiles.wav)) {
+            $scope.handleLocalFiles();	
+        }
+        else if(!$.isEmptyObject($scope.newfiles.textgrid) && $.isEmptyObject($scope.newfiles.wav)){
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Wav file missing !');
+            $scope.resetToInitState();        
+        }
+     }, true);        
+     
+    $scope.$watch('newfiles.other', function () {
         if (!$.isEmptyObject($scope.newfiles.other)) {
             $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unkown File type !');
             $scope.resetToInitState();
         }
-        else {
-            if (!$.isEmptyObject($scope.newfiles.wav)) {
-                $scope.handleLocalFiles();
-            }
-            else if ($.isEmptyObject($scope.newfiles.wav) && !$.isEmptyObject($scope.newfiles.textgrid)) {
-                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: No Audio File (wav) given !');
-                $scope.resetToInitState();
-            }    
-        }
-     }, true);   
+     }, true);        
+     
      
      $scope.$on('resetToInitState', function () {
          console.log('clearing drag n drop file cache...');
@@ -206,16 +214,12 @@ angular.module('emuwebApp')
 
     $scope.traverseFileTree = function (item, path) {
       path = path || '';
-      var doLoad = false;
       if (item.isFile) {
         item.file(function (file) {
           var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
           if (extension === 'WAV') {
-            if (file.type.match('audio/wav')) {
                 $scope.newfiles.wav = file;  
-                doLoad = true
                 $scope.$apply();
-            }
           }
           else if (extension === 'TEXTGRID') {
             $scope.newfiles.textgrid = file;  
