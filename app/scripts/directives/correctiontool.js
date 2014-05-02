@@ -162,6 +162,7 @@ angular.module('emuwebApp')
 						}
 						break;
 					}
+					
 					scope.$apply();
 				});
 
