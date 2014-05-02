@@ -15,6 +15,7 @@ angular.module('emuwebApp')
     $scope.txtGridLoaded = 0;
     $scope.labelLoaded = 0;
     $scope.newfiles = {};
+    $scope.curBndl = {};
     
     $scope.dropText = $scope.dropDefault;
     
@@ -78,6 +79,7 @@ angular.module('emuwebApp')
      $scope.$on('resetToInitState', function () {
          console.log('clearing drag n drop file cache...');
          $scope.newfiles = {};
+         $scope.curBndl = {};
          $scope.dropText = $scope.dropDefault;
     });      
 
@@ -106,6 +108,9 @@ angular.module('emuwebApp')
 					$scope.$parent.cps.setVals(resp.data.EMUwebAppConfig);
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 					$scope.$parent.cps.curDbConfig = resp.data;
+					$scope.curBndl = {};
+					$scope.curBndl.name = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
+					$scope.$parent.bundleList.push($scope.curBndl);
 					// then get the DBconfigFile
 		    
 		        
@@ -132,8 +137,6 @@ angular.module('emuwebApp')
 								annot.levels.forEach(function (l) {
 									lNames.push(l.name);
 								});
-								$scope.$parent.curBndl = {};
-								$scope.$parent.curBndl.name = 'test';
 								$scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
 								$scope.$parent.vs.somethingInProgressTxt = 'Done!';
 								$scope.$parent.vs.somethingInProgress = false;
