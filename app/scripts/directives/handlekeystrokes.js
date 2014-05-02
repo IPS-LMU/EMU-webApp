@@ -515,7 +515,7 @@ angular.module('emuwebApp')
                   }
                 }
               }
-              console.log("Hit key code: " + code);
+              // console.log("Hit key code: " + code);
               if (!e.metaKey) {
                 e.preventDefault();
                 e.stopPropagation();
