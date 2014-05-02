@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('dots', function (viewState) {
 		return {
-			template: '<div class="twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
+			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {

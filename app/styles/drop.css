@@ -1,34 +1,4 @@
-table { 
-    border-collapse: collapse; 
-}
-.dropFileList {
-
-}
-.percent {
-    position: absolute; 
-    width: 300px; 
-    height: 14px; 
-    z-index: 1; 
-    text-align: center; 
-    font-size: 0.8em; 
-    color: white;
-}
-.progress-bar {
-    width: 300px; 
-    height: 14px;
-    border-radius: 10px;
-    border: 1px solid #CCC;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#6666cc), to(#4b4b95));
-    border-image: initial;
-}
-.uploaded {
-    padding: 0;
-    height: 14px;
-    border-radius: 10px;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#66cc00), to(#4b9500));
-    border-image: initial;
-}
-.dropzone {
+.emuwebapp-dropzone {
     height: 80%;
     width: 80%;
     border: 1px dashed white;
@@ -38,12 +8,12 @@ table {
     padding: 15px;
     margin: 15px;
 }
-.dropzone.not-available {
+.emuwebapp-dropzone.not-available {
     background-color: #f00;
 }
-.dropzone.over {
+.emuwebapp-dropzone.over {
     background-color: #bfb;
 }
-.dropzone.hidden {
+.emuwebapp-dropzone.hidden {
     display: none;
 }

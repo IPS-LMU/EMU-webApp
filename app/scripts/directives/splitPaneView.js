@@ -7,7 +7,7 @@ angular.module('emuwebApp')
       scope: {
         showTwoDimCans: '@'
       },
-      template: '<div class="split-panes vertical" ng-transclude></div>',
+      template: '<div class="emuwebapp-split-panes vertical" ng-transclude></div>',
       controller: function ($scope) {
         $scope.panes = [];
         $scope.bottomRightResizePane;
@@ -30,7 +30,7 @@ angular.module('emuwebApp')
         var dragBottomRightResizePaneCornerResizer = false;
 
         // create split pane view
-        var handler = angular.element('<div class="split-handler"><span></span></div>');
+        var handler = angular.element('<div class="emuwebapp-split-handler"><span></span></div>');
         var pane1 = scope.panes[0];
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;

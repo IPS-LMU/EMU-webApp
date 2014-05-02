@@ -1,4 +1,4 @@
-.twoDimCanvasContainer {
+.emuwebapp-twoDimCanvasContainer {
 	position: absolute;
 	top: 10px;
 	left: 10px;
@@ -8,7 +8,7 @@
     background-color: white;
 }
 
-.twoDimCanvasContainer canvas {
+.emuwebapp-twoDimCanvasContainer canvas {
     float: left;
     z-index: 1;   
     width: 100%;

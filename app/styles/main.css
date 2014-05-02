@@ -28,10 +28,21 @@ html, body{
     text-align:center;
 }
 
+table { 
+    border-collapse: collapse; 
+}
+
 ul {
     list-style-type: none;
 }
 
+.left {
+    float:left;
+}
+
+.right {
+    float:right;
+}
 
 .ng-scope {
     margin: 0;

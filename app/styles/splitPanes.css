@@ -1,6 +1,6 @@
-/* split-panes CSS */
+/* emuwebapp-split-panes CSS */
 
-.split-panes 
+.emuwebapp-split-panes 
 {
   left: 0px;
   right: 0px;
@@ -9,7 +9,7 @@
   position: absolute;
 }
 
-.split-panes > .split-handler 
+.emuwebapp-split-panes > .emuwebapp-split-handler 
 {
   background: white;
   position: absolute;
@@ -18,7 +18,7 @@
 
 /* Horizontal */ 
 
-.split-panes.horizontal > .split-handler
+.emuwebapp-split-panes.horizontal > .emuwebapp-split-handler
 {
   width: 4px;
   top: 0px; 
@@ -27,20 +27,17 @@
   cursor: ew-resize;
 }
 
-.split-panes.horizontal > .split-pane1,
-.split-panes.horizontal > .split-pane2
-{
+.emuwebapp-split-panes.horizontal > .split-pane1,
+.emuwebapp-split-panes.horizontal > .split-pane2 {
   position: absolute;
   height: 100%;
 }
 
-.split-panes.horizontal > .split-pane1
-{
+.emuwebapp-split-panes.horizontal > .split-pane1 {
   width: 50%; 
 }
 
-.split-panes.horizontal > .split-pane2
-{
+.emuwebapp-split-panes.horizontal > .split-pane2 {
   left: 50%;
   right: 0px;
   border-left: 1px solid #aaa;
@@ -49,7 +46,7 @@
 
 /* Vertical */
 
-.split-panes.vertical > .split-handler
+.emuwebapp-split-panes.vertical > .emuwebapp-split-handler
 {
   height: 10px;
   width: 100%;
@@ -62,24 +59,24 @@
 }
 
 
-.split-handler img{
+.emuwebapp-split-handler img{
     /*content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAICAYAAAB3R5aRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ%0AbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp%0Abj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8%2BIDx4OnhtcG1ldGEgeG1sbnM6%0AeD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0%0AMDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo%0AdHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw%0AdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv%0AIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS%0AZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD%0AcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIE1hY2ludG9zaCIgeG1wTU06SW5zdGFu%0AY2VJRD0ieG1wLmlpZDo5OTk4MkU4RTY3RUQxMUUxQkIzNUE4NUQxNkQxNUNBMCIgeG1wTU06RG9j%0AdW1lbnRJRD0ieG1wLmRpZDo5OTk4MkU4RjY3RUQxMUUxQkIzNUE4NUQxNkQxNUNBMCI%2BIDx4bXBN%0ATTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjk5OTgyRThDNjdFRDExRTFC%0AQjM1QTg1RDE2RDE1Q0EwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjk5OTgyRThENjdFRDEx%0ARTFCQjM1QTg1RDE2RDE1Q0EwIi8%2BIDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY%2BIDwveDp4%0AbXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8%2BOC7QPQAAAC9JREFUOMtjMDU1rQDi/wOI2xnu37/P%0AAcRCA4i5GIAuGVAMdAQDw2h0jEbHYIwOAMpY057wYI5yAAAAAElFTkSuQmCC%0A') center center no-repeat;*/
     /*vertical-align: middle;*/
 }
 
-.split-panes.vertical > .split-pane1,
-.split-panes.vertical > .split-pane2
+.emuwebapp-split-panes.vertical > .split-pane1,
+.emuwebapp-split-panes.vertical > .split-pane2
 {
   position: absolute;
   width: 100%;
 }
 
-.split-panes.vertical > .split-pane1
+.emuwebapp-split-panes.vertical > .split-pane1
 {
   height: 50%; 
 }
 
-.split-panes.vertical > .split-pane2
+.emuwebapp-split-panes.vertical > .split-pane2
 { z-index: 100;
   top: 50%;
   bottom: 0px;
@@ -91,11 +88,11 @@
     Background Pane Splitter CSS
 */
 
-.split-panes.vertical {
+.emuwebapp-split-panes.vertical {
     z-index: 0 !important;
 }
 
-.split-panes.vertical > .split-handler {
+.emuwebapp-split-panes.vertical > .emuwebapp-split-handler {
     height: 14px !important;
     text-align: center;
     border-top: 1px solid #111;
@@ -104,7 +101,7 @@
     border-right: 0px;
 }
 
-.split-panes.vertical > .split-handler:before {
+.emuwebapp-split-panes.vertical > .emuwebapp-split-handler:before {
   content: "";
   position: absolute;
   left: calc(50%-20px);

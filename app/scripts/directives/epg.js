@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('epg', function (viewState) {
 		return {
-			template: '<div class="twoDimCanvasContainer"><canvas width="256" height="256"></canvas></div>',
+			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="256" height="256"></canvas></div>',
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {

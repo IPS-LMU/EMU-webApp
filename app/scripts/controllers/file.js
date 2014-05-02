@@ -42,10 +42,16 @@ angular.module('emuwebApp')
                 doLoad = true;
                 $scope.newfiles.wav = file;
             }
-            if(extension==="TEXTGRID" ) {
+            else if(extension==="TEXTGRID" ) {
                 $scope.newfiles.textgrid = file;
             }            
-            
+            // TODO: LAB and TONE files
+            //else if(extension === 'LAB' || extension === 'TONE') {
+            //    $scope.newfiles.textgrid = file;
+            //} 
+            else  {
+                $scope.newfiles.other = file;
+            }                         
         }
     }
     
@@ -69,18 +75,31 @@ angular.module('emuwebApp')
        });
     }
     
-
-     $scope.$watch('newfiles', function () {
-         if (!$.isEmptyObject($scope.newfiles.wav)) {
-             $scope.handleLocalFiles();
-          }
+    $scope.resetToInitState = function () {
+         $scope.newfiles = {};
+         $scope.curBndl = {};
+         $scope.dropText = $scope.dropDefault;    
+    };
+    
+    $scope.$watch('newfiles', function () {
+        if (!$.isEmptyObject($scope.newfiles.other)) {
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unkown File type !');
+            $scope.resetToInitState();
+        }
+        else {
+            if (!$.isEmptyObject($scope.newfiles.wav)) {
+                $scope.handleLocalFiles();
+            }
+            else if ($.isEmptyObject($scope.newfiles.wav) && !$.isEmptyObject($scope.newfiles.textgrid)) {
+                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: No Audio File (wav) given !');
+                $scope.resetToInitState();
+            }    
+        }
      }, true);   
      
      $scope.$on('resetToInitState', function () {
          console.log('clearing drag n drop file cache...');
-         $scope.newfiles = {};
-         $scope.curBndl = {};
-         $scope.dropText = $scope.dropDefault;
+         $scope.resetToInitState();
     });      
 
 
@@ -101,9 +120,9 @@ angular.module('emuwebApp')
 		var reader = new FileReader();
 		reader.readAsArrayBuffer($scope.newfiles.wav);
 		reader.onloadend = function(evt) {
-		  if (evt.target.readyState == FileReader.DONE) { 
-		    $scope.$parent.io.httpGetPath('configFiles/standalone_config.json').then(function (resp) {
-					// first element of perspectives is default perspective
+		    if (evt.target.readyState == FileReader.DONE) { 
+		        $scope.$parent.io.httpGetPath('configFiles/standalone_config.json').then(function (resp) {
+			        // first element of perspectives is default perspective
 					$scope.$parent.vs.curPerspectiveIdx = 0;
 					$scope.$parent.cps.setVals(resp.data.EMUwebAppConfig);
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
@@ -112,46 +131,44 @@ angular.module('emuwebApp')
 					$scope.curBndl.name = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
 					$scope.$parent.bundleList.push($scope.curBndl);
 					// then get the DBconfigFile
-		    
-		        
-    		    $scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
-    		      console.log(wavJSO);
-		    	  $scope.$parent.vs.curViewPort.sS = 0;
-			      $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
-    			  $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
-  	    		  $scope.$parent.vs.resetSelect();
-	    		  $scope.$parent.vs.curPerspectiveIdx = 0;
-		    	  $scope.$parent.shs.wavJSO = wavJSO;	
-			      // parsing of Textgrid Data
-			      if($scope.newfiles.textgrid !== undefined) {
-			        var reader = new FileReader();
-    			    reader.readAsText($scope.newfiles.textgrid);
-	    		    reader.onloadend = function(evt) {
-		    	        if (evt.target.readyState == FileReader.DONE) { 
-		    	            var extension = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
-		    	            Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.newfiles.wav.name, extension).then(function (parseMess) {
-								var annot = parseMess.data;
-								$scope.$parent.tds.setData(annot);
-								// console.log(JSON.stringify(l, undefined, 2));
-								var lNames = [];
-								annot.levels.forEach(function (l) {
-									lNames.push(l.name);
-								});
-								$scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
-								$scope.$parent.vs.somethingInProgressTxt = 'Done!';
-								$scope.$parent.vs.somethingInProgress = false;
-								$scope.$parent.vs.setState('labeling');
-								$scope.$parent.openSubmenu();
-			                });
-    			        }
-	    		    }, function (errMess) {
-		    	        $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
-			        };
+					
+					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
+					    $scope.$parent.vs.curViewPort.sS = 0;
+					    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
+					    $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
+					    $scope.$parent.vs.resetSelect();
+					    $scope.$parent.vs.curPerspectiveIdx = 0;
+					    $scope.$parent.shs.wavJSO = wavJSO;	
+					    // parsing of Textgrid Data
+					    if($scope.newfiles.textgrid !== undefined) {
+					        var reader = new FileReader();
+					        reader.readAsText($scope.newfiles.textgrid);
+					        reader.onloadend = function(evt) {
+					            if (evt.target.readyState == FileReader.DONE) {
+					                var extension = $scope.newfiles.wav.name.substr(0,$scope.newfiles.wav.name.lastIndexOf('.'));
+					                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.newfiles.wav.name, extension).then(function (parseMess) {
+					                var annot = parseMess.data;
+					                $scope.$parent.tds.setData(annot);
+					                // console.log(JSON.stringify(l, undefined, 2));
+					                var lNames = [];
+					                annot.levels.forEach(function (l) {
+					                    lNames.push(l.name);
+					                });
+					                $scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
+					                $scope.$parent.vs.somethingInProgressTxt = 'Done!';
+					                $scope.$parent.vs.somethingInProgress = false;
+					                $scope.$parent.vs.setState('labeling');
+					                $scope.$parent.openSubmenu();
+					            });
+					        }
+					    }, function (errMess) {
+		    	            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
+			            };
 			      }
 			      else {
-			        $scope.$parent.vs.setState('labeling');
-			        $scope.$parent.vs.somethingInProgress = false;
-			        $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
+			          $scope.$parent.vs.setState('labeling');
+			          $scope.$parent.vs.somethingInProgress = false;
+			          $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
 	                $scope.$parent.openSubmenu();		    
 			      }
 			      
@@ -200,14 +217,19 @@ angular.module('emuwebApp')
                 $scope.$apply();
             }
           }
-          if (extension === 'TEXTGRID') {
+          else if (extension === 'TEXTGRID') {
             $scope.newfiles.textgrid = file;  
             $scope.$apply();     
           }
-          if (extension === 'LAB' || extension === 'TONE') {
-            $scope.newfiles.lab = file;    
-            $scope.$apply();
-          }                    
+         // TODO : LAB & TONE Files
+         // else if (extension === 'LAB' || extension === 'TONE') {
+         //   $scope.newfiles.lab = file;    
+         //   $scope.$apply();
+         // } 
+          else {
+            $scope.newfiles.other = file;    
+            $scope.$apply();          
+          }                
         });
       } else if (item.isDirectory) {
         var dirReader = item.createReader();

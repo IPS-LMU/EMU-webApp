@@ -50,53 +50,6 @@
     font-size: 80%;
 }
 
-/* Vertical menu that slides from the left or right 
- 
-.cbp-spmenu-left {
-    left: -240px;
-
-}
-
-.cbp-spmenu-right {
-    right: -240px;
-
-}
- 
-.cbp-spmenu-left.cbp-spmenu-open {
-    left: 0px;
-}
-
-.cbp-spmenu-right.cbp-spmenu-open {
-    right: 0px;
-}
- 
-.cbp-spmenu-push {
-    overflow-x: hidden;
-    position: relative;
-    left: 0;
-}
- 
-.cbp-spmenu-left-toright {
-    left: 240px;
-    width: -moz-calc(100% - 240px);
-    width: -webkit-calc(100% - 240px);
-    width: calc(100% - 240px);
-}
- 
-.cbp-spmenu-left-toleft {
-    left: 0px;
-}
-
-.cbp-spmenu-right-toright {
-    right: 240px;
-    width: -moz-calc(100% - 240px);
-    width: -webkit-calc(100% - 240px);
-    width: calc(100% - 240px);
-}
- 
-.cbp-spmenu-right-toleft {
-    right: 0px;
-}*/
 
 .emuwebapp-bundleListItem{
     margin: 0px;
