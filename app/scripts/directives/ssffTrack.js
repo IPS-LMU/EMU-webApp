@@ -28,22 +28,21 @@ angular.module('emuwebApp')
           'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
 
+        
+        
+        
+        /////////////////////
+        // watches
+
         scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
-        
-        
-        scope.redraw = function () {
-          drawSsffTrackMarkup(true);
-          scope.updateCSS();
-        };
-        
 
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup(true);
-              scope.updateCSS();
+              drawSsffTrackMarkup();
+              // scope.updateCSS();
             }
           }
         }, true);
@@ -51,12 +50,38 @@ angular.module('emuwebApp')
         scope.$watch('ssffds.data.length', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup(true);
+              drawSsffTrackMarkup();
               scope.updateCSS();
             }
           }
         }, true);
 
+        scope.$watch('vs.movingBoundary', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              drawSsffTrackMarkup();
+            }
+          }
+        }, true);
+
+
+        scope.$watch('vs.movingBoundarySample', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              drawSsffTrackMarkup();
+            }
+          }
+        }, true);
+
+
+        //
+        /////////////////////
+        
+        scope.redraw = function () {
+          drawSsffTrackMarkup();
+          scope.updateCSS();
+        };
+        
         /**
          *
          */
