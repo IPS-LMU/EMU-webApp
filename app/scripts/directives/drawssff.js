@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 
 
         // watch ssffds.data change
-        scope.$watch('Ssffdataservice.data', function (newValue, oldValue) {
+        scope.$watch('Ssffdataservice.data.length', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
