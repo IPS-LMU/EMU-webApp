@@ -21,20 +21,21 @@ angular.module('emuwebApp')
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
 
+				scope.viewState = viewState;
 				// SIC SIC! FIX watches for isolated scopes...
 				scope.cpi = viewState.curPerspectiveIdx;
 				scope.phai = viewState.playHeadAnimationInfos;
-				scope.cvp = viewState.curViewPort;
 				scope.mb = viewState.movingBoundary;
+				scope.cvp = viewState.curViewPort;
 
 				///////////////
 				// watches
 
-				scope.$watch('cpi', function () {
+				scope.$watch('viewState.curPerspectiveIdx', function () {
 					scope.updateCSS();
 				}, true);
 
-				scope.$watch('phai', function () {
+				scope.$watch('viewState.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							drawPlayHead(scope, ConfigProviderService);
@@ -42,16 +43,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				// scope.$watch('tds.data', function () {
-				// 	if (!$.isEmptyObject(Soundhandlerservice)) {
-				// 		if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-				// 			console.log(scope.tds.data)
-				// 			drawVpOsciMarkup(scope, ConfigProviderService, true);
-				// 		}
-				// 	}
-				// }, true);
-
-				scope.$watch('mb', function () {
+				scope.$watch('viewState.movingBoundarySample', function (newValue) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							drawVpOsciMarkup(scope, ConfigProviderService, true);
@@ -59,7 +51,15 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('cvp', function (newValue, oldValue) {
+				scope.$watch('viewState.movingBoundary', function () {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+							drawVpOsciMarkup(scope, ConfigProviderService, true);
+						}
+					}
+				}, true);
+
+				scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							// check for changed zoom

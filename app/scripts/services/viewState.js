@@ -69,7 +69,9 @@ angular.module('emuwebApp')
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
     sServObj.showDropZone = undefined;
+    
     sServObj.movingBoundary = false;
+    sServObj.movingBoundarySample = undefined;
 
     sServObj.gotUnsavedDataChanges = false;
 

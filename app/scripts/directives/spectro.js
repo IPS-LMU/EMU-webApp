@@ -50,18 +50,18 @@ angular.module('emuwebApp')
           }
         };
 
-        // on mouse move
-        element.bind('mousemove', function (event) {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-              // drawSpectMarkup();
-              // if (!scope.vs.getdragBarActive()) {
-              //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
-              // }
-            }
-          }
-        });
+        // // on mouse move
+        // element.bind('mousemove', function (event) {
+        //   if (!$.isEmptyObject(scope.shs)) {
+        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
+        //       // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+        //       // drawSpectMarkup();
+        //       // if (!scope.vs.getdragBarActive()) {
+        //       //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
+        //       // }
+        //     }
+        //   }
+        // });
 
         // on mouse leave clear markup canvas
         element.bind('mouseleave', function () {
@@ -86,14 +86,14 @@ angular.module('emuwebApp')
           }
         }, true);
 
-        // do we need this?
-        // scope.$watch('tds.data', function () {
-        //   if (!$.isEmptyObject(scope.shs)) {
-        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
-        //       scope.redraw();
-        //     }
-        //   }
-        // }, true);
+        scope.$watch('vs.movingBoundarySample', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              drawSpectMarkup();
+            }
+          }
+        }, true);
 
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
@@ -104,10 +104,10 @@ angular.module('emuwebApp')
         }, true);
 
 
-        scope.$on('newlyLoadedAudioFile', function () {
-          console.log('clearing spectro image cache...');
-          clearImageCache();
-        });
+        // scope.$on('newlyLoadedAudioFile', function () {
+        //   console.log('clearing spectro image cache...');
+        //   clearImageCache();
+        // });
 
         scope.$watch('vs.spectroSettings', function () {
           if (!$.isEmptyObject(scope.shs)) {

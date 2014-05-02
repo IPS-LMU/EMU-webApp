@@ -72,6 +72,7 @@ angular.module('emuwebApp')
                 if (scope.vs.getcurMouseSegment() !== undefined) {
                   scope.vs.movingBoundary = true;
                   if (scope.this.level.type == "SEGMENT") {
+                    scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
                     scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
@@ -82,6 +83,7 @@ angular.module('emuwebApp')
                       'movedBy': moveBy
                     });
                   } else {
+                    scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().samplePoint + moveBy;
                     scope.tds.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
