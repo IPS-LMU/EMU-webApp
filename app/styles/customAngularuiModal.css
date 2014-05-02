@@ -1,6 +1,7 @@
 .modal{
 	display: block;
 	margin: 50px;
+	overflow:hidden;
 }
 .modal-header{
 	background-color: #0DC5FF;
