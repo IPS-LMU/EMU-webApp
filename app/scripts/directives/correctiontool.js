@@ -15,12 +15,27 @@ angular.module('emuwebApp')
 				// var elem = element[0];
 				var tr, col, sRaSt;
 				var trackName;
+				var bundleName;
 
 				/////////////////////////////
 				// observe attribute
 				atts.$observe('ssffTrackname', function (val) {
 					if (val) {
 						trackName = val;
+					}
+				});
+
+				// bundleName needed to reset tr, col, sRaSt on bundle change
+				atts.$observe('bundleName', function (val) {
+					if (val) {
+						bundleName = val;
+						if (!$.isEmptyObject(scope.ssffds.data)) {
+							if (scope.ssffds.data.length !== 0) {
+								tr = scope.cps.getSsffTrackConfig('FORMANTS');
+								col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+								sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+							}
+						}
 					}
 				});
 
