@@ -71,7 +71,7 @@ angular.module('emuwebApp')
                 scope.vs.deleteEditArea();
                 if (scope.vs.getcurMouseSegment() !== undefined) {
                   scope.vs.movingBoundary = true;
-                  if (scope.this.level.type == "SEGMENT") {
+                  if (scope.this.level.type == 'SEGMENT') {
                     scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
                     scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({

@@ -745,7 +745,7 @@ angular.module('emuwebApp')
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
 
-      if (type === "SEGMENT") {
+      if (type === 'SEGMENT') {
         var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
         var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
       } else {
