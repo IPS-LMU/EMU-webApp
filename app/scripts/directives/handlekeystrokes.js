@@ -191,7 +191,12 @@ angular.module('emuwebApp')
                   var mouseSeg = viewState.getcurMouseSegment();
                   var levelName = viewState.getcurMouseLevelName();
                   console.log(mouseSeg);
-                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mouseSeg.id);
+                  var minDist;
+                  if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+                    minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mouseSeg.id);
+                  } else {
+                    minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().samplePoint, levelName, mouseSeg.id);
+                  }
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
@@ -203,6 +208,27 @@ angular.module('emuwebApp')
               }
 
               // preselected boundary snap to bottom
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
+                if (ConfigProviderService.vals.restrictions.editItemSize) {
+                  var mousSegID = viewState.getcurMouseSegmentId();
+                  var levelName = viewState.getcurMouseLevelName();
+                  var minDist;
+                  if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+                    minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
+                  } else {
+                    minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().samplePoint, levelName, mousSegID);
+                  }
+                  scope.hists.addObjToUndoStack({
+                    'type': 'ESPS',
+                    'action': 'snapBoundary',
+                    'levelName': levelName,
+                    'itemIdx': mousSegID,
+                    'movedBy': minDist
+                  });
+                }
+              }
+
+              // preselected boundary to nearest zero crossing
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
