@@ -546,17 +546,28 @@ angular.module('emuwebApp')
      * selects all Segements on current level which are inside the selected viewport
      */
     sServObj.selectSegmentsInSelection = function () {
+      sServObj.curClickSegments = [];
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
+      var min = Infinity;
+      var max = -Infinity;
       angular.forEach(Levelservice.data.levels, function (t) {
         if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
               sServObj.setcurClickSegmentMultiple(evt);
+              if(evt.sampleStart < min){
+                min = evt.sampleStart;
+              }
+              if((evt.sampleStart + evt.sampleDur) > max){
+                max = evt.sampleStart + evt.sampleDur;
+              }
             }
           });
         }
       });
+      sServObj.curViewPort.selectS = min;
+      sServObj.curViewPort.selectE = max;
     };
 
 
