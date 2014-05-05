@@ -229,23 +229,14 @@ angular.module('emuwebApp')
               }
 
               // preselected boundary to nearest zero crossing
-              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestZeroCrossing) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  var mousSegID = viewState.getcurMouseSegmentId();
-                  var levelName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
-                  scope.hists.addObjToUndoStack({
-                    'type': 'ESPS',
-                    'action': 'snapBoundary',
-                    'levelName': levelName,
-                    'itemIdx': mousSegID,
-                    'movedBy': minDist
-                  });
+                  alert('TODO: SNAP TO NEAREST ZERO CROSSING... ');
                 }
               }
 
               // expand Segments
-              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsRight) {
+              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsLeftRight) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
@@ -280,7 +271,7 @@ angular.module('emuwebApp')
                 }
               }
 
-              // expand Segment
+              // expand Segment !!!SIC SIC SIC!!! use e.shiftKey like in shink segments
               if (code === ConfigProviderService.vals.keyMappings.plusShift) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
@@ -317,7 +308,7 @@ angular.module('emuwebApp')
               }
 
               // shrink Segments
-              if (code === ConfigProviderService.vals.keyMappings.shrinkSelSegmentsRight) {
+              if (code === ConfigProviderService.vals.keyMappings.shrinkSelSegmentsLeftRight) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
