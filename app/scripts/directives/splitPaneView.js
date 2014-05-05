@@ -35,9 +35,9 @@ angular.module('emuwebApp')
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;
 
-        var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
-        var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
-        var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
+        var bottomRightResizePaneTopResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneTopResizer"></div>');
+        var bottomRightResizePaneLeftResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneLeftResizer"></div>');
+        var bottomRightResizePaneCornerResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneCornerResizer"></div>');
         pane3.elem.prepend(bottomRightResizePaneLeftResizer);
         pane3.elem.prepend(bottomRightResizePaneTopResizer);
         pane3.elem.prepend(bottomRightResizePaneCornerResizer);
@@ -190,7 +190,7 @@ angular.module('emuwebApp')
 
       link: function (scope, element, attrs, bgSplitterCtrl) {
         var newElement;
-        if (scope.type !== "bottomRightResizePane") {
+        if (scope.type !== "emuwebapp-bottomRightResizePane") {
           scope.elem = element;
           scope.index = bgSplitterCtrl.addPane(scope);
           scope.typeclass = 'split-pane' + scope.index;
@@ -209,7 +209,7 @@ angular.module('emuwebApp')
 
           scope.elem = element;
           scope.index = 3;
-          scope.typeclass = 'bottomRightResizePane';
+          scope.typeclass = 'emuwebapp-bottomRightResizePane';
           bgSplitterCtrl.setBottomRightResizePane(scope);
 
         }

@@ -1,3 +1,5 @@
+/*2D + overtime canvases*/
+
 .emuwebapp-twoDimCanvasContainer {
 	position: absolute;
 	top: 10px;
@@ -15,4 +17,58 @@
     height: 100%;
     background-color: #E7E7E7;
     border: 1px solid gray;
+}
+
+.emuwebapp-bottomRightResizePane {
+  position: absolute;
+  left: calc(100% - 200px);
+  top: calc(100% - 200px);
+  height: 200px;
+  width: 200px;
+  background-color: #E7E7E7;
+  color: #000;
+  box-shadow: 0 0 5px 2px #ccc;
+  border-radius: 0px;
+  z-index: 1000000;
+}
+
+.emuwebapp-bottomRightResizePaneCornerResizer{
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  cursor: nwse-resize;
+
+  background: linear-gradient(135deg,
+    white 30%,
+    black 30%, black 40%,
+    white 40%, white 50%,
+    black 50%, black 60%,
+    white 60%, white 70%,
+    black 70%, black 80%,
+    white 80%
+    );
+}
+
+.emuwebapp-bottomRightResizePaneTopResizer{
+  position: absolute;
+  left: 10px;
+  height: 10px;
+  width: calc(100% - 10px);
+  background-color: #fff;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  cursor: ns-resize;
+}
+
+.emuwebapp-bottomRightResizePaneLeftResizer{
+  position: absolute;
+  height: calc(100% - 10px);
+  top: 10px;
+  width: 10px;
+  background-color: #fff;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  cursor: ew-resize;
 }
