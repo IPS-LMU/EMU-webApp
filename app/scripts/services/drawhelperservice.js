@@ -390,6 +390,13 @@ angular.module('emuwebApp')
 				ctx.moveTo(mouseX, 0);
 				ctx.lineTo(mouseX, ctx.canvas.height);
 				ctx.stroke();
+
+
+
+				if (navigator.vendor === 'Google Inc.') {
+					ctx.setLineDash([0]);
+				}
+
 				// draw frequency / sample / time
 				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
 
@@ -407,11 +414,6 @@ angular.module('emuwebApp')
 				}
 				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
 
-
-				if (navigator.vendor === 'Google Inc.') {
-					ctx.setLineDash([0]);
-				}
-				// drawSpectMarkup();
 			}
 		};
 
@@ -427,6 +429,8 @@ angular.module('emuwebApp')
 		sServObj.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
 
 			// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			ctx.strokeStyle = ConfigProviderService.vals.colors.labelColor;
+			ctx.fillStyle = ConfigProviderService.vals.colors.labelColor;
 
 			// var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 			var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
