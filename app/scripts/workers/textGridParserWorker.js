@@ -241,7 +241,7 @@ self.addEventListener('message', function (e) {
 	case 'parseTG':
 		sampleRate = data.sampleRate;
 		var retVal = toJSO(data.textGrid, data.annotates, data.name)
-		if (retVal.type === undefined) {
+		if (retVal.status.type === undefined) {
 			self.postMessage({
 				'status': {
 					'type': 'SUCCESS',
