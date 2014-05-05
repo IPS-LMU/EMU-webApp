@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 
             scope.setlastkeycode(code, e.shiftKey);
             if (viewState.focusInTextField) {
-              if (code === ConfigProviderService.vals.keyMappings.enter) {
+              if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
                   var editingElement = Levelservice.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
                   HistoryService.addObjToUndoStack({
@@ -177,31 +177,33 @@ angular.module('emuwebApp')
 
               // LevelUp
               if (code === ConfigProviderService.vals.keyMappings.levelUp) {
-                viewState.selectLevel(false);
+                viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order); // pass in order from cps to prevent circular deps
               }
               // levelDown
               if (code === ConfigProviderService.vals.keyMappings.levelDown) {
-                viewState.selectLevel(true);
+                viewState.selectLevel(true, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order); // pass in order from cps to prevent circular deps
               }
 
               // preselected boundary snap to top
-              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToTop) {
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestTopBoundary) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  var mousSegID = viewState.getcurMouseSegmentId();
+                  // var mousSegID = viewState.getcurMouseSegmentId();
+                  var mouseSeg = viewState.getcurMouseSegment();
                   var levelName = viewState.getcurMouseLevelName();
-                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
+                  console.log(mouseSeg);
+                  var minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mouseSeg.id);
                   scope.hists.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'snapBoundary',
                     'levelName': levelName,
-                    'itemIdx': mousSegID,
+                    'itemIdx': mouseSeg.id,
                     'movedBy': minDist
                   });
                 }
               }
 
               // preselected boundary snap to bottom
-              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToBottom) {
+              if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mousSegID = viewState.getcurMouseSegmentId();
                   var levelName = viewState.getcurMouseLevelName();
@@ -216,8 +218,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // expand Segment
-              if (code === ConfigProviderService.vals.keyMappings.plus) {
+              // expand Segments
+              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsRight) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
@@ -288,8 +290,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // expand Segment
-              if (code === ConfigProviderService.vals.keyMappings.minus) {
+              // shrink Segments
+              if (code === ConfigProviderService.vals.keyMappings.shrinkSelSegmentsRight) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
@@ -343,8 +345,8 @@ angular.module('emuwebApp')
               }
 
 
-              // openSubmenu
-              if (code === ConfigProviderService.vals.keyMappings.openSubmenu) {
+              // toggleSideBars
+              if (code === ConfigProviderService.vals.keyMappings.toggleSideBars) {
                 // check if menu button in showing -> if not -> no submenu open
                 if (ConfigProviderService.vals.activeButtons.openMenu) {
                   if (e.shiftKey) {
@@ -354,13 +356,7 @@ angular.module('emuwebApp')
                   }
                 }
               }
-              if (code === ConfigProviderService.vals.keyMappings.openRightSubmenu) {
-                scope.openRightSubmenu();
-              }
-              // spectroSettings
-              if (code === ConfigProviderService.vals.keyMappings.spectroSettings) {
-                scope.dials.open('views/spectroSettings.html', 'dialog');
-              }
+
               // select Segments in viewport selection
               if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
                 if (viewState.getcurClickLevelName() === undefined) {
@@ -370,7 +366,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              if (code === ConfigProviderService.vals.keyMappings.left) {
+              // selPrevItem
+              if (code === ConfigProviderService.vals.keyMappings.selPrevItem) {
                 if (viewState.getcurClickSegments().length > 0) {
                   var idLeft = viewState.getcurClickSegments()[0].id;
                   var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
@@ -383,7 +380,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              if (code === ConfigProviderService.vals.keyMappings.right) {
+              // selNextItem
+              if (code === ConfigProviderService.vals.keyMappings.selNextItem) {
                 if (viewState.getcurClickSegments().length > 0) {
                   var idLeft = viewState.getcurClickSegments()[0].id;
                   var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
@@ -395,8 +393,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // tab
-              if (code === ConfigProviderService.vals.keyMappings.tab) {
+              // selNextPrevItem
+              if (code === ConfigProviderService.vals.keyMappings.selNextPrevItem) {
                 if (viewState.getcurClickSegments().length > 0) {
                   var idLeft = viewState.getcurClickSegments()[0].id;
                   var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
@@ -416,8 +414,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // enter
-              if (code === ConfigProviderService.vals.keyMappings.enter) {
+              // createNewItemAtSelection
+              if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (ConfigProviderService.vals.restrictions.addItem) {
                   if (viewState.getselectedRange().start == viewState.curViewPort.selectS && viewState.getselectedRange().end == viewState.curViewPort.selectE) {
                     if (viewState.getcurClickSegments().length == 1) {
@@ -465,16 +463,17 @@ angular.module('emuwebApp')
               }
 
 
-              // history
-              if (code === ConfigProviderService.vals.keyMappings.history) {
+              // undoRedo
+              if (code === ConfigProviderService.vals.keyMappings.undoRedo) {
                 if (!e.shiftKey) {
                   HistoryService.undo();
                 } else {
                   HistoryService.redo();
                 }
               }
-              // backspace
-              if (code === ConfigProviderService.vals.keyMappings.backspace) {
+
+              // deletePreselBoundary
+              if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (!e.shiftKey) {
                   if (ConfigProviderService.vals.restrictions.deleteItem) {
                     var seg = viewState.getcurMouseSegment();

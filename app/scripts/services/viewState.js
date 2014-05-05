@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, Soundhandlerservice, $window, Levelservice) {
+  .factory('viewState', function ($rootScope, $window, Soundhandlerservice, Levelservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
     sServObj.curMouseSegmentId = undefined;
     sServObj.TransitionTime = undefined;
     sServObj.showDropZone = undefined;
-    
+
     sServObj.movingBoundary = false;
     sServObj.movingBoundarySample = undefined;
 
@@ -127,6 +127,7 @@ angular.module('emuwebApp')
     };
 
     /**
+     *
      */
     sServObj.updatePlayHead = function (timestamp) {
       // at first push animation !!!
@@ -224,42 +225,33 @@ angular.module('emuwebApp')
       }
     };
 
-    sServObj.selectLevel = function (next) {
+    /**
+     *
+     */
+    sServObj.selectLevel = function (next, order) {
       var tag;
       var now = sServObj.getcurClickLevelName();
-      var name = $('li').children()[0].id;
-      if (now === undefined) {
-        sServObj.setcurClickLevelName(name);
-      } else {
-        if (next) {
-          tag = $('li.' + now).next().children()[0];
-          if (tag === undefined) {
-            sServObj.setcurClickLevelName(name);
-          } else {
-            name = tag.id;
-            sServObj.setcurClickLevelName(name);
-          }
-        } else {
-          tag = $('li.' + now).prev().children()[0];
-          if (tag === undefined) {
-            sServObj.setcurClickLevelName(name);
-          } else {
-            name = tag.id;
-            sServObj.setcurClickLevelName(name);
-          }
+      if (now === undefined && !next) {
+        sServObj.setcurClickLevelName(order[0]);
+        return;
+      } else if (now === undefined && next) {
+        sServObj.setcurClickLevelName(order[order.length - 1]);
+        return;
+      }
+      var idxOfNow;
+      order.forEach(function (name, idx) {
+        if (name == now) {
+          idxOfNow = idx;
         }
-        var segs = sServObj.getcurClickSegments();
-        if (segs !== undefined) {
-          if (segs.length > 0) {
-            var pcm = segs[0].sampleStart + (segs[0].sampleDur / 2);
-            var ld = Levelservice.getLevelDetails(name);
-            var lastEventClick = Levelservice.getEvent(pcm, ld.level, false);
-            console.log(lastEventClick);
-            sServObj.setlasteditArea('_' + lastEventClick.id);
-            sServObj.setcurClickLevelType(ld.level.type);
-            sServObj.setcurClickSegment(lastEventClick);
-            sServObj.setLevelLength(ld.level.items.length);
-          }
+      })
+
+      if (next) {
+        if (idxOfNow + 1 < order.length) {
+          sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+        }
+      } else {
+        if (idxOfNow - 1 >= 0) {
+          sServObj.setcurClickLevelName(order[idxOfNow - 1]);
         }
       }
     };
@@ -556,10 +548,10 @@ angular.module('emuwebApp')
           angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
               sServObj.setcurClickSegmentMultiple(evt);
-              if(evt.sampleStart < min){
+              if (evt.sampleStart < min) {
                 min = evt.sampleStart;
               }
-              if((evt.sampleStart + evt.sampleDur) > max){
+              if ((evt.sampleStart + evt.sampleDur) > max) {
                 max = evt.sampleStart + evt.sampleDur;
               }
             }
@@ -668,7 +660,7 @@ angular.module('emuwebApp')
     sServObj.getselected = function () {
       return this.curClickSegments;
     };
-    
+
     sServObj.getlasteditAreaElem = function () {
       return this.lasteditAreaElem;
     };

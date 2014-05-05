@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ConfigProviderService', function ConfigProviderService(viewState) {
+	.service('ConfigProviderService', function (viewState) {
 
 		// shared service object
 		var sServObj = {};
