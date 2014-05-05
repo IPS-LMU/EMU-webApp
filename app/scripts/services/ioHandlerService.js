@@ -19,7 +19,9 @@ angular.module('emuwebApp')
 		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetPath = function (path, respType) {
-			var prom = $http.get(path, {responseType: respType});
+			var prom = $http.get(path, {
+				responseType: respType
+			});
 			return prom;
 		};
 
@@ -134,10 +136,17 @@ angular.module('emuwebApp')
 		////////////////////////////
 
 		/**
-		 * pass through to Textgridparserservice
+		 * pass through to according parser
 		 */
-		sServObj.toTextGrid = function (labelJSO) {
-			return (Textgridparserservice.toTextGrid(labelJSO));
+		sServObj.parseLabelFile = function (string, annotates, name, fileType) {
+			var prom;
+			if (fileType === 'ESPS') {
+				prom = Espsparserservice.asyncParseEsps(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
+			} else if (fileType === 'TEXTGRID') {
+				prom = Textgridparserservice.asyncParseTextGrid(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
+			}
+
+			return prom;
 		};
 
 

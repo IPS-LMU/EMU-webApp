@@ -11,7 +11,8 @@ angular.module('emuwebApp')
 		// embedded values -> if these are set this overrides the normal config  
 		sServObj.embeddedVals = {
 			audioGetUrl: '',
-			labelGetUrl: ''
+			labelGetUrl: '',
+			labelType: ''
 		};
 
 		/**

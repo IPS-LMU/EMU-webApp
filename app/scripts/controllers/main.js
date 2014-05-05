@@ -77,7 +77,7 @@ angular.module('emuwebApp')
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 				// check if file extension is correct 
-				
+
 				// if (ConfigProviderService.embeddedVals.labelGetUrl.split('.')[1] !== 'TextGrid') {
 				// 	alert("File extention of embedded mode has to be .TextGrid")
 				// 	return;
@@ -118,11 +118,11 @@ angular.module('emuwebApp')
 						viewState.resetSelect();
 						Soundhandlerservice.wavJSO = wavJSO;
 
-						// get + parse textgrid
+						// get + parse file
 						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
-							viewState.somethingInProgressTxt = 'Parsing TextGrid file...';
-							Espsparserservice.asyncParseEsps(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid').then(function (parseMess) {
-								console.log(parseMess)
+							viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
+							Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+								// console.log(parseMess)
 								var annot = parseMess.data;
 								Levelservice.setData(annot);
 								// console.log(JSON.stringify(l, undefined, 2));
@@ -329,8 +329,8 @@ angular.module('emuwebApp')
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
 		$scope.menuBundleClick = function (bndl) {
-	
-	        
+
+
 
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
@@ -397,10 +397,10 @@ angular.module('emuwebApp')
 								Ssffdataservice.data = ssffJso.data;
 								// set annotation
 								Levelservice.setData(bundleData.annotation);
-								
-								
+
+
 								console.log(bndl);
-								
+
 								$scope.curBndl = bndl;
 								viewState.setState('labeling');
 								viewState.somethingInProgress = false;

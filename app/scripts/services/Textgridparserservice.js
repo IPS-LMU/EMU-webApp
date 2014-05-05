@@ -5,7 +5,7 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		var worker = new Worker('scripts/workers/espsParserWorker.js');
+		var worker = new Worker('scripts/workers/textGridParserWorker.js');
 		var defer;
 
 		// add event listener to worker to respond to messages

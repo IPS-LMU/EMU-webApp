@@ -19,8 +19,10 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * parse array of ssff file using webworker
-		 * @param array of ssff files encoded as base64 stings
+		 * parse ESPS file using webworker
+		 * @param esps
+		 * @param annotates
+		 * @param name
 		 * @returns promise
 		 */
 		sServObj.asyncParseEsps = function (esps, annotates, name) {

@@ -86,7 +86,6 @@ function toJSO(string, annotates, name) {
 
 	}
 
-	console.log(JSON.stringify(labelJSO, undefined, 2));
 	return labelJSO;
 };
 
@@ -140,7 +139,7 @@ self.addEventListener('message', function (e) {
 		self.postMessage({
 			'status': {
 				'type': 'ERROR',
-				'message': 'Unknown command sent to textGridParserWorker'
+				'message': 'Unknown command sent to espsParserWorker: ' + data.cmd
 			}
 		});
 
