@@ -252,7 +252,6 @@ self.addEventListener('message', function (e) {
 		} else {
 			self.postMessage(retVal);
 		}
-		// self.postMessage('yo mumma smells');
 		break;
 	default:
 		self.postMessage({

@@ -2,7 +2,7 @@
 
 angular.module('emuwebApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice) {
 
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
@@ -121,7 +121,7 @@ angular.module('emuwebApp')
 						// get + parse textgrid
 						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
 							viewState.somethingInProgressTxt = 'Parsing TextGrid file...';
-							Textgridparserservice.asyncParseTextGrid(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid').then(function (parseMess) {
+							Espsparserservice.asyncParseEsps(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid').then(function (parseMess) {
 								console.log(parseMess)
 								var annot = parseMess.data;
 								Levelservice.setData(annot);

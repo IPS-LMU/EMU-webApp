@@ -7,7 +7,10 @@
     "type": "SEGMENT",
     "items": [{
       "id": 1,
-      "label": "V",
+      "labels": [{
+        "name": "Phonetic",
+        "value": ""
+      }]
       "sampleStart": 3750,
       "sampleDur": 1390
     }]
@@ -17,14 +20,20 @@
     "items": [{
       "id": 2,
       "samplePoint": 8382,
-      "label": "H*"
+      "labels": [{
+        "name": "Tone",
+        "value": "H*"
+      }]
     }]
   }, {
     "name": "Syllable",
     "type": "ITEM",
     "items": [{
       "id": 5,
-      "label": "W"
+      "labels": [{
+        "name": "Syllable",
+        "value": "bla"
+      }]
     }]
   }],
   "links": [{

@@ -1,9 +1,16 @@
 'use strict';
 
+var sampleRate;
 
-function toJSO(string, filePath) {
+function toJSO(string, annotates, name) {
 
-	var ext = '_' + filePath.split('.')[filePath.split('.').length - 1];
+	var labelJSO = {};
+	labelJSO.name = name;
+	labelJSO.annotates = annotates;
+	labelJSO.sampleRate = sampleRate;
+	labelJSO.levels = [];
+
+	// var ext = '_' + filePath.split('.')[filePath.split('.').length - 1];
 
 	// remove all empty lines from string
 	string = string.replace(/([ \t]*\r?\n)+/g, '\n');
@@ -21,64 +28,70 @@ function toJSO(string, filePath) {
 	}
 
 	//init empty labelJSO
-	var labelJSO = {
-		fileInfos: [{
-			fileURI: filePath,
-			fileType: 'esps',
-			associatedLevelNames: [ext]
-		}],
-		levels: []
-	};
+	labelJSO.levels[0] = {};
+	labelJSO.levels[0].name = name;
+	labelJSO.levels[0].items = [];
 
-	labelJSO.levels.push({
-		LevelName: ext,
-		type: '',
-		items: []
-	});
+	var idCounter = 1;
 
 	// set level type
 	var prevLineArr;
 	var curLineArr = lines[headEndIdx + 1].split(/\s+/);
 	if (curLineArr[curLineArr.length - 1] !== 'H#') {
-		labelJSO.levels[0].type = 'point';
+		labelJSO.levels[0].type = 'POINT';
 	} else {
-		labelJSO.levels[0].type = 'seg';
+		labelJSO.levels[0].type = 'SEGMENT';
 	}
 
-	if (labelJSO.levels[0].type === 'point') {
+	if (labelJSO.levels[0].type === 'POINT') {
 		for (i = headEndIdx + 1; i < lines.length - 1; i++) {
 			curLineArr = lines[i].split(/\s+/);
 			labelJSO.levels[0].items.push({
-				label: curLineArr[curLineArr.length - 1],
-				sampleStart: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
+				id: idCounter,
+				labels: [{
+					name: name,
+					value: curLineArr[curLineArr.length - 1]
+				}],
+				sampleStart: Math.round(curLineArr[1] * sampleRate)
 			});
+			idCounter += 1;
 		}
 	} else {
 		// take care of H#
 		curLineArr = lines[headEndIdx + 1].split(/\s+/);
 		labelJSO.levels[0].items.push({
-			label: '',
+			id: idCounter,
+			labels: [{
+				name: name,
+				value: ''
+			}],
 			sampleStart: 0,
-			sampleDur: Math.round(curLineArr[1] * Soundhandlerservice.wavJSO.SampleRate)
+			sampleDur: Math.round(curLineArr[1] * sampleRate)
 		});
+		idCounter += 1;
 		for (i = headEndIdx + 2; i < lines.length - 1; i++) {
 			curLineArr = lines[i].split(/\s+/);
 			prevLineArr = lines[i - 1].split(/\s+/);
 			labelJSO.levels[0].items.push({
-				label: curLineArr[curLineArr.length - 1],
-				sampleStart: Math.round(prevLineArr[1] * Soundhandlerservice.wavJSO.SampleRate),
-				sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * Soundhandlerservice.wavJSO.SampleRate)
+				id: idCounter,
+				labels: [{
+					name: name,
+					value: curLineArr[curLineArr.length - 1]
+				}],
+				sampleStart: Math.round(prevLineArr[1] * sampleRate),
+				sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * sampleRate)
 			});
+			idCounter += 1;
 		}
 
 	}
 
-	// console.log(JSON.stringify(labelJSO, undefined, 2));
+	console.log(JSON.stringify(labelJSO, undefined, 2));
 	return labelJSO;
 };
 
 /**
- *
+ * SIC! This function probably has to be fixed...
  */
 function toESPS(espsJSO) {
 	var fBaseN = espsJSO.LevelName.substring(1);
@@ -94,7 +107,7 @@ function toESPS(espsJSO) {
 		} else {
 			curLabel = i.label;
 		}
-		espsStr += '\t' + String((i.sampleStart + i.sampleDur) / Soundhandlerservice.wavJSO.SampleRate) + '\t125\t' + curLabel + '\n';
+		espsStr += '\t' + String((i.sampleStart + i.sampleDur) / sampleRate) + '\t125\t' + curLabel + '\n';
 	});
 
 	// console.log(espsStr);
@@ -108,7 +121,7 @@ function toESPS(espsJSO) {
 self.addEventListener('message', function (e) {
 	var data = e.data;
 	switch (data.cmd) {
-	case 'parseTG':
+	case 'parseESPS':
 		sampleRate = data.sampleRate;
 		var retVal = toJSO(data.textGrid, data.annotates, data.name)
 		if (retVal.type === undefined) {
@@ -122,7 +135,6 @@ self.addEventListener('message', function (e) {
 		} else {
 			self.postMessage(retVal);
 		}
-		// self.postMessage('yo mumma smells');
 		break;
 	default:
 		self.postMessage({
