@@ -129,6 +129,7 @@ angular.module('emuwebApp')
             drawTimeLine(cache);
             drawSpectMarkup();
           } else {
+            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawSpectro(scope.shs.wavJSO.Data);
           }
         };
