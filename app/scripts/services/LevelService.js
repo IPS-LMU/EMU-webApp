@@ -44,7 +44,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element order by passing in elemtent id
+		 * gets element order by passing in elemtent id
 		 */
 		sServObj.getOrderById = function (name, id) {
 			var ret = null;
@@ -62,7 +62,7 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * get's element id by passing in element order
+		 * gets element id by passing in element order
 		 */
 		sServObj.getIdByOrder = function (name, order) {
 			var ret = null;
@@ -81,7 +81,7 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * get's element details by passing in levelName and elemtent order
+		 * gets element details by passing in levelName and elemtent order
 		 */
 		sServObj.getElementDetails = function (name, order) {
 			var details = null;
@@ -98,7 +98,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element details by passing in levelName and elemtent order
+		 * gets element details by passing in levelName and elemtent order
 		 */
 		sServObj.getLastElement = function (name) {
 			var details = null;
@@ -112,7 +112,7 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * get's element details by passing in levelName and elemtent id
+		 * gets element details by passing in levelName and elemtent id
 		 */
 		sServObj.getElementDetailsById = function (name, id) {
 			return sServObj.getElementDetails(name, sServObj.getOrderById(name, id));
@@ -126,13 +126,13 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					var newElement = angular.copy(level.items[0]);
-					if (level.type == "SEGMENT") {
+					if (level.type == 'SEGMENT') {
 						newElement.id = myID;
 						newElement.sampleStart = start;
 						newElement.sampleDur = duration;
 						newElement.labels[0].value = labelname;
 						level.items.splice(position, 0, newElement);
-					} else if (level.type == "EVENT") {
+					} else if (level.type == 'EVENT') {
 						newElement.id = myID;
 						newElement.samplePoint = start;
 						newElement.labels[0].value = labelname;
@@ -143,7 +143,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element details by passing in levelName and elemtent id
+		 * gets element details by passing in levelName and elemtent id
 		 */
 		sServObj.setElementDetails = function (levelname, id, labelname, start, duration) {
 			angular.forEach(sServObj.data.levels, function (level) {
@@ -166,7 +166,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element details by passing in levelName and elemtent id
+		 * gets element details by passing in levelName and elemtent id
 		 */
 		sServObj.setPointDetails = function (levelname, id, labelname, start) {
 			angular.forEach(sServObj.data.levels, function (level) {
@@ -182,7 +182,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get's element details by passing in levelName and element id's
+		 * gets element details by passing in levelName and element id's
 		 */
 		sServObj.getElementNeighbourDetails = function (name, firstid, lastid) {
 			var left = null;
@@ -207,12 +207,12 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * get's element details by passing in level, pcm position and maximum pcm
+		 * gets element details by passing in level, pcm position and maximum pcm
 		 */
 		sServObj.getEvent = function (pcm, level, maximum) {
 			var event = level.items[0];
 			var nearest = false;
-			if (level.type === "SEGMENT") {
+			if (level.type === 'SEGMENT') {
 				angular.forEach(level.items, function (evt, index) {
 					if (pcm >= evt.sampleStart) {
 						if (pcm <= (evt.sampleStart + evt.sampleDur)) {
@@ -301,7 +301,9 @@ angular.module('emuwebApp')
 			});
 		};
 
-
+		/**
+		 *
+		 */
 		sServObj.deleteSegmentsInvers = function (levelname, segments, neighbours) {
 			var length1 = 0;
 			var length2 = 0;
@@ -320,7 +322,7 @@ angular.module('emuwebApp')
 			var insertPoint = 0;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
-					if (level.type === "SEGMENT") {
+					if (level.type === 'SEGMENT') {
 						angular.forEach(level.items, function (evt, num) {
 							if (evt.id == neighbours.left.id) {
 								insertPoint = num + 1;
@@ -337,6 +339,9 @@ angular.module('emuwebApp')
 
 		};
 
+		/**
+		 *
+		 */
 		sServObj.deleteSegments = function (levelname, segments, neighbours) {
 			var length1 = 0;
 			var length2 = 0;
@@ -370,6 +375,9 @@ angular.module('emuwebApp')
 
 		};
 
+		/**
+		 *
+		 */
 		sServObj.insertSegmentInvers = function (start, end, levelName, newLabel) {
 			var ret = true;
 			angular.forEach(sServObj.data.levels, function (t) {
@@ -407,6 +415,9 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.insertSegment = function (start, end, name, newLabel) {
 			var ret = true;
 			angular.forEach(sServObj.data.levels, function (level) {
@@ -476,10 +487,13 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.insertPoint = function (start, name, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (level) {
-				if (level.name === name && level.type == "EVENT") {
+				if (level.name === name && level.type == 'EVENT') {
 					var last = level.items[0].samplePoint;
 					angular.forEach(level.items, function (evt, id) {
 						if (!ret) {
@@ -496,10 +510,13 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.insertPointInvers = function (startP, levelName, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
-				if (t.name === levelName && t.type == "EVENT") {
+				if (t.name === levelName && t.type == 'EVENT') {
 					var last = 0;
 					angular.forEach(t.items, function (evt, id) {
 						if (!ret) {
@@ -514,6 +531,9 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.deleteBoundary = function (toDelete, name, levelType) {
 			var last = null;
 			angular.forEach(sServObj.data.levels, function (level) {
@@ -536,7 +556,9 @@ angular.module('emuwebApp')
 			});
 		};
 
-
+		/**
+		 *
+		 */
 		sServObj.snapBoundary = function (toTop, sample, levelName, segID) {
 			var neighTd;
 			var thisTd;
@@ -579,6 +601,9 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 *
+		 */
 		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
 			if (seg === false) { // before first element
 				seg = sServObj.getElementDetails(name, 0);
@@ -604,11 +629,16 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 *
+		 */
 		sServObj.movePoint = function (changeTime, name, seg) {
 			sServObj.setPointDetails(name, seg.id, seg.labels[0].value, (seg.samplePoint + changeTime));
 		};
 
-
+		/**
+		 *
+		 */
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
 			if (lastNeighbours.left === undefined) {
 				if (((selected[0].sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1)) {
@@ -638,6 +668,9 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 *
+		 */
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
 			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length - 1].id);
