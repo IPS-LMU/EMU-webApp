@@ -8,8 +8,10 @@ angular.module('emuwebApp')
 		$scope.options = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
-		
-		console.log(Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1]);
+
+		// console.log(Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1]);
+
+		$scope.windowLengths = [32, 64, 128, 256, 512, 1024, 2048];
 
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
@@ -19,25 +21,33 @@ angular.module('emuwebApp')
 			'window': $scope.vs.spectroSettings.window
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cursorInTextField = function () {
 			viewState.focusInTextField = true;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.saveSpectroSettings = function () {
-			console.log($scope.modalVals);
-			console.log($scope.selWindowInfo.name);
+			// console.log($scope.modalVals);
+			// console.log($scope.selWindowInfo.name);
 			viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name);
 			$scope.cancel();
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cancel = function () {
 			dialogService.close();
 		};
