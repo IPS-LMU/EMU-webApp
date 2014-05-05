@@ -241,7 +241,8 @@ self.addEventListener('message', function (e) {
 	case 'parseTG':
 		sampleRate = data.sampleRate;
 		var retVal = toJSO(data.textGrid, data.annotates, data.name)
-		if (retVal.type === undefined) {
+		// console.log(JSON.stringify(retVal, undefined, 2));
+		if (retVal.status === undefined) {
 			self.postMessage({
 				'status': {
 					'type': 'SUCCESS',
@@ -252,13 +253,12 @@ self.addEventListener('message', function (e) {
 		} else {
 			self.postMessage(retVal);
 		}
-		// self.postMessage('yo mumma smells');
 		break;
 	default:
 		self.postMessage({
 			'status': {
 				'type': 'ERROR',
-				'message': 'Unknown command sent to textGridParserWorker'
+				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd 
 			}
 		});
 
