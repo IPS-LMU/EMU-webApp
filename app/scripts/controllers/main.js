@@ -62,8 +62,6 @@ angular.module('emuwebApp')
 		// watch if embedded override (if attributes are set on emuwebapp tag)
 		$scope.$watch('cps.embeddedVals.audioGetUrl', function (val) {
 			if (val !== undefined && val !== '') {
-				console.log("fasdkfjadsklfjasldkfj");
-				console.log(val);
 				// check if both are set
 				$scope.loadFilesForEmbeddedApp();
 			}
@@ -79,10 +77,11 @@ angular.module('emuwebApp')
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 				// check if file extension is correct 
-				if (ConfigProviderService.embeddedVals.labelGetUrl.split('.')[1] !== 'TextGrid') {
-					alert("File extention of embedded mode has to be .TextGrid")
-					return;
-				}
+				
+				// if (ConfigProviderService.embeddedVals.labelGetUrl.split('.')[1] !== 'TextGrid') {
+				// 	alert("File extention of embedded mode has to be .TextGrid")
+				// 	return;
+				// }
 
 				viewState.showDropZone = false;
 
@@ -123,6 +122,7 @@ angular.module('emuwebApp')
 						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
 							viewState.somethingInProgressTxt = 'Parsing TextGrid file...';
 							Textgridparserservice.asyncParseTextGrid(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid').then(function (parseMess) {
+								console.log(parseMess)
 								var annot = parseMess.data;
 								Levelservice.setData(annot);
 								// console.log(JSON.stringify(l, undefined, 2));
@@ -136,7 +136,6 @@ angular.module('emuwebApp')
 								viewState.somethingInProgress = false;
 								viewState.setState('labeling');
 							}, function (errMess) {
-								console.error(errMess);
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 							});
 
