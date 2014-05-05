@@ -882,13 +882,18 @@ angular.module('emuwebApp')
      * if set to false -> zoom out
      */
     sServObj.zoomViewPort = function (zoomIn) {
-      var newStartS, newEndS;
-      // var levelName = this.getcurMouseLevelName();
+      var newStartS, newEndS, curMouseMoveSegmentStart;
       var segMId = this.getcurMouseSegment();
+
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       if (segMId !== undefined) {
-        var curMouseMoveSegmentStart = segMId.sampleStart;
+        if (this.getcurMouseLevelType() === 'SEGMENT') {
+          curMouseMoveSegmentStart = segMId.sampleStart;
+        } else {
+          curMouseMoveSegmentStart = segMId.samplePoint;
+        }
+
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
         var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
 
