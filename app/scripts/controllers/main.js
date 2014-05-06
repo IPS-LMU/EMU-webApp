@@ -241,9 +241,6 @@ angular.module('emuwebApp')
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
 
-			if (ConfigProviderService.vals.restrictions.sortLabels) {
-				// $('#allowSortable').sortable('enable');
-			}
 		};
 
 		/**
