@@ -81,7 +81,7 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * gets element details by passing in levelName and elemtent order
+		 * gets element details by passing in levelName and element order
 		 */
 		sServObj.getElementDetails = function (name, order) {
 			var details = null;

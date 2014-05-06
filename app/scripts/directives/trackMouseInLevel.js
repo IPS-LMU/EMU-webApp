@@ -48,7 +48,11 @@ angular.module('emuwebApp')
 
             if (zoom <= 1) {
               // absolute movement in pcm below 1 pcm per pixel
-              moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetails(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
+              if (scope.this.level.type === 'SEGMENT') {
+                moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
+              }else{
+                moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).samplePoint);
+              }
             } else {
               // relative movement in pcm above 1 pcm per pixel
               moveBy = Math.round(thisPCM - lastPCM);
@@ -71,7 +75,7 @@ angular.module('emuwebApp')
                 scope.vs.deleteEditArea();
                 if (scope.vs.getcurMouseSegment() !== undefined) {
                   scope.vs.movingBoundary = true;
-                  if (scope.this.level.type == 'SEGMENT') {
+                  if (scope.this.level.type === 'SEGMENT') {
                     scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
                     scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
