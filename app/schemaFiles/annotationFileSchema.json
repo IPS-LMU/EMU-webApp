@@ -1,0 +1,68 @@
+{
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"minLength": 1,
+			"required": true
+		},
+		"annotates": {
+			"type": "string",
+			"minLength": 1,
+			"required": true
+		},
+		"levels": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"required": true
+					},
+					"type": {
+						"type": {
+							"enum": ["ITEM", "EVENT", "SEGMENT"]
+						}
+					},
+					"elements": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer",
+									"required": true
+								},
+								"sampleStart": {
+									"type": "integer"
+								},
+								"sampleDur": {
+									"type": "integer"
+								},
+								"label": {
+									"type": "string",
+									"required": true
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"from": {
+						"type": "integer"
+					},
+					"to": {
+						"type": "integer"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,179 @@
+{
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"required": true
+		},
+		"UUID": {
+			"type": "string",
+			"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+			"required": true
+		},
+		"levelDefinitions": {
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"required": true
+					},
+					"type": {
+						"type": {
+							"enum": ["ITEM", "EVENT", "SEGMENT"]
+						},
+						"required": true
+					},
+					"labelDefinitions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"required": true
+								},
+								"legalValues": {
+									"type": "array",
+									"required": true,
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"minItems": 1,
+						"required": true
+					}
+				}
+			},
+			"uniqueItems": true,
+			"required": true
+		},
+		"linkDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"superlevelName": {
+						"type": "string",
+						"required": true
+					},
+					"sublevelName": {
+						"type": "string",
+						"required": true
+					},
+					"type": {
+						"type": {
+							"enum": ["ONE_TO_ONE", "ONE_TO_MANY", "MANY_TO_MANY"]
+						},
+						"required": true
+					}
+				}
+			},
+			"required": true
+		},
+		"mediafileExtension": {
+			"type": {
+				"enum": ["wav"]
+			},
+			"required": true
+		},
+		"ssffTracks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"required": true
+					},
+					"fileExtension": {
+						"type": "string",
+						"required": true
+					},
+					"columnName": {
+						"type": "string",
+						"required": true
+					}
+				}
+			},
+			"uniqueItems": true,
+			"required": true
+		},
+		"EMUwebAppConfig": {
+			"perspectives": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string",
+							"required": true
+						},
+						"signalCanvases": {
+							"type": "object",
+							"required": true,
+							"properties": {
+								"order": {
+									"type": "array",
+									"required": true,
+									"minItems": 1,
+									"items": {
+										"type": "string"
+									}
+								},
+								"assign": {
+									"type": "array",
+									"required": true,
+									"items": {
+										"type": "object",
+										"properties": {
+											"SPEC": {
+												"type": "string"
+											},
+											"OSCI": {
+												"type": "string"
+											}
+										}
+									}
+								},
+								"contourLims": {
+									"type": "array",
+									"required": true,
+									"items": {
+										"type": "object"
+									}
+								}
+							}
+						},
+						"levelCanvases": {
+							"type": "object",
+							"properties": {
+								"order": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+            "twoDcanvases":{
+              "type": "object",
+              "properties":{
+                "show":{
+                  "type": "boolean"
+                }
+              }
+            }
+					}
+				},
+				"minItems": 1,
+				"required": true
+			},
+			"required": true
+		}
+	}
+}
