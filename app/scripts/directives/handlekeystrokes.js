@@ -236,7 +236,7 @@ angular.module('emuwebApp')
               }
 
               // expand Segments
-              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsLeftRight) {
+              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsRight) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
@@ -251,6 +251,7 @@ angular.module('emuwebApp')
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }
+
                       Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
@@ -271,8 +272,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // expand Segment !!!SIC SIC SIC!!! use e.shiftKey like in shink segments
-              if (code === ConfigProviderService.vals.keyMappings.plusShift) {
+              // expand Segment left
+              if (code === ConfigProviderService.vals.keyMappings.expandSelSegmentsLeft) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
