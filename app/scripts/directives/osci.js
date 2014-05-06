@@ -22,11 +22,6 @@ angular.module('emuwebApp')
 				};
 
 				scope.viewState = viewState;
-				// SIC SIC! FIX watches for isolated scopes...
-				scope.cpi = viewState.curPerspectiveIdx;
-				scope.phai = viewState.playHeadAnimationInfos;
-				scope.mb = viewState.movingBoundary;
-				scope.cvp = viewState.curViewPort;
 
 				///////////////
 				// watches
