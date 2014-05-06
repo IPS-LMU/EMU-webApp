@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Textgridparserservice', function Textgridparserservice($q, Soundhandlerservice) {
+	.service('Textgridparserservice', function Textgridparserservice($q, Levelservice, viewState, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -18,6 +18,23 @@ angular.module('emuwebApp')
 		}, false);
 
 
+		/**
+		 * parse level data to Textgrid File
+		 * @param level data
+		 * @returns promise
+		 */
+		sServObj.asyncToTextGrid = function () {
+			defer = $q.defer();
+			worker.postMessage({
+				'cmd': 'toTextGrid',
+				'levelData': Levelservice.getData(),
+				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
+				'bufferLength': viewState.curViewPort.bufferLength
+			}); // Send data to our worker.
+			return defer.promise;
+		};
+		
+		
 		/**
 		 * parse array of ssff file using webworker
 		 * @param array of ssff files encoded as base64 stings

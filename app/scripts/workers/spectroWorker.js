@@ -263,6 +263,15 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 
 		if (!executed) {
 			//renderHeight *= pixelRatio;
+			
+			var scaling = 1;
+
+			if(N<256) {
+			    scaling = (N / 256) * pixelRatio;
+			}
+			else if(N>256) {
+			    scaling = (256 / N) * pixelRatio;
+			}
 
 			// start execution once
 			executed = true;
@@ -274,10 +283,10 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			paint = new Array(renderWidth);
 
 			// Hz per pixel height
-			HzStep = (sampleRate / 2) / renderHeight;
+			HzStep = (sampleRate / 2) / (renderHeight * scaling);
 
 			// uper Hz boundry to display
-			c = Math.floor(upperFreq / HzStep);
+			c = Math.ceil(upperFreq / HzStep);
 
 			// lower Hz boundry to display
 			d = Math.floor(lowerFreq / HzStep); // -1 for value below display when lower>0
@@ -306,6 +315,8 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 				'start': start,
 				'end': end,
 				'myStep': myStep,
+				'pixelHeight' : pixelHeight,
+				'pixelRatio' : pixelRatio,
 				'renderWidth': renderWidth,
 				'renderHeight': renderHeight,
 				'img': imageResult

@@ -196,7 +196,11 @@ angular.module('emuwebApp')
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           var imageData = context.createImageData(canvas0.width, canvas0.height);
           primeWorker.addEventListener('message', function (event) {
+
             if (pcmperpixel === event.data.myStep) {
+            console.log(event.data.renderHeight);
+            console.log(event.data.renderWidth); 
+            console.log(event.data.pixelRatio);           
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
               buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
@@ -268,7 +272,6 @@ angular.module('emuwebApp')
             'cmd': 'config',
             'pixelRatio': devicePixelRatio
           });
-          console.log(devicePixelRatio);
           primeWorker.postMessage({
             'cmd': 'config',
             'sampleRate': scope.shs.wavJSO.SampleRate
@@ -281,7 +284,6 @@ angular.module('emuwebApp')
             'cmd': 'pcm',
             'stream': parseData
           });
-
           primeWorker.postMessage({
             'cmd': 'render'
           });
