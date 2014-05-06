@@ -33,7 +33,7 @@ angular.module('emuwebApp')
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
                   console.log(HistoryService.movesAwayFromLastSave);
-                  
+
                   Levelservice.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
@@ -234,7 +234,23 @@ angular.module('emuwebApp')
               // preselected boundary to nearest zero crossing
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestZeroCrossing) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  alert('TODO: SNAP TO NEAREST ZERO CROSSING... ');
+                  // var mousSegID = viewState.getcurMouseSegmentId();
+                  // var levelName = viewState.getcurMouseLevelName();
+                  var minDist;
+                  Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().sampleStart);
+                  // if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+                  //   minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
+                  // } else {
+                  //   minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().samplePoint, levelName, mousSegID);
+                  // }
+                  // scope.hists.addObjToUndoStack({
+                  //   'type': 'ESPS',
+                  //   'action': 'snapBoundary',
+                  //   'levelName': levelName,
+                  //   'itemIdx': mousSegID,
+                  //   'movedBy': minDist
+                  // });
+
                 }
               }
 

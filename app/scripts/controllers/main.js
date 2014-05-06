@@ -327,10 +327,9 @@ angular.module('emuwebApp')
 		 */
 		$scope.menuBundleClick = function (bndl) {
 
-
-
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0)) {
+				console.log(ConfigProviderService.vals.main)
 				if (bndl !== $scope.curBndl) {
 					$scope.lastclickedutt = bndl;
 					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {

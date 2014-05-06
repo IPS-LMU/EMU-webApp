@@ -683,7 +683,7 @@ angular.module('emuwebApp')
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
-							
+
 						});
 					}
 				} else {
@@ -722,6 +722,42 @@ angular.module('emuwebApp')
 			}
 		};
 
+
+		/**
+		 *
+		 */
+		sServObj.calcDistanceToNearesZeroCrossing = function (sample) {
+
+			console.log(sample);
+			console.log(Soundhandlerservice.wavJSO.Data);
+
+			// walk right
+			var distRight;
+			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
+				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
+					distRight = i - sample;
+					console.log('--------------------------')
+					console.log(Soundhandlerservice.wavJSO.Data[i])
+					console.log(Soundhandlerservice.wavJSO.Data[i + 1])
+					console.log(i)
+					break;
+				}
+			};
+
+			// walk left
+			var distLeft;
+			// for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
+			// 	if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
+			// 		distleft = i - sample;
+			// 		console.log('--------------------------')
+			// 		console.log(Soundhandlerservice.wavJSO.Data[i])
+			// 		console.log(Soundhandlerservice.wavJSO.Data[i + 1])
+			// 		console.log(i)
+			// 		break;
+			// 	}
+			// };
+
+		};
 
 
 		return sServObj;
