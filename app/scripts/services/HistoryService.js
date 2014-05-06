@@ -88,7 +88,6 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							console.log(cur)
 							Levelservice.insertSegment(cur.seg.sampleStart, cur.seg.sampleStart, cur.levelName, ConfigProviderService.vals.labelCanvasConfig.newSegmentName); // SIC
 						} else {
 							Levelservice.deleteBoundary(cur.seg, cur.levelName, cur.levelType);
