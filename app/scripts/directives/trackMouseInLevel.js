@@ -77,7 +77,7 @@ angular.module('emuwebApp')
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
-                      'name': scope.this.level.name,
+                      'levelName': scope.this.level.name,
                       'neighbours': scope.vs.getcurMouseNeighbours(),
                       'itemIdx': scope.vs.getcurMouseSegment(),
                       'movedBy': moveBy
@@ -88,7 +88,7 @@ angular.module('emuwebApp')
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
-                      'name': scope.this.level.name,
+                      'levelName': scope.this.level.name,
                       'itemIdx': scope.vs.getcurMouseSegment(),
                       'movedBy': moveBy
                     });
@@ -98,13 +98,13 @@ angular.module('emuwebApp')
                 }
               } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
                 scope.vs.deleteEditArea();
-                if (scope.this.level.type == "SEGMENT") {
+                if (scope.this.level.type == 'SEGMENT') {
                   var neighbours = scope.tds.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length - 1].id);
                   scope.tds.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
-                    'name': scope.this.level.name,
+                    'levelName': scope.this.level.name,
                     'neighbours': neighbours,
                     'itemIdx': scope.vs.getcurClickSegments(),
                     'movedBy': moveBy

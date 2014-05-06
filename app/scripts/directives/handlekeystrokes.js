@@ -23,14 +23,17 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
                   var editingElement = Levelservice.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
+                  console.log(HistoryService.movesAwayFromLastSave);
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
-                    'name': viewState.getcurClickLevelName(),
+                    'levelName': viewState.getcurClickLevelName(),
                     'itemIdx': viewState.getlastID(),
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
+                  console.log(HistoryService.movesAwayFromLastSave);
+                  
                   Levelservice.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
@@ -256,7 +259,7 @@ angular.module('emuwebApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'name': viewState.getcurClickLevelName(),
+                        'levelName': viewState.getcurClickLevelName(),
                         'itemIdx': viewState.getcurClickSegments(),
                         'rightSide': true,
                         'changeTime': changeTime
@@ -292,7 +295,7 @@ angular.module('emuwebApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'expandSegments',
-                        'name': viewState.getcurClickLevelName(),
+                        'levelName': viewState.getcurClickLevelName(),
                         'itemIdx': viewState.getcurClickSegments(),
                         'rightSide': false,
                         'changeTime': changeTime
@@ -328,7 +331,7 @@ angular.module('emuwebApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'name': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': false,
                           'changeTime': -changeTime
@@ -344,7 +347,7 @@ angular.module('emuwebApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
-                          'name': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'itemIdx': viewState.getcurClickSegments(),
                           'rightSide': true,
                           'changeTime': -changeTime
@@ -501,7 +504,7 @@ angular.module('emuwebApp')
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
-                        'name': tn,
+                        'levelName': tn,
                         'levelType': viewState.getcurMouseLevelType(),
                         'seg': seg
                       });
@@ -522,7 +525,7 @@ angular.module('emuwebApp')
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteSegments',
-                          'name': viewState.getcurClickLevelName(),
+                          'levelName': viewState.getcurClickLevelName(),
                           'selected': selected,
                           'neighbours': neighbour
                         });
