@@ -204,7 +204,7 @@ angular.module('emuwebApp')
                     'type': 'ESPS',
                     'action': 'snapBoundary',
                     'levelName': levelName,
-                    'itemIdx': mouseSeg.id,
+                    'item': mouseSeg.id,
                     'movedBy': minDist
                   });
                 }
@@ -225,7 +225,7 @@ angular.module('emuwebApp')
                     'type': 'ESPS',
                     'action': 'snapBoundary',
                     'levelName': levelName,
-                    'itemIdx': mousSegID,
+                    'item': mousSegID,
                     'movedBy': minDist
                   });
                 }
@@ -236,21 +236,23 @@ angular.module('emuwebApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   // var mousSegID = viewState.getcurMouseSegmentId();
                   // var levelName = viewState.getcurMouseLevelName();
-                  var minDist;
-                  Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().sampleStart);
-                  // if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-                  //   minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
-                  // } else {
-                  //   minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().samplePoint, levelName, mousSegID);
-                  // }
-                  // scope.hists.addObjToUndoStack({
-                  //   'type': 'ESPS',
-                  //   'action': 'snapBoundary',
-                  //   'levelName': levelName,
-                  //   'itemIdx': mousSegID,
-                  //   'movedBy': minDist
-                  // });
+                  var dist;
+                  if (viewState.getcurMouseLevelType() === 'SEGMENT') {
+                    dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().sampleStart);
+                  } else {
+                    dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().samplePoint);
+                  }
+                  if (dist !== 0) {
+                    scope.tds.moveBoundry(dist, viewState.getcurMouseLevelName(), viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
+                    scope.hists.addObjToUndoStack({
+                      'type': 'ESPS',
+                      'action': 'snapBoundary',
+                      'levelName': viewState.getcurMouseLevelName(),
+                      'item': viewState.getcurMouseSegment(),
+                      'movedBy': dist
+                    });
 
+                  }
                 }
               }
 
@@ -276,7 +278,7 @@ angular.module('emuwebApp')
                         'type': 'ESPS',
                         'action': 'expandSegments',
                         'levelName': viewState.getcurClickLevelName(),
-                        'itemIdx': viewState.getcurClickSegments(),
+                        'item': viewState.getcurClickSegments(),
                         'rightSide': true,
                         'changeTime': changeTime
                       });
@@ -312,7 +314,7 @@ angular.module('emuwebApp')
                         'type': 'ESPS',
                         'action': 'expandSegments',
                         'levelName': viewState.getcurClickLevelName(),
-                        'itemIdx': viewState.getcurClickSegments(),
+                        'item': viewState.getcurClickSegments(),
                         'rightSide': false,
                         'changeTime': changeTime
                       });
@@ -348,7 +350,7 @@ angular.module('emuwebApp')
                           'type': 'ESPS',
                           'action': 'expandSegments',
                           'levelName': viewState.getcurClickLevelName(),
-                          'itemIdx': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickSegments(),
                           'rightSide': false,
                           'changeTime': -changeTime
                         });
@@ -364,7 +366,7 @@ angular.module('emuwebApp')
                           'type': 'ESPS',
                           'action': 'expandSegments',
                           'levelName': viewState.getcurClickLevelName(),
-                          'itemIdx': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickSegments(),
                           'rightSide': true,
                           'changeTime': -changeTime
                         });

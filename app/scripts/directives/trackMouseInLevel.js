@@ -47,7 +47,7 @@ angular.module('emuwebApp')
             var moveBy = (thisPCM - lastPCM);
 
             if (zoom <= 1) {
-              // ansolute movement in pcm below 1 pcm per pixel
+              // absolute movement in pcm below 1 pcm per pixel
               moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetails(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
             } else {
               // relative movement in pcm above 1 pcm per pixel

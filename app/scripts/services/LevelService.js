@@ -736,27 +736,38 @@ angular.module('emuwebApp')
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
 				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
 					distRight = i - sample;
-					console.log('--------------------------')
-					console.log(Soundhandlerservice.wavJSO.Data[i])
-					console.log(Soundhandlerservice.wavJSO.Data[i + 1])
-					console.log(i)
+					console.log('--------------------------');
+					console.log(Soundhandlerservice.wavJSO.Data[i]);
+					console.log(Soundhandlerservice.wavJSO.Data[i + 1]);
+					console.log(i);
 					break;
 				}
-			};
+			}
 
 			// walk left
 			var distLeft;
-			// for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
-			// 	if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
-			// 		distleft = i - sample;
-			// 		console.log('--------------------------')
-			// 		console.log(Soundhandlerservice.wavJSO.Data[i])
-			// 		console.log(Soundhandlerservice.wavJSO.Data[i + 1])
-			// 		console.log(i)
-			// 		break;
-			// 	}
-			// };
+			for (var i = sample; i > 1; i--) {
+				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i - 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i - 1] >= 0) {
+					distLeft = i - sample;
+					console.log('--------------------------');
+					console.log(Soundhandlerservice.wavJSO.Data[i]);
+					console.log(Soundhandlerservice.wavJSO.Data[i - 1]);
+					console.log(i);
+					break;
+				}
+			}
+			var res; 
+			if(Math.abs(distLeft) < Math.abs(distRight)){
+				res = distLeft;
+			}else{
+				res = distRight + 1;
+			}
 
+			console.log('..................')
+			console.log(distLeft)
+			console.log(distRight)
+
+			return res;
 		};
 
 
