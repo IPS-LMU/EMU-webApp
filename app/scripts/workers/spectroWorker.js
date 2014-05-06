@@ -262,8 +262,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
 
 		if (!executed) {
-			//cWidth *= pixelRatio;
-			//cHeight *= pixelRatio;
+			//renderHeight *= pixelRatio;
 
 			// start execution once
 			executed = true;

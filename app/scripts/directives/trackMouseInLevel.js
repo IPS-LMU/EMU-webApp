@@ -145,7 +145,9 @@ angular.module('emuwebApp')
           scope.vs.setEditing(false);
           scope.vs.focusInTextField = false;
           lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
-          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id, element.parent());
+          console.log(element.parent());
+          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id);
+          scope.vs.setlasteditAreaElem(element.parent());
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
@@ -170,7 +172,8 @@ angular.module('emuwebApp')
           lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           scope.vs.setcurClickSegment(lastEventClick.evtr);
-          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id, element.parent());
+          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id);
+          scope.vs.setlasteditAreaElem(element.parent());
           scope.vs.setEditing(true);
           scope.vs.openEditArea(lastEventClick.evtr, element.parent(), levelType);
           scope.cursorInTextField();

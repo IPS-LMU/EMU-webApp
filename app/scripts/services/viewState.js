@@ -665,6 +665,10 @@ angular.module('emuwebApp')
       return this.lasteditAreaElem;
     };
 
+    sServObj.setlasteditAreaElem = function (e) {
+      this.lasteditAreaElem = e;
+    };
+
     sServObj.isEditing = function () {
       return this.editing;
     };
@@ -673,9 +677,8 @@ angular.module('emuwebApp')
       this.editing = n;
     };
 
-    sServObj.setlasteditArea = function (name, elem) {
+    sServObj.setlasteditArea = function (name) {
       this.lasteditArea = name;
-      this.lasteditAreaElem = elem;
     };
 
     sServObj.getlastID = function () {

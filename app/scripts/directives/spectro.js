@@ -268,6 +268,7 @@ angular.module('emuwebApp')
             'cmd': 'config',
             'pixelRatio': devicePixelRatio
           });
+          console.log(devicePixelRatio);
           primeWorker.postMessage({
             'cmd': 'config',
             'sampleRate': scope.shs.wavJSO.SampleRate
