@@ -234,8 +234,6 @@ angular.module('emuwebApp')
               // preselected boundary to nearest zero crossing
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestZeroCrossing) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  // var mousSegID = viewState.getcurMouseSegmentId();
-                  // var levelName = viewState.getcurMouseLevelName();
                   var dist;
                   if (viewState.getcurMouseLevelType() === 'SEGMENT') {
                     dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().sampleStart);
@@ -246,8 +244,9 @@ angular.module('emuwebApp')
                     scope.tds.moveBoundry(dist, viewState.getcurMouseLevelName(), viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
                     scope.hists.addObjToUndoStack({
                       'type': 'ESPS',
-                      'action': 'snapBoundary',
+                      'action': 'moveBoundary',
                       'levelName': viewState.getcurMouseLevelName(),
+                      'neighbours': viewState.getcurMouseNeighbours(),
                       'item': viewState.getcurMouseSegment(),
                       'movedBy': dist
                     });
