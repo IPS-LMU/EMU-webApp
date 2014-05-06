@@ -79,7 +79,7 @@ angular.module('emuwebApp')
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
                       'neighbours': scope.vs.getcurMouseNeighbours(),
-                      'itemIdx': scope.vs.getcurMouseSegment(),
+                      'item': scope.vs.getcurMouseSegment(),
                       'movedBy': moveBy
                     });
                   } else {
@@ -89,7 +89,7 @@ angular.module('emuwebApp')
                       'type': 'ESPS',
                       'action': 'movePoint',
                       'levelName': scope.this.level.name,
-                      'itemIdx': scope.vs.getcurMouseSegment(),
+                      'item': scope.vs.getcurMouseSegment(),
                       'movedBy': moveBy
                     });
                   }
@@ -106,7 +106,7 @@ angular.module('emuwebApp')
                     'action': 'moveSegment',
                     'levelName': scope.this.level.name,
                     'neighbours': neighbours,
-                    'itemIdx': scope.vs.getcurClickSegments(),
+                    'item': scope.vs.getcurClickSegments(),
                     'movedBy': moveBy
                   });
                   lastPCM = thisPCM;

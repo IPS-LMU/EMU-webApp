@@ -29,7 +29,6 @@ angular.module('emuwebApp')
 				scope.$watch('hists.movesAwayFromLastSave', function () {
 					drawLevelDetails(scope.level, scope.vs, scope.cps);
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
-					console.log('level: hists.movesAwayFromLastSave');
 				}, true);
 
 

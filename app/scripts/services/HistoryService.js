@@ -37,39 +37,39 @@ angular.module('emuwebApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.itemIdx, cur.neighbours);
+							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.item, cur.neighbours);
 						} else {
-							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.itemIdx, cur.neighbours);
+							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.item, cur.neighbours);
 						}
 						break;
 					case 'snapBoundary':
 						if (applyOldVal) {
 							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.itemIdx, cur.max);
+							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.item, cur.max);
 						} else {
 							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(cur.movedBy, res.level, cur.itemIdx, cur.max);
+							Levelservice.moveBoundry(cur.movedBy, res.level, cur.item, cur.max);
 						}
 						break;
 					case 'moveSegment':
 						if (applyOldVal) {
-							Levelservice.moveSegment(-cur.movedBy, cur.levelName, cur.itemIdx, cur.neighbours);
+							Levelservice.moveSegment(-cur.movedBy, cur.levelName, cur.item, cur.neighbours);
 						} else {
-							Levelservice.moveSegment(cur.movedBy, cur.levelName, cur.itemIdx, cur.neighbours);
+							Levelservice.moveSegment(cur.movedBy, cur.levelName, cur.item, cur.neighbours);
 						}
 						break;
 					case 'movePoint':
 						if (applyOldVal) {
-							Levelservice.movePoint(-cur.movedBy, cur.levelName, cur.itemIdx);
+							Levelservice.movePoint(-cur.movedBy, cur.levelName, cur.item);
 						} else {
-							Levelservice.movePoint(cur.movedBy, cur.levelName, cur.itemIdx);
+							Levelservice.movePoint(cur.movedBy, cur.levelName, cur.item);
 						}
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.oldValue);
+							Levelservice.renameLabel(cur.levelName, cur.item, cur.oldValue);
 						} else {
-							Levelservice.renameLabel(cur.levelName, cur.itemIdx, cur.newValue);
+							Levelservice.renameLabel(cur.levelName, cur.item, cur.newValue);
 						}
 						break;
 					case 'renameLevel':
@@ -81,9 +81,9 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.data.levels.splice(cur.itemIdx, 0, cur.level);
+							Levelservice.data.levels.splice(cur.item, 0, cur.level);
 						} else {
-							Levelservice.data.levels.splice(cur.itemIdx, 1);
+							Levelservice.data.levels.splice(cur.item, 1);
 						}
 						break;
 					case 'deleteBoundary':
@@ -116,9 +116,9 @@ angular.module('emuwebApp')
 						break;
 					case 'expandSegments':
 						if (applyOldVal) {
-							Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.levelName, -cur.changeTime);
+							Levelservice.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
-							Levelservice.expandSegment(cur.rightSide, cur.itemIdx, cur.levelName, cur.changeTime);
+							Levelservice.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
 
@@ -151,8 +151,7 @@ angular.module('emuwebApp')
 				case 'moveBoundary':
 				case 'movePoint':
 				case 'moveSegment':
-					console.log(dataObj.itemIdx)
-					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.itemIdx);
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.item.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
@@ -175,7 +174,6 @@ angular.module('emuwebApp')
 			// add to undoStack
 			if (!$.isEmptyObject(curChangeObj)) {
 				undoStack.push(curChangeObj);
-				console.log(curChangeObj)
 				sServObj.movesAwayFromLastSave += 1;
 			}
 			// reset curChangeObj
@@ -194,7 +192,6 @@ angular.module('emuwebApp')
 			tmpObj[dataKey] = obj;
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
-				console.log(tmpObj)
 				undoStack.push(tmpObj);
 				sServObj.movesAwayFromLastSave += 1;
 			}
