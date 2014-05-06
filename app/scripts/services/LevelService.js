@@ -674,6 +674,7 @@ angular.module('emuwebApp')
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
 			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length - 1].id);
+			var segTime = (changeTime * segments.length);
 
 			if (rightSide) { // if expand or shrink on RIGHT side
 				if (neighbours.right === undefined) { // last element
@@ -686,7 +687,10 @@ angular.module('emuwebApp')
 						});
 					}
 				} else {
-					if (neighbours.right.sampleDur - (changeTime * segments.length) > 0) {
+				    angular.forEach(segments, function (seg) {
+				        segTime += seg.sampleDur;
+				    });
+					if (segTime > 0) {
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
@@ -703,7 +707,10 @@ angular.module('emuwebApp')
 						});
 					}
 				} else {
-					if (neighbours.left.sampleDur - (changeTime * segments.length) > 0) {
+				    angular.forEach(segments, function (seg) {
+				        segTime += seg.sampleDur;
+				    });
+					if (segTime > 0) {
 						startTime = 0;
 						angular.forEach(segments, function (seg, i) {
 							startTime = -(segments.length - i) * changeTime;
