@@ -27,7 +27,7 @@
 		"restrictions": {
 			"showPerspectivesSidebar": false,
 			"sortLabels": false,
-			"editItemSize": false,
+			"editItemSize": true,
 			"editItemName": true,
 			"deleteItemBoundary": true,
 			"deleteItem": true,

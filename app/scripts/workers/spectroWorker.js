@@ -45,7 +45,7 @@ function FFT(fftSize) {
 
 	if (cos === undefined || n !== fftSize ) {
 
-	   // this means that if block is only executed 
+	   // this means that the following is only executed 
 	   // when no COS table exists
 	   // or n changes 
 
@@ -56,7 +56,7 @@ function FFT(fftSize) {
 	}
 	if (sin === undefined || n !== fftSize) { 
 
-	   // this means that if block is only executed 
+	   // this means that the following is only executed 
 	   // when no COS table exists
 	   // or n changes 
 	   
@@ -264,14 +264,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 		if (!executed) {
 			//renderHeight *= pixelRatio;
 			
-			var scaling = 1;
-
-			if(N<256) {
-			    scaling = (N / 256) * pixelRatio;
-			}
-			else if(N>256) {
-			    scaling = (256 / N) * pixelRatio;
-			}
+			var scaling = N / 256;
 
 			// start execution once
 			executed = true;
@@ -301,7 +294,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			pixelHeight = renderHeight / (c - d - 2);
 
 			// create new picture
-			imageResult = new Uint8ClampedArray(renderWidth*renderHeight*4);
+			imageResult = new Uint8ClampedArray(Math.ceil(renderWidth*renderHeight*4));
 
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)

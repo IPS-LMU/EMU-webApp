@@ -199,8 +199,7 @@ angular.module('emuwebApp')
 
             if (pcmperpixel === event.data.myStep) {
             console.log(event.data.renderHeight);
-            console.log(event.data.renderWidth); 
-            console.log(event.data.pixelRatio);           
+            console.log(event.data.pixelHeight);           
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
               buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
