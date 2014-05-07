@@ -515,14 +515,15 @@ angular.module('emuwebApp')
                     var seg = viewState.getcurMouseSegment();
                     var tn = viewState.getcurMouseLevelName();
                     if (seg !== undefined) {
+                      var order = Levelservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseLevelName());
                       scope.hists.addObjToUndoStack({
                         'type': 'ESPS',
                         'action': 'deleteBoundary',
                         'levelName': tn,
-                        'levelType': viewState.getcurMouseLevelType(),
+                        'order': order,
                         'seg': seg
                       });
-                      Levelservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseLevelName(), viewState.getcurMouseLevelType());
+                      
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                     }

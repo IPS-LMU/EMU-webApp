@@ -538,10 +538,14 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 *   delete a single boundary between items
+		 *   @param toDelete 
+		 *   @param name 
+		 *   @param levelType 
 		 */
-		sServObj.deleteBoundary = function (toDelete, name, levelType) {
+		sServObj.deleteBoundary = function (toDelete, name) {
 			var last = null;
+			var order = null;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					angular.forEach(level.items, function (evt, id) {
@@ -549,18 +553,40 @@ angular.module('emuwebApp')
 							if (toDelete.sampleStart == evt.sampleStart && toDelete.sampleDur == evt.sampleDur) {
 								last.labels[0].value += evt.labels[0].value;
 								last.sampleDur += evt.sampleDur;
+								order = id;
 								level.items.splice(id, 1);
 							}
 						} else {
 							if (evt.samplePoint == toDelete.samplePoint) {
 								level.items.splice(id, 1);
+								order = id;
 							}
 						}
 						last = evt;
 					});
 				}
 			});
+			return order;
 		};
+
+		/**
+		 *   delete a single boundary between items
+		 *   @param toDelete 
+		 *   @param name 
+		 *   @param levelType 
+		 */
+		sServObj.deleteBoundaryInvers = function (toRestore, name, order) {
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
+				    level.items.splice(order, 0, toRestore);
+				    var oldName = level.items[order-1].labels[0].value.slice(0, (level.items[order-1].labels[0].value.length - toRestore.labels[0].value.length));
+				    //level.items[order-1].labels[0].value = level.items[order-1].labels[0].value.slice(0, -(toRestore.labels[0].value.length));
+				    level.items[order-1].labels[0].value = oldName;
+				    level.items[order-1].sampleDur -= toRestore.sampleDur;
+				}
+			});
+			
+		};		
 
 		/**
 		 *
