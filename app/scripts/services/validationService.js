@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 						name: n,
 						data: resp.data
 					})
-					console.log(schemasJsos)
+
 				});
 			})
 		};
@@ -31,18 +31,14 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.validateJSO = function (schemaName, jso) {
-			console.log(schemaName)
-			console.log(jso)
 			var schema;
 			schemasJsos.forEach(function (s) {
 				if(s.name === schemaName){
 					schema = s;
 				}
 			})
-			console.log(schema)
 
 			if (tv4.validate(jso, schema.data)) {
-				console.log("PASS!!!")
 				return true;
 			} else {
 				return tv4.error;

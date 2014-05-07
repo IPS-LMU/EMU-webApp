@@ -418,9 +418,6 @@ angular.module('emuwebApp')
 									// set annotation
 									Levelservice.setData(bundleData.annotation);
 
-
-									console.log(bndl);
-
 									$scope.curBndl = bndl;
 									viewState.setState('labeling');
 									viewState.somethingInProgress = false;
