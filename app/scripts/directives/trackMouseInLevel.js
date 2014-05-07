@@ -186,7 +186,6 @@ angular.module('emuwebApp')
         }
 
         function setLastMove(x, doChange) {
-          console.log(scope.cps.vals);
           thisPCM = getX(x) * scope.vs.getPCMpp(x);
           lastEventMove = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
           if (doChange) {
