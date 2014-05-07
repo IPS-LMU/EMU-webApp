@@ -602,7 +602,6 @@
 		{
 			"name" : "Phonetic",
 			"type" : "SEGMENT",
-			"sampleRate" : 20000,
 			"items" : [
 				{
 					"id" : 147,
@@ -983,7 +982,6 @@
 		{
 			"name" : "Tone",
 			"type" : "EVENT",
-			"sampleRate" : 20000,
 			"items" : [
 				{
 					"id" : 181,

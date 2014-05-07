@@ -391,18 +391,23 @@ angular.module('emuwebApp')
 							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
 								Ssffdataservice.data = ssffJso.data;
-								// set annotation
-								Levelservice.setData(bundleData.annotation);
+								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
+								if (validRes === true) {;
+									// set annotation
+									Levelservice.setData(bundleData.annotation);
 
 
-								console.log(bndl);
+									console.log(bndl);
 
-								$scope.curBndl = bndl;
-								viewState.setState('labeling');
-								viewState.somethingInProgress = false;
-								viewState.somethingInProgressTxt = 'Done!';
-								// FOR DEVELOPMENT:
-								// $scope.menuBundleSaveBtnClick(); // for testing save button
+									$scope.curBndl = bndl;
+									viewState.setState('labeling');
+									viewState.somethingInProgress = false;
+									viewState.somethingInProgressTxt = 'Done!';
+									// FOR DEVELOPMENT:
+									// $scope.menuBundleSaveBtnClick(); // for testing save button
+								} else {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4));
+								}
 							}, function (errMess) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
 							});
@@ -601,8 +606,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-			    Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-				    dialogService.openExport('views/export.html', 'ExportCtrl', parseMess.data, 'textgrid.txt');
+				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
+					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess.data, 'textgrid.txt');
 				});
 			} else {
 				console.log('action currently not allowed');

@@ -5,20 +5,19 @@ angular.module('emuwebApp')
 		//shared service object to be returned
 		var sServObj = {};
 
-		var schemas = [];
+		var schemasJsos = [];
 
-		var paths = ['schemaFiles/annotationFileSchema.json', 'globalDBschema.json'];
+		var names = ['annotationFileSchema', 'globalDBschema'];
 
 		/**
 		 *
 		 */
 		sServObj.loadSchemas = function () {
 
-			// sServObj.paths.forEach(function (p) {
-			console.log(paths[0])
-			$http.get(paths[0]).then(function (resp) {
-				console.log(resp.data)
-				schemas.push({
+			// sServObj.names.forEach(function (p) {
+			console.log(names[0])
+			$http.get('schemaFiles/' + names[0] + '.json').then(function (resp) {
+				schemasJsos.push({
 					name: 'annotationFileSchema',
 					data: resp.data
 				})
@@ -27,6 +26,20 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.loadSchemas();
+
+		/**
+		 *
+		 */
+		sServObj.validateJSO = function (schemaName, jso) {
+
+			if (tv4.validate(jso, schemasJsos[0].data)) {
+				return true;
+			} else {
+				return tv4.error;
+			}
+
+
+		};
 
 		return sServObj;
 	});

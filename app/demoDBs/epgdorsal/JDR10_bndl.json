@@ -42,7 +42,6 @@
    {
     "name": "Phonetic",
     "type": "SEGMENT",
-    "sampleRate": 16000,
     "items": [
      {
       "id": 3,

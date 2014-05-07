@@ -93,7 +93,6 @@
    {
     "name": "Segment",
     "type": "SEGMENT",
-    "sampleRate": 24000,
     "items": [
      {
       "id": 0,
@@ -452,7 +451,6 @@
    {
     "name": "TT",
     "type": "SEGMENT",
-    "sampleRate": 24000,
     "items": [
      {
       "id": 32,
@@ -481,7 +479,6 @@
    {
     "name": "TB",
     "type": "SEGMENT",
-    "sampleRate": 24000,
     "items": [
      {
       "id": 34,
