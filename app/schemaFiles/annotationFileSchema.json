@@ -73,13 +73,15 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"from": {
+					"fromID": {
 						"type": "integer"
 					},
-					"to": {
+					"toID": {
 						"type": "integer"
 					}
-				}
+				},
+				"required": ["fromID", "toID"],
+				"additionalProperties": false
 			}
 		}
 	},
