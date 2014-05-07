@@ -37,6 +37,22 @@ angular.module('emuwebApp')
 			return defer.promise;
 		};
 
+		/**
+		 * parse JSO data to ESPS file using webworker
+		 * @param name
+		 * @param sampleRate
+		 * @returns promise
+		 */
+		sServObj.asyncParseEsps = function (name, sampleRate) {
+			defer = $q.defer();
+			worker.postMessage({
+				'cmd': 'parseJSO',
+				'name': name,
+				'sampleRate': Soundhandlerservice.wavJSO.SampleRate
+			}); // Send data to our worker.
+			return defer.promise;
+		};
+
 
 		return sServObj;
 

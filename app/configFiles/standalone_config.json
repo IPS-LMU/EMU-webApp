@@ -44,7 +44,7 @@
 			"clear": true,
 			"deleteSingleLevel": true,
 			"resizeSingleLevel": true,
-			"saveSingleLevel": false,
+			"saveSingleLevel": true,
 			"resizeOsci": true,
 			"resizeSpectro": true,
 			"openDemoDB": false,

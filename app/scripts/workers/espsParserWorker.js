@@ -92,7 +92,7 @@ function toJSO(string, annotates, name) {
 /**
  * SIC! This function probably has to be fixed...
  */
-function toESPS(espsJSO) {
+function toESPS(name, sampleRate) {
 	var fBaseN = espsJSO.LevelName.substring(1);
 	var espsStr = '';
 	// construct header
@@ -135,6 +135,20 @@ self.addEventListener('message', function (e) {
 			self.postMessage(retVal);
 		}
 		break;
+	case 'parseJSO':
+		var retVal = toESPS(data.name, data.sampleRate)
+		if (retVal.type === undefined) {
+			self.postMessage({
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				},
+				'data': retVal
+			});
+		} else {
+			self.postMessage(retVal);
+		}
+		break;		
 	default:
 		self.postMessage({
 			'status': {
