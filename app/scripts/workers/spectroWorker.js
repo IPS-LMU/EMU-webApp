@@ -387,7 +387,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 
 function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight) {
 
-	// set upper boundry for linear interpolation
+	// set upper boundary for linear interpolation
 	var x1 = pixelHeight;
 	// value for first interpolation at lower boundry (height=0)
 	psd = (2 * Math.pow(paint[line][1], 2)) / N;
@@ -446,7 +446,16 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				p[index+3] = '255';
 			}
 		} else {
-
+		    rgb = 255 - Math.round(255 * y1);
+			// set internal image buffer to calculated & interpolated value
+			var px = Math.floor(line + cacheOffet);
+			var py = Math.floor(myheight - (pixelHeight * (i - 2)));
+				
+			var index = (px + (py * renderWidth)) * 4;
+			p[index+0] = rgb;
+			p[index+1] = rgb;
+			p[index+2] = rgb;
+			p[index+3] = '255';
 		}
 	}
 }
