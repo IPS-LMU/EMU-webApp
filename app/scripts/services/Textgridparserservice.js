@@ -25,7 +25,6 @@ angular.module('emuwebApp')
 		 */
 		sServObj.asyncToTextGrid = function () {
 			defer = $q.defer();
-			console.log(Levelservice.getData().levels);
 			worker.postMessage({
 				'cmd': 'toTextGrid',
 				'levels': Levelservice.getData().levels,

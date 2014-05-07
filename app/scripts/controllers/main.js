@@ -602,10 +602,8 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 			    Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-				    console.log(parseMess.data);
+				    dialogService.openExport('views/export.html', 'ExportCtrl', parseMess.data, 'textgrid.txt');
 				});
-
-				//dialogService.openExport('views/export.html', 'ExportCtrl', Textgridparserservice.toTextGrid(Levelservice.data), 'textgrid.txt');
 			} else {
 				console.log('action currently not allowed');
 			}

@@ -165,7 +165,7 @@ function toTextGrid(levelData, bufferLength, sampleRate) {
 		} else if (curLevel.type === 'EVENT') {
 			tG = tG + t + t + 'class = "TextLevel"' + nl;
 		}
-		tG = tG + t + t + 'name = "' + curLevel.LevelName + '"' + nl;
+		tG = tG + t + t + 'name = "' + curLevel.name + '"' + nl;
 		tG = tG + t + t + 'xmin = ' + findTimeOfMinSample() + nl;
 		tG = tG + t + t + 'xmax = ' + findTimeOfMaxSample(bufferLength, sampleRate) + nl;
 		if (curLevel.type === 'SEGMENT') {
@@ -188,7 +188,7 @@ function toTextGrid(levelData, bufferLength, sampleRate) {
 					tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(bufferLength, sampleRate) + nl;
 				}
 
-				tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].label + '"' + nl;
+				tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].labels[0].value + '"' + nl;
 			} else if (curLevel.type === 'EVENT') {
 				tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
 				tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].sampleStart / sampleRate + nl;
