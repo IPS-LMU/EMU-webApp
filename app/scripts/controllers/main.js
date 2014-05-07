@@ -278,14 +278,19 @@ angular.module('emuwebApp')
 								viewState.curPerspectiveIdx = 0;
 								ConfigProviderService.setVals(data.EMUwebAppConfig);
 								delete data.EMUwebAppConfig; // delete to avoid duplicate
-								ConfigProviderService.curDbConfig = data;
-								// then get the DBconfigFile
-								viewState.somethingInProgressTxt = 'Loading bundle list...';
-								Iohandlerservice.getBundleList().then(function (bdata) {
-									$scope.bundleList = bdata;
-									// then load first bundle in list
-									$scope.menuBundleClick($scope.bundleList[0]);
-								});
+								var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals)
+								if (validRes === true) {
+									ConfigProviderService.curDbConfig = data;
+									// then get the DBconfigFile
+									viewState.somethingInProgressTxt = 'Loading bundle list...';
+									Iohandlerservice.getBundleList().then(function (bdata) {
+										$scope.bundleList = bdata;
+										// then load first bundle in list
+										$scope.menuBundleClick($scope.bundleList[0]);
+									});
+								} else {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+								}
 							});
 						} else {
 							// show user management error 

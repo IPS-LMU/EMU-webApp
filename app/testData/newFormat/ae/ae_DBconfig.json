@@ -147,7 +147,7 @@
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]
 			},
-			"twoDcanvases": {
+			"twoDimCanvases": {
 				"order": []
 			}
 		}, {
@@ -164,8 +164,8 @@
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]
 			},
-			"twoDcanvases": {
-				"show": false
+			"twoDimCanvases": {
+				"order": []
 			}
 		}],
 		"restrictions": {
