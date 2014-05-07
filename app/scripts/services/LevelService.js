@@ -266,19 +266,24 @@ angular.module('emuwebApp')
 		/**
 		 * deletes a level by its name
 		 */
-		sServObj.deleteLevel = function (levelName) {
-			var y = 0;
+		sServObj.deleteLevel = function (levelName, levelIndex) {
+		
+/*			var y = 0;
 			var curLevel;
 			angular.forEach(sServObj.data.levels, function (t, x) {
 				if (t.name === levelName) {
 					curLevel = t;
 					y = x;
-					sServObj.data.levels.splice(x, 1);
+					
 				}
 			});
+			
+*/
+            var l = sServObj.data.levels[levelIndex];
+            sServObj.data.levels.splice(levelIndex, 1);
 			return {
-				level: curLevel,
-				id: y,
+				level: l,
+				id: levelIndex,
 				name: levelName
 			};
 		};

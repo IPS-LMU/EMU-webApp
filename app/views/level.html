@@ -4,7 +4,7 @@
     <canvas class="emuwebapp-levelMarkupCanvas" id="levelMarkupCanvas" width="2048" height="64" trackmouseinlevel ></canvas>
   </div>
   <div class="emuwebapp-levelButtonsContainer">
-   <div class="emuwebapp-levelDeleteBtn" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete>
+   <div class="emuwebapp-levelDeleteBtn" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete="{{$index}}">
      <img style="cursor: pointer;">
    </div>
    <div class="emuwebapp-levelResizeBtn" ng-show="cps.vals.activeButtons.resizeSingleLevel" resize>

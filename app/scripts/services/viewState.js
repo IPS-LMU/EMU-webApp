@@ -470,6 +470,16 @@ angular.module('emuwebApp')
     sServObj.getcurClickLevelName = function () {
       return this.curClickLevelName;
     };
+    
+    /**
+     * gets the current (clicked) Level Name
+     */
+    sServObj.getcurClickLevelIndex = function () {
+      return this.curClickLevelIndex;
+    };
+    
+    
+    
 
     /**
      * gets the current (clicked) Level Name
