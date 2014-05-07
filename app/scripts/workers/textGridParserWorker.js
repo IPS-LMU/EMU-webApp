@@ -154,10 +154,11 @@ function toTextGrid(levelData, bufferLength, sampleRate) {
 	tG = tG + 'size = ' + levelData.length + nl;
 	tG = tG + 'item []:' + nl;
 	//var levelNr = 0;
-	for (var levelNr = 0; (levelNr-1) < levelData.length; levelNr++) {
+	for (var levelNr = 0; levelNr < levelData.length; levelNr++) {
 	//angular.forEach(levelData, function (curLevel) {
 		//write level items
 		//levelNr = levelNr + 1;
+		var curLevel = levelData[levelNr];
 		tG = tG + t + 'item [' + levelNr + ']:' + nl;
 		if (curLevel.type === 'SEGMENT') {
 			tG = tG + t + t + 'class = "IntervalLevel"' + nl;
@@ -255,7 +256,7 @@ self.addEventListener('message', function (e) {
 		}
 		break;
 	case 'toTextGrid':
-		var retVal = toTextGrid(data.levelData, data.bufferLength, data.sampleRate)
+		var retVal = toTextGrid(data.levels, data.bufferLength, data.sampleRate)
 		if (retVal.status === undefined) {
 			self.postMessage({
 				'status': {
