@@ -96,9 +96,10 @@ angular.module('emuwebApp')
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
 					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
+					// TODO validate config!
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 					ConfigProviderService.curDbConfig = resp.data;
-					// then get the DBconfigFile
+					// TODO validate config!
 
 					// set wav file
 					viewState.somethingInProgress = true;
@@ -281,13 +282,20 @@ angular.module('emuwebApp')
 								var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals)
 								if (validRes === true) {
 									ConfigProviderService.curDbConfig = data;
-									// then get the DBconfigFile
-									viewState.somethingInProgressTxt = 'Loading bundle list...';
-									Iohandlerservice.getBundleList().then(function (bdata) {
-										$scope.bundleList = bdata;
-										// then load first bundle in list
-										$scope.menuBundleClick($scope.bundleList[0]);
-									});
+									validRes = Validationservice.validateJSO('DBconfigFileSchema', data)
+									if (validRes === true) {
+										// then get the DBconfigFile
+										viewState.somethingInProgressTxt = 'Loading bundle list...';
+										Iohandlerservice.getBundleList().then(function (bdata) {
+											$scope.bundleList = bdata;
+											// then load first bundle in list
+											$scope.menuBundleClick($scope.bundleList[0]);
+										});
+
+									} else {
+										dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+									}
+
 								} else {
 									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
 								}
