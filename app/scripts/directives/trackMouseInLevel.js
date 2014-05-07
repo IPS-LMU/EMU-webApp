@@ -149,7 +149,7 @@ angular.module('emuwebApp')
           scope.vs.setEditing(false);
           scope.vs.focusInTextField = false;
           lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
-          console.log(element.parent());
+          // console.log(element.parent());
           scope.vs.setlasteditArea('_' + lastEventClick.evtr.id);
           scope.vs.setlasteditAreaElem(element.parent());
           scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);

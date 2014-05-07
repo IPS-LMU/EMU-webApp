@@ -23,7 +23,6 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
                   var editingElement = Levelservice.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
-                  console.log(HistoryService.movesAwayFromLastSave);
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
@@ -32,7 +31,6 @@ angular.module('emuwebApp')
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
-                  console.log(HistoryService.movesAwayFromLastSave);
 
                   Levelservice.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
@@ -458,7 +456,6 @@ angular.module('emuwebApp')
                   if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
                     if (viewState.getcurClickSegments().length == 1) {
                       viewState.setEditing(true);
-                      console.log(viewState.getlasteditAreaElem());
                       viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
                       scope.cursorInTextField();
                     } else {

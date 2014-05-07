@@ -742,8 +742,6 @@ angular.module('emuwebApp')
     };
 
     sServObj.openEditArea = function (lastEventClick, element, type) {
-      console.log(lastEventClick);
-      console.log(element);
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
