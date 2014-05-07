@@ -1,14 +1,14 @@
 CACHE MANIFEST
-# rev 1 - 2014-05-05T17:46:33.099Z
+# rev 1 - 2014-05-07T17:37:00.713Z
 
 CACHE:
 404.html
 apple-touch-icon.png
 assets/icon.png
 background.js
-configFiles/defaultConfig.json
-configFiles/embedded_config.json
-configFiles/standalone_config.json
+configFiles/default_emuwebappConfig.json
+configFiles/embedded_emuwebappConfig.json
+configFiles/standalone_emuwebappConfig.json
 demoDBs/ae/ae_DBconfig.json
 demoDBs/ae/ae_bundleList.json
 demoDBs/ae/msajc003_bndl.json
@@ -30,15 +30,19 @@ img/search-dark.png
 index.html
 manifest.json
 robots.txt
-scripts/5f00f75a.emuwebAppExternal.min.js
-scripts/dd0d207f.emuwebApp.min.js
+schemaFiles/DBconfigFileSchema.json
+schemaFiles/annotationFileSchema.json
+schemaFiles/emuwebappConfigSchema.json
+schemaFiles/globalDBschema.json
+scripts/0b5a9d46.emuwebApp.min.js
+scripts/9de0f2b5.emuwebAppExternal.min.js
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js
 scripts/workers/textGridParserWorker.js
 scripts/workers/wavParserWorker.js
+styles/29684eeb.emuwebApp.min.css
 styles/973611cc.emuwebAppExternal.min.css
-styles/b560e154.emuwebApp.min.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
 views/about.html

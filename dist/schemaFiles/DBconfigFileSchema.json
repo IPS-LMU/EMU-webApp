@@ -1,0 +1,88 @@
+{
+	"description": "Schema for DBconfig files for the EMU system",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"UUID": {
+			"type": "string"
+		},
+		"mediafileExtension": {
+			"enum": ["wav"]
+		},
+		"ssffTracks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"columnName": {
+						"type": "string"
+					},
+					"fileExtension": {
+						"type": "string"
+					}
+				},
+				"required": ["name", "columnName", "fileExtension"],
+				"additionalProperties": false
+			}
+		},
+		"levelDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"enum": ["ITEM", "SEGMENT", "EVENT"]
+					},
+					"attributeDefinitions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"type": {
+									"enum": ["string"]
+								}
+							},
+							"required": ["name", "type"],
+							"additionalProperties": false
+						}
+					}
+				},
+				"required": ["name", "type", "attributeDefinitions"],
+				"additionalProperties": false
+			}
+
+		},
+		"linkDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"type": {
+						"enum": ["ONE_TO_MANY", "MANY_TO_MANY", "ONE_TO_ONE"]
+					},
+					"superlevelName": {
+						"type": "string"
+					},
+					"sublevelName": {
+						"type": "string"
+					}
+				},
+				"required": ["type", "superlevelName", "sublevelName"],
+				"additionalProperties": false
+			}
+		}
+	},
+	"required": ["name", "UUID", "mediafileExtension", "ssffTracks", "levelDefinitions", "linkDefinitions"],
+	"additionalProperties": false
+}

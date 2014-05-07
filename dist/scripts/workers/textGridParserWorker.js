@@ -138,7 +138,7 @@ function toJSO(string, myFile, myName) {
  * converts the internal levels format returned from levelHandler.getLevels
  * to a string containing a TextGrid file
  */
-function toTextGrid() {
+function toTextGrid(levelData, bufferLength, sampleRate) {
 
 	var l1 = 'File type = \"ooTextFile\"';
 	var l2 = 'Object class = \"TextGrid\"';
@@ -148,25 +148,26 @@ function toTextGrid() {
 
 	// writing header infos
 	tG = tG + l1 + nl + l2 + nl + nl;
-	tG = tG + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
-	tG = tG + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
+	tG = tG + 'xmin = ' + findTimeOfMinSample() + nl;
+	tG = tG + 'xmax = ' + findTimeOfMaxSample(bufferLength, sampleRate) + nl;
 	tG = tG + 'levels? <exists>' + nl;
-	tG = tG + 'size = ' + $('#HandleLevelsCtrl').scope().getLevelLength() + nl;
+	tG = tG + 'size = ' + levelData.length + nl;
 	tG = tG + 'item []:' + nl;
-	var levelNr = 0;
-	$('#HandleLevelsCtrl level').each(function () {
-		var curLevel = $('#HandleLevelsCtrl').scope().getLevel($(this).attr('id'));
+	//var levelNr = 0;
+	for (var levelNr = 0; levelNr < levelData.length; levelNr++) {
+	//angular.forEach(levelData, function (curLevel) {
 		//write level items
-		levelNr = levelNr + 1;
+		//levelNr = levelNr + 1;
+		var curLevel = levelData[levelNr];
 		tG = tG + t + 'item [' + levelNr + ']:' + nl;
 		if (curLevel.type === 'SEGMENT') {
 			tG = tG + t + t + 'class = "IntervalLevel"' + nl;
 		} else if (curLevel.type === 'EVENT') {
 			tG = tG + t + t + 'class = "TextLevel"' + nl;
 		}
-		tG = tG + t + t + 'name = "' + curLevel.LevelName + '"' + nl;
-		tG = tG + t + t + 'xmin = ' + sServObj.findTimeOfMinSample() + nl;
-		tG = tG + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
+		tG = tG + t + t + 'name = "' + curLevel.name + '"' + nl;
+		tG = tG + t + t + 'xmin = ' + findTimeOfMinSample() + nl;
+		tG = tG + t + t + 'xmax = ' + findTimeOfMaxSample(bufferLength, sampleRate) + nl;
 		if (curLevel.type === 'SEGMENT') {
 			tG = tG + t + t + 'intervals: size = ' + curLevel.items.length + nl;
 		} else if (curLevel.type === 'EVENT') {
@@ -177,24 +178,24 @@ function toTextGrid() {
 			if (curLevel.type === 'SEGMENT') {
 				tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
 				if (curLevel.items[j].sampleStart !== 0) {
-					tG = tG + t + t + t + t + 'xmin = ' + ((curLevel.items[j].sampleStart) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+					tG = tG + t + t + t + t + 'xmin = ' + ((curLevel.items[j].sampleStart) / sampleRate + ((1 / sampleRate) / 2)) + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 				}
 				if (j < curLevel.items.length - 1) {
-					tG = tG + t + t + t + t + 'xmax = ' + ((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur + 1) / Soundhandlerservice.wavJSO.SampleRate + ((1 / Soundhandlerservice.wavJSO.SampleRate) / 2)) + nl;
+					tG = tG + t + t + t + t + 'xmax = ' + ((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur + 1) / sampleRate + ((1 / sampleRate) / 2)) + nl;
 				} else {
-					tG = tG + t + t + t + t + 'xmax = ' + sServObj.findTimeOfMaxSample() + nl;
+					tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(bufferLength, sampleRate) + nl;
 				}
 
-				tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].label + '"' + nl;
+				tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].labels[0].value + '"' + nl;
 			} else if (curLevel.type === 'EVENT') {
 				tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
-				tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].sampleStart / Soundhandlerservice.wavJSO.SampleRate + nl;
+				tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].sampleStart / sampleRate + nl;
 				tG = tG + t + t + t + t + 'mark = "' + curLevel.items[j].label + '"' + nl;
 			}
 		}
-	});
+	}
 	return (tG);
 };
 
@@ -209,8 +210,8 @@ function findTimeOfMinSample() {
 /**
  *
  */
-function findTimeOfMaxSample() {
-	return viewState.curViewPort.bufferLength / Soundhandlerservice.wavJSO.SampleRate;
+function findTimeOfMaxSample(bufferLength, sampleRate) {
+	return bufferLength / sampleRate;
 };
 
 
@@ -242,6 +243,20 @@ self.addEventListener('message', function (e) {
 		sampleRate = data.sampleRate;
 		var retVal = toJSO(data.textGrid, data.annotates, data.name)
 		// console.log(JSON.stringify(retVal, undefined, 2));
+		if (retVal.status === undefined) {
+			self.postMessage({
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				},
+				'data': retVal
+			});
+		} else {
+			self.postMessage(retVal);
+		}
+		break;
+	case 'toTextGrid':
+		var retVal = toTextGrid(data.levels, data.bufferLength, data.sampleRate)
 		if (retVal.status === undefined) {
 			self.postMessage({
 				'status': {

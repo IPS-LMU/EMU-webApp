@@ -285,6 +285,7 @@ module.exports = function (grunt) {
             'img/*.png',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
+            'schemaFiles/*.json',
             'scripts/workers/*.js',
             'demoDBs/{,*/}*.*',
             'background.js',

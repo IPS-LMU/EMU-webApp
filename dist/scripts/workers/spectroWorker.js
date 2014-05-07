@@ -45,7 +45,7 @@ function FFT(fftSize) {
 
 	if (cos === undefined || n !== fftSize ) {
 
-	   // this means that if block is only executed 
+	   // this means that the following is only executed 
 	   // when no COS table exists
 	   // or n changes 
 
@@ -56,7 +56,7 @@ function FFT(fftSize) {
 	}
 	if (sin === undefined || n !== fftSize) { 
 
-	   // this means that if block is only executed 
+	   // this means that the following is only executed 
 	   // when no COS table exists
 	   // or n changes 
 	   
@@ -262,8 +262,9 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
 
 		if (!executed) {
-			//cWidth *= pixelRatio;
-			//cHeight *= pixelRatio;
+			//renderHeight *= pixelRatio;
+			
+			var scaling = N / 256;
 
 			// start execution once
 			executed = true;
@@ -275,10 +276,10 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			paint = new Array(renderWidth);
 
 			// Hz per pixel height
-			HzStep = (sampleRate / 2) / renderHeight;
+			HzStep = (sampleRate / 2) / (renderHeight * scaling);
 
 			// uper Hz boundry to display
-			c = Math.floor(upperFreq / HzStep);
+			c = Math.ceil(upperFreq / HzStep);
 
 			// lower Hz boundry to display
 			d = Math.floor(lowerFreq / HzStep); // -1 for value below display when lower>0
@@ -293,7 +294,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			pixelHeight = renderHeight / (c - d - 2);
 
 			// create new picture
-			imageResult = new Uint8ClampedArray(renderWidth*renderHeight*4);
+			imageResult = new Uint8ClampedArray(Math.ceil(renderWidth*renderHeight*4));
 
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
@@ -307,6 +308,8 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 				'start': start,
 				'end': end,
 				'myStep': myStep,
+				'pixelHeight' : pixelHeight,
+				'pixelRatio' : pixelRatio,
 				'renderWidth': renderWidth,
 				'renderHeight': renderHeight,
 				'img': imageResult
@@ -384,7 +387,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 
 function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight) {
 
-	// set upper boundry for linear interpolation
+	// set upper boundary for linear interpolation
 	var x1 = pixelHeight;
 	// value for first interpolation at lower boundry (height=0)
 	psd = (2 * Math.pow(paint[line][1], 2)) / N;
@@ -443,7 +446,16 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				p[index+3] = '255';
 			}
 		} else {
-
+		    rgb = 255 - Math.round(255 * y1);
+			// set internal image buffer to calculated & interpolated value
+			var px = Math.floor(line + cacheOffet);
+			var py = Math.floor(myheight - (pixelHeight * (i - 2)));
+				
+			var index = (px + (py * renderWidth)) * 4;
+			p[index+0] = rgb;
+			p[index+1] = rgb;
+			p[index+2] = rgb;
+			p[index+3] = '255';
 		}
 	}
 }

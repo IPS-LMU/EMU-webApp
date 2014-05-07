@@ -19,10 +19,12 @@ angular.module('emuwebApp')
 					schemasJsos.push({
 						name: n,
 						data: resp.data
-					})
-
+					},function (err) {
+						console.error('Unable to load schemas!');
+						console.error(err);
+					});
 				});
-			})
+			});
 		};
 
 		sServObj.loadSchemas();
@@ -36,7 +38,7 @@ angular.module('emuwebApp')
 				if(s.name === schemaName){
 					schema = s;
 				}
-			})
+			});
 
 			if (tv4.validate(jso, schema.data)) {
 				return true;

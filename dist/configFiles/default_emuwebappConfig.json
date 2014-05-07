@@ -2,9 +2,9 @@
     "main": {
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
-        "wsServerUrl": "ws://localhost:8080",
-        "wsTimeoutInterval": 5000,
-        "comType": "WS",
+        "serverUrl": "ws://localhost:8080",
+        "serverTimeoutInterval": 5000,
+        "comMode": "WS",
         "catchMouseForKeyBinding": false
     },
     "keyMappings": {
@@ -26,9 +26,9 @@
         "levelUp": 38,
         "levelDown": 40,
         "undoRedo": 90,
-        "plusShift": 221,
         "shrinkSelSegmentsLeftRight": 189,
-        "expandSelSegmentsLeftRight": 187,
+        "expandSelSegmentsRight": 187,
+        "expandSelSegmentsLeft": 221,
         "selectFirstContourCorrectionTool": 49,
         "selectSecondContourCorrectionTool": 50,
         "selectThirdContourCorrectionTool": 51,
@@ -81,10 +81,10 @@
         "name": "default",
         "signalCanvases": {
             "order": [],
-            "assign": {},
-            "contourLims": {}
+            "assign": [],
+            "contourLims": []
         },
-        "labelCanvases": {
+        "levelCanvases": {
             "order": []
         },
         "twoDimCanvases": {
@@ -95,7 +95,7 @@
         "addTimeMode": "absolute",
         "addTimeValue": 750,
         "newSegmentName": "Segment",
-        "newPointName": "P"
+        "newEventName": "Event"
     },
     "restrictions": {
         "playback": true,

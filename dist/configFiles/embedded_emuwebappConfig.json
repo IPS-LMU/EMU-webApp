@@ -7,8 +7,8 @@
 	"linkDefinitions": [],
 	"EMUwebAppConfig": {
 		"main": {
-			"comType": "embedded",
-			"catchMouseForKeyBinding": false
+			"comMode": "embedded",
+			"catchMouseForKeyBinding": true
 		},
 		"perspectives": [{
 			"name": "default",
@@ -28,28 +28,28 @@
 			"showPerspectivesSidebar": false,
 			"sortLabels": false,
 			"editItemSize": false,
-			"editItemName": true,
-			"deleteItemBoundary": true,
-			"deleteItem": true,
-			"deleteLevel": true,
-			"addItem": true
+			"editItemName": false,
+			"deleteItemBoundary": false,
+			"deleteItem": false,
+			"deleteLevel": false,
+			"addItem": false
 		},
 		"activeButtons": {
-			"addLevelSeg": true,
-			"addLevelEvent": true,
-			"renameSelLevel": true,
-			"downloadTextGrid": true,
+			"addLevelSeg": false,
+			"addLevelEvent": false,
+			"renameSelLevel": false,
+			"downloadTextGrid": false,
 			"specSettings": true,
 			"connect": false,
-			"clear": true,
-			"deleteSingleLevel": true,
+			"clear": false,
+			"deleteSingleLevel": false,
 			"resizeSingleLevel": true,
 			"saveSingleLevel": false,
 			"resizeOsci": true,
 			"resizeSpectro": true,
 			"openDemoDB": false,
 			"saveBundle": false,
-			"openMenu": true
+			"openMenu": false
 		}
 	}
 }
