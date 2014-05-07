@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Espsparserservice', function Espsparserservice($q, Soundhandlerservice) {
+	.service('Espsparserservice', function Espsparserservice($q, Levelservice, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -43,11 +43,11 @@ angular.module('emuwebApp')
 		 * @param sampleRate
 		 * @returns promise
 		 */
-		sServObj.asyncParseEsps = function (name, sampleRate) {
+		sServObj.asyncParseJSO = function (name) {
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'parseJSO',
-				'name': name,
+				'level': Levelservice.getLevelDetails(name).level,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate
 			}); // Send data to our worker.
 			return defer.promise;

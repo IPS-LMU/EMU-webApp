@@ -92,22 +92,23 @@ function toJSO(string, annotates, name) {
 /**
  * SIC! This function probably has to be fixed...
  */
-function toESPS(name, sampleRate) {
-	var fBaseN = espsJSO.LevelName.substring(1);
+function toESPS(data, name, sampleRate) {
 	var espsStr = '';
 	// construct header
-	espsStr += 'signal ' + fBaseN + '\n';
+	espsStr += 'signal ' + name + '\n';
 	espsStr += 'nfields 1\n';
 	espsStr += '#\n';
 	var curLabel;
-	espsJSO.items.forEach(function (i, idx) {
-		if (i.label === '' && idx === 0) {
+	for (var j = 0; j < data.length; j++) {
+	//angular.forEach(data, function (i, idx) {
+		if (data[j].labels[0].value === '' && j === 0) {
 			curLabel = 'H#';
 		} else {
-			curLabel = i.label;
+			curLabel = data[j].labels[0].value;
 		}
-		espsStr += '\t' + String((i.sampleStart + i.sampleDur) / sampleRate) + '\t125\t' + curLabel + '\n';
-	});
+		espsStr += '\t' + String((data[j].sampleStart + data[j].sampleDur) / sampleRate) + '\t125\t' + curLabel + '\n';
+	}
+	//});
 
 	// console.log(espsStr);
 	return espsStr;
@@ -136,7 +137,7 @@ self.addEventListener('message', function (e) {
 		}
 		break;
 	case 'parseJSO':
-		var retVal = toESPS(data.name, data.sampleRate)
+		var retVal = toESPS(data.level.items, data.level.name, data.sampleRate)
 		if (retVal.type === undefined) {
 			self.postMessage({
 				'status': {

@@ -9,9 +9,10 @@ angular.module('emuwebApp')
 
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(name, attr.save);
-          dialogService.openExport('views/export.html', 'ExportCtrl', Espsparserservice.toESPS(scope.this.level),'level.txt');
+          Espsparserservice.asyncParseJSO(name).then(function (result) {
+		    dialogService.openExport('views/export.html', 'ExportCtrl', result.data, name + '_esps.txt');
+		  });
         });
-
       }
     };
   });
