@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, $window, Soundhandlerservice, Levelservice) {
+  .factory('viewState', function ($rootScope, $window, Soundhandlerservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -547,13 +547,13 @@ angular.module('emuwebApp')
     /**
      * selects all Segements on current level which are inside the selected viewport
      */
-    sServObj.selectSegmentsInSelection = function () {
+    sServObj.selectSegmentsInSelection = function (levelData) {
       sServObj.curClickSegments = [];
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
       var min = Infinity;
       var max = -Infinity;
-      angular.forEach(Levelservice.data.levels, function (t) {
+      angular.forEach(levelData, function (t) {
         if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (evt) {
             if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {

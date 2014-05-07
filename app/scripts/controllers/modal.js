@@ -30,6 +30,7 @@ angular.module('emuwebApp')
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
+		    
 			Levelservice.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
@@ -61,8 +62,8 @@ angular.module('emuwebApp')
 		 *  Delete a complete level from Levelservice
 		 */
 		$scope.deleteLevel = function () {
-		    console.log($scope);
 			var res = Levelservice.deleteLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelIndex());
+			
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'deleteLevel',

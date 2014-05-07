@@ -398,7 +398,7 @@ angular.module('emuwebApp')
                 if (viewState.getcurClickLevelName() === undefined) {
                   scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                 } else {
-                  viewState.selectSegmentsInSelection();
+                  viewState.selectSegmentsInSelection(Levelservice.data.levels);
                 }
               }
 
