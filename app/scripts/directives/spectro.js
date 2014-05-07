@@ -198,8 +198,6 @@ angular.module('emuwebApp')
           primeWorker.addEventListener('message', function (event) {
 
             if (pcmperpixel === event.data.myStep) {
-            console.log(event.data.renderHeight);
-            console.log(event.data.pixelHeight);           
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
               buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);

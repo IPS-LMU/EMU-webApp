@@ -619,7 +619,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
-				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl');
+				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl', '');
 			} else {
 				console.log('action currently not allowed');
 			}
