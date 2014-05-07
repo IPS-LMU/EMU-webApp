@@ -57,12 +57,12 @@ angular.module('emuwebApp')
 					'callbackID': callbackId,
 					'status': {
 						'type': 'ERROR:TIMEOUT',
-						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.wsTimeoutInterval + 'ms!  Please check the server...'
+						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.serverTimeoutInterval + 'ms!  Please check the server...'
 					}
 				};
 
 				listener(tOutResp);
-			}, ConfigProviderService.vals.main.wsTimeoutInterval);
+			}, ConfigProviderService.vals.main.serverTimeoutInterval);
 
 			return defer.promise;
 		}

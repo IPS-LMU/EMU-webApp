@@ -92,7 +92,7 @@ angular.module('emuwebApp')
 
 				viewState.somethingInProgressTxt = 'Loading DB config...';
 				// then get the DBconfigFile
-				Iohandlerservice.httpGetPath('configFiles/embedded_config.json').then(function (resp) {
+				Iohandlerservice.httpGetPath('configFiles/embedded_emuwebappConfig.json').then(function (resp) {
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
 					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
@@ -163,8 +163,17 @@ angular.module('emuwebApp')
 		$scope.loadDefaultConfig = function () {
 
 			Iohandlerservice.httpGetDefaultConfig().success(function (data) {
-				ConfigProviderService.setVals(data);
-				$scope.handleDefaultConfigLoaded();
+				viewState.somethingInProgress = true;
+				viewState.somethingInProgressTxt = "Validating emuwebappConfig"
+				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
+				if (validRes === true) {
+					ConfigProviderService.setVals(data);
+					$scope.handleDefaultConfigLoaded();
+					viewState.somethingInProgress = false;
+				} else {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4));
+				}
+
 			}).error(function (data, status, header, config) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
 			});
@@ -222,9 +231,9 @@ angular.module('emuwebApp')
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.wsServerUrl).then(function (message) {
+				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
+						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.defaultServerUrl);
 					} else {
 						$scope.handleConnectedToWSserver();
 					}
@@ -287,7 +296,7 @@ angular.module('emuwebApp')
 					});
 				} else {
 					// show protocol error and disconnect from server
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
 						$scope.resetToInitState();
 					});
 				}
@@ -634,7 +643,7 @@ angular.module('emuwebApp')
 					if (url) {
 						Iohandlerservice.wsH.initConnect(url).then(function (message) {
 							if (message.type === 'error') {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.wsServerUrl);
+								dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
 							} else {
 								$scope.handleConnectedToWSserver();
 							}

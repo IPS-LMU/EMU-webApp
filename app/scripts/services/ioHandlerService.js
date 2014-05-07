@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetDefaultConfig = function () {
-			var prom = $http.get('configFiles/default_config.json');
+			var prom = $http.get('configFiles/default_emuwebappConfig.json');
 			return prom;
 		};
 

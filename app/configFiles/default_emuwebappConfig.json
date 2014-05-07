@@ -2,8 +2,8 @@
     "main": {
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
-        "wsServerUrl": "ws://localhost:8080",
-        "wsTimeoutInterval": 5000,
+        "serverUrl": "ws://localhost:8080",
+        "serverTimeoutInterval": 5000,
         "comMode": "WS",
         "catchMouseForKeyBinding": false
     },
@@ -81,10 +81,10 @@
         "name": "default",
         "signalCanvases": {
             "order": [],
-            "assign": {},
-            "contourLims": {}
+            "assign": [],
+            "contourLims": []
         },
-        "labelCanvases": {
+        "levelCanvases": {
             "order": []
         },
         "twoDimCanvases": {
@@ -95,7 +95,7 @@
         "addTimeMode": "absolute",
         "addTimeValue": 750,
         "newSegmentName": "Segment",
-        "newPointName": "P"
+        "newEventName": "Event"
     },
     "restrictions": {
         "playback": true,
