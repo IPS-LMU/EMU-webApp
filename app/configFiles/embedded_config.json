@@ -7,7 +7,7 @@
 	"linkDefinitions": [],
 	"EMUwebAppConfig": {
 		"main": {
-			"comType": "embedded",
+			"comMode": "embedded",
 			"catchMouseForKeyBinding": true
 		},
 		"perspectives": [{
