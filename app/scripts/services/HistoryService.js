@@ -81,10 +81,11 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.data.levels.splice(cur.item, 0, cur.level);
+							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.level.id, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.data.levels.splice(cur.item, 1);
+							Levelservice.deleteLevel(cur.level.name, cur.level.id, cur.curPerspectiveIdx);
 						}
+						console.log();
 						break;
 					case 'deleteBoundary':
 						if (applyOldVal) {
