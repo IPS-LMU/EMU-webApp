@@ -12,25 +12,42 @@ angular.module('emuwebApp')
 
 				scope.open = attr.open;
 
-				// scope.$watch('levelDetails.data', function () {
-				// 	drawLevelDetails(scope.level, scope.vs, scope.cps);
-				// }, true);
+				///////////////
+				// watches
 
 				scope.$watch('vs.curViewPort', function () {
 					drawLevelDetails(scope.level, scope.vs, scope.cps);
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
 
-				scope.$watch('vs.curMouseSegment', function () {
-					drawLevelDetails(scope.level, scope.vs, scope.cps);
+				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
+					// only repaint if mouse over current level
+					if (scope.vs.getcurMouseLevelName() === scope.level.name) {
+						if (!oldValue || !newValue || newValue.id !== oldValue.id) {
+							drawLevelMarkup(scope.level, scope.vs, scope.cps);
+						} else {
+							drawLevelDetails(scope.level, scope.vs, scope.cps);
+							drawLevelMarkup(scope.level, scope.vs, scope.cps);
+						}
+					}
+				}, true);
+
+				scope.$watch('vs.movingBoundarySample', function () {
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
+
+				scope.$watch('vs.movingBoundary', function () {
+					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+				}, true);
+
 
 				scope.$watch('hists.movesAwayFromLastSave', function () {
 					drawLevelDetails(scope.level, scope.vs, scope.cps);
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				}, true);
 
+				///////////////
+				// bindings
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
@@ -38,9 +55,9 @@ angular.module('emuwebApp')
 					drawLevelMarkup(scope.level, scope.vs, scope.cps);
 				});
 
-				scope.updateView = function () {
-					drawLevelDetails(scope.level, scope.vs, scope.cps);
-				};
+				//
+				///////////////////////
+
 
 				/**
 				 * draw level details
