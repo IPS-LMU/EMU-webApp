@@ -350,8 +350,7 @@ angular.module('emuwebApp')
 		$scope.menuBundleClick = function (bndl) {
 
 			// check if bndl has to be saved
-			if ((HistoryService.movesAwayFromLastSave !== 0)) {
-				console.log(ConfigProviderService.vals.main)
+			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 				if (bndl !== $scope.curBndl) {
 					$scope.lastclickedutt = bndl;
 					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
@@ -718,7 +717,14 @@ angular.module('emuwebApp')
 		 */
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
-			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? This will also delete any unsaved changes...').then(function (res) {
+			console.log(ConfigProviderService.vals.main.comMode !== 'DEMO')
+			var modalText;
+			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
+				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.'
+			} else {
+				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.'
+			}
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', modalText).then(function (res) {
 				if (res) {
 					$scope.resetToInitState();
 				}
@@ -883,7 +889,6 @@ angular.module('emuwebApp')
 		 * @param persp json object of current perspective containing name attribute
 		 */
 		$scope.changePerspective = function (persp) {
-			console.log('-----------------------------------------')
 			// viewState.somethingInProgress = true;
 			// alert(nameOfDB);
 			// viewState.somethingInProgressTxt = 'Changing perspective...';
