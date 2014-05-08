@@ -26,7 +26,7 @@
   preselects it (indicated by marking it blue).
   <span ng-show="cps.vals.restrictions.editItemSize">
     To move the currently preselected boundary hold down the <b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
-    move the mouse to the desired position. The boundary will then track the
+    move the mouse to the desired position. The boundary will track the
     mouse movement. A segment is preselected by left-clicking it  (indicated by marking it yellow), holding down 
     <b>{{getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire segment.
   </span>
@@ -39,8 +39,8 @@
 <b>Main Navigation Shortcuts:</b><br />&nbsp;<br />
   <table class="emuwebapp-aboutTable">
     <tbody>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.openSubmenu)}}:</b></td><td>Open left submenu</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.openSubmenu)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.shift)}}:</td><td>Open right submenu</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.toggleSideBars)}}:</b></td><td>Open left submenu</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.toggleSideBars)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.shift)}}:</td><td>Open right submenu</td></tr>
       
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomIn)}}:</b></td><td>Zoom in<sup>1</sup></td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomOut)}}:</b></td><td>Zoom out<sup>1</sup></td></tr>
@@ -52,8 +52,8 @@
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomSel)}}:</b></td><td>Zoom in to selected</td></tr>
       
 
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.tab)}}:</b></td><td>Select next event</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.tab)}}:</b></td><td>Select previous event</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.selNextPrevItem)}}:</b></td><td>Select next event</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.selNextPrevItem)}}:</b></td><td>Select previous event</td></tr>
       
       
     </tbody>
@@ -69,18 +69,18 @@
 <b>Labeling shortcuts:</b><br />&nbsp;<br />
   <table class="emuwebapp-aboutTable">
     <tbody>
-      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.history)}}:</b></td><td>Go back in history</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.history)}}:</b></td><td>Go forward in history</td></tr>
-      <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{getStrRep(cps.vals.keyMappings.enter)}}:</b></td><td>Add event / boundary at selected position (also works for segments if a segment is selected in the viewport)</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{getStrRep(cps.vals.keyMappings.backspace)}}:</b></td><td>Deleted selected segments</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.backspace)}}:</b></td><td>Deleted current segment boundary</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapAbove)}}:</b></td><td>Snap selected boundary to closest boundary in level above</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBelow)}}:</b></td><td>Snap selected boundary to closest boundary in level below</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapZero)}}:</b></td><td>Snap to nearest zero crossing</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.plus)}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.minus)}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.plus)}}:</b></td><td>Add time to selected segments (expand to left)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.minus)}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.undoRedo)}}:</b></td><td>Undo last action</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.undoRedo)}}:</b></td><td>Redo last action</td></tr>
+      <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}:</b></td><td>Add event / boundary at selected position (also works for segments if a segment is selected in the viewport)</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}:</b></td><td>Deleted selected segments</td></tr>
+      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}:</b></td><td>Deleted current segment boundary</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}:</b></td><td>Snap preselected boundary to closest boundary in level above</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary)}}:</b></td><td>Snap preselected boundary to closest boundary in level below</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}:</b></td><td>Snap preselected boundary to nearest zero crossing</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.expandSelSegmentsRight)}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeftRight)}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>+</b></td><td>Add time to selected segments (expand to left)</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeftRight)}}:</b></td><td>Remove time to selected segments (shrink from left)</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.levelUp)}}:</b></td><td>Select level above</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.levelDown)}}:</b></td><td>Select level above</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectSegmentsInSelection)}}:</b></td><td>Select all segments in current viewport selection</td></tr>
