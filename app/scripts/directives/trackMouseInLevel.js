@@ -50,7 +50,7 @@ angular.module('emuwebApp')
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
                 moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
-              }else{
+              } else {
                 moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).samplePoint);
               }
             } else {
@@ -76,7 +76,19 @@ angular.module('emuwebApp')
                 if (scope.vs.getcurMouseSegment() !== undefined) {
                   scope.vs.movingBoundary = true;
                   if (scope.this.level.type === 'SEGMENT') {
-                    scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
+                    if (typeof scope.vs.getcurMouseSegment() === 'boolean') {
+                      var seg;
+                      // before first segment
+                      if (scope.vs.getcurMouseSegment() === false) {
+                        seg = scope.tds.getElementDetails(scope.this.level.name, 0);
+                        scope.vs.movingBoundarySample = seg.sampleStart + moveBy;
+                      } else {
+                        seg = scope.tds.getLastElement(scope.this.level.name);
+                        scope.vs.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
+                      }
+                    } else {
+                      scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
+                    }
                     scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
