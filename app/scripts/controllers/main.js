@@ -159,8 +159,6 @@ angular.module('emuwebApp')
 			}, function (errMess) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + errMess);
 			});
-
-
 		};
 
 		/**
