@@ -39,11 +39,13 @@ angular.module('emuwebApp')
           scope.updateCSS();
         }, true);
 
-        scope.$watch('vs.curViewPort', function () {
+        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
-              scope.updateCSS();
+              if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+                scope.redraw();
+                scope.updateCSS();
+              }
             }
           }
         }, true);
