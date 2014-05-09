@@ -31,47 +31,9 @@ angular.module('emuwebApp')
         var cache;
 
 
-        scope.updateCSS = function () {
-          var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
-          if (scope.vs.getenlarge() == -1) {
-            scope.enlargeCanvas = {
-              'height': 100 / parts + '%'
-            };
-          } else {
-            if (scope.vs.getenlarge() == scope.order) {
-              scope.enlargeCanvas = {
-                'height': 3 * 100 / (parts + 2) + '%'
-              };
-            } else {
-              scope.enlargeCanvas = {
-                'height': 100 / (parts + 2) + '%'
-              };
-            }
-          }
-        };
 
-        // // on mouse move
-        // element.bind('mousemove', function (event) {
-        //   if (!$.isEmptyObject(scope.shs)) {
-        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
-        //       // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-        //       // drawSpectMarkup();
-        //       // if (!scope.vs.getdragBarActive()) {
-        //       //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
-        //       // }
-        //     }
-        //   }
-        // });
-
-        // on mouse leave clear markup canvas
-        element.bind('mouseleave', function () {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawSpectMarkup();
-            }
-          }
-        });
+        ///////////////
+        // watches
 
         scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
@@ -104,10 +66,6 @@ angular.module('emuwebApp')
         }, true);
 
 
-        // scope.$on('newlyLoadedAudioFile', function () {
-        //   console.log('clearing spectro image cache...');
-        //   clearImageCache();
-        // });
 
         scope.$watch('vs.spectroSettings', function () {
           if (!$.isEmptyObject(scope.shs)) {
@@ -120,6 +78,54 @@ angular.module('emuwebApp')
             }
           }
         }, true);
+
+        ///////////////
+        // bindings
+
+        // on mouse leave clear markup canvas
+        element.bind('mouseleave', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+              drawSpectMarkup();
+            }
+          }
+        });
+
+        // // on mouse move
+        // element.bind('mousemove', function (event) {
+        //   if (!$.isEmptyObject(scope.shs)) {
+        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
+        //       // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+        //       // drawSpectMarkup();
+        //       // if (!scope.vs.getdragBarActive()) {
+        //       //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
+        //       // }
+        //     }
+        //   }
+        // });
+
+        //
+        ////////////////
+
+        scope.updateCSS = function () {
+          var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
+          if (scope.vs.getenlarge() == -1) {
+            scope.enlargeCanvas = {
+              'height': 100 / parts + '%'
+            };
+          } else {
+            if (scope.vs.getenlarge() == scope.order) {
+              scope.enlargeCanvas = {
+                'height': 3 * 100 / (parts + 2) + '%'
+              };
+            } else {
+              scope.enlargeCanvas = {
+                'height': 100 / (parts + 2) + '%'
+              };
+            }
+          }
+        };
 
         scope.redraw = function () {
           pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
@@ -169,7 +175,7 @@ angular.module('emuwebApp')
           scope.dhs.drawCurViewPortSelected(markupCtx, false);
 
           // draw min max vals and name of track
-          scope.dhs.drawMinMaxAndName(markupCtx, '', scope.vs.spectroSettings.rangeFrom,scope.vs.spectroSettings.rangeTo, 2);
+          scope.dhs.drawMinMaxAndName(markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
         }
 
 

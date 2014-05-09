@@ -15,9 +15,9 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
-						// console.log(oldVal)
-						// console.log(newVal)
-						drawPreview();
+						if(oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS){
+							drawPreview();
+						}
 					}
 				}, true);
 
