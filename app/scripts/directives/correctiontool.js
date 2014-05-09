@@ -172,6 +172,9 @@ angular.module('emuwebApp')
 					}
 				});
 
+				//
+				////////////////////
+
 				function setSelectDrag(event) {
 					curMouseSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
 					if (curMouseSample > dragStartSample) {

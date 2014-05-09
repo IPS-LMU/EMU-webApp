@@ -17,6 +17,9 @@ angular.module('emuwebApp')
 
 				var tr, col, sRaSt;
 
+				////////////////////
+				// watches
+
 				scope.$watch('ssffds.data.length', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -27,11 +30,13 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('vs.curViewPort', function () {
+				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawDots(scope);
+								if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+									drawDots(scope);
+								}
 							}
 						}
 					}
@@ -46,6 +51,9 @@ angular.module('emuwebApp')
 						}
 					}
 				}, true);
+
+				//
+				//////////////////
 
 				function setGlobalMinMaxVals() {
 					// body...

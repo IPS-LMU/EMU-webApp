@@ -30,7 +30,7 @@ angular.module('emuwebApp')
 
         //watch viewPort change
         scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
-          if (!(newValue.sS === oldValue.sS && newValue.eS === oldValue.eS)) {
+          if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
             handleUpdate(newValue, oldValue);
           }
         }, true);
@@ -44,7 +44,7 @@ angular.module('emuwebApp')
         scope.$watch('viewState.curCorrectionToolNr', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
-        
+
         //watch hists.
         scope.$watch('HistoryService.movesAwayFromLastSave', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);

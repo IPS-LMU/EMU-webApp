@@ -12,11 +12,16 @@ angular.module('emuwebApp')
 
 				var tr, col, sRaSt;
 
+				////////////////////
+				// watches
+
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawEpgGrid(scope);
+								if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+									drawEpgGrid(scope);
+								}
 							}
 						}
 					}
@@ -26,12 +31,14 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								// console.log('deine mutter')
 								drawEpgGrid(scope);
 							}
 						}
 					}
 				}, true);
+
+				//
+				////////////////////
 
 				/**
 				 * drawing method to drawEpgGrid
