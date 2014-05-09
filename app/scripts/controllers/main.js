@@ -76,13 +76,6 @@ angular.module('emuwebApp')
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
-				// check if file extension is correct 
-
-				// if (ConfigProviderService.embeddedVals.labelGetUrl.split('.')[1] !== 'TextGrid') {
-				// 	alert("File extention of embedded mode has to be .TextGrid")
-				// 	return;
-				// }
-
 				viewState.showDropZone = false;
 
 				//hide menu
@@ -96,58 +89,70 @@ angular.module('emuwebApp')
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
 					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
-					// TODO validate config!
+					// validate emuwebappConfigSchema
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
-					ConfigProviderService.curDbConfig = resp.data;
-					// TODO validate config!
+					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
+					if (validRes === true) {
+						ConfigProviderService.curDbConfig = resp.data;
+						// validate DBconfigFileSchema!
+						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
 
-					// set wav file
-					viewState.somethingInProgress = true;
-					viewState.somethingInProgressTxt = 'Parsing WAV file...';
+						if (validRes === true) {
+							// set wav file
+							viewState.somethingInProgress = true;
+							viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-					Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
-						var wavJSO = messWavParser;
-						viewState.curViewPort.sS = 0;
-						viewState.curViewPort.eS = wavJSO.Data.length;
-						// viewState.curViewPort.selectS = -1;
-						// viewState.curViewPort.selectE = -1;
-						// viewState.curClickSegments = [];
-						// viewState.curClickLevelName = undefined;
-						// viewState.curClickLevelType = undefined;
+							Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
+								var wavJSO = messWavParser;
+								viewState.curViewPort.sS = 0;
+								viewState.curViewPort.eS = wavJSO.Data.length;
+								// viewState.curViewPort.selectS = -1;
+								// viewState.curViewPort.selectE = -1;
+								// viewState.curClickSegments = [];
+								// viewState.curClickLevelName = undefined;
+								// viewState.curClickLevelType = undefined;
 
-						viewState.curViewPort.bufferLength = wavJSO.Data.length;
-						viewState.resetSelect();
-						Soundhandlerservice.wavJSO = wavJSO;
+								viewState.curViewPort.bufferLength = wavJSO.Data.length;
+								viewState.resetSelect();
+								Soundhandlerservice.wavJSO = wavJSO;
 
-						// get + parse file
-						Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
-							viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-							Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
-								// console.log(parseMess)
-								var annot = parseMess.data;
-								Levelservice.setData(annot);
-								// console.log(JSON.stringify(l, undefined, 2));
-								var lNames = [];
-								annot.levels.forEach(function (l) {
-									lNames.push(l.name);
-								})
+								// get + parse file
+								Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
+									viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
+									Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
-								ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-								viewState.somethingInProgressTxt = 'Done!';
-								viewState.somethingInProgress = false;
-								viewState.setState('labeling');
+										var annot = parseMess.data;
+										Levelservice.setData(annot);
+
+										var lNames = [];
+										annot.levels.forEach(function (l) {
+											lNames.push(l.name);
+										});
+
+										ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+										viewState.somethingInProgressTxt = 'Done!';
+										viewState.somethingInProgress = false;
+										viewState.setState('labeling');
+									}, function (errMess) {
+										dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+									});
+
+								}, function (errMess) {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + errMess);
+								});
+
+
 							}, function (errMess) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 							});
 
-						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + errMess);
-						});
+						} else {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+						}
+					} else {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+					}
 
-
-					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
-					})
 				}, function (errMess) {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
 				});
