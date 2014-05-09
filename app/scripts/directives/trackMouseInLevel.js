@@ -19,6 +19,9 @@ angular.module('emuwebApp')
         var levelID = scope.level.name;
         var levelType = scope.level.type;
 
+
+        /////////////////////////////
+        // Bindings
         element.bind('click', function (event) {
           setLastMove(event, true);
           setLastClick(event);
@@ -154,6 +157,9 @@ angular.module('emuwebApp')
           setLastMove(event, true);
         });
         //levelID
+
+        //
+        /////////////////////////
 
         function setLastClick(x) {
           thisPCM = getX(x) * scope.vs.getPCMpp(x);

@@ -69,7 +69,6 @@ angular.module('emuwebApp')
 				 * @param viewState
 				 * @param cps
 				 */
-
 				function drawLevelDetails(levelDetails, viewState, config) {
 
 					var fontSize = config.vals.font.fontPxSize;
@@ -253,7 +252,6 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-
 				function drawLevelMarkup(levelDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
