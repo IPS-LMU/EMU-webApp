@@ -119,7 +119,7 @@ ul {
 }
 
 .emuwebapp-dialogButton {
-    width: 120px;
+    width: 120px !important;
 }
 
 .emuwebapp-dialogExport {

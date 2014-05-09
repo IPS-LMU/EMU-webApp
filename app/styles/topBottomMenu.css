@@ -91,21 +91,6 @@
     float:left;
 }
 
-.emuwebapp-mini-btn-export a {
-    border:1px solid white;
-    color:white;  
-    font-size:10px;    
-    min-width: 120px !important;
-    min-height: 30px !important;    
-    width: 120px !important;
-    height: 30px !important;    
-    text-decoration: none;  
-}
-
-.emuwebapp-mini-btn-export a:hover {
-    text-decoration: none;  
-    color:white;  
-}
 
 .emuwebapp-mini-btn-group button:hover:enabled{
     background-color:white;

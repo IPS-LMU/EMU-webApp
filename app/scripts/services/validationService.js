@@ -34,7 +34,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.validateJSO = function (schemaName, jso) {
 			var schema;
-			schemasJsos.forEach(function (s) {
+			angular.forEach(schemasJsos, function (s) {
 				if(s.name === schemaName){
 					schema = s;
 				}
