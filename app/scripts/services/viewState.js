@@ -470,16 +470,15 @@ angular.module('emuwebApp')
     sServObj.getcurClickLevelName = function () {
       return this.curClickLevelName;
     };
-    
+
     /**
      * gets the current (clicked) Level Name
      */
     sServObj.getcurClickLevelIndex = function () {
       return this.curClickLevelIndex;
     };
-    
-    
-    
+
+
 
     /**
      * gets the current (clicked) Level Name
@@ -892,18 +891,32 @@ angular.module('emuwebApp')
      * if set to true -> zoom in
      * if set to false -> zoom out
      */
-    sServObj.zoomViewPort = function (zoomIn) {
+    sServObj.zoomViewPort = function (zoomIn, levelservice) {
       var newStartS, newEndS, curMouseMoveSegmentStart;
-      var segMId = this.getcurMouseSegment();
+      var seg = this.getcurMouseSegment();
 
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
-      if (segMId !== undefined) {
-        if (this.getcurMouseLevelType() === 'SEGMENT') {
-          curMouseMoveSegmentStart = segMId.sampleStart;
-        } else {
-          curMouseMoveSegmentStart = segMId.samplePoint;
+      var isLastSeg = false;
+
+      if (seg !== undefined) {
+        if (seg === false) { // before first element
+          seg = levelservice.getElementDetails(sServObj.getcurMouseLevelName(), 0);
+        } else if (seg === true) {
+          seg = levelservice.getLastElement(sServObj.getcurMouseLevelName());
+          isLastSeg = true;
         }
+        if (this.getcurMouseLevelType() === 'SEGMENT') {
+          if (isLastSeg) {
+            curMouseMoveSegmentStart = seg.sampleStart + seg.sampleDur;
+          } else {
+            curMouseMoveSegmentStart = seg.sampleStart;
+          }
+        } else {
+          curMouseMoveSegmentStart = seg.samplePoint;
+        }
+
+        console.log(curMouseMoveSegmentStart);
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
         var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
@@ -926,8 +939,8 @@ angular.module('emuwebApp')
         }
 
       }
-
       this.setViewPort(newStartS, newEndS);
+
     };
 
     /**

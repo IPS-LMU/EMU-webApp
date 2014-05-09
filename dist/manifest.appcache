@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-05-07T17:37:00.713Z
+# rev 1 - 2014-05-09T13:58:35.771Z
 
 CACHE:
 404.html
@@ -34,7 +34,7 @@ schemaFiles/DBconfigFileSchema.json
 schemaFiles/annotationFileSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/0b5a9d46.emuwebApp.min.js
+scripts/90d39df0.emuwebApp.min.js
 scripts/9de0f2b5.emuwebAppExternal.min.js
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
@@ -58,7 +58,6 @@ views/export.html
 views/level.html
 views/loadFiles.html
 views/login.html
-views/main.html
 views/myDropZone.html
 views/osci.html
 views/preview.html

@@ -66,7 +66,7 @@ angular.module('emuwebApp')
               // zoomIn
               if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
                 if (viewState.getPermission('zoom')) {
-                  viewState.zoomViewPort(true);
+                  viewState.zoomViewPort(true, Levelservice);
                 } else {
                   console.log('action currently not allowed');
                 }
@@ -75,7 +75,7 @@ angular.module('emuwebApp')
               // zoomOut
               if (code === ConfigProviderService.vals.keyMappings.zoomOut) {
                 if (viewState.getPermission('zoom')) {
-                  viewState.zoomViewPort(false);
+                  viewState.zoomViewPort(false, Levelservice);
                 } else {
                   console.log('action currently not allowed');
                 }

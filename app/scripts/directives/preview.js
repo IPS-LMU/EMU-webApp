@@ -13,8 +13,10 @@ angular.module('emuwebApp')
 				var initialized = false;
 				var cacheImage = new Image();
 
-				scope.$watch('vs.curViewPort', function () {
+				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
 					if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						// console.log(oldVal)
+						// console.log(newVal)
 						drawPreview();
 					}
 				}, true);
