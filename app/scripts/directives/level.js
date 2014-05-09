@@ -15,9 +15,13 @@ angular.module('emuwebApp')
 				///////////////
 				// watches
 
-				scope.$watch('vs.curViewPort', function () {
-					drawLevelDetails(scope.level, scope.vs, scope.cps);
-					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+						drawLevelDetails(scope.level, scope.vs, scope.cps);
+						drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					} else {
+						drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					}
 				}, true);
 
 				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
