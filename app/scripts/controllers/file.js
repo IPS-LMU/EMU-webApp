@@ -128,6 +128,7 @@ angular.module('emuwebApp')
 					$scope.curBndl = {};
 					$scope.curBndl.name = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
 					$scope.$parent.bundleList.push($scope.curBndl);
+					$scope.$parent.curBndl = $scope.curBndl;
 					// then get the DBconfigFile
 					
 					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
