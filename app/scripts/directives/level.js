@@ -15,11 +15,12 @@ angular.module('emuwebApp')
 				///////////////
 				// watches
 
-				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+				scope.$watchCollection('vs.curViewPort', function (newValue, oldValue) {
+					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
 						drawLevelDetails(scope.level, scope.vs, scope.cps);
 						drawLevelMarkup(scope.level, scope.vs, scope.cps);
 					} else {
+						// console.log(scope.vs.curViewPort)
 						drawLevelMarkup(scope.level, scope.vs, scope.cps);
 					}
 				}, true);
