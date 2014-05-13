@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 				// assign attributes to scope
 				scope.order = attrs.order;
 				scope.trackName = attrs.trackName;
-				console.log(scope.trackName);
+				// console.log(scope.trackName);
 
 				scope.enlargeCanvas = {
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'

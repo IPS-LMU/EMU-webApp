@@ -2,53 +2,59 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function () {
+	.directive('level', function (viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
+			scope: {
+				level: '='
+			},
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
 
 				scope.open = attr.open;
 
+				scope.vs = viewState;
+				scope.hists = HistoryService;
+
 				///////////////
 				// watches
 
 				scope.$watchCollection('vs.curViewPort', function (newValue, oldValue) {
 					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
-						drawLevelDetails(scope.level, scope.vs, scope.cps);
-						drawLevelMarkup(scope.level, scope.vs, scope.cps);
+						drawLevelDetails(scope.level, viewState, ConfigProviderService);
+						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					} else {
-						// console.log(scope.vs.curViewPort)
-						drawLevelMarkup(scope.level, scope.vs, scope.cps);
+						// console.log(viewState.curViewPort)
+						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					}
 				}, true);
 
 				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
 					// only repaint if mouse over current level
-					if (scope.vs.getcurMouseLevelName() === scope.level.name) {
+					if (viewState.getcurMouseLevelName() === scope.level.name) {
 						if (!oldValue || !newValue || newValue.id !== oldValue.id) {
-							drawLevelMarkup(scope.level, scope.vs, scope.cps);
+							drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						} else {
-							drawLevelDetails(scope.level, scope.vs, scope.cps);
-							drawLevelMarkup(scope.level, scope.vs, scope.cps);
+							drawLevelDetails(scope.level, viewState, ConfigProviderService);
+							drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						}
 					}
 				}, true);
 
 				scope.$watch('vs.movingBoundarySample', function () {
-					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 				scope.$watch('vs.movingBoundary', function () {
-					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 
 				scope.$watch('hists.movesAwayFromLastSave', function () {
-					drawLevelDetails(scope.level, scope.vs, scope.cps);
-					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 				///////////////
@@ -56,8 +62,8 @@ angular.module('emuwebApp')
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
-					scope.vs.setcurMouseSegment(undefined);
-					drawLevelMarkup(scope.level, scope.vs, scope.cps);
+					viewState.setcurMouseSegment(undefined);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
 				//
@@ -100,7 +106,7 @@ angular.module('emuwebApp')
 					// draw name of level and type
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
-					horizontalText = scope.fontImage.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
 					var segMId = viewState.getcurMouseSegment();
@@ -144,8 +150,8 @@ angular.module('emuwebApp')
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
-								var tW = scope.fontImage.getLastImageWidth();
+								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
+								var tW = fontScaleService.getLastImageWidth();
 								var tX = posS + (posE - posS) / 2 - tW / 2;
 
 								//check for enough space to stroke text
@@ -157,11 +163,11 @@ angular.module('emuwebApp')
 									}
 								}
 
-								var horizontalSubText1 = scope.fontImage.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
-								var hst1 = scope.fontImage.getLastImageWidth();
+								var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								var hst1 = fontScaleService.getLastImageWidth();
 								var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
-								var horizontalSubText2 = scope.fontImage.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
-								var hst2 = scope.fontImage.getLastImageWidth();
+								var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								var hst2 = fontScaleService.getLastImageWidth();
 								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
 
@@ -198,7 +204,7 @@ angular.module('emuwebApp')
 								}
 								// draw sampleDur numbers.
 
-								//sStW = scope.fontImage.getLastImageWidth();
+								//sStW = fontScaleService.getLastImageWidth();
 								//var sDtW = ctx.measureText('dur: ' + curEvt.sampleDur).width;
 								//ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								//check for enough space to stroke text
@@ -236,11 +242,11 @@ angular.module('emuwebApp')
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								horizontalText = scope.fontImage.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
+								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 								//}
 
-								horizontalText = scope.fontImage.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
@@ -263,10 +269,10 @@ angular.module('emuwebApp')
 
 
 					// draw moving boundary line if moving
-					scope.dhs.drawMovingBoundaryLine(ctx);
+					Drawhelperservice.drawMovingBoundaryLine(ctx);
 
 					// draw current viewport selected
-					scope.dhs.drawCurViewPortSelected(ctx);
+					Drawhelperservice.drawCurViewPortSelected(ctx);
 
 
 					var posS, posE, sDist, xOffset, curEvt;

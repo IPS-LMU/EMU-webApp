@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('ssffTrack', function (ConfigProviderService, viewState) {
+  .directive('ssffTrack', function (viewState, ConfigProviderService) {
     return {
       templateUrl: 'views/ssffTrack.html',
       restrict: 'E',

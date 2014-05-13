@@ -13,9 +13,9 @@ angular.module('emuwebApp')
         var lastDraw = Date.now();
 
         // add watch vars to scope
-        scope.viewState = viewState;
-        scope.HistoryService = HistoryService;
-        scope.Ssffdataservice = Ssffdataservice;
+        scope.vs = viewState;
+        scope.hists = HistoryService;
+        scope.ssffds = Ssffdataservice;
 
         ////////////////////
         // observes
@@ -29,35 +29,35 @@ angular.module('emuwebApp')
         // watches
 
         //watch viewPort change
-        scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
+        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
             handleUpdate(newValue, oldValue);
           }
         }, true);
 
         //watch perspective change
-        scope.$watch('viewState.curPerspectiveIdx', function (newValue, oldValue) {
+        scope.$watch('vs.curPerspectiveIdx', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch vs.curCorrectionToolNr change
-        scope.$watch('viewState.curCorrectionToolNr', function (newValue, oldValue) {
+        scope.$watch('vs.curCorrectionToolNr', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
         //watch hists.
-        scope.$watch('HistoryService.movesAwayFromLastSave', function (newValue, oldValue) {
+        scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
 
         // watch ssffds.data change
-        scope.$watch('Ssffdataservice.data.length', function (newValue, oldValue) {
+        scope.$watch('ssffds.data.length', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
-        // watch viewState.spectroSettings change
-        scope.$watch('viewState.spectroSettings', function (newValue, oldValue) {
+        // watch vs.spectroSettings change
+        scope.$watch('vs.spectroSettings', function (newValue, oldValue) {
           handleUpdate(newValue, oldValue);
         }, true);
 
@@ -89,8 +89,8 @@ angular.module('emuwebApp')
               assTrackName = '';
               // draw ssffTrack onto own canvas
               if (trackName !== 'OSCI' && trackName !== 'SPEC') {
-                console.log('#######here')
-                console.log(trackName)
+                // console.log('#######here')
+                // console.log(trackName)
                 var tr = ConfigProviderService.getSsffTrackConfig(trackName);
                 var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);

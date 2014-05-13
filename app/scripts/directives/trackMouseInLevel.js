@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackmouseinlevel', function (viewState, Levelservice) {
+  .directive('trackmouseinlevel', function (viewState, Levelservice, ConfigProviderService, HistoryService) {
     return {
       restrict: 'A',
+      scope: {
+        level: '='
+      },
       link: function (scope, element, attr) {
 
         var lastEventClick;
@@ -35,7 +38,7 @@ angular.module('emuwebApp')
 
         element.bind('dblclick', function (event) {
           setLastMove(event, true);
-          if (scope.cps.vals.restrictions.editItemName) {
+          if (ConfigProviderService.vals.restrictions.editItemName) {
             setLastDblClick(event);
           } else {
             setLastClick(event);
@@ -74,7 +77,7 @@ angular.module('emuwebApp')
           default:
 
             if (!viewState.getdragBarActive()) {
-              if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
+              if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
@@ -93,7 +96,7 @@ angular.module('emuwebApp')
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                     }
                     Levelservice.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
-                    scope.hists.updateCurChangeObj({
+                    HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
@@ -104,7 +107,7 @@ angular.module('emuwebApp')
                   } else {
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
                     Levelservice.movePoint(moveBy, scope.this.level.name, viewState.getcurMouseSegment());
-                    scope.hists.updateCurChangeObj({
+                    HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
                       'levelName': scope.this.level.name,
@@ -115,12 +118,12 @@ angular.module('emuwebApp')
                   lastPCM = thisPCM;
                   moveLine = false;
                 }
-              } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
+              } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
                   var neighbours = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
                   Levelservice.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neighbours);
-                  scope.hists.updateCurChangeObj({
+                  HistoryService.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'levelName': scope.this.level.name,
