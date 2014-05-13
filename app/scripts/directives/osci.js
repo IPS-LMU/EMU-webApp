@@ -160,7 +160,8 @@ angular.module('emuwebApp')
 
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
-
+					
+					Drawhelperservice.drawViewPortTimes(ctx, true);
 					// draw current viewport selected
 					Drawhelperservice.drawCurViewPortSelected(ctx, true);
 
