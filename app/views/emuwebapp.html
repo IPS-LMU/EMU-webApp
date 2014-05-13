@@ -44,7 +44,7 @@
       <div class="emuwebapp-timeline">
         <ul>
           <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
-            <osci ng-switch-when="OSCI" order="{{$index}}"></osci>
+            <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
             <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
             <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
           </li>

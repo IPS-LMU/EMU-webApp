@@ -15,7 +15,10 @@ angular.module('emuwebApp')
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
+				// assign attributes to scope
 				scope.order = attrs.order;
+				scope.trackName = attrs.trackName;
+				console.log(scope.trackName);
 
 				scope.enlargeCanvas = {
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'

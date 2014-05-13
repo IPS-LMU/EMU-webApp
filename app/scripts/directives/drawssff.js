@@ -89,6 +89,8 @@ angular.module('emuwebApp')
               assTrackName = '';
               // draw ssffTrack onto own canvas
               if (trackName !== 'OSCI' && trackName !== 'SPEC') {
+                console.log('#######here')
+                console.log(trackName)
                 var tr = ConfigProviderService.getSsffTrackConfig(trackName);
                 var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
