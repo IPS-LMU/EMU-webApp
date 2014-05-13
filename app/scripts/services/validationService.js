@@ -14,7 +14,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.loadSchemas = function () {
 
-			names.forEach(function (n) {
+			angular.forEach(names, function (n) {
 				$http.get('schemaFiles/' + n + '.json').then(function (resp) {
 					schemasJsos.push({
 						name: n,
