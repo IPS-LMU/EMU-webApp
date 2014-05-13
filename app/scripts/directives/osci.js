@@ -165,7 +165,7 @@ angular.module('emuwebApp')
 					Drawhelperservice.drawCurViewPortSelected(ctx, true);
 
 					// draw view port times
-					Drawhelperservice.drawViewPortTimes(ctx, true);
+					//Drawhelperservice.drawViewPortTimes(ctx, true);
 
 					// ctx.strokeStyle = config.vals.colors.labelColor;
 					// ctx.fillStyle = config.vals.colors.labelColor;

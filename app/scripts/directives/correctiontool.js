@@ -46,10 +46,12 @@ angular.module('emuwebApp')
 					dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
 					dragEndSample = dragStartSample;
 					scope.vs.select(dragStartSample, dragStartSample);
+					scope.dhs.drawViewPortTimes(ctx, true);
 					scope.$apply();
 				});
 
 				element.bind('mousemove', function (event) {
+				    
 					switch (event.which) {
 					case 0:
 						if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -70,7 +72,13 @@ angular.module('emuwebApp')
 									scope.dhs.drawMovingBoundaryLine(ctx);
 
 									// draw current viewport selected
-									scope.dhs.drawCurViewPortSelected(ctx, false);
+									if(atts.ssffTrackname=="OSCI") {
+    									scope.dhs.drawCurViewPortSelected(ctx, true);
+    								} 
+    								else {
+    								    scope.dhs.drawCurViewPortSelected(ctx, false);
+    								}
+									
 
 									// draw min max vals and name of track
 									scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
@@ -164,12 +172,15 @@ angular.module('emuwebApp')
 						break;
 					}
 					
+					scope.dhs.drawViewPortTimes(ctx, true);
+					
 					scope.$apply();
 				});
 
 				element.bind('mouseup', function (event) {
 					if (!scope.vs.getdragBarActive()) {
 						setSelectDrag(event);
+						scope.dhs.drawViewPortTimes(ctx, true);
 					}
 				});
 				
@@ -179,6 +190,15 @@ angular.module('emuwebApp')
 				    if (!$.isEmptyObject(scope.shs)) {
 				        if (!$.isEmptyObject(scope.shs.wavJSO)) {
 				            ctx.clearRect(0, 0, canvas.width, canvas.height);
+							// draw current viewport selected
+							if(atts.ssffTrackname=="OSCI") {
+							   scope.dhs.drawCurViewPortSelected(ctx, true);
+							}
+							else {
+							    scope.dhs.drawCurViewPortSelected(ctx, false);
+							}
+							scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
+							//scope.dhs.drawViewPortTimes(ctx, true);
 				        }
 				    }
 				});					

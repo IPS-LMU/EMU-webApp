@@ -39,13 +39,11 @@ angular.module('emuwebApp')
           scope.updateCSS();
         }, true);
 
-        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+        scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-                scope.redraw();
-                scope.updateCSS();
-              }
+              scope.redraw();
+              scope.updateCSS();
             }
           }
         }, true);
@@ -80,6 +78,9 @@ angular.module('emuwebApp')
             }
           }
         }, true);
+
+        ///////////////
+        // bindings
 
         scope.updateCSS = function () {
           var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
