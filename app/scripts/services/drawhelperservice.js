@@ -37,10 +37,10 @@ angular.module('emuwebApp')
 			//calculate sample of cur cursor position
 
 			//calc cursor pos
-			var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
-			var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
-			var procC = fracC / all;
-			var posC = canvas.width * procC;
+			// var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
+			// var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
+			// var procC = fracC / all;
+			// var posC = canvas.width * procC;
 
 			//cur
 			var w = 1;
@@ -55,18 +55,19 @@ angular.module('emuwebApp')
 			var prevY = Math.round((canvas.height - prevH) / 2);
 
 
-			if (posC >= x) {
-				ctx.fillStyle = config.vals.colors.playProgressColor;
-				ctx.strokeStyle = config.vals.colors.playProgressColor;
-			} else {
-				ctx.fillStyle = config.vals.colors.osciColor;
-				ctx.strokeStyle = config.vals.colors.osciColor;
-			}
+			// if (posC >= x) {
+			// 	console.error('here...')
+			// 	ctx.fillStyle = config.vals.colors.playProgressColor;
+			// 	ctx.strokeStyle = config.vals.colors.playProgressColor;
+			// } else {
+			ctx.fillStyle = config.vals.colors.osciColor;
+			ctx.strokeStyle = config.vals.colors.osciColor;
+			// }
 
-			ctx.beginPath();
+			// ctx.beginPath();
 			ctx.moveTo(prevX, prevY);
 			ctx.lineTo(x, y);
-			ctx.stroke();
+			// ctx.stroke();
 
 		}
 
@@ -166,11 +167,13 @@ angular.module('emuwebApp')
 			// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
 
 			if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
+				ctx.beginPath();
 				allPeakVals.peaks.forEach(function (peak, index) {
 					if (index !== 0) {
 						drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
 					}
 				});
+				ctx.stroke();
 
 			} else if (allPeakVals.samplePerPx < 1) {
 				// console.log("at 0 over sample exact")
