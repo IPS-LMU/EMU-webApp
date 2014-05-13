@@ -11,12 +11,13 @@ angular.module('emuwebApp')
 				var dragEndSample;
 
 				var canvas = element[0];
+								
 				var ctx = canvas.getContext('2d');
 				// var elem = element[0];
 				var tr, col, sRaSt;
 				var trackName;
 				var bundleName;
-
+				
 				/////////////////////////////
 				// observe attribute
 				atts.$observe('ssffTrackname', function (val) {
@@ -171,6 +172,16 @@ angular.module('emuwebApp')
 						setSelectDrag(event);
 					}
 				});
+				
+
+				// on mouse leave clear markup canvas
+				element.bind('mouseleave', function () {
+				    if (!$.isEmptyObject(scope.shs)) {
+				        if (!$.isEmptyObject(scope.shs.wavJSO)) {
+				            ctx.clearRect(0, 0, canvas.width, canvas.height);
+				        }
+				    }
+				});					
 
 				//
 				////////////////////

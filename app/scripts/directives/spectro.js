@@ -81,35 +81,6 @@ angular.module('emuwebApp')
           }
         }, true);
 
-        ///////////////
-        // bindings
-
-        // on mouse leave clear markup canvas
-        element.bind('mouseleave', function () {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-              drawSpectMarkup();
-            }
-          }
-        });
-
-        // // on mouse move
-        // element.bind('mousemove', function (event) {
-        //   if (!$.isEmptyObject(scope.shs)) {
-        //     if (!$.isEmptyObject(scope.shs.wavJSO)) {
-        //       // markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-        //       // drawSpectMarkup();
-        //       // if (!scope.vs.getdragBarActive()) {
-        //       //   drawCrossHairs(canvas0, scope.cps, scope.dhs, event);
-        //       // }
-        //     }
-        //   }
-        // });
-
-        //
-        ////////////////
-
         scope.updateCSS = function () {
           var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
           if (scope.vs.getenlarge() == -1) {
