@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, Drawhelperservice) {
+	.controller('HandleLevelsCtrl', function ($scope, $http, $injector, Drawhelperservice, Levelservice) {
 
 		$scope.dhs = Drawhelperservice;
 
 		$scope.$on('loadingNewUtt', function () {
-			$scope.tds.data = {};
+			Levelservice.data = {};
 		});
 
 		$scope.$on('errorMessage', function (evt, data) {

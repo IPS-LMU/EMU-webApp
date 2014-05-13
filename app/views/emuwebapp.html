@@ -54,7 +54,7 @@
     <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane">
     <div>
       <ul>
-        <li ng-repeat="level in tds.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
+        <li ng-repeat="level in ls.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
           <level id='{{level.name}}' open='true'></level>
         </li>
       </ul>

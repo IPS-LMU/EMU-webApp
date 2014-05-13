@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackmouseinlevel', function () {
+  .directive('trackmouseinlevel', function (viewState, Levelservice) {
     return {
       restrict: 'A',
       link: function (scope, element, attr) {
@@ -43,18 +43,18 @@ angular.module('emuwebApp')
         });
 
         element.bind('mousemove', function (event) {
-          if (!scope.vs.getdragBarActive()) {
+          if (!viewState.getdragBarActive()) {
             var moveLine = true;
-            var zoom = scope.vs.getPCMpp(event);
+            var zoom = viewState.getPCMpp(event);
             thisPCM = getX(event) * zoom;
             var moveBy = (thisPCM - lastPCM);
 
             if (zoom <= 1) {
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
-                moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).sampleStart);
+                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, viewState.getcurMouseSegment().id).sampleStart);
               } else {
-                moveBy = Math.floor((thisPCM + scope.vs.curViewPort.sS) - scope.tds.getElementDetailsById(scope.this.level.name, scope.vs.getcurMouseSegment().id).samplePoint);
+                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, viewState.getcurMouseSegment().id).samplePoint);
               }
             } else {
               // relative movement in pcm above 1 pcm per pixel
@@ -73,42 +73,42 @@ angular.module('emuwebApp')
             break;
           default:
 
-            if (!scope.vs.getdragBarActive()) {
+            if (!viewState.getdragBarActive()) {
               if (scope.cps.vals.restrictions.editItemSize && event.shiftKey) {
-                scope.vs.deleteEditArea();
-                if (scope.vs.getcurMouseSegment() !== undefined) {
-                  scope.vs.movingBoundary = true;
+                viewState.deleteEditArea();
+                if (viewState.getcurMouseSegment() !== undefined) {
+                  viewState.movingBoundary = true;
                   if (scope.this.level.type === 'SEGMENT') {
-                    if (typeof scope.vs.getcurMouseSegment() === 'boolean') {
+                    if (typeof viewState.getcurMouseSegment() === 'boolean') {
                       var seg;
                       // before first segment
-                      if (scope.vs.getcurMouseSegment() === false) {
-                        seg = scope.tds.getElementDetails(scope.this.level.name, 0);
-                        scope.vs.movingBoundarySample = seg.sampleStart + moveBy;
+                      if (viewState.getcurMouseSegment() === false) {
+                        seg = Levelservice.getElementDetails(scope.this.level.name, 0);
+                        viewState.movingBoundarySample = seg.sampleStart + moveBy;
                       } else {
-                        seg = scope.tds.getLastElement(scope.this.level.name);
-                        scope.vs.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
+                        seg = Levelservice.getLastElement(scope.this.level.name);
+                        viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
                       }
                     } else {
-                      scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().sampleStart + moveBy;
+                      viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                     }
-                    scope.tds.moveBoundry(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment(), scope.vs.getcurMouseNeighbours());
+                    Levelservice.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
-                      'neighbours': scope.vs.getcurMouseNeighbours(),
-                      'item': scope.vs.getcurMouseSegment(),
+                      'neighbours': viewState.getcurMouseNeighbours(),
+                      'item': viewState.getcurMouseSegment(),
                       'movedBy': moveBy
                     });
                   } else {
-                    scope.vs.movingBoundarySample = scope.vs.getcurMouseSegment().samplePoint + moveBy;
-                    scope.tds.movePoint(moveBy, scope.this.level.name, scope.vs.getcurMouseSegment());
+                    viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
+                    Levelservice.movePoint(moveBy, scope.this.level.name, viewState.getcurMouseSegment());
                     scope.hists.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
                       'levelName': scope.this.level.name,
-                      'item': scope.vs.getcurMouseSegment(),
+                      'item': viewState.getcurMouseSegment(),
                       'movedBy': moveBy
                     });
                   }
@@ -116,44 +116,44 @@ angular.module('emuwebApp')
                   moveLine = false;
                 }
               } else if (scope.cps.vals.restrictions.editItemSize && event.altKey) {
-                scope.vs.deleteEditArea();
+                viewState.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
-                  var neighbours = scope.tds.getElementNeighbourDetails(scope.this.level.name, scope.vs.getcurClickSegments()[0].id, scope.vs.getcurClickSegments()[scope.vs.getcurClickSegments().length - 1].id);
-                  scope.tds.moveSegment(moveBy, scope.this.level.name, scope.vs.getcurClickSegments(), neighbours);
+                  var neighbours = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
+                  Levelservice.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neighbours);
                   scope.hists.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'levelName': scope.this.level.name,
                     'neighbours': neighbours,
-                    'item': scope.vs.getcurClickSegments(),
+                    'item': viewState.getcurClickSegments(),
                     'movedBy': moveBy
                   });
                   lastPCM = thisPCM;
                 }
               } else {
-                scope.vs.movingBoundary = false;
+                viewState.movingBoundary = false;
               }
             }
             break;
           }
-          if (!scope.vs.getdragBarActive()) {
+          if (!viewState.getdragBarActive()) {
             setLastMove(event, moveLine);
           }
         });
 
         element.bind('mousedown', function (event) {
-          scope.vs.movingBoundary = true;
+          viewState.movingBoundary = true;
           setLastMove(event, true);
         });
 
 
         element.bind('mouseup', function (event) {
-          scope.vs.movingBoundary = false;
+          viewState.movingBoundary = false;
           setLastMove(event, true);
         });
 
         element.bind('mouseout', function (event) {
-          scope.vs.movingBoundary = false;
+          viewState.movingBoundary = false;
           setLastMove(event, true);
         });
         //levelID
@@ -162,57 +162,57 @@ angular.module('emuwebApp')
         /////////////////////////
 
         function setLastClick(x) {
-          thisPCM = getX(x) * scope.vs.getPCMpp(x);
-          scope.vs.deleteEditArea();
-          scope.vs.setEditing(false);
-          scope.vs.focusInTextField = false;
-          lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
+          thisPCM = getX(x) * viewState.getPCMpp(x);
+          viewState.deleteEditArea();
+          viewState.setEditing(false);
+          viewState.focusInTextField = false;
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
           // console.log(element.parent());
-          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id);
-          scope.vs.setlasteditAreaElem(element.parent());
-          scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-          scope.vs.setcurClickSegment(lastEventClick.evtr);
+          viewState.setlasteditArea('_' + lastEventClick.evtr.id);
+          viewState.setlasteditAreaElem(element.parent());
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastRightClick(x) {
-          if (scope.vs.getcurClickLevelName() !== levelID) {
+          if (viewState.getcurClickLevelName() !== levelID) {
             setLastClick(x);
           }
-          thisPCM = getX(x) * scope.vs.getPCMpp(x);
-          scope.vs.deleteEditArea();
-          lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
-          scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-          scope.vs.setcurClickSegmentMultiple(lastEventClick.evtr);
+          thisPCM = getX(x) * viewState.getPCMpp(x);
+          viewState.deleteEditArea();
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastDblClick(x) {
-          thisPCM = getX(x) * scope.vs.getPCMpp(x);
-          lastEventClick = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
-          scope.vs.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-          scope.vs.setcurClickSegment(lastEventClick.evtr);
-          scope.vs.setlasteditArea('_' + lastEventClick.evtr.id);
-          scope.vs.setlasteditAreaElem(element.parent());
-          scope.vs.setEditing(true);
-          scope.vs.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+          thisPCM = getX(x) * viewState.getPCMpp(x);
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickSegment(lastEventClick.evtr);
+          viewState.setlasteditArea('_' + lastEventClick.evtr.id);
+          viewState.setlasteditAreaElem(element.parent());
+          viewState.setEditing(true);
+          viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
           scope.cursorInTextField();
           lastPCM = thisPCM;
           scope.$apply();
         }
 
         function setLastMove(x, doChange) {
-          thisPCM = getX(x) * scope.vs.getPCMpp(x);
-          lastEventMove = scope.tds.getEvent(thisPCM + scope.vs.curViewPort.sS, scope.this.level, scope.vs.curViewPort.bufferLength);
+          thisPCM = getX(x) * viewState.getPCMpp(x);
+          lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
           if (doChange) {
-            lastNeighboursMove = scope.tds.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            scope.vs.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+            lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
           }
-          scope.vs.setcurMouseLevelName(levelID);
-          scope.vs.setcurMouseLevelType(levelType);
-          scope.vs.selectBoundry();
+          viewState.setcurMouseLevelName(levelID);
+          viewState.setcurMouseLevelType(levelType);
+          viewState.selectBoundry();
           lastPCM = thisPCM;
           scope.$apply();
         }

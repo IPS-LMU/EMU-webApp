@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('correctiontool', function () {
+	.directive('correctiontool', function (viewState, ConfigProviderService, Ssffdataservice, Drawhelperservice, HistoryService, Soundhandlerservice) {
 		return {
 			restrict: 'A',
+			scope: {},
 			link: function (scope, element, atts) {
 
 				var curMouseSample;
@@ -11,13 +12,13 @@ angular.module('emuwebApp')
 				var dragEndSample;
 
 				var canvas = element[0];
-								
+
 				var ctx = canvas.getContext('2d');
 				// var elem = element[0];
 				var tr, col, sRaSt;
 				var trackName;
 				var bundleName;
-				
+
 				/////////////////////////////
 				// observe attribute
 				atts.$observe('ssffTrackname', function (val) {
@@ -30,11 +31,13 @@ angular.module('emuwebApp')
 				atts.$observe('bundleName', function (val) {
 					if (val) {
 						bundleName = val;
-						if (!$.isEmptyObject(scope.ssffds.data)) {
-							if (scope.ssffds.data.length !== 0) {
-								tr = scope.cps.getSsffTrackConfig('FORMANTS');
-								col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-								sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+						if (!$.isEmptyObject(Ssffdataservice.data)) {
+							if (Ssffdataservice.data.length !== 0) {
+								// console.log('WHAT?' + val)
+								// console.log(atts)
+								tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
+								col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+								sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 							}
 						}
 					}
@@ -43,48 +46,48 @@ angular.module('emuwebApp')
 				/////////////////////////////
 				// Bindings
 				element.bind('mousedown', function (event) {
-					dragStartSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+					dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
 					dragEndSample = dragStartSample;
-					scope.vs.select(dragStartSample, dragStartSample);
-					scope.dhs.drawViewPortTimes(ctx, true);
+					viewState.select(dragStartSample, dragStartSample);
+					Drawhelperservice.drawViewPortTimes(ctx, true);
 					scope.$apply();
 				});
 
 				element.bind('mousemove', function (event) {
-				    
+
 					switch (event.which) {
 					case 0:
-						if (!$.isEmptyObject(scope.ssffds.data)) {
-							if (scope.ssffds.data.length !== 0) {
+						if (!$.isEmptyObject(Ssffdataservice.data)) {
+							if (Ssffdataservice.data.length !== 0) {
 
-								if (!scope.vs.getdragBarActive()) {
+								if (!viewState.getdragBarActive()) {
 									// perform mouse tracking
-									var mouseX = scope.dhs.getX(event);
-									scope.vs.curMousePosSample = Math.round(scope.vs.curViewPort.sS + mouseX / element[0].width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
+									var mouseX = Drawhelperservice.getX(event);
+									viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
 
 									ctx.clearRect(0, 0, canvas.width, canvas.height);
 									// draw crossHairs
-									if (scope.cps.vals.restrictions.drawCrossHairs) {
-										scope.dhs.drawCrossHairs(ctx, event, scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 'Hz');
+									if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
+										Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz');
 									}
 									// draw moving boundary line if moving
-									scope.dhs.drawMovingBoundaryLine(ctx);
+									Drawhelperservice.drawMovingBoundaryLine(ctx);
 
 									switchMarkupContext();
-									
 
 
-									if (scope.vs.curCorrectionToolNr !== undefined && !scope.vs.getdragBarActive() && !$.isEmptyObject(scope.cps.getAssignment(trackName))) {
-										// var col = scope.ssffds.data[0].Columns[0];
+
+									if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
+										// var col = Ssffdataservice.data[0].Columns[0];
 										if (tr === undefined) {
-											tr = scope.cps.getSsffTrackConfig('FORMANTS');
-											col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-											sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
+											tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
+											col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+											sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 										}
 
-										var startTimeVP = scope.vs.getViewPortStartTime();
-										var endTimeVP = scope.vs.getViewPortEndTime();
+										var startTimeVP = viewState.getViewPortStartTime();
+										var endTimeVP = viewState.getViewPortEndTime();
 
 										var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
 										var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
@@ -94,7 +97,7 @@ angular.module('emuwebApp')
 										// console.log(colStartSampleNr)
 
 
-										var curMouseTime = startTimeVP + (scope.dhs.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
+										var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
 										var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
 
 										var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
@@ -105,10 +108,10 @@ angular.module('emuwebApp')
 											return;
 										}
 
-										scope.vs.curPreselColumnSample = curMouseSample - colStartSampleNr;
+										viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
 
 										var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-										var y = canvas.height - curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
+										var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
 										// draw sample
 										ctx.strokeStyle = '#0DC5FF';
@@ -120,15 +123,15 @@ angular.module('emuwebApp')
 										ctx.fill();
 
 										if (event.shiftKey) {
-											var oldValue = angular.copy(curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1]);
-											var newValue = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo; // SIC only using rangeTo
+											var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
+											var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
-											curSampleArrs[scope.vs.curPreselColumnSample][scope.vs.curCorrectionToolNr - 1] = scope.vs.spectroSettings.rangeTo - scope.dhs.getY(event) / event.originalEvent.srcElement.height * scope.vs.spectroSettings.rangeTo;
-											var updateObj = scope.hists.updateCurChangeObj({
+											curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo;
+											var updateObj = HistoryService.updateCurChangeObj({
 												'type': 'SSFF',
 												'trackName': tr.name,
-												'sampleBlockIdx': colStartSampleNr + scope.vs.curPreselColumnSample,
-												'sampleIdx': scope.vs.curCorrectionToolNr - 1,
+												'sampleBlockIdx': colStartSampleNr + viewState.curPreselColumnSample,
+												'sampleIdx': viewState.curCorrectionToolNr - 1,
 												'oldValue': oldValue,
 												'newValue': newValue
 											});
@@ -137,7 +140,7 @@ angular.module('emuwebApp')
 											for (var key in updateObj) {
 												curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
 												x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-												y = canvas.height - updateObj[key].newValue / (scope.vs.spectroSettings.rangeTo - scope.vs.spectroSettings.rangeFrom) * canvas.height;
+												y = canvas.height - updateObj[key].newValue / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
 												// draw sample
 												ctx.strokeStyle = 'red';
@@ -158,62 +161,60 @@ angular.module('emuwebApp')
 						}
 						break;
 					case 1:
-						if (!scope.vs.getdragBarActive()) {
+						if (!viewState.getdragBarActive()) {
 							setSelectDrag(event);
 						}
 						break;
 					}
-					
+
 					scope.$apply();
 				});
 
 				element.bind('mouseup', function (event) {
-					if (!scope.vs.getdragBarActive()) {
+					if (!viewState.getdragBarActive()) {
 						setSelectDrag(event);
 						switchMarkupContext();
 					}
 				});
-				
+
 
 				// on mouse leave clear markup canvas
 				element.bind('mouseleave', function () {
-				    if (!$.isEmptyObject(scope.shs)) {
-				        if (!$.isEmptyObject(scope.shs.wavJSO)) {
-				            switchMarkupContext();
-				        }
-				    }
-				});					
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+							switchMarkupContext();
+						}
+					}
+				});
 
 				//
 				////////////////////
-				
-				
+
+
 				function switchMarkupContext() {
-				    ctx.clearRect(0, 0, canvas.width, canvas.height);
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					// draw current viewport selected
-					if(atts.ssffTrackname=="OSCI") {
-						scope.dhs.drawViewPortTimes(ctx, true);
-					    scope.dhs.drawCurViewPortSelected(ctx, true);
+					if (atts.ssffTrackname == 'OSCI') {
+						Drawhelperservice.drawViewPortTimes(ctx, true);
+						Drawhelperservice.drawCurViewPortSelected(ctx, true);
+					} else if (atts.ssffTrackname == 'SPEC') {
+						Drawhelperservice.drawCurViewPortSelected(ctx, false);
+						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
+					} else {
+						Drawhelperservice.drawCurViewPortSelected(ctx, false);
+						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					}
-					else if(atts.ssffTrackname=="SPEC") {
-						scope.dhs.drawCurViewPortSelected(ctx, false);
-					    scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
-					}
-					else {
-						scope.dhs.drawCurViewPortSelected(ctx, false);
-						scope.dhs.drawMinMaxAndName(ctx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
-					}				
 				}
-				
+
 
 				function setSelectDrag(event) {
-					curMouseSample = Math.round(scope.dhs.getX(event) * scope.vs.getPCMpp(event) + scope.vs.curViewPort.sS);
+					curMouseSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
 					if (curMouseSample > dragStartSample) {
 						dragEndSample = curMouseSample;
-						scope.vs.select(dragStartSample, dragEndSample);
+						viewState.select(dragStartSample, dragEndSample);
 					} else {
 						dragStartSample = curMouseSample;
-						scope.vs.select(dragStartSample, dragEndSample);
+						viewState.select(dragStartSample, dragEndSample);
 					}
 					scope.$apply();
 				}

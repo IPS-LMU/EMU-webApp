@@ -8,7 +8,7 @@ angular.module('emuwebApp')
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
-		$scope.tds = Levelservice;
+		$scope.levServ = Levelservice;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;

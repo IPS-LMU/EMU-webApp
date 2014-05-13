@@ -239,7 +239,7 @@ angular.module('emuwebApp')
                     dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().samplePoint);
                   }
                   if (dist !== 0) {
-                    scope.tds.moveBoundry(dist, viewState.getcurMouseLevelName(), viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
+                    Levelservice.moveBoundry(dist, viewState.getcurMouseLevelName(), viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
                     scope.hists.addObjToUndoStack({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
