@@ -62,7 +62,7 @@ angular.module('emuwebApp')
     sServObj.curClickLevelName = undefined;
     sServObj.curClickLevelType = undefined;
     sServObj.curPreselColumnSample = 2;
-    sServObj.curCorrectionToolNr = 1; // SIC reset to undefined
+    sServObj.curCorrectionToolNr = undefined;
     sServObj.curClickLevelIndex = undefined;
     sServObj.start = null;
     sServObj.loadingUtt = false;
