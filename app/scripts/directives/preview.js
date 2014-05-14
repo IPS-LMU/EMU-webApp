@@ -24,13 +24,14 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				// no deep watch here... 
 				scope.$watch('shs.wavJSO', function () {
 					if ($.isEmptyObject(scope.shs.wavJSO)) {
 						var ctx = canvas.getContext('2d');
 						ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 					}
-				}, true);
+				});
 
 				//
 				/////////////////////
