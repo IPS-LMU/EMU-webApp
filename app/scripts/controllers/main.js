@@ -557,7 +557,6 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorInTextField = function () {
 			viewState.focusInTextField = true;
-			// console.log("CURSOR");
 		};
 
 		/**

@@ -201,7 +201,7 @@ angular.module('emuwebApp')
           viewState.setlasteditAreaElem(element.parent());
           viewState.setEditing(true);
           viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-          scope.cursorInTextField();
+          viewState.focusInTextField = true;
           lastPCM = thisPCM;
           scope.$apply();
         }
