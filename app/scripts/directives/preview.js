@@ -10,9 +10,7 @@ angular.module('emuwebApp')
 				// select the needed DOM elements from the template
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[1];
-				// var myid = element[0].id;
 				var initialized = false;
-				// var cacheImage = new Image();
 
 
 				/////////////////////
@@ -42,9 +40,7 @@ angular.module('emuwebApp')
 				 */
 				function drawPreview() {
 					if (!initialized) {
-						// var allPeakVals = scope.dhs.calculatePeaks(scope.vs, canvas, scope.shs.wavJSO.Data);
 						scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.cps);
-						// cacheImage.src = canvas.toDataURL('image/png');
 						initialized = true;
 						drawVpOsciMarkup(scope.vs, canvas, scope.cps);
 					} else {
@@ -60,15 +56,10 @@ angular.module('emuwebApp')
 
 				function drawVpOsciMarkup(vs, canvas, config, cacheImage) {
 					var ctx = markupCanvas.getContext('2d');
-					// var image = new Image();
 					var posS = (markupCanvas.width / scope.shs.wavJSO.Data.length) * vs.curViewPort.sS;
 					var posE = (markupCanvas.width / scope.shs.wavJSO.Data.length) * vs.curViewPort.eS;
 
-
-					// var sDist = vs.getSampleDist(markupCanvas.width);
-					// image.onload = function () {
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-					// ctx.drawImage(image, 0, 0);
 					ctx.fillStyle = config.vals.colors.selectedAreaColor;
 					ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
 					ctx.strokeStyle = config.vals.colors.selectedBorderColor;
@@ -79,8 +70,6 @@ angular.module('emuwebApp')
 					ctx.lineTo(posE, markupCanvas.height);
 					ctx.closePath();
 					ctx.stroke();
-					// };
-					// image.src = cacheImage.src;
 				}
 			}
 		};
