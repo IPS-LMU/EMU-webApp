@@ -17,6 +17,9 @@ angular.module('emuwebApp')
 
 				scope.vs = viewState;
 				scope.hists = HistoryService;
+				scope.cps = ConfigProviderService;
+				
+				
 
 				///////////////
 				// watches
@@ -29,6 +32,7 @@ angular.module('emuwebApp')
 						// console.log(viewState.curViewPort)
 						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					}
+					
 				}, true);
 
 				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
@@ -56,6 +60,16 @@ angular.module('emuwebApp')
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
+				
+				
+				scope.updateView = function () {
+					if ($.isEmptyObject(scope.cps)) {
+						console.log("undef viewState");
+						return;
+					}				
+				    drawLevelDetails(scope.level, scope.vs, scope.cps);
+				};
+				
 
 				///////////////
 				// bindings
@@ -65,10 +79,6 @@ angular.module('emuwebApp')
 					viewState.setcurMouseSegment(undefined);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
-
-				//
-				///////////////////////
-
 
 				/**
 				 * draw level details
@@ -81,15 +91,15 @@ angular.module('emuwebApp')
 					var fontSize = config.vals.font.fontPxSize;
 
 					if ($.isEmptyObject(levelDetails)) {
-						//console.log("undef levelDetails");
+						console.log("undef levelDetails");
 						return;
 					}
 					if ($.isEmptyObject(viewState)) {
-						//console.log("undef viewState");
+						console.log("undef viewState");
 						return;
 					}
 					if ($.isEmptyObject(config)) {
-						//console.log("undef config");
+						console.log("undef config");
 						return;
 					}
 					if (!scope.open) {
