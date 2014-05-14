@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice, ConfigProviderService) {
+  .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice, ConfigProviderService, Validationservice) {
 
     $scope.dropzone = document.getElementById('dropzone');
     $scope.fileInput = document.getElementById('fileDialog');
@@ -124,54 +124,59 @@ angular.module('emuwebApp')
 					$scope.$parent.vs.curPerspectiveIdx = 0;
 					$scope.$parent.cps.setVals(resp.data.EMUwebAppConfig);
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
-					$scope.$parent.cps.curDbConfig = resp.data;
-					$scope.curBndl = {};
-					$scope.curBndl.name = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
-					$scope.$parent.bundleList.push($scope.curBndl);
-					$scope.$parent.curBndl = $scope.curBndl;
-					// then get the DBconfigFile
-					
-					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
-					    $scope.$parent.vs.curViewPort.sS = 0;
-					    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
-					    $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
-					    $scope.$parent.vs.resetSelect();
-					    $scope.$parent.vs.curPerspectiveIdx = 0;
-					    $scope.$parent.shs.wavJSO = wavJSO;	
-					    // parsing of Textgrid Data
-					    if(!$.isEmptyObject($scope.grid)) {
-					        var reader = new FileReader();
-					        reader.readAsText($scope.grid);
-					        reader.onloadend = function(evt) {
-					            if (evt.target.readyState == FileReader.DONE) {
-					                var extension = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
-					                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
-					                var annot = parseMess.data;
-					                $scope.$parent.levServ.setData(annot);
-					                // console.log(JSON.stringify(l, undefined, 2));
-					                var lNames = [];
-					                annot.levels.forEach(function (l) {
-					                    lNames.push(l.name);
+					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals)
+					if (validRes === true) {
+					    $scope.$parent.cps.curDbConfig = resp.data;
+    					$scope.curBndl = {};
+	    				$scope.curBndl.name = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
+				    	$scope.$parent.bundleList.push($scope.curBndl);
+					    $scope.$parent.curBndl = $scope.curBndl;
+    					// then get the DBconfigFile
+    					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
+					        $scope.$parent.vs.curViewPort.sS = 0;
+    					    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
+	    				    $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
+		    			    $scope.$parent.vs.resetSelect();
+			    		    $scope.$parent.vs.curPerspectiveIdx = 0;
+				    	    $scope.$parent.shs.wavJSO = wavJSO;	
+					        // parsing of Textgrid Data
+					        if(!$.isEmptyObject($scope.grid)) {
+					            var reader = new FileReader();
+    					        reader.readAsText($scope.grid);
+	    				        reader.onloadend = function(evt) {
+		    			            if (evt.target.readyState == FileReader.DONE) {
+			    		                var extension = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
+				    	                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
+					                    var annot = parseMess.data;
+					                    $scope.$parent.levServ.setData(annot);
+					                    // console.log(JSON.stringify(l, undefined, 2));
+					                    var lNames = [];
+					                    annot.levels.forEach(function (l) {
+					                        lNames.push(l.name);
+    					                });
+	    				                $scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
+		    			                $scope.$parent.vs.somethingInProgressTxt = 'Done!';
+			    		                $scope.$parent.vs.somethingInProgress = false;
+				    	                $scope.$parent.vs.setState('labeling');
+					                    $scope.$parent.openSubmenu();
 					                });
-					                $scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
-					                $scope.$parent.vs.somethingInProgressTxt = 'Done!';
-					                $scope.$parent.vs.somethingInProgress = false;
-					                $scope.$parent.vs.setState('labeling');
-					                $scope.$parent.openSubmenu();
-					            });
-					        }
-					    }, function (errMess) {
-		    	            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
-			            };
-			      }
-			      else {
-			          $scope.$parent.vs.setState('labeling');
-			          $scope.$parent.vs.somethingInProgress = false;
-			          $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
-	                $scope.$parent.openSubmenu();		    
-			      }
+					            }
+    					    }, function (errMess) {
+	    	    	            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
+		    	            };
+		    	        }
+      			        else {
+    			          $scope.$parent.vs.setState('labeling');
+	    		          $scope.$parent.vs.somethingInProgress = false;
+		    	          $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
+	                    $scope.$parent.openSubmenu();		    
+			          }
 			      
-        });
+                    });    								
+
+					} else {
+					    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) : ' + JSON.stringify(validRes, null, 4));
+					}
 			}, function (errMess) {
 			    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 			});
@@ -242,4 +247,4 @@ angular.module('emuwebApp')
     };
     
     
-  });
+  });    

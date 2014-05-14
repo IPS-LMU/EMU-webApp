@@ -53,12 +53,13 @@ angular.module('emuwebApp')
             var moveBy = (thisPCM - lastPCM);
 
             if (zoom <= 1) {
-              // absolute movement in pcm below 1 pcm per pixel
-              if (scope.this.level.type === 'SEGMENT') {
-                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, viewState.getcurMouseSegment().id).sampleStart);
-              } else {
-                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, viewState.getcurMouseSegment().id).samplePoint);
-              }
+                var zoomEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+                // absolute movement in pcm below 1 pcm per pixel
+                if (scope.this.level.type === 'SEGMENT') {
+                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                } else {
+                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint);
+                }
             } else {
               // relative movement in pcm above 1 pcm per pixel
               moveBy = Math.round(thisPCM - lastPCM);
