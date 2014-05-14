@@ -1,26 +1,28 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('previewtrack', function () {
+  .directive('previewtrack', function (viewState, Soundhandlerservice) {
     return {
       restrict: 'A',
+      scope: {},
       link: function (scope, element) {
 
         var startPCM = -1;
 
         element.bind('click', function (x) {
-          if (!$.isEmptyObject(scope.shs.wavJSO)) {
-            var width = scope.vs.curViewPort.eS - scope.vs.curViewPort.sS;
-            startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
-            scope.vs.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
-            scope.$apply();
+          if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+            var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
+            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
+            scope.$apply(function () {
+              viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
+            });
           }
         });
 
 
         element.bind('mousedown', function (x) {
-          if (!$.isEmptyObject(scope.shs.wavJSO)) {
-            startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
+          if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
           }
         });
 
@@ -28,10 +30,11 @@ angular.module('emuwebApp')
           switch (event.which) {
           case 1:
             if (startPCM !== -1) {
-              var width = scope.vs.curViewPort.eS - scope.vs.curViewPort.sS;
-              startPCM = getX(x) * (scope.shs.wavJSO.Data.length / x.originalEvent.srcElement.width);
-              scope.vs.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
-              scope.$apply();
+              var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
+              startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
+              scope.$apply(function () {
+                viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
+              });
             }
             break;
           }
