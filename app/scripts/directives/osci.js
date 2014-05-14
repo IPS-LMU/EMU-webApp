@@ -135,9 +135,6 @@ angular.module('emuwebApp')
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					}
 
-					var xOffset, sDist;
-					sDist = viewState.getSampleDist(markupCanvas.width);
-
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
 
