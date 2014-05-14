@@ -59,7 +59,8 @@
 					}
 				},
 				"required": ["name", "type", "attributeDefinitions"],
-				"additionalProperties": false
+				"additionalProperties": false,
+				"uniqueItems": true
 			}
 
 		},

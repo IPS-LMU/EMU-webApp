@@ -20,9 +20,9 @@
 			"levelCanvases": {
 				"order": []
 			},
-			"twoDcanvases": {
-				"order": []
-			}
+			"twoDimCanvases": {
+                "order": []
+            }
 		}],
 		"restrictions": {
 			"showPerspectivesSidebar": false,
