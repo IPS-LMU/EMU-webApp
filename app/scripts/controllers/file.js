@@ -40,10 +40,6 @@ angular.module('emuwebApp')
             else if(extension==="TEXTGRID" ) {
                 $scope.grid = file;
             }            
-            // TODO: LAB and TONE files
-            //else if(extension === 'LAB' || extension === 'TONE') {
-            //    $scope.grid = file;
-            //} 
             else  {
                 $scope.other = file;
             }                         
@@ -76,24 +72,26 @@ angular.module('emuwebApp')
         $scope.grid = {};
         $scope.curBndl = {};
         $scope.dropText = $scope.dropDefault;
-    };
+    };    
     
     $scope.$watch('wav', function () {
-        if (!$.isEmptyObject($scope.wav)) {
-            $scope.handleLocalFiles();	
+        if($.isEmptyObject($scope.other)) {
+            if (!$.isEmptyObject($scope.wav)) {
+                $scope.handleLocalFiles();	
+            }   
         }
      }, true);        
      
     $scope.$watch('other', function () {
-        if (!$.isEmptyObject($scope.newfiles.other)) {
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type');
+        if ($.isEmptyObject($scope.wav) && !$.isEmptyObject($scope.other)) {
+            var extension = $scope.other.name.substr($scope.other.name.lastIndexOf('.')+1);
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name);
             $scope.resetToInitState();
         }
      }, true);        
           
      
      $scope.$on('resetToInitState', function () {
-         console.log('clearing drag n drop file cache...');
          $scope.resetToInitState();
     });      
 
@@ -111,7 +109,6 @@ angular.module('emuwebApp')
         $scope.$parent.levServ.data = {};
         //arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 		$scope.$parent.vs.somethingInProgressTxt = 'Parsing WAV file...';
-		
 		var reader = new FileReader();
 		reader.readAsArrayBuffer($scope.wav);
 		reader.onloadend = function(evt) {
@@ -183,23 +180,22 @@ angular.module('emuwebApp')
         };
     };
     
-     $scope.dropzone.addEventListener('drop', function (evt) {
-       evt.stopPropagation();
-       evt.preventDefault();
-       $scope.$apply(function () {
-         $scope.dropText = $scope.dropParsingStarted;
-         $scope.dropClass = '';        
-       });
-       if (window.File && window.FileReader && window.FileList && window.Blob) {
-           var items = evt.dataTransfer.items;
-           for (var i = 0; i < items.length; i++) {
-             var item = items[i].webkitGetAsEntry();
-             if (item) {
-               $scope.traverseFileTree(item); 
-               $scope.$apply();       
-             }
-           } 
-                
+    $scope.dropzone.addEventListener('drop', function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        $scope.$apply(function () {
+            $scope.dropText = $scope.dropParsingStarted;
+            $scope.dropClass = '';        
+        });
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var items = evt.dataTransfer.items;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i].webkitGetAsEntry();
+                if (item) {
+                    $scope.traverseFileTree(item); 
+                    $scope.$apply();       
+                }
+            }     
         }
         else {
             $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
@@ -207,41 +203,31 @@ angular.module('emuwebApp')
         }
      }, false);
      
-     $scope.traverseFileTree = function (item, path) {
-         path = path || '';
-         if (item.isFile) {
-             item.file(function (file) {
-             var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-              if (extension === 'WAV') {
-                  $scope.wav = file;
-                  $scope.$apply();   
-                  
-              }
-          else if (extension === 'TEXTGRID') {
-            $scope.grid = file;  
-            $scope.$apply();   
-               
-          }
-         // TODO : LAB & TONE Files
-         // else if (extension === 'LAB' || extension === 'TONE') {
-         //   $scope.newfiles.lab = file;    
-         //   $scope.$apply();
-         // } 
-          else {
-            $scope.other = file; 
-            $scope.$apply();      
-                  
-          }                
-        });
-      } else if (item.isDirectory) {
-        var dirReader = item.createReader();
-        dirReader.readEntries(function (entries) {
-          for (var i = 0; i < entries.length; i++) {
-            $scope.traverseFileTree(entries[i], path + item.name + '/');
-          }
-        });
-      }
-    };
-    
-    
+    $scope.traverseFileTree = function (item, path) {
+        path = path || '';
+            if (item.isFile) {
+                item.file(function (file) {
+                    var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+                    if (extension === 'WAV') {
+                        $scope.wav = file;
+                        $scope.$apply();    
+                    }
+                    else if (extension === 'TEXTGRID') {
+                        $scope.grid = file;  
+                        $scope.$apply();   
+                    }
+                    else {
+                        $scope.other = file; 
+                        $scope.$apply();      
+                    }
+                });
+            } else if (item.isDirectory) {
+                var dirReader = item.createReader();
+                dirReader.readEntries(function (entries) {
+                    for (var i = 0; i < entries.length; i++) {
+                        $scope.traverseFileTree(entries[i], path + item.name + '/');
+                    }
+                });
+            }
+        };
   });    
