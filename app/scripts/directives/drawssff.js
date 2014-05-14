@@ -148,115 +148,187 @@ angular.module('emuwebApp')
           if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
             var x, y, prevX, prevY, prevVal, curSampleInCol, curSampleInColTime;
+            
+            ////////////////////////////////
+            // NEW VERSION
+            ////////////////////////////////
 
-            curSampleArrs.forEach(function (valRep, valIdx) {
-              valRep.forEach(function (val, idx) {
-                if ($.isEmptyObject(minMaxLims) || (idx >= minMaxLims.min && idx <= minMaxLims.max)) {
-                  curSampleInCol = colStartSampleNr + valIdx;
+            angular.forEach(curSampleArrs[0], function (contourVal, contourNr) {
+              // console.log(contourNr);
+              if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
+                // set color
+                if ($.isEmptyObject(minMaxLims)) {
+                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                  ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                } else {
+                  var l = (minMaxLims.max - minMaxLims.min) + 1;
+                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                  ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                }
+
+                // mark selected
+                // console.log(viewState.curCorrectionToolNr);
+                if (viewState.curCorrectionToolNr - 1 === contourNr && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+                  ctx.strokeStyle = 'white';
+                  ctx.fillStyle = 'white';
+                }
+
+                ctx.beginPath();
+                // first line from sample not in view (left)
+                if (colStartSampleNr >= 1) {
+                  var leftBorder = col.values[colStartSampleNr - 1];
+                  var leftVal = leftBorder[contourNr];
+
+                  curSampleInCol = colStartSampleNr - 1;
                   curSampleInColTime = (1 / sR * curSampleInCol) + sT;
 
                   x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                  y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+                  y = canvas.height - ((leftVal - minVal) / (maxVal - minVal) * canvas.height);
 
-                  // set color
-                  // if (valIdx === viewState.curPreselColumnSample && viewState.curCorrectionToolNr - 1 === idx) {
-                  //   ctx.strokeStyle = 'white';
-                  //   ctx.fillStyle = 'white';
-                  // } else {
-                  if ($.isEmptyObject(minMaxLims)) {
-                    ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                    ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-                  } else {
-                    var l = (minMaxLims.max - minMaxLims.min) + 1;
-                    ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-                    ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-                  }
-                  // }
-
-
-                  // draw dot
-                  if (val !== null) {
-                    ctx.beginPath();
-                    ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                    ctx.closePath();
-                    ctx.stroke();
-                    ctx.fill();
-                  }
-
-                  if (valIdx !== 0) {
-                    curSampleInCol = colStartSampleNr + valIdx - 1;
-                    curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-                    prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                    prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
-
-                    // mark selected
-                    if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-                      ctx.strokeStyle = 'white';
-                      ctx.fillStyle = 'white';
-                    }
-
-                    // draw line
-                    if (val !== null && prevVal !== null) {
-                      ctx.beginPath();
-                      ctx.moveTo(prevX, prevY);
-                      ctx.lineTo(x, y);
-                      ctx.stroke();
-                      ctx.fill();
-                    }
-
-                    prevVal = val;
-
-                    //check if last sample
-                    if (valIdx === curSampleArrs.length - 1) {
-                      if (colEndSampleNr !== col.values.length - 1) {
-                        // lines to right boarder samples not in view
-                        var rightBorder = col.values[colEndSampleNr + 1];
-                        val = rightBorder[idx];
-
-                        curSampleInCol = colEndSampleNr + 1;
-                        curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-                        var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                        var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-                        // draw line
-                        ctx.beginPath();
-                        ctx.moveTo(x, y);
-                        ctx.lineTo(nextX, nextY);
-                        ctx.stroke();
-                        ctx.fill();
-                      }
-                    }
-                  } else {
-                    // lines to left boarder samples not in view
-                    if (colStartSampleNr !== 0) {
-                      var leftBorder = col.values[colStartSampleNr - 1];
-                      val = leftBorder[idx];
-
-                      curSampleInCol = colStartSampleNr - 1;
-                      curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-                      prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                      prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-                      // mark selected
-                      if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-                        ctx.strokeStyle = 'white';
-                        ctx.fillStyle = 'white';
-                      }
-
-                      // draw line
-                      ctx.beginPath();
-                      ctx.moveTo(prevX, prevY);
-                      ctx.lineTo(x, y);
-                      ctx.stroke();
-                      ctx.fill();
-                    }
-                  }
+                  ctx.moveTo(x, y);
                 }
-              });
+
+                angular.forEach(curSampleArrs, function (curArr, curArrIdx) {
+                  // console.log(curArr[contourNr]);
+
+                  curSampleInCol = colStartSampleNr + curArrIdx;
+                  curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+                  x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                  y = canvas.height - ((curArr[contourNr] - minVal) / (maxVal - minVal) * canvas.height);
+
+                  ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                  ctx.lineTo(x, y);
+
+                });
+                // last line from sample not in view (right)
+                if (colEndSampleNr < col.values.length - 1) {
+                  var rightBorder = col.values[colEndSampleNr + 1];
+                  var rightVal = rightBorder[contourNr];
+
+                  curSampleInCol = colEndSampleNr + 1;
+                  curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+                  x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+                  y = canvas.height - ((rightVal - minVal) / (maxVal - minVal) * canvas.height);
+
+                  ctx.lineTo(x, y);
+                }
+
+                ctx.stroke();
+                // ctx.fill();
+              }
             });
+
+
+            ////////////////////////////////
+            // OLD VERSION
+            ////////////////////////////////
+
+            // curSampleArrs.forEach(function (valRep, valIdx) {
+            //   valRep.forEach(function (val, idx) {
+            //     if ($.isEmptyObject(minMaxLims) || (idx >= minMaxLims.min && idx <= minMaxLims.max)) {
+            //       curSampleInCol = colStartSampleNr + valIdx;
+            //       curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+            //       x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+            //       y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+            //       // set color
+            //       if ($.isEmptyObject(minMaxLims)) {
+            //         ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+            //         ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
+            //       } else {
+            //         var l = (minMaxLims.max - minMaxLims.min) + 1;
+            //         ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
+            //         ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
+            //       }
+
+
+            //       // draw dot
+            //       // if (val !== null) {
+            //       //   ctx.beginPath();
+            //       //   ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+            //       //   ctx.closePath();
+            //       //   ctx.stroke();
+            //       //   ctx.fill();
+            //       // }
+
+            //       if (valIdx !== 0) {
+            //         curSampleInCol = colStartSampleNr + valIdx - 1;
+            //         curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+            //         prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+            //         prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
+
+            //         // mark selected
+            //         if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+            //           ctx.strokeStyle = 'white';
+            //           ctx.fillStyle = 'white';
+            //         }
+
+            //         // draw line
+            //         if (val !== null && prevVal !== null) {
+            //           ctx.beginPath();
+            //           ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+            //           ctx.moveTo(prevX, prevY);
+            //           ctx.lineTo(x, y);
+            //           ctx.stroke();
+            //           ctx.fill();
+            //         }
+
+            //         prevVal = val;
+
+            //         //check if last sample
+            //         if (valIdx === curSampleArrs.length - 1) {
+            //           if (colEndSampleNr !== col.values.length - 1) {
+            //             // lines to right boarder samples not in view
+            //             var rightBorder = col.values[colEndSampleNr + 1];
+            //             val = rightBorder[idx];
+
+            //             curSampleInCol = colEndSampleNr + 1;
+            //             curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+            //             var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+            //             var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+            //             // draw line
+            //             ctx.beginPath();
+            //             ctx.moveTo(x, y);
+            //             ctx.lineTo(nextX, nextY);
+            //             ctx.stroke();
+            //             ctx.fill();
+            //           }
+            //         }
+            //       } else {
+            //         // lines to left boarder samples not in view
+            //         if (colStartSampleNr !== 0) {
+            //           var leftBorder = col.values[colStartSampleNr - 1];
+            //           val = leftBorder[idx];
+
+            //           curSampleInCol = colStartSampleNr - 1;
+            //           curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+
+            //           prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+            //           prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
+
+            //           // mark selected
+            //           if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+            //             ctx.strokeStyle = 'white';
+            //             ctx.fillStyle = 'white';
+            //           }
+
+            //           // draw line
+            //           ctx.beginPath();
+            //           ctx.moveTo(prevX, prevY);
+            //           ctx.lineTo(x, y);
+            //           ctx.stroke();
+            //           ctx.fill();
+            //         }
+            //       }
+            //     }
+            //   });
+            // });
 
           } else {
             ctx.strokeStyle = 'red';
