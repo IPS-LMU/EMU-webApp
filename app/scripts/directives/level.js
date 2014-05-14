@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function (viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService) {
+	.directive('level', function (viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -12,27 +12,29 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
-
 				scope.open = attr.open;
-
 				scope.vs = viewState;
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
-				
-				
+				scope.dials = dialogService;
 
 				///////////////
 				// watches
 
-				scope.$watchCollection('vs.curViewPort', function (newValue, oldValue) {
+				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+				// watchCollection does NOT watch for changed values !!!!!
+				// it watches for "adding, removing, and moving items belonging to an object or array."
+				// see https://docs.angularjs.org/api/ng/type/$rootScope.Scope
+				// it cant be used here
+				
 					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
 						drawLevelDetails(scope.level, viewState, ConfigProviderService);
 						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						//console.log('leveldraw update A');
 					} else {
-						// console.log(viewState.curViewPort)
+						//console.log('leveldraw update B');
 						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					}
-					
 				}, true);
 
 				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
@@ -107,7 +109,8 @@ angular.module('emuwebApp')
 					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
-
+					
+					
 					//predef vars
 					var sDist, posS, posE, horizontalText;
 
@@ -276,6 +279,8 @@ angular.module('emuwebApp')
 						ctx.fillStyle = config.vals.colors.selectedLevelColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
+					
+					console.log('leveldraw markup update');
 
 
 					// draw moving boundary line if moving
