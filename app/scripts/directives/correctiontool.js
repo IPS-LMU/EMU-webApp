@@ -49,11 +49,19 @@ angular.module('emuwebApp')
 					dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
 					dragEndSample = dragStartSample;
 					viewState.select(dragStartSample, dragStartSample);
-					Drawhelperservice.drawViewPortTimes(ctx, true);
+					//Drawhelperservice.drawViewPortTimes(ctx, true);
+					switchMarkupContext(event);
 					scope.$apply();
 				});
 
 				element.bind('mousemove', function (event) {
+
+					// perform mouse tracking
+					var mouseX = Drawhelperservice.getX(event);
+					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
+
+					switchMarkupContext(event);
+
 
 					switch (event.which) {
 					case 0:
@@ -61,11 +69,6 @@ angular.module('emuwebApp')
 							if (Ssffdataservice.data.length !== 0) {
 
 								if (!viewState.getdragBarActive()) {
-									// perform mouse tracking
-									var mouseX = Drawhelperservice.getX(event);
-									viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
-
-									switchMarkupContext(event);
 
 									if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 										// var col = Ssffdataservice.data[0].Columns[0];
@@ -155,7 +158,6 @@ angular.module('emuwebApp')
 						}
 						break;
 					}
-
 					scope.$apply();
 				});
 
