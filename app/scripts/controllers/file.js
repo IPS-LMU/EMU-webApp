@@ -111,7 +111,7 @@ angular.module('emuwebApp')
         $scope.$parent.vs.somethingInProgressTxt = 'Loading local File: ' + $scope.wav.name;
         // empty ssff files
         $scope.$parent.ssffds.data = [];
-        $scope.$parent.tds.data = {};
+        $scope.$parent.levServ.data = {};
         //arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 		$scope.$parent.vs.somethingInProgressTxt = 'Parsing WAV file...';
 		
@@ -147,7 +147,7 @@ angular.module('emuwebApp')
 					                var extension = $scope.wav.name.substr(0,$scope.wav.name.lastIndexOf('.'));
 					                Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
 					                var annot = parseMess.data;
-					                $scope.$parent.tds.setData(annot);
+					                $scope.$parent.levServ.setData(annot);
 					                // console.log(JSON.stringify(l, undefined, 2));
 					                var lNames = [];
 					                annot.levels.forEach(function (l) {

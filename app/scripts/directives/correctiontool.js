@@ -65,18 +65,7 @@ angular.module('emuwebApp')
 									var mouseX = Drawhelperservice.getX(event);
 									viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
-
-									ctx.clearRect(0, 0, canvas.width, canvas.height);
-									// draw crossHairs
-									if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
-										Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz');
-									}
-									// draw moving boundary line if moving
-									Drawhelperservice.drawMovingBoundaryLine(ctx);
-
-									switchMarkupContext();
-
-
+									switchMarkupContext(event);
 
 									if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 										// var col = Ssffdataservice.data[0].Columns[0];
@@ -173,16 +162,16 @@ angular.module('emuwebApp')
 				element.bind('mouseup', function (event) {
 					if (!viewState.getdragBarActive()) {
 						setSelectDrag(event);
-						switchMarkupContext();
+						switchMarkupContext(event);
 					}
 				});
 
 
 				// on mouse leave clear markup canvas
-				element.bind('mouseleave', function () {
+				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							switchMarkupContext();
+							switchMarkupContext(event, false);
 						}
 					}
 				});
@@ -191,7 +180,7 @@ angular.module('emuwebApp')
 				////////////////////
 
 
-				function switchMarkupContext() {
+				function switchMarkupContext(event, leave) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					// draw current viewport selected
 					if (atts.ssffTrackname == 'OSCI') {
@@ -202,8 +191,18 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					} else {
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
-						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
+						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					}
+					
+					// draw crossHairs
+					if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
+						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz');
+					}
+					// draw moving boundary line if moving
+					Drawhelperservice.drawMovingBoundaryLine(ctx);
+					
+					
+					
 				}
 
 
