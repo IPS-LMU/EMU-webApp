@@ -20,6 +20,11 @@ angular.module('emuwebApp')
 		    dialogService.close();
 		}		
 
+		
+		$scope.updateHistoryService = function(){
+		    HistoryService.movesAwayFromLastSave = 0;
+		}	
+
 		/**
 		 *
 		 */
@@ -47,6 +52,7 @@ angular.module('emuwebApp')
             event.initEvent('click', true, true);
             save.dispatchEvent(event);
             (window.URL || window.webkitURL).revokeObjectURL(save.href);
+            $scope.updateHistoryService();
 		};
 
 	});

@@ -280,9 +280,6 @@ angular.module('emuwebApp')
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 					
-					console.log('leveldraw markup update');
-
-
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
 
