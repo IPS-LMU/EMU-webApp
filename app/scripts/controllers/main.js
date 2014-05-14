@@ -745,6 +745,8 @@ angular.module('emuwebApp')
 			Levelservice.data = {};
 			Ssffdataservice.data = [];
 			HistoryService.resetToInitState();
+			viewState.setState('noDBorFilesloaded');
+			$scope.$broadcast('resetToInitState');
 
 			viewState.somethingInProgress = false;
 			viewState.resetToInitState();
@@ -752,9 +754,6 @@ angular.module('emuwebApp')
 			$scope.showDropZone = true;
 			$scope.loadDefaultConfig();
 
-			viewState.setState('noDBorFilesloaded');
-
-			$scope.$broadcast('resetToInitState');
 
 		};
 

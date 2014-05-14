@@ -11,16 +11,11 @@ angular.module('emuwebApp')
     $scope.dropNotAllowed = 'File is not allowed';
     $scope.dropAllowed = 'Drop files to start loading';
     $scope.dropParsingStarted = 'Parsing started';
-    $scope.wavLoaded = 0;
-    $scope.txtGridLoaded = 0;
-    $scope.labelLoaded = 0;
     $scope.newfiles = [];
     $scope.wav = {};
     $scope.grid = {};
     $scope.curBndl = {};
-    
     $scope.dropText = $scope.dropDefault;
-    
     $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
     $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
     $scope.dropzone.addEventListener('dragover', handleDragOver, false);
@@ -76,9 +71,11 @@ angular.module('emuwebApp')
     }
     
     $scope.resetToInitState = function () {
-         $scope.newfiles = {};
-         $scope.curBndl = {};
-         $scope.dropText = $scope.dropDefault;    
+        $scope.newfiles = [];
+        $scope.wav = {};
+        $scope.grid = {};
+        $scope.curBndl = {};
+        $scope.dropText = $scope.dropDefault;
     };
     
     $scope.$watch('wav', function () {
