@@ -9,6 +9,10 @@ angular.module('emuwebApp')
 
         var startPCM = -1;
 
+        ///////////////
+        // bindings
+
+        //
         element.bind('click', function (x) {
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
             var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
@@ -19,13 +23,14 @@ angular.module('emuwebApp')
           }
         });
 
-
+        //
         element.bind('mousedown', function (x) {
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
             startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
           }
         });
 
+        //
         element.bind('mousemove', function (x) {
           switch (event.which) {
           case 1:
@@ -40,13 +45,18 @@ angular.module('emuwebApp')
           }
         });
 
+        //
         element.bind('mouseup', function () {
           startPCM = -1;
         });
 
+        //
         element.bind('mouseout', function () {
           startPCM = -1;
         });
+
+        //
+        /////////////////
 
         function getX(e) {
           return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
