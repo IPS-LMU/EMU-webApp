@@ -29,10 +29,12 @@ angular.module('emuwebApp')
 				///////////////
 				// watches
 
+				//
 				scope.$watch('viewState.curPerspectiveIdx', function () {
 					scope.updateCSS();
 				}, true);
 
+				//
 				scope.$watch('viewState.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
@@ -41,6 +43,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('viewState.movingBoundarySample', function (newValue) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
@@ -49,6 +52,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('viewState.movingBoundary', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
@@ -57,6 +61,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
