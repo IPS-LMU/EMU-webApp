@@ -127,15 +127,35 @@ ul {
     min-width: 120px !important;
 }
 
-.emuwebapp-previewCanvas {
-    border: 1px solid gray;
-    background: #E7E7E7;
-    /*box-shadow: 0px 1px 2px #000;*/
+/*preview minimap canvas*/
+.emuwebapp-previewCanvasContainer {
+    position: relative;
     width:calc(100% - 30px); 
     height: 38px !important; 
     min-height: 38px !important; 
     margin-top:5px;
+
 }
+
+
+.emuwebapp-previewCanvas {
+    position: absolute;
+    border: 1px solid gray;
+    background: #E7E7E7;
+    /*box-shadow: 0px 1px 2px #000;*/
+    width: 100%;
+    height: 100%
+}
+
+.emuwebapp-previewMarkupCanvas {
+    position: absolute;
+    background-color: transparent;
+    /*box-shadow: 0px 1px 2px #000;*/
+    width: 100%;
+    height: 100%;
+}
+
+
 
 .emuwebapp-labelEdit {
     z-index:1;
