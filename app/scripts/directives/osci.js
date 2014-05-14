@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			templateUrl: 'views/osci.html',
 			replace: true,
 			restrict: 'E',
-			// scope: {},
+			scope: {},
 			link: function postLink(scope, element, attrs) {
 
 
