@@ -293,14 +293,75 @@
 									"type": "string"
 								},
 								"maxItems": 1
+							},
+							"twoDimDrawingDefinitions": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"dots": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"name": {
+														"type": "string"
+													},
+													"xSsffTrack": {
+														"type": "string"
+													},
+													"xContourNr": {
+														"type": "integer"
+													},
+													"ySsffTrack": {
+														"type": "string"
+													},
+													"yContourNr": {
+														"type": "integer"
+													},
+													"color": {
+														"type": "string"
+													}
+												},
+												"required": ["name", "xSsffTrack", "xContourNr", "ySsffTrack", "yContourNr"],
+												"additionalProperties": false
+											}
+										},
+										"connectLines": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"fromDot": {
+														"type": "string"
+													},
+													"toDot": {
+														"type": "string"
+													},
+													"color": {
+														"type": "string"
+													}
+												},
+												"required": ["fromDot", "toDot", "color"],
+												"additionalProperties": false
+											}
+										}
+									},
+									"required": ["name", "dots", "connectLines"],
+									"additionalProperties": false
+								}
 							}
 						},
+
 						"required": ["order"],
 						"additionalProperties": false
-					}
-				},
-				"required": ["name", "signalCanvases", "levelCanvases", "twoDimCanvases"],
-				"additionalProperties": false
+					},
+					"required": ["name", "signalCanvases", "levelCanvases", "twoDimCanvases"],
+					"additionalProperties": false
+				}
 			}
 		},
 		"labelCanvasConfig": {

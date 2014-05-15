@@ -123,32 +123,44 @@
 					"dots": [{
 						"name": "tt",
 						"xSsffTrack": "tt_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tt_posz",
+						"yContourNr": 0,
 						"color": "rgb(255,0,0)"
 					}, {
 						"name": "tm",
 						"xSsffTrack": "tm_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tm_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "tb",
 						"xSsffTrack": "tb_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tb_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "ul",
 						"xSsffTrack": "ul_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "ul_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "ll",
 						"xSsffTrack": "ll_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "ll_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "jw",
 						"xSsffTrack": "jw_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "jw_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}],
 					"connectLines": [{
@@ -193,32 +205,44 @@
 					"dots": [{
 						"name": "f1-f2",
 						"xSsffTrack": "tt_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tt_posz",
+						"yContourNr": 0,
 						"color": "rgb(255,0,0)"
 					}, {
 						"name": "tm",
 						"xSsffTrack": "tm_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tm_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "tb",
 						"xSsffTrack": "tb_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "tb_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "ul",
 						"xSsffTrack": "ul_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "ul_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "ll",
 						"xSsffTrack": "ll_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "ll_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}, {
 						"name": "jw",
 						"xSsffTrack": "jw_posy",
+						"xContourNr": 0,
 						"ySsffTrack": "jw_posz",
+						"yContourNr": 0,
 						"color": "rgb(0,0,0)"
 					}],
 					"connectLines": []
