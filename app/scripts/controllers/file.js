@@ -97,7 +97,7 @@ angular.module('emuwebApp')
 
 
     $scope.handleLocalFiles = function () {
-        $scope.$parent.showDropZone = false;
+        $scope.$parent.vs.showDropZone = false;
         $scope.$parent.cps.vals.main.comMode = 'FileAPI';
         $scope.$parent.vs.setState('loadingSaving');
         // reset history

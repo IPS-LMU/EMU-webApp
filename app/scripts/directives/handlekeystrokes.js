@@ -188,7 +188,6 @@ angular.module('emuwebApp')
               // preselected boundary snap to top
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestTopBoundary) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  // var mousSegID = viewState.getcurMouseSegmentId();
                   var mouseSeg = viewState.getcurMouseSegment();
                   var levelName = viewState.getcurMouseLevelName();
                   console.log(mouseSeg);

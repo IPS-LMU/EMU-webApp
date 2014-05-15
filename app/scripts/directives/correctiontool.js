@@ -34,8 +34,10 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(Ssffdataservice.data)) {
 							if (Ssffdataservice.data.length !== 0) {
 								tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-								col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-								sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+								if(tr !== undefined) {
+								    col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+								    sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+								}
 							}
 						}
 					}

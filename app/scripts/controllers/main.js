@@ -22,9 +22,7 @@ angular.module('emuwebApp')
 		$scope.tmp = {};
 
 		$scope.dbLoaded = false;
-		$scope.isRightSideMenuHidden = true;
 		$scope.is2dCancasesHidden = true;
-		$scope.showDropZone = true;
 
 		$scope.lastkeycode = 'N/A';
 		$scope.bundleList = [];
@@ -256,7 +254,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.handleConnectedToWSserver = function () {
 			// hide drop zone 
-			$scope.showDropZone = false;
+			viewState.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
 
 			viewState.somethingInProgress = true;
@@ -664,7 +662,7 @@ angular.module('emuwebApp')
 			if (viewState.getPermission('openDemoBtnDBclick')) {
 				$scope.demoDbName = nameOfDB;
 				// hide drop zone 
-				$scope.showDropZone = false;
+				viewState.showDropZone = false;
 
 				viewState.somethingInProgress = true;
 				// alert(nameOfDB);
@@ -743,7 +741,7 @@ angular.module('emuwebApp')
 			viewState.somethingInProgress = false;
 			viewState.resetToInitState();
 
-			$scope.showDropZone = true;
+			viewState.showDropZone = true;
 			$scope.loadDefaultConfig();
 
 
@@ -874,7 +872,7 @@ angular.module('emuwebApp')
 		 * SIC should move into viewstate.rightSubmenuOpen variable
 		 */
 		$scope.toggleRightSideMenuHidden = function () {
-			$scope.isRightSideMenuHidden = !$scope.isRightSideMenuHidden;
+		    viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
 		};
 
 		/**

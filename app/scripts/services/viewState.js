@@ -29,7 +29,6 @@ angular.module('emuwebApp')
             eS: 0,
             selectS: -1,
             selectE: -1,
-            enlargeTimeline: -1,
             dragBarActive: false,
             dragBarHeight: -1,
             windowWidth: undefined,
@@ -49,6 +48,7 @@ angular.module('emuwebApp')
           curS: null,
         };
         
+        sServObj.timelineSize = -1;
         sServObj.somethingInProgress = false;
         sServObj.somethingInProgressTxt = '';
         sServObj.curClickSegments = [];
@@ -56,8 +56,6 @@ angular.module('emuwebApp')
         sServObj.editing = false;
         sServObj.submenuOpen = false;
         sServObj.rightSubmenuOpen = false;
-        sServObj.modalOpen = false;
-        sServObj.levelLength = 0;
         sServObj.curMousePosSample = 0;
         sServObj.curMouseLevelName = undefined;
         sServObj.curMouseLevelType = undefined;
@@ -67,13 +65,10 @@ angular.module('emuwebApp')
         sServObj.curCorrectionToolNr = undefined;
         sServObj.curClickLevelIndex = undefined;
         sServObj.start = null;
-        sServObj.loadingUtt = false;
-        sServObj.curMouseSegmentId = undefined;
         sServObj.TransitionTime = undefined;
-        sServObj.showDropZone = undefined;
+        sServObj.showDropZone = true;
         sServObj.movingBoundary = false;
         sServObj.movingBoundarySample = undefined;
-        sServObj.gotUnsavedDataChanges = false;
         sServObj.focusInTextField = false;
         sServObj.curTaskPercCompl = 0;
         sServObj.curPerspectiveIdx = -1;
@@ -370,7 +365,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.setenlarge = function (s) {
-      this.curViewPort.enlargeTimeline = s;
+      this.timelineSize = s;
     };
 
 
@@ -378,7 +373,7 @@ angular.module('emuwebApp')
      * get the height of the osci
      */
     sServObj.getenlarge = function () {
-      return this.curViewPort.enlargeTimeline;
+      return this.timelineSize;
     };
 
     /**
@@ -411,26 +406,9 @@ angular.module('emuwebApp')
       this.rightSubmenuOpen = s;
     };
 
-    /**
-     * get the height of the osci
-     */
-    sServObj.getmodalOpen = function () {
-      return this.modalOpen;
-    };
-
-    /**
-     * get the height of the osci
-     */
-    sServObj.setmodalOpen = function (s) {
-      this.modalOpen = s;
-    };
-
-
     sServObj.setcurClickLevel = function (levelID, levelType, levelIndex, itemsLength) {
-      this.setLevelLength(itemsLength);
       this.setcurClickLevelName(levelID, levelIndex);
       this.setcurClickLevelType(levelType);
-      this.setLevelLength(itemsLength);
     };
 
 
@@ -704,14 +682,6 @@ angular.module('emuwebApp')
 
     sServObj.countSelected = function () {
       return this.curClickSegments.length;
-    };
-
-    sServObj.setLevelLength = function (length) {
-      this.levelLength = length;
-    };
-
-    sServObj.getLevelLength = function () {
-      return this.levelLength;
     };
 
     sServObj.getCurrentSample = function (perc) {
