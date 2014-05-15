@@ -20,6 +20,7 @@ angular.module('emuwebApp')
 				////////////////////
 				// watches
 
+				//
 				scope.$watch('ssffds.data.length', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -30,6 +31,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -42,6 +44,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('vs.curMousePosSample', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
@@ -50,6 +53,14 @@ angular.module('emuwebApp')
 							}
 						}
 					}
+				}, true);
+
+				//
+				scope.$watch('vs.curPerspectiveIdx', function () {
+					globalMinX = Infinity;
+					globalMaxX = -Infinity;
+					globalMinY = Infinity;
+					globalMaxY = -Infinity;
 				}, true);
 
 				//
@@ -170,8 +181,8 @@ angular.module('emuwebApp')
 						trConf = scope.cps.getSsffTrackConfig(dD.dots[i].ySsffTrack);
 						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
 
-						// check for only one value in column... might change in future
-						if (xCol.length !== yCol.length || xCol.length !== 1 || yCol.length !== 1) {
+						// check if x and why have the same amount of cols
+						if (xCol.values.length !== yCol.values.length ) {
 							alert('colomns do not have same length or length of one not 1');
 							return;
 						}
@@ -188,6 +199,9 @@ angular.module('emuwebApp')
 						var sInterv = 1 / xsRaSt.sampleRate - xsRaSt.startTime;
 						var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
 
+
+						console.log(yCol.values.length);
+						console.log(curFrame);
 						// 
 						// var minX = Math.min.apply(Math, xCol.values);
 						// var maxX = Math.max.apply(Math, xCol.values);
@@ -210,9 +224,11 @@ angular.module('emuwebApp')
 
 						// console.log(xCol.values[curFrame]);
 						// console.log(yCol.values[curFrame]);
+						// console.log(xCol.values[curFrame][dD.dots[i].xContourNr])
 
-						var x = ((xCol.values[curFrame] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
-						var y = canvas.height - ((yCol.values[curFrame] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
+						// return;
+						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
+						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
 
 						var startPoint = (Math.PI / 180) * 0;

@@ -46,6 +46,7 @@ angular.module('emuwebApp')
         sS: -1,
         eS: -1,
         curS: null,
+        endFreezeSample: -1
       };
 
       sServObj.timelineSize = -1;
@@ -134,9 +135,12 @@ angular.module('emuwebApp')
       sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
       if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
-        sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.curS;
+        if (sServObj.playHeadAnimationInfos.curS !== -1) {
+          sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.curS;
+        }
         $rootScope.$apply();
       } else {
+        sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.endFreezeSample;
         sServObj.playHeadAnimationInfos.sS = -1;
         sServObj.playHeadAnimationInfos.eS = -1;
         sServObj.playHeadAnimationInfos.curS = 0;
@@ -149,6 +153,7 @@ angular.module('emuwebApp')
     sServObj.animatePlayHead = function (startS, endS) {
       sServObj.playHeadAnimationInfos.sS = startS;
       sServObj.playHeadAnimationInfos.eS = endS;
+      sServObj.playHeadAnimationInfos.endFreezeSample = endS;
       sServObj.playHeadAnimationInfos.curS = startS;
       $window.requestAnimationFrame(sServObj.updatePlayHead);
     };
