@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Levelservice) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Levelservice, Ssffdataservice) {
 
 		//shared service object to be returned
 		var sServObj = {};
@@ -371,7 +371,7 @@ angular.module('emuwebApp')
 		 * drawing method to drawCrossHairs
 		 */
 
-		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit) {
+		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
 			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
 
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -387,21 +387,10 @@ angular.module('emuwebApp')
 				var mouseX = sServObj.getX(mouseEvt);
 				var mouseY = sServObj.getY(mouseEvt);
 
-				ctx.beginPath();
-				ctx.moveTo(0, mouseY);
-				ctx.lineTo(5, mouseY + 5);
-				ctx.moveTo(0, mouseY);
-				ctx.lineTo(ctx.canvas.width, mouseY);
-				ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-				ctx.moveTo(mouseX, 0);
-				ctx.lineTo(mouseX, ctx.canvas.height);
-				ctx.stroke();
-
-
-
 				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);
 				}
+				
 
 				// draw frequency / sample / time
 				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
@@ -413,10 +402,59 @@ angular.module('emuwebApp')
 				var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
 				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
-
+				
+				
 				if (max !== undefined || min !== undefined) {
-					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+				    if(trackname == "OSCI" ) {
+				        // no horizontal values		
+	    				ctx.beginPath();
+			    		//ctx.moveTo(0, mouseY);
+					    //ctx.lineTo(5, mouseY + 5);
+	    				//ctx.moveTo(0, mouseY);
+			    		//ctx.lineTo(ctx.canvas.width, mouseY);
+					    //ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+	    				ctx.moveTo(mouseX, 0);
+			    		ctx.lineTo(mouseX, ctx.canvas.height);
+					    ctx.stroke();					    
+				        		    
+				    }
+				    else if(trackname == "SPEC" ) {
+					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+	    				ctx.beginPath();
+			    		ctx.moveTo(0, mouseY);
+					    ctx.lineTo(5, mouseY + 5);
+	    				ctx.moveTo(0, mouseY);
+			    		ctx.lineTo(ctx.canvas.width, mouseY);
+					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+	    				ctx.moveTo(mouseX, 0);
+			    		ctx.lineTo(mouseX, ctx.canvas.height);
+					    ctx.stroke();					    
+					    
+				    }
+				    else {
+				        // draw min max an name of track
+                        var tr = ConfigProviderService.getSsffTrackConfig(trackname);
+                        var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+                        mouseFreq = viewState.round(col._maxVal - mouseY / ctx.canvas.height * col._maxVal, 2);
+                        horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+	    				ctx.beginPath();
+			    		ctx.moveTo(0, mouseY);
+					    ctx.lineTo(5, mouseY + 5);
+	    				ctx.moveTo(0, mouseY);
+			    		ctx.lineTo(ctx.canvas.width, mouseY);
+					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+	    				ctx.moveTo(mouseX, 0);
+			    		ctx.lineTo(mouseX, ctx.canvas.height);
+					    ctx.stroke();					    
+
+				    }
+				    
+				    
+				    
+
 				}
 				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
 

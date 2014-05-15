@@ -126,52 +126,6 @@ angular.module('emuwebApp')
             }
           }
 
-          //   markupCtx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-          //   // draw moving boundary line if moving
-          //   scope.dhs.drawMovingBoundaryLine(markupCtx);
-
-          //   // draw current viewport selected
-          //   scope.dhs.drawCurViewPortSelected(markupCtx, false);
-
-          //   // var scaleX = markupCtx.canvas.width / markupCtx.canvas.offsetWidth;
-          //   var scaleY = markupCtx.canvas.height / markupCtx.canvas.offsetHeight;
-
-          //   var smallFontSize = scope.cps.vals.font.fontPxSize * 3 / 4;
-          //   var th = smallFontSize * scaleY;
-
-          //   // draw corner pointers
-          //   markupCtx.beginPath();
-          //   markupCtx.moveTo(0, 0);
-          //   markupCtx.lineTo(5, 5);
-          //   markupCtx.moveTo(0, markupCanvas.height);
-          //   markupCtx.lineTo(5, markupCanvas.height - 5);
-          //   markupCtx.stroke();
-          //   markupCtx.closePath();
-
-
-          //   // draw ssffTrackName
-          //   if (drawName) {
-          //     markupCtx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          //     var trackNameImg = scope.fontImage.getTextImage(markupCtx, trackName, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-          //     markupCtx.drawImage(trackNameImg, 0, markupCanvas.height / 2 - scope.cps.vals.font.fontPxSize * scaleY / 2);
-          //   }
-
-          //   if (!$.isEmptyObject(scope.ssffds.data)) {
-          //     if (scope.ssffds.data.length !== 0) {
-
-          //       var tr = scope.cps.getSsffTrackConfig(trackName);
-          //       var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-
-          //       // draw min/max vals
-          //       var labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'max: ' + viewState.round(col._maxVal, 6), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
-          //       markupCtx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
-          //       // draw min/max vals
-          //       labelTxtImg = scope.fontImage.getTextImage(markupCtx, 'min: ' + viewState.round(col._minVal, 6), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
-          //       markupCtx.drawImage(labelTxtImg, 5, markupCanvas.height - th - 5, labelTxtImg.width, labelTxtImg.height);
-          //     }
-          //   }
-
         }
 
 

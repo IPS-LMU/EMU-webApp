@@ -33,8 +33,6 @@ angular.module('emuwebApp')
 						bundleName = val;
 						if (!$.isEmptyObject(Ssffdataservice.data)) {
 							if (Ssffdataservice.data.length !== 0) {
-								// console.log('WHAT?' + val)
-								// console.log(atts)
 								tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
 								col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 								sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
@@ -192,13 +190,15 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					} else {
+                        var tr = ConfigProviderService.getSsffTrackConfig(atts.ssffTrackname);
+                        var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);					
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
-						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
+						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
 					}
 					
 					// draw crossHairs
 					if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
-						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz');
+						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz', atts.ssffTrackname);
 					}
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);

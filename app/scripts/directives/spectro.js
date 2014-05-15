@@ -266,53 +266,6 @@ angular.module('emuwebApp')
           });
         }
 
-        // function drawCrossHairs(canvas, config, dhs, mouseEvt) {
-        //   if (config.vals.restrictions.drawCrossHairs) {
-        //     markupCtx.clearRect(0, 0, canvas.width, canvas.height);
-        //     markupCtx.strokeStyle = config.vals.colors.crossHairsColor;
-        //     markupCtx.fillStyle = config.vals.colors.crossHairsColor;
-
-        //     // see if Chrome ->dashed line
-        //     if (navigator.vendor === 'Google Inc.') {
-        //       markupCtx.setLineDash([2]);
-        //     }
-
-        //     // draw lines
-        //     var mouseX = dhs.getX(mouseEvt);
-        //     var mouseY = dhs.getY(mouseEvt);
-
-        //     markupCtx.beginPath();
-        //     markupCtx.moveTo(0, mouseY);
-        //     markupCtx.lineTo(5, mouseY + 5);
-        //     markupCtx.moveTo(0, mouseY);
-        //     markupCtx.lineTo(canvas.width, mouseY);
-        //     markupCtx.lineTo(canvas.width - 5, mouseY + 5);
-        //     markupCtx.moveTo(mouseX, 0);
-        //     markupCtx.lineTo(mouseX, canvas.height);
-        //     markupCtx.stroke();
-        //     // draw frequency / sample / time
-        //     markupCtx.font = (config.vals.font.fontPxSize + 'px' + ' ' + config.vals.font.fontType);
-
-        //     var mouseFreq = scope.vs.round(scope.vs.spectroSettings.rangeTo - mouseY / canvas.height * scope.vs.spectroSettings.rangeTo, 2);
-
-        //     var tW = markupCtx.measureText(mouseFreq + ' Hz').width;
-        //     var s1 = Math.round(scope.vs.curViewPort.sS + mouseX / canvas.width * (scope.vs.curViewPort.eS - scope.vs.curViewPort.sS));
-        //     var s2 = scope.vs.round(scope.vs.getViewPortStartTime() + mouseX / canvas.width * (scope.vs.getViewPortEndTime() - scope.vs.getViewPortStartTime()), 6);
-        //     var horizontalText = scope.fontImage.getTextImage(context, mouseFreq + ' Hz', config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
-        //     var verticalText = scope.fontImage.getTextImageTwoLines(context, s1, s2, config.vals.font.fontPxSize, config.vals.font.fontType, config.vals.colors.crossHairsColor, true);
-
-        //     markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-        //     markupCtx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width - 5 - tW * (context.canvas.width / context.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-        //     markupCtx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
-
-
-        //     if (navigator.vendor === 'Google Inc.') {
-        //       markupCtx.setLineDash([0]);
-        //     }
-        //     drawSpectMarkup();
-        //   }
-        // }
-
         clearImageCache();
 
       }
