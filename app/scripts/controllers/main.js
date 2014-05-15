@@ -156,23 +156,29 @@ angular.module('emuwebApp')
 		 * init load of config files
 		 */
 		$scope.loadDefaultConfig = function () {
+			viewState.somethingInProgress = true;
+			viewState.somethingInProgressTxt = 'Loading schema files';
+			Validationservice.loadSchemas().then(function (replies) {
+				Validationservice.setSchemas(replies);
+				Iohandlerservice.httpGetDefaultConfig().success(function (data) {
+					viewState.somethingInProgressTxt = "Validating emuwebappConfig"
+					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
+					if (validRes === true) {
+						ConfigProviderService.setVals(data);
+						$scope.handleDefaultConfigLoaded();
+						viewState.somethingInProgress = false;
+					} else {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4));
+					}
 
-			Iohandlerservice.httpGetDefaultConfig().success(function (data) {
-				viewState.somethingInProgress = true;
-				viewState.somethingInProgressTxt = "Validating emuwebappConfig"
-				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
-				if (validRes === true) {
-					ConfigProviderService.setVals(data);
-					$scope.handleDefaultConfigLoaded();
-					viewState.somethingInProgress = false;
-				} else {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4));
-				}
-
-			}).error(function (data, status, header, config) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
+				}).error(function (data, status, header, config) {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
+				});
+			}, function (errMess) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function (res) {
+					$scope.resetToInitState();
+				});
 			});
-
 		};
 
 		// call function on init
@@ -872,7 +878,7 @@ angular.module('emuwebApp')
 		 * SIC should move into viewstate.rightSubmenuOpen variable
 		 */
 		$scope.toggleRightSideMenuHidden = function () {
-		    viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
+			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
 		};
 
 		/**

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Validationservice', function Validationservice($http) {
+	.service('Validationservice', function Validationservice($http, $q) {
 		//shared service object to be returned
 		var sServObj = {};
 
@@ -13,21 +13,35 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.loadSchemas = function () {
+			var proms = [];
 
 			angular.forEach(names, function (n) {
-				$http.get('schemaFiles/' + n + '.json').then(function (resp) {
-					schemasJsos.push({
-						name: n,
-						data: resp.data
-					}, function (err) {
-						console.error('Unable to load schemas!');
-						console.error(err);
-					});
+				proms.push($http.get('schemaFiles/' + n + '.json'));
+			});
+
+			return $q.all(proms);
+		};
+
+		/**
+		 *
+		 */
+		sServObj.setSchemas = function (schemaArr) {
+			angular.forEach(schemaArr, function (s) {
+				schemasJsos.push({
+					name: s.config.url,
+					data: s.data
 				});
 			});
 		};
 
-		sServObj.loadSchemas();
+		//.then(function (resp) {
+		// schemasJsos.push({
+		// 	name: n,
+		// 	data: resp.data
+		// }, function (err) {
+		// 	console.error('Unable to load schemas!');
+		// 	console.error(err);
+		// });
 
 		/**
 		 *
@@ -35,7 +49,7 @@ angular.module('emuwebApp')
 		sServObj.validateJSO = function (schemaName, jso) {
 			var schema;
 			angular.forEach(schemasJsos, function (s) {
-				if (s.name === schemaName) {
+				if (s.name === 'schemaFiles/' + schemaName + '.json') {
 					schema = s;
 				}
 			});
@@ -44,7 +58,7 @@ angular.module('emuwebApp')
 				return true;
 			} else {
 				if (schema === undefined) {
-					return 'schema is currently undefined! This is either due to a bad schemaName being used or to a slow load time of the schema files (known bug! Should be fixed soon...). A reload should fix the problem'
+					return 'Schema: ' + schemaName + ' is currently undefined! This is probably due to a misnamed schema file on the server...'
 				} else {
 					return tv4.error;
 				}
