@@ -34,15 +34,15 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(Ssffdataservice.data)) {
 							if (Ssffdataservice.data.length !== 0) {
 								tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-								if(tr !== undefined) {
-								    col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-								    sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+								if (tr !== undefined) {
+									col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+									sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 								}
 							}
 						}
 					}
 				});
-							
+
 
 				/////////////////////////////
 				// Bindings
@@ -60,14 +60,14 @@ angular.module('emuwebApp')
 					// perform mouse tracking
 					var mouseX = Drawhelperservice.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
-					switchMarkupContext(event);
 
 					switch (event.which) {
 					case 0:
 						if (!$.isEmptyObject(Ssffdataservice.data)) {
 							if (Ssffdataservice.data.length !== 0) {
-
 								if (!viewState.getdragBarActive()) {
+
+									switchMarkupContext(event);
 
 									if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 										// var col = Ssffdataservice.data[0].Columns[0];
@@ -105,8 +105,8 @@ angular.module('emuwebApp')
 										var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
 										// draw sample
-										ctx.strokeStyle = '#0DC5FF';
-										ctx.fillStyle = 'white';
+										ctx.strokeStyle = 'black';
+										ctx.fillStyle = 'black';
 										ctx.beginPath();
 										ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
 										ctx.closePath();
@@ -172,7 +172,13 @@ angular.module('emuwebApp')
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							switchMarkupContext(event, false);
+							if (!$.isEmptyObject(Ssffdataservice.data)) {
+								if (Ssffdataservice.data.length !== 0) {
+									if (!viewState.getdragBarActive()) {
+										switchMarkupContext(event, false);
+									}
+								}
+							}
 						}
 					}
 				});
@@ -191,21 +197,21 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					} else {
-                        var tr = ConfigProviderService.getSsffTrackConfig(atts.ssffTrackname);
-                        var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);					
+						var tr = ConfigProviderService.getSsffTrackConfig(atts.ssffTrackname);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
 					}
-					
+
 					// draw crossHairs
 					if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
 						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz', atts.ssffTrackname);
 					}
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
-					
-					
-					
+
+
+
 				}
 
 
