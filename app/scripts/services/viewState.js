@@ -6,6 +6,7 @@ angular.module('emuwebApp')
     //shared service object to be returned
     var sServObj = {};
 
+	// window functions enum for spectro
     var myWindow = {
       BARTLETT: 1,
       BARTLETTHANN: 2,
@@ -18,88 +19,83 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
-
-    sServObj.curViewPort = {
-      sS: 0,
-      eS: 0,
-      selectS: -1,
-      selectE: -1,
-      bufferLength: -1,
-      enlargeTimeline: -1,
-      dragBarActive: false,
-      dragBarHeight: -1,
-      windowWidth: undefined,
-    };
-
-    sServObj.spectroSettings = {
-      windowLength: -1,
-      rangeFrom: -1,
-      rangeTo: -1,
-      dynamicRange: -1,
-      window: -1,
-    };
-
-    sServObj.playHeadAnimationInfos = {
-      sS: -1,
-      eS: -1,
-      curS: null,
-    };
-
-
-    sServObj.somethingInProgress = false;
-    sServObj.somethingInProgressTxt = '';
-
-    sServObj.curClickSegments = [];
-    sServObj.lasteditArea = null;
-    sServObj.editing = false;
-    sServObj.submenuOpen = false;
-    sServObj.rightSubmenuOpen = false;
-    sServObj.modalOpen = false;
-    sServObj.levelLength = 0;
-    sServObj.curMousePosSample = 0;
-    sServObj.curMouseLevelName = undefined;
-    sServObj.curMouseLevelType = undefined;
-    sServObj.curClickLevelName = undefined;
-    sServObj.curClickLevelType = undefined;
-    sServObj.curPreselColumnSample = 2;
-    sServObj.curCorrectionToolNr = undefined;
-    sServObj.curClickLevelIndex = undefined;
-    sServObj.start = null;
-    sServObj.loadingUtt = false;
-    sServObj.curMouseSegmentId = undefined;
-    sServObj.TransitionTime = undefined;
-    sServObj.showDropZone = undefined;
-
-    sServObj.movingBoundary = false;
-    sServObj.movingBoundarySample = undefined;
-
-    sServObj.gotUnsavedDataChanges = false;
-
-    sServObj.focusInTextField = false;
-
-    sServObj.curTaskPercCompl = 0;
-
-    sServObj.curPerspectiveIdx = -1;
-
-    sServObj.mouseInEmuWebApp = false;
-
-    // possible general states of state machine
-    sServObj.states = [];
-    sServObj.states.noDBorFilesloaded = {
-      'permittedActions': ['connectBtnClick', 'openDemoBtnDBclick']
-    };
-    sServObj.states.loadingSaving = {
-      'permittedActions': []
-    };
-    sServObj.states.labeling = {
-      'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
-    };
-    sServObj.states.modalShowing = {
-      'permittedActions': []
-    };
-    sServObj.prevState = sServObj.states.noDBorFilesloaded;
-
-    sServObj.curState = sServObj.states.noDBorFilesloaded;
+    
+    /**
+     * initialize all needed vars in viewState
+     */
+    sServObj.initialize = function () {
+        sServObj.curViewPort = {
+            sS: 0,
+            eS: 0,
+            selectS: -1,
+            selectE: -1,
+            enlargeTimeline: -1,
+            dragBarActive: false,
+            dragBarHeight: -1,
+            windowWidth: undefined,
+        };
+        
+        sServObj.spectroSettings = {
+            windowLength: -1,
+            rangeFrom: -1,
+            rangeTo: -1,
+            dynamicRange: -1,
+            window: -1,
+        };
+        
+        sServObj.playHeadAnimationInfos = {
+          sS: -1,
+          eS: -1,
+          curS: null,
+        };
+        
+        sServObj.somethingInProgress = false;
+        sServObj.somethingInProgressTxt = '';
+        sServObj.curClickSegments = [];
+        sServObj.lasteditArea = null;
+        sServObj.editing = false;
+        sServObj.submenuOpen = false;
+        sServObj.rightSubmenuOpen = false;
+        sServObj.modalOpen = false;
+        sServObj.levelLength = 0;
+        sServObj.curMousePosSample = 0;
+        sServObj.curMouseLevelName = undefined;
+        sServObj.curMouseLevelType = undefined;
+        sServObj.curClickLevelName = undefined;
+        sServObj.curClickLevelType = undefined;
+        sServObj.curPreselColumnSample = 2;
+        sServObj.curCorrectionToolNr = undefined;
+        sServObj.curClickLevelIndex = undefined;
+        sServObj.start = null;
+        sServObj.loadingUtt = false;
+        sServObj.curMouseSegmentId = undefined;
+        sServObj.TransitionTime = undefined;
+        sServObj.showDropZone = undefined;
+        sServObj.movingBoundary = false;
+        sServObj.movingBoundarySample = undefined;
+        sServObj.gotUnsavedDataChanges = false;
+        sServObj.focusInTextField = false;
+        sServObj.curTaskPercCompl = 0;
+        sServObj.curPerspectiveIdx = -1;
+        sServObj.mouseInEmuWebApp = false;
+        // possible general states of state machine
+        sServObj.states = [];
+        sServObj.states.noDBorFilesloaded = {
+            'permittedActions': ['connectBtnClick', 'openDemoBtnDBclick']
+        };
+        sServObj.states.loadingSaving = {
+            'permittedActions': []
+        };
+        sServObj.states.labeling = {
+            'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
+        };
+        sServObj.states.modalShowing = sServObj.states.loadingSaving;
+        sServObj.prevState = sServObj.states.noDBorFilesloaded;
+        sServObj.curState = sServObj.states.noDBorFilesloaded;
+    };    
+    
+    // initialize at the beginning
+    sServObj.initialize();
 
     /**
      * function to ask permission in current labeler state
@@ -970,85 +966,7 @@ angular.module('emuwebApp')
      *
      */
     sServObj.resetToInitState = function (shiftRight) {
-      myWindow = {
-        BARTLETT: 1,
-        BARTLETTHANN: 2,
-        BLACKMAN: 3,
-        COSINE: 4,
-        GAUSS: 5,
-        HAMMING: 6,
-        HANN: 7,
-        LANCZOS: 8,
-        RECTANGULAR: 9,
-        TRIANGULAR: 10
-      };
-
-      sServObj.curViewPort = {
-        sS: 0,
-        eS: 0,
-        selectS: -1,
-        selectE: -1,
-        bufferLength: -1,
-        enlargeTimeline: -1,
-        dragBarActive: false,
-        dragBarHeight: -1,
-        windowWidth: undefined,
-      };
-
-      sServObj.spectroSettings = {
-        windowLength: -1,
-        rangeFrom: -1,
-        rangeTo: -1,
-        dynamicRange: -1,
-        window: -1,
-      };
-
-      sServObj.playHeadAnimationInfos = {
-        sS: -1,
-        eS: -1,
-        curS: null,
-      };
-
-
-      sServObj.somethingInProgress = false;
-      sServObj.somethingInProgressTxt = '';
-
-      sServObj.curClickSegments = [];
-      sServObj.lasteditArea = null;
-      sServObj.editing = false;
-      sServObj.submenuOpen = false;
-      sServObj.rightSubmenuOpen = false;
-      sServObj.modalOpen = false;
-      sServObj.levelLength = 0;
-      sServObj.curMousePosSample = 0;
-      sServObj.curMouseLevelName = undefined;
-      sServObj.curMouseLevelType = undefined;
-      sServObj.curClickLevelName = undefined;
-      sServObj.curClickLevelType = undefined;
-      sServObj.curPreselColumnSample = 2;
-      sServObj.curCorrectionToolNr = 1; // SIC reset to undefined
-      sServObj.curClickLevelIndex = undefined;
-      sServObj.start = null;
-      sServObj.loadingUtt = false;
-      sServObj.curMouseSegmentId = undefined;
-      sServObj.TransitionTime = undefined;
-      sServObj.showDropZone = undefined;
-      sServObj.movingBoundary = false;
-
-      sServObj.gotUnsavedDataChanges = false;
-
-      sServObj.focusInTextField = false;
-
-      sServObj.curTaskPercCompl = 0;
-
-      sServObj.curPerspectiveIdx = -1;
-
-      sServObj.mouseInEmuWebApp = false;
-
-      sServObj.prevState = sServObj.states.noDBorFilesloaded;
-
-      sServObj.curState = sServObj.states.noDBorFilesloaded;
-
+        sServObj.initialize();
     };
 
     return sServObj;

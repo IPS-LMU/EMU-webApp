@@ -26,7 +26,6 @@
 		}],
 		"restrictions": {
 			"showPerspectivesSidebar": false,
-			"sortLabels": false,
 			"editItemSize": true,
 			"editItemName": true,
 			"deleteItemBoundary": true,
@@ -45,8 +44,7 @@
 			"deleteSingleLevel": true,
 			"resizeSingleLevel": true,
 			"saveSingleLevel": true,
-			"resizeOsci": true,
-			"resizeSpectro": true,
+			"resizePerspectives": true,
 			"openDemoDB": false,
 			"saveBundle": false,
 			"openMenu": true

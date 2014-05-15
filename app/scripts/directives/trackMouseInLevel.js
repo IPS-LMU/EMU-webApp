@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackmouseinlevel', function (viewState, Levelservice, ConfigProviderService, HistoryService) {
+  .directive('trackmouseinlevel', function (viewState, Levelservice, ConfigProviderService, HistoryService, Soundhandlerservice) {
     return {
       restrict: 'A',
       scope: {
@@ -53,7 +53,7 @@ angular.module('emuwebApp')
             var moveBy = (thisPCM - lastPCM);
 
             if (zoom <= 1) {
-                var zoomEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+                var zoomEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
                 // absolute movement in pcm below 1 pcm per pixel
                 if (scope.this.level.type === 'SEGMENT') {
                     moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
@@ -170,7 +170,7 @@ angular.module('emuwebApp')
           viewState.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
-          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
           // console.log(element.parent());
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setlasteditAreaElem(element.parent());
@@ -186,7 +186,7 @@ angular.module('emuwebApp')
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
-          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
@@ -195,7 +195,7 @@ angular.module('emuwebApp')
 
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
           viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
           viewState.setcurClickSegment(lastEventClick.evtr);
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
@@ -209,7 +209,7 @@ angular.module('emuwebApp')
 
         function setLastMove(x, doChange) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, viewState.curViewPort.bufferLength);
+          lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
             lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
             viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);

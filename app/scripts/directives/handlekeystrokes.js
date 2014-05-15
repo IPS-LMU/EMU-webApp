@@ -57,7 +57,7 @@ angular.module('emuwebApp')
               // zoomAll
               if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
                 if (viewState.getPermission('zoom')) {
-                  viewState.setViewPort(0, viewState.curViewPort.bufferLength);
+                  viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
                 } else {
                   console.log('action currently not allowed');
                 }
@@ -265,7 +265,7 @@ angular.module('emuwebApp')
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                         var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                       } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }
@@ -302,7 +302,7 @@ angular.module('emuwebApp')
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                         var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                       } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }
@@ -338,7 +338,7 @@ angular.module('emuwebApp')
                       if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                         var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                       } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (viewState.curViewPort.bufferLength / 100);
+                        var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                       }

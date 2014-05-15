@@ -34,14 +34,6 @@ angular.module('emuwebApp')
 
 			var ctx = canvas.getContext('2d');
 
-			//calculate sample of cur cursor position
-
-			//calc cursor pos
-			// var all = viewState.curViewPort.eS - viewState.curViewPort.sS;
-			// var fracC = viewState.curCursorPosInPercent * viewState.bufferLength - viewState.curViewPort.sS;
-			// var procC = fracC / all;
-			// var posC = canvas.width * procC;
-
 			//cur
 			var w = 1;
 			var h = Math.round(value * (canvas.height / max)); //rel to max

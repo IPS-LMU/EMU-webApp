@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 				'cmd': 'toTextGrid',
 				'levels': Levelservice.getData().levels,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
-				'bufferLength': viewState.curViewPort.bufferLength
+				'buffLength': Soundhandlerservice.wavJSO.Data.length
 			}); // Send data to our worker.
 			return defer.promise;
 		};

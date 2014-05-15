@@ -129,7 +129,6 @@ angular.module('emuwebApp')
     					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
 					        $scope.$parent.vs.curViewPort.sS = 0;
     					    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
-	    				    $scope.$parent.vs.curViewPort.bufferLength = wavJSO.Data.length;
 		    			    $scope.$parent.vs.resetSelect();
 			    		    $scope.$parent.vs.curPerspectiveIdx = 0;
 				    	    $scope.$parent.shs.wavJSO = wavJSO;	

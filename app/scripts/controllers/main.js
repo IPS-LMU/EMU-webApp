@@ -106,13 +106,6 @@ angular.module('emuwebApp')
 								var wavJSO = messWavParser;
 								viewState.curViewPort.sS = 0;
 								viewState.curViewPort.eS = wavJSO.Data.length;
-								// viewState.curViewPort.selectS = -1;
-								// viewState.curViewPort.selectE = -1;
-								// viewState.curClickSegments = [];
-								// viewState.curClickLevelName = undefined;
-								// viewState.curClickLevelType = undefined;
-
-								viewState.curViewPort.bufferLength = wavJSO.Data.length;
 								viewState.resetSelect();
 								Soundhandlerservice.wavJSO = wavJSO;
 
@@ -406,8 +399,6 @@ angular.module('emuwebApp')
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 4000;
 							// viewState.curViewPort.eS = 5000;
-
-							viewState.curViewPort.bufferLength = wavJSO.Data.length;
 							viewState.resetSelect();
 							Soundhandlerservice.wavJSO = wavJSO;
 
@@ -767,7 +758,7 @@ angular.module('emuwebApp')
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
 				viewState.deleteEditArea(); // SIC should be in service...
-				viewState.setViewPort(0, viewState.curViewPort.bufferLength);
+				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
 				console.log('action currently not allowed');
 			}
