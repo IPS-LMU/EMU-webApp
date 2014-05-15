@@ -706,19 +706,29 @@ angular.module('emuwebApp')
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = data;
-						// then get the DBconfigFile
-						viewState.somethingInProgressTxt = 'Loading bundle list...';
+						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
 
-						Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
-							var bdata = res.data;
-							$scope.bundleList = bdata;
-							// then load first bundle in list
-							$scope.menuBundleClick($scope.bundleList[0]);
-						}, function (err) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+						if (validRes === true) {
+							// then get the DBconfigFile
+							viewState.somethingInProgressTxt = 'Loading bundle list...';
+
+							Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
+								var bdata = res.data;
+								$scope.bundleList = bdata;
+								// then load first bundle in list
+								$scope.menuBundleClick($scope.bundleList[0]);
+							}, function (err) {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+									$scope.resetToInitState();
+								});
+							});
+						} else {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 								$scope.resetToInitState();
 							});
-						});
+						}
+
+
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 							$scope.resetToInitState();
