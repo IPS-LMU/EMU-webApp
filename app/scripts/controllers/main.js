@@ -158,24 +158,29 @@ angular.module('emuwebApp')
 		$scope.loadDefaultConfig = function () {
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Loading schema files';
+			// load schemas first
 			Validationservice.loadSchemas().then(function (replies) {
 				Validationservice.setSchemas(replies);
 				Iohandlerservice.httpGetDefaultConfig().success(function (data) {
-					viewState.somethingInProgressTxt = "Validating emuwebappConfig"
+					viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
 					if (validRes === true) {
 						ConfigProviderService.setVals(data);
 						$scope.handleDefaultConfigLoaded();
 						viewState.somethingInProgress = false;
 					} else {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4));
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							$scope.resetToInitState();
+						});
 					}
 
 				}).error(function (data, status, header, config) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config);
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
+						$scope.resetToInitState();
+					});
 				});
 			}, function (errMess) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function (res) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
 					$scope.resetToInitState();
 				});
 			});
@@ -293,11 +298,15 @@ angular.module('emuwebApp')
 										});
 
 									} else {
-										dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+										dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+											$scope.resetToInitState();
+										});
 									}
 
 								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+										$scope.resetToInitState();
+									});
 								}
 							});
 						} else {
@@ -422,21 +431,31 @@ angular.module('emuwebApp')
 									// FOR DEVELOPMENT:
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
 								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4));
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+										$scope.resetToInitState();
+									});
 								}
 							}, function (errMess) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message);
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+									$scope.resetToInitState();
+								});
 							});
 						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+								$scope.resetToInitState();
+							});
 						});
 
 					}, function (errMess) {
 						// check for http vs websocket response
 						if (errMess.data) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data);
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data).then(function () {
+								$scope.resetToInitState();
+							});
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message);
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message).then(function () {
+								$scope.resetToInitState();
+							});
 						}
 					});
 				}
@@ -503,7 +522,9 @@ angular.module('emuwebApp')
 				defer.resolve();
 			}, function (errMess) {
 				// console.log(mess);
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message);
+				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
+					$scope.resetToInitState();
+				});
 				defer.reject();
 			});
 		};
