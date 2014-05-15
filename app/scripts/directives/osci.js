@@ -9,8 +9,8 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			scope: {},
 			link: function postLink(scope, element, attrs) {
-
-
+			
+			
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];
@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 				// assign attributes to scope
 				scope.order = attrs.order;
 				scope.trackName = attrs.trackName;
+				scope.cps = ConfigProviderService;
 				// console.log(scope.trackName);
 
 				scope.enlargeCanvas = {

@@ -511,7 +511,7 @@ angular.module('emuwebApp')
               // deletePreselBoundary
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (!e.shiftKey) {
-                  if (ConfigProviderService.vals.restrictions.deleteItem) {
+                  if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                     var seg = viewState.getcurMouseSegment();
                     var tn = viewState.getcurMouseLevelName();
                     if (seg !== undefined) {

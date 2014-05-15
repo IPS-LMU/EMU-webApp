@@ -145,21 +145,6 @@
 				"playProgressColor": {
 					"type": "string"
 				},
-				"loadingColor": {
-					"type": "string"
-				},
-				"loadingBackground": {
-					"type": "string"
-				},
-				"loadingBars": {
-					"type": "integer"
-				},
-				"barHeight": {
-					"type": "integer"
-				},
-				"barMargin": {
-					"type": "integer"
-				},
 				"selectedAreaColor": {
 					"type": "string"
 				},
@@ -175,20 +160,11 @@
 				"selectedSegmentColor": {
 					"type": "string"
 				},
-				"selectedMinimapColor": {
-					"type": "string"
-				},
 				"startBoundaryColor": {
 					"type": "string"
 				},
-				"startBoundaryWidth": {
-					"type": "integer"
-				},
 				"endBoundaryColor": {
 					"type": "string"
-				},
-				"endBoundaryWidth": {
-					"type": "integer"
 				},
 				"zeroLineColor": {
 					"type": "string"
@@ -196,14 +172,11 @@
 				"crossHairsColor": {
 					"type": "string"
 				},
-				"timelineHeight": {
-					"type": "string"
-				},
 				"transitionTime": {
 					"type": "integer"
 				}
 			},
-			"required": ["labelColor", "osciColor", "playProgressColor", "loadingColor", "loadingBackground", "loadingBars", "barHeight", "barMargin", "selectedAreaColor", "selectedBorderColor", "selectedBoundaryColor", "selectedLevelColor", "selectedSegmentColor", "selectedMinimapColor", "startBoundaryColor", "startBoundaryWidth", "endBoundaryColor", "endBoundaryWidth", "zeroLineColor", "crossHairsColor", "timelineHeight", "transitionTime"],
+			"required": ["labelColor", "osciColor", "playProgressColor", "selectedAreaColor", "selectedBorderColor", "selectedBoundaryColor", "selectedLevelColor", "selectedSegmentColor", "startBoundaryColor", "endBoundaryColor", "zeroLineColor", "crossHairsColor", "transitionTime"],
 			"additionalProperties": false
 
 		},
@@ -358,9 +331,6 @@
 				"correctionTool": {
 					"type": "boolean"
 				},
-				"sortLabels": {
-					"type": "boolean"
-				},
 				"editItemSize": {
 					"type": "boolean"
 				},
@@ -398,7 +368,7 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["playback", "correctionTool", "sortLabels", "editItemSize", "editItemName", "deleteItemBoundary", "deleteItem", "deleteLevel", "addItem", "drawCrossHairs", "drawSampleNrs", "drawZeroLine", "bundleComments", "bundleFinishedEditing", "showPerspectivesSidebar"],
+			"required": ["playback", "correctionTool", "editItemSize", "editItemName", "deleteItemBoundary", "deleteItem", "deleteLevel", "addItem", "drawCrossHairs", "drawSampleNrs", "drawZeroLine", "bundleComments", "bundleFinishedEditing", "showPerspectivesSidebar"],
 			"additionalProperties": false
 
 		},
@@ -435,10 +405,7 @@
 				"saveSingleLevel": {
 					"type": "boolean"
 				},
-				"resizeOsci": {
-					"type": "boolean"
-				},
-				"resizeSpectro": {
+				"resizePerspectives": {
 					"type": "boolean"
 				},
 				"openDemoDB": {
@@ -451,7 +418,7 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizeOsci", "resizeSpectro", "openDemoDB", "saveBundle", "openMenu"],
+			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu"],
 			"additionalProperties": false
 		},
 		"demoDBs": {
