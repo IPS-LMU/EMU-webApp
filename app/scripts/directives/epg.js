@@ -65,7 +65,7 @@ angular.module('emuwebApp')
 
 
 					var binValStrArr;
-					col.values[curFrame].forEach(function (el, elIdx) {
+					angular.forEach(col.values[curFrame], function (el, elIdx) {
 						binValStrArr = el.toString(2).split('').reverse();
 						while (binValStrArr.length < 8) {
 							binValStrArr.push('0');
