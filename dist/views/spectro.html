@@ -5,7 +5,7 @@
 		<canvas class="emuwebapp-timelineCanvasMarkup" ng-style="enlargeCanvas" width="2048" height="128" correctiontool="" ssff-trackname="{{curTrack}}" bundle-name="{{curBndl.name}}"></canvas>
 	</div>
     <div class="emuwebapp-timelineCanvasButtons">
-        <div class="emuwebapp-levelResizeBtn" enlarge="{{order}}">
+        <div ng-show="cps.vals.activeButtons.resizePerspectives" class="emuwebapp-levelResizeBtn" enlarge="{{order}}">
             <img style="cursor: pointer">
         </div> 
     </div>
