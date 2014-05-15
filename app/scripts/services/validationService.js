@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 					schemasJsos.push({
 						name: n,
 						data: resp.data
-					},function (err) {
+					}, function (err) {
 						console.error('Unable to load schemas!');
 						console.error(err);
 					});
@@ -35,15 +35,19 @@ angular.module('emuwebApp')
 		sServObj.validateJSO = function (schemaName, jso) {
 			var schema;
 			angular.forEach(schemasJsos, function (s) {
-				if(s.name === schemaName){
+				if (s.name === schemaName) {
 					schema = s;
 				}
 			});
 
-			if (tv4.validate(jso, schema.data)) {
+			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				return true;
 			} else {
-				return tv4.error;
+				if (schema === undefined) {
+					return 'schema is currently undefined! This is either due to a bad schemaName being used or to a slow load time of the schema files (known bug! Should be fixed soon...). A reload should fix the problem'
+				} else {
+					return tv4.error;
+				}
 			}
 
 
