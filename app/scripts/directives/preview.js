@@ -2,36 +2,44 @@
 
 
 angular.module('emuwebApp')
-	.directive('preview', function () {
+	.directive('preview', function (viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService) {
 		return {
 			templateUrl: 'views/preview.html',
 			restrict: 'E',
+			scope: {
+				currentBundleName: '@'
+			},
 			link: function postLink(scope, element) {
-				// select the needed DOM elements from the template
+				// select the needed DOM elements from the template and init vals
 				var canvas = element.find('canvas')[0];
 				var markupCanvas = element.find('canvas')[1];
 				var initialized = false;
+
+				// hook up scope vars for watches
+				scope.vs = viewState;
+				scope.shs = Soundhandlerservice;
 
 
 				/////////////////////
 				// watches
 
+				//
 				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
-					if (!$.isEmptyObject(scope.shs.wavJSO)) {
+					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 						if (oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS) {
 							drawPreview();
 						}
 					}
 				}, true);
 
-				// no deep watch here... 
-				scope.$watch('shs.wavJSO', function () {
-					if ($.isEmptyObject(scope.shs.wavJSO)) {
-						var ctx = canvas.getContext('2d');
-						ctx.clearRect(0, 0, canvas.width, canvas.height);
+				//
+				scope.$watch('currentBundleName', function () {
+					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+						initialized = false;
+						drawPreview();
 
 					}
-				});
+				}, true);
 
 				//
 				/////////////////////
@@ -41,11 +49,11 @@ angular.module('emuwebApp')
 				 */
 				function drawPreview() {
 					if (!initialized) {
-						scope.dhs.freshRedrawDrawOsciOnCanvas(scope.vs, canvas, scope.dhs.osciPeaks, scope.shs.wavJSO.Data, scope.cps);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 						initialized = true;
-						drawVpOsciMarkup(scope.vs, canvas, scope.cps);
+						drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					} else {
-						drawVpOsciMarkup(scope.vs, canvas, scope.cps);
+						drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					}
 				}
 
@@ -54,11 +62,10 @@ angular.module('emuwebApp')
 				 * the information that is specified in
 				 * the viewport
 				 */
-
-				function drawVpOsciMarkup(vs, canvas, config, cacheImage) {
+				function drawVpOsciMarkup(vs, canvas, config) {
 					var ctx = markupCanvas.getContext('2d');
-					var posS = (markupCanvas.width / scope.shs.wavJSO.Data.length) * vs.curViewPort.sS;
-					var posE = (markupCanvas.width / scope.shs.wavJSO.Data.length) * vs.curViewPort.eS;
+					var posS = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.sS;
+					var posE = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.eS;
 
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					ctx.fillStyle = config.vals.colors.selectedAreaColor;
