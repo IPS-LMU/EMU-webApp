@@ -587,16 +587,23 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.snapBoundary = function (toTop, sample, levelName, segID) {
+		sServObj.snapBoundary = function (toTop, levelName, segment, neighbor, type) {
 			var neighTd;
-			var thisTd;
 			var neighTdIdx;
 			var absMinDist = Infinity;
 			var absDist;
-			var minDist;
-			angular.forEach(sServObj.data.levels, function (t, tIdx) {
-				if (t.name === levelName) {
-					thisTd = t;
+			var minDist = undefined;
+			var sample;
+			var sampleTarget;
+			if(type == "SEGMENT" ) {
+				sample = segment.sampleStart;
+			}
+			else if(type == "EVENT") {
+				sample = segment.samplePoint;
+			}
+
+			angular.forEach(sServObj.data.levels, function (thisTd, tIdx) {
+				if (thisTd.name === levelName) {
 					if (toTop) {
 						if (tIdx >= 1) {
 							neighTd = sServObj.data.levels[tIdx - 1];
@@ -604,6 +611,7 @@ angular.module('emuwebApp')
 							return false;
 						}
 					} else {
+					    
 						if (tIdx < sServObj.data.levels.length - 1) {
 							neighTd = sServObj.data.levels[tIdx + 1];
 						} else {
@@ -611,19 +619,29 @@ angular.module('emuwebApp')
 						}
 					}
 					neighTd.items.forEach(function (itm) {
-						absDist = Math.abs(sample - itm.sampleStart);
+					    if(neighTd.type == "SEGMENT" ) {
+					        sampleTarget = itm.sampleStart;
+					    }
+					    else if(neighTd.type == "EVENT" ) {
+					        sampleTarget = itm.samplePoint;
+					    }
+						absDist = Math.abs(sample - sampleTarget);
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
-							minDist = itm.sampleStart - sample;
+							minDist = sampleTarget - sample;
 						}
 					});
 				}
 			});
-
-
+			console.log(minDist);
 			if (minDist !== undefined) {
-				this.moveBoundry(minDist, thisTd, segID);
-				return minDist;
+			    if(type == "SEGMENT" ) {
+    				this.moveBoundry(minDist, levelName, segment, neighbor);
+    			}
+    			else if(type == "EVENT" ) {
+    			    this.movePoint(minDist, levelName, segment);
+    			}
+				return true;
 			} else {
 				return false;
 			}

@@ -190,41 +190,43 @@ angular.module('emuwebApp')
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
                   var mouseSeg = viewState.getcurMouseSegment();
                   var levelName = viewState.getcurMouseLevelName();
-                  console.log(mouseSeg);
-                  var minDist;
-                  if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-                    minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().sampleStart, levelName, mouseSeg.id);
-                  } else {
-                    minDist = Levelservice.snapBoundary(true, viewState.getcurMouseSegment().samplePoint, levelName, mouseSeg.id);
+                  var levelType = viewState.getcurMouseLevelType();
+                  var neighbor = viewState.getcurMouseNeighbours();
+                  var minDist = Levelservice.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
+                  if(minDist == false) {
+                      // error msg nothing moved / nothing on top
+                      console.log('TOP2');
                   }
-                  scope.hists.addObjToUndoStack({
-                    'type': 'ESPS',
-                    'action': 'snapBoundary',
-                    'levelName': levelName,
-                    'item': mouseSeg.id,
-                    'movedBy': minDist
-                  });
+                  else {
+                      scope.hists.addObjToUndoStack({
+                        'type': 'ESPS',
+                        'action': 'snapBoundary',
+                        'levelName': levelName,
+                        'segment': mouseSeg
+                      });
+                  }                  
                 }
               }
 
               // preselected boundary snap to bottom
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
                 if (ConfigProviderService.vals.restrictions.editItemSize) {
-                  var mousSegID = viewState.getcurMouseSegmentId();
+                  var mouseSeg = viewState.getcurMouseSegment();
                   var levelName = viewState.getcurMouseLevelName();
-                  var minDist;
-                  if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-                    minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().sampleStart, levelName, mousSegID);
-                  } else {
-                    minDist = Levelservice.snapBoundary(false, viewState.getcurMouseSegment().samplePoint, levelName, mousSegID);
+                  var levelType = viewState.getcurMouseLevelType();
+                  var neighbor = viewState.getcurMouseNeighbours();
+                  var minDist = Levelservice.snapBoundary(false, levelName, mouseSeg, neighbor, levelType);
+                  if(minDist == false) {
+                      // error msg nothing moved / nothing below
                   }
-                  scope.hists.addObjToUndoStack({
-                    'type': 'ESPS',
-                    'action': 'snapBoundary',
-                    'levelName': levelName,
-                    'item': mousSegID,
-                    'movedBy': minDist
-                  });
+                  else {
+                      scope.hists.addObjToUndoStack({
+                        'type': 'ESPS',
+                        'action': 'snapBoundary',
+                        'levelName': levelName,
+                        'segment': mouseSeg
+                      });
+                  } 
                 }
               }
 

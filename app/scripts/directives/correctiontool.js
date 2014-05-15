@@ -42,6 +42,7 @@ angular.module('emuwebApp')
 						}
 					}
 				});
+							
 
 				/////////////////////////////
 				// Bindings
@@ -59,9 +60,7 @@ angular.module('emuwebApp')
 					// perform mouse tracking
 					var mouseX = Drawhelperservice.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
-
 					switchMarkupContext(event);
-
 
 					switch (event.which) {
 					case 0:
