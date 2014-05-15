@@ -740,6 +740,7 @@ angular.module('emuwebApp')
 			if (Iohandlerservice.wsH.isConnected()) {
 				Iohandlerservice.wsH.closeConnect();
 			}
+			$scope.curBndl = {};
 			$scope.bundleList = [];
 			Soundhandlerservice.wavJSO = {};
 			Levelservice.data = {};

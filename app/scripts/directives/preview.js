@@ -39,6 +39,11 @@ angular.module('emuwebApp')
 						drawPreview();
 
 					}
+					//clear on empty bundle name
+					if (scope.currentBundleName === '') {
+						var ctx = canvas.getContext('2d');
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+					}
 				}, true);
 
 				//
