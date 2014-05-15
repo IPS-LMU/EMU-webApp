@@ -161,9 +161,9 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 		var curLevel = levelData[levelNr];
 		tG = tG + t + 'item [' + levelNr + ']:' + nl;
 		if (curLevel.type === 'SEGMENT') {
-			tG = tG + t + t + 'class = "IntervalLevel"' + nl;
+			tG = tG + t + t + 'class = "IntervalTier"' + nl;
 		} else if (curLevel.type === 'EVENT') {
-			tG = tG + t + t + 'class = "TextLevel"' + nl;
+			tG = tG + t + t + 'class = "TextTier"' + nl;
 		}
 		tG = tG + t + t + 'name = "' + curLevel.name + '"' + nl;
 		tG = tG + t + t + 'xmin = ' + findTimeOfMinSample() + nl;
