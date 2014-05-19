@@ -267,9 +267,9 @@ angular.module('emuwebApp')
 		 * deletes a level by its name
 		 */
 		sServObj.deleteLevel = function (levelName, levelIndex, curPerspectiveIdx) {
-            var l = sServObj.data.levels[levelIndex];
-            sServObj.data.levels.splice(levelIndex, 1);
-            ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 1);
+			var l = sServObj.data.levels[levelIndex];
+			sServObj.data.levels.splice(levelIndex, 1);
+			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 1);
 			return {
 				level: l,
 				id: levelIndex,
@@ -281,8 +281,8 @@ angular.module('emuwebApp')
 		 * deletes a level by its name
 		 */
 		sServObj.deleteLevelInvers = function (originalLevel, levelName, levelIndex, curPerspectiveIdx) {
-            sServObj.data.levels.splice(levelIndex, 0, originalLevel);
-            ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, levelName);
+			sServObj.data.levels.splice(levelIndex, 0, originalLevel);
+			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, levelName);
 		};
 
 		/**
@@ -535,9 +535,9 @@ angular.module('emuwebApp')
 
 		/**
 		 *   delete a single boundary between items
-		 *   @param toDelete 
-		 *   @param name 
-		 *   @param levelType 
+		 *   @param toDelete
+		 *   @param name
+		 *   @param levelType
 		 */
 		sServObj.deleteBoundary = function (toDelete, name) {
 			var last = null;
@@ -567,22 +567,22 @@ angular.module('emuwebApp')
 
 		/**
 		 *   delete a single boundary between items
-		 *   @param toDelete 
-		 *   @param name 
-		 *   @param levelType 
+		 *   @param toDelete
+		 *   @param name
+		 *   @param levelType
 		 */
 		sServObj.deleteBoundaryInvers = function (toRestore, name, order) {
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
-				    level.items.splice(order, 0, toRestore);
-				    var oldName = level.items[order-1].labels[0].value.slice(0, (level.items[order-1].labels[0].value.length - toRestore.labels[0].value.length));
-				    //level.items[order-1].labels[0].value = level.items[order-1].labels[0].value.slice(0, -(toRestore.labels[0].value.length));
-				    level.items[order-1].labels[0].value = oldName;
-				    level.items[order-1].sampleDur -= toRestore.sampleDur;
+					level.items.splice(order, 0, toRestore);
+					var oldName = level.items[order - 1].labels[0].value.slice(0, (level.items[order - 1].labels[0].value.length - toRestore.labels[0].value.length));
+					//level.items[order-1].labels[0].value = level.items[order-1].labels[0].value.slice(0, -(toRestore.labels[0].value.length));
+					level.items[order - 1].labels[0].value = oldName;
+					level.items[order - 1].sampleDur -= toRestore.sampleDur;
 				}
 			});
-			
-		};		
+
+		};
 
 		/**
 		 *
@@ -595,10 +595,9 @@ angular.module('emuwebApp')
 			var minDist = undefined;
 			var sample;
 			var sampleTarget;
-			if(type == "SEGMENT" ) {
+			if (type == "SEGMENT") {
 				sample = segment.sampleStart;
-			}
-			else if(type == "EVENT") {
+			} else if (type == "EVENT") {
 				sample = segment.samplePoint;
 			}
 
@@ -611,7 +610,7 @@ angular.module('emuwebApp')
 							return false;
 						}
 					} else {
-					    
+
 						if (tIdx < sServObj.data.levels.length - 1) {
 							neighTd = sServObj.data.levels[tIdx + 1];
 						} else {
@@ -619,12 +618,11 @@ angular.module('emuwebApp')
 						}
 					}
 					neighTd.items.forEach(function (itm) {
-					    if(neighTd.type == "SEGMENT" ) {
-					        sampleTarget = itm.sampleStart;
-					    }
-					    else if(neighTd.type == "EVENT" ) {
-					        sampleTarget = itm.samplePoint;
-					    }
+						if (neighTd.type == "SEGMENT") {
+							sampleTarget = itm.sampleStart;
+						} else if (neighTd.type == "EVENT") {
+							sampleTarget = itm.samplePoint;
+						}
 						absDist = Math.abs(sample - sampleTarget);
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
@@ -635,12 +633,11 @@ angular.module('emuwebApp')
 			});
 			console.log(minDist);
 			if (minDist !== undefined) {
-			    if(type == "SEGMENT" ) {
-    				this.moveBoundry(minDist, levelName, segment, neighbor);
-    			}
-    			else if(type == "EVENT" ) {
-    			    this.movePoint(minDist, levelName, segment);
-    			}
+				if (type == "SEGMENT") {
+					this.moveBoundry(minDist, levelName, segment, neighbor);
+				} else if (type == "EVENT") {
+					this.movePoint(minDist, levelName, segment);
+				}
 				return true;
 			} else {
 				return false;
@@ -733,9 +730,9 @@ angular.module('emuwebApp')
 						});
 					}
 				} else {
-				    angular.forEach(segments, function (seg) {
-				        segTime += seg.sampleDur;
-				    });
+					angular.forEach(segments, function (seg) {
+						segTime += seg.sampleDur;
+					});
 					if (segTime > 0) {
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
@@ -753,9 +750,9 @@ angular.module('emuwebApp')
 						});
 					}
 				} else {
-				    angular.forEach(segments, function (seg) {
-				        segTime += seg.sampleDur;
-				    });
+					angular.forEach(segments, function (seg) {
+						segTime += seg.sampleDur;
+					});
 					if (segTime > 0) {
 						startTime = 0;
 						angular.forEach(segments, function (seg, i) {
@@ -791,10 +788,10 @@ angular.module('emuwebApp')
 					break;
 				}
 			}
-			var res; 
-			if(Math.abs(distLeft) < Math.abs(distRight)){
+			var res;
+			if (Math.abs(distLeft) < Math.abs(distRight)) {
 				res = distLeft;
-			}else{
+			} else {
 				res = distRight + 1;
 			}
 
