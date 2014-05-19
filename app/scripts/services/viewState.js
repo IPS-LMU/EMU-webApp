@@ -150,6 +150,7 @@ angular.module('emuwebApp')
     };
 
     /**
+     *
      */
     sServObj.animatePlayHead = function (startS, endS) {
       sServObj.playHeadAnimationInfos.sS = startS;
@@ -228,7 +229,6 @@ angular.module('emuwebApp')
      */
     sServObj.selectLevel = function (next, order, Levelserv) {
       var curLev;
-      console.log(order)
       var now = sServObj.getcurClickLevelName();
       if (now === undefined && !next) {
         // select first if none prev. defined (up)
@@ -245,7 +245,7 @@ angular.module('emuwebApp')
 
       var idxOfNow;
       order.forEach(function (name, idx) {
-        if (name == now) {
+        if (name === now) {
           idxOfNow = idx;
         }
       });
@@ -261,7 +261,7 @@ angular.module('emuwebApp')
         }
       } else {
         if (idxOfNow - 1 >= 0) {
-          curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
+          curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
           // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
           sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
           sServObj.curClickSegments = [];
@@ -430,6 +430,9 @@ angular.module('emuwebApp')
       this.rightSubmenuOpen = s;
     };
 
+    /**
+     *
+     */
     sServObj.setcurClickLevel = function (levelID, levelType, levelIndex) {
       this.setcurClickLevelName(levelID, levelIndex);
       this.setcurClickLevelType(levelType);
@@ -583,7 +586,6 @@ angular.module('emuwebApp')
 
     /**
      * sets a multiple select (click) Segment
-     * @param segment
      */
     sServObj.selectBoundry = function () {
       if (sServObj.curClickSegments.length > 0) {
@@ -631,6 +633,9 @@ angular.module('emuwebApp')
       }
     };
 
+    /**
+     *
+     */
     sServObj.sortbyid = function (a, b) {
       //Compare "a" and "b" in some fashion, and return -1, 0, or 1
       if (a.id > b.id) return 1;
@@ -668,38 +673,64 @@ angular.module('emuwebApp')
       return this.curClickSegments;
     };
 
+    /**
+     *
+     */
     sServObj.getselected = function () {
       return this.curClickSegments;
     };
 
+    /**
+     *
+     */
     sServObj.getlasteditAreaElem = function () {
       return this.lasteditAreaElem;
     };
 
+    /**
+     *
+     */
     sServObj.setlasteditAreaElem = function (e) {
       this.lasteditAreaElem = e;
     };
 
+    /**
+     *
+     */
     sServObj.isEditing = function () {
       return this.editing;
     };
 
+    /**
+     *
+     */
     sServObj.setEditing = function (n) {
       this.editing = n;
     };
 
+    /**
+     *
+     */
     sServObj.setlasteditArea = function (name) {
       this.lasteditArea = name;
     };
 
+    /**
+     *
+     */
     sServObj.getlastID = function () {
       return this.lasteditArea.substr(1);
     };
 
+    /**
+     *
+     */
     sServObj.getlasteditArea = function () {
       return this.lasteditArea;
     };
-
+    /**
+     *
+     */
     sServObj.deleteEditArea = function () {
       if (null !== this.getlasteditArea()) {
         $('.' + this.getlasteditArea()).remove();
@@ -707,19 +738,30 @@ angular.module('emuwebApp')
       this.editing = false;
     };
 
-
+    /**
+     *
+     */
     sServObj.countSelected = function () {
       return this.curClickSegments.length;
     };
 
+    /**
+     *
+     */
     sServObj.getCurrentSample = function (perc) {
       return this.curViewPort.sS + (this.curViewPort.eS - this.curViewPort.sS) * perc;
     };
 
+    /**
+     *
+     */
     sServObj.getCurrentPercent = function (sample) {
       return (sample * (100 / (this.curViewPort.eS - this.curViewPort.sS) / 100));
     };
 
+    /**
+     *
+     */
     sServObj.getPCMpp = function (event) {
       var start = parseFloat(this.curViewPort.sS);
       var end = parseFloat(this.curViewPort.eS);
@@ -744,6 +786,9 @@ angular.module('emuwebApp')
       return k.substring(0, k.indexOf('.') + n + 1);
     };
 
+    /**
+     *
+     */
     sServObj.openEditArea = function (lastEventClick, element, type) {
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
@@ -763,6 +808,9 @@ angular.module('emuwebApp')
       sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
     };
 
+    /**
+     *
+     */
     sServObj.createSelection = function (field, start, end) {
       if (field.createTextRange) {
         var selRange = field.createTextRange();
@@ -779,6 +827,9 @@ angular.module('emuwebApp')
       field.focus();
     };
 
+    /**
+     *
+     */
     sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
       var textid = '_' + labelid;
       element.prepend($('<textarea>').attr({
