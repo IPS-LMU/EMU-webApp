@@ -437,9 +437,19 @@ angular.module('emuwebApp')
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
                     var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.left !== undefined) {
-                      viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                      viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
-
+                      if (lastNeighboursMove.left.sampleStart !== undefined) {
+                        // check if in view
+                        if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
+                          viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                          viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                        }
+                      } else {
+                        // check if in view
+                        if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
+                          viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                          viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                        }
+                      }
                     }
                   }
                 }
@@ -452,10 +462,20 @@ angular.module('emuwebApp')
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
                     var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
-                    if (lastNeighboursMove.right !== undefined) {
-                      viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                      viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                    if (lastNeighboursMove.right.sampleStart !== undefined) {
+                      // check if in view
+                      if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
+                        viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                        viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                      }
+                    } else {
+                      // check if in view
+                      if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
+                        viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                        viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                      }
                     }
+
                   }
                 }
               }
@@ -469,14 +489,36 @@ angular.module('emuwebApp')
                     var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (e.shiftKey) {
                       if (lastNeighboursMove.left !== undefined) {
-                        viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                        viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                        if (lastNeighboursMove.left.sampleStart !== undefined) {
+                          // check if in view
+                          if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
+                            viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          }
+                        } else {
+                          // check if in view
+                          if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
+                            viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          }
+                        }
                       }
 
                     } else {
                       if (lastNeighboursMove.right !== undefined) {
-                        viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                        viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        if (lastNeighboursMove.right.sampleStart !== undefined) {
+                          // check if in view
+                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
+                            viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          }
+                        } else {
+                          // check if in view
+                          if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
+                            viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          }
+                        }
                       }
                     }
                   }
@@ -489,9 +531,12 @@ angular.module('emuwebApp')
                   if (ConfigProviderService.vals.restrictions.addItem) {
                     if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
                       if (viewState.getcurClickSegments().length === 1) {
-                        viewState.setEditing(true);
-                        viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
-                        scope.cursorInTextField();
+                        // check if in view
+                        if (viewState.getselectedRange().start >= viewState.curViewPort.sS && viewState.getselectedRange().end <= viewState.curViewPort.eS) {
+                          viewState.setEditing(true);
+                          viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                          scope.cursorInTextField();
+                        }
                       } else {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
                       }
