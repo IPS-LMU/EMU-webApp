@@ -309,8 +309,15 @@ angular.module('emuwebApp')
 						if (levelDetails.name === levelId && segCId.length > 0) {
 							segCId.forEach(function (entry) {
 								if (entry !== undefined) {
-									posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
-									posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
+									// check if segment or event level
+									if (entry.sampleStart !== undefined) {
+										posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
+										posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
+									} else {
+										posS = Math.round(viewState.getPos(canvas[0].width, entry.samplePoint));
+										posS = posS - 5;
+										posE = posS + 10;
+									}
 									ctx.fillStyle = config.vals.colors.selectedSegmentColor;
 									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
 									ctx.fillStyle = config.vals.colors.startBoundaryColor;
