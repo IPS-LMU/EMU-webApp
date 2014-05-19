@@ -198,7 +198,7 @@ angular.module('emuwebApp')
 				$scope.openSubmenu();
 			}
 			// FOR DEVELOPMENT:
-			// $scope.openDemoDBbtnClick();
+			// $scope.openDemoDBbtnClick('ae');
 			// $scope.aboutBtnClick();
 
 			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
