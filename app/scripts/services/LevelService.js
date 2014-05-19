@@ -495,11 +495,11 @@ angular.module('emuwebApp')
 		sServObj.insertPoint = function (start, name, pointName) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (level) {
-				if (level.name === name && level.type == 'EVENT') {
+				if (level.name === name && level.type === 'EVENT') {
 					var last = level.items[0].samplePoint;
 					angular.forEach(level.items, function (evt, id) {
 						if (!ret) {
-							if (start < last && (Math.floor(start) != Math.floor(evt.samplePoint))) {
+							if (start < last && (Math.floor(start) !== Math.floor(evt.samplePoint))) {
 								sServObj.insertElementDetails(name, id - 1, pointName, start);
 								ret = true;
 							}

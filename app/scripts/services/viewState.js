@@ -653,11 +653,19 @@ angular.module('emuwebApp')
           start: this.curClickSegments[0].sampleStart,
           end: (this.curClickSegments[this.curClickSegments.length - 1].sampleStart + this.curClickSegments[this.curClickSegments.length - 1].sampleDur)
         };
-      } else if (this.curClickSegments.length == 1) {
-        return {
-          start: this.curClickSegments[0].sampleStart,
-          end: (this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur)
-        };
+      } else if (this.curClickSegments.length === 1) {
+        if (this.curClickSegments[0].sampleStart !== undefined) {
+          return {
+            start: this.curClickSegments[0].sampleStart,
+            end: (this.curClickSegments[0].sampleStart + this.curClickSegments[0].sampleDur)
+          };
+        } else {
+          return {
+            start: this.curClickSegments[0].samplePoint,
+            end: this.curClickSegments[0].samplePoint
+          };
+        }
+
       } else {
         return {
           start: -1,

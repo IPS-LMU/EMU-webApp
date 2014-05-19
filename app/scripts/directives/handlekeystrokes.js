@@ -452,8 +452,9 @@ angular.module('emuwebApp')
               // createNewItemAtSelection
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (ConfigProviderService.vals.restrictions.addItem) {
+                  console.log(viewState.getselectedRange())
                   if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
-                    if (viewState.getcurClickSegments().length == 1) {
+                    if (viewState.getcurClickSegments().length === 1) {
                       viewState.setEditing(true);
                       viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
                       scope.cursorInTextField();
