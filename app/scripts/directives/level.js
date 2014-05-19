@@ -21,12 +21,8 @@ angular.module('emuwebApp')
 				///////////////
 				// watches
 
+				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-				// watchCollection does NOT watch for changed values !!!!!
-				// it watches for "adding, removing, and moving items belonging to an object or array."
-				// see https://docs.angularjs.org/api/ng/type/$rootScope.Scope
-				// it cant be used here
-				
 					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
 						drawLevelDetails(scope.level, viewState, ConfigProviderService);
 						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
@@ -37,6 +33,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
 				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
 					// only repaint if mouse over current level
 					if (viewState.getcurMouseLevelName() === scope.level.name) {
@@ -49,29 +46,40 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
+				scope.$watch('vs.curClickLevelName', function (newValue, oldValue) {
+					if (newValue !== undefined) {
+						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					}
+				}, true);
+
+				//
 				scope.$watch('vs.movingBoundarySample', function () {
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
+				//
 				scope.$watch('vs.movingBoundary', function () {
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
-
+				//
 				scope.$watch('hists.movesAwayFromLastSave', function () {
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
-				
-				
+
+				//
+				/////////////////
+
 				scope.updateView = function () {
 					if ($.isEmptyObject(scope.cps)) {
-						console.log("undef viewState");
+						console.log('undef viewState');
 						return;
-					}				
-				    drawLevelDetails(scope.level, scope.vs, scope.cps);
+					}
+					drawLevelDetails(scope.level, scope.vs, scope.cps);
 				};
-				
+
 
 				///////////////
 				// bindings
@@ -93,15 +101,15 @@ angular.module('emuwebApp')
 					var fontSize = config.vals.font.fontPxSize;
 
 					if ($.isEmptyObject(levelDetails)) {
-						console.log("undef levelDetails");
+						console.log('undef levelDetails');
 						return;
 					}
 					if ($.isEmptyObject(viewState)) {
-						console.log("undef viewState");
+						console.log('undef viewState');
 						return;
 					}
 					if ($.isEmptyObject(config)) {
-						console.log("undef config");
+						console.log('undef config');
 						return;
 					}
 					if (!scope.open) {
@@ -109,8 +117,8 @@ angular.module('emuwebApp')
 					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
-					
-					
+
+
 					//predef vars
 					var sDist, posS, posE, horizontalText;
 
@@ -279,7 +287,7 @@ angular.module('emuwebApp')
 						ctx.fillStyle = config.vals.colors.selectedLevelColor;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
-					
+
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
 

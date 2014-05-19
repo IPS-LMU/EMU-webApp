@@ -229,26 +229,35 @@ angular.module('emuwebApp')
       var tag;
       var now = sServObj.getcurClickLevelName();
       if (now === undefined && !next) {
+        // select first if none prev. defined (up)
         sServObj.setcurClickLevelName(order[0]);
         return;
       } else if (now === undefined && next) {
+        // select last if none prev. defined (down)
         sServObj.setcurClickLevelName(order[order.length - 1]);
         return;
       }
+
       var idxOfNow;
       order.forEach(function (name, idx) {
         if (name == now) {
           idxOfNow = idx;
         }
-      })
+      });
 
       if (next) {
         if (idxOfNow + 1 < order.length) {
           sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+          sServObj.curClickSegments = [];
+          sServObj.selectBoundry();
+          sServObj.resetSelect();
         }
       } else {
         if (idxOfNow - 1 >= 0) {
           sServObj.setcurClickLevelName(order[idxOfNow - 1]);
+          sServObj.curClickSegments = [];
+          sServObj.selectBoundry();
+          sServObj.resetSelect();
         }
       }
     };
@@ -569,8 +578,13 @@ angular.module('emuwebApp')
      */
     sServObj.selectBoundry = function () {
       if (sServObj.curClickSegments.length > 0) {
-        var left = this.curClickSegments[0].sampleStart || this.curClickSegments[0].samplePoint;
-        var right = this.curClickSegments[this.curClickSegments.length - 1].sampleStart + this.curClickSegments[this.curClickSegments.length - 1].sampleDur ||  this.curClickSegments[0].samplePoint;
+        var left, right;
+        if (sServObj.curClickSegments[0].sampleStart !== undefined) {
+          left = sServObj.curClickSegments[0].sampleStart;
+        } else {
+          left = sServObj.curClickSegments[0].samplePoint;
+        }
+        var right = sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleStart + sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleDur ||  sServObj.curClickSegments[0].samplePoint;
         sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -580,7 +594,6 @@ angular.module('emuwebApp')
           }
         });
         sServObj.select(left, right);
-        //$rootScope.$digest();
       }
     };
 
@@ -888,7 +901,7 @@ angular.module('emuwebApp')
           curMouseMoveSegmentStart = seg.samplePoint;
         }
 
-        console.log(curMouseMoveSegmentStart);
+        // console.log(curMouseMoveSegmentStart);
 
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
         var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;

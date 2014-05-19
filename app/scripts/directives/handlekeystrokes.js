@@ -176,7 +176,7 @@ angular.module('emuwebApp')
               }
 
 
-              // LevelUp
+              // levelUp
               if (code === ConfigProviderService.vals.keyMappings.levelUp) {
                 viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order); // pass in order from cps to prevent circular deps
               }
