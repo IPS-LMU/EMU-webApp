@@ -3,8 +3,8 @@
 </div>
 <div class="modal-body">
   <h4 style="text-align:center">Version: 0.0.1</h4>
-  <h5 style="font-size:8pt; text-align:center">Build time stamp: Thu May 15 2014 19:36:49</h5>
-  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: 607ec084d524cfb5a071759aad4f7fee8441e068 - master</h5>
+  <h5 style="font-size:8pt; text-align:center">Build time stamp: Mon May 19 2014 18:35:18</h5>
+  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: f8dc83e9b5f2eeac0774eeca39ac152844e2c699 - master</h5>
   <div class="alert alert-danger"><b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.</div>
 
   <hr class="emuwebapp-aboutHr">
@@ -76,7 +76,7 @@
       <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}:</b></td><td>Deleted current segment boundary</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}:</b></td><td>Snap preselected boundary to closest boundary in level above</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary)}}:</b></td><td>Snap preselected boundary to closest boundary in level below</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}:</b></td><td>Snap preselected boundary to nearest zero crossing</td></tr>
+      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.snapBoundaryToNearestZeroCrossing)}}:</b></td><td>Snap preselected boundary to nearest zero crossing</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.expandSelSegmentsRight)}}:</b></td><td>Add time to selected segments (expand to right)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeftRight)}}:</b></td><td>Remove time to selected segments (shrink from right)</td></tr>
       <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>+</b></td><td>Add time to selected segments (expand to left)</td></tr>
