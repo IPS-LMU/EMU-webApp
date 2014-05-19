@@ -314,7 +314,7 @@ angular.module('emuwebApp')
 										posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
 										posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
 									} else {
-										posS = Math.round(viewState.getPos(canvas[0].width, entry.samplePoint));
+										posS = Math.round(viewState.getPos(canvas[0].width, entry.samplePoint) + sDist / 2);
 										posS = posS - 5;
 										posE = posS + 10;
 									}
