@@ -83,7 +83,7 @@ angular.module('emuwebApp')
         'permittedActions': []
       };
       sServObj.states.labeling = {
-        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick']
+        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars']
       };
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
