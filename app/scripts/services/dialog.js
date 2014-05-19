@@ -57,12 +57,5 @@ angular.module('emuwebApp')
 			modalInstance.close(res);
 		};
 
-		/**
-		 *
-		 */
-		sServObj.doSomething = function (argument) {
-			alert('sdfadsf')
-		}
-
 		return sServObj;
 	});
