@@ -10,6 +10,9 @@ angular.module('emuwebApp')
 			// scope:{},
 			link: function postLink(scope, element, attr) {
 
+				////////////////
+				//watches
+
 				scope.$watch('vs.submenuOpen', function () {
 					// scope.updateCSS();
 					if (scope.vs.submenuOpen) {
@@ -22,6 +25,8 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+				//
+				/////////////////
 
 				// scope.$watch('vs.submenuOpen', function () {
 
