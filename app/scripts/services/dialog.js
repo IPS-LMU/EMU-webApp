@@ -7,6 +7,9 @@ angular.module('emuwebApp')
 
 		var modalInstance = {};
 
+		/**
+		 *
+		 */
 		sServObj.open = function (templatefile, argCtrl, txt) {
 			viewState.setState('modalShowing');
 			modalInstance = $modal.open({
@@ -23,6 +26,9 @@ angular.module('emuwebApp')
 			return modalInstance.result;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.openExport = function (templatefile, argCtrl, data, txt) {
 			viewState.setState('modalShowing');
 			modalInstance = $modal.open({
@@ -42,12 +48,21 @@ angular.module('emuwebApp')
 			return modalInstance.result;
 		};
 
+		/**
+		 *
+		 */
 		sServObj.close = function (res) {
 			viewState.focusInTextField = false;
 			viewState.setState(viewState.prevState);
 			modalInstance.close(res);
 		};
 
+		/**
+		 *
+		 */
+		sServObj.doSomething = function (argument) {
+			alert('sdfadsf')
+		}
 
 		return sServObj;
 	});
