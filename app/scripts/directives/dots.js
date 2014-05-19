@@ -153,8 +153,22 @@ angular.module('emuwebApp')
 					var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].xSsffTrack); // use first track for sample numbers
 					var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
 
-					var sInterv = 1 / xsRaSt.sampleRate - xsRaSt.startTime;
-					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
+					var sInterv = (1 / xsRaSt.sampleRate);
+					var curMousePosTime = scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate;
+					var curFrame;
+
+					if (xsRaSt.startTime === (1 / xsRaSt.sampleRate) / 2) {
+						curFrame = Math.round(curMousePosTime * xsRaSt.sampleRate);
+					} else {
+						curFrame = Math.round((curMousePosTime * xsRaSt.sampleRate) + ((xsRaSt.startTime - (1 / xsRaSt.sampleRate) / 2) * xsRaSt.sampleRate));
+					}
+					// check if due to math.round curFrame > col.length
+					var trConf = scope.cps.getSsffTrackConfig(dD.dots[0].xSsffTrack);
+					var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+
+					if (curFrame > xCol.values.length - 1) {
+						curFrame = xCol.values.length - 1;
+					}
 
 
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
@@ -182,8 +196,8 @@ angular.module('emuwebApp')
 						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
 
 						// check if x and why have the same amount of cols
-						if (xCol.values.length !== yCol.values.length ) {
-							alert('colomns do not have same length or length of one not 1');
+						if (xCol.values.length !== yCol.values.length) {
+							alert('columns do not have same length or length of one not 1');
 							return;
 						}
 
@@ -196,37 +210,6 @@ angular.module('emuwebApp')
 							return;
 						}
 
-						var sInterv = 1 / xsRaSt.sampleRate - xsRaSt.startTime;
-						var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
-
-
-						console.log(yCol.values.length);
-						console.log(curFrame);
-						// 
-						// var minX = Math.min.apply(Math, xCol.values);
-						// var maxX = Math.max.apply(Math, xCol.values);
-
-						// var minY = Math.min.apply(Math, yCol.values);
-						// var maxY = Math.max.apply(Math, yCol.values);
-
-						// if (minX < globalMinX) {
-						// 	globalMinX = minX;
-						// }
-						// if (maxX > globalMaxX) {
-						// 	globalMaxX = maxX;
-						// }
-						// if (minY < globalMinY) {
-						// 	globalMinY = minY;
-						// }
-						// if (maxY > globalMaxY) {
-						// 	globalMaxY = maxY;
-						// }
-
-						// console.log(xCol.values[curFrame]);
-						// console.log(yCol.values[curFrame]);
-						// console.log(xCol.values[curFrame][dD.dots[i].xContourNr])
-
-						// return;
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
