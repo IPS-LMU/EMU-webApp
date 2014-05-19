@@ -23,6 +23,7 @@ angular.module('emuwebApp')
         var levelType = scope.level.type;
 
 
+
         /////////////////////////////
         // Bindings
         element.bind('click', function (event) {
@@ -174,7 +175,7 @@ angular.module('emuwebApp')
           // console.log(element.parent());
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setlasteditAreaElem(element.parent());
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
           scope.$apply();
@@ -187,7 +188,7 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           viewState.deleteEditArea();
           lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
           lastPCM = thisPCM;
           scope.$apply();
@@ -196,7 +197,7 @@ angular.module('emuwebApp')
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegment(lastEventClick.evtr);
           viewState.setlasteditArea('_' + lastEventClick.evtr.id);
           viewState.setlasteditAreaElem(element.parent());
