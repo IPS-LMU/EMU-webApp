@@ -178,11 +178,11 @@ angular.module('emuwebApp')
 
               // levelUp
               if (code === ConfigProviderService.vals.keyMappings.levelUp) {
-                viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order); // pass in order from cps to prevent circular deps
+                viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, Levelservice); // pass in Levelservice to prevent circular deps
               }
               // levelDown
               if (code === ConfigProviderService.vals.keyMappings.levelDown) {
-                viewState.selectLevel(true, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order); // pass in order from cps to prevent circular deps
+                viewState.selectLevel(true, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, Levelservice); // pass Levelservice to prevent circular deps
               }
 
               // preselected boundary snap to top
@@ -193,18 +193,17 @@ angular.module('emuwebApp')
                   var levelType = viewState.getcurMouseLevelType();
                   var neighbor = viewState.getcurMouseNeighbours();
                   var minDist = Levelservice.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
-                  if(minDist == false) {
-                      // error msg nothing moved / nothing on top
-                      console.log('TOP2');
+                  if (minDist == false) {
+                    // error msg nothing moved / nothing on top
+                    console.log('TOP2');
+                  } else {
+                    scope.hists.addObjToUndoStack({
+                      'type': 'ESPS',
+                      'action': 'snapBoundary',
+                      'levelName': levelName,
+                      'segment': mouseSeg
+                    });
                   }
-                  else {
-                      scope.hists.addObjToUndoStack({
-                        'type': 'ESPS',
-                        'action': 'snapBoundary',
-                        'levelName': levelName,
-                        'segment': mouseSeg
-                      });
-                  }                  
                 }
               }
 
@@ -216,17 +215,16 @@ angular.module('emuwebApp')
                   var levelType = viewState.getcurMouseLevelType();
                   var neighbor = viewState.getcurMouseNeighbours();
                   var minDist = Levelservice.snapBoundary(false, levelName, mouseSeg, neighbor, levelType);
-                  if(minDist == false) {
-                      // error msg nothing moved / nothing below
+                  if (minDist == false) {
+                    // error msg nothing moved / nothing below
+                  } else {
+                    scope.hists.addObjToUndoStack({
+                      'type': 'ESPS',
+                      'action': 'snapBoundary',
+                      'levelName': levelName,
+                      'segment': mouseSeg
+                    });
                   }
-                  else {
-                      scope.hists.addObjToUndoStack({
-                        'type': 'ESPS',
-                        'action': 'snapBoundary',
-                        'levelName': levelName,
-                        'segment': mouseSeg
-                      });
-                  } 
                 }
               }
 
@@ -483,7 +481,7 @@ angular.module('emuwebApp')
                       } else {
                         var insPoint = Levelservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newEventName);
                         if (!insPoint) {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Point here.');
+                          scope.dials.open('views/error.html', 'ModalCtrl', 'You are not allowed to insert a Point here.');
                         } else {
                           scope.hists.addObjToUndoStack({ // todo 
                             'type': 'ESPS',
@@ -524,7 +522,7 @@ angular.module('emuwebApp')
                         'order': order,
                         'seg': seg
                       });
-                      
+
                     } else {
                       scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                     }

@@ -90,7 +90,7 @@ angular.module('emuwebApp')
       sServObj.curState = sServObj.states.noDBorFilesloaded;
     };
 
-    // initialize at the beginning
+    // initialize on init
     sServObj.initialize();
 
     /**
@@ -100,7 +100,9 @@ angular.module('emuwebApp')
       return (sServObj.curState.permittedActions.indexOf(actionName) > -1);
     };
 
-
+    /**
+     *
+     */
     sServObj.setWindowWidth = function (b) {
       this.curViewPort.windowWidth = b;
     };
@@ -108,7 +110,6 @@ angular.module('emuwebApp')
     /**
      * set state
      */
-
     sServObj.setState = function (nameOrObj) {
       sServObj.prevState = sServObj.curState;
       if (typeof nameOrObj === 'string') {
@@ -225,16 +226,20 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.selectLevel = function (next, order) {
-      var tag;
+    sServObj.selectLevel = function (next, order, Levelserv) {
+      var curLev;
+      console.log(order)
       var now = sServObj.getcurClickLevelName();
       if (now === undefined && !next) {
         // select first if none prev. defined (up)
-        sServObj.setcurClickLevelName(order[0]);
+        // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+        curLev = Levelserv.getLevelDetails(order[0]);
+        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
         return;
       } else if (now === undefined && next) {
         // select last if none prev. defined (down)
-        sServObj.setcurClickLevelName(order[order.length - 1]);
+        curLev = Levelserv.getLevelDetails(order[order.length - 1]);
+        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.length - 1);
         return;
       }
 
@@ -247,14 +252,18 @@ angular.module('emuwebApp')
 
       if (next) {
         if (idxOfNow + 1 < order.length) {
-          sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+          curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
+          // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
           sServObj.curClickSegments = [];
           sServObj.selectBoundry();
           sServObj.resetSelect();
         }
       } else {
         if (idxOfNow - 1 >= 0) {
-          sServObj.setcurClickLevelName(order[idxOfNow - 1]);
+          curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
+          // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
+          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
           sServObj.curClickSegments = [];
           sServObj.selectBoundry();
           sServObj.resetSelect();
@@ -421,7 +430,7 @@ angular.module('emuwebApp')
       this.rightSubmenuOpen = s;
     };
 
-    sServObj.setcurClickLevel = function (levelID, levelType, levelIndex, itemsLength) {
+    sServObj.setcurClickLevel = function (levelID, levelType, levelIndex) {
       this.setcurClickLevelName(levelID, levelIndex);
       this.setcurClickLevelType(levelType);
     };
