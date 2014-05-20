@@ -46,14 +46,14 @@ angular.module('emuwebApp')
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
-		    
-			Levelservice.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var);
+
+			Levelservice.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'renameLevel',
-				'levelName': $scope.passedOutTxt.
-				var,
-						'oldName': $scope.passedInTxt
+				'levelName': $scope.passedOutTxt.var,
+				'oldName': $scope.passedInTxt,
+				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
 			dialogService.close();
 		};

@@ -61,9 +61,9 @@ angular.module('emuwebApp')
 						break;
 					case 'renameLevel':
 						if (applyOldVal) {
-							Levelservice.renameLevel(cur.levelName, cur.oldName);
+							Levelservice.renameLevel(cur.levelName, cur.oldName, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.renameLevel(cur.oldName, cur.levelName);
+							Levelservice.renameLevel(cur.oldName, cur.levelName, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteLevel':

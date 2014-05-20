@@ -213,7 +213,7 @@ angular.module('emuwebApp')
 			var event = level.items[0];
 			var nearest = false;
 			if (level.type === 'SEGMENT') {
-			    nearest = level.items[0];
+				nearest = level.items[0];
 				angular.forEach(level.items, function (evt, index) {
 					if (pcm >= evt.sampleStart) {
 						if (pcm <= (evt.sampleStart + evt.sampleDur)) {
@@ -279,7 +279,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * deletes a level by its name
+		 * adds a level by its name
 		 */
 		sServObj.deleteLevelInvers = function (originalLevel, levelName, levelIndex, curPerspectiveIdx) {
 			sServObj.data.levels.splice(levelIndex, 0, originalLevel);
@@ -296,13 +296,21 @@ angular.module('emuwebApp')
 		/**
 		 * rename the label of a level by passing in level name and id
 		 */
-		sServObj.renameLevel = function (oldname, newname) {
+		sServObj.renameLevel = function (oldname, newname, curPerspectiveIdx) {
+			//rename level name
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === oldname) {
 					level.name = newname;
+					// rename all first label names to match new 
+					angular.forEach(level.items, function (item) {
+						item.labels[0].name = newname;
+					});
 				}
 			});
+			// update order name as well
+			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order[ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.indexOf(oldname)] = newname;
 		};
+
 
 		/**
 		 *
@@ -650,14 +658,13 @@ angular.module('emuwebApp')
 		sServObj.moveBoundry = function (changeTime, name, segID, lastNeighbours) {
 			var orig = sServObj.getElementDetailsById(name, segID);
 			if (lastNeighbours.left === undefined) { // before first element
-			    if(lastNeighbours.right == undefined) { // after last element
-    			    orig = sServObj.getLastElement(name);
-	    			if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-		    			sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
-			    	}
-			    }
-			    else {
-				    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+				if (lastNeighbours.right == undefined) { // after last element
+					orig = sServObj.getLastElement(name);
+					if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
+					}
+				} else {
+					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			} else {
 				var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
@@ -672,7 +679,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.movePoint = function (changeTime, name, segID) {
-		    var orig = sServObj.getElementDetailsById(name, segID);
+			var orig = sServObj.getElementDetailsById(name, segID);
 			sServObj.setPointDetails(name, segID, orig.labels[0].value, (orig.samplePoint + changeTime));
 		};
 
@@ -796,5 +803,4 @@ angular.module('emuwebApp')
 
 
 		return sServObj;
-
 	});
