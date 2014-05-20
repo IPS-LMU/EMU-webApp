@@ -185,8 +185,8 @@ angular.module('emuwebApp')
 		 * gets element details by passing in levelName and element id's
 		 */
 		sServObj.getElementNeighbourDetails = function (name, firstid, lastid) {
-			var left = null;
-			var right = null;
+			var left = undefined;
+			var right = undefined;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
@@ -213,6 +213,7 @@ angular.module('emuwebApp')
 			var event = level.items[0];
 			var nearest = false;
 			if (level.type === 'SEGMENT') {
+			    nearest = level.items[0];
 				angular.forEach(level.items, function (evt, index) {
 					if (pcm >= evt.sampleStart) {
 						if (pcm <= (evt.sampleStart + evt.sampleDur)) {
@@ -647,26 +648,22 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.moveBoundry = function (changeTime, name, segID, lastNeighbours) {
-			if (orig === false) { // before first element
-				seg = sServObj.getElementDetails(name, 0);
-				sServObj.setElementDetails(name, seg.id, seg.labels[0].value, (seg.sampleStart + changeTime), (seg.sampleDur - changeTime));
-			} else if (orig === true) {
-				seg = sServObj.getLastElement(name);
-				if ((seg.sampleDur + changeTime) >= 1 && (seg.sampleDur + seg.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-					sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, (seg.sampleDur + changeTime));
+			var orig = sServObj.getElementDetailsById(name, segID);
+			if (lastNeighbours.left === undefined) { // before first element
+			    if(lastNeighbours.right == undefined) { // after last element
+    			    orig = sServObj.getLastElement(name);
+	    			if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+		    			sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
+			    	}
+			    }
+			    else {
+				    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			} else {
-				var orig = sServObj.getElementDetailsById(name, segID);
-				if (lastNeighbours.left !== undefined) {
-					var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-					if ((lastNeighbours.left.sampleDur + changeTime > 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
-						sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
-					}
-				} else {
-					if ((orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
-					}
+				var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+				if ((lastNeighbours.left.sampleDur + changeTime > 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
+					sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			}
 		};

@@ -57,7 +57,6 @@ angular.module('emuwebApp')
             var zoom = viewState.getPCMpp(event);
             thisPCM = getX(event) * zoom;
             var moveBy = (thisPCM - lastPCM);
-
             if (zoom <= 1) {
               var zoomEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
@@ -82,7 +81,6 @@ angular.module('emuwebApp')
             //console.log('Right mouse button pressed');
             break;
           default:
-
             if (!viewState.getdragBarActive()) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 viewState.deleteEditArea();
@@ -101,8 +99,8 @@ angular.module('emuwebApp')
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
+                      seg = viewState.getcurMouseSegment();
                     }
-                    seg = viewState.getcurMouseSegment();
                     var neigh = viewState.getcurMouseNeighbours();
                     Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id, neigh);
                     HistoryService.updateCurChangeObj({
