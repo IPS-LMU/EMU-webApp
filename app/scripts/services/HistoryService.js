@@ -125,6 +125,7 @@ angular.module('emuwebApp')
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
 				dataKey = String(dataObj.type + '#' + dataObj.trackName) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
+				console.log(dataKey);
 				// update curChangeObj
 				if (!curChangeObj[dataKey]) {
 					curChangeObj[dataKey] = dataObj;
@@ -135,21 +136,13 @@ angular.module('emuwebApp')
 					curChangeObj[dataKey] = dataObj;
 				}
 			} else if (dataObj.type === 'ESPS') {
+			    
 				switch (dataObj.action) {
 				case 'moveBoundary':
 				case 'movePoint':
-					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.segID);
-					if (!curChangeObj[dataKey]) {
-						curChangeObj[dataKey] = dataObj;
-					} else {
-						dataObj.movedBy += curChangeObj[dataKey].movedBy;
-						curChangeObj[dataKey] = dataObj;
-					}
-					break;
-				
-				
 				case 'moveSegment':
-					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.item.id);
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.segID);
+					console.log(dataKey);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
@@ -157,8 +150,6 @@ angular.module('emuwebApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
-
-
 				}
 			}
 			return (curChangeObj);
@@ -187,6 +178,7 @@ angular.module('emuwebApp')
 			redoStack = [];
 			var tmpObj = {};
 			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.levelName + '#' + obj.itemIdx);
+			console.log(dataKey);
 			tmpObj[dataKey] = obj;
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {

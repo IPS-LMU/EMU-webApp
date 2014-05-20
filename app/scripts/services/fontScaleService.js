@@ -14,7 +14,10 @@ angular.module('emuwebApp')
 		sServObj.getTextImage = function (ctxOriginal, text, fontPxSize, fontType, color) {
 			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
+			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
 			var img = document.createElement('canvas');
+			img.setAttribute('width',Math.round(scaleX*100));
+			img.setAttribute('height',Math.round(scaleY*100));			
 			var ctx = img.getContext('2d');
 			ctx.save();
 			ctx.font = (fontPxSize + 'px' + ' ' + fontType);
@@ -45,7 +48,10 @@ angular.module('emuwebApp')
 		sServObj.getTextImageTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, color, alignLeft) {
 			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
+			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
 			var img = document.createElement('canvas');
+			img.setAttribute('width',Math.round(scaleX*100));
+			img.setAttribute('height',Math.round(scaleY*100));
 			var ctx = img.getContext('2d');
 
 			ctx.save();

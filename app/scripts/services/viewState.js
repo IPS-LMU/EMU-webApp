@@ -675,11 +675,24 @@ angular.module('emuwebApp')
     };
 
     /**
-     * gets the current (click) Segment
+     * gets the current (click) Segments
      */
     sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
     };
+    
+
+    /**
+     * gets the first ! current (click) Segment
+     */
+    sServObj.getfirstClickSegment = function () {
+      if (sServObj.curClickSegments.length > 0) {
+          return sServObj.curClickSegments[0];
+      } 
+    };
+    
+    
+    
 
     /**
      *
