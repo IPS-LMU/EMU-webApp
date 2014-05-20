@@ -631,14 +631,13 @@ angular.module('emuwebApp')
 					});
 				}
 			});
-			console.log(minDist);
 			if (minDist !== undefined) {
 				if (type == "SEGMENT") {
-					this.moveBoundry(minDist, levelName, segment, neighbor);
+					this.moveBoundry(minDist, levelName, segment.id, neighbor);
 				} else if (type == "EVENT") {
-					this.movePoint(minDist, levelName, segment);
+					this.movePoint(minDist, levelName, segment.id);
 				}
-				return true;
+				return minDist;
 			} else {
 				return false;
 			}
@@ -647,26 +646,26 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.moveBoundry = function (changeTime, name, seg, lastNeighbours) {
-			if (seg === false) { // before first element
+		sServObj.moveBoundry = function (changeTime, name, segID, lastNeighbours) {
+			if (orig === false) { // before first element
 				seg = sServObj.getElementDetails(name, 0);
 				sServObj.setElementDetails(name, seg.id, seg.labels[0].value, (seg.sampleStart + changeTime), (seg.sampleDur - changeTime));
-			} else if (seg === true) {
+			} else if (orig === true) {
 				seg = sServObj.getLastElement(name);
 				if ((seg.sampleDur + changeTime) >= 1 && (seg.sampleDur + seg.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart, (seg.sampleDur + changeTime));
 				}
 			} else {
-				var orig = sServObj.getElementDetailsById(name, seg.id);
+				var orig = sServObj.getElementDetailsById(name, segID);
 				if (lastNeighbours.left !== undefined) {
 					var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-					if ((lastNeighbours.left.sampleDur + changeTime > 0) && (seg.sampleStart + changeTime > 0) && (seg.sampleDur - changeTime > 0)) {
+					if ((lastNeighbours.left.sampleDur + changeTime > 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
 						sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
-						sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				} else {
-					if ((seg.sampleStart + changeTime > 0) && (seg.sampleDur - changeTime > 0)) {
-						sServObj.setElementDetails(name, seg.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+					if ((orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			}
@@ -675,8 +674,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.movePoint = function (changeTime, name, seg) {
-			sServObj.setPointDetails(name, seg.id, seg.labels[0].value, (seg.samplePoint + changeTime));
+		sServObj.movePoint = function (changeTime, name, segID) {
+		    var orig = sServObj.getElementDetailsById(name, segID);
+			sServObj.setPointDetails(name, segID, orig.labels[0].value, (orig.samplePoint + changeTime));
 		};
 
 		/**
@@ -726,14 +726,13 @@ angular.module('emuwebApp')
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
-
 						});
 					}
 				} else {
 					angular.forEach(segments, function (seg) {
 						segTime += seg.sampleDur;
 					});
-					if (segTime > 0) {
+					if (segTime > 0 && (neighbours.right.sampleDur - (changeTime * segments.length) > 0)) {
 						angular.forEach(segments, function (seg) {
 							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
@@ -753,7 +752,7 @@ angular.module('emuwebApp')
 					angular.forEach(segments, function (seg) {
 						segTime += seg.sampleDur;
 					});
-					if (segTime > 0) {
+					if (segTime > 0 && (neighbours.left.sampleDur - (changeTime * segments.length) > 0)) {
 						startTime = 0;
 						angular.forEach(segments, function (seg, i) {
 							startTime = -(segments.length - i) * changeTime;

@@ -17,7 +17,6 @@ angular.module('emuwebApp')
                 return;
               }
             }
-
             scope.setlastkeycode(code, e.shiftKey);
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
@@ -208,14 +207,29 @@ angular.module('emuwebApp')
                     var minDist = Levelservice.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
                     if (minDist === false) {
                       // error msg nothing moved / nothing on top
-                      console.log('TOP2');
+                      console.log('error msg nothing moved / nothing on top');
                     } else {
-                      scope.hists.addObjToUndoStack({
-                        'type': 'ESPS',
-                        'action': 'snapBoundary',
-                        'levelName': levelName,
-                        'segment': mouseSeg
-                      });
+                      if(levelType === "EVENT") {
+                        HistoryService.updateCurChangeObj({
+                          'type': 'ESPS',
+                          'action': 'movePoint',
+                          'levelName': levelName,
+                          'segID': mouseSeg.id,
+                          'movedBy': minDist
+                        });
+                        console.log('POINT', levelName, mouseSeg.id, minDist);
+                      }
+                      else if(levelType === "SEGMENT") {
+                        HistoryService.updateCurChangeObj({
+                          'type': 'ESPS',
+                          'action': 'moveBoundary',
+                          'levelName': levelName,
+                          'neighbours': neighbor,
+                          'segID': mouseSeg.id,
+                          'movedBy': minDist
+                        }); 
+                        console.log('SEGMENT', levelName, mouseSeg.id, minDist, neighbor);                 
+                      }
                     }
                   }
                 }
@@ -233,12 +247,28 @@ angular.module('emuwebApp')
                     if (minDist == false) {
                       // error msg nothing moved / nothing below
                     } else {
-                      scope.hists.addObjToUndoStack({
-                        'type': 'ESPS',
-                        'action': 'snapBoundary',
-                        'levelName': levelName,
-                        'segment': mouseSeg
-                      });
+                      if(levelType === "EVENT") {
+                        HistoryService.updateCurChangeObj({
+                          'type': 'ESPS',
+                          'action': 'movePoint',
+                          'levelName': levelName,
+                          'segID': mouseSeg.id,
+                          'movedBy': minDist
+                        });
+                        console.log('POINT', levelName, mouseSeg.id, minDist);
+                      }
+                      else if(levelType === "SEGMENT") {
+                        HistoryService.updateCurChangeObj({
+                          'type': 'ESPS',
+                          'action': 'moveBoundary',
+                          'levelName': levelName,
+                          'neighbours': neighbor,
+                          'segID': mouseSeg.id,
+                          'movedBy': minDist
+                        }); 
+                        console.log('SEGMENT', levelName, mouseSeg.id, minDist, neighbor);                                  
+                      }
+
                     }
                   }
                 }
@@ -255,16 +285,18 @@ angular.module('emuwebApp')
                       dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().samplePoint);
                     }
                     if (dist !== 0) {
-                      Levelservice.moveBoundry(dist, viewState.getcurMouseLevelName(), viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
-                      scope.hists.addObjToUndoStack({
-                        'type': 'ESPS',
-                        'action': 'moveBoundary',
-                        'levelName': viewState.getcurMouseLevelName(),
-                        'neighbours': viewState.getcurMouseNeighbours(),
-                        'item': viewState.getcurMouseSegment(),
-                        'movedBy': dist
+                      var seg = viewState.getcurMouseSegment();
+                      var neigh = viewState.getcurMouseNeighbours();
+                      var levelname = viewState.getcurMouseLevelName();
+                      Levelservice.moveBoundry(dist, name, seg.id, neigh);
+                      HistoryService.updateCurChangeObj({
+                          'type': 'ESPS',
+                          'action': 'moveBoundary',
+                          'levelName': levelname,
+                          'neighbours': neigh,
+                          'segID': seg.id,
+                          'movedBy': dist
                       });
-
                     }
                   }
                 }
@@ -582,11 +614,13 @@ angular.module('emuwebApp')
               // undoRedo
               if (code === ConfigProviderService.vals.keyMappings.undoRedo) {
                 if (viewState.getPermission('labelAction')) {
+                  console.log(HistoryService.getCurrentStack());
                   if (!e.shiftKey) {
                     HistoryService.undo();
                   } else {
                     HistoryService.redo();
                   }
+                  
                 }
               }
 

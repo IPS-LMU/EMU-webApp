@@ -850,8 +850,8 @@ angular.module('emuwebApp')
         'z-index': '9999',
         'left': x + 2 + 'px',
         'top': y + 1 + 'px',
-        'width': Math.round(width) + 'px',
-        'height': Math.round(height) + 'px',
+        'width': Math.round(width) - 4 + 'px',
+        'height': Math.round(height) - 3 + 'px',
         'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
     };

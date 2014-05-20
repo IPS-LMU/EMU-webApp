@@ -102,23 +102,27 @@ angular.module('emuwebApp')
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                     }
-                    Levelservice.moveBoundry(moveBy, scope.this.level.name, viewState.getcurMouseSegment(), viewState.getcurMouseNeighbours());
+                    seg = viewState.getcurMouseSegment();
+                    var neigh = viewState.getcurMouseNeighbours();
+                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id, neigh);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
-                      'neighbours': viewState.getcurMouseNeighbours(),
-                      'item': viewState.getcurMouseSegment(),
+                      'neighbours': neigh,
+                      'segID': seg.id,
                       'movedBy': moveBy
                     });
+                    
                   } else {
+                    seg = viewState.getcurMouseSegment();
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
-                    Levelservice.movePoint(moveBy, scope.this.level.name, viewState.getcurMouseSegment());
+                    Levelservice.movePoint(moveBy, scope.this.level.name, seg.id);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
                       'levelName': scope.this.level.name,
-                      'item': viewState.getcurMouseSegment(),
+                      'segID': seg.id,
                       'movedBy': moveBy
                     });
                   }

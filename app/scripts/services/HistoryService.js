@@ -24,31 +24,18 @@ angular.module('emuwebApp')
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
-						// Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
-						// Ssffdataservice.data[cur.ssffIdx].Columns[cur.colIdx].values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'ESPS') {
-					// console.log('###UNDOING esps change');
-					// console.log(cur);
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.item, cur.neighbours);
+							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
 						} else {
-							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.item, cur.neighbours);
-						}
-						break;
-					case 'snapBoundary':
-						if (applyOldVal) {
-							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(-cur.movedBy, res.level, cur.item, cur.max);
-						} else {
-							var res = Levelservice.getLevelDetails(cur.levelName);
-							Levelservice.moveBoundry(cur.movedBy, res.level, cur.item, cur.max);
+							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
 						}
 						break;
 					case 'moveSegment':
@@ -60,9 +47,9 @@ angular.module('emuwebApp')
 						break;
 					case 'movePoint':
 						if (applyOldVal) {
-							Levelservice.movePoint(-cur.movedBy, cur.levelName, cur.item);
+							Levelservice.movePoint(-cur.movedBy, cur.levelName, cur.segID);
 						} else {
-							Levelservice.movePoint(cur.movedBy, cur.levelName, cur.item);
+							Levelservice.movePoint(cur.movedBy, cur.levelName, cur.segID);
 						}
 						break;
 					case 'renameLabel':
@@ -151,6 +138,16 @@ angular.module('emuwebApp')
 				switch (dataObj.action) {
 				case 'moveBoundary':
 				case 'movePoint':
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.segID);
+					if (!curChangeObj[dataKey]) {
+						curChangeObj[dataKey] = dataObj;
+					} else {
+						dataObj.movedBy += curChangeObj[dataKey].movedBy;
+						curChangeObj[dataKey] = dataObj;
+					}
+					break;
+				
+				
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.item.id);
 					if (!curChangeObj[dataKey]) {
@@ -233,6 +230,12 @@ angular.module('emuwebApp')
 		sServObj.getNrOfPossibleUndos = function () {
 			return undoStack.length;
 		};
+		
+
+		// return current History Stack
+		sServObj.getCurrentStack = function () {
+			return undoStack;
+		};		
 
 		// resetToInitState
 		sServObj.resetToInitState = function () {
