@@ -63,11 +63,11 @@ angular.module('emuwebApp')
 
 					switch (event.which) {
 					case 0:
+						switchMarkupContext(event);
 						if (!$.isEmptyObject(Ssffdataservice.data)) {
 							if (Ssffdataservice.data.length !== 0) {
 								if (!viewState.getdragBarActive()) {
 
-									switchMarkupContext(event);
 
 									if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 										// var col = Ssffdataservice.data[0].Columns[0];
@@ -172,13 +172,13 @@ angular.module('emuwebApp')
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							if (!$.isEmptyObject(Ssffdataservice.data)) {
-								if (Ssffdataservice.data.length !== 0) {
+							// if (!$.isEmptyObject(Ssffdataservice.data)) {
+								// if (Ssffdataservice.data.length !== 0) {
 									if (!viewState.getdragBarActive()) {
 										switchMarkupContext(event, false);
 									}
-								}
-							}
+								// }
+							// }
 						}
 					}
 				});

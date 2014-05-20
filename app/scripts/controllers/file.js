@@ -153,7 +153,7 @@ angular.module('emuwebApp')
 		    			                $scope.$parent.vs.somethingInProgressTxt = 'Done!';
 			    		                $scope.$parent.vs.somethingInProgress = false;
 				    	                $scope.$parent.vs.setState('labeling');
-					                    $scope.$parent.openSubmenu();
+					                    // $scope.$parent.openSubmenu();
 					                });
 					            }
     					    }, function (errMess) {
@@ -164,7 +164,7 @@ angular.module('emuwebApp')
     			          $scope.$parent.vs.setState('labeling');
 	    		          $scope.$parent.vs.somethingInProgress = false;
 		    	          $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
-	                      $scope.$parent.openSubmenu();		    
+	                      // $scope.$parent.openSubmenu();		    
 			          }
 			      
                     });    								

@@ -6,7 +6,6 @@ angular.module('emuwebApp')
       restrict: 'A',
       link: function (scope, element, attr) {
         var name = scope.this.level.name;
-
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(name, attr.delete);
           scope.dials.open('views/deleteLevel.html', 'ModalCtrl', name);

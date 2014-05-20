@@ -7,7 +7,8 @@ angular.module('emuwebApp')
 			templateUrl: 'views/level.html',
 			restrict: 'E',
 			scope: {
-				level: '='
+				level: '=',
+				idx: '='
 			},
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
@@ -40,8 +41,8 @@ angular.module('emuwebApp')
 						//if (!oldValue || !newValue || newValue.id !== oldValue.id) {
 						//	drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						//} else {
-							drawLevelDetails(scope.level, viewState, ConfigProviderService);
-							drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						drawLevelDetails(scope.level, viewState, ConfigProviderService);
+						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						//}
 					}
 				}, true);
@@ -55,13 +56,13 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.movingBoundarySample', function () {
-				    drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 				//
 				scope.$watch('vs.movingBoundary', function () {
-				    
+
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 

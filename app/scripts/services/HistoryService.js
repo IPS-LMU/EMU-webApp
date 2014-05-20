@@ -72,7 +72,6 @@ angular.module('emuwebApp')
 						} else {
 							Levelservice.deleteLevel(cur.level.name, cur.level.id, cur.curPerspectiveIdx);
 						}
-						console.log();
 						break;
 					case 'deleteBoundary':
 						if (applyOldVal) {

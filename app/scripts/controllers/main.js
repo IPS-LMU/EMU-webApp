@@ -604,7 +604,14 @@ angular.module('emuwebApp')
 		$scope.addLevelSegBtnClick = function () {
 
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				alert('not implemented yet');
+				Levelservice.data.levels.push({
+					name: 'segLevel' + Levelservice.data.levels.length,
+					items: [],
+					type: 'SEGMENT',
+					sampleRate: 44100
+				});
+				console.log(Levelservice.data.levels)
+
 			} else {
 				console.log('action currently not allowed');
 			}
