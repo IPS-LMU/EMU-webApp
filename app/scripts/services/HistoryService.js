@@ -68,9 +68,16 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.level.id, cur.curPerspectiveIdx);
+							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.deleteLevel(cur.level.name, cur.level.id, cur.curPerspectiveIdx);
+							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
+						}
+						break;
+					case 'addLevel':
+						if (applyOldVal) {
+							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
+						} else {
+							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteBoundary':
@@ -135,7 +142,7 @@ angular.module('emuwebApp')
 					curChangeObj[dataKey] = dataObj;
 				}
 			} else if (dataObj.type === 'ESPS') {
-			    
+
 				switch (dataObj.action) {
 				case 'moveBoundary':
 				case 'movePoint':
@@ -221,12 +228,12 @@ angular.module('emuwebApp')
 		sServObj.getNrOfPossibleUndos = function () {
 			return undoStack.length;
 		};
-		
+
 
 		// return current History Stack
 		sServObj.getCurrentStack = function () {
 			return undoStack;
-		};		
+		};
 
 		// resetToInitState
 		sServObj.resetToInitState = function () {

@@ -604,13 +604,29 @@ angular.module('emuwebApp')
 		$scope.addLevelSegBtnClick = function () {
 
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				Levelservice.data.levels.push({
-					name: 'segLevel' + Levelservice.data.levels.length,
-					items: [],
-					type: 'SEGMENT',
-					sampleRate: 44100
+				var newName = 'segLevNr' + Levelservice.data.levels.length;
+				var level = {
+					items: [{
+						id: Levelservice.getNewId(),
+						sampleStart: 0,
+						sampleDur: Soundhandlerservice.wavJSO.Data.length,
+						labels: [{
+							name: newName,
+							value: ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+						}]
+					}],
+					name: newName,
+					type: 'SEGMENT'
+				};
+				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				// TODO: Add to history
+				HistoryService.addObjToUndoStack({
+					'type': 'ESPS',
+					'action': 'addLevel',
+					'level': level,
+					'idx': Levelservice.data.levels.length - 1,
+					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-				console.log(Levelservice.data.levels)
 
 			} else {
 				console.log('action currently not allowed');

@@ -67,6 +67,7 @@ angular.module('emuwebApp')
 				'type': 'ESPS',
 				'action': 'deleteLevel',
 				'level': level,
+				'idx': viewState.getcurClickLevelIndex(),
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
 			dialogService.close();

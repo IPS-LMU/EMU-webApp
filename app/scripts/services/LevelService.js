@@ -24,6 +24,15 @@ angular.module('emuwebApp')
 				});
 			});
 		};
+		
+		/**
+		 *
+		 */
+		sServObj.getNewId = function () {
+
+			sServObj.maxElementID = sServObj.maxElementID + 1;
+			return sServObj.maxElementID;
+		};
 
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name
