@@ -604,7 +604,7 @@ angular.module('emuwebApp')
 		$scope.addLevelSegBtnClick = function () {
 
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				var newName = 'segLevNr' + Levelservice.data.levels.length;
+				var newName = 'levelNr' + Levelservice.data.levels.length;
 				var level = {
 					items: [{
 						id: Levelservice.getNewId(),
@@ -619,7 +619,7 @@ angular.module('emuwebApp')
 					type: 'SEGMENT'
 				};
 				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
-				// TODO: Add to history
+				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
@@ -639,7 +639,30 @@ angular.module('emuwebApp')
 		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
-				alert('not implemented yet');
+
+				var newName = 'levelNr' + Levelservice.data.levels.length;
+				var level = {
+					items: [{
+						id: Levelservice.getNewId(),
+						samplePoint: Soundhandlerservice.wavJSO.Data.length/2,
+						labels: [{
+							name: newName,
+							value: ConfigProviderService.vals.labelCanvasConfig.newEventName
+						}]
+					}],
+					name: newName,
+					type: 'EVENT'
+				};
+				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				//  Add to history
+				HistoryService.addObjToUndoStack({
+					'type': 'ESPS',
+					'action': 'addLevel',
+					'level': level,
+					'idx': Levelservice.data.levels.length - 1,
+					'curPerspectiveIdx': viewState.curPerspectiveIdx
+				});
+
 			} else {
 				console.log('action currently not allowed');
 			}

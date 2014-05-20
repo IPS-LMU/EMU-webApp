@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.deleteLevelInvers(cur.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						} else {
 							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						}
@@ -77,7 +77,7 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.deleteLevelInvers(cur.level.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.deleteLevelInvers(cur.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteBoundary':
