@@ -236,7 +236,6 @@ angular.module('emuwebApp')
             lastNeighboursMove = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
             viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
           }
-          console.log(lastNeighboursMove);
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
           viewState.selectBoundry();
