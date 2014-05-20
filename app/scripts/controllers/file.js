@@ -74,27 +74,29 @@ angular.module('emuwebApp')
         $scope.dropText = $scope.dropDefault;
     };    
     
-    $scope.$watch('wav', function () {
+    /*$scope.$watch('wav', function () {
         if($.isEmptyObject($scope.other)) {
             if (!$.isEmptyObject($scope.wav)) {
                 $scope.handleLocalFiles();	
             }   
         }
-     }, true);        
+     });       
      
     $scope.$watch('other', function () {
-        if ($.isEmptyObject($scope.wav) && !$.isEmptyObject($scope.other)) {
+        if (!$.isEmptyObject($scope.other)) {
             var extension = $scope.other.name.substr($scope.other.name.lastIndexOf('.')+1);
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name);
-            $scope.resetToInitState();
+            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name).then(function (res) {
+			    $scope.resetToInitState();
+			    $scope.$parent.resetToInitState();
+			});
         }
-     }, true);        
-          
+     });        
+           */
      
-     $scope.$on('resetToInitState', function () {
-         $scope.resetToInitState();
+    $scope.$on('resetToInitState', function () {
+        $scope.resetToInitState();
+        
     });      
-
 
     $scope.handleLocalFiles = function () {
         $scope.$parent.vs.showDropZone = false;
@@ -162,7 +164,7 @@ angular.module('emuwebApp')
     			          $scope.$parent.vs.setState('labeling');
 	    		          $scope.$parent.vs.somethingInProgress = false;
 		    	          $scope.$parent.vs.somethingInProgressTxt = 'Done!';		            
-	                    $scope.$parent.openSubmenu();		    
+	                      $scope.$parent.openSubmenu();		    
 			          }
 			      
                     });    								
@@ -185,21 +187,21 @@ angular.module('emuwebApp')
         $scope.$apply(function () {
             $scope.dropText = $scope.dropParsingStarted;
             $scope.dropClass = '';        
+
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var items = evt.dataTransfer.items;
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i].webkitGetAsEntry();
+                    if (item) {
+                        $scope.traverseFileTree(item); 
+                    }
+                }     
+            }
+            else {
+                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
+                $scope.dropText = $scope.dropDefault;
+            }
         });
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var items = evt.dataTransfer.items;
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i].webkitGetAsEntry();
-                if (item) {
-                    $scope.traverseFileTree(item); 
-                    $scope.$apply();       
-                }
-            }     
-        }
-        else {
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
-            $scope.dropText = $scope.dropDefault;
-        }
      }, false);
      
     $scope.traverseFileTree = function (item, path) {
@@ -209,15 +211,17 @@ angular.module('emuwebApp')
                     var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                     if (extension === 'WAV') {
                         $scope.wav = file;
-                        $scope.$apply();    
+                        $scope.handleLocalFiles();	   
                     }
                     else if (extension === 'TEXTGRID') {
                         $scope.grid = file;  
-                        $scope.$apply();   
                     }
                     else {
                         $scope.other = file; 
-                        $scope.$apply();      
+                        $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name).then(function (res) {
+			                $scope.resetToInitState();
+			                $scope.$parent.resetToInitState();
+			            });
                     }
                 });
             } else if (item.isDirectory) {

@@ -27,6 +27,22 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 *  Save changes made on SSFF
+		 */
+		$scope.saveChanges = function (name) {
+			dialogService.close('saveChanges');
+		};
+
+
+		/**
+		 *  Save changes made on SSFF
+		 */
+		$scope.discardChanges = function (name) {
+			dialogService.close('discardChanges');
+		};
+
+
+		/**
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
@@ -40,22 +56,6 @@ angular.module('emuwebApp')
 						'oldName': $scope.passedInTxt
 			});
 			dialogService.close();
-		};
-
-
-		/**
-		 *  Save changes made on SSFF
-		 */
-		$scope.saveChanges = function (name) {
-			dialogService.close('saveChanges');
-		};
-
-
-		/**
-		 *  Save changes made on SSFF
-		 */
-		$scope.discardChanges = function (name) {
-			dialogService.close('discardChanges');
 		};
 
 		/**

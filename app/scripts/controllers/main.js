@@ -757,7 +757,6 @@ angular.module('emuwebApp')
 		 */
 		$scope.clearBtnClick = function () {
 			// viewState.setdragBarActive(false);
-			console.log(ConfigProviderService.vals.main.comMode !== 'DEMO')
 			var modalText;
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.'
