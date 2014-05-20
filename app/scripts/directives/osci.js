@@ -31,6 +31,11 @@ angular.module('emuwebApp')
 				// watches
 
 				//
+				scope.$watch('viewState.timelineSize', function () {
+    				scope.updateCSS();  
+				});
+				
+				//
 				scope.$watch('viewState.curPerspectiveIdx', function () {
 					scope.updateCSS();
 				}, true);
