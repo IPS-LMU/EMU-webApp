@@ -384,7 +384,8 @@ angular.module('emuwebApp')
 				if (bndl !== $scope.curBndl) {
 					// reset history
 					HistoryService.resetToInitState();
-					// reset viewstate
+					// set state
+					viewState.setState('loadingSaving');
 
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
