@@ -16,7 +16,7 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the commands `bower install` and `npm install`
 * run static file server at `http://localhost:9000`  with `grunt server`
 * for livereload use the `livereload` browser plugin
-* a small websocket data provider server can be found under `exampleServers/nodeFormantCorrWSserver.js`
+* a small websocket data provider server can be found under `exampleServers/nodeEmuProtocolWsServer.js`
 
 ## Main authors
 
