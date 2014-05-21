@@ -124,6 +124,9 @@ angular.module('emuwebApp')
 										viewState.somethingInProgressTxt = 'Done!';
 										viewState.somethingInProgress = false;
 										viewState.setState('labeling');
+										// close submenu... 
+										$scope.openSubmenu();
+										
 									}, function (errMess) {
 										dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 									});
@@ -644,7 +647,7 @@ angular.module('emuwebApp')
 				var level = {
 					items: [{
 						id: Levelservice.getNewId(),
-						samplePoint: Soundhandlerservice.wavJSO.Data.length/2,
+						samplePoint: Soundhandlerservice.wavJSO.Data.length / 2,
 						labels: [{
 							name: newName,
 							value: ConfigProviderService.vals.labelCanvasConfig.newEventName
