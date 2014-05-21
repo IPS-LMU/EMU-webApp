@@ -127,17 +127,11 @@
 Until the labeler can also display the hierarchical structure of the annotation it will only 
 display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
 
-\lstinputlisting[caption=instanceOfglobalDBconfig.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/instanceOfglobalDBconfig.json}
+\lstinputlisting[caption=aeDBconfig.json, label=idsr, language=json,firstnumber=1]{../../app/testData/newFormat/ae/ae_DBconfig.json}
 
 
 \begin{itemize}
-  \item \texttt{dbName + levelName +...} specific like that or just \texttt{name}?
-  \item \texttt{legalValues} specifies the possible entries that are legal. For example \texttt{["a","b","c"]} would only allow the labels a, b and c to be used. If undefined or empty $\rightarrow$ no restrictions. Good idea?? Or should it always be set?
-  \item \texttt{"type":"txt"} what types are supported? Should we support anything else but \texttt{"TEXT"}. If no then why specify a field for it?
   \item \texttt{constaints[0].type} can be \texttt{"ONE\_TO\_ONE"}, \texttt{"ONE\_TO\_MANY"}or \texttt{"MANY\_TO\_MANY"}
-  \item should we rename \texttt{constaints} to \texttt{links}?? This would make it parallel to the data rep.
-  \item should \texttt{constaints} have a label??? Do we need that?
-  \item should restrictions/key commands also be defined in perspectives?
   \item \texttt{perspectives.signalCanvases.order} \texttt{"OSCI"} and \texttt{"SPEC"} are always available! Other entries have to be predefined in tracks
   \item \texttt{FORMANTS} is a special reserved track name that can be manipulated (== formant corrections)
 \end{itemize}
@@ -401,98 +395,5 @@ If an error occurs with any of the request types above a response should still b
 
 \lstinputlisting[caption=exampleBundle.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
 
-%%%%%%%%%%%%%%%%%%%%%%
-% \begin{landscape}
-% \section{In memory representation of DB (C++ graph)}
-
-% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
-%                     semithick]
-%   \tikzstyle{every state}=[fill=white,text=black]
-
-%   \node[initial,state] (A)                    {0};
-%   \node[state]         (B) [below left of=A] {1};
-%   \node[state]         (C) [below right of=A] {2};
-%   \node[state]         (D) [below left of=B] {3};
-%   \node[state]         (E) [right of=D] {4};
-%   \node[state]         (F) [below left of=C] {5};
-%   \node[state]         (G) [right of=F] {6};
-
-%   %first level
-%   \node[state]         (H) [below left of=D] {7};
-%   \node[state, fill=black!20]         (I) [right of=H] {8};
-%   \node[state, fill=black!20]         (J) [right of=I] {9};
-
-%   % second level
-%   \node[state]         (K) [below of=H] {10};
-%   \node[state, fill=black!20]         (L) [right of=K] {11};
-%   \node[state, fill=black!20]         (M) [right of=L] {12};
-%   \node[state, fill=black!20]         (N) [right of=M] {13};
-%   \node[state, fill=black!20]         (O) [right of=N] {14};
-
-%   %third level
-%   \node[state]         (P) [below of=K] {15};
-%   \node[state, fill=black!20]         (Q) [right of=P] {16};
-%   \node[state, fill=black!20]         (R) [right of=Q] {17};
-%   \node[state, fill=black!20]         (S) [right of=R] {18};
-%   \node[state, fill=black!20]         (T) [right of=S] {19};
-%   \node[state, fill=black!20]         (U) [right of=T] {20};
-%   \node[state, fill=black!20]         (V) [right of=U] {21};
-%   \node[state, fill=black!20]         (W) [right of=V] {22};
-%   \node[state, fill=black!20]         (X) [right of=W] {23};
-
-%   \path (A) edge              node {SES:1} (B)
-%             edge              node {SES:2} (C)
-%         (B) edge              node {BNDL:1} (D)
-%             edge              node {BNDL:2} (E)
-%         (C) edge              node {BNDL:3} (F)
-%             edge              node {BNDL:4} (G)
-%         (D) edge              node {LEV:1} (H)
-%             edge              node {LEV:2} (K)
-%             edge              node {LEV:3} (P)
-%         (H) edge              node {FIRST} (I)
-%         (K) edge              node {FIRST} (L)
-%         (P) edge              node {FIRST} (Q)
-%         % item lists
-%         %first level
-%         (I) edge [bend left]  node {NEXT} (J)
-%         (J) edge [bend left]  node {PREV} (I)
-%         %second level
-%         (L) edge [bend left]  node {NEXT} (M)
-%         (M) edge [bend left]  node {PREV} (L)
-%         (M) edge [bend left]  node {NEXT} (N)
-%         (N) edge [bend left]  node {PREV} (M)
-%         (N) edge [bend left]  node {NEXT} (O)
-%         (O) edge [bend left]  node {PREV} (N)
-%         %third level
-%         (Q) edge [bend left]  node {NEXT} (R)
-%         (R) edge [bend left]  node {PREV} (Q)
-%         (R) edge [bend left]  node {NEXT} (S)
-%         (S) edge [bend left]  node {PREV} (R)
-%         (S) edge [bend left]  node {NEXT} (T)
-%         (T) edge [bend left]  node {PREV} (S)
-%         (T) edge [bend left]  node {NEXT} (U)
-%         (U) edge [bend left]  node {PREV} (T)
-%         (U) edge [bend left]  node {NEXT} (V)
-%         (V) edge [bend left]  node {PREV} (U)
-%         (V) edge [bend left]  node {NEXT} (W)
-%         (W) edge [bend left]  node {PREV} (V)
-%         (W) edge [bend left]  node {NEXT} (X)
-%         (X) edge [bend left]  node {PREV} (W)
-%         % hierarchy
-%         (I) edge [<->,dotted] node {} (L)
-%         (I) edge [<->,dotted] node {} (M)
-%         (J) edge [<->,dotted] node {} (N)
-%         (J) edge [<->,dotted] node {} (O)
-%         (L) edge [<->,dotted] node {} (Q)
-%         (L) edge [<->,dotted] node {} (R)
-%         (M) edge [<->,dotted] node {} (S)
-%         (M) edge [<->,dotted] node {} (T)
-%         (N) edge [<->,dotted] node {} (U)
-%         (N) edge [<->,dotted] node {} (V)
-%         (O) edge [<->,dotted] node {} (W)
-%         (O) edge [<->,dotted] node {} (X);
-
-% \end{tikzpicture}
-% \end{landscape}
 
 \end{document}
