@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('correctiontool', function (viewState, ConfigProviderService, Ssffdataservice, Drawhelperservice, HistoryService, Soundhandlerservice) {
+	.directive('mouseTrackAndCorrectionTool', function (viewState, ConfigProviderService, Ssffdataservice, Drawhelperservice, HistoryService, Soundhandlerservice) {
 		return {
 			restrict: 'A',
 			scope: {},
