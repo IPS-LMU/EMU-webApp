@@ -74,12 +74,14 @@ function toJSO(string, myFile, myName) {
 						items: []
 					});
 				}
-
-
 			}
 			if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 				// parse seg levels event
 				var eSt = Math.floor(lines[i + 1].split(/=/)[1] * sampleRate) + 1;
+				// correct to zero for first sample
+				if (eSt === 1) {
+					eSt = 0;
+				}
 				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 				lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 
@@ -155,7 +157,7 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 	tG = tG + 'item []:' + nl;
 	//var levelNr = 0;
 	for (var levelNr = 0; levelNr < levelData.length; levelNr++) {
-	//angular.forEach(levelData, function (curLevel) {
+		//angular.forEach(levelData, function (curLevel) {
 		//write level items
 		//levelNr = levelNr + 1;
 		var curLevel = levelData[levelNr];
@@ -173,17 +175,20 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 		} else if (curLevel.type === 'EVENT') {
 			tG = tG + t + t + 'points: size = ' + curLevel.items.length + nl;
 		}
+		var curVal;
 		for (var j = 0; j < curLevel.items.length; j++) {
 			var evtNr = j + 1;
 			if (curLevel.type === 'SEGMENT') {
 				tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
 				if (curLevel.items[j].sampleStart !== 0) {
-					tG = tG + t + t + t + t + 'xmin = ' + ((curLevel.items[j].sampleStart) / sampleRate + ((1 / sampleRate) / 2)) + nl;
+					curVal = ((curLevel.items[j].sampleStart / sampleRate) + ((1 / sampleRate) / 2) );
+					tG = tG + t + t + t + t + 'xmin = ' + curVal  + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 				}
 				if (j < curLevel.items.length - 1) {
-					tG = tG + t + t + t + t + 'xmax = ' + ((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur + 1) / sampleRate + ((1 / sampleRate) / 2)) + nl;
+					curVal =(((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2) );
+					tG = tG + t + t + t + t + 'xmax = ' + curVal + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;
 				}
@@ -242,7 +247,7 @@ self.addEventListener('message', function (e) {
 	case 'parseTG':
 		sampleRate = data.sampleRate;
 		var retVal = toJSO(data.textGrid, data.annotates, data.name)
-		// console.log(JSON.stringify(retVal, undefined, 2));
+			// console.log(JSON.stringify(retVal, undefined, 2));
 		if (retVal.status === undefined) {
 			self.postMessage({
 				'status': {
@@ -273,7 +278,7 @@ self.addEventListener('message', function (e) {
 		self.postMessage({
 			'status': {
 				'type': 'ERROR',
-				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd 
+				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd
 			}
 		});
 
