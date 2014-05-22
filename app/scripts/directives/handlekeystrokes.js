@@ -228,6 +228,7 @@ angular.module('emuwebApp')
                           'movedBy': minDist
                         });
                       }
+                      HistoryService.addCurChangeObjToUndoStack();
                     }
                   }
                 }
@@ -265,6 +266,7 @@ angular.module('emuwebApp')
                           'movedBy': minDist
                         });                              
                       }
+                      HistoryService.addCurChangeObjToUndoStack();
                     }
                   }
                 }
@@ -609,6 +611,7 @@ angular.module('emuwebApp')
 
               // undoRedo
               if (code === ConfigProviderService.vals.keyMappings.undoRedo) {
+                console.log(scope.hists.getCurrentStack());
                 if (viewState.getPermission('labelAction')) {
                   if (!e.shiftKey) {
                     HistoryService.undo();

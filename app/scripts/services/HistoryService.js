@@ -183,7 +183,6 @@ angular.module('emuwebApp')
 			redoStack = [];
 			var tmpObj = {};
 			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.idx);
-			console.log(dataKey);
 			tmpObj[dataKey] = obj;
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
@@ -231,7 +230,7 @@ angular.module('emuwebApp')
 
 		// return current History Stack
 		sServObj.getCurrentStack = function () {
-			return undoStack;
+			return {'undo': undoStack, 'redo': redoStack};
 		};
 
 		// resetToInitState
