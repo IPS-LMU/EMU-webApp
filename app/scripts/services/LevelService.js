@@ -695,6 +695,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
+
 			if (lastNeighbours.left === undefined) {
 			    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((selected[0].sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1)) {
@@ -723,7 +724,7 @@ angular.module('emuwebApp')
 					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
 					angular.forEach(selected, function (s) {
 					    var orig = sServObj.getElementDetailsById(name, s.id);
-						sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					});
 				}
 			}

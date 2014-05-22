@@ -217,7 +217,6 @@ angular.module('emuwebApp')
                           'segID': mouseSeg.id,
                           'movedBy': minDist
                         });
-                        console.log('POINT', levelName, mouseSeg.id, minDist);
                       }
                       else if(levelType === "SEGMENT") {
                         HistoryService.updateCurChangeObj({
@@ -227,8 +226,7 @@ angular.module('emuwebApp')
                           'neighbours': neighbor,
                           'segID': mouseSeg.id,
                           'movedBy': minDist
-                        }); 
-                        console.log('SEGMENT', levelName, mouseSeg.id, minDist, neighbor);                 
+                        });
                       }
                     }
                   }
@@ -255,9 +253,9 @@ angular.module('emuwebApp')
                           'segID': mouseSeg.id,
                           'movedBy': minDist
                         });
-                        console.log('POINT', levelName, mouseSeg.id, minDist);
                       }
                       else if(levelType === "SEGMENT") {
+                        console.log('seg to bottom');  
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
@@ -265,10 +263,8 @@ angular.module('emuwebApp')
                           'neighbours': neighbor,
                           'segID': mouseSeg.id,
                           'movedBy': minDist
-                        }); 
-                        console.log('SEGMENT', levelName, mouseSeg.id, minDist, neighbor);                                  
+                        });                              
                       }
-
                     }
                   }
                 }
