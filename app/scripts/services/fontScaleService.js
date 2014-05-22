@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
 			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
 			var img = document.createElement('canvas');
-			img.setAttribute('width',Math.round(scaleX*100));
+			img.setAttribute('width',Math.round(scaleX*200));
 			img.setAttribute('height',Math.round(scaleY*100));			
 			var ctx = img.getContext('2d');
 			ctx.save();
@@ -50,7 +50,7 @@ angular.module('emuwebApp')
 			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
 			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
 			var img = document.createElement('canvas');
-			img.setAttribute('width',Math.round(scaleX*100));
+			img.setAttribute('width',Math.round(scaleX*200));
 			img.setAttribute('height',Math.round(scaleY*100));
 			var ctx = img.getContext('2d');
 

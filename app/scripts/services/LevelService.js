@@ -697,28 +697,35 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveSegment = function (changeTime, name, selected, lastNeighbours) {
 			if (lastNeighbours.left === undefined) {
+			    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((selected[0].sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1)) {
-					sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + changeTime), (lastNeighbours.right.sampleDur - changeTime));
+					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
 					angular.forEach(selected, function (s) {
-						sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart + changeTime), s.sampleDur);
+					    var orig = sServObj.getElementDetailsById(name, s.id);
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					});
 				}
 			} else if (lastNeighbours.right === undefined) {
+			    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 				if ((lastNeighbours.left.sampleDur + changeTime) >= 1) {
 					if ((selected[selected.length - 1].sampleStart + selected[selected.length - 1].sampleDur + changeTime) < Soundhandlerservice.wavJSO.Data.length) {
-						sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + changeTime));
-						angular.forEach(selected, function (s) {
-							var orig = sServObj.getElementDetails(name, s.id);
-							sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart + changeTime), s.sampleDur);
-						});
+						sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur + changeTime));
+					angular.forEach(selected, function (s) {
+					    var orig = sServObj.getElementDetailsById(name, s.id);
+						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
+					});
+
 					}
 				}
 			} else {
 				if (((lastNeighbours.left.sampleDur + changeTime) > 0) && ((lastNeighbours.right.sampleDur - changeTime) > 0)) {
-					sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + changeTime));
-					sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + changeTime), (lastNeighbours.right.sampleDur - changeTime));
+				    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+				    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
+					sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur + changeTime));
+					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
 					angular.forEach(selected, function (s) {
-						sServObj.setElementDetails(name, s.id, s.labels[0].value, (s.sampleStart + changeTime), s.sampleDur);
+					    var orig = sServObj.getElementDetailsById(name, s.id);
+						sServObj.setElementDetails(name, s.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					});
 				}
 			}
