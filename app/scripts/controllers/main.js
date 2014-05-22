@@ -314,7 +314,7 @@ angular.module('emuwebApp')
 							});
 						} else {
 							// show user management error 
-							dialogService.open('views/error.html', 'ModalCtrl', 'We are sorry but the EMU-webApp does not support user management yet...').then(function () {
+							dialogService.open('views/loginModal.html', 'LoginCtrl').then(function () {
 								$scope.resetToInitState();
 							});
 						}
