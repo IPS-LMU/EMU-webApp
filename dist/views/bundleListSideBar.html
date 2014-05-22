@@ -1,4 +1,4 @@
-<div class="emuwebapp-bundleListSideBarOuter">
+<div class="emuwebapp-bundleListSideBarOuter" ng-show="cps.vals.activeButtons.openMenu">
     <h3><div class="emuwebapp-bundleFilter"><input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></div></h3>
     <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
     <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
