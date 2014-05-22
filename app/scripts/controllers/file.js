@@ -36,6 +36,7 @@ angular.module('emuwebApp')
             var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
             if(extension==="WAV" && file.type.match('audio/wav') ) {
                 $scope.wav = file;
+                $scope.handleLocalFiles();	
             }
             else if(extension==="TEXTGRID" ) {
                 $scope.grid = file;
@@ -74,7 +75,8 @@ angular.module('emuwebApp')
         $scope.dropText = $scope.dropDefault;
     };    
     
-    /*$scope.$watch('wav', function () {
+    /*
+    $scope.$watch('wavMenu', function () {
         if($.isEmptyObject($scope.other)) {
             if (!$.isEmptyObject($scope.wav)) {
                 $scope.handleLocalFiles();	
