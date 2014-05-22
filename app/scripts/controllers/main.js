@@ -125,7 +125,7 @@ angular.module('emuwebApp')
 										viewState.somethingInProgress = false;
 										viewState.setState('labeling');
 										// close submenu... 
-										$scope.openSubmenu();
+										// $scope.openSubmenu();
 										
 									}, function (errMess) {
 										dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
