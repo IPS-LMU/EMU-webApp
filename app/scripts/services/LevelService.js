@@ -29,7 +29,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getNewId = function () {
-
 			sServObj.maxElementID = sServObj.maxElementID + 1;
 			return sServObj.maxElementID;
 		};
@@ -710,11 +709,10 @@ angular.module('emuwebApp')
 				if ((lastNeighbours.left.sampleDur + changeTime) >= 1) {
 					if ((selected[selected.length - 1].sampleStart + selected[selected.length - 1].sampleDur + changeTime) < Soundhandlerservice.wavJSO.Data.length) {
 						sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur + changeTime));
-					angular.forEach(selected, function (s) {
-					    var orig = sServObj.getElementDetailsById(name, s.id);
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
-					});
-
+					    angular.forEach(selected, function (s) {
+					       var orig = sServObj.getElementDetailsById(name, s.id);
+    						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
+	    				});
 					}
 				}
 			} else {

@@ -614,7 +614,6 @@ angular.module('emuwebApp')
               // undoRedo
               if (code === ConfigProviderService.vals.keyMappings.undoRedo) {
                 if (viewState.getPermission('labelAction')) {
-                  console.log(HistoryService.getCurrentStack());
                   if (!e.shiftKey) {
                     HistoryService.undo();
                   } else {

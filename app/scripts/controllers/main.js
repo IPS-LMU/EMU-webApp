@@ -606,7 +606,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.addLevelSegBtnClick = function () {
-
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var newName = 'levelNr' + Levelservice.data.levels.length;
 				var level = {
@@ -627,7 +626,7 @@ angular.module('emuwebApp')
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
-					'level': level,
+					'name': level.name,
 					'idx': Levelservice.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
