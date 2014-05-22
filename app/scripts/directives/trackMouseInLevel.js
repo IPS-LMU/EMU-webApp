@@ -215,13 +215,25 @@ angular.module('emuwebApp')
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level, Soundhandlerservice.wavJSO.Data.length);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index);
-          viewState.setcurClickSegment(lastEventClick.evtr);
-          viewState.setlasteditArea('_' + lastEventClick.evtr.id);
-          viewState.setlasteditAreaElem(element.parent());
-          viewState.setEditing(true);
-          viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-          viewState.focusInTextField = true;
+          if(levelType==="SEGMENT") {
+              if(lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
+                  if((lastEventClick.evtr.sampleStart+lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
+                      viewState.setcurClickLevel(levelID, levelType, scope.$index);
+                      viewState.setcurClickSegment(lastEventClick.evtr);
+                      viewState.setlasteditArea('_' + lastEventClick.evtr.id);
+                      viewState.setlasteditAreaElem(element.parent());
+                      viewState.setEditing(true);
+                      viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                      viewState.focusInTextField = true;              
+                  }
+                  else {
+                      console.log('Editing out of right bound !');
+                  }
+              }
+              else {
+                  console.log('Editing out of left bound !');
+              }
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
