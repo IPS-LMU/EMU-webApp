@@ -234,6 +234,15 @@ angular.module('emuwebApp')
                   console.log('Editing out of left bound !');
               }
           }
+          else {
+            viewState.setcurClickLevel(levelID, levelType, scope.$index);
+            viewState.setcurClickSegment(lastEventClick.evtr);
+            viewState.setlasteditArea('_' + lastEventClick.evtr.id);
+            viewState.setlasteditAreaElem(element.parent());
+            viewState.setEditing(true);
+            viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+            viewState.focusInTextField = true;              
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }

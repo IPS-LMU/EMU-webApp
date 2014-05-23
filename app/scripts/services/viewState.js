@@ -814,18 +814,19 @@ angular.module('emuwebApp')
       var elem = element.find('canvas').context.getContext('2d');
       var clientWidth = elem.canvas.clientWidth;
       var clientOffset = elem.canvas.offsetLeft;
+      var top = elem.canvas.offsetTop;
+      var height = elem.canvas.clientHeight;
 
       if (type === 'SEGMENT') {
         var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
         var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
+        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
       } else {
-        var start = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (clientWidth / 50);
-        var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (clientWidth / 50);
+        var len = lastEventClick.labels[0].value.length * 10;
+        var start = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
+        var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
+        sServObj.createEditArea(element, start + ((end - start)/3), top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id); 
       }
-
-      var top = elem.canvas.offsetTop;
-      var height = elem.canvas.clientHeight;
-      sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
       sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
     };
 
@@ -861,10 +862,13 @@ angular.module('emuwebApp')
       }).css({
         'position': 'absolute',
         'z-index': '9999',
+        'font-size': '1.03em',
+        'overflow': 'auto',
+        'overflow-x': 'auto',
         'left': x + 2 + 'px',
-        'top': y + 1 + 'px',
+        'top': y + 'px',
         'width': Math.round(width) - 4 + 'px',
-        'height': Math.round(height) - 3 + 'px',
+        'height': Math.round(height) - 1 + 'px',
         'padding-top': Math.round(height / 3 + 1) + 'px'
       }).text(label));
     };
