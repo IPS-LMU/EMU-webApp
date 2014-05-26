@@ -62,6 +62,21 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		sServObj.logOnUser = function (name, pwd) {
+			var getProm;
+
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of logOnUser not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+				getProm = Websockethandler.logOnUser(name, pwd);
+			}
+
+			return getProm;
+		};
+
+		/**
+		 *
+		 */
 		sServObj.getDBconfigFile = function (nameOfDB) {
 			var getProm;
 

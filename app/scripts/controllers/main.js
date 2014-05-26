@@ -126,7 +126,7 @@ angular.module('emuwebApp')
 										viewState.setState('labeling');
 										// close submenu... 
 										// $scope.openSubmenu();
-										
+
 									}, function (errMess) {
 										dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
 									});
@@ -280,48 +280,59 @@ angular.module('emuwebApp')
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
 						if (doUsrData === 'NO') {
-							viewState.somethingInProgressTxt = 'Loading DB config...';
-							// then get the DBconfigFile
-							Iohandlerservice.getDBconfigFile().then(function (data) {
-								// first element of perspectives is default perspective
-								viewState.curPerspectiveIdx = 0;
-								ConfigProviderService.setVals(data.EMUwebAppConfig);
-								delete data.EMUwebAppConfig; // delete to avoid duplicate
-								var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals)
-								if (validRes === true) {
-									ConfigProviderService.curDbConfig = data;
-									validRes = Validationservice.validateJSO('DBconfigFileSchema', data)
-									if (validRes === true) {
-										// then get the DBconfigFile
-										viewState.somethingInProgressTxt = 'Loading bundle list...';
-										Iohandlerservice.getBundleList().then(function (bdata) {
-											$scope.bundleList = bdata;
-											// then load first bundle in list
-											$scope.menuBundleClick($scope.bundleList[0]);
-										});
-
-									} else {
-										dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-											$scope.resetToInitState();
-										});
-									}
-
-								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-										$scope.resetToInitState();
-									});
-								}
-							});
+							$scope.innerHandleConnectedToWSserver();
 						} else {
 							// show user management error 
-							dialogService.open('views/loginModal.html', 'LoginCtrl').then(function () {
-								$scope.resetToInitState();
+							dialogService.open('views/loginModal.html', 'LoginCtrl').then(function (res) {
+								if (res) {
+									$scope.innerHandleConnectedToWSserver();
+								} else {
+									$scope.resetToInitState();
+								}
 							});
 						}
 					});
 				} else {
 					// show protocol error and disconnect from server
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+						$scope.resetToInitState();
+					});
+				}
+			});
+		};
+
+		/**
+		 * to avoid redundant code...
+		 */
+		$scope.innerHandleConnectedToWSserver = function () {
+			viewState.somethingInProgressTxt = 'Loading DB config...';
+			// then get the DBconfigFile
+			Iohandlerservice.getDBconfigFile().then(function (data) {
+				// first element of perspectives is default perspective
+				viewState.curPerspectiveIdx = 0;
+				ConfigProviderService.setVals(data.EMUwebAppConfig);
+				delete data.EMUwebAppConfig; // delete to avoid duplicate
+				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
+				if (validRes === true) {
+					ConfigProviderService.curDbConfig = data;
+					validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
+					if (validRes === true) {
+						// then get the DBconfigFile
+						viewState.somethingInProgressTxt = 'Loading bundle list...';
+						Iohandlerservice.getBundleList().then(function (bdata) {
+							$scope.bundleList = bdata;
+							// then load first bundle in list
+							$scope.menuBundleClick($scope.bundleList[0]);
+						});
+
+					} else {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							$scope.resetToInitState();
+						});
+					}
+
+				} else {
+					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 						$scope.resetToInitState();
 					});
 				}

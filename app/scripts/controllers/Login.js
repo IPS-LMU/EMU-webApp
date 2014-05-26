@@ -5,26 +5,18 @@ angular.module('emuwebApp')
 
 		$scope.loginData = {
 			'username': '',
-			'accesscode': '',
+			'password': '',
 			'errorMsg': ''
 		};
 
 		$scope.tryLogin = function () {
-			// bit strange to check pwd be4 username... but anyway
-			Iohandlerservice.wsH.checkAccessCode($scope.loginData.accesscode).then(function (codeRes) {
-				if (codeRes === 'CORRECT') {
-					console.log('u are the champion');
-					Iohandlerservice.wsH.getUsrUttList($scope.loginData.username).then(function (usrRes) {
-						if (usrRes === 'USER NOT FOUND') {
-							$scope.loginData.errorMsg = usrRes;
-						} else {
-							$scope.loginData.errorMsg = 'USER FOUND';
-							$rootScope.$broadcast('newUserLoggedOn', $scope.loginData.username);
-							$scope.cancel();
-						}
-					});
+
+
+			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then(function (res) {
+				if (res === 'LOGGEDON') {
+					dialogService.close(true);
 				} else {
-					$scope.loginData.errorMsg = 'Error wrong access code!!';
+					$scope.loginData.errorMsg = 'ERROR: ' + res;
 				}
 			});
 		};
@@ -42,6 +34,6 @@ angular.module('emuwebApp')
 
 		//
 		$scope.cancel = function () {
-			dialogService.close();
+			dialogService.close(false);
 		};
 	});

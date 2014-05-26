@@ -4,7 +4,7 @@ angular.module('emuwebApp')
 	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, Levelservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
 		// shared service object
 		var sServObj = {};
-		
+
 		// Keep all pending requests here until they get responses
 		var callbacks = {};
 
@@ -152,6 +152,18 @@ angular.module('emuwebApp')
 		sServObj.getDoUserManagement = function () {
 			var request = {
 				type: 'GETDOUSERMANAGEMENT'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
+		// ws logOnUser
+		sServObj.logOnUser = function (name, pwd) {
+			var request = {
+				type: 'LOGONUSER',
+				userName: name,
+				pwd: pwd
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);

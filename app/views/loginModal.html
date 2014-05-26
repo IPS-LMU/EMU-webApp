@@ -12,9 +12,11 @@
 		</tr>
 		<tr>
 			<td>Password:</td>
-			<td><input type="password" ng-model="loginData.accesscode" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
+			<td><input type="password" ng-model="loginData.password" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
 		</tr>
 	</table>
+	<hr>
+	<p style="color:red">{{loginData.errorMsg}}</p>
 </div>
 <div class="modal-footer">
 	<button ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>

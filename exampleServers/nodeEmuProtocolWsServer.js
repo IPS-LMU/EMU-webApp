@@ -1,8 +1,13 @@
+'use strict';
+
+// small demo node server that implements the EMU-webApp-websocket-protocol
+
+// load deps
 var fs = require('fs');
 var os = require('os');
 var filewalker = require('filewalker');
 
-var labelData;
+//vars
 
 var pathToDbRoot = '../app/testData/newFormat/ae/';
 var configName = 'ae_DBconfig.json';
@@ -10,6 +15,11 @@ var configName = 'ae_DBconfig.json';
 var portNr = 8080;
 
 var dbConfig = {};
+
+// demo of user management
+var doUserManagement = 'NO';
+var userName = 'user1';
+var userPwd = '1234'; // high security plain text password! This is for demo purposes only! Please store your passwords properly...
 
 
 var WebSocketServer = require('ws').Server,
@@ -47,12 +57,49 @@ wss.on('connection', function (ws) {
     case 'GETDOUSERMANAGEMENT':
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
-        'data': 'NO',
+        'data': doUserManagement,
         'status': {
           'type': 'SUCCESS',
           'message': ''
         }
       }), undefined, 0);
+      break;
+
+      // LOGONUSER method
+    case 'LOGONUSER':
+
+      if (mJSO.userName !== userName) {
+        // handle wrong user name
+        ws.send(JSON.stringify({
+          'callbackID': mJSO.callbackID,
+          'data': 'BADUSERNAME',
+          'status': {
+            'type': 'SUCCESS',
+            'message': ''
+          }
+        }), undefined, 0);
+      } else if (mJSO.pwd !== userPwd) {
+        // handle wrong password
+        ws.send(JSON.stringify({
+          'callbackID': mJSO.callbackID,
+          'data': 'BADPASSWORD',
+          'status': {
+            'type': 'SUCCESS',
+            'message': ''
+          }
+        }), undefined, 0);
+      } else {
+        ws.send(JSON.stringify({
+          'callbackID': mJSO.callbackID,
+          'data': 'LOGGEDON',
+          'status': {
+            'type': 'SUCCESS',
+            'message': ''
+          }
+        }), undefined, 0);
+      }
+
+
       break;
 
       // GETGLOBALDBCONFIG method
@@ -97,8 +144,8 @@ wss.on('connection', function (ws) {
           // var patt = new RegExp('^SES[^/]+/[^/]+$');
 
           if (patt.test(p)) {
-            console.log('###########')
-            console.log(p)
+            console.log('###########');
+            console.log(p);
             var arr = p.split('/');
             var nArr = arr[arr.length - 1].split('_');
             nArr.pop();
@@ -133,7 +180,7 @@ wss.on('connection', function (ws) {
       var bundle = {};
       bundle.ssffFiles = [];
       filewalker(pathToDbRoot)
-        .on('dir', function (p) {}).on('file', function (p) {
+        .on('dir', function () {}).on('file', function (p) {
           // var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
           var pattMedia = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.mediafileExtension + '$');
 
