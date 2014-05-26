@@ -9,6 +9,9 @@ angular.module('emuwebApp')
 			'errorMsg': ''
 		};
 
+		/**
+		 *
+		 */
 		$scope.tryLogin = function () {
 
 
@@ -21,18 +24,24 @@ angular.module('emuwebApp')
 			});
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cursorInTextField = function () {
 			viewState.focusInTextField = true;
 			// console.log("CURSOR");
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
 
-		//
+		/**
+		 *
+		 */
 		$scope.cancel = function () {
 			dialogService.close(false);
 		};
