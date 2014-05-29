@@ -240,17 +240,33 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{LOGONUSER}}
+\begin{center}
+  \line(1,0){250}
 
-\todo[inline]{Write LOGONUSER!!!}
+  \textit{Ask server to log on user. Username and password are sent to server.}
+
+  \line(1,0){250}
+\end{center}
 
 \begin{lstlisting}[caption=Request content, language=json]
 {
   'type': 'LOGONUSER',
   'data': {
     'userName': 'smith', 
-    'userPwd':'mySecretPwd'
+    'pwd':'mySecretPwd'
   },
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Reply content, language=json]
+{
+  'callbackID': request.callbackID,
+  'data': 'BADUSERNAME' | 'BADPASSWORD' | 'LOGGEDON'
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
 }
 \end{lstlisting}
 
@@ -395,5 +411,6 @@ If an error occurs with any of the request types above a response should still b
 
 \lstinputlisting[caption=exampleBundle.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
 
+Currently only BASE64 encoding of binary files allowed.
 
 \end{document}
