@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function () {
+  .directive('spectro', function ($timeout) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -37,7 +37,12 @@ angular.module('emuwebApp')
         
 		//
 		scope.$watch('vs.timelineSize', function () {
-    		scope.updateCSS();  
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {		
+    		  scope.updateCSS();  
+    		  $timeout(scope.redraw,10);
+    		}
+    	  }
 		});        
 
         scope.$watch('vs.curPerspectiveIdx', function () {

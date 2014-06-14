@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function (viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice) {
+	.directive('osci', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
@@ -29,14 +29,25 @@ angular.module('emuwebApp')
 
 				///////////////
 				// watches
+				
+				// on broadcast msg from main ctrl openSubmenu refresh timeline
+				scope.$on('refreshTimeline', function () {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+							drawVpOsciMarkup(scope, ConfigProviderService, true);
+						}
+					}
+				});
 
 				//
 				scope.$watch('viewState.timelineSize', function () {
 					scope.updateCSS();
+					$timeout(scope.redraw,10);
 				});
 
 				//
 				scope.$watch('viewState.curPerspectiveIdx', function () {
+					drawVpOsciMarkup(scope, ConfigProviderService, true);
 					scope.updateCSS();
 				}, true);
 
@@ -106,6 +117,10 @@ angular.module('emuwebApp')
 							};
 						}
 					}
+				};
+				
+				scope.redraw = function () {
+				    drawVpOsciMarkup(scope, ConfigProviderService, true)
 				};
 
 

@@ -12,7 +12,7 @@
 }
 
 .emuwebapp-bundleListSideBarOuter h3 {
-    font-size: 12px;
+    font-size: 1.4em;
     padding-top: 5px;
     padding-bottom: 5px;
     margin: 0;
@@ -47,7 +47,7 @@
     overflow-y:auto;
     text-align: left;
     padding: 10px;
-    font-size: 80%;
+    font-size: 0.8em;
 }
 
 
@@ -68,13 +68,13 @@
 .emuwebapp-bundleListItem input[type='text'] {
     width: 170px;
     height: 25px;
-    font-size: 14px;
+    font-size: 1.4em;
 }
 
 .emuwebapp-bundleListItem b {
     display: block;
     color: #fff;
-    font-size: 14px;
+    font-size: 1.4em;
     font-weight: 500;
     cursor: default;
     width: 100%;

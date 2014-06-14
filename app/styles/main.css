@@ -160,7 +160,7 @@ ul {
 .emuwebapp-labelEdit {
     z-index:9999;
     position: absolute;
-    font-size: 1.03em;
+    font-size: 0.8em;
     text-align:center;
     overflow: scroll;
     padding:0;
@@ -170,8 +170,7 @@ ul {
     resize: none;
     white-space: nowrap;
     background-color:rgba(255,255,0,1);
-    /*box-shadow: 0px 0px 25px #eeee00;*/
-    font-size:12px; 
+    box-shadow: 0px 0px 15px #eeee00;
     vertical-align: middle !important;   
 }
 

@@ -13,12 +13,12 @@
   box-shadow: 0 0 5px 2px #ccc;
   border-radius: 2px;
   z-index: 1000;
-  font-size: 90%;
+  font-size: 0.9em;
 }
 
 
 .emuwebapp-rightSideMenu h3{
-  font-size: 16px;
+  font-size: 1.5em;
   padding-top: 15px;
   padding-bottom: 15px;
   border-bottom:thin solid black;

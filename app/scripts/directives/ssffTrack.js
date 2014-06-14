@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('ssffTrack', function (viewState, ConfigProviderService) {
+  .directive('ssffTrack', function ($timeout, viewState, ConfigProviderService) {
     return {
       templateUrl: 'views/ssffTrack.html',
       restrict: 'E',
@@ -34,9 +34,20 @@ angular.module('emuwebApp')
         /////////////////////
         // watches
 
+		// on broadcast msg from main ctrl openSubmenu refresh timeline
+		scope.$on('refreshTimeline', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              drawSsffTrackMarkup();
+              scope.updateCSS();
+            }
+          }
+		});  
+
 		//
 		scope.$watch('vs.timelineSize', function () {
-    		scope.updateCSS();  
+    		scope.updateCSS(); 
+    		$timeout(scope.redraw, 10); 
 		}); 
 
         scope.$watch('vs.curPerspectiveIdx', function () {

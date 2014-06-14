@@ -606,8 +606,13 @@ angular.module('emuwebApp')
 			} else {
 				viewState.setsubmenuOpen(true);
 			}
-			//$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
+			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
 		};
+		
+		$scope.refreshTimeline = function() {
+		    $scope.$broadcast('refreshTimeline');
+		};
+		
 
 		/////////////////////////////////////////
 		// handle button clicks

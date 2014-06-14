@@ -19,6 +19,12 @@ angular.module('emuwebApp')
 				scope.cps = ConfigProviderService;
 				scope.dials = dialogService;
 
+				// on broadcast msg from main ctrl openSubmenu refresh timeline
+				scope.$on('refreshTimeline', function () {
+		            drawLevelDetails(scope.level, viewState, ConfigProviderService);
+        		    drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+				});
+
 				///////////////
 				// watches
 
