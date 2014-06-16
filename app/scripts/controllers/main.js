@@ -500,10 +500,11 @@ angular.module('emuwebApp')
 					formants = el;
 				}
 			});
-			if (!$.isEmptyObject()) {
-				Ssffparserservice.asyncJso2ssff(el).then(function (messParser) {
+
+			if (!$.isEmptyObject(formants)) {
+				Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
 					bundleData.ssffFiles.push({
-						'ssffTrackName': el.ssffTrackName,
+						'ssffTrackName': formants.ssffTrackName,
 						'encoding': 'BASE64',
 						'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 					});
@@ -608,11 +609,11 @@ angular.module('emuwebApp')
 			}
 			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
 		};
-		
-		$scope.refreshTimeline = function() {
-		    $scope.$broadcast('refreshTimeline');
+
+		$scope.refreshTimeline = function () {
+			$scope.$broadcast('refreshTimeline');
 		};
-		
+
 
 		/////////////////////////////////////////
 		// handle button clicks
