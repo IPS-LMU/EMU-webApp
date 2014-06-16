@@ -1,6 +1,16 @@
+/**
+ * small demo node server that implements the EMU-webApp-websocket-protocol
+ *
+ * NOTE: on save no actions are performed (functions are just stubs) 
+ * 
+ * to run:
+ *  > node nodeEmuProtocolWsServer.js
+ *
+ * author: Raphael Winkelmann
+ */
+
 'use strict';
 
-// small demo node server that implements the EMU-webApp-websocket-protocol
 
 // load deps
 var fs = require('fs');
