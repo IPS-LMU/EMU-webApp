@@ -53,7 +53,7 @@ function toJSO(string, myFile, myName) {
 					labelJSO.levels.push({
 						name: tN,
 						type: tT,
-						sampleRate: sampleRate,
+						// sampleRate: sampleRate,
 						items: []
 					});
 				} else if (lines[i + 1].split(/=/)[1] === '\"TextTier\"') {
@@ -62,17 +62,17 @@ function toJSO(string, myFile, myName) {
 					labelJSO.levels.push({
 						name: tN,
 						type: tT,
-						sampleRate: sampleRate,
+						// sampleRate: sampleRate,
 						items: []
 					});
 				} else {
-					tT = 'ITEM';
-					// adding new level
-					labelJSO.levels.push({
-						name: tN,
-						type: tT,
-						items: []
-					});
+					// tT = 'ITEM';
+					// // adding new level
+					// labelJSO.levels.push({
+					// 	name: tN,
+					// 	type: tT,
+					// 	items: []
+					// });
 				}
 			}
 			if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
