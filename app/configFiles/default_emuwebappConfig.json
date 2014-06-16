@@ -58,7 +58,7 @@
         "transitionTime": 400
     },
     "font": {
-        "fontType": "Verdana",
+        "fontType": "HelveticaNeue",
         "fontPxSize": 14
     },
     "spectrogramSettings": {
