@@ -62,7 +62,9 @@
     "grunt-replace": "~0.5.1",
     "grunt-gitinfo": "~0.1.1",
     "protractor": "~0.16.1",
-    "filewalker": "~0.1.2"
+    "filewalker": "~0.1.2",
+    "webworker-threads": "~0.4.13",
+    "q": "~1.0.1"
   },
   "engines": {
     "node": ">=0.8.0"
