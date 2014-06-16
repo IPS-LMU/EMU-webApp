@@ -8,6 +8,7 @@ angular.module('emuwebApp')
 		var worker = new Worker('scripts/workers/wavParserWorker.js');
 		var defer;
 
+		// add event listener to worker to respond to messages
 		worker.addEventListener('message', function (e) {
 			// console.log('Worker said: ', e.data);
 			if (e.data.status.type === 'SUCCESS') {
@@ -17,6 +18,11 @@ angular.module('emuwebApp')
 			}
 		}, false);
 
+		/**
+		 * parse buffer containing wav file using webworker
+		 * @param buf 
+		 * @returns promise
+		 */
 		sServObj.parseWavArrBuf = function (buf) {
 			defer = $q.defer();
 			worker.postMessage({
