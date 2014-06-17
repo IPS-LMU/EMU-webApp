@@ -300,8 +300,9 @@ wss.on('connection', function (ws) {
       var resp = toTextGrid(mJSO.data.annotation.levels, resp.Data.length, sampleRateOfWavFiles);
       console.log('# Saving TextGrid');
       var now = new Date();
-      console.log(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + now.getMonth() + '-' + now.getUTCFullYear() + '.TextGrid')
-      fs.writeFileSync(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + now.getMonth() + '-' + now.getUTCFullYear() + '.TextGrid', resp);
+      var month = now.getDate() + 1;
+      console.log(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + month + '-' + now.getUTCFullYear() + '.TextGrid')
+      fs.writeFileSync(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + month + '-' + now.getUTCFullYear() + '.TextGrid', resp);
 
       // save FORMANTS track
       console.log(path2folder + mJSO.data.annotation.name + '.fms')
