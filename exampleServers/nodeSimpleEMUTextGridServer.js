@@ -43,16 +43,16 @@ vm.runInThisContext(wp);
 //vars
 var path2folder, sampleRateOfWavFiles;
 // for testing allow no arguments
-if (process.argv.length === 2){
+if (process.argv.length === 2) {
   path2folder = '/Users/raphaelwinkelmann/Desktop/standaloneDemoData/';
   sampleRateOfWavFiles = 44100;
-}else{
+} else {
   // if arguments are give do set vars
   path2folder = process.argv[2];
   sampleRateOfWavFiles = process.argv[3];
 }
 
-var TextGridExt = '.TextGrid';
+var TextGridExt = 'TextGrid';
 var portNr = 8080;
 var dbConfig = {};
 
@@ -208,10 +208,10 @@ wss.on('connection', function (ws) {
       filewalker(path2folder)
         .on('dir', function () {}).on('file', function (p) {
           // var pattMedia = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.mediafileExtension + '$');
-          var pattMedia = new RegExp(dbConfig.mediafileExtension + '$');
+          var pattMedia = new RegExp(mJSO.name + '.' + dbConfig.mediafileExtension + '$');
 
           // var pattAnnot = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + 'json' + '$');
-          var pattAnnot = new RegExp(TextGridExt + '$');
+          var pattAnnot = new RegExp(mJSO.name + '.' + TextGridExt + '$');
 
           // set media file infos
           if (pattMedia.test(p)) {
@@ -230,8 +230,9 @@ wss.on('connection', function (ws) {
           // set ssffTracks file infos
           for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
             // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
-            var pattTrack = new RegExp(dbConfig.ssffTracks[i].fileExtension + '$');
+            var pattTrack = new RegExp(mJSO.name + '.' + dbConfig.ssffTracks[i].fileExtension + '$');
             if (pattTrack.test(p)) {
+              console.log(p);
               bundle.ssffFiles.push({
                 ssffTrackName: dbConfig.ssffTracks[i].name,
                 encoding: 'BASE64',
@@ -258,11 +259,11 @@ wss.on('connection', function (ws) {
           var tgSting = fs.readFileSync(path2folder + bundle.annotation.filePath, 'utf8');
 
           // set external var 
-          sampleRate = sampleRateOfWavFiles;
-          var resp = toJSO(tgSting, bundle.mediaFile.filePath, bundle.mediaFile.filePath.split('.')[0]);
+          sampleRate = Number(sampleRateOfWavFiles);
+          var respTgp = toJSO(tgSting, bundle.mediaFile.filePath, bundle.mediaFile.filePath.split('.')[0]);
 
-          console.log(resp);
-          bundle.annotation = resp;
+          console.log(respTgp);
+          bundle.annotation = respTgp;
           // clean up (= delete filePath)
           delete bundle.mediaFile.filePath;
 
@@ -271,10 +272,12 @@ wss.on('connection', function (ws) {
             bundle.ssffFiles[i].data = fs.readFileSync(path2folder + bundle.ssffFiles[i].filePath, 'base64');
             delete bundle.ssffFiles[i].filePath;
           }
+          console.log(dbConfig.ssffTracks.length);
+          console.log(bundle.ssffFiles.length);
 
           console.log('##########################');
           console.log('done');
-          fs.writeFileSync('/Users/raphaelwinkelmann/Desktop/bundle.json', JSON.stringify(bundle, undefined, 0));
+          fs.writeFileSync('/Users/raphaelwinkelmann/Desktop/bundle.json', JSON.stringify(bundle.annotation, undefined, 0));
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
             'data': bundle,
