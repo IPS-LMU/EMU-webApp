@@ -9,17 +9,33 @@ describe('navigation', function () {
 	beforeEach(function () {
 		ptor = protractor.getInstance();
 	});	
+	
+
+	// afterEach it
+	afterEach(function () {
+		element(by.id('zoomAllBtn')).click();
+	});	
+	
 
 	it('should have 2 bundles', function() {
 	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
 	    expect(elems.count()).toBe(2);
 	});
+	
+	it('should close submenu', function() {
+	    element(by.id('submenuOpen')).click();
+	});	
 
 	
 	it('should select a range in the viewport', function() {
-	   var handle = $(".emuwebapp-timelineCanvasMarkup")[0];
-	   ptor.actions().dragAndDrop(handle, {x:250, y:10}).perform();
+	   ptor.actions().dragAndDrop($(".emuwebapp-timelineCanvasMarkup")[0] , { x: 40, y: 40 }).perform();
+	   ptor.sleep(1000);
 	});	
+	
+	it('should open label rename div', function() {
+	   ptor.actions().mouseMove(element(by.id('Phonetic'))).doubleClick().perform();
+	   ptor.sleep(1000);
+	});		
 	
 	it('should zoom in to the selected viewing range', function() {
 	   element(by.id('zoomSelBtn')).click();
@@ -78,5 +94,7 @@ describe('navigation', function () {
 	it('should move around with zoom', function () {
 		element(by.id('playViewBtn')).click();
 	});
+	
+	
 
 });

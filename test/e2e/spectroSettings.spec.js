@@ -3,8 +3,6 @@ describe('spectrogram settings', function () {
 
 	var ptor;
 
-	browser.get('http://127.0.0.1:9000/');
-
 	// beforeEach it
 	beforeEach(function () {
 		ptor = protractor.getInstance();
@@ -20,6 +18,7 @@ describe('spectrogram settings', function () {
 		element(by.model('modalVals.rangeTo')).sendKeys('5000');
 		element(by.model('modalVals.dynamicRange')).clear()
 		element(by.model('modalVals.dynamicRange')).sendKeys('70');
+		// todo : dropdown menu
 		element(by.id('dialogSaveButton')).click();
 	});
 
