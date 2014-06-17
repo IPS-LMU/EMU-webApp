@@ -41,9 +41,18 @@ vm.runInThisContext(wp);
 
 
 //vars
-var path2folder = '/Users/raphaelwinkelmann/Desktop/standaloneDemoData/';
+var path2folder, sampleRateOfWavFiles;
+// for testing allow no arguments
+if (process.argv.length === 2){
+  path2folder = '/Users/raphaelwinkelmann/Desktop/standaloneDemoData/';
+  sampleRateOfWavFiles = 44100;
+}else{
+  // if arguments are give do set vars
+  path2folder = process.argv[2];
+  sampleRateOfWavFiles = process.argv[3];
+}
+
 var TextGridExt = '.TextGrid';
-var sampleRateOfWavFiles = 44100;
 var portNr = 8080;
 var dbConfig = {};
 
