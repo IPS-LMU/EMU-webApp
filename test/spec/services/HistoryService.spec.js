@@ -15,13 +15,4 @@ describe('Service: HistoryService', function () {
       $scope: scope
     });
   }));
-
-
-
-
-  it('should do something awesome', function () {
-    // scope.openDemoDBbtnClick();
-    // expect(scope.connectBtnLabel).toBe('connect');
-    // expect(scope.connectBtnLabel).toBe('connect');
-  });
 });

@@ -4,26 +4,30 @@ describe('navigation', function () {
 	var ptor;
 
 	browser.get('http://127.0.0.1:9000/');
-	// load demo
-	element(by.id('openDemoDBbtn')).click();
-
+	
 	// beforeEach it
 	beforeEach(function () {
 		ptor = protractor.getInstance();
-	});
-	
-	it('should have 7 utterances', function() {
-	    var elems = element.all(by.repeater('utt in uttList | regex:filterText'));
-	    expect(elems.count()).toBe(7);
+	});	
+
+	it('should have 2 bundles', function() {
+	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
+	    expect(elems.count()).toBe(2);
 	});
 
 	
 	it('should select a range in the viewport', function() {
-	   var handle = $(".OsciMarkupCanvas")
-	   ptor.actions().dragAndDrop(handle.find(), {x:-250, y:0}).perform();
-	   
+	   var handle = $(".emuwebapp-timelineCanvasMarkup")[0];
+	   ptor.actions().dragAndDrop(handle, {x:250, y:10}).perform();
 	});	
+	
+	it('should zoom in to the selected viewing range', function() {
+	   element(by.id('zoomSelBtn')).click();
+	});		
 
+	it('should zoom out to default view', function() {
+	   element(by.id('zoomAllBtn')).click();
+	});	
 
 	it('should overzoom to check boundaries for in and out', function () {
 		for (var i = 0; i < 30; i++) {
