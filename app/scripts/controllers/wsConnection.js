@@ -2,14 +2,14 @@
 
 angular.module('emuwebApp')
 	.controller('WsconnectionCtrl', function ($scope, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
-
-		$scope.serverUrl = ConfigProviderService.vals.main.serverUrl;
+		$scope.serverInfos = {};
+		$scope.serverInfos.Url = ConfigProviderService.vals.main.serverUrl;
 
 		$scope.connectionError = '';
 		viewState.focusInTextField = true;
 
 		$scope.tryConnection = function () {
-			dialogService.close($scope.serverUrl);
+			dialogService.close($scope.serverInfos.Url);
 		};
 
 		$scope.cancel = function () {
