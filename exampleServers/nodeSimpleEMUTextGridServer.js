@@ -3,7 +3,9 @@
  * SSFF files can also be defined using the textGridServerDemo_DBconfig.json
  *
  * to run:
- *  > node nodeEmuProtocolWsServer.js path/2/folder/containing/textgrids/and/audio/files/with/same/basename/
+ *  > node nodeEmuProtocolWsServer.js path/2/folder/containing/textgrids/and/audio/files/with/same/basename/ 44100
+ *
+ * 44100 being the samplerate of the audio files (should be fixe in future version)
  *
  * two files with the same base name would be: msajc003.wav msajc003.TextGrid (base name == msajc003)
  *
@@ -44,8 +46,8 @@ vm.runInThisContext(wp);
 var path2folder, sampleRateOfWavFiles;
 // for testing allow no arguments
 if (process.argv.length === 2) {
-  path2folder = '/Users/raphaelwinkelmann/Desktop/standaloneDemoData/';
-  sampleRateOfWavFiles = 44100;
+  path2folder = '/Users/raphaelwinkelmann/Desktop/testDb/'; // for testing
+  sampleRateOfWavFiles = 44100; // // for testing
 } else {
   // if arguments are give do set vars
   path2folder = process.argv[2];
@@ -56,6 +58,7 @@ var TextGridExt = 'TextGrid';
 var portNr = 8080;
 var dbConfig = {};
 
+var ipBundleListMap = {};
 
 
 ////////////////////////////////////////////////////////
@@ -120,7 +123,7 @@ wss.on('connection', function (ws) {
     case 'GETDOUSERMANAGEMENT':
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
-        'data': 'NO',
+        'data': 'YES',
         'status': {
           'type': 'SUCCESS',
           'message': ''
@@ -129,18 +132,61 @@ wss.on('connection', function (ws) {
       break;
 
 
-      //       break;
+      // LOGONUSER method
+    case 'LOGONUSER':
+      fs.readFile(path2folder + mJSO.userName + '_bundleList.json', 'utf8', function (err, data) {
+        if (err) {
+          console.log('user NOT THERE');
+          console.log(err);
+          // handle wrong user name
+          ws.send(JSON.stringify({
+            'callbackID': mJSO.callbackID,
+            'data': 'BADUSERNAME',
+            'status': {
+              'type': 'SUCCESS',
+              'message': ''
+            }
+          }), undefined, 0);
+        } else {
+          console.log('user there');
+          if (mJSO.pwd !== mJSO.userName) { // for demo purposes the pwd is the same as the username! This should of course not be the case in a live system
+            // handle wrong password
+            ws.send(JSON.stringify({
+              'callbackID': mJSO.callbackID,
+              'data': 'BADPASSWORD',
+              'status': {
+                'type': 'SUCCESS',
+                'message': ''
+              }
+            }), undefined, 0);
+          } else {
+            // set bundleList to according ip address
+            ipBundleListMap[ws._socket.remoteAddress] = JSON.parse(data);
+            ws.send(JSON.stringify({
+              'callbackID': mJSO.callbackID,
+              'data': 'LOGGEDON',
+              'status': {
+                'type': 'SUCCESS',
+                'message': ''
+              }
+            }), undefined, 0);
+          }
+
+        }
+      });
+
+      break;
 
       // // GETGLOBALDBCONFIG method
     case 'GETGLOBALDBCONFIG':
-      fs.readFile('textGridServerDemo_DBconfig.json', 'utf8', function (err, data) {
+      fs.readFile(path2folder+'textGridServerDemo_DBconfig.json', 'utf8', function (err, data) {
         if (err) {
           console.log('Error: ' + err);
           ws.send(JSON.stringify({
             'callbackID': mJSO.callbackID,
             'status': {
               'type': 'ERROR',
-              'message': err
+              'message': JSON.stringify(err, undefined, 1)
             }
           }), undefined, 0);
           return;
@@ -163,39 +209,16 @@ wss.on('connection', function (ws) {
       // GETBUNDLELIST method
       // file walks through DB to get all the bundles
     case 'GETBUNDLELIST':
-      // var DBconfig = generateDBconfig();
-      var bundleList = [];
-      filewalker(path2folder)
-        .on('file', function (p) {
 
-          var patt = new RegExp('.wav$');
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': ipBundleListMap[ws._socket.remoteAddress],
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
 
-          if (patt.test(p)) {
-            console.log('###########');
-            console.log(p);
-            bundleList.push({
-              'name': p.split('.')[0]
-            });
-          }
-        }).on('error', function (err) {
-          ws.send(JSON.stringify({
-            'callbackID': mJSO.callbackID,
-            'status': {
-              'type': 'ERROR',
-              'message': 'Error creating bundleList! Request type was: ' + mJSO.type + ' Error is: ' + err
-            }
-          }), undefined, 0);
-        }).on('done', function () {
-          // TODO should check if all files are there
-          ws.send(JSON.stringify({
-            'callbackID': mJSO.callbackID,
-            'data': bundleList,
-            'status': {
-              'type': 'SUCCESS',
-              'message': ''
-            }
-          }), undefined, 0);
-        }).walk();
       break;
 
       // GETBUNDLE method
