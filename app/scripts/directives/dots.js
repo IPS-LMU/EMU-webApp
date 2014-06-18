@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {
-				// element.text('this is the epg directive');
+				//element.text('this is the dots directive');
 				var canvas = element.find('canvas')[0];
 
 				var globalMinX = Infinity;

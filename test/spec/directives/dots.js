@@ -3,7 +3,7 @@
 describe('Directive: dots', function () {
 
   // load the directive's module
-  beforeEach(module('EMUWebAppApp'));
+  beforeEach(module('emuwebApp'));
 
   var element,
     scope;
@@ -15,6 +15,7 @@ describe('Directive: dots', function () {
   it('should make hidden element visible', inject(function ($compile) {
     element = angular.element('<dots></dots>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the dots directive');
+    expect(element.find('canvas').attr('width')).toBe('512');
+    expect(element.find('canvas').attr('height')).toBe('512');
   }));
 });

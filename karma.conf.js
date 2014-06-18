@@ -21,7 +21,6 @@ module.exports = function (config) {
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
 

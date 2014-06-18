@@ -3,16 +3,14 @@
 describe('Service: validationService', function () {
 
   // load the service's module
-  beforeEach(module('EMUWebAppApp'));
+  beforeEach(module('emuwebApp'));
 
-  // instantiate service
-  var validationService;
-  beforeEach(inject(function (_validationService_) {
-    validationService = _validationService_;
-  }));
 
-  it('should do something', function () {
-    expect(!!validationService).toBe(true);
-  });
+
+ it('should have a defined Validationservice service', inject(['Validationservice',
+    function(Validationservice) {
+      expect(Validationservice).toBeDefined();
+    }])
+  );
 
 });

@@ -3,7 +3,7 @@
 describe('Directive: horizSplitter', function () {
 
   // load the directive's module
-  beforeEach(module('EMUWebAppApp'));
+  beforeEach(module('emuwebApp'));
 
   var element,
     scope;
@@ -15,6 +15,5 @@ describe('Directive: horizSplitter', function () {
   it('should make hidden element visible', inject(function ($compile) {
     element = angular.element('<horiz-splitter></horiz-splitter>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the horizSplitter directive');
   }));
 });
