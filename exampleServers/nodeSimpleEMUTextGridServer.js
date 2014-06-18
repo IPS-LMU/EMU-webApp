@@ -55,7 +55,7 @@ if (process.argv.length === 2) {
 }
 
 var TextGridExt = 'TextGrid';
-var portNr = 8080;
+var portNr = 8999;
 var dbConfig = {};
 
 var ipBundleListMap = {};
