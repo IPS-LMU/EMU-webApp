@@ -1,11 +1,11 @@
 /**
- * small demo node server that serves TextGrid and wav files using the EMU-webApp-communication-protocol
+ * small demo node server that serves TextGrid and wav files and fms files using the EMU-webApp-communication-protocol
  * SSFF files can also be defined using the textGridServerDemo_DBconfig.json
  *
  * to run:
  *  > node nodeEmuProtocolWsServer.js path/2/folder/containing/textgrids/and/audio/files/with/same/basename/ 44100
  *
- * 44100 being the samplerate of the audio files (should be fixe in future version)
+ * 44100 being the samplerate of the audio files (should be extracted done by server in future version)
  *
  * two files with the same base name would be: msajc003.wav msajc003.TextGrid (base name == msajc003)
  *
