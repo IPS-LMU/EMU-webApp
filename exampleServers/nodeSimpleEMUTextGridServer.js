@@ -3,7 +3,7 @@
  * SSFF files can also be defined using the textGridServerDemo_DBconfig.json
  *
  * to run:
- *  > node nodeEmuProtocolWsServer.js path/2/folder/containing/textgrids/and/audio/files/with/same/basename/ 44100
+ *  > node nodeSimpleEMUTextGridServer.js path/2/folder/containing/textgrids/and/audio/files/with/same/basename/ 44100
  *
  * 44100 being the samplerate of the audio files (should be extracted done by server in future version)
  *
