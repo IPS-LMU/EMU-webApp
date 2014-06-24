@@ -1,8 +1,8 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
-        "serverUrl": "ws://localhost:8080",
+        "autoConnect": true,
+        "serverUrl": "ws://localhost:8999",
         "serverTimeoutInterval": 5000,
         "comMode": "WS",
         "catchMouseForKeyBinding": false

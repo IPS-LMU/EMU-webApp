@@ -21,8 +21,8 @@ angular.module('emuwebApp')
 
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {
-		            drawLevelDetails(scope.level, viewState, ConfigProviderService);
-        		    drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
 				///////////////
@@ -144,6 +144,14 @@ angular.module('emuwebApp')
 					var levelId = viewState.getcurClickLevelName();
 					var curID = -1;
 
+					// calculate generic max with of single char (m char used)
+					var mTxtImg = fontScaleService.getTextImage(ctx, 'm', fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
+					var mTxtImgWidth = fontScaleService.getLastImageWidth();
+
+					// calculate generic max with of single digit (0 digit used)
+					var zeroTxtImg = fontScaleService.getTextImage(ctx, '0', fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+					var zeroTxtImgWidth = fontScaleService.getLastImageWidth();
+
 					if (levelDetails.type === 'SEGMENT') {
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;
 						// draw segments
@@ -180,12 +188,12 @@ angular.module('emuwebApp')
 								ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
-								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
-								var tW = fontScaleService.getLastImageWidth();
-								var tX = posS + (posE - posS) / 2 - tW / 2;
 
 								//check for enough space to stroke text
-								if (posE - posS > (tW)) {
+								if (posE - posS > (mTxtImgWidth * curLabVal.length)) {
+									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
+									var tW = fontScaleService.getLastImageWidth();
+									var tX = posS + (posE - posS) / 2 - tW / 2;
 									if (scope.open) {
 										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize - 2), horizontalText.width, horizontalText.height);
 									} else {
@@ -193,52 +201,62 @@ angular.module('emuwebApp')
 									}
 								}
 
-								var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
-								var hst1 = fontScaleService.getLastImageWidth();
-								var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
-								var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
-								var hst2 = fontScaleService.getLastImageWidth();
+
+								// var hst1 = fontScaleService.getLastImageWidth();
+								// var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
+
+
+
 								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
 
 								if (scope.open) {
+									var labelCenter = posS + (posE - posS) / 2;
+
+									var hlY = canvas[0].height / 4;
 									// start helper line
 									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
 									ctx.beginPath();
-									ctx.moveTo(posS, canvas[0].height / 4);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
+									ctx.moveTo(posS, hlY);
+									ctx.lineTo(labelCenter, hlY);
+									ctx.lineTo(labelCenter, hlY + 5);
 									ctx.stroke();
+
+									hlY = canvas[0].height / 4 * 3;
 									// end helper line
 									ctx.strokeStyle = config.vals.colors.endBoundaryColor;
 									ctx.beginPath();
-									ctx.moveTo(posE, canvas[0].height / 4 * 3);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 * 3 - 10);
+									ctx.moveTo(posE, hlY);
+									ctx.lineTo(labelCenter, hlY);
+									ctx.lineTo(labelCenter, hlY - 5);
 									ctx.stroke();
 								}
 
-								if (posE - posS <= tW) {
+								// if (posE - posS <= tW) {
 
-									ctx.strokeStyle = config.vals.colors.startBoundaryColor;
-									ctx.beginPath();
-									ctx.moveTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
-									ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 30);
-									ctx.stroke();
-								}
+								// 	ctx.strokeStyle = 'red';//config.vals.colors.startBoundaryColor;
+								// 	ctx.beginPath();
+								// 	ctx.moveTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
+								// 	ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 30);
+								// 	ctx.stroke();
+								// }
 
 								// draw sampleStart numbers
 								//check for enough space to stroke text
-								if (posE - posS > hst1) {
+								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length) {
+									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
 								}
+
 								// draw sampleDur numbers.
 
 								//sStW = fontScaleService.getLastImageWidth();
 								//var sDtW = ctx.measureText('dur: ' + curEvt.sampleDur).width;
 								//ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								//check for enough space to stroke text
-								if (posE - posS > hst2) {
+								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length)) {
+									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
+									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
 									//ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
