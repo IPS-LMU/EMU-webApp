@@ -179,7 +179,7 @@ wss.on('connection', function (ws) {
 
       // // GETGLOBALDBCONFIG method
     case 'GETGLOBALDBCONFIG':
-      fs.readFile(path2folder+'textGridServerDemo_DBconfig.json', 'utf8', function (err, data) {
+      fs.readFile(path2folder + 'textGridServerDemo_DBconfig.json', 'utf8', function (err, data) {
         if (err) {
           console.log('Error: ' + err);
           ws.send(JSON.stringify({
@@ -278,12 +278,18 @@ wss.on('connection', function (ws) {
           // sync read media file
           bundle.mediaFile.data = fs.readFileSync(path2folder + bundle.mediaFile.filePath, 'base64');
 
-          // sync read media file
-          var tgSting = fs.readFileSync(path2folder + bundle.annotation.filePath, 'utf8');
+          // sync read textGrid file file
+          var tgString = fs.readFileSync(path2folder + bundle.annotation.filePath, 'utf8');
+
+          // make backup of textGrid
+          var d = new Date();
+          // console.log(d.toString().split(' GMT')[0].split(' ').join('_').split(':').join('-'));
+          // fs.writeFileSync(path2folder + bundle.annotation.filePath +'_backupFrom_' + d.toString().split(' GMT')[0].split(' ').join('_').split(':').join('-'), tgString);
+          fs.writeFileSync(path2folder + bundle.annotation.filePath.replace(TextGridExt, '') + 'backUp.' + TextGridExt, tgString);
 
           // set external var 
           sampleRate = Number(sampleRateOfWavFiles);
-          var respTgp = toJSO(tgSting, bundle.mediaFile.filePath, bundle.mediaFile.filePath.split('.')[0]);
+          var respTgp = toJSO(tgString, bundle.mediaFile.filePath, bundle.mediaFile.filePath.split('.')[0]);
 
           console.log(respTgp);
           bundle.annotation = respTgp;
@@ -322,10 +328,8 @@ wss.on('connection', function (ws) {
       // convert back to textGrid to save
       var resp = toTextGrid(mJSO.data.annotation.levels, resp.Data.length, sampleRateOfWavFiles);
       console.log('# Saving TextGrid');
-      var now = new Date();
-      var month = now.getMonth() + 1;
-      console.log(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + month + '-' + now.getUTCFullYear() + '.TextGrid')
-      fs.writeFileSync(path2folder + mJSO.data.annotation.name + '_' + now.getDate() + '-' + month + '-' + now.getUTCFullYear() + '.TextGrid', resp);
+      console.log(path2folder + mJSO.data.annotation.name + '.TextGrid')
+      fs.writeFileSync(path2folder + mJSO.data.annotation.name + '.TextGrid', resp);
 
       // save FORMANTS track
       console.log(path2folder + mJSO.data.annotation.name + '.fms')
