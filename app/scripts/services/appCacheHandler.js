@@ -5,7 +5,7 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		// var appCache = window.applicationCache;
+		var appCache = window.applicationCache;
 
 		// var cacheProperties = {
 		// 	filesDownloaded: 0,
@@ -82,20 +82,26 @@ angular.module('emuwebApp')
 		// 	console.log(e);
 		// }
 
+		/**
+		 *
+		 */
 		// function handleCachedEvent(e) {
 		// 	console.log('###### handleCachedEvent ##########');
 		// 	console.log(e);
-		// 	dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'A new version of the EMU-WebApp is available and has already been downloaded! Would you like to use it (CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-WebApp you will automatically use the updated version)?').then(function (res) {
-		// 		if (res) {
-		// 			window.location.reload();
-		// 		}
-		// 	});
 		// }
 
-		// function handleUpdatereadyEvent(e) {
-		// 	console.log('###### handleUpdatereadyEvent ##########');
-		// 	console.log(e);
-		// }
+		/**
+		 *
+		 */
+		function handleUpdatereadyEvent(e) {
+			console.log('###### handleUpdatereadyEvent ##########');
+			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
+				if (res) {
+					appCache.swapCache();
+					window.location.reload();
+				}
+			});
+		}
 
 		// function handleObsoleteEvent(e) {
 		// 	console.log('###### handleObsoleteEvent ##########');
@@ -116,17 +122,17 @@ angular.module('emuwebApp')
 		// appCache.addEventListener('downloading', handleDownloadingEvent, false);
 		// appCache.addEventListener('progress', handleProgressEvent, false);
 		// appCache.addEventListener('cached', handleCachedEvent, false);
-		// appCache.addEventListener('updateready', handleUpdatereadyEvent, false);
+		appCache.addEventListener('updateready', handleUpdatereadyEvent, false);
 		// appCache.addEventListener('obsolete', handleObsoleteEvent, false);
 		// appCache.addEventListener('error', handleErrorEvent, false);
 
 		// /////////////////////////////////////////////////
 		// // public api
 
-		// sServObj.checkForNewVersion = function () {
-		// 	console.log('check for new version');
-		// 	// appCache.update();
-		// };
+		sServObj.checkForNewVersion = function () {
+			// console.log('check for new version');
+			appCache.update();
+		};
 
 		return sServObj;
 	});

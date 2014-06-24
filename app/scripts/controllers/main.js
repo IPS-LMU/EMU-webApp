@@ -2,7 +2,7 @@
 
 angular.module('emuwebApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
 
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
@@ -16,6 +16,7 @@ angular.module('emuwebApp')
 		$scope.dhs = Drawhelperservice;
 		$scope.wps = Wavparserservice;
 		$scope.io = Iohandlerservice;
+		$scope.ach = Appcachehandler;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
@@ -36,6 +37,9 @@ angular.module('emuwebApp')
 		$scope.windowWidth = $window.outerWidth;
 
 		$scope.demoDbName = '';
+
+		// check for new version
+		$scope.ach.checkForNewVersion();
 
 		//////////////
 		// bindings
