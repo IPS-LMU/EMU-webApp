@@ -55,6 +55,13 @@ angular.module('emuwebApp')
 			}
 		});
 
+		// Take care of preventing navigation out of app (only if something is loaded and not in embedded mode)
+		window.onbeforeunload = function () {
+			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0) {
+				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
+			}
+		};
+
 		//////////////
 		// watches
 		// watch if embedded override (if attributes are set on emuwebapp tag)
