@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document,
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document, $location,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
 
 		// hook up services to use abbreviated forms
@@ -79,6 +79,12 @@ angular.module('emuwebApp')
 
 		//
 		//////////////
+		
+		// check if URL parameters are set -> if so set embedded flags!
+		// var searchObject = $location.search();
+		// if(searchObject['audioGetUrl']){
+		// 	console.log('word!');
+		// };
 
 		/**
 		 *
