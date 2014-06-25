@@ -23,7 +23,7 @@ function selectOption(selector, item){
 }
 
 // tests for spectro Settings
-describe('spectrogram settings', function () {
+describe('E2E: spectrogram settings', function () {
 
 	var ptor;
 

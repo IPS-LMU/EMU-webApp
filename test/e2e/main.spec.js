@@ -1,3 +1,4 @@
+
 // in test/e2e/main.spec.js
 describe('E2E: main page', function () {
 
@@ -27,5 +28,27 @@ describe('E2E: main page', function () {
 			expect(heading.getText()).toEqual('EMU-webApp');
 			element(by.id('modalCancelBtn')).click('EMU-webApp');
 		});
-	})
+	});
+	
+	describe('E2E: export functions', function () {
+
+    	beforeEach(function () {
+	    	ptor = protractor.getInstance();
+    	}); 	
+		
+	    it('should export Textgrid', function() {
+    	    element(by.id('downloadTextgrid')).click();
+        	element(by.id('modal-export')).click();
+        	ptor.sleep(500);
+	    });	
+		
+	    it('should export single SEGMENT and EVENT level', function() {
+	        element.all(by.css('.emuwebapp-levelSaveBtn')).get(0).click();
+    	    element(by.id('modal-export')).click();
+    	    ptor.sleep(500);
+	        element.all(by.css('.emuwebapp-levelSaveBtn')).get(1).click();
+    	    element(by.id('modal-export')).click();
+    	    ptor.sleep(500);
+	    });			
+    });
 });

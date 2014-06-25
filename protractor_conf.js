@@ -6,7 +6,12 @@ exports.config = {
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+  'chromeOptions': {
+    'args': ['show-fps-counter=true'],
+    'profile.content_settings.pattern_pairs.,.multiple-automatic-downloads': 1
+  }
+    
   },
 
   // Spec patterns are relative to the current working directly when
