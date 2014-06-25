@@ -290,7 +290,7 @@ describe('navigation', function () {
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 	
-	it('should insert a new boundary on SEGMENT tier', function() {
+	it('should insert a new boundary on SEGMENT (should work)', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -302,6 +302,21 @@ describe('navigation', function () {
 		    .click()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	});	
+	
+	it('should insert a new boundary on SEGMENT (double boundary should NOT work)', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};
+		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	  
+		    .click()
+	    .perform();
+	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	    element(by.id('modal-cancel')).click();
 	});	
 	
 	it('should insert a new segment on SEGMENT tier', function() {
@@ -318,6 +333,23 @@ describe('navigation', function () {
 	       .mouseUp()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	});	
+	
+	it('should insert a new segment on SEGMENT tier (double seg should NOT work)', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};
+		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+	   ptor.actions()
+	       .mouseMove(elem)
+	       .mouseMove({ x: -80, y: 0 })
+	       .mouseDown()
+	       .mouseMove({ x: 15, y: 0 })
+	       .mouseUp()
+	    .perform();
+	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	    element(by.id('modal-cancel')).click();
 	});	
 	
 	it('should insert a new element on EVENT tier', function() {
@@ -337,6 +369,27 @@ describe('navigation', function () {
 		    .click()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	});	
+	
+	
+	it('should insert a new element on EVENT tier (double elem should NOT work)', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};
+		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .click()	
+		.perform();		
+		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	  
+		    .click()
+	    .perform();
+	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	    element(by.id('modal-cancel')).click();
 	});	
 			
 	it('should open, rename and save on EVENT', function() {
