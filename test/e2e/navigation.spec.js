@@ -232,7 +232,7 @@ describe('navigation', function () {
 	});		
 	
 
-	it('should move a boundary on SEGMENT tier', function() {
+	it('should move a boundary on SEGMENT level', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -247,7 +247,7 @@ describe('navigation', function () {
 		.perform();
 	});	
 	
-	it('should move a segment on SEGMENT tier', function() {
+	it('should move a segment on SEGMENT level', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -262,7 +262,7 @@ describe('navigation', function () {
 		.perform();
 	});		
 	
-	it('should move a element on EVENT tier', function() {
+	it('should move a element on EVENT level', function() {
 		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
 		ptor.actions()
 		    .mouseMove(elem)
@@ -321,7 +321,7 @@ describe('navigation', function () {
 	    element(by.id('modal-cancel')).click();
 	});	
 	
-	it('should insert a new segment on SEGMENT tier', function() {
+	it('should insert a new segment on SEGMENT level', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -337,7 +337,7 @@ describe('navigation', function () {
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});	
 	
-	it('should insert a new segment on SEGMENT tier (double seg should NOT work)', function() {
+	it('should insert a new segment on SEGMENT level (double seg should NOT work)', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -356,7 +356,7 @@ describe('navigation', function () {
 	    element(by.id('modal-cancel')).click();
 	});	
 	
-	it('should insert a new segment on SEGMENT tier (over boundaries should NOT work)', function() {
+	it('should insert a new segment on SEGMENT level (over boundaries should NOT work)', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -375,7 +375,7 @@ describe('navigation', function () {
 	    element(by.id('modal-cancel')).click();
 	});		
 	
-	it('should insert a new element on EVENT tier', function() {
+	it('should insert a new element on EVENT level', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -394,8 +394,7 @@ describe('navigation', function () {
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});	
 	
-	
-	it('should insert a new element on EVENT tier (double elem should NOT work)', function() {
+	it('should insert a new element on EVENT level (double elem should NOT work)', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -432,7 +431,49 @@ describe('navigation', function () {
 	    expect(ptor.isElementPresent(area)).toBe(true);
 	    element(by.css('.emuwebapp-labelEdit')).sendKeys('testElem');
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	});			
+	});	
+	
+	it('should delete new element from EVENT level', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};		
+		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	
+	        .sendKeys(protractor.Key.BACK_SPACE)
+	    .perform();
+	});		
+	
+	
+	it('should delete segment boundary from SEGMENT level', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};
+		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	  		    
+		    .click()	
+		.perform();		
+	    ptor.actions().sendKeys(protractor.Key.BACK_SPACE).perform();
+	});	
+	
+	it('should delete segment from SEGMENT level', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};
+		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	  
+		    .click()	
+		.perform();		
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.BACK_SPACE).keyUp(protractor.Key.SHIFT).perform();
+	});				
 	
 	it('should select a range in the viewport', function() {
 	   var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);

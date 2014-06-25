@@ -11,7 +11,7 @@
 <div>
   <p>Window Length (samples)</p>
   <!-- <input type="text" ng-model="modalVals.windowLength" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> -->
-  <select ng-model="modalVals.windowLength" ng-options="l for l in windowLengths"></select>
+  <select id="windowLength" ng-model="modalVals.windowLength" ng-options="l for l in windowLengths"></select>
 </div>
 <hr />
 <div>          
@@ -21,7 +21,7 @@
 <hr />
 <div>      
   <p>Window Function</p>
-  <select ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
+  <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
 </div>
 </div>
 
