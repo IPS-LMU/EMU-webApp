@@ -23,7 +23,8 @@ describe('navigation', function () {
 	
 	it('should close submenu', function() {
 	    element(by.id('submenuOpen')).click();
-	});	
+	    ptor.sleep(250);
+	});		
 	
 	it('should open & close submenu with shortcuts', function() {
 	    ptor.actions().sendKeys('o').perform();
@@ -31,6 +32,53 @@ describe('navigation', function () {
 	    ptor.actions().sendKeys('o').perform();
 	    ptor.sleep(500);
 	});		
+	
+	it('should zoom in and out three timeline canvases', function() {
+	    var elem1 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(0);
+	    var elem2 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(1);
+	    var elem3 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(2);
+	    elem1.click();
+	    ptor.sleep(250);
+	    elem1.click();
+	    ptor.sleep(250);
+	    elem2.click();
+	    ptor.sleep(250);
+	    elem2.click();
+	    ptor.sleep(250);
+	    elem3.click();
+	    ptor.sleep(250);
+	    elem3.click();
+	    ptor.sleep(250);	    	    
+	});	
+	
+	it('should move dividing pane up and down', function() {
+	    var elem = element.all(by.css('.emuwebapp-split-handler')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 0, y:90 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(250);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 0, y:-180 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(250);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 0, y:90 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(250);	    	    
+	    
+	});			
 	
 	it('should move around with zoom (with shortcuts)', function () {
 		for (var i = 0; i < 5; i++) {
