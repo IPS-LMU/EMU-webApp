@@ -72,7 +72,7 @@ describe('navigation', function () {
 	    ptor.sleep(1000);
 	});			
 	
-	it('should open, rename and save a label', function() {
+	it('should open, rename and save on SEGMENT', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
@@ -140,6 +140,24 @@ describe('navigation', function () {
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	    ptor.sleep(1000);
 	});	
+			
+	it('should open, rename and save on EVENT', function() {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+			element(by.id('zoomRightBtn')).click();
+		};		
+		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .mouseMove({ x: -50, y:0 })	
+	        .doubleClick()
+	    .perform();
+	    var area = by.css('.emuwebapp-labelEdit'); 
+	    expect(ptor.isElementPresent(area)).toBe(true);
+	    element(by.css('.emuwebapp-labelEdit')).sendKeys('testElem');
+	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+	    ptor.sleep(1000);
+	});		
 	
 	it('should select a range in the viewport', function() {
 	   var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
