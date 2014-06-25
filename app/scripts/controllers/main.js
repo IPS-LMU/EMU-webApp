@@ -59,9 +59,9 @@ angular.module('emuwebApp')
 			}
 		});
 
-		// Take care of preventing navigation out of app (only if something is loaded and not in embedded mode)
+		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
-			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0) {
+			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0 && !ConfigProviderService.vals.main.autoConnect) {
 				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
 			}
 		};
