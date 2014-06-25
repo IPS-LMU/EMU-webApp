@@ -13,6 +13,7 @@ describe('navigation', function () {
 
 	// afterEach it
 	afterEach(function () {
+		ptor.sleep(250);
 		element(by.id('zoomAllBtn')).click();
 	});	
 
@@ -21,40 +22,38 @@ describe('navigation', function () {
 	    expect(elems.count()).toBe(2);
 	});
 	
-	it('should close submenu', function() {
+	it('should close submenu with button', function() {
 	    element(by.id('submenuOpen')).click();
-	    ptor.sleep(250);
 	});		
 	
 	it('should open & close submenu with shortcuts', function() {
 	    ptor.actions().sendKeys('o').perform();
-	    ptor.sleep(500);
+	    ptor.sleep(300);
 	    ptor.actions().sendKeys('o').perform();
-	    ptor.sleep(500);
-	});		
+	});			
 	
-	it('should zoom in and out three timeline canvases', function() {
-	    var elem1 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(0);
-	    var elem2 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(1);
-	    var elem3 = element.all(by.css('.emuwebapp-levelResizeBtn')).get(2);
-	    elem1.click();
-	    ptor.sleep(250);
-	    elem1.click();
-	    ptor.sleep(250);
-	    elem2.click();
-	    ptor.sleep(250);
-	    elem2.click();
-	    ptor.sleep(250);
-	    elem3.click();
-	    ptor.sleep(250);
-	    elem3.click();
-	    ptor.sleep(250);	    	    
+	it('should open & close right submenu with shortcuts', function() {
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+	    ptor.sleep(300);
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+	});			
+	
+	it('should test all resize buttons', function() {
+	    var elem = element.all(by.css('.emuwebapp-levelResizeBtn'));
+	    expect(elem.count()).toBe(5);
+		for (var i = 0; i < 5; i++) {
+			var button = elem.get(i);
+			button.click();
+			ptor.sleep(250);
+			button.click();
+		}	
 	});	
 	
 	it('should move dividing pane up and down', function() {
-	    var elem = element.all(by.css('.emuwebapp-split-handler')).get(0);
+	    var elem = element.all(by.css('.emuwebapp-split-handler'));
+	    expect(elem.count()).toBe(1);
 		ptor.actions()
-		    .mouseMove(elem)
+		    .mouseMove(elem.get(0))
 		    .click()		    
 		    .mouseDown()
 		    .mouseMove({ x: 0, y:90 })
@@ -62,7 +61,7 @@ describe('navigation', function () {
 		.perform();
 	    ptor.sleep(250);
 		ptor.actions()
-		    .mouseMove(elem)
+		    .mouseMove(elem.get(0))
 		    .click()		    
 		    .mouseDown()
 		    .mouseMove({ x: 0, y:-180 })
@@ -70,14 +69,12 @@ describe('navigation', function () {
 		.perform();
 	    ptor.sleep(250);
 		ptor.actions()
-		    .mouseMove(elem)
+		    .mouseMove(elem.get(0))
 		    .click()		    
 		    .mouseDown()
 		    .mouseMove({ x: 0, y:90 })
 		    .mouseUp()
-		.perform();
-	    ptor.sleep(250);	    	    
-	    
+		.perform();	    	    
 	});			
 	
 	it('should move around with zoom (with shortcuts)', function () {
@@ -102,23 +99,51 @@ describe('navigation', function () {
 		for (var i = 0; i < 3; i++) {
 			ptor.actions().sendKeys('w').perform();
 		}
-		var elem = element.all(by.css('.emuwebapp-previewMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-previewMarkupCanvas'));
+		expect(elem.count()).toBe(1);
 		ptor.actions()
-		    .mouseMove(elem)
+		    .mouseMove(elem.get(0))
 		    .click()		    
 		    .mouseDown()
+		    .mouseMove({ x: -200, y:0 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(50);
+		ptor.actions()
+		    .mouseMove(elem.get(0))
+		    .mouseMove({ x: -200, y:0 })
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 50, y:0 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(50);
+		ptor.actions()
+		    .mouseMove(elem.get(0))
+		    .mouseMove({ x: -150, y:0 })
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 50, y:0 })
+		    .mouseUp()
+		.perform();
+	    ptor.sleep(50);
+		ptor.actions()
+		    .mouseMove(elem.get(0))
 		    .mouseMove({ x: -100, y:0 })
-		    .mouseUp()
-		.perform();
-	    ptor.sleep(250);
-		ptor.actions()
-		    .mouseMove(elem)
 		    .click()		    
 		    .mouseDown()
-		    .mouseMove({ x: 200, y:0 })
+		    .mouseMove({ x: 50, y:0 })
 		    .mouseUp()
 		.perform();
-	    ptor.sleep(250);	    
+	    ptor.sleep(50);
+		ptor.actions()
+		    .mouseMove(elem.get(0))
+		    .mouseMove({ x: -50, y:0 })
+		    .click()		    
+		    .mouseDown()
+		    .mouseMove({ x: 50, y:0 })
+		    .mouseUp()
+		.perform();	    
 	});
 	
 	it('should move around with zoom', function () {
@@ -181,6 +206,7 @@ describe('navigation', function () {
 	        ptor.sleep(200);
 		};		    
 	});		
+	
 
 	it('should move a boundary on SEGMENT tier', function() {
 		for (var i = 0; i < 3; i++) {
@@ -195,9 +221,6 @@ describe('navigation', function () {
 		    .mouseMove({ x: -80, y:0 })
 		    .keyUp(protractor.Key.SHIFT)
 		.perform();
-	    ptor.sleep(250);
-	    ptor.actions().sendKeys('z').perform();	
-	    ptor.sleep(250);
 	});	
 	
 	it('should move a segment on SEGMENT tier', function() {
@@ -213,7 +236,6 @@ describe('navigation', function () {
 		    .mouseMove({ x: -100, y:0 })
 		    .keyUp(protractor.Key.ALT)
 		.perform();
-	    ptor.sleep(500);
 	});		
 	
 	it('should move a element on EVENT tier', function() {
@@ -226,7 +248,6 @@ describe('navigation', function () {
 		    .mouseMove({ x: -100, y:0 })
 		    .keyUp(protractor.Key.SHIFT)
 		.perform();
-	    ptor.sleep(250);
 	});			
 	
 	it('should open, rename and save on SEGMENT', function() {
@@ -243,7 +264,6 @@ describe('navigation', function () {
 	    expect(ptor.isElementPresent(area)).toBe(true);
 	    element(by.css('.emuwebapp-labelEdit')).sendKeys('TEST');
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	    ptor.sleep(250);
 	});
 	
 	it('should insert a new boundary on SEGMENT tier', function() {
@@ -258,7 +278,6 @@ describe('navigation', function () {
 		    .click()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	    ptor.sleep(250);
 	});	
 	
 	it('should insert a new segment on SEGMENT tier', function() {
@@ -275,7 +294,6 @@ describe('navigation', function () {
 	       .mouseUp()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	    ptor.sleep(250);
 	});	
 	
 	it('should insert a new element on EVENT tier', function() {
@@ -295,7 +313,6 @@ describe('navigation', function () {
 		    .click()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	    ptor.sleep(250);
 	});	
 			
 	it('should open, rename and save on EVENT', function() {
@@ -313,19 +330,6 @@ describe('navigation', function () {
 	    expect(ptor.isElementPresent(area)).toBe(true);
 	    element(by.css('.emuwebapp-labelEdit')).sendKeys('testElem');
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	    ptor.sleep(250);
-	});	
-	
-	it('should undo last 5 changes', function() {
-		var elem = element.all(by.css('.emuwebapp')).get(0);
-		ptor.actions()
-		    .mouseMove(elem)
-		    .click()
-	    .perform();
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('z').perform();	
-			ptor.sleep(250);
-		};					
 	});			
 	
 	it('should select a range in the viewport', function() {
@@ -337,7 +341,6 @@ describe('navigation', function () {
 	       .mouseMove({ x: 250, y: 0 })
 	       .mouseUp()
 	    .perform();
-	   ptor.sleep(800);
 	});	
 	
 	it('should zoom in to the selected viewing range', function() {
@@ -348,7 +351,7 @@ describe('navigation', function () {
 	   var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
 	   ptor.actions().mouseMove(elem).mouseMove({ x: -250, y: 0 }).mouseDown().mouseMove({ x: 250, y: 0 }).mouseUp().perform();
 	   element(by.id('playSelBtn')).click();
-	   ptor.sleep(900);
+	   ptor.sleep(200);
 	});	
 	
 	it('should play sound in zoomed viewport', function() {
@@ -364,9 +367,41 @@ describe('navigation', function () {
 		ptor.sleep(2950);
 	});	
 
+	it('should change loaded timeline view', function() {
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+	    ptor.sleep(250);
+	    var elem = element.all(by.css('.emuwebapp-perspLi')).get(0).click();
+	});	
 
+	it('should undo all changes', function() {
+		var elem = element.all(by.css('.emuwebapp')).get(0);
+		ptor.actions()
+		    .mouseMove(elem)
+		    .click()
+	    .perform();
+		for (var i = 0; i < 5; i++) {
+			ptor.actions().sendKeys('z').perform();	
+			ptor.sleep(250);
+		};					
+	});	
 
+/*	it('should clear view and open demo1', function() {
+	    element(by.id('clear')).click();	
+	    ptor.sleep(250);
+	    element(by.id('modal-confirm')).click();	
+	    ptor.sleep(250);	  
+    	element(by.id('demoDB')).click();
+	    element(by.id('demo1')).click();  
+	});	
 
+	it('should clear view and open demo2', function() {
+	    element(by.id('clear')).click();	
+	    ptor.sleep(250);
+	    element(by.id('modal-confirm')).click();	
+	    ptor.sleep(250);	  
+    	element(by.id('demoDB')).click();
+	    element(by.id('demo1')).click();  
+	});	*/
 	
 	
 
