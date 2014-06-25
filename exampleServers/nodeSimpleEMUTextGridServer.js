@@ -282,7 +282,6 @@ wss.on('connection', function (ws) {
           var tgString = fs.readFileSync(path2folder + bundle.annotation.filePath, 'utf8');
 
           // make backup of textGrid
-          var d = new Date();
           // console.log(d.toString().split(' GMT')[0].split(' ').join('_').split(':').join('-'));
           // fs.writeFileSync(path2folder + bundle.annotation.filePath +'_backupFrom_' + d.toString().split(' GMT')[0].split(' ').join('_').split(':').join('-'), tgString);
           fs.writeFileSync(path2folder + bundle.annotation.filePath.replace(TextGridExt, '') + 'backUp.' + TextGridExt, tgString);
@@ -320,6 +319,10 @@ wss.on('connection', function (ws) {
 
       // SAVEBUNDLE method
     case 'SAVEBUNDLE':
+      // log saving info
+      var d = new Date();
+      fs.appendFileSync(path2folder + 'log.txt', mJSO.data.annotation.name + ' saved @timestamp: ' + d.toString() + '\n');
+
       // parse wav file to get buffer length for textgrid parser
       var wavBase64Rep = fs.readFileSync(path2folder + mJSO.data.annotation.annotates);
       var wavArrBufRep = toArrayBuffer(wavBase64Rep);
