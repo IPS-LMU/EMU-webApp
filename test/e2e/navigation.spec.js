@@ -21,6 +21,18 @@ describe('navigation', function () {
 	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
 	    expect(elems.count()).toBe(2);
 	});
+		
+	
+	it('should test	bundle filter', function() {
+	    element(by.model('filterText')).sendKeys('msajc01');
+	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
+	    expect(elems.count()).toBe(1);
+	});	
+	
+	it('should load utterance msajc010', function() {
+	    element.all(by.css('.emuwebapp-bundleListItem')).get(0).click();
+	    element(by.model('filterText')).sendKeys('');
+	});		
 	
 	it('should close submenu with button', function() {
 	    element(by.id('submenuOpen')).click();
@@ -36,7 +48,19 @@ describe('navigation', function () {
 	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 	    ptor.sleep(300);
 	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-	});			
+	});	
+
+	it('should change loaded timeline view', function() {
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+	    ptor.sleep(250);
+	    element.all(by.css('.emuwebapp-perspLi')).get(0).click();
+	});	
+	
+	it('should change loaded timeline view back to orig', function() {
+	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+	    ptor.sleep(250);
+	    element.all(by.css('.emuwebapp-perspLi')).get(0).click();
+	});				
 	
 	it('should test all resize buttons', function() {
 	    var elem = element.all(by.css('.emuwebapp-levelResizeBtn'));
@@ -288,9 +312,9 @@ describe('navigation', function () {
 		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
 	   ptor.actions()
 	       .mouseMove(elem)
-	       .mouseMove({ x: -25, y: 0 })
+	       .mouseMove({ x: -80, y: 0 })
 	       .mouseDown()
-	       .mouseMove({ x: 25, y: 0 })
+	       .mouseMove({ x: 15, y: 0 })
 	       .mouseUp()
 	    .perform();
 	    ptor.actions().sendKeys(protractor.Key.ENTER).perform();
@@ -367,11 +391,7 @@ describe('navigation', function () {
 		ptor.sleep(2950);
 	});	
 
-	it('should change loaded timeline view', function() {
-	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-	    ptor.sleep(250);
-	    var elem = element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-	});	
+		
 
 	it('should undo all changes', function() {
 		var elem = element.all(by.css('.emuwebapp')).get(0);
