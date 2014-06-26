@@ -16,7 +16,7 @@
       <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
-      <button ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
+      <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
 
       <div class="btn-group emuwebapp-mini-btn-group" dropdown="" is-open="status.isopen">
@@ -33,7 +33,7 @@
       </div>
 
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
-      <button ng-show="cps.vals.activeButtons.clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
+      <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
       <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img></a>
     </div>
 
