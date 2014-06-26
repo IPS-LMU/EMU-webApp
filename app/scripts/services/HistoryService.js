@@ -32,6 +32,7 @@ angular.module('emuwebApp')
 				} else if (cur.type === 'ESPS') {
 					switch (cur.action) {
 					case 'moveBoundary':
+					    console.log(cur.neighbours.left);
 						if (applyOldVal) {
 							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
 						} else {
@@ -68,7 +69,7 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.deleteLevelInvers(cur.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.addLevel(cur.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						} else {
 							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
 						}
@@ -77,7 +78,7 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							Levelservice.deleteLevel(cur.name, cur.idx, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.deleteLevelInvers(cur.level, cur.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.addLevel(cur.level, cur.name, cur.idx, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteBoundary':
@@ -100,7 +101,6 @@ angular.module('emuwebApp')
 						} else {
 							Levelservice.insertSegment(cur.start, cur.end, cur.levelName, cur.segname);
 						}
-						sServObj.setLastNeighbours(cur.start + ((cur.end-cur.start)/2),cur.levelName);
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {

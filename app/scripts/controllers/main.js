@@ -647,7 +647,15 @@ angular.module('emuwebApp')
 		 */
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				var newName = 'levelNr' + Levelservice.data.levels.length;
+			    var newName, levelLength;
+			    if(Levelservice.data.levels === undefined) {
+			        newName = 'levelNr0';
+			        levelLength = 0;
+			    }
+			    else {
+			        newName = 'levelNr' + Levelservice.data.levels.length;
+			        levelLength = Levelservice.data.levels.length;
+			    }
 				var level = {
 					items: [{
 						id: Levelservice.getNewId(),
@@ -661,7 +669,7 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, newName, levelLength, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
@@ -696,7 +704,7 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'EVENT'
 				};
-				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
