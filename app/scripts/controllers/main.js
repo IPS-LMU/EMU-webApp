@@ -97,7 +97,7 @@ angular.module('emuwebApp')
 
 				// set bundle name
 				var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
-				$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf(".")).substr(tmp.lastIndexOf("/")+1,tmp.length);
+				$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/')+1,tmp.length);
 
 				//hide menu
 				if (viewState.getsubmenuOpen()) {
