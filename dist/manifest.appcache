@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-06-26T11:14:57.988Z
+# rev 1 - 2014-06-26T11:21:52.457Z
 
 CACHE:
 404.html
@@ -34,7 +34,7 @@ schemaFiles/DBconfigFileSchema.json
 schemaFiles/annotationFileSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/493925e6.emuwebApp.min.js
+scripts/8339378b.emuwebApp.min.js
 scripts/9de0f2b5.emuwebAppExternal.min.js
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
