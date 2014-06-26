@@ -132,6 +132,7 @@ angular.module('emuwebApp')
 		sServObj.checkForNewVersion = function () {
 			// console.log('check for new version');
 			if((appCache.status !== 0)){ // uncached == 0
+				console.log('INFO: appCache.status: '+ appCache.status);
 				appCache.update();
 			}
 		};
