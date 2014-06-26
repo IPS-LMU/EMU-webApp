@@ -16,13 +16,20 @@ describe('navigation', function () {
 		ptor.sleep(250);
 		element(by.id('zoomAllBtn')).click();
 	});	
+	
+	it('should load about modal', function () {
+		expect(ptor.isElementPresent(by.id('aboutBtn'))).toBe(true);
+		element(by.id('aboutBtn')).click();
+		heading = ptor.findElement(protractor.By.id('modalHeading'));
+		expect(heading.getText()).toEqual('EMU-webApp');
+		element(by.id('modalCancelBtn')).click('EMU-webApp');
+	});	
 
 	it('should have 2 bundles', function() {
 	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
 	    expect(elems.count()).toBe(2);
 	});
 		
-	
 	it('should test	bundle filter', function() {
 	    element(by.model('filterText')).sendKeys('msajc01');
 	    var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
@@ -32,6 +39,8 @@ describe('navigation', function () {
 	it('should load utterance msajc010', function() {
 	    element.all(by.css('.emuwebapp-bundleListItem')).get(0).click();
 	    element(by.model('filterText')).sendKeys('');
+	    expect(ptor.isElementPresent(by.id('Phonetic'))).toBe(true);
+	    expect(ptor.isElementPresent(by.id('Tone'))).toBe(true);
 	});		
 	
 	it('should close submenu with button', function() {
@@ -72,6 +81,66 @@ describe('navigation', function () {
 			button.click();
 		}	
 	});	
+	
+	it('should test contour correction', function() {
+		for (var i = 0; i < 2; i++) {
+			element(by.id('zoomInBtn')).click();
+		};	
+		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(1);
+		
+		// on first 
+		ptor.actions().sendKeys('1').perform();
+		ptor.actions()
+		    .mouseMove(elem)	
+		    .mouseMove({ x: -61, y:-20 })
+		    .keyDown(protractor.Key.SHIFT)
+		    .mouseMove({ x: 1, y:1 })
+		    .mouseMove({ x: 1, y:1 })
+		    .mouseMove({ x: 1, y:1 })
+		    .mouseMove({ x: 2, y:1 })
+		    .mouseMove({ x: 2, y:1 })
+		    .mouseMove({ x: 3, y:1 })
+		    .mouseMove({ x: 2, y:1 })
+		    .mouseMove({ x: 2, y:1 })
+		    .mouseMove({ x: 1, y:1 })
+		    .mouseMove({ x: 1, y:1 })
+		    .keyUp(protractor.Key.SHIFT)
+		.perform();
+		ptor.sleep(700);
+		
+		// on second
+		ptor.actions().sendKeys('2').perform();
+		ptor.actions()
+		    .mouseMove(elem)	
+		    .mouseMove({ x: 61, y:20 })
+		    .keyDown(protractor.Key.SHIFT)
+		    .mouseMove({ x: -6, y:-2 })
+		    .mouseMove({ x: -5, y:-2 })
+		    .mouseMove({ x: -4, y:-2 })
+		    .mouseMove({ x: -3, y:-2 })
+		    .mouseMove({ x: -2, y:-2 })
+		    .mouseMove({ x: -1, y:-2 })
+		    .mouseMove({ x: -2, y:-2 })
+		    .mouseMove({ x: -3, y:-2 })
+		    .mouseMove({ x: -4, y:-2 })
+		    .mouseMove({ x: -5, y:-2 })
+		    .mouseMove({ x: -6, y:-2 })
+		    .keyUp(protractor.Key.SHIFT)
+		.perform();
+		ptor.sleep(700);		
+	});	
+	
+	it('should undo last 2 changes', function() {
+		var elem = element.all(by.css('.emuwebapp-MainCtrl'));
+		ptor.actions()
+		    .mouseMove(elem.get(0))
+		    .click()		    
+		.perform();		
+		ptor.actions().sendKeys('z').perform();	
+		ptor.sleep(1000);
+		ptor.actions().sendKeys('z').perform();	
+		ptor.sleep(1000);
+	});		
 	
 	it('should move dividing pane up and down', function() {
 	    var elem = element.all(by.css('.emuwebapp-split-handler'));
@@ -213,7 +282,7 @@ describe('navigation', function () {
 	});
 	
 		
-	it('should tab in both directions', function() {
+	it('should tab in both directions with arrow keys and tab (shift tab)', function() {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 		};
@@ -221,15 +290,24 @@ describe('navigation', function () {
 			element(by.id('zoomRightBtn')).click();
 		};		
 	    ptor.actions().mouseMove(element(by.id('Phonetic'))).mouseMove( { x: -200, y: 0 }).click().perform();
-	    for (var i = 0; i < 4; i++) {
+	    for (var i = 0; i < 3; i++) {
 	        ptor.actions().sendKeys(protractor.Key.TAB).perform();
 	        ptor.sleep(200);
+		};	
+	    for (var i = 0; i < 3; i++) {
+	        ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
+	        ptor.sleep(200);
 		};		    
-	    for (var i = 0; i < 4; i++) {
+	    for (var i = 0; i < 3; i++) {
 	        ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
+	        ptor.sleep(200);
+		};	    
+	    for (var i = 0; i < 3; i++) {
+	        ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
 	        ptor.sleep(200);
 		};		    
 	});		
+		
 	
 
 	it('should move a boundary on SEGMENT level', function() {
@@ -473,6 +551,13 @@ describe('navigation', function () {
 		    .click()	
 		.perform();		
 	    ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.BACK_SPACE).keyUp(protractor.Key.SHIFT).perform();
+	});		
+	
+	it('should undo last 10 changes', function() {
+		for (var i = 0; i < 10; i++) {
+			ptor.actions().sendKeys('z').perform();	
+			ptor.sleep(250);
+		};					
 	});				
 	
 	it('should select a range in the viewport', function() {
@@ -510,19 +595,7 @@ describe('navigation', function () {
 		ptor.sleep(2950);
 	});	
 
-		
 
-	it('should undo all changes', function() {
-		var elem = element.all(by.css('.emuwebapp')).get(0);
-		ptor.actions()
-		    .mouseMove(elem)
-		    .click()
-	    .perform();
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('z').perform();	
-			ptor.sleep(250);
-		};					
-	});	
 
 /*	it('should clear view and open demo1', function() {
 	    element(by.id('clear')).click();	

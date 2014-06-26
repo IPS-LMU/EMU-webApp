@@ -8,8 +8,7 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
   'chromeOptions': {
-    'args': ['show-fps-counter=true'],
-    'profile.content_settings.pattern_pairs.,.multiple-automatic-downloads': 1
+    'args': ['show-fps-counter=true']
   }
     
   },

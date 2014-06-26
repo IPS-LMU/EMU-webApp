@@ -683,7 +683,7 @@ angular.module('emuwebApp')
 				}
 			} else {
 				var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-				if ((lastNeighbours.left.sampleDur + changeTime > 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
+				if ((origLeft.sampleDur + changeTime >= 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
 					sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
 					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
@@ -724,11 +724,11 @@ angular.module('emuwebApp')
 					}
 				}
 			} else {
-				if (((lastNeighbours.left.sampleDur + changeTime) > 0) && ((lastNeighbours.right.sampleDur - changeTime) > 0)) {
-				    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-				    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
-					sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur + changeTime));
-					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
+			    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+			    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
+				if (((origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0)) {
+					sServObj.setElementDetails(name, origLeft.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+					sServObj.setElementDetails(name, origRight.id, origRight.labels[0].value, (origRight.sampleStart + changeTime), (origRight.sampleDur - changeTime));
 					angular.forEach(selected, function (s) {
 					    var orig = sServObj.getElementDetailsById(name, s.id);
 						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);

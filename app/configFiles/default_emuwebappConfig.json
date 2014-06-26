@@ -105,14 +105,14 @@
         "showPerspectivesSidebar": false
     },
     "activeButtons": {
-        "addLevelSeg": false,
-        "addLevelEvent": false,
-        "renameSelLevel": false,
+        "addLevelSeg": true,
+        "addLevelEvent": true,
+        "renameSelLevel": true,
         "downloadTextGrid": true,
         "specSettings": true,
         "connect": true,
         "clear": true,
-        "deleteSingleLevel": false,
+        "deleteSingleLevel": true,
         "resizeSingleLevel": true,
         "saveSingleLevel": true,
         "resizePerspectives": true,
