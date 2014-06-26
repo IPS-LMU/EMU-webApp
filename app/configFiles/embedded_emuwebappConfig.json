@@ -26,18 +26,18 @@
 		}],
 		"restrictions": {
 			"showPerspectivesSidebar": false,
-			"editItemSize": false,
-			"editItemName": false,
-			"deleteItemBoundary": false,
-			"deleteItem": false,
+			"editItemSize": true,
+			"editItemName": true,
+			"deleteItemBoundary": true,
+			"deleteItem": true,
 			"deleteLevel": false,
-			"addItem": false
+			"addItem": true
 		},
 		"activeButtons": {
 			"addLevelSeg": false,
 			"addLevelEvent": false,
 			"renameSelLevel": false,
-			"downloadTextGrid": false,
+			"downloadTextGrid": true,
 			"specSettings": true,
 			"connect": false,
 			"clear": false,

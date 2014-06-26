@@ -81,10 +81,12 @@ angular.module('emuwebApp')
 		//////////////
 		
 		// check if URL parameters are set -> if so set embedded flags!
-		// var searchObject = $location.search();
-		// if(searchObject['audioGetUrl']){
-		// 	console.log('word!');
-		// };
+		var searchObject = $location.search();
+		if(searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']){
+			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
+			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
+			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+		};
 
 		/**
 		 *
@@ -92,6 +94,10 @@ angular.module('emuwebApp')
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 				viewState.showDropZone = false;
+
+				// set bundle name
+				var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
+				$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf(".")).substr(tmp.lastIndexOf("/")+1,tmp.length);
 
 				//hide menu
 				if (viewState.getsubmenuOpen()) {
@@ -110,7 +116,7 @@ angular.module('emuwebApp')
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = resp.data;
 						// validate DBconfigFileSchema!
-						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
+						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
 
 						if (validRes === true) {
 							// set wav file
