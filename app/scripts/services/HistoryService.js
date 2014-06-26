@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService) {
+	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -100,6 +100,7 @@ angular.module('emuwebApp')
 						} else {
 							Levelservice.insertSegment(cur.start, cur.end, cur.levelName, cur.segname);
 						}
+						sServObj.setLastNeighbours(cur.start + ((cur.end-cur.start)/2),cur.levelName);
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
@@ -120,6 +121,13 @@ angular.module('emuwebApp')
 				}
 			});
 		}
+		
+		sServObj.setLastNeighbours = function (pcm, levelname) {
+		    var lastEventMove = Levelservice.getEvent(pcm, levelname, Soundhandlerservice.wavJSO.Data.length);
+            var lastNeighboursMove = Levelservice.getElementNeighbourDetails(levelname, lastEventMove.nearest.id, lastEventMove.nearest.id);
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+		};
+		
 		/////////////////////////////////////
 		// public API
 

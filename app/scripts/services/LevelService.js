@@ -130,22 +130,18 @@ angular.module('emuwebApp')
 		 * insert a new Segment at position
 		 */
 		sServObj.insertElementDetails = function (levelname, position, labelname, start, duration) {
-			var myID = ++sServObj.maxElementID;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					var newElement = angular.copy(level.items[0]);
+					newElement.id = sServObj.getNewId();
+					newElement.labels[0].value = labelname;
 					if (level.type == 'SEGMENT') {
-						newElement.id = myID;
 						newElement.sampleStart = start;
 						newElement.sampleDur = duration;
-						newElement.labels[0].value = labelname;
-						level.items.splice(position, 0, newElement);
 					} else if (level.type == 'EVENT') {
-						newElement.id = myID;
 						newElement.samplePoint = start;
-						newElement.labels[0].value = labelname;
-						level.items.splice(position, 0, newElement);
 					}
+					level.items.splice(position, 0, newElement);					
 				}
 			});
 		};
@@ -217,7 +213,8 @@ angular.module('emuwebApp')
 		/**
 		 * gets element details by passing in level, pcm position and maximum pcm
 		 */
-		sServObj.getEvent = function (pcm, level, maximum) {
+		sServObj.getEvent = function (pcm, levelname, maximum) {
+		    var level = sServObj.getLevelDetails(levelname).level;
 			var event = level.items[0];
 			var nearest = false;
 			if (level.type === 'SEGMENT') {
