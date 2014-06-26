@@ -670,8 +670,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.moveBoundry = function (changeTime, name, segID, lastNeighbours) {
+		sServObj.moveBoundry = function (changeTime, name, segID, ln) {
 			var orig = sServObj.getElementDetailsById(name, segID);
+			var lastNeighbours = sServObj.getElementNeighbourDetails(name, segID, segID);
 			if (lastNeighbours.left === undefined) { // before first element
 				if (lastNeighbours.right == undefined) { // after last element
 					orig = sServObj.getLastElement(name);
