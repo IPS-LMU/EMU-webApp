@@ -276,14 +276,10 @@ angular.module('emuwebApp')
 		 * deletes a level by its name
 		 */
 		sServObj.deleteLevel = function (levelName, levelIndex, curPerspectiveIdx) {
-			var l = sServObj.data.levels[levelIndex];
+			var lvl = sServObj.data.levels[levelIndex];
 			sServObj.data.levels.splice(levelIndex, 1);
 			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 1);
-			return {
-				level: l,
-				id: levelIndex,
-				name: levelName
-			};
+			return lvl;
 		};
 
 		/**

@@ -62,11 +62,12 @@ angular.module('emuwebApp')
 		 *  Delete a complete level from Levelservice
 		 */
 		$scope.deleteLevel = function () {
-			var level = Levelservice.deleteLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
+			var lvl = Levelservice.getLevelDetails(viewState.getcurClickLevelName());
+			Levelservice.deleteLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'deleteLevel',
-				'level': level.level,
+				'level': lvl.level,
 				'idx': viewState.getcurClickLevelIndex(),
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
