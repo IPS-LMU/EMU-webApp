@@ -6,7 +6,11 @@ exports.config = {
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+  'chromeOptions': {
+    'args': ['show-fps-counter=true']
+  }
+    
   },
 
   // Spec patterns are relative to the current working directly when

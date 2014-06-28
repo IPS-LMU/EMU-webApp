@@ -593,7 +593,7 @@ angular.module('emuwebApp')
                         } else {
                           var insPoint = Levelservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newEventName);
                           if (!insPoint) {
-                            scope.dials.open('views/error.html', 'ModalCtrl', 'You are not allowed to insert a Point here.');
+                            scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                           } else {
                             scope.hists.addObjToUndoStack({ // todo 
                               'type': 'ESPS',

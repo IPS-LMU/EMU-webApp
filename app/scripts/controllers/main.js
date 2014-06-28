@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document,
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document, $location,
 		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
 
 		// hook up services to use abbreviated forms
@@ -59,9 +59,9 @@ angular.module('emuwebApp')
 			}
 		});
 
-		// Take care of preventing navigation out of app (only if something is loaded and not in embedded mode)
+		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
-			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0) {
+			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0 && !ConfigProviderService.vals.main.autoConnect) {
 				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
 			}
 		};
@@ -79,6 +79,14 @@ angular.module('emuwebApp')
 
 		//
 		//////////////
+		
+		// check if URL parameters are set -> if so set embedded flags!
+		var searchObject = $location.search();
+		if(searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']){
+			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
+			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
+			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+		};
 
 		/**
 		 *
@@ -86,6 +94,10 @@ angular.module('emuwebApp')
 		$scope.loadFilesForEmbeddedApp = function () {
 			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 				viewState.showDropZone = false;
+
+				// set bundle name
+				var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
+				$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/')+1,tmp.length);
 
 				//hide menu
 				if (viewState.getsubmenuOpen()) {
@@ -104,7 +116,7 @@ angular.module('emuwebApp')
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = resp.data;
 						// validate DBconfigFileSchema!
-						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
+						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
 
 						if (validRes === true) {
 							// set wav file
@@ -143,7 +155,7 @@ angular.module('emuwebApp')
 									});
 
 								}, function (errMess) {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + errMess);
+									dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
 								});
 
 
@@ -162,7 +174,7 @@ angular.module('emuwebApp')
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
 				});
 			}, function (errMess) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + errMess);
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
 			});
 		};
 
@@ -636,7 +648,15 @@ angular.module('emuwebApp')
 		 */
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				var newName = 'levelNr' + Levelservice.data.levels.length;
+			    var newName, levelLength;
+			    if(Levelservice.data.levels === undefined) {
+			        newName = 'levelNr0';
+			        levelLength = 0;
+			    }
+			    else {
+			        newName = 'levelNr' + Levelservice.data.levels.length;
+			        levelLength = Levelservice.data.levels.length;
+			    }
 				var level = {
 					items: [{
 						id: Levelservice.getNewId(),
@@ -650,7 +670,7 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, newName, levelLength, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
@@ -685,7 +705,7 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'EVENT'
 				};
-				Levelservice.deleteLevelInvers(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',

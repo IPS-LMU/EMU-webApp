@@ -5,6 +5,8 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
+		// $http.defaults.useXDomain = true;
+
 		sServObj.wsH = Websockethandler;
 
 		/**

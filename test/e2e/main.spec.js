@@ -1,3 +1,4 @@
+
 // in test/e2e/main.spec.js
 describe('E2E: main page', function () {
 
@@ -18,14 +19,34 @@ describe('E2E: main page', function () {
 	    	expect(elems.count()).toBe(2);
     	});			
 
-		it('should load about modal', function () {
-		    expect(ptor.isElementPresent(by.id('aboutBtn'))).toBe(true);
-			element(by.id('aboutBtn')).click();
-			heading = ptor.findElement(protractor.By.id('modalHeading'));
-			// console.log('#########################')
-			// console.log(heading.getText())
-			expect(heading.getText()).toEqual('EMU-webApp');
-			element(by.id('modalCancelBtn')).click('EMU-webApp');
-		});
-	})
+	});
+	
+	/*describe('E2E: export functions', function () {
+
+    	beforeEach(function () {
+	    	ptor = protractor.getInstance();
+    	}); 	
+		
+	    it('should export Textgrid', function() {
+    	    element(by.id('downloadTextgrid')).click();
+        	element(by.id('modal-export')).click();
+        	browser.getAllWindowHandles().then(function (handles) {
+                //newWindowHandle = handles[1];
+                //browser.switchTo().window(newWindowHandle).then(function () {
+                    //expect(browser.driver.getCurrentUrl()).toMatch(/\/url/);
+                //    console.log(browser.driver.getCurrentUrl());
+                //});
+                console.log(handles);
+            });
+	    });	
+		
+	    it('should export single SEGMENT and EVENT level', function() {
+	        element.all(by.css('.emuwebapp-levelSaveBtn')).get(0).click();
+    	    element(by.id('modal-export')).click();
+    	    ptor.sleep(500);
+	        element.all(by.css('.emuwebapp-levelSaveBtn')).get(1).click();
+    	    element(by.id('modal-export')).click();
+    	    ptor.sleep(500);
+	    });
+    });*/
 });

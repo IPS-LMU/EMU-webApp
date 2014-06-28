@@ -130,22 +130,18 @@ angular.module('emuwebApp')
 		 * insert a new Segment at position
 		 */
 		sServObj.insertElementDetails = function (levelname, position, labelname, start, duration) {
-			var myID = ++sServObj.maxElementID;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					var newElement = angular.copy(level.items[0]);
+					newElement.id = sServObj.getNewId();
+					newElement.labels[0].value = labelname;
 					if (level.type == 'SEGMENT') {
-						newElement.id = myID;
 						newElement.sampleStart = start;
 						newElement.sampleDur = duration;
-						newElement.labels[0].value = labelname;
-						level.items.splice(position, 0, newElement);
 					} else if (level.type == 'EVENT') {
-						newElement.id = myID;
 						newElement.samplePoint = start;
-						newElement.labels[0].value = labelname;
-						level.items.splice(position, 0, newElement);
 					}
+					level.items.splice(position, 0, newElement);					
 				}
 			});
 		};
@@ -217,7 +213,8 @@ angular.module('emuwebApp')
 		/**
 		 * gets element details by passing in level, pcm position and maximum pcm
 		 */
-		sServObj.getEvent = function (pcm, level, maximum) {
+		sServObj.getEvent = function (pcm, levelname, maximum) {
+		    var level = sServObj.getLevelDetails(levelname).level;
 			var event = level.items[0];
 			var nearest = false;
 			if (level.type === 'SEGMENT') {
@@ -276,22 +273,25 @@ angular.module('emuwebApp')
 		 * deletes a level by its name
 		 */
 		sServObj.deleteLevel = function (levelName, levelIndex, curPerspectiveIdx) {
-			var l = sServObj.data.levels[levelIndex];
+			var lvl = sServObj.data.levels[levelIndex];
 			sServObj.data.levels.splice(levelIndex, 1);
 			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 1);
-			return {
-				level: l,
-				id: levelIndex,
-				name: levelName
-			};
+			return lvl;
 		};
 
 		/**
 		 * adds a level by its name
 		 */
-		sServObj.deleteLevelInvers = function (originalLevel, levelName, levelIndex, curPerspectiveIdx) {
-			sServObj.data.levels.splice(levelIndex, 0, originalLevel);
-			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, levelName);
+		sServObj.addLevel = function (originalLevel, levelName, levelIndex, curPerspectiveIdx) {
+			if(sServObj.data.levels !== undefined) {
+    			sServObj.data.levels.splice(levelIndex, 0, originalLevel);
+	    		ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, levelName);	
+			}
+			else {
+			    sServObj.data.levels = [];
+			    sServObj.data.levels.splice(levelIndex, 0, originalLevel);
+			    ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, levelName);	
+			}
 		};
 
 		/**
@@ -670,8 +670,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.moveBoundry = function (changeTime, name, segID, lastNeighbours) {
+		sServObj.moveBoundry = function (changeTime, name, segID, ln) {
 			var orig = sServObj.getElementDetailsById(name, segID);
+			var lastNeighbours = sServObj.getElementNeighbourDetails(name, segID, segID);
 			if (lastNeighbours.left === undefined) { // before first element
 				if (lastNeighbours.right == undefined) { // after last element
 					orig = sServObj.getLastElement(name);
@@ -683,7 +684,7 @@ angular.module('emuwebApp')
 				}
 			} else {
 				var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-				if ((lastNeighbours.left.sampleDur + changeTime > 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
+				if ((origLeft.sampleDur + changeTime >= 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
 					sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
 					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
@@ -724,11 +725,11 @@ angular.module('emuwebApp')
 					}
 				}
 			} else {
-				if (((lastNeighbours.left.sampleDur + changeTime) > 0) && ((lastNeighbours.right.sampleDur - changeTime) > 0)) {
-				    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
-				    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
-					sServObj.setElementDetails(name, left.id, left.labels[0].value, left.sampleStart, (left.sampleDur + changeTime));
-					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
+			    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+			    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
+				if (((origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0)) {
+					sServObj.setElementDetails(name, origLeft.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+					sServObj.setElementDetails(name, origRight.id, origRight.labels[0].value, (origRight.sampleStart + changeTime), (origRight.sampleDur - changeTime));
 					angular.forEach(selected, function (s) {
 					    var orig = sServObj.getElementDetailsById(name, s.id);
 						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
