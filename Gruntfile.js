@@ -455,7 +455,7 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('slow', [
+  grunt.registerTask('slowServer', [
     'throttle'
   ]);
 };
