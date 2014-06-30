@@ -86,6 +86,7 @@ angular.module('emuwebApp')
 			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
 			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
 			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+			ConfigProviderService.embeddedVals.fromUrlParams = true;
 		};
 
 		/**
@@ -114,6 +115,10 @@ angular.module('emuwebApp')
 					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
+						// turn of keybinding only on mouseover
+						if(ConfigProviderService.embeddedVals.fromUrlParams){
+							ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
+						}
 						ConfigProviderService.curDbConfig = resp.data;
 						// validate DBconfigFileSchema!
 						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);

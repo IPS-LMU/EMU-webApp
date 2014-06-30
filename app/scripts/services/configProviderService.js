@@ -12,7 +12,8 @@ angular.module('emuwebApp')
 		sServObj.embeddedVals = {
 			audioGetUrl: '',
 			labelGetUrl: '',
-			labelType: ''
+			labelType: '',
+			fromUrlParams: false
 		};
 
 		/**
