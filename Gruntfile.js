@@ -371,14 +371,23 @@ module.exports = function (grunt) {
         fallback: 'index.html'
       }
     },
+    throttle: {
+      default: {
+        remote_port: 9000,
+        local_port: 9001,
+        upstream: 20 * 1024,
+        downstream: 100 * 1024,
+        keepalive: true
+      }
+    },
     replace: {
       dist: {
         options: {
           patterns: [{
             match: 'timestamp',
             replacement: '<%= grunt.template.today() %>'
-          },{
-            match:'sha1',
+          }, {
+            match: 'sha1',
             replacement: '<%= gitinfo.local.branch.current.SHA %> - <%= gitinfo.local.branch.current.name %>'
           }]
         },
@@ -444,5 +453,9 @@ module.exports = function (grunt) {
     'jshint',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('slow', [
+    'throttle'
   ]);
 };
