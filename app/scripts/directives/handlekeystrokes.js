@@ -581,12 +581,15 @@ angular.module('emuwebApp')
                           if (!insSeg) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
                           } else {
+                            console.log(insSeg);
                             scope.hists.addObjToUndoStack({
                               'type': 'ESPS',
                               'action': 'insertSegments',
                               'levelName': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
                               'end': viewState.curViewPort.selectE,
+                              'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName,
+                              'idx': Levelservice.maxElementID,
                               'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
                             });
                           }
@@ -600,6 +603,8 @@ angular.module('emuwebApp')
                               'action': 'insertPoint',
                               'levelName': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
+                              'name': ConfigProviderService.vals.labelCanvasConfig.newEventName,
+                              'idx': Levelservice.maxElementID,
                               'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
                             });
                           }

@@ -107,14 +107,13 @@ angular.module('emuwebApp')
                       neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,seg.id);
                       rightB = 0;
                     }
-                    console.log(neigh);
                     Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id + rightB, neigh);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
                       'neighbours': neigh,
-                      'segID': seg.id,
+                      'segID': seg.id + rightB,
                       'movedBy': moveBy
                     });
                     
@@ -136,13 +135,13 @@ angular.module('emuwebApp')
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
-                  var neighbours = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
-                  Levelservice.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neighbours);
+                  neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
+                  Levelservice.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neigh);
                   HistoryService.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
                     'levelName': scope.this.level.name,
-                    'neighbours': neighbours,
+                    'neighbours': neigh,
                     'item': viewState.getcurClickSegments(),
                     'segID': viewState.getfirstClickSegment().id,
                     'movedBy': moveBy
@@ -158,6 +157,7 @@ angular.module('emuwebApp')
           if (!viewState.getdragBarActive()) {
             setLastMove(event, moveLine);
           }
+          viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
         });
 
         //
