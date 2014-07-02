@@ -32,7 +32,6 @@ angular.module('emuwebApp')
 				} else if (cur.type === 'ESPS') {
 					switch (cur.action) {
 					case 'moveBoundary':
-					    console.log(cur.neighbours.left);
 						if (applyOldVal) {
 							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
 						} else {
@@ -155,7 +154,6 @@ angular.module('emuwebApp')
 				case 'movePoint':
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.segID);
-					console.log(dataKey);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {

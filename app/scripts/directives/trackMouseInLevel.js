@@ -93,21 +93,17 @@ angular.module('emuwebApp')
                       if (viewState.getcurMouseSegment() === false) {
                         seg = Levelservice.getElementDetails(scope.this.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
-                        neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,false,seg.id);
-                        rightB = 0;
                       } else {
                         seg = Levelservice.getLastElement(scope.this.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
-                        neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,false);
-                        rightB = 1;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
-                      neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,seg.id);
-                      rightB = 0;
                     }
-                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id + rightB, neigh);
+                    lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+                    neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id, neigh);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',

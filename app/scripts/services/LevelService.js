@@ -20,7 +20,9 @@ angular.module('emuwebApp')
 			angular.copy(data, sServObj.data);
 			angular.forEach(sServObj.data.levels, function (level) {
 				level.items.forEach(function (item) {
-					sServObj.maxElementID = item.id;
+				    if(item.id > sServObj.maxElementID) {
+					    sServObj.maxElementID = item.id;
+					}
 				});
 			});
 		};
@@ -78,7 +80,7 @@ angular.module('emuwebApp')
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
 						if (num == order) {
-							details = element.id;
+							ret = element.id;
 						}
 					});
 				}
@@ -141,7 +143,7 @@ angular.module('emuwebApp')
 					} else if (level.type == 'EVENT') {
 						newElement.samplePoint = start;
 					}
-					level.items.splice(position, 0, newElement);					
+					level.items.splice(position, 0, newElement);	
 				}
 			});
 		};
@@ -672,11 +674,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveBoundry = function (changeTime, name, segID, ln) {
 			var orig = sServObj.getElementDetailsById(name, segID);
-			var lastNeighbours = sServObj.getElementNeighbourDetails(name, segID, segID);
-			if (lastNeighbours.left === undefined) { // before first element
-				if (lastNeighbours.right == undefined) { // after last element
+			console.log(segID);
+			if (ln.left === undefined) { // before first element
+				if (ln.right == undefined) { // after last element
 					orig = sServObj.getLastElement(name);
-					console.log(orig.id, segID);
 					if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
 					}
@@ -686,9 +687,9 @@ angular.module('emuwebApp')
 				    }
 				}
 			} else {
-				var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
+				var origLeft = sServObj.getElementDetailsById(name, ln.left.id);
 				if ((origLeft.sampleDur + changeTime >= 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
-					sServObj.setElementDetails(name, lastNeighbours.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+					sServObj.setElementDetails(name, ln.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
 					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			}
