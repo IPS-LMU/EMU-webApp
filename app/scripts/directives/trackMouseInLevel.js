@@ -88,21 +88,27 @@ angular.module('emuwebApp')
                   viewState.movingBoundary = true;
                   if (scope.this.level.type === 'SEGMENT') {
                     if (typeof viewState.getcurMouseSegment() === 'boolean') {
-                      var seg;
+                      var seg, neigh, rightB;
                       // before first segment
                       if (viewState.getcurMouseSegment() === false) {
                         seg = Levelservice.getElementDetails(scope.this.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
+                        neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,false,seg.id);
+                        rightB = 0;
                       } else {
                         seg = Levelservice.getLastElement(scope.this.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
+                        neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,false);
+                        rightB = 1;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
+                      neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,seg.id);
+                      rightB = 0;
                     }
-                    var neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name,seg.id,seg.id);//viewState.getcurMouseNeighbours();
-                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id, neigh);
+                    console.log(neigh);
+                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id + rightB, neigh);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
