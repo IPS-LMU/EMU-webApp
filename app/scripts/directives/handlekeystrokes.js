@@ -645,9 +645,11 @@ angular.module('emuwebApp')
                           'order': order,
                           'seg': seg
                         });
+                        // reset to undefined
+                        viewState.setcurMouseSegment(undefined, undefined);
 
                       } else {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
+                        // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                       }
                     }
                   } else {
