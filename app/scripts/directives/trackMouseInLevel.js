@@ -109,7 +109,7 @@ angular.module('emuwebApp')
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
                       'neighbours': neigh,
-                      'segID': seg.id + rightB,
+                      'segID': seg.id,
                       'movedBy': moveBy
                     });
                     
