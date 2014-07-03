@@ -19,7 +19,6 @@ angular.module('emuwebApp')
 		function applyChange(changeObj, applyOldVal) {
 			Object.keys(changeObj).forEach(function (key) {
 				var cur = changeObj[key];
-				console.log(cur.neighbours.right);
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);

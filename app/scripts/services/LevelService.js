@@ -407,8 +407,13 @@ angular.module('emuwebApp')
 							}
 						});
 						if (ret) {
-							var diff = t.items[startID].sampleDur;
-							t.items[startID - 1].sampleDur += diff;
+						    var diff = 0;
+						    if(t.items[startID] !== undefined) {
+						        diff = t.items[startID].sampleDur;
+						    }
+							if(t.items[startID - 1] !== undefined) { // if leftmost item
+							    t.items[startID - 1].sampleDur += diff;
+							}
 							t.items.splice(startID, 1);
 						}
 					} else {
