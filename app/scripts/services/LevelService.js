@@ -396,6 +396,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertSegmentInvers = function (start, end, levelName, newLabel) {
 			var ret = true;
+			var diff, diff2;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === levelName) {
 					if (start == end) {
@@ -425,10 +426,18 @@ angular.module('emuwebApp')
 							}
 						});
 						if (ret) {
-							var diff = t.items[startID].sampleDur;
-							var diff2 = t.items[startID + 1].sampleDur;
-							t.items[startID - 1].sampleDur += (diff + diff2);
-							t.items.splice(startID, 2);
+						    if(t.items[startID + 1] === undefined) {
+			    				t.items.splice(startID - 1, 2);		    						    
+						    }
+						    else if(t.items[startID - 1] === undefined) {
+			    				t.items.splice(startID, 2);		    						    
+						    }
+						    else {
+    							diff = t.items[startID].sampleDur;
+	    						diff2 = t.items[startID + 1].sampleDur;
+		    					t.items[startID - 1].sampleDur += (diff + diff2);
+			    				t.items.splice(startID, 2);		    
+						    }
 						}
 					}
 				}
