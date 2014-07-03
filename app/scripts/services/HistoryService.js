@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService(Ssffdataservice, Levelservice, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, Ssffdataservice, Levelservice, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -170,6 +170,7 @@ angular.module('emuwebApp')
 				undoStack.push(curChangeObj);
 				sServObj.movesAwayFromLastSave += 1;
 			}
+			$log.info(curChangeObj)
 			// reset curChangeObj
 			curChangeObj = {};
 
