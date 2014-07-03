@@ -257,7 +257,7 @@ angular.module('emuwebApp')
           sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
           sServObj.curClickSegments = [];
           sServObj.selectBoundry();
-          sServObj.resetSelect();
+          //sServObj.resetSelect();
         }
       } else {
         if (idxOfNow - 1 >= 0) {
@@ -266,7 +266,7 @@ angular.module('emuwebApp')
           sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
           sServObj.curClickSegments = [];
           sServObj.selectBoundry();
-          sServObj.resetSelect();
+          //sServObj.resetSelect();
         }
       }
     };

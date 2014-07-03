@@ -69,113 +69,120 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 		// watch if embedded override (if attributes are set on emuwebapp tag)
-		$scope.$watch('cps.embeddedVals.audioGetUrl', function (val) {
-			if (val !== undefined && val !== '') {
-				// check if both are set
-				$scope.loadFilesForEmbeddedApp();
-			}
+		// $scope.$watch('cps.embeddedVals.audioGetUrl', function (val) {
+		// 	if (val !== undefined && val !== '') {
+		// 		// check if both are set
+		// 		$scope.loadFilesForEmbeddedApp();
+		// 	}
 
-		}, true);
+		// }, true);
 
 		//
 		//////////////
-		
+
 		// check if URL parameters are set -> if so set embedded flags!
 		var searchObject = $location.search();
-		if(searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']){
+		if (searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']) {
 			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
 			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
 			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+			ConfigProviderService.embeddedVals.fromUrlParams = true;
 		};
 
 		/**
 		 *
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
-			Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
-				viewState.showDropZone = false;
+			if (ConfigProviderService.embeddedVals.audioGetUrl) {
+				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
+					viewState.showDropZone = false;
 
-				// set bundle name
-				var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
-				$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/')+1,tmp.length);
+					// set bundle name
+					var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
+					$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length);
 
-				//hide menu
-				if (viewState.getsubmenuOpen()) {
-					$scope.openSubmenu();
-				}
-
-				viewState.somethingInProgressTxt = 'Loading DB config...';
-				// then get the DBconfigFile
-				Iohandlerservice.httpGetPath('configFiles/embedded_emuwebappConfig.json').then(function (resp) {
-					// first element of perspectives is default perspective
-					viewState.curPerspectiveIdx = 0;
-					ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
-					// validate emuwebappConfigSchema
-					delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
-					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-					if (validRes === true) {
-						ConfigProviderService.curDbConfig = resp.data;
-						// validate DBconfigFileSchema!
-						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
-
-						if (validRes === true) {
-							// set wav file
-							viewState.somethingInProgress = true;
-							viewState.somethingInProgressTxt = 'Parsing WAV file...';
-
-							Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
-								var wavJSO = messWavParser;
-								viewState.curViewPort.sS = 0;
-								viewState.curViewPort.eS = wavJSO.Data.length;
-								viewState.resetSelect();
-								Soundhandlerservice.wavJSO = wavJSO;
-
-								// get + parse file
-								Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
-									viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-									Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
-
-										var annot = parseMess.data;
-										Levelservice.setData(annot);
-
-										var lNames = [];
-										annot.levels.forEach(function (l) {
-											lNames.push(l.name);
-										});
-
-										ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-										viewState.somethingInProgressTxt = 'Done!';
-										viewState.somethingInProgress = false;
-										viewState.setState('labeling');
-										// close submenu... 
-										// $scope.openSubmenu();
-
-									}, function (errMess) {
-										dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
-									});
-
-								}, function (errMess) {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
-								});
-
-
-							}, function (errMess) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
-							});
-
-						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
-						}
-					} else {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+					//hide menu
+					if (viewState.getsubmenuOpen()) {
+						$scope.openSubmenu();
 					}
 
+					viewState.somethingInProgressTxt = 'Loading DB config...';
+					// then get the DBconfigFile
+					Iohandlerservice.httpGetPath('configFiles/embedded_emuwebappConfig.json').then(function (resp) {
+						// first element of perspectives is default perspective
+						viewState.curPerspectiveIdx = 0;
+						ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
+						// validate emuwebappConfigSchema
+						delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
+						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
+						if (validRes === true) {
+							// turn of keybinding only on mouseover
+							if (ConfigProviderService.embeddedVals.fromUrlParams) {
+								ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
+							}
+							ConfigProviderService.curDbConfig = resp.data;
+							// validate DBconfigFileSchema!
+							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
+
+							if (validRes === true) {
+								// set wav file
+								viewState.somethingInProgress = true;
+								viewState.somethingInProgressTxt = 'Parsing WAV file...';
+
+								Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
+									var wavJSO = messWavParser;
+									viewState.curViewPort.sS = 0;
+									viewState.curViewPort.eS = wavJSO.Data.length;
+									viewState.resetSelect();
+									Soundhandlerservice.wavJSO = wavJSO;
+
+									// get + parse file
+									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
+										viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
+										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+
+											var annot = parseMess.data;
+											Levelservice.setData(annot);
+
+											var lNames = [];
+											annot.levels.forEach(function (l) {
+												lNames.push(l.name);
+											});
+
+											ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+											viewState.somethingInProgressTxt = 'Done!';
+											viewState.somethingInProgress = false;
+											viewState.setState('labeling');
+											// close submenu... 
+											// $scope.openSubmenu();
+
+										}, function (errMess) {
+											dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+										});
+
+									}, function (errMess) {
+										dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
+									});
+
+
+								}, function (errMess) {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+								});
+
+							} else {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+							}
+						} else {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+						}
+
+					}, function (errMess) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
+					});
 				}, function (errMess) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
+					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
 				});
-			}, function (errMess) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
-			});
+			}
 		};
 
 		/**
@@ -193,6 +200,8 @@ angular.module('emuwebApp')
 					if (validRes === true) {
 						ConfigProviderService.setVals(data);
 						$scope.handleDefaultConfigLoaded();
+						// loadFilesForEmbeddedApp if these are set 
+						$scope.loadFilesForEmbeddedApp();
 						viewState.somethingInProgress = false;
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -648,15 +657,14 @@ angular.module('emuwebApp')
 		 */
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-			    var newName, levelLength;
-			    if(Levelservice.data.levels === undefined) {
-			        newName = 'levelNr0';
-			        levelLength = 0;
-			    }
-			    else {
-			        newName = 'levelNr' + Levelservice.data.levels.length;
-			        levelLength = Levelservice.data.levels.length;
-			    }
+				var newName, levelLength;
+				if (Levelservice.data.levels === undefined) {
+					newName = 'levelNr0';
+					levelLength = 0;
+				} else {
+					newName = 'levelNr' + Levelservice.data.levels.length;
+					levelLength = Levelservice.data.levels.length;
+				}
 				var level = {
 					items: [{
 						id: Levelservice.getNewId(),

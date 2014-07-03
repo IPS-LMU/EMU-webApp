@@ -32,11 +32,10 @@ angular.module('emuwebApp')
 				} else if (cur.type === 'ESPS') {
 					switch (cur.action) {
 					case 'moveBoundary':
-					    console.log(cur.neighbours.left);
 						if (applyOldVal) {
-							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
+							Levelservice.moveBoundry(-cur.movedBy, cur.levelName, cur.idx);
 						} else {
-							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.segID, cur.neighbours);
+							Levelservice.moveBoundry(cur.movedBy, cur.levelName, cur.idx);
 						}
 						break;
 					case 'moveSegment':
@@ -122,12 +121,6 @@ angular.module('emuwebApp')
 			});
 		}
 		
-		sServObj.setLastNeighbours = function (pcm, levelname) {
-		    var lastEventMove = Levelservice.getEvent(pcm, levelname, Soundhandlerservice.wavJSO.Data.length);
-            var lastNeighboursMove = Levelservice.getElementNeighbourDetails(levelname, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
-		};
-		
 		/////////////////////////////////////
 		// public API
 
@@ -155,7 +148,6 @@ angular.module('emuwebApp')
 				case 'movePoint':
 				case 'moveSegment':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.levelName + '#' + dataObj.segID);
-					console.log(dataKey);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
@@ -191,7 +183,7 @@ angular.module('emuwebApp')
 			redoStack = [];
 			var tmpObj = {};
 			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.idx);
-			tmpObj[dataKey] = obj;
+			tmpObj[dataKey] = angular.copy(obj);
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
 				undoStack.push(tmpObj);
