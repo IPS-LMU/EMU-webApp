@@ -112,8 +112,9 @@ angular.module('emuwebApp')
         };
 
         scope.redraw = function () {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
-          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
+          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel));
           if (cache !== null) {
             markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
@@ -123,7 +124,11 @@ angular.module('emuwebApp')
             drawSpectro(scope.shs.wavJSO.Data);
           }
         };
-
+        
+        function pcmpp() {
+            pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
+        }
+        
         function clearImageCache() {
           imageCache = null;
           imageCacheCounter = 0;
@@ -183,14 +188,15 @@ angular.module('emuwebApp')
         }
 
         function setupEvent() {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
           var imageData = context.createImageData(canvas0.width, canvas0.height);
           primeWorker.addEventListener('message', function (event) {
 
             if (pcmperpixel === event.data.myStep) {
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
-              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
+              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel), event.data.img);
               drawSpectMarkup();
             }
           });
@@ -204,71 +210,28 @@ angular.module('emuwebApp')
         }
 
         function startSpectroRenderingThread(buffer) {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
           primeWorker = new Worker(spectroWorker);
-          var x = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + (pcmperpixel * 3 * scope.vs.spectroSettings.windowLength));
-          var parseData = new Float32Array(x);
-
+          var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 3 * scope.vs.spectroSettings.windowLength)));
           setupEvent();
 
           primeWorker.postMessage({
             'cmd': 'config',
-            'N': scope.vs.spectroSettings.windowLength
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'alpha': alpha
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'freq': scope.vs.spectroSettings.rangeTo
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'freqLow': scope.vs.spectroSettings.rangeFrom
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'start': Math.round(scope.vs.curViewPort.sS)
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'end': Math.round(scope.vs.curViewPort.eS)
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'myStep': pcmperpixel
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'window': scope.vs.spectroSettings.window
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'width': canvas0.width
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'height': canvas0.height
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'dynRangeInDB': scope.vs.spectroSettings.dynamicRange
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'pixelRatio': devicePixelRatio
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'sampleRate': scope.shs.wavJSO.SampleRate
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'streamChannels': scope.shs.wavJSO.NumChannels
-          });
-          primeWorker.postMessage({
-            'cmd': 'pcm',
+            'N': scope.vs.spectroSettings.windowLength,
+            'alpha': alpha,
+            'freq': scope.vs.spectroSettings.rangeTo,
+            'freqLow': scope.vs.spectroSettings.rangeFrom,
+            'start': scope.vs.curViewPort.sS,
+            'end': scope.vs.curViewPort.eS,
+            'myStep': pcmperpixel,
+            'window': scope.vs.spectroSettings.window,
+            'width': canvas0.width,
+            'height': canvas0.height,
+            'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
+            'pixelRatio': devicePixelRatio,
+            'sampleRate': scope.shs.wavJSO.SampleRate,
+            'streamChannels': scope.shs.wavJSO.NumChannels,
             'stream': parseData
           });
           primeWorker.postMessage({

@@ -286,7 +286,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 
 			// calculate i FFT runs, save result into paint and set maxPsd while doing so
 			for (var i = 0; i < renderWidth; i++) {
-				paint[i] = getMagnitude(0, (i * myStep) + myOffset, N, c, d);
+				paint[i] = getMagnitude(0, Math.round(i * myStep) + myOffset, N, c, d);
 				maxPsd = (2 * Math.pow(totalMax, 2)) / N;
 			}
 
@@ -618,8 +618,6 @@ self.addEventListener('message', function (e) {
 		if (data.streamChannels !== undefined) {
 			streamChannels = data.streamChannels;
 		}
-		break;
-	case 'pcm':
 		if (data.stream !== undefined) {
 			threadSoundBuffer = data.stream;
 		}
