@@ -108,7 +108,7 @@ angular.module('emuwebApp')
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'levelName': scope.this.level.name,
-                      'idx': seg.id,
+                      'segID': seg.id,
                       'movedBy': moveBy
                     });
                     
@@ -120,6 +120,7 @@ angular.module('emuwebApp')
                       'type': 'ESPS',
                       'action': 'movePoint',
                       'levelName': scope.this.level.name,
+                      'idx': seg.id,
                       'segID': seg.id,
                       'movedBy': moveBy
                     });
