@@ -331,11 +331,16 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					if (level.type === 'SEGMENT') {
-						angular.forEach(level.items, function (evt, num) {
-							if (evt.id == neighbours.left.id) {
-								insertPoint = num + 1;
-							}
-						});
+						if(neighbours.left === undefined) {
+						    insertPoint = 0;
+						}
+						else {
+						    angular.forEach(level.items, function (evt, num) {
+							    if (evt.id == neighbours.left.id) {
+								    insertPoint = num + 1;
+							    }
+						    });
+						}
 						for (x in segments) {
 							level.items.splice(insertPoint++, 0, segments[x]);
 						}
@@ -343,8 +348,12 @@ angular.module('emuwebApp')
 					}
 				}
 			});
-			sServObj.setElementDetails(levelname, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur);
-			sServObj.setElementDetails(levelname, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart , neighbours.right.sampleDur);
+			if(neighbours.left !== undefined) {
+    			sServObj.setElementDetails(levelname, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur);
+    		}
+    		if(neighbours.right !== undefined) {
+    			sServObj.setElementDetails(levelname, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart , neighbours.right.sampleDur);
+    		}
 		};
 
 		/**
