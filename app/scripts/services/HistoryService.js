@@ -19,6 +19,7 @@ angular.module('emuwebApp')
 		function applyChange(changeObj, applyOldVal) {
 			Object.keys(changeObj).forEach(function (key) {
 				var cur = changeObj[key];
+				console.log(cur.neighbours.right);
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
@@ -121,12 +122,6 @@ angular.module('emuwebApp')
 			});
 		}
 		
-		sServObj.setLastNeighbours = function (pcm, levelname) {
-		    var lastEventMove = Levelservice.getEvent(pcm, levelname, Soundhandlerservice.wavJSO.Data.length);
-            var lastNeighboursMove = Levelservice.getElementNeighbourDetails(levelname, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
-		};
-		
 		/////////////////////////////////////
 		// public API
 
@@ -189,7 +184,7 @@ angular.module('emuwebApp')
 			redoStack = [];
 			var tmpObj = {};
 			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.idx);
-			tmpObj[dataKey] = obj;
+			tmpObj[dataKey] = angular.copy(obj);
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
 				undoStack.push(tmpObj);

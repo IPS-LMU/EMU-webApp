@@ -656,18 +656,24 @@ angular.module('emuwebApp')
                     if (ConfigProviderService.vals.restrictions.deleteItem) {
                       var seg = viewState.getcurClickSegments();
                       if (seg !== undefined) {
-                        var selected = viewState.getcurClickSegments();
-                        var neighbour = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), selected[0].id, selected[selected.length - 1].id);
+                        var neighbour = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), seg[0].id, seg[seg.length - 1].id);
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          Levelservice.deleteSegments(viewState.getcurClickLevelName(), selected, neighbour);
-                          viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
                             'action': 'deleteSegments',
+                            'name': viewState.getcurClickLevelName(),
+                            'idx': seg[0].id,
                             'levelName': viewState.getcurClickLevelName(),
-                            'selected': selected,
+                            'selected': seg,
                             'neighbours': neighbour
                           });
+                          Levelservice.deleteSegments(viewState.getcurClickLevelName(), seg, neighbour);
+                          if(neighbour.left !== undefined) {
+                              viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
+                          }
+                          else {
+                              viewState.setcurClickSegment(neighbour.right, neighbour.right.id);                          
+                          }
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }
