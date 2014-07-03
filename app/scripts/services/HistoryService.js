@@ -170,7 +170,7 @@ angular.module('emuwebApp')
 				undoStack.push(curChangeObj);
 				sServObj.movesAwayFromLastSave += 1;
 			}
-			$log.info(curChangeObj)
+			$log.info(curChangeObj);
 			// reset curChangeObj
 			curChangeObj = {};
 
