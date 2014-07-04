@@ -33,9 +33,9 @@ angular.module('emuwebApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-							Levelservice.moveBoundry(cur.name, cur.id, -cur.movedBy);
+							Levelservice.moveBoundry(cur.name, cur.id, -cur.movedBy, cur.position);
 						} else {
-							Levelservice.moveBoundry(cur.name, cur.id, cur.movedBy);
+							Levelservice.moveBoundry(cur.name, cur.id, cur.movedBy, cur.position);
 						}
 						break;
 					case 'moveSegment':

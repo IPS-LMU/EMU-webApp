@@ -86,30 +86,35 @@ angular.module('emuwebApp')
                 viewState.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
+                  var position = 0;
                   if (scope.this.level.type === 'SEGMENT') {
                     if (typeof viewState.getcurMouseSegment() === 'boolean') {
-                      var seg, neigh, rightB;
+                      var seg, leftMost, rightB;
                       // before first segment
                       if (viewState.getcurMouseSegment() === false) {
                         seg = Levelservice.getElementDetails(scope.this.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
+                        position = -1;
                       } else {
                         seg = Levelservice.getLastElement(scope.this.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
+                        position = 1;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
                     }
+                    console.log(position);
                     //lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
                     //neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-                    Levelservice.moveBoundry(scope.this.level.name, seg.id, moveBy);
+                    Levelservice.moveBoundry(scope.this.level.name, seg.id, moveBy, position);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'name': scope.this.level.name,
                       'id': seg.id,
-                      'movedBy': moveBy
+                      'movedBy': moveBy,
+                      'position': position
                     });
                     
                   } else {
@@ -263,7 +268,6 @@ angular.module('emuwebApp')
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
-          //viewState.selectBoundry();
           lastPCM = thisPCM;
           scope.$apply();
         }
