@@ -137,7 +137,6 @@ angular.module('emuwebApp')
                 viewState.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
                   seg = viewState.getcurClickSegments()
-                  neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
                   Levelservice.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
                   HistoryService.updateCurChangeObj({
                     'type': 'ESPS',
