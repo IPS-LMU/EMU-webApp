@@ -142,6 +142,9 @@
 				"osciColor": {
 					"type": "string"
 				},
+				"levelColor": {
+					"type": "string"
+				},
 				"playProgressColor": {
 					"type": "string"
 				},

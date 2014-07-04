@@ -335,11 +335,15 @@ angular.module('emuwebApp')
             var txt;
             var tW;
             if (nrOfSamples <= 2) {
-              var horizontalText = scope.$parent.fontImage.getTextImageTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, 'red');
+              var horizontalText = scope.$parent.fontImage.getTextImageTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor);
+              ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
             } else {
               txt = 'Zoom in to see contour(s)';
-              var horizontalText = scope.$parent.fontImage.getTextImageTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, 'red');
+              var horizontalText = scope.$parent.fontImage.getTextImageTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor);
+              ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);              
               ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
             }
           }

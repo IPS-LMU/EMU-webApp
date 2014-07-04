@@ -12,6 +12,10 @@ angular.module('emuwebApp')
         scope.enlargeCanvas = {
           'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%'
         };
+        scope.backgroundCanvas = {
+		  'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%',
+		  'background': scope.cps.vals.colors.levelColor
+		};
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
@@ -98,15 +102,27 @@ angular.module('emuwebApp')
             scope.enlargeCanvas = {
               'height': 100 / parts + '%'
             };
+            scope.backgroundCanvas = {
+			  'height': 100 / parts + '%',
+			  'background': scope.cps.vals.colors.levelColor
+			};
           } else {
             if (scope.vs.getenlarge() == scope.order) {
               scope.enlargeCanvas = {
                 'height': 3 * 100 / (parts + 2) + '%'
               };
+			  scope.backgroundCanvas = {
+				'height': 3 * 100 / (parts + 2) + '%',
+				'background': scope.cps.vals.colors.levelColor
+			  };              
             } else {
               scope.enlargeCanvas = {
                 'height': 100 / (parts + 2) + '%'
               };
+			  scope.backgroundCanvas = {
+				'height': 100 / (parts + 2) + '%',
+				'background': scope.cps.vals.colors.levelColor
+			  };	
             }
           }
         };
@@ -176,10 +192,10 @@ angular.module('emuwebApp')
 
 
         function killSpectroRenderingThread() {
-          context.fillStyle = '#222';
+          context.fillStyle = scope.cps.vals.colors.levelColor;
           context.fillRect(0, 0, canvas0.width, canvas0.height);
           context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          context.fillStyle = '#333';
+          context.fillStyle = scope.cps.vals.colors.labelColor;
           context.fillText('loading...', 10, 25);
           if (primeWorker !== null) {
             primeWorker.terminate();
@@ -213,7 +229,7 @@ angular.module('emuwebApp')
           //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           pcmpp();
           primeWorker = new Worker(spectroWorker);
-          var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 3 * scope.vs.spectroSettings.windowLength)));
+          var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
           setupEvent();
 
           primeWorker.postMessage({
