@@ -51,8 +51,8 @@ angular.module('emuwebApp')
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'renameLevel',
-				'levelName': $scope.passedOutTxt.var,
-				'oldName': $scope.passedInTxt,
+				'newname': $scope.passedOutTxt.var,
+				'name': $scope.passedInTxt,
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
 			dialogService.close();

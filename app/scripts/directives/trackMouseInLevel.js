@@ -103,46 +103,47 @@ angular.module('emuwebApp')
                     }
                     //lastEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
                     //neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-                    Levelservice.moveBoundry(moveBy, scope.this.level.name, seg.id);
+                    Levelservice.moveBoundry(scope.this.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
-                      'levelName': scope.this.level.name,
-                      'segID': seg.id,
+                      'name': scope.this.level.name,
+                      'id': seg.id,
                       'movedBy': moveBy
                     });
                     
                   } else {
                     seg = viewState.getcurMouseSegment();
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
-                    Levelservice.movePoint(moveBy, scope.this.level.name, seg.id);
+                    Levelservice.movePoint(scope.this.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'movePoint',
-                      'levelName': scope.this.level.name,
-                      'idx': seg.id,
-                      'segID': seg.id,
+                      'name': scope.this.level.name,
+                      'id': seg.id,
                       'movedBy': moveBy
                     });
                   }
                   lastPCM = thisPCM;
+                  viewState.selectBoundry();
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 viewState.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
+                  seg = viewState.getcurClickSegments()
                   neigh = Levelservice.getElementNeighbourDetails(scope.this.level.name, viewState.getcurClickSegments()[0].id, viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id);
-                  Levelservice.moveSegment(moveBy, scope.this.level.name, viewState.getcurClickSegments(), neigh);
+                  Levelservice.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
                   HistoryService.updateCurChangeObj({
                     'type': 'ESPS',
                     'action': 'moveSegment',
-                    'levelName': scope.this.level.name,
-                    'neighbours': neigh,
-                    'item': viewState.getcurClickSegments(),
-                    'segID': viewState.getfirstClickSegment().id,
+                    'name': scope.this.level.name,
+                    'id': seg[0].id,
+                    'length': seg.length,
                     'movedBy': moveBy
                   });
                   lastPCM = thisPCM;
+                  viewState.selectBoundry();
                 }
               } else {
                 viewState.movingBoundary = false;
@@ -207,6 +208,7 @@ angular.module('emuwebApp')
           lastEventClick = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
+          viewState.selectBoundry();
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -261,7 +263,7 @@ angular.module('emuwebApp')
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
-          viewState.selectBoundry();
+          //viewState.selectBoundry();
           lastPCM = thisPCM;
           scope.$apply();
         }

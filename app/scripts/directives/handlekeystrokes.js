@@ -25,8 +25,8 @@ angular.module('emuwebApp')
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
-                    'levelName': viewState.getcurClickLevelName(),
-                    'item': viewState.getlastID(),
+                    'name': viewState.getcurClickLevelName(),
+                    'id': viewState.getlastID(),
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
@@ -635,15 +635,15 @@ angular.module('emuwebApp')
                   if (!e.shiftKey) {
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                       var seg = viewState.getcurMouseSegment();
-                      var tn = viewState.getcurMouseLevelName();
+                      var levelname = viewState.getcurMouseLevelName();
                       if (seg !== undefined) {
-                        var order = Levelservice.deleteBoundary(viewState.getcurMouseSegment(), viewState.getcurMouseLevelName());
+                        var deletedSegment = Levelservice.deleteBoundary(levelname, seg.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteBoundary',
-                          'levelName': tn,
-                          'order': order,
-                          'seg': seg
+                          'name': levelname,
+                          'id': seg.id,
+                          'deletedSegment': deletedSegment
                         });
                         // reset to undefined
                         viewState.setcurMouseSegment(undefined, undefined);
@@ -655,25 +655,25 @@ angular.module('emuwebApp')
                   } else {
                     if (ConfigProviderService.vals.restrictions.deleteItem) {
                       var seg = viewState.getcurClickSegments();
-                      if (seg !== undefined) {
-                        var neighbour = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), seg[0].id, seg[seg.length - 1].id);
+                      if (seg !== undefined && seg.length>0) {
+                        var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
+                          var deletedSegment = Levelservice.deleteSegments(levelname, seg[0].id, seg.length);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
                             'action': 'deleteSegments',
-                            'name': viewState.getcurClickLevelName(),
-                            'idx': seg[0].id,
-                            'levelName': viewState.getcurClickLevelName(),
-                            'selected': seg,
-                            'neighbours': neighbour
+                            'name': levelname,
+                            'id': seg[0].id,
+                            'length': seg.length,
+                            'deletedSegment': deletedSegment
                           });
-                          Levelservice.deleteSegments(viewState.getcurClickLevelName(), seg, neighbour);
+                          /*var ln = Levelservice.getElementNeighbourDetails(levelname, seg[0].id, seg[0].id);
                           if(neighbour.left !== undefined) {
                               viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
                           }
                           else {
                               viewState.setcurClickSegment(neighbour.right, neighbour.right.id);                          
-                          }
+                          }*/
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }

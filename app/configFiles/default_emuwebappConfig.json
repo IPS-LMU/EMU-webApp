@@ -46,6 +46,7 @@
         "labelColor": "#000",
         "osciColor": "#000",
         "levelColor": "#E7E7E7",
+        "appBackground": "#f00",
         "playProgressColor": "rgba(255, 255, 255, 0.5)",
         "selectedAreaColor": "rgba(22, 22, 22, 0.1)",
         "selectedBorderColor": "rgba(0, 0, 0, 0.7)",
