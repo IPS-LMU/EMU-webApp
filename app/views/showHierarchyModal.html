@@ -4,9 +4,13 @@
 
 <div class="modal-body">
 	<h4>Possible paths through the hierarchy</h4>
-	<ul ng-repeat="a in possiblePaths">
-		<li>{{a}}</li>
-	</ul>
+	<select ng-model="selectedPath" ng-options="value for value in possiblePaths"></select>
+
+	<br>
+
+	<b>Selected path (does not yet influence drawing): {{selectedPath}}</b>
+
+	<div id="tree-container"></div>
 </div>
 
 <div class="modal-footer">
