@@ -53,10 +53,14 @@ angular.module('emuwebApp')
           scope.updateCSS();
         }, true);
 
-        scope.$watch('vs.curViewPort', function () {
+        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
+              // check for changed zoom
+              if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+                scope.redraw();
+              }
+              drawSpectMarkup(true);
               scope.updateCSS();
             }
           }
@@ -74,7 +78,8 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
+              // scope.redraw();
+              drawSpectMarkup(true);
             }
           }
         }, true);
@@ -172,7 +177,10 @@ angular.module('emuwebApp')
           return null;
         }
 
-        function drawSpectMarkup() {
+        function drawSpectMarkup(reset) {
+          if (reset) {
+            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+          }
 
           // draw moving boundary line if moving
           scope.dhs.drawMovingBoundaryLine(markupCtx);
@@ -195,6 +203,8 @@ angular.module('emuwebApp')
         function killSpectroRenderingThread() {
           context.fillStyle = scope.cps.vals.colors.levelColor;
           context.fillRect(0, 0, canvas0.width, canvas0.height);
+          // draw current viewport selected
+          scope.dhs.drawCurViewPortSelected(markupCtx, false);
           // context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
           // context.fillStyle = scope.cps.vals.colors.labelColor;
           var horizontalText = fontScaleService.getTextImage(context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
@@ -233,9 +243,9 @@ angular.module('emuwebApp')
           pcmpp();
           primeWorker = new Worker(spectroWorker);
           // var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
-          if(scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2){
+          if (scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2) {
             var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
-          }else{
+          } else {
             var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
           }
           setupEvent();
