@@ -230,7 +230,8 @@ angular.module('emuwebApp')
           //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           pcmpp();
           primeWorker = new Worker(spectroWorker);
-          var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
+          // var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
+          var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
           setupEvent();
 
           primeWorker.postMessage({
