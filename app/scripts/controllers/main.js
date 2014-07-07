@@ -604,7 +604,7 @@ angular.module('emuwebApp')
 				};
 			} else {
 				curColor = {
-					'background-color': ConfigProviderService.vals.colors.levelColor,
+					'background-color': '#999',
 					'color': 'black'
 				};
 			}
