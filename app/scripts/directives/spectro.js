@@ -215,7 +215,7 @@ angular.module('emuwebApp')
             if (pcmperpixel === event.data.myStep) {
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
-              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel), event.data.img);
+              // buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel), event.data.img);
               drawSpectMarkup();
             }
           });
