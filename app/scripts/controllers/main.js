@@ -457,8 +457,8 @@ angular.module('emuwebApp')
 							viewState.curClickLevelType = undefined;
 
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 4000;
-							// viewState.curViewPort.eS = 5000;
+							// viewState.curViewPort.sS = 442204;
+							// viewState.curViewPort.eS = 445464;
 							viewState.resetSelect();
 							Soundhandlerservice.wavJSO = wavJSO;
 
