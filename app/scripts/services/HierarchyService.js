@@ -11,23 +11,40 @@ angular.module('emuwebApp')
 			//angular.copy(p, sServObj.selectedPath);
 			sServObj.selectedPath = p;
 		};
-
-		// Recursively find all paths through the level hierarchy
-		// This is done bottom-up because there is no explicit root element in the levelDefinitions
-		sServObj.findPaths = function (startNode, path) {
-			if (typeof path === 'undefined') {
-				var path = [startNode];
-			} else {
-				path = path.concat([startNode]);
-			}
-
-			// Find all parents
+		
+		/**
+		 * Find all parent levels of a given level by iterating through the
+		 * current database's linkDefinitions.
+		 *
+		 * @param childLevel The name of the level whose parents to find
+		 * @returns An array of names of childLevel's parent levels
+		 */
+		sServObj.findParentLevels = function (childLevel) {
 			var parents = [];
-			for (var i = 0; i<ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
-				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === startNode) {
+			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
+				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
 					parents.push (ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
 				}
 			}
+			return parents;
+		}
+
+		/**
+		 * Recursively find all paths through the hierarchy of levels.
+		 * This is done bottom-up because there is no explicit root element in the levelDefinitions.
+		 *
+		 * @param startLevel The name of the level from which to start
+		 * @param path An array of levels' names that form a path to startLevel (optional; shouldn't be an empty array)
+		 */
+		sServObj.findPaths = function (startLevel, path) {
+			if (typeof path === 'undefined') {
+				var path = [startLevel];
+			} else {
+				path = path.concat([startLevel]);
+			}
+			
+			// Find all parents of startLevel
+			var parents = this.findParentLevels (startLevel);
 
 			// If we have no more parents, we're at the end of the
 			// path and thus returning it
@@ -64,7 +81,7 @@ angular.module('emuwebApp')
 		 * Find all children of a node d that are part of the currently selected
 		 * path through the hierarchy
 		 *
-		 * @return null if d has no children
+		 * @return null if d has no children (not an empty array because the d3 lib expects null)
 		 * @return an array of children nodes otherwise
 		 */
 		sServObj.findChildren = function (d) {
@@ -263,10 +280,8 @@ angular.module('emuwebApp')
 				dragStarted = null;
 			}
 
-			/*console.debug(d3.select("#tree-container"));
-			console.debug(d3.select("#tree-containesaier"));*/
-
 			// define the baseSvg, attaching a class for styling and the zoomListener
+			d3.select("#tree-container svg").remove();
 			var baseSvg = d3.select("#tree-container").append("svg")
 				.attr("width", viewerWidth)
 				.attr("height", viewerHeight)
@@ -645,7 +660,7 @@ angular.module('emuwebApp')
 			var svgGroup = baseSvg.append("g");
 
 			// Define the root
-			root = Levelservice.getData().levels[1].items[0];
+			root = Levelservice.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
 
@@ -656,4 +671,3 @@ angular.module('emuwebApp')
 
 		return sServObj;
 	});
-

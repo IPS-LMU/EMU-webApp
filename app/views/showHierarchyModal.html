@@ -3,12 +3,7 @@
 </div>
 
 <div class="modal-body">
-	<h4>Possible paths through the hierarchy</h4>
-	<select ng-model="selectedPath" ng-options="value for value in possiblePaths"></select>
-
-	<br>
-
-	<b>Selected path (does not yet influence drawing): {{selectedPath}}</b>
+	<select ng-change="redraw(selectedPath);" ng-model="selectedPath" ng-options="value for value in possiblePaths"></select>
 
 	<div id="tree-container"></div>
 </div>
