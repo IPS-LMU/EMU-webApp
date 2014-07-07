@@ -208,7 +208,7 @@ angular.module('emuwebApp')
           // context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
           // context.fillStyle = scope.cps.vals.colors.labelColor;
           var horizontalText = fontScaleService.getTextImage(context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
-          context.drawImage(horizontalText, 10, 5, horizontalText.width, horizontalText.height);
+          context.drawImage(horizontalText, 10, 50);
 
           if (primeWorker !== null) {
             primeWorker.terminate();
