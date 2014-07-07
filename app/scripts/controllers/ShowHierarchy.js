@@ -3,8 +3,7 @@
 angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, Levelservice, HierarchyService) {
 		// Scope data
-		$scope.possiblePaths = [];
-		$scope.selectedPath = [];
+		$scope.paths = { possible: [], selected: [] };
 
 		$scope.cancel = function () {
 			dialogService.close();
@@ -13,7 +12,7 @@ angular.module('emuwebApp')
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach (ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
 			if (l.type !== 'ITEM') {
-				$scope.possiblePaths = $scope.possiblePaths.concat(HierarchyService.findPaths(l.name));
+				$scope.paths.possible = $scope.paths.possible.concat(HierarchyService.findPaths(l.name));
 			}
 		});
 		
@@ -29,8 +28,8 @@ angular.module('emuwebApp')
 		//
 		// I can seemingly only work around this by writing ng-change="redraw(selectedPath);" in the view
 		//
-		$scope.redraw = function (path) {
-			HierarchyService.setPath(path);
+		$scope.redraw = function () {
+			HierarchyService.setPath($scope.paths.selected);
 			HierarchyService.drawHierarchy();
 		};
 	});
