@@ -90,7 +90,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.calculatePeaks = function (viewState, canvas, data) {
-			var k = (viewState.curViewPort.eS + 1 - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel + one for boundaries
+			var samplePerPx = (viewState.curViewPort.eS + 1 - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel + one to correct for subtraction
 
 			var numberOfChannels = 1; // hardcode for now...
 
@@ -98,9 +98,11 @@ angular.module('emuwebApp')
 			var minPeak = Infinity;
 			var maxPeak = -Infinity;
 
+			console.log(typeof data)
+
 			var relData;
 
-			if (k <= 1) {
+			if (samplePerPx <= 1) {
 				// check if view at start            
 				if (viewState.curViewPort.sS === 0) {
 					relData = data.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
@@ -114,26 +116,26 @@ angular.module('emuwebApp')
 			} else {
 				relData = data.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
 
-				for (var i = 0; i < canvas.width; i++) {
-					var sum = 0;
+				for (var curPxIdx = 0; curPxIdx < canvas.width; curPxIdx++) {
+					var avrVal = 0;
 					for (var c = 0; c < numberOfChannels; c++) {
 
-						var vals = relData.subarray(i * k, (i + 1) * k);
-						var peak = -Infinity;
+						var vals = relData.subarray(curPxIdx * samplePerPx, (curPxIdx + 1) * samplePerPx);
+						// var peak = -Infinity;
 
-						var av = 0;
+						var sum = 0;
 						for (var p = 0, l = vals.length; p < l; p++) {
-							if (vals[p] > peak) {
-								peak = vals[p];
-							}
-							av += vals[p];
+							// if (vals[p] > peak) {
+							// 	peak = vals[p];
+							// }
+							sum += vals[p];
 						}
-						sum += av / vals.length;
+						avrVal += sum / vals.length;
 					}
 
-					peaks[i] = sum;
-					if (sum > maxPeak) {
-						maxPeak = sum;
+					peaks[curPxIdx] = avrVal;
+					if (avrVal > maxPeak) {
+						maxPeak = avrVal;
 					}
 				}
 			} //else
@@ -141,7 +143,7 @@ angular.module('emuwebApp')
 				'peaks': peaks,
 				'minPeak': minPeak,
 				'maxPeak': maxPeak,
-				'samplePerPx': k
+				'samplePerPx': samplePerPx
 			};
 		};
 
