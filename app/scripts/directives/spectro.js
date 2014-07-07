@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function ($timeout) {
+  .directive('spectro', function ($timeout, fontScaleService) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -195,9 +195,11 @@ angular.module('emuwebApp')
         function killSpectroRenderingThread() {
           context.fillStyle = scope.cps.vals.colors.levelColor;
           context.fillRect(0, 0, canvas0.width, canvas0.height);
-          context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          context.fillStyle = scope.cps.vals.colors.labelColor;
-          context.fillText('loading...', 10, 25);
+          // context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
+          // context.fillStyle = scope.cps.vals.colors.labelColor;
+          var horizontalText = fontScaleService.getTextImage(context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          context.drawImage(horizontalText, 10, 5, horizontalText.width, horizontalText.height);
+
           if (primeWorker !== null) {
             primeWorker.terminate();
             primeWorker = null;
