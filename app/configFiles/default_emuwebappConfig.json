@@ -87,8 +87,8 @@
     "labelCanvasConfig": {
         "addTimeMode": "absolute",
         "addTimeValue": 750,
-        "newSegmentName": "Segment",
-        "newEventName": "Event"
+        "newSegmentName": "",
+        "newEventName": ""
     },
     "restrictions": {
         "playback": true,
