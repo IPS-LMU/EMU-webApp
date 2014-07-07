@@ -98,8 +98,6 @@ angular.module('emuwebApp')
 			var minPeak = Infinity;
 			var maxPeak = -Infinity;
 
-			console.log(typeof data)
-
 			var relData;
 
 			if (samplePerPx <= 1) {
