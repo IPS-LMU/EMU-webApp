@@ -147,7 +147,7 @@
 				},
 				"appBackground": {
 					"type": "string"
-				},				
+				},
 				"playProgressColor": {
 					"type": "string"
 				},
@@ -164,6 +164,9 @@
 					"type": "string"
 				},
 				"selectedSegmentColor": {
+					"type": "string"
+				},
+				"selectedContourColor": {
 					"type": "string"
 				},
 				"startBoundaryColor": {

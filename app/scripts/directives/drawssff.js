@@ -169,8 +169,8 @@ angular.module('emuwebApp')
                 // mark selected
                 // console.log(viewState.curCorrectionToolNr);
                 if (viewState.curCorrectionToolNr - 1 === contourNr && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-                  ctx.strokeStyle = 'white';
-                  ctx.fillStyle = 'white';
+                  ctx.strokeStyle = ConfigProviderService.vals.colors.selectedContourColor;
+                  ctx.fillStyle = ConfigProviderService.vals.colors.selectedContourColor;
                 }
 
                 ctx.beginPath();

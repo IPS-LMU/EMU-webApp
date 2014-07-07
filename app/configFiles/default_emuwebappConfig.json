@@ -53,6 +53,7 @@
         "selectedBoundaryColor": "#0DC5FF",
         "selectedLevelColor": "rgba(22, 22, 22, 0.1)",
         "selectedSegmentColor": "rgba(255, 255, 22, 0.5)",
+        "selectedContourColor": "#eeff41",
         "startBoundaryColor": "#000",
         "endBoundaryColor": "#888",
         "zeroLineColor": "#0DC5FF",
