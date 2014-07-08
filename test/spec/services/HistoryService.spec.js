@@ -15,4 +15,6 @@ describe('Service: HistoryService', function () {
       $scope: scope
     });
   }));
+
+  
 });
