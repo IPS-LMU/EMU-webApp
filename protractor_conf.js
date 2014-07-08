@@ -8,7 +8,7 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
-      'args': ['show-fps-counter=true']
+      'args': ['--test-type', 'show-fps-counter=true']
     }
 
   },
