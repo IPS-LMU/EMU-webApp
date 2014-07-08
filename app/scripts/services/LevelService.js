@@ -734,7 +734,9 @@ angular.module('emuwebApp')
 				}
 			} else {
 			    if(ln.left === undefined) {
-			        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+    				if((orig.sampleStart + changeTime)>0) {
+			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+	    			}
 			    }
 			    else {
     				var origLeft = ln.left;
