@@ -578,7 +578,7 @@ angular.module('emuwebApp')
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var insSeg = Levelservice.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-                          if (!insSeg) {
+                          if (!insSeg.ret) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
                           } else {
                             scope.hists.addObjToUndoStack({
@@ -587,12 +587,13 @@ angular.module('emuwebApp')
                               'name': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
                               'end': viewState.curViewPort.selectE,
+                              'ids': insSeg.ids,
                               'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
                             });
                           }
                         } else {
                           var insPoint = Levelservice.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
-                          if (!insPoint) {
+                          if (!insPoint.ret) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                           } else {
                             scope.hists.addObjToUndoStack({ // todo 
@@ -600,6 +601,7 @@ angular.module('emuwebApp')
                               'action': 'insertPoint',
                               'name': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
+                              'id': insPoint.id,
                               'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
                             });
                           }

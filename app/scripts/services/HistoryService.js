@@ -98,14 +98,14 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							Levelservice.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 						} else {
-							Levelservice.insertSegment(cur.name, cur.start, cur.end, cur.segName);
+							Levelservice.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
 							Levelservice.insertPointInvers(cur.name, cur.start, cur.pointName);
 						} else {
-							Levelservice.insertPoint(cur.name, cur.start, cur.pointName);
+							Levelservice.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
 					case 'expandSegments':
