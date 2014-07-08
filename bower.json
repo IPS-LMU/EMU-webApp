@@ -14,6 +14,7 @@
     "bootstrap": "~3.0.3",
     "ngprogress-lite": "~1.0.4",
     "angular-ui-layout": "bower",
-    "tv4": "~1.0.17"
+    "tv4": "~1.0.17",
+    "angular-mocks": "~1.2.19"
   }
 }

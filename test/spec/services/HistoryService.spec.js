@@ -3,7 +3,7 @@
 describe('Service: HistoryService', function () {
 
   // load the controller's module
-  beforeEach(module('emulvcApp'));
+  beforeEach(module('emuwebApp'));
 
   var MainCtrl,
     scope;
