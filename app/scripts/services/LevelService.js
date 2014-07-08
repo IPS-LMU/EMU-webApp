@@ -341,7 +341,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.deleteSegmentsInvers = function (name, id, length, deletedSegment) {		
-		
 			var x, insertPoint;
 			insertPoint = 0;
 			angular.forEach(sServObj.data.levels, function (level) {
@@ -668,6 +667,7 @@ angular.module('emuwebApp')
 			var minDist = undefined;
 			var sample;
 			var sampleTarget;
+			var position;
 			if (type == "SEGMENT") {
 				sample = segment.sampleStart;
 			} else if (type == "EVENT") {
@@ -690,7 +690,7 @@ angular.module('emuwebApp')
 							return false;
 						}
 					}
-					neighTd.items.forEach(function (itm) {
+					neighTd.items.forEach(function (itm, order) {
 						if (neighTd.type == "SEGMENT") {
 							sampleTarget = itm.sampleStart;
 						} else if (neighTd.type == "EVENT") {
@@ -700,15 +700,16 @@ angular.module('emuwebApp')
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
 							minDist = sampleTarget - sample;
+							position = order;
 						}
 					});
 				}
 			});
 			if (minDist !== undefined) {
 				if (type == "SEGMENT") {
-					this.moveBoundry(minDist, levelName, segment.id, neighbor);
+					this.moveBoundry(levelName, segment.id, minDist, position);
 				} else if (type == "EVENT") {
-					this.movePoint(minDist, levelName, segment.id);
+					this.movePoint(levelName, segment.id, minDist);
 				}
 				return minDist;
 			} else {
