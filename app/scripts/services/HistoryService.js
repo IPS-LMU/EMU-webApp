@@ -68,16 +68,16 @@ angular.module('emuwebApp')
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.addLevel(cur.level, cur.level.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.deleteLevel(cur.level.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'addLevel':
 						if (applyOldVal) {
-							Levelservice.deleteLevel(cur.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.addLevel(cur.level, cur.name, cur.idx, cur.curPerspectiveIdx);
+							Levelservice.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteBoundary':
@@ -96,16 +96,16 @@ angular.module('emuwebApp')
 						break;
 					case 'insertSegments':
 						if (applyOldVal) {
-							Levelservice.insertSegmentInvers(cur.start, cur.end, cur.levelName, cur.segname);
+							Levelservice.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 						} else {
-							Levelservice.insertSegment(cur.start, cur.end, cur.levelName, cur.segname);
+							Levelservice.insertSegment(cur.name, cur.start, cur.end, cur.segName);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Levelservice.insertPointInvers(cur.start, cur.levelName, cur.pointName);
+							Levelservice.insertPointInvers(cur.name, cur.start, cur.pointName);
 						} else {
-							Levelservice.insertPoint(cur.start, cur.levelName, cur.pointName);
+							Levelservice.insertPoint(cur.name, cur.start, cur.pointName);
 						}
 						break;
 					case 'expandSegments':

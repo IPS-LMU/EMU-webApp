@@ -577,34 +577,29 @@ angular.module('emuwebApp')
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var insSeg = Levelservice.insertSegment(viewState.curViewPort.selectS, viewState.curViewPort.selectE, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                          var insSeg = Levelservice.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                           if (!insSeg) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
                           } else {
-                            console.log(insSeg);
                             scope.hists.addObjToUndoStack({
                               'type': 'ESPS',
                               'action': 'insertSegments',
-                              'levelName': viewState.getcurClickLevelName(),
+                              'name': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
                               'end': viewState.curViewPort.selectE,
-                              'name': ConfigProviderService.vals.labelCanvasConfig.newSegmentName,
-                              'idx': Levelservice.maxElementID,
-                              'segname': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+                              'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
                             });
                           }
                         } else {
-                          var insPoint = Levelservice.insertPoint(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), ConfigProviderService.vals.labelCanvasConfig.newEventName);
+                          var insPoint = Levelservice.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                           if (!insPoint) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                           } else {
                             scope.hists.addObjToUndoStack({ // todo 
                               'type': 'ESPS',
                               'action': 'insertPoint',
-                              'levelName': viewState.getcurClickLevelName(),
+                              'name': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
-                              'name': ConfigProviderService.vals.labelCanvasConfig.newEventName,
-                              'idx': Levelservice.maxElementID,
                               'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
                             });
                           }
