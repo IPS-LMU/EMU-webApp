@@ -28,9 +28,11 @@ describe("Unit Testing: regex filters", function () {
     filt = $filter('regex');
   }));
 
-  it('should have a regex filter: ', function () {
-    expect(filt).not.toEqual(null);
-  })
+  describe('regexf', function () {
+    it('should have a regex filter: ', function () {
+      expect(filt).not.toEqual(null);
+    })
+  });
 
   // test regex filter
   it('should filter dummyarray with regex properly: ', function () {

@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function ($timeout) {
+  .directive('spectro', function ($timeout, fontScaleService) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -11,6 +11,10 @@ angular.module('emuwebApp')
         scope.order = attrs.order;
         scope.enlargeCanvas = {
           'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%'
+        };
+        scope.backgroundCanvas = {
+          'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%',
+          'background': scope.cps.vals.colors.levelColor
         };
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
@@ -34,25 +38,29 @@ angular.module('emuwebApp')
 
         ///////////////
         // watches
-        
-		//
-		scope.$watch('vs.timelineSize', function () {
+
+        //
+        scope.$watch('vs.timelineSize', function () {
           if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {		
-    		  scope.updateCSS();  
-    		  $timeout(scope.redraw,10);
-    		}
-    	  }
-		});        
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              scope.updateCSS();
+              $timeout(scope.redraw, 10);
+            }
+          }
+        });
 
         scope.$watch('vs.curPerspectiveIdx', function () {
           scope.updateCSS();
         }, true);
 
-        scope.$watch('vs.curViewPort', function () {
+        scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
+              // check for changed zoom
+              if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
+                scope.redraw();
+              }
+              drawSpectMarkup(true);
               scope.updateCSS();
             }
           }
@@ -70,7 +78,8 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
+              // scope.redraw();
+              drawSpectMarkup(true);
             }
           }
         }, true);
@@ -98,31 +107,49 @@ angular.module('emuwebApp')
             scope.enlargeCanvas = {
               'height': 100 / parts + '%'
             };
+            scope.backgroundCanvas = {
+              'height': 100 / parts + '%',
+              'background': scope.cps.vals.colors.levelColor
+            };
           } else {
             if (scope.vs.getenlarge() == scope.order) {
               scope.enlargeCanvas = {
                 'height': 3 * 100 / (parts + 2) + '%'
               };
+              scope.backgroundCanvas = {
+                'height': 3 * 100 / (parts + 2) + '%',
+                'background': scope.cps.vals.colors.levelColor
+              };
             } else {
               scope.enlargeCanvas = {
                 'height': 100 / (parts + 2) + '%'
+              };
+              scope.backgroundCanvas = {
+                'height': 100 / (parts + 2) + '%',
+                'background': scope.cps.vals.colors.levelColor
               };
             }
           }
         };
 
         scope.redraw = function () {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
-          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
+          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel));
           if (cache !== null) {
             markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawTimeLine(cache);
             drawSpectMarkup();
           } else {
+            console.log(imageCache.length);
             markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawSpectro(scope.shs.wavJSO.Data);
           }
         };
+
+        function pcmpp() {
+          pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
+        }
 
         function clearImageCache() {
           imageCache = null;
@@ -150,7 +177,10 @@ angular.module('emuwebApp')
           return null;
         }
 
-        function drawSpectMarkup() {
+        function drawSpectMarkup(reset) {
+          if (reset) {
+            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+          }
 
           // draw moving boundary line if moving
           scope.dhs.drawMovingBoundaryLine(markupCtx);
@@ -171,11 +201,15 @@ angular.module('emuwebApp')
 
 
         function killSpectroRenderingThread() {
-          context.fillStyle = '#222';
+          context.fillStyle = scope.cps.vals.colors.levelColor;
           context.fillRect(0, 0, canvas0.width, canvas0.height);
-          context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          context.fillStyle = '#333';
-          context.fillText('loading...', 10, 25);
+          // draw current viewport selected
+          scope.dhs.drawCurViewPortSelected(markupCtx, false);
+          // context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
+          // context.fillStyle = scope.cps.vals.colors.labelColor;
+          var horizontalText = fontScaleService.getTextImage(context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          context.drawImage(horizontalText, 10, 50);
+
           if (primeWorker !== null) {
             primeWorker.terminate();
             primeWorker = null;
@@ -183,14 +217,15 @@ angular.module('emuwebApp')
         }
 
         function setupEvent() {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
           var imageData = context.createImageData(canvas0.width, canvas0.height);
           primeWorker.addEventListener('message', function (event) {
 
             if (pcmperpixel === event.data.myStep) {
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
-              buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, pcmperpixel, event.data.img);
+              // buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel), event.data.img);
               drawSpectMarkup();
             }
           });
@@ -204,71 +239,33 @@ angular.module('emuwebApp')
         }
 
         function startSpectroRenderingThread(buffer) {
-          pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
+          pcmpp();
           primeWorker = new Worker(spectroWorker);
-          var x = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + (pcmperpixel * 3 * scope.vs.spectroSettings.windowLength));
-          var parseData = new Float32Array(x);
-
+          // var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
+          if (scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2) {
+            var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
+          } else {
+            var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
+          }
           setupEvent();
 
           primeWorker.postMessage({
             'cmd': 'config',
-            'N': scope.vs.spectroSettings.windowLength
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'alpha': alpha
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'freq': scope.vs.spectroSettings.rangeTo
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'freqLow': scope.vs.spectroSettings.rangeFrom
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'start': Math.round(scope.vs.curViewPort.sS)
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'end': Math.round(scope.vs.curViewPort.eS)
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'myStep': pcmperpixel
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'window': scope.vs.spectroSettings.window
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'width': canvas0.width
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'height': canvas0.height
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'dynRangeInDB': scope.vs.spectroSettings.dynamicRange
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'pixelRatio': devicePixelRatio
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'sampleRate': scope.shs.wavJSO.SampleRate
-          });
-          primeWorker.postMessage({
-            'cmd': 'config',
-            'streamChannels': scope.shs.wavJSO.NumChannels
-          });
-          primeWorker.postMessage({
-            'cmd': 'pcm',
+            'N': scope.vs.spectroSettings.windowLength,
+            'alpha': alpha,
+            'freq': scope.vs.spectroSettings.rangeTo,
+            'freqLow': scope.vs.spectroSettings.rangeFrom,
+            'start': scope.vs.curViewPort.sS,
+            'end': scope.vs.curViewPort.eS,
+            'myStep': pcmperpixel,
+            'window': scope.vs.spectroSettings.window,
+            'width': canvas0.width,
+            'height': canvas0.height,
+            'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
+            'pixelRatio': devicePixelRatio,
+            'sampleRate': scope.shs.wavJSO.SampleRate,
+            'streamChannels': scope.shs.wavJSO.NumChannels,
             'stream': parseData
           });
           primeWorker.postMessage({

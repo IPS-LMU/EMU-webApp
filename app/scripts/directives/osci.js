@@ -24,6 +24,10 @@ angular.module('emuwebApp')
 				scope.enlargeCanvas = {
 					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
 				};
+				scope.backgroundCanvas = {
+				    'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%',
+				    'background': ConfigProviderService.vals.colors.levelColor
+				};
 
 				scope.viewState = viewState;
 
@@ -106,15 +110,27 @@ angular.module('emuwebApp')
 						scope.enlargeCanvas = {
 							'height': 100 / parts + '%'
 						};
+						scope.backgroundCanvas = {
+				            'height': 100 / parts + '%',
+				            'background': ConfigProviderService.vals.colors.levelColor
+				        };
 					} else {
 						if (viewState.getenlarge() == scope.order) {
 							scope.enlargeCanvas = {
 								'height': 3 * 100 / (parts + 2) + '%'
 							};
-						} else {
+						    scope.backgroundCanvas = {
+				                'height': 3 * 100 / (parts + 2) + '%',
+				                'background': ConfigProviderService.vals.colors.levelColor
+				            };							
+						} else {					
 							scope.enlargeCanvas = {
 								'height': 100 / (parts + 2) + '%'
 							};
+						    scope.backgroundCanvas = {
+				                'height': 100 / (parts + 2) + '%',
+				                'background': ConfigProviderService.vals.colors.levelColor
+				            };								
 						}
 					}
 				};

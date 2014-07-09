@@ -1,5 +1,5 @@
 <!-- container for everything -->
-<div ng-controller="MainCtrl" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize}">
+<div ng-controller="MainCtrl" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize, 'background': ConfigProviderService.vals.colors.appBackground}">
 
   <!-- left side menu bar -->
   <bundle-list-side-bar></bundle-list-side-bar>
@@ -8,7 +8,6 @@
   <div class="emuwebapp-mainWindow" id="mainWindow">
 
     <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
-
     
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">

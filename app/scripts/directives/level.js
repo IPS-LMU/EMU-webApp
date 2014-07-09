@@ -18,6 +18,10 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.dials = dialogService;
+				
+				scope.backgroundCanvas = {
+				    'background': ConfigProviderService.vals.colors.levelColor
+				}
 
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {

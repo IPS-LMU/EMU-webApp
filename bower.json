@@ -15,6 +15,7 @@
     "ngprogress-lite": "~1.0.4",
     "angular-ui-layout": "bower",
     "tv4": "~1.0.17",
-    "d3": "~3.4.9"
+    "d3": "~3.4.9",
+    "angular-mocks": "~1.2.19"
   }
 }

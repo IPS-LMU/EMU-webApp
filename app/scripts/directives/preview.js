@@ -18,7 +18,12 @@ angular.module('emuwebApp')
 				// hook up scope vars for watches
 				scope.vs = viewState;
 				scope.shs = Soundhandlerservice;
-
+				scope.backgroundCanvas = {
+				    'background': '#eee',
+				    'border': '1px solid gray',
+				    'width': '100%',
+                    'height': '100%'				    
+				}
 
 				/////////////////////
 				// watches
@@ -36,6 +41,12 @@ angular.module('emuwebApp')
 				scope.$watch('currentBundleName', function () {
 					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 						initialized = false;
+						scope.backgroundCanvas = {
+				            'background': ConfigProviderService.vals.colors.levelColor,
+				            'border': '1px solid gray',
+				            'width': '100%',
+                            'height': '100%'					            
+				        }
 						drawPreview();
 
 					}

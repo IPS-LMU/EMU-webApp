@@ -45,12 +45,15 @@
     "colors": {
         "labelColor": "#000",
         "osciColor": "#000",
+        "levelColor": "#E7E7E7",
+        "appBackground": "#f00",
         "playProgressColor": "rgba(255, 255, 255, 0.5)",
         "selectedAreaColor": "rgba(22, 22, 22, 0.1)",
         "selectedBorderColor": "rgba(0, 0, 0, 0.7)",
         "selectedBoundaryColor": "#0DC5FF",
         "selectedLevelColor": "rgba(22, 22, 22, 0.1)",
         "selectedSegmentColor": "rgba(255, 255, 22, 0.5)",
+        "selectedContourColor": "#eeff41",
         "startBoundaryColor": "#000",
         "endBoundaryColor": "#888",
         "zeroLineColor": "#0DC5FF",
@@ -85,8 +88,8 @@
     "labelCanvasConfig": {
         "addTimeMode": "absolute",
         "addTimeValue": 750,
-        "newSegmentName": "Segment",
-        "newEventName": "Event"
+        "newSegmentName": "",
+        "newEventName": ""
     },
     "restrictions": {
         "playback": true,

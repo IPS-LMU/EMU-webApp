@@ -457,8 +457,8 @@ angular.module('emuwebApp')
 							viewState.curClickLevelType = undefined;
 
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 4000;
-							// viewState.curViewPort.eS = 5000;
+							// viewState.curViewPort.sS = 442204;
+							// viewState.curViewPort.eS = 445464;
 							viewState.resetSelect();
 							Soundhandlerservice.wavJSO = wavJSO;
 
@@ -678,13 +678,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				Levelservice.addLevel(level, newName, levelLength, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, levelLength, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
-					'name': level.name,
-					'idx': Levelservice.data.levels.length - 1,
+					'level': level,
+					'id': Levelservice.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -713,13 +713,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'EVENT'
 				};
-				Levelservice.addLevel(level, newName, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				Levelservice.addLevel(level, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
-					'name': level.name,
-					'idx': Levelservice.data.levels.length - 1,
+					'level': level,
+					'id': Levelservice.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 

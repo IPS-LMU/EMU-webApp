@@ -3,16 +3,42 @@
 describe('Service: HistoryService', function () {
 
   // load the controller's module
-  beforeEach(module('emulvcApp'));
+  beforeEach(module('emuwebApp'));
 
-  var MainCtrl,
-    scope;
+  var changeObj = {
+    'type': 'ESPS',
+    'action': 'renameLabel',
+    'name': 'Phonetic',
+    'id': 12,
+    'oldValue': 'xxx',
+    'newValue': 'yyy'
+  };
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
-    });
+  /**
+   *
+   */
+  it('undo stack should be empty at statup', inject(function (HistoryService) {
+    expect(HistoryService.getNrOfPossibleUndos()).toEqual(0);
   }));
+
+  /**
+   *
+   */
+  it('check init state of both stacks', inject(function (HistoryService) {
+    expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
+    expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
+  }));
+
+
+  /**
+   *
+   */
+  it('should add object to undo stack', inject(function (HistoryService) {
+    HistoryService.addObjToUndoStack(changeObj);
+    expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#12');
+  }));
+
+
+
 });

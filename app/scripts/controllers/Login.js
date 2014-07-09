@@ -8,7 +8,6 @@ angular.module('emuwebApp')
 			'password': '',
 			'errorMsg': ''
 		};
-
 		/**
 		 *
 		 */
@@ -23,6 +22,8 @@ angular.module('emuwebApp')
 				}
 			});
 		};
+		// FOR DEVELOPMENT
+		// $scope.tryLogin(); // for autologin uncomment and set username + password
 
 		/**
 		 *
