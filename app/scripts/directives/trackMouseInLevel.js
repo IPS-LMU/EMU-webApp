@@ -29,6 +29,7 @@ angular.module('emuwebApp')
 
         //
         element.bind('click', function (event) {
+          event.preventDefault();
           setLastMove(event, true);
           setLastClick(event);
         });
@@ -280,7 +281,7 @@ angular.module('emuwebApp')
          *
          */
         function getX(e) {
-          return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
+          return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
         }
       }
     };

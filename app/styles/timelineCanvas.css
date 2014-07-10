@@ -20,8 +20,8 @@
 .emuwebapp-timelineCanvasContainer {
     position: relative;
     float:left;
+    height: 100% !important;
     width: calc(100% - 30px);
-    height: 100%;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 1px;

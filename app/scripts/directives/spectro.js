@@ -30,6 +30,7 @@ angular.module('emuwebApp')
         var devicePixelRatio = window.devicePixelRatio || 1;
         var spectroWorker = 'scripts/workers/spectroWorker.js';
         var primeWorker = new Worker(spectroWorker);
+        var currentImage;
 
         ///////////////
         // watches
@@ -39,7 +40,7 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               scope.updateCSS();
-              $timeout(scope.redraw, 10);
+              $timeout(scope.redraw, 5);
             }
           }
         });
@@ -187,7 +188,6 @@ angular.module('emuwebApp')
         }
 
         function startSpectroRenderingThread(buffer) {
-          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
           pcmpp();
           primeWorker = new Worker(spectroWorker);
           // var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
@@ -197,7 +197,8 @@ angular.module('emuwebApp')
             var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
           }
           setupEvent();
-
+          console.log(canvas0.height);
+          
           primeWorker.postMessage({
             'cmd': 'config',
             'N': scope.vs.spectroSettings.windowLength,

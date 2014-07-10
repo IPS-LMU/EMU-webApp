@@ -261,9 +261,6 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
 
 		if (!executed) {
-			//renderHeight *= pixelRatio;
-
-			var scaling = N / 256;
 
 			// start execution once
 			executed = true;
@@ -275,7 +272,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			paint = new Array(renderWidth);
 
 			// Hz per pixel height
-			HzStep = (sampleRate / 2) / (renderHeight * scaling);
+			HzStep = (sampleRate / 2) / (N / 2);
 
 			// upper Hz boundary to display
 			c = Math.ceil(upperFreq / HzStep);

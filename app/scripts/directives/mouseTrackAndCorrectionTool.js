@@ -56,12 +56,18 @@ angular.module('emuwebApp')
 				});
 
 				element.bind('mousemove', function (event) {
-
+				    var mbutton = 0;
+				    if(event.buttons===undefined) {
+				        mbutton = event.which;
+				    }
+				    else {
+				        mbutton = event.buttons;
+				    }
 					// perform mouse tracking
 					var mouseX = Drawhelperservice.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
-					switch (event.which) {
+					switch (mbutton) {
 					case 0:
 						if (viewState.getPermission('labelAction')) {
 							switchMarkupContext(event);
@@ -156,6 +162,7 @@ angular.module('emuwebApp')
 					case 1:
 						if (!viewState.getdragBarActive()) {
 							setSelectDrag(event);
+							
 						}
 						break;
 					}

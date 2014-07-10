@@ -563,11 +563,13 @@ angular.module('emuwebApp')
 			// annotation
 			bundleData.annotation = Levelservice.getData();
 			viewState.somethingInProgressTxt = 'Saving bundle...';
+			viewState.setState('loadingSaving');
 			Iohandlerservice.saveBundle(bundleData).then(function () {
 				viewState.somethingInProgressTxt = 'Done!';
 				viewState.somethingInProgress = false;
 				HistoryService.movesAwayFromLastSave = 0;
 				defer.resolve();
+				viewState.setState('labeling');
 			}, function (errMess) {
 				// console.log(mess);
 				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
