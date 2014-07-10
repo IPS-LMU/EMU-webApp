@@ -183,7 +183,7 @@ angular.module('emuwebApp')
 			// empty redo stack
 			redoStack = [];
 			var tmpObj = {};
-			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.id);
+			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.id + '#' + obj.order);
 			tmpObj[dataKey] = angular.copy(obj);
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {

@@ -74,8 +74,6 @@ angular.module('emuwebApp')
 							if (!$.isEmptyObject(Ssffdataservice.data)) {
 								if (Ssffdataservice.data.length !== 0) {
 									if (!viewState.getdragBarActive()) {
-
-
 										if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 											// var col = Ssffdataservice.data[0].Columns[0];
 											if (tr === undefined) {
@@ -119,10 +117,11 @@ angular.module('emuwebApp')
 											ctx.closePath();
 											ctx.stroke();
 											ctx.fill();
+											
 
 											if (event.shiftKey) {
 												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
-												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
+												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / 128 * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
 												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo;
 												var updateObj = HistoryService.updateCurChangeObj({

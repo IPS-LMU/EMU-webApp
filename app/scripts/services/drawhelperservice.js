@@ -79,7 +79,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.getY = function (e) {
-			return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
+			return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
 		};
 
 

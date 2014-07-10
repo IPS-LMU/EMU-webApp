@@ -22,8 +22,6 @@ angular.module('emuwebApp')
         var levelID = scope.level.name;
         var levelType = scope.level.type;
 
-
-
         /////////////////////////////
         // Bindings
 
@@ -78,8 +76,15 @@ angular.module('emuwebApp')
               // relative movement in pcm above 1 pcm per pixel
               moveBy = Math.round(thisPCM - lastPCM);
             }
+          }  
+          var mbutton = 0;
+          if(event.buttons===undefined) {
+              mbutton = event.which;
           }
-          switch (event.which) {
+		  else {
+			mbutton = event.buttons;
+		  }  
+          switch (mbutton) {
           case 1:
             //console.log('Left mouse button pressed');
             break;
