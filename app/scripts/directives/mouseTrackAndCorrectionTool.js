@@ -56,13 +56,12 @@ angular.module('emuwebApp')
 				});
 
 				element.bind('mousemove', function (event) {
-				    var mbutton = 0;
-				    if(event.buttons===undefined) {
-				        mbutton = event.which;
-				    }
-				    else {
-				        mbutton = event.buttons;
-				    }
+					var mbutton = 0;
+					if (event.buttons === undefined) {
+						mbutton = event.which;
+					} else {
+						mbutton = event.buttons;
+					}
 					// perform mouse tracking
 					var mouseX = Drawhelperservice.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
@@ -117,10 +116,11 @@ angular.module('emuwebApp')
 											ctx.closePath();
 											ctx.stroke();
 											ctx.fill();
-											
+
 
 											if (event.shiftKey) {
 												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
+												console.log(e.originalEvent.target);
 												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / 128 * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
 												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo;
@@ -161,7 +161,7 @@ angular.module('emuwebApp')
 					case 1:
 						if (!viewState.getdragBarActive()) {
 							setSelectDrag(event);
-							
+
 						}
 						break;
 					}
