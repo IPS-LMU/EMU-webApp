@@ -69,7 +69,8 @@
         "rangeFrom": 0,
         "rangeTo": 5000,
         "dynamicRange": 70,
-        "window": "GAUSS"
+        "window": "GAUSS",
+        "transparency": 255        
     },
     "perspectives": [{
         "name": "default",

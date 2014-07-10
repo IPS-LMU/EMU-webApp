@@ -219,7 +219,10 @@
 				},
 				"window": {
 					"enum": ["BARTLETT", "BARTLETTHANN", "BLACKMAN", "COSINE", "GAUSS", "HAMMING", "HANN", "LANCZOS", "RECTANGULAR", "TRIANGULAR"]
-				}
+				},
+				"transparency": {
+					"type": "integer"
+				}				
 			},
 			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false

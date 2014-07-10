@@ -20,7 +20,7 @@ var myOffset = 0;
 var mywidth = 0;
 var myDrawOffset = 0;
 var pixelRatio = 1;
-var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight;
+var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight, transparency;
 var myWindow = {
 	BARTLETT: 1,
 	BARTLETTHANN: 2,
@@ -257,8 +257,8 @@ function FFT(fftSize) {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
-	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
 
 		if (!executed) {
 			//renderHeight *= pixelRatio;
@@ -298,7 +298,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
 			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight);
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency);
 			}
 
 			// post generated image block with settings back
@@ -384,7 +384,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 	//
 	*/
 
-function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight) {
+function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight, transparency) {
 
 	// set upper boundary for linear interpolation
 	var x1 = pixelHeight;
@@ -441,7 +441,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				p[index + 0] = rgb;
 				p[index + 1] = rgb;
 				p[index + 2] = rgb;
-				p[index + 3] = '255';
+				p[index + 3] = transparency;
 			}
 		} else {
 			rgb = 255 - Math.round(255 * y1);
@@ -616,12 +616,15 @@ self.addEventListener('message', function (e) {
 		if (data.streamChannels !== undefined) {
 			streamChannels = data.streamChannels;
 		}
+		if (data.transparency !== undefined) {
+			transparency = data.transparency;
+		}		
 		if (data.stream !== undefined) {
 			threadSoundBuffer = data.stream;
 		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);

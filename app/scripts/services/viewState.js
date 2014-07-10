@@ -132,8 +132,9 @@ angular.module('emuwebApp')
       if (sServObj.start === null) {
         sServObj.start = timestamp;
       }
-      var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
-      sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
+      
+      var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
+      sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
       if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
         if (sServObj.playHeadAnimationInfos.curS !== -1) {

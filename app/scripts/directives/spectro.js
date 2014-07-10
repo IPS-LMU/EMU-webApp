@@ -20,9 +20,9 @@ angular.module('emuwebApp')
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
         var canvas1 = element.find('canvas')[canvasLength - 1];
-        // var myid = element[0].id;
         // FFT default vars
         var alpha = 0.16; // default alpha for Window Function
+        
         var context = canvas0.getContext('2d');
         var markupCtx = canvas1.getContext('2d');
         var pcmperpixel = 0;
@@ -30,11 +30,6 @@ angular.module('emuwebApp')
         var devicePixelRatio = window.devicePixelRatio || 1;
         var spectroWorker = 'scripts/workers/spectroWorker.js';
         var primeWorker = new Worker(spectroWorker);
-        var imageCache = null;
-        var imageCacheCounter = 0;
-        var cache;
-
-
 
         ///////////////
         // watches
@@ -90,10 +85,7 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               setupEvent();
-              clearImageCache();
               scope.redraw();
-              //console.log(scope.shs.wavJSO);
-              //drawSpectro(scope.vs, scope.shs.wavJSO.Data);
             }
           }
         }, true);
@@ -133,48 +125,13 @@ angular.module('emuwebApp')
         };
 
         scope.redraw = function () {
-          //pcmperpixel = Math.round((scope.vs.curViewPort.eS - scope.vs.curViewPort.sS) / canvas0.width);
-          pcmpp();
-          cache = cacheHit(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel));
-          if (cache !== null) {
-            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-            drawTimeLine(cache);
-            drawSpectMarkup();
-          } else {
-            console.log(imageCache.length);
+            pcmpp();
             markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
             drawSpectro(scope.shs.wavJSO.Data);
-          }
         };
 
         function pcmpp() {
-          pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
-        }
-
-        function clearImageCache() {
-          imageCache = null;
-          imageCacheCounter = 0;
-          imageCache = [];
-        }
-
-        function buildImageCache(cstart, cend, ppp, imgData) {
-          imageCache[imageCacheCounter] = [];
-          imageCache[imageCacheCounter][0] = cstart;
-          imageCache[imageCacheCounter][1] = cend;
-          imageCache[imageCacheCounter][2] = ppp;
-          imageCache[imageCacheCounter][3] = imgData;
-          ++imageCacheCounter;
-        }
-
-        function cacheHit(cstart, cend, ppp) {
-          for (var i = 0; i < imageCache.length; ++i) {
-            if (imageCache[i][0] === cstart &&
-              imageCache[i][1] === cend &&
-              imageCache[i][2] === ppp) {
-              return i;
-            }
-          }
-          return null;
+            pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
         }
 
         function drawSpectMarkup(reset) {
@@ -191,14 +148,6 @@ angular.module('emuwebApp')
           // draw min max vals and name of track
           scope.dhs.drawMinMaxAndName(markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
         }
-
-
-        function drawTimeLine(id) {
-          var imageData = context.createImageData(canvas0.width, canvas0.height);
-          imageData.data.set(imageCache[id][3]);
-          context.putImageData(imageData, 0, 0);
-        }
-
 
         function killSpectroRenderingThread() {
           context.fillStyle = scope.cps.vals.colors.levelColor;
@@ -225,7 +174,6 @@ angular.module('emuwebApp')
             if (pcmperpixel === event.data.myStep) {
               imageData.data.set(event.data.img);
               context.putImageData(imageData, 0, 0);
-              // buildImageCache(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS, Math.round(pcmperpixel), event.data.img);
               drawSpectMarkup();
             }
           });
@@ -266,15 +214,13 @@ angular.module('emuwebApp')
             'pixelRatio': devicePixelRatio,
             'sampleRate': scope.shs.wavJSO.SampleRate,
             'streamChannels': scope.shs.wavJSO.NumChannels,
+            'transparency': scope.cps.vals.spectrogramSettings.transparency,
             'stream': parseData
           });
           primeWorker.postMessage({
             'cmd': 'render'
           });
         }
-
-        clearImageCache();
-
       }
     };
   });
