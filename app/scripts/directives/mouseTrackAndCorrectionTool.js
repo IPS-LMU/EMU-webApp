@@ -92,7 +92,7 @@ angular.module('emuwebApp')
 											// console.log(colStartSampleNr)
 
 
-											var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
+											var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
 											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
 
 											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
@@ -120,10 +120,9 @@ angular.module('emuwebApp')
 
 											if (event.shiftKey) {
 												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
-												console.log(e.originalEvent.target);
-												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / 128 * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
+												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
-												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo;
+												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
 												var updateObj = HistoryService.updateCurChangeObj({
 													'type': 'SSFF',
 													'trackName': tr.name,
