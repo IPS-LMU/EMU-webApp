@@ -61,7 +61,15 @@ angular.module('emuwebApp')
               var zoomEventMove = Levelservice.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
-                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                if(zoomEventMove.nearest === false) { // before first elem
+                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetails(scope.this.level.name, 0).sampleStart);
+                }
+                else if(zoomEventMove.nearest === true) { // after last elem
+                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getLastElement(scope.this.level.name).sampleStart);
+                }
+                else {
+                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                }
               } else {
                 moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - Levelservice.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint);
               }
