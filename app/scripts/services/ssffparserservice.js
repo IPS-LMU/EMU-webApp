@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 		var sServObj = {};
 
 		var workerPath = 'scripts/workers/ssffParserWorker.js';
-		var worker = new Worker(workerPath);
+		var worker;
 		var defer;
 
 		// event listener function for worker to respond to messages
