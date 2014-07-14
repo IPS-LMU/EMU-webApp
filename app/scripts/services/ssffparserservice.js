@@ -10,11 +10,13 @@ angular.module('emuwebApp')
 		var worker = new Worker(workerPath);
 		var defer;
 
-		// add event listener to worker to respond to messages
+		// event listener function for worker to respond to messages
 		function messageWorkerCallback(e) {
 			if (e.data.status.type === 'SUCCESS') {
+				killOldAndCreateNewWorker();
 				defer.resolve(e.data);
 			} else {
+				killOldAndCreateNewWorker();
 				defer.reject(e.data);
 			}
 
@@ -31,10 +33,14 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		function killOldAndCreateNewWorker() {
-			worker.terminate();
-			worker = new Worker(workerPath);
-			worker.addEventListener('message', messageWorkerCallback, false);
+		function killOldAndCreateNewWorker(createNew) {
+			if (worker !== undefined) {
+				worker.terminate();
+			}
+			if (createNew) {
+				worker = new Worker(workerPath);
+				worker.addEventListener('message', messageWorkerCallback, false);
+			}
 		}
 
 		/**
@@ -43,7 +49,7 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncParseSsffArr = function (ssffArray) {
-			killOldAndCreateNewWorker();
+			killOldAndCreateNewWorker(true);
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'parseArr',
@@ -59,7 +65,7 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncJso2ssff = function (jso) {
-			killOldAndCreateNewWorker();
+			killOldAndCreateNewWorker(true);
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'jso2ssff',
