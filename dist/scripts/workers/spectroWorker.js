@@ -20,7 +20,7 @@ var myOffset = 0;
 var mywidth = 0;
 var myDrawOffset = 0;
 var pixelRatio = 1;
-var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight;
+var myFFT, renderWidth, paint, p, HzStep, c, d, maxPsd, pixelHeight, transparency;
 var myWindow = {
 	BARTLETT: 1,
 	BARTLETTHANN: 2,
@@ -43,28 +43,28 @@ function FFT(fftSize) {
 	n = fftSize;
 	m = parseInt((Math.log(n) / 0.6931471805599453)); // Math.log(n) / Math.log(2) 
 
-	if (cos === undefined || n !== fftSize ) {
+	if (cos === undefined || n !== fftSize) {
 
-	   // this means that the following is only executed 
-	   // when no COS table exists
-	   // or n changes 
+		// this means that the following is only executed 
+		// when no COS table exists
+		// or n changes 
 
 		cos = new Float32Array(n / 2); // precompute cos table
 		for (var x = 0; x < n / 2; x++) {
 			cos[x] = Math.cos(-2 * PI * x / n);
 		}
 	}
-	if (sin === undefined || n !== fftSize) { 
+	if (sin === undefined || n !== fftSize) {
 
-	   // this means that the following is only executed 
-	   // when no COS table exists
-	   // or n changes 
-	   
-	   	sin = new Float32Array(n / 2); // precompute sin table
+		// this means that the following is only executed 
+		// when no COS table exists
+		// or n changes 
+
+		sin = new Float32Array(n / 2); // precompute sin table
 		for (var x = 0; x < n / 2; x++) {
 			sin[x] = Math.sin(-2 * PI * x / n);
 		}
-	}	
+	}
 
 	/*
     // choose window function set alpha and execute it on the buffer 
@@ -239,7 +239,6 @@ function FFT(fftSize) {
 
 
 
-
 /* 
 	// initial function call for calculating and drawing Spectrogram
 	// input PCM data is coming from the buffer "localSoundBuffer"
@@ -258,13 +257,10 @@ function FFT(fftSize) {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
-	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
 
 		if (!executed) {
-			//renderHeight *= pixelRatio;
-			
-			var scaling = N / 256;
 
 			// start execution once
 			executed = true;
@@ -276,17 +272,17 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			paint = new Array(renderWidth);
 
 			// Hz per pixel height
-			HzStep = (sampleRate / 2) / (renderHeight * scaling);
+			HzStep = (sampleRate / 2) / (N / 2);
 
-			// uper Hz boundry to display
+			// upper Hz boundary to display
 			c = Math.ceil(upperFreq / HzStep);
 
-			// lower Hz boundry to display
+			// lower Hz boundary to display
 			d = Math.floor(lowerFreq / HzStep); // -1 for value below display when lower>0
 
 			// calculate i FFT runs, save result into paint and set maxPsd while doing so
 			for (var i = 0; i < renderWidth; i++) {
-				paint[i] = getMagnitude(0, (i * myStep) + myOffset, N, c, d);
+				paint[i] = getMagnitude(0, Math.round(i * myStep) + myOffset, N, c, d);
 				maxPsd = (2 * Math.pow(totalMax, 2)) / N;
 			}
 
@@ -294,12 +290,12 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			pixelHeight = renderHeight / (c - d - 2);
 
 			// create new picture
-			imageResult = new Uint8ClampedArray(Math.ceil(renderWidth*renderHeight*4));
+			imageResult = new Uint8ClampedArray(Math.ceil(renderWidth * renderHeight * 4));
 
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
 			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight);
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency);
 			}
 
 			// post generated image block with settings back
@@ -308,8 +304,8 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 				'start': start,
 				'end': end,
 				'myStep': myStep,
-				'pixelHeight' : pixelHeight,
-				'pixelRatio' : pixelRatio,
+				'pixelHeight': pixelHeight,
+				'pixelRatio': pixelRatio,
 				'renderWidth': renderWidth,
 				'renderHeight': renderHeight,
 				'img': imageResult
@@ -385,7 +381,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 	//
 	*/
 
-function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight) {
+function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight, transparency) {
 
 	// set upper boundary for linear interpolation
 	var x1 = pixelHeight;
@@ -395,8 +391,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 	scaledVal = ((psdLog + dynRangeInDB) / dynRangeInDB);
 	if (scaledVal > 1) {
 		scaledVal = 1;
-	}
-	else if (scaledVal < 0) {
+	} else if (scaledVal < 0) {
 		scaledVal = 0;
 	}
 
@@ -438,24 +433,24 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				// set internal image buffer to calculated & interpolated value
 				var px = Math.floor(line + cacheOffet);
 				var py = Math.floor(myheight - (pixelHeight * (i - 2) + b));
-				
+
 				var index = (px + (py * renderWidth)) * 4;
-				p[index+0] = rgb;
-				p[index+1] = rgb;
-				p[index+2] = rgb;
-				p[index+3] = '255';
+				p[index + 0] = rgb;
+				p[index + 1] = rgb;
+				p[index + 2] = rgb;
+				p[index + 3] = transparency;
 			}
 		} else {
-		    rgb = 255 - Math.round(255 * y1);
+			rgb = 255 - Math.round(255 * y1);
 			// set internal image buffer to calculated & interpolated value
 			var px = Math.floor(line + cacheOffet);
 			var py = Math.floor(myheight - (pixelHeight * (i - 2)));
-				
+
 			var index = (px + (py * renderWidth)) * 4;
-			p[index+0] = rgb;
-			p[index+1] = rgb;
-			p[index+2] = rgb;
-			p[index+3] = '255';
+			p[index + 0] = rgb;
+			p[index + 1] = rgb;
+			p[index + 2] = rgb;
+			p[index + 3] = '255';
 		}
 	}
 }
@@ -618,14 +613,15 @@ self.addEventListener('message', function (e) {
 		if (data.streamChannels !== undefined) {
 			streamChannels = data.streamChannels;
 		}
-		break;
-	case 'pcm':
+		if (data.transparency !== undefined) {
+			transparency = data.transparency;
+		}		
 		if (data.stream !== undefined) {
 			threadSoundBuffer = data.stream;
 		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);

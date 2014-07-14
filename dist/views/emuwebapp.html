@@ -1,5 +1,5 @@
 <!-- container for everything -->
-<div ng-controller="MainCtrl" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes="" ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize}">
+<div ng-controller="MainCtrl" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize, 'background': ConfigProviderService.vals.colors.appBackground}">
 
   <!-- left side menu bar -->
   <bundle-list-side-bar></bundle-list-side-bar>
@@ -8,7 +8,6 @@
   <div class="emuwebapp-mainWindow" id="mainWindow">
 
     <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
-
     
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
@@ -19,7 +18,7 @@
       <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
 
-      <div class="btn-group emuwebapp-mini-btn-group" dropdown="" is-open="status.isopen">
+      <div class="btn-group emuwebapp-mini-btn-group" dropdown is-open="status.isopen">
         <button id="demoDB" type="button" class="dropdown-toggle" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
           open demo DB<span class="caret"></span>
         </button>
@@ -43,10 +42,10 @@
       <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-topPane">
       <div class="emuwebapp-timeline">
         <ul>
-          <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch="" on="curTrack">
+          <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
             <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
-            <ssff-track track-name="{{curTrack}}" ng-switch-default="" order="{{$index}}"></ssff-track>
+            <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
           </li>
         </ul>
       </div>
@@ -62,7 +61,7 @@
   </bg-pane>
   <bg-pane type="emuwebapp-bottomRightResizePane">
   <ul>
-    <li ng-repeat="cur2dTrack in cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order" ng-switch="" on="cur2dTrack">
+    <li ng-repeat="cur2dTrack in cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order" ng-switch on="cur2dTrack">
       <epg ng-switch-when="EPG"></epg>
       <dots ng-switch-when="DOTS"></dots>
     </li>
