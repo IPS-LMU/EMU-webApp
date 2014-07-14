@@ -6,18 +6,36 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		var worker = new Worker('scripts/workers/ssffParserWorker.js');
+		var workerPath = 'scripts/workers/ssffParserWorker.js';
+		var worker = new Worker(workerPath);
 		var defer;
 
 		// add event listener to worker to respond to messages
-		worker.addEventListener('message', function (e) {
+		function messageWorkerCallback(e) {
 			if (e.data.status.type === 'SUCCESS') {
 				defer.resolve(e.data);
 			} else {
 				defer.reject(e.data);
 			}
-		}, false);
 
+		}
+
+		// worker.addEventListener('message', function (e) {
+		// 	if (e.data.status.type === 'SUCCESS') {
+		// 		defer.resolve(e.data);
+		// 	} else {
+		// 		defer.reject(e.data);
+		// 	}
+		// }, false);
+
+		/**
+		 *
+		 */
+		function killOldAndCreateNewWorker() {
+			worker.terminate();
+			worker = new Worker(workerPath);
+			worker.addEventListener('message', messageWorkerCallback, false);
+		}
 
 		/**
 		 * parse array of ssff file using webworker
@@ -25,6 +43,7 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncParseSsffArr = function (ssffArray) {
+			killOldAndCreateNewWorker();
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'parseArr',
@@ -40,6 +59,7 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncJso2ssff = function (jso) {
+			killOldAndCreateNewWorker();
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'jso2ssff',
