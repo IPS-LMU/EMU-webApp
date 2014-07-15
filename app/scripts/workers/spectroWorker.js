@@ -308,8 +308,8 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 				'pixelRatio': pixelRatio,
 				'renderWidth': renderWidth,
 				'renderHeight': renderHeight,
-				'img': imageResult
-			});
+				'img': imageResult.buffer
+			}, [imageResult.buffer]);
 
 			// free vars
 			myFFT = null;
@@ -615,9 +615,9 @@ self.addEventListener('message', function (e) {
 		}
 		if (data.transparency !== undefined) {
 			transparency = data.transparency;
-		}		
+		}
 		if (data.stream !== undefined) {
-			threadSoundBuffer = data.stream;
+			threadSoundBuffer = new Float32Array(data.stream);
 		}
 		break;
 	case 'render':
