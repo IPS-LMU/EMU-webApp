@@ -28,7 +28,7 @@ angular.module('emuwebApp')
 			worker.postMessage({
 				'cmd': 'parseBuf',
 				'buffer': buf
-			}); // Send data to our worker.
+			}, [buf]); // Send data to our worker.
 			return defer.promise;
 		};
 

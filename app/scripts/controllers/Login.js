@@ -4,8 +4,8 @@ angular.module('emuwebApp')
 	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
 
 		$scope.loginData = {
-			'username': 'nikola',
-			'password': 'nikola',
+			'username': '',
+			'password': '',
 			'errorMsg': ''
 		};
 		/**

@@ -555,7 +555,7 @@ angular.module('emuwebApp')
 				return defer.promise;
 				// } // Commented out FOR DEVELOPMENT!
 			}else{
-				$log.info('Action not allowed!');
+				$log.info('Action: menuBundleSaveBtnClick not allowed!');
 			}
 
 		};
