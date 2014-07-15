@@ -199,7 +199,6 @@ angular.module('emuwebApp')
             parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
           }
           setupEvent();
-          console.log(canvas0.height);
 
           primeWorker.postMessage({
             'cmd': 'config',
