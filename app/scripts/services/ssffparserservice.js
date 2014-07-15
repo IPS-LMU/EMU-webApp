@@ -40,7 +40,6 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncJso2ssff = function (jso) {
-			console.log(jso)
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'jso2ssff',
