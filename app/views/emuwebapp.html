@@ -11,7 +11,7 @@
     
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
-      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn left"><img src="/img/menuBtn.png" /></button>
+      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn left"><img src="img/menuBtn.png" /></button>
       <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
@@ -33,7 +33,7 @@
 
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
-      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img src="/img/aboutBtn.png"></img></a>
+      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img src="img/aboutBtn.png"></img></a>
     </div>
 
     <!-- vertical split layout that contains top and bottom pane -->
