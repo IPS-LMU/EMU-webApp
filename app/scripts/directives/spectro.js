@@ -22,7 +22,7 @@ angular.module('emuwebApp')
         var canvas1 = element.find('canvas')[canvasLength - 1];
         // FFT default vars
         var alpha = 0.16; // default alpha for Window Function
-        
+
         var context = canvas0.getContext('2d');
         var markupCtx = canvas1.getContext('2d');
         var pcmperpixel = 0;
@@ -126,13 +126,13 @@ angular.module('emuwebApp')
         };
 
         scope.redraw = function () {
-            pcmpp();
-            markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
-            drawSpectro(scope.shs.wavJSO.Data);
+          pcmpp();
+          markupCtx.clearRect(0, 0, canvas1.width, canvas1.height);
+          drawSpectro(scope.shs.wavJSO.Data);
         };
 
         function pcmpp() {
-            pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
+          pcmperpixel = (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / canvas0.width;
         }
 
         function drawSpectMarkup(reset) {
@@ -173,7 +173,8 @@ angular.module('emuwebApp')
           primeWorker.addEventListener('message', function (event) {
 
             if (pcmperpixel === event.data.myStep) {
-              imageData.data.set(event.data.img);
+              var tmp = new Uint8ClampedArray(event.data.img);
+              imageData.data.set(tmp);
               context.putImageData(imageData, 0, 0);
               drawSpectMarkup();
             }
@@ -191,14 +192,15 @@ angular.module('emuwebApp')
           pcmpp();
           primeWorker = new Worker(spectroWorker);
           // var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + Math.round(pcmperpixel * 20 * scope.vs.spectroSettings.windowLength)));
+          var parseData;
           if (scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2) {
-            var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
+            parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
           } else {
-            var parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
+            parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
           }
           setupEvent();
           console.log(canvas0.height);
-          
+
           primeWorker.postMessage({
             'cmd': 'config',
             'N': scope.vs.spectroSettings.windowLength,
@@ -216,8 +218,8 @@ angular.module('emuwebApp')
             'sampleRate': scope.shs.wavJSO.SampleRate,
             'streamChannels': scope.shs.wavJSO.NumChannels,
             'transparency': scope.cps.vals.spectrogramSettings.transparency,
-            'stream': parseData
-          });
+            'stream': parseData.buffer
+          }, [parseData.buffer]);
           primeWorker.postMessage({
             'cmd': 'render'
           });
