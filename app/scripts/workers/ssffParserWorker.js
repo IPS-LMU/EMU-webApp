@@ -382,24 +382,50 @@ function jso2ssff(jso) {
 	headerStr += 'Original_Freq DOUBLE ' + round(jso.origFreq, 1) + '\n';
 	headerStr += sepString;
 
+	// preallocate data buffer
+	var bytePerTime = 0;
+	jso.Columns.forEach(function (col) {
+		console.log(col.ssffdatatype);
+		if (col.ssffdatatype === 'SHORT') {
+			bytePerTime += 2 * col.length;
+		} else {
+			return ({
+				'status': {
+					'type': 'ERROR',
+					'message': 'Unsupported column type! Only SHORT columns supported for now!'
+				}
+			});
+		}
+	});
+
+	console.log(bytePerTime);
+	var byteSizeOfDataBuffer = bytePerTime * jso.Columns[0].values.length;
+	console.log(byteSizeOfDataBuffer);
+
+	var dataBuff = new ArrayBuffer(byteSizeOfDataBuffer);
+	var dataBuffView = new DataView(dataBuff);
+
 	// convert buffer to header
 	var ssffBufView = new Uint8Array(stringToUint(headerStr));
 
-	var curBufferView, curArray;
+	// var curBufferView, curArray;
 
-	curBufferView = new Uint16Array(jso.Columns[0].length);
-	curArray = jso.Columns[0].values[0];
+	// curBufferView = new Uint16Array(jso.Columns[0].length);
+	// curArray = jso.Columns[0].values[0];
 
 	// loop through vals and append array of each column to ssffBufView
+	var byteOffSet = 0;
 	jso.Columns[0].values.forEach(function (curArray, curArrayIDX) {
 		jso.Columns.forEach(function (curCol) {
 			if (curCol.ssffdatatype === 'SHORT') {
-				curBufferView = new Uint16Array(curCol.length);
+				// curBufferView = new Uint16Array(curCol.length);
 				curCol.values[curArrayIDX].forEach(function (val, valIDX) {
-					curBufferView[valIDX] = val;
+					// curBufferView[valIDX] = val;
+					dataBuffView.setInt16(byteOffSet, val, true);
+					byteOffSet += 2;
 				});
-				var tmp = new Uint8Array(curBufferView.buffer);
-				ssffBufView = Uint8Concat(ssffBufView, tmp);
+				// var tmp = new Uint8Array(curBufferView.buffer);
+				// ssffBufView = Uint8Concat(ssffBufView, tmp);
 			} else {
 				// alert('Only SHORT columns supported for now!!!');
 				return ({
@@ -411,6 +437,10 @@ function jso2ssff(jso) {
 			}
 		});
 	});
+
+	// concatenate header with data
+	var tmp = new Uint8Array(dataBuffView.buffer);
+	ssffBufView = Uint8Concat(ssffBufView, tmp);
 
 	// console.log(String.fromCharCode.apply(null, ssffBufView));
 	return ssffBufView.buffer;
