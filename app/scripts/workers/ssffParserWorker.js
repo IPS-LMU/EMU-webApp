@@ -461,7 +461,7 @@ self.addEventListener('message', function (e) {
 		parseArr(data.ssffArr);
 		break;
 	case 'jso2ssff':
-		var retVal = jso2ssff(data.jso);
+		var retVal = jso2ssff(JSON.parse(data.jso));
 		if (retVal.type === undefined) {
 			self.postMessage({
 				'status': {
