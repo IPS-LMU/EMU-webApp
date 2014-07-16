@@ -4,7 +4,7 @@
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/scripts/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "start": "grunt server"
   },
   "author": "Raphael Winkelmann, Georg Raess",
