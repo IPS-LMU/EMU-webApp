@@ -213,8 +213,8 @@ angular.module('emuwebApp')
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'movePoint',
-                          'levelName': levelName,
-                          'segID': mouseSeg.id,
+                          'name': levelName,
+                          'id': mouseSeg.id,
                           'movedBy': minDist
                         });
                       }
@@ -222,10 +222,10 @@ angular.module('emuwebApp')
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
-                          'levelName': levelName,
-                          'neighbours': neighbor,
-                          'segID': mouseSeg.id,
-                          'movedBy': minDist
+                          'name': levelName,
+                          'id': mouseSeg.id,
+                          'movedBy': minDist,
+                          'position': 0                          
                         });
                       }
                       HistoryService.addCurChangeObjToUndoStack();
@@ -250,8 +250,8 @@ angular.module('emuwebApp')
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'movePoint',
-                          'levelName': levelName,
-                          'segID': mouseSeg.id,
+                          'name': levelName,
+                          'id': mouseSeg.id,
                           'movedBy': minDist
                         });
                       }
@@ -260,10 +260,10 @@ angular.module('emuwebApp')
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
-                          'levelName': levelName,
-                          'neighbours': neighbor,
-                          'segID': mouseSeg.id,
-                          'movedBy': minDist
+                          'name': levelName,
+                          'id': mouseSeg.id,
+                          'movedBy': minDist,
+                          'position': 0
                         });                              
                       }
                       HistoryService.addCurChangeObjToUndoStack();
