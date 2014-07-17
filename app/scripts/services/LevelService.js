@@ -680,7 +680,6 @@ angular.module('emuwebApp')
 			var minDist = undefined;
 			var sample;
 			var sampleTarget;
-			var position;
 			if (type == "SEGMENT") {
 				sample = segment.sampleStart;
 			} else if (type == "EVENT") {
@@ -713,14 +712,13 @@ angular.module('emuwebApp')
 						if (absDist < absMinDist) {
 							absMinDist = absDist;
 							minDist = sampleTarget - sample;
-							position = order;
 						}
 					});
 				}
 			});
 			if (minDist !== undefined) {
 				if (type == "SEGMENT") {
-					this.moveBoundry(levelName, segment.id, minDist, position);
+					this.moveBoundary(levelName, segment.id, minDist, 0);
 				} else if (type == "EVENT") {
 					this.movePoint(levelName, segment.id, minDist);
 				}
@@ -731,9 +729,17 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 *  moves a boundary of a given segment
+		 *  
+		 *  @param {string} name The name of the level on which the segment lies.
+		 *  @param {number} id The id of the segment.
+		 *  @param {number} changeTime The time to add or substract.
+		 *  @param {position} The position of the mouse while moving the Boundary 
+		 *                    (i.e. -1 = before first element, 1 = after last element, 0 = in the middle of elements).
+		 *  
 		 */
-		sServObj.moveBoundry = function (name, id, changeTime, position) {
+		sServObj.moveBoundary = function (name, id, changeTime, position) {
+		    console.log(position);
 			var orig = sServObj.getElementDetailsById(name, id);
 			var ln = sServObj.getElementNeighbourDetails(name, id);
 			if (position === -1) { // before first element

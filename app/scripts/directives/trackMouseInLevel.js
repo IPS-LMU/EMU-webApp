@@ -118,7 +118,7 @@ angular.module('emuwebApp')
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
                     }
-                    Levelservice.moveBoundry(scope.this.level.name, seg.id, moveBy, position);
+                    Levelservice.moveBoundary(scope.this.level.name, seg.id, moveBy, position);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',

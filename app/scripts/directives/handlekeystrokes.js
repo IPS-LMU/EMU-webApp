@@ -287,7 +287,7 @@ angular.module('emuwebApp')
                       var neigh = viewState.getcurMouseNeighbours();
                       var levelname = viewState.getcurMouseLevelName();
                       var levelname = viewState.getcurMouseLevelName();
-                      Levelservice.moveBoundry(dist, levelname, seg.id, neigh);
+                      Levelservice.moveBoundary(dist, levelname, seg.id, neigh);
                       HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
