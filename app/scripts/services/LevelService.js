@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Levelservice', function Levelservice(ConfigProviderService, uuid, Soundhandlerservice) {
+	.service('LevelService', function LevelService(ConfigProviderService, uuid, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -876,7 +876,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.calcDistanceToNearesZeroCrossing = function (sample) {
+		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
 
 			// walk right
 			var distRight;

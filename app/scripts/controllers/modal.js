@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, Levelservice, HistoryService) {
+	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, LevelService, HistoryService) {
 
 		$scope.passedInTxt = passedInTxt;
 		$scope.passedOutTxt = {
@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.renameLevel = function () {
 
-			Levelservice.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
+			LevelService.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'renameLevel',
@@ -59,11 +59,11 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *  Delete a complete level from Levelservice
+		 *  Delete a complete level from LevelService
 		 */
 		$scope.deleteLevel = function () {
-			var lvl = Levelservice.getLevelDetails(viewState.getcurClickLevelName());
-			Levelservice.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
+			var lvl = LevelService.getLevelDetails(viewState.getcurClickLevelName());
+			LevelService.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
 				'action': 'deleteLevel',

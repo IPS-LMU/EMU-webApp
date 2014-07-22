@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, Ssffdataservice, Levelservice, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -33,86 +33,86 @@ angular.module('emuwebApp')
 					switch (cur.action) {
 					case 'moveBoundary':
 						if (applyOldVal) {
-							Levelservice.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.position);
+							LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.position);
 						} else {
-							Levelservice.moveBoundary(cur.name, cur.id, cur.movedBy, cur.position);
+							LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.position);
 						}
 						break;
 					case 'moveSegment':
 						if (applyOldVal) {
-							Levelservice.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
+							LevelService.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
 						} else {
-							Levelservice.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
+							LevelService.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
 						}
 						break;
 					case 'movePoint':
 						if (applyOldVal) {
-							Levelservice.movePoint(cur.name, cur.id, -cur.movedBy);
+							LevelService.movePoint(cur.name, cur.id, -cur.movedBy);
 						} else {
-							Levelservice.movePoint(cur.name, cur.id, cur.movedBy);
+							LevelService.movePoint(cur.name, cur.id, cur.movedBy);
 						}
 						break;
 					case 'renameLabel':
 						if (applyOldVal) {
-							Levelservice.renameLabel(cur.name, cur.id, cur.oldValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.oldValue);
 						} else {
-							Levelservice.renameLabel(cur.name, cur.id, cur.newValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.newValue);
 						}
 						break;
 					case 'renameLevel':
 						if (applyOldVal) {
-							Levelservice.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
+							LevelService.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.renameLevel(cur.name, cur.newname, cur.curPerspectiveIdx);
+							LevelService.renameLevel(cur.name, cur.newname, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteLevel':
 						if (applyOldVal) {
-							Levelservice.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
+							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.deleteLevel(cur.id, cur.curPerspectiveIdx);
+							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'addLevel':
 						if (applyOldVal) {
-							Levelservice.deleteLevel(cur.id, cur.curPerspectiveIdx);
+							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						} else {
-							Levelservice.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
+							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'deleteBoundary':
 						if (applyOldVal) {
-							Levelservice.deleteBoundaryInvers(cur.name, cur.id, cur.deletedSegment);
+							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.deletedSegment);
 						} else {
-							Levelservice.deleteBoundary(cur.name, cur.id);
+							LevelService.deleteBoundary(cur.name, cur.id);
 						}
 						break;
 					case 'deleteSegments':
 						if (applyOldVal) {
-							Levelservice.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
+							LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
 						} else {
-							Levelservice.deleteSegments(cur.name, cur.id, cur.length);
+							LevelService.deleteSegments(cur.name, cur.id, cur.length);
 						}
 						break;
 					case 'insertSegments':
 						if (applyOldVal) {
-							Levelservice.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
+							LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 						} else {
-							Levelservice.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
+							LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							Levelservice.insertPointInvers(cur.name, cur.start, cur.pointName);
+							LevelService.insertPointInvers(cur.name, cur.start, cur.pointName);
 						} else {
-							Levelservice.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
+							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
 					case 'expandSegments':
 						if (applyOldVal) {
-							Levelservice.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
+							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
-							Levelservice.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
+							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
 

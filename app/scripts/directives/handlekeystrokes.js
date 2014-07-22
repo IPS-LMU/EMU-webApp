@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, Levelservice) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -32,7 +32,7 @@ angular.module('emuwebApp')
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
-                  var editingElement = Levelservice.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
+                  var editingElement = LevelService.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
@@ -42,7 +42,7 @@ angular.module('emuwebApp')
                     'newValue': $('.' + viewState.getlasteditArea()).val()
                   });
 
-                  Levelservice.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
+                  LevelService.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
                   viewState.deleteEditArea();
                   viewState.focusInTextField = false;
                 }
@@ -76,7 +76,7 @@ angular.module('emuwebApp')
               // zoomIn
               if (code === ConfigProviderService.vals.keyMappings.zoomIn) {
                 if (viewState.getPermission('zoom')) {
-                  viewState.zoomViewPort(true, Levelservice);
+                  viewState.zoomViewPort(true, LevelService);
                 } else {
                   console.log('action currently not allowed');
                 }
@@ -85,7 +85,7 @@ angular.module('emuwebApp')
               // zoomOut
               if (code === ConfigProviderService.vals.keyMappings.zoomOut) {
                 if (viewState.getPermission('zoom')) {
-                  viewState.zoomViewPort(false, Levelservice);
+                  viewState.zoomViewPort(false, LevelService);
                 } else {
                   console.log('action currently not allowed');
                 }
@@ -197,13 +197,13 @@ angular.module('emuwebApp')
               // levelUp
               if (code === ConfigProviderService.vals.keyMappings.levelUp) {
                 if (viewState.getPermission('labelAction')) {
-                  viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, Levelservice); // pass in Levelservice to prevent circular deps
+                  viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
                 }
               }
               // levelDown
               if (code === ConfigProviderService.vals.keyMappings.levelDown) {
                 if (viewState.getPermission('labelAction')) {
-                  viewState.selectLevel(true, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, Levelservice); // pass Levelservice to prevent circular deps
+                  viewState.selectLevel(true, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass LevelService to prevent circular deps
                 }
               }
 
@@ -215,7 +215,7 @@ angular.module('emuwebApp')
                     var levelName = viewState.getcurMouseLevelName();
                     var levelType = viewState.getcurMouseLevelType();
                     var neighbor = viewState.getcurMouseNeighbours();
-                    var minDist = Levelservice.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
+                    var minDist = LevelService.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
                     if (minDist === false) {
                       // error msg nothing moved / nothing on top
                       console.log('error msg nothing moved / nothing on top');
@@ -253,7 +253,7 @@ angular.module('emuwebApp')
                     var levelName = viewState.getcurMouseLevelName();
                     var levelType = viewState.getcurMouseLevelType();
                     var neighbor = viewState.getcurMouseNeighbours();
-                    var minDist = Levelservice.snapBoundary(false, levelName, mouseSeg, neighbor, levelType);
+                    var minDist = LevelService.snapBoundary(false, levelName, mouseSeg, neighbor, levelType);
                     if (minDist == false) {
                       // error msg nothing moved / nothing below
                     } else {
@@ -289,16 +289,16 @@ angular.module('emuwebApp')
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     var dist;
                     if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-                      dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().sampleStart);
+                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseSegment().sampleStart);
                     } else {
-                      dist = Levelservice.calcDistanceToNearesZeroCrossing(viewState.getcurMouseSegment().samplePoint);
+                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseSegment().samplePoint);
                     }
                     if (dist !== 0) {
                       var seg = viewState.getcurMouseSegment();
                       var neigh = viewState.getcurMouseNeighbours();
                       var levelname = viewState.getcurMouseLevelName();
                       var levelname = viewState.getcurMouseLevelName();
-                      Levelservice.moveBoundary(dist, levelname, seg.id, neigh);
+                      LevelService.moveBoundary(dist, levelname, seg.id, neigh);
                       HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
@@ -331,7 +331,7 @@ angular.module('emuwebApp')
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
 
-                        Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
@@ -369,7 +369,7 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
-                        Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'expandSegments',
@@ -415,7 +415,7 @@ angular.module('emuwebApp')
                           'rightSide': true,
                           'changeTime': -changeTime
                         });
-                        Levelservice.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         var l = viewState.getcurClickSegments().length;
                         if (l == 1) {
                           viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
@@ -456,7 +456,7 @@ angular.module('emuwebApp')
                           'rightSide': false,
                           'changeTime': -changeTime
                         });
-                        Levelservice.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         var l = viewState.getcurClickSegments().length;
                         if (l == 1) {
                           viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
@@ -496,7 +496,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                   } else {
-                    viewState.selectSegmentsInSelection(Levelservice.data.levels);
+                    viewState.selectSegmentsInSelection(LevelService.data.levels);
                   }
                 }
               }
@@ -507,7 +507,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.left !== undefined) {
                       if (lastNeighboursMove.left.sampleStart !== undefined) {
                         // check if in view
@@ -533,7 +533,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.right.sampleStart !== undefined) {
                       // check if in view
                       if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
@@ -558,7 +558,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = Levelservice.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (e.shiftKey) {
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
@@ -617,7 +617,7 @@ angular.module('emuwebApp')
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var insSeg = Levelservice.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                          var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                           if (!insSeg.ret) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
                           } else {
@@ -632,7 +632,7 @@ angular.module('emuwebApp')
                             });
                           }
                         } else {
-                          var insPoint = Levelservice.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+                          var insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                           if (!insPoint.ret) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                           } else {
@@ -678,7 +678,7 @@ angular.module('emuwebApp')
                       var seg = viewState.getcurMouseSegment();
                       var levelname = viewState.getcurMouseLevelName();
                       if (seg !== undefined) {
-                        var deletedSegment = Levelservice.deleteBoundary(levelname, seg.id);
+                        var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'deleteBoundary',
@@ -699,7 +699,7 @@ angular.module('emuwebApp')
                       if (seg !== undefined && seg.length>0) {
                         var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var deletedSegment = Levelservice.deleteSegments(levelname, seg[0].id, seg.length);
+                          var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
                             'action': 'deleteSegments',
@@ -708,7 +708,7 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
-                          /*var ln = Levelservice.getElementNeighbourDetails(levelname, seg[0].id, seg[0].id);
+                          /*var ln = LevelService.getElementNeighbourDetails(levelname, seg[0].id, seg[0].id);
                           if(neighbour.left !== undefined) {
                               viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
                           }

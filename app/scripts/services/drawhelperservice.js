@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Levelservice, Ssffdataservice) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Ssffdataservice) {
 
 		//shared service object to be returned
 		var sServObj = {};
@@ -265,20 +265,8 @@ angular.module('emuwebApp')
 
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
-				// var tD = Levelservice.getLevelDetails(viewState.getcurMouseLevelName()).level;
-				// var curM = viewState.getcurMouseSegment();
-				// var item = Levelservice.getElementDetailsById(viewState.getcurMouseLevelName(), curM.id);
-				// if (curM !== false && curM !== true) {
-				// if (tD.type == "SEGMENT") {
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				// } else {
-				// var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				// }
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
-				// }
-				// console.log('############')
-				// console.log(viewState.movingBoundarySample)
-				// console.log(p + xOffset)
 			}
 
 		};

@@ -957,7 +957,7 @@ angular.module('emuwebApp')
      * if set to true -> zoom in
      * if set to false -> zoom out
      */
-    sServObj.zoomViewPort = function (zoomIn, levelservice) {
+    sServObj.zoomViewPort = function (zoomIn, LevelService) {
       var newStartS, newEndS, curMouseMoveSegmentStart;
       var seg = this.getcurMouseSegment();
 
@@ -967,9 +967,9 @@ angular.module('emuwebApp')
 
       if (seg !== undefined) {
         if (seg === false) { // before first element
-          seg = levelservice.getElementDetails(sServObj.getcurMouseLevelName(), 0);
+          seg = LevelService.getElementDetails(sServObj.getcurMouseLevelName(), 0);
         } else if (seg === true) {
-          seg = levelservice.getLastElement(sServObj.getcurMouseLevelName());
+          seg = LevelService.getLastElement(sServObj.getcurMouseLevelName());
           isLastSeg = true;
         }
         if (this.getcurMouseLevelType() === 'SEGMENT') {

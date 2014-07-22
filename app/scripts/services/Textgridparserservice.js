@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Textgridparserservice', function Textgridparserservice($q, Levelservice, viewState, Soundhandlerservice) {
+	.service('Textgridparserservice', function Textgridparserservice($q, LevelService, viewState, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'toTextGrid',
-				'levels': Levelservice.getData().levels,
+				'levels': LevelService.getData().levels,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
 				'buffLength': Soundhandlerservice.wavJSO.Data.length
 			}); // Send data to our worker.

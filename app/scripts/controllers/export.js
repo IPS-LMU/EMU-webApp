@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, Levelservice, HistoryService) {
+	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, HistoryService) {
 		
 		$scope.exportData = exportData;
 		$scope.exportName = exportName;

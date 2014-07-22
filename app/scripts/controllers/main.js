@@ -2,13 +2,13 @@
 
 angular.module('emuwebApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document, $location,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, LevelService, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
 
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
-		$scope.levServ = Levelservice;
+		$scope.levServ = LevelService;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
@@ -144,7 +144,7 @@ angular.module('emuwebApp')
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
 											var annot = parseMess.data;
-											Levelservice.setData(annot);
+											LevelService.setData(annot);
 
 											var lNames = [];
 											annot.levels.forEach(function (l) {
@@ -471,7 +471,7 @@ angular.module('emuwebApp')
 								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
 								if (validRes === true) {;
 									// set annotation
-									Levelservice.setData(bundleData.annotation);
+									LevelService.setData(bundleData.annotation);
 
 									$scope.curBndl = bndl;
 									viewState.setState('labeling');
@@ -568,7 +568,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			// annotation
-			bundleData.annotation = Levelservice.getData();
+			bundleData.annotation = LevelService.getData();
 			viewState.somethingInProgressTxt = 'Saving bundle...';
 			Iohandlerservice.saveBundle(bundleData).then(function () {
 				viewState.somethingInProgressTxt = 'Done!';
@@ -687,16 +687,16 @@ angular.module('emuwebApp')
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var newName, levelLength;
-				if (Levelservice.data.levels === undefined) {
+				if (LevelService.data.levels === undefined) {
 					newName = 'levelNr0';
 					levelLength = 0;
 				} else {
-					newName = 'levelNr' + Levelservice.data.levels.length;
-					levelLength = Levelservice.data.levels.length;
+					newName = 'levelNr' + LevelService.data.levels.length;
+					levelLength = LevelService.data.levels.length;
 				}
 				var level = {
 					items: [{
-						id: Levelservice.getNewId(),
+						id: LevelService.getNewId(),
 						sampleStart: 0,
 						sampleDur: Soundhandlerservice.wavJSO.Data.length,
 						labels: [{
@@ -707,13 +707,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				Levelservice.addLevel(level, levelLength, viewState.curPerspectiveIdx);
+				LevelService.addLevel(level, levelLength, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
 					'level': level,
-					'id': Levelservice.data.levels.length - 1,
+					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -729,10 +729,10 @@ angular.module('emuwebApp')
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 
-				var newName = 'levelNr' + Levelservice.data.levels.length;
+				var newName = 'levelNr' + LevelService.data.levels.length;
 				var level = {
 					items: [{
-						id: Levelservice.getNewId(),
+						id: LevelService.getNewId(),
 						samplePoint: Soundhandlerservice.wavJSO.Data.length / 2,
 						labels: [{
 							name: newName,
@@ -742,13 +742,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'EVENT'
 				};
-				Levelservice.addLevel(level, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				LevelService.addLevel(level, LevelService.data.levels.length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
 					'level': level,
-					'id': Levelservice.data.levels.length - 1,
+					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -790,7 +790,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
-				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl', '');
+				dialogService.open('views/spectSettings.html', 'spectSettingsCtrl', '');
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -915,7 +915,7 @@ angular.module('emuwebApp')
 			$scope.curBndl = {};
 			$scope.bundleList = [];
 			Soundhandlerservice.wavJSO = {};
-			Levelservice.data = {};
+			LevelService.data = {};
 			Ssffdataservice.data = [];
 			HistoryService.resetToInitState();
 			viewState.setState('noDBorFilesloaded');
