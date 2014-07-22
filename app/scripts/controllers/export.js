@@ -5,6 +5,7 @@ angular.module('emuwebApp')
 		
 		$scope.exportData = exportData;
 		$scope.exportName = exportName;
+		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
 
 		/**
 		 *
@@ -24,8 +25,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.export = function(){
-		    var url = URL.createObjectURL($scope.getBlob());
-		    $scope.SaveToDisk(url,$scope.exportName);
+		    $scope.SaveToDisk(URL.createObjectURL($scope.getBlob()), $scope.exportName);
 		    dialogService.close();
 		};
 
@@ -55,13 +55,23 @@ angular.module('emuwebApp')
 		 */
 		$scope.SaveToDisk = function (fileURL, fileName) {
 		  var save = document.createElement('a');
-		  save.href = fileURL;
-		  save.target = '_blank';
-		  save.download = fileName || 'unknown';
-		  var event = document.createEvent('Event');
-		  event.initEvent('click', true, true);
-		  save.dispatchEvent(event);
-		  (window.URL || window.webkitURL).revokeObjectURL(save.href);
+		  if($scope.firefox) {
+		    save.setAttribute('download', fileName);
+		    save.href = fileURL;
+		    save.innerHTML = '';
+		    save.style.display = 'none';
+		    document.body.appendChild(save);
+		    save.click();
+		  }
+		  else {
+		    save.href = fileURL;
+		    save.target = '_blank';
+		    save.download = fileName || 'unknown';
+		    var event = document.createEvent('Event');
+		    event.initEvent('click', true, true);
+		    save.dispatchEvent(event);
+		    (window.URL || window.webkitURL).revokeObjectURL(save.href);		  
+		  }
 		  $scope.updateHistoryService();
 		};
 	});

@@ -40,15 +40,13 @@
     <div class="emuwebapp-allCans">
       <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
       <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-topPane">
-      <div class="emuwebapp-timeline">
-        <ul>
-          <li ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
+        <ul class="emuwebapp-timeline-flexcontainer">
+          <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
             <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
             <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
           </li>
         </ul>
-      </div>
     </bg-pane>
     <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane">
     <div>

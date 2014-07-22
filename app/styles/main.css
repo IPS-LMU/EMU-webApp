@@ -109,6 +109,7 @@ ul {
     /*background-color: green;*/
     text-align: left;
     /*height: 100%;*/
+    position: absolute;
 }
 
 .emuwebapp-bottomPane {
@@ -203,6 +204,10 @@ ul {
 
 .emuwebapp-aboutTable tr td {
     width: 60%;
+}
+
+.emuwebapp-enlarge {
+    height: 200%;
 }
 
 /**-----------------------------*/

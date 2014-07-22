@@ -9,13 +9,6 @@ angular.module('emuwebApp')
       replace: true,
       link: function postLink(scope, element, attrs) {
         scope.order = attrs.order;
-        scope.enlargeCanvas = {
-          'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%'
-        };
-        scope.backgroundCanvas = {
-          'height': 100 / scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length + '%',
-          'background': scope.cps.vals.colors.levelColor
-        };
         // select the needed DOM elements from the template
         var canvasLength = element.find('canvas').length;
         var canvas0 = element.find('canvas')[0];
@@ -39,15 +32,11 @@ angular.module('emuwebApp')
         scope.$watch('vs.timelineSize', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.updateCSS();
               $timeout(scope.redraw, 5);
             }
           }
         });
 
-        scope.$watch('vs.curPerspectiveIdx', function () {
-          scope.updateCSS();
-        }, true);
 
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
@@ -57,7 +46,6 @@ angular.module('emuwebApp')
                 scope.redraw();
               }
               drawSpectMarkup(true);
-              scope.updateCSS();
             }
           }
         }, true);
@@ -93,37 +81,6 @@ angular.module('emuwebApp')
 
         ///////////////
         // bindings
-
-        scope.updateCSS = function () {
-          var parts = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases.order.length;
-          if (scope.vs.getenlarge() == -1) {
-            scope.enlargeCanvas = {
-              'height': 100 / parts + '%'
-            };
-            scope.backgroundCanvas = {
-              'height': 100 / parts + '%',
-              'background': scope.cps.vals.colors.levelColor
-            };
-          } else {
-            if (scope.vs.getenlarge() == scope.order) {
-              scope.enlargeCanvas = {
-                'height': 3 * 100 / (parts + 2) + '%'
-              };
-              scope.backgroundCanvas = {
-                'height': 3 * 100 / (parts + 2) + '%',
-                'background': scope.cps.vals.colors.levelColor
-              };
-            } else {
-              scope.enlargeCanvas = {
-                'height': 100 / (parts + 2) + '%'
-              };
-              scope.backgroundCanvas = {
-                'height': 100 / (parts + 2) + '%',
-                'background': scope.cps.vals.colors.levelColor
-              };
-            }
-          }
-        };
 
         scope.redraw = function () {
           pcmpp();
