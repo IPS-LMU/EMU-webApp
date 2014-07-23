@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LevelService', function LevelService(ConfigProviderService, uuid, Soundhandlerservice, viewState) {
+	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState) {
 		// shared service object
 		var sServObj = {};
 
