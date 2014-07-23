@@ -25,18 +25,30 @@ angular.module('emuwebApp')
 			case 32:
 				str = 'SPACE';
 				break;
+			case 37:
+				str = '←';
+				break;
+			case 39:
+				str = '→';
+				break;
 			case 38:
 				str = '↑';
 				break;
 			case 40:
 				str = '↓';
 				break;
-			case 187:
+			case 42:
 				str = '+';
 				break;
-			case 189:
+			case 43:
+				str = '+';
+				break;								
+			case 45:
 				str = '-';
 				break;
+			case 95:
+				str = '-';
+				break;				
 			default:
 				str = String.fromCharCode(code);
 			}

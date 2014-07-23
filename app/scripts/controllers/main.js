@@ -32,7 +32,6 @@ angular.module('emuwebApp')
 		$scope.curBndl = {};
 
 		$scope.lastclickedutt = null;
-		$scope.shortcut = null;
 		$scope.filterText = '';
 		$scope.windowWidth = $window.outerWidth;
 
@@ -234,44 +233,6 @@ angular.module('emuwebApp')
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}
-			// FOR DEVELOPMENT:
-			// $scope.openDemoDBbtnClick('ae');
-			// $scope.aboutBtnClick();
-
-			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
-
-			// convert int values to char for front end
-			for (var i in $scope.shortcut) {
-				// sonderzeichen space
-				if ($scope.shortcut[i] === 8) {
-					$scope.shortcut[i] = 'BACKSPACE';
-				} else if ($scope.shortcut[i] === 9) {
-					$scope.shortcut[i] = 'TAB';
-				} else if ($scope.shortcut[i] === 13) {
-					$scope.shortcut[i] = 'ENTER';
-				} else if ($scope.shortcut[i] === 16) {
-					$scope.shortcut[i] = 'SHIFT';
-				} else if ($scope.shortcut[i] === 18) {
-					$scope.shortcut[i] = 'ALT';
-				} else if ($scope.shortcut[i] === 27) {
-					$scope.shortcut[i] = 'ESC';
-				} else if ($scope.shortcut[i] === 32) {
-					$scope.shortcut[i] = 'SPACE';
-				} else if ($scope.shortcut[i] === -1) {
-					$scope.shortcut[i] = 'NONE';
-				} else if ($scope.shortcut[i] === 38) {
-					$scope.shortcut[i] = 'ARROW UP';
-				} else if ($scope.shortcut[i] === 40) {
-					$scope.shortcut[i] = 'ARROW DOWN';
-				} else if ($scope.shortcut[i] === 187) {
-					$scope.shortcut[i] = '+';
-				} else if ($scope.shortcut[i] === 189) {
-					$scope.shortcut[i] = '-';
-				} else {
-					$scope.shortcut[i.toString()] = String.fromCharCode($scope.shortcut[i]);
-
-				}
-			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
@@ -371,32 +332,6 @@ angular.module('emuwebApp')
 					});
 				}
 			});
-		};
-
-		/**
-		 *
-		 */
-		$scope.downloadTextGrid = function () {
-			console.log(Iohandlerservice.toTextGrid());
-		};
-
-		/**
-		 *
-		 */
-		$scope.getShortCut = function (name) {
-			if ($scope.shortcut !== null) {
-				if ($scope.shortcut[name] !== null) {
-					if ($scope.shortcut[name] !== '') {
-						return $scope.shortcut[name];
-					} else {
-						return 'NONE';
-					}
-				} else {
-					return 'NONE';
-				}
-			} else {
-				return 'NOT SET';
-			}
 		};
 
 		/**
