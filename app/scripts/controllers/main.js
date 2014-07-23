@@ -48,7 +48,7 @@ angular.module('emuwebApp')
 
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
-			viewState.deleteEditArea();
+			LevelService.deleteEditArea();
 			viewState.setWindowWidth($window.outerWidth);
 			$scope.$digest();
 		});
@@ -938,7 +938,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea(); // SIC should be in service...
+				LevelService.deleteEditArea();
 				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
 				console.log('action currently not allowed');
@@ -950,7 +950,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomIn = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea(); // SIC should be in service...
+				LevelService.deleteEditArea();
 				viewState.zoomViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -962,7 +962,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomOut = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -974,7 +974,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomLeft = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -986,7 +986,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomRight = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -998,7 +998,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomSel = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
 				console.log('action currently not allowed');

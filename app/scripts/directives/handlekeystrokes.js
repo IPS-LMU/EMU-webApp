@@ -32,24 +32,24 @@ angular.module('emuwebApp')
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
-                  var editingElement = LevelService.getElementDetailsById(viewState.getcurClickLevelName(), viewState.getlastID());
+                  var editingElement = LevelService.getElementDetailsById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'renameLabel',
                     'name': viewState.getcurClickLevelName(),
-                    'id': viewState.getlastID(),
+                    'id': LevelService.getlastID(),
                     'oldValue': editingElement.labels[0].value,
-                    'newValue': $('.' + viewState.getlasteditArea()).val()
+                    'newValue': $('.' + LevelService.getlasteditArea()).val()
                   });
 
-                  LevelService.renameLabel(viewState.getcurClickLevelName(), viewState.getlastID(), $('.' + viewState.getlasteditArea()).val());
-                  viewState.deleteEditArea();
+                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), $('.' + LevelService.getlasteditArea()).val());
+                  LevelService.deleteEditArea();
                   viewState.focusInTextField = false;
                 }
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 viewState.focusInTextField = false;
-                viewState.deleteEditArea();
+                LevelService.deleteEditArea();
               }
               if (code === 13) {
                 e.preventDefault();
@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 
             } else {
 
-              viewState.deleteEditArea();
+              LevelService.deleteEditArea();
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
@@ -513,13 +513,13 @@ angular.module('emuwebApp')
                         // check if in view
                         if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
                           viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                          viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                         }
                       } else {
                         // check if in view
                         if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
                           viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                          viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                         }
                       }
                     }
@@ -538,13 +538,13 @@ angular.module('emuwebApp')
                       // check if in view
                       if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
                         viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                        viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                       }
                     } else {
                       // check if in view
                       if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
                         viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                        viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                       }
                     }
 
@@ -565,13 +565,13 @@ angular.module('emuwebApp')
                           // check if in view
                           if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
                             viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                            viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
                             viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                            viewState.setlasteditArea('_' + lastNeighboursMove.left.id);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         }
                       }
@@ -582,13 +582,13 @@ angular.module('emuwebApp')
                           // check if in view
                           if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
                             viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                            viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
                             viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                            viewState.setlasteditArea('_' + lastNeighboursMove.right.id);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         }
                       }
@@ -606,7 +606,7 @@ angular.module('emuwebApp')
                         // check if in view
                         if (viewState.getselectedRange().start >= viewState.curViewPort.sS && viewState.getselectedRange().end <= viewState.curViewPort.eS) {
                           viewState.setEditing(true);
-                          viewState.openEditArea(viewState.getcurClickSegments()[0], viewState.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                          LevelService.openEditArea(viewState.getcurClickSegments()[0], LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
                           scope.cursorInTextField();
                         }
                       } else {

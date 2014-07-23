@@ -53,7 +53,6 @@ angular.module('emuwebApp')
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';
       sServObj.curClickSegments = [];
-      sServObj.lasteditArea = null;
       sServObj.editing = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
@@ -705,20 +704,6 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.getlasteditAreaElem = function () {
-      return this.lasteditAreaElem;
-    };
-
-    /**
-     *
-     */
-    sServObj.setlasteditAreaElem = function (e) {
-      this.lasteditAreaElem = e;
-    };
-
-    /**
-     *
-     */
     sServObj.isEditing = function () {
       return this.editing;
     };
@@ -728,36 +713,6 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
-    };
-
-    /**
-     *
-     */
-    sServObj.setlasteditArea = function (name) {
-      this.lasteditArea = name;
-    };
-
-    /**
-     *
-     */
-    sServObj.getlastID = function () {
-      return this.lasteditArea.substr(1);
-    };
-
-    /**
-     *
-     */
-    sServObj.getlasteditArea = function () {
-      return this.lasteditArea;
-    };
-    /**
-     *
-     */
-    sServObj.deleteEditArea = function () {
-      if (null !== this.getlasteditArea()) {
-        $('.' + this.getlasteditArea()).remove();
-      }
-      this.editing = false;
     };
 
     /**
@@ -807,68 +762,6 @@ angular.module('emuwebApp')
       k += e.toString().substring(1);
       return k.substring(0, k.indexOf('.') + n + 1);
     };
-
-    /**
-     *
-     */
-    sServObj.openEditArea = function (lastEventClick, element, type) {
-      var elem = element.find('canvas').context.getContext('2d');
-      var clientWidth = elem.canvas.clientWidth;
-      var clientOffset = elem.canvas.offsetLeft;
-      var top = elem.canvas.offsetTop;
-      var height = elem.canvas.clientHeight;
-
-      if (type === 'SEGMENT') {
-        var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
-        var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
-        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
-      } else {
-        var len = lastEventClick.labels[0].value.length * 10;
-        var start = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
-        var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
-        sServObj.createEditArea(element, start + ((end - start)/3), top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id); 
-      }
-      sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
-    };
-
-    /**
-     *
-     */
-    sServObj.createSelection = function (field, start, end) {
-      if (field.createTextRange) {
-        var selRange = field.createTextRange();
-        selRange.collapse(true);
-        selRange.moveStart('character', start);
-        selRange.moveEnd('character', end);
-        selRange.select();
-      } else if (field.setSelectionRange) {
-        field.setSelectionRange(start, end);
-      } else if (field.selectionStart) {
-        field.selectionStart = start;
-        field.selectionEnd = end;
-      }
-      field.focus();
-    };
-
-    /**
-     *
-     */
-    sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
-      var textid = '_' + labelid;
-      element.prepend($('<textarea>').attr({
-        id: textid,
-        'class': textid + ' emuwebapp-labelEdit',
-        'ng-model': 'message',
-        'autofocus': 'true'
-      }).css({
-        'left': Math.round(x + 2) + 'px',
-        'top': Math.round(y) + 'px',
-        'width': Math.round(width) - 4 + 'px',
-        'height': Math.round(height) - 1 + 'px',
-        'padding-top': Math.round(height / 3 + 1) + 'px'
-      }).text(label));
-    };
-
 
     /**
      * calcs and returns start in secs

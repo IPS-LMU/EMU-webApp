@@ -97,7 +97,7 @@ angular.module('emuwebApp')
           default:
             if (!viewState.getdragBarActive()) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
-                viewState.deleteEditArea();
+                LevelService.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
                   var position = 0;
@@ -145,7 +145,7 @@ angular.module('emuwebApp')
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
-                viewState.deleteEditArea();
+                LevelService.deleteEditArea();
                 if (scope.this.level.type == 'SEGMENT') {
                   seg = viewState.getcurClickSegments()
                   LevelService.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
@@ -200,13 +200,13 @@ angular.module('emuwebApp')
          */
         function setLastClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          viewState.deleteEditArea();
+          LevelService.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           // console.log(element.parent());
-          viewState.setlasteditArea('_' + lastEventClick.evtr.id);
-          viewState.setlasteditAreaElem(element.parent());
+          LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+          LevelService.setlasteditAreaElem(element.parent());
           viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegment(lastEventClick.evtr);
           lastPCM = thisPCM;
@@ -221,7 +221,7 @@ angular.module('emuwebApp')
             setLastClick(x);
           }
           thisPCM = getX(x) * viewState.getPCMpp(x);
-          viewState.deleteEditArea();
+          LevelService.deleteEditArea();
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           viewState.setcurClickLevel(levelID, levelType, scope.$index);
           viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
@@ -241,10 +241,10 @@ angular.module('emuwebApp')
                   if((lastEventClick.evtr.sampleStart+lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
                       viewState.setcurClickLevel(levelID, levelType, scope.$index);
                       viewState.setcurClickSegment(lastEventClick.evtr);
-                      viewState.setlasteditArea('_' + lastEventClick.evtr.id);
-                      viewState.setlasteditAreaElem(element.parent());
+                      LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+                      LevelService.setlasteditAreaElem(element.parent());
                       viewState.setEditing(true);
-                      viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                      LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
                       viewState.focusInTextField = true;              
                   }
                   else {
@@ -258,10 +258,10 @@ angular.module('emuwebApp')
           else {
             viewState.setcurClickLevel(levelID, levelType, scope.$index);
             viewState.setcurClickSegment(lastEventClick.evtr);
-            viewState.setlasteditArea('_' + lastEventClick.evtr.id);
-            viewState.setlasteditAreaElem(element.parent());
+            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+            LevelService.setlasteditAreaElem(element.parent());
             viewState.setEditing(true);
-            viewState.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+            LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
             viewState.focusInTextField = true;              
           }
           lastPCM = thisPCM;
