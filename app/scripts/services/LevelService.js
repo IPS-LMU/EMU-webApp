@@ -877,7 +877,6 @@ angular.module('emuwebApp')
 		 *  
 		 */
 		sServObj.moveBoundary = function (name, id, changeTime, position) {
-		    console.log(position);
 			var orig = sServObj.getElementDetailsById(name, id);
 			var ln = sServObj.getElementNeighbourDetails(name, id);
 			if (position === -1) { // before first element
