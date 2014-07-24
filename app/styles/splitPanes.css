@@ -88,6 +88,10 @@
     Background Pane Splitter CSS
 */
 
+.emuwebapp-split-handler {
+
+}
+
 .emuwebapp-split-panes.vertical {
     z-index: 0 !important;
 }
@@ -108,13 +112,12 @@
   top: 0.21em;
   bottom: 0.21em;
   width: 20px;
-  background: linear-gradient(
-    top, 
+  background: linear-gradient(180deg,
     black, black 20%, 
     white 20%, white 40%, 
     black 40%, black 60%, 
     white 60%, white 80%, 
     black 80%, black 100%
-  );
+    );
 }
 

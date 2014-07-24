@@ -90,15 +90,14 @@
   -webkit-flex-flow: row wrap;
   flex-wrap: wrap;
   justify-content: center;
-  max-height: 500px;
   min-height: 80px;
   
 }
 
 .emuwebapp-timeline-flexitem {
-  background: tomato;
   padding: 0;
   width: 100%;
-  margin-top: 0;
+  margin-top: 2px;
+  margin-bottom: 3px;
   position: relative;
 }
