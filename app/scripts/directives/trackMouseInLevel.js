@@ -204,11 +204,12 @@ angular.module('emuwebApp')
           viewState.setEditing(false);
           viewState.focusInTextField = false;
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          // console.log(element.parent());
-          LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-          LevelService.setlasteditAreaElem(element.parent());
-          viewState.setcurClickLevel(levelID, levelType, scope.$index);
-          viewState.setcurClickSegment(lastEventClick.evtr);
+          if(lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+            LevelService.setlasteditAreaElem(element.parent());
+            viewState.setcurClickLevel(levelID, levelType, scope.$index);
+            viewState.setcurClickSegment(lastEventClick.evtr);          
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -223,9 +224,11 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           LevelService.deleteEditArea();
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index);
-          viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
-          viewState.selectBoundry();
+          if(lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+            viewState.setcurClickLevel(levelID, levelType, scope.$index);
+            viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
+            viewState.selectBoundry();    
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -236,34 +239,36 @@ angular.module('emuwebApp')
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          if(levelType==="SEGMENT") {
-              if(lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
-                  if((lastEventClick.evtr.sampleStart+lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
-                      viewState.setcurClickLevel(levelID, levelType, scope.$index);
-                      viewState.setcurClickSegment(lastEventClick.evtr);
-                      LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-                      LevelService.setlasteditAreaElem(element.parent());
-                      viewState.setEditing(true);
-                      LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-                      viewState.focusInTextField = true;              
+          if(lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+              if(levelType==="SEGMENT") {
+                  if(lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
+                      if((lastEventClick.evtr.sampleStart+lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
+                          viewState.setcurClickLevel(levelID, levelType, scope.$index);
+                          viewState.setcurClickSegment(lastEventClick.evtr);
+                          LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+                          LevelService.setlasteditAreaElem(element.parent());
+                          viewState.setEditing(true);
+                          LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                          viewState.focusInTextField = true;              
+                      }
+                      else {
+                          console.log('Editing out of right bound !');
+                      }
                   }
                   else {
-                      console.log('Editing out of right bound !');
+                      console.log('Editing out of left bound !');
                   }
               }
               else {
-                  console.log('Editing out of left bound !');
+                viewState.setcurClickLevel(levelID, levelType, scope.$index);
+                viewState.setcurClickSegment(lastEventClick.evtr);
+                LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+                LevelService.setlasteditAreaElem(element.parent());
+                viewState.setEditing(true);
+                LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                viewState.focusInTextField = true;              
               }
-          }
-          else {
-            viewState.setcurClickLevel(levelID, levelType, scope.$index);
-            viewState.setcurClickSegment(lastEventClick.evtr);
-            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-            LevelService.setlasteditAreaElem(element.parent());
-            viewState.setEditing(true);
-            LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-            viewState.focusInTextField = true;              
-          }
+          }  
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -275,8 +280,10 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
-            lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
+            if(lastEventMove.evtr !== undefined && lastEventMove.nearest !== undefined) {
+              lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+              viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);            
+            }
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);

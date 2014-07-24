@@ -373,6 +373,12 @@ angular.module('emuwebApp')
 		    var level = sServObj.getLevelDetails(levelname).level;
 			var event = level.items[0];
 			var nearest = false;
+			if(level.items.length==0) {
+			    return {
+				    evtr: undefined,
+    				nearest: undefined
+	    		};			
+			}
 			if (level.type === 'SEGMENT') {
 				angular.forEach(level.items, function (evt, index) {
 					if (pcm >= evt.sampleStart) {
@@ -542,18 +548,20 @@ angular.module('emuwebApp')
 				}
 			});
 			
-			if (lastNeighbours.left !== undefined) {
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
-			}
-			else {
-			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
-			}
-			if (lastNeighbours.right !== undefined) {
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
-			}
-			else {
+			if((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
 			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeRight));
 			}
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
+			}			
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
+			    // nothing left to do level empty now
+			    viewState.setcurMouseSegment(undefined,undefined,undefined);
+			}	
+			else {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
+			}						
 			return { order: deleteOrder, segments: deletedSegment, timeLeft: timeLeft, timeRight: timeRight};
 		};
 
