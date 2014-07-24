@@ -499,18 +499,20 @@ angular.module('emuwebApp')
 				}
 			});
 			var lastNeighbours = sServObj.getElementNeighbourDetails(name, deletedSegment.segments[0].id, deletedSegment.segments[deletedSegment.segments.length -1 ].id);
-			if(lastNeighbours.left !== undefined) {
-    			sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
-    		}
-    		else {
-    		    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft) , (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
-    		}
-    		if(lastNeighbours.right !== undefined) {
-    			sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeRight) , (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
-    		}
-    		else {
-    		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
-    		}
+			
+			if((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
+			}
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft) , (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
+			}			
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
+			
+			}	
+			else {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeRight) , (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
+			}		
 		};
 
 		/**
