@@ -169,7 +169,7 @@ angular.module('emuwebApp')
           if (!viewState.getdragBarActive()) {
             setLastMove(event, moveLine);
           }
-          if(lastEventMove!==undefined) {
+          if(lastEventMove.nearest!==undefined) {
             viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
           }
         });

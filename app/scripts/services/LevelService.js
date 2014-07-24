@@ -882,8 +882,15 @@ angular.module('emuwebApp')
 			var ln = sServObj.getElementNeighbourDetails(name, id, id);
 			if (position === -1) { // before first element
 			    var origRight = ln.right;
-				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
-			        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+			    if(origRight!==undefined) {
+				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
+			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+				    }
+				}
+				else {
+				    if((orig.sampleStart + changeTime)>0 && (orig.sampleDur - changeTime)>=0 && (orig.sampleStart + orig.sampleDur + changeTime)<=Soundhandlerservice.wavJSO.Data.length) {
+			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+				    }				
 				}
 			}
 			else if (position === 1) { // after last element
@@ -893,8 +900,15 @@ angular.module('emuwebApp')
 			} else {
 			    if(ln.left === undefined) {
 			        var origRight = ln.right;
-    				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
-			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+			        if(origRight!==undefined) {
+    				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
+			                sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+    	    			}
+	    			}
+	    			else {
+    				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length)) {
+			                sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+    	    			}	    			
 	    			}
 			    }
 			    else {
@@ -924,7 +938,7 @@ angular.module('emuwebApp')
 		    var lastSegment = sServObj.getElementDetails(name, firstOrder + length - 1);
 			var lastNeighbours = sServObj.getElementNeighbourDetails(name, firstSegment.id, lastSegment.id);
 			
-			if (lastNeighbours.left === undefined) {
+			if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
 			    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((firstSegment.sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1)) {
 					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
@@ -933,7 +947,7 @@ angular.module('emuwebApp')
 					    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					}
 				}
-			} else if (lastNeighbours.right === undefined) {
+			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left !== undefined)) {
 			    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 				if ((lastNeighbours.left.sampleDur + changeTime) >= 1) {
 					if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < Soundhandlerservice.wavJSO.Data.length) {
@@ -944,7 +958,7 @@ angular.module('emuwebApp')
 					    }
 					}
 				}
-			} else {
+			} else if ((lastNeighbours.right !== undefined) && (lastNeighbours.left !== undefined)) {
 			    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 			    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0)) {
@@ -954,6 +968,11 @@ angular.module('emuwebApp')
 					    var orig = sServObj.getElementDetails(name, i);
 					    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					}
+				}
+			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left === undefined)) {
+				for(var i=firstOrder;i<(firstOrder + length);i++) {
+				    var orig = sServObj.getElementDetails(name, i);
+				    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 				}
 			}
 		};
