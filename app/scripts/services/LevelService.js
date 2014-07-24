@@ -833,7 +833,6 @@ angular.module('emuwebApp')
 							return false;
 						}
 					} else {
-
 						if (tIdx < sServObj.data.levels.length - 1) {
 							neighTd = sServObj.data.levels[tIdx + 1];
 						} else {
@@ -847,7 +846,9 @@ angular.module('emuwebApp')
 							sampleTarget = itm.samplePoint;
 						}
 						absDist = Math.abs(sample - sampleTarget);
+
 						if (absDist < absMinDist) {
+						    
 							absMinDist = absDist;
 							minDist = sampleTarget - sample;
 						}
@@ -878,20 +879,21 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveBoundary = function (name, id, changeTime, position) {
 			var orig = sServObj.getElementDetailsById(name, id);
-			var ln = sServObj.getElementNeighbourDetails(name, id);
+			var ln = sServObj.getElementNeighbourDetails(name, id, id);
 			if (position === -1) { // before first element
-				if((orig.sampleStart + changeTime)>0) {
+			    var origRight = ln.right;
+				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
 			        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			}
 			else if (position === 1) { // after last element
-				//orig = sServObj.getLastElement(name);
 				if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
 				}
 			} else {
 			    if(ln.left === undefined) {
-    				if((orig.sampleStart + changeTime)>0) {
+			        var origRight = ln.right;
+    				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
 			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
 	    			}
 			    }
