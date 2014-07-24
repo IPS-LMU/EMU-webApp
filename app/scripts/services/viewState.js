@@ -525,8 +525,9 @@ angular.module('emuwebApp')
      * sets the current (mousemove) Segment
      * @param name is name of segment
      */
-    sServObj.setcurMouseSegment = function (segment, neighbour) {
+    sServObj.setcurMouseSegment = function (segment, neighbour, x) {
       this.curMouseSegment = segment;
+      this.curMouseX = x;
       this.curMouseNeighbours = neighbour;
     };
 

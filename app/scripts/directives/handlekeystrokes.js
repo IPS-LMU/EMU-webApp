@@ -686,7 +686,7 @@ angular.module('emuwebApp')
                           'deletedSegment': deletedSegment
                         });
                         // reset to undefined
-                        viewState.setcurMouseSegment(undefined, undefined);
+                        viewState.setcurMouseSegment(undefined, undefined, undefined);
 
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');

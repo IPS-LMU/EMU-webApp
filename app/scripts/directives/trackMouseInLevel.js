@@ -170,7 +170,7 @@ angular.module('emuwebApp')
             setLastMove(event, moveLine);
           }
           if(lastEventMove.nearest!==undefined) {
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove,lastPCM);
           }
         });
 
@@ -276,7 +276,7 @@ angular.module('emuwebApp')
           lastEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
             lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
