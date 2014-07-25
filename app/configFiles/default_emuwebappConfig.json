@@ -74,7 +74,7 @@
         "dynamicRange": 70,
         "window": "GAUSS",
         "transparency": 255,
-        "drawHeatMapColors": true
+        "drawHeatMapColors": false
     },
     "perspectives": [{
         "name": "default",

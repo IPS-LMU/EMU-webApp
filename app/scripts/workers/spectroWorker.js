@@ -257,8 +257,8 @@ function FFT(fftSize) {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
-	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
 
 		if (!executed) {
 
@@ -295,7 +295,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
 			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency);
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
 			}
 
 			// post generated image block with settings back
@@ -435,10 +435,17 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				var py = Math.floor(myheight - (pixelHeight * (i - 2) + b));
 
 				var index = (px + (py * renderWidth)) * 4;
-				p[index + 0] = rgb;
-				p[index + 1] = rgb;
-				p[index + 2] = rgb;
-				p[index + 3] = transparency;
+				if (drawHeatMapColors) {
+					p[index + 0] = rgb;
+					p[index + 1] = 0;
+					p[index + 2] = 0;
+					p[index + 3] = transparency;
+				} else {
+					p[index + 0] = rgb;
+					p[index + 1] = rgb;
+					p[index + 2] = rgb;
+					p[index + 3] = transparency;
+				}
 			}
 		} else {
 			rgb = 255 - Math.round(255 * y1);
@@ -619,9 +626,12 @@ self.addEventListener('message', function (e) {
 		if (data.stream !== undefined) {
 			threadSoundBuffer = new Float32Array(data.stream);
 		}
+		if (data.drawHeatMapColors !== undefined) {
+			drawHeatMapColors = data.drawHeatMapColors;
+		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);
