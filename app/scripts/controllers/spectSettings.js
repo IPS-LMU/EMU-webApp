@@ -39,33 +39,28 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.saveSpectroSettings = function () {
-		    if($scope.modalVals.dynamicRange % 1 === 0) {
-		      if($scope.modalVals.rangeFrom % 1 === 0) {
-		        if($scope.modalVals.rangeTo % 1 === 0) {
-		          if($scope.modalVals.rangeFrom >= 0) {
-		            if($scope.modalVals.rangeTo <= LevelService.data.sampleRate/2) {
-		                viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name);
-		                $scope.cancel();
-		            }
-		            else {
-		                $scope.error('View Range (Hz) upper boundary is a value bigger than ' + LevelService.data.sampleRate/2);
-		            }
-		          }
-		          else {
-		            $scope.error('View Range (Hz) lower boundary is a value below zero');
-		          }
-		        }
-		        else {
-		          $scope.error('View Range (Hz) upper boundary has to be an Integer value.');
-		        }
-		      }
-		      else {
-		        $scope.error('View Range (Hz) lower boundary has to be an Integer value.');
-		      }
-		    }
-		    else {
-		        $scope.error('Dynamic Range has to be an Integer value.');
-		    }
+			if ($scope.modalVals.dynamicRange % 1 === 0) {
+				if ($scope.modalVals.rangeFrom % 1 === 0) {
+					if ($scope.modalVals.rangeTo % 1 === 0) {
+						if ($scope.modalVals.rangeFrom >= 0) {
+							if ($scope.modalVals.rangeTo <= LevelService.data.sampleRate / 2) {
+								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name);
+								$scope.cancel();
+							} else {
+								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + LevelService.data.sampleRate / 2);
+							}
+						} else {
+							$scope.error('View Range (Hz) lower boundary is a value below zero');
+						}
+					} else {
+						$scope.error('View Range (Hz) upper boundary has to be an Integer value.');
+					}
+				} else {
+					$scope.error('View Range (Hz) lower boundary has to be an Integer value.');
+				}
+			} else {
+				$scope.error('Dynamic Range has to be an Integer value.');
+			}
 		};
 
 		/**
