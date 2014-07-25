@@ -160,7 +160,17 @@ angular.module('emuwebApp')
 		 *   @return Element Details as Object			 
 		 */
 		sServObj.getElementDetailsById = function (name, id) {
-			return sServObj.getElementDetails(name, sServObj.getOrderById(name, id));
+			var details = null;
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element) {
+						if (element.id == id) {
+							details = element;
+						}
+					});
+				}
+			});
+			return details;
 		};		
 
 		/**
