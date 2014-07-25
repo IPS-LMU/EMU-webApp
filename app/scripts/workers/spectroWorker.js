@@ -671,7 +671,6 @@ self.addEventListener('message', function (e) {
 		}
 		if (data.preEmphasisPerOctaveInDb !== undefined) {
 			preEmphasisPerOctaveInDb = data.preEmphasisPerOctaveInDb;
-			console.log(preEmphasisPerOctaveInDb);
 		}
 		break;
 	case 'render':
