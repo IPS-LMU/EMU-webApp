@@ -632,6 +632,7 @@ angular.module('emuwebApp')
       } else {
         sServObj.curClickSegments.sort(sServObj.sortbyid);
       }
+      
     };
 
     /**
@@ -639,8 +640,8 @@ angular.module('emuwebApp')
      */
     sServObj.sortbyid = function (a, b) {
       //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-      if (a.id > b.id) return 1;
-      if (a.id < b.id) return -1;
+      if (a.sampleStart > b.sampleStart) return 1;
+      if (a.sampleStart < b.sampleStart) return -1;
       return 0;
     };
 
