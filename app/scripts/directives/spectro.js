@@ -174,7 +174,8 @@ angular.module('emuwebApp')
             'streamChannels': scope.shs.wavJSO.NumChannels,
             'transparency': scope.cps.vals.spectrogramSettings.transparency,
             'stream': parseData.buffer,
-            'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors
+            'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
+            'preEmphasisPerOctaveInDb': scope.vs.spectroSettings.preEmphasisPerOctaveInDb
           }, [parseData.buffer]);
           primeWorker.postMessage({
             'cmd': 'render'

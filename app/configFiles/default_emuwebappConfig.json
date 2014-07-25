@@ -73,6 +73,7 @@
         "rangeTo": 5000,
         "dynamicRange": 70,
         "window": "GAUSS",
+        "preEmphasisPerOctaveInDb": 6,
         "transparency": 255,
         "drawHeatMapColors": false
     },

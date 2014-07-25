@@ -257,8 +257,8 @@ function FFT(fftSize) {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
-	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb) {
 
 		if (!executed) {
 
@@ -466,7 +466,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 						var hmVals = convertToHeatmap(0, 255, rgb, [
 							[255, 0, 0],
 							[0, 255, 0],
-							[0, 0, 255]
+							[0, 0, 0]
 						]);
 						p[index + 0] = hmVals.r;
 						p[index + 1] = hmVals.g;
@@ -669,9 +669,13 @@ self.addEventListener('message', function (e) {
 		if (data.drawHeatMapColors !== undefined) {
 			drawHeatMapColors = data.drawHeatMapColors;
 		}
+		if (data.preEmphasisPerOctaveInDb !== undefined) {
+			preEmphasisPerOctaveInDb = data.preEmphasisPerOctaveInDb;
+			console.log(preEmphasisPerOctaveInDb);
+		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);
