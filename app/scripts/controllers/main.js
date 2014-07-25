@@ -249,7 +249,8 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				ConfigProviderService.vals.spectrogramSettings.window);
+				ConfigProviderService.vals.spectrogramSettings.window,
+				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
@@ -414,6 +415,7 @@ angular.module('emuwebApp')
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
+									$scope.spectSettingsBtnClick();
 								} else {
 									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										$scope.resetToInitState();
