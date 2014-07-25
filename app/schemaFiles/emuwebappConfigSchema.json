@@ -231,7 +231,10 @@
 				},
 				"transparency": {
 					"type": "integer"
-				}				
+				},
+				"drawHeatMapColors": {
+					"type": "boolean"
+				}
 			},
 			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false

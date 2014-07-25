@@ -23,6 +23,16 @@
   <p>Window Function</p>
   <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
 </div>
+<hr />
+<div>      
+  <p>Other Options</p>
+  <table>
+    <tr>
+      <td>Draw spectrogram in heat map colors:</td>
+      <td><input type="checkbox" ng-model="modalVals.drawHeatMapColors"></td>
+    </tr>
+  </table>
+</div>
 </div>
 
 <div class="modal-footer">

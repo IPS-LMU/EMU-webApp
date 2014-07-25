@@ -40,6 +40,7 @@ angular.module('emuwebApp')
         rangeTo: -1,
         dynamicRange: -1,
         window: -1,
+        drawHeatMapColors: -1
       };
 
       sServObj.playHeadAnimationInfos = {
@@ -192,12 +193,13 @@ angular.module('emuwebApp')
     /**
      * setspectroSettings
      */
-    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win) {
+    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm) {
       sServObj.spectroSettings.windowLength = parseInt(len, 10);
       sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
       sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
       sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);
       sServObj.setWindowFunction(win);
+      sServObj.spectroSettings.drawHeatMapColors = hm;
     };
 
 

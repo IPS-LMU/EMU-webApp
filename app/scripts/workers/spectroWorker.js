@@ -257,8 +257,8 @@ function FFT(fftSize) {
 	// octx			-> Context of Canvas Element used for drawing 
 	*/
 
-var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
-	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency) {
+var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
+	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors) {
 
 		if (!executed) {
 
@@ -295,7 +295,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
 			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency);
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
 			}
 
 			// post generated image block with settings back
@@ -368,6 +368,32 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 	return result;
 }
 
+/**
+ * interpolates a 3D color space and calculate accoring
+ * value on that plane
+ *
+ * @param minval is the minimum value to map to (number)
+ * @param maxval is the maximum value to map to (number)
+ * @param val is the value itself (number)
+ * @param colors is an array of arrays containing the colors
+ * to interpol. against (of the form: [[255, 0, 0],[0, 255, 0],[0, 0, 255]])
+ */
+function convertToHeatmap(minval, maxval, val, colors) {
+	var maxIndex = colors.length - 1;
+	var v = (val - minval) / (maxval - minval) * maxIndex;
+	var i1 = Math.floor(v);
+	var i2 = Math.min.apply(null, [Math.floor(v) + 1, maxIndex]);
+	var rgb1 = colors[i1];
+	var rgb2 = colors[i2];
+	var f = v - i1;
+	return ({
+		'r': Math.floor(rgb1[0] + f * (rgb2[0] - rgb1[0])),
+		'g': Math.floor(rgb1[1] + f * (rgb2[1] - rgb1[1])),
+		'b': Math.floor(rgb1[2] + f * (rgb2[2] - rgb1[2]))
+	});
+
+}
+
 /*
 	// draws a single Line on the Canvas Element
 	// by calculating the RGB value of the current pixel with:
@@ -435,10 +461,31 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				var py = Math.floor(myheight - (pixelHeight * (i - 2) + b));
 
 				var index = (px + (py * renderWidth)) * 4;
-				p[index + 0] = rgb;
-				p[index + 1] = rgb;
-				p[index + 2] = rgb;
-				p[index + 3] = transparency;
+				if (drawHeatMapColors) {
+					if (!isNaN(rgb)) { // SIC!!! Why do we have NaNs as rgb vals?
+						var hmVals = convertToHeatmap(0, 255, rgb, [
+							[255, 0, 0],
+							[0, 255, 0],
+							[0, 0, 255]
+						]);
+						p[index + 0] = hmVals.r;
+						p[index + 1] = hmVals.g;
+						p[index + 2] = hmVals.b;
+						p[index + 3] = transparency;
+
+					} else {
+						p[index + 0] = rgb;
+						p[index + 1] = rgb;
+						p[index + 2] = rgb;
+						p[index + 3] = transparency;
+					}
+
+				} else {
+					p[index + 0] = rgb;
+					p[index + 1] = rgb;
+					p[index + 2] = rgb;
+					p[index + 3] = transparency;
+				}
 			}
 		} else {
 			rgb = 255 - Math.round(255 * y1);
@@ -619,9 +666,12 @@ self.addEventListener('message', function (e) {
 		if (data.stream !== undefined) {
 			threadSoundBuffer = new Float32Array(data.stream);
 		}
+		if (data.drawHeatMapColors !== undefined) {
+			drawHeatMapColors = data.drawHeatMapColors;
+		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);

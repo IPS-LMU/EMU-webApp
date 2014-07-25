@@ -249,7 +249,8 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				ConfigProviderService.vals.spectrogramSettings.window);
+				ConfigProviderService.vals.spectrogramSettings.window,
+				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
