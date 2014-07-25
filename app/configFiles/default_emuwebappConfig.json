@@ -1,7 +1,7 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "serverUrl": "ws://localhost:8080",
         "serverTimeoutInterval": 5000,
         "comMode": "WS",
@@ -60,7 +60,7 @@
         "startBoundaryColor": "#000",
         "endBoundaryColor": "#888",
         "zeroLineColor": "#0DC5FF",
-        "crossHairsColor":  "rgba(255, 0, 0, 0.95)",
+        "crossHairsColor": "rgba(255, 0, 0, 0.95)",
         "transitionTime": 400
     },
     "font": {
@@ -73,7 +73,7 @@
         "rangeTo": 5000,
         "dynamicRange": 70,
         "window": "GAUSS",
-        "transparency": 255        
+        "transparency": 255
     },
     "perspectives": [{
         "name": "default",
