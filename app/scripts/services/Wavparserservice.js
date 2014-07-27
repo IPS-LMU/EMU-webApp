@@ -10,7 +10,8 @@ angular.module('emuwebApp')
 
 		// add event listener to worker to respond to messages
 		worker.addEventListener('message', function (e) {
-			// console.log('Worker said: ', e.data);
+		
+			 console.log('Worker said: ', e.data);
 			if (e.data.status.type === 'SUCCESS') {
 				defer.resolve(e.data.data);
 			} else {
@@ -28,7 +29,7 @@ angular.module('emuwebApp')
 			worker.postMessage({
 				'cmd': 'parseBuf',
 				'buffer': buf
-			}); // Send data to our worker.
+			}, [buf]); // Send data to our worker.
 			return defer.promise;
 		};
 

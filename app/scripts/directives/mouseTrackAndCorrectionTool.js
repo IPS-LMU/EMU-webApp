@@ -56,20 +56,23 @@ angular.module('emuwebApp')
 				});
 
 				element.bind('mousemove', function (event) {
-
+					var mbutton = 0;
+					if (event.buttons === undefined) {
+						mbutton = event.which;
+					} else {
+						mbutton = event.buttons;
+					}
 					// perform mouse tracking
 					var mouseX = Drawhelperservice.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
-					switch (event.which) {
+					switch (mbutton) {
 					case 0:
 						if (viewState.getPermission('labelAction')) {
 							switchMarkupContext(event);
 							if (!$.isEmptyObject(Ssffdataservice.data)) {
 								if (Ssffdataservice.data.length !== 0) {
 									if (!viewState.getdragBarActive()) {
-
-
 										if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
 											// var col = Ssffdataservice.data[0].Columns[0];
 											if (tr === undefined) {
@@ -89,7 +92,7 @@ angular.module('emuwebApp')
 											// console.log(colStartSampleNr)
 
 
-											var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.srcElement.width) * (endTimeVP - startTimeVP);
+											var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
 											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
 
 											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
@@ -114,11 +117,12 @@ angular.module('emuwebApp')
 											ctx.stroke();
 											ctx.fill();
 
+
 											if (event.shiftKey) {
 												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
-												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
+												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
-												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.srcElement.height * viewState.spectroSettings.rangeTo;
+												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
 												var updateObj = HistoryService.updateCurChangeObj({
 													'type': 'SSFF',
 													'trackName': tr.name,
@@ -156,6 +160,7 @@ angular.module('emuwebApp')
 					case 1:
 						if (!viewState.getdragBarActive()) {
 							setSelectDrag(event);
+
 						}
 						break;
 					}

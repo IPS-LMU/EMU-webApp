@@ -142,6 +142,12 @@
 				"osciColor": {
 					"type": "string"
 				},
+				"levelColor": {
+					"type": "string"
+				},
+				"appBackground": {
+					"type": "string"
+				},
 				"playProgressColor": {
 					"type": "string"
 				},
@@ -158,6 +164,9 @@
 					"type": "string"
 				},
 				"selectedSegmentColor": {
+					"type": "string"
+				},
+				"selectedContourColor": {
 					"type": "string"
 				},
 				"startBoundaryColor": {
@@ -210,7 +219,10 @@
 				},
 				"window": {
 					"enum": ["BARTLETT", "BARTLETTHANN", "BLACKMAN", "COSINE", "GAUSS", "HAMMING", "HANN", "LANCZOS", "RECTANGULAR", "TRIANGULAR"]
-				}
+				},
+				"transparency": {
+					"type": "integer"
+				}				
 			},
 			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false

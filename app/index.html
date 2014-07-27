@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" manifest="manifest.appcache" ng-csp> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" manifest="manifest.appcache"> <!--<![endif]-->
 
 <!-- add/remove ng-csp to html tag if you wish to use as chrome app -> slows everything down quite a bit(~ 30%) -->
 
@@ -82,7 +82,6 @@
     <!-- build:js scripts/emuwebApp.min.js -->
     <script src="scripts/prototypeexpansions.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/services/enums.js"></script>
     <script src="scripts/services/ConfigProviderService.js"></script>        
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/file.js"></script>
@@ -119,7 +118,7 @@
     <script src="scripts/services/websocketHandler.js"></script>
     <script src="scripts/controllers/wsConnection.js"></script>
     <script src="scripts/services/binaryDataManipHelper.js"></script>
-    <script src="scripts/services/dialog.js"></script>
+    <script src="scripts/services/dialogService.js"></script>
     <script src="scripts/controllers/wait.js"></script>
     <script src="scripts/services/appCacheHandler.js"></script>
     <script src="scripts/controllers/about.js"></script>
@@ -130,7 +129,6 @@
     <script src="scripts/controllers/modal.js"></script>
     <script src="scripts/directives/toggleRightSideBar.js"></script>
     <script src="scripts/directives/toggle2dCanvases.js"></script>
-    <script src="scripts/directives/horizSplitter.js"></script>
     <script src="scripts/directives/splitPaneView.js"></script>
     <script src="scripts/directives/ssffTrack.js"></script>
     <script src="scripts/directives/progressThing.js"></script>

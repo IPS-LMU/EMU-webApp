@@ -11,7 +11,9 @@ describe('navigation', function () {
 		browser.manage().logs().get('browser').then(function (browserLog) {
 			// expect(browserLog.length).toEqual(0);
 			// Uncomment to actually see the log.
-			console.log('log: ' + require('util').inspect(browserLog));
+			if(browserLog.length !== 0){
+				console.log('log: ' + require('util').inspect(browserLog));
+			}
 		});
 	});
 

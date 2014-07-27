@@ -15,6 +15,7 @@ angular.module('emuwebApp')
     $scope.wav = {};
     $scope.grid = {};
     $scope.curBndl = {};
+    $scope.init = true;
     $scope.dropText = $scope.dropDefault;
     $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
     $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
@@ -22,14 +23,45 @@ angular.module('emuwebApp')
     $scope.fileInput.addEventListener('change', handleFilesonChange, false);
 
 
-    $scope.loadFiles = function () {
+    $scope.loadFiles = function (e) {
+        if($scope.firefox) {
+        setTimeout(function() {
+            if ($scope.init) {
+             $scope.fileInput.click();
+             $scope.init = false;
+            }
+            else {
+             $scope.init = true;
+            }
+        }, 1000);  
+        }
+        else {
         setTimeout(function() {
             $scope.fileInput.click();
         }, 0);    
+        }
     };
 
     
     function handleFilesonChange() {
+        if($scope.firefox) {
+            var loadedFiles = $scope.fileInput;
+            for (var i = 0; i < loadedFiles.files.length; i++) {
+                var file = loadedFiles.files[i];
+                var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+                if(extension==="WAV" && file.type.match('audio/x-wav') ) {
+                    $scope.wav = file;
+                    $scope.handleLocalFiles();	
+                }
+                else if(extension==="TEXTGRID" ) {
+                    $scope.grid = file;
+                }            
+                else  {
+                    $scope.other = file;
+                }                         
+            }
+        }    
+        else {
         var loadedFiles = $scope.fileInput;
         for (var i = 0; i < loadedFiles.files.length; i++) {
             var file = loadedFiles.files[i];
@@ -44,6 +76,7 @@ angular.module('emuwebApp')
             else  {
                 $scope.other = file;
             }                         
+        }
         }
     }
     
@@ -61,9 +94,8 @@ angular.module('emuwebApp')
     
     function  handleDragOver(evt) {
        evt.preventDefault();
-       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0;
        $scope.$apply(function () {
-         $scope.dropClass = ok ? 'over' : 'not-available';
+         $scope.dropClass = 'over';
        });
     }
     
@@ -74,26 +106,6 @@ angular.module('emuwebApp')
         $scope.curBndl = {};
         $scope.dropText = $scope.dropDefault;
     };    
-    
-    /*
-    $scope.$watch('wavMenu', function () {
-        if($.isEmptyObject($scope.other)) {
-            if (!$.isEmptyObject($scope.wav)) {
-                $scope.handleLocalFiles();	
-            }   
-        }
-     });       
-     
-    $scope.$watch('other', function () {
-        if (!$.isEmptyObject($scope.other)) {
-            var extension = $scope.other.name.substr($scope.other.name.lastIndexOf('.')+1);
-            $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name).then(function (res) {
-			    $scope.resetToInitState();
-			    $scope.$parent.resetToInitState();
-			});
-        }
-     });        
-           */
      
     $scope.$on('resetToInitState', function () {
         $scope.resetToInitState();
@@ -116,6 +128,7 @@ angular.module('emuwebApp')
 		var reader = new FileReader();
 		reader.readAsArrayBuffer($scope.wav);
 		reader.onloadend = function(evt) {
+		    console.log(evt);
 		    if (evt.target.readyState == FileReader.DONE) { 
 		        $scope.$parent.io.httpGetPath('configFiles/standalone_emuwebappConfig.json').then(function (resp) {
 			        // first element of perspectives is default perspective
@@ -130,7 +143,14 @@ angular.module('emuwebApp')
 				    	$scope.$parent.bundleList.push($scope.curBndl);
 					    $scope.$parent.curBndl = $scope.curBndl;
     					// then get the DBconfigFile
-    					$scope.$parent.wps.parseWavArrBuf(evt.currentTarget.result).then(function (wavJSO) {
+    					var res;
+    					if($scope.firefox) {
+    					    res = evt.target.result;
+    					}
+    					else {
+    					    res = evt.currentTarget.result;
+    					}
+    					$scope.$parent.wps.parseWavArrBuf(res).then(function (wavJSO) {
 					        $scope.$parent.vs.curViewPort.sS = 0;
     					    $scope.$parent.vs.curViewPort.eS = wavJSO.Data.length;
 		    			    $scope.$parent.vs.resetSelect();
@@ -182,6 +202,8 @@ angular.module('emuwebApp')
             
         };
     };
+
+   
     
     $scope.dropzone.addEventListener('drop', function (evt) {
         evt.stopPropagation();
@@ -191,13 +213,23 @@ angular.module('emuwebApp')
             $scope.dropClass = '';        
 
             if (window.File && window.FileReader && window.FileList && window.Blob) {
-                var items = evt.dataTransfer.items;
-                for (var i = 0; i < items.length; i++) {
-                    var item = items[i].webkitGetAsEntry();
-                    if (item) {
-                        $scope.traverseFileTree(item); 
+                if($scope.firefox) {
+                    var dt = evt.dataTransfer;
+                    var files = dt.files;
+                    var count = files.length;
+                    for (var i = 0; i < files.length; i++) {
+                        $scope.traverseFileTreeFirefox(files[i]); 
                     }
-                }     
+                }
+                else {            
+                    var items = evt.dataTransfer.items;
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i].webkitGetAsEntry();
+                        if (item) {
+                            $scope.traverseFileTreeChrome(item); 
+                        }
+                    }    
+                }
             }
             else {
                 $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
@@ -206,7 +238,7 @@ angular.module('emuwebApp')
         });
      }, false);
      
-    $scope.traverseFileTree = function (item, path) {
+    $scope.traverseFileTreeChrome = function (item, path) {
         path = path || '';
             if (item.isFile) {
                 item.file(function (file) {
@@ -230,9 +262,47 @@ angular.module('emuwebApp')
                 var dirReader = item.createReader();
                 dirReader.readEntries(function (entries) {
                     for (var i = 0; i < entries.length; i++) {
-                        $scope.traverseFileTree(entries[i], path + item.name + '/');
+                        $scope.traverseFileTreeChrome(entries[i], path + item.name + '/');
                     }
                 });
             }
         };
+        
+
+    $scope.traverseFileTreeFirefox = function (item, path) {
+        path = path || '';
+            if (item.size > 0) {             
+                var extension = item.name.substr(item.name.lastIndexOf('.') + 1).toUpperCase();
+                if (extension === 'WAV') {
+                    $scope.wav = item;
+                    $scope.handleLocalFiles();	
+                }
+                else if (extension === 'TEXTGRID') {
+                    $scope.grid = item;  
+                }
+                else {
+                    $scope.other = item; 
+                    $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + $scope.other.name).then(function (res) {
+			            $scope.resetToInitState();
+			            $scope.$parent.resetToInitState();
+			        });
+                }
+            } else if (item.isDirectory) {
+                var dirReader = item.createReader();
+                dirReader.readEntries(function (entries) {
+                    for (var i = 0; i < entries.length; i++) {
+                        $scope.traverseFileTreeFirefox(entries[i], path + item.name + '/');
+                    }
+                });
+            }
+        };        
+        
   });    
+  
+  
+  
+  
+  
+  
+  
+  

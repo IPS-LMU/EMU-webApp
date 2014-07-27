@@ -40,6 +40,8 @@ angular.module('emuwebApp')
         rangeTo: -1,
         dynamicRange: -1,
         window: -1,
+        drawHeatMapColors: -1,
+        preEmphasisPerOctaveInDb: -1
       };
 
       sServObj.playHeadAnimationInfos = {
@@ -53,7 +55,6 @@ angular.module('emuwebApp')
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';
       sServObj.curClickSegments = [];
-      sServObj.lasteditArea = null;
       sServObj.editing = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
@@ -83,7 +84,7 @@ angular.module('emuwebApp')
         'permittedActions': []
       };
       sServObj.states.labeling = {
-        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars']
+        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars', 'saveBndlBtnClick']
       };
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
@@ -132,8 +133,9 @@ angular.module('emuwebApp')
       if (sServObj.start === null) {
         sServObj.start = timestamp;
       }
-      var samplesPassed = (Math.ceil(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
-      sServObj.playHeadAnimationInfos.curS = Math.round(sServObj.playHeadAnimationInfos.sS + samplesPassed);
+      
+      var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
+      sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
       if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
         if (sServObj.playHeadAnimationInfos.curS !== -1) {
@@ -192,12 +194,14 @@ angular.module('emuwebApp')
     /**
      * setspectroSettings
      */
-    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win) {
+    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph) {
       sServObj.spectroSettings.windowLength = parseInt(len, 10);
       sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
       sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
       sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);
       sServObj.setWindowFunction(win);
+      sServObj.spectroSettings.drawHeatMapColors = hm;
+      sServObj.spectroSettings.preEmphasisPerOctaveInDb = preEmph;
     };
 
 
@@ -704,20 +708,6 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.getlasteditAreaElem = function () {
-      return this.lasteditAreaElem;
-    };
-
-    /**
-     *
-     */
-    sServObj.setlasteditAreaElem = function (e) {
-      this.lasteditAreaElem = e;
-    };
-
-    /**
-     *
-     */
     sServObj.isEditing = function () {
       return this.editing;
     };
@@ -727,36 +717,6 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
-    };
-
-    /**
-     *
-     */
-    sServObj.setlasteditArea = function (name) {
-      this.lasteditArea = name;
-    };
-
-    /**
-     *
-     */
-    sServObj.getlastID = function () {
-      return this.lasteditArea.substr(1);
-    };
-
-    /**
-     *
-     */
-    sServObj.getlasteditArea = function () {
-      return this.lasteditArea;
-    };
-    /**
-     *
-     */
-    sServObj.deleteEditArea = function () {
-      if (null !== this.getlasteditArea()) {
-        $('.' + this.getlasteditArea()).remove();
-      }
-      this.editing = false;
     };
 
     /**
@@ -786,7 +746,7 @@ angular.module('emuwebApp')
     sServObj.getPCMpp = function (event) {
       var start = parseFloat(this.curViewPort.sS);
       var end = parseFloat(this.curViewPort.eS);
-      return (end - start) / event.originalEvent.srcElement.width;
+      return (end - start) / event.originalEvent.target.width;
     };
 
     /**
@@ -806,68 +766,6 @@ angular.module('emuwebApp')
       k += e.toString().substring(1);
       return k.substring(0, k.indexOf('.') + n + 1);
     };
-
-    /**
-     *
-     */
-    sServObj.openEditArea = function (lastEventClick, element, type) {
-      var elem = element.find('canvas').context.getContext('2d');
-      var clientWidth = elem.canvas.clientWidth;
-      var clientOffset = elem.canvas.offsetLeft;
-      var top = elem.canvas.offsetTop;
-      var height = elem.canvas.clientHeight;
-
-      if (type === 'SEGMENT') {
-        var start = sServObj.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
-        var end = sServObj.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
-        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
-      } else {
-        var len = lastEventClick.labels[0].value.length * 10;
-        var start = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
-        var end = sServObj.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
-        sServObj.createEditArea(element, start + ((end - start)/3), top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id); 
-      }
-      sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
-    };
-
-    /**
-     *
-     */
-    sServObj.createSelection = function (field, start, end) {
-      if (field.createTextRange) {
-        var selRange = field.createTextRange();
-        selRange.collapse(true);
-        selRange.moveStart('character', start);
-        selRange.moveEnd('character', end);
-        selRange.select();
-      } else if (field.setSelectionRange) {
-        field.setSelectionRange(start, end);
-      } else if (field.selectionStart) {
-        field.selectionStart = start;
-        field.selectionEnd = end;
-      }
-      field.focus();
-    };
-
-    /**
-     *
-     */
-    sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
-      var textid = '_' + labelid;
-      element.prepend($('<textarea>').attr({
-        id: textid,
-        'class': textid + ' emuwebapp-labelEdit',
-        'ng-model': 'message',
-        'autofocus': 'true'
-      }).css({
-        'left': Math.round(x + 2) + 'px',
-        'top': Math.round(y) + 'px',
-        'width': Math.round(width) - 4 + 'px',
-        'height': Math.round(height) - 1 + 'px',
-        'padding-top': Math.round(height / 3 + 1) + 'px'
-      }).text(label));
-    };
-
 
     /**
      * calcs and returns start in secs
@@ -956,7 +854,7 @@ angular.module('emuwebApp')
      * if set to true -> zoom in
      * if set to false -> zoom out
      */
-    sServObj.zoomViewPort = function (zoomIn, levelservice) {
+    sServObj.zoomViewPort = function (zoomIn, LevelService) {
       var newStartS, newEndS, curMouseMoveSegmentStart;
       var seg = this.getcurMouseSegment();
 
@@ -966,9 +864,9 @@ angular.module('emuwebApp')
 
       if (seg !== undefined) {
         if (seg === false) { // before first element
-          seg = levelservice.getElementDetails(sServObj.getcurMouseLevelName(), 0);
+          seg = LevelService.getElementDetails(sServObj.getcurMouseLevelName(), 0);
         } else if (seg === true) {
-          seg = levelservice.getLastElement(sServObj.getcurMouseLevelName());
+          seg = LevelService.getLastElement(sServObj.getcurMouseLevelName());
           isLastSeg = true;
         }
         if (this.getcurMouseLevelType() === 'SEGMENT') {

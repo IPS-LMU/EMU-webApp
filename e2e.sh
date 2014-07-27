@@ -4,20 +4,18 @@ if [ -z $1 ]
   else 
     if [ $1 = "nav" ]
       then 
-      ./node_modules/protractor/bin/protractor protractor_conf_navigation.js
+      ./node_modules/protractor/bin/protractor --specs ./test/e2e/main.spec.js,./test/e2e/navigation.spec.js protractor_conf.js
     fi
     if [ $1 = "spec" ]
       then 
-      ./node_modules/protractor/bin/protractor protractor_conf_spectroSettings.js
+      ./node_modules/protractor/bin/protractor --specs ./test/e2e/main.spec.js,./test/e2e/spectroSettings.spec.js protractor_conf.js
     fi 
     if [ $1 = "utt" ]
       then 
-      ./node_modules/protractor/bin/protractor protractor_conf_uttFilter.js
+      ./node_modules/protractor/bin/protractor --specs ./test/e2e/main.spec.js,./test/e2e/uttFilter.spec.js protractor_conf.js
     fi  
     if [ $1 = "all" ]
       then 
-      ./node_modules/protractor/bin/protractor protractor_conf_navigation.js
-      ./node_modules/protractor/bin/protractor protractor_conf_spectroSettings.js
-      ./node_modules/protractor/bin/protractor protractor_conf_uttFilter.js
+      ./node_modules/protractor/bin/protractor protractor_conf.js
     fi                
 fi

@@ -16,7 +16,7 @@ angular.module('emuwebApp')
         element.bind('click', function (x) {
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
             var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
+            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
             scope.$apply(function () {
               viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
             });
@@ -26,17 +26,24 @@ angular.module('emuwebApp')
         //
         element.bind('mousedown', function (x) {
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
+            startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
           }
         });
 
         //
         element.bind('mousemove', function (x) {
-          switch (event.which) {
+          var mbutton = 0;
+          if(x.buttons===undefined) {
+              mbutton = x.which;
+          }
+		  else {
+			mbutton = x.buttons;
+		  }  
+          switch (mbutton) {
           case 1:
             if (startPCM !== -1) {
               var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-              startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.srcElement.width);
+              startPCM = getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
               scope.$apply(function () {
                 viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
               });
@@ -59,7 +66,7 @@ angular.module('emuwebApp')
         /////////////////
 
         function getX(e) {
-          return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
+          return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
         }
 
       }

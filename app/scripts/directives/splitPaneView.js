@@ -18,6 +18,7 @@ angular.module('emuwebApp')
           $scope.panes.push(pane);
           return $scope.panes.length;
         };
+        
         this.setBottomRightResizePane = function (pane) {
           $scope.bottomRightResizePane = pane;
         };

@@ -10,6 +10,7 @@ describe('Service: HistoryService', function () {
     'action': 'renameLabel',
     'name': 'Phonetic',
     'id': 12,
+    'order': 10,
     'oldValue': 'xxx',
     'newValue': 'yyy'
   };
@@ -36,7 +37,7 @@ describe('Service: HistoryService', function () {
   it('should add object to undo stack', inject(function (HistoryService) {
     HistoryService.addObjToUndoStack(changeObj);
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#12');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#12#10');
   }));
 
 

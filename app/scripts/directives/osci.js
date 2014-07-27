@@ -19,16 +19,6 @@ angular.module('emuwebApp')
 				scope.order = attrs.order;
 				scope.trackName = attrs.trackName;
 				scope.cps = ConfigProviderService;
-				// console.log(scope.trackName);
-
-				scope.enlargeCanvas = {
-					'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%'
-				};
-				scope.backgroundCanvas = {
-				    'height': 100 / ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length + '%',
-				    'background': ConfigProviderService.vals.colors.levelColor
-				};
-
 				scope.viewState = viewState;
 
 				///////////////
@@ -45,14 +35,12 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.timelineSize', function () {
-					scope.updateCSS();
 					$timeout(scope.redraw,10);
 				});
 
 				//
 				scope.$watch('viewState.curPerspectiveIdx', function () {
 					drawVpOsciMarkup(scope, ConfigProviderService, true);
-					scope.updateCSS();
 				}, true);
 
 				//
@@ -93,47 +81,12 @@ angular.module('emuwebApp')
 								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 							}
 							drawVpOsciMarkup(scope, ConfigProviderService, true);
-							scope.updateCSS();
 						}
 					}
 				}, true);
 
 				//
 				/////////////////////////
-
-				/**
-				 *
-				 */
-				scope.updateCSS = function () {
-					var parts = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
-					if (viewState.getenlarge() == -1) {
-						scope.enlargeCanvas = {
-							'height': 100 / parts + '%'
-						};
-						scope.backgroundCanvas = {
-				            'height': 100 / parts + '%',
-				            'background': ConfigProviderService.vals.colors.levelColor
-				        };
-					} else {
-						if (viewState.getenlarge() == scope.order) {
-							scope.enlargeCanvas = {
-								'height': 3 * 100 / (parts + 2) + '%'
-							};
-						    scope.backgroundCanvas = {
-				                'height': 3 * 100 / (parts + 2) + '%',
-				                'background': ConfigProviderService.vals.colors.levelColor
-				            };							
-						} else {					
-							scope.enlargeCanvas = {
-								'height': 100 / (parts + 2) + '%'
-							};
-						    scope.backgroundCanvas = {
-				                'height': 100 / (parts + 2) + '%',
-				                'background': ConfigProviderService.vals.colors.levelColor
-				            };								
-						}
-					}
-				};
 				
 				scope.redraw = function () {
 				    drawVpOsciMarkup(scope, ConfigProviderService, true)

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Levelservice, Ssffdataservice) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Ssffdataservice) {
 
 		//shared service object to be returned
 		var sServObj = {};
@@ -71,7 +71,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.getX = function (e) {
-			return e.offsetX * (e.originalEvent.srcElement.width / e.originalEvent.srcElement.clientWidth);
+			return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
 		};
 
 		/**
@@ -79,7 +79,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.getY = function (e) {
-			return e.offsetY * (e.originalEvent.srcElement.height / e.originalEvent.srcElement.clientHeight);
+			return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
 		};
 
 
@@ -265,20 +265,8 @@ angular.module('emuwebApp')
 
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
-				// var tD = Levelservice.getLevelDetails(viewState.getcurMouseLevelName()).level;
-				// var curM = viewState.getcurMouseSegment();
-				// var item = Levelservice.getElementDetailsById(viewState.getcurMouseLevelName(), curM.id);
-				// if (curM !== false && curM !== true) {
-				// if (tD.type == "SEGMENT") {
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				// } else {
-				// var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				// }
 				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
-				// }
-				// console.log('############')
-				// console.log(viewState.movingBoundarySample)
-				// console.log(p + xOffset)
 			}
 
 		};

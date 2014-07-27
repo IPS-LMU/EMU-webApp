@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Levelservice', function Levelservice(ConfigProviderService, uuid, Soundhandlerservice) {
+	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState) {
 		// shared service object
 		var sServObj = {};
 
-		sServObj.data = {};
-
-		sServObj.maxElementID = 0; // max currently loaded Id
+		sServObj.data = {};                     // holding level data
+		sServObj.maxElementID = 0;              // max currently loaded level data Id
+		sServObj.lasteditArea = null;           // holding current edit area
+		sServObj.lasteditAreaElem = null;       // holding current edit area element
 
 		sServObj.getData = function () {
 			return sServObj.data;
@@ -139,10 +140,147 @@ angular.module('emuwebApp')
 
 		/**
 		 * gets element details by passing in levelName and elemtent id
+		 *   @return Element Details as Object			 
 		 */
 		sServObj.getElementDetailsById = function (name, id) {
 			return sServObj.getElementDetails(name, sServObj.getOrderById(name, id));
+		};		
+
+		/**
+		* Getter for last edit Area Element	
+		*   @return lasteditAreaElem last edit Area Element		
+		*/
+		sServObj.getlasteditAreaElem = function () {
+		  return sServObj.lasteditAreaElem;
 		};
+
+		/**
+		* Setter for last edit Area Element	
+		*   @param lasteditAreaElem last edit Area Element		
+		*/
+		sServObj.setlasteditAreaElem = function (e) {
+		  sServObj.lasteditAreaElem = e;
+		};
+
+		/**
+		* Setter for last edit Area 	
+		*   @param lasteditAreaElem last edit Area 		
+		*/
+		sServObj.setlasteditArea = function (name) {
+		  sServObj.lasteditArea = name;
+		};
+
+		/**
+		* Getter for last edit Area 	
+		*   @return lasteditAreaElem last edit Area 		
+		*/
+		sServObj.getlasteditArea = function () {
+		  return sServObj.lasteditArea;
+		};		
+
+		/**
+		* Getter for id of last edited Element
+		*   @return lasteditAreaElem last edit Area 		
+		*/
+		sServObj.getlastID = function () {
+		  return sServObj.lasteditArea.substr(1);
+		};
+		
+		/**
+		* Remove currently open html textarea (if there is a textarea open)
+		* and set viewState.editing to false.
+		*/
+		sServObj.deleteEditArea = function () {
+		  if (null !== sServObj.getlasteditArea()) {
+		    $('.' + sServObj.getlasteditArea()).remove();
+		  }
+		  viewState.editing = false;
+		};		
+		
+		/**
+		* Calculate values (x,y,width,height) for textarea to open
+		* depending on the current Level type, the current canvas
+		* and the current clicked Element
+		*   @param lastEventClick the current clicked Level Element
+		*   @param element the current html Element to get canvas from
+		*   @param type the current Level type 				
+		*/
+		sServObj.openEditArea = function (lastEventClick, element, type) {
+		  var elem = element.find('canvas').context.getContext('2d');
+		  var clientWidth = elem.canvas.clientWidth;
+		  var clientOffset = elem.canvas.offsetLeft;
+		  var top = elem.canvas.offsetTop;
+		  var height = elem.canvas.clientHeight;
+		  if (type === 'SEGMENT') {
+		    var start = viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
+		    var end = viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
+		    var width = end - start;
+		    if(width < 20) {
+		      viewState.zoomViewPort(true);
+		      sServObj.openEditArea(lastEventClick, element, type);
+		      return;
+		    }
+		    sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[0].value, lastEventClick.id);
+		  } else {
+		    var len = lastEventClick.labels[0].value.length * 10;
+		    var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
+		    var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
+		    var width = end - start;
+		    if(width < 20) {
+		      width = 20;
+		    }
+		    sServObj.createEditArea(element, start + ((end - start)/3), top, width, height, lastEventClick.labels[0].value, lastEventClick.id); 
+		  }
+		  sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[0].value.length);
+		};
+
+		/**
+		* Create a Text Selection in a html Textarea
+		*   @param field the textarea element
+		*   @param start the starting character position as int
+		*   @param end the ending character position as int
+		*/
+		sServObj.createSelection = function (field, start, end) {
+		  if (field.createTextRange) {
+		    var selRange = field.createTextRange();
+		    selRange.collapse(true);
+		    selRange.moveStart('character', start);
+		    selRange.moveEnd('character', end);
+		    selRange.select();
+		  } else if (field.setSelectionRange) {
+		    field.setSelectionRange(start, end);
+		  } else if (field.selectionStart) {
+		    field.selectionStart = start;
+		    field.selectionEnd = end;
+		  }
+		  field.focus();
+		};
+
+		/**
+		* create a html textarea element at given 
+		 *   @param x the x Position
+		 *   @param y the y Position
+		 *   @param width the Width
+		 *   @param height the Height
+		 *   @param label the Text Content of the Textarea
+		 *   @param labelid the id of the element	 
+		*/
+		sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
+		  var textid = '_' + labelid;
+		  element.prepend($('<textarea>').attr({
+		    id: textid,
+		    'class': textid + ' emuwebapp-labelEdit',
+		    'ng-model': 'message',
+		    'autofocus': 'true'
+		   }).css({
+		    'left': Math.round(x + 2) + 'px',
+		    'top': Math.round(y) + 'px',
+		    'width': Math.round(width) - 4 + 'px',
+		    'height': Math.round(height) - 1 + 'px',
+		    'padding-top': Math.round(height / 3 + 1) + 'px'
+		  }).text(label));
+		};
+		
 
 		/**
 		 * insert a new Segment at position
@@ -680,7 +818,6 @@ angular.module('emuwebApp')
 			var minDist = undefined;
 			var sample;
 			var sampleTarget;
-			var position;
 			if (type == "SEGMENT") {
 				sample = segment.sampleStart;
 			} else if (type == "EVENT") {
@@ -696,7 +833,6 @@ angular.module('emuwebApp')
 							return false;
 						}
 					} else {
-
 						if (tIdx < sServObj.data.levels.length - 1) {
 							neighTd = sServObj.data.levels[tIdx + 1];
 						} else {
@@ -710,17 +846,18 @@ angular.module('emuwebApp')
 							sampleTarget = itm.samplePoint;
 						}
 						absDist = Math.abs(sample - sampleTarget);
+
 						if (absDist < absMinDist) {
+						    
 							absMinDist = absDist;
 							minDist = sampleTarget - sample;
-							position = order;
 						}
 					});
 				}
 			});
 			if (minDist !== undefined) {
 				if (type == "SEGMENT") {
-					this.moveBoundry(levelName, segment.id, minDist, position);
+					this.moveBoundary(levelName, segment.id, minDist, 0);
 				} else if (type == "EVENT") {
 					this.movePoint(levelName, segment.id, minDist);
 				}
@@ -731,24 +868,32 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 *  moves a boundary of a given segment
+		 *  
+		 *  @param {string} name The name of the level on which the segment lies.
+		 *  @param {number} id The id of the segment.
+		 *  @param {number} changeTime The time to add or substract.
+		 *  @param {position} The position of the mouse while moving the Boundary 
+		 *                    (i.e. -1 = before first element, 1 = after last element, 0 = in the middle of elements).
+		 *  
 		 */
-		sServObj.moveBoundry = function (name, id, changeTime, position) {
+		sServObj.moveBoundary = function (name, id, changeTime, position) {
 			var orig = sServObj.getElementDetailsById(name, id);
-			var ln = sServObj.getElementNeighbourDetails(name, id);
+			var ln = sServObj.getElementNeighbourDetails(name, id, id);
 			if (position === -1) { // before first element
-				if((orig.sampleStart + changeTime)>0) {
+			    var origRight = ln.right;
+				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
 			        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			}
 			else if (position === 1) { // after last element
-				//orig = sServObj.getLastElement(name);
 				if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
 				}
 			} else {
 			    if(ln.left === undefined) {
-    				if((orig.sampleStart + changeTime)>0) {
+			        var origRight = ln.right;
+    				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
 			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
 	    			}
 			    }
@@ -870,7 +1015,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.calcDistanceToNearesZeroCrossing = function (sample) {
+		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
 
 			// walk right
 			var distRight;

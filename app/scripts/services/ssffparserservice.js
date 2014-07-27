@@ -43,7 +43,7 @@ angular.module('emuwebApp')
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'jso2ssff',
-				'jso': jso
+				'jso': JSON.stringify(jso)
 			}); // Send data to our worker.
 			return defer.promise;
 		};

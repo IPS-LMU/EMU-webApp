@@ -2,13 +2,13 @@
 
 angular.module('emuwebApp')
 	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document, $location,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, Levelservice, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
+		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, LevelService, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
 
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
-		$scope.levServ = Levelservice;
+		$scope.levServ = LevelService;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
@@ -32,11 +32,12 @@ angular.module('emuwebApp')
 		$scope.curBndl = {};
 
 		$scope.lastclickedutt = null;
-		$scope.shortcut = null;
 		$scope.filterText = '';
 		$scope.windowWidth = $window.outerWidth;
 
 		$scope.demoDbName = '';
+		
+		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -46,7 +47,7 @@ angular.module('emuwebApp')
 
 		// bind window resize event
 		angular.element($window).bind('resize', function () {
-			viewState.deleteEditArea();
+			LevelService.deleteEditArea();
 			viewState.setWindowWidth($window.outerWidth);
 			$scope.$digest();
 		});
@@ -142,7 +143,7 @@ angular.module('emuwebApp')
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
 											var annot = parseMess.data;
-											Levelservice.setData(annot);
+											LevelService.setData(annot);
 
 											var lNames = [];
 											annot.levels.forEach(function (l) {
@@ -232,44 +233,6 @@ angular.module('emuwebApp')
 			if (!viewState.getsubmenuOpen()) {
 				$scope.openSubmenu();
 			}
-			// FOR DEVELOPMENT:
-			// $scope.openDemoDBbtnClick('ae');
-			// $scope.aboutBtnClick();
-
-			$scope.shortcut = Object.create(ConfigProviderService.vals.keyMappings);
-
-			// convert int values to char for front end
-			for (var i in $scope.shortcut) {
-				// sonderzeichen space
-				if ($scope.shortcut[i] === 8) {
-					$scope.shortcut[i] = 'BACKSPACE';
-				} else if ($scope.shortcut[i] === 9) {
-					$scope.shortcut[i] = 'TAB';
-				} else if ($scope.shortcut[i] === 13) {
-					$scope.shortcut[i] = 'ENTER';
-				} else if ($scope.shortcut[i] === 16) {
-					$scope.shortcut[i] = 'SHIFT';
-				} else if ($scope.shortcut[i] === 18) {
-					$scope.shortcut[i] = 'ALT';
-				} else if ($scope.shortcut[i] === 27) {
-					$scope.shortcut[i] = 'ESC';
-				} else if ($scope.shortcut[i] === 32) {
-					$scope.shortcut[i] = 'SPACE';
-				} else if ($scope.shortcut[i] === -1) {
-					$scope.shortcut[i] = 'NONE';
-				} else if ($scope.shortcut[i] === 38) {
-					$scope.shortcut[i] = 'ARROW UP';
-				} else if ($scope.shortcut[i] === 40) {
-					$scope.shortcut[i] = 'ARROW DOWN';
-				} else if ($scope.shortcut[i] === 187) {
-					$scope.shortcut[i] = '+';
-				} else if ($scope.shortcut[i] === 189) {
-					$scope.shortcut[i] = '-';
-				} else {
-					$scope.shortcut[i.toString()] = String.fromCharCode($scope.shortcut[i]);
-
-				}
-			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
@@ -286,7 +249,9 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-				ConfigProviderService.vals.spectrogramSettings.window);
+				ConfigProviderService.vals.spectrogramSettings.window,
+				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
+				ConfigProviderService.vals.spectrogramSettings.preEmphasisPerOctaveInDb);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
@@ -372,32 +337,6 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
-		 */
-		$scope.downloadTextGrid = function () {
-			console.log(Iohandlerservice.toTextGrid());
-		};
-
-		/**
-		 *
-		 */
-		$scope.getShortCut = function (name) {
-			if ($scope.shortcut !== null) {
-				if ($scope.shortcut[name] !== null) {
-					if ($scope.shortcut[name] !== '') {
-						return $scope.shortcut[name];
-					} else {
-						return 'NONE';
-					}
-				} else {
-					return 'NONE';
-				}
-			} else {
-				return 'NOT SET';
-			}
-		};
-
-		/**
 		 * Handle click on bundle in side menu. It is
 		 * also used as a general loadBundle method.
 		 * @param bndl object containing name attribute of currently loaded bundle
@@ -469,7 +408,7 @@ angular.module('emuwebApp')
 								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
 								if (validRes === true) {;
 									// set annotation
-									Levelservice.setData(bundleData.annotation);
+									LevelService.setData(bundleData.annotation);
 
 									$scope.curBndl = bndl;
 									viewState.setState('labeling');
@@ -519,40 +458,45 @@ angular.module('emuwebApp')
 		$scope.menuBundleSaveBtnClick = function () {
 			// check if something has changed
 			// if (HistoryService.movesAwayFromLastSave !== 0) { // Commented out FOR DEVELOPMENT!
-			var defer = $q.defer();
-			viewState.somethingInProgress = true;
-			//create bundle json
-			var bundleData = {};
-			viewState.somethingInProgressTxt = 'Creating bundle json...';
-			bundleData.ssffFiles = [];
-			var formants = {};
-			// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-			Ssffdataservice.data.forEach(function (el) {
+			if (viewState.getPermission('saveBndlBtnClick')) {
+				var defer = $q.defer();
+				viewState.somethingInProgress = true;
+				viewState.setState('loadingSaving');
+				//create bundle json
+				var bundleData = {};
+				viewState.somethingInProgressTxt = 'Creating bundle json...';
+				bundleData.ssffFiles = [];
+				var formants = {};
+				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
+				Ssffdataservice.data.forEach(function (el) {
 
-				if (el.ssffTrackName === 'FORMANTS') {
-					formants = el;
-				}
-			});
-
-			if (!$.isEmptyObject(formants)) {
-				Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
-					bundleData.ssffFiles.push({
-						'ssffTrackName': formants.ssffTrackName,
-						'encoding': 'BASE64',
-						'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
-					});
-					$scope.getAnnotationAndSaveBndl(bundleData, defer);
-
-				}, function (errMess) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
-					defer.reject();
+					if (el.ssffTrackName === 'FORMANTS') {
+						formants = el;
+					}
 				});
-			} else {
-				$scope.getAnnotationAndSaveBndl(bundleData, defer);
-			}
 
-			return defer.promise;
-			// } // Commented out FOR DEVELOPMENT!
+				if (!$.isEmptyObject(formants)) {
+					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
+						bundleData.ssffFiles.push({
+							'ssffTrackName': formants.ssffTrackName,
+							'encoding': 'BASE64',
+							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
+						});
+						$scope.getAnnotationAndSaveBndl(bundleData, defer);
+
+					}, function (errMess) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+						defer.reject();
+					});
+				} else {
+					$scope.getAnnotationAndSaveBndl(bundleData, defer);
+				}
+
+				return defer.promise;
+				// } // Commented out FOR DEVELOPMENT!
+			}else{
+				$log.info('Action: menuBundleSaveBtnClick not allowed!');
+			}
 
 		};
 
@@ -562,13 +506,14 @@ angular.module('emuwebApp')
 		 */
 		$scope.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			// annotation
-			bundleData.annotation = Levelservice.getData();
+			bundleData.annotation = LevelService.getData();
 			viewState.somethingInProgressTxt = 'Saving bundle...';
 			Iohandlerservice.saveBundle(bundleData).then(function () {
 				viewState.somethingInProgressTxt = 'Done!';
 				viewState.somethingInProgress = false;
 				HistoryService.movesAwayFromLastSave = 0;
 				defer.resolve();
+				viewState.setState('labeling');
 			}, function (errMess) {
 				// console.log(mess);
 				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
@@ -588,6 +533,28 @@ angular.module('emuwebApp')
 				return true;
 			}
 		};
+		
+		$scope.getEnlarge = function (index) {
+		    var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+			if (viewState.getenlarge() == -1) {
+				return 'auto';
+			} else {
+			    if(len==2) {
+			        if (viewState.getenlarge() == index) {
+				        return '75%';
+        			} else {
+	        			return '25%';
+		        	}			    
+			    }
+			    else {
+			        if (viewState.getenlarge() == index) {
+				        return Math.floor((100/len)*(len-1))+'%';
+        			} else {
+	        			return Math.floor((100/len)/(len-1))+'%';
+		        	}
+		    	}
+			}
+        };
 
 		/**
 		 * returns jso with css defining color dependent
@@ -658,16 +625,16 @@ angular.module('emuwebApp')
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var newName, levelLength;
-				if (Levelservice.data.levels === undefined) {
+				if (LevelService.data.levels === undefined) {
 					newName = 'levelNr0';
 					levelLength = 0;
 				} else {
-					newName = 'levelNr' + Levelservice.data.levels.length;
-					levelLength = Levelservice.data.levels.length;
+					newName = 'levelNr' + LevelService.data.levels.length;
+					levelLength = LevelService.data.levels.length;
 				}
 				var level = {
 					items: [{
-						id: Levelservice.getNewId(),
+						id: LevelService.getNewId(),
 						sampleStart: 0,
 						sampleDur: Soundhandlerservice.wavJSO.Data.length,
 						labels: [{
@@ -678,13 +645,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				Levelservice.addLevel(level, levelLength, viewState.curPerspectiveIdx);
+				LevelService.addLevel(level, levelLength, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
 					'level': level,
-					'id': Levelservice.data.levels.length - 1,
+					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -700,10 +667,10 @@ angular.module('emuwebApp')
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 
-				var newName = 'levelNr' + Levelservice.data.levels.length;
+				var newName = 'levelNr' + LevelService.data.levels.length;
 				var level = {
 					items: [{
-						id: Levelservice.getNewId(),
+						id: LevelService.getNewId(),
 						samplePoint: Soundhandlerservice.wavJSO.Data.length / 2,
 						labels: [{
 							name: newName,
@@ -713,13 +680,13 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'EVENT'
 				};
-				Levelservice.addLevel(level, Levelservice.data.levels.length, viewState.curPerspectiveIdx);
+				LevelService.addLevel(level, LevelService.data.levels.length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'addLevel',
 					'level': level,
-					'id': Levelservice.data.levels.length - 1,
+					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -761,7 +728,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
-				dialogService.open('views/spectroSettings.html', 'SpectsettingsCtrl', '');
+				dialogService.open('views/spectSettings.html', 'spectSettingsCtrl', '');
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -893,7 +860,7 @@ angular.module('emuwebApp')
 			$scope.curBndl = {};
 			$scope.bundleList = [];
 			Soundhandlerservice.wavJSO = {};
-			Levelservice.data = {};
+			LevelService.data = {};
 			Ssffdataservice.data = [];
 			HistoryService.resetToInitState();
 			viewState.setState('noDBorFilesloaded');
@@ -916,7 +883,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea(); // SIC should be in service...
+				LevelService.deleteEditArea();
 				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
 				console.log('action currently not allowed');
@@ -928,7 +895,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomIn = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea(); // SIC should be in service...
+				LevelService.deleteEditArea();
 				viewState.zoomViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -940,7 +907,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomOut = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -952,7 +919,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomLeft = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
 				console.log('action currently not allowed');
@@ -964,7 +931,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomRight = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
 				console.log('action currently not allowed');
@@ -976,7 +943,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdZoomSel = function () {
 			if (viewState.getPermission('zoom')) {
-				viewState.deleteEditArea();
+				LevelService.deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
 				console.log('action currently not allowed');

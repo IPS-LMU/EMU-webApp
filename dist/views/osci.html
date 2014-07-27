@@ -1,12 +1,12 @@
 <div class="emuwebapp-timelineCanvasOuter">
     <div class="emuwebapp-timelineCanvasContainer">
-        <canvas class="emuwebapp-timelineCanvasMain" ng-style="enlargeCanvas" width="2048" height="256"></canvas>
-        <canvas class="emuwebapp-timelineCanvasSSFF" ng-style="enlargeCanvas" width="2048" height="256" drawssff="" ssff-trackname="{{trackName}}"></canvas>
-        <canvas class="emuwebapp-timelineCanvasMarkup" ng-style="enlargeCanvas" width="2048" height="256" mouse-track-and-correction-tool="" ssff-trackname="{{trackName}}"></canvas>
+        <canvas class="emuwebapp-timelineCanvasMain" ng-style="backgroundCanvas" width="2048"></canvas>
+        <canvas class="emuwebapp-timelineCanvasSSFF" ng-style="enlargeCanvas" width="2048" drawssff ssff-trackname="{{trackName}}"></canvas>
+        <canvas class="emuwebapp-timelineCanvasMarkup" ng-style="enlargeCanvas" width="2048" mouse-track-and-correction-tool ssff-trackname="{{trackName}}"></canvas>
     </div>
     <div class="emuwebapp-timelineCanvasButtons">
         <div ng-show="cps.vals.activeButtons.resizePerspectives" class="emuwebapp-levelResizeBtn" enlarge="{{order}}">
-            <img style="cursor: pointer">
+            <img style="cursor: pointer" src="img/resizeBtn.png">
         </div> 
     </div>
 </div>
