@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, Levelservice, HierarchyService) {
+	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, LevelService, HierarchyService) {
 		// Scope data
 		$scope.paths = { possible: [], selected: [] };
 

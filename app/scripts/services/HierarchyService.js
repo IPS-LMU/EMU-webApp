@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HierarchyService', function (ConfigProviderService, Levelservice) {
+	.service('HierarchyService', function (ConfigProviderService, LevelService) {
 		// shared service object
 		var sServObj = {};
 
@@ -65,10 +65,10 @@ angular.module('emuwebApp')
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
-			for (var i=0; i < Levelservice.getData().levels.length; ++i ) {
-				for (var ii=0; ii < Levelservice.getData().levels[i].items.length; ++ii) {
-					if (Levelservice.getData().levels[i].items[ii].id === nodeID) {
-						levelName = Levelservice.getData().levels[i].name;
+			for (var i=0; i < LevelService.getData().levels.length; ++i ) {
+				for (var ii=0; ii < LevelService.getData().levels[i].items.length; ++ii) {
+					if (LevelService.getData().levels[i].items[ii].id === nodeID) {
+						levelName = LevelService.getData().levels[i].name;
 						break;
 					}
 				}
@@ -108,17 +108,17 @@ angular.module('emuwebApp')
 			}
 
 			// Iterate over links to find children
-			for (var li=0; li < Levelservice.getData().links.length; ++li) {
-				if (Levelservice.getData().links[li].fromID === d.id) {
+			for (var li=0; li < LevelService.getData().links.length; ++li) {
+				if (LevelService.getData().links[li].fromID === d.id) {
 					// Iterate over levels to find the object corresponding to d.id
-					for (var l=0; l < Levelservice.getData().levels.length; ++l) {
-						if (Levelservice.getData().levels[l].name !== childLevel) {
+					for (var l=0; l < LevelService.getData().levels.length; ++l) {
+						if (LevelService.getData().levels[l].name !== childLevel) {
 							continue;
 						}
 
-						for (var it=0; it < Levelservice.getData().levels[l].items.length; ++it) {
-							if (Levelservice.getData().levels[l].items[it].id === Levelservice.getData().links[li].toID) {
-								children.push(Levelservice.getData().levels[l].items[it]);
+						for (var it=0; it < LevelService.getData().levels[l].items.length; ++it) {
+							if (LevelService.getData().levels[l].items[it].id === LevelService.getData().links[li].toID) {
+								children.push(LevelService.getData().levels[l].items[it]);
 							}
 						}
 					}
@@ -181,7 +181,7 @@ angular.module('emuwebApp')
 			}
 
 			// Call visit function to establish maxLabelLength
-			/*visit(Levelservice.getData(), function(d) {
+			/*visit(LevelService.getData(), function(d) {
 				totalNodes++;
 				maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
@@ -660,7 +660,7 @@ angular.module('emuwebApp')
 			var svgGroup = baseSvg.append("g");
 
 			// Define the root
-			root = Levelservice.getData().levels[0].items[0];
+			root = LevelService.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
 
