@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 			var viewerWidth = $(document).width();
 			var viewerHeight = $(document).height();
 
-			var tree = d3.layout.tree()
+			var tree = d3.layout.myLayout()
 				.size([viewerHeight, viewerWidth]);
 
 
@@ -612,7 +612,8 @@ angular.module('emuwebApp')
 				// Update the links…
 				var link = svgGroup.selectAll("path.link")
 					.data(links, function(d) {
-						return d.target.id;
+						//return d.target.id;
+						return 's'+d.source.id+'t'+d.target.id;
 					});
 
 				// Enter any new links at the parent's previous position.
