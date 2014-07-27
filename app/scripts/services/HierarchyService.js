@@ -281,8 +281,8 @@ angular.module('emuwebApp')
 			}
 
 			// define the baseSvg, attaching a class for styling and the zoomListener
-			d3.select("#tree-container svg").remove();
-			var baseSvg = d3.select("#tree-container").append("svg")
+			d3.select("#emuwebapp-tree-container svg").remove();
+			var baseSvg = d3.select("#emuwebapp-tree-container").append("svg")
 				.attr("width", viewerWidth)
 				.attr("height", viewerHeight)
 				.attr("class", "overlay")
