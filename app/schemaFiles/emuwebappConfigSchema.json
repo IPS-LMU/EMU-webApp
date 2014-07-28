@@ -229,9 +229,15 @@
 				"window": {
 					"enum": ["BARTLETT", "BARTLETTHANN", "BLACKMAN", "COSINE", "GAUSS", "HAMMING", "HANN", "LANCZOS", "RECTANGULAR", "TRIANGULAR"]
 				},
+				"preEmphasisPerOctaveInDb": {
+					"type": "integer"
+				},
 				"transparency": {
 					"type": "integer"
-				}				
+				},
+				"drawHeatMapColors": {
+					"type": "boolean"
+				}
 			},
 			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false

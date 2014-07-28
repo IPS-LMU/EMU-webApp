@@ -156,7 +156,6 @@ angular.module('emuwebApp')
             parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); // tolerate window/2 alignment issue if at beginning of file
           }
           setupEvent();
-
           primeWorker.postMessage({
             'cmd': 'config',
             'N': scope.vs.spectroSettings.windowLength,
@@ -174,7 +173,9 @@ angular.module('emuwebApp')
             'sampleRate': scope.shs.wavJSO.SampleRate,
             'streamChannels': scope.shs.wavJSO.NumChannels,
             'transparency': scope.cps.vals.spectrogramSettings.transparency,
-            'stream': parseData.buffer
+            'stream': parseData.buffer,
+            'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
+            'preEmphasisPerOctaveInDb': scope.vs.spectroSettings.preEmphasisPerOctaveInDb
           }, [parseData.buffer]);
           primeWorker.postMessage({
             'cmd': 'render'

@@ -60,7 +60,7 @@
         "startBoundaryColor": "#000",
         "endBoundaryColor": "#888",
         "zeroLineColor": "#0DC5FF",
-        "crossHairsColor":  "rgba(255, 0, 0, 0.95)",
+        "crossHairsColor": "rgba(255, 0, 0, 0.95)",
         "transitionTime": 400
     },
     "font": {
@@ -73,7 +73,9 @@
         "rangeTo": 5000,
         "dynamicRange": 70,
         "window": "GAUSS",
-        "transparency": 255        
+        "preEmphasisPerOctaveInDb": 6,
+        "transparency": 255,
+        "drawHeatMapColors": false
     },
     "perspectives": [{
         "name": "default",
