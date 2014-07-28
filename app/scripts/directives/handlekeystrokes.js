@@ -8,7 +8,7 @@ angular.module('emuwebApp')
         $(document).bind('keydown', function (e) {
           if(!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
-            if(code == 8 || code == 9 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
+            if(code == 8 || code == 9 || code == 27 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
               applyKeyCode(code, e);
             }
           }
@@ -677,17 +677,42 @@ angular.module('emuwebApp')
                       var seg = viewState.getcurMouseSegment();
                       var levelname = viewState.getcurMouseLevelName();
                       if (seg !== undefined) {
-                        var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
-                        scope.hists.addObjToUndoStack({
-                          'type': 'ESPS',
-                          'action': 'deleteBoundary',
-                          'name': levelname,
-                          'id': seg.id,
-                          'deletedSegment': deletedSegment
-                        });
-                        // reset to undefined
-                        viewState.setcurMouseSegment(undefined, undefined);
-
+                        if(seg === false) { // before first segment
+                          seg = LevelService.getElementDetails(levelname, 0);
+                          var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
+                          scope.hists.addObjToUndoStack({
+                            'type': 'ESPS',
+                            'action': 'deleteSegments',
+                            'name': levelname,
+                            'id': seg.id,
+                            'length': 1,
+                            'deletedSegment': deletedSegment
+                          });
+                        }
+                        else if(seg === true) { // after last segment
+                          seg = LevelService.getLastElement(levelname);
+                          var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
+                          scope.hists.addObjToUndoStack({
+                            'type': 'ESPS',
+                            'action': 'deleteSegments',
+                            'name': levelname,
+                            'id': seg.id,
+                            'length': 1,
+                            'deletedSegment': deletedSegment
+                          });                          
+                        }
+                        else {
+                            var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
+                            scope.hists.addObjToUndoStack({
+                              'type': 'ESPS',
+                              'action': 'deleteBoundary',
+                              'name': levelname,
+                              'id': seg.id,
+                              'deletedSegment': deletedSegment
+                            });
+                            // reset to undefined
+                            viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                        }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
                       }
@@ -707,13 +732,6 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
-                          /*var ln = LevelService.getElementNeighbourDetails(levelname, seg[0].id, seg[0].id);
-                          if(neighbour.left !== undefined) {
-                              viewState.setcurClickSegment(neighbour.left, neighbour.left.id);
-                          }
-                          else {
-                              viewState.setcurClickSegment(neighbour.right, neighbour.right.id);                          
-                          }*/
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }

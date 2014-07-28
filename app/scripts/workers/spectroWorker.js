@@ -422,7 +422,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 	}
 
 
-	for (var i = 1; i < paint[line].length; i++) {
+	for (var i = 0; i < paint[line].length; i++) {
 
 		var y0 = scaledVal; // !!!! set y0 to previous scaled value
 
