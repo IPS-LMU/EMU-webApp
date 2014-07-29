@@ -1,3 +1,4 @@
+'use strict';
 /**
  * A handy class to draw a spectrom (calculate a fft)
  *
@@ -34,6 +35,20 @@ var myWindow = {
 	TRIANGULAR: 10
 };
 
+// worker scope global config var definitions
+var N;
+var upperFreq;
+var lowerFreq;
+var start;
+var end;
+var myStep;
+var myheight;
+var wFunction;
+var sampleRate;
+var streamChannels;
+var threadSoundBuffer;
+var drawHeatMapColors;
+var preEmphasisPerOctaveInDb;
 
 function FFT(fftSize) {
 	var m, alpha, func, i;
@@ -290,7 +305,7 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			pixelHeight = renderHeight / (c - d - 2);
 
 			// create new picture
-			imageResult = new Uint8ClampedArray(Math.ceil(renderWidth * renderHeight * 4));
+			var imageResult = new Uint8ClampedArray(Math.ceil(renderWidth * renderHeight * 4));
 
 			// draw spectrogram on png image with canvas width
 			// (one column is drawn in drawOfflineSpectogram)
@@ -341,13 +356,13 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 
 function getMagnitude(channel, offset, windowSize, c, d) {
 	// imaginary array of length N
-	imag = new Float32Array(N);
+	var imag = new Float32Array(N);
 
 	// real array of length N
-	real = new Float32Array(N);
+	var real = new Float32Array(N);
 
 	// result array of length N
-	result = new Float32Array(c - d);
+	var result = new Float32Array(c - d);
 
 	// set real values by reading local sound buffer
 	for (var j = 0; j < windowSize; j++) {
@@ -412,9 +427,9 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 	// set upper boundary for linear interpolation
 	var x1 = pixelHeight;
 	// value for first interpolation at lower boundry (height=0)
-	psd = (2 * Math.pow(paint[line][1], 2)) / N;
-	psdLog = 10 * log10(psd / maxPsd);
-	scaledVal = ((psdLog + dynRangeInDB) / dynRangeInDB);
+	var psd = (2 * Math.pow(paint[line][1], 2)) / N;
+	var psdLog = 10 * log10(psd / maxPsd);
+	var scaledVal = ((psdLog + dynRangeInDB) / dynRangeInDB);
 	if (scaledVal > 1) {
 		scaledVal = 1;
 	} else if (scaledVal < 0) {
@@ -451,10 +466,10 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 		if (pixelHeight >= 1) {
 			// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
 			for (var b = 0; b < pixelHeight; b++) {
-				y2 = y0 + (y1 - y0) / x1 * b;
+				var y2 = y0 + (y1 - y0) / x1 * b;
 
 				// calculate corresponding color value for interpolation point [0...255]
-				rgb = 255 - Math.round(255 * y2);
+				var rgb = 255 - Math.round(255 * y2);
 
 				// set internal image buffer to calculated & interpolated value
 				var px = Math.floor(line + cacheOffet);
