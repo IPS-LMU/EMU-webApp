@@ -258,9 +258,8 @@ function FFT(fftSize) {
  * initial function call for calculating and drawing Spectrogram
  * input sample data comes from the buffer "localSoundBuffer"
  * which has to be filled before.
- * In the loop it 
- * - first calculates magnitudes (getMagnitude())
- * - then draws the values on canvas (drawOfflineSpectogram())
+ * - first loop calculates magnitudes to draw (getMagnitude())
+ * - second loop draws values on canvas  (drawOfflineSpectogram())
  *
  * [parameters]
  *
@@ -303,11 +302,15 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			var imageResult = new Uint8ClampedArray(Math.ceil(renderWidth * renderHeight * 4));
 
 			// calculate i FFT runs, save result into paint and set maxPsd while doing so
-			// then draw spectrogram on image buffer
 			for (var i = 0; i < renderWidth; i++) {
 				paint[i] = getMagnitude(0, Math.round(i * myStep) + myOffset, N, c, d);
 				maxPsd = (2 * Math.pow(totalMax, 2)) / N;
-				drawOfflineSpectogram(i, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
+			}
+
+			// draw spectrogram on png image with canvas width
+			// (one column is drawn in drawOfflineSpectogram)
+			for (var j = 0; j < renderWidth; j++) {
+				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
 			}
 
 			// post generated image block with settings back
