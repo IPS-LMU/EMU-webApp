@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
+				scope.$watch('vs.curMouseX', function (newValue, oldValue) {
 					// only repaint if mouse over current level
 					if (viewState.getcurMouseLevelName() === scope.level.name) {
 						//if (!oldValue || !newValue || newValue.id !== oldValue.id) {
@@ -72,7 +72,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.movingBoundary', function () {
-
+				
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
@@ -80,6 +80,7 @@ angular.module('emuwebApp')
 				scope.$watch('hists.movesAwayFromLastSave', function () {
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+
 				}, true);
 
 				//
@@ -99,7 +100,7 @@ angular.module('emuwebApp')
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
-					viewState.setcurMouseSegment(undefined);
+					viewState.setcurMouseSegment(undefined, undefined, undefined);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
