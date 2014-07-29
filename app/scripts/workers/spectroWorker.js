@@ -12,7 +12,7 @@ var executed = false;
 var PI = 3.141592653589793; // value : Math.PI
 var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
 var OCTAVE_FACTOR = 3.321928094887363; // value : 1.0/log10(2)	
-var emphasisPerOctave = 3.9810717055349722; // value : toLinearLevel(6);	
+var emphasisPerOctave; // = 3.9810717055349722; // value : toLinearLevel(6);	
 var sin, cos, n; // vars to hold sin and cos table	
 var internalalpha = 0.16;
 var totalMax = 0;
@@ -81,19 +81,19 @@ function FFT(fftSize) {
 		}
 	}
 
-	/*
-    // choose window function set alpha and execute it on the buffer 
-    //
-	// [parameters]
-	//
-	// type			-> chosen Window Function
-	// alpha		-> alpha for Window Functions (default 0.16)
-	// buffer		-> current fft window data
-	//
-	// [return]
-	//	
-	// calculated FFT Window
-	*/
+	/**
+	 * choose window function set alpha and execute it on the buffer
+	 *
+	 * [parameters]
+	 *
+	 * type			-> chosen Window Function
+	 * alpha		-> alpha for Window Functions (default 0.16)
+	 * buffer		-> current fft window data
+	 *
+	 * [return]
+	 *
+	 * calculated FFT Window
+	 */
 	this.wFunction = function (type, alpha, buffer) {
 		var length = buffer.length;
 		this.alpha = alpha;
@@ -280,6 +280,9 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			// start execution once
 			executed = true;
 
+			// calculate emphasisPerOctave
+			emphasisPerOctave = toLinearLevel(preEmphasisPerOctaveInDb);
+
 			// instance of FFT with windowSize N
 			myFFT = new FFT(N);
 
@@ -335,24 +338,24 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 	};
 })();
 
-/*
-	// calculates Magnitude by 
-	// - reading the current (defined with offset) data from localSoundBuffer
-	// - applying the current Window Function to the selected data
-	// - calculating the actual FFT
-	// - (and saving the biggest value in totalMax)
-	//
-	// [parameters]
-	//
-	// channel			-> Number of Channels
-	// offset			-> Calculated offset in PCM Stream
-	// windowSize		-> Size of Window used for calculation
-	// c				-> Upper Boundry (c = Math.floor(upperFreq/HzStep);)
-	//
-	// [return]
-	//
-	// calculated FFT data as Float32Array
-	*/
+/**
+ * calculates Magnitude by
+ * - reading the current (defined with offset) data from localSoundBuffer
+ * - applying the current Window Function to the selected data
+ * - calculating the actual FFT
+ * - (and saving the biggest value in totalMax)
+ *
+ * [parameters]
+ *
+ * channel			-> Number of Channels
+ * offset			-> Calculated offset in PCM Stream
+ * windowSize		-> Size of Window used for calculation
+ * c				-> Upper Boundry (c = Math.floor(upperFreq/HzStep);)
+ 
+ * [return]
+ 
+ * calculated FFT data as Float32Array
+ */
 
 function getMagnitude(channel, offset, windowSize, c, d) {
 	// imaginary array of length N
@@ -374,8 +377,10 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 
 	// calculate FFT over real and save to result
 	myFFT.fft(real, imag);
+	// calculate magnitude for each spectral component 
 	for (var low = 0; low <= c - d; low++) {
 		result[low] = magnitude(real[low + d], imag[low + d]);
+		result[low] = result[low] * low * emphasisPerOctave; // preemphasis per octave
 		if (totalMax < result[low]) {
 			totalMax = result[low];
 		}
@@ -409,18 +414,18 @@ function convertToHeatmap(minval, maxval, val, colors) {
 
 }
 
-/*
-	// draws a single Line on the Canvas Element
-	// by calculating the RGB value of the current pixel with:
-	// 255-(255*scaled)
-	// function has to be called in an outer loop (according to canvas_width)
-	// the inner loop draws a single line on the canvas (according to canvas_height)
-	//
-	// [parameters]
-	//
-	// line			-> calculated FFT Data
-	//
-	*/
+/**
+ * draws a single Line on the Canvas Element
+ * by calculating the RGB value of the current pixel with:
+ * 255-(255*scaled)
+ * function has to be called in an outer loop (according to canvas_width)
+ * the inner loop draws a single line on the canvas (according to canvas_height)
+ *
+ * [parameters]
+ *
+ * line			-> calculated FFT Data
+ *
+ */
 
 function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHeight, transparency) {
 
@@ -524,22 +529,22 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
  */
 
 // decimal color [0...255] to hex color
-function d2h(d) {
-	return (+d).toString(16);
-}
+// function d2h(d) {
+// 	return (+d).toString(16);
+// }
 
 // used by FFT
-function toLevelInDB(linearLevel) {
-	if (linearLevel < 0) {
-		alert('Linear level argument must be positive.');
-	}
-	return 10 * log10(linearLevel);
-}
+// function toLevelInDB(linearLevel) {
+// 	if (linearLevel < 0) {
+// 		alert('Linear level argument must be positive.');
+// 	}
+// 	return 10 * log10(linearLevel);
+// }
 
 // used by FFT
-function getLevelInDB(linearLevel) {
-	return toLevelInDB(linearLevel);
-}
+// function getLevelInDB(linearLevel) {
+// 	return toLevelInDB(linearLevel);
+// }
 
 // used by FFT
 function toLinearLevel(dbLevel) {
@@ -557,46 +562,46 @@ function magnitude(real, imag) {
 }
 
 // used to calculate current packet
-function getPacketInPercent(packets, percent) {
-	return Math.floor(packets / 100 * percent);
-}
+//function getPacketInPercent(packets, percent) {
+//	return Math.floor(packets / 100 * percent);
+//}
 
-/*
-    // Web Worker Communication
-    //
-    // Steps:
-    // ------
-    //
-    // (1)	Setup Web Worker by calling "config" and corresponding parameter
-    //		N		--> window Size
-    //		freq	--> upper Frequency Boundry
-    //		start	--> start Value in
-    //		end		--> end Value in 
-    //		window	-->	window Function (please use myWindow enum)
-    //		width	--> height of canvas used to display
-    //		height	--> width of canvas used to display
-    //
-    //		- example: primeWorker.postMessage({'cmd': 'config', 'N': N});
-    //
-    //
-    // (2)	Send PCM Configuration Data (ie header of pcm data) to Web Worker by calling "pcm","config"
-    //
-    //		- example:	var data = JSON.stringify(sourceBuffer);
-    //					primeWorker.postMessage({'cmd': 'pcm', 'config': data});		
-    //
-    //
-    // (3)	Send PCM Data by calling "pcm","stream"
-    //
-    //		- example:	primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});		
-    //
-    //
-    // (4)	Start complete calculation by calling "render"
-    //
-    //		- example	primeWorker.postMessage({'cmd': 'render'});
-    //
-    //
-    //	--> Wait for callback of Web Worker sending you Base64 encoded spectrogram image
-    */
+/**
+ * Web Worker Communication
+ *
+ * Steps:
+ * ------
+ *
+ * (1)	Setup Web Worker by calling "config" and corresponding parameter
+ *		N		--> window Size
+ *		freq	--> upper Frequency Boundry
+ *		start	--> start Value in
+ *		end		--> end Value in
+ *		window	-->	window Function (please use myWindow enum)
+ *		width	--> height of canvas used to display
+ *		height	--> width of canvas used to display
+ *
+ *		- example: primeWorker.postMessage({'cmd': 'config', 'N': N});
+ *
+ *
+ * (2)	Send PCM Configuration Data (ie header of pcm data) to Web Worker by calling "pcm","config"
+ *
+ *		- example:	var data = JSON.stringify(sourceBuffer);
+ *					primeWorker.postMessage({'cmd': 'pcm', 'config': data});
+ *
+ *
+ * (3)	Send PCM Data by calling "pcm","stream"
+ *
+ *		- example:	primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});
+ *
+ *
+ * (4)	Start complete calculation by calling "render"
+ *
+ *		- example	primeWorker.postMessage({'cmd': 'render'});
+ *
+ *
+ *	--> Wait for callback of Web Worker sending you Base64 encoded spectrogram image
+ */
 
 self.addEventListener('message', function (e) {
 	var data = e.data;
