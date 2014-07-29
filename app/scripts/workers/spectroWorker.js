@@ -254,23 +254,24 @@ function FFT(fftSize) {
 
 
 
-/* 
-	// initial function call for calculating and drawing Spectrogram
-	// input PCM data is coming from the buffer "localSoundBuffer"
-	// which has to be filled before.
-	// - first loop calculates magnitudes to draw (getMagnitude())
-	// - second loop draws values on canvas  (drawOfflineSpectogram())
-	//
-	// [parameters]
-	//
-	// N			-> window Size
-	// upperFreq	-> upper boundry in Hz
-	// start		-> start time
-	// end			-> end time
-	// cWidth		-> width of canvas element
-	// cHeight		-> height of canvas element
-	// octx			-> Context of Canvas Element used for drawing 
-	*/
+/**
+ * initial function call for calculating and drawing Spectrogram
+ * input sample data comes from the buffer "localSoundBuffer"
+ * which has to be filled before.
+ * In the loop it 
+ * - first calculates magnitudes (getMagnitude())
+ * - then draws the values on canvas (drawOfflineSpectogram())
+ *
+ * [parameters]
+ *
+ * N			-> window Size
+ * upperFreq	-> upper boundry in Hz
+ * start		-> start time
+ * end			-> end time
+ * cWidth		-> width of canvas element
+ * cHeight		-> height of canvas element
+ * octx			-> Context of Canvas Element used for drawing
+ */
 
 var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb) {
 	return function (N, upperFreq, lowerFreq, start, end, renderWidth, renderHeight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb) {
@@ -295,22 +296,18 @@ var parseData = (function (N, upperFreq, lowerFreq, start, end, renderWidth, ren
 			// lower Hz boundary to display
 			d = Math.floor(lowerFreq / HzStep); // -1 for value below display when lower>0
 
-			// calculate i FFT runs, save result into paint and set maxPsd while doing so
-			for (var i = 0; i < renderWidth; i++) {
-				paint[i] = getMagnitude(0, Math.round(i * myStep) + myOffset, N, c, d);
-				maxPsd = (2 * Math.pow(totalMax, 2)) / N;
-			}
-
 			// height between two interpolation points
 			pixelHeight = renderHeight / (c - d - 2);
 
 			// create new picture
 			var imageResult = new Uint8ClampedArray(Math.ceil(renderWidth * renderHeight * 4));
 
-			// draw spectrogram on png image with canvas width
-			// (one column is drawn in drawOfflineSpectogram)
-			for (var j = 0; j < renderWidth; j++) {
-				drawOfflineSpectogram(j, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
+			// calculate i FFT runs, save result into paint and set maxPsd while doing so
+			// then draw spectrogram on image buffer
+			for (var i = 0; i < renderWidth; i++) {
+				paint[i] = getMagnitude(0, Math.round(i * myStep) + myOffset, N, c, d);
+				maxPsd = (2 * Math.pow(totalMax, 2)) / N;
+				drawOfflineSpectogram(i, imageResult, c, d, myDrawOffset, renderWidth, renderHeight, transparency, drawHeatMapColors);
 			}
 
 			// post generated image block with settings back
