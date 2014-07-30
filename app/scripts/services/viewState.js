@@ -583,9 +583,14 @@ angular.module('emuwebApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function (segment) {
-      sServObj.curClickSegments = [];
-      sServObj.curClickSegments.push(segment);
-      sServObj.selectBoundry();
+        if(segment !== null && segment !== undefined) {
+            sServObj.curClickSegments = [];
+            sServObj.curClickSegments.push(segment);
+            sServObj.selectBoundry();
+        }
+        else {
+            sServObj.curClickSegments = [];        
+        }
     };
 
 
@@ -636,7 +641,6 @@ angular.module('emuwebApp')
       } else {
         sServObj.curClickSegments.sort(sServObj.sortbyid);
       }
-      
     };
 
     /**
