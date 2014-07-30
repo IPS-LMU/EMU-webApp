@@ -20,7 +20,6 @@ angular.module('emuwebApp')
 
 
         function applyKeyCode(code, e) {
-          console.log(code);
           scope.$apply(function () {
             // check if mouse has to be in labeler for key mappings
             if (ConfigProviderService.vals.main.catchMouseForKeyBinding) {
@@ -41,7 +40,6 @@ angular.module('emuwebApp')
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + LevelService.getlasteditArea()).val()
                   });
-
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.focusInTextField = false;

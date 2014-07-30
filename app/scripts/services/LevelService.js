@@ -778,7 +778,6 @@ angular.module('emuwebApp')
 					    }
 					    sServObj.insertElementDetails(id, name, pos, pointName, start);
 					}
-					console.log(level.items);
 				}
 			});
 			
@@ -789,7 +788,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.deletePoint = function (name, id) {
-		    console.log(name,id);
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === name && t.type == 'EVENT') {
