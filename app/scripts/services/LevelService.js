@@ -523,7 +523,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.deleteSegmentsInvers = function (name, id, length, deletedSegment) {		
+		sServObj.deleteSegmentsInvers = function (name, id, length, deletedSegment) {
 			var x, insertPoint;
 			insertPoint = 0;
 			angular.forEach(sServObj.data.levels, function (level) {
