@@ -175,7 +175,8 @@ angular.module('emuwebApp')
             'transparency': scope.cps.vals.spectrogramSettings.transparency,
             'stream': parseData.buffer,
             'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
-            'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor
+            'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
+            'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
           }, [parseData.buffer]);
           primeWorker.postMessage({
             'cmd': 'render'
