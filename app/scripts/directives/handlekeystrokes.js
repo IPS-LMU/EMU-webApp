@@ -20,7 +20,6 @@ angular.module('emuwebApp')
 
 
         function applyKeyCode(code, e) {
-          console.log(code);
           scope.$apply(function () {
             // check if mouse has to be in labeler for key mappings
             if (ConfigProviderService.vals.main.catchMouseForKeyBinding) {
@@ -41,7 +40,6 @@ angular.module('emuwebApp')
                     'oldValue': editingElement.labels[0].value,
                     'newValue': $('.' + LevelService.getlasteditArea()).val()
                   });
-
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.focusInTextField = false;
@@ -609,6 +607,7 @@ angular.module('emuwebApp')
                           scope.cursorInTextField();
                         }
                       } else {
+                        console.log(viewState.getcurClickSegments());
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
                       }
                     } else {
@@ -676,6 +675,7 @@ angular.module('emuwebApp')
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                       var seg = viewState.getcurMouseSegment();
                       var levelname = viewState.getcurMouseLevelName();
+                      var type = viewState.getcurMouseLevelType();
                       if (seg !== undefined) {
                         if(seg === false) { // before first segment
                           seg = LevelService.getElementDetails(levelname, 0);
@@ -688,6 +688,8 @@ angular.module('emuwebApp')
                             'length': 1,
                             'deletedSegment': deletedSegment
                           });
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);            
                         }
                         else if(seg === true) { // after last segment
                           seg = LevelService.getLastElement(levelname);
@@ -699,19 +701,38 @@ angular.module('emuwebApp')
                             'id': seg.id,
                             'length': 1,
                             'deletedSegment': deletedSegment
-                          });                          
+                          });   
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);                                   
                         }
                         else {
-                            var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
-                            scope.hists.addObjToUndoStack({
-                              'type': 'ESPS',
-                              'action': 'deleteBoundary',
-                              'name': levelname,
-                              'id': seg.id,
-                              'deletedSegment': deletedSegment
-                            });
-                            // reset to undefined
-                            viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                            if(type==="SEGMENT") {
+                                var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
+                                scope.hists.addObjToUndoStack({
+                                  'type': 'ESPS',
+                                  'action': 'deleteBoundary',
+                                  'name': levelname,
+                                  'id': seg.id,
+                                  'deletedSegment': deletedSegment
+                                });
+                                // reset to undefined
+                                viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                                viewState.setcurClickSegment(deletedSegment.clickSeg);            
+                            }
+                            else {
+                                var deletedPoint = LevelService.deletePoint(levelname, seg.id);
+                                scope.hists.addObjToUndoStack({
+                                  'type': 'ESPS',
+                                  'action': 'deletePoint',
+                                  'name': levelname,
+                                  'start': deletedPoint.samplePoint,
+                                  'id': deletedPoint.id,
+                                  'pointName': deletedPoint.labels[0].value
+                                  
+                                });
+                                // reset to undefined
+                                viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                            }
                         }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -732,6 +753,8 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);                           
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }
