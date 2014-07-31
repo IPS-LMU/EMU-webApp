@@ -495,7 +495,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * rename the label of a level by passing in level name and id
+		 * rename the label of an element by passing in level name and id
 		 */
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
 			sServObj.setElementDetails(levelName, id, newLabelName);
