@@ -41,7 +41,7 @@ angular.module('emuwebApp')
         dynamicRange: -1,
         window: -1,
         drawHeatMapColors: -1,
-        preEmphasisPerOctaveInDb: -1
+        preEmphasisFilterFactor: -1
       };
 
       sServObj.playHeadAnimationInfos = {
@@ -201,7 +201,7 @@ angular.module('emuwebApp')
       sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);
       sServObj.setWindowFunction(win);
       sServObj.spectroSettings.drawHeatMapColors = hm;
-      sServObj.spectroSettings.preEmphasisPerOctaveInDb = preEmph;
+      sServObj.spectroSettings.preEmphasisFilterFactor = preEmph;
     };
 
 

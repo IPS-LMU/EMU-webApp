@@ -36,8 +36,8 @@ angular.module('emuwebApp')
 		$scope.windowWidth = $window.outerWidth;
 
 		$scope.demoDbName = '';
-		
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
+
+		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true : false);
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -251,7 +251,7 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window,
 				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
-				ConfigProviderService.vals.spectrogramSettings.preEmphasisPerOctaveInDb);
+				ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
@@ -493,7 +493,7 @@ angular.module('emuwebApp')
 
 				return defer.promise;
 				// } // Commented out FOR DEVELOPMENT!
-			}else{
+			} else {
 				$log.info('Action: menuBundleSaveBtnClick not allowed!');
 			}
 
@@ -532,28 +532,27 @@ angular.module('emuwebApp')
 				return true;
 			}
 		};
-		
+
 		$scope.getEnlarge = function (index) {
-		    var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 			if (viewState.getenlarge() == -1) {
 				return 'auto';
 			} else {
-			    if(len==2) {
-			        if (viewState.getenlarge() == index) {
-				        return '75%';
-        			} else {
-	        			return '25%';
-		        	}			    
-			    }
-			    else {
-			        if (viewState.getenlarge() == index) {
-				        return Math.floor((100/len)*(len-1))+'%';
-        			} else {
-	        			return Math.floor((100/len)/(len-1))+'%';
-		        	}
-		    	}
+				if (len == 2) {
+					if (viewState.getenlarge() == index) {
+						return '75%';
+					} else {
+						return '25%';
+					}
+				} else {
+					if (viewState.getenlarge() == index) {
+						return Math.floor((100 / len) * (len - 1)) + '%';
+					} else {
+						return Math.floor((100 / len) / (len - 1)) + '%';
+					}
+				}
 			}
-        };
+		};
 
 		/**
 		 * returns jso with css defining color dependent

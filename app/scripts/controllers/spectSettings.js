@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 			'windowLength': $scope.vs.spectroSettings.windowLength,
 			'window': $scope.vs.spectroSettings.window,
 			'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
-			'preEmphasisPerOctaveInDb': $scope.vs.spectroSettings.preEmphasisPerOctaveInDb
+			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor
 		};
 
 		/**
@@ -46,7 +46,7 @@ angular.module('emuwebApp')
 					if ($scope.modalVals.rangeTo % 1 === 0) {
 						if ($scope.modalVals.rangeFrom >= 0) {
 							if ($scope.modalVals.rangeTo <= LevelService.data.sampleRate / 2) {
-								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisPerOctaveInDb);
+								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor);
 								$scope.cancel();
 							} else {
 								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + LevelService.data.sampleRate / 2);
