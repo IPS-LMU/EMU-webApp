@@ -16,4 +16,10 @@
  </div>
 </div>
 
+<ul>
+  <li ng-repeat="levelDef in cps.curDbConfig.levelDefinitions[6].attributeDefinitions">
+    <button ng-click="changeLabels();">{{levelDef.name}}</button>
+  </li>
+</ul>
+
 

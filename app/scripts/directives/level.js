@@ -390,6 +390,10 @@ angular.module('emuwebApp')
 
 					}
 				}
+
+				function changeLabels(name){
+					console.log(name);
+				}
 			}
 		};
 	});

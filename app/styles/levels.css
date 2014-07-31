@@ -9,6 +9,7 @@
     /*float: left;*/
     width: 100%;
     height: 64px;
+    perspective: 800px;
 }
 
 .emuwebapp-levelCanvasContainer {
@@ -17,8 +18,43 @@
     width: calc(100% - 30px);
     height: 100%;
     padding: 5px;
-    /*background-color: #aaf;*/
+    -webkit-animation-name: emuwebapp-levelCanvasContainer;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 2s;
+
+    animation-name: emuwebapp-levelCanvasContainer;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    animation-play-state: paused;
 }
+
+  @-webkit-keyframes emuwebapp-levelCanvasContainer{
+    from { -webkit-transform: rotateX(0deg);    }
+    to   { -webkit-transform: rotateX(-360deg); }
+  }
+
+  /* all other browsers */
+  @keyframes emuwebapp-levelCanvasContainer{
+    from {
+      -moz-transform: rotateX(0deg);
+      -ms-transform: rotateX(0deg);
+      transform: rotateX(0deg);
+    }
+    to {
+      -moz-transform: rotateX(-360deg);
+      -ms-transform: rotateX(-360deg);
+      transform: rotateX(-360deg);
+    }
+  }
+
 
 .emuwebapp-levelCanvas {
     float: left;
