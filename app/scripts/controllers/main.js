@@ -318,9 +318,16 @@ angular.module('emuwebApp')
 						// then get the DBconfigFile
 						viewState.somethingInProgressTxt = 'Loading bundle list...';
 						Iohandlerservice.getBundleList().then(function (bdata) {
-							$scope.bundleList = bdata;
-							// then load first bundle in list
-							$scope.menuBundleClick($scope.bundleList[0]);
+							validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+							if (validRes === true) {
+								$scope.bundleList = bdata;
+								// then load first bundle in list
+								$scope.menuBundleClick($scope.bundleList[0]);
+							} else {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									$scope.resetToInitState();
+								});
+							}
 						});
 
 					} else {
@@ -786,9 +793,16 @@ angular.module('emuwebApp')
 
 							Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
 								var bdata = res.data;
-								$scope.bundleList = bdata;
-								// then load first bundle in list
-								$scope.menuBundleClick($scope.bundleList[0]);
+								validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+								if (validRes === true) {
+									$scope.bundleList = bdata;
+									// then load first bundle in list
+									$scope.menuBundleClick($scope.bundleList[0]);
+								} else {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+										$scope.resetToInitState();
+									});
+								}
 							}, function (err) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 									$scope.resetToInitState();
