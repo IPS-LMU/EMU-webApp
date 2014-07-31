@@ -567,11 +567,11 @@ describe('Service: LevelService', function () {
     // test on mockEmaProsody0024
     // 1 elements on left side
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);     
-    LevelService.deleteSegments('Phonetic', 148, 2);    
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);     
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleDur).toEqual(3088);   //  <- (6838 - 3750)
-    expect(LevelService.getElementDetailsById('Phonetic',150).sampleStart).toEqual(6838);      
+    expect(LevelService.getLevelDetails('TT').level.items.length).toEqual(2);     
+    LevelService.deleteSegments('TT', 41, 1);    
+    expect(LevelService.getLevelDetails('TT').level.items.length).toEqual(1);     
+    expect(LevelService.getElementDetailsById('TT',40).sampleDur).toEqual(2994);
+
     }));       
 
 
