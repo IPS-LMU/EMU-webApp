@@ -41,12 +41,74 @@ describe('Service: HistoryService', function () {
     'position': 0  
   };   
   
-  var mockEpgdorsalJDR10 = {"name":"JDR10","annotates":"0000_ses/JDR10_bndl/JDR10.wav","sampleRate":16000,"levels":[{"name":"Word","type":"ITEM","items":[{"id":2,"labels":[{"name":"Word","value":"rockinskiweg"},{"name":"Kommentar","value":""}]}]},{"name":"Phonetic","type":"SEGMENT","items":[{
-  "id":3,"sampleStart":87710,"sampleDur":929,"labels":[{"name":"Phonetic","value":"O"}]},{
-  "id":0,"sampleStart":88639,"sampleDur":1642,"labels":[{"name":"Phonetic","value":"k"}]},{
-  "id":1,"sampleStart":90281,"sampleDur":761,"labels":[{"name":"Phonetic","value":"H"}]},{
-  "id":4,"sampleStart":91042,"sampleDur":553,"labels":[{"name":"Phonetic","value":"I"}]}]}],"links":[{"fromID":2,"toID":0},{"fromID":2,"toID":1},{"fromID":2,"toID":3},{"fromID":2,"toID":4}]};
-
+  var mockEpgdorsalJDR10 = {
+      "name":"JDR10",
+      "annotates":"0000_ses/JDR10_bndl/JDR10.wav",
+      "sampleRate":16000,
+      "levels":[{
+        "name":"Word",
+        "type":"ITEM",
+        "items":[{
+          "id":2,
+          "labels":[{
+            "name":"Word",
+            "value":"rockinskiweg"
+            },{
+            "name":"Kommentar",
+            "value":""
+            }]
+          }]
+          },{
+          "name":"Phonetic",
+          "type":"SEGMENT",
+          "items":[{
+            "id":3,
+            "sampleStart":87710,
+            "sampleDur":929,
+            "labels":[{
+              "name":"Phonetic",
+              "value":"O"
+            }]
+          },{
+            "id":0,
+            "sampleStart":88639,
+            "sampleDur":1642,
+            "labels":[{
+              "name":"Phonetic",
+              "value":"k"
+            }]
+          },{
+            "id":1,
+            "sampleStart":90281,
+            "sampleDur":761,
+            "labels":[{
+              "name":"Phonetic",
+              "value":"H"
+            }]
+          },{
+            "id":4,
+            "sampleStart":91042,
+            "sampleDur":553,
+            "labels":[{
+              "name":"Phonetic",
+              "value":"I"
+            }]
+          }]
+        }],
+        "links":[{
+          "fromID":2,
+          "toID":0
+        },{
+          "fromID":2,
+          "toID":1
+        },{
+          "fromID":2,
+          "toID":3
+        },{
+          "fromID":2,
+          "toID":4
+        }]
+    };
   /**
    *
    */
@@ -128,7 +190,7 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should undo and redo 2 steps on real data', inject(function (LevelService, HistoryService) {
+  it('should do and undo and redo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
     LevelService.setData(mockEpgdorsalJDR10);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
     HistoryService.addObjToUndoStack(changeObjmoveBy2);
@@ -156,7 +218,7 @@ describe('Service: HistoryService', function () {
  /**
    *
    */
-  it('should undo 2 steps on real data', inject(function (LevelService, HistoryService) {
+  it('should do and undo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.moveBoundary(changeObjmoveBy1.name, changeObjmoveBy1.id, changeObjmoveBy1.movedBy, changeObjmoveBy1.position);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
@@ -202,7 +264,7 @@ describe('Service: HistoryService', function () {
  /**
    *
    */
-  it('should update currentChange Object based on real data', inject(function (LevelService, HistoryService) {
+  it('should do and update 2 steps (moveBoundary) on currentChange Object based on real data', inject(function (LevelService, HistoryService) {
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.getElementDetailsById('Phonetic',3).sampleStart).toEqual(87710); 
     expect(LevelService.getElementDetailsById('Phonetic',3).sampleDur).toEqual(929); 

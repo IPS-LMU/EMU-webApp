@@ -26,6 +26,7 @@ angular.module('emuwebApp')
 					}
 				});
 			});
+			//console.log(JSON.stringify(sServObj.data));
 		};
 		
 		/**
