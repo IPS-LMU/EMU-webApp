@@ -122,6 +122,9 @@ function FFT(fftSize) {
 		case myWindow.GAUSS:
 			this.alpha = this.alpha || 0.25;
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionGauss(length, i, alpha);
 			}
 			break;
@@ -198,6 +201,12 @@ function FFT(fftSize) {
 
 	this.wFunctionTriangular = function (length, index) {
 		return 2 / length * (length / 2 - Math.abs(index - (length - 1) / 2));
+	};
+	/**
+	 * calculate and apply according pre-emphasis on sample 
+	 */
+	this.applyPreEmph = function (curSample, prevSample) {
+		return curSample - 0.97 * prevSample;
 	};
 
 	// the FFT calculation
@@ -380,7 +389,7 @@ function getMagnitude(channel, offset, windowSize, c, d) {
 	// calculate magnitude for each spectral component 
 	for (var low = 0; low <= c - d; low++) {
 		result[low] = magnitude(real[low + d], imag[low + d]);
-		result[low] = result[low] * low * emphasisPerOctave; // preemphasis per octave
+		// result[low] = result[low] * low * emphasisPerOctave; // preemphasis per octave SIC SIC SIC... don't use
 		if (totalMax < result[low]) {
 			totalMax = result[low];
 		}
@@ -486,7 +495,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 						var hmVals = convertToHeatmap(0, 255, rgb, [
 							[255, 0, 0],
 							[0, 255, 0],
-							[0, 0, 0]
+							[0, 0, 255]
 						]);
 						p[index + 0] = hmVals.r;
 						p[index + 1] = hmVals.g;
