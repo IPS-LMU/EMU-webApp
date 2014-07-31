@@ -48,7 +48,7 @@ var sampleRate;
 var streamChannels;
 var threadSoundBuffer;
 var drawHeatMapColors;
-var preEmphasisPerOctaveInDb;
+var preEmphasisFilterFactor = 0.97;
 
 function FFT(fftSize) {
 	var m, alpha, func, i;
@@ -100,22 +100,34 @@ function FFT(fftSize) {
 		switch (type) {
 		case myWindow.BARTLETT:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionBartlett(length, i);
 			}
 			break;
 		case myWindow.BARTLETTHANN:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionBartlettHann(length, i);
 			}
 			break;
 		case myWindow.BLACKMAN:
 			this.alpha = this.alpha || 0.16;
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionBlackman(length, i, alpha);
 			}
 			break;
 		case myWindow.COSINE:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionCosine(length, i);
 			}
 			break;
@@ -130,26 +142,41 @@ function FFT(fftSize) {
 			break;
 		case myWindow.HAMMING:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionHamming(length, i);
 			}
 			break;
 		case myWindow.HANN:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionHann(length, i);
 			}
 			break;
 		case myWindow.LANCZOS:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionLanczos(length, i);
 			}
 			break;
 		case myWindow.RECTANGULAR:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionRectangular(length, i);
 			}
 			break;
 		case myWindow.TRIANGULAR:
 			for (i = 0; i < length; i++) {
+				if (i > 0) {
+					buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+				}
 				buffer[i] *= this.wFunctionTriangular(length, i);
 			}
 			break;
@@ -203,10 +230,10 @@ function FFT(fftSize) {
 		return 2 / length * (length / 2 - Math.abs(index - (length - 1) / 2));
 	};
 	/**
-	 * calculate and apply according pre-emphasis on sample 
+	 * calculate and apply according pre-emphasis on sample
 	 */
 	this.applyPreEmph = function (curSample, prevSample) {
-		return curSample - 0.97 * prevSample;
+		return curSample - preEmphasisFilterFactor * prevSample;
 	};
 
 	// the FFT calculation
@@ -495,7 +522,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 						var hmVals = convertToHeatmap(0, 255, rgb, [
 							[255, 0, 0],
 							[0, 255, 0],
-							[0, 0, 255]
+							[0, 0, 0]
 						]);
 						p[index + 0] = hmVals.r;
 						p[index + 1] = hmVals.g;
@@ -698,12 +725,13 @@ self.addEventListener('message', function (e) {
 		if (data.drawHeatMapColors !== undefined) {
 			drawHeatMapColors = data.drawHeatMapColors;
 		}
-		if (data.preEmphasisPerOctaveInDb !== undefined) {
-			preEmphasisPerOctaveInDb = data.preEmphasisPerOctaveInDb;
+		if (data.preEmphasisFilterFactor !== undefined) {
+			preEmphasisFilterFactor = data.preEmphasisFilterFactor;
 		}
 		break;
 	case 'render':
-		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisPerOctaveInDb);
+		console.log(preEmphasisFilterFactor);
+		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisFilterFactor);
 		break;
 	default:
 		self.postMessage('Unknown command: ' + data.msg);

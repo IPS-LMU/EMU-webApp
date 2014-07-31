@@ -229,8 +229,8 @@
 				"window": {
 					"enum": ["BARTLETT", "BARTLETTHANN", "BLACKMAN", "COSINE", "GAUSS", "HAMMING", "HANN", "LANCZOS", "RECTANGULAR", "TRIANGULAR"]
 				},
-				"preEmphasisPerOctaveInDb": {
-					"type": "integer"
+				"preEmphasisFilterFactor": {
+					"type": "number"
 				},
 				"transparency": {
 					"type": "integer"
