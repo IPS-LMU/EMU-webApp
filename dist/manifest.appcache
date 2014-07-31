@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-07-15T17:08:43.466Z
+# rev 1 - 2014-07-31T14:05:52.603Z
 
 CACHE:
 404.html
@@ -39,14 +39,14 @@ schemaFiles/annotationFileSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
 scripts/9de0f2b5.emuwebAppExternal.min.js
-scripts/ee190032.emuwebApp.min.js
+scripts/d274baa2.emuwebApp.min.js
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js
 scripts/workers/textGridParserWorker.js
 scripts/workers/wavParserWorker.js
 styles/12d92e3d.emuwebAppExternal.min.css
-styles/3f0e4ab6.emuwebApp.min.css
+styles/aeaaafce.emuwebApp.min.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
 views/about.html
@@ -67,8 +67,8 @@ views/osci.html
 views/preview.html
 views/renameLevel.html
 views/saveChanges.html
+views/spectSettings.html
 views/spectro.html
-views/spectroSettings.html
 views/ssffTrack.html
 views/twoDcanvases.html
 views/waitDial.html
