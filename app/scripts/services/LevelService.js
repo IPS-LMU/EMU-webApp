@@ -1023,9 +1023,11 @@ angular.module('emuwebApp')
 					}
 				}
 			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left === undefined)) {
-				for(var i=firstOrder;i<(firstOrder + length);i++) {
-				    var orig = sServObj.getElementDetails(name, i);
-				    if (((orig.sampleStart + changeTime) > 0) && (((orig.sampleDur + orig.sampleStart) + changeTime) < Soundhandlerservice.wavJSO.Data.length)) {
+			    var first = sServObj.getElementDetails(name, firstOrder);
+			    var last = sServObj.getElementDetails(name, (firstOrder + length - 1));
+			    if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < Soundhandlerservice.wavJSO.Data.length)) {
+    				for(var i=firstOrder;i<(firstOrder + length);i++) {
+	    			    var orig = sServObj.getElementDetails(name, i);		    
 				        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 				    }
 				}
