@@ -48,6 +48,12 @@ var sampleRate;
 var streamChannels;
 var threadSoundBuffer;
 var drawHeatMapColors;
+var heatMapColorAnchors = [
+	[255, 0, 0],
+	[0, 255, 0],
+	[0, 0, 0]
+];
+
 var preEmphasisFilterFactor = 0.97;
 
 function FFT(fftSize) {
@@ -519,11 +525,7 @@ function drawOfflineSpectogram(line, p, c, d, cacheOffet, renderWidth, renderHei
 				var index = (px + (py * renderWidth)) * 4;
 				if (drawHeatMapColors) {
 					if (!isNaN(rgb)) { // SIC!!! Why do we have NaNs as rgb vals?
-						var hmVals = convertToHeatmap(0, 255, rgb, [
-							[255, 0, 0],
-							[0, 255, 0],
-							[0, 0, 0]
-						]);
+						var hmVals = convertToHeatmap(0, 255, rgb, heatMapColorAnchors);
 						p[index + 0] = hmVals.r;
 						p[index + 1] = hmVals.g;
 						p[index + 2] = hmVals.b;
@@ -728,9 +730,12 @@ self.addEventListener('message', function (e) {
 		if (data.preEmphasisFilterFactor !== undefined) {
 			preEmphasisFilterFactor = data.preEmphasisFilterFactor;
 		}
+		if (data.heatMapColorAnchors !== undefined) {
+			heatMapColorAnchors = data.heatMapColorAnchors;
+			console.log(heatMapColorAnchors)
+		}
 		break;
 	case 'render':
-		console.log(preEmphasisFilterFactor);
 		parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisFilterFactor);
 		break;
 	default:
