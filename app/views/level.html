@@ -16,10 +16,12 @@
  </div>
 </div>
 
+<div ng-controller="AttrdefCtrl">
 <ul>
   <li ng-repeat="levelDef in cps.curDbConfig.levelDefinitions[6].attributeDefinitions">
-    <button ng-click="changeLabels();">{{levelDef.name}}</button>
+    <button ng-click="changeAttrDef();">{{levelDef.name}}</button>
   </li>
+  <li ng-repeat="at in awesomeThings">{{at}}</li>
 </ul>
-
+</div>
 
