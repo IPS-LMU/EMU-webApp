@@ -16,11 +16,12 @@
  </div>
 </div>
 
-<div>
-  <ul>
-    <li ng-if="levelDef.attributeDefinitions.length > 1" ng-repeat="attrDef in levelDef.attributeDefinitions">
-      <button ng-click="changeCurAttrDef(attrDef.name)">{{attrDef.name}}</button>
-    </li>
-  </ul>
+<div ng-if="levelDef.attributeDefinitions.length > 1" class="emuwebapp-selectAttrDef">
+  <div>
+    <ul>
+      <li ng-repeat="attrDef in levelDef.attributeDefinitions">
+        <button ng-class="" ng-click="changeCurAttrDef(attrDef.name)"></button>
+      </li>
+    </ul>
+  </div>
 </div>
-
