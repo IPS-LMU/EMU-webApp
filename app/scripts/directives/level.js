@@ -194,7 +194,11 @@ angular.module('emuwebApp')
 					// draw name of level and type
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
-					horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					if (levelDetails.name === scope.curAttrDefName) {
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					} else {
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name + ':' + scope.curAttrDefName, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					}
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
 					var segMId = viewState.getcurMouseSegment();
