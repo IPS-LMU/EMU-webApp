@@ -20,7 +20,7 @@
   <div>
     <ul>
       <li ng-repeat="attrDef in levelDef.attributeDefinitions">
-        <button ng-class="" ng-click="changeCurAttrDef(attrDef.name)"></button>
+        <button ng-click="changeCurAttrDef(attrDef.name);" ng-style="getAttrDefBtnColor(attrDef.name)"></button>
       </li>
     </ul>
   </div>

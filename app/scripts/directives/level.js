@@ -22,7 +22,9 @@ angular.module('emuwebApp')
 				var levelCanvasContainer = element.find('div');
 
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-				scope.animate3dclass = '';
+				console.log(scope.levelDef)
+				scope.curAttrDefName = scope.level.name;
+
 
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
@@ -90,20 +92,51 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('curAttrDefName', function () {
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+
+				}, true);
+				//
 				/////////////////
 
+				/**
+				 *
+				 */
 				scope.changeCurAttrDef = function (attrDefName) {
-					console.log(attrDefName);
-					if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
-						console.log('here dude2');
-						$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
+					if (scope.curAttrDefName !== attrDefName) {
+						scope.curAttrDefName = attrDefName;
+						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
+							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
+						}
 					}
 				};
 
+				/**
+				 *
+				 */
 				scope.finishedAnim = function () {
 					// alert('done');
 					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
 				};
+
+				/**
+				 *
+				 */
+				scope.getAttrDefBtnColor = function (attrDefName) {
+					var curColor;
+					if (attrDefName === scope.curAttrDefName) {
+						curColor = {
+							'background-color': 'white',
+						};
+					} else {
+						curColor = {
+							'background-color': 'black',
+						};
+					}
+					return curColor;
+				};
+
 
 
 				scope.updateView = function () {
@@ -195,7 +228,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === levelDetails.name) {
+									if (lab.name === scope.curAttrDefName) {
 										curLabVal = lab.value;
 									}
 								});
@@ -298,7 +331,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === levelDetails.name) {
+									if (lab.name === scope.curAttrDefName) {
 										curLabVal = lab.value;
 									}
 								});

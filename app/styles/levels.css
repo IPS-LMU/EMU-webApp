@@ -22,7 +22,7 @@
 
     @-webkit-keyframes emuwebapp-levelCanvasContainer{
         from { -webkit-transform: rotateX(0deg);    }
-        to   { -webkit-transform: rotateX(-360deg); }
+        to   { -webkit-transform: rotateX(-180deg); }
     }
 
     /* all other browsers */
@@ -33,9 +33,9 @@
           transform: rotateX(0deg);
       }
       to {
-          -moz-transform: rotateX(-360deg);
-          -ms-transform: rotateX(-360deg);
-          transform: rotateX(-360deg);
+          -moz-transform: rotateX(-180deg);
+          -ms-transform: rotateX(-180deg);
+          transform: rotateX(-180deg);
       }
   }
 
@@ -44,12 +44,12 @@
     -webkit-animation-name: emuwebapp-levelCanvasContainer;
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.5s;
+    -webkit-animation-duration: 0.3s;
 
     animation-name: emuwebapp-levelCanvasContainer;
     animation-timing-function: linear;
     animation-iteration-count: 1;
-    animation-duration: 0.5s;
+    animation-duration: 0.3s;
 
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
