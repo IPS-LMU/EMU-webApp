@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function (viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -18,16 +18,22 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.dials = dialogService;
-				
+
+				var levelCanvasContainer = element.find('div');
+
+				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
+				scope.animate3dclass = '';
+
 				scope.backgroundCanvas = {
-				    'background': ConfigProviderService.vals.colors.levelColor
-				}
+					'background': ConfigProviderService.vals.colors.levelColor
+				};
 
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
+
 
 				///////////////
 				// watches
@@ -72,7 +78,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.movingBoundary', function () {
-				
+
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
@@ -85,6 +91,20 @@ angular.module('emuwebApp')
 
 				//
 				/////////////////
+
+				scope.changeCurAttrDef = function (attrDefName) {
+					console.log(attrDefName);
+					if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
+						console.log('here dude2');
+						$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
+					}
+				};
+
+				scope.finishedAnim = function () {
+					// alert('done');
+					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
+				};
+
 
 				scope.updateView = function () {
 					if ($.isEmptyObject(scope.cps)) {
@@ -391,7 +411,7 @@ angular.module('emuwebApp')
 					}
 				}
 
-				function changeLabels(name){
+				function changeLabels(name) {
 					console.log(name);
 				}
 			}

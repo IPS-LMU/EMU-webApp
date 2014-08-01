@@ -8,6 +8,12 @@ angular.module('emuwebApp')
 			replace: true,
 			restrict: 'E',
 			scope: {},
+			controller: function ($scope) {
+				$scope.changeAttrDef = function(){
+					alert('sadf');
+				};
+
+			},
 			link: function postLink(scope, element, attrs) {
 
 
@@ -23,7 +29,7 @@ angular.module('emuwebApp')
 
 				///////////////
 				// watches
-				
+
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
@@ -35,7 +41,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.timelineSize', function () {
-					$timeout(scope.redraw,10);
+					$timeout(scope.redraw, 10);
 				});
 
 				//
@@ -87,9 +93,9 @@ angular.module('emuwebApp')
 
 				//
 				/////////////////////////
-				
+
 				scope.redraw = function () {
-				    drawVpOsciMarkup(scope, ConfigProviderService, true)
+					drawVpOsciMarkup(scope, ConfigProviderService, true)
 				};
 
 
