@@ -70,7 +70,7 @@
 			"name": "Phonetic",
 			"type": "string"
 		}, {
-			"name": "parallelPhoneticLabels",
+			"name": "UTF-8",
 			"type": "string"
 		}]
 	}, {

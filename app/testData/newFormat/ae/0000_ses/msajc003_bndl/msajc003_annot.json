@@ -415,7 +415,7 @@
 				"name": "Phonetic",
 				"value": "V"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -426,7 +426,7 @@
 				"name": "Phonetic",
 				"value": "m"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -437,7 +437,7 @@
 				"name": "Phonetic",
 				"value": "V"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -448,7 +448,7 @@
 				"name": "Phonetic",
 				"value": "N"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -459,7 +459,7 @@
 				"name": "Phonetic",
 				"value": "s"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -470,7 +470,7 @@
 				"name": "Phonetic",
 				"value": "t"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -481,7 +481,7 @@
 				"name": "Phonetic",
 				"value": "H"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -492,7 +492,7 @@
 				"name": "Phonetic",
 				"value": "@:"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -503,7 +503,7 @@
 				"name": "Phonetic",
 				"value": "f"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -514,7 +514,7 @@
 				"name": "Phonetic",
 				"value": "r"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -525,7 +525,7 @@
 				"name": "Phonetic",
 				"value": "E"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -536,7 +536,7 @@
 				"name": "Phonetic",
 				"value": "n"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -547,7 +547,7 @@
 				"name": "Phonetic",
 				"value": "z"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -558,7 +558,7 @@
 				"name": "Phonetic",
 				"value": "S"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -569,7 +569,7 @@
 				"name": "Phonetic",
 				"value": "i:"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -580,7 +580,7 @@
 				"name": "Phonetic",
 				"value": "w"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -591,7 +591,7 @@
 				"name": "Phonetic",
 				"value": "@"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -602,7 +602,7 @@
 				"name": "Phonetic",
 				"value": "z"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -613,7 +613,7 @@
 				"name": "Phonetic",
 				"value": "k"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -624,7 +624,7 @@
 				"name": "Phonetic",
 				"value": "H"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -635,7 +635,7 @@
 				"name": "Phonetic",
 				"value": "@"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -646,7 +646,7 @@
 				"name": "Phonetic",
 				"value": "n"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -657,7 +657,7 @@
 				"name": "Phonetic",
 				"value": "s"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -668,7 +668,7 @@
 				"name": "Phonetic",
 				"value": "I"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -679,7 +679,7 @@
 				"name": "Phonetic",
 				"value": "d"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -690,7 +690,7 @@
 				"name": "Phonetic",
 				"value": "@"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -701,7 +701,7 @@
 				"name": "Phonetic",
 				"value": "db"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -712,7 +712,7 @@
 				"name": "Phonetic",
 				"value": "j"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -723,7 +723,7 @@
 				"name": "Phonetic",
 				"value": "u:"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -734,7 +734,7 @@
 				"name": "Phonetic",
 				"value": "dH"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -745,7 +745,7 @@
 				"name": "Phonetic",
 				"value": "@"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -756,7 +756,7 @@
 				"name": "Phonetic",
 				"value": "f"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -767,7 +767,7 @@
 				"name": "Phonetic",
 				"value": "@"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}, {
@@ -778,7 +778,7 @@
 				"name": "Phonetic",
 				"value": "l"
 			}, {
-				"name": "parallelPhoneticLabels",
+				"name": "UTF-8",
 				"value": "???"
 			}]
 		}]
