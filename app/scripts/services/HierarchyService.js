@@ -27,7 +27,68 @@ angular.module('emuwebApp')
 				}
 			}
 			return parents;
-		}
+		};
+
+		/**
+		 * Calculate the weights (widths) of all nodes bottom-up
+		 */
+		sServObj.calculateWeightsBottomUp = function () {
+			var bottomLevel;
+			var i, ii, iii;
+
+			// Iterate through levels bottom-up
+			for (i=0; i<sServObj.selectedPath.length; ++i) {
+				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
+				level._weight = 0;
+
+				for (ii=0; ii<level.items.length; ++ii) {
+					var itemWeight = level.items[ii]._weight;
+					if (itemWeight === 0) {
+						itemWeight = 1;
+						level.items[ii]._weight = 1;
+					}
+
+					if (typeof level.items[ii]._parents !== 'undefined') {
+						for (iii=0; iii<level.items[ii]._parents.length; ++iii) {
+							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
+						}
+					}
+					console.debug ('Increasing weight of level' , level.name, ':', level._weight, '+',itemWeight);
+					level._weight += itemWeight;
+				}
+			}
+
+
+			// Iterate through levels top-down
+			for (i=sServObj.selectedPath.length-1; i>=0; --i) {
+				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
+				var itemSize = 20;
+				
+
+				console.debug(level.name, level._weight);
+				var currentX = -itemSize*level._weight/2;
+
+				for (ii=0; ii<level.items.length; ++ii) {
+					if (typeof level.items[ii]._parents === 'undefined') {
+						level.items[ii].x = 0;
+					} else {
+						level.items[ii].x = currentX + itemSize * level.items[ii]._weight/2
+						//level.items[ii].x = currentX;
+						currentX += itemSize * level.items[ii]._weight;
+
+						//if (level.items[ii]._parents.length === 1) {
+						//	level.items[ii].x = level.items[ii]._parents[0].x + 20 * level.items[ii]._weight;
+						//} else {
+						//	level.items[ii].x = level.items[ii]._parents[0].x + 
+						//}
+					}
+
+					//console.debug(level.items[ii]._weight, level._weight);
+					//level.items[ii].x = 20*  level.items[ii]._weight / level._weight;
+					//level.items[ii]._levelWeight = level._weight;
+				}
+			}
+		};
 
 		/**
 		 * Recursively find all paths through the hierarchy of levels.
@@ -474,6 +535,11 @@ angular.module('emuwebApp')
 			}
 
 			function update(source) {
+
+				//
+
+
+
 				// Compute the new height, function counts total children of root node and sets tree height accordingly.
 				// sServObj prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
 				// sServObj makes the layout more consistent.
@@ -492,19 +558,26 @@ angular.module('emuwebApp')
 					}
 				};
 				childCount(0, root);
+
 				var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
 				tree = tree.size([newHeight, viewerWidth]);
 
 				// Compute the new tree layout.
 				var nodes = tree.nodes(root).reverse(),
 					links = tree.links(nodes);
+				
+				sServObj.calculateWeightsBottomUp();
 
 				// Set widths between levels based on maxLabelLength.
 				nodes.forEach(function(d) {
-					d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+					d.y = (d.depth *(maxLabelLength * 10)); //maxLabelLength * 10px
 					// alternatively to keep a fixed scale one can set a fixed depth per level
 					// Normalize for fixed-depth by commenting out below line
 					// d.y = (d.depth * 500); //500px per level.
+					
+					//console.debug(d);
+					//d.x = 20* d._weight / d._levelWeight;
+					//level.items[ii].x = 20*  level.items[ii]._weight / level._weight;
 				});
 
 				// Update the nodes…

@@ -6329,10 +6329,12 @@
       root.depth = 0;
       while ((node = stack.pop()) != null) {
 
-	if (node.visited !== true) {
+	if (node._visited !== true) {
 		nodes.push(node);
-		node.visited = true;
+		node._visited = true;
 	}
+
+	node._weight = 0;
 
         if ((childs = children.call(hierarchy, node, node.depth)) && (n = childs.length)) {
           var n, childs, child;
@@ -6342,11 +6344,12 @@
 	            child.parent = node;
 
 
-	if (typeof child.parents === 'undefined') {
-		child.parents = [node];
+	if (typeof child._parents === 'undefined') {
+		child._parents = [node];
 	} else {
-		child.parents.push(node);
+		child._parents.push(node);
 	}
+
 
             child.depth = node.depth + 1;
           }
@@ -9303,13 +9306,25 @@ d3.layout.myLayout = function() {
     }
     */
 
+	/// ....
+
+	//
+	
+
+	//
+	// Despite the name, the x property of nodes is their vertical position
+
 	for ( var x= 0; x<nodes.length; ++x) {
 		nodes[x].x = 15*x;
+
+	/*	for (var y=0; y < nodes[x]._parents.length; ++y) {
+			nodes[x]._parents[y]._weight += 1/nodes[x]._parents.length;
+		}*/
 	}
 
 	for ( var x= 0; x<nodes.length; ++x) {
-		if (nodes[x].parents && nodes[x].parents.length === 2) {
-			nodes[x].x = nodes[x].parents[0].x + (nodes[x].parents[1].x - nodes[x].parents[0].x) / 2;
+		if (nodes[x]._parents && nodes[x]._parents.length === 2) {
+			nodes[x].x = nodes[x]._parents[0].x + (nodes[x]._parents[1].x - nodes[x]._parents[0].x) / 2;
 		}
 	}
 
