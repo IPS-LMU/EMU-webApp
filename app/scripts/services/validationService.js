@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 
 		var schemasJsos = [];
 
-		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema'];
+		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema','bundleListSchema'];
 
 		/**
 		 *

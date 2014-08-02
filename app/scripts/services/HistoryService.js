@@ -103,11 +103,18 @@ angular.module('emuwebApp')
 						break;
 					case 'insertPoint':
 						if (applyOldVal) {
-							LevelService.insertPointInvers(cur.name, cur.start, cur.pointName);
+							LevelService.deletePoint(cur.name, cur.id);
 						} else {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
+					case 'deletePoint':
+						if (applyOldVal) {
+							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
+						} else {
+							LevelService.deletePoint(cur.name, cur.id);
+						}
+						break;						
 					case 'expandSegments':
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
@@ -183,7 +190,7 @@ angular.module('emuwebApp')
 			// empty redo stack
 			redoStack = [];
 			var tmpObj = {};
-			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.id + '#' + obj.order);
+			var dataKey = String(obj.type + '#' + obj.action + '#' + obj.name + '#' + obj.id);
 			tmpObj[dataKey] = angular.copy(obj);
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
@@ -192,14 +199,12 @@ angular.module('emuwebApp')
 			}
 			// reset curChangeObj
 			curChangeObj = {};
-			// console.log(undoStack);
 
 		};
 
 		// undo
 		sServObj.undo = function () {
 			if (undoStack.length > 0) {
-				// console.log('##########UNDO');
 				// add to redo stack
 				var oldChangeObj = angular.copy(undoStack[undoStack.length - 1]);
 				redoStack.push(oldChangeObj);
@@ -213,7 +218,6 @@ angular.module('emuwebApp')
 
 		// redo
 		sServObj.redo = function () {
-			// console.log('##########REDO');
 			if (redoStack.length > 0) {
 				var oldChangeObj = angular.copy(redoStack[redoStack.length - 1]);
 				undoStack.push(oldChangeObj);

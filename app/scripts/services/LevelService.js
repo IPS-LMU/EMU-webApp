@@ -73,12 +73,12 @@ angular.module('emuwebApp')
 		/**
 		 * gets element order by passing in elemtent id
 		 */
-		sServObj.getOrderById = function (name, id) {
-			var ret = null;
+		sServObj.getOrderById = function (name, eid) {
+			var ret = undefined;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
-					level.items.forEach(function (element, num) {
-						if (element.id == id) {
+					level.items.forEach(function (e, num) {
+						if (e.id === eid) {
 							ret = num;
 						}
 					});
@@ -137,13 +137,40 @@ angular.module('emuwebApp')
 			return details;
 		};
 
+		/**
+		 * get next Element in order
+		 */
+		sServObj.getNextElement = function (name, id) {
+			var details = null;
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element, num) {
+						if (element.id == id) {
+							details = level.items[num+1];
+						}
+					});
+				}
+			});
+			return details;
+		};
+
 
 		/**
 		 * gets element details by passing in levelName and elemtent id
 		 *   @return Element Details as Object			 
 		 */
 		sServObj.getElementDetailsById = function (name, id) {
-			return sServObj.getElementDetails(name, sServObj.getOrderById(name, id));
+			var details = null;
+			angular.forEach(sServObj.data.levels, function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element) {
+						if (element.id == id) {
+							details = element;
+						}
+					});
+				}
+			});
+			return details;
 		};		
 
 		/**
@@ -288,15 +315,26 @@ angular.module('emuwebApp')
 		sServObj.insertElementDetails = function (id, levelname, position, labelname, start, duration) {
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
-					var newElement = angular.copy(level.items[0]);
-					newElement.id = id;
-					newElement.labels[0].value = labelname;
 					if (level.type == 'SEGMENT') {
-						newElement.sampleStart = start;
-						newElement.sampleDur = duration;
+					    var newElement = {
+    						id: id,
+	    					sampleStart: start,
+		    				sampleDur: duration,
+			    			labels: [{
+				    			name: levelname,
+					    		value: labelname
+						    }]
+    					};
 					} else if (level.type == 'EVENT') {
-						newElement.samplePoint = start;
-					}
+	    				var newElement = {
+		    				id: id,
+			    			samplePoint: start,
+				    		labels: [{
+					    		name: levelname,
+						    	value: labelname
+    						}]
+	    				};
+		    			}
 					level.items.splice(position, 0, newElement);	
 				}
 			});
@@ -373,6 +411,12 @@ angular.module('emuwebApp')
 		    var level = sServObj.getLevelDetails(levelname).level;
 			var event = level.items[0];
 			var nearest = false;
+			if(level.items.length==0) {
+			    return {
+				    evtr: undefined,
+    				nearest: undefined
+	    		};			
+			}
 			if (level.type === 'SEGMENT') {
 				angular.forEach(level.items, function (evt, index) {
 					if (pcm >= evt.sampleStart) {
@@ -483,43 +527,42 @@ angular.module('emuwebApp')
 			insertPoint = 0;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
-					if (level.type === 'SEGMENT') {
-						insertPoint = deletedSegment.order;
-						for (x in deletedSegment.segments) {
-							level.items.splice(insertPoint++, 0, deletedSegment.segments[x]);
-						}
-
+					insertPoint = deletedSegment.order;
+					for (x in deletedSegment.segments) {
+						level.items.splice(insertPoint++, 0, deletedSegment.segments[x]);
 					}
 				}
 			});
 			var lastNeighbours = sServObj.getElementNeighbourDetails(name, deletedSegment.segments[0].id, deletedSegment.segments[deletedSegment.segments.length -1 ].id);
-			if(lastNeighbours.left !== undefined) {
-    			sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
-    		}
-    		else {
-    		    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft) , (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
-    		}
-    		if(lastNeighbours.right !== undefined) {
-    			sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeRight) , (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
-    		}
-    		else {
-    		    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
-    		}
+			
+			if((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
+			}
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft) , (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
+			}			
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
+			
+			}	
+			else {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, (lastNeighbours.right.sampleStart + deletedSegment.timeRight) , (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
+			}		
 		};
 
 		/**
 		 *
 		 */
 		sServObj.deleteSegments = function (name, id, length) {
+		    var firstSegment = sServObj.getElementDetailsById(name, id);
 		    var firstOrder = sServObj.getOrderById(name, id);
-		    var firstSegment = sServObj.getElementDetails(name, firstOrder);
-		    var lastSegment = sServObj.getElementDetails(name, firstOrder + length - 1);
+		    var lastSegment = sServObj.getElementDetails(name, (firstOrder+length-1));
 			var lastNeighbours = sServObj.getElementNeighbourDetails(name, firstSegment.id, lastSegment.id);
-
 			var timeLeft = 0;
 			var timeRight = 0;
 			var deleteOrder = null;
 			var deletedSegment = null;
+			var clickSeg = null;
 			
 			for(var i=firstOrder;i<(firstOrder + length);i++) {
 			    timeLeft += sServObj.getElementDetails(name, i).sampleDur;
@@ -542,19 +585,24 @@ angular.module('emuwebApp')
 				}
 			});
 			
-			if (lastNeighbours.left !== undefined) {
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
-			}
-			else {
-			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
-			}
-			if (lastNeighbours.right !== undefined) {
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
-			}
-			else {
+			if((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
 			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeRight));
+			    clickSeg = lastNeighbours.left;
 			}
-			return { order: deleteOrder, segments: deletedSegment, timeLeft: timeLeft, timeRight: timeRight};
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
+			    clickSeg = lastNeighbours.right;
+			}			
+			else if((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
+			    // nothing left to do level empty now
+			    viewState.setcurMouseSegment(undefined,undefined,undefined);
+			}	
+			else {
+			    sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
+			    sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
+			    clickSeg = lastNeighbours.left;
+			}						
+			return { order: deleteOrder, segments: deletedSegment, timeLeft: timeLeft, timeRight: timeRight, clickSeg: clickSeg};
 		};
 
 		/**
@@ -623,72 +671,82 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					if (start == end) {
-					    if(ids === undefined) {
-					        ids = [];
-					        ids[0] = sServObj.getNewId();
+					    if(level.items.length == 0) { // if on an empty level
+					        return {ret: false, ids: ids};
 					    }
-						var startID = -1;
-						if (start < level.items[0].sampleStart) { // before first segment
-							var diff = level.items[0].sampleStart - start;
-							sServObj.insertElementDetails(ids[0], name, 0, newLabel, start, diff);
-						} else if (start > (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur)) { // after last segment
-							var newStart = (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur) + 1;
-							sServObj.insertElementDetails(ids[0], name, level.items.length, newLabel, newStart, start - newStart);
-						} else {
-							angular.forEach(level.items, function (evt, id) {
-								if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
-									startID = id;
-								}
-								if (evt.sampleStart == start) {
-									ret = false;
-								}
-								if (evt.sampleStart + evt.sampleDur == start) {
-									ret = false;
-								}
-							});
-							if (ret) {
-								var diff = start - level.items[startID].sampleStart;
-								sServObj.insertElementDetails(ids[0], name, startID + 1, newLabel, start, level.items[startID].sampleDur - diff);
-								level.items[startID].sampleDur = diff;
-							}
+					    else { // if not on an empty level
+    					    if(ids === undefined) {
+	    				        ids = [];
+		    			        ids[0] = sServObj.getNewId();
+			    		    }
+				    		var startID = -1;
+					    	if (start < level.items[0].sampleStart) { // before first segment
+						    	var diff = level.items[0].sampleStart - start;
+							    sServObj.insertElementDetails(ids[0], name, 0, newLabel, start, diff);
+    						} else if (start > (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur)) { // after last segment
+	    						var newStart = (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur);
+		    					sServObj.insertElementDetails(ids[0], name, level.items.length, newLabel, newStart, start - newStart);
+			    			} else {
+				    			angular.forEach(level.items, function (evt, id) {
+					    			if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
+						    			startID = id;
+							    	}
+								    if (evt.sampleStart == start) {
+    									ret = false;
+	    							}
+		    						if (evt.sampleStart + evt.sampleDur == start) {
+			    						ret = false;
+				    				}
+					    		});
+						    	if (ret) {
+							    	var diff = start - level.items[startID].sampleStart;
+								    sServObj.insertElementDetails(ids[0], name, startID + 1, newLabel, start, level.items[startID].sampleDur - diff);
+    								level.items[startID].sampleDur = diff;
+	    						}
+		    				}
 						}
 					} else {
 					    if(ids === undefined) {
-					        ids = [];
-					        ids[0] = sServObj.getNewId();
-					        ids[1] = sServObj.getNewId();
-					    }					
-						if (end < level.items[0].sampleStart) { // before first segment
-							var diff = level.items[0].sampleStart - end;
-							var diff2 = end - start;
-							sServObj.insertElementDetails(ids[0], name, 0, newLabel, end, diff);
-							sServObj.insertElementDetails(ids[1], name, 0, newLabel, start, diff2);
+    				        ids = [];
+	    			        ids[0] = sServObj.getNewId();
+		    		        ids[1] = sServObj.getNewId();
+		    		    }					
+					    if(level.items.length == 0) { // if on an empty level
+					    	sServObj.insertElementDetails(ids[0], name, 0, newLabel, start, (end-start));
+					    }	
+					    else { // if not on an empty level				
+				    		if (end < level.items[0].sampleStart) { // before first segment
+					    		var diff = level.items[0].sampleStart - end;
+						    	var diff2 = end - start;
+							    sServObj.insertElementDetails(ids[0], name, 0, newLabel, end, diff);
+    							sServObj.insertElementDetails(ids[1], name, 0, newLabel, start, diff2);
 
-						} else if (start > (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur)) { // after last segment
-							var diff = start - (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur);
-							var diff2 = end - start;
-							var len = level.items.length;
-							sServObj.insertElementDetails(ids[0], name, len, newLabel, (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur), diff);
-							sServObj.insertElementDetails(ids[1], name, len + 1, newLabel, start, diff2);
-						} else { // in the middle			
-							var startID = -1;
-							var endID = -1;
-							angular.forEach(level.items, function (evt, id) {
-								if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
-									startID = id;
-								}
-								if (end >= evt.sampleStart && end <= (evt.sampleStart + evt.sampleDur)) {
-									endID = id;
-								}
-							});
-							ret = (startID === endID);
-							if (startID === endID) {
-								var diff = start - level.items[startID].sampleStart;
-								var diff2 = end - start;
-								sServObj.insertElementDetails(ids[0], name, startID + 1, newLabel, start, diff2);
-								sServObj.insertElementDetails(ids[1], name, startID + 2, newLabel, end, level.items[startID].sampleDur - diff - diff2);
-								level.items[startID].sampleDur = diff;
-							}
+    						} else if (start > (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur)) { // after last segment
+	    						var diff = start - (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur);
+		    					var diff2 = end - start;
+			    				var len = level.items.length;
+				    			sServObj.insertElementDetails(ids[0], name, len, newLabel, (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur), diff);
+					    		sServObj.insertElementDetails(ids[1], name, len + 1, newLabel, start, diff2);
+						    } else { // in the middle			
+							    var startID = -1;
+    							var endID = -1;
+	    						angular.forEach(level.items, function (evt, id) {
+		    						if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
+			    						startID = id;
+				    				}
+					    			if (end >= evt.sampleStart && end <= (evt.sampleStart + evt.sampleDur)) {
+						    			endID = id;
+							    	}
+    							});
+	    						ret = (startID === endID);
+		    					if (startID === endID && startID !== -1) {
+			    					var diff = start - level.items[startID].sampleStart;
+				    				var diff2 = end - start;
+					    			sServObj.insertElementDetails(ids[0], name, startID + 1, newLabel, start, diff2);
+						    		sServObj.insertElementDetails(ids[1], name, startID + 2, newLabel, end, level.items[startID].sampleDur - diff - diff2);
+							    	level.items[startID].sampleDur = diff;
+    							}
+	    					}
 						}
 					}
 				}
@@ -702,6 +760,7 @@ angular.module('emuwebApp')
 		sServObj.insertPoint = function (name, start, pointName, id) {
 			var ret = false;
 			var found = false;
+			var pos = undefined;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name && level.type === 'EVENT') {
 					var last = level.items[0].samplePoint;
@@ -709,41 +768,35 @@ angular.module('emuwebApp')
 					    if(Math.floor(start) === Math.floor(evt.samplePoint)) {
 					        found = true;
 					    }
+					    if (start > evt.samplePoint) {
+					        pos = order+1;
+					    }
 					});
 					if(!found) {
-					    angular.forEach(level.items, function (evt, order) {
-					    	if (!ret) {
-						    	if (start < last && (Math.floor(start) !== Math.floor(evt.samplePoint))) {
-						    	    if(id===undefined) {
-						    	        id = [];
-						    	        id[0] = sServObj.getNewId();
-						    	    }
-							    	sServObj.insertElementDetails(id, name, order - 1, pointName, start);
-								    ret = true;
-    							}
-	    						last = evt.samplePoint;
-		    				}
-    					});
+						if(id===undefined) {
+						    id = sServObj.getNewId();
+					    }
+					    sServObj.insertElementDetails(id, name, pos, pointName, start);
 					}
 				}
 			});
-			return {ret: ret, id: id};
+			
+			return {ret: !found, id: id};
 		};
 
 		/**
 		 *
 		 */
-		sServObj.insertPointInvers = function (name, start, pointName) {
+		sServObj.deletePoint = function (name, id) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === name && t.type == 'EVENT') {
 					var last = 0;
 					angular.forEach(t.items, function (evt, order) {
 						if (!ret) {
-							if (start == evt.samplePoint) {
+							if (id == evt.id) {
+							    ret = evt;
 								t.items.splice(order, 1);
-								//sServObj.lowerId(1);
-								ret = true;
 							}
 						}
 					});
@@ -762,6 +815,7 @@ angular.module('emuwebApp')
 			var last = null;
 			var retOrder = null;
 			var retEvt = null;
+			var clickSeg = null;
 			var toDelete = sServObj.getElementDetailsById(name, id);
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
@@ -773,19 +827,18 @@ angular.module('emuwebApp')
 								level.items.splice(order, 1);
 								retOrder = order;
 								retEvt = evt;
+								clickSeg = last;								
 							}
-						} else {
-							if (evt.samplePoint == toDelete.samplePoint) {
-								level.items.splice(order, 1);
-								retOrder = order;
-								retEvt = evt;
-							}
-						}
+						} 
 						last = evt;
 					});
+			        if (clickSeg == null) {
+			            clickSeg = level.items[0];
+        			}					
 				}
 			});
-			return { order: retOrder, event: retEvt };
+
+			return { order: retOrder, event: retEvt, clickSeg: clickSeg };
 		};
 
 		/**
@@ -882,8 +935,15 @@ angular.module('emuwebApp')
 			var ln = sServObj.getElementNeighbourDetails(name, id, id);
 			if (position === -1) { // before first element
 			    var origRight = ln.right;
-				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
-			        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+			    if(origRight!==undefined) {
+				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
+			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+				    }
+				}
+				else {
+				    if((orig.sampleStart + changeTime)>0 && (orig.sampleDur - changeTime)>=0 && (orig.sampleStart + orig.sampleDur + changeTime)<=Soundhandlerservice.wavJSO.Data.length) {
+			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+				    }				
 				}
 			}
 			else if (position === 1) { // after last element
@@ -893,8 +953,15 @@ angular.module('emuwebApp')
 			} else {
 			    if(ln.left === undefined) {
 			        var origRight = ln.right;
-    				if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
-			            sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+			        if(origRight!==undefined) {
+    				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + changeTime)<origRight.sampleStart)) {
+			                sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+    	    			}
+	    			}
+	    			else {
+    				    if(((orig.sampleStart + changeTime)>0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length)) {
+			                sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));	  
+    	    			}	    			
 	    			}
 			    }
 			    else {
@@ -924,7 +991,7 @@ angular.module('emuwebApp')
 		    var lastSegment = sServObj.getElementDetails(name, firstOrder + length - 1);
 			var lastNeighbours = sServObj.getElementNeighbourDetails(name, firstSegment.id, lastSegment.id);
 			
-			if (lastNeighbours.left === undefined) {
+			if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
 			    var right = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((firstSegment.sampleStart + changeTime) >= 1) && ((lastNeighbours.right.sampleDur - changeTime) >= 1)) {
 					sServObj.setElementDetails(name, right.id, right.labels[0].value, (right.sampleStart + changeTime), (right.sampleDur - changeTime));
@@ -933,7 +1000,7 @@ angular.module('emuwebApp')
 					    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					}
 				}
-			} else if (lastNeighbours.right === undefined) {
+			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left !== undefined)) {
 			    var left = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 				if ((lastNeighbours.left.sampleDur + changeTime) >= 1) {
 					if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < Soundhandlerservice.wavJSO.Data.length) {
@@ -944,7 +1011,7 @@ angular.module('emuwebApp')
 					    }
 					}
 				}
-			} else {
+			} else if ((lastNeighbours.right !== undefined) && (lastNeighbours.left !== undefined)) {
 			    var origLeft = sServObj.getElementDetailsById(name, lastNeighbours.left.id);
 			    var origRight = sServObj.getElementDetailsById(name, lastNeighbours.right.id);
 				if (((origLeft.sampleDur + changeTime) > 0) && ((origRight.sampleDur - changeTime) > 0)) {
@@ -954,6 +1021,15 @@ angular.module('emuwebApp')
 					    var orig = sServObj.getElementDetails(name, i);
 					    sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
 					}
+				}
+			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left === undefined)) {
+			    var first = sServObj.getElementDetails(name, firstOrder);
+			    var last = sServObj.getElementDetails(name, (firstOrder + length - 1));
+			    if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < Soundhandlerservice.wavJSO.Data.length)) {
+    				for(var i=firstOrder;i<(firstOrder + length);i++) {
+	    			    var orig = sServObj.getElementDetails(name, i);		    
+				        sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), orig.sampleDur);
+				    }
 				}
 			}
 		};
