@@ -192,7 +192,8 @@
     width: 8px;
     border-radius: 50%;
     border:1px solid gray;
-    background-color: black;
+    /*background: -webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));*/
+
 }
 
 .emuwebapp-selectAttrDef button:hover{

@@ -127,11 +127,11 @@ angular.module('emuwebApp')
 					var curColor;
 					if (attrDefName === scope.curAttrDefName) {
 						curColor = {
-							'background-color': 'white',
+							'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
 						};
 					} else {
 						curColor = {
-							'background-color': 'black',
+							'background-color': 'white',
 						};
 					}
 					return curColor;
