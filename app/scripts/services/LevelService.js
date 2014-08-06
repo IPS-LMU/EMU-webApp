@@ -980,7 +980,9 @@ angular.module('emuwebApp')
 		 */
 		sServObj.movePoint = function (name, id, changeTime) {
 			var orig = sServObj.getElementDetailsById(name, id);
-			sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			if((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+			    sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			}
 		};
 
 		/**
@@ -1093,7 +1095,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
-
+		    console.log(sample);
 			// walk right
 			var distRight;
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
