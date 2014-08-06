@@ -20,6 +20,7 @@ module.exports = function (config) {
       'app/bower_components/angular-ui/build/angular-ui.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
+      'app/scripts/workers/*.js',
       'app/scripts/**/*.js',
       'test/spec/**/*.js'
     ],

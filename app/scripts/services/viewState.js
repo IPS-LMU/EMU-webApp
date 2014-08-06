@@ -223,7 +223,7 @@ angular.module('emuwebApp')
       if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
       }
-      if (end > this.selectE) {
+      if (end > this.curViewPort.selectE) {
         this.curViewPort.selectE = end;
       }
     };
