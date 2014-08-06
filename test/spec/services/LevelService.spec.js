@@ -728,7 +728,7 @@ describe('Service: LevelService', function () {
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);  
-    // insert 1 new point
+    // delete 1 point
     var ret = LevelService.deletePoint('Tone', 181);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(6); 
     }));       
@@ -741,7 +741,7 @@ describe('Service: LevelService', function () {
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
-    // insert 1 new point
+    // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33); 
     expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('Vm');      
@@ -756,8 +756,9 @@ describe('Service: LevelService', function () {
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
-    // insert 1 new point
+    // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
+    // undo delete 1 boundary
     LevelService.deleteBoundaryInvers('Phonetic', 148, ret);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34); 
     expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('V');      
@@ -771,14 +772,31 @@ describe('Service: LevelService', function () {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
-    // insert 1 new point
+    // snap point to boundary above
     var ret = LevelService.snapBoundary(true, 
                                         'Tone', 
                                         {"id":181,"samplePoint":8382,"labels":[{"name":"Tone","value":"H*"}]},
                                         {"right":{"id":182,"samplePoint":18632,"labels":[{"name":"Tone","value":"H*"}]}},
                                         'EVENT');
     expect(ret).toEqual(153); 
-    }));     
+    }));   
+        
+          
+ /**
+   *
+   */
+  it('should moveBoundary', inject(function (LevelService) {
+    // test on mockaeMsajc003
+    // delete and deleteSegmentsInvers 2 segments
+    LevelService.setData(mockaeMsajc003);
+    // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 10 samples
+    LevelService.moveBoundary('Phonetic', 158, 10, 0); 
+    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640+10);     
+    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640+10);  
+    // move left most (-1) boundary of segment with id 147 on level 'Phonetic' by 10 samples   
+    LevelService.moveBoundary('Phonetic', 147, 10, -1); 
+    expect(LevelService.getElementDetailsById('Phonetic',147).sampleStart).toEqual(3750+10);     
+    }));  
 
-    // TODO moveBoundary, movePoint, moveSegment, expandSegment, calcDistanceToNearestZeroCrossing
+    // TODO movePoint, moveSegment, expandSegment, calcDistanceToNearestZeroCrossing
 });
