@@ -88,7 +88,116 @@ describe('Factory: viewState', function () {
     expect(viewState.curClickLevelType).toEqual('EVENT');         
     viewState.selectLevel(false,["Phonetic", "Tone"], LevelService);
     expect(viewState.curClickLevelName).toEqual('Phonetic');         
-    expect(viewState.curClickLevelType).toEqual('SEGMENT');      
+    expect(viewState.curClickLevelType).toEqual('SEGMENT'); 
+    viewState.selectLevel(false,["Phonetic", "Tone"], LevelService);
+    viewState.selectLevel(false,["Phonetic", "Tone"], LevelService);
+    viewState.selectLevel(false,["Phonetic", "Tone"], LevelService);     
+    expect(viewState.curClickLevelName).toEqual('Phonetic');         
+    expect(viewState.curClickLevelType).toEqual('SEGMENT');     
+  }));  
+ 
+  
+ /**
+   *
+   */
+  it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
+    LevelService.setData(mockaeMsajc003);
+    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
+    viewState.select(10,9700);
+    viewState.selectSegmentsInSelection(LevelService.data.levels);
+    expect(viewState.curClickSegments.length).toEqual(4);  
+    expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
+    expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
+    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
+    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
+  }));  
+  
+ /**
+   *
+   */
+  it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
+    LevelService.setData(mockaeMsajc003);
+    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
+    viewState.select(10,9700);
+    viewState.selectSegmentsInSelection(LevelService.data.levels);
+    expect(viewState.curClickSegments.length).toEqual(4);  
+    expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
+    expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
+    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
+    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
+  }));  
+   
+  
+ /**
+   *
+   */
+  it('should getselectedRange', inject(function (viewState, LevelService) {
+    var range = viewState.getselectedRange();
+    expect(range.start).toEqual(-1);
+    expect(range.end).toEqual(-1);
+    LevelService.setData(mockaeMsajc003);
+    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
+    viewState.select(9700,15000);
+    viewState.selectSegmentsInSelection(LevelService.data.levels);
+    range = viewState.getselectedRange();
+    expect(range.start).toEqual(11340);
+    expect(range.end).toEqual(14800);
+  }));  
+  
+ /**
+   *
+   */
+  it('should setViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
+    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    viewState.setViewPort(20156, 34679);
+    expect(viewState.curViewPort.sS).toEqual(20156); 
+    expect(viewState.curViewPort.eS).toEqual(34679);
+    // too small
+    viewState.setViewPort(20156, 20158); 
+    expect(viewState.curViewPort.sS).toEqual(20156); 
+    expect(viewState.curViewPort.eS).toEqual(34679);
+    // out of rang
+    viewState.setViewPort(-100000000000, 100000000000); 
+    expect(viewState.curViewPort.sS).toEqual(0); 
+    expect(viewState.curViewPort.eS).toEqual(58089);    
+  })); 
+  
+ /**
+   *
+   */
+  it('should zoomViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
+    LevelService.setData(mockaeMsajc003);
+    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    viewState.setViewPort(0, 58089);
+    viewState.zoomViewPort(true, LevelService);
+    viewState.zoomViewPort(true, LevelService);
+    expect(viewState.curViewPort.sS).toEqual(21783); 
+    expect(viewState.curViewPort.eS).toEqual(36306);
+    viewState.zoomViewPort(false, LevelService);
+    viewState.zoomViewPort(false, LevelService);
+    viewState.zoomViewPort(false, LevelService);
+    viewState.zoomViewPort(false, LevelService);
+    expect(viewState.curViewPort.sS).toEqual(0); 
+    expect(viewState.curViewPort.eS).toEqual(58089);    
+  })); 
+  
+ /**
+   *
+   */
+  it('should shiftViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
+    LevelService.setData(mockaeMsajc003);
+    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    viewState.setViewPort(0, 58089);
+    viewState.zoomViewPort(true, LevelService);
+    viewState.zoomViewPort(true, LevelService);
+    expect(viewState.curViewPort.sS).toEqual(21783); 
+    expect(viewState.curViewPort.eS).toEqual(36306);
+    viewState.shiftViewPort(true);
+    expect(viewState.curViewPort.sS).toEqual(25413); 
+    expect(viewState.curViewPort.eS).toEqual(39936);
+    viewState.shiftViewPort(false);    
+    expect(viewState.curViewPort.sS).toEqual(21783); 
+    expect(viewState.curViewPort.eS).toEqual(36306);    
   }));  
 
 

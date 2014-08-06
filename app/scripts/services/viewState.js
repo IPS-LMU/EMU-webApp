@@ -810,7 +810,6 @@ angular.module('emuwebApp')
      * @param sSample end sample of view
      */
     sServObj.setViewPort = function (sSample, eSample) {
-
       var oldStart = this.curViewPort.sS;
       var oldEnd = this.curViewPort.eS;
       if (sSample !== undefined) {
