@@ -19,9 +19,19 @@
   <input type="text" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"> 
 </div>
 <hr>
+<div>          
+  <p>Pre-emphasis filter factor (resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1))</em></p> 
+  <input type="text" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"> 
+</div>
+<hr>
 <div>      
   <p>Window Function</p>
   <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
+</div>
+<hr>
+<div>      
+  <p>Other Options</p>
+  Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
 </div>
 </div>
 

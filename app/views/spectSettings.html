@@ -20,8 +20,8 @@
 </div>
 <hr />
 <div>          
-  <p>Pre-emphasis per Octave (dB)</p>  
-  <input type="text" ng-model="modalVals.preEmphasisPerOctaveInDb" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" disabled/> 
+  <p>Pre-emphasis filter factor (resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1))</em></p> 
+  <input type="text" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
 </div>
 <hr />
 <div>      

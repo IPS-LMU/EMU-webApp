@@ -36,8 +36,8 @@ angular.module('emuwebApp')
 		$scope.windowWidth = $window.outerWidth;
 
 		$scope.demoDbName = '';
-		
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
+
+		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true : false);
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -251,7 +251,8 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
 				ConfigProviderService.vals.spectrogramSettings.window,
 				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
-				ConfigProviderService.vals.spectrogramSettings.preEmphasisPerOctaveInDb);
+				ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
+				ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
@@ -317,9 +318,16 @@ angular.module('emuwebApp')
 						// then get the DBconfigFile
 						viewState.somethingInProgressTxt = 'Loading bundle list...';
 						Iohandlerservice.getBundleList().then(function (bdata) {
-							$scope.bundleList = bdata;
-							// then load first bundle in list
-							$scope.menuBundleClick($scope.bundleList[0]);
+							validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+							if (validRes === true) {
+								$scope.bundleList = bdata;
+								// then load first bundle in list
+								$scope.menuBundleClick($scope.bundleList[0]);
+							} else {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									$scope.resetToInitState();
+								});
+							}
 						});
 
 					} else {
@@ -493,7 +501,7 @@ angular.module('emuwebApp')
 
 				return defer.promise;
 				// } // Commented out FOR DEVELOPMENT!
-			}else{
+			} else {
 				$log.info('Action: menuBundleSaveBtnClick not allowed!');
 			}
 
@@ -532,28 +540,27 @@ angular.module('emuwebApp')
 				return true;
 			}
 		};
-		
+
 		$scope.getEnlarge = function (index) {
-		    var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 			if (viewState.getenlarge() == -1) {
 				return 'auto';
 			} else {
-			    if(len==2) {
-			        if (viewState.getenlarge() == index) {
-				        return '75%';
-        			} else {
-	        			return '25%';
-		        	}			    
-			    }
-			    else {
-			        if (viewState.getenlarge() == index) {
-				        return Math.floor((100/len)*(len-1))+'%';
-        			} else {
-	        			return Math.floor((100/len)/(len-1))+'%';
-		        	}
-		    	}
+				if (len == 2) {
+					if (viewState.getenlarge() == index) {
+						return '75%';
+					} else {
+						return '25%';
+					}
+				} else {
+					if (viewState.getenlarge() == index) {
+						return Math.floor((100 / len) * (len - 1)) + '%';
+					} else {
+						return Math.floor((100 / len) / (len - 1)) + '%';
+					}
+				}
 			}
-        };
+		};
 
 		/**
 		 * returns jso with css defining color dependent
@@ -786,9 +793,16 @@ angular.module('emuwebApp')
 
 							Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
 								var bdata = res.data;
-								$scope.bundleList = bdata;
-								// then load first bundle in list
-								$scope.menuBundleClick($scope.bundleList[0]);
+								validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+								if (validRes === true) {
+									$scope.bundleList = bdata;
+									// then load first bundle in list
+									$scope.menuBundleClick($scope.bundleList[0]);
+								} else {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+										$scope.resetToInitState();
+									});
+								}
 							}, function (err) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 									$scope.resetToInitState();
