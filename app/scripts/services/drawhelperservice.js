@@ -91,7 +91,6 @@ angular.module('emuwebApp')
 
 		sServObj.calculatePeaks = function (viewState, canvas, data) {
 			var samplePerPx = (viewState.curViewPort.eS + 1 - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel + one to correct for subtraction
-
 			var numberOfChannels = 1; // hardcode for now...
 
 			var peaks = [];
@@ -107,6 +106,7 @@ angular.module('emuwebApp')
 				} else {
 					relData = data.subarray(viewState.curViewPort.sS - 1, viewState.curViewPort.eS + 2); // +2 to compensate for length
 				}
+
 				minPeak = Math.min.apply(Math, relData);
 				maxPeak = Math.max.apply(Math, relData);
 				peaks = Array.prototype.slice.call(relData);
