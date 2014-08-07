@@ -8,7 +8,7 @@ describe('Service: dialogService', function () {
  /**
    *
    */
-  it('should open and close a dialog', inject(function (dialogService, viewState, $modal) {
+  it('should open and close a dialog', inject(function (dialogService, viewState) {
       var res = dialogService.open('views/connectModal.html', 'WsconnectionCtrl', undefined);
       expect(viewState.curState).toBe(viewState.states.loadingSaving);
       dialogService.close(res);
