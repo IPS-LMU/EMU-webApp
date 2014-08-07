@@ -9,12 +9,21 @@ describe('Factory: viewState', function () {
    *
    */
   it('should initialize viewState correctly', inject(function (viewState) {
-    viewState.initialize()
+    viewState.initialize();
+    expect(viewState.curViewPort).toEqual({"sS":0,"eS":0,"selectS":-1,"selectE":-1,"dragBarActive":false,"dragBarHeight":-1}); 
+    expect(viewState.spectroSettings).toEqual({"windowLength":-1,"rangeFrom":-1,"rangeTo":-1,"dynamicRange":-1,"window":-1,"drawHeatMapColors":-1,"preEmphasisPerOctaveInDb":-1}); 
+    expect(viewState.playHeadAnimationInfos).toEqual({"sS":-1,"eS":-1,"curS":null,"endFreezeSample":-1});     
+  }));    
+  
+ /**
+   *
+   */
+  it('should resetToInitState', inject(function (viewState) {
+    viewState.resetToInitState();
     expect(viewState.curViewPort).toEqual({"sS":0,"eS":0,"selectS":-1,"selectE":-1,"dragBarActive":false,"dragBarHeight":-1}); 
     expect(viewState.spectroSettings).toEqual({"windowLength":-1,"rangeFrom":-1,"rangeTo":-1,"dynamicRange":-1,"window":-1,"drawHeatMapColors":-1,"preEmphasisPerOctaveInDb":-1}); 
     expect(viewState.playHeadAnimationInfos).toEqual({"sS":-1,"eS":-1,"curS":null,"endFreezeSample":-1});     
   }));  
-
     
  /**
    *
