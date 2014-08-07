@@ -11,7 +11,13 @@ describe('Factory: viewState', function () {
   it('should initialize viewState correctly', inject(function (viewState) {
     viewState.initialize();
     expect(viewState.curViewPort).toEqual({"sS":0,"eS":0,"selectS":-1,"selectE":-1,"dragBarActive":false,"dragBarHeight":-1}); 
-    expect(viewState.spectroSettings).toEqual({"windowLength":-1,"rangeFrom":-1,"rangeTo":-1,"dynamicRange":-1,"window":-1,"drawHeatMapColors":-1,"preEmphasisPerOctaveInDb":-1}); 
+    expect(viewState.spectroSettings.windowLength).toBe(-1);
+    expect(viewState.spectroSettings.rangeFrom).toBe(-1);
+    expect(viewState.spectroSettings.rangeTo).toBe(-1);
+    expect(viewState.spectroSettings.dynamicRange).toBe(-1);
+    expect(viewState.spectroSettings.window).toBe(-1);
+    expect(viewState.spectroSettings.drawHeatMapColors).toBe(-1);
+    expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(-1);
     expect(viewState.playHeadAnimationInfos).toEqual({"sS":-1,"eS":-1,"curS":null,"endFreezeSample":-1});     
   }));    
   
@@ -21,7 +27,13 @@ describe('Factory: viewState', function () {
   it('should resetToInitState', inject(function (viewState) {
     viewState.resetToInitState();
     expect(viewState.curViewPort).toEqual({"sS":0,"eS":0,"selectS":-1,"selectE":-1,"dragBarActive":false,"dragBarHeight":-1}); 
-    expect(viewState.spectroSettings).toEqual({"windowLength":-1,"rangeFrom":-1,"rangeTo":-1,"dynamicRange":-1,"window":-1,"drawHeatMapColors":-1,"preEmphasisPerOctaveInDb":-1}); 
+    expect(viewState.spectroSettings.windowLength).toBe(-1);
+    expect(viewState.spectroSettings.rangeFrom).toBe(-1);
+    expect(viewState.spectroSettings.rangeTo).toBe(-1);
+    expect(viewState.spectroSettings.dynamicRange).toBe(-1);
+    expect(viewState.spectroSettings.window).toBe(-1);
+    expect(viewState.spectroSettings.drawHeatMapColors).toBe(-1);
+    expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(-1);
     expect(viewState.playHeadAnimationInfos).toEqual({"sS":-1,"eS":-1,"curS":null,"endFreezeSample":-1});     
   }));  
     
@@ -63,7 +75,7 @@ describe('Factory: viewState', function () {
     expect(viewState.spectroSettings.dynamicRange).toBe(10); 
     expect(viewState.spectroSettings.window).toBe(myWindow.HANN); 
     expect(viewState.spectroSettings.drawHeatMapColors).toBe(true); 
-    expect(viewState.spectroSettings.preEmphasisPerOctaveInDb).toBe(1); 
+    expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(1); 
   })); 
   
  /**
