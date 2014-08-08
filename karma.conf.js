@@ -22,8 +22,19 @@ module.exports = function (config) {
       'app/scripts/*.js',
       'app/scripts/workers/*.js',
       'app/scripts/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      //include the directory where directive templates are stored.
+      'app/views/**/*.html'
     ],
+    
+    // generate js files from html templates to expose them during testing.
+    preprocessors: {
+      'app/views/**/*.html': 'html2js'
+    },
+    
+    proxies: {
+      '/scripts/workers/': 'http://localhost:9000/scripts/workers/'
+    },
 
     // list of files / patterns to exclude
     exclude: [],
