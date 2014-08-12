@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService, LevelService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -22,9 +22,7 @@ angular.module('emuwebApp')
 				var levelCanvasContainer = element.find('div');
 
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-				console.log(scope.levelDef)
 				scope.curAttrDefName = scope.level.name;
-
 
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
@@ -107,6 +105,8 @@ angular.module('emuwebApp')
 					if (scope.curAttrDefName !== attrDefName) {
 						scope.curAttrDefName = attrDefName;
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
+							viewState.focusInTextField = false;
+							LevelService.deleteEditArea();
 							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
 						}
 					}
