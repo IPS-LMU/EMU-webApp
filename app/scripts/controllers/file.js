@@ -3,101 +3,10 @@
 angular.module('emuwebApp')
   .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice, ConfigProviderService, Validationservice) {
 
-    $scope.dropzone = document.getElementById('dropzone');
-    $scope.fileInput = document.getElementById('fileDialog');
-    $scope.dropDefault = 'Drop your files here or click here to open a file';
-    $scope.dropErrorFileType = 'Error: Could not parse file. You can drop multiple files, but you have to select at least one .WAV file. The following file types are supported: .WAV .TEXTGRID';
-    $scope.dropErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
-    $scope.dropNotAllowed = 'File is not allowed';
-    $scope.dropAllowed = 'Drop files to start loading';
-    $scope.dropParsingStarted = 'Parsing started';
     $scope.newfiles = [];
     $scope.wav = {};
     $scope.grid = {};
     $scope.curBndl = {};
-    $scope.init = true;
-    $scope.dropText = $scope.dropDefault;
-    $scope.dropzone.addEventListener('dragenter', dragEnterLeave, false);
-    $scope.dropzone.addEventListener('dragleave', dragEnterLeave, false);
-    $scope.dropzone.addEventListener('dragover', handleDragOver, false);
-    $scope.fileInput.addEventListener('change', handleFilesonChange, false);
-
-
-    $scope.loadFiles = function (e) {
-        if($scope.firefox) {
-        setTimeout(function() {
-            if ($scope.init) {
-             $scope.fileInput.click();
-             $scope.init = false;
-            }
-            else {
-             $scope.init = true;
-            }
-        }, 1000);  
-        }
-        else {
-        setTimeout(function() {
-            $scope.fileInput.click();
-        }, 0);    
-        }
-    };
-
-    
-    function handleFilesonChange() {
-        if($scope.firefox) {
-            var loadedFiles = $scope.fileInput;
-            for (var i = 0; i < loadedFiles.files.length; i++) {
-                var file = loadedFiles.files[i];
-                var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-                if(extension==="WAV" && file.type.match('audio/x-wav') ) {
-                    $scope.wav = file;
-                    $scope.handleLocalFiles();	
-                }
-                else if(extension==="TEXTGRID" ) {
-                    $scope.grid = file;
-                }            
-                else  {
-                    $scope.other = file;
-                }                         
-            }
-        }    
-        else {
-        var loadedFiles = $scope.fileInput;
-        for (var i = 0; i < loadedFiles.files.length; i++) {
-            var file = loadedFiles.files[i];
-            var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-            if(extension==="WAV" && file.type.match('audio/wav') ) {
-                $scope.wav = file;
-                $scope.handleLocalFiles();	
-            }
-            else if(extension==="TEXTGRID" ) {
-                $scope.grid = file;
-            }            
-            else  {
-                $scope.other = file;
-            }                         
-        }
-        }
-    }
-    
-
-    function dragEnterLeave(evt) {
-      evt.preventDefault();
-      var files = evt.target.files || evt.dataTransfer.files;
-      $scope.$apply(function () {
-        $scope.dropText = $scope.dropDefault;
-        $scope.dropClass = '';
-      });
-    }
-
-    
-    
-    function  handleDragOver(evt) {
-       evt.preventDefault();
-       $scope.$apply(function () {
-         $scope.dropClass = 'over';
-       });
-    }
     
     $scope.resetToInitState = function () {
         $scope.newfiles = [];
@@ -128,7 +37,6 @@ angular.module('emuwebApp')
 		var reader = new FileReader();
 		reader.readAsArrayBuffer($scope.wav);
 		reader.onloadend = function(evt) {
-		    console.log(evt);
 		    if (evt.target.readyState == FileReader.DONE) { 
 		        $scope.$parent.io.httpGetPath('configFiles/standalone_emuwebappConfig.json').then(function (resp) {
 			        // first element of perspectives is default perspective
@@ -203,41 +111,6 @@ angular.module('emuwebApp')
         };
     };
 
-   
-    
-    $scope.dropzone.addEventListener('drop', function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        $scope.$apply(function () {
-            $scope.dropText = $scope.dropParsingStarted;
-            $scope.dropClass = '';        
-
-            if (window.File && window.FileReader && window.FileList && window.Blob) {
-                if($scope.firefox) {
-                    var dt = evt.dataTransfer;
-                    var files = dt.files;
-                    var count = files.length;
-                    for (var i = 0; i < files.length; i++) {
-                        $scope.traverseFileTreeFirefox(files[i]); 
-                    }
-                }
-                else {            
-                    var items = evt.dataTransfer.items;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i].webkitGetAsEntry();
-                        if (item) {
-                            $scope.traverseFileTreeChrome(item); 
-                        }
-                    }    
-                }
-            }
-            else {
-                $scope.$parent.dials.open('views/error.html', 'ModalCtrl', $scope.dropErrorAPI);
-                $scope.dropText = $scope.dropDefault;
-            }
-        });
-     }, false);
-     
     $scope.traverseFileTreeChrome = function (item, path) {
         path = path || '';
             if (item.isFile) {
@@ -297,12 +170,4 @@ angular.module('emuwebApp')
             }
         };        
         
-  });    
-  
-  
-  
-  
-  
-  
-  
-  
+  });  
