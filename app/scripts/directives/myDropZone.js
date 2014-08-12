@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 		link: function postLink(scope, element, attr) {
 		
 		  scope.dropDefault = 'Drop your files here or click here to open a file';
-		  scope.dropErrorFileType = 'Error: Could not parse file. You can drop multiple files, but you have to select at least one .WAV file. The following file types are supported: .WAV .TEXTGRID';
+		  scope.dropErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID';
 		  scope.dropErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
 		  scope.dropNotAllowed = 'File is not allowed';
 		  scope.dropAllowed = 'Drop files to start loading';
@@ -41,16 +41,17 @@ angular.module('emuwebApp')
               scope.dropClass = '';        
               if (window.File && window.FileReader && window.FileList && window.Blob) {
 		        scope.dropText = scope.dropParsingStarted;
-		        scope.dropClass = 'over';              
-                if(scope.firefox) {
+		        scope.dropClass = 'over';    
+		        if(evt.originalEvent !== undefined) {          
+                  if(scope.firefox) {
                     var dt = evt.originalEvent.dataTransfer;
                     var files = dt.files;
                     var count = files.length;
                     for (var i = 0; i < files.length; i++) {
                         scope.traverseFileTreeFirefox(files[i]); 
                     }
-                }
-                else {        
+                  }
+                  else {        
                     var items = evt.originalEvent.dataTransfer.items;
                     for (var i = 0; i < items.length; i++) {
                         var item = items[i].webkitGetAsEntry();
@@ -58,6 +59,11 @@ angular.module('emuwebApp')
                             scope.traverseFileTreeChrome(item); 
                         }
                     }    
+                  }
+                }
+                else {
+    		      scope.dropText = scope.dropErrorFileType;
+	    	      scope.dropClass = '';                
                 }
               }
               else {

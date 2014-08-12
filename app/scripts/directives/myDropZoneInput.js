@@ -7,8 +7,10 @@ angular.module('emuwebApp')
 		templateUrl: 'views/myDropZoneInput.html',
 		restrict: 'E',
 		link: function postLink(scope, element, attr) {
-		
+		  scope.handler = false;
+		  
 		  function handleFilesonChange() {
+		    scope.handler = true;
 		    var loadedFiles = element.context.children.fileDialog;
 		    if(scope.firefox) {
               for (var i = 0; i < loadedFiles.files.length; i++) {
@@ -43,14 +45,16 @@ angular.module('emuwebApp')
               }
             }
           }
-
+          
           element.bind('change', function (event) {
             handleFilesonChange(event);
           });
           
           element.bind('click', function (event) {
             var elem = angular.element('input');
-            elem[1].click();
+            if(elem[1]!==undefined) {
+              elem[1].click();
+            }
           });	                   	
           		
 		}
