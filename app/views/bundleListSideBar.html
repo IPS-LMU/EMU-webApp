@@ -4,7 +4,7 @@
             <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
         </div>
     </h3>
-    <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
+    <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
     <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
         <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
             <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="menuBundleClick(bundle);">
