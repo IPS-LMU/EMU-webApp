@@ -46,7 +46,12 @@ angular.module('emuwebApp')
 
           element.bind('change', function (event) {
             handleFilesonChange(event);
-          });         	
+          });
+          
+          element.bind('click', function (event) {
+            var elem = angular.element('input');
+            elem[1].click();
+          });	                   	
           		
 		}
 	}

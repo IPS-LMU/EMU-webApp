@@ -8,6 +8,15 @@ angular.module('emuwebApp')
 		restrict: 'E',
 		link: function postLink(scope, element, attr) {
 		
+		  scope.dropDefault = 'Drop your files here or click here to open a file';
+		  scope.dropErrorFileType = 'Error: Could not parse file. You can drop multiple files, but you have to select at least one .WAV file. The following file types are supported: .WAV .TEXTGRID';
+		  scope.dropErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
+		  scope.dropNotAllowed = 'File is not allowed';
+		  scope.dropAllowed = 'Drop files to start loading';
+		  scope.dropParsingStarted = 'Parsing started';
+		  scope.dropText = scope.dropDefault;
+		  scope.dropClass = '';
+		
 		  function dragEnterLeave(evt) {
 		    evt.preventDefault();
 		    scope.$apply(function () {
@@ -19,6 +28,7 @@ angular.module('emuwebApp')
 		  function handleDragOver(evt) {
 		    evt.preventDefault();
 		    scope.$apply(function () {
+		      scope.dropText = scope.dropAllowed;
 		      scope.dropClass = 'over';
 		    });
 		  }	
@@ -30,6 +40,8 @@ angular.module('emuwebApp')
               scope.dropText = scope.dropParsingStarted;
               scope.dropClass = '';        
               if (window.File && window.FileReader && window.FileList && window.Blob) {
+		        scope.dropText = scope.dropParsingStarted;
+		        scope.dropClass = 'over';              
                 if(scope.firefox) {
                     var dt = evt.originalEvent.dataTransfer;
                     var files = dt.files;
@@ -69,6 +81,10 @@ angular.module('emuwebApp')
     		
           element.bind('dragleave', function (event) {
             dragEnterLeave(event);
+          });		
+    		
+          element.bind('click', function (event) {
+            element.context.children[0].children[1].click();
           });		
 		
 		}

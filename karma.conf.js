@@ -39,7 +39,7 @@ module.exports = function (config) {
       prependPrefix: "",
 
       // the name of the Angular module to create
-      moduleName: "my.templates"
+      moduleName: "emuwebApp.templates"
     },    
     
     proxies: {

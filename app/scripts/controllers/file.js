@@ -3,31 +3,10 @@
 angular.module('emuwebApp')
   .controller('FileCtrl', function ($scope, Binarydatamaniphelper, Textgridparserservice, ConfigProviderService, Validationservice) {
 
-    $scope.dropDefault = 'Drop your files here or click here to open a file';
-    $scope.dropErrorFileType = 'Error: Could not parse file. You can drop multiple files, but you have to select at least one .WAV file. The following file types are supported: .WAV .TEXTGRID';
-    $scope.dropErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
-    $scope.dropNotAllowed = 'File is not allowed';
-    $scope.dropAllowed = 'Drop files to start loading';
-    $scope.dropParsingStarted = 'Parsing started';
     $scope.newfiles = [];
     $scope.wav = {};
     $scope.grid = {};
     $scope.curBndl = {};
-    $scope.init = true;
-    $scope.dropText = $scope.dropDefault;
-
-    $scope.loadFiles = function (e) {
-        var elem = angular.element('input');
-        setTimeout(function() {
-          if ($scope.init) {
-            elem.click();
-            $scope.init = false;
-          }
-          else {
-            $scope.init = true;
-          }
-        }, 1000);  
-    };
     
     $scope.resetToInitState = function () {
         $scope.newfiles = [];
