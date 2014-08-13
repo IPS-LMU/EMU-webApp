@@ -22,7 +22,7 @@ angular.module('emuwebApp')
 				var levelCanvasContainer = element.find('div');
 
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-				scope.curAttrDefName = scope.level.name;
+				// curAttrDef = scope.level.name;
 
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
@@ -90,20 +90,18 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('curAttrDefName', function () {
-					drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
-
-				}, true);
-				//
 				/////////////////
 
 				/**
 				 *
 				 */
 				scope.changeCurAttrDef = function (attrDefName) {
-					if (scope.curAttrDefName !== attrDefName) {
-						scope.curAttrDefName = attrDefName;
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
+
+					if (curAttrDef !== attrDefName) {
+						// curAttrDef = attrDefName;
+						viewState.setCurAttrDef(scope.level.name, attrDefName);
+
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
 							viewState.focusInTextField = false;
 							LevelService.deleteEditArea();
@@ -116,8 +114,11 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.finishedAnim = function () {
-					// alert('done');
 					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
+					// redraw
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+
 				};
 
 				/**
@@ -125,7 +126,8 @@ angular.module('emuwebApp')
 				 */
 				scope.getAttrDefBtnColor = function (attrDefName) {
 					var curColor;
-					if (attrDefName === scope.curAttrDefName) {
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
+					if (attrDefName === curAttrDef) {
 						curColor = {
 							'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
 						};
@@ -166,6 +168,7 @@ angular.module('emuwebApp')
 				function drawLevelDetails(levelDetails, viewState, config) {
 
 					var fontSize = config.vals.font.fontPxSize;
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
 
 					if ($.isEmptyObject(levelDetails)) {
 						console.log('undef levelDetails');
@@ -194,10 +197,10 @@ angular.module('emuwebApp')
 					// draw name of level and type
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
-					if (levelDetails.name === scope.curAttrDefName) {
+					if (levelDetails.name === curAttrDef) {
 						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 					} else {
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name + ':' + scope.curAttrDefName, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name + ':' + curAttrDef, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
 					}
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
@@ -232,7 +235,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === scope.curAttrDefName) {
+									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
 								});
@@ -335,7 +338,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === scope.curAttrDefName) {
+									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
 								});
