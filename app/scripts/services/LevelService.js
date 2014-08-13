@@ -373,7 +373,7 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					level.items.forEach(function (element) {
-						if (element.id == id) {
+						if (element.id === id) {
 							if (start !== undefined) {
 								element.sampleStart = start;
 							}
@@ -396,7 +396,7 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					level.items.forEach(function (element) {
-						if (element.id == id) {
+						if (element.id === id) {
 							element.samplePoint = start;
 							element.labels[0].value = labelname;
 						}
