@@ -70,7 +70,7 @@
 			"name": "Phonetic",
 			"type": "string"
 		}, {
-			"name": "UTF-8",
+			"name": "IPA",
 			"type": "string"
 		}]
 	}, {
