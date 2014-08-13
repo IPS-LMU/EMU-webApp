@@ -89,6 +89,8 @@ angular.module('emuwebApp')
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
       sServObj.curState = sServObj.states.noDBorFilesloaded;
+
+      sServObj.curAttrDefLevelStates = []; // to hold 
     };
 
     // initialize on init
@@ -938,7 +940,7 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.resetToInitState = function (shiftRight) {
+    sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
 

@@ -10,6 +10,25 @@ angular.module('emuwebApp')
 		sServObj.lasteditArea = null; // holding current edit area
 		sServObj.lasteditAreaElem = null; // holding current edit area element
 
+		/**
+		 * search for the according label field in labels
+		 * and return its index
+		 *    @param attrDefName
+		 *    @param labels
+		 */
+		function getLabelIdx(attrDefName, labels) {
+			var labelIdx;
+			angular.forEach(labels, function (l, idx) {
+				if (l.name === attrDefName) {
+					labelIdx = idx;
+				}
+			});
+			return labelIdx;
+		}
+
+		///////////////////////////////
+		// public api
+
 		sServObj.getData = function () {
 			return sServObj.data;
 		};
@@ -160,10 +179,10 @@ angular.module('emuwebApp')
 		 * gets element details by passing in levelName and elemtent id
 		 *   @return Element Details as Object
 		 */
-		sServObj.getElementDetailsById = function (name, id) {
+		sServObj.getElementDetailsById = function (levelName, id) {
 			var details = null;
 			angular.forEach(sServObj.data.levels, function (level) {
-				if (level.name === name) {
+				if (level.name === levelName) {
 					level.items.forEach(function (element) {
 						if (element.id == id) {
 							details = element;
@@ -236,12 +255,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.openEditArea = function (lastEventClick, element, type, attrDefName) {
 			// find labelIdx
-			var labelIdx;
-			angular.forEach(lastEventClick.labels, function (l, idx) {
-				if(l.name === attrDefName){
-					labelIdx = idx;
-				}
-			});
+			var labelIdx = getLabelIdx(attrDefName, lastEventClick.labels);
 
 			var elem = element.find('canvas').context.getContext('2d');
 			var clientWidth = elem.canvas.clientWidth;
@@ -353,7 +367,7 @@ angular.module('emuwebApp')
 		/**
 		 * gets element details by passing in levelName and elemtent id
 		 */
-		sServObj.setElementDetails = function (levelname, id, labelname, start, duration) {
+		sServObj.setElementDetails = function (levelname, id, labelname, labelIdx, start, duration) {
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					level.items.forEach(function (element) {
@@ -365,7 +379,7 @@ angular.module('emuwebApp')
 								element.sampleDur = duration;
 							}
 							if (labelname !== undefined) {
-								element.labels[0].value = labelname;
+								element.labels[labelIdx].value = labelname;
 							}
 						}
 					});
@@ -505,8 +519,13 @@ angular.module('emuwebApp')
 		/**
 		 * rename the label of an element by passing in level name and id
 		 */
-		sServObj.renameLabel = function (levelName, id, newLabelName) {
-			sServObj.setElementDetails(levelName, id, newLabelName);
+		sServObj.renameLabel = function (levelName, id, newLabelName, attrDefName) {
+			var item = sServObj.getElementDetailsById(levelName, id);
+			var labelIdx = getLabelIdx(attrDefName, item.labels);
+			console.log(item);
+			console.log(labelIdx);
+			console.log(attrDefName);
+			sServObj.setElementDetails(levelName, id, newLabelName, labelIdx);
 		};
 
 		/**
@@ -993,8 +1012,8 @@ angular.module('emuwebApp')
 		 */
 		sServObj.movePoint = function (name, id, changeTime) {
 			var orig = sServObj.getElementDetailsById(name, id);
-			if((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-			    sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+				sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 			}
 		};
 
@@ -1108,7 +1127,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
-		    console.log(sample);
+			console.log(sample);
 			// walk right
 			var distRight;
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
