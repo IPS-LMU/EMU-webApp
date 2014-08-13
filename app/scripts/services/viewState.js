@@ -951,7 +951,6 @@ angular.module('emuwebApp')
           'curAttrDefName': ld.name
         });
       });
-      console.log(curLevelAttrDefs);
     };
 
     /**

@@ -5,8 +5,7 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       scope: {
-        level: '=',
-        curAttrDefName: '='
+        level: '='
       },
       link: function (scope, element, attr) {
         var lastEventClick;
@@ -246,7 +245,7 @@ angular.module('emuwebApp')
                   LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
                   LevelService.setlasteditAreaElem(element.parent());
                   viewState.setEditing(true);
-                  LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType, scope.curAttrDefName);
+                  LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
                   viewState.focusInTextField = true;
                 } else {
                   console.log('Editing out of right bound !');

@@ -251,9 +251,11 @@ angular.module('emuwebApp')
 		 *   @param lastEventClick the current clicked Level Element
 		 *   @param element the current html Element to get canvas from
 		 *   @param type the current Level type
-		 *   @param attrDefName name of attribute currently being displayed
 		 */
-		sServObj.openEditArea = function (lastEventClick, element, type, attrDefName) {
+		sServObj.openEditArea = function (lastEventClick, element, type) {
+			var levelName = viewState.getcurClickLevelName();
+			var attrDefName =  viewState.getCurAttrDef(levelName);
+
 			// find labelIdx
 			var labelIdx = getLabelIdx(attrDefName, lastEventClick.labels);
 
@@ -519,12 +521,11 @@ angular.module('emuwebApp')
 		/**
 		 * rename the label of an element by passing in level name and id
 		 */
-		sServObj.renameLabel = function (levelName, id, newLabelName, attrDefName) {
+		sServObj.renameLabel = function (levelName, id, newLabelName) {
+			var attrDefName = viewState.getCurAttrDef(levelName);
 			var item = sServObj.getElementDetailsById(levelName, id);
 			var labelIdx = getLabelIdx(attrDefName, item.labels);
-			console.log(item);
-			console.log(labelIdx);
-			console.log(attrDefName);
+
 			sServObj.setElementDetails(levelName, id, newLabelName, labelIdx);
 		};
 
