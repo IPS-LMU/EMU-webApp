@@ -22,6 +22,7 @@ module.exports = function (config) {
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
       'app/scripts/workers/*.js',
+      'app/scripts/filters/*.js',
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.

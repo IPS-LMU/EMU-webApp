@@ -17,16 +17,3 @@ angular.module('emuwebApp')
 			}
 		};
 	});
-
-
-// simple animation to add slideLeft class
-angular.module('emuwebApp').animation('.slideInMenu', function () {
-	return {
-		addClass: function (element, className) {
-			element.addClass('slideLeft');
-		},
-		removeClass: function (element, className) {
-			element.removeClass('slideLeft');
-		}
-	}
-});
