@@ -268,7 +268,7 @@ angular.module('emuwebApp')
 				}
 				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 			}
-			sServObj.createSelection(element.find('textarea')[labelIdx], 0, lastEventClick.labels[labelIdx].value.length);
+			sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[labelIdx].value.length);
 		};
 
 		/**
