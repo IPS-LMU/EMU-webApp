@@ -18,13 +18,17 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/angular-ui/build/angular-ui.js',
+      'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
       'app/scripts/workers/*.js',
+      'app/scripts/filters/*.js',
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.
-      'app/views/**/*.html'
+      'app/views/**/*.html',
+      // fixtures
+      {pattern: 'app/schemaFiles/*.json', watched: true, served: true, included: false}      
     ],
     
     // generate js files from html templates to expose them during testing.
@@ -43,7 +47,8 @@ module.exports = function (config) {
     },    
     
     proxies: {
-      '/scripts/workers/': 'http://localhost:9000/scripts/workers/'
+      '/scripts/workers/': 'http://localhost:9000/scripts/workers/',
+      '/img/': 'http://localhost:9000/img/'
     },
 
     // list of files / patterns to exclude

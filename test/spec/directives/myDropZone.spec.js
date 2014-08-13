@@ -7,7 +7,6 @@ describe('Directive: myDropZone', function() {
     
     beforeEach(inject(function($rootScope, $compile) {
         scope = $rootScope.$new();
-        
     }));
 
     function compileDirective(tpl) {
