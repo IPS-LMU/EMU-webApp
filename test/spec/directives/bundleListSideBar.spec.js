@@ -38,7 +38,6 @@ describe('Directive: bundleListSideBar', function() {
         scope.vs = viewState;
         scope.vs.submenuOpen = true;
         compileDirective();
-        console.log(elm[0]);
         expect(elm.html()).toContain('<div class="emuwebapp-bundleFilter">');
         expect(elm.html()).toContain('input');
         expect(elm.html()).toContain('my-drop-zone');
