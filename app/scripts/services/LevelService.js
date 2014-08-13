@@ -26,6 +26,7 @@ angular.module('emuwebApp')
 					}
 				});
 			});
+			//console.log(JSON.stringify(sServObj.data));
 		};
 
 		/**
@@ -502,7 +503,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * rename the label of a level by passing in level name and id
+		 * rename the label of an element by passing in level name and id
 		 */
 		sServObj.renameLabel = function (levelName, id, newLabelName) {
 			sServObj.setElementDetails(levelName, id, newLabelName);
@@ -992,7 +993,9 @@ angular.module('emuwebApp')
 		 */
 		sServObj.movePoint = function (name, id, changeTime) {
 			var orig = sServObj.getElementDetailsById(name, id);
-			sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			if((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+			    sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			}
 		};
 
 		/**
@@ -1105,7 +1108,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
-
+		    console.log(sample);
 			// walk right
 			var distRight;
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {

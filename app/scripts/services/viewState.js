@@ -224,7 +224,7 @@ angular.module('emuwebApp')
       if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
       }
-      if (end > this.selectE) {
+      if (end > this.curViewPort.selectE) {
         this.curViewPort.selectE = end;
       }
     };
@@ -811,7 +811,6 @@ angular.module('emuwebApp')
      * @param sSample end sample of view
      */
     sServObj.setViewPort = function (sSample, eSample) {
-
       var oldStart = this.curViewPort.sS;
       var oldEnd = this.curViewPort.eS;
       if (sSample !== undefined) {

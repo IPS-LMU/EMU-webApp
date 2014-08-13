@@ -20,9 +20,31 @@ module.exports = function (config) {
       'app/bower_components/angular-ui/build/angular-ui.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/scripts/*.js',
+      'app/scripts/workers/*.js',
       'app/scripts/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      //include the directory where directive templates are stored.
+      'app/views/**/*.html'
     ],
+    
+    // generate js files from html templates to expose them during testing.
+    preprocessors: {
+      'app/views/**/*.html': 'ng-html2js'
+    },
+    
+    ngHtml2JsPreprocessor: {
+      // If your build process changes the path to your templates,
+      // use stripPrefix and prependPrefix to adjust it.
+      stripPrefix: "app/",
+      prependPrefix: "",
+
+      // the name of the Angular module to create
+      moduleName: "emuwebApp.templates"
+    },    
+    
+    proxies: {
+      '/scripts/workers/': 'http://localhost:9000/scripts/workers/'
+    },
 
     // list of files / patterns to exclude
     exclude: [],
@@ -47,7 +69,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['PhantomJS','Chrome','Firefox'],
 
 
     // Continuous Integration mode
