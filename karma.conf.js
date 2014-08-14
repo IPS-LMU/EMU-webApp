@@ -33,7 +33,8 @@ module.exports = function (config) {
     
     // generate js files from html templates to expose them during testing.
     preprocessors: {
-      'app/views/**/*.html': 'ng-html2js'
+      'app/views/**/*.html': 'ng-html2js',
+      'app/scripts/**/*.js': 'coverage'
     },
     
     ngHtml2JsPreprocessor: {
@@ -64,6 +65,14 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
+    
+    // coverage reporter
+    reporters: [ 'dots' ],
+    
+    coverageReporter: {
+      type : 'html',
+      dir : 'test/coverage/',
+    },
 
 
     // Start these browsers, currently available:
@@ -74,7 +83,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS','Chrome','Firefox'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
