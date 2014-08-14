@@ -254,7 +254,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.openEditArea = function (lastEventClick, element, type) {
 			var levelName = viewState.getcurClickLevelName();
-			var attrDefName =  viewState.getCurAttrDef(levelName);
+			var attrDefName = viewState.getCurAttrDef(levelName);
 
 			// find labelIdx
 			var labelIdx = getLabelIdx(attrDefName, lastEventClick.labels);
@@ -525,7 +525,6 @@ angular.module('emuwebApp')
 			var attrDefName = viewState.getCurAttrDef(levelName);
 			var item = sServObj.getElementDetailsById(levelName, id);
 			var labelIdx = getLabelIdx(attrDefName, item.labels);
-
 			sServObj.setElementDetails(levelName, id, newLabelName, labelIdx);
 		};
 
@@ -568,16 +567,16 @@ angular.module('emuwebApp')
 
 			if ((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
 				labelIdx = getLabelIdx(attrDefName, lastNeighbours.left.labels);
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
+				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[labelIdx].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeRight));
 			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
 				labelIdx = getLabelIdx(attrDefName, lastNeighbours.right.labels);
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, labelIdx, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft), (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
+				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[labelIdx].value, labelIdx, (lastNeighbours.right.sampleStart + deletedSegment.timeLeft), (lastNeighbours.right.sampleDur - deletedSegment.timeLeft));
 			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
 
 			} else {
 				labelIdx = getLabelIdx(attrDefName, lastNeighbours.left.labels);
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, labelIdx, (lastNeighbours.right.sampleStart + deletedSegment.timeRight), (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
+				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[labelIdx].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur - deletedSegment.timeLeft));
+				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[labelIdx].value, labelIdx, (lastNeighbours.right.sampleStart + deletedSegment.timeRight), (lastNeighbours.right.sampleDur - deletedSegment.timeRight));
 			}
 		};
 
@@ -620,17 +619,17 @@ angular.module('emuwebApp')
 			});
 
 			if ((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeRight));
+				sServObj.setElementDetails(name, lastNeighbours.left.id, undefined, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeRight));
 				clickSeg = lastNeighbours.left;
 			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, labelIdx, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
+				sServObj.setElementDetails(name, lastNeighbours.right.id, undefined, labelIdx, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
 				clickSeg = lastNeighbours.right;
 			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
 				// nothing left to do level empty now
 				viewState.setcurMouseSegment(undefined, undefined, undefined);
 			} else {
-				sServObj.setElementDetails(name, lastNeighbours.left.id, lastNeighbours.left.labels[0].value, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
-				sServObj.setElementDetails(name, lastNeighbours.right.id, lastNeighbours.right.labels[0].value, labelIdx, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
+				sServObj.setElementDetails(name, lastNeighbours.left.id, undefined, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
+				sServObj.setElementDetails(name, lastNeighbours.right.id, undefined, labelIdx, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
 				clickSeg = lastNeighbours.left;
 			}
 			return {
@@ -978,7 +977,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveBoundary = function (levelName, id, changeTime, position) {
 			var orig = sServObj.getElementDetailsById(levelName, id);
-			
+
 			var attrDefName = viewState.getCurAttrDef(levelName);
 			var labelIdx = getLabelIdx(attrDefName, orig.labels);
 
@@ -987,34 +986,34 @@ angular.module('emuwebApp')
 				var origRight = ln.right;
 				if (origRight !== undefined) {
 					if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + changeTime) < origRight.sampleStart)) {
-						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				} else {
 					if ((orig.sampleStart + changeTime) > 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			} else if (position === 1) { // after last element
 				if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-					sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
+					sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
 				}
 			} else {
 				if (ln.left === undefined) {
 					var origRight = ln.right;
 					if (origRight !== undefined) {
 						if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + changeTime) < origRight.sampleStart)) {
-							sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+							sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					} else {
 						if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length)) {
-							sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+							sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					}
 				} else {
 					var origLeft = ln.left;
 					if ((origLeft.sampleDur + changeTime >= 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
-						sServObj.setElementDetails(levelName, ln.left.id, origLeft.labels[0].value, labelIdx, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
-						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, ln.left.id, undefined, labelIdx, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+						sServObj.setElementDetails(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			}
@@ -1093,12 +1092,15 @@ angular.module('emuwebApp')
 			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length - 1].id);
 			var segTime = (changeTime * segments.length);
 
+			var attrDefName = viewState.getCurAttrDef(name);
+			var labelIdx = getLabelIdx(attrDefName, segments[0].labels);
+
 			if (rightSide) { // if expand or shrink on RIGHT side
 				if (neighbours.right === undefined) { // last element
 					var lastLength = segments[segments.length - 1].sampleStart + segments[segments.length - 1].sampleDur + (changeTime * segments.length);
 					if (lastLength < Soundhandlerservice.wavJSO.Data.length) {
 						angular.forEach(segments, function (seg) {
-							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
+							sServObj.setElementDetails(name, seg.id, undefined, labelIdx, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
 						});
 					}
@@ -1108,10 +1110,10 @@ angular.module('emuwebApp')
 					});
 					if (segTime > 0 && (neighbours.right.sampleDur - (changeTime * segments.length) > 0)) {
 						angular.forEach(segments, function (seg) {
-							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
+							sServObj.setElementDetails(name, seg.id, undefined, labelIdx, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 							startTime += changeTime;
 						});
-						sServObj.setElementDetails(name, neighbours.right.id, neighbours.right.labels[0].value, neighbours.right.sampleStart + startTime, neighbours.right.sampleDur - startTime);
+						sServObj.setElementDetails(name, neighbours.right.id, undefined, labelIdx, neighbours.right.sampleStart + startTime, neighbours.right.sampleDur - startTime);
 					}
 				}
 			} else { // if expand or shrink on LEFT side
@@ -1119,7 +1121,7 @@ angular.module('emuwebApp')
 					var first = sServObj.getElementDetails(name, 0);
 					if (first.sampleStart + (changeTime * (segments.length + 1)) > 0) {
 						angular.forEach(segments, function (seg) {
-							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart - changeTime, seg.sampleDur + changeTime);
+							sServObj.setElementDetails(name, seg.id, undefined, seg.sampleStart - changeTime, labelIdx, seg.sampleDur + changeTime);
 						});
 					}
 				} else {
@@ -1130,9 +1132,9 @@ angular.module('emuwebApp')
 						startTime = 0;
 						angular.forEach(segments, function (seg, i) {
 							startTime = -(segments.length - i) * changeTime;
-							sServObj.setElementDetails(name, seg.id, seg.labels[0].value, seg.sampleStart + startTime, seg.sampleDur + changeTime);
+							sServObj.setElementDetails(name, seg.id, undefined, labelIdx, seg.sampleStart + startTime, seg.sampleDur + changeTime);
 						});
-						sServObj.setElementDetails(name, neighbours.left.id, neighbours.left.labels[0].value, neighbours.left.sampleStart, neighbours.left.sampleDur - (segments.length * changeTime));
+						sServObj.setElementDetails(name, neighbours.left.id, undefined, labelIdx, neighbours.left.sampleStart, neighbours.left.sampleDur - (segments.length * changeTime));
 					}
 				}
 			}
@@ -1143,7 +1145,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
-			console.log(sample);
 			// walk right
 			var distRight;
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
