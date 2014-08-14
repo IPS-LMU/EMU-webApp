@@ -339,6 +339,9 @@ angular.module('emuwebApp')
 		 * insert a new Segment at position
 		 */
 		sServObj.insertElementDetails = function (id, levelname, position, labelname, start, duration) {
+			var attrdefs = ConfigProviderService.getLevelDefinition(levelname).attributeDefinitions;
+			console.error('Only label with levelname inserted! Breaks with parallel labels...');
+			console.log(attrdefs);
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					if (level.type == 'SEGMENT') {
