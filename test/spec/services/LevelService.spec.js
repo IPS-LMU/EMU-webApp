@@ -234,19 +234,21 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should change element (segment) details on level based on name and id', inject(function (LevelService) {
+  it('should change element (segment) details on level based on name and id', inject(function (LevelService, viewState) {
     // test on mockEpgdorsalJDR10
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
-    LevelService.setElementDetails('Phonetic', 3, 'test', 87700, 939);
+    LevelService.setElementDetails('Phonetic', 3, 'test', 0, 87700, 939);
     expect(LevelService.getElementDetails('Phonetic',0).id).toEqual(3);
     expect(LevelService.getElementDetails('Phonetic',0).sampleStart).toEqual(87700); 
     expect(LevelService.getElementDetails('Phonetic',0).sampleDur).toEqual(939);
     expect(LevelService.getElementDetails('Phonetic',0).labels[0].name).toEqual('Phonetic');
     expect(LevelService.getElementDetails('Phonetic',0).labels[0].value).toEqual('test');
 
-    // test on mockEmaProsody0024
+    // // test on mockEmaProsody0024
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
-    LevelService.setElementDetails('TB', 40, 'test', 29604, 2700);
+    LevelService.setElementDetails('TB', 40, 'test', 0, 29604, 2700);
     expect(LevelService.getElementDetails('TB',0).id).toEqual(40); 
     expect(LevelService.getElementDetails('TB',0).sampleStart).toEqual(29604); 
     expect(LevelService.getElementDetails('TB',0).sampleDur).toEqual(2700);
@@ -432,18 +434,22 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should rename an element', inject(function (LevelService) {
+  it('should rename an element', inject(function (LevelService, viewState) {
+
     // test on mockaeMsajc003
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
     LevelService.setData(mockaeMsajc003);
     LevelService.renameLabel('Phonetic', 147, 'test');
     expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('test');
     
     // test on mockEmaProsody0024
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
     LevelService.renameLabel('TB', 40, 'test');
     expect(LevelService.getElementDetailsById('TB',40).labels[0].value).toEqual('test');    
             
     // test on mockEpgdorsalJDR10
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.renameLabel('Phonetic', 3, 'test');
     expect(LevelService.getElementDetailsById('Phonetic',3).labels[0].value).toEqual('test');    
@@ -512,9 +518,10 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should deleteSegmentsInvers', inject(function (LevelService) {
+  it('should deleteSegmentsInvers', inject(function (LevelService, viewState) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions)
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
     var deleted = LevelService.deleteSegments('Phonetic', 148, 2);
@@ -524,6 +531,7 @@ describe('Service: LevelService', function () {
 
     // test on mockEmaProsody0024
     // 1 elements on left side
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions)
     LevelService.setData(mockEmaProsody0024);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
     var deleted = LevelService.deleteSegments('TB', 41, 1);
@@ -533,6 +541,7 @@ describe('Service: LevelService', function () {
     
     // test on mockEpgdorsalJDR10
     // 1 elements on right side
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions)
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
     var deleted = LevelService.deleteSegments('Phonetic', 4, 1);
