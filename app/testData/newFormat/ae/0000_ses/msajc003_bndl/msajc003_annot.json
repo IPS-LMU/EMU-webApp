@@ -416,7 +416,7 @@
 				"value": "V"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ʌ"
 			}]
 		}, {
 			"id": 148,
@@ -427,7 +427,7 @@
 				"value": "m"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "m"
 			}]
 		}, {
 			"id": 149,
@@ -438,7 +438,7 @@
 				"value": "V"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ʌ"
 			}]
 		}, {
 			"id": 150,
@@ -449,7 +449,7 @@
 				"value": "N"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ŋ"
 			}]
 		}, {
 			"id": 151,
@@ -460,7 +460,7 @@
 				"value": "s"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "s"
 			}]
 		}, {
 			"id": 152,
@@ -471,7 +471,7 @@
 				"value": "t"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "t"
 			}]
 		}, {
 			"id": 153,
@@ -482,7 +482,7 @@
 				"value": "H"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ɥ"
 			}]
 		}, {
 			"id": 154,
@@ -493,7 +493,7 @@
 				"value": "@:"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "@:"
 			}]
 		}, {
 			"id": 155,
@@ -504,7 +504,7 @@
 				"value": "f"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "f"
 			}]
 		}, {
 			"id": 156,
@@ -515,7 +515,7 @@
 				"value": "r"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "r"
 			}]
 		}, {
 			"id": 157,
@@ -526,7 +526,7 @@
 				"value": "E"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ɛ"
 			}]
 		}, {
 			"id": 158,
@@ -537,7 +537,7 @@
 				"value": "n"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "n"
 			}]
 		}, {
 			"id": 159,
@@ -548,7 +548,7 @@
 				"value": "z"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "z"
 			}]
 		}, {
 			"id": 160,
@@ -559,7 +559,7 @@
 				"value": "S"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ʃ"
 			}]
 		}, {
 			"id": 161,
@@ -570,7 +570,7 @@
 				"value": "i:"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "iː"
 			}]
 		}, {
 			"id": 162,
@@ -581,7 +581,7 @@
 				"value": "w"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "w"
 			}]
 		}, {
 			"id": 163,
@@ -592,7 +592,7 @@
 				"value": "@"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ə"
 			}]
 		}, {
 			"id": 164,
@@ -603,7 +603,7 @@
 				"value": "z"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "z"
 			}]
 		}, {
 			"id": 165,
@@ -614,7 +614,7 @@
 				"value": "k"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "k"
 			}]
 		}, {
 			"id": 166,
@@ -625,7 +625,7 @@
 				"value": "H"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ɥ"
 			}]
 		}, {
 			"id": 167,
@@ -636,7 +636,7 @@
 				"value": "@"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ə"
 			}]
 		}, {
 			"id": 168,
@@ -647,7 +647,7 @@
 				"value": "n"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "n"
 			}]
 		}, {
 			"id": 169,
@@ -658,7 +658,7 @@
 				"value": "s"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "s"
 			}]
 		}, {
 			"id": 170,
@@ -669,7 +669,7 @@
 				"value": "I"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ɪ"
 			}]
 		}, {
 			"id": 171,
@@ -680,7 +680,7 @@
 				"value": "d"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "d"
 			}]
 		}, {
 			"id": 172,
@@ -691,7 +691,7 @@
 				"value": "@"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ə"
 			}]
 		}, {
 			"id": 173,
@@ -702,7 +702,7 @@
 				"value": "db"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "db"
 			}]
 		}, {
 			"id": 174,
@@ -713,7 +713,7 @@
 				"value": "j"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "j"
 			}]
 		}, {
 			"id": 175,
@@ -724,7 +724,7 @@
 				"value": "u:"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "uː"
 			}]
 		}, {
 			"id": 176,
@@ -735,7 +735,7 @@
 				"value": "dH"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "dH"
 			}]
 		}, {
 			"id": 177,
@@ -746,7 +746,7 @@
 				"value": "@"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ə"
 			}]
 		}, {
 			"id": 178,
@@ -757,7 +757,7 @@
 				"value": "f"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "f"
 			}]
 		}, {
 			"id": 179,
@@ -768,7 +768,7 @@
 				"value": "@"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "ə"
 			}]
 		}, {
 			"id": 180,
@@ -779,7 +779,7 @@
 				"value": "l"
 			}, {
 				"name": "IPA",
-				"value": "???"
+				"value": "l"
 			}]
 		}]
 	}, {
