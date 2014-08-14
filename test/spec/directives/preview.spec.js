@@ -55,4 +55,25 @@ describe('Directive: preview', function() {
         scope.$apply(); 
         expect(spy).toHaveBeenCalled();
     }));
+
+    it('should render selectedAreaColor in the middle of the canvas', inject(function (viewState, Soundhandlerservice, ConfigProviderService) {
+        Soundhandlerservice.wavJSO.Data = new Array(58089); 
+        ConfigProviderService.setVals(configProviderServiceData);
+        viewState.curViewPort = {
+          sS : 0,
+          eS : 58089
+        }
+        compileDirective('test');    
+        var markup = elm.find('canvas')[1];
+        var ctx = markup.getContext('2d');
+        var posS = (markup.width / Soundhandlerservice.wavJSO.Data.length) * viewState.curViewPort.sS;
+        var posE = (markup.width / Soundhandlerservice.wavJSO.Data.length) * viewState.curViewPort.eS;
+        var colorMiddle = ctx.getImageData(markup.width/2, markup.height/2, 1, 1).data;
+        var area = ConfigProviderService.vals.colors.selectedAreaColor;
+        var fillArea = area.substring(area.indexOf('(') + 1, area.lastIndexOf(')')).split(/,\s*/);
+        expect(parseInt(fillArea[0])).toBe(colorMiddle[0]);
+        expect(parseInt(fillArea[1])).toBe(colorMiddle[1]);
+        expect(parseInt(fillArea[2])).toBe(colorMiddle[2]);
+        expect(Math.floor(fillArea[3]*255)).toBe(colorMiddle[3]);
+    }));
 });
