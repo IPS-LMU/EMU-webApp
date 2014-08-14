@@ -968,41 +968,45 @@ angular.module('emuwebApp')
 		 *                    (i.e. -1 = before first element, 1 = after last element, 0 = in the middle of elements).
 		 *
 		 */
-		sServObj.moveBoundary = function (name, id, changeTime, position) {
-			var orig = sServObj.getElementDetailsById(name, id);
-			var ln = sServObj.getElementNeighbourDetails(name, id, id);
+		sServObj.moveBoundary = function (levelName, id, changeTime, position) {
+			var orig = sServObj.getElementDetailsById(levelName, id);
+			
+			var attrDefName = viewState.getCurAttrDef(levelName);
+			var labelIdx = getLabelIdx(attrDefName, orig.labels);
+
+			var ln = sServObj.getElementNeighbourDetails(levelName, id, id);
 			if (position === -1) { // before first element
 				var origRight = ln.right;
 				if (origRight !== undefined) {
 					if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + changeTime) < origRight.sampleStart)) {
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				} else {
 					if ((orig.sampleStart + changeTime) > 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			} else if (position === 1) { // after last element
 				if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-					sServObj.setElementDetails(name, orig.id, orig.labels[0].value, orig.sampleStart, (orig.sampleDur + changeTime));
+					sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
 				}
 			} else {
 				if (ln.left === undefined) {
 					var origRight = ln.right;
 					if (origRight !== undefined) {
 						if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + changeTime) < origRight.sampleStart)) {
-							sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+							sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					} else {
 						if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length)) {
-							sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+							sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					}
 				} else {
 					var origLeft = ln.left;
 					if ((origLeft.sampleDur + changeTime >= 0) && (orig.sampleStart + changeTime > 0) && (orig.sampleDur - changeTime > 0)) {
-						sServObj.setElementDetails(name, ln.left.id, origLeft.labels[0].value, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
-						sServObj.setElementDetails(name, orig.id, orig.labels[0].value, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
+						sServObj.setElementDetails(levelName, ln.left.id, origLeft.labels[0].value, labelIdx, origLeft.sampleStart, (origLeft.sampleDur + changeTime));
+						sServObj.setElementDetails(levelName, orig.id, orig.labels[0].value, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			}
