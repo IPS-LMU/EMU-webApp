@@ -612,9 +612,12 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should insertSegmentInvers', inject(function (LevelService) {
+  it('should insertSegmentInvers', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
     // insert 1 new segment on the left side
@@ -627,6 +630,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
     
     // test on mockEmaProsody0024
+    ConfigProviderService.curDbConfig =emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+
     LevelService.setData(mockEmaProsody0024);  
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
     // insert 1 new segment on the right side    
@@ -639,6 +645,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
     
     // test on mockEpgdorsalJDR10
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+
     LevelService.setData(mockEpgdorsalJDR10);  
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
     // insert 1 new segment in the middle   
@@ -654,9 +663,12 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should insertPoint', inject(function (LevelService) {
+  it('should insertPoint', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);  
     // insert 1 new point
