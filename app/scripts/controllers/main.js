@@ -425,6 +425,7 @@ angular.module('emuwebApp')
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
+									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
 								} else {
 									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										$scope.resetToInitState();
