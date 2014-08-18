@@ -51,7 +51,7 @@ describe('Service: ConfigProviderService', function () {
    *
    */
   it('check if getSsffTrackConfig', inject(function (ConfigProviderService) {
-    ConfigProviderService.curDbConfig = mockCurDbConfig;
+    ConfigProviderService.curDbConfig = aeDbConfig;
     expect(ConfigProviderService.getSsffTrackConfig('FORMANTS').name).toBe('FORMANTS');
     expect(ConfigProviderService.getSsffTrackConfig('FORMANTS').columnName).toBe('fm');
     expect(ConfigProviderService.getSsffTrackConfig('FORMANTS').fileExtension).toBe('fms');
