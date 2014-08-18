@@ -17,27 +17,27 @@ describe('Service: Espsparserservice', function () {
  /**
    *
    */
-  it('should resolve asyncParseJSO', inject(function (Espsparserservice, LevelService) {
-     var result;
-     LevelService.setData(mockaeMsajc003);
-     //spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
-     var ret = Espsparserservice.asyncParseJSO('Utterance').then(function (res) {
-      expect(res).toEqual('called');
-     });
-     scope.$apply();
-  }));
+  // it('should resolve asyncParseJSO', inject(function (Espsparserservice, LevelService) {
+     // var result;
+     // LevelService.setData(mockaeMsajc003);
+     // //spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
+     // var ret = Espsparserservice.asyncParseJSO('Utterance').then(function (res) {
+     //  expect(res).toEqual('called');
+     // });
+     // scope.$apply();
+  // }));
    
  /**
    *
    */
-  it('should resolve asyncParseEsps', inject(function (Espsparserservice, LevelService) {
-     var result;
-     LevelService.setData(mockaeMsajc003);
-     //spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
-     var ret = Espsparserservice.asyncParseEsps('','','').then(function (res) {
-      expect(res).toEqual('called');
-     });
-     scope.$apply();
-  }));
+  // it('should resolve asyncParseEsps', inject(function (Espsparserservice, LevelService) {
+     // var result;
+     // LevelService.setData(mockaeMsajc003);
+     // //spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
+     // var ret = Espsparserservice.asyncParseEsps('','','').then(function (res) {
+     //  expect(res).toEqual('called');
+     // });
+     // scope.$apply();
+  // }));
   
 });

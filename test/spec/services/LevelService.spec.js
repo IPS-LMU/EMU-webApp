@@ -4,22 +4,22 @@ describe('Service: LevelService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
-    
- /**
+
+  /**
    *
    */
   it('should set level data and max Element id', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.data).toEqual(mockEpgdorsalJDR10); 
-    expect(LevelService.maxElementID).toEqual(4); 
-    
+    expect(LevelService.data).toEqual(mockEpgdorsalJDR10);
+    expect(LevelService.maxElementID).toEqual(4);
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.maxElementID).toEqual(42); 
-  }));    
-    
- /**
+    expect(LevelService.maxElementID).toEqual(42);
+  }));
+
+  /**
    *
    */
   it('should raise max Element id', inject(function (LevelService) {
@@ -27,283 +27,289 @@ describe('Service: LevelService', function () {
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.raiseId(1);
     expect(LevelService.maxElementID).toEqual(5);
-    
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
     LevelService.raiseId(1);
     expect(LevelService.maxElementID).toEqual(43);
-  })); 
-      
- /**
+  }));
+
+  /**
    *
    */
   it('should lower max Element id', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.lowerId(1);
-    expect(LevelService.maxElementID).toEqual(3); 
-    
+    expect(LevelService.maxElementID).toEqual(3);
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
     LevelService.lowerId(1);
-    expect(LevelService.maxElementID).toEqual(41);     
-  })); 
-        
- /**
+    expect(LevelService.maxElementID).toEqual(41);
+  }));
+
+  /**
    *
    */
   it('should return level details', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getLevelDetails('Phonetic').level.name).toEqual('Phonetic'); 
+    expect(LevelService.getLevelDetails('Phonetic').level.name).toEqual('Phonetic');
     expect(LevelService.getLevelDetails('Phonetic').level.type).toEqual('SEGMENT');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4); 
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getLevelDetails('TB').level.name).toEqual('TB'); 
+    expect(LevelService.getLevelDetails('TB').level.name).toEqual('TB');
     expect(LevelService.getLevelDetails('TB').level.type).toEqual('SEGMENT');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2); 
-  })); 
-    
- /**
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+  }));
+
+  /**
    *
    */
   it('should return element order by passing id', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getOrderById('Phonetic',3)).toEqual(0); 
-    expect(LevelService.getOrderById('Phonetic',0)).toEqual(1); 
-    expect(LevelService.getOrderById('Phonetic',1)).toEqual(2); 
-    expect(LevelService.getOrderById('Phonetic',4)).toEqual(3); 
+    expect(LevelService.getOrderById('Phonetic', 3)).toEqual(0);
+    expect(LevelService.getOrderById('Phonetic', 0)).toEqual(1);
+    expect(LevelService.getOrderById('Phonetic', 1)).toEqual(2);
+    expect(LevelService.getOrderById('Phonetic', 4)).toEqual(3);
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getOrderById('TB',40)).toEqual(0); 
-    expect(LevelService.getOrderById('TB',41)).toEqual(1); 
-  }));  
-      
- /**
+    expect(LevelService.getOrderById('TB', 40)).toEqual(0);
+    expect(LevelService.getOrderById('TB', 41)).toEqual(1);
+  }));
+
+  /**
    *
    */
   it('should return element id by passing order', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getIdByOrder('Phonetic',0)).toEqual(3); 
-    expect(LevelService.getIdByOrder('Phonetic',1)).toEqual(0); 
-    expect(LevelService.getIdByOrder('Phonetic',2)).toEqual(1); 
-    expect(LevelService.getIdByOrder('Phonetic',3)).toEqual(4); 
+    expect(LevelService.getIdByOrder('Phonetic', 0)).toEqual(3);
+    expect(LevelService.getIdByOrder('Phonetic', 1)).toEqual(0);
+    expect(LevelService.getIdByOrder('Phonetic', 2)).toEqual(1);
+    expect(LevelService.getIdByOrder('Phonetic', 3)).toEqual(4);
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getIdByOrder('TB',0)).toEqual(40); 
-    expect(LevelService.getIdByOrder('TB',1)).toEqual(41); 
-  }));    
-      
- /**
+    expect(LevelService.getIdByOrder('TB', 0)).toEqual(40);
+    expect(LevelService.getIdByOrder('TB', 1)).toEqual(41);
+  }));
+
+  /**
    *
    */
   it('should get element (segment) details by passing name and order', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getElementDetails('Phonetic',0).id).toEqual(3);
-    expect(LevelService.getElementDetails('Phonetic',0).sampleStart).toEqual(87710); 
-    expect(LevelService.getElementDetails('Phonetic',0).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].value).toEqual('O');
-    
+    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87710);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(929);
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('O');
+
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getElementDetails('TB',0).id).toEqual(40); 
-    expect(LevelService.getElementDetails('TB',0).sampleStart).toEqual(29609); 
-    expect(LevelService.getElementDetails('TB',0).sampleDur).toEqual(2695);
-    expect(LevelService.getElementDetails('TB',0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB',0).labels[0].value).toEqual('raise');    
-  }));    
-      
- /**
+    expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
+    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29609);
+    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2695);
+    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('raise');
+  }));
+
+  /**
    *
    */
   it('should get last element details by passing name', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.getLastElement('Phonetic').id).toEqual(4);
-    expect(LevelService.getLastElement('Phonetic').sampleStart).toEqual(91042); 
+    expect(LevelService.getLastElement('Phonetic').sampleStart).toEqual(91042);
     expect(LevelService.getLastElement('Phonetic').sampleDur).toEqual(553);
     expect(LevelService.getLastElement('Phonetic').labels[0].name).toEqual('Phonetic');
     expect(LevelService.getLastElement('Phonetic').labels[0].value).toEqual('I');
-    
+
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getLastElement('TB').id).toEqual(41); 
-    expect(LevelService.getLastElement('TB').sampleStart).toEqual(32304); 
+    expect(LevelService.getLastElement('TB').id).toEqual(41);
+    expect(LevelService.getLastElement('TB').sampleStart).toEqual(32304);
     expect(LevelService.getLastElement('TB').sampleDur).toEqual(2028);
     expect(LevelService.getLastElement('TB').labels[0].name).toEqual('TB');
-    expect(LevelService.getLastElement('TB').labels[0].value).toEqual('lower');    
-  }));  
-      
- /**
+    expect(LevelService.getLastElement('TB').labels[0].value).toEqual('lower');
+  }));
+
+  /**
    *
    */
   it('should get next element details by passing name and id', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getNextElement('Phonetic',1).id).toEqual(4);
-    expect(LevelService.getNextElement('Phonetic',1).sampleStart).toEqual(91042); 
-    expect(LevelService.getNextElement('Phonetic',1).sampleDur).toEqual(553);
-    expect(LevelService.getNextElement('Phonetic',1).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getNextElement('Phonetic',1).labels[0].value).toEqual('I');
-    
+    expect(LevelService.getNextElement('Phonetic', 1).id).toEqual(4);
+    expect(LevelService.getNextElement('Phonetic', 1).sampleStart).toEqual(91042);
+    expect(LevelService.getNextElement('Phonetic', 1).sampleDur).toEqual(553);
+    expect(LevelService.getNextElement('Phonetic', 1).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getNextElement('Phonetic', 1).labels[0].value).toEqual('I');
+
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getNextElement('TB',40).id).toEqual(41); 
-    expect(LevelService.getNextElement('TB',40).sampleStart).toEqual(32304); 
-    expect(LevelService.getNextElement('TB',40).sampleDur).toEqual(2028);
-    expect(LevelService.getNextElement('TB',40).labels[0].name).toEqual('TB');
-    expect(LevelService.getNextElement('TB',40).labels[0].value).toEqual('lower');    
-  })); 
-      
- /**
+    expect(LevelService.getNextElement('TB', 40).id).toEqual(41);
+    expect(LevelService.getNextElement('TB', 40).sampleStart).toEqual(32304);
+    expect(LevelService.getNextElement('TB', 40).sampleDur).toEqual(2028);
+    expect(LevelService.getNextElement('TB', 40).labels[0].name).toEqual('TB');
+    expect(LevelService.getNextElement('TB', 40).labels[0].value).toEqual('lower');
+  }));
+
+  /**
    *
    */
   it('should get element details by passing name and id', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getElementDetailsById('Phonetic',3).id).toEqual(3);
-    expect(LevelService.getElementDetailsById('Phonetic',3).sampleStart).toEqual(87710); 
-    expect(LevelService.getElementDetailsById('Phonetic',3).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetailsById('Phonetic',3).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetailsById('Phonetic',3).labels[0].value).toEqual('O');
-    
+    expect(LevelService.getElementDetailsById('Phonetic', 3).id).toEqual(3);
+    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
+    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929);
+    expect(LevelService.getElementDetailsById('Phonetic', 3).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getElementDetailsById('Phonetic', 3).labels[0].value).toEqual('O');
+
 
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getElementDetailsById('TB',40).id).toEqual(40); 
-    expect(LevelService.getElementDetailsById('TB',40).sampleStart).toEqual(29609); 
-    expect(LevelService.getElementDetailsById('TB',40).sampleDur).toEqual(2695);
-    expect(LevelService.getElementDetailsById('TB',40).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetailsById('TB',40).labels[0].value).toEqual('raise');    
-  }));  
+    expect(LevelService.getElementDetailsById('TB', 40).id).toEqual(40);
+    expect(LevelService.getElementDetailsById('TB', 40).sampleStart).toEqual(29609);
+    expect(LevelService.getElementDetailsById('TB', 40).sampleDur).toEqual(2695);
+    expect(LevelService.getElementDetailsById('TB', 40).labels[0].name).toEqual('TB');
+    expect(LevelService.getElementDetailsById('TB', 40).labels[0].value).toEqual('raise');
+  }));
 
-   /**
+  /**
    *
    */
   it('should set and get lasteditAreaElem', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setlasteditAreaElem('a');
-    expect(LevelService.getlasteditAreaElem()).toEqual('a');   
-  })); 
-  
-   /**
+    expect(LevelService.getlasteditAreaElem()).toEqual('a');
+  }));
+
+  /**
    *
    */
   it('should set and get lasteditArea', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     LevelService.setlasteditArea('_1');
-    expect(LevelService.getlasteditArea()).toEqual('_1');   
-    expect(LevelService.getlastID()).toEqual('1');   
-  })); 
+    expect(LevelService.getlasteditArea()).toEqual('_1');
+    expect(LevelService.getlastID()).toEqual('1');
+  }));
 
- /**
+  /**
    *
    */
-  it('should insert a new element on level', inject(function (LevelService) {
+  it('should insert a new element on level', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockEpgdorsalJDR10
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.insertElementDetails(5, 'Phonetic', 0, 'test', 87610, 100);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5); 
-    expect(LevelService.getElementDetails('Phonetic',0).id).toEqual(5); 
-    expect(LevelService.getElementDetails('Phonetic',0).sampleStart).toEqual(87610); 
-    expect(LevelService.getElementDetails('Phonetic',0).sampleDur).toEqual(100);
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].value).toEqual('test');  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
+    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(5);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87610);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(100);
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
     // test on mockEmaProsody0024
+    ConfigProviderService.curDbConfig = emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
     LevelService.insertElementDetails(42, 'TB', 0, 'test', 29509, 100);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3); 
-    expect(LevelService.getElementDetails('TB',0).id).toEqual(42); 
-    expect(LevelService.getElementDetails('TB',0).sampleStart).toEqual(29509); 
-    expect(LevelService.getElementDetails('TB',0).sampleDur).toEqual(100);
-    expect(LevelService.getElementDetails('TB',0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB',0).labels[0].value).toEqual('test');      
-  })); 
-        
- /**
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
+    expect(LevelService.getElementDetails('TB', 0).id).toEqual(42);
+    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29509);
+    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(100);
+    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('test');
+  }));
+
+  /**
    *
    */
-  it('should change element (segment) details on level based on name and id', inject(function (LevelService) {
+  it('should change element (segment) details on level based on name and id', inject(function (LevelService, viewState) {
     // test on mockEpgdorsalJDR10
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
-    LevelService.setElementDetails('Phonetic', 3, 'test', 87700, 939);
-    expect(LevelService.getElementDetails('Phonetic',0).id).toEqual(3);
-    expect(LevelService.getElementDetails('Phonetic',0).sampleStart).toEqual(87700); 
-    expect(LevelService.getElementDetails('Phonetic',0).sampleDur).toEqual(939);
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic',0).labels[0].value).toEqual('test');
+    LevelService.setElementDetails('Phonetic', 3, 'test', 0, 87700, 939);
+    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87700);
+    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(939);
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
 
-    // test on mockEmaProsody0024
+    // // test on mockEmaProsody0024
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
-    LevelService.setElementDetails('TB', 40, 'test', 29604, 2700);
-    expect(LevelService.getElementDetails('TB',0).id).toEqual(40); 
-    expect(LevelService.getElementDetails('TB',0).sampleStart).toEqual(29604); 
-    expect(LevelService.getElementDetails('TB',0).sampleDur).toEqual(2700);
-    expect(LevelService.getElementDetails('TB',0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB',0).labels[0].value).toEqual('test');     
-    }));  
-        
- /**
+    LevelService.setElementDetails('TB', 40, 'test', 0, 29604, 2700);
+    expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
+    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29604);
+    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2700);
+    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('test');
+  }));
+
+  /**
    *
    */
   it('should change element (point) details on level based on name and id', inject(function (LevelService) {
     // test on mockaeMsajc003
     LevelService.setData(mockaeMsajc003);
     LevelService.setPointDetails('Tone', 181, 'test', 100);
-    expect(LevelService.getElementDetails('Tone',0).id).toEqual(181);
-    expect(LevelService.getElementDetails('Tone',0).samplePoint).toEqual(100); 
-    expect(LevelService.getElementDetails('Tone',0).labels[0].name).toEqual('Tone');
-    expect(LevelService.getElementDetails('Tone',0).labels[0].value).toEqual('test');  
-    }));  
-        
- /**
+    expect(LevelService.getElementDetails('Tone', 0).id).toEqual(181);
+    expect(LevelService.getElementDetails('Tone', 0).samplePoint).toEqual(100);
+    expect(LevelService.getElementDetails('Tone', 0).labels[0].name).toEqual('Tone');
+    expect(LevelService.getElementDetails('Tone', 0).labels[0].value).toEqual('test');
+  }));
+
+  /**
    *
    */
   it('should get element neightbour details', inject(function (LevelService) {
     // test on mockEpgdorsalJDR10
     // should return neighbours "O" and "I"
     LevelService.setData(mockEpgdorsalJDR10);
-    var neigh = LevelService.getElementNeighbourDetails('Phonetic', 0, 1);   
+    var neigh = LevelService.getElementNeighbourDetails('Phonetic', 0, 1);
     expect(neigh.left.id).toEqual(3);
     expect(neigh.right.id).toEqual(4);
     expect(neigh.left.labels[0].value).toEqual('O');
-    expect(neigh.right.labels[0].value).toEqual('I');    
-    
+    expect(neigh.right.labels[0].value).toEqual('I');
+
     // test on mockEmaProsody0024
     // should return neighbours undefined and "lower"
     LevelService.setData(mockEmaProsody0024);
     var neigh = LevelService.getElementNeighbourDetails('TB', 40, 40);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right.id).toEqual(41);
-    expect(neigh.right.labels[0].value).toEqual('lower'); 
-        
+    expect(neigh.right.labels[0].value).toEqual('lower');
+
     // test on mockEmaProsody0024
     // should return neighbours "raise" and undefined
     LevelService.setData(mockEmaProsody0024);
     var neigh = LevelService.getElementNeighbourDetails('TB', 41, 41);
     expect(neigh.left.id).toEqual(40);
-    expect(neigh.left.labels[0].value).toEqual('raise'); 
+    expect(neigh.left.labels[0].value).toEqual('raise');
     expect(neigh.right).toEqual(undefined);
-       
+
     // test on mockaeMsajc003
     // should return neighbours "V" and "l"
     LevelService.setData(mockaeMsajc003);
     var neigh = LevelService.getElementNeighbourDetails('Phonetic', 148, 179);
     expect(neigh.left.id).toEqual(147);
-    expect(neigh.left.labels[0].value).toEqual('V'); 
+    expect(neigh.left.labels[0].value).toEqual('V');
     expect(neigh.right.id).toEqual(180);
-    expect(neigh.right.labels[0].value).toEqual('l');     
+    expect(neigh.right.labels[0].value).toEqual('l');
 
     // test on mockaeMsajc003
     // should return neighbours undefined and undefined
@@ -311,9 +317,9 @@ describe('Service: LevelService', function () {
     var neigh = LevelService.getElementNeighbourDetails('Phonetic', 147, 180);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right).toEqual(undefined);
-    }));  
-        
- /**
+  }));
+
+  /**
    *
    */
   it('should getEvent (surrounding details) at given pcm position', inject(function (LevelService) {
@@ -336,7 +342,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getEvent(10, 'Phonetic', 58089).evtr.sampleStart).toEqual(3750);
     // after last -> evtr should be first element
     expect(LevelService.getEvent(58088, 'Phonetic', 58089).evtr.sampleStart).toEqual(50126);
-    
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
     // Soundhandlerservice.wavJSO.Data.length = 96002  
@@ -356,7 +362,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getEvent(10, 'TT', 96002).evtr.sampleStart).toEqual(30970);
     // after last -> evtr should be first element
     expect(LevelService.getEvent(96000, 'TT', 96002).evtr.sampleStart).toEqual(32707);
-    
+
     //test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     // Soundhandlerservice.wavJSO.Data.length = 112000 
@@ -375,84 +381,124 @@ describe('Service: LevelService', function () {
     // before first -> evtr should be first element
     expect(LevelService.getEvent(10, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
     // after last -> evtr should be first element
-    expect(LevelService.getEvent(111998, 'Phonetic', 112000).evtr.sampleStart).toEqual(91042);        
-    }));  
-        
- /**
+    expect(LevelService.getEvent(111998, 'Phonetic', 112000).evtr.sampleStart).toEqual(91042);
+  }));
+
+  /**
    *
    */
-  it('should delete a level', inject(function (LevelService,ConfigProviderService) {
+  it('should delete a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     ConfigProviderService.setVals(configProviderServiceData);
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.data.levels.length).toEqual(9);
-    LevelService.deleteLevel(0,0);
+    LevelService.deleteLevel(0, 0);
     expect(LevelService.data.levels.length).toEqual(8);
-    
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
     expect(LevelService.data.levels.length).toEqual(4);
-    LevelService.deleteLevel(2,0);
-    expect(LevelService.data.levels.length).toEqual(3); 
-        
+    LevelService.deleteLevel(2, 0);
+    expect(LevelService.data.levels.length).toEqual(3);
+
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.data.levels.length).toEqual(2);
-    LevelService.deleteLevel(1,0);
-    expect(LevelService.data.levels.length).toEqual(1);    
-    })); 
-          
- /**
+    LevelService.deleteLevel(1, 0);
+    expect(LevelService.data.levels.length).toEqual(1);
+  }));
+
+  /**
    *
    */
-  it('should add a level', inject(function (LevelService,ConfigProviderService) {
+  it('should add a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     ConfigProviderService.setVals(configProviderServiceData);
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.data.levels.length).toEqual(9);
-    LevelService.addLevel({"items":[{"id":150,"sampleStart":0,"sampleDur":90932,"labels":[{"name":"levelNr0","value":""}]}],"name":"levelNr0","type":"SEGMENT"} , 0, 0);
+    LevelService.addLevel({
+      "items": [{
+        "id": 150,
+        "sampleStart": 0,
+        "sampleDur": 90932,
+        "labels": [{
+          "name": "levelNr0",
+          "value": ""
+        }]
+      }],
+      "name": "levelNr0",
+      "type": "SEGMENT"
+    }, 0, 0);
     expect(LevelService.data.levels.length).toEqual(10);
     expect(LevelService.data.levels[0].items[0].id).toEqual(150);
-    
+
     // test on mockEmaProsody0024
     LevelService.setData(mockEmaProsody0024);
     expect(LevelService.data.levels.length).toEqual(4);
-    LevelService.addLevel({"items":[{"id":151,"sampleStart":0,"sampleDur":90932,"labels":[{"name":"levelNr0","value":""}]}],"name":"levelNr0","type":"SEGMENT"} , 2, 0);
+    LevelService.addLevel({
+      "items": [{
+        "id": 151,
+        "sampleStart": 0,
+        "sampleDur": 90932,
+        "labels": [{
+          "name": "levelNr0",
+          "value": ""
+        }]
+      }],
+      "name": "levelNr0",
+      "type": "SEGMENT"
+    }, 2, 0);
     expect(LevelService.data.levels.length).toEqual(5);
     expect(LevelService.data.levels[2].items[0].id).toEqual(151);
-        
+
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.data.levels.length).toEqual(2);
-    LevelService.addLevel({"items":[{"id":152,"sampleStart":0,"sampleDur":90932,"labels":[{"name":"levelNr0","value":""}]}],"name":"levelNr0","type":"SEGMENT"} , 1, 0);
+    LevelService.addLevel({
+      "items": [{
+        "id": 152,
+        "sampleStart": 0,
+        "sampleDur": 90932,
+        "labels": [{
+          "name": "levelNr0",
+          "value": ""
+        }]
+      }],
+      "name": "levelNr0",
+      "type": "SEGMENT"
+    }, 1, 0);
     expect(LevelService.data.levels.length).toEqual(3);
     expect(LevelService.data.levels[1].items[0].id).toEqual(152);
-    })); 
-          
- /**
+  }));
+
+  /**
    *
    */
-  it('should rename an element', inject(function (LevelService) {
+  it('should rename an element', inject(function (LevelService, viewState) {
+
     // test on mockaeMsajc003
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
     LevelService.setData(mockaeMsajc003);
     LevelService.renameLabel('Phonetic', 147, 'test');
-    expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('test');
-    
+    expect(LevelService.getElementDetailsById('Phonetic', 147).labels[0].value).toEqual('test');
+
     // test on mockEmaProsody0024
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
     LevelService.renameLabel('TB', 40, 'test');
-    expect(LevelService.getElementDetailsById('TB',40).labels[0].value).toEqual('test');    
-            
+    expect(LevelService.getElementDetailsById('TB', 40).labels[0].value).toEqual('test');
+
     // test on mockEpgdorsalJDR10
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.renameLabel('Phonetic', 3, 'test');
-    expect(LevelService.getElementDetailsById('Phonetic',3).labels[0].value).toEqual('test');    
-    }));  
-          
- /**
+    expect(LevelService.getElementDetailsById('Phonetic', 3).labels[0].value).toEqual('test');
+  }));
+
+  /**
    *
    */
-  it('should rename a level', inject(function (LevelService,ConfigProviderService) {
+  it('should rename a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     LevelService.setData(mockaeMsajc003);
     ConfigProviderService.setVals(configProviderServiceData);
@@ -464,391 +510,430 @@ describe('Service: LevelService', function () {
     LevelService.setData(mockEmaProsody0024);
     expect(LevelService.getLevelDetails('TB').id).toEqual(3);
     LevelService.renameLevel('TB', 'test', 0);
-    expect(LevelService.getLevelDetails('test').id).toEqual(3); 
-    
+    expect(LevelService.getLevelDetails('test').id).toEqual(3);
+
     // test on mockEpgdorsalJDR10
     LevelService.setData(mockEpgdorsalJDR10);
     expect(LevelService.getLevelDetails('Phonetic').id).toEqual(1);
     LevelService.renameLevel('Phonetic', 'test', 0);
-    expect(LevelService.getLevelDetails('test').id).toEqual(1);      
-    }));  
-          
- /**
+    expect(LevelService.getLevelDetails('test').id).toEqual(1);
+  }));
+
+  /**
    *
    */
   it('should deleteSegments', inject(function (LevelService) {
     // test on mockaeMsajc003
     // 2 elements in the middle
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);     
-    LevelService.deleteSegments('Phonetic', 148, 2);    
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    LevelService.deleteSegments('Phonetic', 148, 2);
     // check new length 34-2=32
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);     
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
     // check new sampleDur and sampleStart
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleDur).toEqual(3088);
-    expect(LevelService.getElementDetailsById('Phonetic',150).sampleStart).toEqual(6838);     
+    expect(LevelService.getElementDetailsById('Phonetic', 147).sampleDur).toEqual(3088);
+    expect(LevelService.getElementDetailsById('Phonetic', 150).sampleStart).toEqual(6838);
 
     // test on mockEmaProsody0024
     // 1 elements on left side
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);     
-    LevelService.deleteSegments('TB', 41, 1);  
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    LevelService.deleteSegments('TB', 41, 1);
     // check new length 2-1=1  
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1); 
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
     // check new sampleDur     
-    expect(LevelService.getElementDetailsById('TB',40).sampleDur).toEqual(3709);
+    expect(LevelService.getElementDetailsById('TB', 40).sampleDur).toEqual(3709);
 
     // test on mockEpgdorsalJDR10
     // 1 elements on right side
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);     
-    LevelService.deleteSegments('Phonetic', 4, 1);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    LevelService.deleteSegments('Phonetic', 4, 1);
     // check new length 4-1=3  
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3); 
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
     // check new sampleDur and sampleStart        
-    expect(LevelService.getElementDetailsById('Phonetic',1).sampleDur).toEqual(1037);
-    }));   
-          
- /**
+    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(1037);
+  }));
+
+  /**
    *
    */
-  it('should deleteSegmentsInvers', inject(function (LevelService) {
+  it('should deleteSegmentsInvers', inject(function (LevelService, viewState) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions)
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     var deleted = LevelService.deleteSegments('Phonetic', 148, 2);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
     LevelService.deleteSegmentsInvers('Phonetic', 148, 2, deleted);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);     
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
 
     // test on mockEmaProsody0024
     // 1 elements on left side
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions)
     LevelService.setData(mockEmaProsody0024);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     var deleted = LevelService.deleteSegments('TB', 41, 1);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);  
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
     LevelService.deleteSegmentsInvers('TB', 41, 1, deleted);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);       
-    
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+
     // test on mockEpgdorsalJDR10
     // 1 elements on right side
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions)
     LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     var deleted = LevelService.deleteSegments('Phonetic', 4, 1);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
     LevelService.deleteSegmentsInvers('Phonetic', 4, 1, deleted);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);     
-    }));   
-          
- /**
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+  }));
+
+  /**
    *
    */
-  it('should insertSegment', inject(function (LevelService) {
+  it('should insertSegment', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
+
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 1 new segment on the left side
     var ret1 = LevelService.insertSegment('Phonetic', 100, 100, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(35);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(35);
     // insert 2 new segments on the left side
     var ret2 = LevelService.insertSegment('Phonetic', 10, 50, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(37);  
-    expect(LevelService.getElementDetailsById('Phonetic',ret1.ids[0]).labels[0].value).toEqual('test1');  
-    expect(LevelService.getElementDetailsById('Phonetic',ret2.ids[0]).labels[0].value).toEqual('test2');  
-    expect(LevelService.getElementDetailsById('Phonetic',ret2.ids[1]).labels[0].value).toEqual('test2');  
-    
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(37);
+    expect(LevelService.getElementDetailsById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
+    expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
+    expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
+
     // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);  
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
+    ConfigProviderService.curDbConfig = emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+
+    LevelService.setData(mockEmaProsody0024);
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     // insert 1 new segment on the right side    
     var ret1 = LevelService.insertSegment('TB', 58000, 58000, 'test1');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);  
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
     // insert 2 new segments on the left side
     var ret2 = LevelService.insertSegment('TB', 58100, 58200, 'test2');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(5);  
-    expect(LevelService.getElementDetailsById('TB',ret1.ids[0]).labels[0].value).toEqual('test1');  
-    expect(LevelService.getElementDetailsById('TB',ret2.ids[0]).labels[0].value).toEqual('test2');  
-    expect(LevelService.getElementDetailsById('TB',ret2.ids[1]).labels[0].value).toEqual('test2');  
-    
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(5);
+    expect(LevelService.getElementDetailsById('TB', ret1.ids[0]).labels[0].value).toEqual('test1');
+    expect(LevelService.getElementDetailsById('TB', ret2.ids[0]).labels[0].value).toEqual('test2');
+    expect(LevelService.getElementDetailsById('TB', ret2.ids[1]).labels[0].value).toEqual('test2');
+
     // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);  
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+
+    LevelService.setData(mockEpgdorsalJDR10);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     // insert 1 new segment in the middle   
     var ret1 = LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
     // insert 2 new segments in the middle
     var ret2 = LevelService.insertSegment('Phonetic', 89000, 89500, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(7);  
-    expect(LevelService.getElementDetailsById('Phonetic',ret1.ids[0]).labels[0].value).toEqual('test1');  
-    expect(LevelService.getElementDetailsById('Phonetic',ret2.ids[0]).labels[0].value).toEqual('test2');  
-    expect(LevelService.getElementDetailsById('Phonetic',ret2.ids[1]).labels[0].value).toEqual('test2');      
-    }));     
-          
- /**
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(7);
+    expect(LevelService.getElementDetailsById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
+    expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
+    expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
+  }));
+
+  /**
    *
    */
-  it('should insertSegmentInvers', inject(function (LevelService) {
+  it('should insertSegmentInvers', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 1 new segment on the left side
     LevelService.insertSegment('Phonetic', 100, 100, 'test1');
     LevelService.insertSegmentInvers('Phonetic', 100, 100, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 2 new segments on the left side
     LevelService.insertSegment('Phonetic', 10, 50, 'test2');
     LevelService.insertSegmentInvers('Phonetic', 10, 50, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
-    
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+
     // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);  
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
+    ConfigProviderService.curDbConfig = emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+
+    LevelService.setData(mockEmaProsody0024);
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     // insert 1 new segment on the right side    
     LevelService.insertSegment('TB', 58000, 58000, 'test1');
     LevelService.insertSegmentInvers('TB', 58000, 58000, 'test1');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     // insert 2 new segments on the left side
     LevelService.insertSegment('TB', 58100, 58200, 'test2');
     LevelService.insertSegmentInvers('TB', 58100, 58200, 'test2');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
-    
+    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+
     // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);  
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+
+    LevelService.setData(mockEpgdorsalJDR10);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     // insert 1 new segment in the middle   
     LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
     LevelService.insertSegmentInvers('Phonetic', 90000, 90000, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     // insert 2 new segments in the middle
     LevelService.insertSegment('Phonetic', 89000, 89500, 'test2');
     LevelService.insertSegmentInvers('Phonetic', 89000, 89500, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
-    }));      
-          
- /**
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+  }));
+
+  /**
    *
    */
-  it('should insertPoint', inject(function (LevelService) {
+  it('should insertPoint', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);  
+    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
     // insert 1 new point
     var ret = LevelService.insertPoint('Tone', 100, 'test');
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(8);  
-    expect(LevelService.getElementDetailsById('Tone',ret.id).labels[0].value).toEqual('test');      
-    }));       
-          
- /**
+    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(8);
+    expect(LevelService.getElementDetailsById('Tone', ret.id).labels[0].value).toEqual('test');
+  }));
+
+  /**
    *
    */
   it('should deletePoint', inject(function (LevelService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);  
+    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
     // delete 1 point
     var ret = LevelService.deletePoint('Tone', 181);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(6); 
-    }));       
-          
- /**
+    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(6);
+  }));
+
+  /**
    *
    */
   it('should deleteBoundary', inject(function (LevelService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33); 
-    expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('Vm');      
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleDur).toEqual(3055);      
-    }));       
-          
- /**
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+    expect(LevelService.getElementDetailsById('Phonetic', 147).labels[0].value).toEqual('Vm');
+    expect(LevelService.getElementDetailsById('Phonetic', 147).sampleDur).toEqual(3055);
+  }));
+
+  /**
    *
    */
   it('should deleteBoundaryInvers', inject(function (LevelService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
     // undo delete 1 boundary
     LevelService.deleteBoundaryInvers('Phonetic', 148, ret);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34); 
-    expect(LevelService.getElementDetailsById('Phonetic',147).labels[0].value).toEqual('V');      
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleDur).toEqual(1390);      
-    }));      
-          
- /**
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getElementDetailsById('Phonetic', 147).labels[0].value).toEqual('V');
+    expect(LevelService.getElementDetailsById('Phonetic', 147).sampleDur).toEqual(1390);
+  }));
+
+  /**
    *
    */
   it('should snapBoundary', inject(function (LevelService, Soundhandlerservice) {
     // test on mockaeMsajc003
     // snap Boundary
     LevelService.setData(mockaeMsajc003);
-    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    Soundhandlerservice.wavJSO.Data = new Array(58089);
     // snap point to boundary above
-    var ret = LevelService.snapBoundary(true, 
-                                        'Tone', 
-                                        {"id":181,"samplePoint":8382,"labels":[{"name":"Tone","value":"H*"}]},
-                                        {"right":{"id":182,"samplePoint":18632,"labels":[{"name":"Tone","value":"H*"}]}},
-                                        'EVENT');
-    expect(ret).toEqual(153); 
-    }));   
-        
-          
- /**
+    var ret = LevelService.snapBoundary(true,
+      'Tone', {
+        "id": 181,
+        "samplePoint": 8382,
+        "labels": [{
+          "name": "Tone",
+          "value": "H*"
+        }]
+      }, {
+        "right": {
+          "id": 182,
+          "samplePoint": 18632,
+          "labels": [{
+            "name": "Tone",
+            "value": "H*"
+          }]
+        }
+      },
+      'EVENT');
+    expect(ret).toEqual(153);
+  }));
+
+
+  /**
    *
    */
-  it('should moveBoundary', inject(function (LevelService,Soundhandlerservice) {
-  
+  it('should moveBoundary', inject(function (LevelService, Soundhandlerservice) {
+
     // test on mockaeMsajc003
     // move Boundary
     LevelService.setData(mockaeMsajc003);
     // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Phonetic', 158, 100000, 0); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000);     
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640);     
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
+    LevelService.moveBoundary('Phonetic', 158, 100000, 0);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
     // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 10 samples
-    LevelService.moveBoundary('Phonetic', 158, 10, 0); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000);     
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640+10);     
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280-10); 
+    LevelService.moveBoundary('Phonetic', 158, 10, 0);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280 - 10);
     // move left most (-1) boundary of segment with id 147 on level 'Phonetic' by 10 samples   
-    LevelService.moveBoundary('Phonetic', 147, 10, -1); 
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleStart).toEqual(3750+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',147).sampleDur).toEqual(1390-10);     
+    LevelService.moveBoundary('Phonetic', 147, 10, -1);
+    expect(LevelService.getElementDetailsById('Phonetic', 147).sampleStart).toEqual(3750 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 147).sampleDur).toEqual(1390 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
-    Soundhandlerservice.wavJSO.Data = new Array(58089); 
-    LevelService.moveBoundary('Phonetic', 180, 10, 1); 
-    expect(LevelService.getElementDetailsById('Phonetic',180).sampleStart).toEqual(50126); 
-    expect(LevelService.getElementDetailsById('Phonetic',180).sampleDur).toEqual(1964+10);   
+    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    LevelService.moveBoundary('Phonetic', 180, 10, 1);
+    expect(LevelService.getElementDetailsById('Phonetic', 180).sampleStart).toEqual(50126);
+    expect(LevelService.getElementDetailsById('Phonetic', 180).sampleDur).toEqual(1964 + 10);
 
     // test on mockEmaProsody0024
     // move Boundary
     LevelService.setData(mockEmaProsody0024);
     // move middle (0) boundary of segment with id 2 on level 'Segment' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Segment', 2, 100000, 0); 
-    expect(LevelService.getElementDetailsById('Segment',1).sampleStart).toEqual(8640);     
-    expect(LevelService.getElementDetailsById('Segment',1).sampleDur).toEqual(6240);     
-    expect(LevelService.getElementDetailsById('Segment',2).sampleStart).toEqual(14880); 
-    expect(LevelService.getElementDetailsById('Segment',2).sampleDur).toEqual(2640); 
+    LevelService.moveBoundary('Segment', 2, 100000, 0);
+    expect(LevelService.getElementDetailsById('Segment', 1).sampleStart).toEqual(8640);
+    expect(LevelService.getElementDetailsById('Segment', 1).sampleDur).toEqual(6240);
+    expect(LevelService.getElementDetailsById('Segment', 2).sampleStart).toEqual(14880);
+    expect(LevelService.getElementDetailsById('Segment', 2).sampleDur).toEqual(2640);
     // move middle (0) boundary of segment with id 2 on level 'Segment' by 10 samples
-    LevelService.moveBoundary('Segment', 2, 10, 0); 
-    expect(LevelService.getElementDetailsById('Segment',1).sampleStart).toEqual(8640);     
-    expect(LevelService.getElementDetailsById('Segment',1).sampleDur).toEqual(6240+10);     
-    expect(LevelService.getElementDetailsById('Segment',2).sampleStart).toEqual(14880+10); 
-    expect(LevelService.getElementDetailsById('Segment',2).sampleDur).toEqual(2640-10); 
+    LevelService.moveBoundary('Segment', 2, 10, 0);
+    expect(LevelService.getElementDetailsById('Segment', 1).sampleStart).toEqual(8640);
+    expect(LevelService.getElementDetailsById('Segment', 1).sampleDur).toEqual(6240 + 10);
+    expect(LevelService.getElementDetailsById('Segment', 2).sampleStart).toEqual(14880 + 10);
+    expect(LevelService.getElementDetailsById('Segment', 2).sampleDur).toEqual(2640 - 10);
     // move left most (-1) boundary of segment with id 0 on level 'Segment' by 10 samples   
-    LevelService.moveBoundary('Segment', 0, 10, -1); 
-    expect(LevelService.getElementDetailsById('Segment',0).sampleStart).toEqual(0+10); 
-    expect(LevelService.getElementDetailsById('Segment',0).sampleDur).toEqual(8640-10);     
+    LevelService.moveBoundary('Segment', 0, 10, -1);
+    expect(LevelService.getElementDetailsById('Segment', 0).sampleStart).toEqual(0 + 10);
+    expect(LevelService.getElementDetailsById('Segment', 0).sampleDur).toEqual(8640 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
-    Soundhandlerservice.wavJSO.Data = new Array(96002); 
-    LevelService.moveBoundary('Segment', 37, 10, 1); 
-    expect(LevelService.getElementDetailsById('Segment',37).sampleStart).toEqual(94560); 
-    expect(LevelService.getElementDetailsById('Segment',37).sampleDur).toEqual(1200+10);   
-    
+    Soundhandlerservice.wavJSO.Data = new Array(96002);
+    LevelService.moveBoundary('Segment', 37, 10, 1);
+    expect(LevelService.getElementDetailsById('Segment', 37).sampleStart).toEqual(94560);
+    expect(LevelService.getElementDetailsById('Segment', 37).sampleDur).toEqual(1200 + 10);
+
     // test on mockEpgdorsalJDR10
     // move Boundary
     LevelService.setData(mockEpgdorsalJDR10);
     // move middle (0) boundary of segment with id 1 on level 'Phonetic' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Phonetic', 1, 100000, 0); 
-    expect(LevelService.getElementDetailsById('Phonetic',0).sampleStart).toEqual(88639);     
-    expect(LevelService.getElementDetailsById('Phonetic',0).sampleDur).toEqual(1642);     
-    expect(LevelService.getElementDetailsById('Phonetic',1).sampleStart).toEqual(90281); 
-    expect(LevelService.getElementDetailsById('Phonetic',1).sampleDur).toEqual(761); 
+    LevelService.moveBoundary('Phonetic', 1, 100000, 0);
+    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
+    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1642);
+    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90281);
+    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(761);
     // move middle (0) boundary of segment with id 1 on level 'Phonetic' by 10 samples
-    LevelService.moveBoundary('Phonetic', 1, 10, 0); 
-    expect(LevelService.getElementDetailsById('Phonetic',0).sampleStart).toEqual(88639);     
-    expect(LevelService.getElementDetailsById('Phonetic',0).sampleDur).toEqual(1642+10);     
-    expect(LevelService.getElementDetailsById('Phonetic',1).sampleStart).toEqual(90281+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',1).sampleDur).toEqual(761-10); 
+    LevelService.moveBoundary('Phonetic', 1, 10, 0);
+    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
+    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1642 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90281 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(761 - 10);
     // move left most (-1) boundary of segment with id 0 on level 'Phonetic' by 10 samples   
-    LevelService.moveBoundary('Phonetic', 3, 10, -1); 
-    expect(LevelService.getElementDetailsById('Phonetic',3).sampleStart).toEqual(87710+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',3).sampleDur).toEqual(929-10);     
+    LevelService.moveBoundary('Phonetic', 3, 10, -1);
+    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
-    Soundhandlerservice.wavJSO.Data = new Array(112000); 
-    LevelService.moveBoundary('Phonetic', 4, 10, 1); 
-    expect(LevelService.getElementDetailsById('Phonetic',4).sampleStart).toEqual(91042); 
-    expect(LevelService.getElementDetailsById('Phonetic',4).sampleDur).toEqual(553+10);   
-    
-    }));
-        
-          
- /**
+    Soundhandlerservice.wavJSO.Data = new Array(112000);
+    LevelService.moveBoundary('Phonetic', 4, 10, 1);
+    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
+    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553 + 10);
+
+  }));
+
+
+  /**
    *
    */
-  it('should movePoint', inject(function (LevelService,Soundhandlerservice) {
+  it('should movePoint', inject(function (LevelService, Soundhandlerservice) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
     LevelService.setData(mockaeMsajc003);
-    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    Soundhandlerservice.wavJSO.Data = new Array(58089);
     // move point with id 181 on level 'Tone' by 100000000000 samples -> should not change anything
-    LevelService.movePoint('Tone', 181, 100000000000); 
-    expect(LevelService.getElementDetailsById('Tone',181).samplePoint).toEqual(8382);  
+    LevelService.movePoint('Tone', 181, 100000000000);
+    expect(LevelService.getElementDetailsById('Tone', 181).samplePoint).toEqual(8382);
     // move point with id 181 on level 'Tone' by 10 samples
-    LevelService.movePoint('Tone', 181, 10); 
-    expect(LevelService.getElementDetailsById('Tone',181).samplePoint).toEqual(8382+10);     
+    LevelService.movePoint('Tone', 181, 10);
+    expect(LevelService.getElementDetailsById('Tone', 181).samplePoint).toEqual(8382 + 10);
     // move point with id 181 on level 'Tone' back by 10 samples
-    LevelService.movePoint('Tone', 181, -10); 
-    expect(LevelService.getElementDetailsById('Tone',181).samplePoint).toEqual(8382);     
-    }));  
- 
-          
- /**
+    LevelService.movePoint('Tone', 181, -10);
+    expect(LevelService.getElementDetailsById('Tone', 181).samplePoint).toEqual(8382);
+  }));
+
+
+  /**
    *
    */
-  it('should moveSegment', inject(function (LevelService,Soundhandlerservice) {
+  it('should moveSegment', inject(function (LevelService, Soundhandlerservice) {
     // test on mockaeMsajc003
     // move segment
     LevelService.setData(mockaeMsajc003);
-    Soundhandlerservice.wavJSO.Data = new Array(58089); 
+    Soundhandlerservice.wavJSO.Data = new Array(58089);
     // move single segment with id 158 on level 'Phonetic' by 100000000000 samples -> should not change anything
-    LevelService.moveSegment('Phonetic', 158, 1, 100000000000); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000);     
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640);     
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleStart).toEqual(23920); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleDur).toEqual(1870);     
+    LevelService.moveSegment('Phonetic', 158, 1, 100000000000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleStart).toEqual(23920);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleDur).toEqual(1870);
     // move single segment with id 158 on level 'Phonetic' by 10 samples
-    LevelService.moveSegment('Phonetic', 158, 1, 10); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000);     
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640+10);     
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleStart).toEqual(23920+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleDur).toEqual(1870-10);     
+    LevelService.moveSegment('Phonetic', 158, 1, 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleStart).toEqual(23920 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleDur).toEqual(1870 - 10);
     // undo made changes
     LevelService.moveSegment('Phonetic', 158, 1, -10);
     // move two segments beginning with id 158 on level 'Phonetic' by 10 samples
-    LevelService.moveSegment('Phonetic', 158, 2, 10); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000);     
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640+10);     
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleStart).toEqual(23920+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleDur).toEqual(1870); 
-    expect(LevelService.getElementDetailsById('Phonetic',160).sampleStart).toEqual(25790+10); 
-    expect(LevelService.getElementDetailsById('Phonetic',160).sampleDur).toEqual(2610-10);   
-    }));
-    
+    LevelService.moveSegment('Phonetic', 158, 2, 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleStart).toEqual(23920 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleDur).toEqual(1870);
+    expect(LevelService.getElementDetailsById('Phonetic', 160).sampleStart).toEqual(25790 + 10);
+    expect(LevelService.getElementDetailsById('Phonetic', 160).sampleDur).toEqual(2610 - 10);
+  }));
 
-          
- /**
+
+
+  /**
    *
    */
   it('should expandSegment', inject(function (LevelService) {
@@ -856,50 +941,76 @@ describe('Service: LevelService', function () {
     // expand segment
     LevelService.setData(mockaeMsajc003);
     // expand segment with id 158 on level 'Phonetic' on RIGHT side
-    LevelService.expandSegment(true, 
-                               [{"id":158,"sampleStart":20640,"sampleDur":3280,"labels":[{"name":"Phonetic","value":"n"}]}],
-                               'Phonetic',
-                                750); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280 + 750); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleStart).toEqual(23920 + 750); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleDur).toEqual(1870 - 750); 
-        
+    LevelService.expandSegment(true, [{
+        "id": 158,
+        "sampleStart": 20640,
+        "sampleDur": 3280,
+        "labels": [{
+          "name": "Phonetic",
+          "value": "n"
+        }]
+      }],
+      'Phonetic',
+      750);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280 + 750);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleStart).toEqual(23920 + 750);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleDur).toEqual(1870 - 750);
+
     // shrink segment with id 158 on level 'Phonetic' on RIGHT side
-    LevelService.expandSegment(true, 
-                               [{"id":158,"sampleStart":20640,"sampleDur":(3280+750),"labels":[{"name":"Phonetic","value":"n"}]}],
-                               'Phonetic',
-                                -750); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleStart).toEqual(23920); 
-    expect(LevelService.getElementDetailsById('Phonetic',159).sampleDur).toEqual(1870);     
+    LevelService.expandSegment(true, [{
+        "id": 158,
+        "sampleStart": 20640,
+        "sampleDur": (3280 + 750),
+        "labels": [{
+          "name": "Phonetic",
+          "value": "n"
+        }]
+      }],
+      'Phonetic', -750);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleStart).toEqual(23920);
+    expect(LevelService.getElementDetailsById('Phonetic', 159).sampleDur).toEqual(1870);
 
     // expand segment with id 158 on level 'Phonetic' on LEFT side
-    LevelService.expandSegment(false, 
-                               [{"id":158,"sampleStart":20640,"sampleDur":3280,"labels":[{"name":"Phonetic","value":"n"}]}],
-                               'Phonetic',
-                                750); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640 - 750); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640 - 750); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280 + 750); 
-     
-    // shrink segment with id 158 on level 'Phonetic' on LEFT side
-    LevelService.expandSegment(false, 
-                               [{"id":158,"sampleStart":(20640-750),"sampleDur":(3280+750),"labels":[{"name":"Phonetic","value":"n"}]}],
-                               'Phonetic',
-                                -750); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleStart).toEqual(19000); 
-    expect(LevelService.getElementDetailsById('Phonetic',157).sampleDur).toEqual(1640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleStart).toEqual(20640); 
-    expect(LevelService.getElementDetailsById('Phonetic',158).sampleDur).toEqual(3280); 
-            
-    }));    
+    LevelService.expandSegment(false, [{
+        "id": 158,
+        "sampleStart": 20640,
+        "sampleDur": 3280,
+        "labels": [{
+          "name": "Phonetic",
+          "value": "n"
+        }]
+      }],
+      'Phonetic',
+      750);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640 - 750);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640 - 750);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280 + 750);
 
-   // calcDistanceToNearestZeroCrossing
-   // TODO openEditArea && deleteEditArea && createSelection && createEditArea 
-   // --> maybe move to directive in order to make it testable   
-      
+    // shrink segment with id 158 on level 'Phonetic' on LEFT side
+    LevelService.expandSegment(false, [{
+        "id": 158,
+        "sampleStart": (20640 - 750),
+        "sampleDur": (3280 + 750),
+        "labels": [{
+          "name": "Phonetic",
+          "value": "n"
+        }]
+      }],
+      'Phonetic', -750);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
+    expect(LevelService.getElementDetailsById('Phonetic', 157).sampleDur).toEqual(1640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleStart).toEqual(20640);
+    expect(LevelService.getElementDetailsById('Phonetic', 158).sampleDur).toEqual(3280);
+
+  }));
+
+  // calcDistanceToNearestZeroCrossing
+  // TODO openEditArea && deleteEditArea && createSelection && createEditArea 
+  // --> maybe move to directive in order to make it testable   
+
 
 });
