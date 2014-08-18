@@ -20,7 +20,8 @@ angular.module('emuwebApp')
 			'windowLength': $scope.vs.spectroSettings.windowLength,
 			'window': $scope.vs.spectroSettings.window,
 			'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
-			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor
+			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
+			'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors
 		};
 
 		/**
@@ -37,6 +38,16 @@ angular.module('emuwebApp')
 			viewState.focusInTextField = false;
 		};
 
+		/**
+		 *
+		 */
+		$scope.getColorOfAnchor = function (anchorNr) {
+
+			var curStyle = {
+				'color': 'rgb(' + $scope.modalVals.heatMapColorAnchors[anchorNr][0] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][1] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][2] + ')'
+			};
+			return (curStyle);
+		};
 		/**
 		 *
 		 */
