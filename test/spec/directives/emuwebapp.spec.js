@@ -23,7 +23,7 @@ describe('Directive: emuwebapp', function() {
     }
 
     it('should set correct values', inject(function ($rootScope, viewState, ConfigProviderService) {
-        ConfigProviderService.setVals(configProviderServiceData);
+        ConfigProviderService.setVals(defaultEmuwebappConfig);
         viewState.mouseInEmuWebApp = undefined;
         compileDirective();
         $rootScope.$digest();

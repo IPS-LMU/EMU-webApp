@@ -389,7 +389,7 @@ describe('Service: LevelService', function () {
    */
   it('should delete a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
-    ConfigProviderService.setVals(configProviderServiceData);
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.data.levels.length).toEqual(9);
     LevelService.deleteLevel(0, 0);
@@ -413,7 +413,7 @@ describe('Service: LevelService', function () {
    */
   it('should add a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
-    ConfigProviderService.setVals(configProviderServiceData);
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.data.levels.length).toEqual(9);
     LevelService.addLevel({
@@ -501,7 +501,7 @@ describe('Service: LevelService', function () {
   it('should rename a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     LevelService.setData(mockaeMsajc003);
-    ConfigProviderService.setVals(configProviderServiceData);
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
     expect(LevelService.getLevelDetails('Phonetic').id).toEqual(6);
     LevelService.renameLevel('Phonetic', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(6);

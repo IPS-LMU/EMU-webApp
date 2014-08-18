@@ -36,6 +36,12 @@ module.exports = function (config) {
         served: true,
         included: false
       },
+      {
+        pattern: 'app/configFiles/*.json',
+        watched: true,
+        served: true,
+        included: false
+      },
 
       // fixtures
       {

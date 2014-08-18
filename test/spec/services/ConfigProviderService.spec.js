@@ -26,9 +26,9 @@ describe('Service: ConfigProviderService', function () {
    *
    */
   it('check if initial set of vals works', inject(function (ConfigProviderService) {
-    ConfigProviderService.setVals(configProviderServiceData);
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
     expect($.isEmptyObject(ConfigProviderService.vals)).toBe(false);
-    expect(JSON.stringify(ConfigProviderService.vals, undefined, 0)).toEqual(JSON.stringify(configProviderServiceData, undefined, 0));
+    expect(JSON.stringify(ConfigProviderService.vals, undefined, 0)).toEqual(JSON.stringify(defaultEmuwebappConfig, undefined, 0));
 
   }));
 
@@ -36,7 +36,7 @@ describe('Service: ConfigProviderService', function () {
    *
    */
   it('check if vals overwrite works', inject(function (ConfigProviderService) {
-    ConfigProviderService.setVals(configProviderServiceData);
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
     // single value
     var newVals = {
       'colors': {
