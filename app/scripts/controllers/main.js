@@ -786,6 +786,7 @@ angular.module('emuwebApp')
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = data;
+						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
 
 						if (validRes === true) {
