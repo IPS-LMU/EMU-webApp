@@ -8,7 +8,7 @@ describe('Directive: delete', function() {
     beforeEach(inject(function($rootScope, $compile, viewState, dialogService) {
         scope = $rootScope.$new();
         scope.level = new Object();
-        scope.level = mockaeMsajc003.levels[0];
+        scope.level = msajc003_bndl.annotation.levels[0];
         scope.vs = viewState;
         scope.dials = dialogService;
     }));

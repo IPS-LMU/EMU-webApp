@@ -125,7 +125,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should selectLevel', inject(function (viewState, LevelService) {
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(true, ["Phonetic", "Tone"], LevelService);
     expect(viewState.curClickLevelName).toEqual('Tone');
     expect(viewState.curClickLevelType).toEqual('EVENT');
@@ -144,7 +144,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
@@ -159,7 +159,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
@@ -178,7 +178,7 @@ describe('Factory: viewState', function () {
     var range = viewState.getselectedRange();
     expect(range.start).toEqual(-1);
     expect(range.end).toEqual(-1);
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(9700, 15000);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
@@ -209,7 +209,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should zoomViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);
@@ -228,7 +228,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should shiftViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);

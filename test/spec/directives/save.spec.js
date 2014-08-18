@@ -7,8 +7,8 @@ describe('Directive: save', function() {
 
     beforeEach(inject(function($rootScope, $compile, viewState, dialogService, LevelService) {
         scope = $rootScope.$new();
-        LevelService.setData(mockaeMsajc003);
-        scope.level = mockaeMsajc003.levels[0];
+        LevelService.setData(msajc003_bndl.annotation);
+        scope.level = msajc003_bndl.annotation.levels[0];
         scope.vs = viewState;
         scope.dials = dialogService;
     }));

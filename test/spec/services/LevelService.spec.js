@@ -264,8 +264,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should change element (point) details on level based on name and id', inject(function (LevelService) {
-    // test on mockaeMsajc003
-    LevelService.setData(mockaeMsajc003);
+    // test on msajc003_bndl.annotation
+    LevelService.setData(msajc003_bndl.annotation);
     LevelService.setPointDetails('Tone', 181, 'test', 100);
     expect(LevelService.getElementDetails('Tone', 0).id).toEqual(181);
     expect(LevelService.getElementDetails('Tone', 0).samplePoint).toEqual(100);
@@ -302,18 +302,18 @@ describe('Service: LevelService', function () {
     expect(neigh.left.labels[0].value).toEqual('raise');
     expect(neigh.right).toEqual(undefined);
 
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // should return neighbours "V" and "l"
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     var neigh = LevelService.getElementNeighbourDetails('Phonetic', 148, 179);
     expect(neigh.left.id).toEqual(147);
     expect(neigh.left.labels[0].value).toEqual('V');
     expect(neigh.right.id).toEqual(180);
     expect(neigh.right.labels[0].value).toEqual('l');
 
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // should return neighbours undefined and undefined
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     var neigh = LevelService.getElementNeighbourDetails('Phonetic', 147, 180);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right).toEqual(undefined);
@@ -323,8 +323,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should getEvent (surrounding details) at given pcm position', inject(function (LevelService) {
-    // test on mockaeMsajc003
-    LevelService.setData(mockaeMsajc003);
+    // test on msajc003_bndl.annotation
+    LevelService.setData(msajc003_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 58089 
     // before any element nearest should be false
     expect(LevelService.getEvent(10, 'Phonetic', 58089).nearest).toEqual(false);
@@ -388,9 +388,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should delete a level', inject(function (LevelService, ConfigProviderService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     ConfigProviderService.setVals(defaultEmuwebappConfig);
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(9);
     LevelService.deleteLevel(0, 0);
     expect(LevelService.data.levels.length).toEqual(8);
@@ -412,9 +412,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should add a level', inject(function (LevelService, ConfigProviderService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     ConfigProviderService.setVals(defaultEmuwebappConfig);
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(9);
     LevelService.addLevel({
       "items": [{
@@ -476,9 +476,9 @@ describe('Service: LevelService', function () {
    */
   it('should rename an element', inject(function (LevelService, viewState) {
 
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     LevelService.renameLabel('Phonetic', 147, 'test');
     expect(LevelService.getElementDetailsById('Phonetic', 147).labels[0].value).toEqual('test');
 
@@ -499,8 +499,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should rename a level', inject(function (LevelService, ConfigProviderService) {
-    // test on mockaeMsajc003
-    LevelService.setData(mockaeMsajc003);
+    // test on msajc003_bndl.annotation
+    LevelService.setData(msajc003_bndl.annotation);
     ConfigProviderService.setVals(defaultEmuwebappConfig);
     expect(LevelService.getLevelDetails('Phonetic').id).toEqual(6);
     LevelService.renameLevel('Phonetic', 'test', 0);
@@ -523,9 +523,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should deleteSegments', inject(function (LevelService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // 2 elements in the middle
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     LevelService.deleteSegments('Phonetic', 148, 2);
     // check new length 34-2=32
@@ -559,10 +559,10 @@ describe('Service: LevelService', function () {
    *
    */
   it('should deleteSegmentsInvers', inject(function (LevelService, viewState) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions)
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     var deleted = LevelService.deleteSegments('Phonetic', 148, 2);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
@@ -594,13 +594,13 @@ describe('Service: LevelService', function () {
    *
    */
   it('should insertSegment', inject(function (LevelService, viewState, ConfigProviderService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     ConfigProviderService.curDbConfig = aeDbConfig;
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
 
 
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 1 new segment on the left side
     var ret1 = LevelService.insertSegment('Phonetic', 100, 100, 'test1');
@@ -649,12 +649,12 @@ describe('Service: LevelService', function () {
    *
    */
   it('should insertSegmentInvers', inject(function (LevelService, viewState, ConfigProviderService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     ConfigProviderService.curDbConfig = aeDbConfig;
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
 
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 1 new segment on the left side
     LevelService.insertSegment('Phonetic', 100, 100, 'test1');
@@ -700,12 +700,12 @@ describe('Service: LevelService', function () {
    *
    */
   it('should insertPoint', inject(function (LevelService, viewState, ConfigProviderService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     ConfigProviderService.curDbConfig = aeDbConfig;
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
 
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
     // insert 1 new point
     var ret = LevelService.insertPoint('Tone', 100, 'test');
@@ -717,9 +717,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should deletePoint', inject(function (LevelService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
     // delete 1 point
     var ret = LevelService.deletePoint('Tone', 181);
@@ -730,9 +730,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should deleteBoundary', inject(function (LevelService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
@@ -745,9 +745,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should deleteBoundaryInvers', inject(function (LevelService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
@@ -762,9 +762,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should snapBoundary', inject(function (LevelService, Soundhandlerservice) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // snap Boundary
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     // snap point to boundary above
     var ret = LevelService.snapBoundary(true,
@@ -795,9 +795,9 @@ describe('Service: LevelService', function () {
    */
   it('should moveBoundary', inject(function (LevelService, Soundhandlerservice) {
 
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // move Boundary
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 100000 samples -> should not change anything
     LevelService.moveBoundary('Phonetic', 158, 100000, 0);
     expect(LevelService.getElementDetailsById('Phonetic', 157).sampleStart).toEqual(19000);
@@ -877,9 +877,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should movePoint', inject(function (LevelService, Soundhandlerservice) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     // move point with id 181 on level 'Tone' by 100000000000 samples -> should not change anything
     LevelService.movePoint('Tone', 181, 100000000000);
@@ -897,9 +897,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should moveSegment', inject(function (LevelService, Soundhandlerservice) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // move segment
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     // move single segment with id 158 on level 'Phonetic' by 100000000000 samples -> should not change anything
     LevelService.moveSegment('Phonetic', 158, 1, 100000000000);
@@ -937,9 +937,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should expandSegment', inject(function (LevelService) {
-    // test on mockaeMsajc003
+    // test on msajc003_bndl.annotation
     // expand segment
-    LevelService.setData(mockaeMsajc003);
+    LevelService.setData(msajc003_bndl.annotation);
     // expand segment with id 158 on level 'Phonetic' on RIGHT side
     LevelService.expandSegment(true, [{
         "id": 158,
