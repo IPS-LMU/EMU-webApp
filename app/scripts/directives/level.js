@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function (viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService, LevelService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -18,16 +18,22 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.dials = dialogService;
-				
+
+				var levelCanvasContainer = element.find('div');
+
+				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
+				// curAttrDef = scope.level.name;
+
 				scope.backgroundCanvas = {
-				    'background': ConfigProviderService.vals.colors.levelColor
-				}
+					'background': ConfigProviderService.vals.colors.levelColor
+				};
 
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
+
 
 				///////////////
 				// watches
@@ -45,7 +51,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('vs.curMouseSegment', function (newValue, oldValue) {
+				scope.$watch('vs.curMouseX', function (newValue, oldValue) {
 					// only repaint if mouse over current level
 					if (viewState.getcurMouseLevelName() === scope.level.name) {
 						//if (!oldValue || !newValue || newValue.id !== oldValue.id) {
@@ -80,10 +86,60 @@ angular.module('emuwebApp')
 				scope.$watch('hists.movesAwayFromLastSave', function () {
 					drawLevelDetails(scope.level, viewState, ConfigProviderService);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+
 				}, true);
 
 				//
 				/////////////////
+
+				/**
+				 *
+				 */
+				scope.changeCurAttrDef = function (attrDefName) {
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
+
+					if (curAttrDef !== attrDefName) {
+						// curAttrDef = attrDefName;
+						viewState.setCurAttrDef(scope.level.name, attrDefName);
+
+						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
+							viewState.focusInTextField = false;
+							LevelService.deleteEditArea();
+							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
+						}
+					}
+				};
+
+				/**
+				 *
+				 */
+				scope.finishedAnim = function () {
+					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
+					// redraw
+					drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+
+				};
+
+				/**
+				 *
+				 */
+				scope.getAttrDefBtnColor = function (attrDefName) {
+					var curColor;
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
+					if (attrDefName === curAttrDef) {
+						curColor = {
+							'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
+						};
+					} else {
+						curColor = {
+							'background-color': 'white',
+						};
+					}
+					return curColor;
+				};
+
+
 
 				scope.updateView = function () {
 					if ($.isEmptyObject(scope.cps)) {
@@ -99,7 +155,7 @@ angular.module('emuwebApp')
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
-					viewState.setcurMouseSegment(undefined);
+					viewState.setcurMouseSegment(undefined, undefined, undefined);
 					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
@@ -112,6 +168,7 @@ angular.module('emuwebApp')
 				function drawLevelDetails(levelDetails, viewState, config) {
 
 					var fontSize = config.vals.font.fontPxSize;
+					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
 
 					if ($.isEmptyObject(levelDetails)) {
 						console.log('undef levelDetails');
@@ -140,7 +197,11 @@ angular.module('emuwebApp')
 					// draw name of level and type
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
-					horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					if (levelDetails.name === curAttrDef) {
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					} else {
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, levelDetails.name + ':' + curAttrDef, '(' + levelDetails.type + ')', fontSize, config.vals.font.fontType, config.vals.colors.labelColor, true);
+					}
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
 					var segMId = viewState.getcurMouseSegment();
@@ -174,7 +235,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === levelDetails.name) {
+									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
 								});
@@ -277,7 +338,7 @@ angular.module('emuwebApp')
 								// get label
 								var curLabVal;
 								curEvt.labels.forEach(function (lab) {
-									if (lab.name === levelDetails.name) {
+									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
 								});

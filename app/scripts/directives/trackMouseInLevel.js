@@ -8,7 +8,6 @@ angular.module('emuwebApp')
         level: '='
       },
       link: function (scope, element, attr) {
-
         var lastEventClick;
         var lastEventClickId;
         var lastEventRightClick;
@@ -21,6 +20,7 @@ angular.module('emuwebApp')
         var thisPCM;
         var levelID = scope.level.name;
         var levelType = scope.level.type;
+
 
         /////////////////////////////
         // Bindings
@@ -60,14 +60,12 @@ angular.module('emuwebApp')
               var zoomEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
-                if(zoomEventMove.nearest === false) { // before first elem
-                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetails(scope.this.level.name, 0).sampleStart);
-                }
-                else if(zoomEventMove.nearest === true) { // after last elem
-                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getLastElement(scope.this.level.name).sampleStart);
-                }
-                else {
-                    moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                if (zoomEventMove.nearest === false) { // before first elem
+                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetails(scope.this.level.name, 0).sampleStart);
+                } else if (zoomEventMove.nearest === true) { // after last elem
+                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getLastElement(scope.this.level.name).sampleStart);
+                } else {
+                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
                 }
               } else {
                 moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint);
@@ -76,14 +74,13 @@ angular.module('emuwebApp')
               // relative movement in pcm above 1 pcm per pixel
               moveBy = Math.round(thisPCM - lastPCM);
             }
-          }  
-          var mbutton = 0;
-          if(event.buttons===undefined) {
-              mbutton = event.which;
           }
-		  else {
-			mbutton = event.buttons;
-		  }  
+          var mbutton = 0;
+          if (event.buttons === undefined) {
+            mbutton = event.which;
+          } else {
+            mbutton = event.buttons;
+          }
           switch (mbutton) {
           case 1:
             //console.log('Left mouse button pressed');
@@ -127,7 +124,7 @@ angular.module('emuwebApp')
                       'movedBy': moveBy,
                       'position': position
                     });
-                    
+
                   } else {
                     seg = viewState.getcurMouseSegment();
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
@@ -169,8 +166,8 @@ angular.module('emuwebApp')
           if (!viewState.getdragBarActive()) {
             setLastMove(event, moveLine);
           }
-          if(lastEventMove!==undefined) {
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+          if (lastEventMove.nearest !== undefined) {
+            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
           }
         });
 
@@ -204,11 +201,12 @@ angular.module('emuwebApp')
           viewState.setEditing(false);
           viewState.focusInTextField = false;
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          // console.log(element.parent());
-          LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-          LevelService.setlasteditAreaElem(element.parent());
-          viewState.setcurClickLevel(levelID, levelType, scope.$index);
-          viewState.setcurClickSegment(lastEventClick.evtr);
+          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+            LevelService.setlasteditAreaElem(element.parent());
+            viewState.setcurClickLevel(levelID, levelType, scope.$index);
+            viewState.setcurClickSegment(lastEventClick.evtr);
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -223,9 +221,11 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           LevelService.deleteEditArea();
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          viewState.setcurClickLevel(levelID, levelType, scope.$index);
-          viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
-          viewState.selectBoundry();
+          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+            viewState.setcurClickLevel(levelID, levelType, scope.$index);
+            viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
+            viewState.selectBoundry();
+          }
           lastPCM = thisPCM;
           scope.$apply();
         }
@@ -236,33 +236,32 @@ angular.module('emuwebApp')
         function setLastDblClick(x) {
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          if(levelType==="SEGMENT") {
-              if(lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
-                  if((lastEventClick.evtr.sampleStart+lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
-                      viewState.setcurClickLevel(levelID, levelType, scope.$index);
-                      viewState.setcurClickSegment(lastEventClick.evtr);
-                      LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-                      LevelService.setlasteditAreaElem(element.parent());
-                      viewState.setEditing(true);
-                      LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-                      viewState.focusInTextField = true;              
-                  }
-                  else {
-                      console.log('Editing out of right bound !');
-                  }
+          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+            if (levelType === 'SEGMENT') {
+              if (lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
+                if ((lastEventClick.evtr.sampleStart + lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
+                  viewState.setcurClickLevel(levelID, levelType, scope.$index);
+                  viewState.setcurClickSegment(lastEventClick.evtr);
+                  LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+                  LevelService.setlasteditAreaElem(element.parent());
+                  viewState.setEditing(true);
+                  LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                  viewState.focusInTextField = true;
+                } else {
+                  console.log('Editing out of right bound !');
+                }
+              } else {
+                console.log('Editing out of left bound !');
               }
-              else {
-                  console.log('Editing out of left bound !');
-              }
-          }
-          else {
-            viewState.setcurClickLevel(levelID, levelType, scope.$index);
-            viewState.setcurClickSegment(lastEventClick.evtr);
-            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
-            LevelService.setlasteditAreaElem(element.parent());
-            viewState.setEditing(true);
-            LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
-            viewState.focusInTextField = true;              
+            } else {
+              viewState.setcurClickLevel(levelID, levelType, scope.$index);
+              viewState.setcurClickSegment(lastEventClick.evtr);
+              LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+              LevelService.setlasteditAreaElem(element.parent());
+              viewState.setEditing(true);
+              LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+              viewState.focusInTextField = true;
+            }
           }
           lastPCM = thisPCM;
           scope.$apply();
@@ -275,20 +274,22 @@ angular.module('emuwebApp')
           thisPCM = getX(x) * viewState.getPCMpp(x);
           lastEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
-            lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove);
+            if (lastEventMove.evtr !== undefined && lastEventMove.nearest !== undefined) {
+              lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+              viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
+            }
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
           lastPCM = thisPCM;
           scope.$apply();
         }
-        
+
         /**
          *
          */
         function getX(e) {
-          return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
+          return (e.offsetX ||  e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
         }
       }
     };

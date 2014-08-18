@@ -229,11 +229,29 @@
 				"window": {
 					"enum": ["BARTLETT", "BARTLETTHANN", "BLACKMAN", "COSINE", "GAUSS", "HAMMING", "HANN", "LANCZOS", "RECTANGULAR", "TRIANGULAR"]
 				},
+				"preEmphasisFilterFactor": {
+					"type": "number"
+				},
 				"transparency": {
-					"type": "integer"
+					"type": "integer",
+					"minimum": 0,
+					"maximum": 255
 				},
 				"drawHeatMapColors": {
 					"type": "boolean"
+				},
+				"heatMapColorAnchors": {
+					"type": "array",
+					"items": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"minimum": 0,
+							"maximum": 255
+						},
+						"minItems": 3,
+						"maxItems": 3
+					}
 				}
 			},
 			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],

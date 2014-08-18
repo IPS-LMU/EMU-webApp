@@ -73,8 +73,14 @@
         "rangeTo": 5000,
         "dynamicRange": 70,
         "window": "GAUSS",
+        "preEmphasisFilterFactor": 0.97,
         "transparency": 255,
-        "drawHeatMapColors": false
+        "drawHeatMapColors": false,
+        "heatMapColorAnchors": [
+            [255, 0, 0],
+            [0, 255, 0],
+            [0, 0, 0]
+        ]
     },
     "perspectives": [{
         "name": "default",

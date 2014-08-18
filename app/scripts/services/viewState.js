@@ -19,6 +19,8 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
+    // hold the current attribute definitions that are in view 
+    var curLevelAttrDefs = [];
 
     /**
      * initialize all needed vars in viewState
@@ -40,7 +42,8 @@ angular.module('emuwebApp')
         rangeTo: -1,
         dynamicRange: -1,
         window: -1,
-        drawHeatMapColors: -1
+        drawHeatMapColors: -1,
+        preEmphasisFilterFactor: -1
       };
 
       sServObj.playHeadAnimationInfos = {
@@ -88,6 +91,8 @@ angular.module('emuwebApp')
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
       sServObj.curState = sServObj.states.noDBorFilesloaded;
+
+      curLevelAttrDefs = [];
     };
 
     // initialize on init
@@ -132,7 +137,7 @@ angular.module('emuwebApp')
       if (sServObj.start === null) {
         sServObj.start = timestamp;
       }
-      
+
       var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
@@ -193,13 +198,15 @@ angular.module('emuwebApp')
     /**
      * setspectroSettings
      */
-    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm) {
+    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors) {
       sServObj.spectroSettings.windowLength = parseInt(len, 10);
       sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
       sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
       sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);
       sServObj.setWindowFunction(win);
       sServObj.spectroSettings.drawHeatMapColors = hm;
+      sServObj.spectroSettings.preEmphasisFilterFactor = preEmph;
+      sServObj.spectroSettings.heatMapColorAnchors = hmColorAnchors;
     };
 
 
@@ -221,7 +228,7 @@ angular.module('emuwebApp')
       if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
       }
-      if (end > this.selectE) {
+      if (end > this.curViewPort.selectE) {
         this.curViewPort.selectE = end;
       }
     };
@@ -527,8 +534,9 @@ angular.module('emuwebApp')
      * sets the current (mousemove) Segment
      * @param name is name of segment
      */
-    sServObj.setcurMouseSegment = function (segment, neighbour) {
+    sServObj.setcurMouseSegment = function (segment, neighbour, x) {
       this.curMouseSegment = segment;
+      this.curMouseX = x;
       this.curMouseNeighbours = neighbour;
     };
 
@@ -580,9 +588,13 @@ angular.module('emuwebApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function (segment) {
-      sServObj.curClickSegments = [];
-      sServObj.curClickSegments.push(segment);
-      sServObj.selectBoundry();
+      if (segment !== null && segment !== undefined) {
+        sServObj.curClickSegments = [];
+        sServObj.curClickSegments.push(segment);
+        sServObj.selectBoundry();
+      } else {
+        sServObj.curClickSegments = [];
+      }
     };
 
 
@@ -640,8 +652,8 @@ angular.module('emuwebApp')
      */
     sServObj.sortbyid = function (a, b) {
       //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-      if (a.id > b.id) return 1;
-      if (a.id < b.id) return -1;
+      if (a.sampleStart > b.sampleStart) return 1;
+      if (a.sampleStart < b.sampleStart) return -1;
       return 0;
     };
 
@@ -682,19 +694,18 @@ angular.module('emuwebApp')
     sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
     };
-    
+
 
     /**
      * gets the first ! current (click) Segment
      */
     sServObj.getfirstClickSegment = function () {
       if (sServObj.curClickSegments.length > 0) {
-          return sServObj.curClickSegments[0];
-      } 
+        return sServObj.curClickSegments[0];
+      }
     };
-    
-    
-    
+
+
 
     /**
      *
@@ -802,7 +813,6 @@ angular.module('emuwebApp')
      * @param sSample end sample of view
      */
     sServObj.setViewPort = function (sSample, eSample) {
-
       var oldStart = this.curViewPort.sS;
       var oldEnd = this.curViewPort.eS;
       if (sSample !== undefined) {
@@ -928,9 +938,59 @@ angular.module('emuwebApp')
 
 
     /**
+     * sets all the curLevelAttrDefs array
+     * to hold the default attr. definitions
+     * which are the same as the level names
+     *
+     * @param levelDefs level definitions from the DBconfig
+     */
+    sServObj.setCurLevelAttrDefs = function (levelDefs) {
+      angular.forEach(levelDefs, function (ld) {
+        curLevelAttrDefs.push({
+          'levelName': ld.name,
+          'curAttrDefName': ld.name
+        });
+      });
+    };
+
+    /**
+     * set the current attribute definition name of the
+     * given levelName
+     *
+     * @param levelName name of level
+     * @param newAttrDefName
+     */
+    sServObj.setCurAttrDef = function (levelName, newAttrDefName) {
+      angular.forEach(curLevelAttrDefs, function (ad) {
+        if (ad.levelName === levelName) {
+          ad.curAttrDefName = newAttrDefName;
+        }
+      });
+    };
+
+    /**
+     * get the current attribute definition name of the
+     * given levelName
+     *
+     * @param levelName name of level
+     * @returns attrDefName
+     */
+    sServObj.getCurAttrDef = function (levelName) {
+      var curAttrDef;
+      angular.forEach(curLevelAttrDefs, function (ad) {
+        if (ad.levelName === levelName) {
+          curAttrDef = ad.curAttrDefName;
+        }
+      });
+      return curAttrDef;
+    };
+
+
+
+    /**
      *
      */
-    sServObj.resetToInitState = function (shiftRight) {
+    sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
 

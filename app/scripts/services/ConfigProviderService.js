@@ -89,6 +89,20 @@ angular.module('emuwebApp')
 			return res;
 		};
 
+		/**
+		 *
+		 */
+		sServObj.getLevelDefinition = function (levelName) {
+			var res = {};
+			angular.forEach(sServObj.curDbConfig.levelDefinitions, function (ld) {
+				if (ld.name === levelName) {
+					res = ld;
+				}
+			});
+
+			return res;
+		};
+
 		return sServObj;
 
 	});

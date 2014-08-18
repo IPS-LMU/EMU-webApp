@@ -18,11 +18,61 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/angular-ui/build/angular-ui.js',
+      'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
+      'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'app/scripts/*.js',
+      'app/scripts/workers/*.js',
+      'app/scripts/filters/*.js',
       'app/scripts/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      //include the directory where directive templates are stored.
+      'app/views/**/*.html',
+
+      // JSON fixture
+      {
+        pattern: 'app/demoDBs/*/*.json',
+        watched: true,
+        served: true,
+        included: false
+      },
+      {
+        pattern: 'app/configFiles/*.json',
+        watched: true,
+        served: true,
+        included: false
+      },
+
+      // fixtures
+      {
+        pattern: 'app/schemaFiles/*.json',
+        watched: true,
+        served: true,
+        included: false
+      }
+
     ],
+
+    // generate js files from html templates to expose them during testing.
+    preprocessors: {
+      'app/views/**/*.html': 'ng-html2js',
+      'app/scripts/**/*.js': 'coverage'
+    },
+
+    ngHtml2JsPreprocessor: {
+      // If your build process changes the path to your templates,
+      // use stripPrefix and prependPrefix to adjust it.
+      stripPrefix: 'app/',
+      prependPrefix: '',
+
+      // the name of the Angular module to create
+      moduleName: 'emuwebApp.templates'
+    },
+
+    proxies: {
+      '/scripts/workers/': 'http://localhost:9000/scripts/workers/',
+      '/img/': 'http://localhost:9000/img/'
+    },
 
     // list of files / patterns to exclude
     exclude: [],
@@ -37,6 +87,14 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
+
+    // coverage reporter
+    reporters: ['dots'],
+
+    coverageReporter: {
+      type: 'html',
+      dir: 'test/coverage/',
+    },
 
 
     // Start these browsers, currently available:
