@@ -30,8 +30,33 @@
 </div>
 <hr />
 <div>      
-  <p>Other Options</p>
-  Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
+  <p>Color Options</p>
+  <p>
+    Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
+  </p>
+  <table class='emuwebapp-modalTable'>
+    <tr>
+      <td>First spectrogram color anchor:</td>
+      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td><div ng-style="getColorOfAnchor(0);"></div></td>
+    </tr>
+    <tr>
+      <td>Second spectrogram color anchor: </td>
+      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td><div ng-style="getColorOfAnchor(1);"></div></td>
+    </tr>
+    <tr>
+      <td>Third spectrogram color anchor: </td>
+      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+      <td><div ng-style="getColorOfAnchor(2);"></div></td>
+    </tr>
+  </table>
 </div>
 </div>
 

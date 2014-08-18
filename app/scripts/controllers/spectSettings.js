@@ -20,7 +20,8 @@ angular.module('emuwebApp')
 			'windowLength': $scope.vs.spectroSettings.windowLength,
 			'window': $scope.vs.spectroSettings.window,
 			'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
-			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor
+			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
+			'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors
 		};
 
 		/**
@@ -40,13 +41,25 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		$scope.getColorOfAnchor = function (anchorNr) {
+
+			var curStyle = {
+				'background-color': 'rgb(' + $scope.modalVals.heatMapColorAnchors[anchorNr][0] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][1] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][2] + ')',
+				'width': '10px',
+				'height': '10px'
+			};
+			return (curStyle);
+		};
+		/**
+		 *
+		 */
 		$scope.saveSpectroSettings = function () {
 			if ($scope.modalVals.dynamicRange % 1 === 0) {
 				if ($scope.modalVals.rangeFrom % 1 === 0) {
 					if ($scope.modalVals.rangeTo % 1 === 0) {
 						if ($scope.modalVals.rangeFrom >= 0) {
 							if ($scope.modalVals.rangeTo <= LevelService.data.sampleRate / 2) {
-								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, viewState.spectroSettings.heatMapColorAnchors);
+								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
 								$scope.cancel();
 							} else {
 								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + LevelService.data.sampleRate / 2);
