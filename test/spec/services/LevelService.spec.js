@@ -9,9 +9,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should set level data and max Element id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.data).toEqual(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
+    expect(LevelService.data).toEqual(JDR10_bndl.annotation);
     expect(LevelService.maxElementID).toEqual(4);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
@@ -23,8 +23,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should raise max Element id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.raiseId(1);
     expect(LevelService.maxElementID).toEqual(5);
 
@@ -38,8 +38,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should lower max Element id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.lowerId(1);
     expect(LevelService.maxElementID).toEqual(3);
 
@@ -53,8 +53,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should return level details', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.name).toEqual('Phonetic');
     expect(LevelService.getLevelDetails('Phonetic').level.type).toEqual('SEGMENT');
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
@@ -70,8 +70,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should return element order by passing id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getOrderById('Phonetic', 3)).toEqual(0);
     expect(LevelService.getOrderById('Phonetic', 0)).toEqual(1);
     expect(LevelService.getOrderById('Phonetic', 1)).toEqual(2);
@@ -87,8 +87,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should return element id by passing order', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getIdByOrder('Phonetic', 0)).toEqual(3);
     expect(LevelService.getIdByOrder('Phonetic', 1)).toEqual(0);
     expect(LevelService.getIdByOrder('Phonetic', 2)).toEqual(1);
@@ -104,8 +104,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should get element (segment) details by passing name and order', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
     expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87710);
     expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(929);
@@ -126,8 +126,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should get last element details by passing name', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLastElement('Phonetic').id).toEqual(4);
     expect(LevelService.getLastElement('Phonetic').sampleStart).toEqual(91042);
     expect(LevelService.getLastElement('Phonetic').sampleDur).toEqual(553);
@@ -148,8 +148,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should get next element details by passing name and id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getNextElement('Phonetic', 1).id).toEqual(4);
     expect(LevelService.getNextElement('Phonetic', 1).sampleStart).toEqual(91042);
     expect(LevelService.getNextElement('Phonetic', 1).sampleDur).toEqual(553);
@@ -170,8 +170,8 @@ describe('Service: LevelService', function () {
    *
    */
   it('should get element details by passing name and id', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getElementDetailsById('Phonetic', 3).id).toEqual(3);
     expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
     expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929);
@@ -192,7 +192,7 @@ describe('Service: LevelService', function () {
    *
    */
   it('should set and get lasteditAreaElem', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     LevelService.setlasteditAreaElem('a');
     expect(LevelService.getlasteditAreaElem()).toEqual('a');
   }));
@@ -201,7 +201,7 @@ describe('Service: LevelService', function () {
    *
    */
   it('should set and get lasteditArea', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     LevelService.setlasteditArea('_1');
     expect(LevelService.getlasteditArea()).toEqual('_1');
     expect(LevelService.getlastID()).toEqual('1');
@@ -211,10 +211,10 @@ describe('Service: LevelService', function () {
    *
    */
   it('should insert a new element on level', inject(function (LevelService, viewState, ConfigProviderService) {
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     ConfigProviderService.curDbConfig = epgdorsalDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.insertElementDetails(5, 'Phonetic', 0, 'test', 87610, 100);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
     expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(5);
@@ -239,9 +239,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should change element (segment) details on level based on name and id', inject(function (LevelService, viewState) {
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.setElementDetails('Phonetic', 3, 'test', 0, 87700, 939);
     expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
     expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87700);
@@ -277,9 +277,9 @@ describe('Service: LevelService', function () {
    *
    */
   it('should get element neightbour details', inject(function (LevelService) {
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     // should return neighbours "O" and "I"
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     var neigh = LevelService.getElementNeighbourDetails('Phonetic', 0, 1);
     expect(neigh.left.id).toEqual(3);
     expect(neigh.right.id).toEqual(4);
@@ -363,8 +363,8 @@ describe('Service: LevelService', function () {
     // after last -> evtr should be first element
     expect(LevelService.getEvent(96000, 'TT', 96002).evtr.sampleStart).toEqual(32707);
 
-    //test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    //test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 112000 
     // before any element nearest should be false
     expect(LevelService.getEvent(10, 'Phonetic', 112000).nearest).toEqual(false);
@@ -401,8 +401,8 @@ describe('Service: LevelService', function () {
     LevelService.deleteLevel(2, 0);
     expect(LevelService.data.levels.length).toEqual(3);
 
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(2);
     LevelService.deleteLevel(1, 0);
     expect(LevelService.data.levels.length).toEqual(1);
@@ -451,8 +451,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.data.levels.length).toEqual(5);
     expect(LevelService.data.levels[2].items[0].id).toEqual(151);
 
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(2);
     LevelService.addLevel({
       "items": [{
@@ -488,9 +488,9 @@ describe('Service: LevelService', function () {
     LevelService.renameLabel('TB', 40, 'test');
     expect(LevelService.getElementDetailsById('TB', 40).labels[0].value).toEqual('test');
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.renameLabel('Phonetic', 3, 'test');
     expect(LevelService.getElementDetailsById('Phonetic', 3).labels[0].value).toEqual('test');
   }));
@@ -512,8 +512,8 @@ describe('Service: LevelService', function () {
     LevelService.renameLevel('TB', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(3);
 
-    // test on mockEpgdorsalJDR10
-    LevelService.setData(mockEpgdorsalJDR10);
+    // test on JDR10_bndl.annotation
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').id).toEqual(1);
     LevelService.renameLevel('Phonetic', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(1);
@@ -544,9 +544,9 @@ describe('Service: LevelService', function () {
     // check new sampleDur     
     expect(LevelService.getElementDetailsById('TB', 40).sampleDur).toEqual(3709);
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     // 1 elements on right side
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     LevelService.deleteSegments('Phonetic', 4, 1);
     // check new length 4-1=3  
@@ -579,10 +579,10 @@ describe('Service: LevelService', function () {
     LevelService.deleteSegmentsInvers('TB', 41, 1, deleted);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     // 1 elements on right side
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions)
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     var deleted = LevelService.deleteSegments('Phonetic', 4, 1);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
@@ -628,11 +628,11 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('TB', ret2.ids[0]).labels[0].value).toEqual('test2');
     expect(LevelService.getElementDetailsById('TB', ret2.ids[1]).labels[0].value).toEqual('test2');
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     ConfigProviderService.curDbConfig = epgdorsalDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
 
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     // insert 1 new segment in the middle   
     var ret1 = LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
@@ -680,11 +680,11 @@ describe('Service: LevelService', function () {
     LevelService.insertSegmentInvers('TB', 58100, 58200, 'test2');
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     ConfigProviderService.curDbConfig = epgdorsalDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
 
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     // insert 1 new segment in the middle   
     LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
@@ -845,9 +845,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Segment', 37).sampleStart).toEqual(94560);
     expect(LevelService.getElementDetailsById('Segment', 37).sampleDur).toEqual(1200 + 10);
 
-    // test on mockEpgdorsalJDR10
+    // test on JDR10_bndl.annotation
     // move Boundary
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     // move middle (0) boundary of segment with id 1 on level 'Phonetic' by 100000 samples -> should not change anything
     LevelService.moveBoundary('Phonetic', 1, 100000, 0);
     expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
