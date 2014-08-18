@@ -16,7 +16,6 @@
     "angular-ui-layout": "bower",
     "tv4": "~1.0.17",
     "angular-mocks": "~1.2.19",
-    "jasmine-jquery": "~2.0.5",
-    "angular-bootstrap-colorpicker": "~3.0.8"
+    "jasmine-jquery": "~2.0.5"
   }
 }

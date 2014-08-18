@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngAnimate', 'colorpicker.module'])
+angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngAnimate'])
   .config(function($locationProvider) {
     // $routeProvider
     //   .when('/', {
