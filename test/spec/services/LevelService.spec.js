@@ -14,8 +14,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.data).toEqual(mockEpgdorsalJDR10);
     expect(LevelService.maxElementID).toEqual(4);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.maxElementID).toEqual(42);
   }));
 
@@ -28,8 +28,8 @@ describe('Service: LevelService', function () {
     LevelService.raiseId(1);
     expect(LevelService.maxElementID).toEqual(5);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.raiseId(1);
     expect(LevelService.maxElementID).toEqual(43);
   }));
@@ -43,8 +43,8 @@ describe('Service: LevelService', function () {
     LevelService.lowerId(1);
     expect(LevelService.maxElementID).toEqual(3);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.lowerId(1);
     expect(LevelService.maxElementID).toEqual(41);
   }));
@@ -59,8 +59,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLevelDetails('Phonetic').level.type).toEqual('SEGMENT');
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.name).toEqual('TB');
     expect(LevelService.getLevelDetails('TB').level.type).toEqual('SEGMENT');
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
@@ -77,8 +77,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getOrderById('Phonetic', 1)).toEqual(2);
     expect(LevelService.getOrderById('Phonetic', 4)).toEqual(3);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getOrderById('TB', 40)).toEqual(0);
     expect(LevelService.getOrderById('TB', 41)).toEqual(1);
   }));
@@ -94,8 +94,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getIdByOrder('Phonetic', 2)).toEqual(1);
     expect(LevelService.getIdByOrder('Phonetic', 3)).toEqual(4);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getIdByOrder('TB', 0)).toEqual(40);
     expect(LevelService.getIdByOrder('TB', 1)).toEqual(41);
   }));
@@ -113,8 +113,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('O');
 
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
     expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29609);
     expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2695);
@@ -135,8 +135,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLastElement('Phonetic').labels[0].value).toEqual('I');
 
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLastElement('TB').id).toEqual(41);
     expect(LevelService.getLastElement('TB').sampleStart).toEqual(32304);
     expect(LevelService.getLastElement('TB').sampleDur).toEqual(2028);
@@ -157,8 +157,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getNextElement('Phonetic', 1).labels[0].value).toEqual('I');
 
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getNextElement('TB', 40).id).toEqual(41);
     expect(LevelService.getNextElement('TB', 40).sampleStart).toEqual(32304);
     expect(LevelService.getNextElement('TB', 40).sampleDur).toEqual(2028);
@@ -179,8 +179,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Phonetic', 3).labels[0].value).toEqual('O');
 
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getElementDetailsById('TB', 40).id).toEqual(40);
     expect(LevelService.getElementDetailsById('TB', 40).sampleStart).toEqual(29609);
     expect(LevelService.getElementDetailsById('TB', 40).sampleDur).toEqual(2695);
@@ -222,10 +222,10 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(100);
     expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
     expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = emaDbConfig;
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.insertElementDetails(42, 'TB', 0, 'test', 29509, 100);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
     expect(LevelService.getElementDetails('TB', 0).id).toEqual(42);
@@ -249,9 +249,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
     expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
 
-    // // test on mockEmaProsody0024
+    // // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.setElementDetails('TB', 40, 'test', 0, 29604, 2700);
     expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
     expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29604);
@@ -286,17 +286,17 @@ describe('Service: LevelService', function () {
     expect(neigh.left.labels[0].value).toEqual('O');
     expect(neigh.right.labels[0].value).toEqual('I');
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // should return neighbours undefined and "lower"
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     var neigh = LevelService.getElementNeighbourDetails('TB', 40, 40);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right.id).toEqual(41);
     expect(neigh.right.labels[0].value).toEqual('lower');
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // should return neighbours "raise" and undefined
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     var neigh = LevelService.getElementNeighbourDetails('TB', 41, 41);
     expect(neigh.left.id).toEqual(40);
     expect(neigh.left.labels[0].value).toEqual('raise');
@@ -343,8 +343,8 @@ describe('Service: LevelService', function () {
     // after last -> evtr should be first element
     expect(LevelService.getEvent(58088, 'Phonetic', 58089).evtr.sampleStart).toEqual(50126);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 96002  
     // before any element nearest should be false
     expect(LevelService.getEvent(10, 'TT', 96002).nearest).toEqual(false);
@@ -395,8 +395,8 @@ describe('Service: LevelService', function () {
     LevelService.deleteLevel(0, 0);
     expect(LevelService.data.levels.length).toEqual(8);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(4);
     LevelService.deleteLevel(2, 0);
     expect(LevelService.data.levels.length).toEqual(3);
@@ -432,8 +432,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.data.levels.length).toEqual(10);
     expect(LevelService.data.levels[0].items[0].id).toEqual(150);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(4);
     LevelService.addLevel({
       "items": [{
@@ -482,9 +482,9 @@ describe('Service: LevelService', function () {
     LevelService.renameLabel('Phonetic', 147, 'test');
     expect(LevelService.getElementDetailsById('Phonetic', 147).labels[0].value).toEqual('test');
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.renameLabel('TB', 40, 'test');
     expect(LevelService.getElementDetailsById('TB', 40).labels[0].value).toEqual('test');
 
@@ -506,8 +506,8 @@ describe('Service: LevelService', function () {
     LevelService.renameLevel('Phonetic', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(6);
 
-    // test on mockEmaProsody0024
-    LevelService.setData(mockEmaProsody0024);
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').id).toEqual(3);
     LevelService.renameLevel('TB', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(3);
@@ -534,9 +534,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Phonetic', 147).sampleDur).toEqual(3088);
     expect(LevelService.getElementDetailsById('Phonetic', 150).sampleStart).toEqual(6838);
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // 1 elements on left side
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     LevelService.deleteSegments('TB', 41, 1);
     // check new length 2-1=1  
@@ -569,10 +569,10 @@ describe('Service: LevelService', function () {
     LevelService.deleteSegmentsInvers('Phonetic', 148, 2, deleted);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // 1 elements on left side
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions)
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     var deleted = LevelService.deleteSegments('TB', 41, 1);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
@@ -612,11 +612,11 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
     expect(LevelService.getElementDetailsById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = emaDbConfig;
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
 
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     // insert 1 new segment on the right side    
     var ret1 = LevelService.insertSegment('TB', 58000, 58000, 'test1');
@@ -665,11 +665,11 @@ describe('Service: LevelService', function () {
     LevelService.insertSegmentInvers('Phonetic', 10, 50, 'test2');
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = emaDbConfig;
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
 
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     // insert 1 new segment on the right side    
     LevelService.insertSegment('TB', 58000, 58000, 'test1');
@@ -820,9 +820,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Phonetic', 180).sampleStart).toEqual(50126);
     expect(LevelService.getElementDetailsById('Phonetic', 180).sampleDur).toEqual(1964 + 10);
 
-    // test on mockEmaProsody0024
+    // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // move Boundary
-    LevelService.setData(mockEmaProsody0024);
+    LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     // move middle (0) boundary of segment with id 2 on level 'Segment' by 100000 samples -> should not change anything
     LevelService.moveBoundary('Segment', 2, 100000, 0);
     expect(LevelService.getElementDetailsById('Segment', 1).sampleStart).toEqual(8640);
