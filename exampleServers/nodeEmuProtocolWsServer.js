@@ -19,8 +19,8 @@ var filewalker = require('filewalker');
 
 //vars
 
-var pathToDbRoot = '../app/testData/newFormat/ae/';
-var configName = 'ae_DBconfig.json';
+var pathToDbRoot = '../app/testData/ignoredData/artEmaLabel/';
+var configName = 'artEmaLabel_DBconfig.json';
 
 var portNr = 8080;
 
