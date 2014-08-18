@@ -210,8 +210,10 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should insert a new element on level', inject(function (LevelService) {
+  it('should insert a new element on level', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockEpgdorsalJDR10
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.insertElementDetails(5, 'Phonetic', 0, 'test', 87610, 100);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5); 
@@ -221,6 +223,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetails('Phonetic',0).labels[0].name).toEqual('Phonetic');
     expect(LevelService.getElementDetails('Phonetic',0).labels[0].value).toEqual('test');  
     // test on mockEmaProsody0024
+    ConfigProviderService.curDbConfig = emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(mockEmaProsody0024);
     LevelService.insertElementDetails(42, 'TB', 0, 'test', 29509, 100);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3); 
