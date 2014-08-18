@@ -85,8 +85,38 @@
 								"type": "number",
 								"minimun": "0.0",
 								"maximum": "1.0"
+							},
+							"gestureOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxVelocityOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"constrictionPlateauBeginEndLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxConstrictionLabel": {
+								"type": "string"
 							}
-						}
+						},
+						"required": ["ssffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "multiplicationFactor", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
+						"additionalProperties": false,
+						"uniqueItems": true
 					}
 				},
 				"required": ["name", "type", "attributeDefinitions"],
