@@ -212,7 +212,7 @@ describe('Service: LevelService', function () {
    */
   it('should insert a new element on level', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockEpgdorsalJDR10
-    ConfigProviderService.curDbConfig = aeDbConfig;
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(mockEpgdorsalJDR10);
     LevelService.insertElementDetails(5, 'Phonetic', 0, 'test', 87610, 100);
@@ -387,7 +387,7 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should delete a level', inject(function (LevelService,ConfigProviderService) {
+  it('should delete a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     ConfigProviderService.setVals(configProviderServiceData);
     LevelService.setData(mockaeMsajc003);
@@ -411,7 +411,7 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should add a level', inject(function (LevelService,ConfigProviderService) {
+  it('should add a level', inject(function (LevelService, ConfigProviderService) {
     // test on mockaeMsajc003
     ConfigProviderService.setVals(configProviderServiceData);
     LevelService.setData(mockaeMsajc003);
@@ -557,9 +557,13 @@ describe('Service: LevelService', function () {
  /**
    *
    */
-  it('should insertSegment', inject(function (LevelService) {
+  it('should insertSegment', inject(function (LevelService, viewState, ConfigProviderService) {
     // test on mockaeMsajc003
     // delete and deleteSegmentsInvers 2 segments
+    ConfigProviderService.curDbConfig = aeDbConfig;
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+
+
     LevelService.setData(mockaeMsajc003);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);  
     // insert 1 new segment on the left side
@@ -573,6 +577,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('Phonetic',ret2.ids[1]).labels[0].value).toEqual('test2');  
     
     // test on mockEmaProsody0024
+    ConfigProviderService.curDbConfig = emaDbConfig;
+    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+
     LevelService.setData(mockEmaProsody0024);  
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);  
     // insert 1 new segment on the right side    
@@ -586,6 +593,9 @@ describe('Service: LevelService', function () {
     expect(LevelService.getElementDetailsById('TB',ret2.ids[1]).labels[0].value).toEqual('test2');  
     
     // test on mockEpgdorsalJDR10
+    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+
     LevelService.setData(mockEpgdorsalJDR10);  
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);  
     // insert 1 new segment in the middle   
