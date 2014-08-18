@@ -415,7 +415,7 @@ angular.module('emuwebApp')
 							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
 								Ssffdataservice.data = ssffJso.data;
 								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
-								if (validRes === true) {;
+								if (validRes === true) {
 									// set annotation
 									LevelService.setData(bundleData.annotation);
 
