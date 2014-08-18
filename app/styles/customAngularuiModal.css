@@ -14,6 +14,17 @@
 	padding: 10%;
 }
 
+.emuwebapp-rgbTextInput {
+	width: 50px;
+	text-align: center;
+}
+
+.emuwebapp-modalTable {
+	 border: 1px solid rgba(0,0,0,0.1);
+	 text-align: left;
+	 margin: 0px auto;
+}
+
 .modal-exportdata {
     text-align:left;
     width: 70%;
