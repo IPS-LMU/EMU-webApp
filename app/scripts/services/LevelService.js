@@ -340,29 +340,51 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertElementDetails = function (id, levelname, position, labelname, start, duration) {
 			var attrdefs = ConfigProviderService.getLevelDefinition(levelname).attributeDefinitions;
-			console.error('Only label with levelname inserted! Breaks with parallel labels...');
-			console.log(attrdefs);
+			var curAttrDef = viewState.getCurAttrDef(levelname);
+
+			var newElement;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					if (level.type == 'SEGMENT') {
-						var newElement = {
+						newElement = {
 							id: id,
 							sampleStart: start,
 							sampleDur: duration,
-							labels: [{
-								name: levelname,
-								value: labelname
-							}]
+							labels: []
 						};
+						for (var i = 0; i < attrdefs.length; i++) {
+							if (attrdefs[i].name === curAttrDef) {
+								newElement.labels.push({
+									name: levelname,
+									value: labelname
+								});
+							} else {
+								newElement.labels.push({
+									name: attrdefs[i].name,
+									value: ''
+								});
+							}
+						}
+
 					} else if (level.type == 'EVENT') {
-						var newElement = {
+						newElement = {
 							id: id,
 							samplePoint: start,
-							labels: [{
-								name: levelname,
-								value: labelname
-							}]
+							labels: []
 						};
+						for (var i = 0; i < attrdefs.length; i++) {
+							if (attrdefs[i].name === curAttrDef) {
+								newElement.labels.push({
+									name: levelname,
+									value: labelname
+								});
+							} else {
+								newElement.labels.push({
+									name: attrdefs[i].name,
+									value: ''
+								});
+							}
+						}
 					}
 					level.items.splice(position, 0, newElement);
 				}
