@@ -63,7 +63,8 @@
     "protractor": "~0.16.1",
     "filewalker": "~0.1.2",
     "grunt-throttle": "~0.2.1",
-    "phantomjs": "~1.9.7-12"
+    "phantomjs": "~1.9.7-12",
+    "karma-coverage": "~0.2.6"
   },
   "engines": {
     "node": ">=0.8.0"
