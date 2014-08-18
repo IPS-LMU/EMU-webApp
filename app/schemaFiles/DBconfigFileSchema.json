@@ -62,6 +62,31 @@
 							"required": ["name", "type"],
 							"additionalProperties": false
 						}
+					},
+					"anagestConfig": {
+						"type": "object",
+						"properties": {
+							"ssffTrackName": {
+								"type": "string"
+							},
+							"velocitySsffTrackName": {
+								"type": "string"
+							},
+							"velocityType": {
+								"enum": ["V", "TV"]
+							},
+							"autoLinkLevelName": {
+								"type": "string"
+							},
+							"multiplicationFactor": {
+								"enum": [-1, 1]
+							},
+							"threshold": {
+								"type": "number",
+								"minimun": "0.0",
+								"maximum": "1.0"
+							}
+						}
 					}
 				},
 				"required": ["name", "type", "attributeDefinitions"],
