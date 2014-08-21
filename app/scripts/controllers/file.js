@@ -75,9 +75,22 @@ angular.module('emuwebApp')
                                                 $scope.$parent.levServ.setData(annot);
                                                 // console.log(JSON.stringify(l, undefined, 2));
                                                 var lNames = [];
+                                                var levelDefs = [];
                                                 annot.levels.forEach(function (l) {
                                                     lNames.push(l.name);
+                                                    levelDefs.push({
+                                                        'name': l.name,
+                                                        'type': l.type,
+                                                        'attributeDefinitions': {
+                                                            'name': l.name,
+                                                            'type': 'string'
+                                                        }
+                                                    });
                                                 });
+                                                // set level defs
+                                                $scope.$parent.cps.curDbConfig.levelDefinitions = levelDefs;
+                                                $scope.$parent.vs.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+
                                                 $scope.$parent.cps.vals.perspectives[$scope.$parent.vs.curPerspectiveIdx].levelCanvases.order = lNames;
                                                 $scope.$parent.vs.somethingInProgressTxt = 'Done!';
                                                 $scope.$parent.vs.somethingInProgress = false;
