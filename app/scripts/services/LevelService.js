@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState) {
+	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
 		// shared service object
 		var sServObj = {};
 
@@ -1197,6 +1197,76 @@ angular.module('emuwebApp')
 			return res;
 		};
 
+		/**
+		 *
+		 */
+		sServObj.insertAnagestEvents = function () {
+			// vertical position signal
+			var trackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
+			var tr = ConfigProviderService.getSsffTrackConfig(trackName);
+			var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+
+			var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+
+			// velocity signal
+			var vTrackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
+			var vTr = ConfigProviderService.getSsffTrackConfig(vTrackName);
+			var vCol = Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
+			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
+
+			var gdat = [NaN, NaN];
+			var vdat = [NaN, NaN];
+			var ndat = [NaN, NaN];
+			var cdat = [NaN, NaN];
+
+			// easiest way to handle non-tangential signals (and has no effect on tangential signals)
+			vCol = ArrayHelperService.convertToAbsValues(vCol);
+
+			// selected column samples
+			var startTimeSel = viewState.getSelectedStartTime();
+			var endTimeSel = viewState.getSelectedEndTime();
+			var colStartSampleNr = Math.round(startTimeSel * sRaSt.sampleRate + sRaSt.startTime);
+			var colEndSampleNr = Math.round(endTimeSel * sRaSt.sampleRate + sRaSt.startTime);
+
+			var nrOfSamples = colEndSampleNr - colStartSampleNr;
+
+			var selCol = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+			var selVCol = vCol.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
+
+			// maxConstr
+			var maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
+			cdat[0] = maxVerticalPos.idx;
+
+			// max vel before max constriction
+			var maxVelBeforeMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0]), 'max');
+			vdat[0] = maxVelBeforeMaxConstr.idx;
+
+			// min vel before max vel
+			var minVelBeforeMaxVel = ArrayHelperService.findMinMax(selVCol.slice(0, vdat[0]), 'min');
+
+			// gesture onset
+			console.log('Looking for gesture onset');
+			var on20 = ArrayHelperService.findThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+			console.log(on20)
+			gdat[0] = on20[on20.length - 1];
+
+			// min vel between max vel 0 and max constriction
+			var min = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0]), 'min');
+			min = min + vdat[0] - 1;
+
+			// nucleus onset
+			console.log('Looking for nucleus onset');
+			var off20 = ArrayHelperService.findThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+
+
+
+			var maxConstrSample = viewState.curViewPort.selectS + (viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 2;
+			var maxConstrPoint = sServObj.insertPoint(viewState.getcurClickLevelName(), maxConstrSample, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+
+
+
+			return (maxConstrPoint);
+		};
 
 		return sServObj;
 	});
