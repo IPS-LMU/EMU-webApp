@@ -51,7 +51,7 @@ describe('Service: ArrayHelperService', function () {
 		threshold = 0.35
 		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, direction);
 		expect(viewState.round(res, 1)).toEqual(4.1);
-		
+
 		threshold = 0.8;
 		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, direction);
 		expect(viewState.round(res, 1)).toEqual(6.8);
@@ -92,5 +92,22 @@ describe('Service: ArrayHelperService', function () {
 
 	}));
 
+	/**
+	 *
+	 */
+	it('should flatten array of arrays', inject(function (ArrayHelperService) {
+
+		var arrOfArrs = [
+			[1],
+			[2],
+			[3],
+			[4],
+			[5, 6]
+		];
+		expect(typeof arrOfArrs[0]).toEqual('object');
+		var flatArr = ArrayHelperService.flattenArrayOfArray(arrOfArrs);
+		expect(typeof flatArr[0]).toEqual('number');
+
+	}));
 
 });

@@ -79,7 +79,7 @@ angular.module('emuwebApp')
 			}
 
 			if (anavv.length > 1) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'more then one threshold found... this will now break!!!! Should allow selection modal not error modal in future versions...');
+				dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', anavv);
 				return []; // SIC SIC SIC!!!!
 			} else if (anavv.length == 0) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!');
@@ -103,7 +103,6 @@ angular.module('emuwebApp')
 		 * by linearly interpolating them
 		 */
 		sServObj.interp2points = function (x0, y0, x1, y1, x) {
-
 			return y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
 		};
 
@@ -138,6 +137,15 @@ angular.module('emuwebApp')
 				'val': val,
 				'idx': idx
 			};
+		};
+
+		/**
+		 *
+		 */
+		sServObj.flattenArrayOfArray = function (arrOfArrs) {
+			var merged = [];
+			merged = merged.concat.apply(merged, arrOfArrs);
+			return merged;
 		};
 
 

@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3>Please select</h3>
+</div>
+<div class="modal-body">
+	Please select one of the options below:	
+	<ul>
+		<li ng-repeat="(key, value) in passedInOpts">
+			<input type="checkbox"> {{value}} </input>
+		</li>
+
+	</ul>
+</div>
+<div class="modal-footer">
+	<button ng-click="select();" id="modal-confirm" class="emuwebapp-mini-btn-dialog">Select</button>
+</div>

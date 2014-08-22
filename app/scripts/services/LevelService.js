@@ -1201,6 +1201,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.insertAnagestEvents = function () {
+
 			// vertical position signal
 			var trackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
 			var tr = ConfigProviderService.getSsffTrackConfig(trackName);
@@ -1213,6 +1214,16 @@ angular.module('emuwebApp')
 			var vTr = ConfigProviderService.getSsffTrackConfig(vTrackName);
 			var vCol = Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
 			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
+
+			if (col.length !== 1 || vCol.length !== 1) {
+				alert('UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!');
+				return;
+			}
+			// flatten columns
+			var flatColVals = ArrayHelperService.flattenArrayOfArray(col.values);
+			var flatVcolVals = ArrayHelperService.flattenArrayOfArray(vCol.values);
+
+			/////////////////////////////////////////
 
 			var gdat = [NaN, NaN];
 			var vdat = [NaN, NaN];
@@ -1230,8 +1241,8 @@ angular.module('emuwebApp')
 
 			var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
-			var selCol = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-			var selVCol = vCol.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
+			var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
 
 			// maxConstr
 			var maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
@@ -1247,8 +1258,9 @@ angular.module('emuwebApp')
 			// gesture onset
 			console.log('Looking for gesture onset');
 			console.log(selVCol.splice(0, vdat[0]))
-			var on20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+			var on20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1)
 			if (on20.length === 0) {
+				console.log('returning')
 				return;
 			}
 			gdat[0] = on20[on20.length - 1];
@@ -1259,7 +1271,7 @@ angular.module('emuwebApp')
 
 			// nucleus onset
 			console.log('Looking for nucleus onset');
-			var off20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+			var off20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1)
 
 
 
