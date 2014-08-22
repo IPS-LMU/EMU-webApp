@@ -773,7 +773,7 @@ angular.module('emuwebApp')
         k += '.';
       }
       k += e.toString().substring(1);
-      return k.substring(0, k.indexOf('.') + n + 1);
+      return parseFloat(k.substring(0, k.indexOf('.') + n + 1));
     };
 
     /**

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ArrayHelperService', function ArrayHelperService() {
+	.service('ArrayHelperService', function ArrayHelperService(dialogService) {
 		// shared service object
 		var sServObj = {};
 
@@ -20,7 +20,17 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * find threshold in array (an adapted reimplementation of findth by
+		 *
+		 */
+		sServObj.multiplyEachElement = function (arr, val) {
+			for (var i = 0; i < arr.length; i++) {
+				arr[i] = arr[i] * val;
+			}
+			return arr;
+		};
+
+		/**
+		 * find threshold in array (an adapted reimplementation of findth.m by
 		 * Phil Hoole Version 17.6.2006)
 		 *
 		 * @param x
@@ -30,28 +40,71 @@ angular.module('emuwebApp')
 		 * @param direction
 		 * @returns array containing found thresholds
 		 */
-		sServObj.findThresholds = function (x, minVal, maxVal, threshold, direction) {
+		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction) {
 
-
-			var thdir = direction;
 			var thdat = minVal + (maxVal - minVal) * threshold;
 
-			var xx = x * thdir; // handle positive/neg.
+			var thdir = direction;
 
-			var lx = length(xx);
-			var xsh = xx.slice(1, xx.length);
-			var loguk = 1;
-			var higuk = lx;
+			thdat = thdat * thdir
 
 
-			var allThreshIdxs = [];
-			for (var i = 0; i < arr.length - 1; i++) {
-				// check if stepping over threshold
-				if ((arr[i] < thVal && arr[i + 1] > thVal) || (arr[i] > thVal && arr[i + 1] < thVal)) {
-					allThreshIdxs.push(i);
+			var xx = sServObj.multiplyEachElement(x, thdir); // handle positive/neg.
+
+			var lx = xx.length;
+			var xsh = xx.slice(1, lx);
+			var loguk = 0;
+			var higuk = lx - 1;
+
+			// console.log(lx);
+			// console.log(xx);
+			// console.log(xsh);
+			// console.log(loguk);
+			// console.log(higuk);
+
+			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
+			var vz = [];
+			for (var i = 0; i < xx.length; i++) {
+				if ((xsh[i] >= thdat) && (xx[i] < thdat)) {
+					vz.push(i);
 				}
 			}
-			return allThreshIdxs;
+
+			// anavv=find(vz>=loguk & vz<=higuk);
+			var anavv = [];
+			for (var i = 0; i < vz.length; i++) {
+				if ((vz[i] >= loguk) && vz[i] <= higuk) {
+					anavv.push(i);
+				}
+			}
+
+			if (anavv.length > 1) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'more then one threshold found... this will now break!!!! Should allow selection modal not error modal in future versions...');
+				return []; // SIC SIC SIC!!!!
+			} else if (anavv.length == 0) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!');
+				return [];
+			}
+
+			var ap = vz[anavv[0]];
+
+			console.log('-----')
+			console.log(xx[ap])
+			console.log(xx[ap + 1])
+			console.log(ap);
+			console.log(ap + 1);
+			ap = sServObj.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+			console.log(ap);
+			return ap;
+		};
+
+		/**
+		 * find value between two points
+		 * by linearly interpolating them
+		 */
+		sServObj.interp2points = function (x0, y0, x1, y1, x) {
+
+			return y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
 		};
 
 		/**

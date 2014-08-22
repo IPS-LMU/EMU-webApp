@@ -1246,8 +1246,11 @@ angular.module('emuwebApp')
 
 			// gesture onset
 			console.log('Looking for gesture onset');
-			var on20 = ArrayHelperService.findThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
-			console.log(on20)
+			console.log(selVCol.splice(0, vdat[0]))
+			var on20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+			if (on20.length === 0) {
+				return;
+			}
 			gdat[0] = on20[on20.length - 1];
 
 			// min vel between max vel 0 and max constriction
@@ -1256,7 +1259,7 @@ angular.module('emuwebApp')
 
 			// nucleus onset
 			console.log('Looking for nucleus onset');
-			var off20 = ArrayHelperService.findThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
+			var off20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold)
 
 
 
