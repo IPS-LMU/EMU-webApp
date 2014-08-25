@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ArrayHelperService', function ArrayHelperService(dialogService) {
+	.service('ArrayHelperService', function ArrayHelperService($q, dialogService) {
 		// shared service object
 		var sServObj = {};
 
+		var defer; // defer promise obj
 
 		/**
 		 * convert values of array to max values
@@ -38,9 +39,11 @@ angular.module('emuwebApp')
 		 * @param maxVal
 		 * @param threshold
 		 * @param direction
+		 * @param descriptions describes the task
 		 * @returns array containing found thresholds
 		 */
-		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction) {
+		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
+			console.log('interactiveFindThresholds');
 
 			var thdat = minVal + (maxVal - minVal) * threshold;
 
@@ -79,23 +82,45 @@ angular.module('emuwebApp')
 			}
 
 			if (anavv.length > 1) {
-				dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', anavv);
-				return []; // SIC SIC SIC!!!!
-			} else if (anavv.length == 0) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!');
-				return [];
+				defer = $q.defer();
+				var infos = {};
+				infos.description = description;
+				infos.options = [];
+				for (var i = 0; i < vz.length; i++) {
+					infos.options.push({
+						'thresholdIdx': vz[i],
+						'thresholdValue': xx[i],
+					})
+				};
+
+				dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', infos).then(function (resp) {
+					console.log(resp);
+					var ap = vz[anavv[resp]];
+					// console.log('-----')
+					// console.log(xx[ap])
+					// console.log(xx[ap + 1])
+					// console.log(ap);
+					// console.log(ap + 1);
+					ap = sServObj.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+
+					console.log('done with selectmodal modal');
+					console.log(ap);
+					defer.resolve(ap);
+				});
+				return defer.promise;
+			} else if (anavv.length === 0) {
+				defer = $q.defer();
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!').then(function () {
+					defer.reject();
+				});
+				return defer.promise;
+			} else {
+				var ap = vz[anavv[0]];
+				ap = sServObj.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+				defer.resolve(ap);
+				return defer.promise;
 			}
 
-			var ap = vz[anavv[0]];
-
-			console.log('-----')
-			console.log(xx[ap])
-			console.log(xx[ap + 1])
-			console.log(ap);
-			console.log(ap + 1);
-			ap = sServObj.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
-			console.log(ap);
-			return ap;
 		};
 
 		/**

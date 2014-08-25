@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
+	.service('LevelService', function LevelService($q, ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
 		// shared service object
 		var sServObj = {};
 
@@ -9,6 +9,7 @@ angular.module('emuwebApp')
 		sServObj.maxElementID = 0; // max currently loaded level data Id
 		sServObj.lasteditArea = null; // holding current edit area
 		sServObj.lasteditAreaElem = null; // holding current edit area element
+
 
 		/**
 		 * search for the according label field in labels
@@ -1244,43 +1245,109 @@ angular.module('emuwebApp')
 			var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
 
+			console.log(selCol);
+			console.log(selVCol);
+
 			// maxConstr
 			var maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
 			cdat[0] = maxVerticalPos.idx;
 
 			// max vel before max constriction
-			var maxVelBeforeMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0]), 'max');
+			var maxVelBeforeMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0] + 1), 'max');
 			vdat[0] = maxVelBeforeMaxConstr.idx;
 
 			// min vel before max vel
-			var minVelBeforeMaxVel = ArrayHelperService.findMinMax(selVCol.slice(0, vdat[0]), 'min');
+			var minVelBeforeMaxVel = ArrayHelperService.findMinMax(selVCol.slice(0, vdat[0] + 1), 'min');
 
 			// gesture onset
 			console.log('Looking for gesture onset');
-			console.log(selVCol.splice(0, vdat[0]))
-			var on20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(0, vdat[0]), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1)
-			if (on20.length === 0) {
-				console.log('returning')
-				return;
-			}
-			gdat[0] = on20[on20.length - 1];
 
-			// min vel between max vel 0 and max constriction
-			var min = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0]), 'min');
-			min = min + vdat[0] - 1;
+			var defer = $q.defer();
+			var promises = [];
 
-			// nucleus onset
-			console.log('Looking for nucleus onset');
-			var off20 = ArrayHelperService.interactiveFindThresholds(selVCol.splice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1)
+			ArrayHelperService.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
+				// keyboard;
+				var on20 = resp;
+				gdat[1] = on20;
+
+				// min vel between max vel 1 and max constriction
+				var minVelBetwMaxVel1maxConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0]), 'min');
+
+				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0] + 1;
+
+				// nucleus onset
+				console.log('Looking for nucleus onset');
+				ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
+					var off20 = resp;
+					ndat[0] = off20 + vdat[0] - 1;
+
+					// max vel after max constriction
+					var maxVelAfterMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0]), 'max'); // max vel before max constriction
+					vdat[1] = maxVelAfterMaxConstr.idx + cdat[0] - 1;
+
+
+					// minimum between max constriction and max vel after constriction
+					var minBetwMaxConstrMaxVelConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0], vdat[1] + 1), 'min');
+
+					minp = minBetwMaxConstrMaxVelConstr.idx + cdat[0] - 1;
+
+					// nucleus offset
+					console.log('Looking for nucleus offset');
+					ArrayHelperService.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
+						var on20 = resp;
+						ndat[1] = on20 + minp - 1;
+
+						// minimum velocity after max vel after constriction
+						var minVelAfterMaxVelAfterConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[1]), 'min');
+
+						minp = minp + vdat[1] - 1;
+						console.log('hi mum!!!!!!!!!!!!');
+
+						// gesture offset
+
+						console.log('Looking for gesture offset');
+						ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
+							var off20 = resp;
+							gdat[1] = off20 + vdat[1] - 1;
+
+							console.log(gdat);
+
+							console.log(vdat);
+
+							console.log(ndat);
+
+							console.log(cdat);
+
+							console.log('I aaaaam BATMAAAN!!!!!');
+						})
+					});
+				});
+
+
+				console.log('all good!!!');
+			}, function () {
+				console.error('rejected biiiatch');
+			});
+
+			// gdat[0] = on20[on20.length - 1];
+
+			// // min vel between max vel 0 and max constriction
+			// var min = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0]), 'min');
+			// min = min + vdat[0] - 1;
+
+			// var off20 = ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[0], min), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1)
 
 
 
-			var maxConstrSample = viewState.curViewPort.selectS + (viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 2;
-			var maxConstrPoint = sServObj.insertPoint(viewState.getcurClickLevelName(), maxConstrSample, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+			// var maxConstrSample = viewState.curViewPort.selectS + (viewState.curViewPort.selectE - viewState.curViewPort.selectS) / 2;
+			// var maxConstrPoint = sServObj.insertPoint(viewState.getcurClickLevelName(), maxConstrSample, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+
+			$q.all(promises).then(function () {
+				console.log('All tasks are completed!');
+			});
 
 
-
-			return (maxConstrPoint);
+			// return (maxConstrPoint);
 		};
 
 		return sServObj;

@@ -404,10 +404,13 @@ angular.module('emuwebApp')
 							viewState.curClickLevelName = undefined;
 							viewState.curClickLevelType = undefined;
 
+							viewState.resetSelect();
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 442204;
 							// viewState.curViewPort.eS = 445464;
-							viewState.resetSelect();
+							// dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', [{'dude': 123}, {'d':12}, {'sadf':123}]);
+							viewState.curViewPort.selectS = 27575;
+							viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;
 
 							// set all ssff files
