@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -635,7 +635,7 @@ angular.module('emuwebApp')
                           if(typeof levelDef.anagestConfig === 'undefined'){
                             var insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                           }else{
-                            var insPoint = LevelService.insertAnagestEvents();;
+                            var insPoint = AnagestService.insertAnagestEvents();;
                           }
                           if (!insPoint.ret) {
                             scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');

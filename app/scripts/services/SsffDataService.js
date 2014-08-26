@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Ssffdataservice', function Ssffdataservice() {
+	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
@@ -22,9 +22,9 @@ angular.module('emuwebApp')
 				}
 			});
 
-			if(res !== undefined){
+			if (res !== undefined) {
 				return res;
-			}else{
+			} else {
 				alert("could not getColumnOfTrack of trackname: " + trackName)
 			}
 		};
@@ -41,11 +41,22 @@ angular.module('emuwebApp')
 					res.startTime = tr.startTime;
 				}
 			});
-			if(res !== undefined){
+			if (res !== undefined) {
 				return res;
-			}else{
+			} else {
 				alert("could not getSampleRateAndStartTimeOfTrack of trackname: " + trackName)
 			}
+		};
+
+
+		/**
+		 * calculates the closest audio sample of
+		 * the passed in column sample nr
+		 */
+		sServObj.calculateSamplePosInVP = function (colSampleNr, sampleRate, startTime) {
+			var sampleTime = (colSampleNr / sampleRate) + startTime;
+			var audioSample = Math.round(sampleTime * Soundhandlerservice.wavJSO.SampleRate);
+			return audioSample;
 		};
 
 		return sServObj;
