@@ -408,7 +408,10 @@ angular.module('emuwebApp')
 							// FOR DEVELOPMENT:
 							// viewState.curViewPort.sS = 442204;
 							// viewState.curViewPort.eS = 445464;
-							// dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', [{'dude': 123}, {'d':12}, {'sadf':123}]);
+							var infos = {};
+							infos.description = 'testing testing 1....2';
+							infos.options = ['sers', 'alte','fishhaut!!!!!!!'];
+							// dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', infos);
 							viewState.curViewPort.selectS = 27575;
 							viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;

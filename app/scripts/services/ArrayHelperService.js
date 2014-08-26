@@ -86,6 +86,10 @@ angular.module('emuwebApp')
 				var infos = {};
 				infos.description = description;
 				infos.options = [];
+				infos.y = xx;
+				infos.minVal = minVal;
+				infos.maxVal = maxVal;
+				infos.threshold = threshold;
 				for (var i = 0; i < vz.length; i++) {
 					infos.options.push({
 						'thresholdIdx': vz[i],
@@ -173,6 +177,20 @@ angular.module('emuwebApp')
 			return merged;
 		};
 
+		/**
+		 * convert array to an array that contains
+		 * objects of the form {x: i, y:y[i]}
+		 */
+		sServObj.convertArrayToXYjsoArray = function (y) {
+			var xyArray = [];
+			for (var i = 0; i < y.length; i++) {
+				xyArray.push({
+					x: i,
+					y: y[i]
+				});
+			}
+			return xyArray;
+		};
 
 
 		return sServObj;

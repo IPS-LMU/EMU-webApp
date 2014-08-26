@@ -14,6 +14,10 @@
 	padding: 10%;
 }
 
+.emuwebapp-modalUl{
+	padding-left: 0;
+}
+
 .emuwebapp-rgbTextInput {
 	width: 50px;
 	text-align: center;
@@ -24,6 +28,18 @@
 	 text-align: left;
 	 margin: 0px auto;
 }
+
+.emuwebapp-card {
+	width:100%;
+	margin-top: 10px;
+	background-color: transparent;
+	border: 1px solid black;
+	box-shadow: 2px 2px 5px #888888;
+}
+.emuwebapp-card:hover{
+	background-color:rgba(152, 152, 152, 0.28);
+}
+
 
 .modal-exportdata {
     text-align:left;
