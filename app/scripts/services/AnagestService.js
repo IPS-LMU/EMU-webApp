@@ -216,7 +216,7 @@ angular.module('emuwebApp')
 							});
 
 							HistoryService.addCurChangeObjToUndoStack();
-							defer.resolve('Should auto hook up hierarchy');
+							defer.resolve();
 						});
 					});
 				});
@@ -240,7 +240,7 @@ angular.module('emuwebApp')
 		 * @returns promise that resolves to threshold value
 		 */
 		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
-			console.log('interactiveFindThresholds');
+			// console.log('interactiveFindThresholds');
 
 			var thdat = minVal + (maxVal - minVal) * threshold;
 
@@ -295,7 +295,6 @@ angular.module('emuwebApp')
 				}
 
 				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
-					console.log(resp);
 					var ap = vz[anavv[resp]];
 					// console.log('-----')
 					// console.log(xx[ap])

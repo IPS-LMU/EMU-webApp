@@ -154,6 +154,7 @@ angular.module('emuwebApp')
 				case 'moveBoundary':
 				case 'movePoint':
 				case 'moveSegment':
+				case 'insertPoint':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
