@@ -644,9 +644,7 @@ angular.module('emuwebApp')
                               });
                             }
                           } else {
-                            AnagestService.insertAnagestEvents().then(function (arg) {
-                              // body...
-                            });
+                            AnagestService.insertAnagestEvents();
                           }
                         }
                       }
