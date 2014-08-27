@@ -411,7 +411,7 @@ angular.module('emuwebApp')
 							var infos = {};
 							infos.description = 'testing testing 1....2';
 							infos.options = ['sers', 'alte','fishhaut!!!!!!!'];
-							// dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', infos);
+							// dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos);
 							viewState.curViewPort.selectS = 27575;
 							viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;

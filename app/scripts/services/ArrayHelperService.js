@@ -97,7 +97,7 @@ angular.module('emuwebApp')
 					})
 				};
 
-				dialogService.open('views/selectModalCtrl.html', 'SelectmodalCtrl', infos).then(function (resp) {
+				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
 					console.log(resp);
 					var ap = vz[anavv[resp]];
 					// console.log('-----')

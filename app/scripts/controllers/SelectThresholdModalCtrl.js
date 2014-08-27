@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('SelectmodalCtrl', function ($scope, dialogService, passedInOpts, ArrayHelperService) {
+	.controller('SelectThresholdModalCtrl', function ($scope, dialogService, passedInOpts, ArrayHelperService) {
 		$scope.passedInOpts = passedInOpts;
 
 		$scope.myData = ArrayHelperService.convertArrayToXYjsoArray(passedInOpts.y);
