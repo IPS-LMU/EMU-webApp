@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function LevelService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService) {
+	.service('AnagestService', function LevelService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService) {
 		// shared service object
 		var sServObj = {};
+
+		// defer object 
+		var defer; 
 		/**
 		 *
 		 */
@@ -71,7 +74,7 @@ angular.module('emuwebApp')
 			var defer = $q.defer();
 			var promises = [];
 
-			ArrayHelperService.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
+			sServObj.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
 				// keyboard;
 				var on20 = resp;
 				gdat[0] = on20;
@@ -83,7 +86,7 @@ angular.module('emuwebApp')
 
 				// nucleus onset
 				$log.info('Looking for nucleus onset');
-				ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
+				sServObj.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
 					var off20 = resp;
 					ndat[0] = off20 + vdat[0];
 
@@ -99,7 +102,7 @@ angular.module('emuwebApp')
 
 					// nucleus offset
 					$log.info('Looking for nucleus offset');
-					ArrayHelperService.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
+					sServObj.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
 						var on20 = resp;
 						ndat[1] = on20 + minp;
 
@@ -110,7 +113,7 @@ angular.module('emuwebApp')
 						// gesture offset
 
 						$log.info('Looking for gesture offset');
-						ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
+						sServObj.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
 							var off20 = resp;
 							gdat[1] = off20 + vdat[1];
 							// insert points
@@ -140,6 +143,101 @@ angular.module('emuwebApp')
 			}, function () {
 				console.error('rejected duuuude!!!!');
 			});
+		};
+
+		/**
+		 * find threshold in array (an adapted reimplementation of findth.m by
+		 * Phil Hoole Version 17.6.2006)
+		 *
+		 * @param x
+		 * @param minVal
+		 * @param maxVal
+		 * @param threshold
+		 * @param direction
+		 * @param descriptions describes the task
+		 * @returns promise that resolves to threshold value
+		 */
+		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
+			console.log('interactiveFindThresholds');
+
+			var thdat = minVal + (maxVal - minVal) * threshold;
+
+			var thdir = direction;
+
+			thdat = thdat * thdir
+
+
+			var xx = ArrayHelperService.multiplyEachElement(x, thdir); // handle positive/neg.
+
+			var lx = xx.length;
+			var xsh = xx.slice(1, lx);
+			var loguk = 0;
+			var higuk = lx - 1;
+
+			// console.log(lx);
+			// console.log(xx);
+			// console.log(xsh);
+			// console.log(loguk);
+			// console.log(higuk);
+
+			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
+			var vz = [];
+			for (var i = 0; i < xx.length; i++) {
+				if ((xsh[i] >= thdat) && (xx[i] < thdat)) {
+					vz.push(i);
+				}
+			}
+
+			// anavv=find(vz>=loguk & vz<=higuk);
+			var anavv = [];
+			for (var i = 0; i < vz.length; i++) {
+				if ((vz[i] >= loguk) && vz[i] <= higuk) {
+					anavv.push(i);
+				}
+			}
+
+			if (anavv.length > 1) {
+				defer = $q.defer();
+				var infos = {};
+				infos.description = description;
+				infos.options = [];
+				infos.y = xx;
+				infos.minVal = minVal;
+				infos.maxVal = maxVal;
+				infos.threshold = threshold;
+				for (var i = 0; i < vz.length; i++) {
+					infos.options.push({
+						'thresholdIdx': vz[i],
+						'thresholdValue': xx[i],
+					});
+				}
+
+				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
+					console.log(resp);
+					var ap = vz[anavv[resp]];
+					// console.log('-----')
+					// console.log(xx[ap])
+					// console.log(xx[ap + 1])
+					// console.log(ap);
+					// console.log(ap + 1);
+					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+					defer.resolve(ap);
+				});
+				return defer.promise;
+			} else if (anavv.length === 0) {
+				defer = $q.defer();
+				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!').then(function () {
+					defer.reject();
+				});
+				return defer.promise;
+			} else {
+				defer = $q.defer();
+				var ap = vz[anavv[0]];
+				ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+				defer.resolve(ap);
+				return defer.promise;
+			}
+
 		};
 
 		return sServObj;
