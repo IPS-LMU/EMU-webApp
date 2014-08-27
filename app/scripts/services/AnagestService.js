@@ -216,6 +216,10 @@ angular.module('emuwebApp')
 							});
 
 							HistoryService.addCurChangeObjToUndoStack();
+							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', ['hallo', 'dude']).then(function (argument) {
+								alert(argument);
+							});
+
 							defer.resolve();
 						});
 					});
