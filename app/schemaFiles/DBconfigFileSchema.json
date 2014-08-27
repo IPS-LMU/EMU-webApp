@@ -72,9 +72,6 @@
 							"velocitySsffTrackName": {
 								"type": "string"
 							},
-							"velocityType": {
-								"enum": ["V", "TV"]
-							},
 							"autoLinkLevelName": {
 								"type": "string"
 							},
