@@ -1,18 +1,28 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function LevelService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService) {
+	.service('AnagestService', function LevelService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
 		// shared service object
 		var sServObj = {};
 
 		// defer object 
-		var defer; 
+		var defer;
+
 		/**
 		 *
 		 */
 		sServObj.insertAnagestEvents = function () {
 
-			// TODO: precheck if exist in interval
+			var defer = $q.defer();
+
+			// precheck if there are items in selection
+			var itemInSel = viewState.getItemsInSelection(LevelService.data.levels);
+			if (itemInSel.length !== 0) {
+				dialogService.open('views/error.html', 'ModalCtrl', 'There are already events in the selected area! This is not permitted...').then(function () {
+					defer.reject();
+				});
+				return defer;
+			}
 
 			// vertical position signal
 			var trackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
@@ -28,8 +38,10 @@ angular.module('emuwebApp')
 			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
 
 			if (col.length !== 1 || vCol.length !== 1) {
-				alert('UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!');
-				return;
+				dialogService.open('views/error.html', 'ModalCtrl', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
+					defer.reject();
+				});
+				return defer;
 			}
 			// flatten columns
 			var flatColVals = ArrayHelperService.flattenArrayOfArray(col.values);
@@ -71,8 +83,6 @@ angular.module('emuwebApp')
 			// gesture onset
 			$log.info('Looking for gesture onset');
 
-			var defer = $q.defer();
-			var promises = [];
 
 			sServObj.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
 				// keyboard;
@@ -82,7 +92,7 @@ angular.module('emuwebApp')
 				// min vel between max vel 1 and max constriction
 				var minVelBetwMaxVel1maxConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0] + 1), 'min');
 
-				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0]
+				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0];
 
 				// nucleus onset
 				$log.info('Looking for nucleus onset');
@@ -117,32 +127,104 @@ angular.module('emuwebApp')
 							var off20 = resp;
 							gdat[1] = off20 + vdat[1];
 							// insert points
-							console.log(gdat)
+							var insPoint;
+							var curLabel;
+
+							// console.log(gdat)
 							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0]);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1]);
-							console.log(vdat);
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': gdat[0],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': gdat[1],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+
+							// console.log(vdat);
 							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0]);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1]);
-							console.log(ndat);
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': vdat[0],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': vdat[1],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+
+							// console.log(ndat);
 							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
 							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0]);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1]);
-							console.log(cdat);
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': ndat[0],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': ndat[1],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+
+							// console.log(cdat);
 							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
-							LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel);
-							console.log('Should auto hook up hierarchy');
-						})
+							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
+							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
+							HistoryService.updateCurChangeObj({
+								'type': 'ESPS',
+								'action': 'insertPoint',
+								'name': viewState.getcurClickLevelName(),
+								'start': cdat[0],
+								'id': insPoint.id,
+								'pointName': curLabel
+							});
+
+							HistoryService.addCurChangeObjToUndoStack();
+							defer.resolve('Should auto hook up hierarchy');
+						});
 					});
 				});
 
 			}, function () {
 				console.error('rejected duuuude!!!!');
 			});
+			return defer.promise;
 		};
 
 		/**

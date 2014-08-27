@@ -6,9 +6,9 @@ angular.module('emuwebApp')
       restrict: 'A',
       link: function postLink(scope) {
         $(document).bind('keydown', function (e) {
-          if(!scope.firefox) {
+          if (!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
-            if(code == 8 || code == 9 || code == 27 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
+            if (code == 8 || code == 9 || code == 27 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
               applyKeyCode(code, e);
             }
           }
@@ -219,7 +219,7 @@ angular.module('emuwebApp')
                       // error msg nothing moved / nothing on top
                       console.log('error msg nothing moved / nothing on top');
                     } else {
-                      if(levelType === "EVENT") {
+                      if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'movePoint',
@@ -227,15 +227,14 @@ angular.module('emuwebApp')
                           'id': mouseSeg.id,
                           'movedBy': minDist
                         });
-                      }
-                      else if(levelType === "SEGMENT") {
+                      } else if (levelType === "SEGMENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist,
-                          'position': 0                          
+                          'position': 0
                         });
                       }
                       HistoryService.addCurChangeObjToUndoStack();
@@ -256,7 +255,7 @@ angular.module('emuwebApp')
                     if (minDist == false) {
                       // error msg nothing moved / nothing below
                     } else {
-                      if(levelType === "EVENT") {
+                      if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'movePoint',
@@ -264,9 +263,8 @@ angular.module('emuwebApp')
                           'id': mouseSeg.id,
                           'movedBy': minDist
                         });
-                      }
-                      else if(levelType === "SEGMENT") {
-                        console.log('seg to bottom');  
+                      } else if (levelType === "SEGMENT") {
+                        console.log('seg to bottom');
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'moveBoundary',
@@ -274,7 +272,7 @@ angular.module('emuwebApp')
                           'id': mouseSeg.id,
                           'movedBy': minDist,
                           'position': 0
-                        });                              
+                        });
                       }
                       HistoryService.addCurChangeObjToUndoStack();
                     }
@@ -298,12 +296,12 @@ angular.module('emuwebApp')
                       var levelname = viewState.getcurMouseLevelName();
                       LevelService.moveBoundary(levelname, seg.id, dist, 0);
                       HistoryService.updateCurChangeObj({
-                          'type': 'ESPS',
-                          'action': 'moveBoundary',
-                          'name': levelname,
-                          'id': seg.id,
-                          'movedBy': dist,
-                          'position': 0
+                        'type': 'ESPS',
+                        'action': 'moveBoundary',
+                        'name': levelname,
+                        'id': seg.id,
+                        'movedBy': dist,
+                        'position': 0
                       });
                       HistoryService.addCurChangeObjToUndoStack();
                     }
@@ -425,9 +423,8 @@ angular.module('emuwebApp')
                   }
                 }
               }
-              
-              
-              
+
+
 
               // shrink Segments Right
               if (code === ConfigProviderService.vals.keyMappings.shrinkSelSegmentsRight) {
@@ -465,7 +462,7 @@ angular.module('emuwebApp')
                     }
                   }
                 }
-              }              
+              }
 
 
               // toggleSideBars
@@ -477,7 +474,7 @@ angular.module('emuwebApp')
                   }
                 }
               }
-              
+
               // toggleSideBars
               if (code === ConfigProviderService.vals.keyMappings.toggleSideBarRight) {
                 if (viewState.getPermission('toggleSideBars')) {
@@ -632,21 +629,23 @@ angular.module('emuwebApp')
                           }
                         } else {
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
-                          if(typeof levelDef.anagestConfig === 'undefined'){
+                          if (typeof levelDef.anagestConfig === 'undefined') {
                             var insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
-                          }else{
-                            var insPoint = AnagestService.insertAnagestEvents();;
-                          }
-                          if (!insPoint.ret) {
-                            scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
+                            if (!insPoint.ret) {
+                              scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
+                            } else {
+                              scope.hists.addObjToUndoStack({ // todo 
+                                'type': 'ESPS',
+                                'action': 'insertPoint',
+                                'name': viewState.getcurClickLevelName(),
+                                'start': viewState.curViewPort.selectS,
+                                'id': insPoint.id,
+                                'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
+                              });
+                            }
                           } else {
-                            scope.hists.addObjToUndoStack({ // todo 
-                              'type': 'ESPS',
-                              'action': 'insertPoint',
-                              'name': viewState.getcurClickLevelName(),
-                              'start': viewState.curViewPort.selectS,
-                              'id': insPoint.id,
-                              'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
+                            AnagestService.insertAnagestEvents().then(function (arg) {
+                              // body...
                             });
                           }
                         }
@@ -664,7 +663,7 @@ angular.module('emuwebApp')
                   HistoryService.undo();
                 }
               }
-              
+
 
               // redo
               if (code === ConfigProviderService.vals.keyMappings.redo) {
@@ -672,7 +671,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   HistoryService.redo();
                 }
-              }              
+              }
 
               // deletePreselBoundary
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
@@ -683,7 +682,7 @@ angular.module('emuwebApp')
                       var levelname = viewState.getcurMouseLevelName();
                       var type = viewState.getcurMouseLevelType();
                       if (seg !== undefined) {
-                        if(seg === false) { // before first segment
+                        if (seg === false) { // before first segment
                           seg = LevelService.getElementDetails(levelname, 0);
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
@@ -694,10 +693,9 @@ angular.module('emuwebApp')
                             'length': 1,
                             'deletedSegment': deletedSegment
                           });
-                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
-                          viewState.setcurClickSegment(deletedSegment.clickSeg);            
-                        }
-                        else if(seg === true) { // after last segment
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);
+                        } else if (seg === true) { // after last segment
                           seg = LevelService.getLastElement(levelname);
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
@@ -707,38 +705,36 @@ angular.module('emuwebApp')
                             'id': seg.id,
                             'length': 1,
                             'deletedSegment': deletedSegment
-                          });   
-                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
-                          viewState.setcurClickSegment(deletedSegment.clickSeg);                                   
-                        }
-                        else {
-                            if(type==="SEGMENT") {
-                                var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
-                                scope.hists.addObjToUndoStack({
-                                  'type': 'ESPS',
-                                  'action': 'deleteBoundary',
-                                  'name': levelname,
-                                  'id': seg.id,
-                                  'deletedSegment': deletedSegment
-                                });
-                                // reset to undefined
-                                viewState.setcurMouseSegment(undefined, undefined, undefined);            
-                                viewState.setcurClickSegment(deletedSegment.clickSeg);            
-                            }
-                            else {
-                                var deletedPoint = LevelService.deletePoint(levelname, seg.id);
-                                scope.hists.addObjToUndoStack({
-                                  'type': 'ESPS',
-                                  'action': 'deletePoint',
-                                  'name': levelname,
-                                  'start': deletedPoint.samplePoint,
-                                  'id': deletedPoint.id,
-                                  'pointName': deletedPoint.labels[0].value
-                                  
-                                });
-                                // reset to undefined
-                                viewState.setcurMouseSegment(undefined, undefined, undefined);            
-                            }
+                          });
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);
+                        } else {
+                          if (type === "SEGMENT") {
+                            var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
+                            scope.hists.addObjToUndoStack({
+                              'type': 'ESPS',
+                              'action': 'deleteBoundary',
+                              'name': levelname,
+                              'id': seg.id,
+                              'deletedSegment': deletedSegment
+                            });
+                            // reset to undefined
+                            viewState.setcurMouseSegment(undefined, undefined, undefined);
+                            viewState.setcurClickSegment(deletedSegment.clickSeg);
+                          } else {
+                            var deletedPoint = LevelService.deletePoint(levelname, seg.id);
+                            scope.hists.addObjToUndoStack({
+                              'type': 'ESPS',
+                              'action': 'deletePoint',
+                              'name': levelname,
+                              'start': deletedPoint.samplePoint,
+                              'id': deletedPoint.id,
+                              'pointName': deletedPoint.labels[0].value
+
+                            });
+                            // reset to undefined
+                            viewState.setcurMouseSegment(undefined, undefined, undefined);
+                          }
                         }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -747,7 +743,7 @@ angular.module('emuwebApp')
                   } else {
                     if (ConfigProviderService.vals.restrictions.deleteItem) {
                       var seg = viewState.getcurClickSegments();
-                      if (seg !== undefined && seg.length>0) {
+                      if (seg !== undefined && seg.length > 0) {
                         var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
@@ -759,8 +755,8 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
-                          viewState.setcurMouseSegment(undefined, undefined, undefined);            
-                          viewState.setcurClickSegment(deletedSegment.clickSeg);                           
+                          viewState.setcurMouseSegment(undefined, undefined, undefined);
+                          viewState.setcurClickSegment(deletedSegment.clickSeg);
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }

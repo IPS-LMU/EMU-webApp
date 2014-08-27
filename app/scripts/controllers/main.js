@@ -410,7 +410,11 @@ angular.module('emuwebApp')
 							// viewState.curViewPort.eS = 445464;
 							var infos = {};
 							infos.description = 'testing testing 1....2';
-							infos.options = ['sers', 'alte','fishhaut!!!!!!!'];
+							infos.options = ['sers', 'alte', 'fishhaut!!!!!!!'];
+							infos.y = [5, 6, 2, 3, 6, 2, 6, 7, 8, 9];
+							infos.minVal = 2;
+							infos.maxVal = 9;
+							infos.threshold = 0.2;
 							// dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos);
 							viewState.curViewPort.selectS = 27575;
 							viewState.curViewPort.selectE = 34538;
