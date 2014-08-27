@@ -51,6 +51,12 @@
 								},
 								"type": {
 									"enum": ["string"]
+								},
+								"legalLabels": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
 								}
 							},
 							"required": ["name", "type"],

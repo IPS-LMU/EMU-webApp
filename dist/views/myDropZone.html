@@ -1,15 +1,4 @@
-<div ng-controller="FileCtrl" id="dropzone" class="emuwebapp-dropzone" ng-class="dropClass" ng-click="loadFiles();">
+<div id="dropzone" class="emuwebapp-dropzone" ng-class="dropClass">
   <span>{{dropText}}</span>
-   
-  <input style="display:none" id="fileDialog" ng-model="files" type="file" multiple="multiple" accept="audio/wav, .TextGrid">
-
-  <div ng-show="files.length">
-      <div ng-repeat="file in files.slice(0)">
-          <span>{{file.webkitRelativePath || file.name}}</span>
-          <span ng-switch="file.size > 1024*1024">
-              <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-              <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-          </span>
-        </div>
-    </div>
+  <my-drop-zone-input></my-drop-zone-input>
 </div>

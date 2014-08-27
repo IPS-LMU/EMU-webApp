@@ -19,6 +19,8 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
+    // hold the current attribute definitions that are in view 
+    var curLevelAttrDefs = [];
 
     /**
      * initialize all needed vars in viewState
@@ -89,6 +91,8 @@ angular.module('emuwebApp')
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
       sServObj.curState = sServObj.states.noDBorFilesloaded;
+
+      curLevelAttrDefs = [];
     };
 
     // initialize on init
@@ -133,7 +137,7 @@ angular.module('emuwebApp')
       if (sServObj.start === null) {
         sServObj.start = timestamp;
       }
-      
+
       var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
@@ -224,7 +228,7 @@ angular.module('emuwebApp')
       if (start < this.curViewPort.selectS) {
         this.curViewPort.selectS = start;
       }
-      if (end > this.selectE) {
+      if (end > this.curViewPort.selectE) {
         this.curViewPort.selectE = end;
       }
     };
@@ -584,14 +588,13 @@ angular.module('emuwebApp')
      * @param segment
      */
     sServObj.setcurClickSegment = function (segment) {
-        if(segment !== null && segment !== undefined) {
-            sServObj.curClickSegments = [];
-            sServObj.curClickSegments.push(segment);
-            sServObj.selectBoundry();
-        }
-        else {
-            sServObj.curClickSegments = [];        
-        }
+      if (segment !== null && segment !== undefined) {
+        sServObj.curClickSegments = [];
+        sServObj.curClickSegments.push(segment);
+        sServObj.selectBoundry();
+      } else {
+        sServObj.curClickSegments = [];
+      }
     };
 
 
@@ -691,19 +694,18 @@ angular.module('emuwebApp')
     sServObj.getcurClickSegments = function () {
       return this.curClickSegments;
     };
-    
+
 
     /**
      * gets the first ! current (click) Segment
      */
     sServObj.getfirstClickSegment = function () {
       if (sServObj.curClickSegments.length > 0) {
-          return sServObj.curClickSegments[0];
-      } 
+        return sServObj.curClickSegments[0];
+      }
     };
-    
-    
-    
+
+
 
     /**
      *
@@ -811,7 +813,6 @@ angular.module('emuwebApp')
      * @param sSample end sample of view
      */
     sServObj.setViewPort = function (sSample, eSample) {
-
       var oldStart = this.curViewPort.sS;
       var oldEnd = this.curViewPort.eS;
       if (sSample !== undefined) {
@@ -937,9 +938,59 @@ angular.module('emuwebApp')
 
 
     /**
+     * sets all the curLevelAttrDefs array
+     * to hold the default attr. definitions
+     * which are the same as the level names
+     *
+     * @param levelDefs level definitions from the DBconfig
+     */
+    sServObj.setCurLevelAttrDefs = function (levelDefs) {
+      angular.forEach(levelDefs, function (ld) {
+        curLevelAttrDefs.push({
+          'levelName': ld.name,
+          'curAttrDefName': ld.name
+        });
+      });
+    };
+
+    /**
+     * set the current attribute definition name of the
+     * given levelName
+     *
+     * @param levelName name of level
+     * @param newAttrDefName
+     */
+    sServObj.setCurAttrDef = function (levelName, newAttrDefName) {
+      angular.forEach(curLevelAttrDefs, function (ad) {
+        if (ad.levelName === levelName) {
+          ad.curAttrDefName = newAttrDefName;
+        }
+      });
+    };
+
+    /**
+     * get the current attribute definition name of the
+     * given levelName
+     *
+     * @param levelName name of level
+     * @returns attrDefName
+     */
+    sServObj.getCurAttrDef = function (levelName) {
+      var curAttrDef;
+      angular.forEach(curLevelAttrDefs, function (ad) {
+        if (ad.levelName === levelName) {
+          curAttrDef = ad.curAttrDefName;
+        }
+      });
+      return curAttrDef;
+    };
+
+
+
+    /**
      *
      */
-    sServObj.resetToInitState = function (shiftRight) {
+    sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
 
