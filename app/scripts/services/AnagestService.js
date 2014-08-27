@@ -77,59 +77,59 @@ angular.module('emuwebApp')
 				gdat[0] = on20;
 
 				// min vel between max vel 1 and max constriction
-				var minVelBetwMaxVel1maxConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0]), 'min');
+				var minVelBetwMaxVel1maxConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0] + 1), 'min');
 
-				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0] + 1;
+				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0]
 
 				// nucleus onset
 				$log.info('Looking for nucleus onset');
-				ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[0], minp), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
+				ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
 					var off20 = resp;
-					ndat[0] = off20 + vdat[0] - 1;
+					ndat[0] = off20 + vdat[0];
 
 					// max vel after max constriction
 					var maxVelAfterMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0]), 'max'); // max vel before max constriction
-					vdat[1] = maxVelAfterMaxConstr.idx + cdat[0] - 1;
+					vdat[1] = maxVelAfterMaxConstr.idx + cdat[0];
 
 
 					// minimum between max constriction and max vel after constriction
 					var minBetwMaxConstrMaxVelConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0], vdat[1] + 1), 'min');
 
-					minp = minBetwMaxConstrMaxVelConstr.idx + cdat[0] - 1;
+					minp = minBetwMaxConstrMaxVelConstr.idx + cdat[0];
 
 					// nucleus offset
 					$log.info('Looking for nucleus offset');
-					ArrayHelperService.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
+					ArrayHelperService.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
 						var on20 = resp;
-						ndat[1] = on20 + minp - 1;
+						ndat[1] = on20 + minp;
 
 						// minimum velocity after max vel after constriction
 						var minVelAfterMaxVelAfterConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[1]), 'min');
 
-						minp = minVelAfterMaxVelAfterConstr.idx + vdat[1] - 1;
+						minp = minVelAfterMaxVelAfterConstr.idx + vdat[1];
 						// gesture offset
 
 						$log.info('Looking for gesture offset');
-						ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
+						ArrayHelperService.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
 							var off20 = resp;
-							gdat[1] = off20 + vdat[1] - 1;
+							gdat[1] = off20 + vdat[1];
 							// insert points
-							// console.log(gdat)
+							console.log(gdat)
 							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0]);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1]);
-							// console.log(vdat);
+							console.log(vdat);
 							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0]);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1]);
-							// console.log(ndat);
+							console.log(ndat);
 							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
 							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0]);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1]);
-							// console.log(cdat);
+							console.log(cdat);
 							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel);
 							console.log('Should auto hook up hierarchy');

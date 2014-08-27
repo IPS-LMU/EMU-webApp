@@ -119,6 +119,7 @@ angular.module('emuwebApp')
 				});
 				return defer.promise;
 			} else {
+				defer = $q.defer();
 				var ap = vz[anavv[0]];
 				ap = sServObj.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 				defer.resolve(ap);
