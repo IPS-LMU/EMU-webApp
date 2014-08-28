@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function LevelService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
 		// shared service object
 		var sServObj = {};
 
