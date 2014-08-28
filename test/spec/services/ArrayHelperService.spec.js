@@ -39,36 +39,6 @@ describe('Service: ArrayHelperService', function () {
 	/**
 	 *
 	 */
-	it('should find thresholds in mock array', inject(function (ArrayHelperService, viewState) {
-		var x = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-		var minVal = 13
-		var maxVal = 19
-		var threshold = 0.2
-		var direction = 1
-		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, direction);
-		expect(viewState.round(res, 1)).toEqual(3.2);
-
-		threshold = 0.35
-		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, direction);
-		expect(viewState.round(res, 1)).toEqual(4.1);
-
-		threshold = 0.8;
-		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, direction);
-		expect(viewState.round(res, 1)).toEqual(6.8);
-
-		// change direction
-		threshold = 0.2;
-		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, -1);
-		expect(res.length).toEqual(0);
-
-		var x = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11]
-		var res = ArrayHelperService.interactiveFindThresholds(x, minVal, maxVal, threshold, -1);
-		expect(viewState.round(res, 1)).toEqual(5.8);
-	}));
-
-	/**
-	 *
-	 */
 	it('should multiply each element of array with value', inject(function (ArrayHelperService) {
 		var mockArr = [3, 2, 1, 1, -1, -2, -3, -4];
 

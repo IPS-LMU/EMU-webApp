@@ -1198,7 +1198,6 @@ angular.module('emuwebApp')
 			return res;
 		};
 
-		/////////////////////// handle hierarchy links /////////////////////
 		
 		/**
 		 * get all labels (curAttr def applies) of a level and
@@ -1221,23 +1220,19 @@ angular.module('emuwebApp')
 		}
 
 
+		/////////////////////// handle hierarchy links /////////////////////
 		/**
 		 * adds links to sServObj.data.links 
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':parentID, 'toID':childId})
 		 */
 		sServObj.addLinkToParent = function (parentId, childIds) {
-			console.log(parentId);
-			console.log(childIds);
-			console.log(sServObj.data.links);
 			angular.forEach(childIds, function (chId) {
-				console.log(chId);
 				sServObj.data.links.push({
 					'fromID': parentId,
 					'toID': chId
 				});
 			});
-			console.log(sServObj.data.links);
 		};
 
 
@@ -1246,6 +1241,7 @@ angular.module('emuwebApp')
 		 * that match the form {'fromID':parentID, 'toID':childId}
 		 */
 		sServObj.inverseAddLinkToParent = function (parentId, childIds) {
+			alert('WROOOOOONG!!!!!!!!!')
 			angular.forEach(childIds, function (chId) {
 				console.log(chId);
 				sServObj.data.links.push({
