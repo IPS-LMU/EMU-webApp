@@ -127,30 +127,30 @@ angular.module('emuwebApp')
 							var off20 = resp;
 							gdat[1] = off20 + vdat[1];
 							// insert points
-							var insPoint;
+							// var insPoint;
 							var curLabel;
 
 							// console.log(gdat)
 							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
+							var gdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[0],
-								'id': insPoint.id,
+								'id': gdat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
+							var gdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[1],
-								'id': insPoint.id,
+								'id': gdat1insPoint.id,
 								'pointName': curLabel
 							});
 
@@ -158,23 +158,23 @@ angular.module('emuwebApp')
 							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
+							var vdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[0],
-								'id': insPoint.id,
+								'id': vdat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
+							var vdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[1],
-								'id': insPoint.id,
+								'id': vdat1insPoint.id,
 								'pointName': curLabel
 							});
 
@@ -182,42 +182,59 @@ angular.module('emuwebApp')
 							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
 							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
+							var ndat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[0],
-								'id': insPoint.id,
+								'id': ndat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
+							var ndat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[1],
-								'id': insPoint.id,
+								'id': ndat1insPoint.id,
 								'pointName': curLabel
 							});
 
 							// console.log(cdat);
 							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
-							insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
+							var cdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
 								'action': 'insertPoint',
 								'name': viewState.getcurClickLevelName(),
 								'start': cdat[0],
-								'id': insPoint.id,
+								'id': cdat0insPoint.id,
 								'pointName': curLabel
 							});
 
-							HistoryService.addCurChangeObjToUndoStack();
-							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', ['hallo', 'dude']).then(function (argument) {
-								alert(argument);
+							var linkLevelName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
+							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
+							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
+							console.log(linkLevelLabels);
+
+
+							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', linkLevelLabels).then(function (itemIdx) {
+								var childIDs = [
+									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
+									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
+								];
+								LevelService.addLinkToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
+								HistoryService.updateCurChangeObj({
+									'type': 'ESPS',
+									'action': 'LINKTOPARENT',
+									'parentID': linkLevelDetails.level.items[itemIdx].id,
+									'childIDs': childIDs
+								});
+
+								HistoryService.addCurChangeObjToUndoStack();
 							});
 
 							defer.resolve();

@@ -1198,6 +1198,63 @@ angular.module('emuwebApp')
 			return res;
 		};
 
+		/////////////////////// handle hierarchy links /////////////////////
+		
+		/**
+		 * get all labels (curAttr def applies) of a level and
+		 * return them as a flat array
+		 * @param levelName
+		 * @return array containing all labels (form==['x','y','z'])
+		 */
+		sServObj.getAllLabelsOfLevel = function (levelDetails) {
+			// console.log(levelDetails);
+			var curAttrDef = viewState.getCurAttrDef(levelDetails.level.name);
+			var labels = [];
+			for (var i = 0; i < levelDetails.level.items.length; i++) {
+				for (var j = 0; j < levelDetails.level.items[i].labels.length; j++) {
+					if (levelDetails.level.items[i].labels[j].name === curAttrDef) {
+						labels.push(levelDetails.level.items[i].labels[j].value);
+					}
+				}
+			}
+			return labels;
+		}
+
+
+		/**
+		 * adds links to sServObj.data.links 
+		 * by pairing all childIds with the parent 
+		 * id (form=={'fromID':parentID, 'toID':childId})
+		 */
+		sServObj.addLinkToParent = function (parentId, childIds) {
+			console.log(parentId);
+			console.log(childIds);
+			console.log(sServObj.data.links);
+			angular.forEach(childIds, function (chId) {
+				console.log(chId);
+				sServObj.data.links.push({
+					'fromID': parentId,
+					'toID': chId
+				});
+			});
+			console.log(sServObj.data.links);
+		};
+
+
+		/**
+		 * removes links from sServObj.data.links 
+		 * that match the form {'fromID':parentID, 'toID':childId}
+		 */
+		sServObj.inverseAddLinkToParent = function (parentId, childIds) {
+			angular.forEach(childIds, function (chId) {
+				console.log(chId);
+				sServObj.data.links.push({
+					'fromID': parentId,
+					'toID': chId
+				});
+			});
+			console.log(sServObj.data.links);
+		};
 
 		return sServObj;
 	});
