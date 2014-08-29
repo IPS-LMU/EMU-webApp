@@ -54,8 +54,9 @@ angular.module('emuwebApp')
 			var ndat = [NaN, NaN];
 			var cdat = [NaN, NaN];
 
+
 			// easiest way to handle non-tangential signals (and has no effect on tangential signals)
-			vCol = ArrayHelperService.convertToAbsValues(vCol);
+			flatVcolVals = ArrayHelperService.convertToAbsValues(flatVcolVals);
 
 			// selected column samples
 			var startTimeSel = viewState.getSelectedStartTime();

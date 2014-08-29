@@ -1220,7 +1220,8 @@ angular.module('emuwebApp')
 		}
 
 
-		/////////////////////// handle hierarchy links /////////////////////
+		/////////////////////// handle hierarchy links (probably better in other service)/////////////////////
+		
 		/**
 		 * adds links to sServObj.data.links 
 		 * by pairing all childIds with the parent 
@@ -1241,15 +1242,15 @@ angular.module('emuwebApp')
 		 * that match the form {'fromID':parentID, 'toID':childId}
 		 */
 		sServObj.inverseAddLinkToParent = function (parentId, childIds) {
-			alert('WROOOOOONG!!!!!!!!!')
-			angular.forEach(childIds, function (chId) {
-				console.log(chId);
-				sServObj.data.links.push({
-					'fromID': parentId,
-					'toID': chId
-				});
+
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+
+				if(link.fromID === parentId && childIds.indexOf(link.toID) !==-1){
+					sServObj.data.links.splice(linkIdx);					
+				};
+
 			});
-			console.log(sServObj.data.links);
+			// console.log(sServObj.data.links);
 		};
 
 		return sServObj;

@@ -1040,7 +1040,7 @@ describe('Service: LevelService', function () {
     var childIDs = [1, 2, 3, 4];
     LevelService.addLinkToParent(parentID, childIDs);
     expect(LevelService.data.links.length).toEqual(4);
-    console.log(LevelService.data.links)
+
     expect(LevelService.data.links[0].fromID).toEqual(1234);
     expect(LevelService.data.links[0].toID).toEqual(1);
   }));
@@ -1049,10 +1049,15 @@ describe('Service: LevelService', function () {
    *
    */
   it('should remove links to parent', inject(function (LevelService) {
-    // set according data
+    // first add
     LevelService.setData(msajc003_bndl.annotation);
-    // console.log(LevelService.data.links)
-
+    LevelService.data.links = [];
+    var parentID = 1234;
+    var childIDs = [1, 2, 3, 4];
+    LevelService.addLinkToParent(parentID, childIDs);
+    // then remove
+    LevelService.inverseAddLinkToParent(parentID, childIDs);
+    expect(LevelService.data.links.length).toEqual(0);
   }));
 
 });
