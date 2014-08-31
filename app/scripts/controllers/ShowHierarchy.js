@@ -3,6 +3,7 @@
 angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, LevelService, HierarchyService) {
 		// Scope data
+		// FIXME Do I still use 'selected'?
 		$scope.paths = { possible: [], selected: [] };
 
 		$scope.cancel = function () {

@@ -191,8 +191,20 @@ angular.module('emuwebApp')
 
 		/**
 		 * @todo documentation
+		 * for the time being: this function is no fun to read because it is based on a d3 example and contains a lot of sub-functions.
+		 * you'd better wait until I have polished it to a certain degree.
 		 */
 		sServObj.drawHierarchy = function () {
+			// Make sure that any private properties that have been added during a previous call of this function are removed
+			for (var x = 0; x < LevelService.getData().levels.length; ++x) {
+				for (var y = 0; y < LevelService.getData().levels[x].items.length; ++y) {
+					delete LevelService.getData().levels[x].items[y]._visited;
+					delete LevelService.getData().levels[x].items[y]._parents;
+					delete LevelService.getData().levels[x].items[y]._weight;
+				}
+			}
+
+
 			// Calculate total nodes, max label length
 			var totalNodes = 0;
 			var maxLabelLength = 0;
@@ -351,7 +363,7 @@ angular.module('emuwebApp')
 
 
 			// Define the drag listeners for drag/drop behaviour of nodes.
-			var dragListener = d3.behavior.drag()
+			/*var dragListener = d3.behavior.drag()
 				.on("dragstart", function(d) {
 					if (d == root) {
 						return;
@@ -427,7 +439,7 @@ angular.module('emuwebApp')
 						endDrag();
 					}
 				});
-
+/*
 			function endDrag() {
 				selectedNode = null;
 				d3.selectAll('.ghostCircle').attr('class', 'ghostCircle');
@@ -495,7 +507,7 @@ angular.module('emuwebApp')
 				link.attr("d", d3.svg.diagonal());
 
 				link.exit().remove();
-			};
+			};*/
 
 			// Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
@@ -588,7 +600,7 @@ angular.module('emuwebApp')
 
 				// Enter any new nodes at the parent's previous position.
 				var nodeEnter = node.enter().append("g")
-					.call(dragListener)
+					//.call(dragListener)
 					.attr("class", "node")
 					.attr("transform", function(d) {
 						return "translate(" + source.y0 + "," + source.x0 + ")";
@@ -734,7 +746,10 @@ angular.module('emuwebApp')
 			var svgGroup = baseSvg.append("g");
 
 			// Define the root
-			root = LevelService.getData().levels[0].items[0];
+			// I presume that the root level of the currently selected path only has one item,
+			// which will be defined as the hierarchy's root item
+			root = LevelService.getLevelDetails(sServObj.selectedPath[sServObj.selectedPath.length-1]).level.items[0];
+			//root = LevelService.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
 
