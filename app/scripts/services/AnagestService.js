@@ -330,7 +330,7 @@ angular.module('emuwebApp')
 			} else if (anavv.length === 0) {
 				defer = $q.defer();
 				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!').then(function () {
-					defer.reject();
+					defer.reject('Could not find any values that step over the threshold!!');
 				});
 				return defer.promise;
 			} else {
