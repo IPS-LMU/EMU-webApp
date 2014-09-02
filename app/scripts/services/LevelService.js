@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LevelService', function LevelService(ConfigProviderService, Soundhandlerservice, viewState) {
+	.service('LevelService', function LevelService($q, ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
 		// shared service object
 		var sServObj = {};
 
@@ -9,6 +9,7 @@ angular.module('emuwebApp')
 		sServObj.maxElementID = 0; // max currently loaded level data Id
 		sServObj.lasteditArea = null; // holding current edit area
 		sServObj.lasteditAreaElem = null; // holding current edit area element
+
 
 		/**
 		 * search for the according label field in labels
@@ -1197,6 +1198,60 @@ angular.module('emuwebApp')
 			return res;
 		};
 
+		
+		/**
+		 * get all labels (curAttr def applies) of a level and
+		 * return them as a flat array
+		 * @param levelName
+		 * @return array containing all labels (form==['x','y','z'])
+		 */
+		sServObj.getAllLabelsOfLevel = function (levelDetails) {
+			// console.log(levelDetails);
+			var curAttrDef = viewState.getCurAttrDef(levelDetails.level.name);
+			var labels = [];
+			for (var i = 0; i < levelDetails.level.items.length; i++) {
+				for (var j = 0; j < levelDetails.level.items[i].labels.length; j++) {
+					if (levelDetails.level.items[i].labels[j].name === curAttrDef) {
+						labels.push(levelDetails.level.items[i].labels[j].value);
+					}
+				}
+			}
+			return labels;
+		}
+
+
+		/////////////////////// handle hierarchy links (probably better in other service)/////////////////////
+		
+		/**
+		 * adds links to sServObj.data.links 
+		 * by pairing all childIds with the parent 
+		 * id (form=={'fromID':parentID, 'toID':childId})
+		 */
+		sServObj.addLinkToParent = function (parentId, childIds) {
+			angular.forEach(childIds, function (chId) {
+				sServObj.data.links.push({
+					'fromID': parentId,
+					'toID': chId
+				});
+			});
+		};
+
+
+		/**
+		 * removes links from sServObj.data.links 
+		 * that match the form {'fromID':parentID, 'toID':childId}
+		 */
+		sServObj.inverseAddLinkToParent = function (parentId, childIds) {
+
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+
+				if(link.fromID === parentId && childIds.indexOf(link.toID) !==-1){
+					sServObj.data.links.splice(linkIdx);					
+				};
+
+			});
+			// console.log(sServObj.data.links);
+		};
 
 		return sServObj;
 	});

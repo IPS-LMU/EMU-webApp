@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h3>Please select a threshold</h3>
+</div>
+<div class="modal-body">
+	<b>{{passedInOpts.description}}</b><br />&nbsp;<br />
+	<p>find threshold options are: 
+		<ul class="emuwebapp-modalUl">
+			<li>minimum value: {{passedInOpts.minVal}}</li>
+			<li>maximum value: {{passedInOpts.maxVal}}</li>
+			<li>threshold value: {{passedInOpts.threshold}}</li>
+		</ul>
+	</p>
+	<b>Please select one of the following options:</b>
+	<ul class="emuwebapp-modalUl">
+		<li ng-repeat="(key, curOpt) in passedInOpts.options">
+			<div class="emuwebapp-card" ng-click="select($index)">
+				<div class="row">
+					<div class="col-md-6">
+						<line-chart data='myData' threshold='curOpt.thresholdIdx'></line-chart>
+					</div>
+					<div class="col-md-6">
+						<ul class="emuwebapp-modalUl">
+							<li>Threshold index: {{curOpt.thresholdIdx}}</li> 
+							<li>Threshold value: {{curOpt.thresholdValue}}</li> 
+						</ul>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<div class="modal-footer">
+	<br />&nbsp;<br />
+	<!-- <button ng-click="select();" id="modal-confirm" class="emuwebapp-mini-btn-dialog">Select</button> -->
+</div>
