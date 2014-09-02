@@ -1,6 +1,7 @@
 # EMU-webApp
 
 [![Build Status](https://travis-ci.org/IPS-LMU/EMU-webApp.png)](https://travis-ci.org/IPS-LMU/EMU-webApp)
+[![Coverage Status](https://img.shields.io/coveralls/IPS-LMU/EMU-webApp.svg)](https://coveralls.io/r/IPS-LMU/EMU-webApp)
 
 The EMU-webApp is an online and offline web application for labeling, visualizing and correcting speech and derived speech data. To get an idea of what it looks like please visit [this URL](http://ips-lmu.github.io/EMU-webApp/). General information about the next iteration of the EMU speech database management system can be found [here](http://ips-lmu.github.io/EMU.html).
 
