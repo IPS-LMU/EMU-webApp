@@ -18,11 +18,13 @@ describe('Service: AnagestService', function () {
 		$rootScope = _$rootScope_;
 
 		// mock open function 
-		mockDialogService.open = function () {
+		mockDialogService.open = function (p1, p2, p3) {
 			var deferred = $q.defer();
 			deferred.resolve('called open on dialogService');
 			return deferred.promise;
 		};
+
+		// spyOn(dialogService, 'open');
 	}));
 
 	/**
@@ -63,11 +65,20 @@ describe('Service: AnagestService', function () {
 
 		// new values
 		x = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11];
-
 		AnagestService.interactiveFindThresholds(x, minVal, maxVal, threshold, -1).then(function (res) {
 			expect(viewState.round(res, 1)).toEqual(5.8);
 		});
 		$rootScope.$apply();
+
+		// two thresholds
+		// new values
+		x = [20, 19, 18, 17, 16, 15, 14, 13, 20, 19, 18, 17, 16, 15, 14, 13];
+		AnagestService.interactiveFindThresholds(x, minVal, maxVal, threshold, -1).then(function (res) {
+			expect(res).toEqual(NaN);
+		});
+		$rootScope.$apply();
+
+		// TODO: SHOULD spy on mock open function to see if it is called with the correct values 
 
 	}));
 
