@@ -97,7 +97,6 @@ angular.module('emuwebApp')
 			if (ConfigProviderService.embeddedVals.audioGetUrl) {
 				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 					viewState.showDropZone = false;
-
 					// set bundle name
 					var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
 					$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length);
@@ -122,6 +121,7 @@ angular.module('emuwebApp')
 								ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
 							}
 							ConfigProviderService.curDbConfig = resp.data;
+
 							// validate DBconfigFileSchema!
 							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
 
@@ -146,9 +146,22 @@ angular.module('emuwebApp')
 											LevelService.setData(annot);
 
 											var lNames = [];
+											var levelDefs = [];
 											annot.levels.forEach(function (l) {
 												lNames.push(l.name);
+												levelDefs.push({
+													'name': l.name,
+													'type': l.type,
+													'attributeDefinitions': {
+														'name': l.name,
+														'type': 'string'
+													}
+												});
 											});
+
+											// set level defs
+											ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+											viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 
 											ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
 											viewState.somethingInProgressTxt = 'Done!';
