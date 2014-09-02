@@ -559,6 +559,7 @@ angular.module('emuwebApp')
      */
     sServObj.selectSegmentsInSelection = function (levelData) {
       sServObj.curClickSegments = [];
+      //SIC should use getItemsInSelection -> then set min max
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
       var min = Infinity;
@@ -578,8 +579,38 @@ angular.module('emuwebApp')
           });
         }
       });
+
       sServObj.curViewPort.selectS = min;
       sServObj.curViewPort.selectE = max;
+    };
+
+    /**
+     * get all items of current level which are inside the selected viewport
+     */
+    sServObj.getItemsInSelection = function (levelData) {
+      var itemsInRange = [];
+      var rangeStart = sServObj.curViewPort.selectS;
+      var rangeEnd = sServObj.curViewPort.selectE;
+
+      angular.forEach(levelData, function (t) {
+        if (t.name === sServObj.getcurClickLevelName()) {
+          angular.forEach(t.items, function (item) {
+            //SEGMENTS
+            if (item.sampleStart >= rangeStart && (item.sampleStart + item.sampleDur) <= rangeEnd) {
+              itemsInRange.push(item);
+            }
+
+            //EVENTS
+            if (item.samplePoint >= rangeStart && item.samplePoint <= rangeEnd) {
+              itemsInRange.push(item);
+            }
+          });
+        }
+      });
+
+      return itemsInRange;
+
+
     };
 
 
@@ -773,7 +804,7 @@ angular.module('emuwebApp')
         k += '.';
       }
       k += e.toString().substring(1);
-      return k.substring(0, k.indexOf('.') + n + 1);
+      return parseFloat(k.substring(0, k.indexOf('.') + n + 1));
     };
 
     /**

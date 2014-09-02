@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.open = function (templatefile, argCtrl, txt) {
+		sServObj.open = function (templatefile, argCtrl, passedIn) {
 			viewState.setState('modalShowing');
 			modalInstance = $modal.open({
 				backdrop: 'static',
@@ -19,7 +19,10 @@ angular.module('emuwebApp')
 				controller: argCtrl,
 				resolve: {
 					passedInTxt: function () {
-						return txt;
+						return passedIn;
+					},
+					passedInOpts: function () {
+						return passedIn;
 					}
 				}
 			});

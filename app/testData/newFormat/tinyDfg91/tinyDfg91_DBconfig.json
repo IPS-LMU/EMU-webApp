@@ -1,0 +1,63 @@
+{
+	"name": "tinyDfg91",
+	"UUID": "3412D5E3-E0EA-4E81-9F1C-E0A864D0D403",
+	"mediafileExtension": "wav",
+	"ssffTracks": [{
+		"name": "tt_posz",
+		"columnName": "tt_posz",
+		"fileExtension": "t_tip"
+	}, {
+		"name": "t_tipTV",
+		"columnName": "t_tipTV",
+		"fileExtension": "vel"
+	}],
+	"levelDefinitions": [{
+		"name": "ORT",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "ORT",
+			"type": "string"
+		}]
+	}, {
+		"name": "tongueTipGestures",
+		"type": "EVENT",
+		"attributeDefinitions": [{
+			"name": "tongueTipGestures",
+			"type": "string"
+		}],
+		"anagestConfig": {
+			"verticalPosSsffTrackName": "tt_posz",
+			"velocitySsffTrackName": "t_tipTV",
+			"autoLinkLevelName": "ORT",
+			"multiplicationFactor": 1,
+			"threshold": 0.2,
+			"gestureOnOffsetLabels": ["gon", "goff"],
+			"maxVelocityOnOffsetLabels": ["von", "voff"],
+			"constrictionPlateauBeginEndLabels": ["pon", "poff"],
+			"maxConstrictionLabel": "mon"
+		}
+	}],
+	"linkDefinitions": [],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC", "tt_posz", "t_tipTV"],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": ["ORT", "tongueTipGestures"]
+			},
+			"twoDimCanvases": {
+				"order": []
+			}
+		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
+		"activeButtons": {
+			"saveBundle": true
+		}
+	}
+}

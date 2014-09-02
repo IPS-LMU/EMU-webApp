@@ -1012,5 +1012,52 @@ describe('Service: LevelService', function () {
   // TODO openEditArea && deleteEditArea && createSelection && createEditArea 
   // --> maybe move to directive in order to make it testable   
 
+  /**
+   *
+   */
+  it('should get all labels of level', inject(function (LevelService, viewState) {
+    // set according data
+    LevelService.setData(msajc003_bndl.annotation);
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    var levelDetails = LevelService.getLevelDetails('Phonetic');
+
+    // console.log(levelDetails.level);
+    var labels = LevelService.getAllLabelsOfLevel(levelDetails);
+    expect(labels.length).toEqual(34);
+    expect(labels[0]).toEqual('V');
+    expect(labels[8]).toEqual('f');
+    expect(labels[labels.length - 1]).toEqual('l');
+  }));
+
+  /**
+   *
+   */
+  it('should add links to parent', inject(function (LevelService) {
+    // set according data
+    LevelService.setData(msajc003_bndl.annotation);
+    LevelService.data.links = [];
+    var parentID = 1234;
+    var childIDs = [1, 2, 3, 4];
+    LevelService.addLinkToParent(parentID, childIDs);
+    expect(LevelService.data.links.length).toEqual(4);
+
+    expect(LevelService.data.links[0].fromID).toEqual(1234);
+    expect(LevelService.data.links[0].toID).toEqual(1);
+  }));
+
+  /**
+   *
+   */
+  it('should remove links to parent', inject(function (LevelService) {
+    // first add
+    LevelService.setData(msajc003_bndl.annotation);
+    LevelService.data.links = [];
+    var parentID = 1234;
+    var childIDs = [1, 2, 3, 4];
+    LevelService.addLinkToParent(parentID, childIDs);
+    // then remove
+    LevelService.inverseAddLinkToParent(parentID, childIDs);
+    expect(LevelService.data.links.length).toEqual(0);
+  }));
 
 });
