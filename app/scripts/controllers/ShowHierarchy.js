@@ -3,34 +3,57 @@
 angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, LevelService, HierarchyService) {
 		// Scope data
-		// FIXME Do I still use 'selected'?
-		$scope.paths = { possible: [], selected: [] };
 
-		$scope.cancel = function () {
-			dialogService.close();
+		$scope.paths = {
+			possible: [],
+			possibleAsStr: [],
+			selected: ''
 		};
-		
+
+
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
-		angular.forEach (ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
+		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
 			if (l.type !== 'ITEM') {
 				$scope.paths.possible = $scope.paths.possible.concat(HierarchyService.findPaths(l.name));
 			}
 		});
-		
-		
-		//
-		// FIXME All of the following is hacky and must be angularised but I have yet to find out how
-		//
 
-		// FIXME Why do I need to pass a value from $scope to this function?
+		// convert array paths to strings
+		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
+			if (arrIdx === 0) {
+				// select first possible path on load
+				$scope.paths.selected = arr.join('<-');
+			}
+			$scope.paths.possibleAsStr.push(arr.join('<-'));
+		});
+
+		//////////////
+		// watches
+
+		// watch selected path to redraw on startup and change of value
+		$scope.$watch('paths.selected', function (val) {
+			if (val !== undefined) {
+				$scope.redraw();
+			}
+
+		}, true);
+
 		//
-		// When calling redraw() without arguments from ng-change, I cannot access the current value of
-		// $scope.selectedPath (which is changed by an HTML select.
-		//
-		// I can seemingly only work around this by writing ng-change="redraw(selectedPath);" in the view
-		//
+		//////////////
+
+		/**
+		 * redraw on selected path change (is called if $scope.paths.selected is changed)
+		 */
 		$scope.redraw = function () {
-			HierarchyService.setPath($scope.paths.selected);
+			var selIdx = $scope.paths.possibleAsStr.indexOf($scope.paths.selected);
+			HierarchyService.setPath($scope.paths.possible[selIdx]);
 			HierarchyService.drawHierarchy();
+		};
+
+		/**
+		 * cancel dialog i.e. close
+		 */
+		$scope.cancel = function () {
+			dialogService.close();
 		};
 	});

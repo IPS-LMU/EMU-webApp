@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 			//angular.copy(p, sServObj.selectedPath);
 			sServObj.selectedPath = p;
 		};
-		
+
 		/**
 		 * Find all parent levels of a given level by iterating through the
 		 * current database's linkDefinitions.
@@ -23,7 +23,7 @@ angular.module('emuwebApp')
 			var parents = [];
 			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
 				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
-					parents.push (ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
+					parents.push(ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
 				}
 			}
 			return parents;
@@ -37,11 +37,11 @@ angular.module('emuwebApp')
 			var i, ii, iii;
 
 			// Iterate through levels bottom-up
-			for (i=0; i<sServObj.selectedPath.length; ++i) {
+			for (i = 0; i < sServObj.selectedPath.length; ++i) {
 				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
 				level._weight = 0;
 
-				for (ii=0; ii<level.items.length; ++ii) {
+				for (ii = 0; ii < level.items.length; ++ii) {
 					var itemWeight = level.items[ii]._weight;
 					if (itemWeight === 0) {
 						itemWeight = 1;
@@ -49,30 +49,30 @@ angular.module('emuwebApp')
 					}
 
 					if (typeof level.items[ii]._parents !== 'undefined') {
-						for (iii=0; iii<level.items[ii]._parents.length; ++iii) {
+						for (iii = 0; iii < level.items[ii]._parents.length; ++iii) {
 							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
 						}
 					}
-					console.debug ('Increasing weight of level' , level.name, ':', level._weight, '+',itemWeight);
+					console.debug('Increasing weight of level', level.name, ':', level._weight, '+', itemWeight);
 					level._weight += itemWeight;
 				}
 			}
 
 
 			// Iterate through levels top-down
-			for (i=sServObj.selectedPath.length-1; i>=0; --i) {
+			for (i = sServObj.selectedPath.length - 1; i >= 0; --i) {
 				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
 				var itemSize = 20;
-				
+
 
 				console.debug(level.name, level._weight);
-				var currentX = -itemSize*level._weight/2;
+				var currentX = -itemSize * level._weight / 2;
 
-				for (ii=0; ii<level.items.length; ++ii) {
+				for (ii = 0; ii < level.items.length; ++ii) {
 					if (typeof level.items[ii]._parents === 'undefined') {
 						level.items[ii].x = 0;
 					} else {
-						level.items[ii].x = currentX + itemSize * level.items[ii]._weight/2
+						level.items[ii].x = currentX + itemSize * level.items[ii]._weight / 2
 						//level.items[ii].x = currentX;
 						currentX += itemSize * level.items[ii]._weight;
 
@@ -103,9 +103,9 @@ angular.module('emuwebApp')
 			} else {
 				path = path.concat([startLevel]);
 			}
-			
+
 			// Find all parents of startLevel
-			var parents = this.findParentLevels (startLevel);
+			var parents = this.findParentLevels(startLevel);
 
 			// If we have no more parents, we're at the end of the
 			// path and thus returning it
@@ -116,7 +116,7 @@ angular.module('emuwebApp')
 			// If, on the other hand, there are parents, we start
 			// recursion to find all paths
 			var paths = [];
-			for (var i = 0; i<parents.length; ++i) {
+			for (var i = 0; i < parents.length; ++i) {
 				paths = paths.concat(sServObj.findPaths(parents[i], path));
 			}
 
@@ -126,8 +126,8 @@ angular.module('emuwebApp')
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
-			for (var i=0; i < LevelService.getData().levels.length; ++i ) {
-				for (var ii=0; ii < LevelService.getData().levels[i].items.length; ++ii) {
+			for (var i = 0; i < LevelService.getData().levels.length; ++i) {
+				for (var ii = 0; ii < LevelService.getData().levels[i].items.length; ++ii) {
 					if (LevelService.getData().levels[i].items[ii].id === nodeID) {
 						levelName = LevelService.getData().levels[i].name;
 						break;
@@ -150,7 +150,7 @@ angular.module('emuwebApp')
 
 			// Find the level that d is a part of
 			// Return null if that fails (which shouldn't happen at all)
-			var currentLevel = sServObj.getLevelName (d.id);
+			var currentLevel = sServObj.getLevelName(d.id);
 			if (currentLevel === null) {
 				console.debug('Likely a bug: failed to find a node\'s level', d)
 				return null;
@@ -158,8 +158,8 @@ angular.module('emuwebApp')
 
 			// Find the child level
 			var childLevel = null;
-			for (var i=0; i < sServObj.selectedPath.length-1; ++i) {
-				if (sServObj.selectedPath[i+1] === currentLevel) {
+			for (var i = 0; i < sServObj.selectedPath.length - 1; ++i) {
+				if (sServObj.selectedPath[i + 1] === currentLevel) {
 					childLevel = sServObj.selectedPath[i];
 					break;
 				}
@@ -169,15 +169,15 @@ angular.module('emuwebApp')
 			}
 
 			// Iterate over links to find children
-			for (var li=0; li < LevelService.getData().links.length; ++li) {
+			for (var li = 0; li < LevelService.getData().links.length; ++li) {
 				if (LevelService.getData().links[li].fromID === d.id) {
 					// Iterate over levels to find the object corresponding to d.id
-					for (var l=0; l < LevelService.getData().levels.length; ++l) {
+					for (var l = 0; l < LevelService.getData().levels.length; ++l) {
 						if (LevelService.getData().levels[l].name !== childLevel) {
 							continue;
 						}
 
-						for (var it=0; it < LevelService.getData().levels[l].items.length; ++it) {
+						for (var it = 0; it < LevelService.getData().levels[l].items.length; ++it) {
 							if (LevelService.getData().levels[l].items[it].id === LevelService.getData().links[li].toID) {
 								children.push(LevelService.getData().levels[l].items[it]);
 							}
@@ -233,7 +233,7 @@ angular.module('emuwebApp')
 
 			// define a d3 diagonal projection for use by the node paths later on.
 			var diagonal = d3.svg.diagonal()
-				.projection(function(d) {
+				.projection(function (d) {
 					return [d.y, d.x];
 				});
 
@@ -295,7 +295,7 @@ angular.module('emuwebApp')
 					d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
 					zoomListener.scale(zoomListener.scale());
 					zoomListener.translate([translateX, translateY]);
-					panTimer = setTimeout(function() {
+					panTimer = setTimeout(function () {
 						pan(domNode, speed, direction);
 					}, 50);
 				}
@@ -317,7 +317,7 @@ angular.module('emuwebApp')
 				d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
 				d3.select(domNode).attr('class', 'node activeDrag');
 
-				svgGroup.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
+				svgGroup.selectAll("g.node").sort(function (a, b) { // select the parent and sort the path's
 					if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
 					else return -1; // a is the hovered element, bring "a" to the front
 				});
@@ -326,14 +326,14 @@ angular.module('emuwebApp')
 					// remove link paths
 					links = tree.links(nodes);
 					nodePaths = svgGroup.selectAll("path.link")
-						.data(links, function(d) {
+						.data(links, function (d) {
 							return d.target.id;
 						}).remove();
 					// remove child nodes
 					nodesExit = svgGroup.selectAll("g.node")
-						.data(nodes, function(d) {
+						.data(nodes, function (d) {
 							return d.id;
-						}).filter(function(d, i) {
+						}).filter(function (d, i) {
 							if (d.id == draggingNode.id) {
 								return false;
 							}
@@ -343,7 +343,7 @@ angular.module('emuwebApp')
 
 				// remove parent link
 				parentLink = tree.links(tree.nodes(draggingNode.parent));
-				svgGroup.selectAll('path.link').filter(function(d, i) {
+				svgGroup.selectAll('path.link').filter(function (d, i) {
 					if (d.target.id == draggingNode.id) {
 						return true;
 					}
@@ -556,7 +556,7 @@ angular.module('emuwebApp')
 				// sServObj prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
 				// sServObj makes the layout more consistent.
 				var levelWidth = [1];
-				var childCount = function(level, n) {
+				var childCount = function (level, n) {
 
 					//if (n.children && n.children.length > 0) {
 					var children = tree.children()(n);
@@ -564,7 +564,7 @@ angular.module('emuwebApp')
 						if (levelWidth.length <= level + 1) levelWidth.push(0);
 
 						levelWidth[level + 1] += children.length;
-						children.forEach(function(d) {
+						children.forEach(function (d) {
 							childCount(level + 1, d);
 						});
 					}
@@ -577,16 +577,16 @@ angular.module('emuwebApp')
 				// Compute the new tree layout.
 				var nodes = tree.nodes(root).reverse(),
 					links = tree.links(nodes);
-				
+
 				sServObj.calculateWeightsBottomUp();
 
 				// Set widths between levels based on maxLabelLength.
-				nodes.forEach(function(d) {
-					d.y = (d.depth *(maxLabelLength * 10)); //maxLabelLength * 10px
+				nodes.forEach(function (d) {
+					d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
 					// alternatively to keep a fixed scale one can set a fixed depth per level
 					// Normalize for fixed-depth by commenting out below line
 					// d.y = (d.depth * 500); //500px per level.
-					
+
 					//console.debug(d);
 					//d.x = 20* d._weight / d._levelWeight;
 					//level.items[ii].x = 20*  level.items[ii]._weight / level._weight;
@@ -594,7 +594,7 @@ angular.module('emuwebApp')
 
 				// Update the nodes…
 				var node = svgGroup.selectAll("g.node")
-					.data(nodes, function(d) {
+					.data(nodes, function (d) {
 						return d.id || (d.id = ++i);
 					});
 
@@ -602,7 +602,7 @@ angular.module('emuwebApp')
 				var nodeEnter = node.enter().append("g")
 					//.call(dragListener)
 					.attr("class", "node")
-					.attr("transform", function(d) {
+					.attr("transform", function (d) {
 						return "translate(" + source.y0 + "," + source.x0 + ")";
 					})
 					.on('click', click);
@@ -610,22 +610,22 @@ angular.module('emuwebApp')
 				nodeEnter.append("circle")
 					.attr('class', 'nodeCircle')
 					.attr("r", 0)
-					.style("fill", function(d) {
+					.style("fill", function (d) {
 						return d._children ? "lightsteelblue" : "#fff";
 					});
 
 				nodeEnter.append("text")
-					.attr("x", function(d) {
+					.attr("x", function (d) {
 						return d.children || d._children ? -10 : 10;
 					})
 					.attr("dy", ".35em")
 					.attr('class', 'nodeText')
-					.attr("text-anchor", function(d) {
+					.attr("text-anchor", function (d) {
 						return d.children || d._children ? "end" : "start";
 					})
-					.text(function(d) {
+					.text(function (d) {
 						var text = d.labels[0].value;
-						for (var i=1; i < d.labels.length; ++i) {
+						for (var i = 1; i < d.labels.length; ++i) {
 							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
 						}
 						return text;
@@ -639,24 +639,24 @@ angular.module('emuwebApp')
 					.attr("opacity", 0.2) // change sServObj to zero to hide the target area
 				.style("fill", "red")
 					.attr('pointer-events', 'mouseover')
-					.on("mouseover", function(node) {
+					.on("mouseover", function (node) {
 						overCircle(node);
 					})
-					.on("mouseout", function(node) {
+					.on("mouseout", function (node) {
 						outCircle(node);
 					});
 
 				// Update the text to reflect whether node has children or not.
 				node.select('text')
-					.attr("x", function(d) {
+					.attr("x", function (d) {
 						return d.children || d._children ? -10 : 10;
 					})
-					.attr("text-anchor", function(d) {
+					.attr("text-anchor", function (d) {
 						return d.children || d._children ? "end" : "start";
 					})
-					.text(function(d) {
+					.text(function (d) {
 						var text = d.labels[0].value;
-						for (var i=1; i < d.labels.length; ++i) {
+						for (var i = 1; i < d.labels.length; ++i) {
 							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
 						}
 						return text;
@@ -665,14 +665,14 @@ angular.module('emuwebApp')
 				// Change the circle fill depending on whether it has children and is collapsed
 				node.select("circle.nodeCircle")
 					.attr("r", 4.5)
-					.style("fill", function(d) {
+					.style("fill", function (d) {
 						return d._children ? "lightsteelblue" : "#fff";
 					});
 
 				// Transition nodes to their new position.
 				var nodeUpdate = node.transition()
 					.duration(duration)
-					.attr("transform", function(d) {
+					.attr("transform", function (d) {
 						return "translate(" + d.y + "," + d.x + ")";
 					});
 
@@ -683,7 +683,7 @@ angular.module('emuwebApp')
 				// Transition exiting nodes to the parent's new position.
 				var nodeExit = node.exit().transition()
 					.duration(duration)
-					.attr("transform", function(d) {
+					.attr("transform", function (d) {
 						return "translate(" + source.y + "," + source.x + ")";
 					})
 					.remove();
@@ -696,15 +696,15 @@ angular.module('emuwebApp')
 
 				// Update the links…
 				var link = svgGroup.selectAll("path.link")
-					.data(links, function(d) {
+					.data(links, function (d) {
 						//return d.target.id;
-						return 's'+d.source.id+'t'+d.target.id;
+						return 's' + d.source.id + 't' + d.target.id;
 					});
 
 				// Enter any new links at the parent's previous position.
 				link.enter().insert("path", "g")
 					.attr("class", "link")
-					.attr("d", function(d) {
+					.attr("d", function (d) {
 						var o = {
 							x: source.x0,
 							y: source.y0
@@ -723,7 +723,7 @@ angular.module('emuwebApp')
 				// Transition exiting nodes to the parent's new position.
 				link.exit().transition()
 					.duration(duration)
-					.attr("d", function(d) {
+					.attr("d", function (d) {
 						var o = {
 							x: source.x,
 							y: source.y
@@ -736,7 +736,7 @@ angular.module('emuwebApp')
 					.remove();
 
 				// Stash the old positions for transition.
-				nodes.forEach(function(d) {
+				nodes.forEach(function (d) {
 					d.x0 = d.x;
 					d.y0 = d.y;
 				});
@@ -748,7 +748,7 @@ angular.module('emuwebApp')
 			// Define the root
 			// I presume that the root level of the currently selected path only has one item,
 			// which will be defined as the hierarchy's root item
-			root = LevelService.getLevelDetails(sServObj.selectedPath[sServObj.selectedPath.length-1]).level.items[0];
+			root = LevelService.getLevelDetails(sServObj.selectedPath[sServObj.selectedPath.length - 1]).level.items[0];
 			//root = LevelService.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
