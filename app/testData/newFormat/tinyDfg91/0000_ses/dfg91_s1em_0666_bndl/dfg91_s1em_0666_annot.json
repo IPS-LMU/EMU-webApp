@@ -1,0 +1,46 @@
+{
+	"name": "dfg91_s1em_0666",
+	"annotates": "SES0000/dfg91_s1em_0666_bndl/dfg91_s1em_0666.wav",
+	"sampleRate": 20000,
+	"levels": [{
+		"name": "ORT",
+		"type": "SEGMENT",
+		"items": [{
+			"id": 36,
+			"sampleStart": 15835,
+			"sampleDur": 10000,
+			"labels": [{
+				"name": "ORT",
+				"value": "bla"
+			}]
+		}, {
+			"id": 37,
+			"sampleStart": 25835,
+			"sampleDur": 10000,
+			"labels": [{
+				"name": "ORT",
+				"value": "bli"
+			}]
+		}, {
+			"id": 38,
+			"sampleStart": 35835,
+			"sampleDur": 10000,
+			"labels": [{
+				"name": "ORT",
+				"value": "blup"
+			}]
+		}]
+	}, {
+		"name": "tongueTipGestures",
+		"type": "EVENT",
+		"items": [{
+			"id": 147,
+			"samplePoint": 150000,
+			"labels": [{
+				"name": "tongueTipGestures",
+				"value": "dude!!!!!!!!!"
+			}]
+		}]
+	}],
+	"links": []
+}
