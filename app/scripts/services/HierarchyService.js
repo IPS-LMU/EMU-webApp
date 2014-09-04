@@ -7,6 +7,9 @@ angular.module('emuwebApp')
 
 		sServObj.selectedPath = null;
 
+		// private service variable to hold svgGroup 
+		var svgGroup;
+
 		sServObj.setPath = function (p) {
 			//angular.copy(p, sServObj.selectedPath);
 			sServObj.selectedPath = p;
@@ -124,9 +127,9 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		* SIC this should probably be moved to the LevelService as it might 
-		* be useful for other parts of the webApp
-		*/
+		 * SIC this should probably be moved to the LevelService as it might
+		 * be useful for other parts of the webApp
+		 */
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
@@ -747,7 +750,7 @@ angular.module('emuwebApp')
 			}
 
 			// Append a group which holds all nodes and which the zoom Listener can act upon.
-			var svgGroup = baseSvg.append("g");
+			svgGroup = baseSvg.append("g");
 
 			// Define the root
 			// I presume that the root level of the currently selected path only has one item,
@@ -761,6 +764,14 @@ angular.module('emuwebApp')
 			update(root);
 			centerNode(root);
 		};
+
+		/**
+		 *
+		 */
+		 sServObj.rotateBy90 = function () {
+		 	svgGroup.attr("transform", "rotate(90)");
+		 }
+
 
 		return sServObj;
 	});

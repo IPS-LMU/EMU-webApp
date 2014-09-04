@@ -51,6 +51,14 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * rotate hierarchy
+		 */
+		$scope.rotateHierarchy = function () {
+			HierarchyService.rotateBy90();
+		};
+
+
+		/**
 		 * cancel dialog i.e. close
 		 */
 		$scope.cancel = function () {
