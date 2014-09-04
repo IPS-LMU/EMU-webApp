@@ -678,6 +678,13 @@ angular.module('emuwebApp')
 
 				// Update the text to reflect whether node has children or not.
 				node.select('text')
+					.attr('transform', function (d) {
+						if (rotated) {
+							return 'scale(1, -1)'; // SIC SIC SIC ... not working
+						} else {
+							return 'scale(1, 1)';
+						}
+					})
 					.attr("x", 10)
 					.attr("text-anchor", "start")
 					.text(function (d) {
