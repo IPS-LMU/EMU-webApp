@@ -7,9 +7,60 @@ angular.module('emuwebApp')
 
 		sServObj.selectedPath = null;
 
-		// private service variable to hold svgGroup 
+		////////////////////////////////////////////
+		// private vars and functions
 		var svgGroup;
+		var rotated = false;
 
+		// size of the diagram
+		var viewerWidth = $(document).width();
+		var viewerHeight = $(document).height();
+		var duration = 750;
+
+		//define the zoomListener which calls the zoom function on the "zoom" eventconstrained within the scaleExtents
+		var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+
+		// root node
+		var root;
+
+		/**
+		 * Function to center node when clicked/dropped so node doesn't get lost when
+		 * collapsing/moving with large amount of children.
+		 */
+		function centerNode(source) {
+			var scale = zoomListener.scale();
+			var x = -source.y0;
+			var y = -source.x0;
+			x = x * scale + viewerWidth / 2;
+			y = y * scale + viewerHeight / 2;
+			d3.select('g').transition()
+				.duration(duration)
+				.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+			zoomListener.scale(scale);
+			zoomListener.translate([x, y]);
+		}
+
+		/**
+		 * Define the zoom function for the zoomable tree
+		 */
+		function zoom() {
+			if (rotated) {
+				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")rotate(90)");
+			} else {
+				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+			}
+		}
+
+		//
+		/////////////////////
+
+		/////////////////////
+		// public API
+
+
+		/**
+		 *
+		 */
 		sServObj.setPath = function (p) {
 			//angular.copy(p, sServObj.selectedPath);
 			sServObj.selectedPath = p;
@@ -224,12 +275,6 @@ angular.module('emuwebApp')
 			var panBoundary = 20; // Within 20px from edges will pan when dragging.
 			// Misc. variables
 			var i = 0;
-			var duration = 750;
-			var root;
-
-			// size of the diagram
-			var viewerWidth = $(document).width();
-			var viewerHeight = $(document).height();
 
 			var tree = d3.layout.myLayout()
 				.size([viewerHeight, viewerWidth]);
@@ -308,15 +353,6 @@ angular.module('emuwebApp')
 				}
 			}
 
-			// Define the zoom function for the zoomable tree
-
-			function zoom() {
-				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-			}
-
-
-			// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-			var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
 			function initiateDrag(d, domNode) {
 				draggingNode = d;
@@ -516,20 +552,7 @@ angular.module('emuwebApp')
 				link.exit().remove();
 			};*/
 
-			// Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
-			function centerNode(source) {
-				var scale = zoomListener.scale();
-				var x = -source.y0;
-				var y = -source.x0;
-				x = x * scale + viewerWidth / 2;
-				y = y * scale + viewerHeight / 2;
-				d3.select('g').transition()
-					.duration(duration)
-					.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-				zoomListener.scale(scale);
-				zoomListener.translate([x, y]);
-			}
 
 			// Toggle children function
 
@@ -747,6 +770,11 @@ angular.module('emuwebApp')
 					d.x0 = d.x;
 					d.y0 = d.y;
 				});
+
+				// check for rotation if so rotate
+				if (rotated) {
+					// svgGroup.attr("transform", "rotate(90)");
+				}
 			}
 
 			// Append a group which holds all nodes and which the zoom Listener can act upon.
@@ -769,7 +797,18 @@ angular.module('emuwebApp')
 		 * simple rotate by
 		 */
 		sServObj.rotateBy90 = function () {
-			svgGroup.attr("transform", "rotate(90)");
+			if (!rotated) {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(90)");
+				rotated = true;
+			} else {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(0)");
+				rotated = false;
+			}
+			// centerNode(root);
 		}
 
 
