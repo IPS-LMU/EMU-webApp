@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 		 */
 		function zoom() {
 			if (rotated) {
-				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")rotate(90)");
+				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")scale(-1,1)rotate(90)");
 			} else {
 				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 			}
@@ -678,12 +678,8 @@ angular.module('emuwebApp')
 
 				// Update the text to reflect whether node has children or not.
 				node.select('text')
-					.attr("x", function (d) {
-						return d.children || d._children ? -10 : 10;
-					})
-					.attr("text-anchor", function (d) {
-						return d.children || d._children ? "end" : "start";
-					})
+					.attr("x", 10)
+					.attr("text-anchor", "start")
 					.text(function (d) {
 						var text = d.labels[0].value;
 						for (var i = 1; i < d.labels.length; ++i) {
@@ -800,7 +796,7 @@ angular.module('emuwebApp')
 			if (!rotated) {
 				svgGroup.transition()
 					.duration(duration)
-					.attr("transform", "rotate(90)");
+					.attr("transform", "rotate(90)scale(-1,1)");
 				rotated = true;
 			} else {
 				svgGroup.transition()

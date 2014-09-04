@@ -5,13 +5,16 @@
 <div class="modal-body">
 	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr">
 	</select>
+	
+	<div id="emuwebapp-tree-container"></div>
+
+	<emuhierarchy></emuhierarchy>
+
 	<button class="btn btn-default" ng-click="rotateHierarchy()">
 		<span class="glyphicon glyphicon-repeat"></span> 
 		rotate by 90°
 	</button>
-	
-	<div id="emuwebapp-tree-container"></div>
-	<emuhierarchy></emuhierarchy>
+
 </div>
 
 <div class="modal-footer">
