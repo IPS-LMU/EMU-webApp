@@ -123,6 +123,10 @@ angular.module('emuwebApp')
 			return paths;
 		};
 
+		/**
+		* SIC this should probably be moved to the LevelService as it might 
+		* be useful for other parts of the webApp
+		*/
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
@@ -280,7 +284,7 @@ angular.module('emuwebApp')
 				var speed = panSpeed;
 				if (panTimer) {
 					clearTimeout(panTimer);
-					translateCoords = d3.transform(svgGroup.attr("transform"));
+					translateCoords = d3.transform(svgGroup.attr('transform'));
 					if (direction == 'left' || direction == 'right') {
 						translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
 						translateY = translateCoords.translate[1];
@@ -291,7 +295,7 @@ angular.module('emuwebApp')
 					scaleX = translateCoords.scale[0];
 					scaleY = translateCoords.scale[1];
 					var scale = zoomListener.scale();
-					svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
+					svgGroup.transition().attr('transform', 'translate(' + translateX + ',' + translateY + ")scale(" + scale + ")");
 					d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
 					zoomListener.scale(zoomListener.scale());
 					zoomListener.translate([translateX, translateY]);
