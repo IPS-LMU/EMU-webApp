@@ -22,6 +22,60 @@ angular.module('emuwebApp')
 		// Must be set to an array of level names (eg ["Phonetic", "Phonemic", "Word"])
 		sServObj.selectedPath = null;
 
+		////////////////////////////////////////////
+		// private vars and functions
+		var svgGroup;
+		var rotated = false;
+
+		// size of the diagram
+		var viewerWidth = $(document).width();
+		var viewerHeight = $(document).height();
+		var duration = 750;
+
+		//define the zoomListener which calls the zoom function on the "zoom" eventconstrained within the scaleExtents
+		var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+
+		// root node
+		var root;
+
+		/**
+		 * Function to center node when clicked/dropped so node doesn't get lost when
+		 * collapsing/moving with large amount of children.
+		 */
+		function centerNode(source) {
+			var scale = zoomListener.scale();
+			var x = -source.y0;
+			var y = -source.x0;
+			x = x * scale + viewerWidth / 2;
+			y = y * scale + viewerHeight / 2;
+			d3.select('g').transition()
+				.duration(duration)
+				.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+			zoomListener.scale(scale);
+			zoomListener.translate([x, y]);
+		}
+
+		/**
+		 * Define the zoom function for the zoomable tree
+		 */
+		function zoom() {
+			if (rotated) {
+				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")scale(-1,1)rotate(90)");
+			} else {
+				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+			}
+		}
+
+		//
+		/////////////////////
+
+		/////////////////////
+		// public API
+
+
+		/**
+		 *
+		 */
 		sServObj.setPath = function (p) {
 			//angular.copy(p, sServObj.selectedPath);
 			sServObj.selectedPath = p;
@@ -180,6 +234,10 @@ angular.module('emuwebApp')
 			return paths;
 		};
 
+		/**
+		 * SIC this should probably be moved to the LevelService as it might
+		 * be useful for other parts of the webApp
+		 */
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
@@ -485,12 +543,6 @@ angular.module('emuwebApp')
 			var panBoundary = 20; // Within 20px from edges will pan when dragging.
 			// Misc. variables
 			var i = 0;
-			var duration = 750;
-			var root;
-
-			// size of the diagram
-			var viewerWidth = $(document).width();
-			var viewerHeight = $(document).height();
 
 			var tree = d3.layout.myLayout()
 				.size([viewerHeight, viewerWidth]);
@@ -548,7 +600,7 @@ angular.module('emuwebApp')
 				var speed = panSpeed;
 				if (panTimer) {
 					clearTimeout(panTimer);
-					translateCoords = d3.transform(svgGroup.attr("transform"));
+					translateCoords = d3.transform(svgGroup.attr('transform'));
 					if (direction == 'left' || direction == 'right') {
 						translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
 						translateY = translateCoords.translate[1];
@@ -559,7 +611,7 @@ angular.module('emuwebApp')
 					scaleX = translateCoords.scale[0];
 					scaleY = translateCoords.scale[1];
 					var scale = zoomListener.scale();
-					svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
+					svgGroup.transition().attr('transform', 'translate(' + translateX + ',' + translateY + ")scale(" + scale + ")");
 					d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
 					zoomListener.scale(zoomListener.scale());
 					zoomListener.translate([translateX, translateY]);
@@ -569,15 +621,6 @@ angular.module('emuwebApp')
 				}
 			}
 
-			// Define the zoom function for the zoomable tree
-
-			function zoom() {
-				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-			}
-
-
-			// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-			var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
 			function initiateDrag(d, domNode) {
 				draggingNode = d;
@@ -777,20 +820,7 @@ angular.module('emuwebApp')
 				link.exit().remove();
 			};*/
 
-			// Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
-			function centerNode(source) {
-				var scale = zoomListener.scale();
-				var x = -source.y0;
-				var y = -source.x0;
-				x = x * scale + viewerWidth / 2;
-				y = y * scale + viewerHeight / 2;
-				d3.select('g').transition()
-					.duration(duration)
-					.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-				zoomListener.scale(scale);
-				zoomListener.translate([x, y]);
-			}
 
 			// Toggle children function
 
@@ -916,12 +946,15 @@ angular.module('emuwebApp')
 
 				// Update the text to reflect whether node has children or not.
 				node.select('text')
-					.attr("x", function (d) {
-						return d.children || d._children ? -10 : 10;
+					.attr('transform', function (d) {
+						if (rotated) {
+							return 'scale(1, -1)'; // SIC SIC SIC ... not working
+						} else {
+							return 'scale(1, 1)';
+						}
 					})
-					.attr("text-anchor", function (d) {
-						return d.children || d._children ? "end" : "start";
-					})
+					.attr("x", 10)
+					.attr("text-anchor", "start")
 					.text(function (d) {
 						var text = d.labels[0].value;
 						for (var i = 1; i < d.labels.length; ++i) {
@@ -1008,10 +1041,15 @@ angular.module('emuwebApp')
 					d.x0 = d.x;
 					d.y0 = d.y;
 				});
+
+				// check for rotation if so rotate
+				if (rotated) {
+					// svgGroup.attr("transform", "rotate(90)");
+				}
 			}
 
 			// Append a group which holds all nodes and which the zoom Listener can act upon.
-			var svgGroup = baseSvg.append("g");
+			svgGroup = baseSvg.append("g");
 
 			// Define the root
 			// I presume that the root level of the currently selected path only has one item,
@@ -1025,6 +1063,25 @@ angular.module('emuwebApp')
 			update(root);
 			centerNode(root);
 		};
+
+		/**
+		 * simple rotate by
+		 */
+		sServObj.rotateBy90 = function () {
+			if (!rotated) {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(90)scale(-1,1)");
+				rotated = true;
+			} else {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(0)");
+				rotated = false;
+			}
+			// centerNode(root);
+		}
+
 
 		return sServObj;
 	});

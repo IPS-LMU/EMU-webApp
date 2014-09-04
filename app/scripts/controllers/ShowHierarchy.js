@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, dialogService, ConfigProviderService, LevelService, HierarchyService) {
+	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyService) {
 		// Scope data
 
 		$scope.paths = {
@@ -45,9 +45,32 @@ angular.module('emuwebApp')
 		 * redraw on selected path change (is called if $scope.paths.selected is changed)
 		 */
 		$scope.redraw = function () {
-			var selIdx = $scope.paths.possibleAsStr.indexOf($scope.paths.selected);
+			var selIdx = $scope.getSelIdx();
 			HierarchyService.setPath($scope.paths.possible[selIdx]);
 			HierarchyService.drawHierarchy();
+		};
+
+		/**
+		 *
+		 */
+		$scope.getSelIdx = function () {
+			var selIdx = $scope.paths.possibleAsStr.indexOf($scope.paths.selected);
+			return (selIdx);
+		};
+
+		/**
+		 * rotate hierarchy
+		 */
+		$scope.rotateHierarchy = function () {
+			HierarchyService.rotateBy90();
+		};
+
+		/**
+		 *
+		 */
+		$scope.getAllAttrDefs = function (levelName) {
+			var levDef = ConfigProviderService.getLevelDefinition(levelName);
+			return levDef.attributeDefinitions;
 		};
 
 		/**
