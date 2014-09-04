@@ -10,6 +10,17 @@
 
 	<emuhierarchy></emuhierarchy>
 
+	choose attribute definitions for levels currently displayed:
+	<div ng-repeat="(key, value) in paths.possible[getSelIdx()]">
+		<hr>
+		<div>Level name: {{value}}</div>
+		<div>All attribute definitions:
+			<ul>
+				<li ng-repeat="(key2, value2) in getAllAttrDefs(value)">{{value2.name}}</li>
+			</ul>
+		</div>
+	</div>
+
 	<button class="btn btn-default" ng-click="rotateHierarchy()">
 		<span class="glyphicon glyphicon-repeat"></span> 
 		rotate by 90°
