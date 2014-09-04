@@ -766,11 +766,11 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 *
+		 * simple rotate by
 		 */
-		 sServObj.rotateBy90 = function () {
-		 	svgGroup.attr("transform", "rotate(90)");
-		 }
+		sServObj.rotateBy90 = function () {
+			svgGroup.attr("transform", "rotate(90)");
+		}
 
 
 		return sServObj;
