@@ -1,10 +1,25 @@
 'use strict';
 
+
+/**
+ * This service aims to provide functions for laying out the hierarchy of a
+ * bundle (ie, calculating the positions of the nodes). The actual drawing is
+ * done in another service, same goes for manipulating the hierarchy.
+ *
+ * While the DBConfig allows for a complex network of levels, the visualisation
+ * is always limited to one straight path of levels.
+ *
+ * A selection menu shall be offered comprising all possible paths through the
+ * hierarchy.
+ */
+
 angular.module('emuwebApp')
 	.service('HierarchyService', function (ConfigProviderService, LevelService) {
 		// shared service object
 		var sServObj = {};
 
+		// The path that will be drawn
+		// Must be set to an array of level names (eg ["Phonetic", "Phonemic", "Word"])
 		sServObj.selectedPath = null;
 
 		sServObj.setPath = function (p) {
@@ -30,6 +45,48 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * Calculate the position of nodes within a non-item level (ie, one with time information)
+		 *
+		 * The nodes are positioned at a regular distance to each other.
+		 * The first node will be at position -0.5, the last at somewhat
+		 * below 0.5.
+		 *
+		 * It is taken for granted that the order of the nodes within
+		 * the array is coherent with the time information.
+		 */
+		sServObj.layoutNonItemLevel = function (name, levelDepth) {
+			var nodes = LevelService.getLevelDetails(name).level.items;
+			for (var i=0; i<nodes.length; ++i) {
+				nodes[i]._posInLevel = i / nodes.length - 0.5;
+				nodes[i]._depth = levelDepth;
+			}
+		};
+
+		/**
+		 * Calculate the position of nodes within an item level (ie, one without time information)
+		 * 
+		 * This is done by looking at the position of the first and the
+		 * last child of each node and centering the node in-between
+		 */
+		sServObj.layoutItemLevel = function (name, levelDepth) {
+			var nodes = LevelService.getLevelDetails(name).level.items;
+			for (var i=0; i<nodes.length; ++i) {
+				// Find first and last child of nodes[i]
+				var children = sServObj.findChildren (nodes[i]);
+				if (children === null) {
+					nodes[i]._posInLevel = null;
+				}
+				var firstChild = children[0];
+				var lastChild = children[children.length-1];
+
+				nodes[i]._posInLevel = firstChild._posInLevel + (lastChild._posInLevel - firstChild._posInLevel)/2;
+				nodes[i]._depth = levelDepth;
+			}
+		}
+
+		
+
+		/**
 		 * Calculate the weights (widths) of all nodes bottom-up
 		 */
 		sServObj.calculateWeightsBottomUp = function () {
@@ -53,7 +110,7 @@ angular.module('emuwebApp')
 							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
 						}
 					}
-					console.debug('Increasing weight of level', level.name, ':', level._weight, '+', itemWeight);
+					//console.debug('Increasing weight of level', level.name, ':', level._weight, '+', itemWeight);
 					level._weight += itemWeight;
 				}
 			}
@@ -65,7 +122,7 @@ angular.module('emuwebApp')
 				var itemSize = 20;
 
 
-				console.debug(level.name, level._weight);
+				//console.debug(level.name, level._weight);
 				var currentX = -itemSize * level._weight / 2;
 
 				for (ii = 0; ii < level.items.length; ++ii) {
@@ -189,12 +246,223 @@ angular.module('emuwebApp')
 			return children;
 		}
 
+
+		sServObj.drawHierarchy = function () {
+			// define the baseSvg, attaching a class for styling and the zoomListener
+			d3.select("#emuwebapp-tree-container svg").remove();
+			var viewerWidth = $(document).width();
+			var viewerHeight = $(document).height();
+			var baseSvg = d3.select("#emuwebapp-tree-container").append("svg")
+				.attr("width", viewerWidth)
+				.attr("height", viewerHeight)
+
+			function update() {
+				// Compute the new tree layout
+				var nodes = [];
+
+				for (var i=0; i<sServObj.selectedPath.length; ++i) {
+					if (i === 0) {
+						sServObj.layoutNonItemLevel(sServObj.selectedPath[0], sServObj.selectedPath.length);
+					} else {
+						sServObj.layoutItemLevel(sServObj.selectedPath[i], sServObj.selectedPath.length-i);
+					}
+
+					nodes = nodes.concat(LevelService.getLevelDetails(sServObj.selectedPath[i]).level.items);
+				}
+
+				console.debug(nodes);
+
+
+				// Set widths between levels based on maxLabelLength.
+				nodes.forEach(function (d) {
+					d._y = (d._posInLevel * viewerHeight);
+					d._x = (d._depth * 150); //maxLabelLength * 10px
+				});
+
+				// Update the nodes…
+				var node = svgGroup.selectAll("g.node")
+					.data(nodes, function (d) {
+						return d.id || (d.id = ++i);
+					});
+
+				// Enter any new nodes at the parent's previous position.
+				var nodeEnter = node.enter().append("g")
+					//.call(dragListener)
+					.attr("class", "node")
+					.attr("transform", function (d) {
+						return "translate(" + d._x  + "," + d._y + ")";
+					})
+					//.on('click', click)
+					;
+
+				nodeEnter.append("circle")
+					.attr('class', 'nodeCircle')
+					.attr("r", 0)
+					.style("fill", function (d) {
+						return d._children ? "lightsteelblue" : "#fff";
+					});
+
+				nodeEnter.append("text")
+					.attr("x", function (d) {
+						return d.children || d._children ? -10 : 10;
+					})
+					.attr("dy", ".35em")
+					.attr('class', 'nodeText')
+					.attr("text-anchor", function (d) {
+						return d.children || d._children ? "end" : "start";
+					})
+					.text(function (d) {
+						return "foo";
+						var text = d.labels[0].value;
+						for (var i = 1; i < d.labels.length; ++i) {
+							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
+						}
+						return text;
+					})
+					.style("fill-opacity", 1);
+
+				// phantom node to give us mouseover in a radius around it
+				nodeEnter.append("circle")
+					.attr('class', 'ghostCircle')
+					.attr("r", 30)
+					.attr("opacity", 0.2) // change sServObj to zero to hide the target area
+				.style("fill", "red")
+					.attr('pointer-events', 'mouseover')
+					.on("mouseover", function (node) {
+						overCircle(node);
+					})
+					.on("mouseout", function (node) {
+						outCircle(node);
+					});
+
+				// Update the text to reflect whether node has children or not.
+				node.select('text')
+					.attr("x", function (d) {
+						return d.children || d._children ? -10 : 10;
+					})
+					.attr("text-anchor", function (d) {
+						return d.children || d._children ? "end" : "start";
+					})
+					.text(function (d) {
+						var text = d.labels[0].value;
+						for (var i = 1; i < d.labels.length; ++i) {
+							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
+						}
+						return text;
+					});
+
+				// Change the circle fill depending on whether it has children and is collapsed
+				node.select("circle.nodeCircle")
+					.attr("r", 4.5)
+					.style("fill", function (d) {
+						return d._children ? "lightsteelblue" : "#fff";
+					});
+
+				// Transition nodes to their new position.
+				/*
+				var nodeUpdate = node.transition()
+					.duration(duration)
+					.attr("transform", function (d) {
+						return "translate(" + d.y + "," + d.x + ")";
+					});/
+
+				// Fade the text in
+				nodeUpdate.select("text")
+					.style("fill-opacity", 1);
+				
+
+				// Transition exiting nodes to the parent's new position.
+				var nodeExit = node.exit().transition()
+					.duration(duration)
+					.attr("transform", function (d) {
+						return "translate(" + source.y + "," + source.x + ")";
+					})
+					.remove();
+
+				nodeExit.select("circle")
+					.attr("r", 0);
+
+				nodeExit.select("text")
+					.style("fill-opacity", 0);
+				*/
+
+				/*
+
+				// Update the links…
+				var link = svgGroup.selectAll("path.link")
+					.data(links, function (d) {
+						//return d.target.id;
+						return 's' + d.source.id + 't' + d.target.id;
+					});
+
+				// Enter any new links at the parent's previous position.
+				link.enter().insert("path", "g")
+					.attr("class", "link")
+					.attr("d", function (d) {
+						var o = {
+							x: source.x0,
+							y: source.y0
+						};
+						return diagonal({
+							source: o,
+							target: o
+						});
+					});
+
+				// Transition links to their new position.
+				link.transition()
+					.duration(duration)
+					.attr("d", diagonal);
+
+				// Transition exiting nodes to the parent's new position.
+				link.exit().transition()
+					.duration(duration)
+					.attr("d", function (d) {
+						var o = {
+							x: source.x,
+							y: source.y
+						};
+						return diagonal({
+							source: o,
+							target: o
+						});
+					})
+					.remove();
+				*/
+
+				// Stash the old positions for transition.
+				nodes.forEach(function (d) {
+					d.x0 = d.x;
+					d.y0 = d.y;
+				});
+			}
+
+			// Append a group which holds all nodes and which the zoom Listener can act upon.
+			var svgGroup = baseSvg.append("g");
+			update();
+
+		};
+
+
+
+
+
+/*##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+*/
 		/**
 		 * @todo documentation
 		 * for the time being: this function is no fun to read because it is based on a d3 example and contains a lot of sub-functions.
 		 * you'd better wait until I have polished it to a certain degree.
 		 */
-		sServObj.drawHierarchy = function () {
+		sServObj.oldDrawHierarchy = function () {
 			// Make sure that any private properties that have been added during a previous call of this function are removed
 			for (var x = 0; x < LevelService.getData().levels.length; ++x) {
 				for (var y = 0; y < LevelService.getData().levels[x].items.length; ++y) {
