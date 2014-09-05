@@ -9,7 +9,7 @@
 
 .modal-body{
 	background-color: white;
-	height: 50%;
+	/*height: 50%;*/
 	overflow-y: auto;
 	padding: 10%;
 }
@@ -53,4 +53,10 @@
 	text-align: center;
 	background-color: #0DC5FF;
 	border-radius: 0;
+}
+
+.emuwebapp-hierarchy-container{
+	width: 100%;
+	height: 100%;
+	background-color: pink;
 }

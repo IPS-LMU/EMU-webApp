@@ -33,7 +33,7 @@ angular.module('emuwebApp')
 		// watch selected path to redraw on startup and change of value
 		$scope.$watch('paths.selected', function (val) {
 			if (val !== undefined) {
-				$scope.redraw();
+				// $scope.redraw();
 			}
 
 		}, true);
@@ -63,6 +63,28 @@ angular.module('emuwebApp')
 		 */
 		$scope.rotateHierarchy = function () {
 			HierarchyService.rotateBy90();
+		};
+
+		/**
+		 *
+		 */
+		$scope.isCurrentAttrDef = function (levelName, attrDef) {
+			if (viewState.getCurAttrDef(levelName) === attrDef) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+
+		/**
+		 * set current attribute definition
+		 * just delegates same fuction call to viewState
+		 *
+		 * @param levelName name of level
+		 * @param attrDef name of attribute definition
+		 */
+		$scope.setCurrentAttrDef = function (levelName, attrDef) {
+			viewState.setCurAttrDef(levelName, attrDef);
 		};
 
 		/**

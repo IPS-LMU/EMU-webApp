@@ -1,17 +1,17 @@
 <div class="modal-header">
 	<!-- <h3 id="modalHeading">Hierarchy of bundle</h3> -->
-	<div class="btn-group emuwebapp-mini-btn-group" dropup is-open="status.isopen" ng-repeat="(key, value) in paths.possible[getSelIdx()]">
+	<div class="btn-group emuwebapp-mini-btn-group" dropup is-open="status.isopen" ng-repeat="(key, levelName) in paths.possible[getSelIdx()]">
 		<button id="demoDB" type="button" class="dropdown-toggle">
-			<span class="glyphicon glyphicon-cog"></span> {{value}}<span class="caret"></span>
+			<span class="glyphicon glyphicon-cog"></span> {{levelName}}<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 			<li><em>Choose current label:</em></li>
 			<li class="divider"></li>
-<!-- 			<li ng-repeat="curDB in cps.vals.demoDBs">
-				<a ng-click="openDemoDBbtnClick(curDB);" id="demo{{$index}}">{{curDB}}</a>
-			</li> -->
-			<li ng-repeat="(key2, value2) in getAllAttrDefs(value)">
-				<a>{{value2.name}}</a>
+			<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)">
+				<a ng-click="setCurrentAttrDef(levelName, attrDef.name)">
+					<span ng-show="isCurrentAttrDef(levelName, attrDef.name)" class="glyphicon glyphicon-arrow-right"></span>
+					{{attrDef.name}}
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -21,10 +21,10 @@
 
 </div>
 
-<div class="modal-body">
+<div class="modal-body" style="padding:0%">
 	
 	<emuhierarchy></emuhierarchy>
-	<div id="emuwebapp-tree-container"></div>
+	<!-- <div id="emuwebapp-tree-container"></div> -->
 
 
 </div>
