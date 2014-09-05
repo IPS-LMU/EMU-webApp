@@ -1,10 +1,13 @@
 'use strict';
 
+// FIXME Should x or y be first in translate()?
+// FIXME Rename this Service
 
 /**
  * This service aims to provide functions for laying out the hierarchy of a
  * bundle (ie, calculating the positions of the nodes). The actual drawing is
- * done in another service, same goes for manipulating the hierarchy.
+ * done in a directive, the manipulating the hierarchy is done in another
+ * service.
  *
  * While the DBConfig allows for a complex network of levels, the visualisation
  * is always limited to one straight path of levels.
@@ -66,6 +69,12 @@ angular.module('emuwebApp')
 			}
 		}
 
+		// define a d3 diagonal projection for use by the node paths later on.
+		var diagonal = d3.svg.diagonal()
+			.projection(function (d) {
+				return [d.x, d.y];
+			});
+
 		//
 		/////////////////////
 
@@ -111,8 +120,17 @@ angular.module('emuwebApp')
 		sServObj.layoutNonItemLevel = function (name, levelDepth) {
 			var nodes = LevelService.getLevelDetails(name).level.items;
 			for (var i=0; i<nodes.length; ++i) {
-				nodes[i]._posInLevel = i / nodes.length - 0.5;
+				nodes[i]._posInLevel = i / nodes.length ;//- 0.5;
 				nodes[i]._depth = levelDepth;
+
+				// Additionally, calculate link positions
+				var links = LevelService.getData().links;
+				for (var l=0; l<links.length; ++l) {
+					if (links[l].toID === nodes[i].id) {
+						links[l]._toPosInLevel = nodes[i]._posInLevel;
+						links[l]._toDepth = nodes[i]._depth;
+					}
+				}
 			}
 		};
 
@@ -135,9 +153,21 @@ angular.module('emuwebApp')
 
 				nodes[i]._posInLevel = firstChild._posInLevel + (lastChild._posInLevel - firstChild._posInLevel)/2;
 				nodes[i]._depth = levelDepth;
+				
+				// Additionally, calculate link positions
+				var links = LevelService.getData().links;
+				for (var l=0; l<links.length; ++l) {
+					if (links[l].toID === nodes[i].id) {
+						links[l]._toPosInLevel = nodes[i]._posInLevel;
+						links[l]._toDepth = nodes[i]._depth;
+					}
+					if (links[l].fromID === nodes[i].id) {
+						links[l]._fromPosInLevel = nodes[i]._posInLevel;
+						links[l]._fromDepth = nodes[i]._depth;
+					}
+				}
 			}
-		}
-
+		};
 		
 
 		/**
@@ -328,19 +358,25 @@ angular.module('emuwebApp')
 					nodes = nodes.concat(LevelService.getLevelDetails(sServObj.selectedPath[i]).level.items);
 				}
 
-				console.debug(nodes);
-
+				var links = LevelService.getData().links;
+				console.debug(links);
 
 				// Set widths between levels based on maxLabelLength.
 				nodes.forEach(function (d) {
-					d._y = (d._posInLevel * viewerHeight);
 					d._x = (d._depth * 150); //maxLabelLength * 10px
+					d._y = (d._posInLevel * viewerHeight);
+				});
+				links.forEach(function (d) {
+					d._fromX = (d._fromDepth * 150);
+					d._fromY = (d._fromPosInLevel * viewerHeight);
+					d._toX = (d._toDepth * 150);
+					d._toY = (d._toPosInLevel * viewerHeight);
 				});
 
 				// Update the nodes…
 				var node = svgGroup.selectAll("g.node")
 					.data(nodes, function (d) {
-						return d.id || (d.id = ++i);
+						return d.id;
 					});
 
 				// Enter any new nodes at the parent's previous position.
@@ -417,18 +453,19 @@ angular.module('emuwebApp')
 					});
 
 				// Transition nodes to their new position.
-				/*
+				
 				var nodeUpdate = node.transition()
-					.duration(duration)
+					.duration(sServObj.duration)
 					.attr("transform", function (d) {
-						return "translate(" + d.y + "," + d.x + ")";
-					});/
+						return "translate(" + d._x + "," + d._y + ")";
+					});
 
 				// Fade the text in
 				nodeUpdate.select("text")
 					.style("fill-opacity", 1);
 				
 
+				/*
 				// Transition exiting nodes to the parent's new position.
 				var nodeExit = node.exit().transition()
 					.duration(duration)
@@ -443,35 +480,34 @@ angular.module('emuwebApp')
 				nodeExit.select("text")
 					.style("fill-opacity", 0);
 				*/
+				
 
-				/*
+				
 
 				// Update the links…
 				var link = svgGroup.selectAll("path.link")
 					.data(links, function (d) {
-						//return d.target.id;
-						return 's' + d.source.id + 't' + d.target.id;
+						// Form unique link ID
+						return 's' + d.fromID + 't' + d.toID;
 					});
 
 				// Enter any new links at the parent's previous position.
 				link.enter().insert("path", "g")
 					.attr("class", "link")
 					.attr("d", function (d) {
-						var o = {
-							x: source.x0,
-							y: source.y0
-						};
-						return diagonal({
-							source: o,
-							target: o
-						});
-					});
+						return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
+					})
+					;
+
+			/*	
 
 				// Transition links to their new position.
 				link.transition()
 					.duration(duration)
-					.attr("d", diagonal);
-
+					.attr("d", sServObj.diagonal);
+			*/
+				
+				/*
 				// Transition exiting nodes to the parent's new position.
 				link.exit().transition()
 					.duration(duration)
@@ -487,6 +523,7 @@ angular.module('emuwebApp')
 					})
 					.remove();
 				*/
+				
 
 				// Stash the old positions for transition.
 				nodes.forEach(function (d) {
