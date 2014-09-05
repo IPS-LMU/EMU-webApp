@@ -344,197 +344,211 @@ angular.module('emuwebApp')
 				.attr("width", viewerWidth)
 				.attr("height", viewerHeight)
 
-			function update() {
-				// Compute the new tree layout
-				var nodes = [];
-
-				for (var i=0; i<sServObj.selectedPath.length; ++i) {
-					if (i === 0) {
-						sServObj.layoutNonItemLevel(sServObj.selectedPath[0], sServObj.selectedPath.length);
-					} else {
-						sServObj.layoutItemLevel(sServObj.selectedPath[i], sServObj.selectedPath.length-i);
-					}
-
-					nodes = nodes.concat(LevelService.getLevelDetails(sServObj.selectedPath[i]).level.items);
-				}
-
-				var links = LevelService.getData().links;
-				console.debug(links);
-
-				// Set widths between levels based on maxLabelLength.
-				nodes.forEach(function (d) {
-					d._x = (d._depth * 150); //maxLabelLength * 10px
-					d._y = (d._posInLevel * viewerHeight);
-				});
-				links.forEach(function (d) {
-					d._fromX = (d._fromDepth * 150);
-					d._fromY = (d._fromPosInLevel * viewerHeight);
-					d._toX = (d._toDepth * 150);
-					d._toY = (d._toPosInLevel * viewerHeight);
-				});
-
-				// Update the nodes…
-				var node = svgGroup.selectAll("g.node")
-					.data(nodes, function (d) {
-						return d.id;
-					});
-
-				// Enter any new nodes at the parent's previous position.
-				var nodeEnter = node.enter().append("g")
-					//.call(dragListener)
-					.attr("class", "node")
-					.attr("transform", function (d) {
-						return "translate(" + d._x  + "," + d._y + ")";
-					})
-					//.on('click', click)
-					;
-
-				nodeEnter.append("circle")
-					.attr('class', 'nodeCircle')
-					.attr("r", 0)
-					.style("fill", function (d) {
-						return d._children ? "lightsteelblue" : "#fff";
-					});
-
-				nodeEnter.append("text")
-					.attr("x", function (d) {
-						return d.children || d._children ? -10 : 10;
-					})
-					.attr("dy", ".35em")
-					.attr('class', 'nodeText')
-					.attr("text-anchor", function (d) {
-						return d.children || d._children ? "end" : "start";
-					})
-					.text(function (d) {
-						return "foo";
-						var text = d.labels[0].value;
-						for (var i = 1; i < d.labels.length; ++i) {
-							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
-						}
-						return text;
-					})
-					.style("fill-opacity", 1);
-
-				// phantom node to give us mouseover in a radius around it
-				nodeEnter.append("circle")
-					.attr('class', 'ghostCircle')
-					.attr("r", 30)
-					.attr("opacity", 0.2) // change sServObj to zero to hide the target area
-				.style("fill", "red")
-					.attr('pointer-events', 'mouseover')
-					.on("mouseover", function (node) {
-						overCircle(node);
-					})
-					.on("mouseout", function (node) {
-						outCircle(node);
-					});
-
-				// Update the text to reflect whether node has children or not.
-				node.select('text')
-					.attr("x", function (d) {
-						return d.children || d._children ? -10 : 10;
-					})
-					.attr("text-anchor", function (d) {
-						return d.children || d._children ? "end" : "start";
-					})
-					.text(function (d) {
-						var text = d.labels[0].value;
-						for (var i = 1; i < d.labels.length; ++i) {
-							text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
-						}
-						return text;
-					});
-
-				// Change the circle fill depending on whether it has children and is collapsed
-				node.select("circle.nodeCircle")
-					.attr("r", 4.5)
-					.style("fill", function (d) {
-						return d._children ? "lightsteelblue" : "#fff";
-					});
-
-				// Transition nodes to their new position.
-				
-				var nodeUpdate = node.transition()
-					.duration(sServObj.duration)
-					.attr("transform", function (d) {
-						return "translate(" + d._x + "," + d._y + ")";
-					});
-
-				// Fade the text in
-				nodeUpdate.select("text")
-					.style("fill-opacity", 1);
-				
-
-				/*
-				// Transition exiting nodes to the parent's new position.
-				var nodeExit = node.exit().transition()
-					.duration(duration)
-					.attr("transform", function (d) {
-						return "translate(" + source.y + "," + source.x + ")";
-					})
-					.remove();
-
-				nodeExit.select("circle")
-					.attr("r", 0);
-
-				nodeExit.select("text")
-					.style("fill-opacity", 0);
-				*/
-				
-
-				
-
-				// Update the links…
-				var link = svgGroup.selectAll("path.link")
-					.data(links, function (d) {
-						// Form unique link ID
-						return 's' + d.fromID + 't' + d.toID;
-					});
-
-				// Enter any new links at the parent's previous position.
-				link.enter().insert("path", "g")
-					.attr("class", "link")
-					.attr("d", function (d) {
-						return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
-					})
-					;
-
-			/*	
-
-				// Transition links to their new position.
-				link.transition()
-					.duration(duration)
-					.attr("d", sServObj.diagonal);
-			*/
-				
-				/*
-				// Transition exiting nodes to the parent's new position.
-				link.exit().transition()
-					.duration(duration)
-					.attr("d", function (d) {
-						var o = {
-							x: source.x,
-							y: source.y
-						};
-						return diagonal({
-							source: o,
-							target: o
-						});
-					})
-					.remove();
-				*/
-				
-
-				// Stash the old positions for transition.
-				nodes.forEach(function (d) {
-					d.x0 = d.x;
-					d.y0 = d.y;
-				});
-			}
 
 			// Append a group which holds all nodes and which the zoom Listener can act upon.
 			var svgGroup = baseSvg.append("g");
-			update();
+			// Compute the new tree layout
+			var nodes = [];
+
+			for (var i=0; i<sServObj.selectedPath.length; ++i) {
+				if (i === 0) {
+					sServObj.layoutNonItemLevel(sServObj.selectedPath[0], sServObj.selectedPath.length);
+				} else {
+					sServObj.layoutItemLevel(sServObj.selectedPath[i], sServObj.selectedPath.length-i);
+				}
+
+				nodes = nodes.concat(LevelService.getLevelDetails(sServObj.selectedPath[i]).level.items);
+			}
+
+			// We can only draw links that are part of the currently selected path
+			// This is a very low-performance approach to filtering
+			var links = [];
+			var allLinks = LevelService.getData().links;
+			for (var l=0; l<allLinks.length; ++l) {
+				for (var i=0; i<sServObj.selectedPath.length-1; ++i) {
+					var element = LevelService.getElementDetailsById(sServObj.selectedPath[i], allLinks[l].toID);
+					if (element === null) {
+						continue;
+					}
+					var parentElement = LevelService.getElementDetailsById(sServObj.selectedPath[i+1], allLinks[l].fromID);
+					if (parentElement !== null) {
+						links.push(allLinks[l]);
+					}
+
+
+				}
+			}
+
+
+			// Set widths between levels based on maxLabelLength.
+			nodes.forEach(function (d) {
+				d._x = (d._depth * 150); //maxLabelLength * 10px
+				d._y = (d._posInLevel * viewerHeight);
+			});
+			links.forEach(function (d) {
+				d._fromX = (d._fromDepth * 150);
+				d._fromY = (d._fromPosInLevel * viewerHeight);
+				d._toX = (d._toDepth * 150);
+				d._toY = (d._toPosInLevel * viewerHeight);
+			});
+
+			// Update the nodes…
+			var node = svgGroup.selectAll("g.node")
+				.data(nodes, function (d) {
+					return d.id;
+				});
+
+			// Enter any new nodes at the parent's previous position.
+			var nodeEnter = node.enter().append("g")
+				//.call(dragListener)
+				.attr("class", "node")
+				.attr("transform", function (d) {
+					return "translate(" + d._x  + "," + d._y + ")";
+				})
+				//.on('click', click)
+				;
+
+			nodeEnter.append("circle")
+				.attr('class', 'nodeCircle')
+				.attr("r", 0)
+				.style("fill", function (d) {
+					return d._children ? "lightsteelblue" : "#fff";
+				});
+
+			nodeEnter.append("text")
+				.attr("x", function (d) {
+					return d.children || d._children ? -10 : 10;
+				})
+				.attr("dy", ".35em")
+				.attr('class', 'nodeText')
+				.attr("text-anchor", function (d) {
+					return d.children || d._children ? "end" : "start";
+				})
+				.text(function (d) {
+					return "foo";
+					var text = d.labels[0].value;
+					for (var i = 1; i < d.labels.length; ++i) {
+						text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
+					}
+					return text;
+				})
+				.style("fill-opacity", 1);
+
+			// phantom node to give us mouseover in a radius around it
+			nodeEnter.append("circle")
+				.attr('class', 'ghostCircle')
+				.attr("r", 30)
+				.attr("opacity", 0.2) // change sServObj to zero to hide the target area
+			.style("fill", "red")
+				.attr('pointer-events', 'mouseover')
+				.on("mouseover", function (node) {
+					overCircle(node);
+				})
+				.on("mouseout", function (node) {
+					outCircle(node);
+				});
+
+			// Update the text to reflect whether node has children or not.
+			node.select('text')
+				.attr("x", function (d) {
+					return d.children || d._children ? -10 : 10;
+				})
+				.attr("text-anchor", function (d) {
+					return d.children || d._children ? "end" : "start";
+				})
+				.text(function (d) {
+					var text = d.labels[0].value;
+					for (var i = 1; i < d.labels.length; ++i) {
+						text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
+					}
+					return text;
+				});
+
+			// Change the circle fill depending on whether it has children and is collapsed
+			node.select("circle.nodeCircle")
+				.attr("r", 4.5)
+				.style("fill", function (d) {
+					return d._children ? "lightsteelblue" : "#fff";
+				});
+
+			// Transition nodes to their new position.
+			
+			var nodeUpdate = node.transition()
+				.duration(sServObj.duration)
+				.attr("transform", function (d) {
+					return "translate(" + d._x + "," + d._y + ")";
+				});
+
+			// Fade the text in
+			nodeUpdate.select("text")
+				.style("fill-opacity", 1);
+			
+
+			/*
+			// Transition exiting nodes to the parent's new position.
+			var nodeExit = node.exit().transition()
+				.duration(duration)
+				.attr("transform", function (d) {
+					return "translate(" + source.y + "," + source.x + ")";
+				})
+				.remove();
+
+			nodeExit.select("circle")
+				.attr("r", 0);
+
+			nodeExit.select("text")
+				.style("fill-opacity", 0);
+			*/
+			
+
+			
+
+			// Update the links…
+			var link = svgGroup.selectAll("path.link")
+				.data(links, function (d) {
+					// Form unique link ID
+					return 's' + d.fromID + 't' + d.toID;
+				});
+
+			// Enter any new links at the parent's previous position.
+			link.enter().insert("path", "g")
+				.attr("class", "link")
+				.attr("d", function (d) {
+					return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
+				})
+				;
+
+		/*	
+
+			// Transition links to their new position.
+			link.transition()
+				.duration(duration)
+				.attr("d", sServObj.diagonal);
+		*/
+			
+			/*
+			// Transition exiting nodes to the parent's new position.
+			link.exit().transition()
+				.duration(duration)
+				.attr("d", function (d) {
+					var o = {
+						x: source.x,
+						y: source.y
+					};
+					return diagonal({
+						source: o,
+						target: o
+					});
+				})
+				.remove();
+			*/
+			
+
+			// Stash the old positions for transition.
+			nodes.forEach(function (d) {
+				d.x0 = d.x;
+				d.y0 = d.y;
+			});
 
 		};
 
