@@ -17,19 +17,8 @@ angular.module('emuwebApp')
 
         // SIC deep watches are really expensive!!!! Should watch something else!!!!!!
         scope.$watch('LevelService.data', function () {
-          // scope.render();
+          scope.render();
         }, true);
-
-        // watch for element resize
-        scope.$watch(
-          function () {
-            return [element[0].clientWidth, element[0].clientHeight].join('x');
-          },
-          function (value) {
-            console.log('directive got resized:', value.split('x'));
-            // scope.render();
-          }
-        )
 
         //
         //////////////////////
@@ -66,7 +55,9 @@ angular.module('emuwebApp')
         var svg = d3.select(element[0])
           .append('svg')
           .attr('width', '100%')
-          .attr('height', '100%');
+          .attr('height', '100%')
+          .append('g')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         // background color
         svg.append("rect")
@@ -74,29 +65,30 @@ angular.module('emuwebApp')
           .attr("height", "100%")
           .attr("fill", "lightgrey");
 
-        //Create the scales we need for the graph
-        // var x = d3.scale.linear().range([0, width]);
-        // var y = d3.scale.linear().range([height, 0]);
+        // Create the scales we need for the graph
+        var x = d3.scale.linear().range([0, width]);
+        var y = d3.scale.linear().range([height, 0]);
 
-        //Create the axes we need for the graph
-        // var xAxis = d3.svg.axis()
-        //   .scale(x)
-        //   .tickSize(5)
-        //   .tickSubdivide(true);
+        // Create the axes we need for the graph
+        var xAxis = d3.svg.axis()
+          .scale(x)
+          .tickSize(5)
+          .tickSubdivide(true)
+          .orient('top');
 
-        // var yAxis = d3.svg.axis()
-        //   .scale(y)
-        //   .orient('right');
+        var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient('right');
 
         // line drawing function
-        // var lineFunc = d3.svg.line()
-        //   .x(function (d) {
-        //     return x(d.x);
-        //   })
-        //   .y(function (d) {
-        //     return y(d.y);
-        //   })
-        //   .interpolate('linear');
+        var lineFunc = d3.svg.line()
+          .x(function (d) {
+            return x(d.x);
+          })
+          .y(function (d) {
+            return y(d.y);
+          })
+          .interpolate('linear');
 
 
         /**
