@@ -1,33 +1,39 @@
 <div class="modal-header">
-	<h3 id="modalHeading">Hierarchy of bundle</h3>
-</div>
-
-<div class="modal-body">
-	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr">
-	</select>
-	
-	<div id="emuwebapp-tree-container"></div>
-
-	<emuhierarchy></emuhierarchy>
-
-	choose attribute definitions for levels currently displayed:
-	<div ng-repeat="(key, value) in paths.possible[getSelIdx()]">
-		<hr>
-		<div>Level name: {{value}}</div>
-		<div>All attribute definitions:
-			<ul>
-				<li ng-repeat="(key2, value2) in getAllAttrDefs(value)">{{value2.name}}</li>
-			</ul>
-		</div>
+	<!-- <h3 id="modalHeading">Hierarchy of bundle</h3> -->
+	<div class="btn-group emuwebapp-mini-btn-group" dropup is-open="status.isopen" ng-repeat="(key, levelName) in paths.possible[getSelIdx()]">
+		<button id="demoDB" type="button" class="dropdown-toggle">
+			<span class="glyphicon glyphicon-cog"></span> {{levelName}}<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><em>Choose current label:</em></li>
+			<li class="divider"></li>
+			<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)">
+				<a ng-click="setCurrentAttrDef(levelName, attrDef.name)">
+					<span ng-show="isCurrentAttrDef(levelName, attrDef.name)" class="glyphicon glyphicon-arrow-right"></span>
+					{{attrDef.name}}
+				</a>
+			</li>
+		</ul>
 	</div>
 
-	<button class="btn btn-default" ng-click="rotateHierarchy()">
-		<span class="glyphicon glyphicon-repeat"></span> 
-		rotate by 90°
-	</button>
+	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr">
+	</select>
+
+</div>
+
+<div class="modal-body" style="padding:0%">
+	
+	<emuhierarchy></emuhierarchy>
+	<!-- <div id="emuwebapp-tree-container"></div> -->
+
 
 </div>
 
 <div class="modal-footer">
-	<button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>
+	<button class="emuwebapp-mini-btn-dialog" ng-click="rotateHierarchy()">
+		<span class="glyphicon glyphicon-repeat"></span> 
+		rotate by 90°
+	</button>
+
+	<button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog">close hierarchy view</button>
 </div>
