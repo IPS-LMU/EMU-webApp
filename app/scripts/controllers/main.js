@@ -419,8 +419,8 @@ angular.module('emuwebApp')
 
 							viewState.resetSelect();
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 442204;
-							// viewState.curViewPort.eS = 445464;
+							viewState.curViewPort.sS = 5132;
+							viewState.curViewPort.eS = 5146;
 							// viewState.curViewPort.selectS = 27575;
 							// viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;

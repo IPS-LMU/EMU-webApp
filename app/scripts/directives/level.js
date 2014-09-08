@@ -244,7 +244,7 @@ angular.module('emuwebApp')
 								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart));
 								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur+1));
 								posS = viewState.getPos(canvas[0].width, curEvt.sampleStart);
-								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur);
+								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur + 1);
 
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
