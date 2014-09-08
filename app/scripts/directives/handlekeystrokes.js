@@ -31,7 +31,7 @@ angular.module('emuwebApp')
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {
-                  var editingElement = LevelService.getElementDetailsById(viewState.getcurClickLevelName(), LevelService.getlastID());
+                  var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   console.error('parallel labels are not added to history service correctly!!!!!!');
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
