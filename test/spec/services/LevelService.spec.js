@@ -322,66 +322,66 @@ describe('Service: LevelService', function () {
   /**
    *
    */
-  it('should getEvent (surrounding details) at given pcm position', inject(function (LevelService) {
+  it('should getClosestItem (surrounding details) for a given sampleNr', inject(function (LevelService) {
     // test on msajc003_bndl.annotation
     LevelService.setData(msajc003_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 58089 
     // before any element nearest should be false
-    expect(LevelService.getEvent(10, 'Phonetic', 58089).nearest).toEqual(false);
+    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).nearest).toEqual(false);
     // after any element nearest should be true
-    expect(LevelService.getEvent(58088, 'Phonetic', 58089).nearest).toEqual(true);
+    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).nearest).toEqual(true);
     // in the middle nearest should be element
     // nearest left
-    expect(LevelService.getEvent(20650, 'Phonetic', 58089).nearest.sampleStart).toEqual(20640);
+    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).nearest.sampleStart).toEqual(20640);
     // nearest right
-    expect(LevelService.getEvent(23900, 'Phonetic', 58089).nearest.sampleStart).toEqual(23920);
+    expect(LevelService.getClosestItem(23900, 'Phonetic', 58089).nearest.sampleStart).toEqual(23920);
     // evtr should be actual element
-    expect(LevelService.getEvent(20650, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
-    expect(LevelService.getEvent(23900, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
+    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
+    expect(LevelService.getClosestItem(23900, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
     // before first -> evtr should be first element
-    expect(LevelService.getEvent(10, 'Phonetic', 58089).evtr.sampleStart).toEqual(3750);
+    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).evtr.sampleStart).toEqual(3750);
     // after last -> evtr should be first element
-    expect(LevelService.getEvent(58088, 'Phonetic', 58089).evtr.sampleStart).toEqual(50126);
+    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).evtr.sampleStart).toEqual(50126);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 96002  
     // before any element nearest should be false
-    expect(LevelService.getEvent(10, 'TT', 96002).nearest).toEqual(false);
+    expect(LevelService.getClosestItem(10, 'TT', 96002).nearest).toEqual(false);
     // after any element nearest should be true
-    expect(LevelService.getEvent(96000, 'TT', 96002).nearest).toEqual(true);
+    expect(LevelService.getClosestItem(96000, 'TT', 96002).nearest).toEqual(true);
     // in the middle nearest should be element
     // nearest left
-    expect(LevelService.getEvent(30980, 'TT', 96002).nearest.sampleStart).toEqual(30970);
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).nearest.sampleStart).toEqual(30970);
     // nearest right
-    expect(LevelService.getEvent(32700, 'TT', 96002).nearest.sampleStart).toEqual(32707);
+    expect(LevelService.getClosestItem(32700, 'TT', 96002).nearest.sampleStart).toEqual(32707);
     // evtr should be actual element
-    expect(LevelService.getEvent(30980, 'TT', 96002).evtr.sampleStart).toEqual(30970);
-    expect(LevelService.getEvent(32700, 'TT', 96002).evtr.sampleStart).toEqual(30970);
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).evtr.sampleStart).toEqual(30970);
+    expect(LevelService.getClosestItem(32700, 'TT', 96002).evtr.sampleStart).toEqual(30970);
     // before first -> evtr should be first element
-    expect(LevelService.getEvent(10, 'TT', 96002).evtr.sampleStart).toEqual(30970);
+    expect(LevelService.getClosestItem(10, 'TT', 96002).evtr.sampleStart).toEqual(30970);
     // after last -> evtr should be first element
-    expect(LevelService.getEvent(96000, 'TT', 96002).evtr.sampleStart).toEqual(32707);
+    expect(LevelService.getClosestItem(96000, 'TT', 96002).evtr.sampleStart).toEqual(32707);
 
     //test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 112000 
     // before any element nearest should be false
-    expect(LevelService.getEvent(10, 'Phonetic', 112000).nearest).toEqual(false);
+    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).nearest).toEqual(false);
     // after any element nearest should be true
-    expect(LevelService.getEvent(111998, 'Phonetic', 112000).nearest).toEqual(true);
+    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).nearest).toEqual(true);
     // in the middle nearest should be element
     // nearest left
-    expect(LevelService.getEvent(87720, 'Phonetic', 112000).nearest.sampleStart).toEqual(87710);
+    expect(LevelService.getClosestItem(87720, 'Phonetic', 112000).nearest.sampleStart).toEqual(87710);
     // nearest right
-    expect(LevelService.getEvent(88630, 'Phonetic', 112000).nearest.sampleStart).toEqual(88639);
+    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).nearest.sampleStart).toEqual(88639);
     // evtr should be actual element
-    expect(LevelService.getEvent(87720, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
-    expect(LevelService.getEvent(88630, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
+    expect(LevelService.getClosestItem(87720, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
+    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
     // before first -> evtr should be first element
-    expect(LevelService.getEvent(10, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
+    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
     // after last -> evtr should be first element
-    expect(LevelService.getEvent(111998, 'Phonetic', 112000).evtr.sampleStart).toEqual(91042);
+    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).evtr.sampleStart).toEqual(91042);
   }));
 
   /**
