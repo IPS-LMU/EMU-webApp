@@ -243,5 +243,21 @@ describe('Factory: viewState', function () {
     expect(viewState.curViewPort.eS).toEqual(36306);
   }));
 
+  /**
+   *
+   */
+  it('should calculate correct samplesPerPxl value', inject(function (viewState) {
+    viewState.initialize();
+    viewState.curViewPort.eS = 100;
+    // mock event:
+    var evt = {};
+    evt.originalEvent = {};
+    evt.originalEvent.target = {};
+    evt.originalEvent.target.width = 50;
+    expect(viewState.getSamplesPerPixelVal(evt)).toEqual(2);
+    evt.originalEvent.target.width = 200;
+    expect(viewState.getSamplesPerPixelVal(evt)).toEqual(0.5);
+  }));
+
 
 });
