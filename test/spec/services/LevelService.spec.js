@@ -242,7 +242,7 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(JDR10_bndl.annotation);
-    LevelService.setElementDetails('Phonetic', 3, 'test', 0, 87700, 939);
+    LevelService.updateSegItemInLevel('Phonetic', 3, 'test', 0, 87700, 939);
     expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
     expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87700);
     expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(939);
@@ -252,7 +252,7 @@ describe('Service: LevelService', function () {
     // // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    LevelService.setElementDetails('TB', 40, 'test', 0, 29604, 2700);
+    LevelService.updateSegItemInLevel('TB', 40, 'test', 0, 29604, 2700);
     expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
     expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29604);
     expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2700);
