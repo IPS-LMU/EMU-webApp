@@ -433,18 +433,18 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * gets element details by passing in levelName and element id's
+		 * gets item details by passing in levelName and item id's
 		 */
-		sServObj.getElementNeighbourDetails = function (name, firstid, lastid) {
+		sServObj.getItemNeighboursFromLevel = function (levelName, firstid, lastid) {
 			var left = undefined;
 			var right = undefined;
 			angular.forEach(sServObj.data.levels, function (level) {
-				if (level.name === name) {
-					level.items.forEach(function (element, num) {
-						if (element.id == firstid) {
+				if (level.name === levelName) {
+					level.items.forEach(function (itm, num) {
+						if (itm.id == firstid) {
 							left = level.items[num - 1];
 						}
-						if (element.id == lastid) {
+						if (itm.id == lastid) {
 							right = level.items[num + 1];
 						}
 					});
@@ -597,7 +597,7 @@ angular.module('emuwebApp')
 					}
 				}
 			});
-			var lastNeighbours = sServObj.getElementNeighbourDetails(name, deletedSegment.segments[0].id, deletedSegment.segments[deletedSegment.segments.length - 1].id);
+			var lastNeighbours = sServObj.getItemNeighboursFromLevel(name, deletedSegment.segments[0].id, deletedSegment.segments[deletedSegment.segments.length - 1].id);
 
 			if ((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
 				labelIdx = getLabelIdx(attrDefName, lastNeighbours.left.labels);
@@ -621,7 +621,7 @@ angular.module('emuwebApp')
 			var firstSegment = sServObj.getItemFromLevelById(name, id);
 			var firstOrder = sServObj.getOrderById(name, id);
 			var lastSegment = sServObj.getElementDetails(name, (firstOrder + length - 1));
-			var lastNeighbours = sServObj.getElementNeighbourDetails(name, firstSegment.id, lastSegment.id);
+			var lastNeighbours = sServObj.getItemNeighboursFromLevel(name, firstSegment.id, lastSegment.id);
 			var timeLeft = 0;
 			var timeRight = 0;
 			var deleteOrder = null;
@@ -1015,7 +1015,7 @@ angular.module('emuwebApp')
 			var attrDefName = viewState.getCurAttrDef(levelName);
 			var labelIdx = getLabelIdx(attrDefName, orig.labels);
 
-			var ln = sServObj.getElementNeighbourDetails(levelName, id, id);
+			var ln = sServObj.getItemNeighboursFromLevel(levelName, id, id);
 			if (position === -1) { // before first item
 				var origRight = ln.right;
 				if (origRight !== undefined) {
@@ -1070,7 +1070,7 @@ angular.module('emuwebApp')
 			var firstOrder = sServObj.getOrderById(name, id);
 			var firstSegment = sServObj.getElementDetails(name, firstOrder);
 			var lastSegment = sServObj.getElementDetails(name, firstOrder + length - 1);
-			var lastNeighbours = sServObj.getElementNeighbourDetails(name, firstSegment.id, lastSegment.id);
+			var lastNeighbours = sServObj.getItemNeighboursFromLevel(name, firstSegment.id, lastSegment.id);
 
 			var attrDefName = viewState.getCurAttrDef(name);
 			var labelIdx = getLabelIdx(attrDefName, firstSegment.labels);
@@ -1123,7 +1123,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.expandSegment = function (rightSide, segments, name, changeTime) {
 			var startTime = 0;
-			var neighbours = sServObj.getElementNeighbourDetails(name, segments[0].id, segments[segments.length - 1].id);
+			var neighbours = sServObj.getItemNeighboursFromLevel(name, segments[0].id, segments[segments.length - 1].id);
 			var segTime = (changeTime * segments.length);
 
 			var attrDefName = viewState.getCurAttrDef(name);

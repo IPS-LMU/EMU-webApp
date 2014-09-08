@@ -502,7 +502,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.left !== undefined) {
                       if (lastNeighboursMove.left.sampleStart !== undefined) {
                         // check if in view
@@ -528,7 +528,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.right.sampleStart !== undefined) {
                       // check if in view
                       if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
@@ -553,7 +553,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickSegments().length > 0) {
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
-                    var lastNeighboursMove = LevelService.getElementNeighbourDetails(viewState.getcurClickLevelName(), idLeft, idRight);
+                    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (e.shiftKey) {
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {

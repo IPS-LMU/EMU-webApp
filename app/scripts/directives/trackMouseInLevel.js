@@ -275,7 +275,7 @@ angular.module('emuwebApp')
           lastEventMove = LevelService.getClosestItem(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
             if (lastEventMove.evtr !== undefined && lastEventMove.nearest !== undefined) {
-              lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+              lastNeighboursMove = LevelService.getItemNeighboursFromLevel(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
               viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
             }
           }

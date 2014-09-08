@@ -280,7 +280,7 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     // should return neighbours "O" and "I"
     LevelService.setData(JDR10_bndl.annotation);
-    var neigh = LevelService.getElementNeighbourDetails('Phonetic', 0, 1);
+    var neigh = LevelService.getItemNeighboursFromLevel('Phonetic', 0, 1);
     expect(neigh.left.id).toEqual(3);
     expect(neigh.right.id).toEqual(4);
     expect(neigh.left.labels[0].value).toEqual('O');
@@ -289,7 +289,7 @@ describe('Service: LevelService', function () {
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // should return neighbours undefined and "lower"
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    var neigh = LevelService.getElementNeighbourDetails('TB', 40, 40);
+    var neigh = LevelService.getItemNeighboursFromLevel('TB', 40, 40);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right.id).toEqual(41);
     expect(neigh.right.labels[0].value).toEqual('lower');
@@ -297,7 +297,7 @@ describe('Service: LevelService', function () {
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // should return neighbours "raise" and undefined
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    var neigh = LevelService.getElementNeighbourDetails('TB', 41, 41);
+    var neigh = LevelService.getItemNeighboursFromLevel('TB', 41, 41);
     expect(neigh.left.id).toEqual(40);
     expect(neigh.left.labels[0].value).toEqual('raise');
     expect(neigh.right).toEqual(undefined);
@@ -305,7 +305,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // should return neighbours "V" and "l"
     LevelService.setData(msajc003_bndl.annotation);
-    var neigh = LevelService.getElementNeighbourDetails('Phonetic', 148, 179);
+    var neigh = LevelService.getItemNeighboursFromLevel('Phonetic', 148, 179);
     expect(neigh.left.id).toEqual(147);
     expect(neigh.left.labels[0].value).toEqual('V');
     expect(neigh.right.id).toEqual(180);
@@ -314,7 +314,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // should return neighbours undefined and undefined
     LevelService.setData(msajc003_bndl.annotation);
-    var neigh = LevelService.getElementNeighbourDetails('Phonetic', 147, 180);
+    var neigh = LevelService.getItemNeighboursFromLevel('Phonetic', 147, 180);
     expect(neigh.left).toEqual(undefined);
     expect(neigh.right).toEqual(undefined);
   }));
