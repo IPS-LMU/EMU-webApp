@@ -19,6 +19,10 @@ angular.module('emuwebApp')
         scope.$watch('LevelService.data', function () {
           scope.render();
         }, true);
+        scope.$watch('viewState', function () {
+	  console.debug('wathced sth');
+          scope.render();
+        }, true);
 
         //
         //////////////////////
@@ -177,12 +181,14 @@ angular.module('emuwebApp')
 				return d.children || d._children ? "end" : "start";
 			})
 			.text(function (d) {
-				return "foo";
-				var text = d.labels[0].value;
-				for (var i = 1; i < d.labels.length; ++i) {
-					text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
+				var level = viewState.getCurAttrDef(HierarchyService.getLevelName(d.id));
+				for (var i=0; i<d.labels.length; ++i) {
+					if (d.labels[i].name === level) {
+						return d.labels[i].value;
+					}
 				}
-				return text;
+				console.debug ("Likely a bug: Did not find the label selected for display", "Selected level:", level, "Node: ", d);
+				return "NO VALUE";
 			})
 			.style("fill-opacity", 1);
 
@@ -207,13 +213,6 @@ angular.module('emuwebApp')
 			})
 			.attr("text-anchor", function (d) {
 				return d.children || d._children ? "end" : "start";
-			})
-			.text(function (d) {
-				var text = d.labels[0].value;
-				for (var i = 1; i < d.labels.length; ++i) {
-					text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
-				}
-				return text;
 			});
 
 		// Change the circle fill depending on whether it has children and is collapsed
