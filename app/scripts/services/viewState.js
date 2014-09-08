@@ -783,7 +783,7 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.getPCMpp = function (event) {
+    sServObj.getSamplesPerPixelVal = function (event) {
       var start = parseFloat(this.curViewPort.sS);
       var end = parseFloat(this.curViewPort.eS);
       return (end - start) / event.originalEvent.target.width;

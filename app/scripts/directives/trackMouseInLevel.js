@@ -53,7 +53,8 @@ angular.module('emuwebApp')
         element.bind('mousemove', function (event) {
           if (!viewState.getdragBarActive()) {
             var moveLine = true;
-            var zoom = viewState.getPCMpp(event);
+            var zoom = viewState.getSamplesPerPixelVal(event);
+            console.log(zoom)
             thisPCM = getX(event) * zoom;
             var moveBy = (thisPCM - lastPCM);
             if (zoom <= 1) {
@@ -196,7 +197,7 @@ angular.module('emuwebApp')
          *
          */
         function setLastClick(x) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          thisPCM = getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
@@ -218,7 +219,7 @@ angular.module('emuwebApp')
           if (viewState.getcurClickLevelName() !== levelID) {
             setLastClick(x);
           }
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          thisPCM = getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
           lastEventClick = LevelService.getClosestItem(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
@@ -234,7 +235,7 @@ angular.module('emuwebApp')
          *
          */
         function setLastDblClick(x) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          thisPCM = getX(x) * viewState.getSamplesPerPixelVal(x);
           lastEventClick = LevelService.getClosestItem(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
             if (levelType === 'SEGMENT') {
@@ -271,7 +272,7 @@ angular.module('emuwebApp')
          *
          */
         function setLastMove(x, doChange) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          thisPCM = getX(x) * viewState.getSamplesPerPixelVal(x);
           lastEventMove = LevelService.getClosestItem(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
             if (lastEventMove.evtr !== undefined && lastEventMove.nearest !== undefined) {

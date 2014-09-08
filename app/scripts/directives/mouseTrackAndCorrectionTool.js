@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 				/////////////////////////////
 				// Bindings
 				element.bind('mousedown', function (event) {
-					dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
+					dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					dragEndSample = dragStartSample;
 					viewState.select(dragStartSample, dragStartSample);
 					//Drawhelperservice.drawViewPortTimes(ctx, true);
@@ -225,7 +225,7 @@ angular.module('emuwebApp')
 
 
 				function setSelectDrag(event) {
-					curMouseSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
+					curMouseSample = Math.round(Drawhelperservice.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					if (curMouseSample > dragStartSample) {
 						dragEndSample = curMouseSample;
 						viewState.select(dragStartSample, dragEndSample);
