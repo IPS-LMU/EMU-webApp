@@ -394,19 +394,21 @@ angular.module('emuwebApp')
 
 
 					var segMId = viewState.getcurMouseSegment();
-					var segCId = viewState.getcurClickSegments();
+					var clickedSegs = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
-					if (segCId !== undefined) {
+					if (clickedSegs !== undefined) {
 						// draw clicked on selected areas
-						if (levelDetails.name === levelId && segCId.length > 0) {
-							segCId.forEach(function (entry) {
-								if (entry !== undefined) {
+						if (levelDetails.name === levelId && clickedSegs.length > 0) {
+							clickedSegs.forEach(function (cs) {
+								if (cs !== undefined) {
 									// check if segment or event level
-									if (entry.sampleStart !== undefined) {
-										posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
-										posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
+									if (cs.sampleStart !== undefined) {
+										posS = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart));
+										console.log(segMId);
+										console.log(cs);
+										posE = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart + cs.sampleDur));
 									} else {
-										posS = Math.round(viewState.getPos(canvas[0].width, entry.samplePoint) + sDist / 2);
+										posS = Math.round(viewState.getPos(canvas[0].width, cs.samplePoint) + sDist / 2);
 										posS = posS - 5;
 										posE = posS + 10;
 									}
@@ -423,7 +425,7 @@ angular.module('emuwebApp')
 					// draw preselected boundary
 					curEvt = viewState.getcurMouseSegment();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
-						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
+						ctx.fillStyle = config.vals.colors.selectedBounadaryColor;
 						if (segMId === false) { // before first segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[0];
@@ -433,7 +435,7 @@ angular.module('emuwebApp')
 						} else if (segMId === true) { // after last segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[levelDetails.items.length - 1];
-								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur)));
+								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
 						} else { // in the middle
