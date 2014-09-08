@@ -457,11 +457,19 @@ angular.module('emuwebApp')
 
 
 		/**
-		 * gets element details by passing in level, pcm position and maximum pcm
+		 * get item details by passing in level, sampleNr and maximum pcm
+		 *
+		 * @param level
+		 * @param sampleNr
+		 * @param maximum 
+		 * @returns object of the form {evtr: event,nearest: nearest}
+		 * where evtr is the actual item and nearest is the closest
+		 * item to that event???? SIC ?? Is this how it is meant?
 		 */
-		sServObj.getEvent = function (pcm, levelname, maximum) {
+		sServObj.getClosestItem = function (sampleNr, levelname, maximum) {
+			console.log(sampleNr)
 			var level = sServObj.getLevelDetails(levelname).level;
-			var event = level.items[0];
+			var item = level.items[0];
 			var nearest = false;
 			if (level.items.length == 0) {
 				return {
@@ -471,26 +479,27 @@ angular.module('emuwebApp')
 			}
 			if (level.type === 'SEGMENT') {
 				angular.forEach(level.items, function (evt, index) {
-					if (pcm >= evt.sampleStart) {
-						if (pcm <= (evt.sampleStart + evt.sampleDur)) {
-							if (pcm - evt.sampleStart >= evt.sampleDur / 2) {
+					if (sampleNr >= evt.sampleStart) {
+						if (sampleNr <= (evt.sampleStart + evt.sampleDur + 0.5)) { //0.5 sample correction
+							console.log('within segment');
+							if (sampleNr - evt.sampleStart >= evt.sampleDur / 2) {
 								if (level.items[index + 1] !== undefined) {
 									nearest = level.items[index + 1];
 								} else {
 									nearest = true;
-									event = level.items[level.items.length - 1];
+									item = level.items[level.items.length - 1];
 								}
 							} else {
 								nearest = level.items[index];
 							}
 						}
 					}
-					if (pcm >= evt.sampleStart) {
-						if (pcm <= (evt.sampleStart + evt.sampleDur)) {
-							event = evt;
+					if (sampleNr >= evt.sampleStart) {
+						if (sampleNr <= (evt.sampleStart + evt.sampleDur)) {
+							item = evt;
 						} else {
 							nearest = true;
-							event = level.items[level.items.length - 1];
+							item = level.items[level.items.length - 1];
 						}
 					}
 				});
@@ -508,14 +517,14 @@ angular.module('emuwebApp')
 					} else {
 						spaceLower = 0;
 					}
-					if (pcm <= spaceHigher && pcm >= spaceLower) {
-						event = evt;
+					if (sampleNr <= spaceHigher && sampleNr >= spaceLower) {
+						item = evt;
 						nearest = evt;
 					}
 				});
 			}
 			return {
-				evtr: event,
+				evtr: item,
 				nearest: nearest
 			};
 		};
