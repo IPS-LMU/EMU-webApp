@@ -404,8 +404,6 @@ angular.module('emuwebApp')
 									// check if segment or event level
 									if (cs.sampleStart !== undefined) {
 										posS = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart));
-										console.log(segMId);
-										console.log(cs);
 										posE = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart + cs.sampleDur));
 									} else {
 										posS = Math.round(viewState.getPos(canvas[0].width, cs.samplePoint) + sDist / 2);
