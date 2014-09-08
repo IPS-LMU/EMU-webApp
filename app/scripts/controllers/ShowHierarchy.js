@@ -33,7 +33,7 @@ angular.module('emuwebApp')
 		// watch selected path to redraw on startup and change of value
 		$scope.$watch('paths.selected', function (val) {
 			if (val !== undefined) {
-				// $scope.redraw();
+				$scope.redraw();
 			}
 
 		}, true);
@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 		$scope.redraw = function () {
 			var selIdx = $scope.getSelIdx();
 			HierarchyService.setPath($scope.paths.possible[selIdx]);
-			HierarchyService.drawHierarchy();
+			//HierarchyService.drawHierarchy();
 		};
 
 		/**
