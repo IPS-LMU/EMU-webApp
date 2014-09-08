@@ -1,7 +1,7 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "serverUrl": "ws://localhost:8080",
         "serverTimeoutInterval": 5000,
         "comMode": "WS",
@@ -112,7 +112,7 @@
         "deleteLevel": true,
         "addItem": true,
         "drawCrossHairs": true,
-        "drawSampleNrs": false,
+        "drawSampleNrs": true,
         "drawZeroLine": true,
         "bundleComments": false,
         "bundleFinishedEditing": false,
