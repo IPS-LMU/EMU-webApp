@@ -423,7 +423,7 @@ angular.module('emuwebApp')
 					// draw preselected boundary
 					curEvt = viewState.getcurMouseSegment();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
-						ctx.fillStyle = config.vals.colors.selectedBounadaryColor;
+						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						if (segMId === false) { // before first segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[0];
