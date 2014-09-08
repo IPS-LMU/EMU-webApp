@@ -467,7 +467,6 @@ angular.module('emuwebApp')
 		 * item to that event???? SIC ?? Is this how it is meant?
 		 */
 		sServObj.getClosestItem = function (sampleNr, levelname, maximum) {
-			console.log(sampleNr)
 			var level = sServObj.getLevelDetails(levelname).level;
 			var item = level.items[0];
 			var nearest = false;
@@ -478,11 +477,10 @@ angular.module('emuwebApp')
 				};
 			}
 			if (level.type === 'SEGMENT') {
-				angular.forEach(level.items, function (evt, index) {
-					if (sampleNr >= evt.sampleStart) {
-						if (sampleNr <= (evt.sampleStart + evt.sampleDur + 0.5)) { //0.5 sample correction
-							console.log('within segment');
-							if (sampleNr - evt.sampleStart >= evt.sampleDur / 2) {
+				angular.forEach(level.items, function (itm, index) {
+					if (sampleNr >= (itm.sampleStart - 0.5)) { // 0.5 sample correction
+						if (sampleNr <= (itm.sampleStart + itm.sampleDur + 0.5)) { // 0.5 sample correction
+							if (sampleNr - itm.sampleStart >= itm.sampleDur / 2) {
 								if (level.items[index + 1] !== undefined) {
 									nearest = level.items[index + 1];
 								} else {
@@ -494,9 +492,9 @@ angular.module('emuwebApp')
 							}
 						}
 					}
-					if (sampleNr >= evt.sampleStart) {
-						if (sampleNr <= (evt.sampleStart + evt.sampleDur)) {
-							item = evt;
+					if (sampleNr >= itm.sampleStart) {
+						if (sampleNr <= (itm.sampleStart + itm.sampleDur + 0.5)) { // 0.5 sample correction
+							item = itm;
 						} else {
 							nearest = true;
 							item = level.items[level.items.length - 1];
