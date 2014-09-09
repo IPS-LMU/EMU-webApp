@@ -97,7 +97,6 @@ angular.module('emuwebApp')
                 LevelService.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
-                  var position = 0;
                   if (scope.this.level.type === 'SEGMENT') {
                     if (viewState.getcurMouseisFirst() || viewState.getcurMouseisLast()) {
                       var seg, leftMost, rightB;
@@ -105,24 +104,23 @@ angular.module('emuwebApp')
                       if (viewState.getcurMouseisFirst()) {
                         seg = LevelService.getItemDetails(scope.this.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
-                        position = -1;
                       } else if(viewState.getcurMouseisLast()){
                         seg = LevelService.getLastItem(scope.this.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
-                        position = 1;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
                     }
-                    LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, position);
+                    LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
                       'action': 'moveBoundary',
                       'name': scope.this.level.name,
                       'id': seg.id,
                       'movedBy': moveBy,
-                      'position': position
+                      'isFirst': viewState.getcurMouseisFirst(),
+                      'isLast': viewState.getcurMouseisLast()
                     });
 
                   } else {

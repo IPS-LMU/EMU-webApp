@@ -1014,18 +1014,17 @@ angular.module('emuwebApp')
 		 *  @param {string} name The name of the level in which the segment lies.
 		 *  @param {number} id The id of the segment.
 		 *  @param {number} changeTime The time to add or substract.
-		 *  @param {position} The position of the mouse while moving the Boundary
-		 *                    (i.e. -1 = before first item, 1 = after last item, 0 = in the middle of items).
+		 *  @param {isFirst} if item is first
+		 *  @param {isLast} if item is last
 		 *
 		 */
-		sServObj.moveBoundary = function (levelName, id, changeTime, position) {
-		    console.log(levelName, id, changeTime, position);
+		sServObj.moveBoundary = function (levelName, id, changeTime, isFirst, isLast) {
 			var orig = sServObj.getItemFromLevelById(levelName, id);
 			var attrDefName = viewState.getCurAttrDef(levelName);
 			var labelIdx = getLabelIdx(attrDefName, orig.labels);
 
 			var ln = sServObj.getItemNeighboursFromLevel(levelName, id, id);
-			if (position === -1) { // before first item
+			if (isFirst) { // before first item
 				var origRight = ln.right;
 				if (origRight !== undefined) {
 					if (((orig.sampleStart + changeTime) > 0) && ((orig.sampleStart + changeTime) < origRight.sampleStart)) {
@@ -1036,7 +1035,7 @@ angular.module('emuwebApp')
 						sServObj.updateSegItemInLevel(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
-			} else if (position === 1) { // after last item
+			} else if (isLast) { // after last item
 				if ((orig.sampleDur + changeTime) >= 1 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.updateSegItemInLevel(levelName, orig.id, undefined, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
 				}

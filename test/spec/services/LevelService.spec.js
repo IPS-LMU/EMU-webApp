@@ -808,24 +808,24 @@ describe('Service: LevelService', function () {
     // move Boundary
     LevelService.setData(msajc003_bndl.annotation);
     // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Phonetic', 158, 100000, 0);
+    LevelService.moveBoundary('Phonetic', 158, 100000, false, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 157).sampleStart).toEqual(19000);
     expect(LevelService.getItemFromLevelById('Phonetic', 157).sampleDur).toEqual(1640);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleStart).toEqual(20640);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleDur).toEqual(3280);
     // move middle (0) boundary of segment with id 158 on level 'Phonetic' by 10 samples
-    LevelService.moveBoundary('Phonetic', 158, 10, 0);
+    LevelService.moveBoundary('Phonetic', 158, 10, false, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 157).sampleStart).toEqual(19000);
     expect(LevelService.getItemFromLevelById('Phonetic', 157).sampleDur).toEqual(1640 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleStart).toEqual(20640 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleDur).toEqual(3280 - 10);
     // move left most (-1) boundary of segment with id 147 on level 'Phonetic' by 10 samples   
-    LevelService.moveBoundary('Phonetic', 147, 10, -1);
+    LevelService.moveBoundary('Phonetic', 147, 10, true, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleStart).toEqual(3750 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(1390 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
     Soundhandlerservice.wavJSO.Data = new Array(58089);
-    LevelService.moveBoundary('Phonetic', 180, 10, 1);
+    LevelService.moveBoundary('Phonetic', 180, 10, false, true);
     expect(LevelService.getItemFromLevelById('Phonetic', 180).sampleStart).toEqual(50126);
     expect(LevelService.getItemFromLevelById('Phonetic', 180).sampleDur).toEqual(1964 + 10);
 
@@ -833,24 +833,24 @@ describe('Service: LevelService', function () {
     // move Boundary
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     // move middle (0) boundary of segment with id 2 on level 'Segment' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Segment', 2, 100000, 0);
+    LevelService.moveBoundary('Segment', 2, 100000, false, false);
     expect(LevelService.getItemFromLevelById('Segment', 1).sampleStart).toEqual(8640);
     expect(LevelService.getItemFromLevelById('Segment', 1).sampleDur).toEqual(6240);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleStart).toEqual(14880);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleDur).toEqual(2640);
     // move middle (0) boundary of segment with id 2 on level 'Segment' by 10 samples
-    LevelService.moveBoundary('Segment', 2, 10, 0);
+    LevelService.moveBoundary('Segment', 2, 10, false, false);
     expect(LevelService.getItemFromLevelById('Segment', 1).sampleStart).toEqual(8640);
     expect(LevelService.getItemFromLevelById('Segment', 1).sampleDur).toEqual(6240 + 10);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleStart).toEqual(14880 + 10);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleDur).toEqual(2640 - 10);
     // move left most (-1) boundary of segment with id 0 on level 'Segment' by 10 samples   
-    LevelService.moveBoundary('Segment', 0, 10, -1);
+    LevelService.moveBoundary('Segment', 0, 10, true, false);
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleStart).toEqual(0 + 10);
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleDur).toEqual(8640 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
     Soundhandlerservice.wavJSO.Data = new Array(96002);
-    LevelService.moveBoundary('Segment', 37, 10, 1);
+    LevelService.moveBoundary('Segment', 37, 10, false, true);
     expect(LevelService.getItemFromLevelById('Segment', 37).sampleStart).toEqual(94560);
     expect(LevelService.getItemFromLevelById('Segment', 37).sampleDur).toEqual(1200 + 10);
 
@@ -858,24 +858,24 @@ describe('Service: LevelService', function () {
     // move Boundary
     LevelService.setData(JDR10_bndl.annotation);
     // move middle (0) boundary of segment with id 1 on level 'Phonetic' by 100000 samples -> should not change anything
-    LevelService.moveBoundary('Phonetic', 1, 100000, 0);
+    LevelService.moveBoundary('Phonetic', 1, 100000, false, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(88639);
     expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(1642);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(90281);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(761);
     // move middle (0) boundary of segment with id 1 on level 'Phonetic' by 10 samples
-    LevelService.moveBoundary('Phonetic', 1, 10, 0);
+    LevelService.moveBoundary('Phonetic', 1, 10, false, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(88639);
     expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(1642 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(90281 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(761 - 10);
     // move left most (-1) boundary of segment with id 0 on level 'Phonetic' by 10 samples   
-    LevelService.moveBoundary('Phonetic', 3, 10, -1);
+    LevelService.moveBoundary('Phonetic', 3, 10, true, false);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(87710 + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(929 - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
     Soundhandlerservice.wavJSO.Data = new Array(112000);
-    LevelService.moveBoundary('Phonetic', 4, 10, 1);
+    LevelService.moveBoundary('Phonetic', 4, 10, false, true);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(91042);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(553 + 10);
 
