@@ -35,7 +35,7 @@ angular.module('emuwebApp')
                   console.error('parallel labels are not added to history service correctly!!!!!!');
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
-                    'action': 'renameLabel',
+                    'action': 'RENAMELABEL',
                     'name': viewState.getcurClickLevelName(),
                     'id': LevelService.getlastID(),
                     'oldValue': editingElement.labels[0].value,
@@ -222,7 +222,7 @@ angular.module('emuwebApp')
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
-                          'action': 'movePoint',
+                          'action': 'MOVEPOINT',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist
@@ -230,7 +230,7 @@ angular.module('emuwebApp')
                       } else if (levelType === "SEGMENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
-                          'action': 'moveBoundary',
+                          'action': 'MOVEBOUNDARY',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist,
@@ -258,7 +258,7 @@ angular.module('emuwebApp')
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
-                          'action': 'movePoint',
+                          'action': 'MOVEPOINT',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist
@@ -267,7 +267,7 @@ angular.module('emuwebApp')
                         console.log('seg to bottom');
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
-                          'action': 'moveBoundary',
+                          'action': 'MOVEBOUNDARY',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist,
@@ -297,7 +297,7 @@ angular.module('emuwebApp')
                       LevelService.moveBoundary(levelname, seg.id, dist, 0);
                       HistoryService.updateCurChangeObj({
                         'type': 'ESPS',
-                        'action': 'moveBoundary',
+                        'action': 'MOVEBOUNDARY',
                         'name': levelname,
                         'id': seg.id,
                         'movedBy': dist,
@@ -330,7 +330,7 @@ angular.module('emuwebApp')
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
-                          'action': 'expandSegments',
+                          'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
                           'rightSide': true,
@@ -368,7 +368,7 @@ angular.module('emuwebApp')
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
-                          'action': 'expandSegments',
+                          'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
                           'rightSide': false,
@@ -405,7 +405,7 @@ angular.module('emuwebApp')
                         }
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
-                          'action': 'expandSegments',
+                          'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
                           'rightSide': true,
@@ -445,7 +445,7 @@ angular.module('emuwebApp')
                         }
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
-                          'action': 'expandSegments',
+                          'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
                           'rightSide': false,
@@ -619,7 +619,7 @@ angular.module('emuwebApp')
                           } else {
                             scope.hists.addObjToUndoStack({
                               'type': 'ESPS',
-                              'action': 'insertSegments',
+                              'action': 'INSERTSEGMENTS',
                               'name': viewState.getcurClickLevelName(),
                               'start': viewState.curViewPort.selectS,
                               'end': viewState.curViewPort.selectE,
@@ -636,7 +636,7 @@ angular.module('emuwebApp')
                             } else {
                               scope.hists.addObjToUndoStack({ // todo 
                                 'type': 'ESPS',
-                                'action': 'insertPoint',
+                                'action': 'INSERTPOINT',
                                 'name': viewState.getcurClickLevelName(),
                                 'start': viewState.curViewPort.selectS,
                                 'id': insPoint.id,
@@ -685,7 +685,7 @@ angular.module('emuwebApp')
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
-                            'action': 'deleteSegments',
+                            'action': 'DELETESEGMENTS',
                             'name': levelname,
                             'id': seg.id,
                             'length': 1,
@@ -694,11 +694,11 @@ angular.module('emuwebApp')
                           viewState.setcurMouseSegment(undefined, undefined, undefined);
                           viewState.setcurClickSegment(deletedSegment.clickSeg);
                         } else if (seg === true) { // after last segment
-                          seg = LevelService.getLastItem(levelname);
+                          seg = LevelService.getLastElement(levelname);
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
-                            'action': 'deleteSegments',
+                            'action': 'DELETESEGMENTS',
                             'name': levelname,
                             'id': seg.id,
                             'length': 1,
@@ -711,7 +711,7 @@ angular.module('emuwebApp')
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id);
                             scope.hists.addObjToUndoStack({
                               'type': 'ESPS',
-                              'action': 'deleteBoundary',
+                              'action': 'DELETEBOUNDARY',
                               'name': levelname,
                               'id': seg.id,
                               'deletedSegment': deletedSegment
@@ -723,7 +723,7 @@ angular.module('emuwebApp')
                             var deletedPoint = LevelService.deletePoint(levelname, seg.id);
                             scope.hists.addObjToUndoStack({
                               'type': 'ESPS',
-                              'action': 'deletePoint',
+                              'action': 'DELETEPOINT',
                               'name': levelname,
                               'start': deletedPoint.samplePoint,
                               'id': deletedPoint.id,
@@ -747,7 +747,7 @@ angular.module('emuwebApp')
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
-                            'action': 'deleteSegments',
+                            'action': 'DELETESEGMENTS',
                             'name': levelname,
                             'id': seg[0].id,
                             'length': seg.length,

@@ -343,21 +343,11 @@ angular.module('emuwebApp')
 									}
 								});
 
-								//if (segMId !=== undefined && levelDetails.name === viewState.curMouseMoveLevelName && segMId.id === viewState.curMouseMoveSegmentName) {
-								//console.log('this is the selected boundary');
-								// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-								// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		tW = ctx.measureText(levelDetails.items[k].label).width;
-								// 		ctx.fillStyle = this.params.labelColor;
-								// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
-								//} else {
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
-								//}
 
 								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);

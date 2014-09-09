@@ -138,7 +138,7 @@ angular.module('emuwebApp')
 							var gdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[0],
 								'id': gdat0insPoint.id,
@@ -148,7 +148,7 @@ angular.module('emuwebApp')
 							var gdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[1],
 								'id': gdat1insPoint.id,
@@ -162,7 +162,7 @@ angular.module('emuwebApp')
 							var vdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[0],
 								'id': vdat0insPoint.id,
@@ -172,7 +172,7 @@ angular.module('emuwebApp')
 							var vdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[1],
 								'id': vdat1insPoint.id,
@@ -186,7 +186,7 @@ angular.module('emuwebApp')
 							var ndat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[0],
 								'id': ndat0insPoint.id,
@@ -196,7 +196,7 @@ angular.module('emuwebApp')
 							var ndat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[1],
 								'id': ndat1insPoint.id,
@@ -209,7 +209,7 @@ angular.module('emuwebApp')
 							var cdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ESPS',
-								'action': 'insertPoint',
+								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': cdat[0],
 								'id': cdat0insPoint.id,

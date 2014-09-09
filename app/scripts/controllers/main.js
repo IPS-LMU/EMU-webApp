@@ -672,7 +672,7 @@ angular.module('emuwebApp')
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
-					'action': 'addLevel',
+					'action': 'ADDLEVEL',
 					'level': level,
 					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
@@ -707,7 +707,7 @@ angular.module('emuwebApp')
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
-					'action': 'addLevel',
+					'action': 'ADDLEVEL',
 					'level': level,
 					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
