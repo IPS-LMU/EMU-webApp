@@ -1,6 +1,6 @@
 {
   "name": "EMU-webApp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "angular-mocks": "~1.2.18"
   },
