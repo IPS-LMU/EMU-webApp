@@ -912,15 +912,14 @@ angular.module('emuwebApp')
     sServObj.zoomViewPort = function (zoomIn, LevelService) {
       var newStartS, newEndS, curMouseMoveSegmentStart;
       var seg = this.getcurMouseSegment();
-
       var d = this.curViewPort.eS - this.curViewPort.sS;
 
       var isLastSeg = false;
 
       if (seg !== undefined) {
-        if (seg === false) { // before first element
+        if (this.getcurMouseisFirst()) { // before first element
           seg = LevelService.getItemDetails(sServObj.getcurMouseLevelName(), 0);
-        } else if (seg === true) {
+        } else if (this.getcurMouseisLast()) {
           seg = LevelService.getLastItem(sServObj.getcurMouseLevelName());
           isLastSeg = true;
         }
@@ -933,9 +932,6 @@ angular.module('emuwebApp')
         } else {
           curMouseMoveSegmentStart = seg.samplePoint;
         }
-
-        // console.log(curMouseMoveSegmentStart);
-
         var d1 = curMouseMoveSegmentStart - this.curViewPort.sS;
         var d2 = this.curViewPort.eS - curMouseMoveSegmentStart;
 
