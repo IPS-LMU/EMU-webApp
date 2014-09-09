@@ -9,17 +9,17 @@ describe('Service: Soundhandlerservice', function () {
    *
    */
   it('should setPlayerSrc', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(base64Wav));   
-    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + base64Wav);
+    Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data));   
+    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + msajc003_bndl.mediaFile.data);
   }));
   
  /**
    *
    */
   it('should resetPlayerSrcFromTo', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    /*Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(base64Wav));   
+    /*Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data));   
     Soundhandlerservice.resetPlayerSrcFromTo(0,2000)
-    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + base64Wav);
+    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + msajc003_bndl.mediaFile.data);
      subarray bug */
   }));
   
