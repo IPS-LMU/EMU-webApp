@@ -12,11 +12,11 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.data).toEqual(JDR10_bndl.annotation);
-    expect(LevelService.maxElementID).toEqual(4);
+    expect(LevelService.maxItemID).toEqual(4);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.maxElementID).toEqual(42);
+    expect(LevelService.maxItemID).toEqual(42);
   }));
 
   /**
@@ -26,12 +26,12 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     LevelService.raiseId(1);
-    expect(LevelService.maxElementID).toEqual(5);
+    expect(LevelService.maxItemID).toEqual(5);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.raiseId(1);
-    expect(LevelService.maxElementID).toEqual(43);
+    expect(LevelService.maxItemID).toEqual(43);
   }));
 
   /**
@@ -41,12 +41,12 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     LevelService.lowerId(1);
-    expect(LevelService.maxElementID).toEqual(3);
+    expect(LevelService.maxItemID).toEqual(3);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.lowerId(1);
-    expect(LevelService.maxElementID).toEqual(41);
+    expect(LevelService.maxItemID).toEqual(41);
   }));
 
   /**
@@ -106,20 +106,20 @@ describe('Service: LevelService', function () {
   it('should get element (segment) details by passing name and order', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('O');
+    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(3);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87710);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(929);
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('O');
 
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
-    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29609);
-    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2695);
-    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('raise');
+    expect(LevelService.getItemDetails('TB', 0).id).toEqual(40);
+    expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29609);
+    expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(2695);
+    expect(LevelService.getItemDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getItemDetails('TB', 0).labels[0].value).toEqual('raise');
   }));
 
   /**
@@ -128,20 +128,20 @@ describe('Service: LevelService', function () {
   it('should get last element details by passing name', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLastElement('Phonetic').id).toEqual(4);
-    expect(LevelService.getLastElement('Phonetic').sampleStart).toEqual(91042);
-    expect(LevelService.getLastElement('Phonetic').sampleDur).toEqual(553);
-    expect(LevelService.getLastElement('Phonetic').labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getLastElement('Phonetic').labels[0].value).toEqual('I');
+    expect(LevelService.getLastItem('Phonetic').id).toEqual(4);
+    expect(LevelService.getLastItem('Phonetic').sampleStart).toEqual(91042);
+    expect(LevelService.getLastItem('Phonetic').sampleDur).toEqual(553);
+    expect(LevelService.getLastItem('Phonetic').labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getLastItem('Phonetic').labels[0].value).toEqual('I');
 
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLastElement('TB').id).toEqual(41);
-    expect(LevelService.getLastElement('TB').sampleStart).toEqual(32304);
-    expect(LevelService.getLastElement('TB').sampleDur).toEqual(2028);
-    expect(LevelService.getLastElement('TB').labels[0].name).toEqual('TB');
-    expect(LevelService.getLastElement('TB').labels[0].value).toEqual('lower');
+    expect(LevelService.getLastItem('TB').id).toEqual(41);
+    expect(LevelService.getLastItem('TB').sampleStart).toEqual(32304);
+    expect(LevelService.getLastItem('TB').sampleDur).toEqual(2028);
+    expect(LevelService.getLastItem('TB').labels[0].name).toEqual('TB');
+    expect(LevelService.getLastItem('TB').labels[0].value).toEqual('lower');
   }));
 
   /**
@@ -150,20 +150,20 @@ describe('Service: LevelService', function () {
   it('should get next element details by passing name and id', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getNextElement('Phonetic', 1).id).toEqual(4);
-    expect(LevelService.getNextElement('Phonetic', 1).sampleStart).toEqual(91042);
-    expect(LevelService.getNextElement('Phonetic', 1).sampleDur).toEqual(553);
-    expect(LevelService.getNextElement('Phonetic', 1).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getNextElement('Phonetic', 1).labels[0].value).toEqual('I');
+    expect(LevelService.getNextItem('Phonetic', 1).id).toEqual(4);
+    expect(LevelService.getNextItem('Phonetic', 1).sampleStart).toEqual(91042);
+    expect(LevelService.getNextItem('Phonetic', 1).sampleDur).toEqual(553);
+    expect(LevelService.getNextItem('Phonetic', 1).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getNextItem('Phonetic', 1).labels[0].value).toEqual('I');
 
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getNextElement('TB', 40).id).toEqual(41);
-    expect(LevelService.getNextElement('TB', 40).sampleStart).toEqual(32304);
-    expect(LevelService.getNextElement('TB', 40).sampleDur).toEqual(2028);
-    expect(LevelService.getNextElement('TB', 40).labels[0].name).toEqual('TB');
-    expect(LevelService.getNextElement('TB', 40).labels[0].value).toEqual('lower');
+    expect(LevelService.getNextItem('TB', 40).id).toEqual(41);
+    expect(LevelService.getNextItem('TB', 40).sampleStart).toEqual(32304);
+    expect(LevelService.getNextItem('TB', 40).sampleDur).toEqual(2028);
+    expect(LevelService.getNextItem('TB', 40).labels[0].name).toEqual('TB');
+    expect(LevelService.getNextItem('TB', 40).labels[0].value).toEqual('lower');
   }));
 
   /**
@@ -215,24 +215,24 @@ describe('Service: LevelService', function () {
     ConfigProviderService.curDbConfig = epgdorsalDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(JDR10_bndl.annotation);
-    LevelService.insertElementDetails(5, 'Phonetic', 0, 'test', 87610, 100);
+    LevelService.insertItemDetails(5, 'Phonetic', 0, 'test', 87610, 100);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
-    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(5);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87610);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(100);
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
+    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(5);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87610);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(100);
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('test');
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = emaDbConfig;
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    LevelService.insertElementDetails(42, 'TB', 0, 'test', 29509, 100);
+    LevelService.insertItemDetails(42, 'TB', 0, 'test', 29509, 100);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
-    expect(LevelService.getElementDetails('TB', 0).id).toEqual(42);
-    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29509);
-    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(100);
-    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('test');
+    expect(LevelService.getItemDetails('TB', 0).id).toEqual(42);
+    expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29509);
+    expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(100);
+    expect(LevelService.getItemDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getItemDetails('TB', 0).labels[0].value).toEqual('test');
   }));
 
   /**
@@ -243,21 +243,21 @@ describe('Service: LevelService', function () {
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(JDR10_bndl.annotation);
     LevelService.updateSegItemInLevel('Phonetic', 3, 'test', 0, 87700, 939);
-    expect(LevelService.getElementDetails('Phonetic', 0).id).toEqual(3);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleStart).toEqual(87700);
-    expect(LevelService.getElementDetails('Phonetic', 0).sampleDur).toEqual(939);
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getElementDetails('Phonetic', 0).labels[0].value).toEqual('test');
+    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(3);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87700);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(939);
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
+    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('test');
 
     // // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.updateSegItemInLevel('TB', 40, 'test', 0, 29604, 2700);
-    expect(LevelService.getElementDetails('TB', 0).id).toEqual(40);
-    expect(LevelService.getElementDetails('TB', 0).sampleStart).toEqual(29604);
-    expect(LevelService.getElementDetails('TB', 0).sampleDur).toEqual(2700);
-    expect(LevelService.getElementDetails('TB', 0).labels[0].name).toEqual('TB');
-    expect(LevelService.getElementDetails('TB', 0).labels[0].value).toEqual('test');
+    expect(LevelService.getItemDetails('TB', 0).id).toEqual(40);
+    expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29604);
+    expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(2700);
+    expect(LevelService.getItemDetails('TB', 0).labels[0].name).toEqual('TB');
+    expect(LevelService.getItemDetails('TB', 0).labels[0].value).toEqual('test');
   }));
 
   /**
@@ -267,10 +267,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     LevelService.setData(msajc003_bndl.annotation);
     LevelService.setPointDetails('Tone', 181, 'test', 100);
-    expect(LevelService.getElementDetails('Tone', 0).id).toEqual(181);
-    expect(LevelService.getElementDetails('Tone', 0).samplePoint).toEqual(100);
-    expect(LevelService.getElementDetails('Tone', 0).labels[0].name).toEqual('Tone');
-    expect(LevelService.getElementDetails('Tone', 0).labels[0].value).toEqual('test');
+    expect(LevelService.getItemDetails('Tone', 0).id).toEqual(181);
+    expect(LevelService.getItemDetails('Tone', 0).samplePoint).toEqual(100);
+    expect(LevelService.getItemDetails('Tone', 0).labels[0].name).toEqual('Tone');
+    expect(LevelService.getItemDetails('Tone', 0).labels[0].value).toEqual('test');
   }));
 
   /**
@@ -326,62 +326,71 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     LevelService.setData(msajc003_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 58089 
-    // before any element nearest should be false
-    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).nearest).toEqual(false);
-    // after any element nearest should be true
-    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).nearest).toEqual(true);
+    // before any element isFirst should be true
+    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).isFirst).toEqual(true);
+    // after any element isLast should be true
+    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).isLast).toEqual(true);
     // in the middle nearest should be element
     // nearest left
     expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).nearest.sampleStart).toEqual(20640);
+    // in the middle isFirst && isLast should be false
+    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).isFirst).toEqual(false);
+    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).isLast).toEqual(false);
     // nearest right
     expect(LevelService.getClosestItem(23900, 'Phonetic', 58089).nearest.sampleStart).toEqual(23920);
-    // evtr should be actual element
-    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
-    expect(LevelService.getClosestItem(23900, 'Phonetic', 58089).evtr.sampleStart).toEqual(20640);
-    // before first -> evtr should be first element
-    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).evtr.sampleStart).toEqual(3750);
-    // after last -> evtr should be first element
-    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).evtr.sampleStart).toEqual(50126);
+    // current should be actual element
+    expect(LevelService.getClosestItem(20650, 'Phonetic', 58089).current.sampleStart).toEqual(20640);
+    expect(LevelService.getClosestItem(23900, 'Phonetic', 58089).current.sampleStart).toEqual(20640);
+    // before first -> current should be first element
+    expect(LevelService.getClosestItem(10, 'Phonetic', 58089).current.sampleStart).toEqual(3750);
+    // after last -> current should be first element
+    expect(LevelService.getClosestItem(58088, 'Phonetic', 58089).current.sampleStart).toEqual(50126);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 96002  
-    // before any element nearest should be false
-    expect(LevelService.getClosestItem(10, 'TT', 96002).nearest).toEqual(false);
-    // after any element nearest should be true
-    expect(LevelService.getClosestItem(96000, 'TT', 96002).nearest).toEqual(true);
+    // before any element isFirst should be true
+    expect(LevelService.getClosestItem(10, 'TT', 96002).isFirst).toEqual(true);
+    // after any element isLast should be true
+    expect(LevelService.getClosestItem(96000, 'TT', 96002).isLast).toEqual(true);
     // in the middle nearest should be element
     // nearest left
     expect(LevelService.getClosestItem(30980, 'TT', 96002).nearest.sampleStart).toEqual(30970);
+    // in the middle isFirst && isLast should be false
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).isFirst).toEqual(false);
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).isLast).toEqual(false);
     // nearest right
     expect(LevelService.getClosestItem(32700, 'TT', 96002).nearest.sampleStart).toEqual(32707);
-    // evtr should be actual element
-    expect(LevelService.getClosestItem(30980, 'TT', 96002).evtr.sampleStart).toEqual(30970);
-    expect(LevelService.getClosestItem(32700, 'TT', 96002).evtr.sampleStart).toEqual(30970);
-    // before first -> evtr should be first element
-    expect(LevelService.getClosestItem(10, 'TT', 96002).evtr.sampleStart).toEqual(30970);
-    // after last -> evtr should be first element
-    expect(LevelService.getClosestItem(96000, 'TT', 96002).evtr.sampleStart).toEqual(32707);
+    // current should be actual element
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).current.sampleStart).toEqual(30970);
+    expect(LevelService.getClosestItem(32700, 'TT', 96002).current.sampleStart).toEqual(30970);
+    // before first -> current should be first element
+    expect(LevelService.getClosestItem(10, 'TT', 96002).current.sampleStart).toEqual(30970);
+    // after last -> current should be first element
+    expect(LevelService.getClosestItem(96000, 'TT', 96002).current.sampleStart).toEqual(32707);
 
     //test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 112000 
-    // before any element nearest should be false
-    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).nearest).toEqual(false);
-    // after any element nearest should be true
-    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).nearest).toEqual(true);
+    // before any element isFirst should be true
+    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).isFirst).toEqual(true);
+    // after any element isLast should be true
+    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).isLast).toEqual(true);
     // in the middle nearest should be element
     // nearest left
     expect(LevelService.getClosestItem(87720, 'Phonetic', 112000).nearest.sampleStart).toEqual(87710);
     // nearest right
     expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).nearest.sampleStart).toEqual(88639);
-    // evtr should be actual element
-    expect(LevelService.getClosestItem(87720, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
-    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
-    // before first -> evtr should be first element
-    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).evtr.sampleStart).toEqual(87710);
-    // after last -> evtr should be first element
-    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).evtr.sampleStart).toEqual(91042);
+    // current should be actual element
+    // in the middle isFirst && isLast should be false
+    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).isFirst).toEqual(false);
+    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).isLast).toEqual(false);
+    expect(LevelService.getClosestItem(87720, 'Phonetic', 112000).current.sampleStart).toEqual(87710);
+    expect(LevelService.getClosestItem(88630, 'Phonetic', 112000).current.sampleStart).toEqual(87710);
+    // before first -> current should be first element
+    expect(LevelService.getClosestItem(10, 'Phonetic', 112000).current.sampleStart).toEqual(87710);
+    // after last -> current should be first element
+    expect(LevelService.getClosestItem(111998, 'Phonetic', 112000).current.sampleStart).toEqual(91042);
   }));
 
   /**

@@ -394,6 +394,8 @@ angular.module('emuwebApp')
 
 
 					var segMId = viewState.getcurMouseSegment();
+					var isFirst = viewState.getcurMouseisFirst();
+					var isLast = viewState.getcurMouseisLast();
 					var clickedSegs = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
 					if (clickedSegs !== undefined) {
@@ -424,13 +426,13 @@ angular.module('emuwebApp')
 					curEvt = viewState.getcurMouseSegment();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						if (segMId === false) { // before first segment
+						if (isFirst === true) { // before first segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[0];
 								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
-						} else if (segMId === true) { // after last segment
+						} else if (isLast === true) { // after last segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[levelDetails.items.length - 1];
 								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart

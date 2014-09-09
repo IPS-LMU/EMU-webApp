@@ -534,10 +534,12 @@ angular.module('emuwebApp')
      * sets the current (mousemove) Segment
      * @param name is name of segment
      */
-    sServObj.setcurMouseSegment = function (segment, neighbour, x) {
+    sServObj.setcurMouseSegment = function (segment, neighbour, x, isFirst, isLast) {
       this.curMouseSegment = segment;
       this.curMouseX = x;
       this.curMouseNeighbours = neighbour;
+      this.curMouseisFirst = isFirst;
+      this.curMouseisLast = isLast;
     };
 
     /**
@@ -546,6 +548,20 @@ angular.module('emuwebApp')
     sServObj.getcurMouseSegment = function () {
       return this.curMouseSegment;
     };
+
+    /**
+     * gets the current (mousemove) Segment
+     */
+    sServObj.getcurMouseisFirst = function () {
+      return this.curMouseisFirst;
+    };  
+    
+    /**
+     * gets the current (mousemove) Segment
+     */
+    sServObj.getcurMouseisLast = function () {
+      return this.curMouseisLast;
+    };   
 
     /**
      * gets the current (mousemove) Segment
@@ -903,9 +919,9 @@ angular.module('emuwebApp')
 
       if (seg !== undefined) {
         if (seg === false) { // before first element
-          seg = LevelService.getElementDetails(sServObj.getcurMouseLevelName(), 0);
+          seg = LevelService.getItemDetails(sServObj.getcurMouseLevelName(), 0);
         } else if (seg === true) {
-          seg = LevelService.getLastElement(sServObj.getcurMouseLevelName());
+          seg = LevelService.getLastItem(sServObj.getcurMouseLevelName());
           isLastSeg = true;
         }
         if (this.getcurMouseLevelType() === 'SEGMENT') {

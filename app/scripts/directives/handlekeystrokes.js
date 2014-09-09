@@ -681,7 +681,7 @@ angular.module('emuwebApp')
                       var type = viewState.getcurMouseLevelType();
                       if (seg !== undefined) {
                         if (seg === false) { // before first segment
-                          seg = LevelService.getElementDetails(levelname, 0);
+                          seg = LevelService.getItemDetails(levelname, 0);
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
@@ -694,7 +694,7 @@ angular.module('emuwebApp')
                           viewState.setcurMouseSegment(undefined, undefined, undefined);
                           viewState.setcurClickSegment(deletedSegment.clickSeg);
                         } else if (seg === true) { // after last segment
-                          seg = LevelService.getLastElement(levelname);
+                          seg = LevelService.getLastItem(levelname);
                           var deletedSegment = LevelService.deleteSegments(levelname, seg.id, 1);
                           scope.hists.addObjToUndoStack({
                             'type': 'ESPS',
