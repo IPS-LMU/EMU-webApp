@@ -665,7 +665,7 @@ angular.module('emuwebApp')
             right = entry.sampleStart + entry.sampleDur;
           }
         });
-        sServObj.select(left, right);
+        sServObj.select(left, right + 1);
       }
     };
 

@@ -332,7 +332,7 @@ angular.module('emuwebApp')
 					space = getScale(ctx, viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
 
 					if (posE - posS > space) {
-						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS;
+						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
 						var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
 
 						space = getScaleWidth(ctx, str1, str2, scaleX);
