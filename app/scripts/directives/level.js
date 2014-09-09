@@ -95,12 +95,11 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-				scope.changeCurAttrDef = function (attrDefName) {
+				scope.changeCurAttrDef = function (attrDefName, index) {
 					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
-
 					if (curAttrDef !== attrDefName) {
 						// curAttrDef = attrDefName;
-						viewState.setCurAttrDef(scope.level.name, attrDefName);
+						viewState.setCurAttrDef(scope.level.name, attrDefName, index);
 
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
 							viewState.focusInTextField = false;

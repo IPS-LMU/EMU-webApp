@@ -1003,10 +1003,11 @@ angular.module('emuwebApp')
      * @param levelName name of level
      * @param newAttrDefName
      */
-    sServObj.setCurAttrDef = function (levelName, newAttrDefName) {
+    sServObj.setCurAttrDef = function (levelName, newAttrDefName, index) {
       angular.forEach(curLevelAttrDefs, function (ad) {
         if (ad.levelName === levelName) {
           ad.curAttrDefName = newAttrDefName;
+          ad.curAttrDefIndex = index;
         }
       });
     };
@@ -1023,6 +1024,28 @@ angular.module('emuwebApp')
       angular.forEach(curLevelAttrDefs, function (ad) {
         if (ad.levelName === levelName) {
           curAttrDef = ad.curAttrDefName;
+        }
+      });
+      return curAttrDef;
+    };
+
+    /**
+     * get the current attribute definition index of the
+     * given levelName
+     *
+     * @param levelName name of level
+     * @returns attrDefName
+     */
+    sServObj.getCurAttrIndex = function (levelName) {
+      var curAttrDef;
+      angular.forEach(curLevelAttrDefs, function (ad) {
+        if (ad.levelName === levelName) {
+          if(ad.curAttrDefIndex === undefined) {
+            curAttrDef = 0;
+          }
+          else {
+            curAttrDef = ad.curAttrDefIndex;
+          }
         }
       });
       return curAttrDef;

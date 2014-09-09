@@ -11,6 +11,7 @@ describe('Service: HistoryService', function () {
     'action': 'RENAMELABEL',
     'name': 'Phonetic',
     'id': 154,
+    'attrIndex': 0,
     'oldValue': 'xxx',
     'newValue': 'yyy'
   };

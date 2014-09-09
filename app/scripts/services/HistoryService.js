@@ -54,9 +54,9 @@ angular.module('emuwebApp')
 						break;
 					case 'RENAMELABEL':
 						if (applyOldVal) {
-							LevelService.renameLabel(cur.name, cur.id, cur.oldValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 						} else {
-							LevelService.renameLabel(cur.name, cur.id, cur.newValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
 						}
 						break;
 					case 'RENAMELEVEL':

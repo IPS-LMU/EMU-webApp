@@ -488,19 +488,19 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
     LevelService.setData(msajc003_bndl.annotation);
-    LevelService.renameLabel('Phonetic', 147, 'test');
+    LevelService.renameLabel('Phonetic', 147, 0, 'test');
     expect(LevelService.getItemFromLevelById('Phonetic', 147).labels[0].value).toEqual('test');
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    LevelService.renameLabel('TB', 40, 'test');
+    LevelService.renameLabel('TB', 40, 0, 'test');
     expect(LevelService.getItemFromLevelById('TB', 40).labels[0].value).toEqual('test');
 
     // test on JDR10_bndl.annotation
     viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
     LevelService.setData(JDR10_bndl.annotation);
-    LevelService.renameLabel('Phonetic', 3, 'test');
+    LevelService.renameLabel('Phonetic', 3, 0, 'test');
     expect(LevelService.getItemFromLevelById('Phonetic', 3).labels[0].value).toEqual('test');
   }));
 

@@ -30,18 +30,18 @@ angular.module('emuwebApp')
             scope.setlastkeycode(code, e.shiftKey);
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
-                if (viewState.isEditing()) {
+                if (viewState.isEditing()) {                  
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
-                  console.error('parallel labels are not added to history service correctly!!!!!!');
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'RENAMELABEL',
                     'name': viewState.getcurClickLevelName(),
                     'id': LevelService.getlastID(),
-                    'oldValue': editingElement.labels[0].value,
+                    'attrIndex': viewState.getCurAttrIndex(viewState.getcurClickLevelName()),
+                    'oldValue': editingElement.labels[viewState.getCurAttrIndex(viewState.getcurClickLevelName())].value,
                     'newValue': $('.' + LevelService.getlasteditArea()).val()
                   });
-                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), $('.' + LevelService.getlasteditArea()).val());
+                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.focusInTextField = false;
                 }
