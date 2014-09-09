@@ -280,7 +280,8 @@ wss.on('connection', function (ws) {
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
         'status': {
-          'type': 'SUCCESS'
+          'type': 'SUCCESS',
+          'message': ''
         }
       }), undefined, 0);
       break;
