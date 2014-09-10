@@ -69,3 +69,17 @@ jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('emuwebappConfigSchema.json');
 var emuwebappConfigSchema = JSON.parse(f);
 
+////////////////////////////
+// files for parsing tests
+
+// esps file containing segments
+jasmine.getFixtures().fixturesPath = 'base/app/testData/oldFormat/msajc003/';
+var msajc003EspsLabFile = readFixtures('msajc003.lab');
+
+// esps file containing events
+var msajc003EspsToneFile = readFixtures('msajc003.tone');
+
+// TextGrid file containing segments and events
+var msajc003TextGridFile = readFixtures('msajc003.TextGrid');
+
+
