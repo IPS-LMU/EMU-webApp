@@ -529,20 +529,16 @@ angular.module('emuwebApp')
                     var idLeft = viewState.getcurClickSegments()[0].id;
                     var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
-                    if (lastNeighboursMove.right.sampleStart !== undefined) {
+                      if (lastNeighboursMove.right !== undefined) {
                       // check if in view
-                      if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
-                        viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                        LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
+                          viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        }
                       }
-                    } else {
-                      // check if in view
-                      if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
-                        viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                        LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                      else {
+                      
                       }
-                    }
-
                   }
                 }
               }

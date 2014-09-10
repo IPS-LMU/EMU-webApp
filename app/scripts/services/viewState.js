@@ -575,27 +575,18 @@ angular.module('emuwebApp')
      */
     sServObj.selectSegmentsInSelection = function (levelData) {
       sServObj.curClickSegments = [];
-      //SIC should use getItemsInSelection -> then set min max
-      var rangeStart = sServObj.curViewPort.selectS;
-      var rangeEnd = sServObj.curViewPort.selectE;
       var min = Infinity;
-      var max = -Infinity;
-      angular.forEach(levelData, function (t) {
-        if (t.name === sServObj.getcurClickLevelName()) {
-          angular.forEach(t.items, function (evt) {
-            if (evt.sampleStart >= rangeStart && (evt.sampleStart + evt.sampleDur) <= rangeEnd) {
-              sServObj.setcurClickSegmentMultiple(evt);
-              if (evt.sampleStart < min) {
-                min = evt.sampleStart;
-              }
-              if ((evt.sampleStart + evt.sampleDur) > max) {
-                max = evt.sampleStart + evt.sampleDur;
-              }
-            }
-          });
-        }
+      var max = -Infinity;      
+      var itemInSel = this.getItemsInSelection(levelData);
+      angular.forEach(itemInSel, function (item) {
+          if (item.sampleStart < min) {
+            min = item.sampleStart;
+          }
+          if ((item.sampleStart + item.sampleDur) > max) {
+            max = item.sampleStart + item.sampleDur;
+          }
+          sServObj.setcurClickSegmentMultiple(item);
       });
-
       sServObj.curViewPort.selectS = min;
       sServObj.curViewPort.selectE = max;
     };
@@ -680,7 +671,7 @@ angular.module('emuwebApp')
       var end = start + segment.sampleDur;
       sServObj.curClickSegments.forEach(function (entry) {
         var front = (entry.sampleStart == end) ? true : false;
-        var back = ((entry.sampleStart + entry.sampleDur) == start) ? true : false;
+        var back = ((entry.sampleStart + entry.sampleDur + 1) == start) ? true : false;
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           sServObj.curClickSegments.push(segment);
           empty = false;
