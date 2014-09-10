@@ -10,8 +10,6 @@ angular.module('emuwebApp')
       replace: true,
       link: function postLink(scope, element, attrs) {
 
-        console.log(element[0])
-
         //////////////////////
         // watches 
 
@@ -29,20 +27,32 @@ angular.module('emuwebApp')
 
 	//////////////////////
 	// helper functions
+
 	/**
 	 * Function to center node when clicked/dropped so node doesn't get lost when
 	 * collapsing/moving with large amount of children.
 	 */
 	scope.centerNode = function (node) {
-		//var scale = zoomListener.scale();
-		console.debug(width, height);
-		var x = (-node._x + width/2); // * scale
-		var y = (-node._y + height/2); // * scale
-		d3.select('g').transition()
+		var scale = zoomListener.scale();
+		var x = -node._x * scale + width/2;
+		var y = -node._y * scale + height/2;
+		svg.transition()
 			.duration(duration)
-			.attr("transform", "translate(" + x + "," + y + ")"/*scale(" + scale + ")"*/);
-		/*zoomListener.scale(scale);
-		zoomListener.translate([x, y]);*/
+			.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+		zoomListener.scale(scale);
+		zoomListener.translate([x, y]);
+	}
+	
+	/**
+	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
+	 */
+	scope.zoom = function () {
+		//if (rotated) {
+		if (false) {
+			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")scale(-1,1)rotate(90)");
+		} else {
+			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		}
 	}
 	//
 	/////////////////////////////
@@ -65,59 +75,29 @@ angular.module('emuwebApp')
           percent = d3.format('%'),
 	  duration = 750;
 
-        console.log(height)
+	// scaleExtent limits the amount of zooming possible
+	var zoomListener = d3.behavior.zoom().scaleExtent([0.5, 10]).on("zoom", scope.zoom);
 
-        //Set margins, width, and height
-        // var margin = {
-        //     top: 0,
-        //     right: 0,
-        //     bottom: 0,
-        //     left: 0
-        //   },
-        //   width = 500 - margin.left - margin.right,
-        //  height = 150 - margin.top - margin.bottom;
-
-        //Create the d3 element and position it based on margins
+        // Create the d3 element and position it based on margins
         var svg = d3.select(element[0])
           .append('svg')
           .attr('width', '100%')
           .attr('height', '100%')
 	  .style('background-color', 'darkgrey')
+	  .call(zoomListener)
           .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+	  // Append a group which holds all nodes and which the zoom Listener can act upon.
+	  .append('g');
 
-        // Create the scales we need for the graph
-        var x = d3.scale.linear().range([0, width]);
-        var y = d3.scale.linear().range([height, 0]);
-
-        // Create the axes we need for the graph
-        var xAxis = d3.svg.axis()
-          .scale(x)
-          .tickSize(5)
-          .tickSubdivide(true)
-          .orient('top');
-
-        var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient('right');
-
-        // line drawing function
-        var lineFunc = d3.svg.line()
-          .x(function (d) {
-            return x(d.x);
-          })
-          .y(function (d) {
-            return y(d.y);
-          })
-          .interpolate('linear');
+	//
+        /////////////////////////////
 
 
         /**
          *
          */
         scope.render = function () {
-		// Append a group which holds all nodes and which the zoom Listener can act upon.
-		var svgGroup = svg.append("g");
 		// Compute the new tree layout
 		var nodes = [];
 
@@ -164,7 +144,7 @@ angular.module('emuwebApp')
 		});
 
 		// Update the nodes…
-		var node = svgGroup.selectAll("g.node")
+		var node = svg.selectAll("g.node")
 			.data(nodes, function (d) {
 				return d.id;
 			});
@@ -272,7 +252,7 @@ angular.module('emuwebApp')
 		
 
 		// Update the links…
-		var link = svgGroup.selectAll("path.link")
+		var link = svg.selectAll("path.link")
 			.data(links, function (d) {
 				// Form unique link ID
 				return 's' + d.fromID + 't' + d.toID;
