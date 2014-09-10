@@ -1,8 +1,6 @@
 'use strict';
 
-var sampleRate;
-
-function toJSO(string, annotates, name) {
+function toJSO(string, annotates, name, sampleRate) {
 
 	var labelJSO = {};
 	labelJSO.name = name;
@@ -52,7 +50,7 @@ function toJSO(string, annotates, name) {
 					name: name,
 					value: curLineArr[curLineArr.length - 1]
 				}],
-				sampleStart: Math.round(curLineArr[1] * sampleRate)
+				sampleStart: Math.floor(curLineArr[1] * sampleRate)
 			});
 			idCounter += 1;
 		}
@@ -66,7 +64,7 @@ function toJSO(string, annotates, name) {
 				value: ''
 			}],
 			sampleStart: 0,
-			sampleDur: Math.round(curLineArr[1] * sampleRate)
+			sampleDur: Math.floor(curLineArr[1] * sampleRate)
 		});
 		idCounter += 1;
 		for (i = headEndIdx + 2; i < lines.length - 1; i++) {
@@ -78,8 +76,8 @@ function toJSO(string, annotates, name) {
 					name: name,
 					value: curLineArr[curLineArr.length - 1]
 				}],
-				sampleStart: Math.round(prevLineArr[1] * sampleRate),
-				sampleDur: Math.round((curLineArr[1] - prevLineArr[1]) * sampleRate)
+				sampleStart: Math.floor(prevLineArr[1] * sampleRate),
+				sampleDur: Math.floor((curLineArr[1] - prevLineArr[1]) * sampleRate)
 			});
 			idCounter += 1;
 		}
@@ -122,8 +120,8 @@ self.addEventListener('message', function (e) {
 	var data = e.data;
 	switch (data.cmd) {
 	case 'parseESPS':
-		sampleRate = data.sampleRate;
-		var retVal = toJSO(data.textGrid, data.annotates, data.name)
+		// sampleRate = data.sampleRate;
+		var retVal = toJSO(data.textGrid, data.annotates, data.name, data.sampleRate)
 		if (retVal.type === undefined) {
 			self.postMessage({
 				'status': {
