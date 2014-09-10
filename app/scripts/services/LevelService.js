@@ -265,23 +265,30 @@ angular.module('emuwebApp')
 			var clientOffset = elem.canvas.offsetLeft;
 			var top = elem.canvas.offsetTop;
 			var height = elem.canvas.clientHeight;
+			var len = lastEventClick.labels[labelIdx].value.length * 10;
 			if (type === 'SEGMENT') {
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
 				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
 				var width = end - start;
-				if (width < 20) {
-					viewState.zoomViewPort(true, this);
-					sServObj.openEditArea(lastEventClick, element, type);
-					return;
+				if (width < (2*len)) {
+				    var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
+				    console.log(zoom);
+				    if(zoom <= 10) { // if already zoomed in but text is still too long
+				        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+				    }
+				    else {
+					    viewState.zoomViewPort(true, this);
+					    sServObj.openEditArea(lastEventClick, element, type);
+					    return;
+					}
 				}
 				sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 			} else {
-				var len = lastEventClick.labels[labelIdx].value.length * 10;
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
 				var width = end - start;
-				if (width < 20) {
-					width = 20;
+				if (width < (2*len)) {
+					width = (2*len);
 				}
 				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 			}

@@ -954,7 +954,6 @@ angular.module('emuwebApp')
 
       }
       this.setViewPort(newStartS, newEndS);
-
     };
 
     /**
