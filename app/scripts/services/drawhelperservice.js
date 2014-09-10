@@ -266,7 +266,12 @@ angular.module('emuwebApp')
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				if(viewState.getcurMouseisLast()) {
+				    ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
+				}
+				else {
+				    ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				}
 			}
 
 		};

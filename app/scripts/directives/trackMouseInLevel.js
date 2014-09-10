@@ -63,7 +63,9 @@ angular.module('emuwebApp')
                 if (zoomEventMove.isFirst === true && zoomEventMove.isLast === false) { // before first elem
                   moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemDetails(scope.this.level.name, 0).sampleStart);
                 } else if (zoomEventMove.isFirst === false && zoomEventMove.isLast === true) { // after last elem
-                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getLastItem(scope.this.level.name).sampleStart);
+                  var lastItem = LevelService.getLastItem(scope.this.level.name);
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - lastItem.sampleStart - lastItem.sampleDur);
+                  console.log(moveBy);
                 } else {
                   moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
                 }
@@ -75,6 +77,7 @@ angular.module('emuwebApp')
               moveBy = Math.round(curMouseSampleNrInView - lastPCM);
             }
           }
+          
           var mbutton = 0;
           if (event.buttons === undefined) {
             mbutton = event.which;
