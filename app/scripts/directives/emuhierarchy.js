@@ -27,6 +27,27 @@ angular.module('emuwebApp')
         //
         //////////////////////
 
+	//////////////////////
+	// helper functions
+	/**
+	 * Function to center node when clicked/dropped so node doesn't get lost when
+	 * collapsing/moving with large amount of children.
+	 */
+	scope.centerNode = function (node) {
+		//var scale = zoomListener.scale();
+		console.debug(width, height);
+		var x = (-node._x + width/2); // * scale
+		var y = (-node._y + height/2); // * scale
+		d3.select('g').transition()
+			.duration(duration)
+			.attr("transform", "translate(" + x + "," + y + ")"/*scale(" + scale + ")"*/);
+		/*zoomListener.scale(scale);
+		zoomListener.translate([x, y]);*/
+	}
+	//
+	/////////////////////////////
+
+
         /////////////////////////////
         // inital d3.js setup stuff
 
@@ -61,15 +82,9 @@ angular.module('emuwebApp')
           .append('svg')
           .attr('width', '100%')
           .attr('height', '100%')
+	  .style('background-color', 'darkgrey')
           .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-        // background color
-        svg.append("rect")
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("fill", "darkgrey");
-          //.attr("fill", "white");
 
         // Create the scales we need for the graph
         var x = d3.scale.linear().range([0, width]);
@@ -161,7 +176,9 @@ angular.module('emuwebApp')
 			.attr("transform", function (d) {
 				return "translate(" + d._x  + "," + d._y + ")";
 			})
-			//.on('click', click)
+			.on('click', function (d) {
+				scope.centerNode(d);
+			})
 			;
 
 		nodeEnter.append("circle")

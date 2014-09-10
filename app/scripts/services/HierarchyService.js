@@ -120,7 +120,7 @@ angular.module('emuwebApp')
 		sServObj.layoutNonItemLevel = function (name, levelDepth) {
 			var nodes = LevelService.getLevelDetails(name).level.items;
 			for (var i=0; i<nodes.length; ++i) {
-				nodes[i]._posInLevel = i / nodes.length ;//- 0.5;
+				nodes[i]._posInLevel = i / nodes.length + 0.01 ;//- 0.5;
 				nodes[i]._depth = levelDepth;
 
 				// Additionally, calculate link positions
