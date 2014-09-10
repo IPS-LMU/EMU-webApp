@@ -36,12 +36,12 @@ function toJSO(string, annotates, name, sampleRate) {
 	var prevLineArr;
 	var curLineArr = lines[headEndIdx + 1].split(/\s+/);
 	if (curLineArr[curLineArr.length - 1] !== 'H#') {
-		labelJSO.levels[0].type = 'POINT';
+		labelJSO.levels[0].type = 'EVENT';
 	} else {
 		labelJSO.levels[0].type = 'SEGMENT';
 	}
 
-	if (labelJSO.levels[0].type === 'POINT') {
+	if (labelJSO.levels[0].type === 'EVENT') {
 		for (i = headEndIdx + 1; i < lines.length - 1; i++) {
 			curLineArr = lines[i].split(/\s+/);
 			labelJSO.levels[0].items.push({
@@ -50,23 +50,14 @@ function toJSO(string, annotates, name, sampleRate) {
 					name: name,
 					value: curLineArr[curLineArr.length - 1]
 				}],
-				sampleStart: Math.floor(curLineArr[1] * sampleRate)
+				samplePoint: Math.floor(curLineArr[1] * sampleRate)
 			});
 			idCounter += 1;
 		}
 	} else {
-		// take care of H#
-		curLineArr = lines[headEndIdx + 1].split(/\s+/);
-		labelJSO.levels[0].items.push({
-			id: idCounter,
-			labels: [{
-				name: name,
-				value: ''
-			}],
-			sampleStart: 0,
-			sampleDur: Math.floor(curLineArr[1] * sampleRate)
-		});
+		// take care of H# by not doing anything :-)
 		idCounter += 1;
+
 		for (i = headEndIdx + 2; i < lines.length - 1; i++) {
 			curLineArr = lines[i].split(/\s+/);
 			prevLineArr = lines[i - 1].split(/\s+/);
@@ -77,7 +68,7 @@ function toJSO(string, annotates, name, sampleRate) {
 					value: curLineArr[curLineArr.length - 1]
 				}],
 				sampleStart: Math.floor(prevLineArr[1] * sampleRate),
-				sampleDur: Math.floor((curLineArr[1] - prevLineArr[1]) * sampleRate)
+				sampleDur: Math.floor(curLineArr[1] * sampleRate) - Math.floor(prevLineArr[1] * sampleRate) - 1
 			});
 			idCounter += 1;
 		}
@@ -98,7 +89,7 @@ function toESPS(data, name, sampleRate) {
 	espsStr += '#\n';
 	var curLabel;
 	for (var j = 0; j < data.length; j++) {
-	//angular.forEach(data, function (i, idx) {
+		//angular.forEach(data, function (i, idx) {
 		if (data[j].labels[0].value === '' && j === 0) {
 			curLabel = 'H#';
 		} else {
@@ -121,7 +112,7 @@ self.addEventListener('message', function (e) {
 	switch (data.cmd) {
 	case 'parseESPS':
 		// sampleRate = data.sampleRate;
-		var retVal = toJSO(data.textGrid, data.annotates, data.name, data.sampleRate)
+		var retVal = toJSO(data.esps, data.annotates, data.name, data.sampleRate)
 		if (retVal.type === undefined) {
 			self.postMessage({
 				'status': {
@@ -147,7 +138,7 @@ self.addEventListener('message', function (e) {
 		} else {
 			self.postMessage(retVal);
 		}
-		break;		
+		break;
 	default:
 		self.postMessage({
 			'status': {
