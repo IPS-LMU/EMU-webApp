@@ -668,10 +668,11 @@ angular.module('emuwebApp')
       var empty = true;
       var my = this;
       var start = segment.sampleStart;
-      var end = start + segment.sampleDur;
+      var end = start + segment.sampleDur + 1;
       sServObj.curClickSegments.forEach(function (entry) {
         var front = (entry.sampleStart == end) ? true : false;
-        var back = ((entry.sampleStart + entry.sampleDur + 1) == start) ? true : false;
+        var back = ((entry.sampleStart + entry.sampleDur ) == start) ? true : false;
+        console.log(start, (entry.sampleStart + entry.sampleDur));
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           sServObj.curClickSegments.push(segment);
           empty = false;

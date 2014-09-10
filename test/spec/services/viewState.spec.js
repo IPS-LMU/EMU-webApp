@@ -139,35 +139,18 @@ describe('Factory: viewState', function () {
     expect(viewState.curClickLevelType).toEqual('SEGMENT');
   }));
 
-
   /**
    *
    */
   it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
     LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(10, 9700);
+    viewState.select(3300, 7000);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
-    expect(viewState.curClickSegments.length).toEqual(4);
+    expect(viewState.curClickSegments.length).toEqual(2);
+    console.log(viewState.curClickSegments);
     expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
     expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
-    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
-  }));
-
-  /**
-   *
-   */
-  it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
-    LevelService.setData(msajc003_bndl.annotation);
-    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(10, 9700);
-    viewState.selectSegmentsInSelection(LevelService.data.levels);
-    expect(viewState.curClickSegments.length).toEqual(4);
-    expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
-    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
   }));
 
 
@@ -180,7 +163,7 @@ describe('Factory: viewState', function () {
     expect(range.end).toEqual(-1);
     LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(9700, 15000);
+    viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
     range = viewState.getselectedRange();
     expect(range.start).toEqual(11340);
