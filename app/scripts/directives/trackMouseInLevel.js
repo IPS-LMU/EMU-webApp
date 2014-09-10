@@ -65,7 +65,6 @@ angular.module('emuwebApp')
                 } else if (zoomEventMove.isFirst === false && zoomEventMove.isLast === true) { // after last elem
                   var lastItem = LevelService.getLastItem(scope.this.level.name);
                   moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - lastItem.sampleStart - lastItem.sampleDur);
-                  console.log(moveBy);
                 } else {
                   moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
                 }

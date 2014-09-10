@@ -266,11 +266,11 @@ angular.module('emuwebApp')
 			var top = elem.canvas.offsetTop;
 			var height = elem.canvas.clientHeight;
 			if (type === 'SEGMENT') {
-				var start = viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset;
-				var end = viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur)) + clientOffset;
+				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
+				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
 				var width = end - start;
 				if (width < 20) {
-					viewState.zoomViewPort(true);
+					viewState.zoomViewPort(true, this);
 					sServObj.openEditArea(lastEventClick, element, type);
 					return;
 				}
