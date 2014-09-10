@@ -582,8 +582,8 @@ angular.module('emuwebApp')
         if (item.sampleStart < min) {
           min = item.sampleStart;
         }
-        if ((item.sampleStart + item.sampleDur) > max) {
-          max = item.sampleStart + item.sampleDur;
+        if ((item.sampleStart + item.sampleDur + 1) > max) {
+          max = item.sampleStart + item.sampleDur + 1;
         }
         sServObj.setcurClickSegmentMultiple(item);
       });

@@ -162,12 +162,13 @@ describe('Factory: viewState', function () {
     expect(range.start).toEqual(-1);
     expect(range.end).toEqual(-1);
     LevelService.setData(msajc003_bndl.annotation);
-    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
+    viewState.selectLevel(false, ['Phonetic', 'Tone'], LevelService);
     viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
     range = viewState.getselectedRange();
-    expect(range.start).toEqual(11340);
-    expect(range.end).toEqual(14800);
+    console.log(range)
+    expect(range.start).toEqual(3750);
+    expect(range.end).toEqual(9669);
   }));
 
   /**
