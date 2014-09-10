@@ -60,7 +60,7 @@ function compareAnnotLevels(level1, level2) {
 
 	}
 
-	return ('SUCCESS!!!');
+	return ('SUCCESS: They are the same!');
 }
 
 
