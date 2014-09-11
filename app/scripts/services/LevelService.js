@@ -265,7 +265,11 @@ angular.module('emuwebApp')
 			var clientOffset = elem.canvas.offsetLeft;
 			var top = elem.canvas.offsetTop;
 			var height = elem.canvas.clientHeight;
-			var len = lastEventClick.labels[labelIdx].value.length * 10;
+			var len = 10;
+			if(labelIdx !== undefined) {
+    			len = lastEventClick.labels[labelIdx].value.length * 10;
+    		}
+    		console.log(lastEventClick);
 			if (type === 'SEGMENT') {
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
 				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
@@ -282,7 +286,11 @@ angular.module('emuwebApp')
 					    return;
 					}
 				}
-				sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+				var editText = '';
+				if(lastEventClick.labels.length>0) {
+				    editText = lastEventClick.labels[labelIdx].value;
+				}
+				sServObj.createEditArea(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
@@ -292,7 +300,7 @@ angular.module('emuwebApp')
 				}
 				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 			}
-			sServObj.createSelection(element.find('textarea')[0], 0, lastEventClick.labels[labelIdx].value.length);
+			sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
 		};
 
 		/**
@@ -349,7 +357,6 @@ angular.module('emuwebApp')
 		sServObj.insertItemDetails = function (id, levelname, position, labelname, start, duration) {
 			var attrdefs = ConfigProviderService.getLevelDefinition(levelname).attributeDefinitions;
 			var curAttrDef = viewState.getCurAttrDef(levelname);
-
 			var newElement;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
@@ -360,20 +367,27 @@ angular.module('emuwebApp')
 							sampleDur: duration,
 							labels: []
 						};
-						for (var i = 0; i < attrdefs.length; i++) {
-							if (attrdefs[i].name === curAttrDef) {
-								newElement.labels.push({
-									name: levelname,
-									value: labelname
-								});
-							} else {
-								newElement.labels.push({
-									name: attrdefs[i].name,
-									value: ''
-								});
-							}
+						if(attrdefs.length>0) {
+						    for (var i = 0; i < attrdefs.length; i++) {
+    							if (attrdefs[i].name === curAttrDef) {
+	    							newElement.labels.push({
+		    							name: levelname,
+			    						value: labelname
+				    				});
+					    		} else {
+						    		newElement.labels.push({
+							    		name: attrdefs[i].name,
+								    	value: ''
+    								});
+	    						}
+		    				}
 						}
-
+						else {
+	    					newElement.labels.push({
+		    					name: levelname,
+								value: labelname
+		    				});
+						}
 					} else if (level.type == 'EVENT') {
 						newElement = {
 							id: id,

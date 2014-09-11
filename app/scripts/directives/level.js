@@ -254,7 +254,7 @@ angular.module('emuwebApp')
 
 
 								//check for enough space to stroke text
-								if (posE - posS > (mTxtImgWidth * curLabVal.length)) {
+								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
 									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 									var tW = fontScaleService.getLastImageWidth();
 									var tX = posS + (posE - posS) / 2 - tW / 2;
