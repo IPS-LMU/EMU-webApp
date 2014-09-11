@@ -148,7 +148,6 @@ describe('Factory: viewState', function () {
     viewState.select(3300, 7000);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
     expect(viewState.curClickSegments.length).toEqual(2);
-    console.log(viewState.curClickSegments);
     expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
     expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
   }));
@@ -166,7 +165,6 @@ describe('Factory: viewState', function () {
     viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
     range = viewState.getselectedRange();
-    console.log(range)
     expect(range.start).toEqual(3750);
     expect(range.end).toEqual(9669);
   }));
