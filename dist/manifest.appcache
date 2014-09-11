@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-08-21T11:37:25.911Z
+# rev 1 - 2014-09-11T16:01:01.769Z
 
 CACHE:
 404.html
@@ -39,17 +39,20 @@ schemaFiles/annotationFileSchema.json
 schemaFiles/bundleListSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/00162570.emuwebAppExternal.min.js
-scripts/24cb2aa2.emuwebApp.min.js
+scripts/2971d503.emuwebApp.min.js
+scripts/54f16f7b.emuwebAppExternal.min.js
+scripts/emuwebApp.min.js.map
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js
 scripts/workers/textGridParserWorker.js
 scripts/workers/wavParserWorker.js
 styles/12d92e3d.emuwebAppExternal.min.css
-styles/6d7a7e21.emuwebApp.min.css
+styles/295587fa.emuwebApp.min.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
+views/SelectLabelModal.html
+views/SelectThresholdModal.html
 views/about.html
 views/bundleListSideBar.html
 views/confirmModal.html
