@@ -12,7 +12,7 @@ describe('navigation', function () {
 			// expect(browserLog.length).toEqual(0);
 			// Uncomment to actually see the log.
 			if(browserLog.length !== 0){
-				console.log('log: ' + require('util').inspect(browserLog));
+				//console.log('log: ' + require('util').inspect(browserLog));
 			}
 		});
 	});
@@ -20,7 +20,6 @@ describe('navigation', function () {
 
 	// afterEach it
 	afterEach(function () {
-		ptor.sleep(250);
 		element(by.id('zoomAllBtn')).click();
 	});
 
@@ -56,25 +55,25 @@ describe('navigation', function () {
 
 	it('should open & close submenu with shortcuts', function () {
 		ptor.actions().sendKeys('o').perform();
-		ptor.sleep(300);
+		ptor.sleep(100);
 		ptor.actions().sendKeys('o').perform();
 	});
 
 	it('should open & close right submenu with shortcuts', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(300);
+		ptor.sleep(100);
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 	});
 
 	it('should change loaded timeline view', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(250);
+		ptor.sleep(80);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
 	});
 
 	it('should change loaded timeline view back to orig', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(250);
+		ptor.sleep(80);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
 	});
 
@@ -84,7 +83,7 @@ describe('navigation', function () {
 		for (var i = 0; i < 5; i++) {
 			var button = elem.get(i);
 			button.click();
-			ptor.sleep(250);
+			ptor.sleep(80);
 			button.click();
 		}
 	});
@@ -146,7 +145,7 @@ describe('navigation', function () {
 			})
 			.keyUp(protractor.Key.SHIFT)
 			.perform();
-		ptor.sleep(700);
+		ptor.sleep(200);
 
 		// on second
 		ptor.actions().sendKeys('2').perform();
@@ -203,7 +202,7 @@ describe('navigation', function () {
 			})
 			.keyUp(protractor.Key.SHIFT)
 			.perform();
-		ptor.sleep(700);
+		ptor.sleep(100);
 	});
 
 	it('should undo last 2 changes', function () {
@@ -213,9 +212,9 @@ describe('navigation', function () {
 			.click()
 			.perform();
 		ptor.actions().sendKeys('z').perform();
-		ptor.sleep(1000);
+		ptor.sleep(100);
 		ptor.actions().sendKeys('z').perform();
-		ptor.sleep(1000);
+		ptor.sleep(100);
 	});
 
 	it('should move dividing pane up and down', function () {
@@ -231,7 +230,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(250);
+		ptor.sleep(80);
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()
@@ -242,7 +241,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(250);
+		ptor.sleep(80);
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()

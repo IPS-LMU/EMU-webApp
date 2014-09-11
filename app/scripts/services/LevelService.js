@@ -270,6 +270,10 @@ angular.module('emuwebApp')
     			len = lastEventClick.labels[labelIdx].value.length * 10;
     		}
     		console.log(lastEventClick);
+    		var editText = '';
+			if(lastEventClick.labels.length>0) {
+			    editText = lastEventClick.labels[labelIdx].value;
+			}    		
 			if (type === 'SEGMENT') {
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
 				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
@@ -286,10 +290,8 @@ angular.module('emuwebApp')
 					    return;
 					}
 				}
-				var editText = '';
-				if(lastEventClick.labels.length>0) {
-				    editText = lastEventClick.labels[labelIdx].value;
-				}
+				
+
 				sServObj.createEditArea(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
@@ -298,7 +300,7 @@ angular.module('emuwebApp')
 				if (width < (2*len)) {
 					width = (2*len);
 				}
-				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, editText, lastEventClick.id);
 			}
 			sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
 		};
