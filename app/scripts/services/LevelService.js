@@ -933,9 +933,7 @@ angular.module('emuwebApp')
 						if (level.type === 'SEGMENT') {
 							if (toDelete.sampleStart == evt.sampleStart && toDelete.sampleDur == evt.sampleDur) {
 							    if(order===0) {
-								    last.labels[0].value += level.items[1].labels[0].value;
-								    last.sampleDur += level.items[1].sampleDur + 1;
-								    level.items.splice(1, 1);
+								    level.items.splice(order, 1);
 								    retOrder = order;
 								    retEvt = evt;
 								    clickSeg = last;							    
