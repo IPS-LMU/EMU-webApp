@@ -19,7 +19,7 @@ describe('espsParserWorker', function () {
 
   /**
    *
-   */
+   *
   it('should parse esps file containing segments correctly ', inject(function () {
     
 

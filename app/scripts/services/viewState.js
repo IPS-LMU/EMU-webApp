@@ -265,7 +265,7 @@ angular.module('emuwebApp')
           // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
           sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
           sServObj.curClickSegments = [];
-          sServObj.selectBoundry();
+          sServObj.selectBoundary();
           //sServObj.resetSelect();
         }
       } else {
@@ -274,7 +274,7 @@ angular.module('emuwebApp')
           // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
           sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
           sServObj.curClickSegments = [];
-          sServObj.selectBoundry();
+          sServObj.selectBoundary();
           //sServObj.resetSelect();
         }
       }
@@ -629,7 +629,7 @@ angular.module('emuwebApp')
       if (segment !== null && segment !== undefined) {
         sServObj.curClickSegments = [];
         sServObj.curClickSegments.push(segment);
-        sServObj.selectBoundry();
+        sServObj.selectBoundary();
       } else {
         sServObj.curClickSegments = [];
       }
@@ -639,7 +639,7 @@ angular.module('emuwebApp')
     /**
      * sets a multiple select (click) Segment
      */
-    sServObj.selectBoundry = function () {
+    sServObj.selectBoundary = function () {
       if (sServObj.curClickSegments.length > 0) {
         var left, right;
         if (sServObj.curClickSegments[0].sampleStart !== undefined) {

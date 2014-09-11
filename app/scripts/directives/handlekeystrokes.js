@@ -336,12 +336,7 @@ angular.module('emuwebApp')
                           'rightSide': true,
                           'changeTime': changeTime
                         });
-                        var l = viewState.getcurClickSegments().length;
-                        if (l == 1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                        } else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
-                        }
+                        viewState.selectBoundary();
                       }
                     }
                   }
@@ -374,12 +369,7 @@ angular.module('emuwebApp')
                           'rightSide': false,
                           'changeTime': changeTime
                         });
-                        var l = viewState.getcurClickSegments().length;
-                        if (l == 1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                        } else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
-                        }
+                        viewState.selectBoundary();
                       }
                     }
                   }
@@ -412,12 +402,7 @@ angular.module('emuwebApp')
                           'changeTime': -changeTime
                         });
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
-                        var l = viewState.getcurClickSegments().length;
-                        if (l == 1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                        } else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
-                        }
+                        viewState.selectBoundary();
                       }
                     }
                   }
@@ -452,12 +437,7 @@ angular.module('emuwebApp')
                           'changeTime': -changeTime
                         });
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
-                        var l = viewState.getcurClickSegments().length;
-                        if (l == 1) {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[0].sampleStart + viewState.getcurClickSegments()[0].sampleDur);
-                        } else {
-                          viewState.select(viewState.getcurClickSegments()[0].sampleStart, viewState.getcurClickSegments()[l - 1].sampleStart + viewState.getcurClickSegments()[l - 1].sampleDur);
-                        }
+                        viewState.selectBoundary();
                       }
                     }
                   }

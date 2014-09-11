@@ -138,7 +138,7 @@ angular.module('emuwebApp')
                     });
                   }
                   lastPCM = curMouseSampleNrInView;
-                  viewState.selectBoundry();
+                  viewState.selectBoundary();
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
@@ -155,7 +155,7 @@ angular.module('emuwebApp')
                     'movedBy': moveBy
                   });
                   lastPCM = curMouseSampleNrInView;
-                  viewState.selectBoundry();
+                  viewState.selectBoundary();
                 }
               } else {
                 viewState.movingBoundary = false;
@@ -221,7 +221,7 @@ angular.module('emuwebApp')
           if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             viewState.setcurClickLevel(levelID, levelType, scope.$index);
             viewState.setcurClickSegmentMultiple(lastEventClick.current);
-            viewState.selectBoundry();
+            viewState.selectBoundary();
           }
           lastPCM = curMouseSampleNrInView;
           scope.$apply();
