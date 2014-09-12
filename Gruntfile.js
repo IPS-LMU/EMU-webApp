@@ -437,6 +437,16 @@ module.exports = function (grunt) {
           dest: 'dist/views/'
         }]
       }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverage_dir: 'test/coverage',
+        dryRun: false,
+        force: true,
+        recursive: true
+      }
     }
   });
 

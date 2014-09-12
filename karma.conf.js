@@ -29,13 +29,15 @@ module.exports = function (config) {
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
 
-      // JSON fixture
+      // demoDBs JSON fixtures
       {
         pattern: 'app/demoDBs/*/*.json',
         watched: true,
         served: true,
         included: false
-      },
+      }, 
+
+      // configFiles JSON fixtures
       {
         pattern: 'app/configFiles/*.json',
         watched: true,
@@ -43,7 +45,7 @@ module.exports = function (config) {
         included: false
       },
 
-      // fixtures
+      // schemaFiles fixtures
       {
         pattern: 'app/schemaFiles/*.json',
         watched: true,
@@ -92,10 +94,13 @@ module.exports = function (config) {
     reporters: ['dots'],
 
     coverageReporter: {
-      type: 'html',
+      type: 'lcov',
       dir: 'test/coverage/',
     },
 
+    // plugins: [
+    //   'karma-coverage',
+    // ],
 
     // Start these browsers, currently available:
     // - Chrome
