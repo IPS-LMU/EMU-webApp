@@ -6,7 +6,7 @@
 /**
  * This service aims to provide functions for laying out the hierarchy of a
  * bundle (ie, calculating the positions of the nodes). The actual drawing is
- * done in a directive, the manipulating the hierarchy is done in another
+ * done in a directive, the manipulation of the hierarchy is done in another
  * service.
  *
  * While the DBConfig allows for a complex network of levels, the visualisation
@@ -35,45 +35,6 @@ angular.module('emuwebApp')
 		var viewerHeight = $(document).height();
 		var duration = 750;
 
-		//define the zoomListener which calls the zoom function on the "zoom" eventconstrained within the scaleExtents
-		var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
-
-		// root node
-		var root;
-
-		/**
-		 * Function to center node when clicked/dropped so node doesn't get lost when
-		 * collapsing/moving with large amount of children.
-		 */
-		function centerNode(source) {
-			var scale = zoomListener.scale();
-			var x = -source.y0;
-			var y = -source.x0;
-			x = x * scale + viewerWidth / 2;
-			y = y * scale + viewerHeight / 2;
-			d3.select('g').transition()
-				.duration(duration)
-				.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-			zoomListener.scale(scale);
-			zoomListener.translate([x, y]);
-		}
-
-		/**
-		 * Define the zoom function for the zoomable tree
-		 */
-		function zoom() {
-			if (rotated) {
-				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")scale(-1,1)rotate(90)");
-			} else {
-				svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-			}
-		}
-
-		// define a d3 diagonal projection for use by the node paths later on.
-		var diagonal = d3.svg.diagonal()
-			.projection(function (d) {
-				return [d.x, d.y];
-			});
 
 		//
 		/////////////////////
@@ -171,7 +132,8 @@ angular.module('emuwebApp')
 		
 
 		/**
-		 * Calculate the weights (widths) of all nodes bottom-up
+		 * Calculate the weights (size within their level) of all nodes bottom-up
+		 * This is most likely rather slow and definitely needs tweaking
 		 */
 		sServObj.calculateWeightsBottomUp = function () {
 			var bottomLevel;
@@ -182,9 +144,11 @@ angular.module('emuwebApp')
 				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
 				level._weight = 0;
 
+				//////
+				// Iterate through items to calculate their _weight
 				for (ii = 0; ii < level.items.length; ++ii) {
 					var itemWeight = level.items[ii]._weight;
-					if (itemWeight === 0) {
+					if (typeof itemWeight === 'undefined') {
 						itemWeight = 1;
 						level.items[ii]._weight = 1;
 					}
@@ -194,9 +158,33 @@ angular.module('emuwebApp')
 							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
 						}
 					}
-					//console.debug('Increasing weight of level', level.name, ':', level._weight, '+', itemWeight);
 					level._weight += itemWeight;
 				}
+
+				/////
+				// Iterate through items again to calculate their _posInLevel and _depth.
+				// This is done in a new for loop because it depends on the correctness of level._weight
+				var posInLevel = 0;
+				for (ii = 0; ii < level.items.length; ++ii) {
+					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
+					posInLevel += level.items[ii]._weight;
+					level.items[ii]._depth = sServObj.selectedPath.length - i - 1;
+				
+					//////
+					// Additionally, calculate link positions
+					var links = LevelService.getData().links;
+					for (var l=0; l<links.length; ++l) {
+						if (links[l].toID === level.items[ii].id) {
+							links[l]._toPosInLevel = level.items[ii]._posInLevel;
+							links[l]._toDepth = level.items[ii]._depth;
+						}
+						if (links[l].fromID === level.items[ii].id) {
+							links[l]._fromPosInLevel = level.items[ii]._posInLevel;
+							links[l]._fromDepth = level.items[ii]._depth;
+						}
+					}
+				}
+
 			}
 
 
@@ -335,223 +323,32 @@ angular.module('emuwebApp')
 		}
 
 
+		/**
+		 * simple rotate by
+		 */
+		sServObj.rotateBy90 = function () {
+			if (!rotated) {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(90)scale(-1,1)");
+				rotated = true;
+			} else {
+				svgGroup.transition()
+					.duration(duration)
+					.attr("transform", "rotate(0)");
+				rotated = false;
+			}
+			// centerNode(root);
+		}
+
+
 		sServObj.drawHierarchy = function () {
-			// define the baseSvg, attaching a class for styling and the zoomListener
-			d3.select("#emuwebapp-tree-container svg").remove();
-			var viewerWidth = $(document).width();
-			var viewerHeight = $(document).height();
-			var baseSvg = d3.select("#emuwebapp-tree-container").append("svg")
-				.attr("width", viewerWidth)
-				.attr("height", viewerHeight)
-
-
-			// Append a group which holds all nodes and which the zoom Listener can act upon.
-			var svgGroup = baseSvg.append("g");
-			// Compute the new tree layout
-			var nodes = [];
-
-			for (var i=0; i<sServObj.selectedPath.length; ++i) {
-				if (i === 0) {
-					sServObj.layoutNonItemLevel(sServObj.selectedPath[0], sServObj.selectedPath.length);
-				} else {
-					sServObj.layoutItemLevel(sServObj.selectedPath[i], sServObj.selectedPath.length-i);
-				}
-
-				nodes = nodes.concat(LevelService.getLevelDetails(sServObj.selectedPath[i]).level.items);
-			}
-
-			// We can only draw links that are part of the currently selected path
-			// This is a very low-performance approach to filtering
-			var links = [];
-			var allLinks = LevelService.getData().links;
-			for (var l=0; l<allLinks.length; ++l) {
-				for (var i=0; i<sServObj.selectedPath.length-1; ++i) {
-					var element = LevelService.getElementDetailsById(sServObj.selectedPath[i], allLinks[l].toID);
-					if (element === null) {
-						continue;
-					}
-					var parentElement = LevelService.getElementDetailsById(sServObj.selectedPath[i+1], allLinks[l].fromID);
-					if (parentElement !== null) {
-						links.push(allLinks[l]);
-					}
-
-
-				}
-			}
-
-
-			// Set widths between levels based on maxLabelLength.
-			nodes.forEach(function (d) {
-				d._x = (d._depth * 150); //maxLabelLength * 10px
-				d._y = (d._posInLevel * viewerHeight);
-			});
-			links.forEach(function (d) {
-				d._fromX = (d._fromDepth * 150);
-				d._fromY = (d._fromPosInLevel * viewerHeight);
-				d._toX = (d._toDepth * 150);
-				d._toY = (d._toPosInLevel * viewerHeight);
-			});
-
-			// Update the nodes…
-			var node = svgGroup.selectAll("g.node")
-				.data(nodes, function (d) {
-					return d.id;
-				});
-
-			// Enter any new nodes at the parent's previous position.
-			var nodeEnter = node.enter().append("g")
-				//.call(dragListener)
-				.attr("class", "node")
-				.attr("transform", function (d) {
-					return "translate(" + d._x  + "," + d._y + ")";
-				})
-				//.on('click', click)
-				;
-
-			nodeEnter.append("circle")
-				.attr('class', 'nodeCircle')
-				.attr("r", 0)
-				.style("fill", function (d) {
-					return d._children ? "lightsteelblue" : "#fff";
-				});
-
-			nodeEnter.append("text")
-				.attr("x", function (d) {
-					return d.children || d._children ? -10 : 10;
-				})
-				.attr("dy", ".35em")
-				.attr('class', 'nodeText')
-				.attr("text-anchor", function (d) {
-					return d.children || d._children ? "end" : "start";
-				})
-				.text(function (d) {
-					return "foo";
-					var text = d.labels[0].value;
-					for (var i = 1; i < d.labels.length; ++i) {
-						text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
-					}
-					return text;
-				})
-				.style("fill-opacity", 1);
-
-			// phantom node to give us mouseover in a radius around it
-			nodeEnter.append("circle")
-				.attr('class', 'ghostCircle')
-				.attr("r", 30)
-				.attr("opacity", 0.2) // change sServObj to zero to hide the target area
-			.style("fill", "red")
-				.attr('pointer-events', 'mouseover')
-				.on("mouseover", function (node) {
-					overCircle(node);
-				})
-				.on("mouseout", function (node) {
-					outCircle(node);
-				});
-
-			// Update the text to reflect whether node has children or not.
-			node.select('text')
-				.attr("x", function (d) {
-					return d.children || d._children ? -10 : 10;
-				})
-				.attr("text-anchor", function (d) {
-					return d.children || d._children ? "end" : "start";
-				})
-				.text(function (d) {
-					var text = d.labels[0].value;
-					for (var i = 1; i < d.labels.length; ++i) {
-						text += ' / ' + d.labels[i].name + ': ' + d.labels[i].value;
-					}
-					return text;
-				});
-
-			// Change the circle fill depending on whether it has children and is collapsed
-			node.select("circle.nodeCircle")
-				.attr("r", 4.5)
-				.style("fill", function (d) {
-					return d._children ? "lightsteelblue" : "#fff";
-				});
-
-			// Transition nodes to their new position.
-			
-			var nodeUpdate = node.transition()
-				.duration(sServObj.duration)
-				.attr("transform", function (d) {
-					return "translate(" + d._x + "," + d._y + ")";
-				});
-
-			// Fade the text in
-			nodeUpdate.select("text")
-				.style("fill-opacity", 1);
-			
-
-			/*
-			// Transition exiting nodes to the parent's new position.
-			var nodeExit = node.exit().transition()
-				.duration(duration)
-				.attr("transform", function (d) {
-					return "translate(" + source.y + "," + source.x + ")";
-				})
-				.remove();
-
-			nodeExit.select("circle")
-				.attr("r", 0);
-
-			nodeExit.select("text")
-				.style("fill-opacity", 0);
-			*/
-			
-
-			
-
-			// Update the links…
-			var link = svgGroup.selectAll("path.link")
-				.data(links, function (d) {
-					// Form unique link ID
-					return 's' + d.fromID + 't' + d.toID;
-				});
-
-			// Enter any new links at the parent's previous position.
-			link.enter().insert("path", "g")
-				.attr("class", "link")
-				.attr("d", function (d) {
-					return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
-				})
-				;
-
-		/*	
-
-			// Transition links to their new position.
-			link.transition()
-				.duration(duration)
-				.attr("d", sServObj.diagonal);
-		*/
-			
-			/*
-			// Transition exiting nodes to the parent's new position.
-			link.exit().transition()
-				.duration(duration)
-				.attr("d", function (d) {
-					var o = {
-						x: source.x,
-						y: source.y
-					};
-					return diagonal({
-						source: o,
-						target: o
-					});
-				})
-				.remove();
-			*/
-			
-
-			// Stash the old positions for transition.
-			nodes.forEach(function (d) {
-				d.x0 = d.x;
-				d.y0 = d.y;
-			});
-
+			console.debug("ERROR: Called obsolete function HierarchyService/HierarchyLayoutService.drawHierarchy()");
 		};
 
+
+		return sServObj;
+	});
 
 
 
@@ -559,9 +356,9 @@ angular.module('emuwebApp')
 /*##########################################
 ##########################################
 ##########################################
-##########################################
-##########################################
-##########################################
+########  THE REMAINDER IS ONLY LEFT TO ##
+########  USE SOME IDEAS – IT IS NEVER  ##
+########  CALLED                        ##
 ##########################################
 ##########################################
 ##########################################
@@ -571,7 +368,8 @@ angular.module('emuwebApp')
 		 * for the time being: this function is no fun to read because it is based on a d3 example and contains a lot of sub-functions.
 		 * you'd better wait until I have polished it to a certain degree.
 		 */
-		sServObj.oldDrawHierarchy = function () {
+		//sServObj.oldDrawHierarchy = function () {
+		var foooooooo = function () {
 			// Make sure that any private properties that have been added during a previous call of this function are removed
 			for (var x = 0; x < LevelService.getData().levels.length; ++x) {
 				for (var y = 0; y < LevelService.getData().levels[x].items.length; ++y) {
@@ -1096,6 +894,7 @@ angular.module('emuwebApp')
 				// check for rotation if so rotate
 				if (rotated) {
 					// svgGroup.attr("transform", "rotate(90)");
+					
 				}
 			}
 
@@ -1113,26 +912,9 @@ angular.module('emuwebApp')
 			// Layout the tree initially and center on the root node.
 			update(root);
 			centerNode(root);
+
+
 		};
 
-		/**
-		 * simple rotate by
-		 */
-		sServObj.rotateBy90 = function () {
-			if (!rotated) {
-				svgGroup.transition()
-					.duration(duration)
-					.attr("transform", "rotate(90)scale(-1,1)");
-				rotated = true;
-			} else {
-				svgGroup.transition()
-					.duration(duration)
-					.attr("transform", "rotate(0)");
-				rotated = false;
-			}
-			// centerNode(root);
-		}
+	
 
-
-		return sServObj;
-	});

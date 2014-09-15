@@ -98,21 +98,55 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
-		// Compute the new tree layout
+
+		/////
+		// Compute the new tree layout (first nodes and then links)
+		//
 		var nodes = [];
 
+
+		// At the moment I have two different approaches to calculating the layout of a hierarchy
+		//
+		// The first is simpler and is used by first calling layoutNonItemLevel() for the bottom-most level (the one with time information)
+		// and then calling layoutItemLevel() for all other levels. Unfortunately, it will in some cases render multiple nodes to the same
+		// position (happens when they share the same set of children).
+		//
+		// The second one looks simpler in this file, because it is completely done in one function. But that function is actually quite
+		// complex.
+		//
+		// It might be desirable to find some sort of collision detection for the first approach (which is commented out below)
+		//
+
 		for (var i=0; i<HierarchyService.selectedPath.length; ++i) {
+			/////
+			// This is the aforementioned second approach
+			HierarchyService.calculateWeightsBottomUp();
+			//
+			/////
+
+			/////
+			// This is the aformentioned first approach
+			/*
 			if (i === 0) {
 				HierarchyService.layoutNonItemLevel(HierarchyService.selectedPath[0], HierarchyService.selectedPath.length);
 			} else {
 				HierarchyService.layoutItemLevel(HierarchyService.selectedPath[i], HierarchyService.selectedPath.length-i);
 			}
+			*/
+			//////
 
 			nodes = nodes.concat(LevelService.getLevelDetails(HierarchyService.selectedPath[i]).level.items);
 		}
+		
 
-		// We can only draw links that are part of the currently selected path
-		// This is a very low-performance approach to filtering
+
+
+		// Now layout links
+
+		// We must only draw links that are part of the currently selected path.
+		// We must therefore filter the links.
+		//
+		// What follows below is a very low-performance approach to filtering
 		var links = [];
 		var allLinks = LevelService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
@@ -265,6 +299,8 @@ angular.module('emuwebApp')
 				return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
 			})
 			;
+
+
 
 	/*	
 
