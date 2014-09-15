@@ -129,15 +129,48 @@ angular.module('emuwebApp')
 				}
 			}
 		};
-		
+
+		/**
+		 * This function aims to find and store the parents of every node
+		 */
+		sServObj.findParents = function () {
+			var i, ii, c;
+			
+			/////
+			// Iterate throug levels top-down
+			for (i = sServObj.selectedPath.length-1; i>=0; --i) {
+				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
+
+				// Iterate through the current level's items
+				// And save them as _parents in their children
+				for (ii = 0; ii<level.items.length; ++ii) {
+					var children = sServObj.findChildren(level.items[ii]);
+
+					if (children === null) {
+						continue;
+					}
+
+					console.debug('label', level.items[ii].labels[0].value, 'number of children: ', children.length);
+
+					for (c = 0; c < children.length; ++c) {
+						if (typeof children[c]._parents === 'undefined') {
+							children[c]._parents = [];
+						}
+						children[c]._parents.push (level.items[ii]);
+					}
+				}
+			}
+		};
+
 
 		/**
 		 * Calculate the weights (size within their level) of all nodes bottom-up
 		 * This is most likely rather slow and definitely needs tweaking
 		 */
 		sServObj.calculateWeightsBottomUp = function () {
-			var bottomLevel;
 			var i, ii, iii;
+
+			sServObj.findParents();
 
 			// Iterate through levels bottom-up
 			for (i = 0; i < sServObj.selectedPath.length; ++i) {
@@ -145,7 +178,7 @@ angular.module('emuwebApp')
 				level._weight = 0;
 
 				//////
-				// Iterate through items to calculate their _weight
+				// Iterate through items to calculate their _weight and the level's _weight
 				for (ii = 0; ii < level.items.length; ++ii) {
 					var itemWeight = level.items[ii]._weight;
 					if (typeof itemWeight === 'undefined') {
@@ -153,11 +186,17 @@ angular.module('emuwebApp')
 						level.items[ii]._weight = 1;
 					}
 
+					// This would create tidier drawings but depends on knowledge of each node's parents 
 					if (typeof level.items[ii]._parents !== 'undefined') {
+						console.debug(level.items[ii]._parents.length);
+						/*
 						for (iii = 0; iii < level.items[ii]._parents.length; ++iii) {
 							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
 						}
+						*/
 					}
+					
+
 					level._weight += itemWeight;
 				}
 
@@ -183,38 +222,6 @@ angular.module('emuwebApp')
 							links[l]._fromDepth = level.items[ii]._depth;
 						}
 					}
-				}
-
-			}
-
-
-			// Iterate through levels top-down
-			for (i = sServObj.selectedPath.length - 1; i >= 0; --i) {
-				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
-				var itemSize = 20;
-
-
-				//console.debug(level.name, level._weight);
-				var currentX = -itemSize * level._weight / 2;
-
-				for (ii = 0; ii < level.items.length; ++ii) {
-					if (typeof level.items[ii]._parents === 'undefined') {
-						level.items[ii].x = 0;
-					} else {
-						level.items[ii].x = currentX + itemSize * level.items[ii]._weight / 2
-						//level.items[ii].x = currentX;
-						currentX += itemSize * level.items[ii]._weight;
-
-						//if (level.items[ii]._parents.length === 1) {
-						//	level.items[ii].x = level.items[ii]._parents[0].x + 20 * level.items[ii]._weight;
-						//} else {
-						//	level.items[ii].x = level.items[ii]._parents[0].x + 
-						//}
-					}
-
-					//console.debug(level.items[ii]._weight, level._weight);
-					//level.items[ii].x = 20*  level.items[ii]._weight / level._weight;
-					//level.items[ii]._levelWeight = level._weight;
 				}
 			}
 		};
@@ -276,6 +283,7 @@ angular.module('emuwebApp')
 		 * path through the hierarchy
 		 *
 		 * @return null if d has no children (not an empty array because the d3 lib expects null)
+		 * FIXME I will soon be changing this behaviour to return an empty array – let's see what breaks (actually I don' have that d3 dependency anymore)
 		 * @return an array of children nodes otherwise
 		 */
 		sServObj.findChildren = function (d) {
