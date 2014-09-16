@@ -19,8 +19,9 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
+
     // hold the current attribute definitions that are in view 
-    var curLevelAttrDefs = [];
+    sServObj.curLevelAttrDefs = [];
 
     /**
      * initialize all needed vars in viewState
@@ -92,7 +93,7 @@ angular.module('emuwebApp')
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
       sServObj.curState = sServObj.states.noDBorFilesloaded;
 
-      curLevelAttrDefs = [];
+      sServObj.curLevelAttrDefs = [];
     };
 
     // initialize on init
@@ -977,7 +978,7 @@ angular.module('emuwebApp')
      */
     sServObj.setCurLevelAttrDefs = function (levelDefs) {
       angular.forEach(levelDefs, function (ld) {
-        curLevelAttrDefs.push({
+        sServObj.curLevelAttrDefs.push({
           'levelName': ld.name,
           'curAttrDefName': ld.name
         });
@@ -992,7 +993,7 @@ angular.module('emuwebApp')
      * @param newAttrDefName
      */
     sServObj.setCurAttrDef = function (levelName, newAttrDefName) {
-      angular.forEach(curLevelAttrDefs, function (ad) {
+      angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
         if (ad.levelName === levelName) {
           ad.curAttrDefName = newAttrDefName;
         }
@@ -1008,7 +1009,7 @@ angular.module('emuwebApp')
      */
     sServObj.getCurAttrDef = function (levelName) {
       var curAttrDef;
-      angular.forEach(curLevelAttrDefs, function (ad) {
+      angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
         if (ad.levelName === levelName) {
           curAttrDef = ad.curAttrDefName;
         }
