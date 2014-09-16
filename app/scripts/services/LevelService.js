@@ -536,6 +536,8 @@ angular.module('emuwebApp')
 			    } else {
     				var spaceLower = 0;
 	    			var spaceHigher = 0;
+	    			isFirst = false;
+	    			isLast = false;
 		    		angular.forEach(level.items, function (evt, index) {
     					if (index < level.items.length - 1) {
 	    					spaceHigher = evt.samplePoint + (level.items[index + 1].samplePoint - level.items[index].samplePoint) / 2;

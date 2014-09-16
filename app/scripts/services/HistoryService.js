@@ -101,21 +101,21 @@ angular.module('emuwebApp')
 							LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
-					case 'INSERTPOINT': // ongoing
+					case 'INSERTPOINT': // done
 						if (applyOldVal) {
 							LevelService.deletePoint(cur.name, cur.id);
 						} else {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
-					case 'DELETEPOINT': // ongoing
+					case 'DELETEPOINT': // done
 						if (applyOldVal) {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						} else {
 							LevelService.deletePoint(cur.name, cur.id);
 						}
 						break;						
-					case 'EXPANDSEGMENTS': // done
+					case 'EXPANDSEGMENTS': // ongoing
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
