@@ -936,7 +936,7 @@ angular.module('emuwebApp')
 								    level.items.splice(order, 1);
 								    retOrder = order;
 								    retEvt = evt;
-								    clickSeg = last;							    
+								    clickSeg = level.items[0];							    
 							    }
 							    else {
 								    last.labels[0].value += evt.labels[0].value;
@@ -973,10 +973,12 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.splice(deletedSegment.order, 0, deletedSegment.event);
-					var oldName = level.items[deletedSegment.order - 1].labels[0].value.slice(0, (level.items[deletedSegment.order - 1].labels[0].value.length - deletedSegment.event.labels[0].value.length));
-					//level.items[order-1].labels[0].value = level.items[order-1].labels[0].value.slice(0, -(toRestore.labels[0].value.length));
-					level.items[deletedSegment.order - 1].labels[0].value = oldName;
-					level.items[deletedSegment.order - 1].sampleDur -= deletedSegment.event.sampleDur;
+					var oldName = deletedSegment.event.labels[0].value;
+					if(deletedSegment.order>0) {
+    					oldName = level.items[deletedSegment.order - 1].labels[0].value.slice(0, (level.items[deletedSegment.order - 1].labels[0].value.length - deletedSegment.event.labels[0].value.length));
+					    level.items[deletedSegment.order - 1].labels[0].value = oldName;
+					    level.items[deletedSegment.order - 1].sampleDur -= (deletedSegment.event.sampleDur + 1);
+    				}
 				}
 			});
 

@@ -754,7 +754,7 @@ describe('Service: LevelService', function () {
     var ret = LevelService.deleteBoundary('Phonetic', 148);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).labels[0].value).toEqual('Vm');
-    expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(1389 + 1664); // sampleDur of 147 and 148
+    expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(1389 + 1664 + 1); // sampleDur of 147 and 148
   }));
 
   /**
