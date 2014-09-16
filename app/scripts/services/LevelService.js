@@ -651,18 +651,17 @@ angular.module('emuwebApp')
 			var firstSegment = sServObj.getItemFromLevelById(name, id);
 			var firstOrder = sServObj.getOrderById(name, id);
 			var lastSegment = sServObj.getItemDetails(name, (firstOrder + length - 1));
-			var lastNeighbours = sServObj.getItemNeighboursFromLevel(name, firstSegment.id, lastSegment.id);
+			var neighbours = sServObj.getItemNeighboursFromLevel(name, firstSegment.id, lastSegment.id);
 			var timeLeft = 0;
 			var timeRight = 0;
 			var deleteOrder = null;
 			var deletedSegment = null;
 			var clickSeg = null;
-
 			var attrDefName = viewState.getCurAttrDef(name);
 			var labelIdx = getLabelIdx(attrDefName, firstSegment.labels);
 
 			for (var i = firstOrder; i < (firstOrder + length); i++) {
-				timeLeft += sServObj.getItemDetails(name, i).sampleDur;
+				timeLeft += sServObj.getItemDetails(name, i).sampleDur + 1;
 			}
 			if (timeLeft % 2 == 0) {
 				timeLeft = timeLeft / 2;
@@ -682,19 +681,19 @@ angular.module('emuwebApp')
 				}
 			});
 
-			if ((lastNeighbours.left !== undefined) && (lastNeighbours.right === undefined)) {
-				sServObj.updateSegItemInLevel(name, lastNeighbours.left.id, undefined, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeRight));
-				clickSeg = lastNeighbours.left;
-			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
-				sServObj.updateSegItemInLevel(name, lastNeighbours.right.id, undefined, labelIdx, lastNeighbours.right.sampleStart - timeLeft, (lastNeighbours.right.sampleDur + timeLeft));
-				clickSeg = lastNeighbours.right;
-			} else if ((lastNeighbours.left === undefined) && (lastNeighbours.right === undefined)) {
+			if ((neighbours.left !== undefined) && (neighbours.right === undefined)) {
+				sServObj.updateSegItemInLevel(name, neighbours.left.id, undefined, labelIdx, neighbours.left.sampleStart, (neighbours.left.sampleDur + timeRight));
+				clickSeg = neighbours.left;
+			} else if ((neighbours.left === undefined) && (neighbours.right !== undefined)) {
+				sServObj.updateSegItemInLevel(name, neighbours.right.id, undefined, labelIdx, neighbours.right.sampleStart - timeLeft, (neighbours.right.sampleDur + timeLeft));
+				clickSeg = neighbours.right;
+			} else if ((neighbours.left === undefined) && (neighbours.right === undefined)) {
 				// nothing left to do level empty now
 				viewState.setcurMouseSegment(undefined, undefined, undefined);
 			} else {
-				sServObj.updateSegItemInLevel(name, lastNeighbours.left.id, undefined, labelIdx, lastNeighbours.left.sampleStart, (lastNeighbours.left.sampleDur + timeLeft));
-				sServObj.updateSegItemInLevel(name, lastNeighbours.right.id, undefined, labelIdx, lastNeighbours.right.sampleStart - timeRight, (lastNeighbours.right.sampleDur + timeRight));
-				clickSeg = lastNeighbours.left;
+				sServObj.updateSegItemInLevel(name, neighbours.left.id, undefined, labelIdx, neighbours.left.sampleStart, (neighbours.left.sampleDur + timeLeft));
+				sServObj.updateSegItemInLevel(name, neighbours.right.id, undefined, labelIdx, neighbours.right.sampleStart - timeRight, (neighbours.right.sampleDur + timeRight));
+				clickSeg = neighbours.left;
 			}
 			return {
 				order: deleteOrder,

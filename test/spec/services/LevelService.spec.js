@@ -4,6 +4,8 @@ describe('Service: LevelService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
+  
+  var item;
 
   /**
    *
@@ -106,20 +108,21 @@ describe('Service: LevelService', function () {
   it('should get element (segment) details by passing name and order', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(3);
-    expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87710);
-    expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(929);
-    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('O');
-
+    // first item has id 3
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(item.id);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getItemDetails('Phonetic', 0).labels).toEqual(item.labels);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getItemDetails('TB', 0).id).toEqual(40);
-    expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29609);
-    expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(2695);
-    expect(LevelService.getItemDetails('TB', 0).labels[0].name).toEqual('TB');
-    expect(LevelService.getItemDetails('TB', 0).labels[0].value).toEqual('raise');
+    // first item has id 40
+    item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 40);
+    expect(LevelService.getItemDetails('TB', 0).id).toEqual(item.id);
+    expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(item.sampleDur)
+    expect(LevelService.getItemDetails('TB', 0).labels).toEqual(item.labels);
   }));
 
   /**
@@ -128,20 +131,21 @@ describe('Service: LevelService', function () {
   it('should get last element details by passing name', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLastItem('Phonetic').id).toEqual(4);
-    expect(LevelService.getLastItem('Phonetic').sampleStart).toEqual(91042);
-    expect(LevelService.getLastItem('Phonetic').sampleDur).toEqual(553);
-    expect(LevelService.getLastItem('Phonetic').labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getLastItem('Phonetic').labels[0].value).toEqual('I');
-
+    // last item has id 4 
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getLastItem('Phonetic').id).toEqual(item.id);
+    expect(LevelService.getLastItem('Phonetic').sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getLastItem('Phonetic').sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getLastItem('Phonetic').labels).toEqual(item.labels);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLastItem('TB').id).toEqual(41);
-    expect(LevelService.getLastItem('TB').sampleStart).toEqual(32304);
-    expect(LevelService.getLastItem('TB').sampleDur).toEqual(2028);
-    expect(LevelService.getLastItem('TB').labels[0].name).toEqual('TB');
-    expect(LevelService.getLastItem('TB').labels[0].value).toEqual('lower');
+    // last element has id 41
+    item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41);
+    expect(LevelService.getLastItem('TB').id).toEqual(item.id);
+    expect(LevelService.getLastItem('TB').sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getLastItem('TB').sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getLastItem('TB').labels).toEqual(item.labels);
   }));
 
   /**
@@ -150,20 +154,21 @@ describe('Service: LevelService', function () {
   it('should get next element details by passing name and id', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getNextItem('Phonetic', 1).id).toEqual(4);
-    expect(LevelService.getNextItem('Phonetic', 1).sampleStart).toEqual(91042);
-    expect(LevelService.getNextItem('Phonetic', 1).sampleDur).toEqual(553);
-    expect(LevelService.getNextItem('Phonetic', 1).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getNextItem('Phonetic', 1).labels[0].value).toEqual('I');
-
+    // next item has id 4 
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getNextItem('Phonetic', 1).id).toEqual(item.id);
+    expect(LevelService.getNextItem('Phonetic', 1).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getNextItem('Phonetic', 1).sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getNextItem('Phonetic', 1).labels).toEqual(item.labels);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getNextItem('TB', 40).id).toEqual(41);
-    expect(LevelService.getNextItem('TB', 40).sampleStart).toEqual(32304);
-    expect(LevelService.getNextItem('TB', 40).sampleDur).toEqual(2028);
-    expect(LevelService.getNextItem('TB', 40).labels[0].name).toEqual('TB');
-    expect(LevelService.getNextItem('TB', 40).labels[0].value).toEqual('lower');
+    // next item has id 41
+    item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41);
+    expect(LevelService.getNextItem('TB', 40).id).toEqual(item.id);
+    expect(LevelService.getNextItem('TB', 40).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getNextItem('TB', 40).sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getNextItem('TB', 40).labels).toEqual(item.labels);
   }));
 
   /**
@@ -172,20 +177,22 @@ describe('Service: LevelService', function () {
   it('should get element details by passing name and id', inject(function (LevelService) {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getItemFromLevelById('Phonetic', 3).id).toEqual(3);
-    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(929);
-    expect(LevelService.getItemFromLevelById('Phonetic', 3).labels[0].name).toEqual('Phonetic');
-    expect(LevelService.getItemFromLevelById('Phonetic', 3).labels[0].value).toEqual('O');
+    // item has id 3
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).id).toEqual(item.id);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).labels).toEqual(item.labels);
 
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getItemFromLevelById('TB', 40).id).toEqual(40);
-    expect(LevelService.getItemFromLevelById('TB', 40).sampleStart).toEqual(29609);
-    expect(LevelService.getItemFromLevelById('TB', 40).sampleDur).toEqual(2695);
-    expect(LevelService.getItemFromLevelById('TB', 40).labels[0].name).toEqual('TB');
-    expect(LevelService.getItemFromLevelById('TB', 40).labels[0].value).toEqual('raise');
+    // item has id 40
+    item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 40);
+    expect(LevelService.getItemFromLevelById('TB', 40).id).toEqual(item.id);
+    expect(LevelService.getItemFromLevelById('TB', 40).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('TB', 40).sampleDur).toEqual(item.sampleDur);
+    expect(LevelService.getItemFromLevelById('TB', 40).labels).toEqual(item.labels);
   }));
 
   /**
@@ -226,9 +233,9 @@ describe('Service: LevelService', function () {
     ConfigProviderService.curDbConfig = emaDbConfig;
     viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    LevelService.insertItemDetails(42, 'TB', 0, 'test', 29509, 100);
+    LevelService.insertItemDetails(112, 'TB', 0, 'test', 29509, 100);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
-    expect(LevelService.getItemDetails('TB', 0).id).toEqual(42);
+    expect(LevelService.getItemDetails('TB', 0).id).toEqual(112);
     expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29509);
     expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(100);
     expect(LevelService.getItemDetails('TB', 0).labels[0].name).toEqual('TB');
@@ -540,12 +547,21 @@ describe('Service: LevelService', function () {
     // check new length 34-2=32
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
     // check new sampleDur of 147
-    // to be length of 147 + (148+149)/2
-    var timeLeft = Math.ceil((1664+1729)/2);
+    var timeLeft = getItemFromJSON(msajc003_bndl.annotation, 148).sampleDur+1
+                   +getItemFromJSON(msajc003_bndl.annotation, 149).sampleDur+1;
+    var timeRight = 0;
+    if (timeLeft % 2 == 0) {
+        timeLeft = timeLeft / 2;
+		timeRight = timeLeft;
+    }
+    else {
+		timeLeft = Math.ceil(timeLeft / 2);
+		timeRight = timeLeft - 1;    
+    }
+    var newSampleDur = getItemFromJSON(msajc003_bndl.annotation, 147).sampleDur + timeLeft;
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(1389 + timeLeft);
     // check new sampleDur and sampleStart of 150
     // to be length of 150 + (148+149)/2  
-    var timeRight = Math.ceil((1664+1729)/2) - 1;
     expect(LevelService.getItemFromLevelById('Phonetic', 150).sampleDur).toEqual(1134 + timeRight);
     // and to be at position
     expect(LevelService.getItemFromLevelById('Phonetic', 150).sampleStart).toEqual(8535 - timeRight);
@@ -554,11 +570,22 @@ describe('Service: LevelService', function () {
     // 1 elements on left side
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
-    LevelService.deleteSegments('TB', 41, 1);
+    LevelService.deleteSegments('TB', 40, 1);
     // check new length 2-1=1  
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
-    // check new sampleDur     
-    expect(LevelService.getItemFromLevelById('TB', 40).sampleDur).toEqual(3709);
+    timeLeft = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 40).sampleDur+1;
+    timeRight = 0;
+    if (timeLeft % 2 == 0) {
+        timeLeft = timeLeft / 2;
+		timeRight = timeLeft;
+    }
+    else {
+		timeLeft = Math.ceil(timeLeft / 2);
+		timeRight = timeLeft - 1;    
+    }
+    // check new sampleDur  
+    newSampleDur = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41).sampleDur + timeRight;   
+    expect(LevelService.getItemFromLevelById('TB', 41).sampleDur).toEqual(newSampleDur);
 
     // test on JDR10_bndl.annotation
     // 1 elements on right side
@@ -567,8 +594,19 @@ describe('Service: LevelService', function () {
     LevelService.deleteSegments('Phonetic', 4, 1);
     // check new length 4-1=3  
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
-    // check new sampleDur and sampleStart        
-    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(1037);
+    timeLeft = getItemFromJSON(JDR10_bndl.annotation, 4).sampleDur+1;
+    timeRight = 0;
+    if (timeLeft % 2 == 0) {
+        timeLeft = timeLeft / 2;
+		timeRight = timeLeft;
+    }
+    else {
+		timeLeft = Math.ceil(timeLeft / 2);
+		timeRight = timeLeft - 1;    
+    }    
+    // check new sampleDur and sampleStart   
+    newSampleDur = getItemFromJSON(JDR10_bndl.annotation, 1).sampleDur + timeRight;
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(newSampleDur);
   }));
 
   /**
@@ -1056,7 +1094,6 @@ describe('Service: LevelService', function () {
     var childIDs = [1, 2, 3, 4];
     LevelService.addLinkToParent(parentID, childIDs);
     expect(LevelService.data.links.length).toEqual(4);
-
     expect(LevelService.data.links[0].fromID).toEqual(1234);
     expect(LevelService.data.links[0].toID).toEqual(1);
   }));
@@ -1075,5 +1112,18 @@ describe('Service: LevelService', function () {
     LevelService.inverseAddLinkToParent(parentID, childIDs);
     expect(LevelService.data.links.length).toEqual(0);
   }));
+  
+  function getItemFromJSON(anno, itemID) {
+      var ret = undefined;
+      for(var x = 0; x < anno.levels.length; x++) {
+        for(var j = 0; j < anno.levels[x].items.length; j++) {
+          var item = anno.levels[x].items[j];
+          if(item.id === itemID) {
+              ret = item;
+          }
+        }
+      }
+      return ret;
+  }
 
 });

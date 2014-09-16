@@ -80,14 +80,14 @@ angular.module('emuwebApp')
 							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
-					case 'DELETEBOUNDARY': // ongoing
+					case 'DELETEBOUNDARY': // done
 						if (applyOldVal) {
 							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.deletedSegment);
 						} else {
 							LevelService.deleteBoundary(cur.name, cur.id);
 						}
 						break;
-					case 'DELETESEGMENTS': // todo
+					case 'DELETESEGMENTS': // ongoing
 						if (applyOldVal) {
 							LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
 						} else {
