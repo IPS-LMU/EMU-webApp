@@ -1187,6 +1187,7 @@ angular.module('emuwebApp')
 			var attrDefName = viewState.getCurAttrDef(name);
 			var labelIdx = getLabelIdx(attrDefName, segments[0].labels);
 			var tempItem;
+			var allow = true;
 
 			if (rightSide) { // if expand or shrink on RIGHT side
 				if (neighbours.right === undefined) { // last element
@@ -1200,9 +1201,11 @@ angular.module('emuwebApp')
 					}
 				} else {
 					angular.forEach(segments, function (seg) {
-						segTime += seg.sampleDur + 1;
+					    if((seg.sampleDur + 1 + changeTime)<0) {
+					        allow = false;
+					    }
 					});
-					if (segTime > 0 && (neighbours.right.sampleDur - (changeTime * segments.length) > 0)) {
+					if (allow && (neighbours.right.sampleDur - (changeTime * segments.length) > 0)) {
 						angular.forEach(segments, function (seg) {
 						    tempItem = sServObj.getItemFromLevelById(name, seg.id);
 							sServObj.updateSegItemInLevel(name, tempItem.id, undefined, labelIdx, tempItem.sampleStart + startTime, tempItem.sampleDur + changeTime);
@@ -1222,9 +1225,11 @@ angular.module('emuwebApp')
 					}
 				} else {
 					angular.forEach(segments, function (seg) {
-						segTime += seg.sampleDur + 1;
+					    if((seg.sampleDur + 1 + changeTime)<0) {
+					        allow = false;
+					    }
 					});
-					if (segTime > 0 && (neighbours.left.sampleDur - (changeTime * segments.length) > 0)) {
+					if (allow && (neighbours.left.sampleDur - (changeTime * segments.length) > 0)) {
 						startTime = 0;
 						angular.forEach(segments, function (seg, i) {
 						    tempItem = sServObj.getItemFromLevelById(name, seg.id);
