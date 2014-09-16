@@ -103,7 +103,7 @@ angular.module('emuwebApp')
 		}
 	};
 
-	scope.getOrientatedNodeX = function (d) {
+	scope.getOrientatedTextX = function (d) {
 		if (scope.vertical) {
 			return 0;
 		} else {
@@ -111,7 +111,7 @@ angular.module('emuwebApp')
 		}
 	};
 
-	scope.getOrientatedNodeY = function (d) {
+	scope.getOrientatedTextY = function (d) {
 		if (scope.vertical) {
 			return '1.45em';
 		} else {
@@ -120,16 +120,8 @@ angular.module('emuwebApp')
 	};
 
 	scope.getPath = function (d) {
-		var topDown = d._fromY < d._toY;
-		//var leftRight = d._fromX < d._toX;
-
-		//var controlX = leftRight ? d._fromX : d._toX;
-		//var controlX = topDown ? d._fromX : d._toX;
-		//var controlY = topDown ? d._toY : d._fromY;
 		var controlX = d._fromX;
 		var controlY = d._toY;
-
-		//console.debug(topDown, leftRight, controlX-d._fromX, controlY-d._fromY);
 
 		return "M"+d._fromX+" "+d._fromY+"Q"+controlX+" "+controlY+" "+d._toX+" "+d._toY;
 	};
@@ -201,13 +193,15 @@ angular.module('emuwebApp')
 		//
 		// It might be desirable to find some sort of collision detection for the first approach (which is commented out below)
 		//
+		
+		
+		/////
+		// This is the aforementioned second approach
+		HierarchyService.calculateWeightsBottomUp();
+		//
+		/////
 
 		for (var i=0; i<HierarchyService.selectedPath.length; ++i) {
-			/////
-			// This is the aforementioned second approach
-			HierarchyService.calculateWeightsBottomUp();
-			//
-			/////
 
 			/////
 			// This is the aformentioned first approach
@@ -244,8 +238,6 @@ angular.module('emuwebApp')
 				if (parentElement !== null) {
 					links.push(allLinks[l]);
 				}
-
-
 			}
 		}
 
@@ -275,138 +267,158 @@ angular.module('emuwebApp')
 			d._toY = posInLevelToY(d._toPosInLevel);
 		});
 
-		// Update the nodes…
-		var node = svg.selectAll("g.node")
+
+
+
+		
+		//////
+		// Now that all actual coordinates have been calculated, we
+		// update our SVG using d3js data joins
+		//
+		// For an introduction to the concept see
+		// http://bost.ocks.org/mike/join/
+		//
+
+		//
+		// Define the data set to be visualised
+
+		var dataSet = svg.selectAll("g.node")
 			.data(nodes, function (d) {
 				return d.id;
 			});
 
-		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("g")
-			//.call(dragListener)
+		var newNodes = dataSet.enter();
+		var oldNodes = dataSet.exit();
+
+		//
+		// Add nodes that were previously not part of the svg.
+		//
+		// Any node will consist of an svg group ("g"), a circle, a
+		// text and a second, invisible circle for mouseover handling.
+		//
+		// Note that properties that can be changed after the node is 
+		// added will be set further below
+		
+
+		newNodes = newNodes.append("g")		// append() will return a set of all appended elements
 			.attr("class", "node")
-			.attr("transform", function (d) {
-				return "translate(" + d._x  + "," + d._y + ")";
-			})
+
+			// event handlers
+			//.call(dragListener)
 			.on('click', function (d) {
 				console.debug('Clicked node', d);
 				scope.centerNode(d);
 			})
 			;
 
-		nodeEnter.append("circle")
+		newNodes.append("circle")
 			.attr('class', 'nodeCircle')
-			.attr("r", 0)
-			.style("fill", function (d) {
-				return d._children ? "lightsteelblue" : "#fff";
-			});
 
-		nodeEnter.append("text")
-			.attr('class', 'nodeText')
-			/*.attr ('x', scope.getOrientatedNodeX )
-			.attr ('y', scope.getOrientatedNodeY )
-			.attr('text-anchor', scope.getOrientatedTextAnchor )
-			.text( scope.getNodeText )
-			.attr( 'transform', scope.getOrientatedNodeTransform )*/
-			.style("fill-opacity", 1)
+			// Make circle invisible at first
+			.attr('r', 0)
+
+			// And then transition it to its normal size
+			.transition()
+			.duration(duration)
+			.attr('r', 4.5)
 			;
 
+		newNodes.append("text")
+			.attr('class', 'nodeText')
+			;
+
+		/*
+
 		// phantom node to give us mouseover in a radius around it
-		nodeEnter.append("circle")
+		newNodes.append("circle")
 			.attr('class', 'ghostCircle')
-			.attr("r", 30)
-			.attr("opacity", 0.2) // change sServObj to zero to hide the target area
-		.style("fill", "red")
+			.attr('r', 30)
+			.attr('opacity', 0.2) // change this to zero to hide the target area
+			.style('fill', 'red')
 			.attr('pointer-events', 'mouseover')
-			.on("mouseover", function (node) {
+			.on('mouseover', function (node) {
+				console.debug(node);
 				overCircle(node);
 			})
-			.on("mouseout", function (node) {
+			.on('mouseout', function (node) {
 				outCircle(node);
 			});
 
-		node.select('text')
-			.attr ('x', scope.getOrientatedNodeX )
-			.attr ('y', scope.getOrientatedNodeY )
+		*/
+		
+		//
+		// Remove nodes that shall no longer be part of the svg
+
+		// Transition exiting nodes to the origin
+		oldNodes = oldNodes.transition()
+			.duration(duration)
+			.attr("transform", function (d) {
+				return "translate(" + 0 + "," + 0 + ")";
+			})
+			.remove();
+		
+		oldNodes.select("text")
+			.style("fill-opacity", 0);
+
+		//
+		// Set or update properties that are subject to change after
+		// the node is added.
+
+		dataSet.select('text')
+			.attr ('x', scope.getOrientatedTextX )
+			.attr ('y', scope.getOrientatedTextY )
 			.attr('text-anchor', scope.getOrientatedTextAnchor )
+			.attr('transform', scope.getOrientatedTextTransform )
 			.text( scope.getNodeText )
-			.attr('transform', scope.getOrientatedNodeTransform )
 			;
 
 		// Change the circle fill depending on whether it has children and is collapsed
-		node.select("circle.nodeCircle")
-			.attr("r", 4.5)
-			.style("fill", function (d) {
-				return d._children ? "lightsteelblue" : "#fff";
-			});
+		dataSet.select("circle.nodeCircle")
+			//.attr("r", 4.5)
+			//.style("fill", function (d) {
+			//	return d._children ? "lightsteelblue" : "#fff";
+			//})
+			;
 
 		// Transition nodes to their new position.
-		
-		var nodeUpdate = node.transition()
+		dataSet.transition()
 			.duration(duration)
 			.attr("transform", function (d) {
 				return "translate(" + d._x + "," + d._y + ")";
 			});
 
-		// Fade the text in
-		nodeUpdate.select("text")
-			.style("fill-opacity", 1);
-		
 
-		// Transition exiting nodes to the parent's new position.
-		var nodeExit = node.exit().transition()
-			.duration(duration)
-			/*.attr("transform", function (d) {
-				return "translate(" + source.y + "," + source.x + ")";
-			})*/
-			.remove();
-		
-		nodeExit.select("circle")
-			.attr("r", 0);
-
-		nodeExit.select("text")
-			.style("fill-opacity", 0);
-		
-		
-
-		
-
-		// Update the links…
-		var link = svg.selectAll("path.link")
+		//
+		//
+		// Now we turn to visualising links
+		var linkSet = svg.selectAll("path.link")
 			.data(links, function (d) {
 				// Form unique link ID
 				return 's' + d.fromID + 't' + d.toID;
 			});
 
-		// Enter any new links at the parent's previous position.
-		link.enter().insert("path", "g")
-			.attr("class", "link")
-			.attr("d", scope.getPath )
+		var newLinks = linkSet.enter();
+		var oldLinks = linkSet.exit();
+
+		newLinks.insert('path', 'g')
+			.attr('class', 'link')
+			.style('opacity', 0)
+			.transition()
+			.duration(duration)
+			.style('opacity', 1)
 			;
 
-
-		// Transition links to their new position.
-		link.transition()
+		oldLinks.transition()
 			.duration(duration)
-			.style("fill-opacity", 1)
-			.attr("d", scope.getPath )
-			;
-		
-		
-		// Transition exiting nodes to the parent's new position.
-		link.exit().transition()
-			.duration(duration)
-			/*.attr("d", function (d) {
-				var o = {
-					x: source.x,
-					y: source.y
-				};
-				return diagonal({
-					source: o,
-					target: o
-				});
-			})*/
+			.style('opacity', 0)
 			.remove();
+		
+		// Transition links to their new position.
+		linkSet.transition()
+			.duration(duration)
+			.attr("d", scope.getPath )
+			.style('opacity', 1)
+			;
 		
 		
 
