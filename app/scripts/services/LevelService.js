@@ -713,44 +713,41 @@ angular.module('emuwebApp')
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === name) {
 					if (start == end) {
-						var startID = -1;
-						angular.forEach(t.items, function (evt, id) {
+						var startOrder = -1;
+						angular.forEach(t.items, function (evt, order) {
 							if (start == evt.sampleStart) {
-								startID = id;
+								startOrder = order;
 								ret = true;
 							}
 						});
 						if (ret) {
 							var diff = 0;
-							if (t.items[startID] !== undefined) {
-								diff = t.items[startID].sampleDur;
+							if (t.items[startOrder] !== undefined) {
+								diff = t.items[startOrder].sampleDur + 1;
 							}
-							if (t.items[startID - 1] !== undefined) { // if leftmost item
-								t.items[startID - 1].sampleDur += diff;
+							if (t.items[startOrder - 1] !== undefined) { // if not leftmost item
+								t.items[startOrder - 1].sampleDur += diff;
 							}
-							t.items.splice(startID, 1);
-							//sServObj.lowerId(1);
+							t.items.splice(startOrder, 1);
 						}
 					} else {
-						var startID = -1;
-						angular.forEach(t.items, function (evt, id) {
+						var startOrder = -1;
+						angular.forEach(t.items, function (evt, order) {
 							if (start == evt.sampleStart) {
-								startID = id;
+								startOrder = order;
 								ret = true;
 							}
 						});
 						if (ret) {
-							if (t.items[startID + 1] === undefined) {
-								t.items.splice(startID - 1, 2);
-								//sServObj.lowerId(2);	    						    
-							} else if (t.items[startID - 1] === undefined) {
-								t.items.splice(startID, 2);
-								//sServObj.lowerId(2);		    						    
-							} else {
-								diff = t.items[startID].sampleDur;
-								diff2 = t.items[startID + 1].sampleDur;
-								t.items[startID - 1].sampleDur += (diff + diff2);
-								t.items.splice(startID, 2);
+							if (t.items[startOrder + 1] === undefined) { // if rightmost item
+								t.items.splice(startOrder - 1, 2);   						    
+							} else if (t.items[startOrder - 1] === undefined) { // if leftmost item
+								t.items.splice(startOrder, 2);	    						    
+							} else { // in the middle
+								diff = t.items[startOrder].sampleDur + 1;
+								diff2 = t.items[startOrder + 1].sampleDur + 1;
+								t.items[startOrder - 1].sampleDur += (diff + diff2);
+								t.items.splice(startOrder, 2);
 								//sServObj.lowerId(2);	    
 							}
 						}
@@ -797,7 +794,6 @@ angular.module('emuwebApp')
 									}
 									if (evt.sampleStart + evt.sampleDur + 1 == start) {
 										ret = false;
-										console.log('HIER');
 									}
 								});
 								if (ret) {
@@ -840,11 +836,11 @@ angular.module('emuwebApp')
 									}
 								});
 								ret = (startID === endID);
-								if (startID === endID && startID !== -1) {
+								if (ret && startID !== -1) {
 									var diff = start - level.items[startID].sampleStart - 1;
 									var diff2 = end - start - 1;
 									sServObj.insertItemDetails(ids[0], name, startID + 1, newLabel, start, diff2);
-									sServObj.insertItemDetails(ids[1], name, startID + 2, newLabel, end, level.items[startID].sampleDur - diff - diff2);
+									sServObj.insertItemDetails(ids[1], name, startID + 2, newLabel, end, level.items[startID].sampleDur - diff - 1 - diff2 - 1);
 									level.items[startID].sampleDur = diff;
 								}
 							}

@@ -56,7 +56,7 @@ angular.module('emuwebApp')
             var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
             curMouseSampleNrInView = getX(event) * samplesPerPixel;
             var moveBy = (curMouseSampleNrInView - lastPCM);
-            if (samplesPerPixel <= 1) {
+            if (samplesPerPixel <= 1 && scope.this.level.items.length > 0) {
               var zoomEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
