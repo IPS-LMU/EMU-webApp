@@ -1,8 +1,8 @@
 /**
  * small demo node server that implements the EMU-webApp-websocket-protocol
  *
- * NOTE: on save no actions are performed (functions are just stubs) 
- * 
+ * NOTE: on save no actions are performed (functions are just stubs)
+ *
  * to run:
  *  > node nodeEmuProtocolWsServer.js
  *
@@ -17,12 +17,28 @@ var fs = require('fs');
 var os = require('os');
 var filewalker = require('filewalker');
 
-//vars
+// allow to set vars from command line
+if (process.argv.length === 2) {
+  
+  var portNr = 8080;
+  var pathToDbRoot = '../app/testData/newFormat/ae/';
+  var configName = 'ae_DBconfig.json';
 
-var pathToDbRoot = '../app/testData/newFormat/ae/';
-var configName = 'ae_DBconfig.json';
+} else if (process.argv.length === 3){
 
-var portNr = 8080;
+  var portNr = process.argv[2];
+  var pathToDbRoot = '../app/testData/newFormat/ae/';
+  var configName = 'ae_DBconfig.json';
+
+} else if(process.argv.length === 5){
+
+  var portNr = process.argv[2];
+  var pathToDbRoot = process.argv[3];;
+  var configName = process.argv[4];;
+
+}
+
+
 
 var dbConfig = {};
 
