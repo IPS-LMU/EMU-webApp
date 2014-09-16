@@ -6,21 +6,28 @@ angular.module('emuwebApp')
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
-      scope: {},
+      scope: {
+      	path: '=' // This directive actually never writes back to path
+      },
       replace: true,
       link: function postLink(scope, element, attrs) {
 
         //////////////////////
         // watches 
 
+	scope.$watch('path', function (newValue) {
+		if (typeof newValue !== 'undefined') {
+			scope.render();
+		}
+	});
+
+	/*
         // SIC deep watches are really expensive!!!! Should watch something else!!!!!!
-        scope.$watch('LevelService.data', function () {
+        // With the advent of the $watch('path') above, this should have become obsolete
+	scope.$watch('LevelService.data', function () {
           scope.render();
         }, true);
-        scope.$watch('viewState', function () {
-	  console.debug('wathced sth');
-          scope.render();
-        }, true);
+	*/
 
         //
         //////////////////////

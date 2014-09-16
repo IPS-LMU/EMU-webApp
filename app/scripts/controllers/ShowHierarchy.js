@@ -2,6 +2,7 @@
 
 angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyService) {
+	
 		// Scope data
 
 		$scope.paths = {
@@ -9,7 +10,6 @@ angular.module('emuwebApp')
 			possibleAsStr: [],
 			selected: ''
 		};
-
 
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
@@ -33,21 +33,24 @@ angular.module('emuwebApp')
 		// watch selected path to redraw on startup and change of value
 		$scope.$watch('paths.selected', function (val) {
 			if (val !== undefined) {
-				$scope.redraw();
+				$scope.pathChange();
 			}
-
 		}, true);
-
+		
 		//
 		//////////////
 
 		/**
-		 * redraw on selected path change (is called if $scope.paths.selected is changed)
+		 * When the user (or the browser) selects a new path, this has
+		 * to be propagated to the service and the directive (the
+		 * latter is done in the view).
+		 *
+		 * Can either be called by a watcher or by ng-change, but
+		 * ng-change doesn't seem to see the initial value.
 		 */
-		$scope.redraw = function () {
+		$scope.pathChange = function () {
 			var selIdx = $scope.getSelIdx();
 			HierarchyService.setPath($scope.paths.possible[selIdx]);
-			//HierarchyService.drawHierarchy();
 		};
 
 		/**

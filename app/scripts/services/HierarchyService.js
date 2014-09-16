@@ -10,7 +10,8 @@
  * service.
  *
  * While the DBConfig allows for a complex network of levels, the visualisation
- * is always limited to one straight path of levels.
+ * is always limited to one straight path of levels. Set this path via the
+ * public function setPath(p).
  *
  * A selection menu shall be offered comprising all possible paths through the
  * hierarchy.
@@ -150,7 +151,7 @@ angular.module('emuwebApp')
 						continue;
 					}
 
-					console.debug('label', level.items[ii].labels[0].value, 'number of children: ', children.length);
+					//console.debug('label', level.items[ii].labels[0].value, 'number of children: ', children.length);
 
 					for (c = 0; c < children.length; ++c) {
 						if (typeof children[c]._parents === 'undefined') {
@@ -188,7 +189,7 @@ angular.module('emuwebApp')
 
 					// This would create tidier drawings but depends on knowledge of each node's parents 
 					if (typeof level.items[ii]._parents !== 'undefined') {
-						console.debug(level.items[ii]._parents.length);
+						//console.debug(level.items[ii]._parents.length);
 						/*
 						for (iii = 0; iii < level.items[ii]._parents.length; ++iii) {
 							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
