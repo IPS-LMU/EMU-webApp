@@ -29,13 +29,6 @@ angular.module('emuwebApp')
 		////////////////////////////////////////////
 		// private vars and functions
 		var svgGroup;
-		var rotated = false;
-
-		// size of the diagram
-		var viewerWidth = $(document).width();
-		var viewerHeight = $(document).height();
-		var duration = 750;
-
 
 		//
 		/////////////////////
@@ -330,31 +323,6 @@ angular.module('emuwebApp')
 
 			return children;
 		}
-
-
-		/**
-		 * simple rotate by
-		 */
-		sServObj.rotateBy90 = function () {
-			if (!rotated) {
-				svgGroup.transition()
-					.duration(duration)
-					.attr("transform", "rotate(90)scale(-1,1)");
-				rotated = true;
-			} else {
-				svgGroup.transition()
-					.duration(duration)
-					.attr("transform", "rotate(0)");
-				rotated = false;
-			}
-			// centerNode(root);
-		}
-
-
-		sServObj.drawHierarchy = function () {
-			console.debug("ERROR: Called obsolete function HierarchyService/HierarchyLayoutService.drawHierarchy()");
-		};
-
 
 		return sServObj;
 	});

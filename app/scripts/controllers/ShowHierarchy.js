@@ -4,6 +4,8 @@ angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyService) {
 	
 		// Scope data
+		
+		var rotated = false;
 
 		$scope.paths = {
 			possible: [],
@@ -65,8 +67,12 @@ angular.module('emuwebApp')
 		 * rotate hierarchy
 		 */
 		$scope.rotateHierarchy = function () {
-			HierarchyService.rotateBy90();
+			rotated = !rotated;
 		};
+		
+		$scope.getRotation = function () {
+			return rotated;
+		}
 
 		/**
 		 *

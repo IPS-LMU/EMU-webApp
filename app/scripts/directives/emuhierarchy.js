@@ -7,7 +7,8 @@ angular.module('emuwebApp')
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
       scope: {
-      	path: '=' // This directive actually never writes back to path
+      	path: '=', // This directive actually never writes back to path
+	vertical: '='
       },
       replace: true,
       link: function postLink(scope, element, attrs) {
@@ -16,10 +17,17 @@ angular.module('emuwebApp')
         // watches 
 
 	scope.$watch('path', function (newValue) {
+		console.debug('Rendering due to path change: ', newValue);
+		scope.render();
+	}, false);
+
+	scope.$watch('vertical', function (newValue) {
+		console.debug('Rendering due to rotation: ', newValue);
 		scope.render();
 	}, false);
 
 	scope.$watch('viewState.curLevelAttrDefs', function (newValue) {
+		console.debug('Rendering due to attribute change: ', newValue);
 		scope.render();
 	}, true);
 
@@ -50,19 +58,23 @@ angular.module('emuwebApp')
 			.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
 		zoomListener.scale(scale);
 		zoomListener.translate([x, y]);
-	}
+	};
 	
 	/**
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
-		//if (rotated) {
-		if (false) {
-			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")scale(-1,1)rotate(90)");
+			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")"+scope.getOrientatedTransform());
+	};
+
+	scope.getOrientatedTransform = function () {
+		if (scope.vertical) {
+			return 'translate('+((width-height)/2)+',0)scale(-1,1),rotate(90)';
 		} else {
-			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+			return 'rotate(0)';
 		}
-	}
+	};
+
 	//
 	/////////////////////////////
 
@@ -107,6 +119,10 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
+		// Set orientation
+		svg.transition()
+		  .duration(duration)
+		  .attr('transform', scope.getOrientatedTransform()); 
 
 		/////
 		// Compute the new tree layout (first nodes and then links)
@@ -176,13 +192,13 @@ angular.module('emuwebApp')
 
 		// Set widths between levels based on maxLabelLength.
 		nodes.forEach(function (d) {
-			d._x = (d._depth * 150); //maxLabelLength * 10px
+			d._x = 25 + (d._depth * 150); //maxLabelLength * 10px
 			d._y = (d._posInLevel * height);
 		});
 		links.forEach(function (d) {
-			d._fromX = (d._fromDepth * 150);
+			d._fromX = 25 + (d._fromDepth * 150);
 			d._fromY = (d._fromPosInLevel * height);
-			d._toX = (d._toDepth * 150);
+			d._toX = 25 + (d._toDepth * 150);
 			d._toY = (d._toPosInLevel * height);
 		});
 
