@@ -22,9 +22,9 @@ angular.module('emuwebApp')
 		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
 			if (arrIdx === 0) {
 				// select first possible path on load
-				$scope.paths.selected = arr.join('<-');
+				$scope.paths.selected = arr.join(' ← ');
 			}
-			$scope.paths.possibleAsStr.push(arr.join('<-'));
+			$scope.paths.possibleAsStr.push(arr.join(' ← '));
 		});
 
 		//////////////
