@@ -78,6 +78,49 @@ angular.module('emuwebApp')
 		return transform;
 	};
 
+	scope.getOrientatedNodeTransform = function (d) {
+		if (scope.vertical) {
+			return 'scale(-1,1)rotate(90)';
+		} else {
+			return 'scale(1,1)rotate(0)';
+		}
+	};
+
+	scope.getNodeText = function (d) {
+		var level = viewState.getCurAttrDef(HierarchyService.getLevelName(d.id));
+		for (var i=0; i<d.labels.length; ++i) {
+			if (d.labels[i].name === level) {
+				return d.labels[i].value;
+			}
+		}
+		console.debug ("Likely a bug: Did not find the label selected for display", "Selected level:", level, "Node: ", d);
+		return "NO VALUE";
+	};
+
+	scope.getOrientatedTextAnchor = function (d) {
+		if (scope.vertical) {
+			return 'middle';
+		} else {
+			return 'begin';
+		}
+	}
+
+	scope.getOrientatedNodeX = function (d) {
+		if (scope.vertical) {
+			return 0;
+		} else {
+			return 10;
+		}
+	}
+
+	scope.getOrientatedNodeY = function (d) {
+		if (scope.vertical) {
+			return '1.45em';
+		} else {
+			return '0.35em';
+		}
+	}
+
 	//
 	/////////////////////////////
 
@@ -245,25 +288,14 @@ angular.module('emuwebApp')
 			});
 
 		nodeEnter.append("text")
-			.attr("x", function (d) {
-				return d.children || d._children ? -10 : 10;
-			})
-			.attr("dy", ".35em")
 			.attr('class', 'nodeText')
-			.attr("text-anchor", function (d) {
-				return d.children || d._children ? "end" : "start";
-			})
-			.text(function (d) {
-				var level = viewState.getCurAttrDef(HierarchyService.getLevelName(d.id));
-				for (var i=0; i<d.labels.length; ++i) {
-					if (d.labels[i].name === level) {
-						return d.labels[i].value;
-					}
-				}
-				console.debug ("Likely a bug: Did not find the label selected for display", "Selected level:", level, "Node: ", d);
-				return "NO VALUE";
-			})
-			.style("fill-opacity", 1);
+			/*.attr ('x', scope.getOrientatedNodeX )
+			.attr ('y', scope.getOrientatedNodeY )
+			.attr('text-anchor', scope.getOrientatedTextAnchor )
+			.text( scope.getNodeText )
+			.attr( 'transform', scope.getOrientatedNodeTransform )*/
+			.style("fill-opacity", 1)
+			;
 
 		// phantom node to give us mouseover in a radius around it
 		nodeEnter.append("circle")
@@ -279,14 +311,13 @@ angular.module('emuwebApp')
 				outCircle(node);
 			});
 
-		// Update the text to reflect whether node has children or not.
 		node.select('text')
-			.attr("x", function (d) {
-				return d.children || d._children ? -10 : 10;
-			})
-			.attr("text-anchor", function (d) {
-				return d.children || d._children ? "end" : "start";
-			});
+			.attr ('x', scope.getOrientatedNodeX )
+			.attr ('y', scope.getOrientatedNodeY )
+			.attr('text-anchor', scope.getOrientatedTextAnchor )
+			.text( scope.getNodeText )
+			.attr('transform', scope.getOrientatedNodeTransform )
+			;
 
 		// Change the circle fill depending on whether it has children and is collapsed
 		node.select("circle.nodeCircle")
