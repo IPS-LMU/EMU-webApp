@@ -384,7 +384,7 @@ angular.module('emuwebApp')
 		dataSet.transition()
 			.duration(duration)
 			.attr("transform", function (d) {
-				return "translate(" + d._x + "," + d._y + ")";
+				return "translate(" + d._x + "," + d._y + ")"+scope.getOrientatedNodeTransform(d);
 			});
 
 
