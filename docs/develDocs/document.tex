@@ -392,6 +392,34 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 
 
 %%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{DISCONNECTWARNING}}
+\begin{center}
+  \line(1,0){250}
+
+  \textit{Function that tells server that it is about to disconnect. This is currently needed because the httpuv R package can't listen to the websockets own close event.}
+
+  \line(1,0){250}
+\end{center}
+
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'DISCONNECTWARNING'
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Reply content, language=json]
+{
+  'callbackID': request.callbackID,
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Error handling}
 
 If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.

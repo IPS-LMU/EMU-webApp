@@ -81,6 +81,17 @@ angular.module('emuwebApp')
 		//
 		//////////////
 
+		/////////////
+		// listens
+
+		// listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
+		$scope.$on('connectionDisrupted', function (event, args) {
+			$scope.resetToInitState();
+		});
+		
+		//
+		////////////
+
 		// check if URL parameters are set -> if so set embedded flags!
 		var searchObject = $location.search();
 		if (searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']) {
@@ -887,7 +898,10 @@ angular.module('emuwebApp')
 		 */
 		$scope.resetToInitState = function () {
 			if (Iohandlerservice.wsH.isConnected()) {
-				Iohandlerservice.wsH.closeConnect();
+				Iohandlerservice.wsH.disconnectWarning().then(function (resp) {
+					$log.info('Closing websocket connection to server');
+					Iohandlerservice.wsH.closeConnect();
+				})
 			}
 			$scope.curBndl = {};
 			$scope.bundleList = [];

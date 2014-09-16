@@ -273,6 +273,19 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
 
+      // DISCONNECTING method
+    case 'DISCONNECTWARNING':
+      console.log('preparing to disconnect...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+
     default:
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,

@@ -732,7 +732,7 @@ self.addEventListener('message', function (e) {
 		}
 		if (data.heatMapColorAnchors !== undefined) {
 			heatMapColorAnchors = data.heatMapColorAnchors;
-			console.log(heatMapColorAnchors)
+			// console.log(heatMapColorAnchors);
 		}
 		break;
 	case 'render':
