@@ -50,13 +50,11 @@ angular.module('emuwebApp')
 	 * collapsing/moving with large amount of children.
 	 */
 	scope.centerNode = function (node) {
-		var scale = zoomListener.scale();
-		var x = -node._x * scale + width/2;
-		var y = -node._y * scale + height/2;
+		var x = -node._x + width/2;
+		var y = -node._y  + height/2;
 		svg.transition()
 			.duration(duration)
-			.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-		zoomListener.scale(scale);
+			.attr("transform", scope.getOrientatedTransform()+"translate(" + x + "," + y + ")");
 		zoomListener.translate([x, y]);
 	};
 	
@@ -103,7 +101,7 @@ angular.module('emuwebApp')
 		} else {
 			return 'begin';
 		}
-	}
+	};
 
 	scope.getOrientatedNodeX = function (d) {
 		if (scope.vertical) {
@@ -111,7 +109,7 @@ angular.module('emuwebApp')
 		} else {
 			return 10;
 		}
-	}
+	};
 
 	scope.getOrientatedNodeY = function (d) {
 		if (scope.vertical) {
@@ -119,7 +117,23 @@ angular.module('emuwebApp')
 		} else {
 			return '0.35em';
 		}
-	}
+	};
+
+	scope.getPath = function (d) {
+		var topDown = d._fromY < d._toY;
+		//var leftRight = d._fromX < d._toX;
+
+		//var controlX = leftRight ? d._fromX : d._toX;
+		//var controlX = topDown ? d._fromX : d._toX;
+		//var controlY = topDown ? d._toY : d._fromY;
+		var controlX = d._fromX;
+		var controlY = d._toY;
+
+		//console.debug(topDown, leftRight, controlX-d._fromX, controlY-d._fromY);
+
+		return "M"+d._fromX+" "+d._fromY+"Q"+controlX+" "+controlY+" "+d._toX+" "+d._toY;
+	};
+
 
 	//
 	/////////////////////////////
@@ -367,9 +381,7 @@ angular.module('emuwebApp')
 		// Enter any new links at the parent's previous position.
 		link.enter().insert("path", "g")
 			.attr("class", "link")
-			.attr("d", function (d) {
-				return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
-			})
+			.attr("d", scope.getPath )
 			;
 
 
@@ -377,9 +389,8 @@ angular.module('emuwebApp')
 		link.transition()
 			.duration(duration)
 			.style("fill-opacity", 1)
-			.attr("d", function (d) {
-				return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
-			});
+			.attr("d", scope.getPath )
+			;
 		
 		
 		// Transition exiting nodes to the parent's new position.
