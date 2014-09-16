@@ -68,12 +68,14 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedTransform = function () {
+		var transform = 'scale('+zoomListener.scale()+')';
+		transform += 'translate('+zoomListener.translate()+')';
 		if (scope.vertical) {
-			//return 'translate('+((width-height)/2)+',0)scale(-1,1),rotate(90)';
-			return 'scale(-1,1),rotate(90)';
+			transform += 'scale(-1,1),rotate(90)';
 		} else {
-			return 'rotate(0)';
+			transform += 'rotate(0)';
 		}
+		return transform;
 	};
 
 	//
@@ -230,6 +232,7 @@ angular.module('emuwebApp')
 				return "translate(" + d._x  + "," + d._y + ")";
 			})
 			.on('click', function (d) {
+				console.debug('Clicked node', d);
 				scope.centerNode(d);
 			})
 			;
@@ -305,21 +308,20 @@ angular.module('emuwebApp')
 			.style("fill-opacity", 1);
 		
 
-		/*
 		// Transition exiting nodes to the parent's new position.
 		var nodeExit = node.exit().transition()
 			.duration(duration)
-			.attr("transform", function (d) {
+			/*.attr("transform", function (d) {
 				return "translate(" + source.y + "," + source.x + ")";
-			})
+			})*/
 			.remove();
-
+		
 		nodeExit.select("circle")
 			.attr("r", 0);
 
 		nodeExit.select("text")
 			.style("fill-opacity", 0);
-		*/
+		
 		
 
 		
@@ -340,20 +342,19 @@ angular.module('emuwebApp')
 			;
 
 
-
-	/*	
-
 		// Transition links to their new position.
 		link.transition()
 			.duration(duration)
-			.attr("d", diagonal);
-	*/
+			.style("fill-opacity", 1)
+			.attr("d", function (d) {
+				return "M"+d._fromX+" "+d._fromY+"L"+d._toX+" "+d._toY;
+			});
 		
-		/*
+		
 		// Transition exiting nodes to the parent's new position.
 		link.exit().transition()
 			.duration(duration)
-			.attr("d", function (d) {
+			/*.attr("d", function (d) {
 				var o = {
 					x: source.x,
 					y: source.y
@@ -362,9 +363,9 @@ angular.module('emuwebApp')
 					source: o,
 					target: o
 				});
-			})
+			})*/
 			.remove();
-		*/
+		
 		
 
 		// Stash the old positions for transition.
