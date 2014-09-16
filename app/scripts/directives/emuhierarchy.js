@@ -16,10 +16,12 @@ angular.module('emuwebApp')
         // watches 
 
 	scope.$watch('path', function (newValue) {
-		if (typeof newValue !== 'undefined') {
-			scope.render();
-		}
-	});
+		scope.render();
+	}, false);
+
+	scope.$watch('viewState.curLevelAttrDefs', function (newValue) {
+		scope.render();
+	}, true);
 
 	/*
         // SIC deep watches are really expensive!!!! Should watch something else!!!!!!
