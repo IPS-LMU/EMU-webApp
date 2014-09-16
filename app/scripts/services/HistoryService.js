@@ -108,7 +108,7 @@ angular.module('emuwebApp')
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
-					case 'DELETEPOINT': // todo
+					case 'DELETEPOINT': // ongoing
 						if (applyOldVal) {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						} else {

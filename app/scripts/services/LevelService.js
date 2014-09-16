@@ -264,12 +264,13 @@ angular.module('emuwebApp')
 			var clientWidth = elem.canvas.clientWidth;
 			var clientOffset = elem.canvas.offsetLeft;
 			var top = elem.canvas.offsetTop;
-			var height = elem.canvas.clientHeight;
+			var height = elem.canvas.clientHeight - 1;
 			var len = 10;
 			if(labelIdx !== undefined) {
-    			len = lastEventClick.labels[labelIdx].value.length * 10;
+			    if(lastEventClick.labels[labelIdx].value.length > 0) {
+    			    len = lastEventClick.labels[labelIdx].value.length * 7;
+    			}
     		}
-    		console.log(lastEventClick);
     		var editText = '';
 			if(lastEventClick.labels.length>0) {
 			    editText = lastEventClick.labels[labelIdx].value;
@@ -300,7 +301,7 @@ angular.module('emuwebApp')
 				if (width < (2*len)) {
 					width = (2*len);
 				}
-				sServObj.createEditArea(element, start + ((end - start) / 3), top, width, height, editText, lastEventClick.id);
+				sServObj.createEditArea(element, start, top, width, height, editText, lastEventClick.id);
 			}
 			sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
 		};
@@ -859,30 +860,29 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertPoint = function (name, start, pointName, id) {
 			var ret = false;
-			var found = false;
+			var alreadyExists = false;
 			var pos = undefined;
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name && level.type === 'EVENT') {
 					var last = level.items[0].samplePoint;
 					angular.forEach(level.items, function (evt, order) {
 						if (Math.floor(start) === Math.floor(evt.samplePoint)) {
-							found = true;
+							alreadyExists = true;
 						}
 						if (start > evt.samplePoint) {
 							pos = order + 1;
 						}
 					});
-					if (!found) {
-						if (id === undefined) {
-							id = sServObj.getNewId();
-						}
-						sServObj.insertItemDetails(id, name, pos, pointName, start);
-					}
 				}
 			});
-
+			if (!alreadyExists) {
+				if (id === undefined) {
+					id = sServObj.getNewId();
+				}
+				sServObj.insertItemDetails(id, name, pos, pointName, start);
+			}
 			return {
-				ret: !found,
+				alreadyExists: alreadyExists,
 				id: id
 			};
 		};
@@ -1100,8 +1100,26 @@ angular.module('emuwebApp')
 			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 				sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 			}
-		};
+			//resort Points after moving
+			angular.forEach(sServObj.data.levels, function (t) {
+				if (t.name === name) {
+				    t.items.sort(sServObj.orderPoints);
+				}
+			});
 
+		};
+		
+		/**
+		 * reorder points on Event level after moving them. This is needed when Points are moved before or after each other
+		 *
+		 */
+		 sServObj.orderPoints = function (a, b) {
+		     //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+		     if (a.samplePoint > b.samplePoint) return 1;
+		     if (a.samplePoint < b.samplePoint) return -1;
+		     return 0;
+		};
+		
 		/**
 		 *
 		 */

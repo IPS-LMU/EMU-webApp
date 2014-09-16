@@ -607,7 +607,7 @@ angular.module('emuwebApp')
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
                           if (typeof levelDef.anagestConfig === 'undefined') {
                             var insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
-                            if (!insPoint.ret) {
+                            if (insPoint.alreadyExists) {
                               scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                             } else {
                               scope.hists.addObjToUndoStack({ // todo 
