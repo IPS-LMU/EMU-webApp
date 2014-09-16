@@ -428,7 +428,6 @@ angular.module('emuwebApp')
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
 						} else { // in the middle
-						    console.log('hier');
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
 								ctx.fillRect(posS, 0, 3, canvas[1].height);

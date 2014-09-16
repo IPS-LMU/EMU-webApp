@@ -326,7 +326,6 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
-
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
@@ -393,6 +392,7 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
+                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
@@ -401,7 +401,6 @@ angular.module('emuwebApp')
                           'rightSide': true,
                           'changeTime': -changeTime
                         });
-                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         viewState.selectBoundary();
                       }
                     }
@@ -428,6 +427,7 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
+                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         scope.hists.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
@@ -436,7 +436,6 @@ angular.module('emuwebApp')
                           'rightSide': false,
                           'changeTime': -changeTime
                         });
-                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         viewState.selectBoundary();
                       }
                     }
