@@ -69,7 +69,8 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedTransform = function () {
 		if (scope.vertical) {
-			return 'translate('+((width-height)/2)+',0)scale(-1,1),rotate(90)';
+			//return 'translate('+((width-height)/2)+',0)scale(-1,1),rotate(90)';
+			return 'scale(-1,1),rotate(90)';
 		} else {
 			return 'rotate(0)';
 		}
@@ -190,16 +191,29 @@ angular.module('emuwebApp')
 		}
 
 
-		// Set widths between levels based on maxLabelLength.
+		// Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
+		
+		var offsetX = 25;
+
+		var depthToX = function (depth) {
+			var size = (scope.vertical) ? height : width;
+			return offsetX + depth / scope.path.length * size;
+		};
+
+		var posInLevelToY = function (posInLevel) {
+			var size = (scope.vertical) ? width : height;
+			return posInLevel * size;
+		};
+
 		nodes.forEach(function (d) {
-			d._x = 25 + (d._depth * 150); //maxLabelLength * 10px
-			d._y = (d._posInLevel * height);
+			d._x = depthToX(d._depth);
+			d._y = posInLevelToY(d._posInLevel);
 		});
 		links.forEach(function (d) {
-			d._fromX = 25 + (d._fromDepth * 150);
-			d._fromY = (d._fromPosInLevel * height);
-			d._toX = 25 + (d._toDepth * 150);
-			d._toY = (d._toPosInLevel * height);
+			d._fromX = depthToX(d._fromDepth);
+			d._fromY = posInLevelToY(d._fromPosInLevel);
+			d._toX = depthToX(d._toDepth);
+			d._toY = posInLevelToY(d._toPosInLevel);
 		});
 
 		// Update the nodes…
