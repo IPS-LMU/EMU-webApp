@@ -146,7 +146,10 @@
 					"min": 0,
 					"max": 1
 				}],
-				"contourColors": ["rgba(255,0,0,0.3)", "hsl(120,60%,70%)"]
+				"contourColors": [{
+				    "ssffTrackName": "FORMANTS",
+				    "colors": ["rgba(255,0,0,0.9)", "#00f"]
+				}]
 			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]
@@ -163,8 +166,7 @@
 					"ssffTrackName": "dftSpec",
 					"min": 0,
 					"max": 9
-				}],
-				"contourColors": ["#000", "#0f0"]
+				}]
 			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"]

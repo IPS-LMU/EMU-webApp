@@ -310,10 +310,24 @@
 								}
 							},
 							"contourColors": {
-							    "type": "array",
-							    "items": {
-								    "type": "string"
-							    }
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"colors": {
+											"type": "array",
+											"items": {
+											    "type": "string"
+											}
+										}
+									},
+									"required": ["ssffTrackName", "colors"],
+									"additionalProperties": false
+								}
+
 						    }
 						},						
 						"required": ["order", "assign", "contourLims"],

@@ -159,22 +159,21 @@ angular.module('emuwebApp')
 
               // console.log(contourNr);
               if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
-                //console.log(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr]);
                 
-                if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors === undefined) {
-                    // set color
-                    if ($.isEmptyObject(minMaxLims)) {
-                      ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
-                      ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
-                    } else {
-                      var l = (minMaxLims.max - minMaxLims.min) + 1;
-                      ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
-                      ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
-                    }
+                // set color
+                if ($.isEmptyObject(minMaxLims)) {
+                    ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                    ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                } else {
+                  var l = (minMaxLims.max - minMaxLims.min) + 1;
+                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                  ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
                 }
-                else {
-                    ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr];
-                    ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr];
+                if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors !== undefined) {
+                    if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].ssffTrackName === assTrackName) {
+                        ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+                        ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];                    
+                    }
                 }
 
                 // mark selected
