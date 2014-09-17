@@ -1039,6 +1039,20 @@ angular.module('emuwebApp')
       });
       return curAttrDef;
     };
+    
+    /**
+	*
+	*/
+	sServObj.getX = function (e) {
+	    return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
+	};
+
+	/**
+	*
+	*/
+	sServObj.getY = function (e) {
+	    return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
+	};    
 
 
 

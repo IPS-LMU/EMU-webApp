@@ -63,24 +63,7 @@ angular.module('emuwebApp')
 
 		}
 
-
 		sServObj.osciPeaks = [];
-
-		/**
-		 *
-		 */
-
-		sServObj.getX = function (e) {
-			return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
-		};
-
-		/**
-		 *
-		 */
-
-		sServObj.getY = function (e) {
-			return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
-		};
 
 
 		/**
@@ -369,8 +352,8 @@ angular.module('emuwebApp')
 				}
 
 				// draw lines
-				var mouseX = sServObj.getX(mouseEvt);
-				var mouseY = sServObj.getY(mouseEvt);
+				var mouseX = viewState.getX(mouseEvt);
+				var mouseY = viewState.getY(mouseEvt);
 
 				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);

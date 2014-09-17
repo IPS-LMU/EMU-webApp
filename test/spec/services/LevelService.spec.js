@@ -1062,7 +1062,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // expand segment
     LevelService.setData(msajc003_bndl.annotation);
-    var temp = item = getItemFromJSON(msajc003_bndl.annotation, 158);
+    var temp = getItemFromJSON(msajc003_bndl.annotation, 158);
     // expand segment with id 158 on level 'Phonetic' on RIGHT side
     LevelService.expandSegment(true, [temp], 'Phonetic', 750);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleStart).toEqual(temp.sampleStart);
@@ -1149,17 +1149,4 @@ describe('Service: LevelService', function () {
     expect(LevelService.data.links.length).toEqual(0);
   }));
   
-  function getItemFromJSON(anno, itemID) {
-      var ret = undefined;
-      for(var x = 0; x < anno.levels.length; x++) {
-        for(var j = 0; j < anno.levels[x].items.length; j++) {
-          var item = anno.levels[x].items[j];
-          if(item.id === itemID) {
-              ret = item;
-          }
-        }
-      }
-      return ret;
-  }
-
 });

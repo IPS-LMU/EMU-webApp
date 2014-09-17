@@ -83,3 +83,17 @@ var msajc003EspsToneFile = readFixtures('msajc003.tone');
 var msajc003TextGridFile = readFixtures('msajc003.TextGrid');
 
 
+  function getItemFromJSON(anno, itemID) {
+      var ret = undefined;
+      for(var x = 0; x < anno.levels.length; x++) {
+        for(var j = 0; j < anno.levels[x].items.length; j++) {
+          var item = anno.levels[x].items[j];
+          if(item.id === itemID) {
+              ret = item;
+          }
+        }
+      }
+      return ret;
+  }
+
+
