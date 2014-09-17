@@ -841,9 +841,10 @@ describe('Service: LevelService', function () {
     LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // delete 1 boundary
-    var ret = LevelService.deleteBoundary('Phonetic', 148);
+    var ret = LevelService.deleteBoundary('Phonetic', 148 , false, false);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
     // undo delete 1 boundary
-    LevelService.deleteBoundaryInvers('Phonetic', 148, ret);
+    LevelService.deleteBoundaryInvers('Phonetic', 148, false, false, ret);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     item = getItemFromJSON(msajc003_bndl.annotation, 147);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).labels).toEqual(item.labels);
