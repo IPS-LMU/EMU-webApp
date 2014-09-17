@@ -159,18 +159,20 @@ angular.module('emuwebApp')
 
               // console.log(contourNr);
               if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
-              
-                //console.log(ConfigProviderService.curDbConfig.ssffTracks[contourNr]);
-                //console.log();              
-              
-                // set color
-                if ($.isEmptyObject(minMaxLims)) {
-                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
-                  ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
-                } else {
-                  var l = (minMaxLims.max - minMaxLims.min) + 1;
-                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
-                  ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                if(ConfigProviderService.curDbConfig.ssffTracks[contourNr].color === undefined) {
+                    // set color
+                    if ($.isEmptyObject(minMaxLims)) {
+                      ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                      ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                    } else {
+                      var l = (minMaxLims.max - minMaxLims.min) + 1;
+                      ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                      ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
+                    }
+                }
+                else {
+                    ctx.strokeStyle = ConfigProviderService.curDbConfig.ssffTracks[contourNr].color;
+                    ctx.fillStyle = ConfigProviderService.curDbConfig.ssffTracks[contourNr].color;
                 }
 
                 // mark selected

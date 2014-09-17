@@ -16,7 +16,7 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"name": {
+					"color": {
 						"type": "string"
 					},
 					"columnName": {
@@ -25,7 +25,7 @@
 					"fileExtension": {
 						"type": "string"
 					},
-					"color": {
+					"name": {
 						"type": "string"
 					}
 				},
