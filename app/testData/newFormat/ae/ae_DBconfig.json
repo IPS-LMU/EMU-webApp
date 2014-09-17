@@ -148,7 +148,7 @@
 				}],
 				"contourColors": [{
 				    "ssffTrackName": "FORMANTS",
-				    "colors": ["rgba(255,0,0,0.9)", "#00f"]
+				    "colors": ["rgb(238,130,238)", "rgb(127,255,212)"]
 				}]
 			},
 			"levelCanvases": {

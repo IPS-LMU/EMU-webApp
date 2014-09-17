@@ -78,6 +78,20 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		sServObj.getContourColorsOfTrack = function (trackName) {
+			var res;
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors, function (cC) {
+				if (cC.ssffTrackName === trackName) {
+					res = cC;
+				}
+			});
+
+			return res;
+		};
+
+		/**
+		 *
+		 */
 		sServObj.getAssignment = function (signalName) {
 			var res = {};
 			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign, function (a) {
@@ -102,6 +116,8 @@ angular.module('emuwebApp')
 
 			return res;
 		};
+
+
 
 		return sServObj;
 

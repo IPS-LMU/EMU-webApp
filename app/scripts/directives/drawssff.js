@@ -148,7 +148,7 @@ angular.module('emuwebApp')
           if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
             var x, y, prevX, prevY, prevVal, curSampleInCol, curSampleInColTime;
-            
+
             ////////////////////////////////
             // NEW VERSION
             ////////////////////////////////
@@ -159,21 +159,24 @@ angular.module('emuwebApp')
 
               // console.log(contourNr);
               if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
-                
+
                 // set color
                 if ($.isEmptyObject(minMaxLims)) {
-                    ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
-                    ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                  ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
+                  ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
                 } else {
                   var l = (minMaxLims.max - minMaxLims.min) + 1;
                   ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
                   ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
                 }
-                if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors !== undefined) {
-                    if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].ssffTrackName === assTrackName) {
-                        ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
-                        ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];                    
-                    }
+
+                // overwrite color settings if they are preconfigured
+                var contColors = ConfigProviderService.getContourColorsOfTrack(assTrackName);
+                if (contColors !== undefined) {
+                  if (contColors.colors[contourNr] !== undefined) {
+                    ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+                    ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+                  }
                 }
 
                 // mark selected
