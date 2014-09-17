@@ -21,6 +21,10 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * for livereload use the `livereload` browser plugin
 * a small websocket data provider server can be found under `exampleServers/nodeEmuProtocolWsServer.js`
 
+## Tests
+* unit: run `grunt test`
+* end-to-end: make sure the chrome driver is installed (`./node_modules/protractor/bin/webdriver-manager update`) then run `./e2e.sh all`
+
 ## Main authors
 
 **Raphael Winkelmann**

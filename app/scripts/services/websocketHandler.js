@@ -37,8 +37,16 @@ angular.module('emuwebApp')
 		}
 
 		function wsonclose(message) {
+			console.log(message);
+			if (!message.wasClean && connected) {
+				// show no clean disconnect error
+				dialogService.open('views/error.html', 'ModalCtrl', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function (argument) {
+					console.log('pushed cancel')
+					$rootScope.$broadcast('connectionDisrupted');
+				});
+
+			}
 			connected = false;
-			// console.log(message);
 			console.log('WEBSOCKET closed!!!!!');
 		}
 
@@ -208,6 +216,16 @@ angular.module('emuwebApp')
 			var request = {
 				type: 'SAVEBUNDLE',
 				data: bundleData
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
+		// ws  disconnecting
+		sServObj.disconnectWarning = function () {
+			var request = {
+				type: 'DISCONNECTWARNING'
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
