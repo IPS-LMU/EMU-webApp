@@ -16,9 +16,6 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"color": {
-						"type": "string"
-					},
 					"columnName": {
 						"type": "string"
 					},

@@ -159,7 +159,9 @@ angular.module('emuwebApp')
 
               // console.log(contourNr);
               if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
-                if(ConfigProviderService.curDbConfig.ssffTracks[contourNr].color === undefined) {
+                //console.log(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr]);
+                
+                if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors === undefined) {
                     // set color
                     if ($.isEmptyObject(minMaxLims)) {
                       ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
@@ -171,8 +173,8 @@ angular.module('emuwebApp')
                     }
                 }
                 else {
-                    ctx.strokeStyle = ConfigProviderService.curDbConfig.ssffTracks[contourNr].color;
-                    ctx.fillStyle = ConfigProviderService.curDbConfig.ssffTracks[contourNr].color;
+                    ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr];
+                    ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[contourNr];
                 }
 
                 // mark selected
