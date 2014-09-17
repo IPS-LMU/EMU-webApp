@@ -5,7 +5,8 @@
 	"ssffTracks": [{
 		"name": "FORMANTS",
 		"columnName": "fm",
-		"fileExtension": "fms"
+		"fileExtension": "fms",
+		"color": "#fff"
 	}, {
 		"name": "fundFreq",
 		"columnName": "F0",

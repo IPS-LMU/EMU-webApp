@@ -916,24 +916,29 @@ angular.module('emuwebApp')
 		 *   @param name
 		 *   @param levelType
 		 */
-		sServObj.deleteBoundary = function (name, id) {
+		sServObj.deleteBoundary = function (name, id, isFirst, isLast) {
 			var toDelete = sServObj.getItemFromLevelById(name, id);
 			var last = null;
 			var retOrder = null;
 			var retEvt = null;
 			var clickSeg = null;
-			
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 				    last = level.items[0];
 					angular.forEach(level.items, function (evt, order) {
 						if (level.type === 'SEGMENT') {
 							if (toDelete.sampleStart == evt.sampleStart && toDelete.sampleDur == evt.sampleDur) {
-							    if(order===0) {
+							    if(order===0 && isFirst) {
 								    level.items.splice(order, 1);
 								    retOrder = order;
 								    retEvt = evt;
 								    clickSeg = level.items[0];							    
+							    }
+							    else if(order===(level.items.length-1) && isLast) {
+								    level.items.splice(order, 1);
+								    retOrder = order;
+								    retEvt = evt;
+								    clickSeg = level.items[level.items.length-1];							    
 							    }
 							    else {
 								    last.labels[0].value += evt.labels[0].value;
@@ -966,12 +971,12 @@ angular.module('emuwebApp')
 		 *   @param name
 		 *   @param levelType
 		 */
-		sServObj.deleteBoundaryInvers = function (name, id, deletedSegment) {
+		sServObj.deleteBoundaryInvers = function (name, id, isFirst, isLast, deletedSegment) {
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === name) {
 					level.items.splice(deletedSegment.order, 0, deletedSegment.event);
 					var oldName = deletedSegment.event.labels[0].value;
-					if(deletedSegment.order>0) {
+					if(!isFirst && !isLast) {
     					oldName = level.items[deletedSegment.order - 1].labels[0].value.slice(0, (level.items[deletedSegment.order - 1].labels[0].value.length - deletedSegment.event.labels[0].value.length));
 					    level.items[deletedSegment.order - 1].labels[0].value = oldName;
 					    level.items[deletedSegment.order - 1].sampleDur -= (deletedSegment.event.sampleDur + 1);

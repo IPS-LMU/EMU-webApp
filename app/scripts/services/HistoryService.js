@@ -82,9 +82,9 @@ angular.module('emuwebApp')
 						break;
 					case 'DELETEBOUNDARY':
 						if (applyOldVal) {
-							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.deletedSegment);
+							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
 						} else {
-							LevelService.deleteBoundary(cur.name, cur.id);
+							LevelService.deleteBoundary(cur.name, cur.id, cur.isFirst, cur.isLast);
 						}
 						break;
 					case 'DELETESEGMENTS':

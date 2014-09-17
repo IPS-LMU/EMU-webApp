@@ -24,6 +24,9 @@
 					},
 					"fileExtension": {
 						"type": "string"
+					},
+					"color": {
+						"type": "string"
 					}
 				},
 				"required": ["name", "columnName", "fileExtension"],

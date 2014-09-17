@@ -154,8 +154,15 @@ angular.module('emuwebApp')
             ////////////////////////////////
 
             angular.forEach(curSampleArrs[0], function (contourVal, contourNr) {
+
+
+
               // console.log(contourNr);
               if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
+              
+                //console.log(ConfigProviderService.curDbConfig.ssffTracks[contourNr]);
+                //console.log();              
+              
                 // set color
                 if ($.isEmptyObject(minMaxLims)) {
                   ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
