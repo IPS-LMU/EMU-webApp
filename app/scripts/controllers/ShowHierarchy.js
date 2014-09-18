@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyService) {
+	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
 	
 		// Scope data
 		
@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
 			if (l.type !== 'ITEM') {
-				$scope.paths.possible = $scope.paths.possible.concat(HierarchyService.findPaths(l.name));
+				$scope.paths.possible = $scope.paths.possible.concat(HierarchyLayoutService.findPaths(l.name));
 			}
 		});
 
@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.pathChange = function () {
 			var selIdx = $scope.getSelIdx();
-			HierarchyService.setPath($scope.paths.possible[selIdx]);
+			HierarchyLayoutService.setPath($scope.paths.possible[selIdx]);
 		};
 
 		/**

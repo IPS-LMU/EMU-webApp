@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, LevelService, HierarchyService) {
+  .directive('emuhierarchy', function (viewState, LevelService, HierarchyLayoutService) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -87,7 +87,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getNodeText = function (d) {
-		var level = viewState.getCurAttrDef(HierarchyService.getLevelName(d.id));
+		var level = viewState.getCurAttrDef(HierarchyLayoutService.getLevelName(d.id));
 		for (var i=0; i<d.labels.length; ++i) {
 			if (d.labels[i].name === level) {
 				return d.labels[i].value;
@@ -199,24 +199,24 @@ angular.module('emuwebApp')
 		
 		/////
 		// This is the aforementioned second approach
-		HierarchyService.calculateWeightsBottomUp();
+		HierarchyLayoutService.calculateWeightsBottomUp();
 		//
 		/////
 
-		for (var i=0; i<HierarchyService.selectedPath.length; ++i) {
+		for (var i=0; i<HierarchyLayoutService.selectedPath.length; ++i) {
 
 			/////
 			// This is the aformentioned first approach
 			/*
 			if (i === 0) {
-				HierarchyService.layoutNonItemLevel(HierarchyService.selectedPath[0], HierarchyService.selectedPath.length);
+				HierarchyLayoutService.layoutNonItemLevel(HierarchyLayoutService.selectedPath[0], HierarchyLayoutService.selectedPath.length);
 			} else {
-				HierarchyService.layoutItemLevel(HierarchyService.selectedPath[i], HierarchyService.selectedPath.length-i);
+				HierarchyLayoutService.layoutItemLevel(HierarchyLayoutService.selectedPath[i], HierarchyLayoutService.selectedPath.length-i);
 			}
 			*/
 			//////
 
-			nodes = nodes.concat(LevelService.getLevelDetails(HierarchyService.selectedPath[i]).level.items);
+			nodes = nodes.concat(LevelService.getLevelDetails(HierarchyLayoutService.selectedPath[i]).level.items);
 		}
 		
 
@@ -231,12 +231,12 @@ angular.module('emuwebApp')
 		var links = [];
 		var allLinks = LevelService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
-			for (var i=0; i<HierarchyService.selectedPath.length-1; ++i) {
-				var element = LevelService.getItemFromLevelById(HierarchyService.selectedPath[i], allLinks[l].toID);
+			for (var i=0; i<HierarchyLayoutService.selectedPath.length-1; ++i) {
+				var element = LevelService.getItemFromLevelById(HierarchyLayoutService.selectedPath[i], allLinks[l].toID);
 				if (element === null) {
 					continue;
 				}
-				var parentElement = LevelService.getItemFromLevelById(HierarchyService.selectedPath[i+1], allLinks[l].fromID);
+				var parentElement = LevelService.getItemFromLevelById(HierarchyLayoutService.selectedPath[i+1], allLinks[l].fromID);
 				if (parentElement !== null) {
 					links.push(allLinks[l]);
 				}

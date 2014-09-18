@@ -1,8 +1,5 @@
 'use strict';
 
-// FIXME Should x or y be first in translate()?
-// FIXME Rename this Service
-
 /**
  * This service aims to provide functions for laying out the hierarchy of a
  * bundle (ie, calculating the positions of the nodes). The actual drawing is
@@ -18,7 +15,7 @@
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyService', function (ConfigProviderService, LevelService) {
+	.service('HierarchyLayoutService', function (ConfigProviderService, LevelService) {
 		// shared service object
 		var sServObj = {};
 
