@@ -16,6 +16,8 @@ angular.module('emuwebApp')
         //////////////////////
         // watches 
 
+	scope.cLAD = viewState.curLevelAttrDefs;
+
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
 		scope.render();
@@ -26,7 +28,7 @@ angular.module('emuwebApp')
 		scope.render();
 	}, false);
 
-	scope.$watch('viewState.curLevelAttrDefs', function (newValue) {
+	scope.$watch('cLAD', function (newValue) {
 		console.debug('Rendering due to attribute change: ', newValue);
 		scope.render();
 	}, true);

@@ -1029,7 +1029,7 @@ angular.module('emuwebApp')
      */
     sServObj.getCurAttrIndex = function (levelName) {
       var curAttrDef;
-      angular.forEach(curLevelAttrDefs, function (ad) {
+      angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
         if (ad.levelName === levelName) {
           if (ad.curAttrDefIndex === undefined) {
             curAttrDef = 0;
