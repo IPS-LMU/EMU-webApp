@@ -139,35 +139,17 @@ describe('Factory: viewState', function () {
     expect(viewState.curClickLevelType).toEqual('SEGMENT');
   }));
 
-
   /**
    *
    */
   it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
     LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(10, 9700);
+    viewState.select(3300, 7000);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
-    expect(viewState.curClickSegments.length).toEqual(4);
+    expect(viewState.curClickSegments.length).toEqual(2);
     expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
     expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
-    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
-  }));
-
-  /**
-   *
-   */
-  it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
-    LevelService.setData(msajc003_bndl.annotation);
-    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(10, 9700);
-    viewState.selectSegmentsInSelection(LevelService.data.levels);
-    expect(viewState.curClickSegments.length).toEqual(4);
-    expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
-    expect(viewState.curClickSegments[2].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[3].labels[0].value).toEqual('N');
   }));
 
 
@@ -179,12 +161,12 @@ describe('Factory: viewState', function () {
     expect(range.start).toEqual(-1);
     expect(range.end).toEqual(-1);
     LevelService.setData(msajc003_bndl.annotation);
-    viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
-    viewState.select(9700, 15000);
+    viewState.selectLevel(false, ['Phonetic', 'Tone'], LevelService);
+    viewState.select(10, 9700);
     viewState.selectSegmentsInSelection(LevelService.data.levels);
     range = viewState.getselectedRange();
-    expect(range.start).toEqual(11340);
-    expect(range.end).toEqual(14800);
+    expect(range.start).toEqual(3750);
+    expect(range.end).toEqual(9669);
   }));
 
   /**
@@ -241,6 +223,22 @@ describe('Factory: viewState', function () {
     viewState.shiftViewPort(false);
     expect(viewState.curViewPort.sS).toEqual(21783);
     expect(viewState.curViewPort.eS).toEqual(36306);
+  }));
+
+  /**
+   *
+   */
+  it('should calculate correct samplesPerPxl value', inject(function (viewState) {
+    viewState.initialize();
+    viewState.curViewPort.eS = 100;
+    // mock event:
+    var evt = {};
+    evt.originalEvent = {};
+    evt.originalEvent.target = {};
+    evt.originalEvent.target.width = 50;
+    expect(viewState.getSamplesPerPixelVal(evt)).toEqual(2);
+    evt.originalEvent.target.width = 200;
+    expect(viewState.getSamplesPerPixelVal(evt)).toEqual(0.5);
   }));
 
 

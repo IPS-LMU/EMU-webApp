@@ -50,7 +50,7 @@ angular.module('emuwebApp')
 			LevelService.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
-				'action': 'renameLevel',
+				'action': 'RENAMELEVEL',
 				'newname': $scope.passedOutTxt.var,
 				'name': $scope.passedInTxt,
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
@@ -66,7 +66,7 @@ angular.module('emuwebApp')
 			LevelService.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ESPS',
-				'action': 'deleteLevel',
+				'action': 'DELETELEVEL',
 				'level': lvl.level,
 				'id': viewState.getcurClickLevelIndex(),
 				'curPerspectiveIdx': viewState.curPerspectiveIdx

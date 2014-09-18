@@ -16,13 +16,13 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"name": {
-						"type": "string"
-					},
 					"columnName": {
 						"type": "string"
 					},
 					"fileExtension": {
+						"type": "string"
+					},
+					"name": {
 						"type": "string"
 					}
 				},

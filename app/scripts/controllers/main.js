@@ -430,8 +430,8 @@ angular.module('emuwebApp')
 
 							viewState.resetSelect();
 							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 442204;
-							// viewState.curViewPort.eS = 445464;
+							// viewState.curViewPort.sS = 52063;
+							// viewState.curViewPort.eS = 52100;
 							// viewState.curViewPort.selectS = 27575;
 							// viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;
@@ -683,7 +683,7 @@ angular.module('emuwebApp')
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
-					'action': 'addLevel',
+					'action': 'ADDLEVEL',
 					'level': level,
 					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
@@ -718,7 +718,7 @@ angular.module('emuwebApp')
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
-					'action': 'addLevel',
+					'action': 'ADDLEVEL',
 					'level': level,
 					'id': LevelService.data.levels.length - 1,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx

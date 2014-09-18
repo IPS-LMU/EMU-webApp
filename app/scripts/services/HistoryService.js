@@ -31,91 +31,91 @@ angular.module('emuwebApp')
 					}
 				} else if (cur.type === 'ESPS') {
 					switch (cur.action) {
-					case 'moveBoundary':
+					case 'MOVEBOUNDARY':
 						if (applyOldVal) {
-							LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.position);
+							LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.isFirst, cur.isLast);
 						} else {
-							LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.position);
+							LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.isFirst, cur.isLast);
 						}
 						break;
-					case 'moveSegment':
+					case 'MOVESEGMENT':
 						if (applyOldVal) {
 							LevelService.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
 						} else {
 							LevelService.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
 						}
 						break;
-					case 'movePoint':
+					case 'MOVEPOINT':
 						if (applyOldVal) {
 							LevelService.movePoint(cur.name, cur.id, -cur.movedBy);
 						} else {
 							LevelService.movePoint(cur.name, cur.id, cur.movedBy);
 						}
 						break;
-					case 'renameLabel':
+					case 'RENAMELABEL':
 						if (applyOldVal) {
-							LevelService.renameLabel(cur.name, cur.id, cur.oldValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 						} else {
-							LevelService.renameLabel(cur.name, cur.id, cur.newValue);
+							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
 						}
 						break;
-					case 'renameLevel':
+					case 'RENAMELEVEL':
 						if (applyOldVal) {
 							LevelService.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
 						} else {
 							LevelService.renameLevel(cur.name, cur.newname, cur.curPerspectiveIdx);
 						}
 						break;
-					case 'deleteLevel':
+					case 'DELETELEVEL':
 						if (applyOldVal) {
 							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						} else {
 							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						}
 						break;
-					case 'addLevel':
+					case 'ADDLEVEL':
 						if (applyOldVal) {
 							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						} else {
 							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
-					case 'deleteBoundary':
+					case 'DELETEBOUNDARY':
 						if (applyOldVal) {
-							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.deletedSegment);
+							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
 						} else {
-							LevelService.deleteBoundary(cur.name, cur.id);
+							LevelService.deleteBoundary(cur.name, cur.id, cur.isFirst, cur.isLast);
 						}
 						break;
-					case 'deleteSegments':
+					case 'DELETESEGMENTS':
 						if (applyOldVal) {
 							LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
 						} else {
 							LevelService.deleteSegments(cur.name, cur.id, cur.length);
 						}
 						break;
-					case 'insertSegments':
+					case 'INSERTSEGMENTS':
 						if (applyOldVal) {
 							LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 						} else {
 							LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
-					case 'insertPoint':
+					case 'INSERTPOINT':
 						if (applyOldVal) {
 							LevelService.deletePoint(cur.name, cur.id);
 						} else {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
-					case 'deletePoint':
+					case 'DELETEPOINT':
 						if (applyOldVal) {
 							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
 						} else {
 							LevelService.deletePoint(cur.name, cur.id);
 						}
 						break;						
-					case 'expandSegments':
+					case 'EXPANDSEGMENTS': // ongoing
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
@@ -151,10 +151,10 @@ angular.module('emuwebApp')
 				}
 			} else if (dataObj.type === 'ESPS') {
 				switch (dataObj.action) {
-				case 'moveBoundary':
-				case 'movePoint':
-				case 'moveSegment':
-				case 'insertPoint':
+				case 'MOVEBOUNDARY':
+				case 'MOVEPOINT':
+				case 'MOVESEGMENT':
+				case 'INSERTPOINT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;

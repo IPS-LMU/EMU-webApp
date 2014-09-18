@@ -51,6 +51,13 @@ module.exports = function (config) {
         watched: true,
         served: true,
         included: false
+      },
+      // fixtures
+      {
+        pattern: 'app/testData/oldFormat/msajc003/*',
+        watched: true,
+        served: true,
+        included: false
       }
 
     ],

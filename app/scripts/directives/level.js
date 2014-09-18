@@ -95,12 +95,11 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-				scope.changeCurAttrDef = function (attrDefName) {
+				scope.changeCurAttrDef = function (attrDefName, index) {
 					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
-
 					if (curAttrDef !== attrDefName) {
 						// curAttrDef = attrDefName;
-						viewState.setCurAttrDef(scope.level.name, attrDefName);
+						viewState.setCurAttrDef(scope.level.name, attrDefName, index);
 
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
 							viewState.focusInTextField = false;
@@ -244,7 +243,7 @@ angular.module('emuwebApp')
 								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart));
 								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur+1));
 								posS = viewState.getPos(canvas[0].width, curEvt.sampleStart);
-								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur);
+								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur + 1);
 
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
@@ -255,7 +254,7 @@ angular.module('emuwebApp')
 
 
 								//check for enough space to stroke text
-								if (posE - posS > (mTxtImgWidth * curLabVal.length)) {
+								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
 									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 									var tW = fontScaleService.getLastImageWidth();
 									var tX = posS + (posE - posS) / 2 - tW / 2;
@@ -343,21 +342,11 @@ angular.module('emuwebApp')
 									}
 								});
 
-								//if (segMId !=== undefined && levelDetails.name === viewState.curMouseMoveLevelName && segMId.id === viewState.curMouseMoveSegmentName) {
-								//console.log('this is the selected boundary');
-								// 		ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-								// 		ctx.fillRect(perc, 0, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 8, canvas[0].height / 2 - canvas[0].height / 10);
-								// 		tW = ctx.measureText(levelDetails.items[k].label).width;
-								// 		ctx.fillStyle = this.params.labelColor;
-								// 		ctx.fillText(levelDetails.items[k].label, perc - tW / 2 + 1, canvas[0].height / 2);
-								//} else {
 								ctx.fillStyle = config.vals.colors.startBoundaryColor;
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, config.vals.font.fontType, config.vals.colors.labelColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
-								//}
 
 								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
@@ -394,19 +383,21 @@ angular.module('emuwebApp')
 
 
 					var segMId = viewState.getcurMouseSegment();
-					var segCId = viewState.getcurClickSegments();
+					var isFirst = viewState.getcurMouseisFirst();
+					var isLast = viewState.getcurMouseisLast();
+					var clickedSegs = viewState.getcurClickSegments();
 					var levelId = viewState.getcurClickLevelName();
-					if (segCId !== undefined) {
+					if (clickedSegs !== undefined) {
 						// draw clicked on selected areas
-						if (levelDetails.name === levelId && segCId.length > 0) {
-							segCId.forEach(function (entry) {
-								if (entry !== undefined) {
+						if (levelDetails.name === levelId && clickedSegs.length > 0) {
+							clickedSegs.forEach(function (cs) {
+								if (cs !== undefined) {
 									// check if segment or event level
-									if (entry.sampleStart !== undefined) {
-										posS = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart));
-										posE = Math.round(viewState.getPos(canvas[0].width, entry.sampleStart + entry.sampleDur));
+									if (cs.sampleStart !== undefined) {
+										posS = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart));
+										posE = Math.round(viewState.getPos(canvas[0].width, cs.sampleStart + cs.sampleDur + 1));
 									} else {
-										posS = Math.round(viewState.getPos(canvas[0].width, entry.samplePoint) + sDist / 2);
+										posS = Math.round(viewState.getPos(canvas[0].width, cs.samplePoint) + sDist / 2);
 										posS = posS - 5;
 										posE = posS + 10;
 									}
@@ -424,16 +415,16 @@ angular.module('emuwebApp')
 					curEvt = viewState.getcurMouseSegment();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
-						if (segMId === false) { // before first segment
+						if (isFirst === true) { // before first segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[0];
 								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.sampleStart));
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
-						} else if (segMId === true) { // after last segment
+						} else if (isLast === true) { // after last segment
 							if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = levelDetails.items[levelDetails.items.length - 1];
-								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur)));
+								posS = Math.round(viewState.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
 						} else { // in the middle
@@ -444,6 +435,7 @@ angular.module('emuwebApp')
 								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
 								xOffset = (sDist / 2);
 								ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
+								
 							}
 						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;

@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 			defer = $q.defer();
 			worker.postMessage({
 				'cmd': 'parseESPS',
-				'textGrid': esps,
+				'esps': esps,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
 				'annotates': annotates,
 				'name': name

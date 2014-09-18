@@ -308,10 +308,30 @@
 									"required": ["ssffTrackName", "min", "max"],
 									"additionalProperties": false
 								}
-							}
-						},
+							},
+							"contourColors": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"colors": {
+											"type": "array",
+											"items": {
+											    "type": "string"
+											}
+										}
+									},
+									"required": ["ssffTrackName", "colors"],
+									"additionalProperties": false
+								}
+
+						    }
+						},						
 						"required": ["order", "assign", "contourLims"],
-						"additionalProperties": false
+						"additionalProperties": true
 					},
 					"levelCanvases": {
 						"type": "object",

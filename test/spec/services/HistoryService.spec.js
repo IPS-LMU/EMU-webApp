@@ -4,20 +4,23 @@ describe('Service: HistoryService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
+  
+  var item;
 
   // NOTE: the ID used here has to be present int msajc003_bundle.annotation
   var changeObj = {
     'type': 'ESPS',
-    'action': 'renameLabel',
+    'action': 'RENAMELABEL',
     'name': 'Phonetic',
     'id': 154,
+    'attrIndex': 0,
     'oldValue': 'xxx',
     'newValue': 'yyy'
   };
 
   var changeObjmoveBy1 = {
     'type': 'ESPS',
-    'action': 'moveBoundary',
+    'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 0,
     'movedBy': 40,
@@ -26,7 +29,7 @@ describe('Service: HistoryService', function () {
 
   var changeObjmoveBy2 = {
     'type': 'ESPS',
-    'action': 'moveBoundary',
+    'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 1,
     'movedBy': -40,
@@ -35,81 +38,13 @@ describe('Service: HistoryService', function () {
 
   var changeObjmoveBy3 = {
     'type': 'ESPS',
-    'action': 'moveBoundary',
+    'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 1,
     'movedBy': 30,
     'position': 0
   };
 
-  var mockEpgdorsalJDR10 = {
-    "name": "JDR10",
-    "annotates": "0000_ses/JDR10_bndl/JDR10.wav",
-    "sampleRate": 16000,
-    "levels": [{
-      "name": "Word",
-      "type": "ITEM",
-      "items": [{
-        "id": 2,
-        "labels": [{
-          "name": "Word",
-          "value": "rockinskiweg"
-        }, {
-          "name": "Kommentar",
-          "value": ""
-        }]
-      }]
-    }, {
-      "name": "Phonetic",
-      "type": "SEGMENT",
-      "items": [{
-        "id": 3,
-        "sampleStart": 87710,
-        "sampleDur": 929,
-        "labels": [{
-          "name": "Phonetic",
-          "value": "O"
-        }]
-      }, {
-        "id": 0,
-        "sampleStart": 88639,
-        "sampleDur": 1642,
-        "labels": [{
-          "name": "Phonetic",
-          "value": "k"
-        }]
-      }, {
-        "id": 1,
-        "sampleStart": 90281,
-        "sampleDur": 761,
-        "labels": [{
-          "name": "Phonetic",
-          "value": "H"
-        }]
-      }, {
-        "id": 4,
-        "sampleStart": 91042,
-        "sampleDur": 553,
-        "labels": [{
-          "name": "Phonetic",
-          "value": "I"
-        }]
-      }]
-    }],
-    "links": [{
-      "fromID": 2,
-      "toID": 0
-    }, {
-      "fromID": 2,
-      "toID": 1
-    }, {
-      "fromID": 2,
-      "toID": 3
-    }, {
-      "fromID": 2,
-      "toID": 4
-    }]
-  };
   /**
    *
    */
@@ -133,7 +68,7 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObj);
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -146,7 +81,7 @@ describe('Service: HistoryService', function () {
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -160,7 +95,7 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -175,7 +110,7 @@ describe('Service: HistoryService', function () {
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -192,15 +127,15 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
-    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#renameLabel#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
   }));
 
   /**
    *
    */
   it('should do and undo and redo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
     HistoryService.addObjToUndoStack(changeObjmoveBy2);
     HistoryService.undo();
@@ -209,18 +144,18 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#moveBoundary#Phonetic#0');
-    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#moveBoundary#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#moveBoundary#Phonetic#0');
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#moveBoundary#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(2);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#moveBoundary#Phonetic#1');
-    expect(Object.keys(HistoryService.getCurrentStack().redo[1])[0]).toEqual('ESPS#moveBoundary#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[1])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
   }));
 
 
@@ -228,7 +163,7 @@ describe('Service: HistoryService', function () {
    *
    */
   it('should do and undo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(mockEpgdorsalJDR10);
+    LevelService.setData(JDR10_bndl.annotation);
     LevelService.moveBoundary(changeObjmoveBy1.name, changeObjmoveBy1.id, changeObjmoveBy1.movedBy, changeObjmoveBy1.position);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
     LevelService.moveBoundary(changeObjmoveBy2.name, changeObjmoveBy2.id, changeObjmoveBy2.movedBy, changeObjmoveBy2.position);
@@ -236,67 +171,88 @@ describe('Service: HistoryService', function () {
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
     // changed values : id1 += 40; id0 -= 40 
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(969);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88679);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1562);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90241);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(801);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553);
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur + 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 0);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(item.sampleStart + 40);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(item.sampleDur - 40 - 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 1);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart - 40);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur + 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
     HistoryService.undo();
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(2);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1642);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90281);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(761);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553);
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 0);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 1);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
     HistoryService.redo();
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(969);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88679);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1562);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90241);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(801);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553);
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur + 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 0);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(item.sampleStart + 40);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(item.sampleDur - 40 - 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 1);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart - 40);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur + 40);
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
+
   }));
 
   /**
    *
    */
   it('should do and update 2 steps (moveBoundary) on currentChange Object based on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(mockEpgdorsalJDR10);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1642);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90281);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(761);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553);
+    LevelService.setData(JDR10_bndl.annotation);
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 0);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 1);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
     LevelService.moveBoundary(changeObjmoveBy3.name, changeObjmoveBy3.id, changeObjmoveBy3.movedBy, changeObjmoveBy3.position);
     HistoryService.addObjToUndoStack(changeObjmoveBy3);
     LevelService.moveBoundary(changeObjmoveBy2.name, changeObjmoveBy2.id, changeObjmoveBy2.movedBy, changeObjmoveBy2.position);
     HistoryService.updateCurChangeObj(changeObjmoveBy2);
     HistoryService.addCurChangeObjToUndoStack();
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleStart).toEqual(87710);
-    expect(LevelService.getElementDetailsById('Phonetic', 3).sampleDur).toEqual(929);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleStart).toEqual(88639);
-    expect(LevelService.getElementDetailsById('Phonetic', 0).sampleDur).toEqual(1632);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleStart).toEqual(90271);
-    expect(LevelService.getElementDetailsById('Phonetic', 1).sampleDur).toEqual(771);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleStart).toEqual(91042);
-    expect(LevelService.getElementDetailsById('Phonetic', 4).sampleDur).toEqual(553);
-
+    // -40 + 30 = -10
+    item = getItemFromJSON(JDR10_bndl.annotation, 3);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur);
+    item = getItemFromJSON(JDR10_bndl.annotation, 0);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 0).sampleDur).toEqual(item.sampleDur - 10);
+    item = getItemFromJSON(JDR10_bndl.annotation, 1);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart - 10);
+    expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur + 10);
+    item = getItemFromJSON(JDR10_bndl.annotation, 4);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
+    expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
   }));
 
   /**
