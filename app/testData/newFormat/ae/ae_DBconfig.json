@@ -145,6 +145,10 @@
 					"ssffTrackName": "FORMANTS",
 					"min": 0,
 					"max": 1
+				}],
+				"contourColors": [{
+				    "ssffTrackName": "FORMANTS",
+				    "colors": ["rgb(238,130,238)", "rgb(127,255,212)"]
 				}]
 			},
 			"levelCanvases": {

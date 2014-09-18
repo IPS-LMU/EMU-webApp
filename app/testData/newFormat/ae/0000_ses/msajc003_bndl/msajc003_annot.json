@@ -410,7 +410,7 @@
 		"items": [{
 			"id": 147,
 			"sampleStart": 3750,
-			"sampleDur": 1390,
+			"sampleDur": 1389,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "V"
@@ -421,7 +421,7 @@
 		}, {
 			"id": 148,
 			"sampleStart": 5140,
-			"sampleDur": 1665,
+			"sampleDur": 1664,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "m"
@@ -432,7 +432,7 @@
 		}, {
 			"id": 149,
 			"sampleStart": 6805,
-			"sampleDur": 1730,
+			"sampleDur": 1729,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "V"
@@ -443,7 +443,7 @@
 		}, {
 			"id": 150,
 			"sampleStart": 8535,
-			"sampleDur": 1135,
+			"sampleDur": 1134,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "N"
@@ -454,7 +454,7 @@
 		}, {
 			"id": 151,
 			"sampleStart": 9670,
-			"sampleDur": 1670,
+			"sampleDur": 1669,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "s"
@@ -465,7 +465,7 @@
 		}, {
 			"id": 152,
 			"sampleStart": 11340,
-			"sampleDur": 595,
+			"sampleDur": 594,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "t"
@@ -476,7 +476,7 @@
 		}, {
 			"id": 153,
 			"sampleStart": 11935,
-			"sampleDur": 1550,
+			"sampleDur": 1549,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "H"
@@ -487,7 +487,7 @@
 		}, {
 			"id": 154,
 			"sampleStart": 13485,
-			"sampleDur": 1315,
+			"sampleDur": 1314,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@:"
@@ -498,7 +498,7 @@
 		}, {
 			"id": 155,
 			"sampleStart": 14800,
-			"sampleDur": 3055,
+			"sampleDur": 3054,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "f"
@@ -509,7 +509,7 @@
 		}, {
 			"id": 156,
 			"sampleStart": 17855,
-			"sampleDur": 1145,
+			"sampleDur": 1144,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "r"
@@ -520,7 +520,7 @@
 		}, {
 			"id": 157,
 			"sampleStart": 19000,
-			"sampleDur": 1640,
+			"sampleDur": 1639,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "E"
@@ -531,7 +531,7 @@
 		}, {
 			"id": 158,
 			"sampleStart": 20640,
-			"sampleDur": 3280,
+			"sampleDur": 3279,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "n"
@@ -542,7 +542,7 @@
 		}, {
 			"id": 159,
 			"sampleStart": 23920,
-			"sampleDur": 1870,
+			"sampleDur": 1869,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "z"
@@ -553,7 +553,7 @@
 		}, {
 			"id": 160,
 			"sampleStart": 25790,
-			"sampleDur": 2610,
+			"sampleDur": 2609,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "S"
@@ -564,7 +564,7 @@
 		}, {
 			"id": 161,
 			"sampleStart": 28400,
-			"sampleDur": 865,
+			"sampleDur": 864,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "i:"
@@ -575,7 +575,7 @@
 		}, {
 			"id": 162,
 			"sampleStart": 29265,
-			"sampleDur": 860,
+			"sampleDur": 859,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "w"
@@ -586,7 +586,7 @@
 		}, {
 			"id": 163,
 			"sampleStart": 30125,
-			"sampleDur": 845,
+			"sampleDur": 844,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@"
@@ -597,7 +597,7 @@
 		}, {
 			"id": 164,
 			"sampleStart": 30970,
-			"sampleDur": 1720,
+			"sampleDur": 1719,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "z"
@@ -608,7 +608,7 @@
 		}, {
 			"id": 165,
 			"sampleStart": 32690,
-			"sampleDur": 830,
+			"sampleDur": 829,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "k"
@@ -619,7 +619,7 @@
 		}, {
 			"id": 166,
 			"sampleStart": 33520,
-			"sampleDur": 790,
+			"sampleDur": 789,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "H"
@@ -630,7 +630,7 @@
 		}, {
 			"id": 167,
 			"sampleStart": 34310,
-			"sampleDur": 520,
+			"sampleDur": 519,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@"
@@ -641,7 +641,7 @@
 		}, {
 			"id": 168,
 			"sampleStart": 34830,
-			"sampleDur": 1000,
+			"sampleDur": 999,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "n"
@@ -652,7 +652,7 @@
 		}, {
 			"id": 169,
 			"sampleStart": 35830,
-			"sampleDur": 2035,
+			"sampleDur": 2034,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "s"
@@ -663,7 +663,7 @@
 		}, {
 			"id": 170,
 			"sampleStart": 37865,
-			"sampleDur": 1045,
+			"sampleDur": 1044,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "I"
@@ -674,7 +674,7 @@
 		}, {
 			"id": 171,
 			"sampleStart": 38910,
-			"sampleDur": 425,
+			"sampleDur": 424,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "d"
@@ -685,7 +685,7 @@
 		}, {
 			"id": 172,
 			"sampleStart": 39335,
-			"sampleDur": 1340,
+			"sampleDur": 1339,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@"
@@ -696,7 +696,7 @@
 		}, {
 			"id": 173,
 			"sampleStart": 40675,
-			"sampleDur": 2330,
+			"sampleDur": 2329,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "db"
@@ -707,7 +707,7 @@
 		}, {
 			"id": 174,
 			"sampleStart": 43005,
-			"sampleDur": 1220,
+			"sampleDur": 1219,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "j"
@@ -718,7 +718,7 @@
 		}, {
 			"id": 175,
 			"sampleStart": 44225,
-			"sampleDur": 1450,
+			"sampleDur": 1449,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "u:"
@@ -729,7 +729,7 @@
 		}, {
 			"id": 176,
 			"sampleStart": 45675,
-			"sampleDur": 385,
+			"sampleDur": 384,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "dH"
@@ -740,7 +740,7 @@
 		}, {
 			"id": 177,
 			"sampleStart": 46060,
-			"sampleDur": 1180,
+			"sampleDur": 1179,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@"
@@ -751,7 +751,7 @@
 		}, {
 			"id": 178,
 			"sampleStart": 47240,
-			"sampleDur": 1710,
+			"sampleDur": 1709,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "f"
@@ -762,7 +762,7 @@
 		}, {
 			"id": 179,
 			"sampleStart": 48950,
-			"sampleDur": 1176,
+			"sampleDur": 1175,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "@"
@@ -773,7 +773,7 @@
 		}, {
 			"id": 180,
 			"sampleStart": 50126,
-			"sampleDur": 1964,
+			"sampleDur": 1963,
 			"labels": [{
 				"name": "Phonetic",
 				"value": "l"

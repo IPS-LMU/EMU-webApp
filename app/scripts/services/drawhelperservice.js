@@ -63,24 +63,7 @@ angular.module('emuwebApp')
 
 		}
 
-
 		sServObj.osciPeaks = [];
-
-		/**
-		 *
-		 */
-
-		sServObj.getX = function (e) {
-			return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
-		};
-
-		/**
-		 *
-		 */
-
-		sServObj.getY = function (e) {
-			return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
-		};
 
 
 		/**
@@ -266,7 +249,12 @@ angular.module('emuwebApp')
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				if(viewState.getcurMouseisLast()) {
+				    ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
+				}
+				else {
+				    ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				}
 			}
 
 		};
@@ -332,7 +320,7 @@ angular.module('emuwebApp')
 					space = getScale(ctx, viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
 
 					if (posE - posS > space) {
-						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS;
+						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
 						var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
 
 						space = getScaleWidth(ctx, str1, str2, scaleX);
@@ -364,8 +352,8 @@ angular.module('emuwebApp')
 				}
 
 				// draw lines
-				var mouseX = sServObj.getX(mouseEvt);
-				var mouseY = sServObj.getY(mouseEvt);
+				var mouseX = viewState.getX(mouseEvt);
+				var mouseY = viewState.getY(mouseEvt);
 
 				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);

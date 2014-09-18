@@ -17,7 +17,7 @@ angular.module('emuwebApp')
         var lastNeighbours;
         var lastNeighboursMove;
         var lastPCM;
-        var thisPCM;
+        var curMouseSampleNrInView;
         var levelID = scope.level.name;
         var levelType = scope.level.type;
 
@@ -53,28 +53,30 @@ angular.module('emuwebApp')
         element.bind('mousemove', function (event) {
           if (!viewState.getdragBarActive()) {
             var moveLine = true;
-            var zoom = viewState.getPCMpp(event);
-            thisPCM = getX(event) * zoom;
-            var moveBy = (thisPCM - lastPCM);
-            if (zoom <= 1) {
-              var zoomEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+            var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
+            curMouseSampleNrInView = viewState.getX(event) * samplesPerPixel;
+            var moveBy = (curMouseSampleNrInView - lastPCM);
+            if (samplesPerPixel <= 1 && scope.this.level.items.length > 0) {
+              var zoomEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.this.level.type === 'SEGMENT') {
-                if (zoomEventMove.nearest === false) { // before first elem
-                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetails(scope.this.level.name, 0).sampleStart);
-                } else if (zoomEventMove.nearest === true) { // after last elem
-                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getLastElement(scope.this.level.name).sampleStart);
+                if (zoomEventMove.isFirst === true && zoomEventMove.isLast === false) { // before first elem
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemDetails(scope.this.level.name, 0).sampleStart);
+                } else if (zoomEventMove.isFirst === false && zoomEventMove.isLast === true) { // after last elem
+                  var lastItem = LevelService.getLastItem(scope.this.level.name);
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - lastItem.sampleStart - lastItem.sampleDur);
                 } else {
-                  moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
                 }
               } else {
-                moveBy = Math.floor((thisPCM + viewState.curViewPort.sS) - LevelService.getElementDetailsById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint);
+                moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint - 0.5); // 0.5 to break between samples not on
               }
             } else {
               // relative movement in pcm above 1 pcm per pixel
-              moveBy = Math.round(thisPCM - lastPCM);
+              moveBy = Math.round(curMouseSampleNrInView - lastPCM);
             }
           }
+          
           var mbutton = 0;
           if (event.buttons === undefined) {
             mbutton = event.which;
@@ -97,32 +99,30 @@ angular.module('emuwebApp')
                 LevelService.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
-                  var position = 0;
                   if (scope.this.level.type === 'SEGMENT') {
-                    if (typeof viewState.getcurMouseSegment() === 'boolean') {
+                    if (viewState.getcurMouseisFirst() || viewState.getcurMouseisLast()) {
                       var seg, leftMost, rightB;
                       // before first segment
-                      if (viewState.getcurMouseSegment() === false) {
-                        seg = LevelService.getElementDetails(scope.this.level.name, 0);
+                      if (viewState.getcurMouseisFirst()) {
+                        seg = LevelService.getItemDetails(scope.this.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
-                        position = -1;
-                      } else {
-                        seg = LevelService.getLastElement(scope.this.level.name);
+                      } else if(viewState.getcurMouseisLast()){
+                        seg = LevelService.getLastItem(scope.this.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
-                        position = 1;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
                     }
-                    LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, position);
+                    LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
-                      'action': 'moveBoundary',
+                      'action': 'MOVEBOUNDARY',
                       'name': scope.this.level.name,
                       'id': seg.id,
                       'movedBy': moveBy,
-                      'position': position
+                      'isFirst': viewState.getcurMouseisFirst(),
+                      'isLast': viewState.getcurMouseisLast()
                     });
 
                   } else {
@@ -131,14 +131,14 @@ angular.module('emuwebApp')
                     LevelService.movePoint(scope.this.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ESPS',
-                      'action': 'movePoint',
+                      'action': 'MOVEPOINT',
                       'name': scope.this.level.name,
                       'id': seg.id,
                       'movedBy': moveBy
                     });
                   }
-                  lastPCM = thisPCM;
-                  viewState.selectBoundry();
+                  lastPCM = curMouseSampleNrInView;
+                  viewState.selectBoundary();
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
@@ -148,14 +148,14 @@ angular.module('emuwebApp')
                   LevelService.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
                   HistoryService.updateCurChangeObj({
                     'type': 'ESPS',
-                    'action': 'moveSegment',
+                    'action': 'MOVESEGMENT',
                     'name': scope.this.level.name,
                     'id': seg[0].id,
                     'length': seg.length,
                     'movedBy': moveBy
                   });
-                  lastPCM = thisPCM;
-                  viewState.selectBoundry();
+                  lastPCM = curMouseSampleNrInView;
+                  viewState.selectBoundary();
                 }
               } else {
                 viewState.movingBoundary = false;
@@ -165,9 +165,6 @@ angular.module('emuwebApp')
           }
           if (!viewState.getdragBarActive()) {
             setLastMove(event, moveLine);
-          }
-          if (lastEventMove.nearest !== undefined) {
-            viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
           }
         });
 
@@ -196,18 +193,18 @@ angular.module('emuwebApp')
          *
          */
         function setLastClick(x) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
           viewState.setEditing(false);
           viewState.focusInTextField = false;
-          lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
-            LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
+            LevelService.setlasteditArea('_' + lastEventClick.current.id);
             LevelService.setlasteditAreaElem(element.parent());
             viewState.setcurClickLevel(levelID, levelType, scope.$index);
-            viewState.setcurClickSegment(lastEventClick.evtr);
+            viewState.setcurClickSegment(lastEventClick.current);
           }
-          lastPCM = thisPCM;
+          lastPCM = curMouseSampleNrInView;
           scope.$apply();
         }
 
@@ -218,15 +215,15 @@ angular.module('emuwebApp')
           if (viewState.getcurClickLevelName() !== levelID) {
             setLastClick(x);
           }
-          thisPCM = getX(x) * viewState.getPCMpp(x);
+          curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
-          lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             viewState.setcurClickLevel(levelID, levelType, scope.$index);
-            viewState.setcurClickSegmentMultiple(lastEventClick.evtr);
-            viewState.selectBoundry();
+            viewState.setcurClickSegmentMultiple(lastEventClick.current);
+            viewState.selectBoundary();
           }
-          lastPCM = thisPCM;
+          lastPCM = curMouseSampleNrInView;
           scope.$apply();
         }
 
@@ -234,18 +231,18 @@ angular.module('emuwebApp')
          *
          */
         function setLastDblClick(x) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventClick = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
-          if (lastEventClick.evtr !== undefined && lastEventClick.nearest !== undefined) {
+          curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             if (levelType === 'SEGMENT') {
-              if (lastEventClick.evtr.sampleStart >= viewState.curViewPort.sS) {
-                if ((lastEventClick.evtr.sampleStart + lastEventClick.evtr.sampleDur) <= viewState.curViewPort.eS) {
+              if (lastEventClick.current.sampleStart >= viewState.curViewPort.sS) {
+                if ((lastEventClick.current.sampleStart + lastEventClick.current.sampleDur) <= viewState.curViewPort.eS) {
                   viewState.setcurClickLevel(levelID, levelType, scope.$index);
-                  viewState.setcurClickSegment(lastEventClick.evtr);
-                  LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+                  viewState.setcurClickSegment(lastEventClick.current);
+                  LevelService.setlasteditArea('_' + lastEventClick.current.id);
                   LevelService.setlasteditAreaElem(element.parent());
                   viewState.setEditing(true);
-                  LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+                  LevelService.openEditArea(lastEventClick.current, element.parent(), levelType);
                   viewState.focusInTextField = true;
                 } else {
                   console.log('Editing out of right bound !');
@@ -255,15 +252,15 @@ angular.module('emuwebApp')
               }
             } else {
               viewState.setcurClickLevel(levelID, levelType, scope.$index);
-              viewState.setcurClickSegment(lastEventClick.evtr);
-              LevelService.setlasteditArea('_' + lastEventClick.evtr.id);
+              viewState.setcurClickSegment(lastEventClick.current);
+              LevelService.setlasteditArea('_' + lastEventClick.current.id);
               LevelService.setlasteditAreaElem(element.parent());
               viewState.setEditing(true);
-              LevelService.openEditArea(lastEventClick.evtr, element.parent(), levelType);
+              LevelService.openEditArea(lastEventClick.current, element.parent(), levelType);
               viewState.focusInTextField = true;
             }
           }
-          lastPCM = thisPCM;
+          lastPCM = curMouseSampleNrInView;
           scope.$apply();
         }
 
@@ -271,25 +268,18 @@ angular.module('emuwebApp')
          *
          */
         function setLastMove(x, doChange) {
-          thisPCM = getX(x) * viewState.getPCMpp(x);
-          lastEventMove = LevelService.getEvent(thisPCM + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
+          lastEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
-            if (lastEventMove.evtr !== undefined && lastEventMove.nearest !== undefined) {
-              lastNeighboursMove = LevelService.getElementNeighbourDetails(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
-              viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM);
+            if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+              lastNeighboursMove = LevelService.getItemNeighboursFromLevel(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+              viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM, lastEventMove.isFirst, lastEventMove.isLast);
             }
           }
           viewState.setcurMouseLevelName(levelID);
           viewState.setcurMouseLevelType(levelType);
-          lastPCM = thisPCM;
+          lastPCM = curMouseSampleNrInView;
           scope.$apply();
-        }
-
-        /**
-         *
-         */
-        function getX(e) {
-          return (e.offsetX ||  e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
         }
       }
     };
