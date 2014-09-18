@@ -3,8 +3,38 @@
 var sampleRate;
 var l1 = 'File type = \"ooTextFile\"';
 var l2 = 'Object class = \"TextGrid\"';
-
 var localID = 0;
+
+/**
+ * test to see if all the segments in seg levels
+ * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
+ */
+function testForGapsInLabelJSO(labelJSO) {
+	var counter = 0;
+	for (var i = 0; i < labelJSO.levels.length; i++) {
+		if (labelJSO.levels[i].type === 'SEGMENT') {
+			for (var j = 0; j < labelJSO.levels[i].items.length - 1; j++) {
+				if (labelJSO.levels[i].items[j].sampleStart + labelJSO.levels[i].items[j].sampleDur + 1 !== labelJSO.levels[i].items[j + 1].sampleStart) {
+					counter = counter + 1;
+				}
+			}
+		}
+	}
+}
+
+/**
+ *
+ */
+function findTimeOfMinSample() {
+	return 0.000000; // maybe needed at some point...
+}
+
+/**
+ *
+ */
+function findTimeOfMaxSample(buffLength, sampleRate) {
+	return buffLength / sampleRate;
+}
 
 /**
  * parse a textgrid string to the specified json format
@@ -22,6 +52,7 @@ function toJSO(string, myFile, myName) {
 
 	var tT, tN, eT, lab;
 	var inHeader = true;
+	var labs = [];
 
 	//meta info for labelJSO
 	var labelJSO = {
@@ -84,8 +115,6 @@ function toJSO(string, myFile, myName) {
 				}
 				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 				lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
-
-				var labs = [];
 				labs.push({
 					name: labelJSO.levels[labelJSO.levels.length - 1].name,
 					value: lab
@@ -104,7 +133,7 @@ function toJSO(string, myFile, myName) {
 				// parse point level event
 				eT = lines[i + 1].split(/=/)[1] * sampleRate;
 				lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
-				var labs = [];
+				labs = [];
 				labs.push({
 					name: labelJSO.levels[labelJSO.levels.length - 1].name,
 					value: lab
@@ -133,8 +162,7 @@ function toJSO(string, myFile, myName) {
 			}
 		});
 	}
-
-};
+}
 
 /**
  * converts the internal levels format returned from levelHandler.getLevels
@@ -202,54 +230,24 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 		}
 	}
 	return (tG);
-};
+}
 
 
-/**
- *
- */
-function findTimeOfMinSample() {
-	return 0.000000; // maybe needed at some point...
-};
-
-/**
- *
- */
-function findTimeOfMaxSample(buffLength, sampleRate) {
-	return buffLength / sampleRate;
-};
 
 
-/**
- * test to see if all the segments in seg levels
- * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
- */
-function testForGapsInLabelJSO(labelJSO) {
-	var counter = 0;
-	for (var i = 0; i < labelJSO.levels.length; i++) {
-		if (labelJSO.levels[i].type === 'SEGMENT') {
-			for (var j = 0; j < labelJSO.levels[i].items.length - 1; j++) {
-				if (labelJSO.levels[i].items[j].sampleStart + labelJSO.levels[i].items[j].sampleDur + 1 !== labelJSO.levels[i].items[j + 1].sampleStart) {
-					counter = counter + 1;
-				}
-			}
-		}
-	}
-	// console.log('TextGridParser had: ', counter, 'alignment issues found in parsed TextGrid');
-};
 
 /**
  * add event listener to webworker
  */
-self.addEventListener('message', function (e) {
+addEventListener('message', function (e) {
 	var data = e.data;
+	var retVal;
 	switch (data.cmd) {
 	case 'parseTG':
 		sampleRate = data.sampleRate;
-		var retVal = toJSO(data.textGrid, data.annotates, data.name)
-			// console.log(JSON.stringify(retVal, undefined, 2));
+		retVal = toJSO(data.textGrid, data.annotates, data.name);
 		if (retVal.status === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -257,13 +255,13 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	case 'toTextGrid':
-		var retVal = toTextGrid(data.levels, data.buffLength, data.sampleRate)
+		retVal = toTextGrid(data.levels, data.buffLength, data.sampleRate);
 		if (retVal.status === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -271,11 +269,11 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	default:
-		self.postMessage({
+		this.postMessage({
 			'status': {
 				'type': 'ERROR',
 				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd
@@ -284,4 +282,4 @@ self.addEventListener('message', function (e) {
 
 		break;
 	}
-})
+});
