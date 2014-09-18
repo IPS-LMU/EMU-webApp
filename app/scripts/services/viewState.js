@@ -647,7 +647,7 @@ angular.module('emuwebApp')
         } else {
           left = sServObj.curClickSegments[0].samplePoint;
         }
-        var right = sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleStart + sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleDur ||  sServObj.curClickSegments[0].samplePoint;
+        right = sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleStart + sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleDur ||  sServObj.curClickSegments[0].samplePoint;
         sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -666,12 +666,11 @@ angular.module('emuwebApp')
      */
     sServObj.setcurClickSegmentMultiple = function (segment) {
       var empty = true;
-      var my = this;
       var start = segment.sampleStart;
       var end = start + segment.sampleDur + 1;
       sServObj.curClickSegments.forEach(function (entry) {
-        var front = (entry.sampleStart == end) ? true : false;
-        var back = ((entry.sampleStart + entry.sampleDur + 1) == start) ? true : false;
+        var front = (entry.sampleStart === end) ? true : false;
+        var back = ((entry.sampleStart + entry.sampleDur + 1) === start) ? true : false;
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           sServObj.curClickSegments.push(segment);
           empty = false;
@@ -689,12 +688,15 @@ angular.module('emuwebApp')
      *
      */
     sServObj.sortbyid = function (a, b) {
-      //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-      if (a.sampleStart > b.sampleStart) return 1;
-      if (a.sampleStart < b.sampleStart) return -1;
-      return 0;
-    };
-
+        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+        if (a.sampleStart > b.sampleStart) {
+          return 1;
+        }
+        if (a.sampleStart < b.sampleStart) {
+          return -1;
+        }
+        return 0;
+      };
 
     /**
      * gets the current (click) Segment
@@ -1043,18 +1045,16 @@ angular.module('emuwebApp')
     /**
 	*
 	*/
-	sServObj.getX = function (e) {
+    sServObj.getX = function (e) {
 	    return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
-	};
+    };
 
 	/**
 	*
 	*/
-	sServObj.getY = function (e) {
+    sServObj.getY = function (e) {
 	    return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
-	};    
-
-
+    };
 
     /**
      *

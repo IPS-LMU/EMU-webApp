@@ -349,7 +349,9 @@ angular.module('emuwebApp')
 				'top': Math.round(y) + 'px',
 				'width': Math.round(width) - 4 + 'px',
 				'height': Math.round(height) - 1 + 'px',
-				'padding-top': Math.round(height / 3 + 1) + 'px'
+				'padding-top': Math.round(height / 3 + 1) + 'px',
+				'overflow-x': 'hidden',
+				'overflow-y': 'hidden'
 			}).text(label));
 		};
 

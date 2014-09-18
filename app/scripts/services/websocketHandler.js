@@ -40,8 +40,7 @@ angular.module('emuwebApp')
 			console.log(message);
 			if (!message.wasClean && connected) {
 				// show no clean disconnect error
-				dialogService.open('views/error.html', 'ModalCtrl', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function (argument) {
-					console.log('pushed cancel')
+				dialogService.open('views/error.html', 'ModalCtrl', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
 					$rootScope.$broadcast('connectionDisrupted');
 				});
 
@@ -84,11 +83,12 @@ angular.module('emuwebApp')
 				// console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
 				case 'getESPSfile':
-					handleReceivedESPS(messageObj.fileName, messageObj.data);
+				  alert('espsfile');
+					//handleReceivedESPS(messageObj.fileName, messageObj.data);
 					break;
 				case 'getSSFFfile':
-					alert("esps")
-					handleReceivedSSFF(messageObj.fileName, messageObj.data);
+				  alert('ssfffile');
+					//handleReceivedSSFF(messageObj.fileName, messageObj.data);
 					break;
 				}
 
