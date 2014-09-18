@@ -230,11 +230,11 @@ angular.module('emuwebApp')
 		var allLinks = LevelService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
 			for (var i=0; i<HierarchyService.selectedPath.length-1; ++i) {
-				var element = LevelService.getElementDetailsById(HierarchyService.selectedPath[i], allLinks[l].toID);
+				var element = LevelService.getItemFromLevelById(HierarchyService.selectedPath[i], allLinks[l].toID);
 				if (element === null) {
 					continue;
 				}
-				var parentElement = LevelService.getElementDetailsById(HierarchyService.selectedPath[i+1], allLinks[l].fromID);
+				var parentElement = LevelService.getItemFromLevelById(HierarchyService.selectedPath[i+1], allLinks[l].fromID);
 				if (parentElement !== null) {
 					links.push(allLinks[l]);
 				}
