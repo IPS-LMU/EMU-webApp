@@ -1,7 +1,6 @@
-<div class="modal-header">
-	<!-- <h3 id="modalHeading">Hierarchy of bundle</h3> -->
+<div class="modal-header modal-header-hierarchy">
 	<div class="btn-group emuwebapp-mini-btn-group" dropup is-open="status.isopen" ng-repeat="(key, levelName) in paths.possible[getSelIdx()]">
-		<button id="demoDB" type="button" class="dropdown-toggle">
+		<button type="button" class="dropdown-toggle">
 			<span class="glyphicon glyphicon-cog"></span> {{levelName}}<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
@@ -16,18 +15,14 @@
 		</ul>
 	</div>
 
-	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr">
-	</select>
-
+	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
 </div>
 
-<div class="modal-body" style="padding:0%">
-	
+<div class="modal-body modal-body-hierarchy">
 	<emuhierarchy path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
-
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer modal-footer-hierarchy">
 	<button class="emuwebapp-mini-btn-dialog" ng-click="rotateHierarchy()">
 		<span class="glyphicon glyphicon-repeat"></span> 
 		rotate by 90°

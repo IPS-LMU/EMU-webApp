@@ -56,7 +56,7 @@ angular.module('emuwebApp')
 		var y = -node._y  + height/2;
 		svg.transition()
 			.duration(duration)
-			.attr("transform", scope.getOrientatedTransform()+"translate(" + x + "," + y + ")");
+			.attr('transform', scope.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
 		zoomListener.translate([x, y]);
 	};
 	
@@ -64,7 +64,7 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
-			svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")"+scope.getOrientatedTransform());
+			svg.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'+scope.getOrientatedTransform());
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -93,8 +93,8 @@ angular.module('emuwebApp')
 				return d.labels[i].value;
 			}
 		}
-		console.debug ("Likely a bug: Did not find the label selected for display", "Selected level:", level, "Node: ", d);
-		return "NO VALUE";
+		console.debug ('Likely a bug: Did not find the label selected for display', 'Selected level:', level, 'Node: ', d);
+		return 'NO VALUE';
 	};
 
 	scope.getOrientatedTextAnchor = function (d) {
@@ -125,7 +125,7 @@ angular.module('emuwebApp')
 		var controlX = d._fromX;
 		var controlY = d._toY;
 
-		return "M"+d._fromX+" "+d._fromY+"Q"+controlX+" "+controlY+" "+d._toX+" "+d._toY;
+		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
 	};
 
 
@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 	  duration = 750;
 
 	// scaleExtent limits the amount of zooming possible
-	var zoomListener = d3.behavior.zoom().scaleExtent([0.5, 10]).on("zoom", scope.zoom);
+	var zoomListener = d3.behavior.zoom().scaleExtent([0.5, 10]).on('zoom', scope.zoom);
 
         // Create the d3 element and position it based on margins
         var svg = d3.select(element[0])
@@ -284,7 +284,7 @@ angular.module('emuwebApp')
 		//
 		// Define the data set to be visualised
 
-		var dataSet = svg.selectAll("g.node")
+		var dataSet = svg.selectAll('g.emuhierarchy-node')
 			.data(nodes, function (d) {
 				return d.id;
 			});
@@ -302,8 +302,8 @@ angular.module('emuwebApp')
 		// added will be set further below
 		
 
-		newNodes = newNodes.append("g")		// append() will return a set of all appended elements
-			.attr("class", "node")
+		newNodes = newNodes.append('g')		// append() will return a set of all appended elements
+			.attr('class', 'emuhierarchy-node')
 
 			// event handlers
 			//.call(dragListener)
@@ -313,8 +313,8 @@ angular.module('emuwebApp')
 			})
 			;
 
-		newNodes.append("circle")
-			.attr('class', 'nodeCircle')
+		newNodes.append('circle')
+			.attr('class', 'emuhierarchy-nodeCircle')
 
 			// Make circle invisible at first
 			.attr('r', 0)
@@ -325,15 +325,15 @@ angular.module('emuwebApp')
 			.attr('r', 4.5)
 			;
 
-		newNodes.append("text")
-			.attr('class', 'nodeText')
+		newNodes.append('text')
+			.attr('class', 'emuhierarchy-nodeText')
 			;
 
 		/*
 
 		// phantom node to give us mouseover in a radius around it
-		newNodes.append("circle")
-			.attr('class', 'ghostCircle')
+		newNodes.append('circle')
+			.attr('class', 'emuhierarchy-ghostCircle')
 			.attr('r', 30)
 			.attr('opacity', 0.2) // change this to zero to hide the target area
 			.style('fill', 'red')
@@ -354,13 +354,13 @@ angular.module('emuwebApp')
 		// Transition exiting nodes to the origin
 		oldNodes = oldNodes.transition()
 			.duration(duration)
-			.attr("transform", function (d) {
-				return "translate(" + 0 + "," + 0 + ")";
+			.attr('transform', function (d) {
+				return 'translate(' + 0 + ',' + 0 + ')';
 			})
 			.remove();
 		
-		oldNodes.select("text")
-			.style("fill-opacity", 0);
+		oldNodes.select('text')
+			.style('fill-opacity', 0);
 
 		//
 		// Set or update properties that are subject to change after
@@ -375,25 +375,25 @@ angular.module('emuwebApp')
 			;
 
 		// Change the circle fill depending on whether it has children and is collapsed
-		dataSet.select("circle.nodeCircle")
-			//.attr("r", 4.5)
-			//.style("fill", function (d) {
-			//	return d._children ? "lightsteelblue" : "#fff";
+		dataSet.select('circle.emuhierarchy-nodeCircle')
+			//.attr('r', 4.5)
+			//.style('fill', function (d) {
+			//	return d._children ? 'lightsteelblue' : '#fff';
 			//})
 			;
 
 		// Transition nodes to their new position.
 		dataSet.transition()
 			.duration(duration)
-			.attr("transform", function (d) {
-				return "translate(" + d._x + "," + d._y + ")"+scope.getOrientatedNodeTransform(d);
+			.attr('transform', function (d) {
+				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform(d);
 			});
 
 
 		//
 		//
 		// Now we turn to visualising links
-		var linkSet = svg.selectAll("path.link")
+		var linkSet = svg.selectAll('path.emuhierarchy-link')
 			.data(links, function (d) {
 				// Form unique link ID
 				return 's' + d.fromID + 't' + d.toID;
@@ -403,7 +403,7 @@ angular.module('emuwebApp')
 		var oldLinks = linkSet.exit();
 
 		newLinks.insert('path', 'g')
-			.attr('class', 'link')
+			.attr('class', 'emuhierarchy-link')
 			.style('opacity', 0)
 			.transition()
 			.duration(duration)
@@ -418,7 +418,7 @@ angular.module('emuwebApp')
 		// Transition links to their new position.
 		linkSet.transition()
 			.duration(duration)
-			.attr("d", scope.getPath )
+			.attr('d', scope.getPath )
 			.style('opacity', 1)
 			;
 		

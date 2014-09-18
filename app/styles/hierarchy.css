@@ -1,0 +1,39 @@
+.emuhierarchy-node {
+	cursor: pointer;
+}
+
+.emuhierarchy-overlay {
+	background-color:#EEE;
+}
+
+.emuhierarchy-node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 1.5px;
+}
+
+.emuhierarchy-node text {
+	font-size:10px;
+	font-family:sans-serif;
+}
+
+.emuhierarchy-link {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 1.emuhierarchy-5px;
+}
+
+.emuhierarchy-templink {
+	fill: none;
+	stroke: red;
+	stroke-width: 3px;
+}
+
+.emuhierarchy-ghostCircle .emuhierarchy-show {
+		display:block;
+}
+
+.emuhierarchy-ghostCircle, .emuhierarchy-activeDrag .emuhierarchy-ghostCircle {
+		display: none;
+}
+
