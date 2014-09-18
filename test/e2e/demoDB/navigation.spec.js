@@ -55,25 +55,25 @@ describe('navigation', function () {
 
 	it('should open & close submenu with shortcuts', function () {
 		ptor.actions().sendKeys('o').perform();
-		ptor.sleep(100);
+		
 		ptor.actions().sendKeys('o').perform();
 	});
 
 	it('should open & close right submenu with shortcuts', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(100);
+		
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 	});
 
 	it('should change loaded timeline view', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(80);
+		
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
 	});
 
 	it('should change loaded timeline view back to orig', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(80);
+		
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
 	});
 
@@ -83,7 +83,7 @@ describe('navigation', function () {
 		for (var i = 0; i < 5; i++) {
 			var button = elem.get(i);
 			button.click();
-			ptor.sleep(80);
+			
 			button.click();
 		}
 	});
@@ -145,7 +145,7 @@ describe('navigation', function () {
 			})
 			.keyUp(protractor.Key.SHIFT)
 			.perform();
-		ptor.sleep(200);
+		
 
 		// on second
 		ptor.actions().sendKeys('2').perform();
@@ -202,7 +202,7 @@ describe('navigation', function () {
 			})
 			.keyUp(protractor.Key.SHIFT)
 			.perform();
-		ptor.sleep(100);
+		
 	});
 
 	it('should undo last 2 changes', function () {
@@ -212,9 +212,9 @@ describe('navigation', function () {
 			.click()
 			.perform();
 		ptor.actions().sendKeys('z').perform();
-		ptor.sleep(100);
+		
 		ptor.actions().sendKeys('z').perform();
-		ptor.sleep(100);
+		
 	});
 
 	it('should move dividing pane up and down', function () {
@@ -230,7 +230,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(80);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()
@@ -241,7 +241,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(80);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()
@@ -253,6 +253,33 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 	});
+
+	it('should tab in both directions with arrow keys and tab (shift tab)', function () {
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomInBtn')).click();
+		};
+		for (var i = 0; i < 3; i++) {
+			element(by.id('zoomRightBtn')).click();
+		};
+        var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		ptor.actions()
+			.mouseMove(elem)
+			.mouseMove( { x: -200, y: 0 }).click()
+			.click()		 
+			.perform();
+		for (var i = 0; i < 3; i++) {
+		        ptor.actions().sendKeys(protractor.Key.TAB).perform();
+		 };	
+		    for (var i = 0; i < 3; i++) {
+		        ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
+		 };		    
+		    for (var i = 0; i < 3; i++) {
+		        ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
+		 };	    
+		    for (var i = 0; i < 3; i++) {
+		        ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
+		 };		    
+	});	
 
 	it('should move around with zoom (with shortcuts)', function () {
 		for (var i = 0; i < 5; i++) {
@@ -288,7 +315,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -303,7 +330,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -318,7 +345,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -333,7 +360,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+		
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -391,34 +418,6 @@ describe('navigation', function () {
 			element(by.id('zoomRightBtn')).click();
 		};
 	});
-
-
-	it('should tab in both directions with arrow keys and tab (shift tab)', function () {
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomInBtn')).click();
-		};
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomRightBtn')).click();
-		};
-		// ptor.actions().mouseMove(element(by.id('Phonetic'))).mouseMove( { x: -200, y: 0 }).click().perform();
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.TAB).perform();
-		//        ptor.sleep(200);
-		// };	
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
-		//        ptor.sleep(200);
-		// };		    
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
-		//        ptor.sleep(200);
-		// };	    
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
-		//        ptor.sleep(200);
-		// };		    
-	});
-
 
 
 	it('should move a boundary on SEGMENT level', function () {
@@ -721,7 +720,7 @@ describe('navigation', function () {
 	it('should undo last 10 changes', function () {
 		for (var i = 0; i < 10; i++) {
 			ptor.actions().sendKeys('z').perform();
-			ptor.sleep(250);
+			
 		};
 	});
 
