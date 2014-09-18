@@ -32,40 +32,18 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 
-		// watch selected path to redraw on startup and change of value
-		$scope.$watch('paths.selected', function (val) {
-			if (val !== undefined) {
-				$scope.pathChange();
-			}
-		}, true);
 		
 		//
 		//////////////
 
 		/**
-		 * When the user (or the browser) selects a new path, this has
-		 * to be propagated to the service and the directive (the
-		 * latter is done in the view).
-		 *
-		 * Can either be called by a watcher or by ng-change, but
-		 * ng-change doesn't seem to see the initial value.
-		 */
-		$scope.pathChange = function () {
-			var selIdx = $scope.getSelIdx();
-			HierarchyLayoutService.setPath($scope.paths.possible[selIdx]);
-		};
-
-		/**
-		 *
+		 * Returns index of the currently selected path (within the $scope.paths.possible array)
 		 */
 		$scope.getSelIdx = function () {
 			var selIdx = $scope.paths.possibleAsStr.indexOf($scope.paths.selected);
 			return (selIdx);
 		};
 
-		/**
-		 * rotate hierarchy
-		 */
 		$scope.rotateHierarchy = function () {
 			rotated = !rotated;
 		};

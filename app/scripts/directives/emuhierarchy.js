@@ -199,24 +199,24 @@ angular.module('emuwebApp')
 		
 		/////
 		// This is the aforementioned second approach
-		HierarchyLayoutService.calculateWeightsBottomUp();
+		HierarchyLayoutService.calculateWeightsBottomUp(scope.path);
 		//
 		/////
 
-		for (var i=0; i<HierarchyLayoutService.selectedPath.length; ++i) {
+		for (var i=0; i<scope.path.length; ++i) {
 
 			/////
 			// This is the aformentioned first approach
 			/*
 			if (i === 0) {
-				HierarchyLayoutService.layoutNonItemLevel(HierarchyLayoutService.selectedPath[0], HierarchyLayoutService.selectedPath.length);
+				HierarchyLayoutService.layoutNonItemLevel(scope.path[0], scope.path.length);
 			} else {
-				HierarchyLayoutService.layoutItemLevel(HierarchyLayoutService.selectedPath[i], HierarchyLayoutService.selectedPath.length-i);
+				HierarchyLayoutService.layoutItemLevel(scope.path[i], scope.path.length-i);
 			}
 			*/
 			//////
 
-			nodes = nodes.concat(LevelService.getLevelDetails(HierarchyLayoutService.selectedPath[i]).level.items);
+			nodes = nodes.concat(LevelService.getLevelDetails(scope.path[i]).level.items);
 		}
 		
 
@@ -231,12 +231,12 @@ angular.module('emuwebApp')
 		var links = [];
 		var allLinks = LevelService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
-			for (var i=0; i<HierarchyLayoutService.selectedPath.length-1; ++i) {
-				var element = LevelService.getItemFromLevelById(HierarchyLayoutService.selectedPath[i], allLinks[l].toID);
+			for (var i=0; i<scope.path.length-1; ++i) {
+				var element = LevelService.getItemFromLevelById(scope.path[i], allLinks[l].toID);
 				if (element === null) {
 					continue;
 				}
-				var parentElement = LevelService.getItemFromLevelById(HierarchyLayoutService.selectedPath[i+1], allLinks[l].fromID);
+				var parentElement = LevelService.getItemFromLevelById(scope.path[i+1], allLinks[l].fromID);
 				if (parentElement !== null) {
 					links.push(allLinks[l]);
 				}

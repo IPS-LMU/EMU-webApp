@@ -19,10 +19,6 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		// The path that will be drawn
-		// Must be set to an array of level names (eg ["Phonetic", "Phonemic", "Word"])
-		sServObj.selectedPath = null;
-
 		////////////////////////////////////////////
 		// private vars and functions
 		var svgGroup;
@@ -32,15 +28,6 @@ angular.module('emuwebApp')
 
 		/////////////////////
 		// public API
-
-
-		/**
-		 *
-		 */
-		sServObj.setPath = function (p) {
-			//angular.copy(p, sServObj.selectedPath);
-			sServObj.selectedPath = p;
-		};
 
 		/**
 		 * Find all parent levels of a given level by iterating through the
@@ -96,7 +83,7 @@ angular.module('emuwebApp')
 			var nodes = LevelService.getLevelDetails(name).level.items;
 			for (var i=0; i<nodes.length; ++i) {
 				// Find first and last child of nodes[i]
-				var children = sServObj.findChildren (nodes[i]);
+				var children = sServObj.findChildren (nodes[i], selectedPath);
 				if (children === null) {
 					nodes[i]._posInLevel = null;
 				}
@@ -124,18 +111,18 @@ angular.module('emuwebApp')
 		/**
 		 * This function aims to find and store the parents of every node
 		 */
-		sServObj.findParents = function () {
+		sServObj.findParents = function (selectedPath) {
 			var i, ii, c;
 			
 			/////
 			// Iterate throug levels top-down
-			for (i = sServObj.selectedPath.length-1; i>=0; --i) {
-				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
+			for (i = selectedPath.length-1; i>=0; --i) {
+				var level = LevelService.getLevelDetails(selectedPath[i]).level;
 
 				// Iterate through the current level's items
 				// And save them as _parents in their children
 				for (ii = 0; ii<level.items.length; ++ii) {
-					var children = sServObj.findChildren(level.items[ii]);
+					var children = sServObj.findChildren(level.items[ii], selectedPath);
 
 					if (children === null) {
 						continue;
@@ -158,14 +145,14 @@ angular.module('emuwebApp')
 		 * Calculate the weights (size within their level) of all nodes bottom-up
 		 * This is most likely rather slow and definitely needs tweaking
 		 */
-		sServObj.calculateWeightsBottomUp = function () {
+		sServObj.calculateWeightsBottomUp = function (selectedPath) {
 			var i, ii, iii;
 
-			sServObj.findParents();
+			sServObj.findParents(selectedPath);
 
 			// Iterate through levels bottom-up
-			for (i = 0; i < sServObj.selectedPath.length; ++i) {
-				var level = LevelService.getLevelDetails(sServObj.selectedPath[i]).level;
+			for (i = 0; i < selectedPath.length; ++i) {
+				var level = LevelService.getLevelDetails(selectedPath[i]).level;
 				level._weight = 0;
 
 				//////
@@ -198,7 +185,7 @@ angular.module('emuwebApp')
 				for (ii = 0; ii < level.items.length; ++ii) {
 					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
 					posInLevel += level.items[ii]._weight;
-					level.items[ii]._depth = sServObj.selectedPath.length - i - 1;
+					level.items[ii]._depth = selectedPath.length - i - 1;
 				
 					//////
 					// Additionally, calculate link positions
@@ -277,7 +264,7 @@ angular.module('emuwebApp')
 		 * FIXME I will soon be changing this behaviour to return an empty array – let's see what breaks (actually I don' have that d3 dependency anymore)
 		 * @return an array of children nodes otherwise
 		 */
-		sServObj.findChildren = function (d) {
+		sServObj.findChildren = function (d, selectedPath) {
 			var children = [];
 
 			// Find the level that d is a part of
@@ -290,9 +277,9 @@ angular.module('emuwebApp')
 
 			// Find the child level
 			var childLevel = null;
-			for (var i = 0; i < sServObj.selectedPath.length - 1; ++i) {
-				if (sServObj.selectedPath[i + 1] === currentLevel) {
-					childLevel = sServObj.selectedPath[i];
+			for (var i = 0; i < selectedPath.length - 1; ++i) {
+				if (selectedPath[i + 1] === currentLevel) {
+					childLevel = selectedPath[i];
 					break;
 				}
 			}
@@ -878,7 +865,7 @@ angular.module('emuwebApp')
 			// Define the root
 			// I presume that the root level of the currently selected path only has one item,
 			// which will be defined as the hierarchy's root item
-			root = LevelService.getLevelDetails(sServObj.selectedPath[sServObj.selectedPath.length - 1]).level.items[0];
+			root = LevelService.getLevelDetails(selectedPath[selectedPath.length - 1]).level.items[0];
 			//root = LevelService.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
