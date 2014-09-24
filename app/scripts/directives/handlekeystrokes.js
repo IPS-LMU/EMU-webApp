@@ -32,13 +32,14 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {                  
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
+                  var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
                   HistoryService.addObjToUndoStack({
                     'type': 'ESPS',
                     'action': 'RENAMELABEL',
                     'name': viewState.getcurClickLevelName(),
                     'id': LevelService.getlastID(),
-                    'attrIndex': viewState.getCurAttrIndex(viewState.getcurClickLevelName()),
-                    'oldValue': editingElement.labels[viewState.getCurAttrIndex(viewState.getcurClickLevelName())].value,
+                    'attrIndex': attrIndex,
+                    'oldValue': editingElement.labels[attrIndex].value,
                     'newValue': $('.' + LevelService.getlasteditArea()).val()
                   });
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
@@ -68,7 +69,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('zoom all action currently not allowed');
                 }
               }
 
@@ -77,7 +78,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.zoomViewPort(true, LevelService);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -86,7 +87,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.zoomViewPort(false, LevelService);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -95,7 +96,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.shiftViewPort(false);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -104,7 +105,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.shiftViewPort(true);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -113,7 +114,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('zoom')) {
                   viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -125,7 +126,7 @@ angular.module('emuwebApp')
                     viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
                   }
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -137,7 +138,7 @@ angular.module('emuwebApp')
                     viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
                   }
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -149,7 +150,7 @@ angular.module('emuwebApp')
                     viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
                   }
                 } else {
-                  console.log('action currently not allowed');
+                  //console.log('action currently not allowed');
                 }
               }
 
@@ -217,7 +218,7 @@ angular.module('emuwebApp')
                     var minDist = LevelService.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
                     if (minDist === false) {
                       // error msg nothing moved / nothing on top
-                      console.log('error msg nothing moved / nothing on top');
+                      //console.log('error msg nothing moved / nothing on top');
                     } else {
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
@@ -264,7 +265,6 @@ angular.module('emuwebApp')
                           'movedBy': minDist
                         });
                       } else if (levelType === "SEGMENT") {
-                        console.log('seg to bottom');
                         HistoryService.updateCurChangeObj({
                           'type': 'ESPS',
                           'action': 'MOVEBOUNDARY',
