@@ -5,7 +5,7 @@ describe('Directive: enlarge', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, dialogService) {
+    beforeEach(inject(function($rootScope, $compile, viewState, dialogService, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
     }));
@@ -23,7 +23,6 @@ describe('Directive: enlarge', function() {
     it('should enlarge', function() {
         compileDirective();
         elm.triggerHandler('click');
-        //scope.$digest();
         expect(scope.vs.timelineSize).toEqual('0');
     });
 

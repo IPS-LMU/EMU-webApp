@@ -1,16 +1,21 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('enlarge', function ($rootScope, viewState) {
+  .directive('enlarge', function ($rootScope, viewState, ConfigProviderService) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
 		scope.$watch('viewState.curPerspectiveIdx', function () {
-		    if(scope.cps.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length===1) {
-                element.hide();
-            }
-            else {
-                element.show();
+		    if (!$.isEmptyObject(ConfigProviderService.vals.perspectives)) {
+		        if (!$.isEmptyObject(viewState.curPerspectiveIdx)) {
+		        console.log(viewState.curPerspectiveIdx);
+				if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length===1) {
+					element.hide();
+				}
+				else {
+					element.show();
+				}
+				}
             }
 		}, true);      
       
