@@ -95,7 +95,7 @@ describe('Factory: viewState', function () {
     expect(viewState.spectroSettings.rangeFrom).toBe(10);
     expect(viewState.spectroSettings.rangeTo).toBe(100);
     expect(viewState.spectroSettings.dynamicRange).toBe(10);
-    expect(viewState.spectroSettings.window).toBe(myWindow.HANN);
+    expect(viewState.spectroSettings.window).toBe(7); // 7 equals HANN
     expect(viewState.spectroSettings.drawHeatMapColors).toBe(true);
     expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(1);
   }));
