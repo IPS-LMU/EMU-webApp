@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
 
-		$scope.lastkeycode = 'N/A';
+		//$scope.lastkeycode = 'N/A';
 		$scope.bundleList = [];
 
 		$scope.curUserName = '';
@@ -1029,18 +1029,18 @@ angular.module('emuwebApp')
 
 		/**
 		 *
-		 */
 		$scope.setlastkeycode = function (c) {
 			$scope.lastkeycode = c;
 		};
-
+		 */
+		 
 		/**
 		 * SIC should move into viewstate.rightSubmenuOpen variable
-		 */
 		$scope.toggleRightSideMenuHidden = function () {
 			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
 		};
-
+		 */
+		 
 		/**
 		 * function used to change perspective
 		 * @param persp json object of current perspective containing name attribute

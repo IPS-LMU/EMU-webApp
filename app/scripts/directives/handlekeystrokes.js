@@ -27,7 +27,7 @@ angular.module('emuwebApp')
                 return;
               }
             }
-            scope.setlastkeycode(code, e.shiftKey);
+            //scope.setlastkeycode(code, e.shiftKey);
             if (viewState.focusInTextField) {
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.isEditing()) {                  
@@ -58,7 +58,7 @@ angular.module('emuwebApp')
 
 
             } else {
-
+              
               LevelService.deleteEditArea();
 
               // delegate keyboard keyMappings according to keyMappings of scope
@@ -459,7 +459,8 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('toggleSideBars')) {
                   // check if menu button in showing -> if not -> no submenu open
                   if (ConfigProviderService.vals.activeButtons.openMenu) {
-                    scope.toggleRightSideMenuHidden();
+                    //scope.toggleRightSideMenuHidden();
+                    viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
                   }
                 }
               }
