@@ -471,7 +471,7 @@ angular.module('emuwebApp')
                 }
               }
 
-              // selPrevItem
+              // selPrevItem (arrow key left)
               if (code === ConfigProviderService.vals.keyMappings.selPrevItem) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickSegments().length > 0) {
@@ -502,7 +502,7 @@ angular.module('emuwebApp')
                           }
                           else {
                             viewState.setcurClickSegment(lastNeighboursMove.left);
-                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);                          
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         }
                       }
@@ -511,7 +511,7 @@ angular.module('emuwebApp')
                 }
               }
 
-              // selNextItem
+              // selNextItem (arrow key right)
               if (code === ConfigProviderService.vals.keyMappings.selNextItem) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickSegments().length > 0) {
@@ -527,6 +527,7 @@ angular.module('emuwebApp')
                             viewState.selectBoundary();
                           }
                           else {
+                            
                             viewState.setcurClickSegment(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
@@ -539,7 +540,7 @@ angular.module('emuwebApp')
                 }
               }
 
-              // selNextPrevItem
+              // selNextPrevItem (tab key and tab+shift key)
               if (code === ConfigProviderService.vals.keyMappings.selNextPrevItem) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickSegments().length > 0) {
@@ -563,11 +564,12 @@ angular.module('emuwebApp')
                         }
                       }
 
-                    } else {
-                      if (lastNeighboursMove.right !== undefined) {
-                        if (lastNeighboursMove.right.sampleStart !== undefined) {
+                    } else {                    
+                      if (lastNeighboursMove.right !== undefined) {                      
+                        if (lastNeighboursMove.right.sampleStart !== undefined) {                        
                           // check if in view
-                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
+                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {   
+                            console.log(lastNeighboursMove.right);                       
                             viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }

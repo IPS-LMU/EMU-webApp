@@ -774,19 +774,85 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
         expect(scope.vs.selectSegmentsInSelection).toHaveBeenCalledWith(scope.lvl.data.levels);
     });
-/*
+    
     it('should selPrevItem', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setRightsubmenuOpen');
+        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
+        var lvlName = 'Phonetic';
         compileDirective();
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         trigEvent(scope.cps.vals.keyMappings.selPrevItem, false);
-        expect(scope.vs.setRightsubmenuOpen).toHaveBeenCalledWith(!scope.vs.getRightsubmenuOpen());        
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
+        var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
+        expect(scope.vs.setcurClickSegment).toHaveBeenCalledWith(neighbours.left); 
+        expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     }); 
-*/
     
-    // todo : expandSelSegmentsRight and further
+    it('should selPrevItem with shift', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickSegmentMultiple').and.callThrough();
+        spyOn(scope.lvl, 'setlasteditArea');
+        spyOn(scope.lvl, 'deleteEditArea');
+        var lvlName = 'Phonetic';
+        compileDirective();
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.selPrevItem, true);
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
+        expect(scope.vs.setcurClickSegmentMultiple).toHaveBeenCalledWith(neighbours.left); 
+        expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    }); 
+    
+    it('should selNextItem', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.lvl, 'setlasteditArea');
+        spyOn(scope.lvl, 'deleteEditArea');
+        var lvlName = 'Phonetic';
+        compileDirective();
+        scope.vs.curViewPort.eS = msajc003_bndl.mediaFile.data.length;
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.selNextItem, false);
+        var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
+        expect(scope.vs.setcurClickSegment).toHaveBeenCalledWith(neighbours.right); 
+        expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    }); 
+    
+    it('should selNextItem with shift', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickSegmentMultiple').and.callThrough();
+        spyOn(scope.lvl, 'setlasteditArea');
+        spyOn(scope.lvl, 'deleteEditArea');
+        var lvlName = 'Phonetic';
+        compileDirective();
+        scope.vs.curViewPort.eS = msajc003_bndl.mediaFile.data.length;
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.selNextItem, true);
+        var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
+        expect(scope.vs.setcurClickSegmentMultiple).toHaveBeenCalledWith(neighbours.right); 
+        expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    }); 
+    
+/*
+    todo selNextPrevItem, deletePreselBoundary, createNewItemAtSelection, undo, redo, 
+*/
 
 });

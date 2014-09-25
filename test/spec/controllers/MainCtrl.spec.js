@@ -1,21 +1,22 @@
 'use strict';
 
 describe('Controller: MainCtrl', function () {
-/*
+
      //load the controller's module
      beforeEach(module('emuwebApp'));
 
      var emptyObject = {};
 
-     var MainCtrl,
-       scope;
+     var MainCtrl, scope;
 
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope) {
+     beforeEach(inject(function ($controller, $rootScope, LevelService, ConfigProviderService) {
        scope = $rootScope.$new();
        MainCtrl = $controller('MainCtrl', {
          $scope: scope
        });
+       scope.lvl = LevelService;
+       scope.cps = ConfigProviderService;
      }));
   
      it('should have all variables defined', function () {
@@ -23,7 +24,6 @@ describe('Controller: MainCtrl', function () {
        expect(scope.tmp).toEqual(emptyObject);
        expect(scope.dbLoaded).toBe(false);
        expect(scope.is2dCancasesHidden).toBe(true);
-       expect(scope.lastkeycode).toBe('N/A');
        expect(scope.bundleList.length).toBe(0);
        expect(scope.curUserName).toBe('');
        expect(scope.curBndl).toEqual(emptyObject);
@@ -31,10 +31,10 @@ describe('Controller: MainCtrl', function () {
        expect(scope.filterText).toBe('');       
        expect(scope.windowWidth).toBeDefined;              
        expect(scope.demoDbName).toBe('');       
-       expect(scope.firefox).toBe(false);  
+       expect(scope.firefox).toBe(false);  // PhantomJS
      });
   
-     it('viewState should exist', inject(function (viewState, 
+     it('all services should exist', inject(function (viewState, 
                                                    ConfigProviderService,
                                                    HistoryService,
                                                    fontScaleService,
@@ -72,7 +72,7 @@ describe('Controller: MainCtrl', function () {
         scope.resetToInitState();
         expect(scope.curBndl).toEqual(emptyObject);
         expect(scope.bundleList.length).toBe(0);
-     });  
+     }); 
   
-  */
+
 });
