@@ -319,15 +319,12 @@ angular.module('emuwebApp')
                       if (viewState.getselected().length === 0) {
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
                       } else {
-                        if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
-                          var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
-                        } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-                          var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
-                        } else {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
-                        }
+                        var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
+                        if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
+                          changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
+                        } 
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
-                        scope.hists.addObjToUndoStack({
+                        HistoryService.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
@@ -360,7 +357,7 @@ angular.module('emuwebApp')
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
-                        scope.hists.addObjToUndoStack({
+                        HistoryService.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
@@ -393,7 +390,7 @@ angular.module('emuwebApp')
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
-                        scope.hists.addObjToUndoStack({
+                        HistoryService.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
@@ -428,7 +425,7 @@ angular.module('emuwebApp')
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
-                        scope.hists.addObjToUndoStack({
+                        HistoryService.addObjToUndoStack({
                           'type': 'ESPS',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
