@@ -48,16 +48,14 @@ angular.module('emuwebApp')
                 }
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
-                viewState.focusInTextField = false;
                 LevelService.deleteEditArea();
+                viewState.focusInTextField = false;
               }
               if (code === 13) {
                 e.preventDefault();
                 e.stopPropagation();
               }
-              //}
-
-
+              viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
             } else {
               
               LevelService.deleteEditArea();
@@ -607,20 +605,31 @@ angular.module('emuwebApp')
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-                          if (!insSeg.ret) {
-                            scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
-                          } else {
-                            scope.hists.addObjToUndoStack({
-                              'type': 'ESPS',
-                              'action': 'INSERTSEGMENTS',
-                              'name': viewState.getcurClickLevelName(),
-                              'start': viewState.curViewPort.selectS,
-                              'end': viewState.curViewPort.selectE,
-                              'ids': insSeg.ids,
-                              'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-                            });
+                          var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
+                          if(seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart+seg.sampleDur + 1) === viewState.curViewPort.selectE) {
+							  viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+							  viewState.setcurClickSegment(seg.current);
+							  LevelService.setlasteditArea('_' + seg.id);
+							  viewState.setEditing(true);
+							  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+							  viewState.focusInTextField = true;
                           }
+                          else {
+							  var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							  if (!insSeg.ret) {
+								scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+							  } else {
+								scope.hists.addObjToUndoStack({
+								  'type': 'ESPS',
+								  'action': 'INSERTSEGMENTS',
+								  'name': viewState.getcurClickLevelName(),
+								  'start': viewState.curViewPort.selectS,
+								  'end': viewState.curViewPort.selectE,
+								  'ids': insSeg.ids,
+								  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+								});
+							  }
+							}
                         } else {
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
                           if (typeof levelDef.anagestConfig === 'undefined') {
