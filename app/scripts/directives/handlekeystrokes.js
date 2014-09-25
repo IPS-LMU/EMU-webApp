@@ -483,15 +483,29 @@ angular.module('emuwebApp')
                     if (lastNeighboursMove.left !== undefined) {
                       if (lastNeighboursMove.left.sampleStart !== undefined) {
                         // check if in view
-                        if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
-                          viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
+                        if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
+                          if(e.shiftKey) { // select multiple while shift
+                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.left);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
+                            viewState.selectBoundary();                          
+                          }
+                          else {
+                            viewState.setcurClickSegment(lastNeighboursMove.left);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          }
                         }
                       } else {
                         // check if in view
                         if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
-                          viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
+                          if(e.shiftKey) { // select multiple while shift
+                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.left);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
+                            viewState.selectBoundary();                          
+                          }
+                          else {
+                            viewState.setcurClickSegment(lastNeighboursMove.left);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);                          
+                          }
                         }
                       }
                     }
@@ -508,9 +522,16 @@ angular.module('emuwebApp')
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                       if (lastNeighboursMove.right !== undefined) {
                       // check if in view
-                        if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
-                          viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                        if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
+                          if(e.shiftKey) { // select multiple while shift
+                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                            viewState.selectBoundary();
+                          }
+                          else {
+                            viewState.setcurClickSegment(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          }
                         }
                       }
                       else {
