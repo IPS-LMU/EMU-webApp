@@ -547,56 +547,6 @@ describe('navigation', function () {
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
-	it('should insert a new segment on SEGMENT level (double seg should NOT work)', function () {
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomInBtn')).click();
-			element(by.id('zoomRightBtn')).click();
-		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
-		ptor.actions()
-			.mouseMove(elem)
-			.mouseMove({
-				x: -80,
-				y: 0
-			})
-			.mouseDown()
-			.mouseMove({
-				x: 15,
-				y: 0
-			})
-			.mouseUp()
-			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.modal-body')).get(0);
-		expect(elem.getText()).toEqual('Error : You are not allowed to insert a Segment here.');
-		element(by.id('modal-cancel')).click();
-	});
-
-	it('should insert a new segment on SEGMENT level (over boundaries should NOT work)', function () {
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomInBtn')).click();
-			element(by.id('zoomRightBtn')).click();
-		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
-		ptor.actions()
-			.mouseMove(elem)
-			.mouseMove({
-				x: -100,
-				y: 0
-			})
-			.mouseDown()
-			.mouseMove({
-				x: 250,
-				y: 0
-			})
-			.mouseUp()
-			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.modal-body')).get(0);
-		expect(elem.getText()).toEqual('Error : You are not allowed to insert a Segment here.');
-		element(by.id('modal-cancel')).click();
-	});
-
 	it('should insert a new element on EVENT level', function () {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();

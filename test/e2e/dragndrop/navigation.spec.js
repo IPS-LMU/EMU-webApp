@@ -48,7 +48,6 @@ describe('navigation', function () {
 
 	it('should open & close submenu with shortcuts', function () {
 		ptor.actions().sendKeys('o').perform();
-		ptor.sleep(100);
 		ptor.actions().sendKeys('o').perform();
 	});
 
@@ -58,7 +57,6 @@ describe('navigation', function () {
 		for (var i = 0; i < 13; i++) {
 			var button = elem.get(i);
 			button.click();
-			ptor.sleep(25);
 			button.click();
 		}
 	});
@@ -129,7 +127,6 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(80);
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()
@@ -140,7 +137,6 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(80);
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()
@@ -187,7 +183,6 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -202,7 +197,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -217,7 +212,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -232,7 +227,7 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.sleep(50);
+
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
@@ -299,23 +294,23 @@ describe('navigation', function () {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomRightBtn')).click();
 		};
-		// ptor.actions().mouseMove(element(by.id('Phonetic'))).mouseMove( { x: -200, y: 0 }).click().perform();
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.TAB).perform();
-		//        ptor.sleep(200);
-		// };	
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
-		//        ptor.sleep(200);
-		// };		    
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
-		//        ptor.sleep(200);
-		// };	    
-		//    for (var i = 0; i < 3; i++) {
-		//        ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
-		//        ptor.sleep(200);
-		// };		    
+		ptor.actions().mouseMove(element(by.id('Phonetic'))).mouseMove( { x: -200, y: 0 }).click().perform();
+		   for (var i = 0; i < 3; i++) {
+		       ptor.actions().sendKeys(protractor.Key.TAB).perform();
+		       ptor.sleep(200);
+		};	
+		   for (var i = 0; i < 3; i++) {
+		       ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
+		       ptor.sleep(200);
+		};		    
+		   for (var i = 0; i < 3; i++) {
+		       ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
+		       ptor.sleep(200);
+		};	    
+		   for (var i = 0; i < 3; i++) {
+		       ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
+		       ptor.sleep(200);
+		};		    
 	});
 
 
@@ -482,7 +477,6 @@ describe('navigation', function () {
 	it('should undo last 10 changes', function () {
 		for (var i = 0; i < 10; i++) {
 			ptor.actions().sendKeys('z').perform();
-			ptor.sleep(250);
 		};
 	});
 
