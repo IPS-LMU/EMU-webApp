@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						$scope.openSubmenu();
+						viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -178,8 +178,6 @@ angular.module('emuwebApp')
 											viewState.somethingInProgressTxt = 'Done!';
 											viewState.somethingInProgress = false;
 											viewState.setState('labeling');
-											// close submenu... 
-											// $scope.openSubmenu();
 
 										}, function (errMess) {
 											dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
@@ -255,7 +253,7 @@ angular.module('emuwebApp')
 		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
-				$scope.openSubmenu();
+				viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
@@ -631,23 +629,6 @@ angular.module('emuwebApp')
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
 		};
-
-		/**
-		 *
-		 */
-		$scope.openSubmenu = function () {
-			if (viewState.getsubmenuOpen()) {
-				viewState.setsubmenuOpen(false);
-			} else {
-				viewState.setsubmenuOpen(true);
-			}
-			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
-		};
-
-		$scope.refreshTimeline = function () {
-			$scope.$broadcast('refreshTimeline');
-		};
-
 
 		/////////////////////////////////////////
 		// handle button clicks

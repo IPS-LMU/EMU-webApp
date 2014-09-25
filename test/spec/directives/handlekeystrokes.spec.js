@@ -4,6 +4,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 
     var elm, scope;
     var fakePCMtime = 123;
+    var fakePCMclick = 25000;
     beforeEach(module('emuwebApp'));
 
     beforeEach(inject(function ($rootScope, 
@@ -13,7 +14,9 @@ describe('Directive: handleglobalkeystrokes', function() {
                                 viewState, 
                                 LevelService, 
                                 HistoryService,
-                                dialogService) {
+                                dialogService,
+                                Binarydatamaniphelper) {
+        // scopes
         scope = $rootScope.$new();
         scope.cps = ConfigProviderService;
         scope.shs = Soundhandlerservice;
@@ -21,6 +24,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.lvl = LevelService;
         scope.history = HistoryService;
         scope.dials = dialogService;
+        scope.binary = Binarydatamaniphelper;
+        
+        // load data
+        scope.cps.setVals(defaultEmuwebappConfig);
+        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.shs.wavJSO.Data = msajc003_bndl.mediaFile.data;
+        
+        // compile
         compileDirective();
     }));
 
@@ -41,10 +52,10 @@ describe('Directive: handleglobalkeystrokes', function() {
         $(document).trigger(e);    
     }
     
-    function clickOnItem(lvlName, pcm, lastPcm, pcmLength, type) {
+    function clickOnItem(lvlName, pcm, pcmLength, type) {
         var lastEventMove = scope.lvl.getClosestItem(pcm, lvlName, pcmLength);
         var lastNeighboursMove = scope.lvl.getItemNeighboursFromLevel(lvlName, lastEventMove.nearest.id, lastEventMove.nearest.id);
-        scope.vs.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPcm, lastEventMove.isFirst, lastEventMove.isLast);
+        scope.vs.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, pcm-20, lastEventMove.isFirst, lastEventMove.isLast);
         scope.vs.setcurMouseLevelName(lvlName);
         scope.vs.setcurMouseLevelType(type);  
         scope.vs.setcurClickLevel(lvlName, type, 0);
@@ -53,12 +64,10 @@ describe('Directive: handleglobalkeystrokes', function() {
     
 
     it('should not do anything because of catchMouseForKeyBinding', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         // set catchMouseForKeyBinding to be true
         scope.cps.vals.main.catchMouseForKeyBinding = true;
         // set mouseInEmuWebApp to be false
         scope.vs.mouseInEmuWebApp = false;
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'setViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
@@ -74,17 +83,14 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
     
     it('should createNewItemAtSelection (focusInTextField)', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         // set focusInTextField to be true
         scope.vs.focusInTextField = true;
         scope.vs.setEditing(true);
-        scope.shs.wavJSO.Data = new Array(58089);
         scope.lvl.setlasteditArea('_141');
         scope.vs.setcurClickLevelName('Word',0);
         scope.vs.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
-        scope.lvl.setData(msajc003_bndl.annotation);
         spyOn(scope.history, 'addObjToUndoStack');
-        spyOn(scope.lvl, 'getItemFromLevelById').and.returnValue({"labels":[{"name":"Phonetic","value":"V"}]} );
+        spyOn(scope.lvl, 'getItemFromLevelById').and.returnValue({"labels":[{"name":"Word","value":"V"}]} );
         spyOn(scope.lvl, 'renameLabel');
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
@@ -100,15 +106,12 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
     
     it('should escape from createNewItemAtSelection (focusInTextField)', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         // set focusInTextField to be true
         scope.vs.focusInTextField = true;
         scope.vs.setEditing(true);
-        scope.shs.wavJSO.Data = new Array(58089);
         scope.lvl.setlasteditArea('_141');
         scope.vs.setcurClickLevelName('Word',0);
         scope.vs.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
-        scope.lvl.setData(msajc003_bndl.annotation);
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
         trigEvent(scope.cps.vals.keyMappings.esc, false);
@@ -121,21 +124,17 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should zoomAll', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'setViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
         trigEvent(scope.cps.vals.keyMappings.zoomAll, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
-        expect(scope.vs.setViewPort).toHaveBeenCalledWith(0, 58089); 
+        expect(scope.vs.setViewPort).toHaveBeenCalledWith(0, msajc003_bndl.mediaFile.data.length); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 
     it('should zoomIn', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'zoomViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
@@ -147,8 +146,6 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should zoomOut', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'zoomViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
@@ -160,8 +157,6 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should shiftViewPortLeft', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'shiftViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
@@ -173,8 +168,6 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should shiftViewPortRight', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'shiftViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
@@ -186,26 +179,22 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should zoomSel', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'setViewPort');
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
         scope.vs.curViewPort = {
-            selectS: 100,
-            selectE: 150
+            selectS: fakePCMtime,
+            selectE: 2*fakePCMtime
         }        
         trigEvent(scope.cps.vals.keyMappings.zoomSel, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
-        expect(scope.vs.setViewPort).toHaveBeenCalledWith(100, 150); 
+        expect(scope.vs.setViewPort).toHaveBeenCalledWith(fakePCMtime, 2*fakePCMtime); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 
     it('should playEntireFile', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.playback = true;
-        scope.shs.wavJSO.Data = new Array(58089);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'animatePlayHead');
         spyOn(scope.shs, 'playFromTo');
@@ -213,13 +202,12 @@ describe('Directive: handleglobalkeystrokes', function() {
         compileDirective();
         trigEvent(scope.cps.vals.keyMappings.playEntireFile, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('playaudio');
-        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(0, 58089); 
-        expect(scope.shs.playFromTo).toHaveBeenCalledWith(0, 58089); 
+        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(0, msajc003_bndl.mediaFile.data.length); 
+        expect(scope.shs.playFromTo).toHaveBeenCalledWith(0, msajc003_bndl.mediaFile.data.length); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 
     it('should playAllInView', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.playback = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'animatePlayHead');
@@ -227,18 +215,17 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
         scope.vs.curViewPort = {
-            sS: 100,
-            eS: 150
+            sS: fakePCMtime,
+            eS: 2*fakePCMtime
         }                
         trigEvent(scope.cps.vals.keyMappings.playAllInView, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('playaudio');
-        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(100, 150); 
-        expect(scope.shs.playFromTo).toHaveBeenCalledWith(100, 150); 
+        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(fakePCMtime, 2*fakePCMtime); 
+        expect(scope.shs.playFromTo).toHaveBeenCalledWith(fakePCMtime, 2*fakePCMtime); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 
     it('should playSelected', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.playback = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'animatePlayHead');
@@ -246,18 +233,17 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.lvl, 'deleteEditArea');
         compileDirective();
         scope.vs.curViewPort = {
-            selectS: 100,
-            selectE: 150
+            selectS: fakePCMtime,
+            selectE: 2*fakePCMtime
         }                
         trigEvent(scope.cps.vals.keyMappings.playSelected, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('playaudio');
-        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(100, 150); 
-        expect(scope.shs.playFromTo).toHaveBeenCalledWith(100, 150); 
+        expect(scope.vs.animatePlayHead).toHaveBeenCalledWith(fakePCMtime, 2*fakePCMtime); 
+        expect(scope.shs.playFromTo).toHaveBeenCalledWith(fakePCMtime, 2*fakePCMtime); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 
     it('should selectContourCorrectionTools', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.correctionTool = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
@@ -285,7 +271,6 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should levelUp', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
@@ -302,7 +287,6 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should levelDown', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
@@ -319,63 +303,83 @@ describe('Directive: handleglobalkeystrokes', function() {
     });
 
     it('should snapBoundaryToNearestTopBoundary', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.editItemSize = true;
-        scope.lvl.setData(msajc003_bndl.annotation);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'snapBoundary').and.returnValue(fakePCMtime);
         spyOn(scope.history, 'updateCurChangeObj');
         spyOn(scope.history, 'addCurChangeObjToUndoStack');
         compileDirective();
-        clickOnItem('Tone', 25000, 18631, 58089, 'SEGMENT');
+        var lvlName = 'Tone';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         trigEvent(scope.cps.vals.keyMappings.snapBoundaryToNearestTopBoundary, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();  
         expect(scope.lvl.snapBoundary).toHaveBeenCalledWith( 
             true, 
-            'Tone', 
-            { id : 183, 
-              samplePoint : 22139, 
-              labels : [ { 
-                  name : 'Tone', 
-                  value : 'L-' 
-                } ] 
-            }, { 
-            left : { id : 182, samplePoint : 18631, labels : [ { name : 'Tone', value : 'H*' } ] }, 
-            right : { id : 184, samplePoint : 38254, labels : [ { name : 'Tone', value : 'H*' } ] } }, 
+            lvlName, 
+            item,
+            { 
+                left : scope.lvl.getItemFromLevelById(lvlName, scope.lvl.getIdByOrder(lvlName, scope.lvl.getOrderById(lvlName, item.id) - 1)), 
+                right : scope.lvl.getItemFromLevelById(lvlName, scope.lvl.getIdByOrder(lvlName, scope.lvl.getOrderById(lvlName, item.id) + 1)) 
+            }, 
             'SEGMENT' 
         );
-        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( { type : 'ESPS', action : 'MOVEBOUNDARY', name : 'Tone', id : 183, movedBy : fakePCMtime, position : 0 } );      
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
+        { 
+            type : 'ESPS', 
+            action : 'MOVEBOUNDARY', 
+            name : lvlName, 
+            id : item.id, 
+            movedBy : fakePCMtime, 
+            position : 0 
+        });      
         expect(scope.history.addCurChangeObjToUndoStack).toHaveBeenCalled();      
     });
 
     it('should snapBoundaryToNearestBottomBoundary', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.editItemSize = true;
-        scope.lvl.setData(msajc003_bndl.annotation);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'snapBoundary').and.returnValue(fakePCMtime);
         spyOn(scope.history, 'updateCurChangeObj');
         spyOn(scope.history, 'addCurChangeObjToUndoStack');
         compileDirective();
-        clickOnItem('Phonetic', 25000, 18631, 58089, 'SEGMENT');
+        var lvlName = 'Phonetic';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         trigEvent(scope.cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();  
-        expect(scope.lvl.snapBoundary).toHaveBeenCalledWith(false, 'Phonetic', { id : 160, sampleStart : 25790, sampleDur : 2609, labels : [ { name : 'Phonetic', value : 'S' } ] }, { left : { id : 159, sampleStart : 23920, sampleDur : 1869, labels : [ { name : 'Phonetic', value : 'z' } ] }, right : { id : 161, sampleStart : 28400, sampleDur : 864, labels : [ { name : 'Phonetic', value : 'i:' } ] } }, 'SEGMENT');;
-        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( { type : 'ESPS', action : 'MOVEBOUNDARY', name : 'Phonetic', id : 160, movedBy : fakePCMtime, position : 0 } );      
+        expect(scope.lvl.snapBoundary).toHaveBeenCalledWith(
+            false, 
+            lvlName, 
+            item, 
+            { 
+                left : scope.lvl.getItemFromLevelById(lvlName, scope.lvl.getIdByOrder(lvlName, scope.lvl.getOrderById(lvlName, item.id) - 1)), 
+                right : scope.lvl.getItemFromLevelById(lvlName, scope.lvl.getIdByOrder(lvlName, scope.lvl.getOrderById(lvlName, item.id) + 1)) 
+            }, 
+            'SEGMENT' 
+        );
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
+        { 
+            type : 'ESPS', 
+            action : 'MOVEBOUNDARY', 
+            name : lvlName, 
+            id : item.id, 
+            movedBy : fakePCMtime, 
+            position : 0 
+        });      
         expect(scope.history.addCurChangeObjToUndoStack).toHaveBeenCalled();      
     });
 
     it('should snapBoundaryToNearestZeroCrossing', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.vals.restrictions.editItemSize = true;
-        scope.lvl.setData(msajc003_bndl.annotation);
         compileDirective();
         var lvlName = 'Phonetic';
-        clickOnItem(lvlName, 25000, 18631, 58089, 'SEGMENT');
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'calcDistanceToNearestZeroCrossing').and.returnValue(fakePCMtime);
@@ -385,15 +389,21 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.snapBoundaryToNearestZeroCrossing, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();  
-        expect(scope.lvl.calcDistanceToNearestZeroCrossing).toHaveBeenCalledWith(25790);
-        expect(scope.lvl.moveBoundary).toHaveBeenCalledWith(lvlName, 160, fakePCMtime, 0 );  
-        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({ type : 'ESPS', action : 'MOVEBOUNDARY', name : 'Phonetic', id : 160, movedBy : fakePCMtime, position : 0 });      
+        expect(scope.lvl.calcDistanceToNearestZeroCrossing).toHaveBeenCalledWith(item.sampleStart);
+        expect(scope.lvl.moveBoundary).toHaveBeenCalledWith(lvlName, item.id, fakePCMtime, 0 );  
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
+        { 
+            type : 'ESPS', 
+            action : 'MOVEBOUNDARY', 
+            name : lvlName, 
+            id : item.id, 
+            movedBy : fakePCMtime, 
+            position : 0 
+        });      
         expect(scope.history.addCurChangeObjToUndoStack).toHaveBeenCalled();      
     });
 
     it('should not expandSelSegmentsRight', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.lvl.setData(msajc003_bndl.annotation);
         scope.cps.vals.restrictions.editItemSize = true;
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
@@ -404,65 +414,378 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first'); 
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select a Level first'
+        ); 
         // no item selected
         scope.vs.setcurClickLevelName('Phonetic');
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first'); 
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select one or more Segments first'
+        ); 
     });  
     
-    it('should expandSelSegmentsRight', function() {
-        scope.cps.setVals(defaultEmuwebappConfig);
-        scope.lvl.setData(msajc003_bndl.annotation);
+    it('should not expandSelSegmentsLeft', function() {
         scope.cps.vals.restrictions.editItemSize = true;
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.dials, 'open');
         compileDirective();
+        // no level selected
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select a Level first'
+        ); 
+        // no item selected
+        scope.vs.setcurClickLevelName('Phonetic');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select one or more Segments first'
+        ); 
+    }); 
+    
+    it('should not shrinkSelSegmentsLeft', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        // no level selected
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select a Level first'
+        ); 
+        // no item selected
+        scope.vs.setcurClickLevelName('Phonetic');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select one or more Segments first'
+        ); 
+    }); 
+    
+    it('should not shrinkSelSegmentsRight', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        // no level selected
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select a Level first'
+        ); 
+        // no item selected
+        scope.vs.setcurClickLevelName('Phonetic');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Expand Segments Error: Please select one or more Segments first'
+        ); 
+    }); 
+    
+    it('should expandSelSegmentsRight', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        
         // absolute
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
         scope.cps.vals.labelCanvasConfig.addTimeValue = fakePCMtime;
         spyOn(scope.lvl, 'expandSegment');
         spyOn(scope.history, 'addObjToUndoStack');
         spyOn(scope.vs, 'selectBoundary');
-        clickOnItem('Phonetic', 25000, 18631, 58089, 'SEGMENT');
+        var lvlName = 'Phonetic';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(
-            true, 
-            [ { 
-                id : 159, 
-                sampleStart : 23920, 
-                sampleDur : 1869, 
-                labels : [ { 
-                    name : 'Phonetic', 
-                    value : 'z' 
-                } ] 
-            } ], 
-            'Phonetic', 
-            123);
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, fakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type : 'ESPS', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
-			item : [ { 
-				id : 159, 
-				sampleStart : 23920, 
-				sampleDur : 1869, 
-				labels : [ {
-					name : 'Phonetic', 
-					value : 'z'
-				} ] 
-			} ], 
+			item : [ item ], 
 			rightSide : true, 
 			changeTime : fakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-    });   
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+        // relative
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = 2;
+        var newfakePCMtime = scope.cps.vals.labelCanvasConfig.addTimeValue * (msajc003_bndl.mediaFile.data.length / 100);
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, newfakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : true, 
+			changeTime : newfakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+    }); 
+    
+    
+    it('should expandSelSegmentsLeft', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        
+        // absolute
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = fakePCMtime;
+        spyOn(scope.lvl, 'expandSegment');
+        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.vs, 'selectBoundary');
+        var lvlName = 'Phonetic';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, fakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : false, 
+			changeTime : fakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+        // relative
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = 2;
+        var newfakePCMtime = scope.cps.vals.labelCanvasConfig.addTimeValue * (msajc003_bndl.mediaFile.data.length / 100);
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, newfakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : false, 
+			changeTime : newfakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+    }); 
+    
+    
+    it('should shrinkSelSegmentsLeft', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        
+        // absolute
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = fakePCMtime;
+        spyOn(scope.lvl, 'expandSegment');
+        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.vs, 'selectBoundary');
+        var lvlName = 'Phonetic';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, -fakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : true, 
+			changeTime : -fakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+        // relative
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = 2;
+        var newfakePCMtime = scope.cps.vals.labelCanvasConfig.addTimeValue * (msajc003_bndl.mediaFile.data.length / 100);
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsLeft, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, -newfakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : true, 
+			changeTime : -newfakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+    });  
+    
+    it('should shrinkSelSegmentsRight', function() {
+        scope.cps.vals.restrictions.editItemSize = true;
+        scope.vs.curPerspectiveIdx = 0;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.lvl, 'deleteEditArea');
+        spyOn(scope.dials, 'open');
+        compileDirective();
+        
+        // absolute
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = fakePCMtime;
+        spyOn(scope.lvl, 'expandSegment');
+        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.vs, 'selectBoundary');
+        var lvlName = 'Phonetic';
+        var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, -fakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : false, 
+			changeTime : -fakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+        
+        // relative
+        scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
+        scope.cps.vals.labelCanvasConfig.addTimeValue = 2;
+        var newfakePCMtime = scope.cps.vals.labelCanvasConfig.addTimeValue * (msajc003_bndl.mediaFile.data.length / 100);
+        clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
+        trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsRight, false);
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+        expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, -newfakePCMtime);
+        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
+			type : 'ESPS', 
+			action : 'EXPANDSEGMENTS', 
+			levelName : 'Phonetic', 
+			item : [ item ], 
+			rightSide : false, 
+			changeTime : -newfakePCMtime 
+        });
+        expect(scope.vs.selectBoundary).toHaveBeenCalled();
+        expect(scope.dials.open).not.toHaveBeenCalled();
+    });  
+
+    it('should toggleSideBarLeft', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'togglesubmenuOpen');
+        spyOn(scope.lvl, 'deleteEditArea');
+        compileDirective();
+        trigEvent(scope.cps.vals.keyMappings.toggleSideBarLeft, false);
+        expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.vals.colors.transitionTime);        
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    });
+
+    it('should toggleSideBarRight', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setRightsubmenuOpen');
+        spyOn(scope.lvl, 'deleteEditArea');
+        compileDirective();
+        trigEvent(scope.cps.vals.keyMappings.toggleSideBarRight, false);
+        expect(scope.vs.setRightsubmenuOpen).toHaveBeenCalledWith(!scope.vs.getRightsubmenuOpen());        
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    }); 
+
+    it('should selectSegmentsInSelection', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'selectSegmentsInSelection');
+        spyOn(scope.dials, 'open');
+        spyOn(scope.lvl, 'deleteEditArea');
+        compileDirective();
+        trigEvent(scope.cps.vals.keyMappings.selectSegmentsInSelection, false);
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');    
+        expect(scope.dials.open).toHaveBeenCalledWith(
+            'views/error.html', 
+            'ModalCtrl', 
+            'Selection Error : Please select a Level first'
+        );                 
+        scope.vs.setcurClickLevel('Phonetic', 'SEGMENT', 0);
+        trigEvent(scope.cps.vals.keyMappings.selectSegmentsInSelection, false);
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
+        expect(scope.vs.selectSegmentsInSelection).toHaveBeenCalledWith(scope.lvl.data.levels);
+    });
+/*
+    it('should selPrevItem', function() {
+        scope.cps.vals.activeButtons.openMenu = true;
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setRightsubmenuOpen');
+        spyOn(scope.lvl, 'deleteEditArea');
+        compileDirective();
+        trigEvent(scope.cps.vals.keyMappings.selPrevItem, false);
+        expect(scope.vs.setRightsubmenuOpen).toHaveBeenCalledWith(!scope.vs.getRightsubmenuOpen());        
+        expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
+    }); 
+*/
     
     // todo : expandSelSegmentsRight and further
 

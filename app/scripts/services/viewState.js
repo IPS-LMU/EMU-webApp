@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, $window, Soundhandlerservice) {
+  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -378,16 +378,25 @@ angular.module('emuwebApp')
     sServObj.getSampleDist = function (w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
+    
 
     /**
-     * get the height of the osci
+     * toggle boolean if left submenu is open
+     */
+    sServObj.togglesubmenuOpen = function (time) {
+      this.submenuOpen = !this.submenuOpen;
+      $timeout(function () {$rootScope.$broadcast('refreshTimeline')}, time, false);
+    };
+
+    /**
+     * get boolean if left submenu is open
      */
     sServObj.getsubmenuOpen = function () {
       return this.submenuOpen;
     };
 
     /**
-     * get the height of the osci
+     * set boolean if left submenu is open
      */
     sServObj.setsubmenuOpen = function (s) {
       this.submenuOpen = s;
