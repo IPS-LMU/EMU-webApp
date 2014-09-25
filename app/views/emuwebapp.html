@@ -88,7 +88,7 @@
 
 <!-- right side menu bar -->
 <nav class="emuwebapp-rightSideMenu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="vs.getRightsubmenuOpen()">
-  <button class="emuwebapp-rightSideMenuOpenBtn" ng-click="toggleRightSideMenuHidden();"><img src="styles/images/rightSideMenuBtn.png" /></button>
+  <button class="emuwebapp-rightSideMenuOpenBtn" ng-click="vs.setRightsubmenuOpen(!vs.getRightsubmenuOpen());"><img src="styles/images/rightSideMenuBtn.png" /></button>
   <h3>Perspectives</h3>
   <ul>
     <li ng-repeat="persp in cps.vals.perspectives" ng-click="changePerspective(persp);" ng-class="getPerspectiveColor(persp);">{{persp.name}}</li>

@@ -1007,20 +1007,6 @@ angular.module('emuwebApp')
 
 		///////////////////////////
 		// other
-
-		/**
-		 *
-		$scope.setlastkeycode = function (c) {
-			$scope.lastkeycode = c;
-		};
-		 */
-		 
-		/**
-		 * SIC should move into viewstate.rightSubmenuOpen variable
-		$scope.toggleRightSideMenuHidden = function () {
-			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
-		};
-		 */
 		 
 		/**
 		 * function used to change perspective
@@ -1039,9 +1025,7 @@ angular.module('emuwebApp')
 			}
 			viewState.curPerspectiveIdx = newIdx;
 			// close submenu
-			$scope.toggleRightSideMenuHidden();
-			// viewState.somethingInProgressTxt = 'Done!';
-			// viewState.somethingInProgress = false;
+			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen())
 		};
 
 		/**

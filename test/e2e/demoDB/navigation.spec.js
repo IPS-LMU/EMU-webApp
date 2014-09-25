@@ -55,26 +55,24 @@ describe('navigation', function () {
 
 	it('should open & close submenu with shortcuts', function () {
 		ptor.actions().sendKeys('o').perform();
-		
 		ptor.actions().sendKeys('o').perform();
 	});
 
 	it('should open & close right submenu with shortcuts', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 	});
 
 	it('should change loaded timeline view', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
+		ptor.sleep(400);
 	});
 
 	it('should change loaded timeline view back to orig', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
+		ptor.sleep(400);
 	});
 
 	it('should test all resize buttons', function () {
