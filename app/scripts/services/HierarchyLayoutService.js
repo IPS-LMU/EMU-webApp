@@ -22,6 +22,7 @@ angular.module('emuwebApp')
 		////////////////////////////////////////////
 		// private vars and functions
 		var svgGroup;
+		var parentsFound;
 
 		//
 		/////////////////////
@@ -114,7 +115,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.findParents = function (selectedPath) {
 			var i, ii, c;
-			
+
+			if (parentsFound) {
+				return;
+			} else {
+				parentsFound = true;
+			}
+
 			/////
 			// Iterate throug levels top-down
 			for (i = selectedPath.length-1; i>=0; --i) {

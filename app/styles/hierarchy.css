@@ -12,6 +12,10 @@
 	stroke-width: 1.5px;
 }
 
+.emuhierarchy-node circle.collapsed {
+	fill: red;
+}
+
 .emuhierarchy-node text {
 	font-size:10px;
 	font-family:sans-serif;

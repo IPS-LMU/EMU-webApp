@@ -128,6 +128,38 @@ angular.module('emuwebApp')
 		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
 	};
 
+	scope.nodeOnClick = function (d) {
+		console.debug('Clicked node', d);
+		//scope.centerNode(d);
+
+		// (De-)Collapse sub-tree
+		var isCollapsing = (d._collapsed !== true);
+		d._collapsed = isCollapsing;
+		
+		var currentChild;
+		var descendants = HierarchyLayoutService.findChildren(d, scope.path);
+		while (descendants.length > 0) {
+			currentChild = descendants.pop();
+			console.debug(currentChild);
+			descendants = descendants.concat(HierarchyLayoutService.findChildren(currentChild, scope.path));
+
+			if (isCollapsing) {
+				if (typeof currentChild._collapsedParents === 'undefined') {
+					currentChild._collapsedParents = 1;
+				} else {
+					currentChild._collapsedParents += 1;
+				}
+			} else {
+				currentChild._collapsedParents -= 1;
+			}
+
+			currentChild._collapsePosition = [d._x, d._y];
+		}
+		
+
+		scope.render();
+	};
+
 
 	//
 	/////////////////////////////
@@ -216,7 +248,23 @@ angular.module('emuwebApp')
 			*/
 			//////
 
-			nodes = nodes.concat(LevelService.getLevelDetails(scope.path[i]).level.items);
+			// Add all nodes that are not collapsed
+			var levelItems = LevelService.getLevelDetails(scope.path[i]).level.items;
+
+			for (var ii=0; ii<levelItems.length; ++ii) {
+				//console.debug(levelItems[ii]._parents);
+
+				if (typeof levelItems[ii]._parents === 'undefined') {
+					nodes.push(levelItems[ii]);
+				} else {
+					if (levelItems[ii]._collapsedParents !== levelItems[ii]._parents.length) {
+						nodes.push(levelItems[ii]);
+					}
+				}
+			}
+
+			// Add all nodes, no matte whether they are collapsed or not
+			//nodes = nodes.concat(LevelService.getLevelDetails(scope.path[i]).level.items);
 		}
 		
 
@@ -237,9 +285,19 @@ angular.module('emuwebApp')
 					continue;
 				}
 				var parentElement = LevelService.getItemFromLevelById(scope.path[i+1], allLinks[l].fromID);
-				if (parentElement !== null) {
-					links.push(allLinks[l]);
+				if (parentElement === null) {
+					continue;
 				}
+				if (parentElement._collapsed === true) {
+					continue;
+				}
+				if (typeof parentElement._parents !== 'undefined') {
+					if (parentElement._collapsedParents === parentElement._parents.length) {
+						continue;
+					}
+				}
+				
+				links.push(allLinks[l]);
 			}
 		}
 
@@ -307,10 +365,7 @@ angular.module('emuwebApp')
 
 			// event handlers
 			//.call(dragListener)
-			.on('click', function (d) {
-				console.debug('Clicked node', d);
-				scope.centerNode(d);
-			})
+			.on('click', scope.nodeOnClick)
 			;
 
 		newNodes.append('circle')
@@ -355,7 +410,12 @@ angular.module('emuwebApp')
 		oldNodes = oldNodes.transition()
 			.duration(duration)
 			.attr('transform', function (d) {
-				return 'translate(' + 0 + ',' + 0 + ')';
+				if (d._collapsePosition) {
+					return 'translate(' + d._collapsePosition[0] + ',' + d._collapsePosition[1] + ')';
+					delete d._collapsePosition;
+				} else {
+					return 'translate(' + 0 + ',' + 0 + ')';
+				}
 			})
 			.remove();
 		
@@ -376,13 +436,17 @@ angular.module('emuwebApp')
 
 		// Change the circle fill depending on whether it has children and is collapsed
 		dataSet.select('circle.emuhierarchy-nodeCircle')
+			.classed('collapsed', function(d) {
+				return d._collapsed;
+			})
 			//.attr('r', 4.5)
 			//.style('fill', function (d) {
 			//	return d._children ? 'lightsteelblue' : '#fff';
 			//})
 			;
 
-		// Transition nodes to their new position.
+		// Transition nodes to their new position
+	
 		dataSet.transition()
 			.duration(duration)
 			.attr('transform', function (d) {
