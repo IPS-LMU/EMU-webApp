@@ -84,9 +84,10 @@ angular.module('emuwebApp')
 			for (var i=0; i<nodes.length; ++i) {
 				// Find first and last child of nodes[i]
 				var children = sServObj.findChildren (nodes[i], selectedPath);
-				if (children === null) {
+				if (children.length === 0) {
 					nodes[i]._posInLevel = null;
 				}
+				// FIXME if this function was actually used, the following would of course fail if children was an empty array
 				var firstChild = children[0];
 				var lastChild = children[children.length-1];
 
@@ -123,10 +124,6 @@ angular.module('emuwebApp')
 				// And save them as _parents in their children
 				for (ii = 0; ii<level.items.length; ++ii) {
 					var children = sServObj.findChildren(level.items[ii], selectedPath);
-
-					if (children === null) {
-						continue;
-					}
 
 					//console.debug('label', level.items[ii].labels[0].value, 'number of children: ', children.length);
 
@@ -260,19 +257,18 @@ angular.module('emuwebApp')
 		 * Find all children of a node d that are part of the currently selected
 		 * path through the hierarchy
 		 *
-		 * @return null if d has no children (not an empty array because the d3 lib expects null)
-		 * FIXME I will soon be changing this behaviour to return an empty array – let's see what breaks (actually I don' have that d3 dependency anymore)
-		 * @return an array of children nodes otherwise
+		 * @return an array of children nodes
+		 * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
 		 */
 		sServObj.findChildren = function (d, selectedPath) {
 			var children = [];
 
 			// Find the level that d is a part of
-			// Return null if that fails (which shouldn't happen at all)
+			// Return empty array if that fails (which shouldn't happen at all)
 			var currentLevel = sServObj.getLevelName(d.id);
 			if (currentLevel === null) {
-				console.debug('Likely a bug: failed to find a node\'s level', d)
-				return null;
+				console.log('Likely a bug: failed to find a node\'s level', d)
+				return [];
 			}
 
 			// Find the child level
@@ -284,7 +280,7 @@ angular.module('emuwebApp')
 				}
 			}
 			if (childLevel === null) {
-				return null;
+				return [];
 			}
 
 			// Iterate over links to find children
