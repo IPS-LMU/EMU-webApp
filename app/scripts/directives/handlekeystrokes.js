@@ -568,7 +568,6 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.right.sampleStart !== undefined) {                        
                           // check if in view
                           if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {   
-                            console.log(lastNeighboursMove.right);                       
                             viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
@@ -588,6 +587,9 @@ angular.module('emuwebApp')
               // createNewItemAtSelection
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.getPermission('labelAction')) {
+                  console.log(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                  console.log(viewState.getselectedRange());
+                
                   if (ConfigProviderService.vals.restrictions.addItem) {
                     if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
                       if (viewState.getcurClickSegments().length === 1) {
@@ -598,7 +600,6 @@ angular.module('emuwebApp')
                           scope.cursorInTextField();
                         }
                       } else {
-                        console.log(viewState.getcurClickSegments());
                         scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
                       }
                     } else {
@@ -620,7 +621,7 @@ angular.module('emuwebApp')
 							  if (!insSeg.ret) {
 								scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
 							  } else {
-								scope.hists.addObjToUndoStack({
+								HistoryService.addObjToUndoStack({
 								  'type': 'ESPS',
 								  'action': 'INSERTSEGMENTS',
 								  'name': viewState.getcurClickLevelName(),
@@ -638,7 +639,7 @@ angular.module('emuwebApp')
                             if (insPoint.alreadyExists) {
                               scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                             } else {
-                              scope.hists.addObjToUndoStack({ // todo 
+                              HistoryService.addObjToUndoStack({
                                 'type': 'ESPS',
                                 'action': 'INSERTPOINT',
                                 'name': viewState.getcurClickLevelName(),
@@ -660,7 +661,6 @@ angular.module('emuwebApp')
 
               // undo
               if (code === ConfigProviderService.vals.keyMappings.undo) {
-                console.log(scope.hists.getCurrentStack());
                 if (viewState.getPermission('labelAction')) {
                   HistoryService.undo();
                 }
@@ -669,7 +669,6 @@ angular.module('emuwebApp')
 
               // redo
               if (code === ConfigProviderService.vals.keyMappings.redo) {
-                console.log(scope.hists.getCurrentStack());
                 if (viewState.getPermission('labelAction')) {
                   HistoryService.redo();
                 }
@@ -688,7 +687,7 @@ angular.module('emuwebApp')
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
-                            scope.hists.addObjToUndoStack({
+                            HistoryService.addObjToUndoStack({
                               'type': 'ESPS',
                               'action': 'DELETEBOUNDARY',
                               'name': levelname,
@@ -702,7 +701,7 @@ angular.module('emuwebApp')
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
                           } else {
                             var deletedPoint = LevelService.deletePoint(levelname, seg.id);
-                            scope.hists.addObjToUndoStack({
+                            HistoryService.addObjToUndoStack({
                               'type': 'ESPS',
                               'action': 'DELETEPOINT',
                               'name': levelname,
@@ -725,7 +724,7 @@ angular.module('emuwebApp')
                         var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
-                          scope.hists.addObjToUndoStack({
+                          HistoryService.addObjToUndoStack({
                             'type': 'ESPS',
                             'action': 'DELETESEGMENTS',
                             'name': levelname,

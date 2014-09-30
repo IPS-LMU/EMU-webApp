@@ -273,7 +273,12 @@ angular.module('emuwebApp')
     		}
     		var editText = '';
 			if(lastEventClick.labels.length>0) {
-			    editText = lastEventClick.labels[labelIdx].value;
+			    if(lastEventClick.labels[labelIdx]!==undefined) {
+			        editText = lastEventClick.labels[labelIdx].value;
+			    }
+			    else {
+			        editText = '';
+			    }
 			}    		
 			if (type === 'SEGMENT') {
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
@@ -281,7 +286,6 @@ angular.module('emuwebApp')
 				var width = end - start;
 				if (width < (2*len)) {
 				    var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
-				    console.log(zoom);
 				    if(zoom <= 10) { // if already zoomed in but text is still too long
 				        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 				    }
@@ -363,6 +367,9 @@ angular.module('emuwebApp')
 			var attrdefs = ConfigProviderService.getLevelDefinition(levelname).attributeDefinitions;
 			var curAttrDef = viewState.getCurAttrDef(levelname);
 			var newElement;
+			if(attrdefs===undefined) { // ugly hack if attrdefs undefined
+				attrdefs = [];
+			}
 			angular.forEach(sServObj.data.levels, function (level) {
 				if (level.name === levelname) {
 					if (level.type == 'SEGMENT') {
@@ -399,18 +406,26 @@ angular.module('emuwebApp')
 							samplePoint: start,
 							labels: []
 						};
-						for (var i = 0; i < attrdefs.length; i++) {
-							if (attrdefs[i].name === curAttrDef) {
-								newElement.labels.push({
-									name: levelname,
-									value: labelname
-								});
-							} else {
-								newElement.labels.push({
-									name: attrdefs[i].name,
-									value: ''
-								});
+						if(attrdefs.length>0) {
+							for (var i = 0; i < attrdefs.length; i++) {
+								if (attrdefs[i].name === curAttrDef) {
+									newElement.labels.push({
+										name: levelname,
+										value: labelname
+									});
+								} else {
+									newElement.labels.push({
+										name: attrdefs[i].name,
+										value: ''
+									});
+								}
 							}
+						}
+						else {
+	    					newElement.labels.push({
+		    					name: levelname,
+								value: labelname
+		    				});						
 						}
 					}
 					level.items.splice(position, 0, newElement);
@@ -1289,7 +1304,6 @@ angular.module('emuwebApp')
 		 * @return array containing all labels (form==['x','y','z'])
 		 */
 		sServObj.getAllLabelsOfLevel = function (levelDetails) {
-			// console.log(levelDetails);
 			var curAttrDef = viewState.getCurAttrDef(levelDetails.level.name);
 			var labels = [];
 			for (var i = 0; i < levelDetails.level.items.length; i++) {
@@ -1333,7 +1347,6 @@ angular.module('emuwebApp')
 				};
 
 			});
-			// console.log(sServObj.data.links);
 		};
 
 		return sServObj;
