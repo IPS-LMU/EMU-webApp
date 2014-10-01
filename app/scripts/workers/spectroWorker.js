@@ -590,135 +590,181 @@
 	 *
 	 * (1)	Setup Web Worker by calling "config" and corresponding parameter
 	 *		N		--> window Size
+	 *		alpha	--> transparency of spectrogram
 	 *		freq	--> upper Frequency Boundry
 	 *		start	--> start Value in
 	 *		end		--> end Value in
 	 *		window	-->	window Function (please use myWindow enum)
 	 *		width	--> height of canvas used to display
 	 *		height	--> width of canvas used to display
+	 *      stream  --> the data to be calculated
+	 *      etc. see below
 	 *
 	 *		- example: primeWorker.postMessage({'cmd': 'config', 'N': N});
 	 *
 	 *
-	 * (2)	Send PCM Configuration Data (ie header of pcm data) to Web Worker by calling "pcm","config"
-	 *
-	 *		- example:	var data = JSON.stringify(sourceBuffer);
-	 *					primeWorker.postMessage({'cmd': 'pcm', 'config': data});
-	 *
-	 *
-	 * (3)	Send PCM Data by calling "pcm","stream"
-	 *
-	 *		- example:	primeWorker.postMessage({'cmd': 'pcm', 'stream': sourceBuffer.getChannelData(0)});
-	 *
-	 *
-	 * (4)	Start complete calculation by calling "render"
-	 *
-	 *		- example	primeWorker.postMessage({'cmd': 'render'});
-	 *
-	 *
-	 *	--> Wait for callback of Web Worker sending you Base64 encoded spectrogram image
+	 * (2)  Wait for callback of Web Worker sending you Base64 encoded spectrogram image
 	 */
 
 	addEventListener('message', function (e) {
+	    var render = true;
+	    var renderError = '';
 		var data = e.data;
-		switch (data.cmd) {
-		case 'config':
-			if (data.N !== undefined) {
-				N = data.N;
-			}
-			if (data.alpha !== undefined) {
-				internalalpha = data.alpha;
-			}
-			if (data.freq !== undefined) {
-				upperFreq = data.freq;
-			}
-			if (data.freqLow !== undefined) {
-				lowerFreq = data.freqLow;
-			}
-			if (data.start !== undefined) {
-				start = data.start;
-			}
-			if (data.end !== undefined) {
-				end = data.end;
-			}
-			if (data.myStep !== undefined) {
-				myStep = data.myStep;
-			}
-			if (data.window !== undefined) {
-				switch (data.window) {
-				case 1:
-					wFunction = myWindow.BARTLETT;
-					break;
-				case 2:
-					wFunction = myWindow.BARTLETTHANN;
-					break;
-				case 3:
-					wFunction = myWindow.BLACKMAN;
-					break;
-				case 4:
-					wFunction = myWindow.COSINE;
-					break;
-				case 5:
-					wFunction = myWindow.GAUSS;
-					break;
-				case 6:
-					wFunction = myWindow.HAMMING;
-					break;
-				case 7:
-					wFunction = myWindow.HANN;
-					break;
-				case 8:
-					wFunction = myWindow.LANCZOS;
-					break;
-				case 9:
-					wFunction = myWindow.RECTANGULAR;
-					break;
-				case 10:
-					wFunction = myWindow.TRIANGULAR;
-					break;
-				}
-			}
-			if (data.width !== undefined) {
-				mywidth = data.width;
-			}
-			if (data.height !== undefined) {
-				myheight = data.height;
-			}
-			if (data.dynRangeInDB !== undefined) {
-				dynRangeInDB = data.dynRangeInDB;
-			}
-			if (data.pixelRatio !== undefined) {
-				pixelRatio = data.pixelRatio;
-			}
-			if (data.sampleRate !== undefined) {
-				sampleRate = data.sampleRate;
-			}
-			if (data.streamChannels !== undefined) {
-				streamChannels = data.streamChannels;
-			}
-			if (data.transparency !== undefined) {
-				transparency = data.transparency;
-			}
-			if (data.stream !== undefined) {
-				threadSoundBuffer = new Float32Array(data.stream);
-			}
-			if (data.drawHeatMapColors !== undefined) {
-				drawHeatMapColors = data.drawHeatMapColors;
-			}
-			if (data.preEmphasisFilterFactor !== undefined) {
-				preEmphasisFilterFactor = data.preEmphasisFilterFactor;
-			}
-			if (data.heatMapColorAnchors !== undefined) {
-				heatMapColorAnchors = data.heatMapColorAnchors;
-				// console.log(heatMapColorAnchors);
-			}
-			break;
-		case 'render':
-			parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisFilterFactor);
-			break;
-		default:
-			this.postMessage('Unknown command: ' + data.msg);
-			break;
+		if (data.N !== undefined) {
+			N = data.N;
+		} else {
+		    renderError = 'N';
+		    render = false;
 		}
+		if (data.alpha !== undefined) {
+			internalalpha = data.alpha;
+		} else {
+		    renderError = 'alpha';
+		    render = false;		    
+		}
+		if (data.freq !== undefined) {
+			upperFreq = data.freq;
+		} else {
+		    renderError = 'freq';
+		    render = false;	
+		}
+		if (data.freqLow !== undefined) {
+			lowerFreq = data.freqLow;
+		} else {
+		    renderError = 'freqLow';
+		    render = false;			    
+		}
+		if (data.start !== undefined) {
+			start = data.start;
+		} else {
+		    renderError = 'start';
+		    render = false;			    
+		}
+		if (data.end !== undefined) {
+			end = data.end;
+		} else {
+		    renderError = 'end';
+		    render = false;	
+		}
+		if (data.myStep !== undefined) {
+			myStep = data.myStep;
+		} else {
+		    renderError = 'myStep';
+		    render = false;			    
+		}
+		if (data.window !== undefined) {
+			switch (data.window) {
+			case 1:
+				wFunction = myWindow.BARTLETT;
+				break;
+			case 2:
+				wFunction = myWindow.BARTLETTHANN;
+				break;
+			case 3:
+				wFunction = myWindow.BLACKMAN;
+				break;
+			case 4:
+				wFunction = myWindow.COSINE;
+				break;
+			case 5:
+				wFunction = myWindow.GAUSS;
+				break;
+			case 6:
+				wFunction = myWindow.HAMMING;
+				break;
+			case 7:
+				wFunction = myWindow.HANN;
+				break;
+			case 8:
+				wFunction = myWindow.LANCZOS;
+				break;
+			case 9:
+				wFunction = myWindow.RECTANGULAR;
+				break;
+			case 10:
+				wFunction = myWindow.TRIANGULAR;
+				break;
+			}
+		} else {
+		    renderError = 'window';
+		    render = false;	
+		}
+		if (data.width !== undefined) {
+			mywidth = data.width;
+		} else {
+		    renderError = 'width';
+		    render = false;	
+		}
+		if (data.height !== undefined) {
+			myheight = data.height;
+		} else {
+		    renderError = 'height';
+		    render = false;	
+		}
+		if (data.dynRangeInDB !== undefined) {
+			dynRangeInDB = data.dynRangeInDB;
+		} else {
+		    renderError = 'dynRangeInDB';
+		    render = false;	
+		}
+		if (data.pixelRatio !== undefined) {
+			pixelRatio = data.pixelRatio;
+		} else {
+		    renderError = 'pixelRatio';
+		    render = false;	
+		}
+		if (data.sampleRate !== undefined) {
+			sampleRate = data.sampleRate;
+		} else {
+		    renderError = 'sampleRate'; 
+		    render = false;	
+		}
+		if (data.streamChannels !== undefined) {
+			streamChannels = data.streamChannels;
+		} else {
+		    renderError = 'streamChannels';
+		    render = false;	
+		}
+		if (data.transparency !== undefined) {
+			transparency = data.transparency;
+		} else {
+		    renderError = 'transparency';
+		    render = false;	
+		}
+		if (data.stream !== undefined) {
+			threadSoundBuffer = new Float32Array(data.stream);
+		} else {
+		    renderError = 'stream';
+		    render = false;	
+		}
+		if (data.drawHeatMapColors !== undefined) {
+			drawHeatMapColors = data.drawHeatMapColors;
+		} else {
+		    renderError = 'drawHeatMapColors';
+		    render = false;	
+		}
+		if (data.preEmphasisFilterFactor !== undefined) {
+			preEmphasisFilterFactor = data.preEmphasisFilterFactor;
+		} else {
+		    renderError = 'preEmphasisFilterFactor';
+		    render = false;	
+		}
+		if (data.heatMapColorAnchors !== undefined) {
+			heatMapColorAnchors = data.heatMapColorAnchors;
+		} else {
+		    renderError = 'heatMapColorAnchors';
+		    render = false;	
+		}
+		if(render) {
+		    parseData(N, upperFreq, lowerFreq, start, end, mywidth, myheight, pixelRatio, transparency, drawHeatMapColors, preEmphasisFilterFactor);
+		} else {
+		    this.postMessage({
+			  'status': {
+				'type': 'ERROR',
+				'message': renderError + ' is undefined'
+			  }
+		    });		
+		}
+		
 	}, false);
 })(self);

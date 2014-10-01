@@ -335,7 +335,7 @@ describe('Service: LevelService', function () {
   /**
    *
    */
-  it('should getClosestItem (surrounding details) for a given sampleNr', inject(function (LevelService) {
+  it('should getClosestItem (surrounding details) for a given sampleNr', inject(function (Binarydatamaniphelper, LevelService) {
     // test on msajc003_bndl.annotation
     LevelService.setData(msajc003_bndl.annotation);
     // Soundhandlerservice.wavJSO.Data.length = 58089 

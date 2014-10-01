@@ -216,7 +216,6 @@ angular.module('emuwebApp')
                     var minDist = LevelService.snapBoundary(true, levelName, mouseSeg, neighbor, levelType);
                     if (minDist === false) {
                       // error msg nothing moved / nothing on top
-                      //console.log('error msg nothing moved / nothing on top');
                     } else {
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
@@ -587,9 +586,6 @@ angular.module('emuwebApp')
               // createNewItemAtSelection
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 if (viewState.getPermission('labelAction')) {
-                  console.log(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
-                  console.log(viewState.getselectedRange());
-                
                   if (ConfigProviderService.vals.restrictions.addItem) {
                     if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
                       if (viewState.getcurClickSegments().length === 1) {

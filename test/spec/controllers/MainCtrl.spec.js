@@ -17,6 +17,8 @@ describe('Controller: MainCtrl', function () {
        });
        scope.lvl = LevelService;
        scope.cps = ConfigProviderService;
+       scope.cps.setVals(defaultEmuwebappConfig);
+       scope.cps.curDbConfig = aeDbConfig;
      }));
   
      it('should have all variables defined', function () {
@@ -73,6 +75,7 @@ describe('Controller: MainCtrl', function () {
         expect(scope.curBndl).toEqual(emptyObject);
         expect(scope.bundleList.length).toBe(0);
      }); 
+  
   
 
 });

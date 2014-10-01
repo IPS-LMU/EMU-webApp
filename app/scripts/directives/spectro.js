@@ -157,7 +157,6 @@ angular.module('emuwebApp')
           }
           setupEvent();
           primeWorker.postMessage({
-            'cmd': 'config',
             'N': scope.vs.spectroSettings.windowLength,
             'alpha': alpha,
             'freq': scope.vs.spectroSettings.rangeTo,
@@ -178,9 +177,6 @@ angular.module('emuwebApp')
             'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
             'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
           }, [parseData.buffer]);
-          primeWorker.postMessage({
-            'cmd': 'render'
-          });
         }
       }
     };
