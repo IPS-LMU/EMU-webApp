@@ -182,6 +182,6 @@
 			}
 		}
 	},
-	"required": ["name", "UUID", "mediafileExtension", "ssffTracks", "levelDefinitions", "linkDefinitions"],
+	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions"],
 	"additionalProperties": false
 }
