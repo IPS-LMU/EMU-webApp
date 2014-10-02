@@ -1,0 +1,205 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0
+xmax = 2.90445
+levels? <exists>
+size = 9
+item []:
+	item [0]:
+		name = "Utterance"
+		xmin = 0
+		xmax = 2.90445
+	item [1]:
+		name = "Intonational"
+		xmin = 0
+		xmax = 2.90445
+	item [2]:
+		name = "Intermediate"
+		xmin = 0
+		xmax = 2.90445
+	item [3]:
+		name = "Word"
+		xmin = 0
+		xmax = 2.90445
+	item [4]:
+		name = "Syllable"
+		xmin = 0
+		xmax = 2.90445
+	item [5]:
+		name = "Phoneme"
+		xmin = 0
+		xmax = 2.90445
+	item [6]:
+		class = "IntervalTier"
+		name = "Phonetic"
+		xmin = 0
+		xmax = 2.90445
+		intervals: size = 34
+			intervals [1]:
+				xmin = 0.187525
+				xmax = 0.256975
+				text = "V"
+			intervals [2]:
+				xmin = 0.257025
+				xmax = 0.340225
+				text = "m"
+			intervals [3]:
+				xmin = 0.340275
+				xmax = 0.426725
+				text = "V"
+			intervals [4]:
+				xmin = 0.426775
+				xmax = 0.483475
+				text = "N"
+			intervals [5]:
+				xmin = 0.483525
+				xmax = 0.566975
+				text = "s"
+			intervals [6]:
+				xmin = 0.567025
+				xmax = 0.5967250000000001
+				text = "t"
+			intervals [7]:
+				xmin = 0.596775
+				xmax = 0.6742250000000001
+				text = "H"
+			intervals [8]:
+				xmin = 0.6742750000000001
+				xmax = 0.739975
+				text = "@:"
+			intervals [9]:
+				xmin = 0.740025
+				xmax = 0.8927250000000001
+				text = "f"
+			intervals [10]:
+				xmin = 0.8927750000000001
+				xmax = 0.949975
+				text = "r"
+			intervals [11]:
+				xmin = 0.950025
+				xmax = 1.0319749999999999
+				text = "E"
+			intervals [12]:
+				xmin = 1.032025
+				xmax = 1.195975
+				text = "n"
+			intervals [13]:
+				xmin = 1.196025
+				xmax = 1.289475
+				text = "z"
+			intervals [14]:
+				xmin = 1.289525
+				xmax = 1.419975
+				text = "S"
+			intervals [15]:
+				xmin = 1.4200249999999999
+				xmax = 1.463225
+				text = "i:"
+			intervals [16]:
+				xmin = 1.4632749999999999
+				xmax = 1.506225
+				text = "w"
+			intervals [17]:
+				xmin = 1.506275
+				xmax = 1.548475
+				text = "@"
+			intervals [18]:
+				xmin = 1.548525
+				xmax = 1.634475
+				text = "z"
+			intervals [19]:
+				xmin = 1.634525
+				xmax = 1.675975
+				text = "k"
+			intervals [20]:
+				xmin = 1.6760249999999999
+				xmax = 1.7154749999999999
+				text = "H"
+			intervals [21]:
+				xmin = 1.715525
+				xmax = 1.7414749999999999
+				text = "@"
+			intervals [22]:
+				xmin = 1.741525
+				xmax = 1.791475
+				text = "n"
+			intervals [23]:
+				xmin = 1.791525
+				xmax = 1.893225
+				text = "s"
+			intervals [24]:
+				xmin = 1.893275
+				xmax = 1.9454749999999998
+				text = "I"
+			intervals [25]:
+				xmin = 1.945525
+				xmax = 1.9667249999999998
+				text = "d"
+			intervals [26]:
+				xmin = 1.966775
+				xmax = 2.033725
+				text = "@"
+			intervals [27]:
+				xmin = 2.033775
+				xmax = 2.150225
+				text = "db"
+			intervals [28]:
+				xmin = 2.150275
+				xmax = 2.2112249999999998
+				text = "j"
+			intervals [29]:
+				xmin = 2.211275
+				xmax = 2.283725
+				text = "u:"
+			intervals [30]:
+				xmin = 2.283775
+				xmax = 2.302975
+				text = "dH"
+			intervals [31]:
+				xmin = 2.303025
+				xmax = 2.361975
+				text = "@"
+			intervals [32]:
+				xmin = 2.362025
+				xmax = 2.447475
+				text = "f"
+			intervals [33]:
+				xmin = 2.4475249999999997
+				xmax = 2.506275
+				text = "@"
+			intervals [34]:
+				xmin = 2.506325
+				xmax = 2.90445
+				text = "l"
+	item [7]:
+		class = "TextTier"
+		name = "Tone"
+		xmin = 0
+		xmax = 2.90445
+		points: size = 7
+			points[1]:
+				time = NaN
+				mark = "undefined"
+			points[2]:
+				time = NaN
+				mark = "undefined"
+			points[3]:
+				time = NaN
+				mark = "undefined"
+			points[4]:
+				time = NaN
+				mark = "undefined"
+			points[5]:
+				time = NaN
+				mark = "undefined"
+			points[6]:
+				time = NaN
+				mark = "undefined"
+			points[7]:
+				time = NaN
+				mark = "undefined"
+	item [8]:
+		name = "Foot"
+		xmin = 0
+		xmax = 2.90445

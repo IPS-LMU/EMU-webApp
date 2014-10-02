@@ -81,6 +81,7 @@ var msajc003EspsToneFile = readFixtures('msajc003.tone');
 
 // TextGrid file containing segments and events
 var msajc003TextGridFile = readFixtures('msajc003.TextGrid');
+var msajc003TextGridFileNew = readFixtures('msajc003_new.TextGrid');
 
 
   function getItemFromJSON(anno, itemID) {

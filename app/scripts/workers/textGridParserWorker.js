@@ -276,7 +276,7 @@ addEventListener('message', function (e) {
 		this.postMessage({
 			'status': {
 				'type': 'ERROR',
-				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd
+				'message': 'Unknown command sent to textGridParserWorker'
 			}
 		});
 

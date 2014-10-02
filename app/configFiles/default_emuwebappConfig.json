@@ -122,7 +122,7 @@
         "addLevelSeg": false,
         "addLevelEvent": false,
         "renameSelLevel": false,
-        "downloadTextGrid": false,
+        "downloadTextGrid": true,
         "specSettings": true,
         "connect": true,
         "clear": true,
