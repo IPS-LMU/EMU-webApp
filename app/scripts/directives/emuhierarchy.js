@@ -201,6 +201,7 @@ angular.module('emuwebApp')
           .attr('height', '100%')
 	  .style('background-color', 'darkgrey')
 	  .call(zoomListener)
+	  .on('dblclick.zoom', null)
           .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 	  // Append a group which holds all nodes and which the zoom Listener can act upon.
