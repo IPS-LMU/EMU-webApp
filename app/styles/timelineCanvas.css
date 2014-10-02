@@ -96,9 +96,10 @@
 }
 
 .emuwebapp-timeline-flexitem {
+  margin: 0;
   padding: 0;
   width: 100%;
-  margin-top: 0px;
-  margin-bottom: 4px;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
   position: relative;
 }

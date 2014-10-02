@@ -576,13 +576,13 @@ angular.module('emuwebApp')
 					if (viewState.getenlarge() == index) {
 						return '75%';
 					} else {
-						return '25%';
+						return '23%';
 					}
 				} else {
 					if (viewState.getenlarge() == index) {
 						return Math.floor((100 / len) * (len - 1)) + '%';
 					} else {
-						return Math.floor((100 / len) / (len - 1)) + '%';
+						return (Math.floor((100 / len) / (len - 1))-1) + '%';
 					}
 				}
 			}
