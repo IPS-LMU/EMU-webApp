@@ -79,6 +79,8 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedNodeTransform = function (d) {
+		// Parameter d is never used because this is independent from the node's position
+
 		if (scope.vertical) {
 			return 'scale(-1,1)rotate(90)';
 		} else {
@@ -133,7 +135,14 @@ angular.module('emuwebApp')
 		//scope.centerNode(d);
 
 		// (De-)Collapse sub-tree
-		var isCollapsing = (d._collapsed !== true);
+		var isCollapsing;
+		if (typeof d._collapsed === 'undefined' || d._collapsed === false) {
+			isCollapsing = true;
+		} else if (d._collapsed === true) {
+			isCollapsing = false;
+		} else {
+			console.debug ('Likely a bug: the following node appears to be neither collapsed nor uncollapsed:', d);
+		}
 		d._collapsed = isCollapsing;
 		
 		var currentChild;
@@ -384,6 +393,18 @@ angular.module('emuwebApp')
 			.attr('class', 'emuhierarchy-nodeText')
 			;
 
+		// Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
+		// (as do all other nodes)
+		newNodes.attr('transform', function (d) {
+			if (typeof d._collapsePosition !== 'undefined') {
+				var x = d._collapsePosition[0];
+				var y = d._collapsePosition[1];
+				delete d._collapsePosition;
+				return 'translate(' + x + ',' + y + ')' + scope.getOrientatedNodeTransform();
+			}
+		});
+
+
 		/*
 
 		// phantom node to give us mouseover in a radius around it
@@ -411,8 +432,10 @@ angular.module('emuwebApp')
 			.duration(duration)
 			.attr('transform', function (d) {
 				if (d._collapsePosition) {
-					return 'translate(' + d._collapsePosition[0] + ',' + d._collapsePosition[1] + ')';
+					var x = d._collapsePosition[0];
+					var y = d._collapsePosition[1];
 					delete d._collapsePosition;
+					return 'translate(' + x + ',' + y + ')';
 				} else {
 					return 'translate(' + 0 + ',' + 0 + ')';
 				}
@@ -446,11 +469,11 @@ angular.module('emuwebApp')
 			;
 
 		// Transition nodes to their new position
-	
+
 		dataSet.transition()
 			.duration(duration)
 			.attr('transform', function (d) {
-				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform(d);
+				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
 			});
 
 
