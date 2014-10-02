@@ -11,7 +11,7 @@
 		"mediafileExtension": {
 			"enum": ["wav"]
 		},
-		"ssffTracks": {
+		"ssffTrackDefinitions": {
 			"type": "array",
 			"items": {
 				"type": "object",
@@ -50,7 +50,7 @@
 									"type": "string"
 								},
 								"type": {
-									"enum": ["string"]
+									"enum": ["STRING"]
 								},
 								"legalValues": {
 									"type": "array",
@@ -116,6 +116,29 @@
 						"uniqueItems": true
 					}
 				},
+				"labelGroups": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"values": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"legalLabels": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
 				"required": ["name", "type", "attributeDefinitions"],
 				"additionalProperties": false,
 				"uniqueItems": true
@@ -142,15 +165,18 @@
 			}
 		},
 		"labelGroups": {
-			"type": "object",
-			"properties": {
-				"name": {
-					"type": "string"
-				},
-				"values": {
-					"type": "array",
-					"items": {
-						"type": "sting"
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"values": {
+						"type": "array",
+						"items": {
+							"type": "sting"
+						}
 					}
 				}
 			}
