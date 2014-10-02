@@ -2,7 +2,7 @@
 	"name": "ema",
 	"UUID": "6e384990-91cf-481a-8a81-e31da0832d64",
 	"mediafileExtension": "wav",
-	"ssffTracks": [{
+	"ssffTrackDefinitions": [{
 		"name": "tt_posz",
 		"columnName": "tt_posz",
 		"fileExtension": "t_tip"
@@ -60,28 +60,28 @@
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Word",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Segment",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "Segment",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "TT",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "TT",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "TB",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "TB",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}],
 	"linkDefinitions": [{

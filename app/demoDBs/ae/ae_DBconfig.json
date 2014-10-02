@@ -20,76 +20,76 @@
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Utterance",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Intonational",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Intonational",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Intermediate",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Intermediate",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Word",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Word",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Accent",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Text",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Syllable",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Syllable",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Phoneme",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Phoneme",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Phonetic",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "Phonetic",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Tone",
 		"type": "EVENT",
 		"attributeDefinitions": [{
 			"name": "Tone",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Foot",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Foot",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Syllable",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Syllable",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}],
 	"linkDefinitions": [{
