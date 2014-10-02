@@ -93,10 +93,11 @@ angular.module('emuwebApp')
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name
 		 */
-		sServObj.getLevelDetailsByType = function (type) {
-			var levels = null;
-			angular.forEach(sServObj.data.levels, function (level) {
-				if (type.indexOf(level.type) !== -1) {
+		sServObj.getLevelsByType = function (types) {
+			var levels = [];
+			angular.forEach(sServObj.data.levels, function (level, num) {
+			    var t = level.type;
+				if (types.indexOf(t) >= 0) {
 					levels.push(level);
 				}
 			});
