@@ -569,20 +569,24 @@ angular.module('emuwebApp')
 
 		$scope.getEnlarge = function (index) {
 			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+			var large = 50;
 			if (viewState.getenlarge() == -1) {
 				return 'auto';
 			} else {
-				if (len == 2) {
+			    if (len === 1) {
+			        return 'auto';
+			    }
+				if (len === 2) {
 					if (viewState.getenlarge() == index) {
-						return '75%';
+						return '70%';
 					} else {
-						return '23%';
+						return '27%';
 					}
 				} else {
 					if (viewState.getenlarge() == index) {
-						return Math.floor((100 / len) * (len - 1)) + '%';
+						return large+'%';
 					} else {
-						return (Math.floor((100 / len) / (len - 1))-1) + '%';
+						return (98-large)/(len - 1) + '%';
 					}
 				}
 			}
@@ -628,6 +632,13 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.focusInTextField = false;
+		};
+
+		/**
+		 *
+		 */
+		$scope.openSubmenu = function () {
+			viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 		};
 
 		/////////////////////////////////////////
