@@ -33,7 +33,6 @@ describe('Controller: MainCtrl', function () {
        expect(scope.filterText).toBe('');       
        expect(scope.windowWidth).toBeDefined;              
        expect(scope.demoDbName).toBe('');       
-       expect(scope.firefox).toBe(false);  // PhantomJS
      });
   
      it('all services should exist', inject(function (viewState, 

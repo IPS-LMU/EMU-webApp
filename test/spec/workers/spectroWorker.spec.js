@@ -2,13 +2,29 @@
 
 describe('Worker: spectroWorker', function () {
 
-  var worker;
+  var worker, worker2, binary;
+  
+  var start = 2000;
+  var end = 5000;
+  var windowLength = 256;  
+  var window = 5;
+  var width = 2048;
+  var height = 150; 
+  var step = 28.36; 
+  var pixelRatio = 0.9;
+  var sampleRate = 20000;
+  var freq = 5000;
+  var freqLow = 0;
+  
+  var workerFileWav = 'scripts/workers/wavParserWorker.js';
+  var workerFileSpec = 'scripts/workers/spectroWorker.js';
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
   
+  
   it('should return error on undefined paramater', function (done) {
-      worker = new Worker('scripts/workers/spectroWorker.js');
+      worker = new Worker(workerFileSpec);
       worker.addEventListener('message', function (e) {
         expect(e.data.status.type).toEqual('ERROR');
         expect(e.data.status.message).toEqual('heatMapColorAnchors is undefined');
@@ -18,40 +34,65 @@ describe('Worker: spectroWorker', function () {
       worker.postMessage('');
   });
   
-  /*it('should render a spectro image', function (done) {
-      worker = new Worker('scripts/workers/spectroWorker.js');
+  it('should return 2 possible undos', inject(function (Binarydatamaniphelper) {
+      worker = new Worker(workerFileSpec);
+      worker2 = new Worker(workerFileWav);
+      
+      // first step : convert b64 to wav using workerFileWav
+      var buf = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
+	  worker2.postMessage({
+		'cmd': 'parseBuf',
+		'buffer': buf
+	  }, [buf]);
+	  
+      // second step : send converted wav data to workerFileSpec
+      worker2.addEventListener('message', function (e) {
+        var wavData = new Float32Array(e.data.data.Data.subarray(start - windowLength / 2, end + windowLength));
+        worker.postMessage({
+          'N': windowLength,
+          'alpha': 0.16,
+          'freq': freq,
+          'freqLow': freqLow,
+          'start': start,
+          'end': end,
+          'myStep': step,
+          'window': window,
+          'width': width,
+          'height': height,
+          'dynRangeInDB': 70,
+          'pixelRatio': pixelRatio,
+          'sampleRate': sampleRate,
+          'streamChannels': 1,
+          'transparency': 255,
+          'stream': wavData,
+          'drawHeatMapColors': false,
+          'preEmphasisFilterFactor': 0.97,
+          'heatMapColorAnchors': JSON.parse('[[255,0,0],[0,255,0],[0,0,0]]')
+        });
+        worker2.terminate();
+      });   
+      
+      // third step : check if workerFileSpec generated spectro image
+      // todo : eventually check if image is like it should be
+      // right now : only parameters and image size are checked
       worker.addEventListener('message', function (e) {
-        console.log(e.data);
-        //expect(e.data).toEqual('Error: N is undefined');
+        var typedArray = new Uint8Array(e.data.img);
+        var normalArray = Array.prototype.slice.call(typedArray);
+        expect(normalArray.length).toEqual(1228800);
+        expect(e.data.start).toEqual(start);
+        expect(e.data.end).toEqual(end);
+        expect(e.data.window).toEqual(window);
+        expect(e.data.myStep).toEqual(step);
+        // calculate pixel Height
+        var HzStep = (sampleRate / 2) / (windowLength / 2);
+        var upperHz = Math.ceil(freq / HzStep);
+        var lowerHz = Math.floor(freqLow / HzStep);
+        var calcPixelHeight = height / (upperHz - lowerHz - 2);
+        expect(e.data.pixelHeight).toEqual(calcPixelHeight);
+        expect(e.data.renderWidth).toEqual(width);
+        expect(e.data.renderHeight).toEqual(height);
         worker.terminate();
-        done();
       });
-      
-      var parseData = '';
-      
-      worker.postMessage({
-        'N': 256,
-        'alpha': 0.16,
-        'freq': 5000,
-        'freqLow': 0,
-        'start': 0,
-        'end': 58089,
-        'myStep': 28.3642578125,
-        'window': 5,
-        'width': 2048,
-        'height': 150,
-        'dynRangeInDB': 70,
-        'pixelRatio': 0.8999999761581421,
-        'sampleRate': 20000,
-        'streamChannels': 1,
-        'transparency': 255,
-        'stream': parseData,
-        'drawHeatMapColors': false,
-        'preEmphasisFilterFactor': 0.97,
-        'heatMapColorAnchors': JSON.parse('[[255,0,0],[0,255,0],[0,0,0]]')
-      }, [parseData]);
-  });  */
-
-  
-
+         
+  })); 
 });

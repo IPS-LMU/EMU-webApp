@@ -117,7 +117,9 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
+    
+    captureTimeout: 60000,
 
 
     // Continuous Integration mode
