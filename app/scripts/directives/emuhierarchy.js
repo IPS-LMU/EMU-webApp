@@ -20,11 +20,13 @@ angular.module('emuwebApp')
 
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
+		scope.selectVisibleNodes();
 		scope.render();
 	}, false);
 
 	scope.$watch('vertical', function (newValue) {
 		console.debug('Rendering due to rotation: ', newValue);
+		scope.selectVisibleNodes();
 		scope.render();
 	}, false);
 
@@ -32,14 +34,6 @@ angular.module('emuwebApp')
 		console.debug('Rendering due to attribute change: ', newValue);
 		scope.render();
 	}, true);
-
-	/*
-        // SIC deep watches are really expensive!!!! Should watch something else!!!!!!
-        // With the advent of the $watch('path') above, this should have become obsolete
-	scope.$watch('LevelService.data', function () {
-          scope.render();
-        }, true);
-	*/
 
         //
         //////////////////////
@@ -145,30 +139,63 @@ angular.module('emuwebApp')
 		}
 		d._collapsed = isCollapsing;
 		
-		var currentChild;
+		var currentDescendant;
 		var descendants = HierarchyLayoutService.findChildren(d, scope.path);
 		while (descendants.length > 0) {
-			currentChild = descendants.pop();
-			console.debug(currentChild);
-			descendants = descendants.concat(HierarchyLayoutService.findChildren(currentChild, scope.path));
+			currentDescendant = descendants.pop();
+			descendants = descendants.concat(HierarchyLayoutService.findChildren(currentDescendant, scope.path));
 
 			if (isCollapsing) {
-				if (typeof currentChild._collapsedParents === 'undefined') {
-					currentChild._collapsedParents = 1;
+				if (typeof currentDescendant._collapsedParents === 'undefined') {
+					currentDescendant._collapsedParents = 1;
 				} else {
-					currentChild._collapsedParents += 1;
+					currentDescendant._collapsedParents += 1;
 				}
 			} else {
-				currentChild._collapsedParents -= 1;
+				currentDescendant._collapsedParents -= 1;
 			}
 
-			currentChild._collapsePosition = [d._x, d._y];
+			currentDescendant._collapsePosition = [d._x, d._y];
 		}
 		
-
+		scope.selectVisibleNodes();
 		scope.render();
 	};
 
+	scope.selectVisibleNodes = function () {
+		// Try to set all nodes to invisible. Later we will search all
+		// paths and if we find one uncollasped path to a node, that
+		// node will be set visible.
+
+		var rootLevelItems = LevelService.getLevelDetails(scope.path[scope.path.length-1]).level.items;
+		console.debug('rlI', rootLevelItems);
+
+		var items = [];
+		items = items.concat(rootLevelItems);
+
+		var currentItem;
+
+		while (items.length > 0) {
+			currentItem = items.pop();
+			items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+			currentItem._visible = false;
+		}		
+		
+
+		// Now all nodes on the selected scope.path have been set invisible
+
+		items = [];
+		items = items.concat(rootLevelItems);
+
+		while (items.length > 0) {
+			currentItem = items.pop();
+			if (! currentItem._collapsed) {
+				items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+			}
+
+			currentItem._visible = true;
+		}		
+	};
 
 	//
 	/////////////////////////////
@@ -260,20 +287,13 @@ angular.module('emuwebApp')
 
 			// Add all nodes that are not collapsed
 			var levelItems = LevelService.getLevelDetails(scope.path[i]).level.items;
-
 			for (var ii=0; ii<levelItems.length; ++ii) {
-				//console.debug(levelItems[ii]._parents);
-
-				if (typeof levelItems[ii]._parents === 'undefined') {
+				if (levelItems[ii]._visible) {
 					nodes.push(levelItems[ii]);
-				} else {
-					if (levelItems[ii]._collapsedParents !== levelItems[ii]._parents.length) {
-						nodes.push(levelItems[ii]);
-					}
 				}
 			}
 
-			// Add all nodes, no matte whether they are collapsed or not
+			// Add all nodes, no matter whether they are collapsed or not
 			//nodes = nodes.concat(LevelService.getLevelDetails(scope.path[i]).level.items);
 		}
 		
@@ -281,31 +301,31 @@ angular.module('emuwebApp')
 
 
 		// Now layout links
-
+		//
 		// We must only draw links that are part of the currently selected path.
 		// We must therefore filter the links.
 		//
-		// What follows below is a very low-performance approach to filtering
+		// We must also filter out links that are collapsed
+		//
+		// What follows below is a probably very low-performance approach to filtering
+		//
 		var links = [];
 		var allLinks = LevelService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
 			for (var i=0; i<scope.path.length-1; ++i) {
 				var element = LevelService.getItemFromLevelById(scope.path[i], allLinks[l].toID);
+				var parentElement = LevelService.getItemFromLevelById(scope.path[i+1], allLinks[l].fromID);
+				
 				if (element === null) {
 					continue;
 				}
-				var parentElement = LevelService.getItemFromLevelById(scope.path[i+1], allLinks[l].fromID);
 				if (parentElement === null) {
 					continue;
 				}
-				if (parentElement._collapsed === true) {
+				if (!element._visible)
 					continue;
-				}
-				if (typeof parentElement._parents !== 'undefined') {
-					if (parentElement._collapsedParents === parentElement._parents.length) {
-						continue;
-					}
-				}
+				if (parentElement._collapsed || !parentElement._visible)
+					continue;
 				
 				links.push(allLinks[l]);
 			}
@@ -509,15 +529,6 @@ angular.module('emuwebApp')
 			.attr('d', scope.getPath )
 			.style('opacity', 1)
 			;
-		
-		
-
-		// Stash the old positions for transition.
-		nodes.forEach(function (d) {
-			d._x0 = d._x;
-			d._y0 = d._y;
-		});
-
 	};
 
         /**
