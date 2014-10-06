@@ -168,7 +168,6 @@ angular.module('emuwebApp')
 		// node will be set visible.
 
 		var rootLevelItems = LevelService.getLevelDetails(scope.path[scope.path.length-1]).level.items;
-		console.debug('rlI', rootLevelItems);
 
 		var items = [];
 		items = items.concat(rootLevelItems);
