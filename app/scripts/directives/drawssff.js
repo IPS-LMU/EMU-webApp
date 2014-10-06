@@ -158,14 +158,14 @@ angular.module('emuwebApp')
 
 
               // console.log(contourNr);
-              if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.min && contourNr <= minMaxLims.max)) {
+              if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.minContourIdx && contourNr <= minMaxLims.maxContourIdx)) {
 
                 // set color
                 if ($.isEmptyObject(minMaxLims)) {
                   ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
                   ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
                 } else {
-                  var l = (minMaxLims.max - minMaxLims.min) + 1;
+                  var l = (minMaxLims.maxContourIdx - minMaxLims.minContourIdx) + 1;
                   ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
                   ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
                 }

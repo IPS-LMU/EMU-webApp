@@ -67,8 +67,7 @@ angular.module('emuwebApp')
 			var res = {};
 			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
 				if (cL.ssffTrackName === trackName) {
-					res.min = cL.min;
-					res.max = cL.max;
+					res = cL;
 				}
 			});
 
