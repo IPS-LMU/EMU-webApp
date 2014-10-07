@@ -74,7 +74,7 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
-			svg.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'+scope.getOrientatedTransform());
+			svg.attr('transform', scope.getOrientatedTransform());
 	};
 
 	scope.getOrientatedTransform = function () {
