@@ -162,6 +162,55 @@ angular.module('emuwebApp')
 		scope.render();
 	};
 
+	scope.nodeOnRightClick = function (d) {
+		scope.play(d);
+	};
+
+	scope.play = function (d) {
+		var timeInfoLevel = scope.path[0];
+		if (typeof timeInfoLevel === 'undefined') {
+			console.debug('Likely a bug: There is no path selection. Not executing play():', d);
+			return;
+		}
+		var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).level.type;
+
+		var firstTimeItem = null;
+		var lastTimeItem = null;
+
+		var itemList = [d];
+		var currentItem;
+		while (itemList.length > 0) {
+			currentItem = itemList.pop();
+			if (currentItem.labels[0].name === timeInfoLevel) {
+				if (lastTimeItem === null) {
+					lastTimeItem = currentItem;
+				}
+				
+				firstTimeItem = currentItem;
+			}
+			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+		}
+
+		console.debug('Node info for playback: ', timeInfoType, d, firstTimeItem, lastTimeItem);
+
+		if (firstTimeItem === null) {
+			console.debug('No time information found for node, aborting playback', d);
+			return;
+		}
+
+		var startSample = 0;
+		var endSample = 0;
+		if (timeInfoType === 'EVENT') {
+			startSample = firstTimeItem.samplePoint;
+			endSample = lastTimeItem.samplePoint;
+		} else if (timeInfoType === 'SEGMENT') {
+			startSample = firstTimeItem.sampleStart;
+			endSample = lastTimeItem.sampleStart + lastTimeItem.sampleDur;
+		}
+
+		console.debug('Sample information for playback:', startSample, endSample);
+	};
+
 	scope.selectVisibleNodes = function () {
 		// Try to set all nodes to invisible. Later we will search all
 		// paths and if we find one uncollasped path to a node, that
@@ -395,6 +444,7 @@ angular.module('emuwebApp')
 			// event handlers
 			//.call(dragListener)
 			.on('click', scope.nodeOnClick)
+			.on('dblclick', scope.nodeOnRightClick)
 			;
 
 		newNodes.append('circle')
