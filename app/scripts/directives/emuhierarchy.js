@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, LevelService, HierarchyLayoutService) {
+  .directive('emuhierarchy', function (viewState, LevelService, HierarchyLayoutService, Soundhandlerservice) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -209,6 +209,7 @@ angular.module('emuwebApp')
 		}
 
 		console.debug('Sample information for playback:', startSample, endSample);
+		Soundhandlerservice.playFromTo(startSample, endSample);
 	};
 
 	scope.selectVisibleNodes = function () {
