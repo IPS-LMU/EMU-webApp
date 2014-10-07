@@ -6,6 +6,7 @@ angular.module('emuwebApp')
 		// Scope data
 		
 		var rotated = false;
+		var playing = 0;
 
 		$scope.paths = {
 			possible: [],
@@ -50,7 +51,15 @@ angular.module('emuwebApp')
 		
 		$scope.getRotation = function () {
 			return rotated;
-		}
+		};
+
+		$scope.playSelection = function () {
+			++playing;
+		};
+
+		$scope.getPlaying = function () {
+			return playing;
+		};
 
 		/**
 		 *

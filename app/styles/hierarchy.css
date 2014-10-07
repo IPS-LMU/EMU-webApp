@@ -12,6 +12,10 @@
 	stroke-width: 1.5px;
 }
 
+.emuhierarchy-node circle.selected {
+	stroke: red;
+}
+
 .emuhierarchy-node circle.collapsed {
 	fill: red;
 }

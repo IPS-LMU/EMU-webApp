@@ -8,10 +8,19 @@ angular.module('emuwebApp')
       restrict: 'E',
       scope: {
       	path: '=', // This directive actually never writes back to path
-	vertical: '='
+	vertical: '=',
+	playing: '='
       },
       replace: true,
       link: function postLink(scope, element, attrs) {
+
+        //////////////////////
+	// private variables
+
+	scope.selectedItem;
+
+	//
+	//////////////////////
 
         //////////////////////
         // watches 
@@ -33,6 +42,13 @@ angular.module('emuwebApp')
 	scope.$watch('cLAD', function (newValue) {
 		console.debug('Rendering due to attribute change: ', newValue);
 		scope.render();
+	}, true);
+
+	scope.$watch('playing', function (newValue) {
+		console.debug(newValue, scope.selectedItem);
+		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
+			scope.play(scope.selectedItem);
+		}
 	}, true);
 
         //
@@ -157,7 +173,7 @@ angular.module('emuwebApp')
 
 			currentDescendant._collapsePosition = [d._x, d._y];
 		}
-		
+
 		scope.selectVisibleNodes();
 		scope.render();
 	};
@@ -165,6 +181,12 @@ angular.module('emuwebApp')
 	scope.nodeOnRightClick = function (d) {
 		scope.play(d);
 	};
+	
+	scope.nodeOnMouseOver = function (d) {
+		scope.selectedItem = d;
+		scope.render();
+	};
+		
 
 	scope.play = function (d) {
 		var timeInfoLevel = scope.path[0];
@@ -444,8 +466,10 @@ angular.module('emuwebApp')
 
 			// event handlers
 			//.call(dragListener)
+			.attr('pointer-events', 'mouseover')
 			.on('click', scope.nodeOnClick)
-			.on('dblclick', scope.nodeOnRightClick)
+			//.on('dblclick', scope.nodeOnRightClick)
+			.on('mouseover', scope.nodeOnMouseOver)
 			;
 
 		newNodes.append('circle')
@@ -533,6 +557,14 @@ angular.module('emuwebApp')
 			.classed('collapsed', function(d) {
 				return d._collapsed;
 			})
+			// Highlight selected item
+			.classed('selected', function(d) {
+				if (typeof (scope.selectedItem) === 'undefined') {
+					return false;
+				}
+
+				return (d.id === scope.selectedItem.id);
+			})
 			//.attr('r', 4.5)
 			//.style('fill', function (d) {
 			//	return d._children ? 'lightsteelblue' : '#fff';
@@ -546,6 +578,7 @@ angular.module('emuwebApp')
 			.attr('transform', function (d) {
 				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
 			});
+
 
 
 		//

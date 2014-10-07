@@ -19,10 +19,14 @@
 </div>
 
 <div class="modal-body modal-body-hierarchy">
-	<emuhierarchy path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
+	<emuhierarchy playing="getPlaying();" path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
 </div>
 
 <div class="modal-footer modal-footer-hierarchy">
+	<button class="emuwebapp-mini-btn-dialog" ng-click="playSelection()">
+		play selected item
+	</button>
+
 	<button class="emuwebapp-mini-btn-dialog" ng-click="rotateHierarchy()">
 		<span class="glyphicon glyphicon-repeat"></span> 
 		rotate by 90°
