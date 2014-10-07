@@ -470,6 +470,7 @@ angular.module('emuwebApp')
 			.on('click', scope.nodeOnClick)
 			//.on('dblclick', scope.nodeOnRightClick)
 			.on('mouseover', scope.nodeOnMouseOver)
+			.on('contextmenu', scope.play)
 			;
 
 		newNodes.append('circle')
