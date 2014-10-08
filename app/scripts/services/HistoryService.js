@@ -115,7 +115,7 @@ angular.module('emuwebApp')
 							LevelService.deletePoint(cur.name, cur.id);
 						}
 						break;						
-					case 'EXPANDSEGMENTS': // ongoing
+					case 'EXPANDSEGMENTS':
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {

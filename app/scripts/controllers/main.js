@@ -1048,9 +1048,6 @@ angular.module('emuwebApp')
 		 * @param persp json object of current perspective containing name attribute
 		 */
 		$scope.changePerspective = function (persp) {
-			// viewState.somethingInProgress = true;
-			// alert(nameOfDB);
-			// viewState.somethingInProgressTxt = 'Changing perspective...';
 
 			var newIdx;
 			for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
