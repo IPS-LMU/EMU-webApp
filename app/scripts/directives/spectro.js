@@ -112,8 +112,6 @@ angular.module('emuwebApp')
           context.fillRect(0, 0, canvas0.width, canvas0.height);
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(markupCtx, false);
-          // context.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
-          // context.fillStyle = scope.cps.vals.colors.labelColor;
           var horizontalText = fontScaleService.getTextImage(context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
           context.drawImage(horizontalText, 10, 50);
 
@@ -157,7 +155,6 @@ angular.module('emuwebApp')
           }
           setupEvent();
           primeWorker.postMessage({
-            'cmd': 'config',
             'N': scope.vs.spectroSettings.windowLength,
             'alpha': alpha,
             'freq': scope.vs.spectroSettings.rangeTo,
@@ -178,9 +175,6 @@ angular.module('emuwebApp')
             'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
             'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
           }, [parseData.buffer]);
-          primeWorker.postMessage({
-            'cmd': 'render'
-          });
         }
       }
     };

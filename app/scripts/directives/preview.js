@@ -65,6 +65,8 @@ angular.module('emuwebApp')
 				 */
 				function drawPreview() {
 					if (!initialized) {
+						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
+						Drawhelperservice.osciPeaks = allPeakVals;
 						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 						initialized = true;
 						drawVpOsciMarkup(viewState, canvas, ConfigProviderService);

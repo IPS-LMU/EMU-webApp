@@ -212,14 +212,14 @@ function wav2jso(buf) {
 /**
  * add event listener to webworker
  */
-self.addEventListener('message', function (e) {
+addEventListener('message', function (e) {
 	var data = e.data;
 	switch (data.cmd) {
 	case 'parseBuf':
 		// console.log(e)
 		var parserRes = wav2jso(data.buffer);
 		if (parserRes.status === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -227,11 +227,11 @@ self.addEventListener('message', function (e) {
 				'data': parserRes
 			});
 		} else {
-			self.postMessage(parserRes);
+			this.postMessage(parserRes);
 		}
 		break;
 	default:
-		self.postMessage({
+		this.postMessage({
 			'status': {
 				'type': 'ERROR',
 				'message': 'Unknown command sent to wavParserWorker'

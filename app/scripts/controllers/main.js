@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
 
-		$scope.lastkeycode = 'N/A';
+		//$scope.lastkeycode = 'N/A';
 		$scope.bundleList = [];
 
 		$scope.curUserName = '';
@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						$scope.openSubmenu();
+						viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -178,8 +178,6 @@ angular.module('emuwebApp')
 											viewState.somethingInProgressTxt = 'Done!';
 											viewState.somethingInProgress = false;
 											viewState.setState('labeling');
-											// close submenu... 
-											// $scope.openSubmenu();
 
 										}, function (errMess) {
 											dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
@@ -255,7 +253,7 @@ angular.module('emuwebApp')
 		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
-				$scope.openSubmenu();
+				viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
@@ -571,20 +569,24 @@ angular.module('emuwebApp')
 
 		$scope.getEnlarge = function (index) {
 			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
+			var large = 50;
 			if (viewState.getenlarge() == -1) {
 				return 'auto';
 			} else {
-				if (len == 2) {
+			    if (len === 1) {
+			        return 'auto';
+			    }
+				if (len === 2) {
 					if (viewState.getenlarge() == index) {
-						return '75%';
+						return '70%';
 					} else {
-						return '25%';
+						return '27%';
 					}
 				} else {
 					if (viewState.getenlarge() == index) {
-						return Math.floor((100 / len) * (len - 1)) + '%';
+						return large+'%';
 					} else {
-						return Math.floor((100 / len) / (len - 1)) + '%';
+						return (98-large)/(len - 1) + '%';
 					}
 				}
 			}
@@ -636,18 +638,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.openSubmenu = function () {
-			if (viewState.getsubmenuOpen()) {
-				viewState.setsubmenuOpen(false);
-			} else {
-				viewState.setsubmenuOpen(true);
-			}
-			$timeout($scope.refreshTimeline, ConfigProviderService.vals.colors.transitionTime);
+			viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
 		};
-
-		$scope.refreshTimeline = function () {
-			$scope.$broadcast('refreshTimeline');
-		};
-
 
 		/////////////////////////////////////////
 		// handle button clicks
@@ -658,14 +650,11 @@ angular.module('emuwebApp')
 		 */
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-				var newName, levelLength;
-				if (LevelService.data.levels === undefined) {
-					newName = 'levelNr0';
-					levelLength = 0;
-				} else {
-					newName = 'levelNr' + LevelService.data.levels.length;
-					levelLength = LevelService.data.levels.length;
+			    var length = 0;
+			    if(LevelService.data.levels!==undefined) {
+				    length = LevelService.data.levels.length;
 				}
+				var newName = 'levelNr'+length;
 				var level = {
 					items: [{
 						id: LevelService.getNewId(),
@@ -679,13 +668,25 @@ angular.module('emuwebApp')
 					name: newName,
 					type: 'SEGMENT'
 				};
-				LevelService.addLevel(level, levelLength, viewState.curPerspectiveIdx);
+
+				if(viewState.getCurAttrDef(newName)===undefined) {
+					var leveldef = {
+						name: newName,
+						type: 'EVENT',
+						attributeDefinitions:{
+							name: newName,
+							type: "string"
+						}
+					} 
+					viewState.setCurLevelAttrDefs(leveldef);
+				}				
+				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'ADDLEVEL',
 					'level': level,
-					'id': LevelService.data.levels.length - 1,
+					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -700,27 +701,42 @@ angular.module('emuwebApp')
 		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
-
-				var newName = 'levelNr' + LevelService.data.levels.length;
+			    var length = 0;
+			    if(LevelService.data.levels!==undefined) {
+				    length = LevelService.data.levels.length;
+				}
+				var newName = 'levelNr'+length;
 				var level = {
 					items: [{
 						id: LevelService.getNewId(),
-						samplePoint: Soundhandlerservice.wavJSO.Data.length / 2,
-						labels: [{
-							name: newName,
-							value: ConfigProviderService.vals.labelCanvasConfig.newEventName
-						}]
+						samplePoint: Math.round(Soundhandlerservice.wavJSO.Data.length / 2),
+						labels: []
 					}],
 					name: newName,
 					type: 'EVENT'
 				};
-				LevelService.addLevel(level, LevelService.data.levels.length, viewState.curPerspectiveIdx);
+				level.items[0].labels.push({
+					name: newName,
+					value: ConfigProviderService.vals.labelCanvasConfig.newEventName
+				});
+				if(viewState.getCurAttrDef(newName)===undefined) {
+					var leveldef = {
+						name: newName,
+						type: 'EVENT',
+						attributeDefinitions:{
+							name: newName,
+							type: "string"
+						}
+					} 
+					viewState.setCurLevelAttrDefs(leveldef);
+				}	
+				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ESPS',
 					'action': 'ADDLEVEL',
 					'level': level,
-					'id': LevelService.data.levels.length - 1,
+					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
 
@@ -1026,21 +1042,7 @@ angular.module('emuwebApp')
 
 		///////////////////////////
 		// other
-
-		/**
-		 *
-		 */
-		$scope.setlastkeycode = function (c) {
-			$scope.lastkeycode = c;
-		};
-
-		/**
-		 * SIC should move into viewstate.rightSubmenuOpen variable
-		 */
-		$scope.toggleRightSideMenuHidden = function () {
-			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
-		};
-
+		 
 		/**
 		 * function used to change perspective
 		 * @param persp json object of current perspective containing name attribute
@@ -1058,9 +1060,7 @@ angular.module('emuwebApp')
 			}
 			viewState.curPerspectiveIdx = newIdx;
 			// close submenu
-			$scope.toggleRightSideMenuHidden();
-			// viewState.somethingInProgressTxt = 'Done!';
-			// viewState.somethingInProgress = false;
+			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen())
 		};
 
 		/**
