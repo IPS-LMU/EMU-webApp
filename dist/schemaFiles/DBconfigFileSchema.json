@@ -52,10 +52,27 @@
 								"type": {
 									"enum": ["STRING"]
 								},
-								"legalValues": {
+								"legalLabels": {
 									"type": "array",
 									"items": {
 										"type": "string"
+									}
+								},
+								"labelGroups": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										}
 									}
 								}
 							},
@@ -114,29 +131,6 @@
 						"required": ["verticalPosSsffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "multiplicationFactor", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
 						"additionalProperties": false,
 						"uniqueItems": true
-					}
-				},
-				"labelGroups": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"values": {
-								"type": "array",
-								"items": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"legalLabels": {
-					"type": "array",
-					"items": {
-						"type": "string"
 					}
 				},
 				"required": ["name", "type", "attributeDefinitions"],
