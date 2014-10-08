@@ -11,18 +11,18 @@
 		"mediafileExtension": {
 			"enum": ["wav"]
 		},
-		"ssffTracks": {
+		"ssffTrackDefinitions": {
 			"type": "array",
 			"items": {
 				"type": "object",
 				"properties": {
-					"name": {
-						"type": "string"
-					},
 					"columnName": {
 						"type": "string"
 					},
 					"fileExtension": {
+						"type": "string"
+					},
+					"name": {
 						"type": "string"
 					}
 				},
@@ -50,9 +50,9 @@
 									"type": "string"
 								},
 								"type": {
-									"enum": ["string"]
+									"enum": ["STRING"]
 								},
-								"legalLabels": {
+								"legalValues": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -116,6 +116,29 @@
 						"uniqueItems": true
 					}
 				},
+				"labelGroups": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"values": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"legalLabels": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
 				"required": ["name", "type", "attributeDefinitions"],
 				"additionalProperties": false,
 				"uniqueItems": true
@@ -140,8 +163,25 @@
 				"required": ["type", "superlevelName", "sublevelName"],
 				"additionalProperties": false
 			}
+		},
+		"labelGroups": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"values": {
+						"type": "array",
+						"items": {
+							"type": "sting"
+						}
+					}
+				}
+			}
 		}
 	},
-	"required": ["name", "UUID", "mediafileExtension", "ssffTracks", "levelDefinitions", "linkDefinitions"],
+	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions"],
 	"additionalProperties": false
 }

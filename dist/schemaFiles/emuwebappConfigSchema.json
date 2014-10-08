@@ -298,20 +298,40 @@
 										"ssffTrackName": {
 											"type": "string"
 										},
-										"min": {
+										"minContourIdx": {
 											"type": "integer"
 										},
-										"max": {
+										"maxContourIdx": {
 											"type": "integer"
 										}
 									},
-									"required": ["ssffTrackName", "min", "max"],
+									"required": ["ssffTrackName", "minContourIdx", "maxContourIdx"],
 									"additionalProperties": false
 								}
-							}
-						},
+							},
+							"contourColors": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"colors": {
+											"type": "array",
+											"items": {
+											    "type": "string"
+											}
+										}
+									},
+									"required": ["ssffTrackName", "colors"],
+									"additionalProperties": false
+								}
+
+						    }
+						},						
 						"required": ["order", "assign", "contourLims"],
-						"additionalProperties": false
+						"additionalProperties": true
 					},
 					"levelCanvases": {
 						"type": "object",
