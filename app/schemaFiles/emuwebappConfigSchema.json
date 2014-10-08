@@ -298,14 +298,14 @@
 										"ssffTrackName": {
 											"type": "string"
 										},
-										"min": {
+										"minContourIdx": {
 											"type": "integer"
 										},
-										"max": {
+										"maxContourIdx": {
 											"type": "integer"
 										}
 									},
-									"required": ["ssffTrackName", "min", "max"],
+									"required": ["ssffTrackName", "minContourIdx", "maxContourIdx"],
 									"additionalProperties": false
 								}
 							},

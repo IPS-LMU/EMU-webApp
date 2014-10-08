@@ -44,10 +44,24 @@ function findTimeOfMaxSample(buffLength, sampleRate) {
  */
 function toJSO(string, myFile, myName) {
 
+	var VU_STR = '123abcABCCBAcba321'; // very unlikly string
+
 	// remove all empty lines from string
 	string = string.replace(/([ \t]*\r?\n)+/g, '\n');
-	// remove all blanks
-	string = string.replace(/[ \t]+/g, '');
+
+	// replace blanks in quates with VU_STR to preserve blanks in labels
+	string = string.replace(/("[^\n]*")/g, function ($0, $1) {
+		var res = $1.replace(/\s+/g, VU_STR);
+		return res;
+	});
+
+	// remove remaining blanks
+	string = string.replace(/[\t ]+/g, '');
+
+	// convert VU_STR back to blanks
+	var re = new RegExp(VU_STR, 'g');
+	string = string.replace(re, ' ');
+
 	var lines = string.split('\n');
 
 	var tT, tN, eT, lab;
@@ -115,6 +129,7 @@ function toJSO(string, myFile, myName) {
 				}
 				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 				lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
+				var labs = [];
 				labs.push({
 					name: labelJSO.levels[labelJSO.levels.length - 1].name,
 					value: lab
@@ -209,13 +224,13 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 			if (curLevel.type === 'SEGMENT') {
 				tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
 				if (curLevel.items[j].sampleStart !== 0) {
-					curVal = ((curLevel.items[j].sampleStart / sampleRate) + ((1 / sampleRate) / 2) );
-					tG = tG + t + t + t + t + 'xmin = ' + curVal  + nl;
+					curVal = ((curLevel.items[j].sampleStart / sampleRate) + ((1 / sampleRate) / 2));
+					tG = tG + t + t + t + t + 'xmin = ' + curVal + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 				}
 				if (j < curLevel.items.length - 1) {
-					curVal =(((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2) );
+					curVal = (((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2));
 					tG = tG + t + t + t + t + 'xmax = ' + curVal + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;

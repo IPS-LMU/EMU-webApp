@@ -225,14 +225,14 @@ wss.on('connection', function (ws) {
             bundle.annotation = {};
             bundle.annotation.filePath = p;
           }
-          // read ssffTracks
+          // read ssffTrackDefinitions
 
-          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
-            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
-            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
+          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
+            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
+            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
             if (pattTrack.test(p)) {
               bundle.ssffFiles.push({
-                ssffTrackName: dbConfig.ssffTracks[i].name,
+                ssffTrackName: dbConfig.ssffTrackDefinitions[i].name,
                 encoding: 'BASE64',
                 filePath: p
               });
@@ -257,7 +257,7 @@ wss.on('connection', function (ws) {
           bundle.annotation = JSON.parse(fs.readFileSync(pathToDbRoot + bundle.annotation.filePath, 'utf8'));
           // delete bundle.annotation.filePath;
           console.log(bundle.ssffFiles)
-          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
+          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
             bundle.ssffFiles[i].data = fs.readFileSync(pathToDbRoot + bundle.ssffFiles[i].filePath, 'base64');
             delete bundle.ssffFiles[i].filePath;
           }

@@ -50,8 +50,8 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSsffTrackConfig = function (name) {
 			var res;
-			if (sServObj.curDbConfig.ssffTracks !== undefined) {
-				angular.forEach(sServObj.curDbConfig.ssffTracks, function (tr) {
+			if (sServObj.curDbConfig.ssffTrackDefinitions !== undefined) {
+				angular.forEach(sServObj.curDbConfig.ssffTrackDefinitions, function (tr) {
 					if (tr.name === name) {
 						res = tr;
 					}
@@ -67,8 +67,7 @@ angular.module('emuwebApp')
 			var res = {};
 			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
 				if (cL.ssffTrackName === trackName) {
-					res.min = cL.min;
-					res.max = cL.max;
+					res = cL;
 				}
 			});
 
