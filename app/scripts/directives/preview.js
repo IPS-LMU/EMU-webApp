@@ -53,7 +53,9 @@ angular.module('emuwebApp')
 					//clear on empty bundle name
 					if (scope.currentBundleName === '') {
 						var ctx = canvas.getContext('2d');
+						var ctxMarkup = markupCanvas.getContext('2d');
 						ctx.clearRect(0, 0, canvas.width, canvas.height);
+						ctxMarkup.clearRect(0, 0, canvas.width, canvas.height);
 					}
 				}, true);
 
