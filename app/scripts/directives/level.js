@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 						viewState.setCurAttrDef(scope.level.name, attrDefName, index);
 
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
-							viewState.focusInTextField = false;
+							viewState.setEditing(false);
 							LevelService.deleteEditArea();
 							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
 						}

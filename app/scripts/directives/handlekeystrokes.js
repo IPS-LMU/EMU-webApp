@@ -27,10 +27,9 @@ angular.module('emuwebApp')
                 return;
               }
             }
-            //scope.setlastkeycode(code, e.shiftKey);
-            if (viewState.focusInTextField) {
-              if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
-                if (viewState.isEditing()) {                  
+            if (viewState.isEditing()) {
+              console.log(code);
+              if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {            
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
                   HistoryService.addObjToUndoStack({
@@ -44,12 +43,11 @@ angular.module('emuwebApp')
                   });
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
-                  viewState.focusInTextField = false;
-                }
+                  viewState.setEditing(false);
               }
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 LevelService.deleteEditArea();
-                viewState.focusInTextField = false;
+                viewState.setEditing(false);
               }
               if (code === 13) {
                 e.preventDefault();
@@ -610,7 +608,7 @@ angular.module('emuwebApp')
 							  LevelService.setlasteditArea('_' + seg.id);
 							  viewState.setEditing(true);
 							  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-							  viewState.focusInTextField = true;
+							  viewState.setEditing(true);
                           }
                           else {
 							  var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);

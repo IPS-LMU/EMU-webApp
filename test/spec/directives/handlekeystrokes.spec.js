@@ -921,26 +921,22 @@ describe('Directive: handleglobalkeystrokes', function() {
         });
     });
     
-    it('should escape from viewState.focusInTextField', function() {
-        // set focusInTextField to be true
-        scope.vs.focusInTextField = true;
+    it('should escape from viewState.isEditing()', function() {
+        // set editing to be true
         scope.vs.setEditing(true);
         scope.lvl.setlasteditArea('_141');
         scope.vs.setcurClickLevelName('Word',0);
         scope.vs.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
         spyOn(scope.lvl, 'deleteEditArea');
         trigEvent(scope.cps.vals.keyMappings.esc, false);
-        expect(scope.vs.focusInTextField).toBe(false); 
+        expect(scope.vs.isEditing()).toBe(false); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();  
-        // set focusInTextField back to be false
-        scope.vs.focusInTextField = false;
         // set setEditing back to be false
         scope.vs.setEditing(false);
     });   
  
-    it('should rename on viewState.focusInTextField', function() {
-        // set focusInTextField to be true
-        scope.vs.focusInTextField = true;
+    it('should rename on viewState.isEditing()', function() {
+        // set editing to be true
         scope.vs.setEditing(true);
         scope.lvl.setlasteditArea('_141');
         scope.vs.setcurClickLevelName('Word',0);
@@ -954,8 +950,6 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.getItemFromLevelById).toHaveBeenCalled();  
         expect(scope.lvl.renameLabel).toHaveBeenCalled();  
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();  
-        // set focusInTextField back to be false
-        scope.vs.focusInTextField = false;
         // set setEditing back to be false
         scope.vs.setEditing(false);
     });

@@ -624,14 +624,14 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.focusInTextField = true;
+			viewState.setEditing(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.focusInTextField = false;
+			viewState.setEditing(false);
 		};
 
 		/**

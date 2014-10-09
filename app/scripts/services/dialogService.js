@@ -55,7 +55,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.close = function (res) {
-			viewState.focusInTextField = false;
+			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
 			modalInstance.close(res);
 		};

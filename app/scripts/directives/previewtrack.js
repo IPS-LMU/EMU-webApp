@@ -17,7 +17,7 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
             var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
             startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
-            if (!viewState.focusInTextField) {
+            if (!viewState.isEditing()) {
               scope.$apply(function () {
                 viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
               });
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
             if (startPCM !== -1) {
               var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
               startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
-              if (!viewState.focusInTextField) {
+              if (!viewState.isEditing()) {
                 scope.$apply(function () {
                   viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
                 });
