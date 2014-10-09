@@ -35,7 +35,7 @@ describe('E2E: spectrogram settings', function () {
 	// afterEach it
 	afterEach(function () {
 		// reset to default values
-		element(by.id('spectSettingsBtn')).click();
+		/*element(by.id('spectSettingsBtn')).click();
 		element(by.model('modalVals.rangeFrom')).clear()
 		element(by.model('modalVals.rangeFrom')).sendKeys('0');
 		element(by.model('modalVals.rangeTo')).clear()
@@ -47,7 +47,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('windowLength'), '256');		
 		ptor.selectOption(by.id('selWindowInfo'), 'GAUSS');				
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(1250);
+		ptor.sleep(1250);*/
 	});
 
 	it('should be able to set window Func to BARLETT and window Len to 1024', function () {
@@ -56,7 +56,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'BARLETT');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 	
 	it('should be able to set window Func to BARLETTHANN and window Len to 1024', function () {
@@ -65,7 +65,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'BARLETTHANN');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 
 	it('should be able to set window Func to BLACKMAN and window Len to 1024', function () {
@@ -74,7 +74,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'BLACKMAN');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 
 	it('should be able to set window Func to COSINE and window Len to 1024', function () {
@@ -83,7 +83,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'COSINE');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 
 	it('should be able to set window Func to HAMMING and window Len to 1024', function () {
@@ -92,7 +92,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'HAMMING');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 
 	it('should be able to set window Func to HANN and window Len to 1024', function () {
@@ -101,7 +101,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'HANN');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 	
 	it('should be able to set window Func to LANCZOS and window Len to 1024', function () {
@@ -110,7 +110,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'LANCZOS');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});	
 
 	it('should be able to set window Func to RECTANGULAR and window Len to 1024', function () {
@@ -119,7 +119,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'RECTANGULAR');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});
 
 	it('should be able to set window Func to TRIANGULAR and window Len to 1024', function () {
@@ -128,7 +128,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('selWindowInfo'), 'TRIANGULAR');
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
-		ptor.sleep(750);
+		ptor.sleep(500);
 	});		
 
 	it('should be able to set window Length to 32', function () {

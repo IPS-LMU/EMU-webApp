@@ -2,11 +2,10 @@
 
 angular.module('emuwebApp')
 	.service('Validationservice', function Validationservice($http, $q) {
+
 		//shared service object to be returned
 		var sServObj = {};
-
 		var schemasJsos = [];
-
 		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema','bundleListSchema'];
 
 		/**
@@ -18,7 +17,6 @@ angular.module('emuwebApp')
 			angular.forEach(names, function (n) {
 				proms.push($http.get('schemaFiles/' + n + '.json'));
 			});
-
 			return $q.all(proms);
 		};
 
@@ -34,15 +32,6 @@ angular.module('emuwebApp')
 			});
 		};
 
-		//.then(function (resp) {
-		// schemasJsos.push({
-		// 	name: n,
-		// 	data: resp.data
-		// }, function (err) {
-		// 	console.error('Unable to load schemas!');
-		// 	console.error(err);
-		// });
-
 		/**
 		 *
 		 */
@@ -53,18 +42,15 @@ angular.module('emuwebApp')
 					schema = s;
 				}
 			});
-
 			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				return true;
 			} else {
 				if (schema === undefined) {
-					return 'Schema: ' + schemaName + ' is currently undefined! This is probably due to a misnamed schema file on the server...'
+					return 'Schema: ' + schemaName + ' is currently undefined! This is probably due to a misnamed schema file on the server...';
 				} else {
 					return tv4.error;
 				}
 			}
-
-
 		};
 
 		return sServObj;

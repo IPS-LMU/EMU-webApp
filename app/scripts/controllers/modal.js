@@ -16,14 +16,14 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.focusInTextField = true;
+			viewState.setEditing(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.focusInTextField = false;
+			viewState.setEditing(false);
 		};
 
 		/**
@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 
 			LevelService.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
-				'type': 'ESPS',
+				'type': 'ANNOT',
 				'action': 'RENAMELEVEL',
 				'newname': $scope.passedOutTxt.var,
 				'name': $scope.passedInTxt,
@@ -65,7 +65,7 @@ angular.module('emuwebApp')
 			var lvl = LevelService.getLevelDetails(viewState.getcurClickLevelName());
 			LevelService.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
-				'type': 'ESPS',
+				'type': 'ANNOT',
 				'action': 'DELETELEVEL',
 				'level': lvl.level,
 				'id': viewState.getcurClickLevelIndex(),

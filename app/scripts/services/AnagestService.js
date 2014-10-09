@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
 		// shared service object
 		var sServObj = {};
 
@@ -137,7 +137,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
 							var gdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[0],
@@ -147,7 +147,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
 							var gdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[1],
@@ -161,7 +161,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
 							var vdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[0],
@@ -171,7 +171,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
 							var vdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[1],
@@ -185,7 +185,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
 							var ndat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[0],
@@ -195,7 +195,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
 							var ndat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[1],
@@ -208,7 +208,7 @@ angular.module('emuwebApp')
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
 							var cdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
+								'type': 'ANNOT',
 								'action': 'INSERTPOINT',
 								'name': viewState.getcurClickLevelName(),
 								'start': cdat[0],
@@ -219,18 +219,17 @@ angular.module('emuwebApp')
 							var linkLevelName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
 							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
-							console.log(linkLevelLabels);
-
 
 							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', linkLevelLabels).then(function (itemIdx) {
 								var childIDs = [
 									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
 									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
 								];
-								LevelService.addLinkToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
+								LinkService.addMultipleLinksToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
 								HistoryService.updateCurChangeObj({
-									'type': 'ESPS',
-									'action': 'LINKTOPARENT',
+									'type': 'ANNOT',
+									'action': 'ADDLINKTOPARENT',
+									'name': linkLevelDetails.level.name,
 									'parentID': linkLevelDetails.level.items[itemIdx].id,
 									'childIDs': childIDs
 								});

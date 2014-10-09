@@ -74,9 +74,8 @@ function toJSO(string, annotates, name, sampleRate) {
 		}
 
 	}
-
 	return labelJSO;
-};
+}
 
 /**
  * SIC! This function probably has to be fixed...
@@ -101,20 +100,21 @@ function toESPS(data, name, sampleRate) {
 
 	// console.log(espsStr);
 	return espsStr;
-};
+}
 
 
 /**
  * add event listener to webworker
  */
-self.addEventListener('message', function (e) {
+addEventListener('message', function (e) {
 	var data = e.data;
+	var retVal;
 	switch (data.cmd) {
 	case 'parseESPS':
 		// sampleRate = data.sampleRate;
-		var retVal = toJSO(data.esps, data.annotates, data.name, data.sampleRate)
+		retVal = toJSO(data.esps, data.annotates, data.name, data.sampleRate);
 		if (retVal.type === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -122,13 +122,13 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	case 'parseJSO':
-		var retVal = toESPS(data.level.items, data.level.name, data.sampleRate)
+		retVal = toESPS(data.level.items, data.level.name, data.sampleRate);
 		if (retVal.type === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -136,11 +136,11 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	default:
-		self.postMessage({
+		this.postMessage({
 			'status': {
 				'type': 'ERROR',
 				'message': 'Unknown command sent to espsParserWorker: ' + data.cmd
@@ -149,4 +149,4 @@ self.addEventListener('message', function (e) {
 
 		break;
 	}
-})
+});

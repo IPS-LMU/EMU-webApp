@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 		$scope.serverInfos.Url = ConfigProviderService.vals.main.serverUrl;
 
 		$scope.connectionError = '';
-		viewState.focusInTextField = true;
+		viewState.setEditing(true);
 
 		$scope.tryConnection = function () {
 			dialogService.close($scope.serverInfos.Url);

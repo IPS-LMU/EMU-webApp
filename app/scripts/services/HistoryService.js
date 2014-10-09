@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
-				} else if (cur.type === 'ESPS') {
+				} else if (cur.type === 'ANNOT') {
 					switch (cur.action) {
 					case 'MOVEBOUNDARY':
 						if (applyOldVal) {
@@ -114,15 +114,35 @@ angular.module('emuwebApp')
 						} else {
 							LevelService.deletePoint(cur.name, cur.id);
 						}
-						break;						
-					case 'EXPANDSEGMENTS': // ongoing
+						break;
+					case 'EXPANDSEGMENTS':
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
-
+					case 'ADDLINKTOPARENT':
+						if (applyOldVal) {
+							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
+						} else {
+							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
+						}
+						break;
+					case 'DELETELINKTOPARENT':
+						if (applyOldVal) {
+							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
+						} else {
+							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
+						}
+						break;
+					case 'DELETELINKS':
+						if (applyOldVal) {
+							LinkService.addMultipleLinks(cur.deletedLinks);
+						} else {
+							LinkService.deleteMultipleLinks(cur.id);
+						}
+						break;
 					}
 				}
 			});
@@ -139,22 +159,18 @@ angular.module('emuwebApp')
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
 				dataKey = String(dataObj.type + '#' + dataObj.trackName) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
-				console.log(dataKey);
 				// update curChangeObj
 				if (!curChangeObj[dataKey]) {
 					curChangeObj[dataKey] = dataObj;
 				} else {
-					// console.log('here' + curChangeObj[dataKey].oldValue);
-					// keep init old value
 					dataObj.oldValue = curChangeObj[dataKey].oldValue;
 					curChangeObj[dataKey] = dataObj;
 				}
-			} else if (dataObj.type === 'ESPS') {
+			} else if (dataObj.type === 'ANNOT') {
 				switch (dataObj.action) {
 				case 'MOVEBOUNDARY':
 				case 'MOVEPOINT':
 				case 'MOVESEGMENT':
-				case 'INSERTPOINT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -163,7 +179,21 @@ angular.module('emuwebApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
+				case 'ADDLINKTOPARENT':
+				case 'DELETELINKTOPARENT':
+				case 'DELETELINKS':	
+				case 'DELETEBOUNDARY':
+				    dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
+					if (!curChangeObj[dataKey]) {
+						curChangeObj[dataKey] = dataObj;
+					} else {
+						dataObj.oldValue = curChangeObj[dataKey].oldValue;
+						curChangeObj[dataKey] = dataObj;
+					}
+							
+					break;				
 				}
+				
 			}
 			return (curChangeObj);
 

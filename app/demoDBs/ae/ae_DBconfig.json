@@ -140,8 +140,8 @@
 				}],
 				"contourLims": [{
 					"ssffTrackName": "FORMANTS",
-					"min": 0,
-					"max": 1
+					"minContourIdx": 0,
+					"maxContourIdx": 1
 				}]
 			},
 			"levelCanvases": {
@@ -157,8 +157,8 @@
 				"assign": [],
 				"contourLims": [{
 					"ssffTrackName": "dftSpec",
-					"min": 0,
-					"max": 11
+					"minContourIdx": 0,
+					"maxContourIdx": 11
 				}]
 			},
 			"levelCanvases": {

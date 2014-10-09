@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, $window, Soundhandlerservice) {
+  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -59,6 +59,7 @@ angular.module('emuwebApp')
       sServObj.somethingInProgressTxt = '';
       sServObj.curClickSegments = [];
       sServObj.editing = false;
+      sServObj.saving = true;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
       sServObj.curMousePosSample = 0;
@@ -379,16 +380,25 @@ angular.module('emuwebApp')
     sServObj.getSampleDist = function (w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
+    
 
     /**
-     * get the height of the osci
+     * toggle boolean if left submenu is open
+     */
+    sServObj.togglesubmenuOpen = function (time) {
+      this.submenuOpen = !this.submenuOpen;
+      $timeout(function () {$rootScope.$broadcast('refreshTimeline')}, time, false);
+    };
+
+    /**
+     * get boolean if left submenu is open
      */
     sServObj.getsubmenuOpen = function () {
       return this.submenuOpen;
     };
 
     /**
-     * get the height of the osci
+     * set boolean if left submenu is open
      */
     sServObj.setsubmenuOpen = function (s) {
       this.submenuOpen = s;
@@ -648,7 +658,7 @@ angular.module('emuwebApp')
         } else {
           left = sServObj.curClickSegments[0].samplePoint;
         }
-        var right = sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleStart + sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleDur ||  sServObj.curClickSegments[0].samplePoint;
+        right = sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleStart + sServObj.curClickSegments[sServObj.curClickSegments.length - 1].sampleDur ||  sServObj.curClickSegments[0].samplePoint;
         sServObj.curClickSegments.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -667,12 +677,11 @@ angular.module('emuwebApp')
      */
     sServObj.setcurClickSegmentMultiple = function (segment) {
       var empty = true;
-      var my = this;
       var start = segment.sampleStart;
       var end = start + segment.sampleDur + 1;
       sServObj.curClickSegments.forEach(function (entry) {
-        var front = (entry.sampleStart == end) ? true : false;
-        var back = ((entry.sampleStart + entry.sampleDur + 1) == start) ? true : false;
+        var front = (entry.sampleStart === end) ? true : false;
+        var back = ((entry.sampleStart + entry.sampleDur + 1) === start) ? true : false;
         if ((front || back) && sServObj.curClickSegments.indexOf(segment) === -1) {
           sServObj.curClickSegments.push(segment);
           empty = false;
@@ -690,12 +699,15 @@ angular.module('emuwebApp')
      *
      */
     sServObj.sortbyid = function (a, b) {
-      //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-      if (a.sampleStart > b.sampleStart) return 1;
-      if (a.sampleStart < b.sampleStart) return -1;
-      return 0;
-    };
-
+        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+        if (a.sampleStart > b.sampleStart) {
+          return 1;
+        }
+        if (a.sampleStart < b.sampleStart) {
+          return -1;
+        }
+        return 0;
+      };
 
     /**
      * gets the current (click) Segment
@@ -765,6 +777,20 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
+    };
+
+    /**
+     *
+     */
+    sServObj.isSavingAllowed = function () {
+      return this.saving;
+    };
+
+    /**
+     *
+     */
+    sServObj.setSavingAllowed = function (n) {
+      this.saving = n;
     };
 
     /**
@@ -1044,18 +1070,16 @@ angular.module('emuwebApp')
     /**
 	*
 	*/
-	sServObj.getX = function (e) {
+    sServObj.getX = function (e) {
 	    return (e.offsetX || e.originalEvent.layerX) * (e.originalEvent.target.width / e.originalEvent.target.clientWidth);
-	};
+    };
 
 	/**
 	*
 	*/
-	sServObj.getY = function (e) {
+    sServObj.getY = function (e) {
 	    return (e.offsetY || e.originalEvent.layerY) * (e.originalEvent.target.height / e.originalEvent.target.clientHeight);
-	};    
-
-
+    };
 
     /**
      *

@@ -3,8 +3,38 @@
 var sampleRate;
 var l1 = 'File type = \"ooTextFile\"';
 var l2 = 'Object class = \"TextGrid\"';
-
 var localID = 0;
+
+/**
+ * test to see if all the segments in seg levels
+ * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
+ */
+function testForGapsInLabelJSO(labelJSO) {
+	var counter = 0;
+	for (var i = 0; i < labelJSO.levels.length; i++) {
+		if (labelJSO.levels[i].type === 'SEGMENT') {
+			for (var j = 0; j < labelJSO.levels[i].items.length - 1; j++) {
+				if (labelJSO.levels[i].items[j].sampleStart + labelJSO.levels[i].items[j].sampleDur + 1 !== labelJSO.levels[i].items[j + 1].sampleStart) {
+					counter = counter + 1;
+				}
+			}
+		}
+	}
+}
+
+/**
+ *
+ */
+function findTimeOfMinSample() {
+	return 0.000000; // maybe needed at some point...
+}
+
+/**
+ *
+ */
+function findTimeOfMaxSample(buffLength, sampleRate) {
+	return buffLength / sampleRate;
+}
 
 /**
  * parse a textgrid string to the specified json format
@@ -14,14 +44,29 @@ var localID = 0;
  */
 function toJSO(string, myFile, myName) {
 
+	var VU_STR = '123abcABCCBAcba321'; // very unlikly string
+
 	// remove all empty lines from string
 	string = string.replace(/([ \t]*\r?\n)+/g, '\n');
-	// remove all blanks
-	string = string.replace(/[ \t]+/g, '');
+
+	// replace blanks in quates with VU_STR to preserve blanks in labels
+	string = string.replace(/("[^\n]*")/g, function ($0, $1) {
+		var res = $1.replace(/\s+/g, VU_STR);
+		return res;
+	});
+
+	// remove remaining blanks
+	string = string.replace(/[\t ]+/g, '');
+
+	// convert VU_STR back to blanks
+	var re = new RegExp(VU_STR, 'g');
+	string = string.replace(re, ' ');
+
 	var lines = string.split('\n');
 
 	var tT, tN, eT, lab;
 	var inHeader = true;
+	var labs = [];
 
 	//meta info for labelJSO
 	var labelJSO = {
@@ -84,7 +129,6 @@ function toJSO(string, myFile, myName) {
 				}
 				var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 				lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
-
 				var labs = [];
 				labs.push({
 					name: labelJSO.levels[labelJSO.levels.length - 1].name,
@@ -104,7 +148,7 @@ function toJSO(string, myFile, myName) {
 				// parse point level event
 				eT = lines[i + 1].split(/=/)[1] * sampleRate;
 				lab = lines[i + 2].split(/=/)[1].replace(/"/g, '');
-				var labs = [];
+				labs = [];
 				labs.push({
 					name: labelJSO.levels[labelJSO.levels.length - 1].name,
 					value: lab
@@ -133,8 +177,7 @@ function toJSO(string, myFile, myName) {
 			}
 		});
 	}
-
-};
+}
 
 /**
  * converts the internal levels format returned from levelHandler.getLevels
@@ -181,13 +224,13 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 			if (curLevel.type === 'SEGMENT') {
 				tG = tG + t + t + t + 'intervals [' + evtNr + ']:' + nl;
 				if (curLevel.items[j].sampleStart !== 0) {
-					curVal = ((curLevel.items[j].sampleStart / sampleRate) + ((1 / sampleRate) / 2) );
-					tG = tG + t + t + t + t + 'xmin = ' + curVal  + nl;
+					curVal = ((curLevel.items[j].sampleStart / sampleRate) + ((1 / sampleRate) / 2));
+					tG = tG + t + t + t + t + 'xmin = ' + curVal + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmin = ' + 0 + nl;
 				}
 				if (j < curLevel.items.length - 1) {
-					curVal =(((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2) );
+					curVal = (((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2));
 					tG = tG + t + t + t + t + 'xmax = ' + curVal + nl;
 				} else {
 					tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;
@@ -202,54 +245,24 @@ function toTextGrid(levelData, buffLength, sampleRate) {
 		}
 	}
 	return (tG);
-};
+}
 
 
-/**
- *
- */
-function findTimeOfMinSample() {
-	return 0.000000; // maybe needed at some point...
-};
-
-/**
- *
- */
-function findTimeOfMaxSample(buffLength, sampleRate) {
-	return buffLength / sampleRate;
-};
 
 
-/**
- * test to see if all the segments in seg levels
- * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
- */
-function testForGapsInLabelJSO(labelJSO) {
-	var counter = 0;
-	for (var i = 0; i < labelJSO.levels.length; i++) {
-		if (labelJSO.levels[i].type === 'SEGMENT') {
-			for (var j = 0; j < labelJSO.levels[i].items.length - 1; j++) {
-				if (labelJSO.levels[i].items[j].sampleStart + labelJSO.levels[i].items[j].sampleDur + 1 !== labelJSO.levels[i].items[j + 1].sampleStart) {
-					counter = counter + 1;
-				}
-			}
-		}
-	}
-	// console.log('TextGridParser had: ', counter, 'alignment issues found in parsed TextGrid');
-};
 
 /**
  * add event listener to webworker
  */
-self.addEventListener('message', function (e) {
+addEventListener('message', function (e) {
 	var data = e.data;
+	var retVal;
 	switch (data.cmd) {
 	case 'parseTG':
 		sampleRate = data.sampleRate;
-		var retVal = toJSO(data.textGrid, data.annotates, data.name)
-			// console.log(JSON.stringify(retVal, undefined, 2));
+		retVal = toJSO(data.textGrid, data.annotates, data.name);
 		if (retVal.status === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -257,13 +270,13 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	case 'toTextGrid':
-		var retVal = toTextGrid(data.levels, data.buffLength, data.sampleRate)
+		retVal = toTextGrid(data.levels, data.buffLength, data.sampleRate);
 		if (retVal.status === undefined) {
-			self.postMessage({
+			this.postMessage({
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
@@ -271,17 +284,17 @@ self.addEventListener('message', function (e) {
 				'data': retVal
 			});
 		} else {
-			self.postMessage(retVal);
+			this.postMessage(retVal);
 		}
 		break;
 	default:
-		self.postMessage({
+		this.postMessage({
 			'status': {
 				'type': 'ERROR',
-				'message': 'Unknown command sent to textGridParserWorker: ' + data.cmd
+				'message': 'Unknown command sent to textGridParserWorker'
 			}
 		});
 
 		break;
 	}
-})
+});

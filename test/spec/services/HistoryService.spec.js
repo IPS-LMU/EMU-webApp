@@ -9,7 +9,7 @@ describe('Service: HistoryService', function () {
 
   // NOTE: the ID used here has to be present int msajc003_bundle.annotation
   var changeObj = {
-    'type': 'ESPS',
+    'type': 'ANNOT',
     'action': 'RENAMELABEL',
     'name': 'Phonetic',
     'id': 154,
@@ -19,7 +19,7 @@ describe('Service: HistoryService', function () {
   };
 
   var changeObjmoveBy1 = {
-    'type': 'ESPS',
+    'type': 'ANNOT',
     'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 0,
@@ -28,7 +28,7 @@ describe('Service: HistoryService', function () {
   };
 
   var changeObjmoveBy2 = {
-    'type': 'ESPS',
+    'type': 'ANNOT',
     'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 1,
@@ -37,7 +37,7 @@ describe('Service: HistoryService', function () {
   };
 
   var changeObjmoveBy3 = {
-    'type': 'ESPS',
+    'type': 'ANNOT',
     'action': 'MOVEBOUNDARY',
     'name': 'Phonetic',
     'id': 1,
@@ -68,7 +68,7 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObj);
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -81,7 +81,7 @@ describe('Service: HistoryService', function () {
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -95,7 +95,7 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -110,7 +110,7 @@ describe('Service: HistoryService', function () {
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -127,8 +127,8 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
-    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ANNOT#RENAMELABEL#Phonetic#154');
   }));
 
   /**
@@ -144,18 +144,18 @@ describe('Service: HistoryService', function () {
     HistoryService.redo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
-    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[1])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#1');
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(1);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(1);
-    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#1');
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(2);
-    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#1');
-    expect(Object.keys(HistoryService.getCurrentStack().redo[1])[0]).toEqual('ESPS#MOVEBOUNDARY#Phonetic#0');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[0])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#1');
+    expect(Object.keys(HistoryService.getCurrentStack().redo[1])[0]).toEqual('ANNOT#MOVEBOUNDARY#Phonetic#0');
   }));
 
 

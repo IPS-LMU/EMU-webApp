@@ -28,9 +28,13 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+
   // Define the configuration for all the tasks
   grunt.initConfig({
-
+    
+    // read package.json to have version nrs
+    pkg: grunt.file.readJSON('package.json'),
+    
     // Project settings
     yeoman: appConfig,
 
@@ -106,10 +110,10 @@ module.exports = function (grunt) {
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
-        jshintrc: '.jshintrc'
+        jshintrc: '.jshintrc',
+        strict: true
       },
       all: [
-        'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,*/}*.js'
       ]
     },
@@ -423,11 +427,14 @@ module.exports = function (grunt) {
       dist: {
         options: {
           patterns: [{
-            match: 'timestamp',
-            replacement: '<%= grunt.template.today() %>'
+            match: 'versionnr',
+            replacement: '<%= pkg.version %>'
           }, {
             match: 'sha1',
             replacement: '<%= gitinfo.local.branch.current.SHA %> - <%= gitinfo.local.branch.current.name %>'
+          }, {
+            match: 'timestamp',
+            replacement: '<%= grunt.template.today() %>'
           }]
         },
         files: [{

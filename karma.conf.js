@@ -59,7 +59,6 @@ module.exports = function (config) {
         served: true,
         included: false
       }
-
     ],
 
     // generate js files from html templates to expose them during testing.
@@ -79,8 +78,8 @@ module.exports = function (config) {
     },
 
     proxies: {
-      '/scripts/workers/': 'http://localhost:9000/scripts/workers/',
-      '/img/': 'http://localhost:9000/img/'
+      '/scripts/workers/': 'http://ips-lmu.github.io/EMU-webApp/scripts/workers/',
+      '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/'
     },
 
     // list of files / patterns to exclude
@@ -118,6 +117,8 @@ module.exports = function (config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
+    
+    captureTimeout: 60000,
 
 
     // Continuous Integration mode

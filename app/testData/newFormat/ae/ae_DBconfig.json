@@ -71,7 +71,8 @@
 			"type": "STRING"
 		}, {
 			"name": "IPA",
-			"type": "STRING"
+			"type": "STRING",
+			"legalLabels": ["ʌ", "m", "ŋ", "s", "t", "ɥ", "@:", "f", "r", "ɛ", "n", "z", "ʃ", "iː", "w", "ə", "k", "ɪ", "d", "db", "j", "uː", "dH", "l"]
 		}]
 	}, {
 		"name": "Tone",
@@ -143,8 +144,8 @@
 				}],
 				"contourLims": [{
 					"ssffTrackName": "FORMANTS",
-					"min": 0,
-					"max": 1
+					"minContourIdx": 0,
+					"maxContourIdx": 1
 				}],
 				"contourColors": [{
 				    "ssffTrackName": "FORMANTS",
@@ -164,8 +165,8 @@
 				"assign": [],
 				"contourLims": [{
 					"ssffTrackName": "dftSpec",
-					"min": 0,
-					"max": 9
+					"minContourIdx": 0,
+					"maxContourIdx": 9
 				}]
 			},
 			"levelCanvases": {
