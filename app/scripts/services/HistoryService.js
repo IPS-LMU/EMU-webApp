@@ -136,6 +136,13 @@ angular.module('emuwebApp')
 							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
 						}
 						break;
+					case 'DELETELINKS':
+						if (applyOldVal) {
+							LinkService.addMultipleLinks(cur.deletedLinks);
+						} else {
+							LinkService.deleteMultipleLinks(cur.id);
+						}
+						break;
 					}
 				}
 			});
@@ -164,7 +171,6 @@ angular.module('emuwebApp')
 				case 'MOVEBOUNDARY':
 				case 'MOVEPOINT':
 				case 'MOVESEGMENT':
-				case 'INSERTPOINT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -174,7 +180,9 @@ angular.module('emuwebApp')
 					}
 					break;
 				case 'ADDLINKTOPARENT':
-				case 'DELETELINKTOPARENT':	
+				case 'DELETELINKTOPARENT':
+				case 'DELETELINKS':	
+				case 'DELETEBOUNDARY':
 				    dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;

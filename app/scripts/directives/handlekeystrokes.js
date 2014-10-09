@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -724,7 +724,7 @@ angular.module('emuwebApp')
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
-                            HistoryService.addObjToUndoStack({
+                            HistoryService.updateCurChangeObj({
                               'type': 'ANNOT',
                               'action': 'DELETEBOUNDARY',
                               'name': levelname,
@@ -733,6 +733,16 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
+							var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+							HistoryService.updateCurChangeObj({
+								'type': 'ANNOT',
+								'action': 'DELETELINKS',
+								'name': levelname,
+								'id': seg.id,
+								'deletedLinks': deletedLinks
+							});
+							HistoryService.addCurChangeObjToUndoStack();
+                            
                             // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
