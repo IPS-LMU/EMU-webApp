@@ -8,7 +8,9 @@ angular.module('emuwebApp')
 
         $(document).bind('keyup', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
-          applyKeyCodeUp(code, e);
+          if(viewState.isEditing()) {
+              applyKeyCodeUp(code, e);
+          }
         });
       
       
