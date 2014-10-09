@@ -275,7 +275,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         );
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
         { 
-            type : 'ESPS', 
+            type : 'ANNOT', 
             action : 'MOVEBOUNDARY', 
             name : lvlName, 
             id : item.id, 
@@ -310,7 +310,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         );
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
         { 
-            type : 'ESPS', 
+            type : 'ANNOT', 
             action : 'MOVEBOUNDARY', 
             name : lvlName, 
             id : item.id, 
@@ -338,7 +338,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.moveBoundary).toHaveBeenCalledWith(lvlName, item.id, fakePCMtime, 0 );  
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith( 
         { 
-            type : 'ESPS', 
+            type : 'ANNOT', 
             action : 'MOVEBOUNDARY', 
             name : lvlName, 
             id : item.id, 
@@ -481,7 +481,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, fakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type : 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -501,7 +501,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, newfakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type : 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -534,7 +534,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, fakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -554,7 +554,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, newfakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -588,7 +588,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, -fakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -608,7 +608,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(true, [item], lvlName, -newfakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -641,7 +641,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, -fakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -661,7 +661,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.expandSegment).toHaveBeenCalledWith(false, [item], lvlName, -newfakePCMtime);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
-			type : 'ESPS', 
+			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
 			levelName : 'Phonetic', 
 			item : [ item ], 
@@ -850,7 +850,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);
         expect(scope.lvl.deleteBoundary).toHaveBeenCalledWith(lvlName, neighbours.right.id, false, false);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
-            'type': 'ESPS',
+            'type': 'ANNOT',
             'action': 'DELETEBOUNDARY',
             'name': lvlName,
             'id': neighbours.right.id,
@@ -883,7 +883,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
         expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);        
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
-            'type': 'ESPS',
+            'type': 'ANNOT',
             'action': 'DELETESEGMENTS',
             'name': lvlName,
             'id': item.id,
@@ -912,7 +912,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deletePoint).toHaveBeenCalledWith(lvlName, item.id);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
-            'type': 'ESPS',
+            'type': 'ANNOT',
             'action': 'DELETEPOINT',
             'name': lvlName,
             'start': fakePCMtime,
@@ -990,7 +990,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.insertSegment).toHaveBeenCalledWith(lvlName, fakePCMclick, fakePCMclick, scope.cps.vals.labelCanvasConfig.newSegmentName); 
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
-			'type': 'ESPS',
+			'type': 'ANNOT',
 			'action': 'INSERTSEGMENTS',
 			'name': lvlName,
 			'start': fakePCMclick,
@@ -1018,7 +1018,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.insertPoint).toHaveBeenCalledWith(lvlName, fakePCMclick, scope.cps.vals.labelCanvasConfig.newSegmentName); 
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
-            'type': 'ESPS',
+            'type': 'ANNOT',
             'action': 'INSERTPOINT',
             'name': lvlName,
             'start': fakePCMclick,

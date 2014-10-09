@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
-				} else if (cur.type === 'ESPS') {
+				} else if (cur.type === 'ANNOT') {
 					switch (cur.action) {
 					case 'MOVEBOUNDARY':
 						if (applyOldVal) {
@@ -149,7 +149,7 @@ angular.module('emuwebApp')
 					dataObj.oldValue = curChangeObj[dataKey].oldValue;
 					curChangeObj[dataKey] = dataObj;
 				}
-			} else if (dataObj.type === 'ESPS') {
+			} else if (dataObj.type === 'ANNOT') {
 				switch (dataObj.action) {
 				case 'MOVEBOUNDARY':
 				case 'MOVEPOINT':

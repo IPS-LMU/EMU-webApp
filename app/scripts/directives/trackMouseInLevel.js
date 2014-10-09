@@ -116,7 +116,7 @@ angular.module('emuwebApp')
                     }
                     LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
                     HistoryService.updateCurChangeObj({
-                      'type': 'ESPS',
+                      'type': 'ANNOT',
                       'action': 'MOVEBOUNDARY',
                       'name': scope.this.level.name,
                       'id': seg.id,
@@ -130,7 +130,7 @@ angular.module('emuwebApp')
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
                     LevelService.movePoint(scope.this.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
-                      'type': 'ESPS',
+                      'type': 'ANNOT',
                       'action': 'MOVEPOINT',
                       'name': scope.this.level.name,
                       'id': seg.id,
@@ -147,7 +147,7 @@ angular.module('emuwebApp')
                   seg = viewState.getcurClickSegments()
                   LevelService.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
                   HistoryService.updateCurChangeObj({
-                    'type': 'ESPS',
+                    'type': 'ANNOT',
                     'action': 'MOVESEGMENT',
                     'name': scope.this.level.name,
                     'id': seg[0].id,

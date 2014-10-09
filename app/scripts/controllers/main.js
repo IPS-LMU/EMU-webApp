@@ -683,7 +683,7 @@ angular.module('emuwebApp')
 				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
-					'type': 'ESPS',
+					'type': 'ANNOT',
 					'action': 'ADDLEVEL',
 					'level': level,
 					'id': length,
@@ -733,7 +733,7 @@ angular.module('emuwebApp')
 				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
-					'type': 'ESPS',
+					'type': 'ANNOT',
 					'action': 'ADDLEVEL',
 					'level': level,
 					'id': length,

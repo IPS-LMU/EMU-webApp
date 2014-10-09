@@ -79,7 +79,7 @@ angular.module('emuwebApp')
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
                   HistoryService.addObjToUndoStack({
-                    'type': 'ESPS',
+                    'type': 'ANNOT',
                     'action': 'RENAMELABEL',
                     'name': viewState.getcurClickLevelName(),
                     'id': LevelService.getlastID(),
@@ -260,7 +260,7 @@ angular.module('emuwebApp')
                     } else {
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'MOVEPOINT',
                           'name': levelName,
                           'id': mouseSeg.id,
@@ -268,7 +268,7 @@ angular.module('emuwebApp')
                         });
                       } else if (levelType === "SEGMENT") {
                         HistoryService.updateCurChangeObj({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'MOVEBOUNDARY',
                           'name': levelName,
                           'id': mouseSeg.id,
@@ -296,7 +296,7 @@ angular.module('emuwebApp')
                     } else {
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'MOVEPOINT',
                           'name': levelName,
                           'id': mouseSeg.id,
@@ -304,7 +304,7 @@ angular.module('emuwebApp')
                         });
                       } else if (levelType === "SEGMENT") {
                         HistoryService.updateCurChangeObj({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'MOVEBOUNDARY',
                           'name': levelName,
                           'id': mouseSeg.id,
@@ -334,7 +334,7 @@ angular.module('emuwebApp')
                       var levelname = viewState.getcurMouseLevelName();
                       LevelService.moveBoundary(levelname, seg.id, dist, 0);
                       HistoryService.updateCurChangeObj({
-                        'type': 'ESPS',
+                        'type': 'ANNOT',
                         'action': 'MOVEBOUNDARY',
                         'name': levelname,
                         'id': seg.id,
@@ -363,7 +363,7 @@ angular.module('emuwebApp')
                         } 
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
@@ -396,7 +396,7 @@ angular.module('emuwebApp')
                         }
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
@@ -429,7 +429,7 @@ angular.module('emuwebApp')
                         }
                         LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
@@ -464,7 +464,7 @@ angular.module('emuwebApp')
                         }
                         LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
-                          'type': 'ESPS',
+                          'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickSegments(),
@@ -659,7 +659,7 @@ angular.module('emuwebApp')
 								scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
 							  } else {
 								HistoryService.addObjToUndoStack({
-								  'type': 'ESPS',
+								  'type': 'ANNOT',
 								  'action': 'INSERTSEGMENTS',
 								  'name': viewState.getcurClickLevelName(),
 								  'start': viewState.curViewPort.selectS,
@@ -677,7 +677,7 @@ angular.module('emuwebApp')
                               scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                             } else {
                               HistoryService.addObjToUndoStack({
-                                'type': 'ESPS',
+                                'type': 'ANNOT',
                                 'action': 'INSERTPOINT',
                                 'name': viewState.getcurClickLevelName(),
                                 'start': viewState.curViewPort.selectS,
@@ -725,7 +725,7 @@ angular.module('emuwebApp')
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
                             HistoryService.addObjToUndoStack({
-                              'type': 'ESPS',
+                              'type': 'ANNOT',
                               'action': 'DELETEBOUNDARY',
                               'name': levelname,
                               'id': seg.id,
@@ -739,7 +739,7 @@ angular.module('emuwebApp')
                           } else {
                             var deletedPoint = LevelService.deletePoint(levelname, seg.id);
                             HistoryService.addObjToUndoStack({
-                              'type': 'ESPS',
+                              'type': 'ANNOT',
                               'action': 'DELETEPOINT',
                               'name': levelname,
                               'start': deletedPoint.samplePoint,
@@ -762,7 +762,7 @@ angular.module('emuwebApp')
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
                           HistoryService.addObjToUndoStack({
-                            'type': 'ESPS',
+                            'type': 'ANNOT',
                             'action': 'DELETESEGMENTS',
                             'name': levelname,
                             'id': seg[0].id,
