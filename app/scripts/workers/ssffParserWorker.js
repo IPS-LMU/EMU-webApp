@@ -2,25 +2,26 @@
 
 'use strict';
 (function (global) {
-  var ssffData = {};
-  var headID = 'SSFF -- (c) SHLRC\n';
-  var machineID = 'Machine IBM-PC\n';
-  var sepString = '-----------------\n';
-  ssffData.ssffTrackName = '';
-  ssffData.sampleRate = -1;
-  ssffData.startTime = -1;
-  ssffData.origFreq = -1;
-  ssffData.Columns = [];
-  
-  /**
-   * Mock for atob btoa for web kit based browsers that don't support these in webworkers
-   */
-  (function () {
+	var ssffData = {};
+	var headID = 'SSFF -- (c) SHLRC\n';
+	var machineID = 'Machine IBM-PC\n';
+	var sepString = '-----------------\n';
+	ssffData.ssffTrackName = '';
+	ssffData.sampleRate = -1;
+	ssffData.startTime = -1;
+	ssffData.origFreq = -1;
+	ssffData.Columns = [];
+
+	/**
+	 * Mock for atob btoa for web kit based browsers that don't support these in webworkers
+	 */
+	(function () {
 		var base64EncodeChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 		var base64DecodeChars = new Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
 			52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 			15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
 			41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1);
+
 		function base64encode(str) {
 			var out, i, len;
 			var c1, c2, c3;
@@ -103,12 +104,12 @@
 
 		var scope = (typeof window !== 'undefined') ? window : global;
 		if (!scope.btoa) {
-		  scope.btoa = base64encode;
+			scope.btoa = base64encode;
 		}
 		if (!scope.atob) {
-		  scope.atob = base64decode;
+			scope.atob = base64decode;
 		}
-  })();
+	})();
 
 	/**
 	 *
@@ -380,18 +381,25 @@
 
 		// preallocate data buffer
 		var bytePerTime = 0;
+		var failed = false;
+
 		jso.Columns.forEach(function (col) {
 			if (col.ssffdatatype === 'SHORT') {
 				bytePerTime += 2 * col.length;
 			} else {
-				return ({
-					'status': {
-						'type': 'ERROR',
-						'message': 'Unsupported column type! Only SHORT columns supported for now!'
-					}
-				});
+				failed = true;
 			}
 		});
+
+		// check if failed
+		if (failed) {
+			return ({
+				'status': {
+					'type': 'ERROR',
+					'message': 'Unsupported column type! Only SHORT columns supported for now!'
+				}
+			});
+		}
 
 		var byteSizeOfDataBuffer = bytePerTime * jso.Columns[0].values.length;
 
@@ -411,22 +419,34 @@
 						byteOffSet += 2;
 					});
 				} else {
-					return ({
-						'status': {
-							'type': 'ERROR',
-							'message': 'Unsupported column type! Only SHORT columns supported for now!'
-						}
-					});
+					failed = true;
 				}
 			});
 		});
+
+		// check if failed
+		if (failed) {
+			return ({
+				'status': {
+					'type': 'ERROR',
+					'message': 'Unsupported column type! Only SHORT columns supported for now!'
+				}
+			});
+		}
 
 		// concatenate header with data
 		var tmp = new Uint8Array(dataBuffView.buffer);
 		ssffBufView = new Uint8Concat(ssffBufView, tmp);
 
 		// console.log(String.fromCharCode.apply(null, ssffBufView));
-		return ssffBufView.buffer;
+
+		return ({
+			'status': {
+				'type': 'SUCCESS',
+				'message': ''
+			},
+			'data': ssffBufView.buffer
+		});
 	}
 
 	/**
@@ -475,18 +495,7 @@
 			break;
 		case 'jso2ssff':
 			var retVal = jso2ssff(JSON.parse(data.jso));
-			if (retVal.type === undefined) {
-				this.postMessage({
-					'status': {
-						'type': 'SUCCESS',
-						'message': ''
-					},
-					'data': retVal
-				});
-			} else {
-				this.postMessage(retVal);
-			}
-
+			this.postMessage(retVal);
 			break;
 		default:
 			this.postMessage({
