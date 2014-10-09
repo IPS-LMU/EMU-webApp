@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
 		// shared service object
 		var sServObj = {};
 
@@ -227,7 +227,7 @@ angular.module('emuwebApp')
 									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
 									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
 								];
-								LevelService.addLinkToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
+								LinkService.addMultipleLinksToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
 								HistoryService.updateCurChangeObj({
 									'type': 'ANNOT',
 									'action': 'LINKTOPARENT',

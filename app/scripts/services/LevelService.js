@@ -1331,37 +1331,5 @@ angular.module('emuwebApp')
 		}
 
 
-		/////////////////////// handle hierarchy links (probably better in other service)/////////////////////
-		
-		/**
-		 * adds links to sServObj.data.links 
-		 * by pairing all childIds with the parent 
-		 * id (form=={'fromID':parentID, 'toID':childId})
-		 */
-		sServObj.addLinkToParent = function (parentId, childIds) {
-			angular.forEach(childIds, function (chId) {
-				sServObj.data.links.push({
-					'fromID': parentId,
-					'toID': chId
-				});
-			});
-		};
-
-
-		/**
-		 * removes links from sServObj.data.links 
-		 * that match the form {'fromID':parentID, 'toID':childId}
-		 */
-		sServObj.inverseAddLinkToParent = function (parentId, childIds) {
-
-			angular.forEach(sServObj.data.links, function (link, linkIdx) {
-
-				if(link.fromID === parentId && childIds.indexOf(link.toID) !==-1){
-					sServObj.data.links.splice(linkIdx);					
-				};
-
-			});
-		};
-
 		return sServObj;
 	});
