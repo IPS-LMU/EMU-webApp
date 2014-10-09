@@ -972,7 +972,9 @@ angular.module('emuwebApp')
 								    clickSeg = level.items[level.items.length-1];							    
 							    }
 							    else {
-								    last.labels[0].value += evt.labels[0].value;
+							        for (var i = 0; i < last.labels.length; i++) { 
+							            last.labels[i].value += evt.labels[i].value;
+							        }
 								    last.sampleDur += evt.sampleDur + 1;
 								    level.items.splice(order, 1);
 								    retOrder = order;

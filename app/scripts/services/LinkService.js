@@ -57,10 +57,22 @@ angular.module('emuwebApp')
 		 * that match the form 'fromID': ID OR 'toID': ID
 		 */
 		sServObj.deleteMultipleLinks = function (ID) {
+		    var deleted = [];
 			angular.forEach(sServObj.data.links, function (link, linkIdx) {
 				if(link.fromID === ID || link.toID === ID){
+				    deleted.push(link);
 					sServObj.data.links.splice(linkIdx);					
 				};
+			});
+			return deleted;
+		};
+
+		/**
+		 * add all deleted links back 
+		 */
+		sServObj.addMultipleLinks = function (deletedLinks) {
+			angular.forEach(deletedLinks, function (link) {
+				sServObj.addLinkToParent(link.fromID, link.toID);
 			});
 		};
 

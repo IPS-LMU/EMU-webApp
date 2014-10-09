@@ -837,7 +837,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteBoundary').and.returnValue('deletedSegment');
-        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.history, 'updateCurChangeObj');
         var lvlName = 'Phonetic';
         clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
@@ -849,7 +849,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
         expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);
         expect(scope.lvl.deleteBoundary).toHaveBeenCalledWith(lvlName, neighbours.right.id, false, false);
-        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
             'action': 'DELETEBOUNDARY',
             'name': lvlName,

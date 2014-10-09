@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -13,7 +13,6 @@ angular.module('emuwebApp')
           }
         });
       
-      
         $(document).bind('keydown', function (e) {
           if (!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -22,6 +21,7 @@ angular.module('emuwebApp')
             }
           }
         });
+        
         $(document).bind('keypress', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
           applyKeyCode(code, e);
@@ -38,21 +38,18 @@ angular.module('emuwebApp')
 				var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())];
 				// if it is defined then check if characters are ok
 				if(definitions.legalLabels !== undefined && str.length > 0) {
-					for (var x = 0; x < str.length; x++) {
-						if(definitions.legalLabels.indexOf(str.charAt(x)) < 0) {
-							viewState.setSavingAllowed(false);
-						}
+					if(definitions.legalLabels.indexOf(str) < 0) {
+						viewState.setSavingAllowed(false);
 					}
 				}
-			  // on all other characters check if legalLabels is defined
-			  if(viewState.isSavingAllowed()) {
-				domElement.css({ "background-color": "rgba(255,255,0,1)"});
-			  }
-			  else {
-				domElement.css({ "background-color": "rgba(255,0,0,1)"});
-			  }  
-		  }              
-        });
+			    if(viewState.isSavingAllowed()) {
+				  domElement.css({ "background-color": "rgba(255,255,0,1)"});
+			    }
+			    else {
+				  domElement.css({ "background-color": "rgba(255,0,0,1)"});
+			    }  
+		     }              
+          });
        }        
 
         function applyKeyCode(code, e) {
@@ -724,7 +721,7 @@ angular.module('emuwebApp')
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
-                            HistoryService.addObjToUndoStack({
+                            HistoryService.updateCurChangeObj({
                               'type': 'ANNOT',
                               'action': 'DELETEBOUNDARY',
                               'name': levelname,
@@ -733,6 +730,16 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
+							var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+							HistoryService.updateCurChangeObj({
+								'type': 'ANNOT',
+								'action': 'DELETELINKS',
+								'name': levelname,
+								'id': seg.id,
+								'deletedLinks': deletedLinks
+							});
+							HistoryService.addCurChangeObjToUndoStack();
+                            
                             // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
