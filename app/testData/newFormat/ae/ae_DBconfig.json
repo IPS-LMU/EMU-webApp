@@ -72,7 +72,7 @@
 		}, {
 			"name": "IPA",
 			"type": "STRING",
-			"legalLabels": ["1","2"]
+			"legalLabels": ["ʌ", "m", "ŋ", "s", "t", "ɥ", "@:", "f", "r", "ɛ", "n", "z", "ʃ", "iː", "w", "ə", "k", "ɪ", "d", "db", "j", "uː", "dH", "l"]
 		}]
 	}, {
 		"name": "Tone",
