@@ -139,13 +139,10 @@ angular.module('emuwebApp')
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
 				dataKey = String(dataObj.type + '#' + dataObj.trackName) + '#' + String(dataObj.sampleBlockIdx) + '#' + String(dataObj.sampleIdx);
-				console.log(dataKey);
 				// update curChangeObj
 				if (!curChangeObj[dataKey]) {
 					curChangeObj[dataKey] = dataObj;
 				} else {
-					// console.log('here' + curChangeObj[dataKey].oldValue);
-					// keep init old value
 					dataObj.oldValue = curChangeObj[dataKey].oldValue;
 					curChangeObj[dataKey] = dataObj;
 				}
@@ -164,6 +161,7 @@ angular.module('emuwebApp')
 					}
 					break;
 				}
+				
 			}
 			return (curChangeObj);
 

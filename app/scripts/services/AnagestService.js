@@ -219,8 +219,6 @@ angular.module('emuwebApp')
 							var linkLevelName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
 							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
-							console.log(linkLevelLabels);
-
 
 							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', linkLevelLabels).then(function (itemIdx) {
 								var childIDs = [
@@ -230,7 +228,7 @@ angular.module('emuwebApp')
 								LinkService.addMultipleLinksToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
 								HistoryService.updateCurChangeObj({
 									'type': 'ANNOT',
-									'action': 'LINKTOPARENT',
+									'action': 'ADDLINKTOPARENT',
 									'parentID': linkLevelDetails.level.items[itemIdx].id,
 									'childIDs': childIDs
 								});
