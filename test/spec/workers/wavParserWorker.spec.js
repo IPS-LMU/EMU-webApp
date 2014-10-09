@@ -11,23 +11,26 @@ describe('Worker: wavParserWorker', function () {
   
   beforeEach(inject(function (Binarydatamaniphelper) {
       binary = Binarydatamaniphelper;
+      worker = new Worker(workerFile);
   }));  
   
-  it('should return error on unknown parameter', function (done) {
-      worker = new Worker(workerFile);
+  afterEach(function () {
+      worker.terminate();
+  });
+  
+  
+  it('should return error on unknown parameter', function () {
       worker.addEventListener('message', function (e) {
           expect(e.data.status.type).toEqual('ERROR');
           expect(e.data.status.message).toEqual('Unknown command sent to wavParserWorker');
-          worker.terminate();
-          done();
       });
       worker.postMessage({
         'cmd': 'unknown'
       });
   }); 
-   
-  it('should parse ArrayBuffer to WAVE', function (done) {
-      worker = new Worker(workerFile);
+
+
+  it('should parse ArrayBuffer to WAVE', function () {
       worker.addEventListener('message', function (e) {
           expect(e.data.status.type).toEqual('SUCCESS');
           expect(e.data.status.message).toEqual('');
@@ -45,14 +48,12 @@ describe('Worker: wavParserWorker', function () {
           expect(e.data.data.Subchunk2ID).toEqual('data');
           expect(e.data.data.Subchunk2Size).toEqual(116178);
           expect(e.data.data.Data.length).toEqual(58089);
-          worker.terminate();
-          done();
       });
       var buf = binary.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
 	  worker.postMessage({
 		'cmd': 'parseBuf',
 		'buffer': buf
-	  }, [buf]);
+	  });
   });
   
 

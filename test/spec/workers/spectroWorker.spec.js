@@ -34,65 +34,67 @@ describe('Worker: spectroWorker', function () {
       worker.postMessage('');
   });
   
-  it('should return 2 possible undos', inject(function (Binarydatamaniphelper) {
-      worker = new Worker(workerFileSpec);
-      worker2 = new Worker(workerFileWav);
-      
-      // first step : convert b64 to wav using workerFileWav
-      var buf = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
-	  worker2.postMessage({
-		'cmd': 'parseBuf',
-		'buffer': buf
-	  }, [buf]);
+  it('should render spectro image', inject(function (Binarydatamaniphelper) {
+      if(navigator.userAgent.match(/PhantomJS/i)===false) {
+		  worker = new Worker(workerFileSpec);
+		  worker2 = new Worker(workerFileWav);
 	  
-      // second step : send converted wav data to workerFileSpec
-      worker2.addEventListener('message', function (e) {
-        var wavData = new Float32Array(e.data.data.Data.subarray(start - windowLength / 2, end + windowLength));
-        worker.postMessage({
-          'N': windowLength,
-          'alpha': 0.16,
-          'freq': freq,
-          'freqLow': freqLow,
-          'start': start,
-          'end': end,
-          'myStep': step,
-          'window': window,
-          'width': width,
-          'height': height,
-          'dynRangeInDB': 70,
-          'pixelRatio': pixelRatio,
-          'sampleRate': sampleRate,
-          'streamChannels': 1,
-          'transparency': 255,
-          'stream': wavData,
-          'drawHeatMapColors': false,
-          'preEmphasisFilterFactor': 0.97,
-          'heatMapColorAnchors': JSON.parse('[[255,0,0],[0,255,0],[0,0,0]]')
-        });
-        worker2.terminate();
-      });   
-      
-      // third step : check if workerFileSpec generated spectro image
-      // todo : eventually check if image is like it should be
-      // right now : only parameters and image size are checked
-      worker.addEventListener('message', function (e) {
-        var typedArray = new Uint8Array(e.data.img);
-        var normalArray = Array.prototype.slice.call(typedArray);
-        expect(normalArray.length).toEqual(1228800);
-        expect(e.data.start).toEqual(start);
-        expect(e.data.end).toEqual(end);
-        expect(e.data.window).toEqual(window);
-        expect(e.data.myStep).toEqual(step);
-        // calculate pixel Height
-        var HzStep = (sampleRate / 2) / (windowLength / 2);
-        var upperHz = Math.ceil(freq / HzStep);
-        var lowerHz = Math.floor(freqLow / HzStep);
-        var calcPixelHeight = height / (upperHz - lowerHz - 2);
-        expect(e.data.pixelHeight).toEqual(calcPixelHeight);
-        expect(e.data.renderWidth).toEqual(width);
-        expect(e.data.renderHeight).toEqual(height);
-        worker.terminate();
-      });
+		  // first step : convert b64 to wav using workerFileWav
+		  var buf = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
+		  worker2.postMessage({
+			'cmd': 'parseBuf',
+			'buffer': buf
+		  }, [buf]);
+	  
+		  // second step : send converted wav data to workerFileSpec
+		  worker2.addEventListener('message', function (e) {
+			var wavData = new Float32Array(e.data.data.Data.subarray(start - windowLength / 2, end + windowLength));
+			worker.postMessage({
+			  'N': windowLength,
+			  'alpha': 0.16,
+			  'freq': freq,
+			  'freqLow': freqLow,
+			  'start': start,
+			  'end': end,
+			  'myStep': step,
+			  'window': window,
+			  'width': width,
+			  'height': height,
+			  'dynRangeInDB': 70,
+			  'pixelRatio': pixelRatio,
+			  'sampleRate': sampleRate,
+			  'streamChannels': 1,
+			  'transparency': 255,
+			  'stream': wavData,
+			  'drawHeatMapColors': false,
+			  'preEmphasisFilterFactor': 0.97,
+			  'heatMapColorAnchors': JSON.parse('[[255,0,0],[0,255,0],[0,0,0]]')
+			});
+			worker2.terminate();
+		  });   
+	  
+		  // third step : check if workerFileSpec generated spectro image
+		  // todo : eventually check if image is like it should be
+		  // right now : only parameters and image size are checked
+		  worker.addEventListener('message', function (e) {
+			var typedArray = new Uint8Array(e.data.img);
+			var normalArray = Array.prototype.slice.call(typedArray);
+			expect(normalArray.length).toEqual(1228800);
+			expect(e.data.start).toEqual(start);
+			expect(e.data.end).toEqual(end);
+			expect(e.data.window).toEqual(window);
+			expect(e.data.myStep).toEqual(step);
+			// calculate pixel Height
+			var HzStep = (sampleRate / 2) / (windowLength / 2);
+			var upperHz = Math.ceil(freq / HzStep);
+			var lowerHz = Math.floor(freqLow / HzStep);
+			var calcPixelHeight = height / (upperHz - lowerHz - 2);
+			expect(e.data.pixelHeight).toEqual(calcPixelHeight);
+			expect(e.data.renderWidth).toEqual(width);
+			expect(e.data.renderHeight).toEqual(height);
+			worker.terminate();
+		  });
+      }
          
   })); 
 });
