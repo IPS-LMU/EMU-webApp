@@ -6,8 +6,23 @@ angular.module('emuwebApp')
 		$scope.serverInfos.Url = ConfigProviderService.vals.main.serverUrl;
 
 		$scope.connectionError = '';
-		viewState.setEditing(true);
 
+		/**
+		 *
+		 */
+		$scope.cursorInTextField = function () {
+			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
+		};
+
+		/**
+		 *
+		 */
+		$scope.cursorOutOfTextField = function () {
+			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
+		};
+		
 		$scope.tryConnection = function () {
 			dialogService.close($scope.serverInfos.Url);
 		};
