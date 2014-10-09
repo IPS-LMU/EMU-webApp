@@ -98,6 +98,11 @@ angular.module('emuwebApp')
             } else {
               
               LevelService.deleteEditArea();
+              
+              // escape from open modal dialog
+              if (viewState.curState.permittedActions.length===0 && code === ConfigProviderService.vals.keyMappings.esc) {
+                scope.dials.close();
+              } 
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
