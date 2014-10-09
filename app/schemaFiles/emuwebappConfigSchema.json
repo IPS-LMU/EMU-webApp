@@ -320,7 +320,7 @@
 										"colors": {
 											"type": "array",
 											"items": {
-											    "type": "string"
+												"type": "string"
 											}
 										}
 									},
@@ -328,8 +328,8 @@
 									"additionalProperties": false
 								}
 
-						    }
-						},						
+							}
+						},
 						"required": ["order", "assign", "contourLims"],
 						"additionalProperties": true
 					},
@@ -539,9 +539,12 @@
 				},
 				"openMenu": {
 					"type": "boolean"
+				},
+				"showHierarchy": {
+					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu"],
+			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
 			"additionalProperties": false
 		},
 		"demoDBs": {
