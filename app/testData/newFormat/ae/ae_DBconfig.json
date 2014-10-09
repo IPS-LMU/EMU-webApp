@@ -71,7 +71,8 @@
 			"type": "STRING"
 		}, {
 			"name": "IPA",
-			"type": "STRING"
+			"type": "STRING",
+			"legalLabels": ["1","2"]
 		}]
 	}, {
 		"name": "Tone",

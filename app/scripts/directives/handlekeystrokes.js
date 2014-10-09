@@ -5,6 +5,13 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function postLink(scope) {
+
+        $(document).bind('keyup', function (e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+          applyKeyCodeUp(code, e);
+        });
+      
+      
         $(document).bind('keydown', function (e) {
           if (!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -17,7 +24,34 @@ angular.module('emuwebApp')
           var code = (e.keyCode ? e.keyCode : e.which);
           applyKeyCode(code, e);
         });
-
+        
+        function applyKeyCodeUp(code, e) {
+          scope.$apply(function () {
+            e.preventDefault();
+            e.stopPropagation();     
+            if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
+				var domElement = $('.' + LevelService.getlasteditArea());
+				var str = domElement.val();
+				viewState.setSavingAllowed(true);
+				var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())];
+				// if it is defined then check if characters are ok
+				if(definitions.legalLabels !== undefined && str.length > 0) {
+					for (var x = 0; x < str.length; x++) {
+						if(definitions.legalLabels.indexOf(str.charAt(x)) < 0) {
+							viewState.setSavingAllowed(false);
+						}
+					}
+				}
+			  // on all other characters check if legalLabels is defined
+			  if(viewState.isSavingAllowed()) {
+				domElement.css({ "background-color": "rgba(255,255,0,1)"});
+			  }
+			  else {
+				domElement.css({ "background-color": "rgba(255,0,0,1)"});
+			  }  
+		  }              
+        });
+       }        
 
         function applyKeyCode(code, e) {
           scope.$apply(function () {
@@ -28,8 +62,18 @@ angular.module('emuwebApp')
               }
             }
             if (viewState.isEditing()) {
-              console.log(code);
-              if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {            
+              var domElement = $('.' + LevelService.getlasteditArea());
+              // preventing new line if saving not allowed
+              if(!viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
+                  var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())].legalLabels;
+                  e.preventDefault();
+                  e.stopPropagation(); 
+                  LevelService.deleteEditArea();
+                  viewState.setEditing(false);                  
+                  scope.dials.open('views/error.html', 'ModalCtrl', 'Editing Error: Sorry, characters allowed on this Level are "'+JSON.stringify(definitions)+'"');                  
+              }
+              // save text on enter if saving is allowed
+              if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {   
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
                   HistoryService.addObjToUndoStack({
@@ -39,19 +83,16 @@ angular.module('emuwebApp')
                     'id': LevelService.getlastID(),
                     'attrIndex': attrIndex,
                     'oldValue': editingElement.labels[attrIndex].value,
-                    'newValue': $('.' + LevelService.getlasteditArea()).val()
+                    'newValue': domElement.val()
                   });
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.setEditing(false);
               }
-              if (code === ConfigProviderService.vals.keyMappings.esc) {
+              // escape from text if esc
+              else if (code === ConfigProviderService.vals.keyMappings.esc) {
                 LevelService.deleteEditArea();
                 viewState.setEditing(false);
-              }
-              if (code === 13) {
-                e.preventDefault();
-                e.stopPropagation();
               }
               viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
             } else {
