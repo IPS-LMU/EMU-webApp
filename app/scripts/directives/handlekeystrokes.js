@@ -38,10 +38,8 @@ angular.module('emuwebApp')
 				var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())];
 				// if it is defined then check if characters are ok
 				if(definitions.legalLabels !== undefined && str.length > 0) {
-					for (var x = 0; x < str.length; x++) {
-						if(definitions.legalLabels.indexOf(str.charAt(x)) < 0) {
-							viewState.setSavingAllowed(false);
-						}
+					if(definitions.legalLabels.indexOf(str) < 0) {
+						viewState.setSavingAllowed(false);
 					}
 				}
 			  // on all other characters check if legalLabels is defined
