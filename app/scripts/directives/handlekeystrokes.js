@@ -8,7 +8,7 @@ angular.module('emuwebApp')
 
         $(document).bind('keyup', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
-          if(viewState.isEditing()) {
+          if(viewState.isEditing() && !viewState.getcursorInTextField()) {
               applyKeyCodeUp(code, e);
           }
         });
@@ -87,13 +87,14 @@ angular.module('emuwebApp')
                   LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.setEditing(false);
+                  viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
               }
               // escape from text if esc
-              else if (code === ConfigProviderService.vals.keyMappings.esc) {
+              if (code === ConfigProviderService.vals.keyMappings.esc) {
                 LevelService.deleteEditArea();
                 viewState.setEditing(false);
               }
-              viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
+              
             } else {
               
               LevelService.deleteEditArea();
