@@ -229,6 +229,7 @@ angular.module('emuwebApp')
 								HistoryService.updateCurChangeObj({
 									'type': 'ANNOT',
 									'action': 'ADDLINKTOPARENT',
+									'name': linkLevelDetails.level.name,
 									'parentID': linkLevelDetails.level.items[itemIdx].id,
 									'childIDs': childIDs
 								});

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 						} else {
 							LevelService.deletePoint(cur.name, cur.id);
 						}
-						break;						
+						break;
 					case 'EXPANDSEGMENTS':
 						if (applyOldVal) {
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
@@ -122,7 +122,20 @@ angular.module('emuwebApp')
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
-
+					case 'ADDLINKTOPARENT':
+						if (applyOldVal) {
+							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
+						} else {
+							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
+						}
+						break;
+					case 'DELETELINKTOPARENT':
+						if (applyOldVal) {
+							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
+						} else {
+							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
+						}
+						break;
 					}
 				}
 			});
@@ -160,6 +173,17 @@ angular.module('emuwebApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
+				case 'ADDLINKTOPARENT':
+				case 'DELETELINKTOPARENT':	
+				    dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
+					if (!curChangeObj[dataKey]) {
+						curChangeObj[dataKey] = dataObj;
+					} else {
+						dataObj.oldValue = curChangeObj[dataKey].oldValue;
+						curChangeObj[dataKey] = dataObj;
+					}
+							
+					break;				
 				}
 				
 			}
