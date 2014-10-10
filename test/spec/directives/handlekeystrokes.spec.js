@@ -872,7 +872,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'setcurClickSegment').and.callThrough();        
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteSegments').and.returnValue(lvlName);
-        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.history, 'updateCurChangeObj');
         clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
@@ -882,7 +882,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteSegments).toHaveBeenCalledWith(lvlName, item.id, length);
         expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
         expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);        
-        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
             'action': 'DELETESEGMENTS',
             'name': lvlName,
@@ -902,7 +902,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'setcurMouseSegment').and.callThrough();        
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteEvent').and.returnValue({"id":fakePCMtime, "samplePoint":fakePCMtime, "labels":[{"name":"Word","value":lvlName}]});
-        spyOn(scope.history, 'addObjToUndoStack');
+        spyOn(scope.history, 'updateCurChangeObj');
         clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'EVENT');
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
@@ -911,7 +911,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);        
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEvent).toHaveBeenCalledWith(lvlName, item.id);
-        expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
+        expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
             'action': 'DELETEEVENT',
             'name': lvlName,

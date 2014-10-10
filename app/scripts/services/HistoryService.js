@@ -94,13 +94,6 @@ angular.module('emuwebApp')
 							LevelService.deleteEvent(cur.name, cur.id);
 						}
 						break;	
-					case 'DELETELINKTOPARENT':
-						if (applyOldVal) {
-							LinkService.insertMultipleLinksToParent(cur.parentID, cur.childIDs);
-						} else {
-							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
-						}
-						break;
 					case 'DELETELINKSTO':
 						if (applyOldVal) {
 							LinkService.insertLinksTo(cur.deletedLinks);
@@ -179,10 +172,11 @@ angular.module('emuwebApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
-				case 'INSERTLINKS':
-				case 'DELETELINKTOPARENT':
-				case 'DELETELINKS':	
+				case 'INSERTLINKSTO':
+				case 'DELETELINKSTO':
 				case 'DELETEBOUNDARY':
+				case 'DELETESEGMENTS':
+				case 'DELETEEVENT':
 				    dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;

@@ -751,7 +751,7 @@ angular.module('emuwebApp')
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
                           } else {
                             var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
-                            HistoryService.addObjToUndoStack({
+                            HistoryService.updateCurChangeObj({
                               'type': 'ANNOT',
                               'action': 'DELETEEVENT',
                               'name': levelname,
@@ -760,6 +760,15 @@ angular.module('emuwebApp')
                               'pointName': deletedPoint.labels[0].value
 
                             });
+						    /*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+						    HistoryService.updateCurChangeObj({
+							  'type': 'ANNOT',
+							  'action': 'DELETELINKS',
+							  'name': levelname,
+							  'id': seg.id,
+							  'deletedLinks': deletedLinks
+						    });*/
+						    HistoryService.addCurChangeObjToUndoStack();
                             // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                         }
@@ -774,7 +783,7 @@ angular.module('emuwebApp')
                         var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
-                          HistoryService.addObjToUndoStack({
+                          HistoryService.updateCurChangeObj({
                             'type': 'ANNOT',
                             'action': 'DELETESEGMENTS',
                             'name': levelname,
@@ -782,6 +791,15 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
+						  /*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+						  HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'DELETELINKS',
+							'name': levelname,
+							'id': seg.id,
+							'deletedLinks': deletedLinks
+						  });*/
+						  HistoryService.addCurChangeObjToUndoStack();
                           viewState.setcurMouseSegment(undefined, undefined, undefined);
                           viewState.setcurClickSegment(deletedSegment.clickSeg);
                         } else {
