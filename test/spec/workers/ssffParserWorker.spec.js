@@ -9,7 +9,6 @@ describe('Worker: ssffParserWorker', function () {
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
-
   it('should return error on unknown parameter', function (done) {
     worker = new Worker(workerFile);
     worker.addEventListener('message', function (e) {
@@ -23,7 +22,7 @@ describe('Worker: ssffParserWorker', function () {
     });
   });
 
-  if (navigator.userAgent.match(/PhantomJS/i) === false) { // phantomjs no support for Float64Array =(
+  if (navigator.userAgent.match(/PhantomJS/i) === null) { // phantomjs no support for Float64Array =(
     it('should parse Arr to ssffJsoArr', function (done) {
       worker = new Worker(workerFile);
       worker.addEventListener('message', function (e) {
