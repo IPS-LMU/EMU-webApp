@@ -95,7 +95,7 @@ angular.module('emuwebApp')
                 viewState.setEditing(false);
               }
               
-            } else {
+            } else if (viewState.getcursorInTextField() === false) {
               
               LevelService.deleteEditArea();
               
