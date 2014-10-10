@@ -394,11 +394,11 @@ module.exports = function (grunt) {
     // Test settings
     
     karma: {
-	  unit: {
+	  continuous: {
 		configFile: 'karma.conf.js',
 		singleRun: false
 	  },
-	  continuous: {
+	  unit: {
 		configFile: 'karma.conf.js',
 		singleRun: true,
 		browsers: ['PhantomJS']
@@ -501,16 +501,16 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma:continuous'
   ]);
   
 
-  grunt.registerTask('testAll', [
+  grunt.registerTask('e2e', [
     'clean:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma:continuous',
+    'karma:unit',
     'protractor:run'
   ]);  
 

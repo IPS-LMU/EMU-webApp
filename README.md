@@ -8,7 +8,7 @@ The EMU-webApp is an online and offline web application for labeling, visualizin
 
 ## Quick start
 
-Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo DB` button in the top menu to load a small example database.
+Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo DB` button in the top menu to load one of the three small example databases.
 
 ## Tools for development
 
@@ -17,13 +17,13 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * install `grunt` with `npm install -g grunt`
 * clone this repo with `git clone https://github.com/IPS-LMU/EMU-webApp.git`
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the commands `bower install` and `npm install`
-* run static file server at `http://localhost:9000`  with `grunt server`
+* run static file server at `http://localhost:9000`  with `grunt serve`
 * for livereload use the `livereload` browser plugin
 * a small websocket data provider server can be found under `exampleServers/nodeEmuProtocolWsServer.js`
 
 ## Tests
 * unit: run `grunt test`
-* end-to-end: make sure the chrome driver is installed (`./node_modules/protractor/bin/webdriver-manager update`) then run `./e2e.sh all`
+* protractor: run `grunt e2e`
 
 ## Main authors
 
@@ -34,3 +34,8 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 **Georg Raess**
 
 + [github](http://github.com/georgraess)
+
+**Markus Jochim**
+
++ [github](http://github.com/MJochim)
+
