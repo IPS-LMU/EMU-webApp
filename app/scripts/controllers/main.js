@@ -449,6 +449,7 @@ angular.module('emuwebApp')
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
+									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
 								} else {
 									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -881,6 +882,13 @@ angular.module('emuwebApp')
 		 */
 		$scope.aboutBtnClick = function () {
 			dialogService.open('views/about.html', 'AboutCtrl');
+		};
+
+		/**
+		 *
+		 */
+		$scope.showHierarchyBtnClick = function () {
+			dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
 		};
 
 		/**

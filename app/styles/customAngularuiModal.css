@@ -54,3 +54,14 @@
 	background-color: #0DC5FF;
 	border-radius: 0;
 }
+
+.emuwebapp-hierarchy-container{
+	width: 100%;
+	height: 100%;
+	background-color: pink;
+}
+
+.modal-body-hierarchy {
+	height: 80%;
+	padding: 0px;
+}

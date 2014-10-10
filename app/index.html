@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="styles/splitPanes.css">
     <link rel="stylesheet" href="styles/twoDimCanvas.css">
     <link rel="stylesheet" href="styles/progressThing.css">
+    <link rel="stylesheet" href="styles/hierarchy.css">
     <!-- endbuild -->
 
     <!-- set basedir for angular app change if not running in root of server-->
@@ -76,7 +77,11 @@
     <script src="bower_components/angular-ui/build/angular-ui.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/tv4/tv4.js"></script>
-    <script src="bower_components/d3/d3.js"></script>
+
+    <script src="scripts/d3-emu.js"></script>
+
+    <!-- // <script src="bower_components/d3/d3.js"></script> -->
+
     <!-- endbuild -->
 
     <!-- build:js scripts/emuwebApp.min.js -->
@@ -134,12 +139,15 @@
     <script src="scripts/directives/splitPaneView.js"></script>
     <script src="scripts/directives/ssffTrack.js"></script>
     <script src="scripts/directives/progressThing.js"></script>
+    <script src="scripts/directives/emuhierarchy.js"></script>
     <script src="scripts/directives/epg.js"></script>
     <script src="scripts/directives/dots.js"></script>
     <script src="scripts/directives/myDropZone.js"></script>
     <script src="scripts/directives/myDropZoneInput.js"></script>
     <script src="scripts/directives/emuwebapp.js"></script>
     <script src="scripts/services/validationService.js"></script>
+    <script src="scripts/controllers/ShowHierarchy.js"></script>
+    <script src="scripts/services/HierarchyLayoutService.js"></script>
     <script src="scripts/services/ArrayHelperService.js"></script>
     <script src="scripts/services/AnagestService.js"></script>
     <script src="scripts/directives/linechart.js"></script>

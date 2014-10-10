@@ -132,7 +132,8 @@
         "resizePerspectives": true,
         "openDemoDB": true,
         "saveBundle": false,
-        "openMenu": true
+        "openMenu": true,
+        "showHierarchy": false
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }
