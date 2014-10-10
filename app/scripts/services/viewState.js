@@ -59,6 +59,7 @@ angular.module('emuwebApp')
       sServObj.somethingInProgressTxt = '';
       sServObj.curClickSegments = [];
       sServObj.editing = false;
+      sServObj.cursorInTextField = false;
       sServObj.saving = true;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
@@ -777,6 +778,21 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
+    };
+
+
+    /**
+     *
+     */
+    sServObj.getcursorInTextField = function () {
+      return this.cursorInTextField;
+    };
+
+    /**
+     *
+     */
+    sServObj.setcursorInTextField = function (n) {
+      this.cursorInTextField = n;
     };
 
     /**

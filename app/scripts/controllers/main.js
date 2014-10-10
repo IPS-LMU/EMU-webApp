@@ -88,7 +88,7 @@ angular.module('emuwebApp')
 		$scope.$on('connectionDisrupted', function (event, args) {
 			$scope.resetToInitState();
 		});
-		
+
 		//
 		////////////
 
@@ -519,7 +519,7 @@ angular.module('emuwebApp')
 						$scope.getAnnotationAndSaveBndl(bundleData, defer);
 
 					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to ssff file: ' + errMess.status.message);
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
 						defer.reject();
 					});
 				} else {
@@ -574,9 +574,9 @@ angular.module('emuwebApp')
 			if (viewState.getenlarge() == -1) {
 				return 'auto';
 			} else {
-			    if (len === 1) {
-			        return 'auto';
-			    }
+				if (len === 1) {
+					return 'auto';
+				}
 				if (len === 2) {
 					if (viewState.getenlarge() == index) {
 						return '70%';
@@ -585,9 +585,9 @@ angular.module('emuwebApp')
 					}
 				} else {
 					if (viewState.getenlarge() == index) {
-						return large+'%';
+						return large + '%';
 					} else {
-						return (98-large)/(len - 1) + '%';
+						return (98 - large) / (len - 1) + '%';
 					}
 				}
 			}
@@ -625,14 +625,14 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
 		};
 
 		/**
@@ -651,11 +651,11 @@ angular.module('emuwebApp')
 		 */
 		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
-			    var length = 0;
-			    if(LevelService.data.levels!==undefined) {
-				    length = LevelService.data.levels.length;
+				var length = 0;
+				if (LevelService.data.levels !== undefined) {
+					length = LevelService.data.levels.length;
 				}
-				var newName = 'levelNr'+length;
+				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
 						id: LevelService.getNewId(),
@@ -670,17 +670,17 @@ angular.module('emuwebApp')
 					type: 'SEGMENT'
 				};
 
-				if(viewState.getCurAttrDef(newName)===undefined) {
+				if (viewState.getCurAttrDef(newName) === undefined) {
 					var leveldef = {
 						name: newName,
 						type: 'EVENT',
-						attributeDefinitions:{
+						attributeDefinitions: {
 							name: newName,
 							type: "string"
 						}
-					} 
+					}
 					viewState.setCurLevelAttrDefs(leveldef);
-				}				
+				}
 				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
@@ -702,11 +702,11 @@ angular.module('emuwebApp')
 		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
-			    var length = 0;
-			    if(LevelService.data.levels!==undefined) {
-				    length = LevelService.data.levels.length;
+				var length = 0;
+				if (LevelService.data.levels !== undefined) {
+					length = LevelService.data.levels.length;
 				}
-				var newName = 'levelNr'+length;
+				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
 						id: LevelService.getNewId(),
@@ -720,17 +720,17 @@ angular.module('emuwebApp')
 					name: newName,
 					value: ConfigProviderService.vals.labelCanvasConfig.newEventName
 				});
-				if(viewState.getCurAttrDef(newName)===undefined) {
+				if (viewState.getCurAttrDef(newName) === undefined) {
 					var leveldef = {
 						name: newName,
 						type: 'EVENT',
-						attributeDefinitions:{
+						attributeDefinitions: {
 							name: newName,
 							type: "string"
 						}
-					} 
+					}
 					viewState.setCurLevelAttrDefs(leveldef);
-				}	
+				}
 				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
@@ -1050,7 +1050,7 @@ angular.module('emuwebApp')
 
 		///////////////////////////
 		// other
-		 
+
 		/**
 		 * function used to change perspective
 		 * @param persp json object of current perspective containing name attribute

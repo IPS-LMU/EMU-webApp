@@ -36,12 +36,6 @@ describe('navigation', function () {
 		expect(elems.count()).toBe(2);
 	});
 
-	it('should test	bundle filter', function () {
-		element(by.model('filterText')).sendKeys('msajc01');
-		var elems = element.all(by.repeater('bundle in bundleList | regex:filterText'));
-		expect(elems.count()).toBe(1);
-	});
-
 	it('should load utterance msajc010', function () {
 		element.all(by.css('.emuwebapp-bundleListItem')).get(0).click();
 		element(by.model('filterText')).sendKeys('');
@@ -570,24 +564,6 @@ describe('navigation', function () {
 	});
 
 	it('should insert a new element on EVENT level (double elem should NOT work)', function () {
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomInBtn')).click();
-			element(by.id('zoomRightBtn')).click();
-		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
-		ptor.actions()
-			.mouseMove(elem)
-			.click()
-			.perform();
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
-		ptor.actions()
-			.mouseMove(elem)
-			.mouseMove({
-				x: -50,
-				y: 0
-			})
-			.click()
-			.perform();
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 		var elem = element.all(by.css('.modal-body')).get(0);
 		expect(elem.getText()).toEqual('Error: You are not allowed to insert a Point here.');
