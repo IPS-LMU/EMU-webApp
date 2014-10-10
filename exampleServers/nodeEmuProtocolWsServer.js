@@ -20,7 +20,7 @@ var filewalker = require('filewalker');
 // allow to set vars from command line
 if (process.argv.length === 2) {
   
-  var portNr = 8080;
+  var portNr = 17890;
   var pathToDbRoot = '../app/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
 
