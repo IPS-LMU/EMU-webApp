@@ -736,7 +736,7 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-							/*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+							/* TODO RECALCULATE LINKS
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
 								'action': 'DELETELINKS',
@@ -760,7 +760,7 @@ angular.module('emuwebApp')
                               'pointName': deletedPoint.labels[0].value
 
                             });
-						    /*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+						    /* TODO RECALCULATE LINKS
 						    HistoryService.updateCurChangeObj({
 							  'type': 'ANNOT',
 							  'action': 'DELETELINKS',
@@ -791,7 +791,7 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
-						  /*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+						  /* TODO RECALCULATE LINKS
 						  HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'DELETELINKS',
