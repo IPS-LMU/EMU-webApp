@@ -39,3 +39,6 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 
 + [github](http://github.com/MJochim)
 
+**Affiliations**
+
+[INSTITUTE OF PHONETICS AND SPEECH PROCESSING](http://www.en.phonetik.uni-muenchen.de/)
