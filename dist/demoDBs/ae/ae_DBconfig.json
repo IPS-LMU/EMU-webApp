@@ -172,7 +172,8 @@
 			"showPerspectivesSidebar": true
 		},
 		"activeButtons": {
-			"saveBundle": false
+			"saveBundle": false,
+			"showHierarchy": true
 		}
 	}
 }

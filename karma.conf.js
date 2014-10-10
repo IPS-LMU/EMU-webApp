@@ -97,7 +97,7 @@ module.exports = function (config) {
     autoWatch: true,
 
     // coverage reporter
-    reporters: ['dots'],
+    reporters: ['progress', 'coverage'],
 
     coverageReporter: {
       type: 'lcov',

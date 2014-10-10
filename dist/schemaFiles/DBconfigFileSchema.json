@@ -72,7 +72,9 @@
 													"type": "string"
 												}
 											}
-										}
+										},
+										"required": ["name", "values"],
+										"additionalProperties": false
 									}
 								}
 							},

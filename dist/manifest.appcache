@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-10-08T13:17:34.777Z
+# rev 1 - 2014-10-10T12:28:27.919Z
 
 CACHE:
 404.html
@@ -39,16 +39,16 @@ schemaFiles/annotationFileSchema.json
 schemaFiles/bundleListSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/1aeb8e44.emuwebApp.min.js
-scripts/e2a93c3e.emuwebAppExternal.min.js
+scripts/0ed99866.emuwebApp.min.js
+scripts/5f911ea7.emuwebAppExternal.min.js
 scripts/emuwebApp.min.js.map
 scripts/workers/espsParserWorker.js
 scripts/workers/spectroWorker.js
 scripts/workers/ssffParserWorker.js
 scripts/workers/textGridParserWorker.js
 scripts/workers/wavParserWorker.js
+styles/47963319.emuwebApp.min.css
 styles/62316d80.emuwebAppExternal.min.css
-styles/d84447a1.emuwebApp.min.css
 styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
 views/SelectLabelModal.html
@@ -57,9 +57,7 @@ views/about.html
 views/bundleListSideBar.html
 views/confirmModal.html
 views/connectModal.html
-views/deleteBoundry.html
 views/deleteLevel.html
-views/deleteSegment.html
 views/emuwebapp.html
 views/error.html
 views/export.html
@@ -72,6 +70,7 @@ views/osci.html
 views/preview.html
 views/renameLevel.html
 views/saveChanges.html
+views/showHierarchyModal.html
 views/spectSettings.html
 views/spectro.html
 views/ssffTrack.html
