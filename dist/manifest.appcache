@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-10-10T12:28:27.919Z
+# rev 1 - 2014-10-10T13:25:11.352Z
 
 CACHE:
 404.html
@@ -22,6 +22,10 @@ demoDBs/epgdorsal/JDR11_bndl.json
 demoDBs/epgdorsal/epgdorsal_DBconfig.json
 demoDBs/epgdorsal/epgdorsal_bundleList.json
 favicon.ico
+fonts/glyphicons-halflings-regular.eot
+fonts/glyphicons-halflings-regular.svg
+fonts/glyphicons-halflings-regular.ttf
+fonts/glyphicons-halflings-regular.woff
 img/aboutBtn.png
 img/deleteBtn.png
 img/glyphicons-halflings-white.png
@@ -49,7 +53,6 @@ scripts/workers/textGridParserWorker.js
 scripts/workers/wavParserWorker.js
 styles/47963319.emuwebApp.min.css
 styles/62316d80.emuwebAppExternal.min.css
-styles/external/a4e7cc3c.bootstrap-combined.min.css
 styles/images/rightSideMenuBtn.png
 views/SelectLabelModal.html
 views/SelectThresholdModal.html

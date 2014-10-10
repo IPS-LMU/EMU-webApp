@@ -31,10 +31,10 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-    
+
     // read package.json to have version nrs
     pkg: grunt.file.readJSON('package.json'),
-    
+
     // Project settings
     yeoman: appConfig,
 
@@ -355,7 +355,7 @@ module.exports = function (grunt) {
             'background.js',
             'manifest.json',
             'assets/icon.png',
-            'styles/external/bootstrap-combined.min.css',
+            // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png'
           ]
         }, {
@@ -364,6 +364,14 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>/images',
           src: [
             'generated/*'
+          ]
+        }, {
+          expand: true,
+          flatten: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>/fonts',
+          src: [
+            'bower_components/bootstrap/dist/fonts/*.*'
           ]
         }]
       },
@@ -392,27 +400,27 @@ module.exports = function (grunt) {
     },
 
     // Test settings
-    
+
     karma: {
-	  continuous: {
-		configFile: 'karma.conf.js',
-		singleRun: false
-	  },
-	  unit: {
-		configFile: 'karma.conf.js',
-		singleRun: true,
-		browsers: ['PhantomJS']
-	  }
-    },   
-    
-    
+      continuous: {
+        configFile: 'karma.conf.js',
+        singleRun: false
+      },
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        browsers: ['PhantomJS']
+      }
+    },
+
+
     protractor: {
       options: {
         keepAlive: true,
         configFile: 'protractor.conf.js'
       },
       run: {}
-    },   
+    },
 
     // auto generate manifest.appcache file with all files of app
     appcache: {
@@ -503,7 +511,7 @@ module.exports = function (grunt) {
     'connect:test',
     'karma:continuous'
   ]);
-  
+
 
   grunt.registerTask('e2e', [
     'clean:server',
@@ -512,7 +520,7 @@ module.exports = function (grunt) {
     'connect:test',
     'karma:unit',
     'protractor:run'
-  ]);  
+  ]);
 
   grunt.registerTask('build', [
     'clean:dist',
