@@ -4,11 +4,15 @@ describe('Worker: ssffParserWorker', function () {
 
   var worker;
   var binary;
+  var jsoDftSpec, jsoFundFreq, jsoFORMANTS;
   var workerFile = 'scripts/workers/ssffParserWorker.js';
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
+  /**
+   *
+   */
   it('should return error on unknown parameter', function (done) {
     worker = new Worker(workerFile);
     worker.addEventListener('message', function (e) {
@@ -23,6 +27,9 @@ describe('Worker: ssffParserWorker', function () {
   });
 
   if (navigator.userAgent.match(/PhantomJS/i) === null) { // phantomjs no support for Float64Array =(
+    /**
+     *
+     */
     it('should parse Arr to ssffJsoArr', function (done) {
       worker = new Worker(workerFile);
       worker.addEventListener('message', function (e) {
@@ -30,6 +37,7 @@ describe('Worker: ssffParserWorker', function () {
         expect(e.data.status.message).toEqual('');
         expect(e.data.data.length).toEqual(3);
 
+        jsoDftSpec = e.data.data[0];
         expect(e.data.data[0].ssffTrackName).toEqual('dftSpec');
         expect(e.data.data[0].sampleRate).toEqual(200);
         expect(e.data.data[0].startTime).toEqual(0.0025);
@@ -84,6 +92,27 @@ describe('Worker: ssffParserWorker', function () {
         'cmd': 'parseArr',
         'ssffArr': buf
       });
+    });
+
+    /**
+     *
+     */
+    it('should return error while parsing non SHORT column jso to ssff', function (done) {
+      var worker = new Worker(workerFile);
+
+      worker.addEventListener('message', function (e) {
+        expect(e.data.status.type).toEqual('ERROR');
+
+        worker.terminate();
+        done();
+      })
+
+      var buf = msajc003_bndl.ssffFiles;
+      worker.postMessage({
+        'cmd': 'jso2ssff',
+        'jso': JSON.stringify(jsoDftSpec)
+      });
+
     });
   }
 });
