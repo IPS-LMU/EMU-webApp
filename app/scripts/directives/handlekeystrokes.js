@@ -95,7 +95,7 @@ angular.module('emuwebApp')
                 viewState.setEditing(false);
               }
               
-            } else {
+            } else if (viewState.getcursorInTextField() === false) {
               
               LevelService.deleteEditArea();
               
@@ -264,7 +264,7 @@ angular.module('emuwebApp')
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ANNOT',
-                          'action': 'MOVEPOINT',
+                          'action': 'MOVEEVENT',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist
@@ -300,7 +300,7 @@ angular.module('emuwebApp')
                       if (levelType === "EVENT") {
                         HistoryService.updateCurChangeObj({
                           'type': 'ANNOT',
-                          'action': 'MOVEPOINT',
+                          'action': 'MOVEEVENT',
                           'name': levelName,
                           'id': mouseSeg.id,
                           'movedBy': minDist
@@ -675,13 +675,13 @@ angular.module('emuwebApp')
                         } else {
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
                           if (typeof levelDef.anagestConfig === 'undefined') {
-                            var insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+                            var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                             if (insPoint.alreadyExists) {
                               scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
                             } else {
                               HistoryService.addObjToUndoStack({
                                 'type': 'ANNOT',
-                                'action': 'INSERTPOINT',
+                                'action': 'INSERTEVENT',
                                 'name': viewState.getcurClickLevelName(),
                                 'start': viewState.curViewPort.selectS,
                                 'id': insPoint.id,
@@ -736,30 +736,39 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-							var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+							/* TODO RECALCULATE LINKS
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
 								'action': 'DELETELINKS',
 								'name': levelname,
 								'id': seg.id,
 								'deletedLinks': deletedLinks
-							});
+							});*/
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
                           } else {
-                            var deletedPoint = LevelService.deletePoint(levelname, seg.id);
-                            HistoryService.addObjToUndoStack({
+                            var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
+                            HistoryService.updateCurChangeObj({
                               'type': 'ANNOT',
-                              'action': 'DELETEPOINT',
+                              'action': 'DELETEEVENT',
                               'name': levelname,
                               'start': deletedPoint.samplePoint,
                               'id': deletedPoint.id,
                               'pointName': deletedPoint.labels[0].value
 
                             });
+						    /* TODO RECALCULATE LINKS
+						    HistoryService.updateCurChangeObj({
+							  'type': 'ANNOT',
+							  'action': 'DELETELINKS',
+							  'name': levelname,
+							  'id': seg.id,
+							  'deletedLinks': deletedLinks
+						    });*/
+						    HistoryService.addCurChangeObjToUndoStack();
                             // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                         }
@@ -774,7 +783,7 @@ angular.module('emuwebApp')
                         var levelname = viewState.getcurClickLevelName();
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
-                          HistoryService.addObjToUndoStack({
+                          HistoryService.updateCurChangeObj({
                             'type': 'ANNOT',
                             'action': 'DELETESEGMENTS',
                             'name': levelname,
@@ -782,6 +791,15 @@ angular.module('emuwebApp')
                             'length': seg.length,
                             'deletedSegment': deletedSegment
                           });
+						  /* TODO RECALCULATE LINKS
+						  HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'DELETELINKS',
+							'name': levelname,
+							'id': seg.id,
+							'deletedLinks': deletedLinks
+						  });*/
+						  HistoryService.addCurChangeObjToUndoStack();
                           viewState.setcurMouseSegment(undefined, undefined, undefined);
                           viewState.setcurClickSegment(deletedSegment.clickSeg);
                         } else {

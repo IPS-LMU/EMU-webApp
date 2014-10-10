@@ -11,7 +11,5 @@ angular.module('emuwebApp', ['ui', 'ui.bootstrap', 'ngAnimate'])
     //     redirectTo: '/'
     //   });
     $locationProvider.html5Mode(true);
-
-  });
-  
+  });   
   

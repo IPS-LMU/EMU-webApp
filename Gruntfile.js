@@ -392,13 +392,27 @@ module.exports = function (grunt) {
     },
 
     // Test settings
+    
     karma: {
-      unit: {
-        configFile: 'karma.conf.js',
-        singleRun: false
-      }
-    },
-
+	  continuous: {
+		configFile: 'karma.conf.js',
+		singleRun: false
+	  },
+	  unit: {
+		configFile: 'karma.conf.js',
+		singleRun: true,
+		browsers: ['PhantomJS']
+	  }
+    },   
+    
+    
+    protractor: {
+      options: {
+        keepAlive: true,
+        configFile: 'protractor.conf.js'
+      },
+      run: {}
+    },   
 
     // auto generate manifest.appcache file with all files of app
     appcache: {
@@ -487,8 +501,18 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma:continuous'
   ]);
+  
+
+  grunt.registerTask('e2e', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'karma:unit',
+    'protractor:run'
+  ]);  
 
   grunt.registerTask('build', [
     'clean:dist',

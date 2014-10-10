@@ -11,10 +11,22 @@ angular.module('emuwebApp')
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':fromID, 'toID':toID})
 		 */
-		sServObj.addLinkToParent = function (fromID, toID) {
+		sServObj.insertLink = function (fromID, toID) {
 			sServObj.data.links.push({
 				'fromID': fromID,
 				'toID': toID
+			});
+		};
+
+		/**
+		 * removes single link from sServObj.data.links 
+		 * that match the form {'fromID':fromID, 'toID':toID}
+		 */
+		sServObj.deleteLink = function (fromID, toID) {
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+				if(link.fromID === fromID && link.toID === toID){
+					sServObj.data.links.splice(linkIdx);					
+        		};
 			});
 		};
 		
@@ -23,58 +35,43 @@ angular.module('emuwebApp')
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
-		sServObj.addMultipleLinksToParent = function (fromID, toIDs) {
+		sServObj.insertLinksTo = function (fromID, toIDs) {
 			angular.forEach(toIDs, function (toID) {
-				sServObj.addLinkToParent(fromID, toID);
+				sServObj.insertLink(fromID, toID);
 			});
 		};
 
-
 		/**
-		 * removes single link from sServObj.data.links 
+		 * removes multiple links to children from sServObj.data.links 
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.deleteLinkToParent = function (fromID, toID) {
-			angular.forEach(sServObj.data.links, function (link, linkIdx) {
-				if(link.fromID === fromID && link.toID === toID){
-					sServObj.data.links.splice(linkIdx);					
-        		};
+		sServObj.deleteLinksTo = function (fromID, toIDs) {
+			angular.forEach(toIDs, function (toID) {
+				sServObj.deleteLink(fromID, toID);
+			});
+		};
+		
+		/**
+		 * adds multiple links to sServObj.data.links 
+		 * by pairing all parentIds with the child 
+		 * id (form=={'fromID':fromID, 'toID':childId})
+		 */
+		sServObj.insertLinksFrom = function (fromIDs, toID) {
+			angular.forEach(fromIDs, function (fromID) {
+				sServObj.insertLink(fromID, toID);
 			});
 		};
 
 		/**
-		 * removes single link from sServObj.data.links 
+		 * removes multiple links to parents from sServObj.data.links 
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.deleteMultipleLinksToParent = function (fromID, toIDs) {
-			angular.forEach(toIDs, function (toID) {
-				sServObj.deleteLinkToParent(fromID, toID);
+		sServObj.deleteLinksFrom = function (fromIDs, toID) {
+			angular.forEach(fromIDs, function (fromID) {
+				sServObj.deleteLink(fromID, toID);
 			});
-		};
+		};		
 
-		/**
-		 * removes all links from sServObj.data.links 
-		 * that match the form 'fromID': ID OR 'toID': ID
-		 */
-		sServObj.deleteMultipleLinks = function (ID) {
-		    var deleted = [];
-			angular.forEach(sServObj.data.links, function (link, linkIdx) {
-				if(link.fromID === ID || link.toID === ID){
-				    deleted.push(link);
-					sServObj.data.links.splice(linkIdx);					
-				};
-			});
-			return deleted;
-		};
-
-		/**
-		 * add all deleted links back 
-		 */
-		sServObj.addMultipleLinks = function (deletedLinks) {
-			angular.forEach(deletedLinks, function (link) {
-				sServObj.addLinkToParent(link.fromID, link.toID);
-			});
-		};
 
 		return sServObj;
 	});

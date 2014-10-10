@@ -60,13 +60,13 @@ describe('navigation', function () {
 	it('should change loaded timeline view', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(400);
+		ptor.sleep(300);
 	});
 
 	it('should change loaded timeline view back to orig', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(400);
+		ptor.sleep(300);
 	});
 
 	it('should test all resize buttons', function () {
@@ -694,27 +694,4 @@ describe('navigation', function () {
 		element(by.id('playAllBtn')).click();
 		ptor.sleep(2950);
 	});
-
-
-
-	/*	it('should clear view and open demo1', function() {
-	    element(by.id('clear')).click();	
-	    ptor.sleep(250);
-	    element(by.id('modal-confirm')).click();	
-	    ptor.sleep(250);	  
-    	element(by.id('demoDB')).click();
-	    element(by.id('demo1')).click();  
-	});	
-
-	it('should clear view and open demo2', function() {
-	    element(by.id('clear')).click();	
-	    ptor.sleep(250);
-	    element(by.id('modal-confirm')).click();	
-	    ptor.sleep(250);	  
-    	element(by.id('demoDB')).click();
-	    element(by.id('demo1')).click();  
-	});	*/
-
-
-
 });
