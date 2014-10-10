@@ -736,14 +736,14 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-							var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
+							/*var deletedLinks = LinkService.deleteMultipleLinks(seg.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
 								'action': 'DELETELINKS',
 								'name': levelname,
 								'id': seg.id,
 								'deletedLinks': deletedLinks
-							});
+							});*/
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined

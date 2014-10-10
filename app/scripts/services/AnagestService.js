@@ -225,10 +225,10 @@ angular.module('emuwebApp')
 									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
 									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
 								];
-								LinkService.addMultipleLinksToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
+								LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
 								HistoryService.updateCurChangeObj({
 									'type': 'ANNOT',
-									'action': 'ADDLINKTOPARENT',
+									'action': 'INSERTLINKSTO',
 									'name': linkLevelDetails.level.name,
 									'parentID': linkLevelDetails.level.items[itemIdx].id,
 									'childIDs': childIDs

@@ -68,16 +68,9 @@ angular.module('emuwebApp')
 						break;
 					case 'DELETELEVEL':
 						if (applyOldVal) {
-							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
+							LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						} else {
 							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
-						}
-						break;
-					case 'ADDLEVEL':
-						if (applyOldVal) {
-							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
-						} else {
-							LevelService.addLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'DELETEBOUNDARY':
@@ -94,6 +87,34 @@ angular.module('emuwebApp')
 							LevelService.deleteSegments(cur.name, cur.id, cur.length);
 						}
 						break;
+					case 'DELETEEVENT':
+						if (applyOldVal) {
+							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
+						} else {
+							LevelService.deleteEvent(cur.name, cur.id);
+						}
+						break;	
+					case 'DELETELINKTOPARENT':
+						if (applyOldVal) {
+							LinkService.insertMultipleLinksToParent(cur.parentID, cur.childIDs);
+						} else {
+							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
+						}
+						break;
+					case 'DELETELINKSTO':
+						if (applyOldVal) {
+							LinkService.insertLinksTo(cur.deletedLinks);
+						} else {
+							LinkService.deleteLinksTo(cur.id);
+						}
+						break;											
+					case 'INSERTLEVEL':
+						if (applyOldVal) {
+							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
+						} else {
+							LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
+						}
+						break;
 					case 'INSERTSEGMENTS':
 						if (applyOldVal) {
 							LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
@@ -108,11 +129,11 @@ angular.module('emuwebApp')
 							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
-					case 'DELETEEVENT':
+					case 'INSERTLINKSTO':
 						if (applyOldVal) {
-							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
+							LinkService.deleteLinksTo(cur.parentID, cur.childIDs);
 						} else {
-							LevelService.deleteEvent(cur.name, cur.id);
+							LinkService.insertLinksTo(cur.parentID, cur.childIDs);
 						}
 						break;
 					case 'EXPANDSEGMENTS':
@@ -122,28 +143,7 @@ angular.module('emuwebApp')
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
-					case 'ADDLINKTOPARENT':
-						if (applyOldVal) {
-							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
-						} else {
-							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
-						}
-						break;
-					case 'DELETELINKTOPARENT':
-						if (applyOldVal) {
-							LinkService.addMultipleLinksToParent(cur.parentID, cur.childIDs);
-						} else {
-							LinkService.deleteMultipleLinksToParent(cur.parentID, cur.childIDs);
-						}
-						break;
-					case 'DELETELINKS':
-						if (applyOldVal) {
-							LinkService.addMultipleLinks(cur.deletedLinks);
-						} else {
-							LinkService.deleteMultipleLinks(cur.id);
-						}
-						break;
-					}
+					}			
 				}
 			});
 		}
@@ -179,7 +179,7 @@ angular.module('emuwebApp')
 						curChangeObj[dataKey] = dataObj;
 					}
 					break;
-				case 'ADDLINKTOPARENT':
+				case 'INSERTLINKS':
 				case 'DELETELINKTOPARENT':
 				case 'DELETELINKS':	
 				case 'DELETEBOUNDARY':

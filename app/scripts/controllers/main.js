@@ -648,7 +648,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.addLevelSegBtnClick = function () {
+		$scope.insertLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var length = 0;
 				if (LevelService.data.levels !== undefined) {
@@ -680,11 +680,11 @@ angular.module('emuwebApp')
 					}
 					viewState.setCurLevelAttrDefs(leveldef);
 				}
-				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
+				LevelService.insertLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ANNOT',
-					'action': 'ADDLEVEL',
+					'action': 'INSERTLEVEL',
 					'level': level,
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
@@ -698,7 +698,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.addLevelPointBtnClick = function () {
+		$scope.insertLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 				var length = 0;
@@ -730,11 +730,11 @@ angular.module('emuwebApp')
 					}
 					viewState.setCurLevelAttrDefs(leveldef);
 				}
-				LevelService.addLevel(level, length, viewState.curPerspectiveIdx);
+				LevelService.insertLevel(level, length, viewState.curPerspectiveIdx);
 				//  Add to history
 				HistoryService.addObjToUndoStack({
 					'type': 'ANNOT',
-					'action': 'ADDLEVEL',
+					'action': 'INSERTLEVEL',
 					'level': level,
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx

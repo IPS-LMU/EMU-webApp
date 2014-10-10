@@ -607,7 +607,7 @@ angular.module('emuwebApp')
 		/**
 		 * adds a level by its name
 		 */
-		sServObj.addLevel = function (originalLevel, levelIndex, curPerspectiveIdx) {
+		sServObj.insertLevel = function (originalLevel, levelIndex, curPerspectiveIdx) {
 			if (sServObj.data.levels !== undefined) {
 				sServObj.data.levels.splice(levelIndex, 0, originalLevel);
 				ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, originalLevel.name);

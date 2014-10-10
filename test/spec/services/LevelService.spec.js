@@ -451,7 +451,7 @@ describe('Service: LevelService', function () {
     ConfigProviderService.setVals(defaultEmuwebappConfig);
     LevelService.setData(msajc003_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(9);
-    LevelService.addLevel({
+    LevelService.insertLevel({
       "items": [{
         "id": 150,
         "sampleStart": 0,
@@ -470,7 +470,7 @@ describe('Service: LevelService', function () {
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     LevelService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(4);
-    LevelService.addLevel({
+    LevelService.insertLevel({
       "items": [{
         "id": 151,
         "sampleStart": 0,
@@ -489,7 +489,7 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     LevelService.setData(JDR10_bndl.annotation);
     expect(LevelService.data.levels.length).toEqual(2);
-    LevelService.addLevel({
+    LevelService.insertLevel({
       "items": [{
         "id": 152,
         "sampleStart": 0,
@@ -1117,36 +1117,6 @@ describe('Service: LevelService', function () {
     expect(labels[0]).toEqual('V');
     expect(labels[8]).toEqual('f');
     expect(labels[labels.length - 1]).toEqual('l');
-  }));
-
-  /**
-   *
-   */
-  it('should add links to parent', inject(function (LevelService, LinkService) {
-    // set according data
-    LevelService.setData(msajc003_bndl.annotation);
-    LevelService.data.links = [];
-    var parentID = 1234;
-    var childIDs = [1, 2, 3, 4];
-    LinkService.addMultipleLinksToParent(parentID, childIDs);
-    expect(LevelService.data.links.length).toEqual(4);
-    expect(LevelService.data.links[0].fromID).toEqual(1234);
-    expect(LevelService.data.links[0].toID).toEqual(1);
-  }));
-
-  /**
-   *
-   */
-  it('should remove links to parent', inject(function (LevelService, LinkService) {
-    // first add
-    LevelService.setData(msajc003_bndl.annotation);
-    LevelService.data.links = [];
-    var parentID = 1234;
-    var childIDs = [1, 2, 3, 4];
-    LinkService.addMultipleLinksToParent(parentID, childIDs);
-    // then remove
-    LinkService.deleteMultipleLinksToParent(parentID, childIDs);
-    expect(LevelService.data.links.length).toEqual(0);
   }));
   
 });
