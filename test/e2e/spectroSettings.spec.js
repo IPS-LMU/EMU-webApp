@@ -88,7 +88,7 @@ describe('E2E: spectrogram settings', function () {
 		ptor.selectOption(by.id('windowLength'), '1024');
 		element(by.id('dialogSaveButton')).click();
 		ptor.sleep(90);
-	});	
+	});	 
 	
 	it('should be able to set window Func to LANCZOS and window Len to 1024', function () {
 		element(by.id('spectSettingsBtn')).click();	
