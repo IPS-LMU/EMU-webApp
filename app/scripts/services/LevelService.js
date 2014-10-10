@@ -891,7 +891,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.insertPoint = function (name, start, pointName, id) {
+		sServObj.insertEvent = function (name, start, pointName, id) {
 			var ret = false;
 			var alreadyExists = false;
 			var pos = undefined;
@@ -923,7 +923,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.deletePoint = function (name, id) {
+		sServObj.deleteEvent = function (name, id) {
 			var ret = false;
 			angular.forEach(sServObj.data.levels, function (t) {
 				if (t.name === name && t.type == 'EVENT') {
@@ -1071,7 +1071,7 @@ angular.module('emuwebApp')
 				if (type == "SEGMENT") {
 					this.moveBoundary(levelName, segment.id, minDist, 0);
 				} else if (type == "EVENT") {
-					this.movePoint(levelName, segment.id, minDist);
+					this.moveEvent(levelName, segment.id, minDist);
 				}
 				return minDist;
 			} else {
@@ -1135,7 +1135,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.movePoint = function (name, id, changeTime) {
+		sServObj.moveEvent = function (name, id, changeTime) {
 			var orig = sServObj.getItemFromLevelById(name, id);
 			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 				sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));

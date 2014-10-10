@@ -135,20 +135,20 @@ angular.module('emuwebApp')
 							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
-							var gdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
+							var gdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[0],
 								'id': gdat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
-							var gdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
+							var gdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[1],
 								'id': gdat1insPoint.id,
@@ -159,20 +159,20 @@ angular.module('emuwebApp')
 							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
-							var vdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
+							var vdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[0],
 								'id': vdat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
-							var vdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
+							var vdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[1],
 								'id': vdat1insPoint.id,
@@ -183,20 +183,20 @@ angular.module('emuwebApp')
 							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
 							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
-							var ndat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
+							var ndat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[0],
 								'id': ndat0insPoint.id,
 								'pointName': curLabel
 							});
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
-							var ndat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
+							var ndat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[1],
 								'id': ndat1insPoint.id,
@@ -206,10 +206,10 @@ angular.module('emuwebApp')
 							// console.log(cdat);
 							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
-							var cdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
+							var cdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), cdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'INSERTPOINT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': cdat[0],
 								'id': cdat0insPoint.id,

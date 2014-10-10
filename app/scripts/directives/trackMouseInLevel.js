@@ -128,10 +128,10 @@ angular.module('emuwebApp')
                   } else {
                     seg = viewState.getcurMouseSegment();
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
-                    LevelService.movePoint(scope.this.level.name, seg.id, moveBy);
+                    LevelService.moveEvent(scope.this.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ANNOT',
-                      'action': 'MOVEPOINT',
+                      'action': 'MOVEEVENT',
                       'name': scope.this.level.name,
                       'id': seg.id,
                       'movedBy': moveBy

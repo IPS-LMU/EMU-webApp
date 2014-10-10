@@ -45,11 +45,11 @@ angular.module('emuwebApp')
 							LevelService.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
 						}
 						break;
-					case 'MOVEPOINT':
+					case 'MOVEEVENT':
 						if (applyOldVal) {
-							LevelService.movePoint(cur.name, cur.id, -cur.movedBy);
+							LevelService.moveEvent(cur.name, cur.id, -cur.movedBy);
 						} else {
-							LevelService.movePoint(cur.name, cur.id, cur.movedBy);
+							LevelService.moveEvent(cur.name, cur.id, cur.movedBy);
 						}
 						break;
 					case 'RENAMELABEL':
@@ -101,18 +101,18 @@ angular.module('emuwebApp')
 							LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
-					case 'INSERTPOINT':
+					case 'INSERTEVENT':
 						if (applyOldVal) {
-							LevelService.deletePoint(cur.name, cur.id);
+							LevelService.deleteEvent(cur.name, cur.id);
 						} else {
-							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
+							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
-					case 'DELETEPOINT':
+					case 'DELETEEVENT':
 						if (applyOldVal) {
-							LevelService.insertPoint(cur.name, cur.start, cur.pointName, cur.id);
+							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 						} else {
-							LevelService.deletePoint(cur.name, cur.id);
+							LevelService.deleteEvent(cur.name, cur.id);
 						}
 						break;
 					case 'EXPANDSEGMENTS':
@@ -169,7 +169,7 @@ angular.module('emuwebApp')
 			} else if (dataObj.type === 'ANNOT') {
 				switch (dataObj.action) {
 				case 'MOVEBOUNDARY':
-				case 'MOVEPOINT':
+				case 'MOVEEVENT':
 				case 'MOVESEGMENT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {

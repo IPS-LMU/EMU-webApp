@@ -901,7 +901,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'setcurMouseSegment').and.callThrough();        
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.lvl, 'deletePoint').and.returnValue({"id":fakePCMtime, "samplePoint":fakePCMtime, "labels":[{"name":"Word","value":lvlName}]});
+        spyOn(scope.lvl, 'deleteEvent').and.returnValue({"id":fakePCMtime, "samplePoint":fakePCMtime, "labels":[{"name":"Word","value":lvlName}]});
         spyOn(scope.history, 'addObjToUndoStack');
         clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'EVENT');
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
@@ -910,10 +910,10 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);        
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-        expect(scope.lvl.deletePoint).toHaveBeenCalledWith(lvlName, item.id);
+        expect(scope.lvl.deleteEvent).toHaveBeenCalledWith(lvlName, item.id);
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
             'type': 'ANNOT',
-            'action': 'DELETEPOINT',
+            'action': 'DELETEEVENT',
             'name': lvlName,
             'start': fakePCMtime,
             'id': fakePCMtime,
@@ -1006,7 +1006,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.lvl, 'insertPoint').and.returnValue({alreadyExists: false, id: fakePCMclick});
+        spyOn(scope.lvl, 'insertEvent').and.returnValue({alreadyExists: false, id: fakePCMclick});
         spyOn(scope.history, 'addObjToUndoStack');
         var lvlName = 'Tone';
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
@@ -1016,10 +1016,10 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curViewPort.selectE = fakePCMclick;
         trigEvent(scope.cps.vals.keyMappings.createNewItemAtSelection, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
-        expect(scope.lvl.insertPoint).toHaveBeenCalledWith(lvlName, fakePCMclick, scope.cps.vals.labelCanvasConfig.newSegmentName); 
+        expect(scope.lvl.insertEvent).toHaveBeenCalledWith(lvlName, fakePCMclick, scope.cps.vals.labelCanvasConfig.newSegmentName); 
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
             'type': 'ANNOT',
-            'action': 'INSERTPOINT',
+            'action': 'INSERTEVENT',
             'name': lvlName,
             'start': fakePCMclick,
             'id': fakePCMclick,
