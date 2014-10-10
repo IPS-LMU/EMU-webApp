@@ -112,6 +112,17 @@
     border:1px solid rgb(33,217,255);
 }
 
+.emuwebapp-mini-btn-dialog:hover:enabled {
+    background-color:white;
+    color:#000;
+}
+
+.emuwebapp-mini-btn-dialog:disabled {
+    color:rgb(33,217,255);
+    border:1px solid rgb(33,217,255);
+}
+
+
 .emuwebapp-mini-btn:active {
     top:1px;
 }

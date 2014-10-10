@@ -1,0 +1,36 @@
+<div class="modal-header modal-header-hierarchy">
+	<div class="btn-group emuwebapp-mini-btn-group" dropup is-open="status.isopen" ng-repeat="(key, levelName) in paths.possible[getSelIdx()]">
+		<button type="button" class="dropdown-toggle">
+			<span class="glyphicon glyphicon-cog"></span> {{levelName}}<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><em>Choose current label:</em></li>
+			<li class="divider"></li>
+			<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)">
+				<a ng-click="setCurrentAttrDef(levelName, attrDef.name)">
+					<span ng-show="isCurrentAttrDef(levelName, attrDef.name)" class="glyphicon glyphicon-arrow-right"></span>
+					{{attrDef.name}}
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
+</div>
+
+<div class="modal-body modal-body-hierarchy">
+	<emuhierarchy playing="getPlaying();" path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
+</div>
+
+<div class="modal-footer modal-footer-hierarchy">
+	<button class="emuwebapp-mini-btn-dialog" ng-click="playSelection()">
+		play selected item
+	</button>
+
+	<button class="emuwebapp-mini-btn-dialog" ng-click="rotateHierarchy()">
+		<span class="glyphicon glyphicon-repeat"></span> 
+		rotate by 90°
+	</button>
+
+	<button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog">close hierarchy view</button>
+</div>
