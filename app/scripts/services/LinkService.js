@@ -42,7 +42,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * removes single link from sServObj.data.links 
+		 * removes multiple links to children from sServObj.data.links 
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksTo = function (fromID, toIDs) {
@@ -50,6 +50,27 @@ angular.module('emuwebApp')
 				sServObj.deleteLink(fromID, toID);
 			});
 		};
+		
+		/**
+		 * adds multiple links to sServObj.data.links 
+		 * by pairing all parentIds with the child 
+		 * id (form=={'fromID':fromID, 'toID':childId})
+		 */
+		sServObj.insertLinksFrom = function (fromIDs, toID) {
+			angular.forEach(fromIDs, function (fromID) {
+				sServObj.insertLink(fromID, toID);
+			});
+		};
+
+		/**
+		 * removes multiple links to parents from sServObj.data.links 
+		 * that match the form {'fromID':fromID, 'toID':toID}
+		 */
+		sServObj.deleteLinksFrom = function (fromIDs, toID) {
+			angular.forEach(fromIDs, function (fromID) {
+				sServObj.deleteLink(fromID, toID);
+			});
+		};		
 
 
 		return sServObj;
