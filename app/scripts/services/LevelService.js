@@ -397,13 +397,13 @@ angular.module('emuwebApp')
 						    for (var i = 0; i < attrdefs.length; i++) {
     							if (attrdefs[i].name === curAttrDef) {
 	    							newElement.labels.push({
-		    							name: levelname,
+		    							name: attrdefs[i].name,
 			    						value: labelname
 				    				});
 					    		} else {
 						    		newElement.labels.push({
 							    		name: attrdefs[i].name,
-								    	value: ''
+								    	value: labelname
     								});
 	    						}
 		    				}
@@ -424,13 +424,13 @@ angular.module('emuwebApp')
 							for (var i = 0; i < attrdefs.length; i++) {
 								if (attrdefs[i].name === curAttrDef) {
 									newElement.labels.push({
-										name: levelname,
+										name: attrdefs[i].name,
 										value: labelname
 									});
 								} else {
 									newElement.labels.push({
 										name: attrdefs[i].name,
-										value: ''
+										value: labelname
 									});
 								}
 							}

@@ -75,6 +75,7 @@ angular.module('emuwebApp')
               if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {   
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
+                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   HistoryService.addObjToUndoStack({
                     'type': 'ANNOT',
                     'action': 'RENAMELABEL',
@@ -84,7 +85,6 @@ angular.module('emuwebApp')
                     'oldValue': editingElement.labels[attrIndex].value,
                     'newValue': domElement.val()
                   });
-                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
                   LevelService.deleteEditArea();
                   viewState.setEditing(false);
                   viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
