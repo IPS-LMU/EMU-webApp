@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		sServObj.deleteLink = function (fromID, toID) {
 			angular.forEach(sServObj.data.links, function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
-					sServObj.data.links.splice(linkIdx);					
+					sServObj.data.links.splice(linkIdx);
         		};
 			});
 		};
@@ -46,9 +46,12 @@ angular.module('emuwebApp')
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksTo = function (fromID, toIDs) {
+		    var ret = [];
 			angular.forEach(toIDs, function (toID) {
-				sServObj.deleteLink(fromID, toID);
+			    sServObj.deleteLink(fromID, toID)
+				ret.push({fromID:fromID, toID:toID});
 			});
+			return ret;
 		};
 		
 		/**
@@ -67,10 +70,41 @@ angular.module('emuwebApp')
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksFrom = function (fromIDs, toID) {
+		    var ret = [];
 			angular.forEach(fromIDs, function (fromID) {
+				ret.push({fromID:fromID, toID:toID});
 				sServObj.deleteLink(fromID, toID);
 			});
+			return ret;
+		};	
+
+		/**
+		 * returns all links
+		 * that match the form {'toID':toID}
+		 */
+		sServObj.getLinksTo = function (toID) {
+		    var ret = [];
+			angular.forEach(sServObj.data.links, function (link) {
+			    if(link.toID === toID) {
+				    ret.push(link);
+				}
+			});
+			return ret;
 		};		
+
+		/**
+		 * returns all links
+		 * that match the form {'toID':toID}
+		 */
+		sServObj.getLinksFrom = function (fromID) {
+		    var ret = [];
+			angular.forEach(sServObj.data.links, function (link) {
+			    if(link.fromID === fromID) {
+				    ret.push(link);
+				}
+			});
+			return ret;
+		};				
 
 
 		return sServObj;

@@ -29,6 +29,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorInTextField = function () {
 			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
 		};
 
 		/**
@@ -36,6 +37,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
 		};
 
 		/**
@@ -50,6 +52,22 @@ angular.module('emuwebApp')
 			};
 			return (curStyle);
 		};
+		
+		/**
+		 *
+		 */
+		$scope.cancel = function () {
+			dialogService.close(false);
+		};
+
+		/**
+		 *
+		 */
+		$scope.error = function (errorMsg) {
+			dialogService.close();
+			dialogService.open('views/error.html', 'ModalCtrl', 'Sorry: ' + errorMsg);
+		};
+		
 		/**
 		 *
 		 */
@@ -78,18 +96,4 @@ angular.module('emuwebApp')
 			}
 		};
 
-		/**
-		 *
-		 */
-		$scope.error = function (errorMsg) {
-			dialogService.close();
-			dialogService.open('views/error.html', 'ModalCtrl', 'Sorry: ' + errorMsg);
-		};
-
-		/**
-		 *
-		 */
-		$scope.cancel = function () {
-			dialogService.close();
-		};
 	});

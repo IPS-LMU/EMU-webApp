@@ -61,6 +61,7 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
+      sServObj.rotated = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
       sServObj.curMousePosSample = 0;
@@ -778,6 +779,20 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
+    };
+
+    /**
+     *
+     */
+    sServObj.isRotated = function () {
+      return this.rotated;
+    };
+
+    /**
+     *
+     */
+    sServObj.rotateHierarchy = function () {
+      this.rotated = !this.rotated;
     };
 
 

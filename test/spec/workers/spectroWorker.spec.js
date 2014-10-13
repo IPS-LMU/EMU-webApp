@@ -16,15 +16,41 @@ describe('Worker: spectroWorker', function () {
 	var freq = 5000;
 	var freqLow = 0;
 
-	var workerFileWav = 'scripts/workers/wavParserWorker.js';
-	var workerFileSpec = 'scripts/workers/spectroWorker.js';
-
 	// load the controller's module
 	beforeEach(module('emuwebApp'));
+	
+	  beforeEach(inject(function() {
+		var blob;
+		  try {
+			  blob = new Blob([spectroWorker], {type: 'application/javascript'});
+		  } catch (e) { // Backwards-compatibility
+			  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+			  blob = new BlobBuilder();
+			  blob.append(spectroWorker);
+			  blob = blob.getBlob();
+		 }
+		 if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+			 worker = new Worker(webkitURL.createObjectURL(blob));
+		 } else {
+			 worker = new Worker(URL.createObjectURL(blob));
+		 }  
+		 try {
+			  blob = new Blob([wavParserWorker], {type: 'application/javascript'});
+		  } catch (e) { // Backwards-compatibility
+			  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+			  blob = new BlobBuilder();
+			  blob.append(wavParserWorker);
+			  blob = blob.getBlob();
+		 }
+		 if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+			 worker2 = new Worker(webkitURL.createObjectURL(blob));
+		 } else {
+			 worker2 = new Worker(URL.createObjectURL(blob));
+		 }		 
+	  }));  	
 
 
 	it('should return error on undefined paramater', function (done) {
-		worker = new Worker(workerFileSpec);
 		worker.addEventListener('message', function (e) {
 			expect(e.data.status.type).toEqual('ERROR');
 			expect(e.data.status.message).toEqual('heatMapColorAnchors is undefined');
@@ -36,8 +62,6 @@ describe('Worker: spectroWorker', function () {
 
 	it('should render spectro image', inject(function (Binarydatamaniphelper) {
 		if (navigator.userAgent.match(/PhantomJS/i) === null) {
-			worker = new Worker(workerFileSpec);
-			worker2 = new Worker(workerFileWav);
 
 			// first step : convert b64 to wav using workerFileWav
 			var buf = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);

@@ -5,7 +5,6 @@ angular.module('emuwebApp')
 	
 		// Scope data
 		
-		var rotated = false;
 		var playing = 0;
 
 		$scope.paths = {
@@ -46,11 +45,11 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			rotated = !rotated;
+			viewState.rotateHierarchy();
 		};
 		
 		$scope.getRotation = function () {
-			return rotated;
+			return viewState.isRotated();
 		};
 
 		$scope.playSelection = function () {

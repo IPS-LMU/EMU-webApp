@@ -38,6 +38,7 @@ describe('Service: LinkService', function () {
     var parentID = 1234;
     var childIDs = [1, 2, 3, 4];
     LinkService.insertLinksTo(parentID, childIDs);
+    expect(LevelService.data.links.length).toEqual(4);
     // then remove
     LinkService.deleteLinksTo(parentID, childIDs);
     expect(LevelService.data.links.length).toEqual(0);
@@ -62,7 +63,6 @@ describe('Service: LinkService', function () {
     expect(LevelService.data.links[2].toID).toEqual(1234);
     expect(LevelService.data.links[3].fromID).toEqual(4);
     expect(LevelService.data.links[3].toID).toEqual(1234);
-
   }));
 
   /**
@@ -75,6 +75,7 @@ describe('Service: LinkService', function () {
     var parentIDs = [1, 2, 3, 4];
     var childID = 1234;
     LinkService.insertLinksFrom(parentIDs, childID);
+    expect(LevelService.data.links.length).toEqual(4);
     // then remove
     LinkService.deleteLinksFrom(parentIDs, childID);
     expect(LevelService.data.links.length).toEqual(0);
