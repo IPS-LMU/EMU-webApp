@@ -29,8 +29,6 @@ angular.module('emuwebApp')
         
         function applyKeyCodeUp(code, e) {
           scope.$apply(function () {
-            e.preventDefault();
-            e.stopPropagation();     
             if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
 				var domElement = $('.' + LevelService.getlasteditArea());
 				var str = domElement.val();
@@ -106,6 +104,11 @@ angular.module('emuwebApp')
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
+              // rotateHierarhy
+              if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
+                  viewState.rotateHierarchy();
+              }
+
               // zoomAll
               if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
                 if (viewState.getPermission('zoom')) {
@@ -133,6 +136,15 @@ angular.module('emuwebApp')
                 }
               }
 
+              // zoomSel
+              if (code === ConfigProviderService.vals.keyMappings.zoomSel) {
+                if (viewState.getPermission('zoom')) {
+                  viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+                } else {
+                  //console.log('action currently not allowed');
+                }
+              }
+
               // shiftViewPortLeft
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortLeft) {
                 if (viewState.getPermission('zoom')) {
@@ -146,15 +158,6 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.shiftViewPortRight) {
                 if (viewState.getPermission('zoom')) {
                   viewState.shiftViewPort(true);
-                } else {
-                  //console.log('action currently not allowed');
-                }
-              }
-
-              // zoomSel
-              if (code === ConfigProviderService.vals.keyMappings.zoomSel) {
-                if (viewState.getPermission('zoom')) {
-                  viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
                 } else {
                   //console.log('action currently not allowed');
                 }
@@ -717,6 +720,7 @@ angular.module('emuwebApp')
               // deletePreselBoundary
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (viewState.getPermission('labelAction')) {
+                  e.preventDefault();
                   if (!e.shiftKey) {
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                       var seg = viewState.getcurMouseSegment();
@@ -736,14 +740,14 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-							/* TODO RECALCULATE LINKS
+                            var deletedLinks = LinkService.deleteLink(seg.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
 								'action': 'DELETELINKS',
 								'name': levelname,
 								'id': seg.id,
 								'deletedLinks': deletedLinks
-							});*/
+							});
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined
@@ -816,7 +820,6 @@ angular.module('emuwebApp')
               }
             }
           });
-
         }
 
         scope.safeApply = function (fn) {

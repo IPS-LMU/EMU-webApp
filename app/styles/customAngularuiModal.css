@@ -1,7 +1,6 @@
 .modal{
 	display: block;
 	margin: 50px;
-	overflow:hidden;
 }
 .modal-header{
 	background-color: #0DC5FF;
@@ -9,8 +8,6 @@
 
 .modal-body{
 	background-color: white;
-	height: 50%;
-	overflow-y: auto;
 	padding: 10%;
 }
 
@@ -36,10 +33,10 @@
 	border: 1px solid black;
 	box-shadow: 2px 2px 5px #888888;
 }
+
 .emuwebapp-card:hover{
 	background-color:rgba(152, 152, 152, 0.28);
 }
-
 
 .modal-exportdata {
     text-align:left;
@@ -47,7 +44,6 @@
     margin-left: 15%;
     font-size: 0.7em;
 }
-
 
 .modal-footer{
 	text-align: center;
