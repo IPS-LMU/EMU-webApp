@@ -5,16 +5,32 @@ describe('Worker: ssffParserWorker', function () {
   var worker;
   var binary;
   var jsoDftSpec, jsoFundFreq, jsoFORMANTS;
-  var workerFile = 'scripts/workers/ssffParserWorker.js';
+
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
+  
+  beforeEach(inject(function() {
+    var blob;
+      try {
+          blob = new Blob([ssffParserWorker], {type: 'application/javascript'});
+      } catch (e) { // Backwards-compatibility
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+          blob = new BlobBuilder();
+          blob.append(ssffParserWorker);
+          blob = blob.getBlob();
+     }
+     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+         worker = new Worker(webkitURL.createObjectURL(blob));
+     } else {
+         worker = new Worker(URL.createObjectURL(blob));
+     }  
+  }));    
 
   /**
    *
    */
   it('should return error on unknown parameter', function (done) {
-    worker = new Worker(workerFile);
     worker.addEventListener('message', function (e) {
       expect(e.data.status.type).toEqual('ERROR');
       expect(e.data.status.message).toEqual('Unknown command sent to ssffParserWorker');
@@ -31,7 +47,6 @@ describe('Worker: ssffParserWorker', function () {
      *
      */
     it('should parse Arr to ssffJsoArr', function (done) {
-      worker = new Worker(workerFile);
       worker.addEventListener('message', function (e) {
         expect(e.data.status.type).toEqual('SUCCESS');
         expect(e.data.status.message).toEqual('');
@@ -98,8 +113,6 @@ describe('Worker: ssffParserWorker', function () {
      *
      */
     it('should return error while parsing non SHORT column jso to ssff', function (done) {
-      var worker = new Worker(workerFile);
-
       worker.addEventListener('message', function (e) {
         expect(e.data.status.type).toEqual('ERROR');
 

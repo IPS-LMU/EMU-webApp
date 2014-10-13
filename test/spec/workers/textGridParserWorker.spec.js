@@ -9,17 +9,30 @@ describe('Worker: textGridParserWorker', function () {
   var bufferLength = 58089;
   var name = 'msajc003';
   var annotates = name + '.wav';
-  var workerFile = 'scripts/workers/textGridParserWorker.js';
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
   beforeEach(inject(function (LevelService) {
     level = LevelService;
+    var blob;
+      try {
+          blob = new Blob([textGridParserWorker], {type: 'application/javascript'});
+      } catch (e) { // Backwards-compatibility
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+          blob = new BlobBuilder();
+          blob.append(textGridParserWorker);
+          blob = blob.getBlob();
+     }
+     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+         worker = new Worker(webkitURL.createObjectURL(blob));
+     } else {
+         worker = new Worker(URL.createObjectURL(blob));
+     }  
+
   }));
 
   it('should return error on unknown parameter', function (done) {
-    worker = new Worker(workerFile);
     worker.addEventListener('message', function (e) {
       expect(e.data.status.type).toEqual('ERROR');
       expect(e.data.status.message).toEqual('Unknown command sent to textGridParserWorker');
@@ -32,7 +45,6 @@ describe('Worker: textGridParserWorker', function () {
   });
 
   it('should convert toTextGrid', function (done) {
-    worker = new Worker(workerFile);
     level.setData(msajc003_bndl.annotation);
     worker.addEventListener('message', function (e) {
       expect(e.data.status.type).toEqual('SUCCESS');
@@ -51,7 +63,6 @@ describe('Worker: textGridParserWorker', function () {
 
 
   it('should parseTG', function (done) {
-    worker = new Worker(workerFile);
     level.setData(msajc003_bndl.annotation);
     worker.addEventListener('message', function (e) {
       expect(e.data.status.type).toEqual('SUCCESS');

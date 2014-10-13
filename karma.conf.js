@@ -58,6 +58,13 @@ module.exports = function (config) {
         watched: true,
         served: true,
         included: false
+      },
+      // fixtures
+      {
+        pattern: 'app/scripts/workers/*',
+        watched: true,
+        served: true,
+        included: false
       }
     ],
 
@@ -78,7 +85,6 @@ module.exports = function (config) {
     },
 
     proxies: {
-      '/scripts/workers/': 'http://ips-lmu.github.io/EMU-webApp/scripts/workers/',
       '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/'
     },
 

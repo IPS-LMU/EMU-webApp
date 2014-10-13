@@ -4,14 +4,27 @@ describe('Worker: wavParserWorker', function () {
 
   var worker;
   var binary;
-  var workerFile = 'scripts/workers/wavParserWorker.js';
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
   beforeEach(inject(function (Binarydatamaniphelper) {
     binary = Binarydatamaniphelper;
-    worker = new Worker(workerFile);
+    var blob;
+      try {
+          blob = new Blob([wavParserWorker], {type: 'application/javascript'});
+      } catch (e) { // Backwards-compatibility
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+          blob = new BlobBuilder();
+          blob.append(wavParserWorker);
+          blob = blob.getBlob();
+     }
+     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+         worker = new Worker(webkitURL.createObjectURL(blob));
+     } else {
+         worker = new Worker(URL.createObjectURL(blob));
+     }  
+
   }));
 
   afterEach(function () {

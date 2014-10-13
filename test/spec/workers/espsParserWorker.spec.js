@@ -6,13 +6,29 @@ describe('Worker: espsParserWorker', function () {
   var name = 'lab';
   var audioExt = '.wav';
   var sampleRate = 20000; 
-  var workerFile = 'scripts/workers/espsParserWorker.js';
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
   
+  beforeEach(inject(function() {
+    var blob;
+      try {
+          blob = new Blob([espsParserWorker], {type: 'application/javascript'});
+      } catch (e) { // Backwards-compatibility
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+          blob = new BlobBuilder();
+          blob.append(espsParserWorker);
+          blob = blob.getBlob();
+     }
+     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+         worker = new Worker(webkitURL.createObjectURL(blob));
+     } else {
+         worker = new Worker(URL.createObjectURL(blob));
+     }  
+  }));  
+  
   it('should parse esps file containing segments correctly', function (done) {
-      worker = new Worker(workerFile);
+      
       worker.addEventListener('message', function (e) {
           var jso = e.data.data;
           expect(e.data.status.type).toEqual('SUCCESS');
@@ -52,7 +68,6 @@ describe('Worker: espsParserWorker', function () {
   });
   
   it('should parse esps file containing events correctly', function (done, Espsparserservice, LevelService) {
-      worker = new Worker(workerFile);
       worker.addEventListener('message', function (e) {
          var jso = e.data.data;
          expect(e.data.status.type).toEqual('SUCCESS');
