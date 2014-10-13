@@ -117,3 +117,14 @@ Animate the stripes
   -moz-transition: height 0.4s;
   transition: height 0.4s;
 }  
+
+.emuwebapp-animationRunning {
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+
+}
+
+.emuwebapp-animationStopped {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+}

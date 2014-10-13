@@ -740,6 +740,7 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
+                            /* TODO RECALCULATE LINKS
                             var deletedLinks = LinkService.deleteLink(seg.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
@@ -747,7 +748,7 @@ angular.module('emuwebApp')
 								'name': levelname,
 								'id': seg.id,
 								'deletedLinks': deletedLinks
-							});
+							});*/
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined

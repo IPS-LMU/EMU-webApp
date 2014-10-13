@@ -113,7 +113,7 @@ angular.module('emuwebApp')
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLink = function (ID) {
-		    console.log(sServObj.getLinksTo(ID));
+		    console.log(sServObj.data.links);
 		    console.log(sServObj.getLinksTo(ID));
 		};		
 
