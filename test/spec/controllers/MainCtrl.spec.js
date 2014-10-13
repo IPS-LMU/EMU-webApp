@@ -39,6 +39,8 @@ describe('Controller: MainCtrl', function () {
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
        scope.history = HistoryService;
+       deferred = $q.defer();
+       deferred.resolve('called');        
      }));
   
      it('should have all variables defined', function () {
@@ -93,7 +95,40 @@ describe('Controller: MainCtrl', function () {
         scope.resetToInitState();
         expect(scope.curBndl).toEqual(emptyObject);
         expect(scope.bundleList.length).toBe(0);
+     });  
+  
+    it('should clear', function() {
+        spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
+        scope.clearBtnClick();
+        expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
      }); 
+     
+    it('should showHierarchy', function() {
+        spyOn(scope.dialog, 'open');
+        scope.showHierarchyBtnClick();
+        expect(scope.dialog.open).toHaveBeenCalledWith('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+     });  
+     
+    it('should showAbout', function() {
+        spyOn(scope.dialog, 'open');
+        scope.aboutBtnClick();
+        expect(scope.dialog.open).toHaveBeenCalledWith('views/about.html', 'AboutCtrl');
+     });  
+     
+    it('should openDemoDB ae', inject(function ($q) {
+        var ioDeferred = $q.defer();
+        ioDeferred.resolve({data: defaultEmuwebappConfig});            
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.vs, 'setState');
+        spyOn(scope.io, 'getDBconfigFile').and.returnValue(ioDeferred.promise);
+        scope.openDemoDBbtnClick('ae');
+        expect(scope.vs.setState).toHaveBeenCalledWith('loadingSaving'); 
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('openDemoBtnDBclick'); 
+        expect(scope.demoDbName).toEqual('ae'); 
+        expect(scope.cps.vals.main.comMode).toEqual('DEMO'); 
+        expect(scope.vs.somethingInProgressTxt).toEqual( 'Loading DB config...'); 
+        expect(scope.io.getDBconfigFile).toHaveBeenCalledWith('ae');
+     }));     
   
     it('should getPerspectiveColor', function() {
         expect(scope.getPerspectiveColor()).toEqual('emuwebapp-curSelPerspLi');
