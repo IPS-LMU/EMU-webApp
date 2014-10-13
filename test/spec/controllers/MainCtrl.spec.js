@@ -16,6 +16,7 @@ describe('Controller: MainCtrl', function () {
      beforeEach(inject(function ($controller, 
                                  $rootScope, 
                                  $q,
+                                 $httpBackend,
                                  LevelService, 
                                  ConfigProviderService, 
                                  viewState,
@@ -40,7 +41,13 @@ describe('Controller: MainCtrl', function () {
        scope.cps.curDbConfig = aeDbConfig;
        scope.history = HistoryService;
        deferred = $q.defer();
-       deferred.resolve('called');        
+       deferred.resolve('called');     
+       $httpBackend.whenGET("schemaFiles/annotationFileSchema.json").respond(annotationFileSchema);
+       $httpBackend.whenGET("schemaFiles/emuwebappConfigSchema.json").respond(emuwebappConfigSchema);
+       $httpBackend.whenGET("schemaFiles/DBconfigFileSchema.json").respond(DBconfigFileSchema);
+       $httpBackend.whenGET("schemaFiles/bundleListSchema.json").respond(bundleListSchema);        
+       $httpBackend.whenGET("views/error.html").respond('');        
+          
      }));
   
      it('should have all variables defined', function () {
@@ -117,7 +124,7 @@ describe('Controller: MainCtrl', function () {
      
     it('should openDemoDB ae', inject(function ($q) {
         var ioDeferred = $q.defer();
-        ioDeferred.resolve({data: defaultEmuwebappConfig});            
+        ioDeferred.resolve({data: {EMUwebAppConfig: {}}});            
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'setState');
         spyOn(scope.io, 'getDBconfigFile').and.returnValue(ioDeferred.promise);
@@ -128,7 +135,28 @@ describe('Controller: MainCtrl', function () {
         expect(scope.cps.vals.main.comMode).toEqual('DEMO'); 
         expect(scope.vs.somethingInProgressTxt).toEqual( 'Loading DB config...'); 
         expect(scope.io.getDBconfigFile).toHaveBeenCalledWith('ae');
+        ioDeferred.resolve();
+        scope.$digest();
+        
      }));     
+
+     
+    it('should connect', inject(function ($q) {
+
+        var conDeferred = $q.defer();
+        conDeferred.resolve('http://test:1234');
+        var ioDeferred = $q.defer();
+        ioDeferred.resolve({type: 'error'});
+        spyOn(scope.vs, 'getPermission').and.returnValue(true);
+        spyOn(scope.dialog, 'open').and.returnValue(conDeferred.promise);
+        spyOn(scope.io.wsH, 'initConnect').and.returnValue(ioDeferred.promise);
+        scope.connectBtnClick();
+        expect(scope.vs.getPermission).toHaveBeenCalledWith('connectBtnClick'); 
+        expect(scope.dialog.open).toHaveBeenCalledWith('views/connectModal.html', 'WsconnectionCtrl');
+        conDeferred.resolve();
+        scope.$digest();
+        expect(scope.io.wsH.initConnect).toHaveBeenCalledWith('http://test:1234'); 
+     }));       
   
     it('should getPerspectiveColor', function() {
         expect(scope.getPerspectiveColor()).toEqual('emuwebapp-curSelPerspLi');
