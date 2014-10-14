@@ -13,6 +13,19 @@ angular.module('emuwebApp')
 			selected: ''
 		};
 
+		////////////
+		// Helper functions
+
+		// Return a reversed copy of an array
+		$scope.reverseCopy = function (a) {
+			var r = angular.copy(a);
+			r.reverse();
+			return r;
+		};
+
+		//
+		////////////
+
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
 			if (l.type !== 'ITEM') {
@@ -22,11 +35,13 @@ angular.module('emuwebApp')
 
 		// convert array paths to strings
 		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
+			var revArr = $scope.reverseCopy(arr);
+			
 			if (arrIdx === 0) {
 				// select first possible path on load
-				$scope.paths.selected = arr.join(' ← ');
+				$scope.paths.selected = revArr.join(' → ');
 			}
-			$scope.paths.possibleAsStr.push(arr.join(' ← '));
+			$scope.paths.possibleAsStr.push(revArr.join(' → '));
 		});
 
 		//////////////
