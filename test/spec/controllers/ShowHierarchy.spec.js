@@ -68,6 +68,20 @@ describe('Controller: ShowhierarchyCtrl', function () {
      expect(scope.getRotation()).toEqual(true);
    });  
    
+   it('should check if isCurrentAttrDef', function () {
+     scope.lvl.setData(msajc003_bndl.annotation);
+     spyOn(scope.vs, 'getCurAttrDef').and.returnValue('Phonetic');
+     expect(scope.isCurrentAttrDef('lvlname','Phonetic')).toBe(true);
+     expect(scope.vs.getCurAttrDef).toHaveBeenCalledWith('lvlname');
+   });  
+   
+   it('should check if not isCurrentAttrDef', function () {
+     scope.lvl.setData(msajc003_bndl.annotation);
+     spyOn(scope.vs, 'getCurAttrDef').and.returnValue('Tone');
+     expect(scope.isCurrentAttrDef('lvlname','Phonetic')).toBe(false);
+     expect(scope.vs.getCurAttrDef).toHaveBeenCalledWith('lvlname');
+   });  
+   
    it('should getAllAttrDefs', function () {
      scope.lvl.setData(msajc003_bndl.annotation);
      var ret = scope.getAllAttrDefs('Phonetic');
