@@ -63,6 +63,12 @@
         "endBoundaryColor": "#888",
         "zeroLineColor": "#0DC5FF",
         "crossHairsColor": "rgba(255, 0, 0, 0.95)",
+	"nodeColor": "#FFF",
+	"nodeStrokeColor": "#888",
+	"linkColor": "#000",
+	"selectedNodeColor": "#0DC5FF",
+	"selectedLinkColor": "#A00",
+	"collapsedNodeColor": "rgba(255,0,0,1.0)",
         "transitionTime": 400
     },
     "font": {

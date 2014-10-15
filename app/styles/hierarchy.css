@@ -7,8 +7,6 @@
 }
 
 .emuhierarchy-node circle {
-	fill: #fff;
-	stroke: steelblue;
 	stroke-width: 1.5px;
 }
 
@@ -27,7 +25,6 @@
 
 .emuhierarchy-link {
 	fill: none;
-	stroke: #ccc;
 	stroke-width: 1.emuhierarchy-5px;
 }
 

@@ -196,6 +196,24 @@
 				"crossHairsColor": {
 					"type": "string"
 				},
+				"nodeColor": {
+					"type": "string"
+				},
+				"nodeStrokeColor": {
+					"type": "string"
+				},
+				"linkColor": {
+					"type": "string"
+				},
+				"selectedNodeColor": {
+					"type": "string"
+				},
+				"selectedLinkColor": {
+					"type": "string"
+				},
+				"collapsedNodeColor": {
+					"type": "string"
+				},
 				"transitionTime": {
 					"type": "integer"
 				}

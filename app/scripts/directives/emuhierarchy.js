@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice) {
+  .directive('emuhierarchy', function (viewState, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -81,18 +81,10 @@ angular.module('emuwebApp')
 
 		captionLayer.attr('transform','translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)');
 
-		var levelCaptionSet = captionLayer.selectAll('g.emuhierarchy-levelcaption')
-			.data(scope.path, function (d) { return d; });
-
-		levelCaptionSet
-			.attr('transform', function (d) {
-				var revArr = angular.copy(scope.path).reverse();
-				return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
-			})
-		
-
-		//captionLayer.attr('transform','scale('+zoomListener.scale()+')translate('+zoomListener.translate()[0]+',0)');
-
+		captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', function(d) {
+			var revArr = angular.copy(scope.path).reverse();
+			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
+		});
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -150,6 +142,12 @@ angular.module('emuwebApp')
 			return '0.35em';
 		}
 	};
+
+	scope.getOrientatedLevelCaptionTransform = function (d) {
+		var revArr = angular.copy(scope.path).reverse();
+		return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
+	};
+
 
 	scope.getPath = function (d) {
 		var controlX = d._fromX;
@@ -328,7 +326,7 @@ angular.module('emuwebApp')
           .append('svg')
           .attr('width', '100%')
           .attr('height', '100%')
-	  //.style('background-color', 'darkgrey')
+	  .style('background-color', ConfigProviderService.vals.colors.levelColor)
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
           .append('g')
@@ -379,10 +377,7 @@ angular.module('emuwebApp')
 
 		
 		levelCaptionSet
-			.attr('transform', function (d) {
-				var revArr = angular.copy(scope.path).reverse();
-				return 'translate('+scope.depthToX(revArr.indexOf(d))+', 20)';
-			})
+			.attr('transform', scope.getOrientatedLevelCaptionTransform);
 		
 		oldLevelCaptions = oldLevelCaptions.transition()
 			.duration(duration)
@@ -540,6 +535,7 @@ angular.module('emuwebApp')
 
 		newNodes.append('circle')
 			.attr('class', 'emuhierarchy-nodeCircle')
+			.style('stroke', ConfigProviderService.vals.colors.nodeStrokeColor)
 
 			// Make circle invisible at first
 			.attr('r', 0)
@@ -618,18 +614,29 @@ angular.module('emuwebApp')
 			.text( scope.getNodeText )
 			;
 
-		// Change the circle fill depending on whether it has children and is collapsed
+		// Change the circle fill depending on whether it is collapsed and/or selected
 		dataSet.select('circle.emuhierarchy-nodeCircle')
-			.classed('collapsed', function(d) {
-				return d._collapsed;
-			})
 			// Highlight selected item
-			.classed('selected', function(d) {
-				if (typeof (scope.selectedItem) === 'undefined') {
-					return false;
+			.style('fill', function(d) {
+				var color = ConfigProviderService.vals.colors.nodeColor;
+
+				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
+					color = ConfigProviderService.vals.colors.selectedNodeColor;
 				}
 
-				return (d.id === scope.selectedItem.id);
+			/*	if (d._collapsed) {
+					color = ConfigProviderService.vals.colors.collapsedNodeColor;
+				}*/
+
+				return color;
+			})
+			// Highlight collapsed items
+			.style('stroke', function(d) {
+				if (d._collapsed) {
+					return ConfigProviderService.vals.colors.collapsedNodeColor;
+				} else {
+					return ConfigProviderService.vals.colors.nodeStrokeColor;
+				}
 			})
 			//.attr('r', 4.5)
 			//.style('fill', function (d) {
@@ -661,6 +668,7 @@ angular.module('emuwebApp')
 
 		newLinks.insert('path', 'g')
 			.attr('class', 'emuhierarchy-link')
+			.style('stroke', ConfigProviderService.vals.colors.linkColor)
 			.style('opacity', 0)
 			.transition()
 			.duration(scope.duration)
