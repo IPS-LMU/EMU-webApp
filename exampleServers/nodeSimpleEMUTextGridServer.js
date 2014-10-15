@@ -27,7 +27,7 @@ var vm = require('vm');
 // read in external worker file
 var tgp = fs.readFileSync('../app/scripts/workers/textGridParserWorker.js', 'utf8');
 // hack to remove addEventListner function
-tgp = tgp.split('self.addEventListener(\'message\', function (e) {')[0];
+tgp = tgp.split('addEventListener(\'message\', function (e) {')[0];
 // run in current context
 vm.runInThisContext(tgp);
 
@@ -37,7 +37,7 @@ vm.runInThisContext(tgp);
 // read external worker file
 var wp = fs.readFileSync('../app/scripts/workers/wavParserWorker.js', 'utf8');
 // hack to remove addEventListner function
-wp = wp.split('self.addEventListener(\'message\', function (e) {')[0];
+wp = wp.split('addEventListener(\'message\', function (e) {')[0];
 // run in current context
 vm.runInThisContext(wp);
 
@@ -346,6 +346,19 @@ wss.on('connection', function (ws) {
         }
       }), undefined, 0);
 
+      break;
+
+      // DISCONNECTING method
+    case 'DISCONNECTWARNING':
+      console.log('preparing to disconnect...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
       break;
 
     default:
