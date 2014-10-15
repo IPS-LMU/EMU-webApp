@@ -18,6 +18,9 @@ angular.module('emuwebApp')
 	// private variables
 
 	scope.selectedItem;
+	scope.offsetX = 25;
+
+
 
 	//
 	//////////////////////
@@ -74,7 +77,10 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
-			svg.attr('transform', scope.getOrientatedTransform());
+		svg.attr('transform', scope.getOrientatedTransform());
+
+		captionLayer.attr('transform','scale('+zoomListener.scale()+')translate('+zoomListener.translate()[0]+',0)');
+
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -268,6 +274,16 @@ angular.module('emuwebApp')
 		}		
 	};
 
+	scope.depthToX = function (depth) {
+		var size = (scope.vertical) ? height : width;
+		return scope.offsetX + depth / scope.path.length * size;
+	};
+
+	scope.posInLevelToY = function (posInLevel) {
+		var size = (scope.vertical) ? width : height;
+		return posInLevel * size;
+	};
+
 	//
 	/////////////////////////////
 
@@ -304,9 +320,13 @@ angular.module('emuwebApp')
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
           .append('g')
-          //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-	  // Append a group which holds all nodes and which the zoom Listener can act upon.
-	  .append('g');
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+	// Append a group which holds all overlay captions and which do not react to zooming
+	var captionLayer = svg.append('g').style('z-index', 5);
+
+	// Append a group which holds all nodes and which the zoom Listener can act upon.
+	svg = svg.append('g').style('z-index', 1);
 
 	scope.element = element;
 
@@ -318,6 +338,8 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
+		var i;
+
 		////
 		// Get current width and height of SVG
 		scope.width = parseInt(d3.select(scope.element[0]).style('width'), 10);
@@ -327,6 +349,38 @@ angular.module('emuwebApp')
 		svg.transition()
 		  .duration(scope.duration)
 		  .attr('transform', scope.getOrientatedTransform()); 
+
+		/////////
+		// Draw level captions and time arrow
+
+		var levelCaptionSet = captionLayer.selectAll('g.emuhierarchy-levelcaption')
+			.data(scope.path, function (d) { return d; });
+
+		var newLevelCaptions = levelCaptionSet.enter();
+		var oldLevelCaptions = levelCaptionSet.exit();
+
+		newLevelCaptions = newLevelCaptions.append('g')
+			.attr('class', 'emuhierarchy-levelcaption')
+			.append('text').text( function (d) {
+				return d;
+			});
+
+		
+		levelCaptionSet
+			.attr('transform', function (d) {
+				var revArr = angular.copy(scope.path).reverse()
+				return 'translate('+scope.depthToX(revArr.indexOf(d))+', 20)';
+			})
+		
+		oldLevelCaptions = oldLevelCaptions.transition()
+			.duration(duration)
+			.remove();
+
+		oldLevelCaptions.select('text')
+			.style('fill-opacity', 0);
+
+		//
+		////////
 
 		/////
 		// Compute the new tree layout (first nodes and then links)
@@ -415,27 +469,16 @@ angular.module('emuwebApp')
 
 		// Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
 		
-		var offsetX = 25;
-
-		var depthToX = function (depth) {
-			var size = (scope.vertical) ? scope.height : scope.width;
-			return offsetX + depth / scope.path.length * size;
-		};
-
-		var posInLevelToY = function (posInLevel) {
-			var size = (scope.vertical) ? scope.width : scope.height;
-			return posInLevel * size;
-		};
 
 		nodes.forEach(function (d) {
-			d._x = depthToX(d._depth);
-			d._y = posInLevelToY(d._posInLevel);
+			d._x = scope.depthToX(d._depth);
+			d._y = scope.posInLevelToY(d._posInLevel);
 		});
 		links.forEach(function (d) {
-			d._fromX = depthToX(d._fromDepth);
-			d._fromY = posInLevelToY(d._fromPosInLevel);
-			d._toX = depthToX(d._toDepth);
-			d._toY = posInLevelToY(d._toPosInLevel);
+			d._fromX = scope.depthToX(d._fromDepth);
+			d._fromY = scope.posInLevelToY(d._fromPosInLevel);
+			d._toX = scope.depthToX(d._toDepth);
+			d._toY = scope.posInLevelToY(d._toPosInLevel);
 		});
 
 
