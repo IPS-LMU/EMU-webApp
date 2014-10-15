@@ -79,7 +79,19 @@ angular.module('emuwebApp')
 	scope.zoom = function () {
 		svg.attr('transform', scope.getOrientatedTransform());
 
-		captionLayer.attr('transform','scale('+zoomListener.scale()+')translate('+zoomListener.translate()[0]+',0)');
+		captionLayer.attr('transform','translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)');
+
+		var levelCaptionSet = captionLayer.selectAll('g.emuhierarchy-levelcaption')
+			.data(scope.path, function (d) { return d; });
+
+		levelCaptionSet
+			.attr('transform', function (d) {
+				var revArr = angular.copy(scope.path).reverse();
+				return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
+			})
+		
+
+		//captionLayer.attr('transform','scale('+zoomListener.scale()+')translate('+zoomListener.translate()[0]+',0)');
 
 	};
 
@@ -368,7 +380,7 @@ angular.module('emuwebApp')
 		
 		levelCaptionSet
 			.attr('transform', function (d) {
-				var revArr = angular.copy(scope.path).reverse()
+				var revArr = angular.copy(scope.path).reverse();
 				return 'translate('+scope.depthToX(revArr.indexOf(d))+', 20)';
 			})
 		
