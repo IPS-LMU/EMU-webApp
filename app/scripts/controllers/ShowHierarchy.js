@@ -94,6 +94,22 @@ angular.module('emuwebApp')
 		 * cancel dialog i.e. close
 		 */
 		$scope.cancel = function () {
+			var traverse = function (o) 
+			{
+				for (var i in o) {
+					if ( i.substr(0,1) === '_') {
+						delete o[i];
+					}
+	
+					if (o[i] !== null && typeof(o[i])==='object') {
+						//going one step down in the object tree
+						traverse(o[i]);
+					}
+				}
+			};
+
+			traverse (LevelService.getData());
+
 			dialogService.close();
 		};
 	});
