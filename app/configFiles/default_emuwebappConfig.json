@@ -65,7 +65,7 @@
         "crossHairsColor": "rgba(255, 0, 0, 0.95)",
 	"nodeColor": "#FFF",
 	"nodeStrokeColor": "#888",
-	"linkColor": "#000",
+	"linkColor": "#888",
 	"selectedNodeColor": "#0DC5FF",
 	"selectedLinkColor": "#A00",
 	"collapsedNodeColor": "rgba(255,0,0,1.0)",
