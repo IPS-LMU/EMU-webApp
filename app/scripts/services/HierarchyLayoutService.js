@@ -165,9 +165,18 @@ angular.module('emuwebApp')
 					var itemWeight = level.items[ii]._weight;
 					if (typeof itemWeight === 'undefined') {
 						itemWeight = 1;
-						level.items[ii]._weight = 1;
 					}
 
+					if (level.items[ii]._visible === true) {
+						itemWeight = 1;
+					}
+
+					if (level.items[ii]._visible === false) {
+						itemWeight = 0.35;
+					}
+					
+					level.items[ii]._weight = itemWeight;
+					
 					// This would create tidier drawings but depends on knowledge of each node's parents 
 					if (typeof level.items[ii]._parents !== 'undefined') {
 						//console.debug(level.items[ii]._parents.length);
@@ -178,7 +187,7 @@ angular.module('emuwebApp')
 						*/
 					}
 					
-
+					// Calculate weight of the level
 					level._weight += itemWeight;
 				}
 
