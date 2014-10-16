@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -100,9 +100,23 @@ angular.module('emuwebApp')
               // escape from open modal dialog
               if (viewState.curState.permittedActions.length===0 && code === ConfigProviderService.vals.keyMappings.esc) {
                 scope.dials.close();
+                if(viewState.isHierarchyOpen()) {
+                    viewState.showHierarchy();
+                }
               } 
 
               // delegate keyboard keyMappings according to keyMappings of scope
+
+              // showHierarhy
+              if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
+                  if(!viewState.isHierarchyOpen()) {
+                      dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+                  }
+                  else {
+                      dialogService.close();
+                  }
+                  viewState.showHierarchy();
+              }
 
               // rotateHierarhy
               if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
@@ -819,6 +833,7 @@ angular.module('emuwebApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
+              console.log(code);
             }
           });
         }

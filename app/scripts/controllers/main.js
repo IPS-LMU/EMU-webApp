@@ -888,7 +888,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showHierarchyBtnClick = function () {
-			dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+		    viewState.showHierarchy();
+		    dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
 		};
 
 		/**

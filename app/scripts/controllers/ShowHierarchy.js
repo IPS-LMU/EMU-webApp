@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 		};
 		
 		$scope.getRotation = function () {
-			return viewState.isRotated();
+			return viewState.isHierarchyRotated();
 		};
 
 		$scope.playSelection = function () {
@@ -95,5 +95,6 @@ angular.module('emuwebApp')
 		 */
 		$scope.cancel = function () {
 			dialogService.close();
+			viewState.showHierarchy();
 		};
 	});
