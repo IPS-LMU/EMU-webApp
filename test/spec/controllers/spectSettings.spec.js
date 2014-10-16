@@ -41,6 +41,57 @@ describe('Controller: spectSettingsCtrl', function () {
      expect(scope.vs.setspectroSettings).toHaveBeenCalledWith(scope.modalVals.windowLength, scope.modalVals.rangeFrom, scope.modalVals.rangeTo, scope.modalVals.dynamicRange, scope.selWindowInfo.name, scope.modalVals.drawHeatMapColors, scope.modalVals.preEmphasisFilterFactor, scope.modalVals.heatMapColorAnchors);
    });    
      
+   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
+     scope.modalVals.dynamicRange = 'string';
+     scope.lvl.data.sampleRate = 1000;
+     spyOn(scope.dialog, 'close');
+     spyOn(scope.dialog, 'open');     
+     spyOn(scope, 'error');
+     scope.saveSpectroSettings();
+     expect(scope.error).toHaveBeenCalledWith('Dynamic Range has to be an Integer value.');
+   });    
+     
+   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
+     scope.modalVals.rangeFrom = 'string';
+     scope.lvl.data.sampleRate = 1000;
+     spyOn(scope.dialog, 'close');
+     spyOn(scope.dialog, 'open');     
+     spyOn(scope, 'error');
+     scope.saveSpectroSettings();
+     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary has to be an Integer value.');
+   });    
+     
+   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
+     scope.modalVals.rangeTo = 'string';
+     scope.lvl.data.sampleRate = 1000;
+     spyOn(scope.dialog, 'close');
+     spyOn(scope.dialog, 'open');     
+     spyOn(scope, 'error');
+     scope.saveSpectroSettings();
+     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary has to be an Integer value.');
+   });  
+     
+   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
+     scope.modalVals.rangeFrom = -100;
+     scope.lvl.data.sampleRate = 1000;
+     spyOn(scope.dialog, 'close');
+     spyOn(scope.dialog, 'open');     
+     spyOn(scope, 'error');
+     scope.saveSpectroSettings();
+     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary is a value below zero');
+   });    
+     
+   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
+     scope.modalVals.rangeTo = 2000;
+     scope.lvl.data.sampleRate = 1000;
+     spyOn(scope.dialog, 'close');
+     spyOn(scope.dialog, 'open');     
+     spyOn(scope, 'error');
+     scope.saveSpectroSettings();
+     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary is a value bigger than ' + scope.lvl.data.sampleRate / 2);
+   });    
+          
+     
    it('should getColorOfAnchor', function () {
      var curStyle0 = {
 		'background-color': 'rgb(0,0,0)',

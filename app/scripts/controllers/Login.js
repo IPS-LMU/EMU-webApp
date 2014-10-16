@@ -30,6 +30,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorInTextField = function () {
 			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
 		};
 
 		/**
@@ -37,6 +38,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
 		};
 
 		/**
