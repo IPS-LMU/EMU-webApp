@@ -19,6 +19,7 @@ angular.module('emuwebApp')
 
 	scope.selectedItem;
 	scope.offsetX = 25;
+	scope.offsetY = 30;
 
 
 
@@ -291,7 +292,8 @@ angular.module('emuwebApp')
 
 	scope.posInLevelToY = function (posInLevel) {
 		var size = (scope.vertical) ? width : height;
-		return posInLevel * size;
+		size -= scope.offsetY;
+		return scope.offsetY + posInLevel * size;
 	};
 
 	//
