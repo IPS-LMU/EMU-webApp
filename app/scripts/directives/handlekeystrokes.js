@@ -833,7 +833,6 @@ angular.module('emuwebApp')
                 e.preventDefault();
                 e.stopPropagation();
               }
-              console.log(code);
             }
           });
         }

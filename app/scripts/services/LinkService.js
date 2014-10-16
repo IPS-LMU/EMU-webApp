@@ -124,7 +124,6 @@ angular.module('emuwebApp')
 		 */
 		sServObj.deleteLinkBorder = function (ID, neighbourID) {
 		    angular.forEach(sServObj.getLinksTo(ID), function (link) {
-		        console.log(link);
 		        sServObj.changeLinkTo(link.fromID, ID, neighbourID);
 		    });
 		};			

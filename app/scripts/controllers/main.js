@@ -918,7 +918,7 @@ angular.module('emuwebApp')
 				Iohandlerservice.wsH.disconnectWarning().then(function (resp) {
 					$log.info('Closing websocket connection to server');
 					Iohandlerservice.wsH.closeConnect();
-				})
+				});
 			}
 			$scope.curBndl = {};
 			$scope.bundleList = [];
