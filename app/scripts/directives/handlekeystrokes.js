@@ -742,6 +742,7 @@ angular.module('emuwebApp')
                       var isLast = viewState.getcurMouseisLast();
                       var levelname = viewState.getcurMouseLevelName();
                       var type = viewState.getcurMouseLevelType();
+                      var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
@@ -754,15 +755,14 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-                            /* TODO RECALCULATE LINKS
-                            var deletedLinks = LinkService.deleteLink(seg.id);
+                            var deletedLinks = LinkService.deleteLinkBorder(seg.id, neighbour.left.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
 								'action': 'DELETELINKS',
 								'name': levelname,
 								'id': seg.id,
 								'deletedLinks': deletedLinks
-							});*/
+							});
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined

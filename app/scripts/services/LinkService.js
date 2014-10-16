@@ -84,9 +84,9 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksTo = function (toID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link) {
+			angular.forEach(sServObj.data.links, function (link, linkOrder) {
 			    if(link.toID === toID) {
-				    ret.push(link);
+				    ret.push({link: link, order:linkOrder});
 				}
 			});
 			return ret;
@@ -98,13 +98,36 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksFrom = function (fromID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link) {
+			angular.forEach(sServObj.data.links, function (link, linkOrder) {
 			    if(link.fromID === fromID) {
-				    ret.push(link);
+				    ret.push({link: link, order:linkOrder});
 				}
 			});
 			return ret;
-		};				
+		};		
+
+		/**
+		 * change a Link (form=={'fromID':fromID, 'toID':toID}) 
+		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
+		 */
+		sServObj.changeLinkTo = function (fromID, toID, toNewID) {
+		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			    if(link.fromID === fromID && link.toID === toID) {
+				    sServObj.data.links[linkOrder].toID = toNewID;
+				}
+			});
+
+		};		
+
+		/**
+		 * removes multiple links from and to ID 
+		 */
+		sServObj.deleteLinkBorder = function (ID, neighbourID) {
+		    angular.forEach(sServObj.getLinksTo(ID), function (link) {
+		        console.log(link);
+		        sServObj.changeLinkTo(link.fromID, ID, neighbourID);
+		    });
+		};			
 
 
 		return sServObj;

@@ -259,7 +259,7 @@ angular.module('emuwebApp')
 			if (ConfigProviderService.vals.main.autoConnect) {
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.defaultServerUrl);
+						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
 					} else {
 						$scope.handleConnectedToWSserver();
 					}
