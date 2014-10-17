@@ -57,6 +57,7 @@ angular.module('emuwebApp')
       sServObj.timelineSize = -1;
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';
+      sServObj.historyActionTxt = '';
       sServObj.curClickSegments = [];
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
