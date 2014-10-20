@@ -120,14 +120,45 @@ angular.module('emuwebApp')
 		};		
 
 		/**
+		 * change a Link (form=={'fromID':fromID, 'toID':toID}) 
+		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
+		 */
+		sServObj.changeLinkFrom = function (fromID, toID, fromNewID) {
+		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			    if(link.fromID === fromID && link.toID === toID) {
+				    sServObj.data.links[linkOrder].fromID = fromNewID;
+				}
+			});
+		};		
+
+		/**
 		 * removes multiple links from and to ID 
 		 */
-		sServObj.deleteLinkBorder = function (ID, neighbourID) {
-		    angular.forEach(sServObj.getLinksTo(ID), function (link) {
-		        sServObj.changeLinkTo(link.fromID, ID, neighbourID);
+		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
+		    var linksTo = [];
+		    var linksFrom = [];
+		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
+		        linksTo.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
+		        sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
 		    });
+		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
+		        linksFrom.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
+		        sServObj.changeLinkFrom(found.link.fromID, ID, neighbourID);
+		    });
+		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
 
+		/**
+		 * removes multiple links from and to ID 
+		 */
+		sServObj.deleteLinkBoundaryInvers = function (deleted) {
+		    angular.forEach(deleted.linksTo, function (found) {
+		        sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		    });
+		    angular.forEach(deleted.linksFrom, function (found) {
+		        sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		    });
+		};					
 
 		return sServObj;
 	});

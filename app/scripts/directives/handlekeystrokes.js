@@ -98,7 +98,7 @@ angular.module('emuwebApp')
               LevelService.deleteEditArea();
               
               // escape from open modal dialog
-              if (viewState.curState.permittedActions.length===0 && code === ConfigProviderService.vals.keyMappings.esc) {
+              if (viewState.curState.permittedActions.length === 0 && code === ConfigProviderService.vals.keyMappings.esc) {
                 scope.dials.close();
                 if(viewState.isHierarchyOpen()) {
                     viewState.showHierarchy();
@@ -109,13 +109,15 @@ angular.module('emuwebApp')
 
               // showHierarhy
               if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
-                  if(!viewState.isHierarchyOpen()) {
-                      dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+                  if(viewState.curState!==viewState.states.noDBorFilesloaded) {
+					  if(!viewState.isHierarchyOpen()) {
+						  dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+					  }
+					  else {
+						  dialogService.close();
+					  }
+					  viewState.showHierarchy();
                   }
-                  else {
-                      dialogService.close();
-                  }
-                  viewState.showHierarchy();
               }
 
               // rotateHierarhy
@@ -755,12 +757,13 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-                            var deletedLinks = LinkService.deleteLinkBorder(seg.id, neighbour.left.id);
+                            var deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'DELETELINKS',
+								'action': 'DELETELINKBOUNDARY',
 								'name': levelname,
 								'id': seg.id,
+								'neighbourId': neighbour.left.id,
 								'deletedLinks': deletedLinks
 							});
 							HistoryService.addCurChangeObjToUndoStack();
