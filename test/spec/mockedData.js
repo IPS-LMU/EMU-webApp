@@ -30,6 +30,8 @@ var epgdorsalDbConfig = JSON.parse(f);
 jasmine.getFixtures().fixturesPath = 'base/app/demoDBs/ae/';
 var f = readFixtures('msajc003_bndl.json');
 var msajc003_bndl = JSON.parse(f);
+var f = readFixtures('ae_bundleList.json');
+var ae_bundleList = JSON.parse(f);
 
 // ema dfgspp_mo1_prosody_0024_bndl
 jasmine.getFixtures().fixturesPath = 'base/app/demoDBs/ema/';

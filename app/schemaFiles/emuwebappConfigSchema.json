@@ -48,6 +48,9 @@
 				"zoomIn": {
 					"type": "integer"
 				},
+				"showHierarhy": {
+					"type": "integer"				
+				},
 				"rotateHierarhy": {
 					"type": "integer"				
 				},
@@ -142,7 +145,7 @@
 					"type": "integer"
 				}
 			},
-			"required": ["toggleSideBarLeft", "toggleSideBarRight", "zoomSel", "zoomAll", "zoomOut", "zoomIn", "rotateHierarhy", "shiftViewPortLeft", "shiftViewPortRight", "playEntireFile", "playAllInView", "playSelected", "deletePreselBoundary", "selNextPrevItem", "selNextItem", "selPrevItem", "createNewItemAtSelection", "levelUp", "levelDown", "undo", "redo", "shrinkSelSegmentsLeft", "shrinkSelSegmentsRight", "expandSelSegmentsRight", "expandSelSegmentsLeft", "selectFirstContourCorrectionTool", "selectSecondContourCorrectionTool", "selectThirdContourCorrectionTool", "selectFourthContourCorrectionTool", "selectNoContourCorrectionTool", "selectSegmentsInSelection", "snapBoundaryToNearestTopBoundary", "snapBoundaryToNearestBottomBoundary", "snapBoundaryToNearestZeroCrossing", "shift", "alt", "esc"],
+			"required": ["toggleSideBarLeft", "toggleSideBarRight", "zoomSel", "zoomAll", "zoomOut", "zoomIn", "showHierarhy", "rotateHierarhy", "shiftViewPortLeft", "shiftViewPortRight", "playEntireFile", "playAllInView", "playSelected", "deletePreselBoundary", "selNextPrevItem", "selNextItem", "selPrevItem", "createNewItemAtSelection", "levelUp", "levelDown", "undo", "redo", "shrinkSelSegmentsLeft", "shrinkSelSegmentsRight", "expandSelSegmentsRight", "expandSelSegmentsLeft", "selectFirstContourCorrectionTool", "selectSecondContourCorrectionTool", "selectThirdContourCorrectionTool", "selectFourthContourCorrectionTool", "selectNoContourCorrectionTool", "selectSegmentsInSelection", "snapBoundaryToNearestTopBoundary", "snapBoundaryToNearestBottomBoundary", "snapBoundaryToNearestZeroCrossing", "shift", "alt", "esc"],
 			"additionalProperties": false
 		},
 		"colors": {

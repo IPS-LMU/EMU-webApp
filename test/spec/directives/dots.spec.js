@@ -2,13 +2,16 @@
 
 describe('Directive: dots', function() {
 
-    var elm, scope;
+    var elm, scope, worker;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, Ssffdataservice) {
+    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, LevelService, Ssffdataservice) {
         scope = $rootScope.$new();
-        scope.vs = viewState;
+        scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
+        scope.cps.setVals(defaultEmuwebappConfig);
+        scope.vs = viewState;
+        scope.lvl.setData(msajc003_bndl.annotation);
         scope.ssffds = Ssffdataservice;    
     }));
     
@@ -23,5 +26,25 @@ describe('Directive: dots', function() {
     it('should be replaced correctly', function() {
         compileDirective();
         expect(elm.html()).toContain('<canvas width="512" height="512"></canvas>');
+    });
+
+    it('should watch ssffds.data.length', function() {
+        compileDirective();
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(elm.isolateScope(), 'drawDots').and.returnValue();
+        scope.ssffds.data = [{ssffTrackName: 'dftSpec', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}];
+        scope.$apply();
+        expect(elm.isolateScope().drawDots).toHaveBeenCalled();
+    });
+
+    it('should watch vs.curViewPort', function() {
+        compileDirective();
+        scope.ssffds.data = [{ssffTrackName: 'dftSpec', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}];
+        scope.vs.select(0,100);
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(elm.isolateScope(), 'drawDots').and.returnValue();
+        scope.vs.select(90,200);
+        scope.$apply();
+        expect(elm.isolateScope().drawDots).toHaveBeenCalled();
     });
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -98,11 +98,27 @@ angular.module('emuwebApp')
               LevelService.deleteEditArea();
               
               // escape from open modal dialog
-              if (viewState.curState.permittedActions.length===0 && code === ConfigProviderService.vals.keyMappings.esc) {
+              if (viewState.curState.permittedActions.length === 0 && code === ConfigProviderService.vals.keyMappings.esc) {
                 scope.dials.close();
+                if(viewState.isHierarchyOpen()) {
+                    viewState.showHierarchy();
+                }
               } 
 
               // delegate keyboard keyMappings according to keyMappings of scope
+
+              // showHierarhy
+              if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
+                  if(viewState.curState!==viewState.states.noDBorFilesloaded) {
+					  if(!viewState.isHierarchyOpen()) {
+						  dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+					  }
+					  else {
+						  dialogService.close();
+					  }
+					  viewState.showHierarchy();
+                  }
+              }
 
               // rotateHierarhy
               if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
@@ -728,6 +744,7 @@ angular.module('emuwebApp')
                       var isLast = viewState.getcurMouseisLast();
                       var levelname = viewState.getcurMouseLevelName();
                       var type = viewState.getcurMouseLevelType();
+                      var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
@@ -740,15 +757,15 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-                            /* TODO RECALCULATE LINKS
-                            var deletedLinks = LinkService.deleteLink(seg.id);
+                            var deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
 							HistoryService.updateCurChangeObj({
 								'type': 'ANNOT',
-								'action': 'DELETELINKS',
+								'action': 'DELETELINKBOUNDARY',
 								'name': levelname,
 								'id': seg.id,
+								'neighbourId': neighbour.left.id,
 								'deletedLinks': deletedLinks
-							});*/
+							});
 							HistoryService.addCurChangeObjToUndoStack();
                             
                             // reset to undefined
