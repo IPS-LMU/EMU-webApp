@@ -72,7 +72,7 @@ angular.module('emuwebApp')
 
 				scope.setGlobalMinMaxVals = function () {
 					// body...
-					console.log(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx]);
+					//console.log(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases);
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 					for (var i = 0; i < dD.dots.length; i++) {
 						// get xCol

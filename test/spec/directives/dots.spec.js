@@ -10,7 +10,6 @@ describe('Directive: dots', function() {
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
-        scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
         scope.lvl.setData(msajc003_bndl.annotation);
         scope.ssffds = Ssffdataservice;    
@@ -30,11 +29,21 @@ describe('Directive: dots', function() {
     });
 
     it('should watch ssffds.data.length', function() {
-        scope.vs.curPerspectiveIdx = 0;
-        scope.ssffds.data = [{ssffTrackName: 'dftSpec', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}, {ssffTrackName: 'fundFreq', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}, {ssffTrackName: 'FORMANTS', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}];
         compileDirective();
         expect(elm.isolateScope()).toBeDefined();
-        spyOn(elm.isolateScope(), 'drawDots');
+        spyOn(elm.isolateScope(), 'drawDots').and.returnValue();
+        scope.ssffds.data = [{ssffTrackName: 'dftSpec', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}];
+        scope.$apply();
+        expect(elm.isolateScope().drawDots).toHaveBeenCalled();
+    });
+
+    it('should watch vs.curViewPort', function() {
+        compileDirective();
+        scope.ssffds.data = [{ssffTrackName: 'dftSpec', sampleRate: 200, startTime: 0.0025, origFreq: 20000, Columns: [0,1,2]}];
+        scope.vs.select(0,100);
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(elm.isolateScope(), 'drawDots').and.returnValue();
+        scope.vs.select(90,200);
         scope.$apply();
         expect(elm.isolateScope().drawDots).toHaveBeenCalled();
     });
