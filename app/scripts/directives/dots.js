@@ -1,12 +1,19 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('dots', function (viewState) {
+	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice) {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
+			scope: {
+			},
 			link: function postLink(scope, element, attrs) {
+				scope.cps = ConfigProviderService;
+				scope.ssffds = Ssffdataservice;
+				scope.vs = viewState;
+				scope.fontImage = fontScaleService;
+				scope.shs = Soundhandlerservice;
 				var canvas = element.find('canvas')[0];
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
@@ -22,7 +29,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawDots(scope);
+								scope.drawDots();
 							}
 						}
 					}
@@ -34,7 +41,7 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
 								if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-									drawDots(scope);
+									scope.drawDots();
 								}
 							}
 						}
@@ -46,7 +53,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawDots(scope);
+								scope.drawDots();
 							}
 						}
 					}
@@ -63,8 +70,9 @@ angular.module('emuwebApp')
 				//
 				//////////////////
 
-				function setGlobalMinMaxVals() {
+				scope.setGlobalMinMaxVals = function () {
 					// body...
+					console.log(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx]);
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 					for (var i = 0; i < dD.dots.length; i++) {
 						// get xCol
@@ -105,9 +113,9 @@ angular.module('emuwebApp')
 				/**
 				 * drawing method to drawDots
 				 */
-				function drawDots() {
+				scope.drawDots = function () {
 					if (globalMinX === Infinity) {
-						setGlobalMinMaxVals();
+						scope.setGlobalMinMaxVals();
 					}
 
 					var ctx = canvas.getContext('2d');
@@ -259,7 +267,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 					});
 
-				}
+				};
 			}
 		};
 	});

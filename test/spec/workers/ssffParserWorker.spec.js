@@ -73,7 +73,6 @@ describe('Worker: ssffParserWorker', function () {
         expect(e.data.data[1].Columns[0]._minVal).toEqual(0); // SIC ..how to calculate manual if these vals are correct ?
         expect(e.data.data[1].Columns[0]._maxVal).toEqual(145.5271759033203); // SIC ..how to calculate manual if these vals are correct ?
 
-
         expect(e.data.data[2].ssffTrackName).toEqual('FORMANTS');
         expect(e.data.data[2].sampleRate).toEqual(200);
         expect(e.data.data[2].startTime).toEqual(0.0025);
