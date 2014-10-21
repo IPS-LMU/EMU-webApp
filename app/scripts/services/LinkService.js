@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		sServObj.deleteLink = function (fromID, toID) {
 			angular.forEach(sServObj.data.links, function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
-					sServObj.data.links.splice(linkIdx, 0);
+					sServObj.data.links.splice(linkIdx, 1);
         		};
 			});
 		};
@@ -150,6 +150,7 @@ angular.module('emuwebApp')
 		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
 
+
 		/**
 		 * removes multiple links from and to ID 
 		 */
@@ -160,7 +161,7 @@ angular.module('emuwebApp')
 		    angular.forEach(deleted.linksFrom, function (found) {
 		        sServObj.insertLink(found.fromID, found.toID);
 		    });
-		};			
+		};					
 
 		/**
 		 * removes multiple links from and to ID 
@@ -169,12 +170,12 @@ angular.module('emuwebApp')
 		    var linksTo = [];
 		    var linksFrom = [];
 		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
-		        linksTo.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
-		        sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+		        linksTo.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
+		        sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
 		    });
 		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
-		        linksFrom.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
-		        sServObj.changeLinkFrom(found.link.fromID, ID, neighbourID);
+		        linksFrom.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
+		        sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
 		    });
 		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
