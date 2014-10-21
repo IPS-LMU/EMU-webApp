@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		sServObj.deleteLink = function (fromID, toID) {
 			angular.forEach(sServObj.data.links, function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
-					sServObj.data.links.splice(linkIdx);
+					sServObj.data.links.splice(linkIdx, 0);
         		};
 			});
 		};
@@ -134,17 +134,17 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID 
 		 */
-		sServObj.deleteLinkSegment = function (name, segments, neighbourID) {
+		sServObj.deleteLinkSegment = function (name, segments) {
 		    var linksTo = [];
 		    var linksFrom = [];
 		    angular.forEach(segments, function (segment) {
 				angular.forEach(sServObj.getLinksTo(segment.id), function (found) {
-					linksTo.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
-					sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
+					linksTo.push({fromID:found.link.fromID, toID:found.link.toID});
+					sServObj.deleteLink(found.link.fromID, found.link.toID);
 				});
 				angular.forEach(sServObj.getLinksFrom(segment.id), function (found) {
-					linksFrom.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
-					sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
+					linksFrom.push({fromID:found.link.fromID, toID:found.link.toID});
+					sServObj.deleteLink(found.link.fromID, found.link.toID);
 				});
 		    });
 		    return {linksTo:linksTo, linksFrom:linksFrom};
@@ -155,10 +155,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.deleteLinkSegmentInvers = function (deleted) {
 		    angular.forEach(deleted.linksTo, function (found) {
-		        sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		        sServObj.insertLink(found.fromID, found.toID);
 		    });
 		    angular.forEach(deleted.linksFrom, function (found) {
-		        sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		        sServObj.insertLink(found.fromID, found.toID);
 		    });
 		};			
 

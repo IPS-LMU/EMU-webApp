@@ -809,13 +809,14 @@ angular.module('emuwebApp')
                             'length': cseg.length,
                             'deletedSegment': deletedSegment
                           });
-                          var deletedLinks = LinkService.deleteLinkSegment(levelname, cseg, neighbour.left.id);
+                          var deletedLinks = LinkService.deleteLinkSegment(levelname, cseg);
+                          console.log(cseg);
+                          console.log(deletedLinks);
 						  HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'DELETELINKSEGMENT',
 							'name': levelname,
 							'segments': cseg,
-							'neighbourId': neighbour.left.id,
 							'deletedLinks': deletedLinks
 						  });
 						  HistoryService.addCurChangeObjToUndoStack();
