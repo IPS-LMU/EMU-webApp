@@ -107,6 +107,13 @@ angular.module('emuwebApp')
 						} else {
 							LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
 						}
+						break;		
+					case 'DELETELINKSEGMENT':
+						if (applyOldVal) {
+							LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
+						} else {
+							LinkService.deleteLinkSegment(cur.name, cur.segments, cur.neighbourId);
+						}
 						break;									
 					case 'INSERTLEVEL':
 						if (applyOldVal) {
@@ -182,6 +189,7 @@ angular.module('emuwebApp')
 				case 'INSERTLINKSTO':
 				case 'DELETELINKSTO':
 				case 'DELETELINKBOUNDARY':
+				case 'DELETELINKSEGMENT':
 				case 'DELETEBOUNDARY':
 				case 'DELETESEGMENTS':
 				case 'DELETEEVENT':

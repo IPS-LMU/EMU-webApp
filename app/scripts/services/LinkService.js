@@ -134,6 +134,37 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID 
 		 */
+		sServObj.deleteLinkSegment = function (name, segments, neighbourID) {
+		    var linksTo = [];
+		    var linksFrom = [];
+		    angular.forEach(segments, function (segment) {
+				angular.forEach(sServObj.getLinksTo(segment.id), function (found) {
+					linksTo.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
+					sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
+				});
+				angular.forEach(sServObj.getLinksFrom(segment.id), function (found) {
+					linksFrom.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
+					sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
+				});
+		    });
+		    return {linksTo:linksTo, linksFrom:linksFrom};
+		};			
+
+		/**
+		 * removes multiple links from and to ID 
+		 */
+		sServObj.deleteLinkSegmentInvers = function (deleted) {
+		    angular.forEach(deleted.linksTo, function (found) {
+		        sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		    });
+		    angular.forEach(deleted.linksFrom, function (found) {
+		        sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		    });
+		};			
+
+		/**
+		 * removes multiple links from and to ID 
+		 */
 		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
 		    var linksTo = [];
 		    var linksFrom = [];

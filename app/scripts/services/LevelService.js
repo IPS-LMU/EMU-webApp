@@ -140,7 +140,6 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 * gets item details by passing in levelName and item order
 		 */
@@ -206,6 +205,23 @@ angular.module('emuwebApp')
 				}
 			});
 			return foundItm;
+		};
+
+
+		/**
+		 * gets item from leve by passing in levelName and item id
+		 *
+		 * @return item
+		 */
+		sServObj.getItemsFromLevelByIdAndLength = function (levelName, id, length) {
+			var foundItms = [];
+			var lastID = id;
+		    for(var j=0;j<length;j++) {
+		        var segment = sServObj.getItemFromLevelById(levelName, lastID);
+		        lastID = sServObj.getNextItem(levelName, segment.id);
+		        foundItms.push(segment);
+		    }
+			return foundItms;
 		};
 
 		/**

@@ -737,14 +737,15 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (viewState.getPermission('labelAction')) {
                   e.preventDefault();
+				  var seg = viewState.getcurMouseSegment();
+				  var cseg = viewState.getcurClickSegments();
+				  var isFirst = viewState.getcurMouseisFirst();
+				  var isLast = viewState.getcurMouseisLast();
+				  var levelname = viewState.getcurMouseLevelName();
+				  var type = viewState.getcurMouseLevelType();
+				  var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                   if (!e.shiftKey) {
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
-                      var seg = viewState.getcurMouseSegment();
-                      var isFirst = viewState.getcurMouseisFirst();
-                      var isLast = viewState.getcurMouseisLast();
-                      var levelname = viewState.getcurMouseLevelName();
-                      var type = viewState.getcurMouseLevelType();
-                      var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                       if (seg !== undefined) {
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
@@ -767,8 +768,6 @@ angular.module('emuwebApp')
 								'deletedLinks': deletedLinks
 							});
 							HistoryService.addCurChangeObjToUndoStack();
-                            
-                            // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                             viewState.setcurClickSegment(deletedSegment.clickSeg);
                           } else {
@@ -791,7 +790,6 @@ angular.module('emuwebApp')
 							  'deletedLinks': deletedLinks
 						    });*/
 						    HistoryService.addCurChangeObjToUndoStack();
-                            // reset to undefined
                             viewState.setcurMouseSegment(undefined, undefined, undefined);
                         }
                       } else {
@@ -800,27 +798,26 @@ angular.module('emuwebApp')
                     }
                   } else {
                     if (ConfigProviderService.vals.restrictions.deleteItem) {
-                      var seg = viewState.getcurClickSegments();
-                      if (seg !== undefined && seg.length > 0) {
-                        var levelname = viewState.getcurClickLevelName();
+                      if (cseg !== undefined && cseg.length > 0) {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var deletedSegment = LevelService.deleteSegments(levelname, seg[0].id, seg.length);
+                          var deletedSegment = LevelService.deleteSegments(levelname, cseg[0].id, cseg.length);
                           HistoryService.updateCurChangeObj({
                             'type': 'ANNOT',
                             'action': 'DELETESEGMENTS',
                             'name': levelname,
-                            'id': seg[0].id,
-                            'length': seg.length,
+                            'id': cseg[0].id,
+                            'length': cseg.length,
                             'deletedSegment': deletedSegment
                           });
-						  /* TODO RECALCULATE LINKS
+                          var deletedLinks = LinkService.deleteLinkSegment(levelname, cseg, neighbour.left.id);
 						  HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
-							'action': 'DELETELINKS',
+							'action': 'DELETELINKSEGMENT',
 							'name': levelname,
-							'id': seg.id,
+							'segments': cseg,
+							'neighbourId': neighbour.left.id,
 							'deletedLinks': deletedLinks
-						  });*/
+						  });
 						  HistoryService.addCurChangeObjToUndoStack();
                           viewState.setcurMouseSegment(undefined, undefined, undefined);
                           viewState.setcurClickSegment(deletedSegment.clickSeg);
