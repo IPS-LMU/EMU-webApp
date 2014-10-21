@@ -6,11 +6,9 @@ angular.module('emuwebApp')
       restrict: 'A',
       scope: {},
       link: function postLink(scope, element, atts) {
-        var canvas = element[0];
-        var trackName;
-        var assTrackName = '';
-
-        var lastDraw = Date.now();
+        scope.trackName = undefined;
+        scope.assTrackName = '';
+        scope.lastDraw = Date.now();
 
         // add watch vars to scope
         scope.vs = viewState;
@@ -22,7 +20,7 @@ angular.module('emuwebApp')
 
         // observe attribute
         atts.$observe('ssffTrackname', function (val) {
-          trackName = val;
+          scope.trackName = val;
         });
 
         ////////////////////
@@ -31,34 +29,34 @@ angular.module('emuwebApp')
         //watch viewPort change
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
           if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-            handleUpdate(newValue, oldValue);
+            scope.handleUpdate();
           }
         }, true);
 
         //watch perspective change
         scope.$watch('vs.curPerspectiveIdx', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          scope.handleUpdate();
         }, true);
 
         //watch vs.curCorrectionToolNr change
         scope.$watch('vs.curCorrectionToolNr', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          scope.handleUpdate();
         }, true);
 
         //watch hists.
         scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          scope.handleUpdate();
         }, true);
 
 
         // watch ssffds.data change
         scope.$watch('ssffds.data.length', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          scope.handleUpdate();
         }, true);
 
         // watch vs.spectroSettings change
         scope.$watch('vs.spectroSettings', function (newValue, oldValue) {
-          handleUpdate(newValue, oldValue);
+          scope.handleUpdate();
         }, true);
 
         //
@@ -67,82 +65,62 @@ angular.module('emuwebApp')
         /**
          *
          */
-        function handleUpdate() {
-          var ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        scope.handleUpdate = function() {
+          var ctx = element[0].getContext('2d');
+          ctx.clearRect(0, 0, element[0].width, element[0].height);
 
           if (!$.isEmptyObject(Ssffdataservice.data)) {
             if (Ssffdataservice.data.length !== 0) {
-              assTrackName = '';
+              scope.assTrackName = '';
               // check assignments (= overlays)
               ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
-                if (ass.signalCanvasName === trackName) {
-                  assTrackName = ass.ssffTrackName;
+                if (ass.signalCanvasName === scope.trackName) {
+                  scope.assTrackName = ass.ssffTrackName;
                   var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
                   var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
                   var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
                   // draw values  
-                  drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                  scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
-              assTrackName = '';
+              scope.assTrackName = '';
               // draw ssffTrack onto own canvas
-              if (trackName !== 'OSCI' && trackName !== 'SPEC') {
-                // console.log('#######here')
-                // console.log(trackName)
-                var tr = ConfigProviderService.getSsffTrackConfig(trackName);
+              if (scope.trackName !== 'OSCI' && scope.trackName !== 'SPEC') {
+                var tr = ConfigProviderService.getSsffTrackConfig(scope.trackName);
                 var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
                 var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
                 // draw values  
-                drawValues(viewState, canvas, ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+                scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
               }
             }
           } else {
-            var ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, element[0].width, element[0].height);
           }
-        }
+        };
 
         /**
          * draw values onto canvas
          */
-
-        function drawValues(viewState, canvas, config, col, sR, sT, minMaxLims) {
+         scope.drawValues = function (viewState, canvas, config, col, sR, sT, minMaxLims) {
 
           var ctx = canvas.getContext('2d');
-          // create a destination canvas. Here the altered image will be placed
-
-          // ctx.fillStyle = "rgba(" + transparentColor.r + ", " + transparentColor.g + ", " + transparentColor.b + ", 1.0)";
-          // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
           var minVal, maxVal;
 
-          if (trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+          if (scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
             minVal = viewState.spectroSettings.rangeFrom;
             maxVal = viewState.spectroSettings.rangeTo;
           } else {
             minVal = col._minVal;
             maxVal = col._maxVal;
           }
-
           var startTimeVP = viewState.getViewPortStartTime();
           var endTimeVP = viewState.getViewPortEndTime();
-
-
           var colStartSampleNr = Math.round(startTimeVP * sR + sT);
           var colEndSampleNr = Math.round(endTimeVP * sR + sT);
-
           var nrOfSamples = colEndSampleNr - colStartSampleNr;
-
-          // console.log('###################################');
-          // console.log(col.name);
-          // console.log(startTimeVP);
-          // console.log(endTimeVP);
-
-
           var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
           if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
@@ -171,7 +149,7 @@ angular.module('emuwebApp')
                 }
 
                 // overwrite color settings if they are preconfigured
-                var contColors = ConfigProviderService.getContourColorsOfTrack(assTrackName);
+                var contColors = ConfigProviderService.getContourColorsOfTrack(scope.assTrackName);
                 if (contColors !== undefined) {
                   if (contColors.colors[contourNr] !== undefined) {
                     ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
@@ -181,7 +159,7 @@ angular.module('emuwebApp')
 
                 // mark selected
                 // console.log(viewState.curCorrectionToolNr);
-                if (viewState.curCorrectionToolNr - 1 === contourNr && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
+                if (viewState.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
                   ctx.strokeStyle = ConfigProviderService.vals.colors.selectedContourColor;
                   ctx.fillStyle = ConfigProviderService.vals.colors.selectedContourColor;
                 }
@@ -232,117 +210,6 @@ angular.module('emuwebApp')
                 // ctx.fill();
               }
             });
-
-
-            ////////////////////////////////
-            // OLD VERSION
-            ////////////////////////////////
-
-            // curSampleArrs.forEach(function (valRep, valIdx) {
-            //   valRep.forEach(function (val, idx) {
-            //     if ($.isEmptyObject(minMaxLims) || (idx >= minMaxLims.min && idx <= minMaxLims.max)) {
-            //       curSampleInCol = colStartSampleNr + valIdx;
-            //       curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-            //       x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-            //       y = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-            //       // set color
-            //       if ($.isEmptyObject(minMaxLims)) {
-            //         ctx.strokeStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-            //         ctx.fillStyle = 'hsl(' + idx * (360 / valRep.length) + ',80%, 50%)';
-            //       } else {
-            //         var l = (minMaxLims.max - minMaxLims.min) + 1;
-            //         ctx.strokeStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-            //         ctx.fillStyle = 'hsl(' + idx * (360 / l) + ',80%, 50%)';
-            //       }
-
-
-            //       // draw dot
-            //       // if (val !== null) {
-            //       //   ctx.beginPath();
-            //       //   ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-            //       //   ctx.closePath();
-            //       //   ctx.stroke();
-            //       //   ctx.fill();
-            //       // }
-
-            //       if (valIdx !== 0) {
-            //         curSampleInCol = colStartSampleNr + valIdx - 1;
-            //         curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-            //         prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-            //         prevY = canvas.height - ((curSampleArrs[valIdx - 1][idx] - minVal) / (maxVal - minVal) * canvas.height);
-
-            //         // mark selected
-            //         if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-            //           ctx.strokeStyle = 'white';
-            //           ctx.fillStyle = 'white';
-            //         }
-
-            //         // draw line
-            //         if (val !== null && prevVal !== null) {
-            //           ctx.beginPath();
-            //           ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-            //           ctx.moveTo(prevX, prevY);
-            //           ctx.lineTo(x, y);
-            //           ctx.stroke();
-            //           ctx.fill();
-            //         }
-
-            //         prevVal = val;
-
-            //         //check if last sample
-            //         if (valIdx === curSampleArrs.length - 1) {
-            //           if (colEndSampleNr !== col.values.length - 1) {
-            //             // lines to right boarder samples not in view
-            //             var rightBorder = col.values[colEndSampleNr + 1];
-            //             val = rightBorder[idx];
-
-            //             curSampleInCol = colEndSampleNr + 1;
-            //             curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-            //             var nextX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-            //             var nextY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-            //             // draw line
-            //             ctx.beginPath();
-            //             ctx.moveTo(x, y);
-            //             ctx.lineTo(nextX, nextY);
-            //             ctx.stroke();
-            //             ctx.fill();
-            //           }
-            //         }
-            //       } else {
-            //         // lines to left boarder samples not in view
-            //         if (colStartSampleNr !== 0) {
-            //           var leftBorder = col.values[colStartSampleNr - 1];
-            //           val = leftBorder[idx];
-
-            //           curSampleInCol = colStartSampleNr - 1;
-            //           curSampleInColTime = (1 / sR * curSampleInCol) + sT;
-
-            //           prevX = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-            //           prevY = canvas.height - ((val - minVal) / (maxVal - minVal) * canvas.height);
-
-            //           // mark selected
-            //           if (viewState.curCorrectionToolNr - 1 === idx && trackName === 'SPEC' && assTrackName === 'FORMANTS') {
-            //             ctx.strokeStyle = 'white';
-            //             ctx.fillStyle = 'white';
-            //           }
-
-            //           // draw line
-            //           ctx.beginPath();
-            //           ctx.moveTo(prevX, prevY);
-            //           ctx.lineTo(x, y);
-            //           ctx.stroke();
-            //           ctx.fill();
-            //         }
-            //       }
-            //     }
-            //   });
-            // });
-
           } else {
             ctx.strokeStyle = 'red';
             var txt;
