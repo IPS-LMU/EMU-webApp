@@ -62,7 +62,8 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
-      sServObj.rotated = false;
+      sServObj.hierarchyRotated = false;
+      sServObj.hierarchyShown = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
       sServObj.curMousePosSample = 0;
@@ -785,15 +786,29 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.isRotated = function () {
-      return this.rotated;
+    sServObj.isHierarchyRotated = function () {
+      return sServObj.hierarchyRotated;
     };
 
     /**
      *
      */
     sServObj.rotateHierarchy = function () {
-      this.rotated = !this.rotated;
+      sServObj.hierarchyRotated = !sServObj.hierarchyRotated;
+    };
+
+    /**
+     *
+     */
+    sServObj.isHierarchyOpen = function () {
+      return sServObj.hierarchyShown;
+    };
+
+    /**
+     *
+     */
+    sServObj.showHierarchy = function () {
+      sServObj.hierarchyShown = !sServObj.hierarchyShown;
     };
 
 

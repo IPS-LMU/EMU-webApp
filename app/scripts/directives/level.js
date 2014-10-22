@@ -30,8 +30,8 @@ angular.module('emuwebApp')
 
 				// on broadcast msg from main ctrl openSubmenu refresh timeline
 				scope.$on('refreshTimeline', function () {
-					drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
 
@@ -41,12 +41,12 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
-						drawLevelDetails(scope.level, viewState, ConfigProviderService);
-						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						//console.log('leveldraw update A');
 					} else {
 						//console.log('leveldraw update B');
-						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					}
 				}, true);
 
@@ -57,8 +57,8 @@ angular.module('emuwebApp')
 						//if (!oldValue || !newValue || newValue.id !== oldValue.id) {
 						//	drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						//} else {
-						drawLevelDetails(scope.level, viewState, ConfigProviderService);
-						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 						//}
 					}
 				}, true);
@@ -66,26 +66,26 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('vs.curClickLevelName', function (newValue, oldValue) {
 					if (newValue !== undefined) {
-						drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+						scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 					}
 				}, true);
 
 				//
 				scope.$watch('vs.movingBoundarySample', function () {
-					drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 				//
 				scope.$watch('vs.movingBoundary', function () {
 
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				}, true);
 
 				//
 				scope.$watch('hists.movesAwayFromLastSave', function () {
-					drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 
 				}, true);
 
@@ -115,8 +115,8 @@ angular.module('emuwebApp')
 				scope.finishedAnim = function () {
 					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
 					// redraw
-					drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 
 				};
 
@@ -145,7 +145,7 @@ angular.module('emuwebApp')
 						console.log('undef viewState');
 						return;
 					}
-					drawLevelDetails(scope.level, scope.vs, scope.cps);
+					scope.drawLevelDetails(scope.level, scope.vs, scope.cps);
 				};
 
 
@@ -155,7 +155,7 @@ angular.module('emuwebApp')
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
 					viewState.setcurMouseSegment(undefined, undefined, undefined);
-					drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
 				/**
@@ -164,7 +164,7 @@ angular.module('emuwebApp')
 				 * @param viewState
 				 * @param cps
 				 */
-				function drawLevelDetails(levelDetails, viewState, config) {
+				scope.drawLevelDetails = function (levelDetails, viewState, config) {
 
 					var fontSize = config.vals.font.fontPxSize;
 					var curAttrDef = viewState.getCurAttrDef(scope.level.name);
@@ -240,8 +240,6 @@ angular.module('emuwebApp')
 								});
 
 								// draw segment start
-								//posS = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart));
-								//posE = Math.round(viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur+1));
 								posS = viewState.getPos(canvas[0].width, curEvt.sampleStart);
 								posE = viewState.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur + 1);
 
@@ -265,16 +263,8 @@ angular.module('emuwebApp')
 									}
 								}
 
-
-								// var hst1 = fontScaleService.getLastImageWidth();
-								// var tX1 = posS + (posE - posS) / 2 - hst1 / 2;
-
-
-
-								// var tX2 = posS + (posE - posS) / 2 - hst2 / 2;
 								//draw helper lines
-
-								if (scope.open) {
+								if (scope.open && curLabVal.length !== 0) { // only draw if label is not empty
 									var labelCenter = posS + (posE - posS) / 2;
 
 									var hlY = canvas[0].height / 4;
@@ -296,14 +286,6 @@ angular.module('emuwebApp')
 									ctx.stroke();
 								}
 
-								// if (posE - posS <= tW) {
-
-								// 	ctx.strokeStyle = 'red';//config.vals.colors.startBoundaryColor;
-								// 	ctx.beginPath();
-								// 	ctx.moveTo(tX1 + hst1 / 2, canvas[0].height / 4 + 10);
-								// 	ctx.lineTo(tX1 + hst1 / 2, canvas[0].height / 4 + 30);
-								// 	ctx.stroke();
-								// }
 
 								// draw sampleStart numbers
 								//check for enough space to stroke text
@@ -314,15 +296,11 @@ angular.module('emuwebApp')
 
 								// draw sampleDur numbers.
 
-								//sStW = fontScaleService.getLastImageWidth();
-								//var sDtW = ctx.measureText('dur: ' + curEvt.sampleDur).width;
-								//ctx.fillStyle = config.vals.colors.endBoundaryColor;
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length)) {
 									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, config.vals.font.fontType, config.vals.colors.endBoundaryColor);
 									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
-									//ctx.fillText('dur: ' + curEvt.sampleDur, posE - sDtW, canvas[0].height - canvas[0].height / 12);
 								}
 							}
 						});
@@ -356,12 +334,12 @@ angular.module('emuwebApp')
 						});
 					}
 					// draw cursor/selected area
-				}
+				};
 
 				/**
 				 *
 				 */
-				function drawLevelMarkup(levelDetails, viewState, config) {
+				scope.drawLevelMarkup = function (levelDetails, viewState, config) {
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 					if (levelDetails.name === viewState.getcurClickLevelName()) {
@@ -435,7 +413,7 @@ angular.module('emuwebApp')
 								posS = Math.round(viewState.getPos(canvas[1].width, curEvt.samplePoint));
 								xOffset = (sDist / 2);
 								ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
-								
+
 							}
 						}
 						ctx.fillStyle = config.vals.colors.startBoundaryColor;

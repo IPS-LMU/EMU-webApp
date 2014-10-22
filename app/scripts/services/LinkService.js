@@ -84,9 +84,9 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksTo = function (toID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link) {
+			angular.forEach(sServObj.data.links, function (link, linkOrder) {
 			    if(link.toID === toID) {
-				    ret.push(link);
+				    ret.push({link: link, order:linkOrder});
 				}
 			});
 			return ret;
@@ -98,14 +98,67 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksFrom = function (fromID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link) {
+			angular.forEach(sServObj.data.links, function (link, linkOrder) {
 			    if(link.fromID === fromID) {
-				    ret.push(link);
+				    ret.push({link: link, order:linkOrder});
 				}
 			});
 			return ret;
-		};				
+		};		
 
+		/**
+		 * change a Link (form=={'fromID':fromID, 'toID':toID}) 
+		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
+		 */
+		sServObj.changeLinkTo = function (fromID, toID, toNewID) {
+		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			    if(link.fromID === fromID && link.toID === toID) {
+				    sServObj.data.links[linkOrder].toID = toNewID;
+				}
+			});
+
+		};		
+
+		/**
+		 * change a Link (form=={'fromID':fromID, 'toID':toID}) 
+		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
+		 */
+		sServObj.changeLinkFrom = function (fromID, toID, fromNewID) {
+		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			    if(link.fromID === fromID && link.toID === toID) {
+				    sServObj.data.links[linkOrder].fromID = fromNewID;
+				}
+			});
+		};		
+
+		/**
+		 * removes multiple links from and to ID 
+		 */
+		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
+		    var linksTo = [];
+		    var linksFrom = [];
+		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
+		        linksTo.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
+		        sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+		    });
+		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
+		        linksFrom.push({fromID:found.link.fromID, toID:ID, newID:neighbourID});
+		        sServObj.changeLinkFrom(found.link.fromID, ID, neighbourID);
+		    });
+		    return {linksTo:linksTo, linksFrom:linksFrom};
+		};			
+
+		/**
+		 * removes multiple links from and to ID 
+		 */
+		sServObj.deleteLinkBoundaryInvers = function (deleted) {
+		    angular.forEach(deleted.linksTo, function (found) {
+		        sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		    });
+		    angular.forEach(deleted.linksFrom, function (found) {
+		        sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		    });
+		};					
 
 		return sServObj;
 	});
