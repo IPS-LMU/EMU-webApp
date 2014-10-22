@@ -5,7 +5,7 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function (scope, element, attr) {
-        var name = scope.this.level.name;
+        var name = scope.level.name;
 
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(name, attr.save);
