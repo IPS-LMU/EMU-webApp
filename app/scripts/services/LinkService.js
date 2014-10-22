@@ -198,37 +198,27 @@ angular.module('emuwebApp')
 		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
 		    var linksTo = [];
 		    var linksFrom = [];
-		    var deleted = false;
 		    var ord = 0;
 		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
 		        if(sServObj.linkExists(found.link.fromID, neighbourID)) {
-		            ord = sServObj.deleteLink(found.link.fromID, found.link.toID);
-		            deleted = true;
+		            ord = sServObj.deleteLink(found.link.fromID, ID);
+		            linksTo.push({fromID:found.link.fromID, toID:ID, deleted:true, order:ord, neighbourID:0});
 		        }
 		        else {
-		            sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
-		            deleted = false;
+		            sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+		            linksTo.push({fromID:found.link.fromID, toID:ID, deleted:false, order:ord, neighbourID:neighbourID});
 		        }
-		        linksTo.push({fromID:found.link.fromID, 
-		                      toID:found.link.toID, 
-		                      deleted:deleted, 
-		                      order:ord,
-		                      newID:neighbourID});
 		    });
 		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
 		        if(sServObj.linkExists(neighbourID, found.link.toID)) {
-		            ord = sServObj.deleteLink(found.link.fromID, found.link.toID);
-		            deleted = true;
+		            ord = sServObj.deleteLink(ID, found.link.toID);
+		            linksFrom.push({fromID:ID, toID:found.link.toID, deleted:true, order:ord, neighbourID:0});
 		        }
 		        else {
-    		        sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
-    		        deleted = true;		        
+    		        sServObj.changeLinkFrom(ID, found.link.toID, neighbourID);
+    		        linksFrom.push({fromID:ID, toID:found.link.toID, deleted:false, order:ord, neighbourID:neighbourID});        
 		        }
-		        linksFrom.push({fromID:found.link.fromID, 
-		                        toID:found.link.toID, 
-		                        deleted:deleted, 
-		                        order:ord,
-		                        newID:neighbourID});
+		        
 		    });
 		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
@@ -242,7 +232,7 @@ angular.module('emuwebApp')
 		            sServObj.insertLinkAt(found.fromID, found.toID, found.order);
 		        }
 		        else {
-		            sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		            sServObj.changeLinkTo(found.fromID, found.neighbourID, found.toID);
 		        }
 		    });
 		    angular.forEach(deleted.linksFrom, function (found) {
@@ -250,7 +240,7 @@ angular.module('emuwebApp')
 		            sServObj.insertLinkAt(found.fromID, found.toID, found.order);
 		        }
 		        else {
-		            sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		            sServObj.changeLinkFrom(found.neighbourID, found.toID, found.fromID);
 		        }		    
 		    });
 		};					

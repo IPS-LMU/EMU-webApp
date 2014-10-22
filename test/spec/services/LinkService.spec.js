@@ -321,8 +321,6 @@ describe('Service: LinkService', function () {
     ]);
     // now delete boundary between 1 and 2
     var deleted1 = LinkService.deleteLinkBoundary(2, 1);
-    console.log(deleted1.linksTo);
-    console.log(deleted1.linksFrom);
     // should be 
     //      1234
     //        |
@@ -353,6 +351,9 @@ describe('Service: LinkService', function () {
         { fromID : 1, toID : 3 },
         { fromID : 1, toID : 4 }
     ]); 
+    console.log(deleted1.linksTo);
+    console.log(deleted1.linksFrom);
+    
     LinkService.deleteLinkBoundaryInvers(deleted1);          
     // should be 
     //      1234
