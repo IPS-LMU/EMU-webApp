@@ -8,6 +8,7 @@
   <div class="emuwebapp-mainWindow" id="mainWindow">
 
     <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
+    
 
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
@@ -68,7 +69,8 @@
 </bg-pane>
 </bg-splitter>
 
-<history-action-popup action-txt="{{vs.historyActionTxt}}"></history-action-popup>
+  <history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
+
 </div>
 
 
