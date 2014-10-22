@@ -809,7 +809,7 @@ angular.module('emuwebApp')
                             'length': cseg.length,
                             'deletedSegment': deletedSegment
                           });
-                          var deletedLinks = LinkService.deleteLinkSegment(levelname, cseg);
+                          var deletedLinks = LinkService.deleteLinkSegment(cseg);
 						  HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'DELETELINKSEGMENT',

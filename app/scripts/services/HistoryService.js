@@ -112,7 +112,7 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
 						} else {
-							LinkService.deleteLinkSegment(cur.name, cur.segments);
+							LinkService.deleteLinkSegment(cur.segments);
 						}
 						break;									
 					case 'INSERTLEVEL':

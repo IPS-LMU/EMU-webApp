@@ -17,17 +17,45 @@ angular.module('emuwebApp')
 				'toID': toID
 			});
 		};
+		
+		/**
+		 * adds single links to sServObj.data.links 
+		 * at position order
+		 */
+		sServObj.insertLinkAt = function (fromID, toID, order) {
+			sServObj.data.links.splice(order,0,{
+				'fromID': fromID,
+				'toID': toID
+			});
+		};		
 
 		/**
 		 * removes single link from sServObj.data.links 
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLink = function (fromID, toID) {
+		    var ret = -1;
 			angular.forEach(sServObj.data.links, function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
 					sServObj.data.links.splice(linkIdx, 1);
+					ret = linkIdx;
         		};
 			});
+			return ret;
+		};
+
+		/**
+		 * checks if a given link exists 
+		 * that matches the form {'fromID':fromID, 'toID':toID}
+		 */
+		sServObj.linkExists = function (fromID, toID) {
+		    var ret = false;
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+				if(link.fromID === fromID && link.toID === toID){
+					ret = true;
+        		};
+			});
+			return ret;
 		};
 		
 		/**
@@ -134,7 +162,7 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID 
 		 */
-		sServObj.deleteLinkSegment = function (name, segments) {
+		sServObj.deleteLinkSegment = function (segments) {
 		    var linksTo = [];
 		    var linksFrom = [];
 		    angular.forEach(segments, function (segment) {
@@ -164,18 +192,43 @@ angular.module('emuwebApp')
 		};					
 
 		/**
-		 * removes multiple links from and to ID 
+		 * reorganizes multiple links from and to ID 
+		 * if a boundary between two items is deleted 
 		 */
 		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
 		    var linksTo = [];
 		    var linksFrom = [];
+		    var deleted = false;
+		    var ord = 0;
 		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
-		        linksTo.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
-		        sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
+		        if(sServObj.linkExists(found.link.fromID, neighbourID)) {
+		            ord = sServObj.deleteLink(found.link.fromID, found.link.toID);
+		            deleted = true;
+		        }
+		        else {
+		            sServObj.changeLinkTo(found.link.fromID, found.link.toID, neighbourID);
+		            deleted = false;
+		        }
+		        linksTo.push({fromID:found.link.fromID, 
+		                      toID:found.link.toID, 
+		                      deleted:deleted, 
+		                      order:ord,
+		                      newID:neighbourID});
 		    });
 		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
-		        linksFrom.push({fromID:found.link.fromID, toID:found.link.toID, newID:neighbourID});
-		        sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
+		        if(sServObj.linkExists(neighbourID, found.link.toID)) {
+		            ord = sServObj.deleteLink(found.link.fromID, found.link.toID);
+		            deleted = true;
+		        }
+		        else {
+    		        sServObj.changeLinkFrom(found.link.fromID, found.link.toID, neighbourID);
+    		        deleted = true;		        
+		        }
+		        linksFrom.push({fromID:found.link.fromID, 
+		                        toID:found.link.toID, 
+		                        deleted:deleted, 
+		                        order:ord,
+		                        newID:neighbourID});
 		    });
 		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
@@ -185,10 +238,20 @@ angular.module('emuwebApp')
 		 */
 		sServObj.deleteLinkBoundaryInvers = function (deleted) {
 		    angular.forEach(deleted.linksTo, function (found) {
-		        sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		        if(found.deleted) {
+		            sServObj.insertLinkAt(found.fromID, found.toID, found.order);
+		        }
+		        else {
+		            sServObj.changeLinkTo(found.fromID, found.newID, found.toID);
+		        }
 		    });
 		    angular.forEach(deleted.linksFrom, function (found) {
-		        sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		        if(found.deleted) {
+		            sServObj.insertLinkAt(found.fromID, found.toID, found.order);
+		        }
+		        else {
+		            sServObj.changeLinkFrom(found.newID, found.toID, found.fromID);
+		        }		    
 		    });
 		};					
 
