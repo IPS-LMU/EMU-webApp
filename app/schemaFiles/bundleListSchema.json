@@ -1,10 +1,13 @@
 {
 	"description": "Schema for bundleList for the EMU-webApp",
 	"type": "array",
-	"items":{
+	"items": {
 		"type": "object",
 		"properties": {
-			"name":{
+			"name": {
+				"type": "string"
+			},
+			"session": {
 				"type": "string"
 			}
 		},
