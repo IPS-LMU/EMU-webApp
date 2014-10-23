@@ -27,6 +27,7 @@ angular.module('emuwebApp')
 
 		//$scope.lastkeycode = 'N/A';
 		$scope.bundleList = [];
+		$scope.uniqSessionList = [];
 
 		$scope.curUserName = '';
 		$scope.curBndl = {};
@@ -344,6 +345,7 @@ angular.module('emuwebApp')
 							validRes = Validationservice.validateJSO('bundleListSchema', bdata);
 							if (validRes === true) {
 								$scope.bundleList = bdata;
+								$scope.uniqSessionList = $scope.genUniqSessionList($scope.bundleList);
 								// then load first bundle in list
 								$scope.menuBundleClick($scope.bundleList[0]);
 							} else {
@@ -571,8 +573,37 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.collapseSession = function (ses) {
-			alert('should collapseSession: ' + ses);
+		$scope.toggleCollapseSession = function (ses) {
+			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
+		};
+
+		/**
+		 *
+		 */
+		$scope.sessionIsCollapsed = function (ses) {
+			console.log(ses);
+			console.log($scope.uniqSessionList[ses].collapsed);
+			return $scope.uniqSessionList[ses].collapsed;
+		};
+
+		/**
+		 *
+		 */
+		$scope.genUniqSessionList = function (bndlList) {
+			var sList = [];
+			var fistSes;
+			bndlList.forEach(function (bndl, idx) {
+				sList[bndl.session] = {
+					'collapsed': true
+				};
+				if(idx === 0){
+					fistSes = bndl.session;
+				}
+			});
+			// open fist session up 
+			sList[fistSes].collapsed = false;
+			console.log(sList['0001'].collapsed);
+			return sList;
 		};
 
 		/**

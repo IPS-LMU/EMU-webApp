@@ -7,7 +7,7 @@
     <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
     <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
         <ul ng-repeat="(key, value) in bundleList | groupBy: 'session'">
-            <div ng-click="collapseSession(key)">
+            <div ng-click="toggleCollapseSession(key)">
                 <span class="glyphicon glyphicon-folder-open"></span>
                 {{key}}
             </div>
