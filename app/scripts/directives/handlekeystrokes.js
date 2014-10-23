@@ -721,7 +721,6 @@ angular.module('emuwebApp')
               // undo
               if (code === ConfigProviderService.vals.keyMappings.undo) {
                 if (viewState.getPermission('labelAction')) {
-                  viewState.historyActionTxt = 'UNDO: ' + String(Math.random());
                   HistoryService.undo();
                 }
               }

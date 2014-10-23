@@ -1,6 +1,7 @@
 .emuwebapp-historyActionPopup{
 	position: absolute;
 	display: flex;
+  	font-size: 75%;
  	align-items: center;
  	justify-content: center;
  	left: 30%;

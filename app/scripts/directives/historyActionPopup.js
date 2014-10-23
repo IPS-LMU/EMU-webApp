@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('historyActionPopup', function ($animate) {
 		return {
-			template: '<div class="emuwebapp-historyActionPopup"> <div class="emuwebapp-historyActionModal">ACTION:{{vs.historyActionTxt}}</div></div>',
+			template: '<div class="emuwebapp-historyActionPopup"> <div class="emuwebapp-historyActionModal">{{vs.historyActionTxt}}</div></div>',
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {
