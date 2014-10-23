@@ -4,7 +4,7 @@ describe('Service: HistoryService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
-  
+
   var item;
 
   // NOTE: the ID used here has to be present int msajc003_bundle.annotation
@@ -262,6 +262,13 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.addObjToUndoStack(changeObj);
     expect(HistoryService.getNrOfPossibleUndos()).toEqual(2);
+  }));
+
+  /**
+   *
+   */
+  it('should set viewState.historyActionText 2 the correct actions', inject(function (HistoryService, viewState) {
+    console.log('IMPLEMENTATION reminder: should set viewState.historyActionText 2 the correct actions unit test!!!')
   }));
 
 });
