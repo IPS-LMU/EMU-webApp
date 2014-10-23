@@ -9,6 +9,7 @@
 
     <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
     
+
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
       <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn left"><img src="img/menuBtn.png" /></button>
@@ -67,6 +68,8 @@
   </ul>
 </bg-pane>
 </bg-splitter>
+
+  <history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
 
 </div>
 

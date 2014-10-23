@@ -4,7 +4,7 @@ describe('Service: HistoryService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
-  
+
   var item;
 
   // NOTE: the ID used here has to be present int msajc003_bundle.annotation
@@ -262,6 +262,26 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.addObjToUndoStack(changeObj);
     expect(HistoryService.getNrOfPossibleUndos()).toEqual(2);
+  }));
+
+  /**
+   *
+   */
+  it('should set selected viewState.historyActionTexts 2 the correct actions', inject(function (LevelService, HistoryService, viewState) {
+    LevelService.setData(JDR10_bndl.annotation);
+    LevelService.moveBoundary(changeObjmoveBy3.name, changeObjmoveBy3.id, changeObjmoveBy3.movedBy, changeObjmoveBy3.position);
+    HistoryService.addObjToUndoStack(changeObjmoveBy3);
+    expect(viewState.historyActionTxt).toEqual('');
+    HistoryService.undo();
+    expect(viewState.historyActionTxt).toEqual('UNDO: MOVEBOUNDARY');
+    HistoryService.redo();
+    expect(viewState.historyActionTxt).toEqual('REDO: MOVEBOUNDARY');
+
+    HistoryService.addObjToUndoStack(changeObj);
+    HistoryService.undo();
+    expect(viewState.historyActionTxt).toEqual('UNDO: RENAMELABEL');
+    HistoryService.redo();
+    expect(viewState.historyActionTxt).toEqual('REDO: RENAMELABEL');
   }));
 
 });
