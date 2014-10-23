@@ -122,7 +122,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS', 'Chrome'],
+    browsers: ['PhantomJS', 'Chrome', 'ChromeCanary', 'Opera', 'Safari'],
     
     captureTimeout: 60000,
 
