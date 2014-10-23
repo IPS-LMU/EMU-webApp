@@ -267,8 +267,21 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should set viewState.historyActionText 2 the correct actions', inject(function (HistoryService, viewState) {
-    console.log('IMPLEMENTATION reminder: should set viewState.historyActionText 2 the correct actions unit test!!!')
+  it('should set selected viewState.historyActionTexts 2 the correct actions', inject(function (LevelService, HistoryService, viewState) {
+    LevelService.setData(JDR10_bndl.annotation);
+    LevelService.moveBoundary(changeObjmoveBy3.name, changeObjmoveBy3.id, changeObjmoveBy3.movedBy, changeObjmoveBy3.position);
+    HistoryService.addObjToUndoStack(changeObjmoveBy3);
+    expect(viewState.historyActionTxt).toEqual('');
+    HistoryService.undo();
+    expect(viewState.historyActionTxt).toEqual('UNDO: MOVEBOUNDARY');
+    HistoryService.redo();
+    expect(viewState.historyActionTxt).toEqual('REDO: MOVEBOUNDARY');
+
+    HistoryService.addObjToUndoStack(changeObj);
+    HistoryService.undo();
+    expect(viewState.historyActionTxt).toEqual('UNDO: RENAMELABEL');
+    HistoryService.redo();
+    expect(viewState.historyActionTxt).toEqual('REDO: RENAMELABEL');
   }));
 
 });
