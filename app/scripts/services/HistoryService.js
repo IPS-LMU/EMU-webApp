@@ -21,10 +21,12 @@ angular.module('emuwebApp')
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
+						viewState.historyActionTxt = 'UNDO: SSFF manipulation';
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
+						viewState.historyActionTxt = 'REDO: SSFF manipulation';
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
@@ -33,78 +35,100 @@ angular.module('emuwebApp')
 					switch (cur.action) {
 					case 'MOVEBOUNDARY':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: MOVEBOUNDARY';
 							LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.isFirst, cur.isLast);
 						} else {
+							viewState.historyActionTxt = 'REDO: MOVEBOUNDARY';
 							LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.isFirst, cur.isLast);
 						}
 						break;
 					case 'MOVESEGMENT':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: MOVESEGMENT';
 							LevelService.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
 						} else {
+							viewState.historyActionTxt = 'REDO: MOVESEGMENT';
 							LevelService.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
 						}
 						break;
 					case 'MOVEEVENT':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: MOVEEVENT';
 							LevelService.moveEvent(cur.name, cur.id, -cur.movedBy);
 						} else {
+							viewState.historyActionTxt = 'REDO: MOVEEVENT';
 							LevelService.moveEvent(cur.name, cur.id, cur.movedBy);
 						}
 						break;
 					case 'RENAMELABEL':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 						} else {
+							viewState.historyActionTxt = 'REDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
 						}
 						break;
 					case 'RENAMELEVEL':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: RENAMELEVEL';
 							LevelService.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
 						} else {
+							viewState.historyActionTxt = 'REDO: RENAMELEVEL';
 							LevelService.renameLevel(cur.name, cur.newname, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'DELETELEVEL':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETELEVEL';
 							LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETELEVEL';
 							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'DELETEBOUNDARY':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETEBOUNDARY';
 							LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETEBOUNDARY';
 							LevelService.deleteBoundary(cur.name, cur.id, cur.isFirst, cur.isLast);
 						}
 						break;
 					case 'DELETESEGMENTS':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETESEGMENTS';
 							LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETESEGMENTS';
 							LevelService.deleteSegments(cur.name, cur.id, cur.length);
 						}
 						break;
 					case 'DELETEEVENT':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETEEVENT';
 							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETEEVENT';
 							LevelService.deleteEvent(cur.name, cur.id);
 						}
-						break;	
+						break;
 					case 'DELETELINKSTO':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETELINKSTO';
 							LinkService.insertLinksTo(cur.deletedLinks);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETELINKSTO';
 							LinkService.deleteLinksTo(cur.id);
 						}
-						break;	
+						break;
 					case 'DELETELINKBOUNDARY':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: DELETELINKBOUNDARY';
 							LinkService.deleteLinkBoundaryInvers(cur.deletedLinks);
 						} else {
+							viewState.historyActionTxt = 'REDO: DELETELINKBOUNDARY';
 							LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
 						}
 						break;		
@@ -117,44 +141,54 @@ angular.module('emuwebApp')
 						break;									
 					case 'INSERTLEVEL':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: INSERTLEVEL';
 							LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 						} else {
+							viewState.historyActionTxt = 'REDO: INSERTLEVEL';
 							LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 						}
 						break;
 					case 'INSERTSEGMENTS':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: INSERTSEGMENTS';
 							LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 						} else {
+							viewState.historyActionTxt = 'REDO: INSERTSEGMENTS';
 							LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 						}
 						break;
 					case 'INSERTEVENT':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: INSERTEVENT';
 							LevelService.deleteEvent(cur.name, cur.id);
 						} else {
+							viewState.historyActionTxt = 'REDO: INSERTEVENT';
 							LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 						}
 						break;
 					case 'INSERTLINKSTO':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: INSERTLINKSTO';
 							LinkService.deleteLinksTo(cur.parentID, cur.childIDs);
 						} else {
+							viewState.historyActionTxt = 'REDO: INSERTLINKSTO';
 							LinkService.insertLinksTo(cur.parentID, cur.childIDs);
 						}
 						break;
 					case 'EXPANDSEGMENTS':
 						if (applyOldVal) {
+							viewState.historyActionTxt = 'UNDO: EXPANDSEGMENTS';
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
 						} else {
+							viewState.historyActionTxt = 'REDO: EXPANDSEGMENTS';
 							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
 						}
 						break;
-					}			
+					}
 				}
 			});
 		}
-		
+
 		/////////////////////////////////////
 		// public API
 
@@ -193,17 +227,17 @@ angular.module('emuwebApp')
 				case 'DELETEBOUNDARY':
 				case 'DELETESEGMENTS':
 				case 'DELETEEVENT':
-				    dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
+					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
 					} else {
 						dataObj.oldValue = curChangeObj[dataKey].oldValue;
 						curChangeObj[dataKey] = dataObj;
 					}
-							
-					break;				
+
+					break;
 				}
-				
+
 			}
 			return (curChangeObj);
 
@@ -276,7 +310,10 @@ angular.module('emuwebApp')
 
 		// return current History Stack
 		sServObj.getCurrentStack = function () {
-			return {'undo': undoStack, 'redo': redoStack};
+			return {
+				'undo': undoStack,
+				'redo': redoStack
+			};
 		};
 
 		// resetToInitState

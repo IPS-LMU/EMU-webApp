@@ -56,20 +56,20 @@ angular.module('emuwebApp')
             var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
             curMouseSampleNrInView = viewState.getX(event) * samplesPerPixel;
             var moveBy = (curMouseSampleNrInView - lastPCM);
-            if (samplesPerPixel <= 1 && scope.this.level.items.length > 0) {
-              var zoomEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+            if (samplesPerPixel <= 1 && scope.level.items.length > 0) {
+              var zoomEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.level.name, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
-              if (scope.this.level.type === 'SEGMENT') {
+              if (scope.level.type === 'SEGMENT') {
                 if (zoomEventMove.isFirst === true && zoomEventMove.isLast === false) { // before first elem
-                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemDetails(scope.this.level.name, 0).sampleStart);
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemDetails(scope.level.name, 0).sampleStart);
                 } else if (zoomEventMove.isFirst === false && zoomEventMove.isLast === true) { // after last elem
-                  var lastItem = LevelService.getLastItem(scope.this.level.name);
+                  var lastItem = LevelService.getLastItem(scope.level.name);
                   moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - lastItem.sampleStart - lastItem.sampleDur);
                 } else {
-                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).sampleStart);
+                  moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.level.name, zoomEventMove.nearest.id).sampleStart);
                 }
               } else {
-                moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.this.level.name, zoomEventMove.nearest.id).samplePoint - 0.5); // 0.5 to break between samples not on
+                moveBy = Math.ceil((curMouseSampleNrInView + viewState.curViewPort.sS) - LevelService.getItemFromLevelById(scope.level.name, zoomEventMove.nearest.id).samplePoint - 0.5); // 0.5 to break between samples not on
               }
             } else {
               // relative movement in pcm above 1 pcm per pixel
@@ -99,26 +99,26 @@ angular.module('emuwebApp')
                 LevelService.deleteEditArea();
                 if (viewState.getcurMouseSegment() !== undefined) {
                   viewState.movingBoundary = true;
-                  if (scope.this.level.type === 'SEGMENT') {
+                  if (scope.level.type === 'SEGMENT') {
                     if (viewState.getcurMouseisFirst() || viewState.getcurMouseisLast()) {
                       var seg, leftMost, rightB;
                       // before first segment
                       if (viewState.getcurMouseisFirst()) {
-                        seg = LevelService.getItemDetails(scope.this.level.name, 0);
+                        seg = LevelService.getItemDetails(scope.level.name, 0);
                         viewState.movingBoundarySample = seg.sampleStart + moveBy;
                       } else if(viewState.getcurMouseisLast()){
-                        seg = LevelService.getLastItem(scope.this.level.name);
+                        seg = LevelService.getLastItem(scope.level.name);
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
                       }
                     } else {
                       viewState.movingBoundarySample = viewState.getcurMouseSegment().sampleStart + moveBy;
                       seg = viewState.getcurMouseSegment();
                     }
-                    LevelService.moveBoundary(scope.this.level.name, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
+                    LevelService.moveBoundary(scope.level.name, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
                     HistoryService.updateCurChangeObj({
                       'type': 'ANNOT',
                       'action': 'MOVEBOUNDARY',
-                      'name': scope.this.level.name,
+                      'name': scope.level.name,
                       'id': seg.id,
                       'movedBy': moveBy,
                       'isFirst': viewState.getcurMouseisFirst(),
@@ -128,11 +128,11 @@ angular.module('emuwebApp')
                   } else {
                     seg = viewState.getcurMouseSegment();
                     viewState.movingBoundarySample = viewState.getcurMouseSegment().samplePoint + moveBy;
-                    LevelService.moveEvent(scope.this.level.name, seg.id, moveBy);
+                    LevelService.moveEvent(scope.level.name, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ANNOT',
                       'action': 'MOVEEVENT',
-                      'name': scope.this.level.name,
+                      'name': scope.level.name,
                       'id': seg.id,
                       'movedBy': moveBy
                     });
@@ -143,13 +143,13 @@ angular.module('emuwebApp')
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 LevelService.deleteEditArea();
-                if (scope.this.level.type == 'SEGMENT') {
+                if (scope.level.type == 'SEGMENT') {
                   seg = viewState.getcurClickSegments()
-                  LevelService.moveSegment(scope.this.level.name, seg[0].id, seg.length, moveBy);
+                  LevelService.moveSegment(scope.level.name, seg[0].id, seg.length, moveBy);
                   HistoryService.updateCurChangeObj({
                     'type': 'ANNOT',
                     'action': 'MOVESEGMENT',
-                    'name': scope.this.level.name,
+                    'name': scope.level.name,
                     'id': seg[0].id,
                     'length': seg.length,
                     'movedBy': moveBy
@@ -196,7 +196,7 @@ angular.module('emuwebApp')
           curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
           viewState.setEditing(false);
-          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             LevelService.setlasteditArea('_' + lastEventClick.current.id);
             LevelService.setlasteditAreaElem(element.parent());
@@ -216,7 +216,7 @@ angular.module('emuwebApp')
           }
           curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           LevelService.deleteEditArea();
-          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             viewState.setcurClickLevel(levelID, levelType, scope.$index);
             viewState.setcurClickSegmentMultiple(lastEventClick.current);
@@ -231,7 +231,7 @@ angular.module('emuwebApp')
          */
         function setLastDblClick(x) {
           curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
-          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          lastEventClick = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (lastEventClick.current !== undefined && lastEventClick.nearest !== undefined) {
             if (levelType === 'SEGMENT') {
               if (lastEventClick.current.sampleStart >= viewState.curViewPort.sS) {
@@ -267,10 +267,10 @@ angular.module('emuwebApp')
          */
         function setLastMove(x, doChange) {
           curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
-          lastEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.this.level.name, Soundhandlerservice.wavJSO.Data.length);
+          lastEventMove = LevelService.getClosestItem(curMouseSampleNrInView + viewState.curViewPort.sS, scope.level.name, Soundhandlerservice.wavJSO.Data.length);
           if (doChange) {
             if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
-              lastNeighboursMove = LevelService.getItemNeighboursFromLevel(scope.this.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
+              lastNeighboursMove = LevelService.getItemNeighboursFromLevel(scope.level.name, lastEventMove.nearest.id, lastEventMove.nearest.id);
               viewState.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, lastPCM, lastEventMove.isFirst, lastEventMove.isLast);
             }
           }
