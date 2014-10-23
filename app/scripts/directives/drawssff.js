@@ -6,7 +6,7 @@ angular.module('emuwebApp')
       restrict: 'A',
       scope: {},
       link: function postLink(scope, element, atts) {
-        scope.trackName = undefined;
+        scope.trackName = atts.ssffTrackname;
         scope.assTrackName = '';
         scope.lastDraw = Date.now();
 
@@ -87,6 +87,7 @@ angular.module('emuwebApp')
               scope.assTrackName = '';
               // draw ssffTrack onto own canvas
               if (scope.trackName !== 'OSCI' && scope.trackName !== 'SPEC') {
+                
                 var tr = ConfigProviderService.getSsffTrackConfig(scope.trackName);
                 var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
