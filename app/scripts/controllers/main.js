@@ -568,6 +568,16 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 *
+		 */
+		$scope.collapseSession = function (ses) {
+			alert('should collapseSession: ' + ses);
+		};
+
+		/**
+		 *
+		 */
 		$scope.getEnlarge = function (index) {
 			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 			var large = 50;
@@ -888,8 +898,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showHierarchyBtnClick = function () {
-		    viewState.showHierarchy();
-		    dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+			viewState.showHierarchy();
+			dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
 		};
 
 		/**

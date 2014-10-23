@@ -6,12 +6,19 @@
     </h3>
     <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
     <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
-        <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
-            <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="menuBundleClick(bundle);">
-                <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>
-                <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
-                <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" /></div>
+        <ul ng-repeat="(key, value) in bundleList | groupBy: 'session'">
+            <div ng-click="collapseSession(key)">
+                <span class="glyphicon glyphicon-folder-open"></span>
+                {{key}}
             </div>
-        </div>
+            <div class="bundleOuter" ng-repeat="bundle in value | regex:filterText">
+                <!--  -->
+                <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="menuBundleClick(bundle);">
+                    <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>
+                    <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
+                    <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" /></div>
+                </div>
+            </div>
+        </ul>
     </div>
 </div>
