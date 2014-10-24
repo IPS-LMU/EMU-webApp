@@ -6,7 +6,8 @@ angular.module('emuwebApp')
 		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
 		LevelService, dialogService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
-		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService) {
+		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
+		appStateService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -90,7 +91,7 @@ angular.module('emuwebApp')
 
 		// listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
 		$scope.$on('connectionDisrupted', function (event, args) {
-			$scope.resetToInitState();
+			appStateService.resetToInitState();
 		});
 
 		//
@@ -232,18 +233,18 @@ angular.module('emuwebApp')
 						viewState.somethingInProgress = false;
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				}).error(function (data, status, header, config) {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				});
 			}, function (errMess) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
-					$scope.resetToInitState();
+					appStateService.resetToInitState();
 				});
 			});
 		};
@@ -311,7 +312,7 @@ angular.module('emuwebApp')
 								if (res) {
 									$scope.innerHandleConnectedToWSserver();
 								} else {
-									$scope.resetToInitState();
+									appStateService.resetToInitState();
 								}
 							});
 						}
@@ -319,7 +320,7 @@ angular.module('emuwebApp')
 				} else {
 					// show protocol error and disconnect from server
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				}
 			});
@@ -345,29 +346,26 @@ angular.module('emuwebApp')
 						// then get the DBconfigFile
 						viewState.somethingInProgressTxt = 'Loading bundle list...';
 						Iohandlerservice.getBundleList().then(function (bdata) {
-							// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
-							// if (validRes === true) {
-							// $scope.bundleList = bdata;
-							loadedMetaDataService.setBundleList(bdata);
-							// $scope.uniqSessionList = $scope.genUniqSessionList($scope.bundleList);
-							// then load first bundle in list
-							dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
-							// } else {
-							// 	dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-							// 		$scope.resetToInitState();
-							// 	});
-							// }
+							validRes = loadedMetaDataService.setBundleList(bdata);
+							if (validRes === true) {
+								// then load first bundle in list
+								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+							} else {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									appStateService.resetToInitState();
+								});
+							}
 						});
 
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				} else {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				}
 			});
@@ -668,30 +666,30 @@ angular.module('emuwebApp')
 								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 								// } else {
 								// 	dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								// 		$scope.resetToInitState();
+								// 		appStateService.resetToInitState();
 								// 	});
 								// }
 							}, function (err) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-									$scope.resetToInitState();
+									appStateService.resetToInitState();
 								});
 							});
 						} else {
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								$scope.resetToInitState();
+								appStateService.resetToInitState();
 							});
 						}
 
 
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				}, function (err) {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				});
 			} //else {
@@ -727,39 +725,10 @@ angular.module('emuwebApp')
 			}
 			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', modalText).then(function (res) {
 				if (res) {
-					$scope.resetToInitState();
+					appStateService.resetToInitState();
 				}
 			});
 		};
-
-		/**
-		 *
-		 */
-		$scope.resetToInitState = function () {
-			if (Iohandlerservice.wsH.isConnected()) {
-				Iohandlerservice.wsH.disconnectWarning().then(function (resp) {
-					$log.info('Closing websocket connection to server');
-					Iohandlerservice.wsH.closeConnect();
-				});
-			}
-			// $scope.curBndl = {};
-			loadedMetaDataService.resetToInitState()
-			Soundhandlerservice.wavJSO = {};
-			LevelService.data = {};
-			Ssffdataservice.data = [];
-			HistoryService.resetToInitState();
-			viewState.setState('noDBorFilesloaded');
-			$scope.$broadcast('resetToInitState');
-
-			viewState.somethingInProgress = false;
-			viewState.resetToInitState();
-
-			viewState.showDropZone = true;
-			$scope.loadDefaultConfig();
-
-
-		};
-
 
 		// bottom menu:
 

@@ -21,6 +21,7 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+      'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/scripts/*.js',
       'app/scripts/workers/*.js',
       'app/scripts/filters/*.js',
@@ -122,7 +123,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS', 'Chrome'],
+    browsers: ['PhantomJS'],
     
     captureTimeout: 60000,
 

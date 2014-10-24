@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 		var uniqSessionList = [];
 		var bundleList = [];
 		var curBndl = {};
-		var demoDbName = ''; // TODO
+		var demoDbName = '';
 
 		//////////////////////
 		// private functions
@@ -46,6 +46,7 @@ angular.module('emuwebApp')
 
 		/**
 		 * setter for bundleList
+		 * @returns validation result for bundle list
 		 */
 		sServObj.setBundleList = function (bList) {
 			// validate
@@ -55,12 +56,8 @@ angular.module('emuwebApp')
 				bundleList = bList;
 				// generate uniqSessionList
 				uniqSessionList = genUniqSessionList(bundleList);
-			} else {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-					// $scope.resetToInitState();
-					alert('resetToInitState currently not implemented in loadedMetaDataService have to do more refactoring')
-				});
 			}
+			return validRes;
 		};
 
 		/**
