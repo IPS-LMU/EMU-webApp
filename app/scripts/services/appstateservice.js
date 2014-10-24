@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('appStateService', function appStateService($log, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, LevelService, Ssffdataservice, HistoryService) {
+	.service('appStateService', function appStateService($log,viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, LevelService, Ssffdataservice, HistoryService) {
 		// shared service object
 		var sServObj = {};
 		/**
