@@ -1,0 +1,203 @@
+'use strict';
+
+/**
+ * @ngdoc service
+ * @name emuwebApp.dbObjLoadSaveService
+ * @description
+ * # dbObjLoadSaveService
+ * Service in the emuwebApp.
+ */
+angular.module('emuwebApp')
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, dialogService, ConfigProviderService) {
+		// shared service object
+		var sServObj = {};
+
+		/**
+		 * general loadBundle method.
+		 * @param bndl object containing name attribute of currently loaded bundle
+		 */
+		sServObj.loadBundle = function (bndl) {
+
+			// check if bndl has to be saved
+			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
+				if (bndl !== loadedMetaDataService.getCurBndl()) {
+					// $scope.lastclickedutt = bndl;
+					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
+						if (messModal === 'saveChanges') {
+							// save current bundle
+							sServObj.saveBundle().then(function () {
+								// load new bundle
+								sServObj.loadBundle(bndl);
+							});
+						} else if (messModal === 'discardChanges') {
+							// reset history
+							HistoryService.resetToInitState();
+							// load new bundle
+							sServObj.loadBundle(bndl);
+						}
+					});
+				}
+			} else {
+				if (bndl !== loadedMetaDataService.getCurBndl()) {
+					// reset history
+					HistoryService.resetToInitState();
+					// set state
+					viewState.setState('loadingSaving');
+
+					viewState.somethingInProgress = true;
+					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
+					// empty ssff files
+					Ssffdataservice.data = [];
+					Iohandlerservice.getBundle(bndl.name, loadedMetaDataService.getDemoDbName()).then(function (bundleData) {
+						// check if response from http request
+						if (bundleData.status === 200) {
+							bundleData = bundleData.data;
+						}
+
+						var arrBuff;
+
+						// set wav file
+						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
+						viewState.somethingInProgressTxt = 'Parsing WAV file...';
+
+						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
+							var wavJSO = messWavParser;
+							viewState.curViewPort.sS = 0;
+							viewState.curViewPort.eS = wavJSO.Data.length;
+							viewState.curViewPort.selectS = -1;
+							viewState.curViewPort.selectE = -1;
+							viewState.curClickSegments = [];
+							viewState.curClickLevelName = undefined;
+							viewState.curClickLevelType = undefined;
+
+							viewState.resetSelect();
+							// FOR DEVELOPMENT:
+							// viewState.curViewPort.sS = 52063;
+							// viewState.curViewPort.eS = 52100;
+							// viewState.curViewPort.selectS = 27575;
+							// viewState.curViewPort.selectE = 34538;
+							Soundhandlerservice.wavJSO = wavJSO;
+
+							// set all ssff files
+							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
+							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
+								Ssffdataservice.data = ssffJso.data;
+								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
+								if (validRes === true) {
+									// set annotation
+									LevelService.setData(bundleData.annotation);
+
+									loadedMetaDataService.setCurBndl(bndl);
+									viewState.setState('labeling');
+									viewState.somethingInProgress = false;
+									viewState.somethingInProgressTxt = 'Done!';
+									// FOR DEVELOPMENT:
+									// $scope.menuBundleSaveBtnClick(); // for testing save button
+									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+								} else {
+									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+										$scope.resetToInitState();
+									});
+								}
+							}, function (errMess) {
+								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+									$scope.resetToInitState();
+								});
+							});
+						}, function (errMess) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+								$scope.resetToInitState();
+							});
+						});
+
+					}, function (errMess) {
+						// check for http vs websocket response
+						if (errMess.data) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data).then(function () {
+								$scope.resetToInitState();
+							});
+						} else {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message).then(function () {
+								$scope.resetToInitState();
+							});
+						}
+					});
+				}
+			}
+		};
+
+		/**
+		 * general purpose save bundle function.
+		 * @return promise that is resolved after completion (rejected on error)
+		 */
+		sServObj.saveBundle = function () {
+			// check if something has changed
+			// if (HistoryService.movesAwayFromLastSave !== 0) {
+				if (viewState.getPermission('saveBndlBtnClick')) {
+					var defer = $q.defer();
+					viewState.somethingInProgress = true;
+					viewState.setState('loadingSaving');
+					//create bundle json
+					var bundleData = {};
+					viewState.somethingInProgressTxt = 'Creating bundle json...';
+					bundleData.ssffFiles = [];
+					var formants = {};
+					// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
+					Ssffdataservice.data.forEach(function (el) {
+
+						if (el.ssffTrackName === 'FORMANTS') {
+							formants = el;
+						}
+					});
+
+					if (!$.isEmptyObject(formants)) {
+						Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
+							bundleData.ssffFiles.push({
+								'ssffTrackName': formants.ssffTrackName,
+								'encoding': 'BASE64',
+								'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
+							});
+							sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+
+						}, function (errMess) {
+							dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
+							defer.reject();
+						});
+					} else {
+						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+					}
+
+					return defer.promise;
+				// }
+			} else {
+				$log.info('Action: menuBundleSaveBtnClick not allowed!');
+			}
+
+		};
+
+
+		/**
+		 *
+		 */
+		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
+			// annotation
+			bundleData.annotation = LevelService.getData();
+			viewState.somethingInProgressTxt = 'Saving bundle...';
+			Iohandlerservice.saveBundle(bundleData).then(function () {
+				viewState.somethingInProgressTxt = 'Done!';
+				viewState.somethingInProgress = false;
+				HistoryService.movesAwayFromLastSave = 0;
+				defer.resolve();
+				viewState.setState('labeling');
+			}, function (errMess) {
+				// console.log(mess);
+				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
+					$scope.resetToInitState();
+				});
+				defer.reject();
+			});
+		};
+
+		return (sServObj);
+	});

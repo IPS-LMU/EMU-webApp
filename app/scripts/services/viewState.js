@@ -823,6 +823,7 @@ angular.module('emuwebApp')
      *
      */
     sServObj.setcursorInTextField = function (n) {
+      console.log(n);
       this.cursorInTextField = n;
     };
 
