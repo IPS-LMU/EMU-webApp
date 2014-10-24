@@ -122,7 +122,6 @@ angular.module('emuwebApp')
 		 * 
 		 */
 		sServObj.getSessionCollapseState = function(session){
-			console.log(session)
 			return uniqSessionList[session].collapsed;
 		}
 
