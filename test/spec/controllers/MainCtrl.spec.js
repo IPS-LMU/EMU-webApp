@@ -12,6 +12,10 @@ describe('Controller: MainCtrl', function () {
   var testSizeStart = 10;
   var testSizeEnd = 1337;
 
+  var mockAppStateService = {
+    resetToInitState: function () {}
+  };
+
   //Initialize the controller and a mock scope
   beforeEach(inject(function ($controller,
     $rootScope,
@@ -27,10 +31,13 @@ describe('Controller: MainCtrl', function () {
     Validationservice,
     Textgridparserservice) {
 
+    // initiate the controller and mock the scope
     scope = $rootScope.$new();
     MainCtrl = $controller('MainCtrl', {
-      $scope: scope
+      $scope: scope,
+      appStateService: mockAppStateService
     });
+
     scope.lvl = LevelService;
     scope.vs = viewState;
     scope.cps = ConfigProviderService;
@@ -43,6 +50,7 @@ describe('Controller: MainCtrl', function () {
     scope.cps.curDbConfig = aeDbConfig;
     scope.history = HistoryService;
     scope.txtgrid = Textgridparserservice;
+
     deferred = $q.defer();
     deferred.resolve('called');
     $httpBackend.whenGET("schemaFiles/annotationFileSchema.json").respond(annotationFileSchema);
@@ -56,10 +64,10 @@ describe('Controller: MainCtrl', function () {
     $httpBackend.whenGET("views/export.html").respond('');
   }));
 
-  it('should react to $broadcast connectionDisrupted', inject(function ($rootScope, appStateService) {
-    spyOn(appStateService, 'resetToInitState');
+  it('should react to $broadcast connectionDisrupted', inject(function ($rootScope) {
+    spyOn(mockAppStateService, 'resetToInitState');
     $rootScope.$broadcast('connectionDisrupted');
-    expect(appStateService.resetToInitState).toHaveBeenCalled();
+    expect(mockAppStateService.resetToInitState).toHaveBeenCalled();
   }));
 
 
@@ -103,23 +111,6 @@ describe('Controller: MainCtrl', function () {
     expect(scope.vs.curViewPort.eS).toBe(0);
     expect(scope.vs.curViewPort.selectS).toBe(-1);
     expect(scope.vs.curViewPort.selectE).toBe(-1);
-  });
-
-  it('should resetToInitState', function () {
-    scope.resetToInitState();
-    expect(scope.curBndl).toEqual(emptyObject);
-    expect(scope.bundleList.length).toBe(0);
-  });
-
-  it('should resetToInitState (connected)', function () {
-    spyOn(scope.io.wsH, 'disconnectWarning').and.returnValue(deferred.promise);
-    spyOn(scope.io.wsH, 'isConnected').and.returnValue(true);
-    spyOn(scope.io.wsH, 'closeConnect');
-    scope.resetToInitState();
-    deferred.resolve();
-    scope.$apply();
-    expect(scope.io.wsH.isConnected).toHaveBeenCalled();
-    expect(scope.io.wsH.closeConnect).toHaveBeenCalled();
   });
 
   it('should set cursorInTextField', function () {
