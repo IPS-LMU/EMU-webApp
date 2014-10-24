@@ -109,6 +109,26 @@ angular.module('emuwebApp')
 		};
 
 		///////////////////
+		// uniqSessionList
+
+		/**
+		 * 
+		 */
+		sServObj.toggleCollapseSession = function(session){
+			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
+		};
+
+		/**
+		 * 
+		 */
+		sServObj.getSessionCollapseState = function(session){
+			console.log(session)
+			return uniqSessionList[session].collapsed;
+		}
+
+
+
+		///////////////////
 		// other functions
 
 		/**

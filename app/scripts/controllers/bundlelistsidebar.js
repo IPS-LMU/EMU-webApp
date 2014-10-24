@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 		$scope.filterText = '';
 
 		/**
-		 * retuns false if bndl is current bndl
+		 * returns false if bndl is current bndl
 		 */
 		$scope.uttIsDisabled = function (bndl) {
 			if (bndl.name === loadedMetaDataService.getCurBndl().name) {
