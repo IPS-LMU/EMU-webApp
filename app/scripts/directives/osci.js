@@ -15,8 +15,6 @@ angular.module('emuwebApp')
 
 			},
 			link: function postLink(scope, element, attrs) {
-
-
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
 				var canvas = element.find('canvas')[0];

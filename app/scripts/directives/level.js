@@ -18,11 +18,8 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.dials = dialogService;
-
 				var levelCanvasContainer = element.find('div');
-
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-				// curAttrDef = scope.level.name;
 
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
