@@ -1,16 +1,19 @@
 'use strict';
 
+
+
 describe('Directive: spectro', function () {
 
     var elm, tpl, scope, curLvl;
     var lvlName = 'Phonetic';
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function ($rootScope, $compile, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
+    beforeEach(inject(function ($rootScope, $compile, Drawhelperservice, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.shs = Soundhandlerservice;
+        scope.dhs = Drawhelperservice;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
@@ -34,20 +37,53 @@ describe('Directive: spectro', function () {
      expect(elm.find('img').length).toBe(1);
    });
    
-   /*
-
    it('should watch vs.timelineSize', inject(function ($timeout) {
+    scope.shs.wavJSO.Data = {};
+    scope.vs.timelineSize = 2;
     compileDirective();
     expect(elm.isolateScope()).toBeDefined();
     spyOn(elm.isolateScope(), 'redraw');
-    spyOn(scope, 'redraw');
-    scope.vs.timelineSize = 2;
+    scope.vs.timelineSize = 4;
     scope.$apply();
     $timeout.flush();
-    expect(scope.redraw).toHaveBeenCalled();
     expect(elm.isolateScope().redraw).toHaveBeenCalled();
    }));  
    
-   */    
+   it('should watch vs.curViewPort', inject(function ($timeout) {
+    scope.shs.wavJSO.Data = {};
+    compileDirective();
+    scope.vs.curViewPort.sS = 1;
+    scope.$apply();
+    expect(elm.isolateScope()).toBeDefined();
+    spyOn(elm.isolateScope(), 'redraw');
+    scope.vs.curViewPort.sS = 10;
+    scope.$apply();
+    expect(elm.isolateScope().redraw).toHaveBeenCalled();
+   }));  
+
+   it('should killSpectroRenderingThread', function () {
+     compileDirective();
+     spyOn(scope.dhs, 'drawCurViewPortSelected');
+     elm.isolateScope().killSpectroRenderingThread();
+     expect(scope.dhs.drawCurViewPortSelected).toHaveBeenCalled();
+   });
+
+   it('should drawSpectro', function () {
+     compileDirective();
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     spyOn(elm.isolateScope(), 'killSpectroRenderingThread');
+     spyOn(elm.isolateScope(), 'startSpectroRenderingThread');
+     elm.isolateScope().drawSpectro(scope.shs.wavJSO.Data);
+     expect(elm.isolateScope().killSpectroRenderingThread).toHaveBeenCalled();
+     expect(elm.isolateScope().startSpectroRenderingThread).toHaveBeenCalledWith([1, 2, 3]);
+   }); 
+
+   it('should return pcmpp', function () {
+     scope.vs.curViewPort.eS = 2048;
+     scope.vs.curViewPort.sS = 1;
+     compileDirective();
+     // (2048 + 1 - 1) / 2
+     expect(elm.isolateScope().pcmpp()).toBe(1);
+   });  
 
 });

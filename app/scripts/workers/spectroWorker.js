@@ -15,14 +15,13 @@
 	var TWO_PI = 6.283185307179586; // value : 2 * Math.PI
 	var emphasisPerOctave; // = 3.9810717055349722; // value : toLinearLevel(6);	
 	var sin, cos, n; // vars to hold sin and cos table	
-	var internalalpha = 0.16;
 	var totalMax = 0;
 	var dynRangeInDB = 50;
 	var myOffset = 0;
 	var mywidth = 0;
 	var myDrawOffset = 0;
 	var pixelRatio = 1;
-	var myFFT, paint, HzStep, c, d, maxPsd, pixelHeight, transparency;
+	var myFFT, paint, HzStep, c, d, maxPsd, pixelHeight, transparency, internalalpha;
 	var myWindow = {
 		BARTLETT: 1,
 		BARTLETTHANN: 2,

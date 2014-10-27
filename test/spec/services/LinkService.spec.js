@@ -350,10 +350,7 @@ describe('Service: LinkService', function () {
         { fromID : 1234, toID : 1 }, 
         { fromID : 1, toID : 3 },
         { fromID : 1, toID : 4 }
-    ]); 
-    console.log(deleted1.linksTo);
-    console.log(deleted1.linksFrom);
-    
+    ]);     
     LinkService.deleteLinkBoundaryInvers(deleted1);          
     // should be 
     //      1234
