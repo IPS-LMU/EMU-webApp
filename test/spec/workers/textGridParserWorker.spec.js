@@ -28,7 +28,7 @@ describe('Worker: textGridParserWorker', function () {
          worker = new Worker(webkitURL.createObjectURL(blob));
      } else {
          worker = new Worker(URL.createObjectURL(blob));
-     }  
+     } 
 
   }));
 

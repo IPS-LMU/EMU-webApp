@@ -31,7 +31,7 @@ angular.module('emuwebApp')
         var dragBottomRightResizePaneCornerResizer = false;
 
         // create split pane view
-        var handler = angular.element('<div class="emuwebapp-split-handler"><span></span></div>');
+        var handler = angular.element('<div id="emuwebapp-split-handler" class="emuwebapp-split-handler"><span></span></div>');
         var pane1 = scope.panes[0];
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;
@@ -188,7 +188,6 @@ angular.module('emuwebApp')
         showTwoDimCans: '@'
       },
       template: '<div class="{{typeclass}}" ng-transclude></div>',
-
       link: function (scope, element, attrs, bgSplitterCtrl) {
         var newElement;
         if (scope.type !== "emuwebapp-bottomRightResizePane") {
@@ -197,17 +196,6 @@ angular.module('emuwebApp')
           scope.typeclass = 'split-pane' + scope.index;
 
         } else {
-          // element.toggleClass('alert-box alert')
-          // var twoDimCans = angular.element('<div class="bottomRightResizePane"></div>');
-          // var bottomRightResizePaneTopResizer = angular.element('<div class="bottomRightResizePaneTopResizer"></div>');
-          // var bottomRightResizePaneLeftResizer = angular.element('<div class="bottomRightResizePaneLeftResizer"></div>');
-          // var bottomRightResizePaneCornerResizer = angular.element('<div class="bottomRightResizePaneCornerResizer"></div>');
-          // element.prepend(bottomRightResizePaneLeftResizer);
-          // element.prepend(bottomRightResizePaneTopResizer);
-          // element.prepend(bottomRightResizePaneCornerResizer);
-
-          // element.append(twoDimCans);
-
           scope.elem = element;
           scope.index = 3;
           scope.typeclass = 'emuwebapp-bottomRightResizePane';

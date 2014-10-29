@@ -64,9 +64,11 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							viewState.historyActionTxt = 'UNDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
+							console.log(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 						} else {
 							viewState.historyActionTxt = 'REDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
+							console.log(cur.name, cur.id, cur.attrIndex, cur.newValue);
 						}
 						break;
 					case 'RENAMELEVEL':
@@ -131,7 +133,14 @@ angular.module('emuwebApp')
 							viewState.historyActionTxt = 'REDO: DELETELINKBOUNDARY';
 							LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
 						}
-						break;
+						break;		
+					case 'DELETELINKSEGMENT':
+						if (applyOldVal) {
+							LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
+						} else {
+							LinkService.deleteLinkSegment(cur.segments);
+						}
+						break;									
 					case 'INSERTLEVEL':
 						if (applyOldVal) {
 							viewState.historyActionTxt = 'UNDO: INSERTLEVEL';
@@ -216,6 +225,7 @@ angular.module('emuwebApp')
 				case 'INSERTLINKSTO':
 				case 'DELETELINKSTO':
 				case 'DELETELINKBOUNDARY':
+				case 'DELETELINKSEGMENT':
 				case 'DELETEBOUNDARY':
 				case 'DELETESEGMENTS':
 				case 'DELETEEVENT':

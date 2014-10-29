@@ -14,7 +14,6 @@ angular.module('emuwebApp')
 				scope.$watch('vs.historyActionTxt', function () {
 					if (scope.vs.historyActionTxt !== '') {
 						$animate.addClass(element, 'emuwebapp-historyActionPopupThere').then(function () {
-							console.log('done with animation fade in');
 							scope.vs.historyActionTxt = '';
 							$animate.removeClass(element, 'emuwebapp-historyActionPopupThere');
 							scope.$apply();

@@ -422,16 +422,10 @@ angular.module('emuwebApp')
 							viewState.curViewPort.eS = wavJSO.Data.length;
 							viewState.curViewPort.selectS = -1;
 							viewState.curViewPort.selectE = -1;
-							viewState.curClickSegments = [];
+							viewState.curClickItems = [];
 							viewState.curClickLevelName = undefined;
 							viewState.curClickLevelType = undefined;
-
 							viewState.resetSelect();
-							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 52063;
-							// viewState.curViewPort.eS = 52100;
-							// viewState.curViewPort.selectS = 27575;
-							// viewState.curViewPort.selectE = 34538;
 							Soundhandlerservice.wavJSO = wavJSO;
 
 							// set all ssff files
@@ -442,15 +436,10 @@ angular.module('emuwebApp')
 								if (validRes === true) {
 									// set annotation
 									LevelService.setData(bundleData.annotation);
-
 									$scope.curBndl = bndl;
 									viewState.setState('labeling');
 									viewState.somethingInProgress = false;
 									viewState.somethingInProgressTxt = 'Done!';
-									// FOR DEVELOPMENT:
-									// $scope.menuBundleSaveBtnClick(); // for testing save button
-									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
 								} else {
 									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										$scope.resetToInitState();
