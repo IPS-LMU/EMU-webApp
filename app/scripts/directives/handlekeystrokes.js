@@ -522,12 +522,12 @@ angular.module('emuwebApp')
               }
 
               // select Segments in viewport selection
-              if (code === ConfigProviderService.vals.keyMappings.selectSegmentsInSelection) {
+              if (code === ConfigProviderService.vals.keyMappings.selectEventsInSelection) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                   } else {
-                    viewState.selectSegmentsInSelection(LevelService.data.levels);
+                    viewState.selectEventsInSelection(LevelService.data.levels);
                   }
                 }
               }

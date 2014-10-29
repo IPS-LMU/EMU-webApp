@@ -588,7 +588,7 @@ angular.module('emuwebApp')
     /**
      * selects all Segements on current level which are inside the selected viewport
      */
-    sServObj.selectSegmentsInSelection = function (levelData) {
+    sServObj.selectEventsInSelection = function (levelData) {
       sServObj.curClickSegments = [];
       var min = Infinity;
       var max = -Infinity;
