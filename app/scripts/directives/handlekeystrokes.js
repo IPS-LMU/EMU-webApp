@@ -73,19 +73,20 @@ angular.module('emuwebApp')
               if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {   
                   var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                   var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
-                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), $('.' + LevelService.getlasteditArea()).val());
+                  var oldValue = editingElement.labels[attrIndex].value;
+                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), domElement.val());
                   HistoryService.addObjToUndoStack({
                     'type': 'ANNOT',
                     'action': 'RENAMELABEL',
                     'name': viewState.getcurClickLevelName(),
                     'id': LevelService.getlastID(),
                     'attrIndex': attrIndex,
-                    'oldValue': editingElement.labels[attrIndex].value,
+                    'oldValue': oldValue,
                     'newValue': domElement.val()
                   });
                   LevelService.deleteEditArea();
                   viewState.setEditing(false);
-                  viewState.setcurClickSegment(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
+                  viewState.setcurClickItem(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
               }
               // escape from text if esc
               if (code === ConfigProviderService.vals.keyMappings.esc) {
@@ -272,7 +273,7 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestTopBoundary) {
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
-                    var mouseSeg = viewState.getcurMouseSegment();
+                    var mouseSeg = viewState.getcurMouseItem();
                     var levelName = viewState.getcurMouseLevelName();
                     var levelType = viewState.getcurMouseLevelType();
                     var neighbor = viewState.getcurMouseNeighbours();
@@ -308,7 +309,7 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.snapBoundaryToNearestBottomBoundary) {
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
-                    var mouseSeg = viewState.getcurMouseSegment();
+                    var mouseSeg = viewState.getcurMouseItem();
                     var levelName = viewState.getcurMouseLevelName();
                     var levelType = viewState.getcurMouseLevelType();
                     var neighbor = viewState.getcurMouseNeighbours();
@@ -346,12 +347,12 @@ angular.module('emuwebApp')
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     var dist;
                     if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseSegment().sampleStart);
+                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().sampleStart);
                     } else {
-                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseSegment().samplePoint);
+                      dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().samplePoint);
                     }
                     if (dist !== 0) {
-                      var seg = viewState.getcurMouseSegment();
+                      var seg = viewState.getcurMouseItem();
                       var neigh = viewState.getcurMouseNeighbours();
                       var levelname = viewState.getcurMouseLevelName();
                       LevelService.moveBoundary(levelname, seg.id, dist, 0);
@@ -383,12 +384,12 @@ angular.module('emuwebApp')
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
                           changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                         } 
-                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                        LevelService.expandSegment(true, viewState.getcurClickItems(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
-                          'item': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickItems(),
                           'rightSide': true,
                           'changeTime': changeTime
                         });
@@ -416,12 +417,12 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
-                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), changeTime);
+                        LevelService.expandSegment(false, viewState.getcurClickItems(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
-                          'item': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickItems(),
                           'rightSide': false,
                           'changeTime': changeTime
                         });
@@ -449,12 +450,12 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
-                        LevelService.expandSegment(true, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        LevelService.expandSegment(true, viewState.getcurClickItems(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
-                          'item': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickItems(),
                           'rightSide': true,
                           'changeTime': -changeTime
                         });
@@ -484,12 +485,12 @@ angular.module('emuwebApp')
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
-                        LevelService.expandSegment(false, viewState.getcurClickSegments(), viewState.getcurClickLevelName(), -changeTime);
+                        LevelService.expandSegment(false, viewState.getcurClickItems(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
                           'levelName': viewState.getcurClickLevelName(),
-                          'item': viewState.getcurClickSegments(),
+                          'item': viewState.getcurClickItems(),
                           'rightSide': false,
                           'changeTime': -changeTime
                         });
@@ -522,12 +523,12 @@ angular.module('emuwebApp')
               }
 
               // select Segments in viewport selection
-              if (code === ConfigProviderService.vals.keyMappings.selectEventsInSelection) {
+              if (code === ConfigProviderService.vals.keyMappings.selectItemsInSelection) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                   } else {
-                    viewState.selectEventsInSelection(LevelService.data.levels);
+                    viewState.selectItemsInSelection(LevelService.data.levels);
                   }
                 }
               }
@@ -535,21 +536,21 @@ angular.module('emuwebApp')
               // selPrevItem (arrow key left)
               if (code === ConfigProviderService.vals.keyMappings.selPrevItem) {
                 if (viewState.getPermission('labelAction')) {
-                  if (viewState.getcurClickSegments().length > 0) {
-                    var idLeft = viewState.getcurClickSegments()[0].id;
-                    var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
+                  if (viewState.getcurClickItems().length > 0) {
+                    var idLeft = viewState.getcurClickItems()[0].id;
+                    var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.left !== undefined) {
                       if (lastNeighboursMove.left.sampleStart !== undefined) {
                         // check if in view
                         if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
                           if(e.shiftKey) { // select multiple while shift
-                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.left);
+                            viewState.setcurClickItemMultiple(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                             viewState.selectBoundary();                          
                           }
                           else {
-                            viewState.setcurClickSegment(lastNeighboursMove.left);
+                            viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         }
@@ -557,12 +558,12 @@ angular.module('emuwebApp')
                         // check if in view
                         if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
                           if(e.shiftKey) { // select multiple while shift
-                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.left);
+                            viewState.setcurClickItemMultiple(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                             viewState.selectBoundary();                          
                           }
                           else {
-                            viewState.setcurClickSegment(lastNeighboursMove.left);
+                            viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         }
@@ -575,21 +576,21 @@ angular.module('emuwebApp')
               // selNextItem (arrow key right)
               if (code === ConfigProviderService.vals.keyMappings.selNextItem) {
                 if (viewState.getPermission('labelAction')) {
-                  if (viewState.getcurClickSegments().length > 0) {
-                    var idLeft = viewState.getcurClickSegments()[0].id;
-                    var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
+                  if (viewState.getcurClickItems().length > 0) {
+                    var idLeft = viewState.getcurClickItems()[0].id;
+                    var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                       if (lastNeighboursMove.right !== undefined) {
                       // check if in view
                         if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
                           if(e.shiftKey) { // select multiple while shift
-                            viewState.setcurClickSegmentMultiple(lastNeighboursMove.right);
+                            viewState.setcurClickItemMultiple(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                             viewState.selectBoundary();
                           }
                           else {
                             
-                            viewState.setcurClickSegment(lastNeighboursMove.right);
+                            viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         }
@@ -604,22 +605,22 @@ angular.module('emuwebApp')
               // selNextPrevItem (tab key and tab+shift key)
               if (code === ConfigProviderService.vals.keyMappings.selNextPrevItem) {
                 if (viewState.getPermission('labelAction')) {
-                  if (viewState.getcurClickSegments().length > 0) {
-                    var idLeft = viewState.getcurClickSegments()[0].id;
-                    var idRight = viewState.getcurClickSegments()[viewState.getcurClickSegments().length - 1].id;
+                  if (viewState.getcurClickItems().length > 0) {
+                    var idLeft = viewState.getcurClickItems()[0].id;
+                    var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (e.shiftKey) {
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
                           if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
-                            viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
-                            viewState.setcurClickSegment(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         }
@@ -630,13 +631,13 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.right.sampleStart !== undefined) {                        
                           // check if in view
                           if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {   
-                            viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
-                            viewState.setcurClickSegment(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         }
@@ -651,11 +652,11 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.addItem) {
                     if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
-                      if (viewState.getcurClickSegments().length === 1) {
+                      if (viewState.getcurClickItems().length === 1) {
                         // check if in view
                         if (viewState.getselectedRange().start >= viewState.curViewPort.sS && viewState.getselectedRange().end <= viewState.curViewPort.eS) {
                           viewState.setEditing(true);
-                          LevelService.openEditArea(viewState.getcurClickSegments()[0], LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                          LevelService.openEditArea(viewState.getcurClickItems()[0], LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
                           scope.cursorInTextField();
                         }
                       } else {
@@ -669,7 +670,7 @@ angular.module('emuwebApp')
                           var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
                           if(seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart+seg.sampleDur + 1) === viewState.curViewPort.selectE) {
 							  viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-							  viewState.setcurClickSegment(seg.current);
+							  viewState.setcurClickItem(seg.current);
 							  LevelService.setlasteditArea('_' + seg.id);
 							  viewState.setEditing(true);
 							  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
@@ -737,8 +738,8 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (viewState.getPermission('labelAction')) {
                   e.preventDefault();
-				  var seg = viewState.getcurMouseSegment();
-				  var cseg = viewState.getcurClickSegments();
+				  var seg = viewState.getcurMouseItem();
+				  var cseg = viewState.getcurClickItems();
 				  var isFirst = viewState.getcurMouseisFirst();
 				  var isLast = viewState.getcurMouseisLast();
 				  var levelname = viewState.getcurMouseLevelName();
@@ -768,8 +769,8 @@ angular.module('emuwebApp')
 								'deletedLinks': deletedLinks
 							});
 							HistoryService.addCurChangeObjToUndoStack();
-                            viewState.setcurMouseSegment(undefined, undefined, undefined);
-                            viewState.setcurClickSegment(deletedSegment.clickSeg);
+                            viewState.setcurMouseItem(undefined, undefined, undefined);
+                            viewState.setcurClickItem(deletedSegment.clickSeg);
                           } else {
                             var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
                             HistoryService.updateCurChangeObj({
@@ -790,7 +791,7 @@ angular.module('emuwebApp')
 							  'deletedLinks': deletedLinks
 						    });*/
 						    HistoryService.addCurChangeObjToUndoStack();
-                            viewState.setcurMouseSegment(undefined, undefined, undefined);
+                            viewState.setcurMouseItem(undefined, undefined, undefined);
                         }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -818,8 +819,8 @@ angular.module('emuwebApp')
 							'deletedLinks': deletedLinks
 						  });
 						  HistoryService.addCurChangeObjToUndoStack();
-                          viewState.setcurMouseSegment(undefined, undefined, undefined);
-                          viewState.setcurClickSegment(deletedSegment.clickSeg);
+                          viewState.setcurMouseItem(undefined, undefined, undefined);
+                          viewState.setcurClickItem(deletedSegment.clickSeg);
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
                         }

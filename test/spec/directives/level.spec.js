@@ -131,10 +131,10 @@ describe('Directive: level', function () {
    it('should clear on mouseleave', function () {
      compileDirective();
      expect(elm.isolateScope()).toBeDefined();
-     spyOn(scope.vs, 'setcurMouseSegment');
+     spyOn(scope.vs, 'setcurMouseItem');
      spyOn(elm.isolateScope(), 'drawLevelMarkup');
      elm.trigger('mouseleave');
-     expect(scope.vs.setcurMouseSegment).toHaveBeenCalledWith(undefined, undefined, undefined);
+     expect(scope.vs.setcurMouseItem).toHaveBeenCalledWith(undefined, undefined, undefined);
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
    });
        
@@ -146,7 +146,7 @@ describe('Directive: level', function () {
      scope.vs.setcurMouseLevelType('SEGMENT');
      var seg = scope.lvl.getClosestItem(pcm, lvlName, 58089);
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
-     scope.vs.setcurMouseSegment(seg.nearest, neigh, pcm, false, false);
+     scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, false);
      spyOn(scope.vs, 'getPos');
      $rootScope.$broadcast('refreshTimeline');
      expect(scope.vs.getPos).toHaveBeenCalled();
@@ -160,7 +160,7 @@ describe('Directive: level', function () {
      scope.vs.setcurMouseLevelType('EVENT');
      var seg = scope.lvl.getClosestItem(pcm, lvlName, 58089);
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
-     scope.vs.setcurMouseSegment(seg.nearest, neigh, pcm, false, false);
+     scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, false);
      spyOn(scope.vs, 'getPos');
      $rootScope.$broadcast('refreshTimeline');
      expect(scope.vs.getPos).toHaveBeenCalled();
@@ -174,7 +174,7 @@ describe('Directive: level', function () {
      scope.vs.setcurMouseLevelType('SEGMENT');
      var seg = scope.lvl.getClosestItem(pcm, lvlName, 58089);
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
-     scope.vs.setcurMouseSegment(seg.nearest, neigh, pcm, true, false);
+     scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, true, false);
      spyOn(scope.vs, 'getPos');
      $rootScope.$broadcast('refreshTimeline');
      expect(scope.vs.getPos).toHaveBeenCalled();
@@ -188,7 +188,7 @@ describe('Directive: level', function () {
      scope.vs.setcurMouseLevelType('SEGMENT');
      var seg = scope.lvl.getClosestItem(pcm, lvlName, 58089);
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
-     scope.vs.setcurMouseSegment(seg.nearest, neigh, pcm, false, true);
+     scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, true);
      spyOn(scope.vs, 'getPos');
      $rootScope.$broadcast('refreshTimeline');
      expect(scope.vs.getPos).toHaveBeenCalled();
@@ -199,8 +199,8 @@ describe('Directive: level', function () {
      var pcm = 4504;
      expect(elm.isolateScope()).toBeDefined();
      scope.vs.setcurClickLevelName(lvlName, 0);
-     scope.vs.setcurClickSegmentMultiple(scope.lvl.getClosestItem(pcm, lvlName, 58089).current);
-     scope.vs.setcurClickSegmentMultiple(scope.lvl.getClosestItem(pcm+600, lvlName, 58089).current);
+     scope.vs.setcurClickItemMultiple(scope.lvl.getClosestItem(pcm, lvlName, 58089).current);
+     scope.vs.setcurClickItemMultiple(scope.lvl.getClosestItem(pcm+600, lvlName, 58089).current);
      spyOn(scope.vs, 'getPos');
      $rootScope.$broadcast('refreshTimeline');
      expect(scope.vs.getPos).toHaveBeenCalled();

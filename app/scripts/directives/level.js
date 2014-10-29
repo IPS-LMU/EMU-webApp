@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 
 				// on mouse leave reset viewState.
 				element.bind('mouseleave', function () {
-					viewState.setcurMouseSegment(undefined, undefined, undefined);
+					viewState.setcurMouseItem(undefined, undefined, undefined);
 					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
 				});
 
@@ -200,8 +200,8 @@ angular.module('emuwebApp')
 					}
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
-					var segMId = viewState.getcurMouseSegment();
-					var segCId = viewState.getcurClickSegments();
+					var segMId = viewState.getcurMouseItem();
+					var segCId = viewState.getcurClickItems();
 					var levelId = viewState.getcurClickLevelName();
 					var curID = -1;
 
@@ -357,10 +357,10 @@ angular.module('emuwebApp')
 					sDist = viewState.getSampleDist(canvas[1].width);
 
 
-					var segMId = viewState.getcurMouseSegment();
+					var segMId = viewState.getcurMouseItem();
 					var isFirst = viewState.getcurMouseisFirst();
 					var isLast = viewState.getcurMouseisLast();
-					var clickedSegs = viewState.getcurClickSegments();
+					var clickedSegs = viewState.getcurClickItems();
 					var levelId = viewState.getcurClickLevelName();
 					if (clickedSegs !== undefined) {
 						// draw clicked on selected areas
@@ -387,7 +387,7 @@ angular.module('emuwebApp')
 
 
 					// draw preselected boundary
-					curEvt = viewState.getcurMouseSegment();
+					curEvt = viewState.getcurMouseItem();
 					if (curEvt !== undefined && segMId !== undefined && levelDetails.name === viewState.getcurMouseLevelName()) {
 						ctx.fillStyle = config.vals.colors.selectedBoundaryColor;
 						if (isFirst === true) { // before first segment
