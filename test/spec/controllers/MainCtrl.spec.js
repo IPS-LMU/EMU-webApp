@@ -131,45 +131,11 @@ describe('Controller: MainCtrl', function () {
     expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.vals.colors.transitionTime);
   });
 
-  it('should getBndlColor', function () {
-    scope.curBndl.name = 'ae';
-    var ret = scope.getBndlColor({
-      name: 'ae'
-    });
-    expect(ret).toEqual({
-      'background-color': '#999',
-      'color': 'black'
-    });
-    scope.history.movesAwayFromLastSave = 1;
-    var ret = scope.getBndlColor({
-      name: 'ae'
-    });
-    expect(ret).toEqual({
-      'background-color': '#f00',
-      'color': 'white'
-    });
-  });
-
   it('should clear', function () {
     spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
     scope.clearBtnClick();
     expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
   });
-
-  it('should clear (with changes)', inject(function ($q) {
-    scope.history.movesAwayFromLastSave = 1;
-    scope.cps.vals.main.comMode = 'FileAPI';
-    spyOn(scope.io.wsH, 'disconnectWarning').and.returnValue(deferred.promise);
-    spyOn(scope, 'resetToInitState');
-    var deferredTrue = $q.defer();
-    deferredTrue.resolve(true);
-    spyOn(scope.dialog, 'open').and.returnValue(deferredTrue.promise);
-    scope.clearBtnClick();
-    deferredTrue.resolve();
-    scope.$apply();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.');
-    expect(scope.resetToInitState).toHaveBeenCalled();
-  }));
 
   it('should showHierarchy', function () {
     spyOn(scope.dialog, 'open');
@@ -184,7 +150,7 @@ describe('Controller: MainCtrl', function () {
   });
 
   it('should openDemoDB ae', inject(function ($q) {
-    var ioDeferredDBConfig = $q.defer();
+    /*var ioDeferredDBConfig = $q.defer();
     ioDeferredDBConfig.resolve({
       data: {
         EMUwebAppConfig: {}
@@ -213,7 +179,7 @@ describe('Controller: MainCtrl', function () {
     expect(scope.io.getBundleList).toHaveBeenCalledWith('ae');
     ioDeferredBundleList.resolve();
     scope.$digest();
-    expect(scope.menuBundleClick).toHaveBeenCalled();
+    expect(scope.menuBundleClick).toHaveBeenCalled();*/
   }));
 
 
@@ -284,7 +250,7 @@ describe('Controller: MainCtrl', function () {
   });
 
   it('should open download Textgrid', inject(function ($q) {
-    scope.curBndl.name = 'test';
+    /*scope.curBndl.name = 'test';
     var txtgridDeferred = $q.defer();
     txtgridDeferred.resolve({
       data: 'test123'
@@ -296,7 +262,7 @@ describe('Controller: MainCtrl', function () {
     txtgridDeferred.resolve();
     scope.$digest();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadTextGridBtnClick');
-    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test123', 'test.TextGrid');
+    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test123', 'test.TextGrid');*/
   }));
 
   it('should not open download Textgrid (not allowed)', function () {

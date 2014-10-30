@@ -2,7 +2,7 @@
 
 describe('Worker: spectroWorker', function () {
 
-	var worker, worker2, binary;
+	var blob1, blob2, worker1, worker2, binary;
 
 	var start = 2000;
 	var end = 5000;
@@ -20,44 +20,36 @@ describe('Worker: spectroWorker', function () {
 	beforeEach(module('emuwebApp'));
 	
 	  beforeEach(inject(function() {
-		var blob;
 		  try {
-			  blob = new Blob([spectroWorker], {type: 'application/javascript'});
+			  blob1 = new Blob([spectroWorker], {type: 'application/javascript'});
+			  blob2 = new Blob([wavParserWorker], {type: 'application/javascript'});
 		  } catch (e) { // Backwards-compatibility
 			  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-			  blob = new BlobBuilder();
-			  blob.append(spectroWorker);
-			  blob = blob.getBlob();
+			  blob1 = new BlobBuilder();
+			  blob1.append(spectroWorker);
+			  blob1 = blob1.getBlob();
+			  blob2 = new BlobBuilder();
+			  blob2.append(wavParserWorker);
+			  blob2 = blob2.getBlob();
 		 }
 		 if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-			 worker = new Worker(webkitURL.createObjectURL(blob));
+			 worker1 = new Worker(webkitURL.createObjectURL(blob1));
+			 worker2 = new Worker(webkitURL.createObjectURL(blob2));
 		 } else {
-			 worker = new Worker(URL.createObjectURL(blob));
+			 worker1 = new Worker(URL.createObjectURL(blob1));
+			 worker2 = new Worker(URL.createObjectURL(blob2));
 		 }  
-		 try {
-			  blob = new Blob([wavParserWorker], {type: 'application/javascript'});
-		  } catch (e) { // Backwards-compatibility
-			  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-			  blob = new BlobBuilder();
-			  blob.append(wavParserWorker);
-			  blob = blob.getBlob();
-		 }
-		 if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-			 worker2 = new Worker(webkitURL.createObjectURL(blob));
-		 } else {
-			 worker2 = new Worker(URL.createObjectURL(blob));
-		 }		 
 	  }));  	
 
 
-	it('should return error on undefined paramater', function (done) {
-		worker.addEventListener('message', function (e) {
+	it('should return error on undefined heatMapColorAnchors', function (done) {
+		worker1.addEventListener('message', function (e) {
 			expect(e.data.status.type).toEqual('ERROR');
 			expect(e.data.status.message).toEqual('heatMapColorAnchors is undefined');
-			worker.terminate();
+			worker1.terminate();
 			done();
 		});
-		worker.postMessage('');
+		worker1.postMessage('');
 	});
 
 	it('should render spectro image', inject(function (Binarydatamaniphelper) {
@@ -73,7 +65,7 @@ describe('Worker: spectroWorker', function () {
 			// second step : send converted wav data to workerFileSpec
 			worker2.addEventListener('message', function (e) {
 				var wavData = new Float32Array(e.data.data.Data.subarray(start - windowLength / 2, end + windowLength));
-				worker.postMessage({
+				worker1.postMessage({
 					'N': windowLength,
 					'alpha': 0.16,
 					'freq': freq,
@@ -100,7 +92,7 @@ describe('Worker: spectroWorker', function () {
 			// third step : check if workerFileSpec generated spectro image
 			// todo : eventually check if image is like it should be
 			// right now : only parameters and image size are checked
-			worker.addEventListener('message', function (e) {
+			worker1.addEventListener('message', function (e) {
 				var typedArray = new Uint8Array(e.data.img);
 				var normalArray = Array.prototype.slice.call(typedArray);
 				expect(normalArray.length).toEqual(1228800);
@@ -116,7 +108,7 @@ describe('Worker: spectroWorker', function () {
 				expect(e.data.pixelHeight).toEqual(calcPixelHeight);
 				expect(e.data.renderWidth).toEqual(width);
 				expect(e.data.renderHeight).toEqual(height);
-				worker.terminate();
+				worker1.terminate();
 			});
 		}
 

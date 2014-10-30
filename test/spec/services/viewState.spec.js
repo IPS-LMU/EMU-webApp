@@ -142,14 +142,14 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should selectSegmentsInSelection', inject(function (viewState, LevelService) {
+  it('should selectItemsInSelection', inject(function (viewState, LevelService) {
     LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(3300, 7000);
-    viewState.selectSegmentsInSelection(LevelService.data.levels);
-    expect(viewState.curClickSegments.length).toEqual(2);
-    expect(viewState.curClickSegments[0].labels[0].value).toEqual('V');
-    expect(viewState.curClickSegments[1].labels[0].value).toEqual('m');
+    viewState.selectItemsInSelection(LevelService.data.levels);
+    expect(viewState.curClickItems.length).toEqual(2);
+    expect(viewState.curClickItems[0].labels[0].value).toEqual('V');
+    expect(viewState.curClickItems[1].labels[0].value).toEqual('m');
   }));
 
 
@@ -163,7 +163,7 @@ describe('Factory: viewState', function () {
     LevelService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ['Phonetic', 'Tone'], LevelService);
     viewState.select(10, 9700);
-    viewState.selectSegmentsInSelection(LevelService.data.levels);
+    viewState.selectItemsInSelection(LevelService.data.levels);
     range = viewState.getselectedRange();
     expect(range.start).toEqual(3750);
     expect(range.end).toEqual(9669);
