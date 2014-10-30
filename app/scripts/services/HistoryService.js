@@ -131,7 +131,14 @@ angular.module('emuwebApp')
 							viewState.historyActionTxt = 'REDO: DELETELINKBOUNDARY';
 							LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
 						}
-						break;
+						break;		
+					case 'DELETELINKSEGMENT':
+						if (applyOldVal) {
+							LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
+						} else {
+							LinkService.deleteLinkSegment(cur.segments);
+						}
+						break;									
 					case 'INSERTLEVEL':
 						if (applyOldVal) {
 							viewState.historyActionTxt = 'UNDO: INSERTLEVEL';
@@ -216,6 +223,7 @@ angular.module('emuwebApp')
 				case 'INSERTLINKSTO':
 				case 'DELETELINKSTO':
 				case 'DELETELINKBOUNDARY':
+				case 'DELETELINKSEGMENT':
 				case 'DELETEBOUNDARY':
 				case 'DELETESEGMENTS':
 				case 'DELETEEVENT':

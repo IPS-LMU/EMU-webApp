@@ -55,11 +55,11 @@ describe('Directive: handleglobalkeystrokes', function() {
     function clickOnItem(lvlName, pcm, pcmLength, type) {
         var lastEventMove = scope.lvl.getClosestItem(pcm, lvlName, pcmLength);
         var lastNeighboursMove = scope.lvl.getItemNeighboursFromLevel(lvlName, lastEventMove.nearest.id, lastEventMove.nearest.id);
-        scope.vs.setcurMouseSegment(lastEventMove.nearest, lastNeighboursMove, pcm-20, lastEventMove.isFirst, lastEventMove.isLast);
+        scope.vs.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, pcm-20, lastEventMove.isFirst, lastEventMove.isLast);
         scope.vs.setcurMouseLevelName(lvlName);
         scope.vs.setcurMouseLevelType(type);  
         scope.vs.setcurClickLevel(lvlName, type, 0);
-        scope.vs.setcurClickSegment(lastEventMove.current);
+        scope.vs.setcurClickItem(lastEventMove.current);
     }
     
 
@@ -692,13 +692,13 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     }); 
 
-    it('should selectSegmentsInSelection', function() {
+    it('should selectItemsInSelection', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'selectSegmentsInSelection');
+        spyOn(scope.vs, 'selectItemsInSelection');
         spyOn(scope.dials, 'open');
         spyOn(scope.lvl, 'deleteEditArea');
-        trigEvent(scope.cps.vals.keyMappings.selectSegmentsInSelection, false);
+        trigEvent(scope.cps.vals.keyMappings.selectItemsInSelection, false);
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');    
         expect(scope.dials.open).toHaveBeenCalledWith(
@@ -707,16 +707,16 @@ describe('Directive: handleglobalkeystrokes', function() {
             'Selection Error : Please select a Level first'
         );                 
         scope.vs.setcurClickLevel('Phonetic', 'SEGMENT', 0);
-        trigEvent(scope.cps.vals.keyMappings.selectSegmentsInSelection, false);
+        trigEvent(scope.cps.vals.keyMappings.selectItemsInSelection, false);
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.selectSegmentsInSelection).toHaveBeenCalledWith(scope.lvl.data.levels);
+        expect(scope.vs.selectItemsInSelection).toHaveBeenCalledWith(scope.lvl.data.levels);
     });
     
     it('should selPrevItem', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
         var lvlName = 'Phonetic';
@@ -725,17 +725,17 @@ describe('Directive: handleglobalkeystrokes', function() {
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).nearest;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalledWith(neighbours.left); 
+        expect(scope.vs.setcurClickItem).toHaveBeenCalledWith(neighbours.left); 
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled(); 
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalled();                 
+        expect(scope.vs.setcurClickItem).toHaveBeenCalled();                 
     }); 
     
     it('should selPrevItem with shift', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
-        spyOn(scope.vs, 'setcurClickSegmentMultiple').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItemMultiple').and.callThrough();
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
         var lvlName = 'Phonetic';
@@ -744,16 +744,16 @@ describe('Directive: handleglobalkeystrokes', function() {
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.setcurClickSegmentMultiple).toHaveBeenCalledWith(neighbours.left); 
+        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.left); 
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalled();                  
+        expect(scope.vs.setcurClickItem).toHaveBeenCalled();                  
     }); 
     
     it('should selNextItem', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
         var lvlName = 'Phonetic';
@@ -763,17 +763,17 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.selNextItem, false);
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalledWith(neighbours.right); 
+        expect(scope.vs.setcurClickItem).toHaveBeenCalledWith(neighbours.right); 
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled(); 
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalled();                 
+        expect(scope.vs.setcurClickItem).toHaveBeenCalled();                 
     }); 
     
     it('should selNextItem with shift', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
-        spyOn(scope.vs, 'setcurClickSegmentMultiple').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItemMultiple').and.callThrough();
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
         var lvlName = 'Phonetic';
@@ -783,10 +783,10 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.selNextItem, true);
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.setcurClickSegmentMultiple).toHaveBeenCalledWith(neighbours.right); 
+        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.right); 
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled(); 
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
-        expect(scope.vs.setcurClickSegment).toHaveBeenCalled();  
+        expect(scope.vs.setcurClickItem).toHaveBeenCalled();  
     }); 
     
     it('should selNextPrevItem', function() {
@@ -795,7 +795,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
         var lvlName = 'Phonetic';
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
@@ -804,8 +804,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-        expect(scope.vs.setcurClickSegment.calls.argsFor(0)).toEqual([item]);
-        expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([neighbours.right, neighbours.right.id]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(0)).toEqual([item]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.right, neighbours.right.id]);
     }); 
     
     it('should selNextPrevItem width shift', function() {
@@ -814,7 +814,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'setlasteditArea');
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
         var lvlName = 'Phonetic';
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
@@ -823,8 +823,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-        expect(scope.vs.setcurClickSegment.calls.argsFor(0)).toEqual([item]);
-        expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([neighbours.left, neighbours.left.id]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(0)).toEqual([item]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.left, neighbours.left.id]);
     });      
     
     it('should deletePreselBoundary on SEGMENT', function() {
@@ -833,8 +833,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curViewPort.selectE = fakePCMclick;
         scope.vs.curViewPort.selectS = fakePCMclick;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurMouseSegment').and.callThrough();
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();
+        spyOn(scope.vs, 'setcurMouseItem').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteBoundary').and.returnValue('deletedSegment');
         spyOn(scope.history, 'updateCurChangeObj');
@@ -846,8 +846,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         // second call after clickOnItem
-        expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
-        expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);
+        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([undefined]);
         expect(scope.lvl.deleteBoundary).toHaveBeenCalledWith(lvlName, neighbours.right.id, false, false);
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
@@ -868,8 +868,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curViewPort.selectE = fakePCMclick;
         scope.vs.curViewPort.selectS = fakePCMclick;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurMouseSegment').and.callThrough();
-        spyOn(scope.vs, 'setcurClickSegment').and.callThrough();        
+        spyOn(scope.vs, 'setcurMouseItem').and.callThrough();
+        spyOn(scope.vs, 'setcurClickItem').and.callThrough();        
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteSegments').and.returnValue(lvlName);
         spyOn(scope.history, 'updateCurChangeObj');
@@ -880,8 +880,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteSegments).toHaveBeenCalledWith(lvlName, item.id, length);
-        expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
-        expect(scope.vs.setcurClickSegment.calls.argsFor(1)).toEqual([undefined]);        
+        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([undefined]);        
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
             'action': 'DELETESEGMENTS',
@@ -899,7 +899,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curViewPort.selectE = fakePCMclick;
         scope.vs.curViewPort.selectS = fakePCMclick;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setcurMouseSegment').and.callThrough();        
+        spyOn(scope.vs, 'setcurMouseItem').and.callThrough();        
         spyOn(scope.lvl, 'deleteEditArea');
         spyOn(scope.lvl, 'deleteEvent').and.returnValue({"id":fakePCMtime, "samplePoint":fakePCMtime, "labels":[{"name":"Word","value":lvlName}]});
         spyOn(scope.history, 'updateCurChangeObj');
@@ -908,7 +908,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         trigEvent(scope.cps.vals.keyMappings.deletePreselBoundary, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
-        expect(scope.vs.setcurMouseSegment.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);        
+        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);        
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEvent).toHaveBeenCalledWith(lvlName, item.id);
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({

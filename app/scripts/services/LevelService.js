@@ -140,7 +140,6 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 * gets item details by passing in levelName and item order
 		 */
@@ -206,6 +205,23 @@ angular.module('emuwebApp')
 				}
 			});
 			return foundItm;
+		};
+
+
+		/**
+		 * gets item from leve by passing in levelName and item id
+		 *
+		 * @return item
+		 */
+		sServObj.getItemsFromLevelByIdAndLength = function (levelName, id, length) {
+			var foundItms = [];
+			var lastID = id;
+		    for(var j=0;j<length;j++) {
+		        var segment = sServObj.getItemFromLevelById(levelName, lastID);
+		        lastID = sServObj.getNextItem(levelName, segment.id);
+		        foundItms.push(segment);
+		    }
+			return foundItms;
 		};
 
 		/**
@@ -301,7 +317,7 @@ angular.module('emuwebApp')
 				if (width < (2*len)) {
 				    var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
 				    if(zoom <= 10) { // if already zoomed in but text is still too long
-				        sServObj.createEditArea(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+				        sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 				    }
 				    else {
 					    viewState.zoomViewPort(true, this);
@@ -311,7 +327,7 @@ angular.module('emuwebApp')
 				}
 				
 
-				sServObj.createEditArea(element, start, top, end - start, height, editText, lastEventClick.id);
+				sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
@@ -319,7 +335,7 @@ angular.module('emuwebApp')
 				if (width < (2*len)) {
 					width = (2*len);
 				}
-				sServObj.createEditArea(element, start, top, width, height, editText, lastEventClick.id);
+				sServObj.createEditAreaElement(element, start, top, width, height, editText, lastEventClick.id);
 			}
 			sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
 		};
@@ -355,7 +371,7 @@ angular.module('emuwebApp')
 		 *   @param label the Text Content of the Textarea
 		 *   @param labelid the id of the element
 		 */
-		sServObj.createEditArea = function (element, x, y, width, height, label, labelid) {
+		sServObj.createEditAreaElement = function (element, x, y, width, height, label, labelid) {
 			var textid = '_' + labelid;
 			element.prepend($('<textarea>').attr({
 				id: textid,
@@ -723,7 +739,7 @@ angular.module('emuwebApp')
 				clickSeg = neighbours.right;
 			} else if ((neighbours.left === undefined) && (neighbours.right === undefined)) {
 				// nothing left to do level empty now
-				viewState.setcurMouseSegment(undefined, undefined, undefined);
+				viewState.setcurMouseItem(undefined, undefined, undefined);
 			} else {
 				sServObj.updateSegItemInLevel(name, neighbours.left.id, undefined, labelIdx, neighbours.left.sampleStart, (neighbours.left.sampleDur + timeLeft));
 				sServObj.updateSegItemInLevel(name, neighbours.right.id, undefined, labelIdx, neighbours.right.sampleStart - timeRight, (neighbours.right.sampleDur + timeRight));

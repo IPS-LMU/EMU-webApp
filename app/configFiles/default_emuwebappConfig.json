@@ -39,7 +39,7 @@
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
         "selectNoContourCorrectionTool": 48,
-        "selectSegmentsInSelection": 103,
+        "selectItemsInSelection": 103,
         "snapBoundaryToNearestTopBoundary": 116,
         "snapBoundaryToNearestBottomBoundary": 98,
         "snapBoundaryToNearestZeroCrossing": 120,
