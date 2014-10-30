@@ -33,7 +33,7 @@ angular.module('emuwebApp')
 			viewState.resetToInitState();
 			HistoryService.resetToInitState();
 			viewState.showDropZone = true;
-			$rootScope.$broadcast('resetToInitState');
+			//$rootScope.$broadcast('resetToInitState');
 			//$scope.loadDefaultConfig();
 
 

@@ -85,6 +85,13 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * setter curBndl name
+		 */
+		sServObj.getCurBndlName = function () {
+			return curBndl.name;
+		};
+
+		/**
 		 * getter curBndl
 		 */
 		sServObj.getCurBndl = function () {

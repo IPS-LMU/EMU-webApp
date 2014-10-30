@@ -394,6 +394,10 @@ angular.module('emuwebApp')
 			// return $scope.uniqSessionList[ses].collapsed;
 			return false;
 		};
+		
+		$scope.getCurBndlName = function () {
+		    return loadedMetaDataService.getCurBndlName();
+		};
 
 		/**
 		 *
