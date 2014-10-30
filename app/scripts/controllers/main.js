@@ -248,6 +248,10 @@ angular.module('emuwebApp')
 				});
 			});
 		};
+		
+		$scope.$on('resetToInitState', function() {
+		    $scope.loadDefaultConfig();
+		});
 
 		// call function on init
 		$scope.loadDefaultConfig();

@@ -1,14 +1,31 @@
-.modal{
-	display: block;
-	margin: 50px;
-}
-.modal-header{
-	background-color: #0DC5FF;
+.modal {
+  overflow-x: hidden;
 }
 
-.modal-body{
-	background-color: white;
-	padding: 10%;
+.modal-body {
+  height: 350px !important;
+  background-color: white;
+  padding: 10%;
+  overflow: auto;
+}
+
+.modal-header{
+  margin: 0;
+  padding-top: 3px;
+  height: 60px !important;
+  background-color: #0DC5FF;
+}
+
+.modal-footer{
+  height: 60px !important;
+  padding-top: 3px;  
+  text-align: center;
+  background-color: #0DC5FF;
+  border-radius: 0;
+}
+
+.modal-content{
+  background: rgba(255,255,255,0);
 }
 
 .emuwebapp-modalUl{
@@ -43,12 +60,6 @@
     width: 70%;
     margin-left: 15%;
     font-size: 0.7em;
-}
-
-.modal-footer{
-	text-align: center;
-	background-color: #0DC5FF;
-	border-radius: 0;
 }
 
 .emuwebapp-hierarchy-container{
