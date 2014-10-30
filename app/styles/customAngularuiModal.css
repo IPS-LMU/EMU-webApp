@@ -2,11 +2,16 @@
   overflow-x: hidden;
 }
 
+.modal-dialog {
+  width: 80%;
+}
+
 .modal-body {
-  height: 350px !important;
+  height: 400px !important;
   background-color: white;
   padding: 10%;
   overflow: auto;
+  width: 100%;
 }
 
 .modal-header{
@@ -26,6 +31,7 @@
 
 .modal-content{
   background: rgba(255,255,255,0);
+  width: 100%;
 }
 
 .emuwebapp-modalUl{
