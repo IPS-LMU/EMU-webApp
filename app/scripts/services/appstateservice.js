@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('appStateService', function appStateService($log, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, LevelService, Ssffdataservice, HistoryService) {
+	.service('appStateService', function appStateService($log, $rootScope, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, LevelService, Ssffdataservice, HistoryService) {
 
 		// shared service object
 		var sServObj = {};
@@ -33,7 +33,7 @@ angular.module('emuwebApp')
 			viewState.resetToInitState();
 			HistoryService.resetToInitState();
 			viewState.showDropZone = true;
-			//$rootScope.$broadcast('resetToInitState');
+			$rootScope.$broadcast('resetToInitState');
 			//$scope.loadDefaultConfig();
 
 
