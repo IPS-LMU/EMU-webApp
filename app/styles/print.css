@@ -5,13 +5,11 @@ div.printTitle { display: none }
     display: block;
     position: running(printTitle);
   }
-  @page 
-  {
+  @page {
     size: auto;
     margin: 0.5cm;
     margin-left: 1cm;
     text-align: center;
-    @top-center { content: element(printTitle) }
   }
   
   html, body 
