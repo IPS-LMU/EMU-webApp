@@ -281,7 +281,9 @@ wss.on('connection', function (ws) {
 
       // SAVEBUNDLE method
     case 'SAVEBUNDLE':
-      console.log('### Pretending to save bundle...');
+      console.log('### Pretending to save bundle:');
+      console.log('\tname:', mJSO.data.annotation.name);
+      console.log('\tsession:', mJSO.data.session);
       // console.log(mJSO.data.annotation);
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
