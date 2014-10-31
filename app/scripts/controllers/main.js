@@ -94,6 +94,11 @@ angular.module('emuwebApp')
 			appStateService.resetToInitState();
 		});
 
+		// listen for resetToInitState
+		$scope.$on('resetToInitState', function () {
+			$scope.loadDefaultConfig();
+		});
+
 		//
 		////////////
 
@@ -248,10 +253,6 @@ angular.module('emuwebApp')
 				});
 			});
 		};
-		
-		$scope.$on('resetToInitState', function() {
-		    $scope.loadDefaultConfig();
-		});
 
 		// call function on init
 		$scope.loadDefaultConfig();
@@ -394,9 +395,9 @@ angular.module('emuwebApp')
 			// return $scope.uniqSessionList[ses].collapsed;
 			return false;
 		};
-		
+
 		$scope.getCurBndlName = function () {
-		    return loadedMetaDataService.getCurBndlName();
+			return loadedMetaDataService.getCurBndlName();
 		};
 
 		/**
