@@ -134,41 +134,41 @@ angular.module('emuwebApp')
 		sServObj.saveBundle = function () {
 			// check if something has changed
 			// if (HistoryService.movesAwayFromLastSave !== 0) {
-				if (viewState.getPermission('saveBndlBtnClick')) {
-					var defer = $q.defer();
-					viewState.somethingInProgress = true;
-					viewState.setState('loadingSaving');
-					//create bundle json
-					var bundleData = {};
-					viewState.somethingInProgressTxt = 'Creating bundle json...';
-					bundleData.ssffFiles = [];
-					var formants = {};
-					// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-					Ssffdataservice.data.forEach(function (el) {
+			if (viewState.getPermission('saveBndlBtnClick')) {
+				var defer = $q.defer();
+				viewState.somethingInProgress = true;
+				viewState.setState('loadingSaving');
+				//create bundle json
+				var bundleData = {};
+				viewState.somethingInProgressTxt = 'Creating bundle json...';
+				bundleData.ssffFiles = [];
+				var formants = {};
+				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
+				Ssffdataservice.data.forEach(function (el) {
 
-						if (el.ssffTrackName === 'FORMANTS') {
-							formants = el;
-						}
-					});
-
-					if (!$.isEmptyObject(formants)) {
-						Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
-							bundleData.ssffFiles.push({
-								'ssffTrackName': formants.ssffTrackName,
-								'encoding': 'BASE64',
-								'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
-							});
-							sServObj.getAnnotationAndSaveBndl(bundleData, defer);
-
-						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
-							defer.reject();
-						});
-					} else {
-						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+					if (el.ssffTrackName === 'FORMANTS') {
+						formants = el;
 					}
+				});
 
-					return defer.promise;
+				if (!$.isEmptyObject(formants)) {
+					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
+						bundleData.ssffFiles.push({
+							'ssffTrackName': formants.ssffTrackName,
+							'encoding': 'BASE64',
+							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
+						});
+						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+
+					}, function (errMess) {
+						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
+						defer.reject();
+					});
+				} else {
+					sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+				}
+
+				return defer.promise;
 				// }
 			} else {
 				$log.info('Action: menuBundleSaveBtnClick not allowed!');
@@ -183,6 +183,12 @@ angular.module('emuwebApp')
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			// annotation
 			bundleData.annotation = LevelService.getData();
+			// add session
+			var curBndl = loadedMetaDataService.getCurBndl();
+			if (typeof curBndl.session !== 'undefined') {
+				bundleData.session = curBndl.session;
+			}
+
 			viewState.somethingInProgressTxt = 'Saving bundle...';
 			Iohandlerservice.saveBundle(bundleData).then(function () {
 				viewState.somethingInProgressTxt = 'Done!';
