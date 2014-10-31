@@ -14,7 +14,7 @@ angular.module('emuwebApp')
 		$scope.lmds = loadedMetaDataService;
 		$scope.dolss = dbObjLoadSaveService;
 		$scope.cps = ConfigProviderService;
-		
+
 		$scope.filterText = '';
 
 		/**
@@ -52,6 +52,18 @@ angular.module('emuwebApp')
 			// console.log(bndl.name)
 			if (bndl.name === loadedMetaDataService.getCurBndl().name) {
 				return curColor;
+			}
+		};
+
+		/**
+		 * checks if name is undefined
+		 * @return bool
+		 */
+		$scope.isSessionDefined = function (ses) {
+			if (ses === 'undefined') {
+				return false;
+			} else {
+				return true;
 			}
 		};
 	});
