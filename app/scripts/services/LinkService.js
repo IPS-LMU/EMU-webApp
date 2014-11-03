@@ -10,6 +10,8 @@ angular.module('emuwebApp')
 		 * adds single links to sServObj.data.links 
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':fromID, 'toID':toID})
+		 * @param fromID father node
+		 * @param toID child node
 		 */
 		sServObj.insertLink = function (fromID, toID) {
 			sServObj.data.links.push({
@@ -20,7 +22,11 @@ angular.module('emuwebApp')
 		
 		/**
 		 * adds single links to sServObj.data.links 
-		 * at position order
+		 * by pairing all childIds with the parent 
+		 * at a given position
+		 * @param fromID father node
+		 * @param toID child node
+		 * @param order position of the node pair
 		 */
 		sServObj.insertLinkAt = function (fromID, toID, order) {
 			sServObj.data.links.splice(order,0,{
@@ -56,6 +62,42 @@ angular.module('emuwebApp')
         		};
 			});
 			return ret;
+		};
+
+		/**
+		 * checks if a given node has parents
+		 * @param ID node to check
+		 */
+		sServObj.hasParents = function (ID) {
+		    var ret = false;
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+				if(link.toID === ID){
+					ret = true;
+        		};
+			});
+			return ret;
+		};
+
+		/**
+		 * checks if a given node has children
+		 * @param ID node to check
+		 */
+		sServObj.hasChildren = function (ID) {
+		    var ret = false;
+			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+				if(link.fromID === ID){
+					ret = true;
+        		};
+			});
+			return ret;
+		};
+
+		/**
+		 * checks if a given node has parents or children
+		 * @param ID node to check
+		 */
+		sServObj.isIntermediate = function (ID) {
+			return (sServObj.hasChildren(ID) || sServObj.hasParents(ID));
 		};
 		
 		/**
