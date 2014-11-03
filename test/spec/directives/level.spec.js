@@ -6,14 +6,15 @@ describe('Directive: level', function () {
     var lvlName = 'Phonetic';
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function ($rootScope, $compile, LevelService, ConfigProviderService, viewState) {
+    beforeEach(inject(function ($rootScope, $compile, LevelService, DataService, ConfigProviderService, viewState) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
-        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.data = DataService;
+        scope.data.setData(msajc003_bndl.annotation);
         curLvl = scope.lvl.getLevelDetails(lvlName).level;
         scope.level = curLvl;
     }));

@@ -25,10 +25,10 @@ describe('Directive: preview', function () {
         expect(elm.html()).toContain('emuwebapp-previewMarkupCanvas');
     }));
 
-    it('should watch curViewPort', inject(function (viewState, Soundhandlerservice, LevelService, Drawhelperservice, ConfigProviderService) {
+    it('should watch curViewPort', inject(function (viewState, Soundhandlerservice, DataService, Drawhelperservice, ConfigProviderService) {
         var spy1 = spyOn(Drawhelperservice,'freshRedrawDrawOsciOnCanvas');
         var spy2 = spyOn(Drawhelperservice,'calculatePeaks');
-        LevelService.setData(msajc003_bndl.annotation);
+        DataService.setData(msajc003_bndl.annotation);
         ConfigProviderService.setVals(defaultEmuwebappConfig);
         Soundhandlerservice.wavJSO.Data = new Array(58089);
         compileDirective('ae');
@@ -41,10 +41,10 @@ describe('Directive: preview', function () {
         expect(spy2).toHaveBeenCalled();
     }));
 
-    it('should watch currentBundleName', inject(function (viewState, Soundhandlerservice, LevelService, Drawhelperservice, ConfigProviderService) {
+    it('should watch currentBundleName', inject(function (viewState, Soundhandlerservice, DataService, Drawhelperservice, ConfigProviderService) {
         var spy1 = spyOn(Drawhelperservice,'freshRedrawDrawOsciOnCanvas');
         var spy2 = spyOn(Drawhelperservice,'calculatePeaks');
-        LevelService.setData(msajc003_bndl.annotation);
+        DataService.setData(msajc003_bndl.annotation);
         ConfigProviderService.setVals(defaultEmuwebappConfig);
         Soundhandlerservice.wavJSO.Data = new Array(58089);
         compileDirective('ae');
@@ -54,8 +54,8 @@ describe('Directive: preview', function () {
         expect(spy2).toHaveBeenCalled();
     }));
 
-    it('should render selectedAreaColor in the middle of the canvas', inject(function (viewState, LevelService, ConfigProviderService) {
-        LevelService.setData(msajc003_bndl.annotation);
+    it('should render selectedAreaColor in the middle of the canvas', inject(function (viewState, DataService, ConfigProviderService) {
+        DataService.setData(msajc003_bndl.annotation);
         ConfigProviderService.setVals(defaultEmuwebappConfig);
         compileDirective('ae');
         viewState.curViewPort = {

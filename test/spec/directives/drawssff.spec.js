@@ -5,13 +5,14 @@ describe('Directive: drawssff', function() {
     var elm, scope, worker;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, LevelService, Ssffdataservice) {
+    beforeEach(inject(function($rootScope, $compile, viewState, DataService, ConfigProviderService, LevelService, Ssffdataservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs = viewState;
-        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.data = DataService;
+        scope.data.setData(msajc003_bndl.annotation);
         scope.ssffds = Ssffdataservice;    
     }));
     

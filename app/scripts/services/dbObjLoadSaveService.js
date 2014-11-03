@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, dialogService, ConfigProviderService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, dialogService, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
@@ -85,8 +85,7 @@ angular.module('emuwebApp')
 								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
 								if (validRes === true) {
 									// set annotation
-									LevelService.setData(bundleData.annotation);
-
+									DataService.setData(bundleData.annotation);
 									loadedMetaDataService.setCurBndl(bndl);
 									viewState.setState('labeling');
 									viewState.somethingInProgress = false;
@@ -182,7 +181,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			// annotation
-			bundleData.annotation = LevelService.getData();
+			bundleData.annotation = DataService.getData();
 			// add session
 			var curBndl = loadedMetaDataService.getCurBndl();
 			if (typeof curBndl.session !== 'undefined') {

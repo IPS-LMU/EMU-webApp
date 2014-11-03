@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, LevelService, HierarchyLayoutService, Soundhandlerservice) {
+  .directive('emuhierarchy', function (viewState, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -381,7 +381,7 @@ angular.module('emuwebApp')
 		// What follows below is a probably very low-performance approach to filtering
 		//
 		var links = [];
-		var allLinks = LevelService.getData().links;
+		var allLinks = DataService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
 			for (var i=0; i<scope.path.length-1; ++i) {
 				var element = LevelService.getItemFromLevelById(scope.path[i], allLinks[l].toID);

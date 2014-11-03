@@ -8,7 +8,7 @@ describe('Directive: osci', function () {
     var lvlName = 'Phonetic';
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function ($rootScope, $compile, Drawhelperservice, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
+    beforeEach(inject(function ($rootScope, $compile, Drawhelperservice, DataService, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
@@ -17,7 +17,8 @@ describe('Directive: osci', function () {
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
-        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.data = DataService;
+        scope.data.setData(msajc003_bndl.annotation);
         scope.level = curLvl;
     }));
 

@@ -8,7 +8,7 @@ describe('Controller: ShowhierarchyCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+     beforeEach(inject(function ($controller, $rootScope, DataService, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
@@ -16,6 +16,7 @@ describe('Controller: ShowhierarchyCtrl', function () {
        scope.dialog = dialogService;
        scope.vs = viewState;
        scope.lvl = LevelService;
+       scope.data = DataService;
        scope.hierarchy = HierarchyLayoutService;
        ShowhierarchyCtrl = $controller('ShowhierarchyCtrl', {
          $scope: scope
@@ -69,28 +70,28 @@ describe('Controller: ShowhierarchyCtrl', function () {
    });  
    
    it('should check if isCurrentAttrDef', function () {
-     scope.lvl.setData(msajc003_bndl.annotation);
+     scope.data.setData(msajc003_bndl.annotation);
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue('Phonetic');
      expect(scope.isCurrentAttrDef('lvlname','Phonetic')).toBe(true);
      expect(scope.vs.getCurAttrDef).toHaveBeenCalledWith('lvlname');
    });  
    
    it('should check if not isCurrentAttrDef', function () {
-     scope.lvl.setData(msajc003_bndl.annotation);
+     scope.data.setData(msajc003_bndl.annotation);
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue('Tone');
      expect(scope.isCurrentAttrDef('lvlname','Phonetic')).toBe(false);
      expect(scope.vs.getCurAttrDef).toHaveBeenCalledWith('lvlname');
    });  
    
    it('should getAllAttrDefs', function () {
-     scope.lvl.setData(msajc003_bndl.annotation);
+     scope.data.setData(msajc003_bndl.annotation);
      var ret = scope.getAllAttrDefs('Phonetic');
      expect(ret[0].name).toEqual('Phonetic');
      expect(ret[0].type).toEqual('STRING');
    }); 
    
    it('should setCurrentAttrDef', function () {
-     scope.lvl.setData(msajc003_bndl.annotation);
+     scope.data.setData(msajc003_bndl.annotation);
      spyOn(scope.vs, 'setCurAttrDef');
      scope.setCurrentAttrDef('Tone',1);
      expect(scope.vs.setCurAttrDef).toHaveBeenCalledWith('Tone',1);

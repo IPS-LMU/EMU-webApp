@@ -8,7 +8,7 @@ describe('Controller: ModalCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, $q, ConfigProviderService, dialogService, viewState, LevelService, HistoryService) {
+     beforeEach(inject(function ($controller, $rootScope, $q, DataService, ConfigProviderService, dialogService, viewState, LevelService, HistoryService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
@@ -16,6 +16,7 @@ describe('Controller: ModalCtrl', function () {
        scope.dialog = dialogService;
        scope.vs = viewState;
        scope.lvl = LevelService;
+       scope.data = DataService;
        scope.history = HistoryService;
        ModalCtrl = $controller('ModalCtrl', {
          $scope: scope,
@@ -45,7 +46,7 @@ describe('Controller: ModalCtrl', function () {
    }); 
    
    it('should deleteLevel', function () {
-     scope.lvl.setData(msajc003_bndl.annotation);
+     scope.data.setData(msajc003_bndl.annotation);
      scope.vs.setcurClickLevelName('Phonetic', 0);
      spyOn(scope.history, 'addObjToUndoStack');
      spyOn(scope.lvl, 'deleteLevel');

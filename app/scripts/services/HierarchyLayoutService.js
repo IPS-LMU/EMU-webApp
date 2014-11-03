@@ -15,7 +15,7 @@
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', function (ConfigProviderService, LevelService) {
+	.service('HierarchyLayoutService', function (ConfigProviderService, LevelService, DataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -64,7 +64,7 @@ angular.module('emuwebApp')
 				nodes[i]._depth = levelDepth;
 
 				// Additionally, calculate link positions
-				var links = LevelService.getData().links;
+				var links = DataService.getData().links;
 				for (var l=0; l<links.length; ++l) {
 					if (links[l].toID === nodes[i].id) {
 						links[l]._toPosInLevel = nodes[i]._posInLevel;
@@ -96,7 +96,7 @@ angular.module('emuwebApp')
 				nodes[i]._depth = levelDepth;
 				
 				// Additionally, calculate link positions
-				var links = LevelService.getData().links;
+				var links = DataService.getData().links;
 				for (var l=0; l<links.length; ++l) {
 					if (links[l].toID === nodes[i].id) {
 						links[l]._toPosInLevel = nodes[i]._posInLevel;
@@ -193,7 +193,7 @@ angular.module('emuwebApp')
 				
 					//////
 					// Additionally, calculate link positions
-					var links = LevelService.getData().links;
+					var links = DataService.getData().links;
 					for (var l=0; l<links.length; ++l) {
 						if (links[l].toID === level.items[ii].id) {
 							links[l]._toPosInLevel = level.items[ii]._posInLevel;
@@ -248,10 +248,10 @@ angular.module('emuwebApp')
 		sServObj.getLevelName = function (nodeID) {
 			var levelName = null;
 
-			for (var i = 0; i < LevelService.getData().levels.length; ++i) {
-				for (var ii = 0; ii < LevelService.getData().levels[i].items.length; ++ii) {
-					if (LevelService.getData().levels[i].items[ii].id === nodeID) {
-						levelName = LevelService.getData().levels[i].name;
+			for (var i = 0; i < DataService.getData().levels.length; ++i) {
+				for (var ii = 0; ii < DataService.getData().levels[i].items.length; ++ii) {
+					if (DataService.getData().levels[i].items[ii].id === nodeID) {
+						levelName = DataService.getData().levels[i].name;
 						break;
 					}
 				}
@@ -291,17 +291,17 @@ angular.module('emuwebApp')
 			}
 
 			// Iterate over links to find children
-			for (var li = 0; li < LevelService.getData().links.length; ++li) {
-				if (LevelService.getData().links[li].fromID === d.id) {
+			for (var li = 0; li < DataService.getData().links.length; ++li) {
+				if (DataService.getData().links[li].fromID === d.id) {
 					// Iterate over levels to find the object corresponding to d.id
-					for (var l = 0; l < LevelService.getData().levels.length; ++l) {
-						if (LevelService.getData().levels[l].name !== childLevel) {
+					for (var l = 0; l < DataService.getData().levels.length; ++l) {
+						if (DataService.getData().levels[l].name !== childLevel) {
 							continue;
 						}
 
-						for (var it = 0; it < LevelService.getData().levels[l].items.length; ++it) {
-							if (LevelService.getData().levels[l].items[it].id === LevelService.getData().links[li].toID) {
-								children.push(LevelService.getData().levels[l].items[it]);
+						for (var it = 0; it < DataService.getData().levels[l].items.length; ++it) {
+							if (DataService.getData().levels[l].items[it].id === DataService.getData().links[li].toID) {
+								children.push(DataService.getData().levels[l].items[it]);
 							}
 						}
 					}
@@ -335,11 +335,11 @@ angular.module('emuwebApp')
 		//sServObj.oldDrawHierarchy = function () {
 		var foooooooo = function () {
 			// Make sure that any private properties that have been added during a previous call of this function are removed
-			for (var x = 0; x < LevelService.getData().levels.length; ++x) {
-				for (var y = 0; y < LevelService.getData().levels[x].items.length; ++y) {
-					delete LevelService.getData().levels[x].items[y]._visited;
-					delete LevelService.getData().levels[x].items[y]._parents;
-					delete LevelService.getData().levels[x].items[y]._weight;
+			for (var x = 0; x < DataService.getData().levels.length; ++x) {
+				for (var y = 0; y < DataService.getData().levels[x].items.length; ++y) {
+					delete DataService.getData().levels[x].items[y]._visited;
+					delete DataService.getData().levels[x].items[y]._parents;
+					delete DataService.getData().levels[x].items[y]._weight;
 				}
 			}
 
@@ -387,7 +387,7 @@ angular.module('emuwebApp')
 			}
 
 			// Call visit function to establish maxLabelLength
-			/*visit(LevelService.getData(), function(d) {
+			/*visit(DataService.getData(), function(d) {
 				totalNodes++;
 				maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
@@ -869,7 +869,7 @@ angular.module('emuwebApp')
 			// I presume that the root level of the currently selected path only has one item,
 			// which will be defined as the hierarchy's root item
 			root = LevelService.getLevelDetails(selectedPath[selectedPath.length - 1]).level.items[0];
-			//root = LevelService.getData().levels[0].items[0];
+			//root = DataService.getData().levels[0].items[0];
 			root.x0 = viewerHeight / 2;
 			root.y0 = 0;
 

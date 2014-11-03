@@ -9,7 +9,7 @@ describe('Controller: spectSettingsCtrl', function () {
   
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, dialogService, viewState, LevelService) {
+     beforeEach(inject(function ($controller, $rootScope, DataService, ConfigProviderService, dialogService, viewState, LevelService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
@@ -17,6 +17,7 @@ describe('Controller: spectSettingsCtrl', function () {
        scope.dialog = dialogService;
        scope.vs = viewState;
        scope.lvl = LevelService;
+       scope.data = DataService;
        spectSettingsCtrl = $controller('spectSettingsCtrl', {
          $scope: scope
        });
@@ -33,7 +34,7 @@ describe('Controller: spectSettingsCtrl', function () {
      }));  
      
    it('should saveSpectroSettings correctly', function () {
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');
      spyOn(scope.vs, 'setspectroSettings');
@@ -43,7 +44,7 @@ describe('Controller: spectSettingsCtrl', function () {
      
    it('should saveSpectroSettings correctly (dynamicRange error)', function () {
      scope.modalVals.dynamicRange = 'string';
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');     
      spyOn(scope, 'error');
@@ -53,7 +54,7 @@ describe('Controller: spectSettingsCtrl', function () {
      
    it('should saveSpectroSettings correctly (dynamicRange error)', function () {
      scope.modalVals.rangeFrom = 'string';
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');     
      spyOn(scope, 'error');
@@ -63,7 +64,7 @@ describe('Controller: spectSettingsCtrl', function () {
      
    it('should saveSpectroSettings correctly (dynamicRange error)', function () {
      scope.modalVals.rangeTo = 'string';
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');     
      spyOn(scope, 'error');
@@ -73,7 +74,7 @@ describe('Controller: spectSettingsCtrl', function () {
      
    it('should saveSpectroSettings correctly (dynamicRange error)', function () {
      scope.modalVals.rangeFrom = -100;
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');     
      spyOn(scope, 'error');
@@ -83,12 +84,12 @@ describe('Controller: spectSettingsCtrl', function () {
      
    it('should saveSpectroSettings correctly (dynamicRange error)', function () {
      scope.modalVals.rangeTo = 2000;
-     scope.lvl.data.sampleRate = 1000;
+     scope.data.data.sampleRate = 1000;
      spyOn(scope.dialog, 'close');
      spyOn(scope.dialog, 'open');     
      spyOn(scope, 'error');
      scope.saveSpectroSettings();
-     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary is a value bigger than ' + scope.lvl.data.sampleRate / 2);
+     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary is a value bigger than ' + scope.data.data.sampleRate / 2);
    });    
           
      

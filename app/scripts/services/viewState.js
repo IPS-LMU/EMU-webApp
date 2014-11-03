@@ -71,6 +71,7 @@ angular.module('emuwebApp')
       sServObj.curMouseLevelType = undefined;
       sServObj.curClickLevelName = undefined;
       sServObj.curClickLevelType = undefined;
+      sServObj.lastPcm = undefined;
       sServObj.curPreselColumnSample = 2;
       sServObj.curCorrectionToolNr = undefined;
       sServObj.curClickLevelIndex = undefined;
@@ -591,7 +592,7 @@ angular.module('emuwebApp')
      */
     sServObj.getcurMouseNeighbours = function () {
       return this.curMouseNeighbours;
-    };
+    };  
 
     /**
      * selects all Segements on current level which are inside the selected viewport
@@ -778,6 +779,20 @@ angular.module('emuwebApp')
      */
     sServObj.setEditing = function (n) {
       this.editing = n;
+    };
+
+    /**
+     *
+     */
+    sServObj.getLasPcm = function () {
+      return this.lastPcm;
+    };
+
+    /**
+     *
+     */
+    sServObj.setLastPcm = function (n) {
+      this.lastPcm = n;
     };
 
     /**

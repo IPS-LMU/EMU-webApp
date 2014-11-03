@@ -13,8 +13,8 @@ describe('Worker: textGridParserWorker', function () {
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
-  beforeEach(inject(function (LevelService) {
-    level = LevelService;
+  beforeEach(inject(function (DataService) {
+    level = DataService;
     var blob;
       try {
           blob = new Blob([textGridParserWorker], {type: 'application/javascript'});

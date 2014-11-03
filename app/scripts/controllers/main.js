@@ -7,12 +7,13 @@ angular.module('emuwebApp')
 		LevelService, dialogService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService) {
+		appStateService, DataService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.levServ = LevelService;
+		$scope.dataServ = DataService;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
@@ -481,8 +482,8 @@ angular.module('emuwebApp')
 		$scope.insertLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var length = 0;
-				if (LevelService.data.levels !== undefined) {
-					length = LevelService.data.levels.length;
+				if (DataService.data.levels !== undefined) {
+					length = DataService.data.levels.length;
 				}
 				var newName = 'levelNr' + length;
 				var level = {
@@ -532,8 +533,8 @@ angular.module('emuwebApp')
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 				var length = 0;
-				if (LevelService.data.levels !== undefined) {
-					length = LevelService.data.levels.length;
+				if (DataService.data.levels !== undefined) {
+					length = DataService.data.levels.length;
 				}
 				var newName = 'levelNr' + length;
 				var level = {

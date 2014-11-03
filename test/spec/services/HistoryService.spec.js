@@ -74,9 +74,9 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should remove object from undo stack by undoing', inject(function (HistoryService, viewState, LevelService) {
+  it('should remove object from undo stack by undoing', inject(function (HistoryService, viewState, DataService) {
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
-    LevelService.setData(msajc003_bndl.annotation)
+    DataService.setData(msajc003_bndl.annotation)
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.undo();
     expect(HistoryService.getCurrentStack().undo.length).toEqual(0);
@@ -87,9 +87,9 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should add object again to undo stack by undoing / redoing', inject(function (HistoryService, viewState, LevelService) {
+  it('should add object again to undo stack by undoing / redoing', inject(function (HistoryService, viewState, DataService) {
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
-    LevelService.setData(msajc003_bndl.annotation)
+    DataService.setData(msajc003_bndl.annotation)
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.undo();
     HistoryService.redo();
@@ -101,9 +101,9 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should remove object again from undo stack by undoing / redoing / undoing', inject(function (HistoryService, viewState, LevelService) {
+  it('should remove object again from undo stack by undoing / redoing / undoing', inject(function (HistoryService, viewState, DataService) {
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
-    LevelService.setData(msajc003_bndl.annotation)
+    DataService.setData(msajc003_bndl.annotation)
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.undo();
     HistoryService.redo();
@@ -116,9 +116,9 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should undo and redo 2 steps', inject(function (HistoryService, viewState, LevelService) {
+  it('should undo and redo 2 steps', inject(function (HistoryService, viewState, DataService) {
     viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
-    LevelService.setData(msajc003_bndl.annotation)
+    DataService.setData(msajc003_bndl.annotation)
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.undo();
@@ -134,8 +134,8 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should do and undo and redo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(JDR10_bndl.annotation);
+  it('should do and undo and redo 2 steps (moveBoundary) on real data', inject(function (DataService, HistoryService) {
+    DataService.setData(JDR10_bndl.annotation);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
     HistoryService.addObjToUndoStack(changeObjmoveBy2);
     HistoryService.undo();
@@ -162,8 +162,8 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should do and undo 2 steps (moveBoundary) on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(JDR10_bndl.annotation);
+  it('should do and undo 2 steps (moveBoundary) on real data', inject(function (DataService, LevelService, HistoryService) {
+    DataService.setData(JDR10_bndl.annotation);
     LevelService.moveBoundary(changeObjmoveBy1.name, changeObjmoveBy1.id, changeObjmoveBy1.movedBy, changeObjmoveBy1.position);
     HistoryService.addObjToUndoStack(changeObjmoveBy1);
     LevelService.moveBoundary(changeObjmoveBy2.name, changeObjmoveBy2.id, changeObjmoveBy2.movedBy, changeObjmoveBy2.position);
@@ -221,8 +221,8 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should do and update 2 steps (moveBoundary) on currentChange Object based on real data', inject(function (LevelService, HistoryService) {
-    LevelService.setData(JDR10_bndl.annotation);
+  it('should do and update 2 steps (moveBoundary) on currentChange Object based on real data', inject(function (DataService, LevelService, HistoryService) {
+    DataService.setData(JDR10_bndl.annotation);
     item = getItemFromJSON(JDR10_bndl.annotation, 3);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur);
@@ -267,8 +267,8 @@ describe('Service: HistoryService', function () {
   /**
    *
    */
-  it('should set selected viewState.historyActionTexts 2 the correct actions', inject(function (LevelService, HistoryService, viewState) {
-    LevelService.setData(JDR10_bndl.annotation);
+  it('should set selected viewState.historyActionTexts 2 the correct actions', inject(function (DataService, LevelService, HistoryService, viewState) {
+    DataService.setData(JDR10_bndl.annotation);
     LevelService.moveBoundary(changeObjmoveBy3.name, changeObjmoveBy3.id, changeObjmoveBy3.movedBy, changeObjmoveBy3.position);
     HistoryService.addObjToUndoStack(changeObjmoveBy3);
     expect(viewState.historyActionTxt).toEqual('');
