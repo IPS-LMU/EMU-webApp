@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LevelService', function LevelService($q, DataService, ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
+	.service('LevelService', function LevelService($q, DataService, LinkService, ConfigProviderService, Soundhandlerservice, viewState, Ssffdataservice, ArrayHelperService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.lasteditArea = null; // holding current edit area
@@ -1099,16 +1099,36 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveEvent = function (name, id, changeTime) {
 			var orig = sServObj.getItemFromLevelById(name, id);
-			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-				sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+			if(LinkService.isIntermediate(id)) {
+			    var neighbour = sServObj.getItemNeighboursFromLevel(name, id, id);
+				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+				    if(neighbour.left !== undefined) { // if not first event
+						if((orig.samplePoint + changeTime) > (neighbour.left.samplePoint)) {
+							if((orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
+								sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+							}
+						}
+					}
+					else { // if first event
+						if((orig.samplePoint + changeTime) > 0) {
+							if((orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
+								sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+							}
+						}					
+					}
+				}			
 			}
-			//resort Points after moving
-			angular.forEach(DataService.getLevelData(), function (t) {
-				if (t.name === name) {
-				    t.items.sort(sServObj.orderPoints);
+			else {
+				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+					sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 				}
-			});
-
+				//resort Points after moving
+				angular.forEach(DataService.getLevelData(), function (t) {
+					if (t.name === name) {
+						t.items.sort(sServObj.orderPoints);
+					}
+				});
+			}
 		};
 		
 		/**

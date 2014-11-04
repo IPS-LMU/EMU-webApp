@@ -175,6 +175,60 @@ describe('Service: LinkService', function () {
   /**
    *
    */
+  it('should check if hasParents', inject(function (DataService, LinkService) {
+    // first add
+    DataService.setData(msajc003_bndl.annotation);
+    DataService.setLinkData([]);
+    var parentID = 1234;
+    var childIDs = [1,2];
+    //      1234
+    //      /  \
+    //     1    2  
+    LinkService.insertLinksTo(parentID, childIDs);
+    expect(LinkService.hasParents(1)).toEqual(true);
+    expect(LinkService.hasParents(2)).toEqual(true);
+    expect(LinkService.hasParents(1234)).toEqual(false);
+  }));
+
+  /**
+   *
+   */
+  it('should check if hasChildren', inject(function (DataService, LinkService) {
+    // first add
+    DataService.setData(msajc003_bndl.annotation);
+    DataService.setLinkData([]);
+    var parentID = 1234;
+    var childIDs = [1,2];
+    //      1234
+    //      /  \
+    //     1    2  
+    LinkService.insertLinksTo(parentID, childIDs);
+    expect(LinkService.hasChildren(1)).toEqual(false);
+    expect(LinkService.hasChildren(2)).toEqual(false);
+    expect(LinkService.hasChildren(1234)).toEqual(true);
+  }));
+
+  /**
+   *
+   */
+  it('should check if isIntermediate', inject(function (DataService, LinkService) {
+    // first add
+    DataService.setData(msajc003_bndl.annotation);
+    DataService.setLinkData([]);
+    var parentID = 1234;
+    var childIDs = [1,2];
+    //      1234
+    //      /  \
+    //     1    2  
+    LinkService.insertLinksTo(parentID, childIDs);
+    expect(LinkService.isIntermediate(1)).toEqual(true);
+    expect(LinkService.isIntermediate(2)).toEqual(true);
+    expect(LinkService.isIntermediate(1234)).toEqual(true);
+  }));
+
+  /**
+   *
+   */
   it('should deleteLinkBoundary', inject(function (DataService, LinkService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
