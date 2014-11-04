@@ -11,16 +11,10 @@ describe("Unit Testing: regex filters", function () {
     'name': 'Tone',
     'type': 'EVENT'
   }, {
-    'name': 'Syllable',
-    'type': 'ITEM'
-  }, {
     'name': 'Word',
-    'type': 'ITEM'
+    'type': 'SEGMENT'
   }, {
-    'name': 'Foot',
-    'type': 'ITEM'
-  }, {
-    'name': 'Intermediate',
+    'name': 'Syllable',
     'type': 'ITEM'
   }];
 
@@ -37,12 +31,13 @@ describe("Unit Testing: regex filters", function () {
   })
 
   // test regex filter
-  //it('should filter dummyarray with levelsFilter properly: ', function () {
-  //  console.log("################################");
-  //  console.log(filt(dummyList,''));
-      // expect(filt(dummyList).length).toEqual(2);
-    //   expect(filt(dummyList, '01').length).toEqual(3);
-    //   expect(filt(dummyList, 'msajc003').length).toEqual(1);
-    //   expect(filt(dummyList, 'asdf').length).toEqual(0);
-  //});
+  it('should filter dummyarray with levelsFilter properly: ', inject(function (ConfigProviderService, viewState) {
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
+    viewState.curPerspectiveIdx = 0;    
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order.push(dummyList[0].name);
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order.push(dummyList[1].name);
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order.push(dummyList[2].name);
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order.push(dummyList[3].name);
+    expect(filt(dummyList).length).toEqual(3);
+  }));
 });

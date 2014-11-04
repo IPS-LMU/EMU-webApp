@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 			// $scope.curBndl = {};
 			loadedMetaDataService.resetToInitState()
 			Soundhandlerservice.wavJSO = {};
-			DataService.data = {};
+			DataService.setData({});
 			Ssffdataservice.data = [];
 			HistoryService.resetToInitState();
 			viewState.setState('noDBorFilesloaded');

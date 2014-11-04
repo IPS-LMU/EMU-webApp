@@ -17,7 +17,6 @@ angular.module('emuwebApp')
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
 		sServObj.loadBundle = function (bndl) {
-
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 				if (bndl !== loadedMetaDataService.getCurBndl()) {
