@@ -559,8 +559,8 @@ angular.module('emuwebApp')
 		 * deletes a level by its name
 		 */
 		sServObj.deleteLevel = function (levelIndex, curPerspectiveIdx) {
-			var lvl = DataService.getLevelData()[levelIndex];
-			DataService.getLevelData().splice(levelIndex, 1);
+			var lvl = DataService.getLevelDataAt(levelIndex);
+			DataService.deleteLevelDataAt(levelIndex);
 			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 1);
 			return lvl;
 		};
@@ -569,14 +569,11 @@ angular.module('emuwebApp')
 		 * adds a level by its name
 		 */
 		sServObj.insertLevel = function (originalLevel, levelIndex, curPerspectiveIdx) {
-			if (DataService.data.levels !== undefined) {
-				DataService.data.levels.splice(levelIndex, 0, originalLevel);
-				ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, originalLevel.name);
-			} else {
-				DataService.data.levels = [];
-				DataService.data.levels.splice(levelIndex, 0, originalLevel);
-				ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, originalLevel.name);
+			if (DataService.getLevelData() === undefined) {
+				DataService.setLevelData([]);
 			}
+			DataService.insertLevelDataAt(levelIndex, originalLevel)
+			ConfigProviderService.vals.perspectives[curPerspectiveIdx].levelCanvases.order.splice(levelIndex, 0, originalLevel.name);
 		};
 
 		/**

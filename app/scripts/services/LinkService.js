@@ -12,14 +12,14 @@ angular.module('emuwebApp')
 		 * @param toID child node
 		 */
 		sServObj.insertLink = function (fromID, toID) {
-			DataService.data.links.push({
+			DataService.insertLinkData({
 				'fromID': fromID,
 				'toID': toID
 			});
 		};
 		
 		/**
-		 * adds single links to DataService.data.links 
+		 * adds single links to DataService
 		 * by pairing all childIds with the parent 
 		 * at a given position
 		 * @param fromID father node
@@ -27,21 +27,21 @@ angular.module('emuwebApp')
 		 * @param order position of the node pair
 		 */
 		sServObj.insertLinkAt = function (fromID, toID, order) {
-			DataService.data.links.splice(order,0,{
+			DataService.insertLinkDataAt(order, {
 				'fromID': fromID,
 				'toID': toID
 			});
 		};		
 
 		/**
-		 * removes single link from DataService.data.links 
+		 * removes single link from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLink = function (fromID, toID) {
 		    var ret = -1;
-			angular.forEach(DataService.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
-					DataService.data.links.splice(linkIdx, 1);
+					DataService.deleteLinkDataAt(linkIdx);
 					ret = linkIdx;
         		};
 			});
@@ -54,7 +54,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.linkExists = function (fromID, toID) {
 		    var ret = false;
-			angular.forEach(DataService.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
 					ret = true;
         		};
@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.hasParents = function (ID) {
 		    var ret = false;
-			angular.forEach(DataService.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.toID === ID){
 					ret = true;
         		};
@@ -82,7 +82,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.hasChildren = function (ID) {
 		    var ret = false;
-			angular.forEach(DataService.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.fromID === ID){
 					ret = true;
         		};
@@ -99,7 +99,7 @@ angular.module('emuwebApp')
 		};
 		
 		/**
-		 * adds multiple links to DataService.data.links 
+		 * adds multiple links to DataService
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
@@ -110,7 +110,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * removes multiple links to children from DataService.data.links 
+		 * removes multiple links to children from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksTo = function (fromID, toIDs) {
@@ -123,7 +123,7 @@ angular.module('emuwebApp')
 		};
 		
 		/**
-		 * adds multiple links to DataService.data.links 
+		 * adds multiple links to DataService
 		 * by pairing all parentIds with the child 
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
@@ -134,7 +134,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * removes multiple links to parents from DataService.data.links 
+		 * removes multiple links to parents from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksFrom = function (fromIDs, toID) {
@@ -152,7 +152,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksTo = function (toID) {
 		    var ret = [];
-			angular.forEach(DataService.data.links, function (link, linkOrder) {
+			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.toID === toID) {
 				    ret.push({link: link, order:linkOrder});
 				}
@@ -166,7 +166,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksFrom = function (fromID) {
 		    var ret = [];
-			angular.forEach(DataService.data.links, function (link, linkOrder) {
+			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID) {
 				    ret.push({link: link, order:linkOrder});
 				}
@@ -179,9 +179,9 @@ angular.module('emuwebApp')
 		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
 		 */
 		sServObj.changeLinkTo = function (fromID, toID, toNewID) {
-		    angular.forEach(DataService.data.links, function (link, linkOrder) {
+		    angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID && link.toID === toID) {
-				    DataService.data.links[linkOrder].toID = toNewID;
+				    DataService.changeLinkDataAt(linkOrder, fromID, toNewID);
 				}
 			});
 
@@ -192,9 +192,9 @@ angular.module('emuwebApp')
 		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
 		 */
 		sServObj.changeLinkFrom = function (fromID, toID, fromNewID) {
-		    angular.forEach(DataService.data.links, function (link, linkOrder) {
+		    angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID && link.toID === toID) {
-				    DataService.data.links[linkOrder].fromID = fromNewID;
+			        DataService.changeLinkDataAt(linkOrder, fromNewID, toID);
 				}
 			});
 		};		
