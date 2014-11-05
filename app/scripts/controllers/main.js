@@ -150,7 +150,7 @@ angular.module('emuwebApp')
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
 											var annot = parseMess.data;
-											LevelService.setData(annot);
+											DataService.setData(annot);
 
 											var lNames = [];
 											var levelDefs = [];

@@ -3,7 +3,8 @@
 angular.module('emuwebApp')
     .controller('FileCtrl', function ($scope, viewState, browserDetector, appStateService, 
            Binarydatamaniphelper, Textgridparserservice, ConfigProviderService, Validationservice,
-           Iohandlerservice, Wavparserservice, Soundhandlerservice, DataService) {
+           Iohandlerservice, Wavparserservice, Soundhandlerservice, DataService, loadedMetaDataService,
+           dbObjLoadSaveService, dialogService) {
 
         $scope.newfiles = [];
         $scope.wav = {};
@@ -28,7 +29,6 @@ angular.module('emuwebApp')
             viewState.somethingInProgress = true;
             viewState.somethingInProgressTxt = 'Loading local File: ' + $scope.wav.name;
             var reader = new FileReader();
-            console.log($scope.wav);
             reader.readAsArrayBuffer($scope.wav);
             reader.onloadend = function (evt) {
                 if (evt.target.readyState == FileReader.DONE) {
@@ -79,6 +79,8 @@ angular.module('emuwebApp')
                                                 ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
                                                 viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
                                                 ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+
+                                                
                                                 viewState.somethingInProgressTxt = 'Done!';
                                                 viewState.somethingInProgress = false;
                                                 viewState.setState('labeling');

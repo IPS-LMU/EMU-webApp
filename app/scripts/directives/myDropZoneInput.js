@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-.directive('myDropZoneInput', function ($animate, browserDetector) {
+.directive('myDropZoneInput', function ($animate, browserDetector, dialogService, appStateService) {
 	return {
 		templateUrl: 'views/myDropZoneInput.html',
 		restrict: 'E',
@@ -10,6 +10,12 @@ angular.module('emuwebApp')
 		},
 		link: function postLink(scope, element, attr) {
 		  scope.handler = false;
+		  
+		  
+		  scope.acceptGrid = '.TextGrid';
+		  scope.acceptWav = 'audio/wav';
+		  scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid;
+		  scope.acceptFile = scope.acceptBoth;
 		  
 		  scope.handleFilesonChange = function() {
 		    scope.handler = true;
@@ -19,14 +25,28 @@ angular.module('emuwebApp')
                 var file = loadedFiles.files[i];
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/x-wav') ) {
-                  scope.wav = file;
-                  scope.handleLocalFiles();	
+                  scope.$parent.$parent.wav = file;
+                  scope.$parent.$parent.handleLocalFiles();
+                  scope.acceptFile = scope.acceptBoth;
                 }
                 else if(extension==="TEXTGRID" ) {
-                  scope.grid = file;
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
+		            scope.$parent.dropClass = 'waiting';
+		            scope.acceptFile = scope.acceptWav;
+		          });
+                  scope.$parent.$parent.grid = file;
                 }            
                 else  {
-                  scope.other = file;
+                  scope.$parent.error = true;
+                  scope.$parent.$parent.other = file;
+                  scope.$parent.dropText = scope.$parent.dropTextErrorFileType;
+                  scope.$parent.dropClass = 'error';
+                  dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
+                    scope.$parent.dropText = scope.$parent.dropTextDefault;
+                    scope.$parent.dropClass = '';
+                    appStateService.resetToInitState();
+                  });
                 }                         
               }
             }    
@@ -36,13 +56,27 @@ angular.module('emuwebApp')
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/wav') ) {
                   scope.$parent.$parent.wav = file;
-                  scope.$parent.$parent.handleLocalFiles();	
+                  scope.$parent.$parent.handleLocalFiles();
+                  scope.acceptFile = scope.acceptBoth;	
                 }
                 else if(extension==="TEXTGRID" ) {
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
+		            scope.$parent.dropClass = 'waiting';
+		            scope.acceptFile = scope.acceptWav;
+		          });                
                   scope.$parent.$parent.grid = file;
                 }            
                 else  {
+                  scope.$parent.error = true;
                   scope.$parent.$parent.other = file;
+                  scope.$parent.dropText = scope.$parent.dropTextErrorFileType;
+                  scope.$parent.dropClass = 'error';
+                  dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
+                    scope.$parent.dropText = scope.$parent.dropTextDefault;
+                    scope.$parent.dropClass = '';
+                    appStateService.resetToInitState();
+                  });
                 }                         
               }
             }
