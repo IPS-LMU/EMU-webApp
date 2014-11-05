@@ -26,24 +26,9 @@ angular.module('emuwebApp')
 		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
-
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
-
-		//$scope.lastkeycode = 'N/A';
-		// $scope.bundleList = [];
-		// $scope.uniqSessionList = [];
-
-		// $scope.curUserName = '';
-		// $scope.curBndl = {};
-
-		// $scope.lastclickedutt = null;
-		// $scope.filterText = '';
 		$scope.windowWidth = $window.outerWidth;
-
-		// $scope.demoDbName = '';
-
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true : false);
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
