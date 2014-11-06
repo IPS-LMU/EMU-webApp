@@ -149,7 +149,7 @@ angular.module('emuwebApp')
 										viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
-											var annot = parseMess.data;
+											var annot = parseMess;
 											DataService.setData(annot);
 
 											var lNames = [];

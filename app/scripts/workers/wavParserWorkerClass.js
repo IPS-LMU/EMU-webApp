@@ -1,6 +1,6 @@
 /**
  * A simple class that creates another thread
- * with does the wavParserWorker work
+ * which does the wavParserWorker work
  * @class wavParserWorker
  * @constructor
  * @param Worker {Worker} injection point for Worker

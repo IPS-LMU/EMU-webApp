@@ -1,18 +1,37 @@
-/* jshint worker:true */
-
-'use strict';
-
-(function (global) {
-	var sampleRate;
-	var l1 = 'File type = \"ooTextFile\"';
-	var l2 = 'Object class = \"TextGrid\"';
-	var localID = 0;
+/**
+ * A simple class that creates another thread
+ * which does the textGridParserWorker work
+ * @class textGridParserWorker
+ * @constructor
+ * @param Worker {Worker} injection point for Worker
+ */
+function textGridParserWorker(Worker) {
+  Worker = Worker || window.Worker;
+  this.url = this.getWorkerURL();
+  this.worker = new Worker(this.url);
+}
+ 
+textGridParserWorker.prototype = {
+  // get the worker script in string format.
+  getWorkerScript: function(){
+    var js = '';
+    js += '(' + this.workerInit + ')(this);';
+    return js;
+  },
+ 
+  // This function really represents the body of our worker script.
+  // The global context of the worker script will be passed in.
+  workerInit: function(global) {
+  
+	global.l1 = 'File type = \"ooTextFile\"';
+	global.l2 = 'Object class = \"TextGrid\"';
+	global.localID = 0;  
 
 	/**
 	 * test to see if all the segments in seg levels
 	 * are "snapped" -> sampleStart+dur+1 = sampleStart of next Segment
 	 */
-	function testForGapsInLabelJSO(labelJSO) {
+	 global.testForGapsInLabelJSO = function(labelJSO) {
 		var counter = 0;
 		for (var i = 0; i < labelJSO.levels.length; i++) {
 			if (labelJSO.levels[i].type === 'SEGMENT') {
@@ -23,21 +42,21 @@
 				}
 			}
 		}
-	}
+	};
 
 	/**
 	 *
 	 */
-	function findTimeOfMinSample() {
+	global.findTimeOfMinSample = function() {
 		return 0.000000; // maybe needed at some point...
-	}
+	};
 
 	/**
 	 *
 	 */
-	function findTimeOfMaxSample(buffLength, sampleRate) {
+	 global.findTimeOfMaxSample = function(buffLength, sampleRate) {
 		return buffLength / sampleRate;
-	}
+	};
 
 	/**
 	 * parse a textgrid string to the specified json format
@@ -45,7 +64,7 @@
 	 * @param string TextGrid file string to be parsed
 	 * @returns a label java script object
 	 */
-	function toJSO(string, myFile, myName) {
+	 global.toJSO = function(string, myFile, myName, sampleRate) {
 
 		var VU_STR = '123abcABCCBAcba321'; // very unlikly string
 
@@ -80,7 +99,7 @@
 			links: []
 		};
 
-		if (lines[0].replace(/\s+/g, '') === l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === l2.replace(/\s+/g, '')) {
+		if (lines[0].replace(/\s+/g, '') === global.l1.replace(/\s+/g, '') && lines[1].replace(/\s+/g, '') === global.l2.replace(/\s+/g, '')) {
 			for (var i = 2; i < lines.length; i++) {
 				var cL = lines[i];
 				if (cL === 'item[]:') {
@@ -139,13 +158,13 @@
 					});
 
 					labelJSO.levels[labelJSO.levels.length - 1].items.push({
-						id: localID,
+						id: global.localID,
 						sampleStart: eSt,
 						sampleDur: eEt - eSt + 1,
 						labels: labs
 					});
 
-					++localID;
+					++global.localID;
 
 				} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 					// parse point level event
@@ -158,46 +177,44 @@
 					});
 
 					labelJSO.levels[labelJSO.levels.length - 1].items.push({
-						id: localID,
+						id: global.localID,
 						samplePoint: Math.round(eT),
 						labels: labs
 					});
 
-					++localID;
+					++global.localID;
 				}
 
 			}
 			// console.log(JSON.stringify(labelJSO, undefined, 2));
-			testForGapsInLabelJSO(labelJSO);
+			global.testForGapsInLabelJSO(labelJSO);
 			return labelJSO;
 
 		} else {
-			// alert('bad header in TextGrid file!!! The header has to be: ', l1, '\n', l2);
+			// alert('bad header in TextGrid file!!! The header has to be: ', global.l1, '\n', global.l2);
 			return ({
 				'status': {
 					'type': 'ERROR',
-					'message': 'bad header in TextGrid file!!! The header has to be: ' + l1 + '\n' + l2
+					'message': 'bad header in TextGrid file!!! The header has to be: ' + global.l1 + '\n' + global.l2
 				}
 			});
 		}
-	}
+	};
 
 	/**
 	 * converts the internal levels format returned from levelHandler.getLevels
 	 * to a string containing a TextGrid file
 	 */
-	function toTextGrid(levelData, buffLength, sampleRate) {
+	 global.toTextGrid = function(levelData, buffLength, sampleRate) {
 
-		var l1 = 'File type = \"ooTextFile\"';
-		var l2 = 'Object class = \"TextGrid\"';
 		var tG = '';
 		var nl = '\n';
 		var t = '\t';
 
 		// writing header infos
-		tG = tG + l1 + nl + l2 + nl + nl;
-		tG = tG + 'xmin = ' + findTimeOfMinSample() + nl;
-		tG = tG + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;
+		tG = tG + global.l1 + nl + global.l2 + nl + nl;
+		tG = tG + 'xmin = ' + global.findTimeOfMinSample() + nl;
+		tG = tG + 'xmax = ' + global.findTimeOfMaxSample(buffLength, sampleRate) + nl;
 		tG = tG + 'levels? <exists>' + nl;
 		tG = tG + 'size = ' + levelData.length + nl;
 		tG = tG + 'item []:' + nl;
@@ -214,8 +231,8 @@
 				tG = tG + t + t + 'class = "TextTier"' + nl;
 			}
 			tG = tG + t + t + 'name = "' + curLevel.name + '"' + nl;
-			tG = tG + t + t + 'xmin = ' + findTimeOfMinSample() + nl;
-			tG = tG + t + t + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;
+			tG = tG + t + t + 'xmin = ' + global.findTimeOfMinSample() + nl;
+			tG = tG + t + t + 'xmax = ' + global.findTimeOfMaxSample(buffLength, sampleRate) + nl;
 			if (curLevel.type === 'SEGMENT') {
 				tG = tG + t + t + 'intervals: size = ' + curLevel.items.length + nl;
 			} else if (curLevel.type === 'EVENT') {
@@ -236,7 +253,7 @@
 						curVal = (((curLevel.items[j].sampleStart + curLevel.items[j].sampleDur) / sampleRate) + ((1 / sampleRate) / 2));
 						tG = tG + t + t + t + t + 'xmax = ' + curVal + nl;
 					} else {
-						tG = tG + t + t + t + t + 'xmax = ' + findTimeOfMaxSample(buffLength, sampleRate) + nl;
+						tG = tG + t + t + t + t + 'xmax = ' + global.findTimeOfMaxSample(buffLength, sampleRate) + nl;
 					}
 
 					tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].labels[0].value + '"' + nl;
@@ -248,58 +265,105 @@
 			}
 		}
 		return (tG);
-	}
-
-
-
-
-
-	/**
-	 * add event listener to webworker
-	 */
-	addEventListener('message', function (e) {
-		var data = e.data;
-		var retVal;
-		switch (data.cmd) {
-		case 'parseTG':
-			sampleRate = data.sampleRate;
-			retVal = toJSO(data.textGrid, data.annotates, data.name);
-			if (retVal.status === undefined) {
-				this.postMessage({
+	};
+    
+    global.onmessage = function(e) {
+        if(e.data !== undefined) {
+			var retVal;
+			switch (e.data.cmd) {
+			case 'parseTG':
+				retVal = global.toJSO(e.data.textGrid, e.data.annotates, e.data.name, e.data.sampleRate);
+				if (retVal.status === undefined) {
+					global.postMessage({
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						},
+						'data': retVal
+					});
+				} else {
+					global.postMessage(retVal);
+				}
+				break;
+			case 'toTextGrid':
+				retVal = global.toTextGrid(e.data.levels, e.data.buffLength, e.data.sampleRate);
+				if (retVal.status === undefined) {
+					global.postMessage({
+						'status': {
+							'type': 'SUCCESS',
+							'message': ''
+						},
+						'data': retVal
+					});
+				} else {
+					global.postMessage(retVal);
+				}
+				break;
+			default:
+				global.postMessage({
 					'status': {
-						'type': 'SUCCESS',
-						'message': ''
-					},
-					'data': retVal
+						'type': 'ERROR',
+						'message': 'Unknown command sent to textGridParserWorker'
+					}
 				});
-			} else {
-				this.postMessage(retVal);
+				break;
 			}
-			break;
-		case 'toTextGrid':
-			retVal = toTextGrid(data.levels, data.buffLength, data.sampleRate);
-			if (retVal.status === undefined) {
-				this.postMessage({
-					'status': {
-						'type': 'SUCCESS',
-						'message': ''
-					},
-					'data': retVal
-				});
-			} else {
-				this.postMessage(retVal);
-			}
-			break;
-		default:
-			this.postMessage({
+		}
+		else {
+			global.postMessage({
 				'status': {
 					'type': 'ERROR',
-					'message': 'Unknown command sent to textGridParserWorker'
+					'message': 'Undefined message was sent to textGridParserWorker'
 				}
 			});
-
-			break;
 		}
-	});
-
-})(self);
+	};    
+  },
+ 
+  
+  // get a blob url for the worker script from the worker script text
+  getWorkerURL: function() {
+    var blob, urlObj;
+	try {
+		blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
+	} catch (e) { // Backwards-compatibility
+		window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+		blob = new BlobBuilder();
+		blob.append(textGridParserWorker);
+		blob = blob.getBlob();
+	}
+	if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+		urlObj = webkitURL.createObjectURL(blob);
+	} else {
+		urlObj = URL.createObjectURL(blob);
+	} 
+	return urlObj;
+  },
+ 
+ 
+  // kill the textGridParserWorker
+  kill: function() {
+    if(this.worker) {
+      this.worker.terminate();
+    }
+    if(this.url) {
+      URL.revokeObjectURL(this.url);
+    }
+  },
+  
+  // say something to the textGridParserWorker
+  tell: function(msg) {
+    if(this.worker) {
+      this.worker.postMessage(msg);
+    }
+  },
+  
+  // listen for the textGridParserWorker to talk back
+  says: function(handler) {
+    if(this.worker) {
+      this.worker.addEventListener('message', function(e) {
+        handler(e.data);
+      });
+    }
+  },
+};

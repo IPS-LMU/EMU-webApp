@@ -60,7 +60,7 @@ angular.module('emuwebApp')
                                         if (evt.target.readyState == FileReader.DONE) {
                                             var extension = $scope.wav.name.substr(0, $scope.wav.name.lastIndexOf('.'));
                                             Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
-                                                var annot = parseMess.data;
+                                                var annot = parseMess;
                                                 DataService.setData(annot);
                                                 var lNames = [];
                                                 var levelDefs = [];

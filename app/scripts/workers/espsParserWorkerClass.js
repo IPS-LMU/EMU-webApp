@@ -1,6 +1,6 @@
 /**
  * A simple class that creates another thread
- * with does the espsParserWorker work
+ * which does the espsParserWorker work
  * @class espsParserWorker
  * @constructor
  * @param Worker {Worker} injection point for Worker
