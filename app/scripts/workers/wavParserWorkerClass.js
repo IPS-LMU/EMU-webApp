@@ -1,16 +1,48 @@
-/* jshint worker:true */
+/**
+ * A simple class that creates another thread that responds to silly messages
+ * with other silly messages. Okay, really it only knows 'mnah mnah'
+ * @class wavParserWorker
+ * @constructor
+ * @param Worker {Worker} injection point for Worker
+ */
+function wavParserWorker(Worker) {
+  Worker = Worker || window.Worker;
+  this.url = this.getWorkerURL();
+  this.worker = new Worker(this.url);
+}
+ 
+wavParserWorker.prototype = {
+  // get the worker script in string format.
+  getWorkerScript: function(){
+    var js = '';
+    js += '(' + this.workerInit + ')(this);';
+    return js;
+  },
+ 
+  // This function really represents the body of our worker script.
+  // The global context of the worker script will be passed in.
+  workerInit: function(global) {
 
-'use strict';
-
-(function (global) {
-
-	/**
-	 * convert arraybuffer containing a wav file
-	 * to a javascript object
-	 * @param buf arraybuffer containing ssff file
-	 * @returns wav file javascript object
-	 */
-	function wav2jso(buf) {
+	//expand ArrayBuffer with subarray function
+	ArrayBuffer.prototype.subarray = function (offset, length) {
+		var sub = new ArrayBuffer(length);
+		var subView = new Int8Array(sub);
+		var thisView = new Int8Array(this);
+		for (var i = 0; i < length; i++) {
+			subView[i] = thisView[offset + i];
+		}
+		return sub;
+	};	 	
+	
+	global.ab2str = function(ab) {
+		var unis = [];
+        for (var i = 0; i < ab.length; i++) {
+          unis.push(ab[i]);
+        }
+        return String.fromCharCode.apply(null, unis);	
+	}; 
+    
+	global.wav2jso = function(buf) {
 
 		var wavRep = {};
 
@@ -27,7 +59,8 @@
 		curBinIdx = 0;
 		curBuffer = buf.subarray(curBinIdx, 4);
 		curBufferView = new Uint8Array(curBuffer);
-		wavRep.ChunkID = String.fromCharCode.apply(null, curBufferView);
+        wavRep.ChunkID = global.ab2str(curBufferView);
+        
 		if (wavRep.ChunkID !== 'RIFF') {
 			// console.error('Wav read error: ChunkID not RIFF. Got ' + wavRep.ChunkID);
 			return ({
@@ -50,7 +83,7 @@
 		curBinIdx = 8;
 		curBuffer = buf.subarray(curBinIdx, 4);
 		curBufferView = new Uint8Array(curBuffer);
-		wavRep.Format = String.fromCharCode.apply(null, curBufferView);
+		wavRep.Format = global.ab2str(curBufferView);
 		if (wavRep.Format !== 'WAVE') {
 			// console.error('Wav read error: Format not WAVE. Got ' + wavRep.Format);
 			return ({
@@ -65,7 +98,7 @@
 		curBinIdx = 12;
 		curBuffer = buf.subarray(curBinIdx, 4);
 		curBufferView = new Uint8Array(curBuffer);
-		wavRep.Subchunk1ID = String.fromCharCode.apply(null, curBufferView);
+		wavRep.Subchunk1ID = global.ab2str(curBufferView);
 		if (wavRep.Subchunk1ID !== 'fmt ') {
 			// console.error('Wav read error: Subchunk1ID not fmt. Got ' + wavRep.Subchunk1ID);
 			return ({
@@ -161,7 +194,7 @@
 		curBinIdx = 36;
 		curBuffer = buf.subarray(curBinIdx, 4);
 		curBufferView = new Uint8Array(curBuffer);
-		wavRep.Subchunk2ID = String.fromCharCode.apply(null, curBufferView);
+		wavRep.Subchunk2ID = global.ab2str(curBufferView);
 		if (wavRep.Subchunk2ID !== 'data') {
 			// console.error('Wav read error: BitsPerSample not 16');
 			return ({
@@ -188,50 +221,90 @@
 		// finally append original array buffer
 		wavRep.origArrBuf = buf;
 		return wavRep;
-	}
-	
-	//expand ArrayBuffer with subarray function
-	ArrayBuffer.prototype.subarray = function (offset, length) {
-		var sub = new ArrayBuffer(length);
-		var subView = new Int8Array(sub);
-		var thisView = new Int8Array(this);
-		for (var i = 0; i < length; i++) {
-			subView[i] = thisView[offset + i];
-		}
-		return sub;
-	};	
-
-	/**
-	 * add event listener to webworker
-	 */
-	addEventListener('message', function (e) {
-		var data = e.data;
-		switch (data.cmd) {
-		case 'parseBuf':
-			// console.log(e)
-			var parserRes = wav2jso(data.buffer);
-			if (parserRes.status === undefined) {
-				this.postMessage({
-					'status': {
-						'type': 'SUCCESS',
-						'message': ''
-					},
-					'data': parserRes
-				});
-			} else {
-				this.postMessage(parserRes);
+	};    
+    
+    global.onmessage = function(e) {
+        if(e.data !== undefined) {
+			switch (e.data.cmd) {
+				case 'parseBuf':
+					var parserRes = global.wav2jso(e.data.buffer);
+					if (parserRes.status === undefined) {
+						global.postMessage({
+							'status': {
+								'type': 'SUCCESS',
+								'message': ''
+							},
+							'data': parserRes
+						});
+					} else {
+						global.postMessage(parserRes);
+					}
+					break;
+				default:
+					global.postMessage({
+						'status': {
+							'type': 'ERROR',
+							'message': 'Unknown command sent to wavParserWorker'
+						}
+					});
+					break;
 			}
-			break;
-		default:
-			this.postMessage({
+		}
+		else {
+			global.postMessage({
 				'status': {
 					'type': 'ERROR',
-					'message': 'Unknown command sent to wavParserWorker'
+					'message': 'Undefined message was sent to wavParserWorker'
 				}
 			});
-
-			break;
-
 		}
-	});
-})(self);
+	};    
+  },
+ 
+  
+  // get a blob url for the worker script from the worker script text
+  getWorkerURL: function() {
+    var blob, urlObj;
+	try {
+		blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
+	} catch (e) { // Backwards-compatibility
+		window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+		blob = new BlobBuilder();
+		blob.append(textGridParserWorker);
+		blob = blob.getBlob();
+	}
+	if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+		urlObj = webkitURL.createObjectURL(blob);
+	} else {
+		urlObj = URL.createObjectURL(blob);
+	} 
+	return urlObj;
+  },
+ 
+ 
+  // kill the wavParserWorker
+  kill: function() {
+    if(this.worker) {
+      this.worker.terminate();
+    }
+    if(this.url) {
+      URL.revokeObjectURL(this.url);
+    }
+  },
+  
+  // say something to the wavParserWorker
+  tell: function(msg) {
+    if(this.worker) {
+      this.worker.postMessage(msg);
+    }
+  },
+  
+  // listen for the wavParserWorker to talk back
+  says: function(handler) {
+    if(this.worker) {
+      this.worker.addEventListener('message', function(e) {
+        handler(e.data);
+      });
+    }
+  },
+};
