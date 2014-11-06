@@ -1,6 +1,6 @@
 /**
- * A simple class that creates another thread that responds to silly messages
- * with other silly messages. Okay, really it only knows 'mnah mnah'
+ * A simple class that creates another thread
+ * with does the espsParserWorker work
  * @class espsParserWorker
  * @constructor
  * @param Worker {Worker} injection point for Worker
