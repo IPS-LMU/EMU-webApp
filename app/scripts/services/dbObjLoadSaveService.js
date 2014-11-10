@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
-					Iohandlerservice.getBundle(bndl.name, loadedMetaDataService.getDemoDbName()).then(function (bundleData) {
+					Iohandlerservice.getBundle(bndl.name, bndl.session, loadedMetaDataService.getDemoDbName()).then(function (bundleData) {
 						// check if response from http request
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;

@@ -113,13 +113,13 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBundle = function (name, nameOfDB) {
+		sServObj.getBundle = function (name, session, nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
 				alert('CORS version of getBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
-				getProm = Websockethandler.getBundle(name);
+				getProm = Websockethandler.getBundle(name, session);
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');

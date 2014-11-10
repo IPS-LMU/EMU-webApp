@@ -199,11 +199,12 @@ angular.module('emuwebApp')
 		};
 
 		// ws  getBundle
-		sServObj.getBundle = function (name) {
+		sServObj.getBundle = function (name, session) {
 
 			var request = {
 				type: 'GETBUNDLE',
-				name: name
+				name: name,
+				session: session
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
