@@ -77,7 +77,6 @@ var emuwebappConfigSchema = JSON.parse(f);
 
 // ae msajc003_bndl
 jasmine.getFixtures().fixturesPath = 'base/app/scripts/workers/';
-var spectroWorker = readFixtures('spectroWorker.js');
 var ssffParserWorker = readFixtures('ssffParserWorker.js');
 
 
