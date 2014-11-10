@@ -79,7 +79,7 @@ angular.module('emuwebApp')
                                                 ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
                                                 viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
                                                 ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-
+                                                loadedMetaDataService.setBundleList([{name: extension}]);
                                                 
                                                 viewState.somethingInProgressTxt = 'Done!';
                                                 viewState.somethingInProgress = false;

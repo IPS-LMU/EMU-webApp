@@ -41,7 +41,6 @@ angular.module('emuwebApp')
 		 * @returns promise
 		 */
 		sServObj.asyncParseTextGrid = function (textGrid, annotates, name) {
-		    console.log(textGrid, annotates, name);
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'parseTG',
