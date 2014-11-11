@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 	}, true);
 
 	scope.$watch('playing', function (newValue) {
-		console.debug(newValue, scope.selectedItem);
+		console.debug('Play() triggered', newValue, scope.selectedItem);
 		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
 			scope.play(scope.selectedItem);
 		}
@@ -62,10 +62,10 @@ angular.module('emuwebApp')
 	 * collapsing/moving with large amount of children.
 	 */
 	scope.centerNode = function (node) {
-		var x = -node._x + width/2;
-		var y = -node._y  + height/2;
+		var x = -node._x + scope.width/2;
+		var y = -node._y  + scope.height/2;
 		svg.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.attr('transform', scope.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
 		zoomListener.translate([x, y]);
 	};
@@ -275,19 +275,22 @@ angular.module('emuwebApp')
         /////////////////////////////
         // inital d3.js setup stuff
 
-        var margin = {
+        /*var margin = {
             top: 0,
             right: 0,
             bottom: 0,
             left: 0
           },
-          width = parseInt(d3.select(element[0]).style('width'), 10),
-          width = width - margin.left - margin.right,
-          height = parseInt(d3.select(element[0]).style('height'), 10),
-          height = height - margin.top - margin.bottom,
           barHeight = 20,
           percent = d3.format('%'),
 	  duration = 750;
+	*/
+	
+	scope.element = element;
+	scope.width = 0;
+	scope.height = 0;
+	scope.duration = 750;
+
 
 	// scaleExtent limits the amount of zooming possible
 	var zoomListener = d3.behavior.zoom().scaleExtent([0.5, 10]).on('zoom', scope.zoom);
@@ -301,9 +304,11 @@ angular.module('emuwebApp')
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
           .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+          //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 	  // Append a group which holds all nodes and which the zoom Listener can act upon.
 	  .append('g');
+
+	scope.element = element;
 
 	//
         /////////////////////////////
@@ -313,9 +318,14 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
+		////
+		// Get current width and height of SVG
+		scope.width = parseInt(d3.select(scope.element[0]).style('width'), 10);
+		scope.height = parseInt(d3.select(scope.element[0]).style('height'), 10);
+
 		// Set orientation
 		svg.transition()
-		  .duration(duration)
+		  .duration(scope.duration)
 		  .attr('transform', scope.getOrientatedTransform()); 
 
 		/////
@@ -408,12 +418,12 @@ angular.module('emuwebApp')
 		var offsetX = 25;
 
 		var depthToX = function (depth) {
-			var size = (scope.vertical) ? height : width;
+			var size = (scope.vertical) ? scope.height : scope.width;
 			return offsetX + depth / scope.path.length * size;
 		};
 
 		var posInLevelToY = function (posInLevel) {
-			var size = (scope.vertical) ? width : height;
+			var size = (scope.vertical) ? scope.width : scope.height;
 			return posInLevel * size;
 		};
 
@@ -481,7 +491,7 @@ angular.module('emuwebApp')
 
 			// And then transition it to its normal size
 			.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.attr('r', 4.5)
 			;
 
@@ -525,7 +535,7 @@ angular.module('emuwebApp')
 
 		// Transition exiting nodes to the origin
 		oldNodes = oldNodes.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.attr('transform', function (d) {
 				if (d._collapsePosition) {
 					var x = d._collapsePosition[0];
@@ -575,7 +585,7 @@ angular.module('emuwebApp')
 		// Transition nodes to their new position
 
 		dataSet.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.attr('transform', function (d) {
 				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
 			});
@@ -598,18 +608,18 @@ angular.module('emuwebApp')
 			.attr('class', 'emuhierarchy-link')
 			.style('opacity', 0)
 			.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.style('opacity', 1)
 			;
 
 		oldLinks.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.style('opacity', 0)
 			.remove();
 		
 		// Transition links to their new position.
 		linkSet.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.attr('d', scope.getPath )
 			.style('opacity', 1)
 			;
@@ -620,7 +630,7 @@ angular.module('emuwebApp')
          */
         scope.resizeHierarchy = function () {
           console.log('###############')
-          console.log(width)
+          console.log(scope.width)
         };
       }
     };
