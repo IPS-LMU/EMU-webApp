@@ -464,7 +464,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.insertLevelSegBtnClick = function () {
+		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var length = 0;
 				if (DataService.data.levels !== undefined) {
@@ -473,7 +473,7 @@ angular.module('emuwebApp')
 				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
-						id: LevelService.getNewId(),
+						id: DataService.getNewId(),
 						sampleStart: 0,
 						sampleDur: Soundhandlerservice.wavJSO.Data.length,
 						labels: [{
@@ -505,7 +505,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-
+				
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -514,7 +514,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.insertLevelPointBtnClick = function () {
+		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 				var length = 0;
@@ -524,7 +524,7 @@ angular.module('emuwebApp')
 				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
-						id: LevelService.getNewId(),
+						id: DataService.getNewId(),
 						samplePoint: Math.round(Soundhandlerservice.wavJSO.Data.length / 2),
 						labels: []
 					}],
