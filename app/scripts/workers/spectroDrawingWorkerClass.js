@@ -770,7 +770,6 @@ spectroDrawingWorker.prototype = {
 	return urlObj;
   },
  
- 
   // kill the spectroDrawingWorker
   kill: function() {
     if(this.worker) {

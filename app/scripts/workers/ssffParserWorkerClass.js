@@ -1,8 +1,29 @@
-/* jshint worker:true */
-
-'use strict';
-(function (global) {
+/**
+ * A simple class that creates another thread
+ * which does the ssffParserWorker work
+ * @class ssffParserWorker
+ * @constructor
+ * @param Worker {Worker} injection point for Worker
+ */
+function ssffParserWorker(Worker) {
+  Worker = Worker || window.Worker;
+  this.url = this.getWorkerURL();
+  this.worker = new Worker(this.url);
+}
+ 
+ssffParserWorker.prototype = {
+  // get the worker script in string format.
+  getWorkerScript: function(){
+    var js = '';
+    js += '(' + this.workerInit + ')(this);';
+    return js;
+  },
+ 
+  // This function really represents the body of our worker script.
+  // The global context of the worker script will be passed in.
+  workerInit: function(global) { 
     
+
 	var ssffData = {};
 	var headID = 'SSFF -- (c) SHLRC\n';
 	var machineID = 'Machine IBM-PC\n';
@@ -103,20 +124,20 @@
 			return out;
 		}
 
-		var scope = (typeof window !== 'undefined') ? window : global;
-		if (!scope.btoa) {
-			scope.btoa = base64encode;
+		//var scope = (typeof window !== 'undefined') ? window : global;
+		if (!global.btoa) {
+			global.btoa = base64encode;
 		}
-		if (!scope.atob) {
-			scope.atob = base64decode;
+		if (!global.atob) {
+			global.atob = base64decode;
 		}
 	})();
 
 	/**
 	 *
 	 */
-	function base64ToArrayBuffer(stringBase64) {
-		var binaryString = atob(stringBase64);
+	 global.base64ToArrayBuffer = function(stringBase64) {
+		var binaryString = global.atob(stringBase64);
 		var len = binaryString.length;
 		var bytes = new Uint8Array(len);
 		for (var i = 0; i < len; i++) {
@@ -124,16 +145,16 @@
 			bytes[i] = ascii;
 		}
 		return bytes.buffer;
-	}
+	};
 
 	/**
 	 * round to n decimal digits after the comma
 	 * used to help display numbers with a given
 	 * precision
 	 */
-	function round(x, n) {
+	 global.round = function(x, n) {
 		if (n < 1 || n > 14) {
-			console.error('error in call of round function!!');
+			return false;
 		}
 		var e = Math.pow(10, n);
 		var k = (Math.round(x * e) / e).toString();
@@ -148,8 +169,7 @@
 	 * helper function to convert string to Uint8Array
 	 * @param string
 	 */
-	function stringToUint(string) {
-		// var string = btoa(unescape(encodeURIComponent(string)));
+	 global.stringToUint = function(string) {
 		var charList = string.split('');
 		var uintArray = [];
 		for (var i = 0; i < charList.length; i++) {
@@ -161,7 +181,7 @@
 	/**
 	 *
 	 */
-	function Uint8Concat(first, second) {
+	 global.Uint8Concat = function(first, second) {
 		var firstLength = first.length;
 		var result = new Uint8Array(firstLength + second.length);
 
@@ -178,7 +198,7 @@
 	 * @param name is ssffTrackName
 	 * @returns ssff javascript object
 	 */
-	function ssff2jso(buf, name) {
+	 global.ssff2jso = function (buf, name) {
 		ssffData.ssffTrackName = name;
 		ssffData.Columns = [];
 		// console.log('SSFF loaded');
@@ -276,6 +296,10 @@
 				if (ssffData.Columns[i].ssffdatatype === 'DOUBLE') {
 					curLen = 8 * ssffData.Columns[i].length;
 					curBuffer = buf.subarray(curBinIdx, curLen);
+					// ugly hack in order to support PhantomJS < 2.0 testing
+					if (typeof Float64Array == "undefined") {
+					    Float64Array = Float32Array;
+					}
 					curBufferView = new Float64Array(curBuffer);
 					ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 					curBinIdx += curLen;
@@ -353,10 +377,10 @@
 	 * @param ssff javascipt object
 	 * @returns ssff arraybuffer
 	 */
-	function jso2ssff(jso) {
+	 global.jso2ssff = function (jso) {
 		// create header
 		var headerStr = headID + machineID;
-		headerStr += 'Record_Freq ' + round(jso.sampleRate, 1) + '\n';
+		headerStr += 'Record_Freq ' + global.round(jso.sampleRate, 1) + '\n';
 		headerStr += 'Start_Time ' + jso.startTime + '\n';
 
 		jso.Columns.forEach(function (col) {
@@ -364,7 +388,7 @@
 			headerStr += 'Column ' + col.name + ' ' + col.ssffdatatype + ' ' + col.length + '\n';
 		});
 
-		headerStr += 'Original_Freq DOUBLE ' + round(jso.origFreq, 1) + '\n';
+		headerStr += 'Original_Freq DOUBLE ' + global.round(jso.origFreq, 1) + '\n';
 		headerStr += sepString;
 
 		// preallocate data buffer
@@ -395,7 +419,7 @@
 		var dataBuffView = new DataView(dataBuff);
 
 		// convert buffer to header
-		var ssffBufView = new Uint8Array(stringToUint(headerStr));
+		var ssffBufView = new Uint8Array(global.stringToUint(headerStr));
 
 		// loop through vals and append array of each column to ssffBufView
 		var byteOffSet = 0;
@@ -421,13 +445,9 @@
 				}
 			});
 		}
-
 		// concatenate header with data
 		var tmp = new Uint8Array(dataBuffView.buffer);
-		ssffBufView = new Uint8Concat(ssffBufView, tmp);
-
-		// console.log(String.fromCharCode.apply(null, ssffBufView));
-
+		ssffBufView = new global.Uint8Concat(ssffBufView, tmp);
 		return ({
 			'status': {
 				'type': 'SUCCESS',
@@ -440,7 +460,7 @@
 	/**
 	 * loop over ssff files in ssffArr and create a ssffJsoArr
 	 */
-	function parseArr(ssffArr) {
+	 global.parseArr = function(ssffArr) {
 		var noError = true;
 		var resArr = [];
 		var ssffJso;
@@ -449,26 +469,33 @@
 
 			ssffJso = {};
 			var arrBuff;
-			arrBuff = base64ToArrayBuffer(ssffArr[i].data);
-			ssffJso = ssff2jso(arrBuff, ssffArr[i].ssffTrackName);
+			arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
+			ssffJso = global.ssff2jso(arrBuff, ssffArr[i].ssffTrackName);
 			if (ssffJso.status === undefined) {
 				resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
 			} else {
-				global.postMessage(ssffJso);
 				noError = false;
-				break;
+				return ssffJso;
 			}
 		}
 		if (noError) {
-			global.postMessage({
+			return {
 				'status': {
 					'type': 'SUCCESS',
 					'message': ''
 				},
 				'data': resArr
-			});
+			};
 		}
-	}
+		else {
+			return {
+				'status': {
+					'type': 'ERROR',
+					'message': 'Error in parseArr() with: '+ JSON.stringify(ssffArr)
+				}
+			};
+		}
+	};
 
 	//expand ArrayBuffer with subarray function
 	ArrayBuffer.prototype.subarray = function (offset, length) {
@@ -480,31 +507,87 @@
 		}
 		return sub;
 	};
-
-
-	/**
-	 * add event listener to webworker
-	 */
-	addEventListener('message', function (e) {
-		var data = e.data;
-		switch (data.cmd) {
-		case 'parseArr':
-			parseArr(data.ssffArr);
-			break;
-		case 'jso2ssff':
-			var retVal = jso2ssff(JSON.parse(data.jso));
-			this.postMessage(retVal);
-			break;
-		default:
-			this.postMessage({
+    
+    
+    global.onmessage = function(e) {
+        if(e.data !== undefined) {
+			switch (e.data.cmd) {
+				case 'parseArr':
+					global.postMessage(global.parseArr(e.data.ssffArr));
+					break;
+				case 'jso2ssff':
+					global.postMessage(global.jso2ssff(JSON.parse(e.data.jso)));
+					break;
+				default:
+					global.postMessage({
+						'status': {
+							'type': 'ERROR',
+							'message': 'Unknown command sent to ssffParserWorker'
+						}
+					});
+					break;
+			}
+		}
+		else {
+			global.postMessage({
 				'status': {
 					'type': 'ERROR',
-					'message': 'Unknown command sent to ssffParserWorker'
+					'message': 'Undefined message was sent to ssffParserWorker'
 				}
 			});
-
-			break;
-
 		}
-	});
-})(self);
+	};    
+  },
+ 
+  
+  // get a blob url for the worker script from the worker script text
+  getWorkerURL: function() {
+    var blob, urlObj;
+	try {
+		blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
+	} catch (e) { // Backwards-compatibility
+		window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+		blob = new BlobBuilder();
+		blob.append(textGridParserWorker);
+		blob = blob.getBlob();
+	}
+	if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+		urlObj = webkitURL.createObjectURL(blob);
+	} else {
+		urlObj = URL.createObjectURL(blob);
+	} 
+	return urlObj;
+  },
+ 
+  // kill the spectroDrawingWorker
+  kill: function() {
+    if(this.worker) {
+      this.worker.terminate();
+      this.worker = undefined;
+    }
+    if(this.url) {
+		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+			webkitURL.revokeObjectURL(this.url);
+		} else {
+			URL.revokeObjectURL(this.url);
+		} 
+		this.url = undefined;
+    }
+  },
+  
+  // say something to the ssffParserWorker
+  tell: function(msg) {
+    if(this.worker) {
+      this.worker.postMessage(msg);
+    }
+  },
+  
+  // listen for the ssffParserWorker to talk back
+  says: function(handler) {
+    if(this.worker) {
+      this.worker.addEventListener('message', function(e) {
+        handler(e.data);
+      });
+    }
+  },
+};

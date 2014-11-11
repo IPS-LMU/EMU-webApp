@@ -72,14 +72,6 @@ var f = readFixtures('emuwebappConfigSchema.json');
 var emuwebappConfigSchema = JSON.parse(f);
 
 
-/////////////////////
-// web worker
-
-// ae msajc003_bndl
-jasmine.getFixtures().fixturesPath = 'base/app/scripts/workers/';
-var ssffParserWorker = readFixtures('ssffParserWorker.js');
-
-
 ////////////////////////////
 // files for parsing tests
 
