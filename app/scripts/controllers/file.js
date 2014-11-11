@@ -47,18 +47,20 @@ angular.module('emuwebApp')
                             }
                             viewState.somethingInProgressTxt = 'Parsing WAV file...';
                             Wavparserservice.parseWavArrBuf(validRes).then(function (wavJSO) {
+                                var extension = $scope.wav.name.substr(0, $scope.wav.name.lastIndexOf('.'));
                                 viewState.curViewPort.sS = 0;
                                 viewState.curViewPort.eS = wavJSO.Data.length;
                                 viewState.resetSelect();
                                 viewState.curPerspectiveIdx = 0;
                                 Soundhandlerservice.wavJSO = wavJSO;
+                                loadedMetaDataService.setBundleList([{name: extension}]);
                                 // parsing of Textgrid Data
                                 if (!$.isEmptyObject($scope.grid)) {
                                     var reader = new FileReader();
                                     reader.readAsText($scope.grid);
                                     reader.onloadend = function (evt) {
                                         if (evt.target.readyState == FileReader.DONE) {
-                                            var extension = $scope.wav.name.substr(0, $scope.wav.name.lastIndexOf('.'));
+                                            
                                             Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, $scope.wav.name, extension).then(function (parseMess) {
                                                 var annot = parseMess;
                                                 DataService.setData(annot);
@@ -79,21 +81,18 @@ angular.module('emuwebApp')
                                                 ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
                                                 viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
                                                 ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-                                                loadedMetaDataService.setBundleList([{name: extension}]);
-                                                
-                                                viewState.somethingInProgressTxt = 'Done!';
-                                                viewState.somethingInProgress = false;
-                                                viewState.setState('labeling');
                                             });
                                         }
                                     },
                                     function (errMess) {
                                         $scope.$parent.dials.open('views/error.html', 'ModalCtrl', 'Error parsing textgrid file: ' + errMess.status.message);
                                     };
-                                } else {
+                                    viewState.somethingInProgressTxt = 'Done!';
                                     viewState.setState('labeling');
-                                    viewState.somethingInProgress = false;
-                                    viewState.somethingInProgressTxt = 'Done!';	    
+                                    
+                                } else {
+                                    viewState.somethingInProgressTxt = 'Done!';	  
+                                    viewState.setState('labeling');  
                                 }
 
                             });
@@ -108,6 +107,7 @@ angular.module('emuwebApp')
                 }
 
             };
+            viewState.somethingInProgress = false;
         };
 
     });

@@ -25,17 +25,19 @@ angular.module('emuwebApp')
                 var file = loadedFiles.files[i];
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/x-wav') ) {
-                  scope.$parent.$parent.wav = file;
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropTextDefault;
+		            scope.acceptFile = scope.acceptBoth;
+		          });
+		          scope.$parent.$parent.wav = file;
                   scope.$parent.$parent.handleLocalFiles();
-                  scope.acceptFile = scope.acceptBoth;
                 }
                 else if(extension==="TEXTGRID" ) {
+                  scope.$parent.$parent.grid = file;
                   scope.$apply(function () {
 		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
-		            scope.$parent.dropClass = 'waiting';
 		            scope.acceptFile = scope.acceptWav;
 		          });
-                  scope.$parent.$parent.grid = file;
                 }            
                 else  {
                   scope.$parent.error = true;
@@ -55,14 +57,16 @@ angular.module('emuwebApp')
                 var file = loadedFiles.files[i];
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/wav') ) {
-                  scope.$parent.$parent.wav = file;
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropTextDefault;
+		            scope.acceptFile = scope.acceptBoth;
+		          });                  
+		          scope.$parent.$parent.wav = file;
                   scope.$parent.$parent.handleLocalFiles();
-                  scope.acceptFile = scope.acceptBoth;	
                 }
                 else if(extension==="TEXTGRID" ) {
                   scope.$apply(function () {
 		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
-		            scope.$parent.dropClass = 'waiting';
 		            scope.acceptFile = scope.acceptWav;
 		          });                
                   scope.$parent.$parent.grid = file;

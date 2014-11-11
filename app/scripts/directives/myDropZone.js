@@ -17,7 +17,6 @@ angular.module('emuwebApp')
 		  scope.dropAllowed = 'Drop file(s) to start loading !';
 		  scope.dropParsingStarted = 'Parsing started';
 		  scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
-		  
 		  scope.dropHintDefault = 'Load .TextGrid first or .TextGrid and .WAV at once!';
 		  
 		  scope.dropText = scope.dropTextDefault;
@@ -32,13 +31,16 @@ angular.module('emuwebApp')
                 item.file(function (file) {
                     var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                     if (scope.error !== true && extension === 'WAV') {
-                        scope.$parent.wav = file;
-                        scope.$parent.handleLocalFiles();
+                        scope.$apply(function () {
+		                    scope.dropText = scope.dropTextDefault;
+		                    scope.dropClass = '';
+		                }); 
+		                scope.$parent.wav = file;   
+		                scope.$parent.handleLocalFiles();                    
                     } else if (scope.error !== true && extension === 'TEXTGRID') {
                         scope.$parent.grid = file;
                         scope.$apply(function () {
 		                    scope.dropText = scope.dropParsingWaiting;
-		                    scope.dropClass = 'waiting';
 		                });
                     } else if (scope.error !== true) {
                         scope.error = true;
@@ -48,8 +50,8 @@ angular.module('emuwebApp')
                         dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
                             scope.dropText = scope.dropTextDefault;
                             scope.dropClass = '';
-                            appStateService.resetToInitState();
                         });
+                        appStateService.resetToInitState();
                     }
                 });
             } else if (item.isDirectory) {
@@ -70,6 +72,10 @@ angular.module('emuwebApp')
                 if (scope.error !== true && extension === 'WAV') {
                     scope.$parent.wav = item;
                     scope.$parent.handleLocalFiles();
+                    scope.$apply(function () {
+		                scope.dropText = scope.dropAllowed;
+		                scope.dropClass = '';
+		            });                    
                 } else if (scope.error !== true && extension === 'TEXTGRID') {
                     scope.$parent.grid = item;
                     scope.$apply(function () {
