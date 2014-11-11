@@ -17,6 +17,7 @@
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
       <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
+      <button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadAnnotationBtnClick();">download Annotation</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
 
       <div class="btn-group emuwebapp-mini-btn-group" dropdown is-open="status.isopen">

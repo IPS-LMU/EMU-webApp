@@ -10,7 +10,7 @@ angular.module('emuwebApp')
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(name, attr.save);
           Espsparserservice.asyncParseJSO(name).then(function (result) {
-		    dialogService.openExport('views/export.html', 'ExportCtrl', result.data, name + '_esps.txt');
+		    dialogService.openExport('views/export.html', 'ExportCtrl', result, name + '_esps.txt');
 		  });
         });
       }

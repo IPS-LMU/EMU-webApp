@@ -54,6 +54,7 @@ angular.module('emuwebApp')
                                 viewState.curPerspectiveIdx = 0;
                                 Soundhandlerservice.wavJSO = wavJSO;
                                 loadedMetaDataService.setBundleList([{name: extension}]);
+                                loadedMetaDataService.setCurBndlName(extension);
                                 // parsing of Textgrid Data
                                 if (!$.isEmptyObject($scope.grid)) {
                                     var reader = new FileReader();

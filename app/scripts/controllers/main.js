@@ -582,8 +582,19 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess.data, loadedMetaDataService.getCurBndl().name + '.TextGrid');
+					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess, loadedMetaDataService.getCurBndl().name + '.TextGrid');
 				});
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		/**
+		 *
+		 */
+		$scope.downloadAnnotationBtnClick = function () {
+			if (viewState.getPermission('downloadAnnotationBtnClick')) {
+				dialogService.openExport('views/export.html', 'ExportCtrl', JSON.stringify(DataService.getData(),null,'\t'), loadedMetaDataService.getCurBndl().name + '_annot.json');
 			} else {
 				console.log('action currently not allowed');
 			}
