@@ -22,6 +22,10 @@
   color: white;
 }
 
+.modal-header-hierarchy{
+  height: 75px !important;
+}
+
 .modal-footer{
   height: 60px !important;
   padding-top: 3px;  
