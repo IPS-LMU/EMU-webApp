@@ -37,7 +37,8 @@ angular.module('emuwebApp')
 					});
 				}
 			} else {
-				if (bndl !== loadedMetaDataService.getCurBndl()) {
+			    
+				if (bndl !== loadedMetaDataService.getCurBndl() && ConfigProviderService.vals.main.comMode !== 'embedded') {
 					// reset history
 					HistoryService.resetToInitState();
 					// set state

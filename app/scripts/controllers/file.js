@@ -23,7 +23,6 @@ angular.module('emuwebApp')
         $scope.handleLocalFiles = function () {
             var validRes;
             viewState.showDropZone = false;
-            ConfigProviderService.vals.main.comMode = 'FileAPI';
             viewState.setState('loadingSaving');
             // reset history
             viewState.somethingInProgress = true;
