@@ -65,7 +65,7 @@
     "karma-script-launcher": "~0.1.0",
     "load-grunt-tasks": "~0.1.0",
     "phantomjs": "~1.9.7-12",
-    "protractor": "~0.16.1",
+    "protractor": "~1.4.0",
     "time-grunt": "~0.1.1",
     "ws": "~0.4.31"
   },
