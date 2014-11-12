@@ -8,6 +8,7 @@ describe('Directive: enlarge', function() {
     beforeEach(inject(function($rootScope, $compile, viewState, dialogService, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
+        scope.vs.curPerspectiveIdx = 0;
     }));
 
     function compileDirective(tpl) {

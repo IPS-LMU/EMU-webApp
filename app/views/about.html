@@ -1,7 +1,10 @@
-<div class="modal-header">
-  <h3 id="modalHeading">EMU-webApp</h3>
+<div class="modal-header-large modal-header">
+  <h3 id="modalHeading">
+    EMU-webApp
+  </h3>
 </div>
 <div class="modal-body">
+  <img src="assets/EMU-webAppIcon-roundCorners.svg" style="height:60px;"></img>
   <h4 style="text-align:center;">Version: @@versionnr</h4>
   <h5 style="font-size:8pt; text-align:center;">Build time stamp: @@timestamp</h5>
   <h5 style="font-size:8pt; text-align:center;">Build GIT SHA-1: @@sha1</h5>
@@ -21,7 +24,7 @@
  
  <div class="emuwebapp-aboutDiv">
   <b>General usage</b><br />&nbsp;<br />
-  Moving the mouse over event and event levels automatically tracks the mouse movement
+  Moving the mouse over segment and event levels automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
   preselects it (indicated by marking it blue).
   <span ng-show="cps.vals.restrictions.editItemSize">
@@ -128,5 +131,5 @@
 </div>
 </div>
 <div class="modal-footer">
-  <button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>
+  <button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
 </div>

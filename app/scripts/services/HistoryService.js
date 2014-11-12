@@ -64,11 +64,9 @@ angular.module('emuwebApp')
 						if (applyOldVal) {
 							viewState.historyActionTxt = 'UNDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
-							console.log(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 						} else {
 							viewState.historyActionTxt = 'REDO: RENAMELABEL';
 							LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
-							console.log(cur.name, cur.id, cur.attrIndex, cur.newValue);
 						}
 						break;
 					case 'RENAMELEVEL':

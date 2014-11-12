@@ -15,6 +15,7 @@ describe('Directive: handleglobalkeystrokes', function() {
                                 LevelService, 
                                 HistoryService,
                                 dialogService,
+                                DataService,
                                 Binarydatamaniphelper) {
         // scopes
         scope = $rootScope.$new();
@@ -22,13 +23,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.shs = Soundhandlerservice;
         scope.vs = viewState;
         scope.lvl = LevelService;
+        scope.data = DataService;
         scope.history = HistoryService;
         scope.dials = dialogService;
         scope.binary = Binarydatamaniphelper;
         
         // load data
         scope.cps.setVals(defaultEmuwebappConfig);
-        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.data.setData(msajc003_bndl.annotation);
         scope.shs.wavJSO.Data = msajc003_bndl.mediaFile.data;
         
         // compile
@@ -710,7 +712,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.selectItemsInSelection, false);
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction'); 
-        expect(scope.vs.selectItemsInSelection).toHaveBeenCalledWith(scope.lvl.data.levels);
+        expect(scope.vs.selectItemsInSelection).toHaveBeenCalledWith(scope.data.getLevelData());
     });
     
     it('should selPrevItem', function() {
@@ -846,8 +848,6 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         // second call after clickOnItem
-        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
-        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([undefined]);
         expect(scope.lvl.deleteBoundary).toHaveBeenCalledWith(lvlName, neighbours.right.id, false, false);
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
@@ -880,8 +880,6 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteSegments).toHaveBeenCalledWith(lvlName, item.id, length);
-        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);
-        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([undefined]);        
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({
             'type': 'ANNOT',
             'action': 'DELETESEGMENTS',
@@ -908,7 +906,6 @@ describe('Directive: handleglobalkeystrokes', function() {
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
         trigEvent(scope.cps.vals.keyMappings.deletePreselBoundary, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
-        expect(scope.vs.setcurMouseItem.calls.argsFor(1)).toEqual([undefined, undefined, undefined]);        
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEvent).toHaveBeenCalledWith(lvlName, item.id);
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith({

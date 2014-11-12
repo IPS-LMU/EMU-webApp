@@ -14,6 +14,12 @@
 .emuwebapp-dropzone.over {
     background-color: #bfb;
 }
+.emuwebapp-dropzone.error {
+    background-color: #f00;
+}
+.emuwebapp-dropzone.waiting {
+    background-color: #0ff;
+}
 .emuwebapp-dropzone.hidden {
     display: none;
 }

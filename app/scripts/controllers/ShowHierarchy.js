@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+	.controller('ShowhierarchyCtrl', function ($scope, DataService, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
 	
 		// Scope data
 		
@@ -108,7 +108,7 @@ angular.module('emuwebApp')
 				}
 			};
 
-			traverse (LevelService.getData());
+			traverse (DataService.getData());
 
 			dialogService.close();
 			viewState.showHierarchy();

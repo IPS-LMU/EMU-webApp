@@ -5,15 +5,21 @@ describe('Directive: drawssff', function() {
     var elm, scope, worker;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, LevelService, Ssffdataservice) {
+    beforeEach(inject(function($rootScope, $compile, viewState, DataService, ConfigProviderService, LevelService, Ssffdataservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs = viewState;
-        scope.lvl.setData(msajc003_bndl.annotation);
-        scope.ssffds = Ssffdataservice;    
+        scope.data = DataService;
+        scope.ssffds = Ssffdataservice;   
     }));
+    
+    afterEach(function() {
+        scope.cps = {};
+        scope.data = {};
+        scope.ssffds = {};
+    })
     
     function compileDirective(trackname) {
         var tpl = '<canvas width="2048" drawssff ssff-trackname="'+trackname+'"></canvas>';
@@ -21,6 +27,13 @@ describe('Directive: drawssff', function() {
             elm = $compile(tpl)(scope);
         });
         scope.$digest();
+    }
+    
+    function setData() {
+        scope.vs.curPerspectiveIdx = 0;
+        scope.ssffds.data = msajc003_bndl.ssffFiles[0].data;
+		scope.data.setData(msajc003_bndl.annotation);
+		scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].signalCanvases = aeDbConfig.EMUwebAppConfig.perspectives[0].signalCanvases;
     }
 
     it('should set ssffTrackname', function() {
@@ -49,13 +62,44 @@ describe('Directive: drawssff', function() {
         expect(elm.isolateScope().handleUpdate).toHaveBeenCalled();
     }); 
 
-    /*it('should handleUpdate on other', function() {
-        compileDirective('');
-        scope.vs.curPerspectiveIdx = 0;
-        scope.ssffds.data = {data: 'test'};
+    it('should handleUpdate', function() {
+        setData(); 
+        spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: '1'});
+        spyOn(scope.cps, 'getLimsOfTrack').and.returnValue(1);
+        spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({values: [0, 1, 2]});
+        spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue(1);
+        compileDirective('SPEC');
         expect(elm.isolateScope()).toBeDefined();
-        spyOn(elm.isolateScope(), 'drawValues').and.returnValue();
         elm.isolateScope().handleUpdate();
-        expect(elm.isolateScope().drawValues).toHaveBeenCalledWith('');
-    }); */ 
+        expect(scope.cps.getLimsOfTrack).toHaveBeenCalledWith('test');
+        expect(scope.cps.getSsffTrackConfig).toHaveBeenCalled();
+        expect(scope.ssffds.getColumnOfTrack).toHaveBeenCalledWith('test', '1');
+        expect(scope.ssffds.getSampleRateAndStartTimeOfTrack).toHaveBeenCalledWith('test');
+    }); 
+
+    it('should handleUpdate on other', function() {
+        setData(); 
+        spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: '1'});
+        spyOn(scope.cps, 'getLimsOfTrack').and.returnValue(1);
+        spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({values: [0, 1, 2]});
+        spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue(1);
+        compileDirective('');
+        expect(elm.isolateScope()).toBeDefined();
+        elm.isolateScope().handleUpdate();
+        expect(scope.cps.getLimsOfTrack).toHaveBeenCalledWith('test');
+        expect(scope.cps.getSsffTrackConfig).toHaveBeenCalled();
+        expect(scope.ssffds.getColumnOfTrack).toHaveBeenCalledWith('test', '1');
+        expect(scope.ssffds.getSampleRateAndStartTimeOfTrack).toHaveBeenCalledWith('test');
+    });  
+    
+    it('should drawValues', function() {
+        setData();
+        spyOn(scope.cps, 'getContourColorsOfTrack').and.returnValue(undefined);
+        compileDirective('OSCI');
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(scope.vs, 'getViewPortStartTime').and.returnValue(0);
+        spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
+        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
+        expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
+    }); 
 });

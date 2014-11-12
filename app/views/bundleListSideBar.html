@@ -1,17 +1,32 @@
-<div class="emuwebapp-bundleListSideBarOuter" ng-show="cps.vals.activeButtons.openMenu">
-    <h3>
-        <div class="emuwebapp-bundleFilter">
-            <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
-        </div>
-    </h3>
-    <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
-    <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
-        <div class="bundleOuter" ng-repeat="bundle in bundleList | regex:filterText">
-            <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="menuBundleClick(bundle);">
-                <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="menuBundleSaveBtnClick();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>
-                <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
-                <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" /></div>
+<div class="emuwebapp-bundleListSideBarOuter">
+    {{filterText}}
+    <div ng-controller="bundleListSideBarCtrl" class="emuwebapp-bundleListSideBarInner">
+        <h3>
+            <div class="emuwebapp-bundleFilter">
+                <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)"/>
             </div>
+        </h3>
+        <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
+        <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
+            <ul ng-repeat="(key, value) in lmds.getBundleList() | groupBy: 'session'">
+                <div class="emuwebapp-bundleListSession" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
+                    <div ng-if="lmds.getSessionCollapseState(key)">
+                        ▷{{key}}
+                    </div>
+                    <div ng-if="!lmds.getSessionCollapseState(key)">
+                        ▽{{key}}
+                    </div>
+                </div>
+                <div collapse="lmds.getSessionCollapseState(key)">
+                <div class="bundleOuter" ng-repeat="bundle in value | regex:filterText">
+                    <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);">
+                        <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>
+                        <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
+                        <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" /></div>
+                    </div>
+                </div>
+                </div>
+            </ul>
         </div>
     </div>
 </div>

@@ -214,6 +214,13 @@ ul {
 .emuwebapp-loginModalTable {
     width: 100%;
     text-align:center;
+}
 
+.emuwebapp-bundleListSideBarOuter {
+    height: 100%;
+}
+
+.emuwebapp-bundleListSideBarInner {
+    height: 100%;
 }
 

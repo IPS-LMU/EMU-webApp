@@ -27,8 +27,7 @@ angular.module('emuwebApp')
         scope.devicePixelRatio = window.devicePixelRatio || 1;
         
         // Spectro Worker 
-        scope.spectroWorkerUrl = 'scripts/workers/spectroWorker.js';
-        scope.primeWorker = new Worker(scope.spectroWorkerUrl);
+        scope.primeWorker = new spectroDrawingWorker();
 
 
         ///////////////
@@ -124,16 +123,16 @@ angular.module('emuwebApp')
           scope.context.drawImage(horizontalText, 10, 50);
 
           if (scope.primeWorker !== null) {
-            scope.primeWorker.terminate();
+            scope.primeWorker.kill();
             scope.primeWorker = null;
           }
         }
 
         scope.setupEvent = function() {
           var imageData = scope.context.createImageData(scope.canvas0.width, scope.canvas0.height);
-          scope.primeWorker.addEventListener('message', function (event) {
-            if (scope.pcmpp() === event.data.myStep) {
-              var tmp = new Uint8ClampedArray(event.data.img);
+          scope.primeWorker.says(function(event) {
+            if (scope.pcmpp() === event.pcmpp) {
+              var tmp = new Uint8ClampedArray(event.img);
               imageData.data.set(tmp);
               scope.context.putImageData(imageData, 0, 0);
               scope.drawSpectMarkup();
@@ -143,7 +142,7 @@ angular.module('emuwebApp')
 
         scope.startSpectroRenderingThread = function(buffer) {
           if(buffer.length>0) {
-			  scope.primeWorker = new Worker(scope.spectroWorkerUrl);
+			  scope.primeWorker = new spectroDrawingWorker();
 			  var parseData;
 			  if (scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2) {
 				// pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
@@ -154,14 +153,12 @@ angular.module('emuwebApp')
 				parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); 
 			  }
 			  scope.setupEvent();
-			  scope.primeWorker.postMessage({
+			  scope.primeWorker.tell({
 				'N': scope.vs.spectroSettings.windowLength,
 				'alpha': scope.alpha,
 				'freq': scope.vs.spectroSettings.rangeTo,
 				'freqLow': scope.vs.spectroSettings.rangeFrom,
-				'start': scope.vs.curViewPort.sS,
-				'end': scope.vs.curViewPort.eS,
-				'myStep': scope.pcmpp(),
+				'pcmpp': scope.pcmpp(),
 				'window': scope.vs.spectroSettings.window,
 				'width': scope.canvas0.width,
 				'height': scope.canvas0.height,

@@ -5,9 +5,9 @@ describe('Directive: save', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, dialogService, LevelService) {
+    beforeEach(inject(function($rootScope, $compile, viewState, dialogService, DataService) {
         scope = $rootScope.$new();
-        LevelService.setData(msajc003_bndl.annotation);
+        DataService.setData(msajc003_bndl.annotation);
         scope.level = msajc003_bndl.annotation.levels[0];
         scope.vs = viewState;
         scope.dials = dialogService;

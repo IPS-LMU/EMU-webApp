@@ -1,73 +1,48 @@
 'use strict';
 
-describe('Worker: wavParserWorker', function () {
+describe('Worker: wavParserWorker', function() {
 
-  var worker;
-  var binary;
-
-  // load the controller's module
+  var worker, mockGlobal, wavData;
+  
   beforeEach(module('emuwebApp'));
-
-  beforeEach(inject(function (Binarydatamaniphelper) {
-    binary = Binarydatamaniphelper;
-    var blob;
-      try {
-          blob = new Blob([wavParserWorker], {type: 'application/javascript'});
-      } catch (e) { // Backwards-compatibility
-          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-          blob = new BlobBuilder();
-          blob.append(wavParserWorker);
-          blob = blob.getBlob();
-     }
-     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-         worker = new Worker(webkitURL.createObjectURL(blob));
-     } else {
-         worker = new Worker(URL.createObjectURL(blob));
-     }  
-
+  
+  beforeEach(function(){
+    var DummyWorker = function() {};
+    worker = new wavParserWorker(DummyWorker);    
+    // mock the global scope for the worker thread.
+    mockGlobal = {
+      postMessage: jasmine.createSpy('postMessage')
+    };
+    // call the initWorker method we use to build the worker script.
+    worker.workerInit(mockGlobal);
+  });
+  
+ 
+  it('should respond properly to undefined msg', function() {
+    mockGlobal.onmessage('unknown');
+    expect(mockGlobal.postMessage).toHaveBeenCalledWith({
+		'status': {
+			'type': 'ERROR',
+			'message': 'Undefined message was sent to wavParserWorker'
+		}
+	});
+  });
+  
+  it('should respond properly to defined msg with unknown cmd', function() {
+    mockGlobal.onmessage({data: {cmd: 'unknown'}});
+    expect(mockGlobal.postMessage).toHaveBeenCalledWith({
+		'status': {
+			'type': 'ERROR',
+			'message': 'Unknown command sent to wavParserWorker'
+		}
+	});
+  });
+  
+  it('should respond properly to defined msg with defined cmd and data', inject(function (Binarydatamaniphelper) {
+    var ab = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
+    mockGlobal.onmessage({data: {cmd: 'parseBuf', 'buffer': ab}}, [ab]);
+    expect(mockGlobal.postMessage).toHaveBeenCalled();
+    // need real test data in order to check correct wav parsing
   }));
-
-  afterEach(function () {
-    worker.terminate();
-  });
-
-
-  it('should return error on unknown parameter', function () {
-    worker.addEventListener('message', function (e) {
-      expect(e.data.status.type).toEqual('ERROR');
-      expect(e.data.status.message).toEqual('Unknown command sent to wavParserWorker');
-    });
-    worker.postMessage({
-      'cmd': 'unknown'
-    });
-  });
-
-
-  it('should parse ArrayBuffer to WAVE', function () {
-    worker.addEventListener('message', function (e) {
-      expect(e.data.status.type).toEqual('SUCCESS');
-      expect(e.data.status.message).toEqual('');
-      expect(e.data.data.ChunkID).toEqual('RIFF');
-      expect(e.data.data.ChunkSize).toEqual(116214);
-      expect(e.data.data.Format).toEqual('WAVE');
-      expect(e.data.data.Subchunk1ID).toEqual('fmt '); // <-- SIC why spaces ?
-      expect(e.data.data.Subchunk1Size).toEqual(16);
-      expect(e.data.data.AudioFormat).toEqual(1);
-      expect(e.data.data.NumChannels).toEqual(1);
-      expect(e.data.data.SampleRate).toEqual(20000);
-      expect(e.data.data.ByteRate).toEqual(40000);
-      expect(e.data.data.BlockAlign).toEqual(2);
-      expect(e.data.data.BitsPerSample).toEqual(16);
-      expect(e.data.data.Subchunk2ID).toEqual('data');
-      expect(e.data.data.Subchunk2Size).toEqual(116178);
-      expect(e.data.data.Data.length).toEqual(58089);
-    });
-    var buf = binary.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
-    worker.postMessage({
-      'cmd': 'parseBuf',
-      'buffer': buf
-    });
-  });
-
-
+  
 });

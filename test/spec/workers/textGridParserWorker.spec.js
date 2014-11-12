@@ -1,86 +1,75 @@
 'use strict';
 
-describe('Worker: textGridParserWorker', function () {
+describe('Worker: textGridParserWorker', function() {
 
-  var worker;
-  var level;
+  var worker, mockGlobal, wavData;
+  
+  beforeEach(module('emuwebApp'));
+  
+  var data;
   var parsed;
   var sampleRate = 20000;
   var bufferLength = 58089;
   var name = 'msajc003';
   var annotates = name + '.wav';
-
-  // load the controller's module
-  beforeEach(module('emuwebApp'));
-
-  beforeEach(inject(function (LevelService) {
-    level = LevelService;
-    var blob;
-      try {
-          blob = new Blob([textGridParserWorker], {type: 'application/javascript'});
-      } catch (e) { // Backwards-compatibility
-          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-          blob = new BlobBuilder();
-          blob.append(textGridParserWorker);
-          blob = blob.getBlob();
-     }
-     if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-         worker = new Worker(webkitURL.createObjectURL(blob));
-     } else {
-         worker = new Worker(URL.createObjectURL(blob));
-     } 
-
+  
+  beforeEach(inject(function (DataService) {
+    data = DataService;
+    var DummyWorker = function() {};
+    worker = new textGridParserWorker(DummyWorker);    
+    // mock the global scope for the worker thread.
+    mockGlobal = {
+      postMessage: jasmine.createSpy('postMessage')
+    };
+    // call the initWorker method we use to build the worker script.
+    worker.workerInit(mockGlobal);
   }));
-
-  it('should return error on unknown parameter', function (done) {
-    worker.addEventListener('message', function (e) {
-      expect(e.data.status.type).toEqual('ERROR');
-      expect(e.data.status.message).toEqual('Unknown command sent to textGridParserWorker');
-      worker.terminate();
-      done();
-    });
-    worker.postMessage({
-      'cmd': 'unknown'
-    });
+  
+ 
+  it('should respond properly to undefined msg', function() {
+    mockGlobal.onmessage('unknown');
+    expect(mockGlobal.postMessage).toHaveBeenCalledWith({
+		'status': {
+			'type': 'ERROR',
+			'message': 'Undefined message was sent to textGridParserWorker'
+		}
+	});
   });
-
-  it('should convert toTextGrid', function (done) {
-    level.setData(msajc003_bndl.annotation);
-    worker.addEventListener('message', function (e) {
-      expect(e.data.status.type).toEqual('SUCCESS');
-      expect(e.data.status.message).toEqual('');
-      //expect(e.data.data).toEqual(msajc003TextGridFile);
-      worker.terminate();
-      done();
-    });
-    worker.postMessage({
+  
+  it('should respond properly to defined msg with unknown cmd', function() {
+    mockGlobal.onmessage({data: {cmd: 'unknown'}});
+    expect(mockGlobal.postMessage).toHaveBeenCalledWith({
+		'status': {
+			'type': 'ERROR',
+			'message': 'Unknown command sent to textGridParserWorker'
+		}
+	});
+  });
+  
+  it('should convert toTextGrid', function() {
+    data.setData(msajc003_bndl.annotation);
+    mockGlobal.onmessage({data: {
       'cmd': 'toTextGrid',
-      'levels': level.getData().levels,
+      'levels': data.getData().levels,
       'sampleRate': sampleRate,
       'buffLength': bufferLength
-    });
+    }});
+    expect(mockGlobal.postMessage).toHaveBeenCalled();    
+    // todo: need data to compare!
   });
-
-
-  it('should parseTG', function (done) {
-    level.setData(msajc003_bndl.annotation);
-    worker.addEventListener('message', function (e) {
-      expect(e.data.status.type).toEqual('SUCCESS');
-      expect(e.data.status.message).toEqual('');
-      expect(e.data.data.name).toEqual(name);
-      expect(e.data.data.annotates).toEqual(annotates);
-      expect(e.data.data.sampleRate).toEqual(sampleRate);
-      //expect(e.data.data.levels).toEqual(level.getLevelsByType(["EVENT", "SEGMENT"]));
-      worker.terminate();
-      done();
-    });
-    worker.postMessage({
+  
+  it('should parse TG', function() {
+    data.setData(msajc003_bndl.annotation);
+    mockGlobal.onmessage({data: {
       'cmd': 'parseTG',
       'textGrid': msajc003TextGridFileNew,
       'sampleRate': sampleRate,
       'annotates': annotates,
       'name': name
-    });
+    }});
+    expect(mockGlobal.postMessage).toHaveBeenCalled();
+    // todo: need data to compare!
   });
+  
 
 });

@@ -125,6 +125,7 @@
         "addLevelEvent": false,
         "renameSelLevel": false,
         "downloadTextGrid": false,
+        "downloadAnnotation": false,
         "specSettings": true,
         "connect": true,
         "clear": true,

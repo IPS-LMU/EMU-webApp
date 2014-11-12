@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="EMU-webAppIcon.svg">
+   sodipodi:docname="EMU-webAppIconInkscape.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -119,10 +119,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.64"
-     inkscape:cx="706.9521"
+     inkscape:cx="499.1396"
      inkscape:cy="508.89593"
      inkscape:document-units="px"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="svg2"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -214,7 +214,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -340,7 +340,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="Layer"
+     inkscape:label="emu"
      style="display:inline">
     <path
        style="fill:#ffffff;fill-opacity:1;filter:url(#filter4143)"
@@ -353,7 +353,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(50.25,211.52169)"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <path
        inkscape:connector-curvature="0"
@@ -365,7 +365,7 @@
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="MASK"
-     style="display:none">
+     style="display:inline">
     <path
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="m -0.03515625,708.40625 c 0.05564213,38.75762 0.61632351,71.02215 3.48917125,100.18549 0.8757813,8.89038 2.0231286,17.50673 3.364698,25.91301 2.7291509,17.10087 6.251639,30.63186 10.624705,44.6288 0.983104,3.14664 2.343873,6.00913 3.546782,8.89844 4.954414,11.90016 10.441772,22.62502 16.75229,32.23106 7.482354,11.38984 16.590926,23.44234 26.690428,33.79613 11.282296,11.56636 22.163363,20.60638 34.238258,28.7856 7.753914,5.2523 15.167714,9.80978 23.655414,13.91931 3.34329,1.61873 6.78353,3.25751 10.45545,4.87471 6.01057,2.6472 12.64725,5.2405 20.38236,7.4312 16.33865,4.6274 37.83594,9.5058 66.67436,11.7859 26.04947,2.0596 58.07248,3.2184 99.20801,3.1754 l -319.08192625,0 z"
@@ -395,7 +395,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="GUIDES"
-     style="display:none"
+     style="display:inline"
      transform="translate(0,-2.2054443)">
     <path
        style="color:#000000;fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"

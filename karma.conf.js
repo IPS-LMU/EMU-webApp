@@ -21,10 +21,13 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+      'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/scripts/*.js',
-      'app/scripts/workers/*.js',
       'app/scripts/filters/*.js',
-      'app/scripts/**/*.js',
+      'app/scripts/controllers/*.js',
+      'app/scripts/directives/*.js',
+      'app/scripts/services/*.js',
+      'app/scripts/workers/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
@@ -58,13 +61,6 @@ module.exports = function (config) {
         watched: true,
         served: true,
         included: false
-      },
-      // fixtures
-      {
-        pattern: 'app/scripts/workers/*',
-        watched: true,
-        served: true,
-        included: false
       }
     ],
 
@@ -85,7 +81,8 @@ module.exports = function (config) {
     },
 
     proxies: {
-      '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/'
+      '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/',
+      '/assets/': 'http://ips-lmu.github.io/EMU-webApp/assets/'
     },
 
     // list of files / patterns to exclude
@@ -122,7 +119,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS', 'Chrome'],
+    browsers: ['PhantomJS'],
     
     captureTimeout: 60000,
 

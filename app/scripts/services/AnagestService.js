@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 			var defer = $q.defer();
 
 			// precheck if there are items in selection
-			var itemInSel = viewState.getItemsInSelection(LevelService.data.levels);
+			var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
 			if (itemInSel.length !== 0) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'There are already events in the selected area! This is not permitted...').then(function () {
 					defer.reject();

@@ -15,9 +15,9 @@ describe('Service: Espsparserservice', function () {
   /**
    *
    */
-   it('should resolve asyncParseJSO', inject(function (Espsparserservice, LevelService) {
+   it('should resolve asyncParseJSO', inject(function (Espsparserservice, DataService) {
      var result;
-     LevelService.setData(msajc003_bndl.annotation);
+     DataService.setData(msajc003_bndl.annotation);
      spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
      Espsparserservice.asyncParseJSO('Utterance').then(function (res) {
        expect(res).toEqual('called');
@@ -28,9 +28,9 @@ describe('Service: Espsparserservice', function () {
   /**
    *
    */
-   it('should resolve asyncParseEsps', inject(function (Espsparserservice, LevelService) {
+   it('should resolve asyncParseEsps', inject(function (Espsparserservice, DataService) {
    var result;
-   LevelService.setData(msajc003_bndl.annotation);
+   DataService.setData(msajc003_bndl.annotation);
    spyOn(Espsparserservice, 'asyncParseEsps').and.returnValue(deferred.promise);
    var ret = Espsparserservice.asyncParseEsps('','','').then(function (res) { //esps, annotates, name
     expect(res).toEqual('called');
@@ -41,9 +41,9 @@ describe('Service: Espsparserservice', function () {
   /**
    *
    */
-   it('should resolve asyncParseJSO', inject(function (Espsparserservice, LevelService) {
+   it('should resolve asyncParseJSO', inject(function (Espsparserservice, DataService) {
    var result;
-   LevelService.setData(msajc003_bndl.annotation);
+   DataService.setData(msajc003_bndl.annotation);
    spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
    var ret = Espsparserservice.asyncParseJSO('').then(function (res) { //name
     expect(res).toEqual('called');

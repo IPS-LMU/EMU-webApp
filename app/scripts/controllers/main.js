@@ -1,14 +1,19 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout, $q, $window, $document, $location,
-		viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, LevelService, dialogService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler) {
-
+	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout,
+		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
+		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
+		LevelService, dialogService, Textgridparserservice, Espsparserservice,
+		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
+		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
+		appStateService, DataService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
 		$scope.fontImage = fontScaleService;
 		$scope.levServ = LevelService;
+		$scope.dataServ = DataService;
 		$scope.vs = viewState;
 		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
@@ -21,23 +26,9 @@ angular.module('emuwebApp')
 		// init vars
 		$scope.connectBtnLabel = 'connect';
 		$scope.tmp = {};
-
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
-
-		//$scope.lastkeycode = 'N/A';
-		$scope.bundleList = [];
-
-		$scope.curUserName = '';
-		$scope.curBndl = {};
-
-		$scope.lastclickedutt = null;
-		$scope.filterText = '';
 		$scope.windowWidth = $window.outerWidth;
-
-		$scope.demoDbName = '';
-
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true : false);
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -62,7 +53,7 @@ angular.module('emuwebApp')
 
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
-			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && $scope.bundleList.length > 0 && !ConfigProviderService.vals.main.autoConnect) {
+			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect) {
 				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
 			}
 		};
@@ -86,7 +77,12 @@ angular.module('emuwebApp')
 
 		// listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
 		$scope.$on('connectionDisrupted', function (event, args) {
-			$scope.resetToInitState();
+			appStateService.resetToInitState();
+		});
+
+		// listen for resetToInitState
+		$scope.$on('resetToInitState', function () {
+			$scope.loadDefaultConfig();
 		});
 
 		//
@@ -110,7 +106,7 @@ angular.module('emuwebApp')
 					viewState.showDropZone = false;
 					// set bundle name
 					var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
-					$scope.curBndl.name = tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length);
+					loadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
@@ -153,8 +149,8 @@ angular.module('emuwebApp')
 										viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
-											var annot = parseMess.data;
-											LevelService.setData(annot);
+											var annot = parseMess;
+											DataService.setData(annot);
 
 											var lNames = [];
 											var levelDefs = [];
@@ -228,18 +224,18 @@ angular.module('emuwebApp')
 						viewState.somethingInProgress = false;
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				}).error(function (data, status, header, config) {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				});
 			}, function (errMess) {
 				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
-					$scope.resetToInitState();
+					appStateService.resetToInitState();
 				});
 			});
 		};
@@ -307,7 +303,7 @@ angular.module('emuwebApp')
 								if (res) {
 									$scope.innerHandleConnectedToWSserver();
 								} else {
-									$scope.resetToInitState();
+									appStateService.resetToInitState();
 								}
 							});
 						}
@@ -315,7 +311,7 @@ angular.module('emuwebApp')
 				} else {
 					// show protocol error and disconnect from server
 					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				}
 			});
@@ -341,222 +337,78 @@ angular.module('emuwebApp')
 						// then get the DBconfigFile
 						viewState.somethingInProgressTxt = 'Loading bundle list...';
 						Iohandlerservice.getBundleList().then(function (bdata) {
-							validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+							validRes = loadedMetaDataService.setBundleList(bdata);
 							if (validRes === true) {
-								$scope.bundleList = bdata;
 								// then load first bundle in list
-								$scope.menuBundleClick($scope.bundleList[0]);
+								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 							} else {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-									$scope.resetToInitState();
+									appStateService.resetToInitState();
 								});
 							}
 						});
 
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				} else {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				}
 			});
-		};
-
-		/**
-		 * Handle click on bundle in side menu. It is
-		 * also used as a general loadBundle method.
-		 * @param bndl object containing name attribute of currently loaded bundle
-		 */
-		$scope.menuBundleClick = function (bndl) {
-
-			// check if bndl has to be saved
-			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-				if (bndl !== $scope.curBndl) {
-					$scope.lastclickedutt = bndl;
-					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
-						if (messModal === 'saveChanges') {
-							// save current bundle
-							$scope.menuBundleSaveBtnClick().then(function () {
-								// load new bundle
-								$scope.menuBundleClick(bndl);
-							});
-						} else if (messModal === 'discardChanges') {
-							// reset history
-							HistoryService.resetToInitState();
-							// load new bundle
-							$scope.menuBundleClick(bndl);
-						}
-					});
-				}
-			} else {
-				if (bndl !== $scope.curBndl) {
-					// reset history
-					HistoryService.resetToInitState();
-					// set state
-					viewState.setState('loadingSaving');
-
-					viewState.somethingInProgress = true;
-					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
-					// empty ssff files
-					Ssffdataservice.data = [];
-					Iohandlerservice.getBundle(bndl.name, $scope.demoDbName).then(function (bundleData) {
-						// check if response from http request
-						if (bundleData.status === 200) {
-							bundleData = bundleData.data;
-						}
-
-						var arrBuff;
-
-						// set wav file
-						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
-						viewState.somethingInProgressTxt = 'Parsing WAV file...';
-
-						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
-							var wavJSO = messWavParser;
-							viewState.curViewPort.sS = 0;
-							viewState.curViewPort.eS = wavJSO.Data.length;
-							viewState.curViewPort.selectS = -1;
-							viewState.curViewPort.selectE = -1;
-							viewState.curClickItems = [];
-							viewState.curClickLevelName = undefined;
-							viewState.curClickLevelType = undefined;
-							viewState.resetSelect();
-							Soundhandlerservice.wavJSO = wavJSO;
-
-							// set all ssff files
-							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
-								Ssffdataservice.data = ssffJso.data;
-								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
-								if (validRes === true) {
-									// set annotation
-									LevelService.setData(bundleData.annotation);
-									$scope.curBndl = bndl;
-									viewState.setState('labeling');
-									viewState.somethingInProgress = false;
-									viewState.somethingInProgressTxt = 'Done!';
-								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
-										$scope.resetToInitState();
-									});
-								}
-							}, function (errMess) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
-									$scope.resetToInitState();
-								});
-							});
-						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message).then(function () {
-								$scope.resetToInitState();
-							});
-						});
-
-					}, function (errMess) {
-						// check for http vs websocket response
-						if (errMess.data) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data).then(function () {
-								$scope.resetToInitState();
-							});
-						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message).then(function () {
-								$scope.resetToInitState();
-							});
-						}
-					});
-				}
-			}
-		};
-
-
-		/**
-		 * Handle save bundle button click. The function is also used
-		 * as a gerneral purpose save bundle function.
-		 * @return promise that is resolved after completion (rejected on error)
-		 */
-		$scope.menuBundleSaveBtnClick = function () {
-			// check if something has changed
-			// if (HistoryService.movesAwayFromLastSave !== 0) { // Commented out FOR DEVELOPMENT!
-			if (viewState.getPermission('saveBndlBtnClick')) {
-				var defer = $q.defer();
-				viewState.somethingInProgress = true;
-				viewState.setState('loadingSaving');
-				//create bundle json
-				var bundleData = {};
-				viewState.somethingInProgressTxt = 'Creating bundle json...';
-				bundleData.ssffFiles = [];
-				var formants = {};
-				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-				Ssffdataservice.data.forEach(function (el) {
-
-					if (el.ssffTrackName === 'FORMANTS') {
-						formants = el;
-					}
-				});
-
-				if (!$.isEmptyObject(formants)) {
-					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
-						bundleData.ssffFiles.push({
-							'ssffTrackName': formants.ssffTrackName,
-							'encoding': 'BASE64',
-							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
-						});
-						$scope.getAnnotationAndSaveBndl(bundleData, defer);
-
-					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
-						defer.reject();
-					});
-				} else {
-					$scope.getAnnotationAndSaveBndl(bundleData, defer);
-				}
-
-				return defer.promise;
-				// } // Commented out FOR DEVELOPMENT!
-			} else {
-				$log.info('Action: menuBundleSaveBtnClick not allowed!');
-			}
-
 		};
 
 
 		/**
 		 *
 		 */
-		$scope.getAnnotationAndSaveBndl = function (bundleData, defer) {
-			// annotation
-			bundleData.annotation = LevelService.getData();
-			viewState.somethingInProgressTxt = 'Saving bundle...';
-			Iohandlerservice.saveBundle(bundleData).then(function () {
-				viewState.somethingInProgressTxt = 'Done!';
-				viewState.somethingInProgress = false;
-				HistoryService.movesAwayFromLastSave = 0;
-				defer.resolve();
-				viewState.setState('labeling');
-			}, function (errMess) {
-				// console.log(mess);
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
-					$scope.resetToInitState();
-				});
-				defer.reject();
-			});
+		$scope.toggleCollapseSession = function (ses) {
+			alert($scope.uniqSessionList[ses].collapsed);
+			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
+			console.log($scope.uniqSessionList[ses].collapsed);
 		};
 
 		/**
 		 *
 		 */
-		$scope.uttIsDisabled = function (bndl) {
-			if (bndl.name === $scope.curBndl.name) {
-				return false;
-			} else {
-				return true;
-			}
+		$scope.sessionIsCollapsed = function (ses) {
+			console.log(ses);
+			console.log($scope.uniqSessionList[ses].collapsed);
+			// return $scope.uniqSessionList[ses].collapsed;
+			return false;
 		};
 
+		$scope.getCurBndlName = function () {
+			return loadedMetaDataService.getCurBndlName();
+		};
+
+		/**
+		 *
+		 */
+		$scope.genUniqSessionList = function (bndlList) {
+			var sList = [];
+			var fistSes;
+			bndlList.forEach(function (bndl, idx) {
+				sList[bndl.session] = {
+					'collapsed': true
+				};
+				if (idx === 0) {
+					fistSes = bndl.session;
+				}
+			});
+			// open fist session up 
+			sList[fistSes].collapsed = false;
+			console.log(sList['0001'].collapsed);
+			return sList;
+		};
+
+		/**
+		 *
+		 */
 		$scope.getEnlarge = function (index) {
 			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 			var large = 50;
@@ -582,32 +434,6 @@ angular.module('emuwebApp')
 			}
 		};
 
-		/**
-		 * returns jso with css defining color dependent
-		 * on if changes have been made that have not been saved
-		 * @param bndl object containing name attribute of bundle item
-		 * requesting color
-		 * @returns color as jso object used by ng-style
-		 */
-		$scope.getBndlColor = function (bndl) {
-			var curColor;
-			if (HistoryService.movesAwayFromLastSave !== 0) {
-				curColor = {
-					'background-color': '#f00',
-					'color': 'white'
-				};
-			} else {
-				curColor = {
-					'background-color': '#999',
-					'color': 'black'
-				};
-			}
-
-			// console.log(bndl.name)
-			if (bndl.name === $scope.curBndl.name) {
-				return curColor;
-			}
-		};
 
 
 		/**
@@ -638,16 +464,16 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.insertLevelSegBtnClick = function () {
+		$scope.addLevelSegBtnClick = function () {
 			if (viewState.getPermission('addLevelSegBtnClick')) {
 				var length = 0;
-				if (LevelService.data.levels !== undefined) {
-					length = LevelService.data.levels.length;
+				if (DataService.data.levels !== undefined) {
+					length = DataService.data.levels.length;
 				}
 				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
-						id: LevelService.getNewId(),
+						id: DataService.getNewId(),
 						sampleStart: 0,
 						sampleDur: Soundhandlerservice.wavJSO.Data.length,
 						labels: [{
@@ -679,7 +505,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-
+				
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -688,17 +514,17 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.insertLevelPointBtnClick = function () {
+		$scope.addLevelPointBtnClick = function () {
 
 			if (viewState.getPermission('addLevelPointBtnClick')) {
 				var length = 0;
-				if (LevelService.data.levels !== undefined) {
-					length = LevelService.data.levels.length;
+				if (DataService.data.levels !== undefined) {
+					length = DataService.data.levels.length;
 				}
 				var newName = 'levelNr' + length;
 				var level = {
 					items: [{
-						id: LevelService.getNewId(),
+						id: DataService.getNewId(),
 						samplePoint: Math.round(Soundhandlerservice.wavJSO.Data.length / 2),
 						labels: []
 					}],
@@ -756,8 +582,19 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess.data, $scope.curBndl.name + '.TextGrid');
+					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess, loadedMetaDataService.getCurBndl().name + '.TextGrid');
 				});
+			} else {
+				console.log('action currently not allowed');
+			}
+		};
+
+		/**
+		 *
+		 */
+		$scope.downloadAnnotationBtnClick = function () {
+			if (viewState.getPermission('downloadAnnotationBtnClick')) {
+				dialogService.openExport('views/export.html', 'ExportCtrl', angular.toJson(DataService.getData(), true), loadedMetaDataService.getCurBndl().name + '_annot.json');
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -800,7 +637,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.openDemoDBbtnClick = function (nameOfDB) {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
-				$scope.demoDbName = nameOfDB;
+				loadedMetaDataService.setDemoDbName(nameOfDB);
 				// hide drop zone 
 				viewState.showDropZone = false;
 
@@ -828,37 +665,37 @@ angular.module('emuwebApp')
 
 							Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
 								var bdata = res.data;
-								validRes = Validationservice.validateJSO('bundleListSchema', bdata);
-								if (validRes === true) {
-									$scope.bundleList = bdata;
-									// then load first bundle in list
-									$scope.menuBundleClick($scope.bundleList[0]);
-								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-										$scope.resetToInitState();
-									});
-								}
+								// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+								// if (validRes === true) {
+								loadedMetaDataService.setBundleList(bdata);
+								// then load first bundle in list
+								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+								// } else {
+								// 	dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								// 		appStateService.resetToInitState();
+								// 	});
+								// }
 							}, function (err) {
 								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-									$scope.resetToInitState();
+									appStateService.resetToInitState();
 								});
 							});
 						} else {
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								$scope.resetToInitState();
+								appStateService.resetToInitState();
 							});
 						}
 
 
 					} else {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					}
 
 				}, function (err) {
 					dialogService.open('views/error.html', 'ModalCtrl', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-						$scope.resetToInitState();
+						appStateService.resetToInitState();
 					});
 				});
 			} //else {
@@ -877,8 +714,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showHierarchyBtnClick = function () {
-		    viewState.showHierarchy();
-		    dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+			viewState.showHierarchy();
+			dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
 		};
 
 		/**
@@ -894,39 +731,10 @@ angular.module('emuwebApp')
 			}
 			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', modalText).then(function (res) {
 				if (res) {
-					$scope.resetToInitState();
+					appStateService.resetToInitState();
 				}
 			});
 		};
-
-		/**
-		 *
-		 */
-		$scope.resetToInitState = function () {
-			if (Iohandlerservice.wsH.isConnected()) {
-				Iohandlerservice.wsH.disconnectWarning().then(function (resp) {
-					$log.info('Closing websocket connection to server');
-					Iohandlerservice.wsH.closeConnect();
-				});
-			}
-			$scope.curBndl = {};
-			$scope.bundleList = [];
-			Soundhandlerservice.wavJSO = {};
-			LevelService.data = {};
-			Ssffdataservice.data = [];
-			HistoryService.resetToInitState();
-			viewState.setState('noDBorFilesloaded');
-			$scope.$broadcast('resetToInitState');
-
-			viewState.somethingInProgress = false;
-			viewState.resetToInitState();
-
-			viewState.showDropZone = true;
-			$scope.loadDefaultConfig();
-
-
-		};
-
 
 		// bottom menu:
 

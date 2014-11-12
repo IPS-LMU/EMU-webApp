@@ -132,6 +132,7 @@ angular.module('emuwebApp')
                     });
                   }
                   scope.lastPCM = scope.curMouseSampleNrInView;
+                  viewState.setLastPcm(scope.lastPCM);
                   viewState.selectBoundary();
                   moveLine = false;
                 }
@@ -149,6 +150,7 @@ angular.module('emuwebApp')
                     'movedBy': moveBy
                   });
                   scope.lastPCM = scope.curMouseSampleNrInView;
+                  viewState.setLastPcm(scope.lastPCM);
                   viewState.selectBoundary();
                 }
               } else {
@@ -198,6 +200,7 @@ angular.module('emuwebApp')
             viewState.setcurClickItem(scope.lastEventClick.current);
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
+          viewState.setLastPcm(scope.lastPCM);
           scope.$apply();
         }
 
@@ -217,6 +220,7 @@ angular.module('emuwebApp')
             viewState.selectBoundary();
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
+          viewState.setLastPcm(scope.lastPCM);
           scope.$apply();
         }
 
@@ -253,6 +257,7 @@ angular.module('emuwebApp')
             }
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
+          viewState.setLastPcm(scope.lastPCM);
           scope.$apply();
         }
 
@@ -271,6 +276,7 @@ angular.module('emuwebApp')
           viewState.setcurMouseLevelName(scope.levelName);
           viewState.setcurMouseLevelType(scope.levelType);
           scope.lastPCM = scope.curMouseSampleNrInView;
+          viewState.setLastPcm(scope.lastPCM);
           scope.$apply();
         }
       }

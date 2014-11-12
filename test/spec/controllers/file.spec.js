@@ -34,17 +34,5 @@ describe('Controller: FileCtrl', function () {
      expect($scope.curBndl).toEqual(emptyObj);
      expect($scope.dropText).toEqual($scope.dropDefault);
    }); 
-   
-   it('should react to $broadcast resetToInitState', inject(function($rootScope) {
-     spyOn($scope, 'resetToInitState');
-     $rootScope.$broadcast('resetToInitState');
-     expect($scope.resetToInitState).toHaveBeenCalled();
-   })); 
-   
-   /*it('should handleLocalFiles', function () { TODO
-     $scope.handleLocalFiles();
-     expect($scope.$parent.vs.showDropZone).toBe(false);
-     expect($scope.$parent.cps.vals.main.comMode).toBe('FileAPI');
-   });    */
 
 });

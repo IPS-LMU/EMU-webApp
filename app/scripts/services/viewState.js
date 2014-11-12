@@ -71,6 +71,7 @@ angular.module('emuwebApp')
       sServObj.curMouseLevelType = undefined;
       sServObj.curClickLevelName = undefined;
       sServObj.curClickLevelType = undefined;
+      sServObj.lastPcm = undefined;
       sServObj.curPreselColumnSample = 2;
       sServObj.curCorrectionToolNr = undefined;
       sServObj.curClickLevelIndex = undefined;
@@ -92,7 +93,7 @@ angular.module('emuwebApp')
         'permittedActions': []
       };
       sServObj.states.labeling = {
-        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars', 'saveBndlBtnClick', 'showHierarchyBtnClick']
+        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'downloadAnnotationBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars', 'saveBndlBtnClick', 'showHierarchyBtnClick']
       };
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
@@ -591,7 +592,7 @@ angular.module('emuwebApp')
      */
     sServObj.getcurMouseNeighbours = function () {
       return this.curMouseNeighbours;
-    };
+    };  
 
     /**
      * selects all Segements on current level which are inside the selected viewport
@@ -783,6 +784,20 @@ angular.module('emuwebApp')
     /**
      *
      */
+    sServObj.getLasPcm = function () {
+      return this.lastPcm;
+    };
+
+    /**
+     *
+     */
+    sServObj.setLastPcm = function (n) {
+      this.lastPcm = n;
+    };
+
+    /**
+     *
+     */
     sServObj.isHierarchyRotated = function () {
       return sServObj.hierarchyRotated;
     };
@@ -820,6 +835,7 @@ angular.module('emuwebApp')
      *
      */
     sServObj.setcursorInTextField = function (n) {
+      console.log(n);
       this.cursorInTextField = n;
     };
 

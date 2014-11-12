@@ -516,6 +516,9 @@
 				"downloadTextGrid": {
 					"type": "boolean"
 				},
+				"downloadAnnotation": {
+					"type": "boolean"
+				},
 				"specSettings": {
 					"type": "boolean"
 				},
@@ -550,7 +553,7 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
+			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
 			"additionalProperties": false
 		},
 		"demoDBs": {

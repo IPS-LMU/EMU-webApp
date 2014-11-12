@@ -10,7 +10,6 @@ describe('Factory: viewState', function () {
    */
   it('should initialize viewState correctly', inject(function (viewState) {
     viewState.initialize();
-
     expect(viewState.curViewPort.sS).toEqual(0);
     expect(viewState.curViewPort.eS).toEqual(0);
     expect(viewState.curViewPort.selectS).toEqual(-1);
@@ -124,8 +123,8 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should selectLevel', inject(function (viewState, LevelService) {
-    LevelService.setData(msajc003_bndl.annotation);
+  it('should selectLevel', inject(function (viewState, LevelService, DataService) {
+    DataService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(true, ["Phonetic", "Tone"], LevelService);
     expect(viewState.curClickLevelName).toEqual('Tone');
     expect(viewState.curClickLevelType).toEqual('EVENT');
@@ -142,11 +141,11 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should selectItemsInSelection', inject(function (viewState, LevelService) {
-    LevelService.setData(msajc003_bndl.annotation);
+  it('should selectItemsInSelection', inject(function (viewState, LevelService, DataService) {
+    DataService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(3300, 7000);
-    viewState.selectItemsInSelection(LevelService.data.levels);
+    viewState.selectItemsInSelection(DataService.data.levels);
     expect(viewState.curClickItems.length).toEqual(2);
     expect(viewState.curClickItems[0].labels[0].value).toEqual('V');
     expect(viewState.curClickItems[1].labels[0].value).toEqual('m');
@@ -156,14 +155,14 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should getselectedRange', inject(function (viewState, LevelService) {
+  it('should getselectedRange', inject(function (viewState, LevelService, DataService) {
     var range = viewState.getselectedRange();
     expect(range.start).toEqual(-1);
     expect(range.end).toEqual(-1);
-    LevelService.setData(msajc003_bndl.annotation);
+    DataService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ['Phonetic', 'Tone'], LevelService);
     viewState.select(10, 9700);
-    viewState.selectItemsInSelection(LevelService.data.levels);
+    viewState.selectItemsInSelection(DataService.data.levels);
     range = viewState.getselectedRange();
     expect(range.start).toEqual(3750);
     expect(range.end).toEqual(9669);
@@ -190,8 +189,8 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should zoomViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
-    LevelService.setData(msajc003_bndl.annotation);
+  it('should zoomViewPort', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
+    DataService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);
@@ -209,8 +208,8 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should shiftViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
-    LevelService.setData(msajc003_bndl.annotation);
+  it('should shiftViewPort', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
+    DataService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);

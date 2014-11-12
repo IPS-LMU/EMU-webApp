@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope) {
@@ -528,7 +528,7 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickLevelName() === undefined) {
                     scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
                   } else {
-                    viewState.selectItemsInSelection(LevelService.data.levels);
+                    viewState.selectItemsInSelection(DataService.data.levels);
                   }
                 }
               }
@@ -744,10 +744,10 @@ angular.module('emuwebApp')
 				  var isLast = viewState.getcurMouseisLast();
 				  var levelname = viewState.getcurMouseLevelName();
 				  var type = viewState.getcurMouseLevelType();
-				  var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                   if (!e.shiftKey) {
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                       if (seg !== undefined) {
+                          var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
                           if (type === "SEGMENT") {
                             var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
                             HistoryService.updateCurChangeObj({
@@ -759,39 +759,58 @@ angular.module('emuwebApp')
                               'isLast': isLast,
                               'deletedSegment': deletedSegment
                             });
-                            var deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'DELETELINKBOUNDARY',
-								'name': levelname,
-								'id': seg.id,
-								'neighbourId': neighbour.left.id,
-								'deletedLinks': deletedLinks
-							});
+                            var deletedLinks
+                            if(neighbour.left!==undefined) {
+                                deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
+								HistoryService.updateCurChangeObj({
+									'type': 'ANNOT',
+									'action': 'DELETELINKBOUNDARY',
+									'name': levelname,
+									'id': seg.id,
+									'neighbourId': neighbour.left.id,
+									'deletedLinks': deletedLinks
+								});
+                            }
+                            else {
+                                deletedLinks = LinkService.deleteLinkBoundary(seg.id, -1);
+								HistoryService.updateCurChangeObj({
+									'type': 'ANNOT',
+									'action': 'DELETELINKBOUNDARY',
+									'name': levelname,
+									'id': seg.id,
+									'neighbourId': -1,
+									'deletedLinks': deletedLinks
+								});                                
+                            }
 							HistoryService.addCurChangeObjToUndoStack();
-                            viewState.setcurMouseItem(undefined, undefined, undefined);
+						    var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+						    if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+						        var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+						        viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+						    }
                             viewState.setcurClickItem(deletedSegment.clickSeg);
                           } else {
                             var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
-                            HistoryService.updateCurChangeObj({
-                              'type': 'ANNOT',
-                              'action': 'DELETEEVENT',
-                              'name': levelname,
-                              'start': deletedPoint.samplePoint,
-                              'id': deletedPoint.id,
-                              'pointName': deletedPoint.labels[0].value
+                            if(deletedPoint!==false) {
+								HistoryService.updateCurChangeObj({
+								  'type': 'ANNOT',
+								  'action': 'DELETEEVENT',
+								  'name': levelname,
+								  'start': deletedPoint.samplePoint,
+								  'id': deletedPoint.id,
+								  'pointName': deletedPoint.labels[0].value
 
-                            });
-						    /* TODO RECALCULATE LINKS
-						    HistoryService.updateCurChangeObj({
-							  'type': 'ANNOT',
-							  'action': 'DELETELINKS',
-							  'name': levelname,
-							  'id': seg.id,
-							  'deletedLinks': deletedLinks
-						    });*/
-						    HistoryService.addCurChangeObjToUndoStack();
-                            viewState.setcurMouseItem(undefined, undefined, undefined);
+								});
+								HistoryService.addCurChangeObjToUndoStack();
+								var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+								if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+									var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+									viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+								}
+						    }
+						    else {
+						        viewState.setcurMouseItem(undefined, undefined, undefined, undefined, undefined);
+						    }
                         }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -819,7 +838,11 @@ angular.module('emuwebApp')
 							'deletedLinks': deletedLinks
 						  });
 						  HistoryService.addCurChangeObjToUndoStack();
-                          viewState.setcurMouseItem(undefined, undefined, undefined);
+						  var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+						  if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+						    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+						    viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+						  }
                           viewState.setcurClickItem(deletedSegment.clickSeg);
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');

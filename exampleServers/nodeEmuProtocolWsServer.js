@@ -174,9 +174,12 @@ wss.on('connection', function (ws) {
             console.log(p);
             var arr = p.split('/');
             var nArr = arr[arr.length - 1].split('_');
+            var sArr = arr[0].split('_');
+            sArr.pop();
             nArr.pop();
             bundleList.push({
-              'name': nArr.join('_')
+              'name': nArr.join('_'),
+              'session': sArr.join('_')
             });
           }
         }).on('error', function (err) {
@@ -278,7 +281,9 @@ wss.on('connection', function (ws) {
 
       // SAVEBUNDLE method
     case 'SAVEBUNDLE':
-      console.log('### Pretending to save bundle...');
+      console.log('### Pretending to save bundle:');
+      console.log('\tname:', mJSO.data.annotation.name);
+      console.log('\tsession:', mJSO.data.session);
       // console.log(mJSO.data.annotation);
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,

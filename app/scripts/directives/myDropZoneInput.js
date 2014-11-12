@@ -2,29 +2,53 @@
 
 
 angular.module('emuwebApp')
-.directive('myDropZoneInput', function ($animate) {
+.directive('myDropZoneInput', function ($animate, browserDetector, dialogService, appStateService) {
 	return {
 		templateUrl: 'views/myDropZoneInput.html',
 		restrict: 'E',
+		scope: {	    
+		},
 		link: function postLink(scope, element, attr) {
 		  scope.handler = false;
 		  
-		  function handleFilesonChange() {
+		  
+		  scope.acceptGrid = '.TextGrid';
+		  scope.acceptWav = 'audio/wav';
+		  scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid;
+		  scope.acceptFile = scope.acceptBoth;
+		  
+		  scope.handleFilesonChange = function() {
 		    scope.handler = true;
 		    var loadedFiles = element.context.children.fileDialog;
-		    if(scope.firefox) {
+		    if(browserDetector.isBrowser.Firefox()) {
               for (var i = 0; i < loadedFiles.files.length; i++) {
                 var file = loadedFiles.files[i];
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/x-wav') ) {
-                  scope.wav = file;
-                  scope.handleLocalFiles();	
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropTextDefault;
+		            scope.acceptFile = scope.acceptBoth;
+		          });
+		          scope.$parent.$parent.wav = file;
+                  scope.$parent.$parent.handleLocalFiles();
                 }
                 else if(extension==="TEXTGRID" ) {
-                  scope.grid = file;
+                  scope.$parent.$parent.grid = file;
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
+		            scope.acceptFile = scope.acceptWav;
+		          });
                 }            
                 else  {
-                  scope.other = file;
+                  scope.$parent.error = true;
+                  scope.$parent.$parent.other = file;
+                  scope.$parent.dropText = scope.$parent.dropTextErrorFileType;
+                  scope.$parent.dropClass = 'error';
+                  dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
+                    scope.$parent.dropText = scope.$parent.dropTextDefault;
+                    scope.$parent.dropClass = '';
+                    appStateService.resetToInitState();
+                  });
                 }                         
               }
             }    
@@ -33,21 +57,37 @@ angular.module('emuwebApp')
                 var file = loadedFiles.files[i];
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 if(extension==="WAV" && file.type.match('audio/wav') ) {
-                  scope.wav = file;
-                  scope.handleLocalFiles();	
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropTextDefault;
+		            scope.acceptFile = scope.acceptBoth;
+		          });                  
+		          scope.$parent.$parent.wav = file;
+                  scope.$parent.$parent.handleLocalFiles();
                 }
                 else if(extension==="TEXTGRID" ) {
-                  scope.grid = file;
+                  scope.$apply(function () {
+		            scope.$parent.dropText = scope.$parent.dropParsingWaiting;
+		            scope.acceptFile = scope.acceptWav;
+		          });                
+                  scope.$parent.$parent.grid = file;
                 }            
                 else  {
-                  scope.other = file;
+                  scope.$parent.error = true;
+                  scope.$parent.$parent.other = file;
+                  scope.$parent.dropText = scope.$parent.dropTextErrorFileType;
+                  scope.$parent.dropClass = 'error';
+                  dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
+                    scope.$parent.dropText = scope.$parent.dropTextDefault;
+                    scope.$parent.dropClass = '';
+                    appStateService.resetToInitState();
+                  });
                 }                         
               }
             }
           }
           
           element.bind('change', function (event) {
-            handleFilesonChange(event);
+            scope.handleFilesonChange(event);
           });
           
           element.bind('click', function (event) {

@@ -7,15 +7,16 @@ describe('Directive: trackmouseinlevel', function () {
     var lvlType = 'SEGMENT';
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function ($rootScope, $compile, Soundhandlerservice, LevelService, ConfigProviderService, viewState) {
+    beforeEach(inject(function ($rootScope, $compile, Soundhandlerservice, DataService, LevelService, ConfigProviderService, viewState) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
+        scope.data = DataService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
         scope.shs = Soundhandlerservice;
-        scope.lvl.setData(msajc003_bndl.annotation);
+        scope.data.setData(msajc003_bndl.annotation);
         curLvl = scope.lvl.getLevelDetails(lvlName).level;
         scope.level = curLvl;
     }));

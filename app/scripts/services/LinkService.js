@@ -1,43 +1,47 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LinkService', function LinkService(LevelService) {
+	.service('LinkService', function LinkService(DataService) {
 		// shared service object
 		var sServObj = {};
-		sServObj.data = LevelService.data;
 
 		/**
-		 * adds single links to sServObj.data.links 
-		 * by pairing all childIds with the parent 
-		 * id (form=={'fromID':fromID, 'toID':toID})
+		 * adds single links by pairing all childIds 
+		 * with the parent id (form=={'fromID':fromID, 'toID':toID})
+		 * @param fromID father node
+		 * @param toID child node
 		 */
 		sServObj.insertLink = function (fromID, toID) {
-			sServObj.data.links.push({
+			DataService.insertLinkData({
 				'fromID': fromID,
 				'toID': toID
 			});
 		};
 		
 		/**
-		 * adds single links to sServObj.data.links 
-		 * at position order
+		 * adds single links to DataService
+		 * by pairing all childIds with the parent 
+		 * at a given position
+		 * @param fromID father node
+		 * @param toID child node
+		 * @param order position of the node pair
 		 */
 		sServObj.insertLinkAt = function (fromID, toID, order) {
-			sServObj.data.links.splice(order,0,{
+			DataService.insertLinkDataAt(order, {
 				'fromID': fromID,
 				'toID': toID
 			});
 		};		
 
 		/**
-		 * removes single link from sServObj.data.links 
+		 * removes single link from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLink = function (fromID, toID) {
 		    var ret = -1;
-			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
-					sServObj.data.links.splice(linkIdx, 1);
+					DataService.deleteLinkDataAt(linkIdx);
 					ret = linkIdx;
         		};
 			});
@@ -50,16 +54,52 @@ angular.module('emuwebApp')
 		 */
 		sServObj.linkExists = function (fromID, toID) {
 		    var ret = false;
-			angular.forEach(sServObj.data.links, function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
 				if(link.fromID === fromID && link.toID === toID){
 					ret = true;
         		};
 			});
 			return ret;
 		};
+
+		/**
+		 * checks if a given node has parents
+		 * @param ID node to check
+		 */
+		sServObj.hasParents = function (ID) {
+		    var ret = false;
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+				if(link.toID === ID){
+					ret = true;
+        		};
+			});
+			return ret;
+		};
+
+		/**
+		 * checks if a given node has children
+		 * @param ID node to check
+		 */
+		sServObj.hasChildren = function (ID) {
+		    var ret = false;
+			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+				if(link.fromID === ID){
+					ret = true;
+        		};
+			});
+			return ret;
+		};
+
+		/**
+		 * checks if a given node has parents or children
+		 * @param ID node to check
+		 */
+		sServObj.isIntermediate = function (ID) {
+			return (sServObj.hasChildren(ID) || sServObj.hasParents(ID));
+		};
 		
 		/**
-		 * adds multiple links to sServObj.data.links 
+		 * adds multiple links to DataService
 		 * by pairing all childIds with the parent 
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
@@ -70,7 +110,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * removes multiple links to children from sServObj.data.links 
+		 * removes multiple links to children from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksTo = function (fromID, toIDs) {
@@ -83,7 +123,7 @@ angular.module('emuwebApp')
 		};
 		
 		/**
-		 * adds multiple links to sServObj.data.links 
+		 * adds multiple links to DataService
 		 * by pairing all parentIds with the child 
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
@@ -94,7 +134,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * removes multiple links to parents from sServObj.data.links 
+		 * removes multiple links to parents from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
 		sServObj.deleteLinksFrom = function (fromIDs, toID) {
@@ -112,7 +152,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksTo = function (toID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.toID === toID) {
 				    ret.push({link: link, order:linkOrder});
 				}
@@ -126,7 +166,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksFrom = function (fromID) {
 		    var ret = [];
-			angular.forEach(sServObj.data.links, function (link, linkOrder) {
+			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID) {
 				    ret.push({link: link, order:linkOrder});
 				}
@@ -139,9 +179,9 @@ angular.module('emuwebApp')
 		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
 		 */
 		sServObj.changeLinkTo = function (fromID, toID, toNewID) {
-		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+		    angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID && link.toID === toID) {
-				    sServObj.data.links[linkOrder].toID = toNewID;
+				    DataService.changeLinkDataAt(linkOrder, fromID, toNewID);
 				}
 			});
 
@@ -152,9 +192,9 @@ angular.module('emuwebApp')
 		 * to (to=={'fromID':fromID, 'toID':toNewID}) 
 		 */
 		sServObj.changeLinkFrom = function (fromID, toID, fromNewID) {
-		    angular.forEach(sServObj.data.links, function (link, linkOrder) {
+		    angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
 			    if(link.fromID === fromID && link.toID === toID) {
-				    sServObj.data.links[linkOrder].fromID = fromNewID;
+			        DataService.changeLinkDataAt(linkOrder, fromNewID, toID);
 				}
 			});
 		};		
@@ -199,27 +239,39 @@ angular.module('emuwebApp')
 		    var linksTo = [];
 		    var linksFrom = [];
 		    var ord = 0;
-		    angular.forEach(sServObj.getLinksTo(ID), function (found) {
-		        if(sServObj.linkExists(found.link.fromID, neighbourID)) {
-		            ord = sServObj.deleteLink(found.link.fromID, ID);
-		            linksTo.push({fromID:found.link.fromID, toID:ID, deleted:true, order:ord, neighbourID:0});
-		        }
-		        else {
-		            sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
-		            linksTo.push({fromID:found.link.fromID, toID:ID, deleted:false, order:ord, neighbourID:neighbourID});
-		        }
-		    });
-		    angular.forEach(sServObj.getLinksFrom(ID), function (found) {
-		        if(sServObj.linkExists(neighbourID, found.link.toID)) {
-		            ord = sServObj.deleteLink(ID, found.link.toID);
-		            linksFrom.push({fromID:ID, toID:found.link.toID, deleted:true, order:ord, neighbourID:0});
-		        }
-		        else {
-    		        sServObj.changeLinkFrom(ID, found.link.toID, neighbourID);
-    		        linksFrom.push({fromID:ID, toID:found.link.toID, deleted:false, order:ord, neighbourID:neighbourID});        
-		        }
-		        
-		    });
+		    if(neighbourID>0) { // if not first item
+				angular.forEach(sServObj.getLinksTo(ID), function (found) {
+					if(sServObj.linkExists(found.link.fromID, neighbourID)) {
+						ord = sServObj.deleteLink(found.link.fromID, ID);
+						linksTo.push({fromID:found.link.fromID, toID:ID, deleted:true, order:ord, neighbourID:0});
+					}
+					else {
+						sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+						linksTo.push({fromID:found.link.fromID, toID:ID, deleted:false, order:ord, neighbourID:neighbourID});
+					}
+				});
+				angular.forEach(sServObj.getLinksFrom(ID), function (found) {
+					if(sServObj.linkExists(neighbourID, found.link.toID)) {
+						ord = sServObj.deleteLink(ID, found.link.toID);
+						linksFrom.push({fromID:ID, toID:found.link.toID, deleted:true, order:ord, neighbourID:0});
+					}
+					else {
+						sServObj.changeLinkFrom(ID, found.link.toID, neighbourID);
+						linksFrom.push({fromID:ID, toID:found.link.toID, deleted:false, order:ord, neighbourID:neighbourID});        
+					}
+				
+				});
+		    }
+		    else {
+				angular.forEach(sServObj.getLinksTo(ID), function (found) {
+					ord = sServObj.deleteLink(found.link.fromID, ID);
+					linksTo.push({fromID:found.link.fromID, toID:ID, deleted:true, order:ord, neighbourID:0});
+				});
+				angular.forEach(sServObj.getLinksFrom(ID), function (found) {
+					ord = sServObj.deleteLink(ID, found.link.toID);
+					linksFrom.push({fromID:ID, toID:found.link.toID, deleted:true, order:ord, neighbourID:0});
+				});
+		    }
 		    return {linksTo:linksTo, linksFrom:linksFrom};
 		};			
 

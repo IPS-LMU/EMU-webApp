@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('spectSettingsCtrl', function ($scope, dialogService, viewState, LevelService) {
+	.controller('spectSettingsCtrl', function ($scope, dialogService, viewState, DataService) {
 
 		$scope.vs = viewState;
 
@@ -76,11 +76,11 @@ angular.module('emuwebApp')
 				if ($scope.modalVals.rangeFrom % 1 === 0) {
 					if ($scope.modalVals.rangeTo % 1 === 0) {
 						if ($scope.modalVals.rangeFrom >= 0) {
-							if ($scope.modalVals.rangeTo <= LevelService.data.sampleRate / 2) {
+							if ($scope.modalVals.rangeTo <= DataService.data.sampleRate / 2) {
 								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
 								$scope.cancel();
 							} else {
-								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + LevelService.data.sampleRate / 2);
+								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + DataService.data.sampleRate / 2);
 							}
 						} else {
 							$scope.error('View Range (Hz) lower boundary is a value below zero');
