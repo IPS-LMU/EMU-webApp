@@ -594,7 +594,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadAnnotationBtnClick = function () {
 			if (viewState.getPermission('downloadAnnotationBtnClick')) {
-				dialogService.openExport('views/export.html', 'ExportCtrl', JSON.stringify(DataService.getData(),null,'\t'), loadedMetaDataService.getCurBndl().name + '_annot.json');
+				dialogService.openExport('views/export.html', 'ExportCtrl', angular.toJson(DataService.getData(), true), loadedMetaDataService.getCurBndl().name + '_annot.json');
 			} else {
 				console.log('action currently not allowed');
 			}
