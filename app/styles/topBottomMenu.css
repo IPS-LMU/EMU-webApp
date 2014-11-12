@@ -24,13 +24,18 @@
     display:inline-block;
     position: relative;
     background: transparent;
-    padding-top: 7px;
+    /*padding-top: 7px;*/
     border: 0;
     width: 40px;
     height: 40px;
     text-align: center;
     top: 0px;
 }
+
+.emuwebapp-aboutBtn{
+    padding-top: 7px;
+}
+
 
 .emuwebapp-SideMenuBtn img {
     width: 20px;

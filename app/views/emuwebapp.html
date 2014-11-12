@@ -36,7 +36,7 @@
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
-      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg"></img></a>
+      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn right" title="About" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg"></img></a>
     </div>
 
     <!-- vertical split layout that contains top and bottom pane -->
