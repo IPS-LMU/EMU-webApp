@@ -518,7 +518,6 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma:unit',
     'protractor:run'
   ]);
 
