@@ -101,20 +101,14 @@ angular.module('emuwebApp')
 						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
 							viewState.setEditing(false);
 							LevelService.deleteEditArea();
-							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate', scope.finishedAnim);
+							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate').then(function () {
+								$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
+								// redraw
+								scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
+								scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
+							});
 						}
 					}
-				};
-
-				/**
-				 *
-				 */
-				scope.finishedAnim = function () {
-					$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
-					// redraw
-					scope.drawLevelDetails(scope.level, viewState, ConfigProviderService);
-					scope.drawLevelMarkup(scope.level, viewState, ConfigProviderService);
-
 				};
 
 				/**
