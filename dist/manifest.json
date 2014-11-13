@@ -5,7 +5,7 @@
     "minimum_chrome_version": "23",
     "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
     "icons": {
-        "128": "assets/icon.png"
+        "128": "assets/favicon-192x192.png"
     },
     "app": {
         "background": {

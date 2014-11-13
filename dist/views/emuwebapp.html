@@ -2,12 +2,13 @@
 <div ng-controller="MainCtrl" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize, 'background': ConfigProviderService.vals.colors.appBackground}">
 
   <!-- left side menu bar -->
-  <bundle-list-side-bar></bundle-list-side-bar>
-  
+  <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu" is-open="{{vs.submenuOpen}}"></bundle-list-side-bar>
   <!-- container for everything (top + bottom menu and all cans) but left sub-menu -->
   <div class="emuwebapp-mainWindow" id="mainWindow">
 
     <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
+    
+    <div class="printTitle">{{getCurBndlName()}}</div>
     
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
@@ -16,6 +17,7 @@
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
       <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
+      <button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadAnnotationBtnClick();">download Annotation</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
 
       <div class="btn-group emuwebapp-mini-btn-group" dropdown is-open="status.isopen">
@@ -34,7 +36,7 @@
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
-      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 right" title="About" ng-click="aboutBtnClick();"><img src="img/aboutBtn.png"></a>
+      <a id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn right" title="About" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg"></a>
     </div>
 
     <!-- vertical split layout that contains top and bottom pane -->
@@ -44,15 +46,16 @@
         <ul class="emuwebapp-timeline-flexcontainer">
           <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
-            <spectro ng-switch-when="SPEC" order="{{$index}}"></spectro>
+            <spectro ng-switch-when="SPEC" order="{{$index}}" track-name="{{curTrack}}"></spectro>
             <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
           </li>
         </ul>
     </bg-pane>
     <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane">
     <div>
+      
       <ul>
-        <li ng-repeat="level in levServ.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
+        <li ng-repeat="level in dataServ.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
           <level id="{{level.name}}" open="true" level="level" idx="$index"></level>
         </li>
       </ul>
@@ -68,13 +71,15 @@
 </bg-pane>
 </bg-splitter>
 
+  <history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
+
 </div>
 
 
 <!-- bottom menu bar -->
 <div class="emuwebapp-menuBarBottom">
   <div>
-    <preview id="preview" class="preview" current-bundle-name="{{curBndl.name}}"></preview>  
+    <preview id="preview" class="preview" current-bundle-name="{{getCurBndlName()}}"></preview>  
   </div>
   <button id="zoomAllBtn" ng-click="cmdZoomAll();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn" id="cmd_viewZoomAll">all</button>
   <button id="zoomInBtn" ng-click="cmdZoomIn();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn" id="cmd_viewZoomIn">in</button>

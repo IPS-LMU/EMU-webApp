@@ -1,10 +1,11 @@
 CACHE MANIFEST
-# rev 1 - 2014-10-10T13:25:11.352Z
+# rev 1 - 2014-11-13T10:54:31.579Z
 
 CACHE:
 404.html
 apple-touch-icon.png
-assets/icon.png
+assets/EMU-webAppEmu.svg
+assets/EMU-webAppIcon-roundCorners.svg
 background.js
 configFiles/default_emuwebappConfig.json
 configFiles/embedded_emuwebappConfig.json
@@ -26,7 +27,6 @@ fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
 fonts/glyphicons-halflings-regular.woff
-img/aboutBtn.png
 img/deleteBtn.png
 img/glyphicons-halflings-white.png
 img/glyphicons-halflings.png
@@ -43,16 +43,16 @@ schemaFiles/annotationFileSchema.json
 schemaFiles/bundleListSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/0ed99866.emuwebApp.min.js
-scripts/5f911ea7.emuwebAppExternal.min.js
+scripts/174d7821.emuwebApp.min.js
+scripts/2dc44a09.emuwebAppExternal.min.js
 scripts/emuwebApp.min.js.map
-scripts/workers/espsParserWorker.js
-scripts/workers/spectroWorker.js
-scripts/workers/ssffParserWorker.js
-scripts/workers/textGridParserWorker.js
-scripts/workers/wavParserWorker.js
-styles/47963319.emuwebApp.min.css
-styles/62316d80.emuwebAppExternal.min.css
+scripts/workers/espsParserWorkerClass.js
+scripts/workers/spectroDrawingWorkerClass.js
+scripts/workers/ssffParserWorkerClass.js
+scripts/workers/textGridParserWorkerClass.js
+scripts/workers/wavParserWorkerClass.js
+styles/89202259.emuwebAppExternal.min.css
+styles/db89c5b4.emuwebApp.min.css
 styles/images/rightSideMenuBtn.png
 views/SelectLabelModal.html
 views/SelectThresholdModal.html

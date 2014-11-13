@@ -1,10 +1,13 @@
-<div class="modal-header">
-  <h3 id="modalHeading">EMU-webApp</h3>
+<div class="modal-header-large modal-header">
+  <h3 id="modalHeading">
+    EMU-webApp
+  </h3>
 </div>
 <div class="modal-body">
-  <h4 style="text-align:center">Version: 0.0.7</h4>
-  <h5 style="font-size:8pt; text-align:center">Build time stamp: Fri Oct 10 2014 15:25:11</h5>
-  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: aba420bb88a2b7c7b1cc34c0bc07ca5d3e312fca - master</h5>
+  <img src="assets/EMU-webAppIcon-roundCorners.svg" style="height:60px">
+  <h4 style="text-align:center">Version: 0.0.8</h4>
+  <h5 style="font-size:8pt; text-align:center">Build time stamp: Thu Nov 13 2014 11:54:31</h5>
+  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: 2cf985a02e2dc71ccb43e94faab42e2d6c91240a - master</h5>
   <div class="alert alert-danger"><b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.</div>
 
   <hr class="emuwebapp-aboutHr">
@@ -21,7 +24,7 @@
  
  <div class="emuwebapp-aboutDiv">
   <b>General usage</b><br>&nbsp;<br>
-  Moving the mouse over event and event levels automatically tracks the mouse movement
+  Moving the mouse over segment and event levels automatically tracks the mouse movement
   and calculates the nearest boundary to the current mouse position and
   preselects it (indicated by marking it blue).
   <span ng-show="cps.vals.restrictions.editItemSize">
@@ -41,6 +44,10 @@
     <tbody>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open left submenu</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} {{getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open right submenu</td></tr>
+
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.showHierarhy)}}</b></td><td>Open Hierarchy View</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.rotateHierarhy)}}</b></td><td>Rotate Hierarchy</td></tr>
+
       
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td><td>Zoom in<sup>1</sup></td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td><td>Zoom out<sup>1</sup></td></tr>
@@ -58,7 +65,7 @@
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Select previous event</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} {{getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td><td>Extend event selection right</td></tr>
       <tr><td><b>{{getStrRep(cps.vals.keyMappings.shift)}} {{getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Extend event selection left</td></tr>
-      <tr><td><b>{{getStrRep(cps.vals.keyMappings.selecteventsInSelection)}}</b></td><td>Select all events in current viewport selection</td></tr>
+      <tr><td><b>{{getStrRep(cps.vals.keyMappings.selectItemsInSelection)}}</b></td><td>Select all events in current viewport selection</td></tr>
       
     </tbody>
   </table>
@@ -124,5 +131,5 @@
 </div>
 </div>
 <div class="modal-footer">
-  <button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>
+  <button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
 </div>
