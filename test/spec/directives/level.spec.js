@@ -95,16 +95,6 @@ describe('Directive: level', function () {
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
    });
        
-   it('should finishedAnim', function () {
-     compileDirective();
-     expect(elm.isolateScope()).toBeDefined();
-     spyOn(elm.isolateScope(), 'drawLevelMarkup');
-     spyOn(elm.isolateScope(), 'drawLevelDetails');
-     elm.isolateScope().finishedAnim();
-     expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalledWith(curLvl, scope.vs, scope.cps);
-     expect(elm.isolateScope().drawLevelDetails).toHaveBeenCalledWith(curLvl, scope.vs, scope.cps);
-   });
-       
    it('should getAttrDefBtnColor', function () {
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue('test');
      compileDirective();
