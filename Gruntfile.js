@@ -354,7 +354,8 @@ module.exports = function (grunt) {
             'demoDBs/{,*/}*.*',
             'background.js',
             'manifest.json',
-            'assets/icon.png',
+            'assets/EMU-webAppEmu.svg',
+            'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png'
           ]
