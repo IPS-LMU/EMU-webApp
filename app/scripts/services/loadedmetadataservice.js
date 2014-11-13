@@ -124,6 +124,23 @@ angular.module('emuwebApp')
 		sServObj.toggleCollapseSession = function(session){
 			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
 		};
+		
+		/**
+		 * 
+		 */
+		sServObj.updateCollapseSessionState = function(text){
+		    angular.forEach(sServObj.getBundleList(), function (bundle) {
+			    if(bundle.name.indexOf(text)) {
+			        uniqSessionList[bundle.session].collapsed = false;
+			    }
+			    else {
+			        uniqSessionList[bundle.session].collapsed = true;
+			    }
+			});
+		};		
+		
+		
+		
 
 		/**
 		 * 
