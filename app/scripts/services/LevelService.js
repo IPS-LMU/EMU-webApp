@@ -1267,7 +1267,8 @@ angular.module('emuwebApp')
 		 */
 		sServObj.calcDistanceToNearestZeroCrossing = function (sample) {
 			// walk right
-			var distRight;
+			var distRight = Infinity;
+			var distLeft = Infinity;
 			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
 				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
 					distRight = i - sample;
@@ -1276,7 +1277,6 @@ angular.module('emuwebApp')
 			}
 
 			// walk left
-			var distLeft;
 			for (var i = sample; i > 1; i--) {
 				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i - 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i - 1] >= 0) {
 					distLeft = i - sample;

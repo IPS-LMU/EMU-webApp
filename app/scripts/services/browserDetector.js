@@ -44,27 +44,47 @@ angular.module('emuwebApp')
 		Opera: function() {
 			return navigator.userAgent.match(/Opera/i);
 		},
+		PhantomJS: function() {
+			return navigator.userAgent.match(/PhantomJS/i);
+		},
 		any: function() {
 			return (sServObj.isBrowser.Firefox() || 
 			        sServObj.isBrowser.Chrome() || 
-			        sServObj.InternetExplorer.iOS() || 
-			        sServObj.Opera.Opera());
-		},
-		other: function() {
-			return !(sServObj.isBrowser.Firefox() || 
-			        sServObj.isBrowser.Chrome() || 
-			        sServObj.InternetExplorer.iOS() || 
-			        sServObj.Opera.Opera());
+			        sServObj.isBrowser.InternetExplorer() || 
+			        sServObj.isBrowser.Opera() ||
+			        sServObj.isBrowser.PhantomJS());
 		}
 	};
 	
-    sServObj.mobile = function () {
-        return sServObj.isMobile.any();
-    };
-
-    sServObj.known = function () {
-        return sServObj.isBrowser.any();
-    };
+	sServObj.isMobileDevice = function() {
+	    var data = sServObj.isMobile.any();
+	    if(data === null) {
+	        return false;
+	    }
+	    else {
+	        if(data.length > 0 ) {
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	};
+	
+	sServObj.isDesktopDevice = function() {
+	    var data = sServObj.isBrowser.any();
+	    if(data === null) {
+	        return false;
+	    }
+	    else {
+	        if(data.length > 0 ) {
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	};	
     
     return sServObj;
 

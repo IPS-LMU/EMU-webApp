@@ -485,7 +485,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type : 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : true, 
 			changeTime : fakePCMtime 
@@ -505,7 +505,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type : 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : true, 
 			changeTime : newfakePCMtime 
@@ -538,7 +538,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : false, 
 			changeTime : fakePCMtime 
@@ -558,7 +558,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : false, 
 			changeTime : newfakePCMtime 
@@ -592,7 +592,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : true, 
 			changeTime : -fakePCMtime 
@@ -612,7 +612,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : true, 
 			changeTime : -newfakePCMtime 
@@ -645,7 +645,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : false, 
 			changeTime : -fakePCMtime 
@@ -665,7 +665,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({ 
 			type: 'ANNOT', 
 			action : 'EXPANDSEGMENTS', 
-			levelName : 'Phonetic', 
+			name : 'Phonetic', 
 			item : [ item ], 
 			rightSide : false, 
 			changeTime : -newfakePCMtime 

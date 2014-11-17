@@ -240,5 +240,72 @@ describe('Factory: viewState', function () {
     expect(viewState.getSamplesPerPixelVal(evt)).toEqual(0.5);
   }));
 
+  /**
+   *
+   */
+  it('should setCurAttrDef', inject(function (viewState) {
+    viewState.initialize();
+    viewState.curLevelAttrDefs = [{levelName: 'test', curAttrDefName: '', curAttrDefIndex: -1}];
+    viewState.setCurAttrDef('test', 'test1', 1)
+    expect(viewState.curLevelAttrDefs[0].curAttrDefName).toEqual('test1');
+    expect(viewState.curLevelAttrDefs[0].curAttrDefIndex).toEqual(1);
+  }));
+
+
+  /**
+   *
+   */
+  it('should setWindowFunction', inject(function (viewState) {
+  /*
+      BARTLETT: 1,
+      BARTLETTHANN: 2,
+      BLACKMAN: 3,
+      COSINE: 4,
+      GAUSS: 5,
+      HAMMING: 6,
+      HANN: 7,
+      LANCZOS: 8,
+      RECTANGULAR: 9,
+      TRIANGULAR: 10
+    */  
+    viewState.initialize();
+    viewState.setWindowFunction('BARTLETT');
+    expect(viewState.spectroSettings.window).toEqual(1);
+    viewState.setWindowFunction('BARTLETTHANN');
+    expect(viewState.spectroSettings.window).toEqual(2);
+    viewState.setWindowFunction('BLACKMAN');
+    expect(viewState.spectroSettings.window).toEqual(3);
+    viewState.setWindowFunction('COSINE');
+    expect(viewState.spectroSettings.window).toEqual(4);
+    viewState.setWindowFunction('GAUSS');
+    expect(viewState.spectroSettings.window).toEqual(5);
+    viewState.setWindowFunction('HAMMING');
+    expect(viewState.spectroSettings.window).toEqual(6);
+    viewState.setWindowFunction('HANN');
+    expect(viewState.spectroSettings.window).toEqual(7);
+    viewState.setWindowFunction('LANCZOS');
+    expect(viewState.spectroSettings.window).toEqual(8);
+    viewState.setWindowFunction('RECTANGULAR');
+    expect(viewState.spectroSettings.window).toEqual(9);
+    viewState.setWindowFunction('TRIANGULAR');
+    expect(viewState.spectroSettings.window).toEqual(10);
+
+  }));
+
+  /**
+   *
+   */
+  it('should zoomViewPort with seg', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
+    viewState.initialize();
+    DataService.setData(msajc003_bndl.annotation);
+    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
+    spyOn(viewState, 'setViewPort');
+    var lastEventMove = LevelService.getClosestItem(5000, 'Phonetic', Soundhandlerservice.wavJSO.Data.length);
+    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel('Phonetic', lastEventMove.nearest.id, lastEventMove.nearest.id);
+    viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, 5000, lastEventMove.isFirst, lastEventMove.isLast);
+    viewState.zoomViewPort(true, LevelService);
+  }));
+
 
 });

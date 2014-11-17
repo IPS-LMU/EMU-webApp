@@ -388,7 +388,7 @@ angular.module('emuwebApp')
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
-                          'levelName': viewState.getcurClickLevelName(),
+                          'name': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickItems(),
                           'rightSide': true,
                           'changeTime': changeTime
@@ -421,7 +421,7 @@ angular.module('emuwebApp')
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
-                          'levelName': viewState.getcurClickLevelName(),
+                          'name': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickItems(),
                           'rightSide': false,
                           'changeTime': changeTime
@@ -454,7 +454,7 @@ angular.module('emuwebApp')
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
-                          'levelName': viewState.getcurClickLevelName(),
+                          'name': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickItems(),
                           'rightSide': true,
                           'changeTime': -changeTime
@@ -489,7 +489,7 @@ angular.module('emuwebApp')
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
                           'action': 'EXPANDSEGMENTS',
-                          'levelName': viewState.getcurClickLevelName(),
+                          'name': viewState.getcurClickLevelName(),
                           'item': viewState.getcurClickItems(),
                           'rightSide': false,
                           'changeTime': -changeTime

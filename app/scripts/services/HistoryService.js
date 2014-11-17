@@ -134,8 +134,10 @@ angular.module('emuwebApp')
 						break;		
 					case 'DELETELINKSEGMENT':
 						if (applyOldVal) {
+						    viewState.historyActionTxt = 'UNDO: DELETELINKSEGMENT';
 							LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
 						} else {
+						    viewState.historyActionTxt = 'REDO: DELETELINKSEGMENT';
 							LinkService.deleteLinkSegment(cur.segments);
 						}
 						break;									
@@ -178,10 +180,10 @@ angular.module('emuwebApp')
 					case 'EXPANDSEGMENTS':
 						if (applyOldVal) {
 							viewState.historyActionTxt = 'UNDO: EXPANDSEGMENTS';
-							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, -cur.changeTime);
+							LevelService.expandSegment(cur.rightSide, cur.item, cur.name, -cur.changeTime);
 						} else {
 							viewState.historyActionTxt = 'REDO: EXPANDSEGMENTS';
-							LevelService.expandSegment(cur.rightSide, cur.item, cur.levelName, cur.changeTime);
+							LevelService.expandSegment(cur.rightSide, cur.item, cur.name, cur.changeTime);
 						}
 						break;
 					}

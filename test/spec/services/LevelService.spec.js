@@ -1118,5 +1118,68 @@ describe('Service: LevelService', function () {
     expect(labels[8]).toEqual('f');
     expect(labels[labels.length - 1]).toEqual('l');
   }));
+
+  /**
+   *
+   */
+  it('should getLevelsByType', inject(function (DataService, LevelService, viewState) {
+    // set according data
+    DataService.setData(msajc003_bndl.annotation);
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    var levels = LevelService.getLevelsByType('SEGMENT');
+    expect(levels.length).toEqual(1);
+    expect(levels[0].name).toEqual('Phonetic');
+  }));  
+  
+  /**
+   *
+   */
+  it('should getItemsFromLevelByIdAndLength', inject(function (DataService, LevelService, viewState) {
+    // set according data
+    DataService.setData(msajc003_bndl.annotation);
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    var items = LevelService.getItemsFromLevelByIdAndLength('Phonetic', 148, 1);
+    expect(items.length).toEqual(1);
+    expect(items[0].sampleStart).toEqual(5140);
+  }));  
+  
+  /**
+   *
+   */
+  it('should calcDistanceToNearestZeroCrossing', inject(function (DataService, LevelService, viewState, Soundhandlerservice) {
+    // set according data
+    DataService.setData(msajc003_bndl.annotation);
+    Soundhandlerservice.wavJSO.Data = new Array(1000);
+    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    for (var i = 0; i < Soundhandlerservice.wavJSO.Data.length; i++) {
+        Soundhandlerservice.wavJSO.Data[i] = 0;
+    }
+    Soundhandlerservice.wavJSO.Data[480] = -1;
+    Soundhandlerservice.wavJSO.Data[481] = 1;
+    var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
+    expect(shift).toBe(-19);
+    Soundhandlerservice.wavJSO.Data[480] = -1;
+    Soundhandlerservice.wavJSO.Data[481] = 1;
+    Soundhandlerservice.wavJSO.Data[510] = 1;
+    Soundhandlerservice.wavJSO.Data[511] = -1;
+    var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
+    expect(shift).toBe(11);
+  }));    
+  
+  /**
+   *
+   */
+  it('should createSelection', inject(function (DataService, LevelService, viewState) {
+    // set according data
+    var input = document.createElement('TEXTAREA');
+    input.value = 'test';
+    LevelService.createSelection(input, 0, 4);
+  }));
+  
+  
+  
+  
+  
+  
   
 });
