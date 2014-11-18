@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 		var bundleList = [];
 		var curBndl = {};
 		var demoDbName = '';
+		var drandropBundles = [];
 
 		//////////////////////
 		// private functions
@@ -49,6 +50,7 @@ angular.module('emuwebApp')
 		 * @returns validation result for bundle list
 		 */
 		sServObj.setBundleList = function (bList) {
+		    console.log(bList);
 			// validate
 			var validRes = Validationservice.validateJSO('bundleListSchema', bList);
 			if (validRes === true) {
@@ -102,20 +104,21 @@ angular.module('emuwebApp')
 		// demoDbName
 
 		/**
-		 * setter curBndl
+		 * setter demoDbName
 		 */
 		sServObj.setDemoDbName = function (name) {
 			demoDbName = name;
 		};
 
 		/**
-		 * getter curBndl
+		 * getter demoDbName
 		 */
 		sServObj.getDemoDbName = function () {
 			return demoDbName;
 		};
 
-		///////////////////
+		
+				///////////////////
 		// uniqSessionList
 
 		/**

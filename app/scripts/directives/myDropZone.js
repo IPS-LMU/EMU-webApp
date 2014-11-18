@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-.directive('myDropZone', function ($animate, $compile, browserDetector, appStateService, dialogService) {
+.directive('myDropZone', function ($animate, $compile, DragnDropDataService, browserDetector, appStateService, dialogService) {
 	return {
 		templateUrl: 'views/myDropZone.html',
 		restrict: 'E',
@@ -30,20 +30,24 @@ angular.module('emuwebApp')
             if (item.isFile) {
                 item.file(function (file) {
                     var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+                    var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
                     if (scope.error !== true && extension === 'WAV') {
                         scope.$apply(function () {
 		                    scope.dropText = scope.dropTextDefault;
 		                    scope.dropClass = '';
 		                }); 
+		                DragnDropDataService.setDragnDropData(bundle, 'wav', file);
 		                scope.$parent.wav = file;   
-		                scope.$parent.handleLocalFiles();                    
+		                scope.$parent.handleLocalFiles(); 
                     } else if (scope.error !== true && extension === 'TEXTGRID') {
+                        DragnDropDataService.setDragnDropData(bundle, 'grid', file);
                         scope.$parent.grid = file;
                         scope.$apply(function () {
 		                    scope.dropText = scope.dropParsingWaiting;
 		                });
-                    } else if (scope.error !== true) {
+                    } else if (scope.error !== true && (extension !== 'DS_STORE')) {
                         scope.error = true;
+                        DragnDropDataService.setDragnDropData(bundle, 'other', file);
                         scope.$parent.other = file;
                         scope.dropText = scope.dropTextErrorFileType;
                         scope.dropClass = 'error';
@@ -69,14 +73,17 @@ angular.module('emuwebApp')
             path = path || '';
             if (item.size > 0) {
                 var extension = item.name.substr(item.name.lastIndexOf('.') + 1).toUpperCase();
+                var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
                 if (scope.error !== true && extension === 'WAV') {
+                    DragnDropDataService.setDragnDropData(bundle, 'wav', item);
                     scope.$parent.wav = item;
-                    scope.$parent.handleLocalFiles();
                     scope.$apply(function () {
 		                scope.dropText = scope.dropAllowed;
 		                scope.dropClass = '';
-		            });                    
+		            });
+		            scope.$parent.handleLocalFiles();
                 } else if (scope.error !== true && extension === 'TEXTGRID') {
+                    DragnDropDataService.setDragnDropData(bundle, 'grid', item);
                     scope.$parent.grid = item;
                     scope.$apply(function () {
 		                scope.dropText = scope.dropParsingWaiting;
@@ -84,6 +91,7 @@ angular.module('emuwebApp')
 		            });
                 } else if(scope.error !== true) {
                     scope.error = true;
+                    DragnDropDataService.setDragnDropData(bundle, 'other', item);
                     scope.$parent.other = item;
                     scope.dropText = scope.dropTextErrorFileType;
                     scope.dropClass = 'error';
@@ -139,6 +147,12 @@ angular.module('emuwebApp')
                     for (var i = 0; i < items.length; i++) {
                         var item = items[i].webkitGetAsEntry();
                         if (item) {
+                            if(item.isDirectory) {
+                                DragnDropDataService.setSession(item.name);
+                            }
+                            else {
+                                DragnDropDataService.setSession('File(s)');
+                            }
                             scope.traverseFileTreeChrome(item); 
                         }
                     }    
