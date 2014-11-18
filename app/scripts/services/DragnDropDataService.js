@@ -21,9 +21,15 @@ angular.module('emuwebApp')
 		sServObj.setDragnDropData = function (bundle, type, data) {
 			if(sServObj.drandropBundles[bundle] === undefined) {
 			    sServObj.drandropBundles[bundle] = {};
-			    sServObj.bundleList.push({name: bundle, session: sServObj.sessionName})
+			    sServObj.bundleList.push({
+			        name: bundle, 
+			        session: sServObj.sessionName,
+			        draggable: true,
+			        downloadurl: ''
+			    })
 			    loadedMetaDataService.setBundleList(sServObj.bundleList);
 			    loadedMetaDataService.setCurBndlName(bundle);
+			    sServObj.sessionDefault = bundle;
 			}
 			if(type === 'wav') {
 			    sServObj.drandropBundles[bundle].wav = data;
@@ -49,6 +55,13 @@ angular.module('emuwebApp')
 			else {
 			    return false;
 			}
+		};
+		
+		/**
+		 * getter sServObj.drandropBundles
+		 */
+		sServObj.getDragnDropDataDefault = function () {
+			return sServObj.drandropBundles[sServObj.sessionDefault];
 		};
 		
 		sServObj.setSession = function (name) {

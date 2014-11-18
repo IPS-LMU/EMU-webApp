@@ -50,7 +50,6 @@ angular.module('emuwebApp')
 		 * @returns validation result for bundle list
 		 */
 		sServObj.setBundleList = function (bList) {
-		    console.log(bList);
 			// validate
 			var validRes = Validationservice.validateJSO('bundleListSchema', bList);
 			if (validRes === true) {
@@ -151,7 +150,7 @@ angular.module('emuwebApp')
 		sServObj.getSessionCollapseState = function(session){
 			return uniqSessionList[session].collapsed;
 		}
-
+		
 
 
 		///////////////////
