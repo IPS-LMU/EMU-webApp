@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('spectSettingsCtrl', function ($scope, dialogService, viewState, DataService) {
+	.controller('spectSettingsCtrl', function ($scope, dialogService, viewState, DataService, mathHelperService, Soundhandlerservice) {
 
 		$scope.vs = viewState;
 
@@ -17,7 +17,9 @@ angular.module('emuwebApp')
 			'window': $scope.vs.spectroSettings.window,
 			'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
 			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
-			'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors
+			'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors,
+			'_fftN': 512,
+			'_windowSizeInSamples': Soundhandlerservice.wavJSO.SampleRate * $scope.vs.spectroSettings.windowSizeInSecs
 		};
 
 		/**
@@ -48,7 +50,43 @@ angular.module('emuwebApp')
 			};
 			return (curStyle);
 		};
-		
+
+		//////////////////////////
+		// window size functions
+
+		/**
+		 *
+		 */
+		$scope.calcWindowSizeInSamples = function () {
+
+			$scope.modalVals._windowSizeInSamples = Soundhandlerservice.wavJSO.SampleRate * $scope.modalVals.windowSizeInSecs;
+		};
+
+		/**
+		 *
+		 */
+		$scope.calcFftN = function () {
+			var fftN = mathHelperService.calcClosestPowerOf2Gt($scope.modalVals._windowSizeInSamples);
+			// fftN must be greater than 512 (leads to better resolution of spectrogram)
+			if (fftN < 512) {
+				fftN = 512;
+			}
+			console.log(fftN);
+			$scope.modalVals._fftN = fftN;
+		};
+
+		/**
+		 *
+		 */
+		$scope.calcWindowSizeVals = function () {
+			$scope.calcWindowSizeInSamples();
+			$scope.calcFftN();
+			console.log('calcWindowSizeVals')
+		};
+
+		//
+		////////////////////
+
 		/**
 		 *
 		 */
@@ -63,7 +101,7 @@ angular.module('emuwebApp')
 			dialogService.close();
 			dialogService.open('views/error.html', 'ModalCtrl', 'Sorry: ' + errorMsg);
 		};
-		
+
 		/**
 		 *
 		 */
