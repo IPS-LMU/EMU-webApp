@@ -9,15 +9,11 @@ angular.module('emuwebApp')
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
 
-		// console.log(Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1]);
-
-		$scope.windowLengths = [32, 64, 128, 256, 512, 1024, 2048];
-
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
 			'rangeTo': $scope.vs.spectroSettings.rangeTo,
 			'dynamicRange': $scope.vs.spectroSettings.dynamicRange,
-			'windowLength': $scope.vs.spectroSettings.windowLength,
+			'windowSizeInSecs': $scope.vs.spectroSettings.windowSizeInSecs,
 			'window': $scope.vs.spectroSettings.window,
 			'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
 			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
@@ -77,7 +73,7 @@ angular.module('emuwebApp')
 					if ($scope.modalVals.rangeTo % 1 === 0) {
 						if ($scope.modalVals.rangeFrom >= 0) {
 							if ($scope.modalVals.rangeTo <= DataService.data.sampleRate / 2) {
-								viewState.setspectroSettings($scope.modalVals.windowLength, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+								viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
 								$scope.cancel();
 							} else {
 								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + DataService.data.sampleRate / 2);
