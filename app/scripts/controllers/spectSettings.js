@@ -81,7 +81,6 @@ angular.module('emuwebApp')
 		$scope.calcWindowSizeVals = function () {
 			$scope.calcWindowSizeInSamples();
 			$scope.calcFftN();
-			console.log('calcWindowSizeVals')
 		};
 
 		//

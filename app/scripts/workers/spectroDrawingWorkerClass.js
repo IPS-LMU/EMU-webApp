@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A simple class that creates another thread
  * which does the spectroDrawingWorker work
@@ -87,156 +89,22 @@ spectroDrawingWorker.prototype = {
 		// used by FFT
 		global.toLinearLevel = function (dbLevel) {
 			return Math.pow(10, (dbLevel / 10));
-		}
+		};
 
 		// used by FFT
 		global.log10 = function (arg) {
 			return Math.log(arg) / 2.302585092994046; // Math.log(x) / Math.LN10
-		}
+		};
 
 		// used by FFT
 		global.magnitude = function (real, imag) {
 			return Math.sqrt((real * real) + (imag * imag));
-		}
-
-
-
-		/**
-		 * interpolates a 3D color space and calculate accoring
-		 * value on that plane
-		 *
-		 * @param minval is the minimum value to map to (number)
-		 * @param maxval is the maximum value to map to (number)
-		 * @param val is the value itself (number)
-		 * @param colors is an array of arrays containing the colors
-		 * to interpol. against (of the form: [[255, 0, 0],[0, 255, 0],[0, 0, 255]])
-		 */
-		global.convertToHeatmap = function (minval, maxval, val, colors) {
-			var maxIndex = colors.length - 1;
-			var v = (val - minval) / (maxval - minval) * maxIndex;
-			var i1 = Math.floor(v);
-			var i2 = Math.min.apply(null, [Math.floor(v) + 1, maxIndex]);
-			var rgb1 = colors[i1];
-			var rgb2 = colors[i2];
-			var f = v - i1;
-			return ({
-				'r': Math.floor(rgb1[0] + f * (rgb2[0] - rgb1[0])),
-				'g': Math.floor(rgb1[1] + f * (rgb2[1] - rgb1[1])),
-				'b': Math.floor(rgb1[2] + f * (rgb2[2] - rgb1[2]))
-			});
-		}
+		};
 
 
 		/**
-		 * draws a single Line on the Canvas Element
-		 * by calculating the RGB value of the current pixel with:
-		 * 255-(255*scaled)
-		 * function has to be called in an outer loop (according to canvas_width)
-		 * the inner loop draws a single line on the canvas (according to canvas_height)
-		 * @param line is the calculated FFT data
-		 * @param p
-		 * @param c
-		 * @param d
-		 * @param cacheOffet
-		 *
-		 */
-		global.drawOfflineSpectogram = function (line) {
-
-			// set upper boundary for linear interpolation
-			var x1 = global.pixelHeight;
-			var rgb, index, px, py;
-			// value for first interpolation at lower boundry (height=0)
-			var psd = (2 * Math.pow(global.paint[line][1], 2)) / global.N;
-			var psdLog = 10 * global.log10(psd / global.maxPsd);
-			var scaledVal = ((psdLog + global.dynRangeInDB) / global.dynRangeInDB);
-			if (scaledVal > 1) {
-				scaledVal = 1;
-			} else if (scaledVal < 0) {
-				scaledVal = 0;
-			}
-
-			for (var i = 0; i < global.paint[line].length; i++) {
-
-				var y0 = scaledVal; // !!!! set y0 to previous scaled value
-
-				// for each value in paint[] calculate pixelHeight interpolation points
-				// x0=0
-				// x1=pixelHeight
-				// if(paint[i-1]<0) paint[i-1] = 1
-				// y0=paint[i-1]    
-				// y1=paint[i]
-
-
-				// !!!! calculate next scaledValue [0...1] 
-				psd = (2 * Math.pow(global.paint[line][i], 2)) / global.N;
-				psdLog = 10 * global.log10(psd / global.maxPsd);
-				scaledVal = ((psdLog + global.dynRangeInDB) / global.dynRangeInDB);
-				if (scaledVal > 1) {
-					scaledVal = 1;
-				}
-				if (scaledVal < 0) {
-					scaledVal = 0;
-				}
-
-				// !!!! set y1 to this scaled value
-				var y1 = scaledVal;
-
-				if (global.pixelHeight >= 1) {
-					// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
-					for (var b = 0; b < global.pixelHeight; b++) {
-						var y2 = y0 + (y1 - y0) / x1 * b;
-
-						// calculate corresponding color value for interpolation point [0...255]
-						rgb = 255 - Math.round(255 * y2);
-
-						// set internal image buffer to calculated & interpolated value
-						px = Math.floor(line);
-						py = Math.floor(global.height - (global.pixelHeight * (i - 2) + b));
-
-						index = (px + (py * global.width)) * 4;
-						if (global.drawHeatMapColors) {
-							if (!isNaN(rgb)) {
-								var hmVals = global.convertToHeatmap(0, 255, rgb, global.heatMapColorAnchors);
-								global.imageResult[index + 0] = hmVals.r;
-								global.imageResult[index + 1] = hmVals.g;
-								global.imageResult[index + 2] = hmVals.b;
-								global.imageResult[index + 3] = global.transparency;
-
-							} else {
-								global.imageResult[index + 0] = rgb;
-								global.imageResult[index + 1] = rgb;
-								global.imageResult[index + 2] = rgb;
-								global.imageResult[index + 3] = global.transparency;
-							}
-
-						} else {
-							global.imageResult[index + 0] = rgb;
-							global.imageResult[index + 1] = rgb;
-							global.imageResult[index + 2] = rgb;
-							global.imageResult[index + 3] = global.transparency;
-						}
-					}
-				} else {
-					rgb = 255 - Math.round(255 * y1);
-					// set internal image buffer to calculated & interpolated value
-					px = Math.floor(line);
-					py = Math.floor(global.height - (global.pixelHeight * (i - 2)));
-
-					index = (px + (py * global.width)) * 4;
-					global.imageResult[index + 0] = rgb;
-					global.imageResult[index + 1] = rgb;
-					global.imageResult[index + 2] = rgb;
-					global.imageResult[index + 3] = global.transparency;
-				}
-			}
-		}
-
-		/**
-		 * the actual FFT calculation including all window
-		 * functions
-		 *
-		 * @param fftSize is the actual size of the FFT
-		 *
+		 * the actual FFT class including all window
+		 * functions and the fft function itself
 		 */
 		global.FFT = function () {
 			var m, i, x;
@@ -470,6 +338,133 @@ spectroDrawingWorker.prototype = {
 			};
 		};
 
+		/**
+		 * interpolates a 3D color space and calculate accoring
+		 * value on that plane
+		 *
+		 * @param minval is the minimum value to map to (number)
+		 * @param maxval is the maximum value to map to (number)
+		 * @param val is the value itself (number)
+		 * @param colors is an array of arrays containing the colors
+		 * to interpol. against (of the form: [[255, 0, 0],[0, 255, 0],[0, 0, 255]])
+		 */
+		global.convertToHeatmap = function (minval, maxval, val, colors) {
+			var maxIndex = colors.length - 1;
+			var v = (val - minval) / (maxval - minval) * maxIndex;
+			var i1 = Math.floor(v);
+			var i2 = Math.min.apply(null, [Math.floor(v) + 1, maxIndex]);
+			var rgb1 = colors[i1];
+			var rgb2 = colors[i2];
+			var f = v - i1;
+			return ({
+				'r': Math.floor(rgb1[0] + f * (rgb2[0] - rgb1[0])),
+				'g': Math.floor(rgb1[1] + f * (rgb2[1] - rgb1[1])),
+				'b': Math.floor(rgb1[2] + f * (rgb2[2] - rgb1[2]))
+			});
+		};
+
+
+		/**
+		 * draws a single line of the spectrogram into the imageResult array.
+		 * by calculating the RGB value of the current pixel with:
+		 * 255-(255*scaled)
+		 * @param xIdx in the global.paint array
+		 *
+		 */
+		global.drawVerticalLineOfSpectogram = function (xIdx) {
+
+			// set upper boundary for linear interpolation
+			var x1 = global.pixelHeight;
+			var rgb, index, px, py;
+			// value for first interpolation at lower boundry (height=0)
+
+			// calculate the one sided power spectral density PSD (f, t) in Pa2/Hz
+			// PSD(f) proportional to 2|X(f)|2 / (t2 - t1)
+			var psd = (2 * Math.pow(global.paint[xIdx][1], 2)) / global.N;
+			var psdLog = 10 * global.log10(psd / global.maxPsd);
+			var scaledVal = ((psdLog + global.dynRangeInDB) / global.dynRangeInDB);
+			if (scaledVal > 1) {
+				scaledVal = 1;
+			} else if (scaledVal < 0) {
+				scaledVal = 0;
+			}
+
+			for (var i = 0; i < global.paint[xIdx].length; i++) {
+
+				var y0 = scaledVal; // !!!! set y0 to previous scaled value
+
+				// for each value in paint[] calculate pixelHeight interpolation points
+				// x0=0
+				// x1=pixelHeight
+				// if(paint[i-1]<0) paint[i-1] = 1
+				// y0=paint[i-1]    
+				// y1=paint[i]
+
+
+				// !!!! calculate next scaledValue [0...1] 
+				psd = (2 * Math.pow(global.paint[xIdx][i], 2)) / global.N;
+				psdLog = 10 * global.log10(psd / global.maxPsd);
+				scaledVal = ((psdLog + global.dynRangeInDB) / global.dynRangeInDB);
+				if (scaledVal > 1) {
+					scaledVal = 1;
+				}
+				if (scaledVal < 0) {
+					scaledVal = 0;
+				}
+
+				// !!!! set y1 to this scaled value
+				var y1 = scaledVal;
+
+				if (global.pixelHeight >= 1) {
+					// do interpolation between y0 (previous scaledValue) and y1 (scaledValue now)
+					for (var b = 0; b < global.pixelHeight; b++) {
+						var y2 = y0 + (y1 - y0) / x1 * b;
+
+						// calculate corresponding color value for interpolation point [0...255]
+						rgb = 255 - Math.round(255 * y2);
+
+						// set internal image buffer to calculated & interpolated value
+						px = Math.floor(xIdx);
+						py = Math.floor(global.height - (global.pixelHeight * (i - 2) + b));
+
+						index = (px + (py * global.width)) * 4;
+						if (global.drawHeatMapColors) {
+							if (!isNaN(rgb)) {
+								var hmVals = global.convertToHeatmap(0, 255, rgb, global.heatMapColorAnchors);
+								global.imageResult[index + 0] = hmVals.r;
+								global.imageResult[index + 1] = hmVals.g;
+								global.imageResult[index + 2] = hmVals.b;
+								global.imageResult[index + 3] = global.transparency;
+
+							} else {
+								global.imageResult[index + 0] = rgb;
+								global.imageResult[index + 1] = rgb;
+								global.imageResult[index + 2] = rgb;
+								global.imageResult[index + 3] = global.transparency;
+							}
+
+						} else {
+							global.imageResult[index + 0] = rgb;
+							global.imageResult[index + 1] = rgb;
+							global.imageResult[index + 2] = rgb;
+							global.imageResult[index + 3] = global.transparency;
+						}
+					}
+				} else {
+					rgb = 255 - Math.round(255 * y1);
+					// set internal image buffer to calculated & interpolated value
+					px = Math.floor(xIdx);
+					py = Math.floor(global.height - (global.pixelHeight * (i - 2)));
+
+					index = (px + (py * global.width)) * 4;
+					global.imageResult[index + 0] = rgb;
+					global.imageResult[index + 1] = rgb;
+					global.imageResult[index + 2] = rgb;
+					global.imageResult[index + 3] = global.transparency;
+				}
+			}
+		};
+
 
 		/**
 		 * calculates Magnitude by
@@ -478,14 +473,8 @@ spectroDrawingWorker.prototype = {
 		 * - calculating the actual FFT
 		 * - (and saving the biggest value in totalMax)
 		 *
-		 * [parameters]
-		 * channel			-> Number of Channels
-		 * offset			-> Calculated offset in PCM Stream
-		 * windowSize		-> Size of Window used for calculation
-		 * c				-> Upper Boundry (c = Math.floor(upperFreq/HzStep);)
-		 *
-		 * [return]
-		 * calculated FFT data as Float32Array
+		 * @param offset calculated offset in PCM Stream
+		 * @return magnitude spectrum as Float32Array
 		 */
 		global.calcMagnitudeSpectrum = function (offset, windowSizeInSamples) {
 			// imaginary array of length N
@@ -523,7 +512,7 @@ spectroDrawingWorker.prototype = {
 		 * input sample data comes from the buffer "localSoundBuffer"
 		 * which has to be filled before.
 		 * - first loop calculates magnitudes to draw (getMagnitude())
-		 * - second loop draws values on canvas  (drawOfflineSpectogram())
+		 * - second loop draws values on canvas  (drawVerticalLineOfSpectogram())
 		 *
 		 */
 		global.renderSpectrogram = function () {
@@ -553,10 +542,6 @@ spectroDrawingWorker.prototype = {
 				// height between two interpolation points
 				global.pixelHeight = global.height / (global.c - global.d - 2);
 
-				console.log(global.c);
-				console.log(global.d);
-				console.log(global.pixelHeight);
-
 				// ugly hack in order to support PhantomJS < 2.0 testing
 				if (typeof Uint8ClampedArray === 'undefined') {
 					Uint8ClampedArray = Uint8Array;
@@ -571,9 +556,9 @@ spectroDrawingWorker.prototype = {
 				}
 
 				// draw spectrogram on png image with canvas width
-				// one column is drawn per drawOfflineSpectogram
+				// one column is drawn per drawVerticalLineOfSpectogram
 				for (var j = 0; j < global.width; j++) {
-					global.drawOfflineSpectogram(j);
+					global.drawVerticalLineOfSpectogram(j);
 				}
 
 				// post generated image block with settings back
@@ -596,6 +581,10 @@ spectroDrawingWorker.prototype = {
 		};
 
 
+		/**
+		 * function to handle messages events if used ad web worker
+		 * @param e message event
+		 */
 		global.onmessage = function (e) {
 			if (e.data !== undefined) {
 				var render = true;
@@ -811,5 +800,5 @@ spectroDrawingWorker.prototype = {
 				handler(e.data);
 			});
 		}
-	},
+	}
 };
