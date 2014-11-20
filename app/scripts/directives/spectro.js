@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function ($timeout, viewState, ConfigProviderService, Drawhelperservice, fontScaleService, Soundhandlerservice) {
+  .directive('spectro', function ($timeout, viewState, ConfigProviderService, Drawhelperservice, fontScaleService, Soundhandlerservice, mathHelperService) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -23,9 +23,9 @@ angular.module('emuwebApp')
 
         // FFT default vars
         // default alpha for Window Function
-        scope.alpha = 0.16; 
+        scope.alpha = 0.16;
         scope.devicePixelRatio = window.devicePixelRatio || 1;
-        
+
         // Spectro Worker 
         scope.primeWorker = new spectroDrawingWorker();
 
@@ -91,15 +91,15 @@ angular.module('emuwebApp')
           scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
           scope.drawSpectro(scope.shs.wavJSO.Data);
         };
-        
-        scope.drawSpectro = function(buffer) {
+
+        scope.drawSpectro = function (buffer) {
           scope.killSpectroRenderingThread();
           scope.startSpectroRenderingThread(buffer);
-        }        
+        }
 
-        scope.pcmpp = function() {
+        scope.pcmpp = function () {
           return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
-          
+
         }
 
         scope.drawSpectMarkup = function (reset) {
@@ -114,7 +114,7 @@ angular.module('emuwebApp')
           scope.dhs.drawMinMaxAndName(scope.markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
         }
 
-        scope.killSpectroRenderingThread = function() {
+        scope.killSpectroRenderingThread = function () {
           scope.context.fillStyle = scope.cps.vals.colors.levelColor;
           scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
           // draw current viewport selected
@@ -128,9 +128,9 @@ angular.module('emuwebApp')
           }
         }
 
-        scope.setupEvent = function() {
+        scope.setupEvent = function () {
           var imageData = scope.context.createImageData(scope.canvas0.width, scope.canvas0.height);
-          scope.primeWorker.says(function(event) {
+          scope.primeWorker.says(function (event) {
             if (scope.pcmpp() === event.pcmpp) {
               var tmp = new Uint8ClampedArray(event.img);
               imageData.data.set(tmp);
@@ -140,38 +140,46 @@ angular.module('emuwebApp')
           });
         };
 
-        scope.startSpectroRenderingThread = function(buffer) {
-          if(buffer.length>0) {
-			  scope.primeWorker = new spectroDrawingWorker();
-			  var parseData;
-			  if (scope.vs.curViewPort.sS >= scope.vs.spectroSettings.windowLength / 2) {
-				// pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
-				parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - scope.vs.spectroSettings.windowLength / 2, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); 
-				
-			  } else {
-			    // tolerate window/2 alignment issue if at beginning of file
-				parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + scope.vs.spectroSettings.windowLength)); 
-			  }
-			  scope.setupEvent();
-			  scope.primeWorker.tell({
-				'N': scope.vs.spectroSettings.windowLength,
-				'alpha': scope.alpha,
-				'freq': scope.vs.spectroSettings.rangeTo,
-				'freqLow': scope.vs.spectroSettings.rangeFrom,
-				'pcmpp': scope.pcmpp(),
-				'window': scope.vs.spectroSettings.window,
-				'width': scope.canvas0.width,
-				'height': scope.canvas0.height,
-				'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
-				'pixelRatio': scope.devicePixelRatio,
-				'sampleRate': scope.shs.wavJSO.SampleRate,
-				'streamChannels': scope.shs.wavJSO.NumChannels,
-				'transparency': scope.cps.vals.spectrogramSettings.transparency,
-				'stream': parseData.buffer,
-				'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
-				'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
-				'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
-			  }, [parseData.buffer]);
+        scope.startSpectroRenderingThread = function (buffer) {
+          if (buffer.length > 0) {
+            scope.primeWorker = new spectroDrawingWorker();
+            var parseData;
+            var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs);
+            // fftN must be greater than 512 (leads to better resolution of spectrogram)
+            if (fftN < 512) {
+              fftN = 512;
+            }
+
+            if (scope.vs.curViewPort.sS >= fftN / 2) {
+              // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
+              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN));
+            } else {
+              // tolerate window/2 alignment issue if at beginning of file
+              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN));
+            }
+
+            scope.setupEvent();
+            
+            scope.primeWorker.tell({
+              'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,
+              'fftN': fftN,
+              'alpha': scope.alpha,
+              'freq': scope.vs.spectroSettings.rangeTo,
+              'freqLow': scope.vs.spectroSettings.rangeFrom,
+              'pcmpp': scope.pcmpp(),
+              'window': scope.vs.spectroSettings.window,
+              'width': scope.canvas0.width,
+              'height': scope.canvas0.height,
+              'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
+              'pixelRatio': scope.devicePixelRatio,
+              'sampleRate': scope.shs.wavJSO.SampleRate,
+              'streamChannels': scope.shs.wavJSO.NumChannels,
+              'transparency': scope.cps.vals.spectrogramSettings.transparency,
+              'stream': parseData.buffer,
+              'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
+              'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
+              'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
+            }, [parseData.buffer]);
           }
         }
       }

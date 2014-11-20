@@ -38,7 +38,7 @@ angular.module('emuwebApp')
       };
 
       sServObj.spectroSettings = {
-        windowLength: -1,
+        windowSizeInSecs: -1,
         rangeFrom: -1,
         rangeTo: -1,
         dynamicRange: -1,
@@ -206,7 +206,7 @@ angular.module('emuwebApp')
      * setspectroSettings
      */
     sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors) {
-      sServObj.spectroSettings.windowLength = parseInt(len, 10);
+      sServObj.spectroSettings.windowSizeInSecs = len;
       sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
       sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
       sServObj.spectroSettings.dynamicRange = parseInt(dyn, 10);

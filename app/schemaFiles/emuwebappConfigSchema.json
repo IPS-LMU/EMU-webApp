@@ -220,8 +220,8 @@
 		"spectrogramSettings": {
 			"type": "object",
 			"properties": {
-				"N": {
-					"type": "integer"
+				"windowSizeInSecs": {
+					"type": "number"
 				},
 				"rangeFrom": {
 					"type": "integer"
@@ -260,7 +260,7 @@
 					}
 				}
 			},
-			"required": ["N", "rangeFrom", "rangeTo", "dynamicRange", "window"],
+			"required": ["windowSizeInSecs", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false
 		},
 		"perspectives": {
