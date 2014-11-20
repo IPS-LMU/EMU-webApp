@@ -15,13 +15,18 @@ angular.module('emuwebApp')
 		///////////////////
 		// drag n drop data 
 		sServObj.setData = function (bundles) {
-		    console.log(bundles);
+			angular.forEach(bundles, function (bundle) {
+				sServObj.setDragnDropData(bundle[0], 'wav', bundle[1]);
+				sServObj.setDragnDropData(bundle[0], 'annotation', bundle[2]);
+			});
+
 		};
 		
 		/**
 		 * setter sServObj.drandropBundles
 		 */
 		sServObj.setDragnDropData = function (bundle, type, data) {
+		    console.log(bundle, type, data);
 			if(sServObj.drandropBundles[bundle] === undefined) {
 			    sServObj.drandropBundles[bundle] = {};
 			    sServObj.bundleList.push({
