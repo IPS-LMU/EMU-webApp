@@ -19,6 +19,11 @@ angular.module('emuwebApp')
             $scope.dropText = $scope.dropDefault;
             appStateService.resetToInitState();
         };
+        
+		// listen for resetToInitState
+		$scope.$on('handle', function () {
+            console.log(DragnDropDataService.drandropBundles);
+        });
 
         $scope.handleLocalFiles = function () {
             var validRes;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropDataService', function DragnDropDataService(loadedMetaDataService) {
+	.service('DragnDropDataService', function DragnDropDataService($q, $rootScope, browserDetector, Wavparserservice, loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
@@ -15,18 +15,25 @@ angular.module('emuwebApp')
 		///////////////////
 		// drag n drop data 
 		sServObj.setData = function (bundles) {
+		    var prom = [];
 			angular.forEach(bundles, function (bundle) {
-				sServObj.setDragnDropData(bundle[0], 'wav', bundle[1]);
-				sServObj.setDragnDropData(bundle[0], 'annotation', bundle[2]);
-			});
+				prom.push(
+				    sServObj.setDragnDropData(bundle[0], 'wav', bundle[1]).then( function () {
+				        sServObj.setDragnDropData(bundle[0], 'annotation', bundle[2])
+				    })
+				);
 
+			})
+			$q.all(prom).then(function () {
+                $rootScope.$broadcast('handle', sServObj.drandropBundles);
+            });
 		};
 		
 		/**
 		 * setter sServObj.drandropBundles
 		 */
 		sServObj.setDragnDropData = function (bundle, type, data) {
-		    console.log(bundle, type, data);
+		    var defer = $q.defer();
 			if(sServObj.drandropBundles[bundle] === undefined) {
 			    sServObj.drandropBundles[bundle] = {};
 			    sServObj.bundleList.push({
@@ -40,14 +47,30 @@ angular.module('emuwebApp')
 			    sServObj.sessionDefault = bundle;
 			}
 			if(type === 'wav') {
-			    sServObj.drandropBundles[bundle].wav = data;
+                var reader = new FileReader();
+                var validRes;
+                reader.readAsArrayBuffer(data);
+                reader.onloadend = function (evt) {
+                    if (evt.target.readyState == FileReader.DONE) {
+                        if (browserDetector.isBrowser.Firefox()) {
+                            validRes = evt.target.result;
+                        } else {
+                            validRes = evt.currentTarget.result;
+                        }
+                        
+                        Wavparserservice.parseWavArrBuf(validRes).then(function (wavJSO) {
+                            console.log(wavJSO);
+                            sServObj.drandropBundles[bundle].mediaFile = wavJSO;
+                            defer.resolve();
+                        });
+                    }
+                };
 			}
 			else if(type === 'annotation') {
 			    sServObj.drandropBundles[bundle].grid = data;
+			    defer.resolve();
 			}
-			else {
-			    sServObj.drandropBundles[bundle].other = data;
-			}
+			return defer.promise;
 		};
 		
 		/**
