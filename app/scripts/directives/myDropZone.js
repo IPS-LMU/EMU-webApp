@@ -9,108 +9,102 @@ angular.module('emuwebApp')
 		scope: {
 		},
 		link: function postLink(scope, element, attr) {
-		
-		
-		  scope.dropTextDefault = 'Drop your files here or click here to open a file';
-		  scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID';
-		  scope.dropTextErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
-		  scope.dropAllowed = 'Drop file(s) to start loading !';
-		  scope.dropParsingStarted = 'Parsing started';
-		  scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
-		  scope.dropHintDefault = 'Load .TextGrid first or .TextGrid and .WAV at once!';
-		  
-		  scope.dropText = scope.dropTextDefault;
-		  scope.dropHint = scope.dropHintDefault;
-		  
-		  scope.dropClass = '';
-		  scope.error = false;
-		  
-		  scope.traverseFileTreeChrome = function (item, path) {
-            path = path || '';
-            if (item.isFile) {
-                item.file(function (file) {
-                    var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-                    var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
-                    if (scope.error !== true && extension === 'WAV') {
-                        scope.$apply(function () {
-		                    scope.dropText = scope.dropTextDefault;
-		                    scope.dropClass = '';
-		                }); 
-		                DragnDropDataService.setDragnDropData(bundle, 'wav', file);
-		                scope.$parent.wav = file;   
-		                scope.$parent.handleLocalFiles(); 
-                    } else if (scope.error !== true && extension === 'TEXTGRID') {
-                        DragnDropDataService.setDragnDropData(bundle, 'grid', file);
-                        scope.$parent.grid = file;
-                        scope.$apply(function () {
-		                    scope.dropText = scope.dropParsingWaiting;
-		                });
-                    } else if (scope.error !== true && (extension !== 'DS_STORE')) {
-                        scope.error = true;
-                        DragnDropDataService.setDragnDropData(bundle, 'other', file);
-                        scope.$parent.other = file;
-                        scope.dropText = scope.dropTextErrorFileType;
-                        scope.dropClass = 'error';
-                        dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
-                            scope.dropText = scope.dropTextDefault;
-                            scope.dropClass = '';
-                        });
-                        appStateService.resetToInitState();
-                    }
-                });
-            } else if (item.isDirectory) {
-                var dirReader = item.createReader();
-                dirReader.readEntries(function (entries) {
-                    for (var i = 0; i < entries.length; i++) {
-                        scope.traverseFileTreeChrome(entries[i], path + item.name + '/');
-                    }
-                });
-            }
-		  };
+			scope.dropTextDefault = 'Drop your files here or click here to open a file';
+			scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID';
+			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
+			scope.dropAllowed = 'Drop file(s) to start loading !';
+			scope.dropParsingStarted = 'Parsing started';
+			scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
+			scope.dropHintDefault = 'Load .TextGrid first or .TextGrid and .WAV at once!';
+
+			scope.dropText = scope.dropTextDefault;
+			scope.dropHint = scope.dropHintDefault;
+
+			scope.dropClass = '';
+			scope.count = 0;
+			scope.handles = [];
 
 
-		  scope.traverseFileTreeFirefox = function (item, path) {
-            path = path || '';
-            if (item.size > 0) {
-                var extension = item.name.substr(item.name.lastIndexOf('.') + 1).toUpperCase();
-                var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
-                if (scope.error !== true && extension === 'WAV') {
-                    DragnDropDataService.setDragnDropData(bundle, 'wav', item);
-                    scope.$parent.wav = item;
-                    scope.$apply(function () {
-		                scope.dropText = scope.dropAllowed;
-		                scope.dropClass = '';
-		            });
-		            scope.$parent.handleLocalFiles();
-                } else if (scope.error !== true && extension === 'TEXTGRID') {
-                    DragnDropDataService.setDragnDropData(bundle, 'grid', item);
-                    scope.$parent.grid = item;
-                    scope.$apply(function () {
-		                scope.dropText = scope.dropParsingWaiting;
-		                scope.dropClass = 'waiting';
-		            });
-                } else if(scope.error !== true) {
-                    scope.error = true;
-                    DragnDropDataService.setDragnDropData(bundle, 'other', item);
-                    scope.$parent.other = item;
-                    scope.dropText = scope.dropTextErrorFileType;
-                    scope.dropClass = 'error';
-                    dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
-                        scope.dropText = scope.dropTextDefault;
-                        scope.dropClass = '';
-                        appStateService.resetToInitState();
-                    });
-                }
-            } else if (item.isDirectory) {
-                var dirReader = item.createReader();
-                dirReader.readEntries(function (entries) {
-                    for (var i = 0; i < entries.length; i++) {
-                        scope.traverseFileTreeFirefox(entries[i], path + item.name + '/');
-                    }
-                });
-            }
-		  };		  
-		
+		    scope.updateQueueLength = function (quantity) {
+				scope.count += quantity;
+			}
+ 
+			scope.enqueueFileAddition = function (file) {
+                var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+				if(extension === 'WAV' || extension === 'TEXTGRID' ) {
+    			    scope.handles.push(file); 
+			    }
+			    else {
+		            scope.dropClass = 'error';
+				    scope.dropText = scope.dropTextErrorFileType;
+					scope.handles = [];
+					scope.count = 0;
+					scope.$digest();
+    			}
+				
+				// If all the files we expect have shown up, then flush the queue.
+				if (scope.count === scope.handles.length) {
+					DragnDropDataService.setData(scope.handles);
+					scope.handles = [];
+					scope.count = 0;
+				}
+			}        
+		  
+			scope.loadFiles = function (files) {
+				scope.updateQueueLength(files.length);
+				for (var i = 0; i < files.length; i++) {
+				    var file = files[i];
+				    if(file.name==='.DS_Store') {
+				        scope.updateQueueLength(-1);
+				    }
+				    else {
+						var entry, reader;
+		 
+						if (file.isFile || file.isDirectory) {
+							entry = file;
+						}
+						else if (file.getAsEntry) {
+							entry = file.getAsEntry();
+						}
+						else if (file.webkitGetAsEntry) {
+							entry = file.webkitGetAsEntry();
+						}
+						else if (typeof file.getAsFile === 'function') {
+							scope.enqueueFileAddition(file.getAsFile());
+							continue;
+						}
+						else if (File && file instanceof File) {
+							scope.enqueueFileAddition(file);
+							continue;
+						}
+						else {
+							scope.updateQueueLength(-1);
+							continue;
+						}
+		 
+						if (!entry) {
+							updateQueueLength(-1);
+						}
+						else if (entry.isFile) {
+							entry.file(function(file) {
+								scope.enqueueFileAddition(file);
+							}, function(err) {
+								console.warn(err);
+							});
+						}
+						else if (entry.isDirectory) {
+							reader = entry.createReader();
+							reader.readEntries(function(entries) {
+								scope.loadFiles(entries);
+								scope.updateQueueLength(-1);
+							}, function(err) {
+								console.warn(err);
+							});
+						}
+					}
+				}
+			}    
+
 		  scope.dragEnterLeave = function(evt) {
 		    evt.preventDefault();
 		    scope.$apply(function () {
@@ -128,35 +122,18 @@ angular.module('emuwebApp')
 		  }	
 		  
 		  scope.dropFiles = function(evt) {
-		    scope.error = false;
 		    evt.stopPropagation();
 		    evt.preventDefault();
 		    scope.$apply(function () {
               if (window.File && window.FileReader && window.FileList && window.Blob) {
 		        if(evt.originalEvent !== undefined) {          
                   if(browserDetector.isBrowser.Firefox()) {
-                    var dt = evt.originalEvent.dataTransfer;
-                    var files = dt.files;
-                    var count = files.length;
-                    for (var i = 0; i < files.length; i++) {
-                        scope.traverseFileTreeFirefox(files[i]); 
-                    }
+                    var items = evt.originalEvent.dataTransfer.files;
                   }
                   else {        
                     var items = evt.originalEvent.dataTransfer.items;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i].webkitGetAsEntry();
-                        if (item) {
-                            if(item.isDirectory) {
-                                DragnDropDataService.setSession(item.name);
-                            }
-                            else {
-                                DragnDropDataService.setSession('File(s)');
-                            }
-                            scope.traverseFileTreeChrome(item); 
-                        }
-                    }    
                   }
+                  scope.loadFiles(items);
                 }
                 else {
     		      scope.dropText = scope.dropTextErrorFileType;
@@ -194,7 +171,10 @@ angular.module('emuwebApp')
     		
           element.bind('click', function (event) {
             element.context.children[0].children[1].click();
-          });		
+          });	
+          
+          
+      	
 		
 		}
 	};

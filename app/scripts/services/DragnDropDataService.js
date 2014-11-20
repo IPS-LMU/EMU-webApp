@@ -14,7 +14,10 @@ angular.module('emuwebApp')
 		
 		///////////////////
 		// drag n drop data 
-
+		sServObj.setData = function (bundles) {
+		    console.log(bundles);
+		};
+		
 		/**
 		 * setter sServObj.drandropBundles
 		 */
@@ -34,7 +37,7 @@ angular.module('emuwebApp')
 			if(type === 'wav') {
 			    sServObj.drandropBundles[bundle].wav = data;
 			}
-			else if(type === 'grid') {
+			else if(type === 'annotation') {
 			    sServObj.drandropBundles[bundle].grid = data;
 			}
 			else {
