@@ -43,7 +43,7 @@ describe('Worker: spectroDrawingWorker', function () {
 		'heatMapColorAnchors': JSON.parse('[[255,0,0],[0,255,0],[0,0,0]]')
 	}
 
-	var windowData;
+	var windowData, samples;
 
 
 	beforeEach(module('emuwebApp'));
@@ -61,6 +61,8 @@ describe('Worker: spectroDrawingWorker', function () {
 		// set window function test data
 		windowData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
+		// set samples
+		samples = [5, -2, 17, -5, -5, -2, -2, 9, 1, 6, 18, -1, 5, 0, 0, -3, -4, 5, 11, 6, -9, 5, 14, 5, 11, 10, 1, -12, -20, -17, -5, -1, -13, -11, -32, -39, -22, -32, -12, -21, -31, -31, -30, -28, -41, -46, -37, -24, -23, -30, -48, -45, -47, -47, -55, -70, -30, -60, -59, -50, -76, -74, -86, -78, -76, -91, -60, -66, -83, -77, -78, -68, -75, -78, -81, -70, -65, -70, -69, -73, -70, -61, -75, -77, -69, -78, -81, -68, -95, -92, -84, -97, -104, -94, -96, -95, -99, -92, -105, -97]
 	});
 
 	/**
@@ -348,5 +350,41 @@ describe('Worker: spectroDrawingWorker', function () {
 		expect(res).toBe(-47);
 
 	});
+
+
+	/**
+	 *
+	 */
+	it('should calculate fft correctly', function () {
+
+		mockGlobal.N = 512;
+		mockGlobal.myFFT = new mockGlobal.FFT();
+
+		var imag = new Float32Array(mockData.fftN);
+
+		var real = new Float32Array(mockData.fftN);
+
+		for (var j = 0; j < samples.length; j++) {
+			real[j] = samples[j];
+		}
+
+		mockGlobal.myFFT.fft(real, imag);
+
+		expect(real[0]).toBeCloseTo(-4196.00000, 4);
+		
+		expect(real[1]).toBeCloseTo(-2551.42727, 2);
+		expect(imag[1]).toBeCloseTo(3224.107843, 3);
+		expect(real[100]).toBeCloseTo(-30.04602, 4);
+		expect(imag[100]).toBeCloseTo(26.566480, 4);
+		expect(real[200]).toBeCloseTo(182.22050, 4);
+		expect(imag[200]).toBeCloseTo(83.981800, 4);
+		expect(real[250]).toBeCloseTo(4.35428, 4);
+		expect(imag[250]).toBeCloseTo(30.942623, 4);
+
+	});
+
+
+	// TODO: write tests for renderSpectrogram, calcMagnitudeSpectrum, drawVerticalLineOfSpectogram, convertToHeatmap and 
+	// probably getWorkerURL, kill, tell, says
 
 });
