@@ -34,18 +34,26 @@ angular.module('emuwebApp')
 			scope.enqueueFileAddition = function (file) {
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
+                var j = 0;
                 if(scope.bundleNames.indexOf(bundle) === -1) {
                     scope.bundleNames.push(bundle);
-                    scope.bundles[scope.bundleNames.indexOf(bundle)] = [];
-                    scope.bundles[scope.bundleNames.indexOf(bundle)][0] = bundle;
+                    j = scope.bundleNames.indexOf(bundle);
+                    scope.bundles[j] = [];
+                    scope.bundles[j][0] = bundle;
                 }
 				if(extension === 'WAV') {
-				    scope.bundles[scope.bundleNames.indexOf(bundle)][1] = file;
+    				j = scope.bundleNames.indexOf(bundle);
+				    scope.bundles[j][1] = file;
     			    scope.handles.push(file); 
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
-			        scope.bundles[scope.bundleNames.indexOf(bundle)][2]= file;
+			        j = scope.bundleNames.indexOf(bundle);
+			        console.log(scope.bundles[j]);
+			        scope.bundles[j][2]= file;
 			        scope.handles.push(file); 
+			        scope.dropClass = '';
+			        scope.dropText = scope.dropParsingWaiting;
+			        scope.$digest();
 			    }
 			    else {
 		            scope.dropClass = 'error';
@@ -62,6 +70,8 @@ angular.module('emuwebApp')
 					scope.handles = [];
 					scope.bundles = [];
 					scope.count = 0;
+					scope.dropClass = '';
+					scope.dropText = scope.dropTextDefault;
 				}
 			}        
 		  

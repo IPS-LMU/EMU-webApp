@@ -62,34 +62,53 @@ angular.module('emuwebApp')
             var reader2 = new FileReader();
             var res;
             if(bundles.length>i) {
-				reader.readAsArrayBuffer(data.wav);
-				reader.onloadend = function (evt) {
-					if (evt.target.readyState == FileReader.DONE) {
-						if (browserDetector.isBrowser.Firefox()) {
-							res = evt.target.result;
-						} else {
-							res = evt.currentTarget.result;
-						} 
-						Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) { 
-						    sServObj.convertedBundles[i].mediaFile = {};
-						    Soundhandlerservice.wavJSO = wavJSO;
-							sServObj.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
-							var bundle = data.wav.name.substr(0, data.wav.name.lastIndexOf('.'));
-							reader2.readAsText(data.annotation);
-							reader2.onloadend = function (evt) {
-								if (evt.target.readyState == FileReader.DONE) {
-									Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
-										sServObj.convertedBundles[i].annotation =  parseMess;
-										sServObj.convertedBundles[i].ssffFiles =  {};
-										sServObj.convertDragnDropData(bundles, i+1).then( function () {
-										    defer.resolve();
-										});
-									});                                                            
+                if(data.wav===undefined) {
+                    
+                }
+                else {
+					reader.readAsArrayBuffer(data.wav);
+					reader.onloadend = function (evt) {
+						if (evt.target.readyState == FileReader.DONE) {
+							if (browserDetector.isBrowser.Firefox()) {
+								res = evt.target.result;
+							} else {
+								res = evt.currentTarget.result;
+							} 
+							Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) { 
+								sServObj.convertedBundles[i].mediaFile = {};
+								Soundhandlerservice.wavJSO = wavJSO;
+								sServObj.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
+								sServObj.convertedBundles[i].ssffFiles =  {};
+								var bundle = data.wav.name.substr(0, data.wav.name.lastIndexOf('.'));
+								if(data.annotation===undefined) {
+									sServObj.convertedBundles[i].annotation = {
+										levels: [],
+										links: [],
+										sampleRate: wavJSO.SampleRate,
+										annotates: bundle,
+										name: bundle
+									};
+									sServObj.convertDragnDropData(bundles, i+1).then( function () {
+										defer.resolve();
+									});
 								}
-							};
-						});
-					}
-				};            
+								else {
+									reader2.readAsText(data.annotation);
+									reader2.onloadend = function (evt) {
+										if (evt.target.readyState == FileReader.DONE) {
+											Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
+												sServObj.convertedBundles[i].annotation =  parseMess;
+												sServObj.convertDragnDropData(bundles, i+1).then( function () {
+													defer.resolve();
+												});
+											});                                                            
+										}
+									};
+								}
+							});
+						}
+					}; 
+				}           
             }
             else {
                 defer.resolve();

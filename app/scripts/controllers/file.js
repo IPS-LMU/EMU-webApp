@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 						DataService.setData(annotation);
 						var lNames = [];
 						var levelDefs = [];
-						annot.levels.forEach(function (l) {
+						annotation.levels.forEach(function (l) {
 							lNames.push(l.name);
 							levelDefs.push({
 								'name': l.name,
