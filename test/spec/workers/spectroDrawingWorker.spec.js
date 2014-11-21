@@ -371,7 +371,7 @@ describe('Worker: spectroDrawingWorker', function () {
 		mockGlobal.myFFT.fft(real, imag);
 
 		expect(real[0]).toBeCloseTo(-4196.00000, 4);
-		
+
 		expect(real[1]).toBeCloseTo(-2551.42727, 2);
 		expect(imag[1]).toBeCloseTo(3224.107843, 3);
 		expect(real[100]).toBeCloseTo(-30.04602, 4);
