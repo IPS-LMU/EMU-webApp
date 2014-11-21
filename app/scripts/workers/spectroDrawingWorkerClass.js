@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 /**
  * A simple class that creates another thread
