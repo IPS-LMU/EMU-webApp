@@ -70,7 +70,7 @@
         "fontPxSize": 14
     },
     "spectrogramSettings": {
-        "N": 256,
+        "windowSizeInSecs": 0.01,
         "rangeFrom": 0,
         "rangeTo": 5000,
         "dynamicRange": 70,

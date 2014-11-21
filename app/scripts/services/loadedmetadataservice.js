@@ -119,35 +119,33 @@ angular.module('emuwebApp')
 		// uniqSessionList
 
 		/**
-		 * 
+		 *
 		 */
-		sServObj.toggleCollapseSession = function(session){
+		sServObj.toggleCollapseSession = function (session) {
 			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
 		};
-		
-		/**
-		 * 
-		 */
-		sServObj.updateCollapseSessionState = function(text){
-		    angular.forEach(sServObj.getBundleList(), function (bundle) {
-			    if(bundle.name.indexOf(text)) {
-			        uniqSessionList[bundle.session].collapsed = false;
-			    }
-			    else {
-			        uniqSessionList[bundle.session].collapsed = true;
-			    }
-			});
-		};		
-		
-		
-		
 
 		/**
-		 * 
+		 *
 		 */
-		sServObj.getSessionCollapseState = function(session){
+		sServObj.updateCollapseSessionState = function (text) {
+			angular.forEach(sServObj.getBundleList(), function (bundle) {
+				if (bundle.name.indexOf(text)) {
+					uniqSessionList[bundle.session].collapsed = false;
+				} else {
+					uniqSessionList[bundle.session].collapsed = true;
+				}
+			});
+		};
+
+
+
+		/**
+		 *
+		 */
+		sServObj.getSessionCollapseState = function (session) {
 			return uniqSessionList[session].collapsed;
-		}
+		};
 
 
 
@@ -161,7 +159,7 @@ angular.module('emuwebApp')
 			uniqSessionList = [];
 			bundleList = [];
 			curBndl = {};
-		}
+		};
 
 		return (sServObj);
 	});
