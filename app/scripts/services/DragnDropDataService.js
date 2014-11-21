@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropDataService', function DragnDropDataService($q, $rootScope, browserDetector, Wavparserservice, loadedMetaDataService) {
+	.service('DragnDropDataService', function DragnDropDataService($q, $rootScope, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
+		sServObj.convertedBundles = [];
 		sServObj.bundleList = [];
 		sServObj.sessionName = 'File(s)';
 		sServObj.sessionDefault = '';
@@ -16,26 +17,23 @@ angular.module('emuwebApp')
 		// drag n drop data 
 		sServObj.setData = function (bundles) {
 		    var prom = [];
-			angular.forEach(bundles, function (bundle) {
-				prom.push(
-				    sServObj.setDragnDropData(bundle[0], 'wav', bundle[1]).then( function () {
-				        sServObj.setDragnDropData(bundle[0], 'annotation', bundle[2])
-				    })
-				);
-
-			})
-			$q.all(prom).then(function () {
-                $rootScope.$broadcast('handle', sServObj.drandropBundles);
-            });
+			angular.forEach(bundles, function (bundle, i) {
+			    sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
+			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
+			});
+			sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
+			    $rootScope.$broadcast('handle');
+			});
 		};
 		
 		/**
 		 * setter sServObj.drandropBundles
 		 */
-		sServObj.setDragnDropData = function (bundle, type, data) {
-		    var defer = $q.defer();
-			if(sServObj.drandropBundles[bundle] === undefined) {
-			    sServObj.drandropBundles[bundle] = {};
+		sServObj.setDragnDropData = function (bundle, i, type, data) {
+			if(sServObj.drandropBundles[i] === undefined) {
+			    sServObj.drandropBundles[i] = {};
+			    sServObj.convertedBundles[i] = {};
+			    sServObj.convertedBundles[i].name = bundle;
 			    sServObj.bundleList.push({
 			        name: bundle, 
 			        session: sServObj.sessionName,
@@ -44,34 +42,66 @@ angular.module('emuwebApp')
 			    })
 			    loadedMetaDataService.setBundleList(sServObj.bundleList);
 			    loadedMetaDataService.setCurBndlName(bundle);
-			    sServObj.sessionDefault = bundle;
+			    loadedMetaDataService.setDemoDbName(bundle);
+			    sServObj.sessionDefault = i;
 			}
 			if(type === 'wav') {
-                var reader = new FileReader();
-                var validRes;
-                reader.readAsArrayBuffer(data);
-                reader.onloadend = function (evt) {
-                    if (evt.target.readyState == FileReader.DONE) {
-                        if (browserDetector.isBrowser.Firefox()) {
-                            validRes = evt.target.result;
-                        } else {
-                            validRes = evt.currentTarget.result;
-                        }
-                        
-                        Wavparserservice.parseWavArrBuf(validRes).then(function (wavJSO) {
-                            console.log(wavJSO);
-                            sServObj.drandropBundles[bundle].mediaFile = wavJSO;
-                            defer.resolve();
-                        });
-                    }
-                };
+                sServObj.drandropBundles[i].wav = data;
 			}
 			else if(type === 'annotation') {
-			    sServObj.drandropBundles[bundle].grid = data;
-			    defer.resolve();
+			    sServObj.drandropBundles[i].annotation = data;
 			}
+		};
+		
+		
+		
+		sServObj.convertDragnDropData = function (bundles, i) {
+		    var defer = $q.defer();
+			var data = sServObj.drandropBundles[i];
+            var reader = new FileReader();
+            var reader2 = new FileReader();
+            var res;
+            if(bundles.length>i) {
+				reader.readAsArrayBuffer(data.wav);
+				reader.onloadend = function (evt) {
+					if (evt.target.readyState == FileReader.DONE) {
+						if (browserDetector.isBrowser.Firefox()) {
+							res = evt.target.result;
+						} else {
+							res = evt.currentTarget.result;
+						} 
+						Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) { 
+						    sServObj.convertedBundles[i].mediaFile = {};
+						    Soundhandlerservice.wavJSO = wavJSO;
+							sServObj.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
+							var bundle = data.wav.name.substr(0, data.wav.name.lastIndexOf('.'));
+							reader2.readAsText(data.annotation);
+							reader2.onloadend = function (evt) {
+								if (evt.target.readyState == FileReader.DONE) {
+									Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
+										sServObj.convertedBundles[i].annotation =  parseMess;
+										sServObj.convertedBundles[i].ssffFiles =  {};
+										sServObj.convertDragnDropData(bundles, i+1).then( function () {
+										    defer.resolve();
+										});
+									});                                                            
+								}
+							};
+						});
+					}
+				};            
+            }
+            else {
+                defer.resolve();
+                return defer.promise;
+            }			
 			return defer.promise;
 		};
+			
+		
+		            
+
+		
 		
 		/**
 		 * getter sServObj.drandropBundles
@@ -80,8 +110,8 @@ angular.module('emuwebApp')
 			if(type === 'wav') {
 			    return sServObj.drandropBundles[bundle].wav;
 			}
-			else if(type === 'grid') {
-			    return sServObj.drandropBundles[bundle].grid;
+			else if(type === 'annotation') {
+			    return sServObj.drandropBundles[bundle].annotation;
 			}
 			else {
 			    return false;
@@ -100,7 +130,17 @@ angular.module('emuwebApp')
 		};
 		
 		sServObj.getBundle = function (name, session) {
-    		return sServObj.drandropBundles[name];
+		    var defer = $q.defer();
+		    var ret = {}
+		    angular.forEach(sServObj.convertedBundles, function (bundle, i) {
+		        if(bundle.name === name) {
+		            defer.resolve({
+		                status: 200,
+		                data: bundle
+		            });
+		        }
+		    });
+		    return defer.promise;
 		};
 	
 		return sServObj;
