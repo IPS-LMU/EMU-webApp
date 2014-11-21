@@ -33,6 +33,9 @@ spectroDrawingWorker.prototype = {
 		 * @link http://www.phonetik.uni-muenchen.de/
 		 *
 		 */
+
+		///////////////////////////////////
+		// start: global vars
 		global.executed = false;
 		global.PI = 3.141592653589793; // value : Math.PI
 		global.TWO_PI = 6.283185307179586; // value : 2 * Math.PI
@@ -50,8 +53,8 @@ spectroDrawingWorker.prototype = {
 			RECTANGULAR: 9,
 			TRIANGULAR: 10
 		};
-		global.width = 0;
-		global.height = 0;
+		global.imgWidth = 0;
+		global.imgHeight = 0;
 		global.upperFreq = 0;
 		global.lowerFreq = 0;
 		global.pixelRatio = 1;
@@ -60,15 +63,15 @@ spectroDrawingWorker.prototype = {
 			[0, 255, 0],
 			[0, 0, 0]
 		];
-		global.pcmpp = 0;
+		global.samplesPerPxl = 0;
 		global.sampleRate = 0;
 		global.preEmphasisFilterFactor = 0.97;
 		global.transparency = 0;
 		global.drawHeatMapColors = false;
 		global.N = 0;
 		global.windowSizeInSecs = 0.01;
-		global.threadSoundBuffer = undefined;
-		global.streamChannels = 0;
+		global.audioBuffer = undefined;
+		global.audioBufferChannels = 0;
 		global.wFunction = 0;
 		global.myFFT = undefined;
 		global.pixelHeight = 1;
@@ -78,34 +81,37 @@ spectroDrawingWorker.prototype = {
 		global.paint = [];
 		global.sin = undefined;
 		global.cos = undefined;
-		global.c = 0;
-		global.d = 0;
-		global.imageResult = undefined;
+		global.ceilingFreqFftIdx = 0;
+		global.floorFreqFftIdx = 0;
+		global.resultImgArr = undefined;
 
-		/**
-		 *various helper functions for calculation
-		 */
+		// end: global vars
+		//////////////////////////////////
+
+		/////////////////////////////////
+		// start: math helper functions
 
 		// used by FFT
 		global.toLinearLevel = function (dbLevel) {
 			return Math.pow(10, (dbLevel / 10));
 		};
 
-		// used by FFT
+		// calculate decadic logarithm
 		global.log10 = function (arg) {
 			return Math.log(arg) / 2.302585092994046; // Math.log(x) / Math.LN10
 		};
 
-		// used by FFT
+		// calculate magintude
 		global.magnitude = function (real, imag) {
 			return Math.sqrt((real * real) + (imag * imag));
 		};
 
+		// end: math helper functions
+		////////////////////////////////
 
-		/**
-		 * the actual FFT class including all window
-		 * functions and the fft function itself
-		 */
+		///////////////////////////////////////////////////
+		// start: FFT class (incl. fft() function itself)
+
 		global.FFT = function () {
 			var m, i, x;
 			var n = global.N;
@@ -117,7 +123,7 @@ spectroDrawingWorker.prototype = {
 
 				// this means that the following is only executed 
 				// when no COS table exists
-				// or n changes 
+				// or n changes
 
 				global.cos = new Float32Array(n / 2); // precompute cos table
 				for (x = 0; x < n / 2; x++) {
@@ -137,14 +143,19 @@ spectroDrawingWorker.prototype = {
 			}
 
 			/**
-			 * choose window function set alpha and execute it on the buffer
+			 * apply window function and pre-emphasis from idx 0 to length
+			 * in buffer given
 			 *
-			 * @param type is the chosen window Function as enmu
+			 * @param type is the chosen window Function as enum
 			 * @param alpha is the alpha value for Window Functions (default 0.16)
-			 * @param buffer represents the current fft window data
-			 * @return the calculated FFT window
+			 * @param buffer is the zero padded magnitude spectrum
+			 * @param length is the length to in the buffer (starting at idx 0)
+			 * to which to apply the window to. If the buffer is [x0, x1, x2, x4] and
+			 * length is 2 the window will be applied to [x0, x1, x2] this is needed
+			 * to only apply function to non-zero-padded values of magnitude spectrum.
+			 * @return the windowed/pre-emphasised buffer
 			 */
-			this.wFunction = function (type, alpha, buffer, length) {
+			this.applyWindowFuncAndPreemph = function (type, alpha, buffer, length) {
 				// var length = buffer.length;
 				this.alpha = alpha;
 				switch (type) {
@@ -233,8 +244,8 @@ spectroDrawingWorker.prototype = {
 				}
 				return buffer;
 			};
-
-			// the Window Functions
+			////////////////////////////////////
+			// start: the windowing functions
 
 			this.wFunctionBartlett = function (length, index) {
 				return 2 / (length - 1) * ((length - 1) / 2 - Math.abs(index - (length - 1) / 2));
@@ -279,6 +290,9 @@ spectroDrawingWorker.prototype = {
 			this.wFunctionTriangular = function (length, index) {
 				return 2 / length * (length / 2 - Math.abs(index - (length - 1) / 2));
 			};
+			// end: the windowing functions
+			///////////////////////////////////
+
 			/**
 			 * calculate and apply according pre-emphasis on sample
 			 */
@@ -338,6 +352,12 @@ spectroDrawingWorker.prototype = {
 			};
 		};
 
+		// end: FFT class 
+		///////////////////
+
+		/////////////////////////////////
+		// start: rendering function 
+
 		/**
 		 * interpolates a 3D color space and calculate accoring
 		 * value on that plane
@@ -369,13 +389,13 @@ spectroDrawingWorker.prototype = {
 		 * by calculating the RGB value of the current pixel with:
 		 * 255-(255*scaled)
 		 * @param xIdx in the global.paint array
-		 *
 		 */
 		global.drawVerticalLineOfSpectogram = function (xIdx) {
 
 			// set upper boundary for linear interpolation
 			var x1 = global.pixelHeight;
 			var rgb, index, px, py;
+
 			// value for first interpolation at lower boundry (height=0)
 
 			// calculate the one sided power spectral density PSD (f, t) in Pa2/Hz
@@ -425,42 +445,42 @@ spectroDrawingWorker.prototype = {
 
 						// set internal image buffer to calculated & interpolated value
 						px = Math.floor(xIdx);
-						py = Math.floor(global.height - (global.pixelHeight * (i - 2) + b));
+						py = Math.floor(global.imgHeight - (global.pixelHeight * (i - 2) + b));
 
-						index = (px + (py * global.width)) * 4;
+						index = (px + (py * global.imgWidth)) * 4;
 						if (global.drawHeatMapColors) {
 							if (!isNaN(rgb)) {
 								var hmVals = global.convertToHeatmap(0, 255, rgb, global.heatMapColorAnchors);
-								global.imageResult[index + 0] = hmVals.r;
-								global.imageResult[index + 1] = hmVals.g;
-								global.imageResult[index + 2] = hmVals.b;
-								global.imageResult[index + 3] = global.transparency;
+								global.resultImgArr[index + 0] = hmVals.r;
+								global.resultImgArr[index + 1] = hmVals.g;
+								global.resultImgArr[index + 2] = hmVals.b;
+								global.resultImgArr[index + 3] = global.transparency;
 
 							} else {
-								global.imageResult[index + 0] = rgb;
-								global.imageResult[index + 1] = rgb;
-								global.imageResult[index + 2] = rgb;
-								global.imageResult[index + 3] = global.transparency;
+								global.resultImgArr[index + 0] = rgb;
+								global.resultImgArr[index + 1] = rgb;
+								global.resultImgArr[index + 2] = rgb;
+								global.resultImgArr[index + 3] = global.transparency;
 							}
 
 						} else {
-							global.imageResult[index + 0] = rgb;
-							global.imageResult[index + 1] = rgb;
-							global.imageResult[index + 2] = rgb;
-							global.imageResult[index + 3] = global.transparency;
+							global.resultImgArr[index + 0] = rgb;
+							global.resultImgArr[index + 1] = rgb;
+							global.resultImgArr[index + 2] = rgb;
+							global.resultImgArr[index + 3] = global.transparency;
 						}
 					}
 				} else {
 					rgb = 255 - Math.round(255 * y1);
 					// set internal image buffer to calculated & interpolated value
 					px = Math.floor(xIdx);
-					py = Math.floor(global.height - (global.pixelHeight * (i - 2)));
+					py = Math.floor(global.imgHeight - (global.pixelHeight * (i - 2)));
 
-					index = (px + (py * global.width)) * 4;
-					global.imageResult[index + 0] = rgb;
-					global.imageResult[index + 1] = rgb;
-					global.imageResult[index + 2] = rgb;
-					global.imageResult[index + 3] = global.transparency;
+					index = (px + (py * global.imgWidth)) * 4;
+					global.resultImgArr[index + 0] = rgb;
+					global.resultImgArr[index + 1] = rgb;
+					global.resultImgArr[index + 2] = rgb;
+					global.resultImgArr[index + 3] = global.transparency;
 				}
 			}
 		};
@@ -484,22 +504,22 @@ spectroDrawingWorker.prototype = {
 			var real = new Float32Array(global.N);
 
 			// result array of length c - d
-			var result = new Float32Array(global.c - global.d);
+			var result = new Float32Array(global.ceilingFreqFftIdx - global.floorFreqFftIdx);
 
 			// set real values by reading local sound buffer (this auto zeropads everything > windowSizeInSamples)
 			for (var j = 0; j < windowSizeInSamples; j++) {
-				real[j] = global.threadSoundBuffer[offset + j];
+				real[j] = global.audioBuffer[offset + j];
 			}
 
-			// apply window function over non zero padded real 
-			global.myFFT.wFunction(global.wFunction, global.internalalpha, real, windowSizeInSamples);
+			// apply window function and pre-emphasis to non zero padded real 
+			global.myFFT.applyWindowFuncAndPreemph(global.wFunction, global.internalalpha, real, windowSizeInSamples);
 
 			// calculate FFT over real and save to result
 			global.myFFT.fft(real, imag);
 
 			// calculate magnitude for each spectral component 
-			for (var low = 0; low <= global.c - global.d; low++) {
-				result[low] = global.magnitude(real[low + global.d], imag[low + global.d]);
+			for (var low = 0; low <= global.ceilingFreqFftIdx - global.floorFreqFftIdx; low++) {
+				result[low] = global.magnitude(real[low + global.floorFreqFftIdx], imag[low + global.floorFreqFftIdx]);
 				if (global.totalMax < result[low]) {
 					global.totalMax = result[low];
 				}
@@ -509,11 +529,9 @@ spectroDrawingWorker.prototype = {
 
 		/**
 		 * initial function call for calculating and drawing Spectrogram
-		 * input sample data comes from the buffer "localSoundBuffer"
-		 * which has to be filled before.
-		 * - first loop calculates magnitudes to draw (getMagnitude())
-		 * - second loop draws values on canvas  (drawVerticalLineOfSpectogram())
-		 *
+		 * input sample data comes from the buffer global.audioBuffer
+		 * - first loop calculates magnitude spectra to draw (calcMagnitudeSpectrum())
+		 * - second loop draws these values into the global.resultImgArr (drawVerticalLineOfSpectogram())
 		 */
 		global.renderSpectrogram = function () {
 
@@ -527,50 +545,50 @@ spectroDrawingWorker.prototype = {
 				global.myFFT = new global.FFT();
 
 				// array holding FFT results paint[canvas width][canvas height]
-				global.paint = new Array(global.width);
+				global.paint = new Array(global.imgWidth);
 
 				// Hz per pixel height
 				global.HzStep = (global.sampleRate / 2) / (global.N / 2);
 
 
 				// upper Hz boundary to display
-				global.c = Math.ceil(global.upperFreq / global.HzStep);
+				global.ceilingFreqFftIdx = Math.ceil(global.upperFreq / global.HzStep);
 
 				// lower Hz boundary to display
-				global.d = Math.floor(global.lowerFreq / global.HzStep); // -1 for value below display when lower>0
+				global.floorFreqFftIdx = Math.floor(global.lowerFreq / global.HzStep); // -1 for value below display when lower>0
 
 				// height between two interpolation points
-				global.pixelHeight = global.height / (global.c - global.d - 2);
+				global.pixelHeight = global.imgHeight / (global.ceilingFreqFftIdx - global.floorFreqFftIdx - 2);
 
 				// ugly hack in order to support PhantomJS < 2.0 testing
 				if (typeof Uint8ClampedArray === 'undefined') {
 					Uint8ClampedArray = Uint8Array;
 				}
 				// create new picture
-				global.imageResult = new Uint8ClampedArray(Math.ceil(global.width * global.height * 4));
+				global.resultImgArr = new Uint8ClampedArray(Math.ceil(global.imgWidth * global.imgHeight * 4));
 
 				// calculate i FFT runs, save result into paint and set maxPsd while doing so
-				for (var i = 0; i < global.width; i++) {
-					global.paint[i] = global.calcMagnitudeSpectrum(Math.round(i * global.pcmpp), windowSizeInSamples);
+				for (var i = 0; i < global.imgWidth; i++) {
+					global.paint[i] = global.calcMagnitudeSpectrum(Math.round(i * global.samplesPerPxl), windowSizeInSamples);
 					global.maxPsd = (2 * Math.pow(global.totalMax, 2)) / global.N;
 				}
 
 				// draw spectrogram on png image with canvas width
 				// one column is drawn per drawVerticalLineOfSpectogram
-				for (var j = 0; j < global.width; j++) {
+				for (var j = 0; j < global.imgWidth; j++) {
 					global.drawVerticalLineOfSpectogram(j);
 				}
 
 				// post generated image block with settings back
 				global.postMessage({
 					'window': global.wFunction,
-					'pcmpp': global.pcmpp,
+					'samplesPerPxl': global.samplesPerPxl,
 					'pixelHeight': global.pixelHeight,
 					'pixelRatio': global.pixelRatio,
-					'width': global.width,
-					'height': global.height,
-					'img': global.imageResult.buffer
-				}, [global.imageResult.buffer]);
+					'width': global.imgWidth,
+					'height': global.imgHeight,
+					'img': global.resultImgArr.buffer
+				}, [global.resultImgArr.buffer]);
 
 				// free vars
 				global.myFFT = null;
@@ -579,6 +597,12 @@ spectroDrawingWorker.prototype = {
 				global.executed = false;
 			}
 		};
+
+		// end: rendering function 
+		//////////////////////////////
+
+		//////////////////////////
+		// communication functions
 
 
 		/**
@@ -608,22 +632,22 @@ spectroDrawingWorker.prototype = {
 					renderError = 'alpha';
 					render = false;
 				}
-				if (data.freq !== undefined) {
-					global.upperFreq = data.freq;
+				if (data.upperFreq !== undefined) {
+					global.upperFreq = data.upperFreq;
 				} else {
-					renderError = 'freq';
+					renderError = 'upperFreq';
 					render = false;
 				}
-				if (data.freqLow !== undefined) {
-					global.lowerFreq = data.freqLow;
+				if (data.lowerFreq !== undefined) {
+					global.lowerFreq = data.lowerFreq;
 				} else {
-					renderError = 'freqLow';
+					renderError = 'lowerFreq';
 					render = false;
 				}
-				if (data.pcmpp !== undefined) {
-					global.pcmpp = data.pcmpp;
+				if (data.samplesPerPxl !== undefined) {
+					global.samplesPerPxl = data.samplesPerPxl;
 				} else {
-					renderError = 'pcmpp';
+					renderError = 'samplesPerPxl';
 					render = false;
 				}
 				if (data.window !== undefined) {
@@ -663,16 +687,16 @@ spectroDrawingWorker.prototype = {
 					renderError = 'window';
 					render = false;
 				}
-				if (data.width !== undefined) {
-					global.width = data.width;
+				if (data.imgWidth !== undefined) {
+					global.imgWidth = data.imgWidth;
 				} else {
-					renderError = 'width';
+					renderError = 'imgWidth';
 					render = false;
 				}
-				if (data.height !== undefined) {
-					global.height = data.height;
+				if (data.imgHeight !== undefined) {
+					global.imgHeight = data.imgHeight;
 				} else {
-					renderError = 'height';
+					renderError = 'imgHeight';
 					render = false;
 				}
 				if (data.dynRangeInDB !== undefined) {
@@ -693,10 +717,10 @@ spectroDrawingWorker.prototype = {
 					renderError = 'sampleRate';
 					render = false;
 				}
-				if (data.streamChannels !== undefined) {
-					global.streamChannels = data.streamChannels;
+				if (data.audioBufferChannels !== undefined) {
+					global.audioBufferChannels = data.audioBufferChannels;
 				} else {
-					renderError = 'streamChannels';
+					renderError = 'audioBufferChannels';
 					render = false;
 				}
 				if (data.transparency !== undefined) {
@@ -705,10 +729,10 @@ spectroDrawingWorker.prototype = {
 					renderError = 'transparency';
 					render = false;
 				}
-				if (data.stream !== undefined) {
-					global.threadSoundBuffer = new Float32Array(data.stream);
+				if (data.audioBuffer !== undefined) {
+					global.audioBuffer = new Float32Array(data.audioBuffer);
 				} else {
-					renderError = 'stream';
+					renderError = 'audioBuffer';
 					render = false;
 				}
 				if (data.drawHeatMapColors !== undefined) {
@@ -801,4 +825,7 @@ spectroDrawingWorker.prototype = {
 			});
 		}
 	}
+
+	//
+	/////////////////////
 };

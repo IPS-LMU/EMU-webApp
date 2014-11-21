@@ -97,7 +97,7 @@ angular.module('emuwebApp')
           scope.startSpectroRenderingThread(buffer);
         }
 
-        scope.pcmpp = function () {
+        scope.calcSamplesPerPxl = function () {
           return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
 
         }
@@ -131,11 +131,15 @@ angular.module('emuwebApp')
         scope.setupEvent = function () {
           var imageData = scope.context.createImageData(scope.canvas0.width, scope.canvas0.height);
           scope.primeWorker.says(function (event) {
-            if (scope.pcmpp() === event.pcmpp) {
-              var tmp = new Uint8ClampedArray(event.img);
-              imageData.data.set(tmp);
-              scope.context.putImageData(imageData, 0, 0);
-              scope.drawSpectMarkup();
+            if (event.status === undefined) {
+              if (scope.calcSamplesPerPxl() === event.samplesPerPxl) {
+                var tmp = new Uint8ClampedArray(event.img);
+                imageData.data.set(tmp);
+                scope.context.putImageData(imageData, 0, 0);
+                scope.drawSpectMarkup();
+              }
+            } else {
+              console.error('Error rendering spectrogram:', event.status.message);
             }
           });
         };
@@ -159,23 +163,23 @@ angular.module('emuwebApp')
             }
 
             scope.setupEvent();
-            
+
             scope.primeWorker.tell({
               'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,
               'fftN': fftN,
               'alpha': scope.alpha,
-              'freq': scope.vs.spectroSettings.rangeTo,
-              'freqLow': scope.vs.spectroSettings.rangeFrom,
-              'pcmpp': scope.pcmpp(),
+              'upperFreq': scope.vs.spectroSettings.rangeTo,
+              'lowerFreq': scope.vs.spectroSettings.rangeFrom,
+              'samplesPerPxl': scope.calcSamplesPerPxl(),
               'window': scope.vs.spectroSettings.window,
-              'width': scope.canvas0.width,
-              'height': scope.canvas0.height,
+              'imgWidth': scope.canvas0.width,
+              'imgHeight': scope.canvas0.height,
               'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
               'pixelRatio': scope.devicePixelRatio,
               'sampleRate': scope.shs.wavJSO.SampleRate,
-              'streamChannels': scope.shs.wavJSO.NumChannels,
               'transparency': scope.cps.vals.spectrogramSettings.transparency,
-              'stream': parseData.buffer,
+              'audioBuffer': parseData.buffer,
+              'audioBufferChannels': scope.shs.wavJSO.NumChannels,
               'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
               'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
               'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
