@@ -10,6 +10,8 @@ describe('Factory: viewState', function () {
    */
   it('should initialize viewState correctly', inject(function (viewState) {
     viewState.initialize();
+
+    // curViewPort
     expect(viewState.curViewPort.sS).toEqual(0);
     expect(viewState.curViewPort.eS).toEqual(0);
     expect(viewState.curViewPort.selectS).toEqual(-1);
@@ -17,7 +19,8 @@ describe('Factory: viewState', function () {
     expect(viewState.curViewPort.dragBarActive).toEqual(false);
     expect(viewState.curViewPort.dragBarHeight).toEqual(-1);
 
-    expect(viewState.spectroSettings.windowLength).toBe(-1);
+    // spectroSettings
+    expect(viewState.spectroSettings.windowSizeInSecs).toBe(-1);
     expect(viewState.spectroSettings.rangeFrom).toBe(-1);
     expect(viewState.spectroSettings.rangeTo).toBe(-1);
     expect(viewState.spectroSettings.dynamicRange).toBe(-1);
@@ -25,6 +28,7 @@ describe('Factory: viewState', function () {
     expect(viewState.spectroSettings.drawHeatMapColors).toBe(-1);
     expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(-1);
 
+    // playHeadAnimationInfos
     expect(viewState.playHeadAnimationInfos.sS).toEqual(-1);
     expect(viewState.playHeadAnimationInfos.eS).toEqual(-1);
     expect(viewState.playHeadAnimationInfos.curS).toEqual(null);
@@ -37,6 +41,7 @@ describe('Factory: viewState', function () {
   it('should resetToInitState', inject(function (viewState) {
     viewState.resetToInitState();
 
+    // curViewPort
     expect(viewState.curViewPort.sS).toEqual(0);
     expect(viewState.curViewPort.eS).toEqual(0);
     expect(viewState.curViewPort.selectS).toEqual(-1);
@@ -44,7 +49,8 @@ describe('Factory: viewState', function () {
     expect(viewState.curViewPort.dragBarActive).toEqual(false);
     expect(viewState.curViewPort.dragBarHeight).toEqual(-1);
 
-    expect(viewState.spectroSettings.windowLength).toBe(-1);
+    // spectroSettings
+    expect(viewState.spectroSettings.windowSizeInSecs).toBe(-1);
     expect(viewState.spectroSettings.rangeFrom).toBe(-1);
     expect(viewState.spectroSettings.rangeTo).toBe(-1);
     expect(viewState.spectroSettings.dynamicRange).toBe(-1);
@@ -52,6 +58,7 @@ describe('Factory: viewState', function () {
     expect(viewState.spectroSettings.drawHeatMapColors).toBe(-1);
     expect(viewState.spectroSettings.preEmphasisFilterFactor).toBe(-1);
 
+    // playHeadAnimationInfos
     expect(viewState.playHeadAnimationInfos.sS).toEqual(-1);
     expect(viewState.playHeadAnimationInfos.eS).toEqual(-1);
     expect(viewState.playHeadAnimationInfos.curS).toEqual(null);
@@ -89,8 +96,8 @@ describe('Factory: viewState', function () {
    *
    */
   it('should setspectroSettings', inject(function (viewState) {
-    var vp = viewState.setspectroSettings('10', '10', '100', '10', 'HANN', true, 1)
-    expect(viewState.spectroSettings.windowLength).toBe(10);
+    var vp = viewState.setspectroSettings(0.01, '10', '100', '10', 'HANN', true, 1)
+    expect(viewState.spectroSettings.windowSizeInSecs).toBe(0.01);
     expect(viewState.spectroSettings.rangeFrom).toBe(10);
     expect(viewState.spectroSettings.rangeTo).toBe(100);
     expect(viewState.spectroSettings.dynamicRange).toBe(10);
@@ -245,7 +252,11 @@ describe('Factory: viewState', function () {
    */
   it('should setCurAttrDef', inject(function (viewState) {
     viewState.initialize();
-    viewState.curLevelAttrDefs = [{levelName: 'test', curAttrDefName: '', curAttrDefIndex: -1}];
+    viewState.curLevelAttrDefs = [{
+      levelName: 'test',
+      curAttrDefName: '',
+      curAttrDefIndex: -1
+    }];
     viewState.setCurAttrDef('test', 'test1', 1)
     expect(viewState.curLevelAttrDefs[0].curAttrDefName).toEqual('test1');
     expect(viewState.curLevelAttrDefs[0].curAttrDefIndex).toEqual(1);
@@ -256,18 +267,18 @@ describe('Factory: viewState', function () {
    *
    */
   it('should setWindowFunction', inject(function (viewState) {
-  /*
-      BARTLETT: 1,
-      BARTLETTHANN: 2,
-      BLACKMAN: 3,
-      COSINE: 4,
-      GAUSS: 5,
-      HAMMING: 6,
-      HANN: 7,
-      LANCZOS: 8,
-      RECTANGULAR: 9,
-      TRIANGULAR: 10
-    */  
+    /*
+        BARTLETT: 1,
+        BARTLETTHANN: 2,
+        BLACKMAN: 3,
+        COSINE: 4,
+        GAUSS: 5,
+        HAMMING: 6,
+        HANN: 7,
+        LANCZOS: 8,
+        RECTANGULAR: 9,
+        TRIANGULAR: 10
+      */
     viewState.initialize();
     viewState.setWindowFunction('BARTLETT');
     expect(viewState.spectroSettings.window).toEqual(1);

@@ -3,34 +3,36 @@
 </div>
 <div class="modal-body">
  <div>
-  <p>View Range (Hz)</p>
+  <h4>View Range (Hz)</h4>
   <input type="text" ng-model="modalVals.rangeFrom" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
   <input type="text" ng-model="modalVals.rangeTo" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 </div>
 <hr>
 <div>
-  <p>Window Length (samples)</p>
-  <!-- <input type="text" ng-model="modalVals.windowLength" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> -->
-  <select id="windowLength" ng-model="modalVals.windowLength" ng-options="l for l in windowLengths"></select>
+  <h4>Window Size (seconds)</h4>
+    <p>resulting number of samples <em>{{modalVals._windowSizeInSamples}}</em> 
+    zero-padded to <em>{{modalVals._fftN}} (min. = 512)</em></p>
+  <input type="text" ng-model="modalVals.windowSizeInSecs" ng-change="calcWindowSizeVals()" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"> 
 </div>
 <hr>
 <div>          
-  <p>Dynamic Range for Maximum (dB)</p>  
+  <h4>Dynamic Range for Maximum (dB)</h4>  
   <input type="text" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"> 
 </div>
 <hr>
 <div>          
-  <p>Pre-emphasis filter factor (resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1))</em></p> 
+  <h4>Pre-emphasis filter factor</h4> 
+  <p>resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1)</em></p>
   <input type="text" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"> 
 </div>
 <hr>
 <div>      
-  <p>Window Function</p>
+  <h4>Window Function</h4>
   <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
 </div>
 <hr>
 <div>      
-  <p>Color Options</p>
+  <h4>Color Options</h4>
   <p>
     Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
   </p>

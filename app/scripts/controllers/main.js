@@ -263,7 +263,7 @@ angular.module('emuwebApp')
 			}
 
 			// init loading of files for testing
-			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.N,
+			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
 				ConfigProviderService.vals.spectrogramSettings.dynamicRange,
