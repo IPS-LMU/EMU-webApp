@@ -207,8 +207,8 @@ angular.module('emuwebApp')
     		
           element.bind('dragleave', function (event) {
             scope.dragEnterLeave(event);
-          });		
-    		
+          });
+          
           element.bind('click', function (event) {
             element.context.children[0].children[1].click();
           });	

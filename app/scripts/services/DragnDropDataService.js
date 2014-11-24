@@ -30,6 +30,7 @@ angular.module('emuwebApp')
 		 * setter sServObj.drandropBundles
 		 */
 		sServObj.setDragnDropData = function (bundle, i, type, data) {
+
 			if(sServObj.drandropBundles[i] === undefined) {
 			    sServObj.drandropBundles[i] = {};
 			    sServObj.convertedBundles[i] = {};
@@ -38,7 +39,7 @@ angular.module('emuwebApp')
 			        name: bundle, 
 			        session: sServObj.sessionName,
 			        draggable: true,
-			        downloadurl: ''
+			        downloadurl: 'application/json:'+bundle+'_annot.json:URL'
 			    })
 			    loadedMetaDataService.setBundleList(sServObj.bundleList);
 			    loadedMetaDataService.setCurBndlName(bundle);
@@ -52,6 +53,33 @@ angular.module('emuwebApp')
 			    sServObj.drandropBundles[i].annotation = data;
 			}
 		};
+		
+		sServObj.generateDrop = function (data) {
+			var objURL;
+		    if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+		        objURL = webkitURL.createObjectURL(sServObj.getBlob(data));
+		    } else {
+		        objURL = URL.createObjectURL(sServObj.getBlob(data));
+		    }	
+		    return objURL;
+		};
+		
+		/**
+		 *
+		 */
+		sServObj.getBlob = function(data){
+		    var blob;
+		    try {
+		        blob = new Blob([data], {type: 'text/plain'});
+		    } catch (e) { // Backwards-compatibility
+		        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+		        blob = new BlobBuilder();
+		        blob.append(data);
+		        blob = blob.getBlob();
+		    }
+		    return blob;
+		};
+		
 		
 		
 		
