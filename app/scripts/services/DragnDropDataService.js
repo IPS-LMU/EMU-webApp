@@ -26,6 +26,12 @@ angular.module('emuwebApp')
 			});
 		};
 		
+		
+
+		sServObj.drag = function (bundle) {
+			console.log(bundle);
+		};
+		
 		/**
 		 * setter sServObj.drandropBundles
 		 */
