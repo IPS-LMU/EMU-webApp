@@ -15,10 +15,9 @@ angular.module('emuwebApp')
 			scope.dropAllowed = 'Drop file(s) to start loading !';
 			scope.dropParsingStarted = 'Parsing started';
 			scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
-			scope.dropHintDefault = 'Load .TextGrid first or .TextGrid and .WAV at once!';
+			scope.dropFirefoxWarning = 'Sorry ! Firefox does not support dropping folders ! please drop single or multiple files !';
 
 			scope.dropText = scope.dropTextDefault;
-			scope.dropHint = scope.dropHintDefault;
 
 			scope.dropClass = '';
 			scope.count = 0;
@@ -34,47 +33,63 @@ angular.module('emuwebApp')
 			scope.enqueueFileAddition = function (file) {
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
                 var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
-                var j = 0;
-                if(scope.bundleNames.indexOf(bundle) === -1) {
+                var j = scope.bundleNames.indexOf(bundle);
+                if(j === -1) {
                     scope.bundleNames.push(bundle);
                     j = scope.bundleNames.indexOf(bundle);
                     scope.bundles[j] = [];
                     scope.bundles[j][0] = bundle;
                 }
+                
 				if(extension === 'WAV') {
-    				j = scope.bundleNames.indexOf(bundle);
 				    scope.bundles[j][1] = file;
     			    scope.handles.push(file); 
+			        scope.dropClass = '';
+			        scope.dropText = scope.dropParsingWaiting;
+			        scope.startRendering();
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
-			        j = scope.bundleNames.indexOf(bundle);
-			        console.log(scope.bundles[j]);
 			        scope.bundles[j][2]= file;
 			        scope.handles.push(file); 
 			        scope.dropClass = '';
 			        scope.dropText = scope.dropParsingWaiting;
-			        scope.$digest();
 			    }
 			    else {
-		            scope.dropClass = 'error';
-				    scope.dropText = scope.dropTextErrorFileType;
+			        if(browserDetector.isBrowser.Firefox()) {
+						if(file.size === 0) {
+							scope.dropClass = 'error';
+							scope.dropText = scope.dropFirefoxWarning;			        
+						}
+						else {
+							scope.dropClass = 'error';
+							scope.dropText = scope.dropTextErrorFileType;
+						}
+			        }
+			        else {
+		                scope.dropClass = 'error';
+				        scope.dropText = scope.dropTextErrorFileType;
+			        }
 					scope.handles = [];
 					scope.bundles = [];
+					scope.bundleNames = [];
 					scope.count = 0;
-					scope.$digest();
     			}
-				
+			    if(!browserDetector.isBrowser.Firefox()) {
+			        scope.$digest();
+		        }		
+			};
+			
+			scope.startRendering = function () { 
 				// If all the files we expect have shown up, then flush the queue.
 				if (scope.count === scope.handles.length) {
 					DragnDropDataService.setData(scope.bundles);
 					scope.handles = [];
 					scope.bundles = [];
+					scope.bundleNames = [];
 					scope.count = 0;
-					scope.dropClass = '';
-					scope.dropText = scope.dropTextDefault;
 				}
-			}        
-		  
+			};
+			
 			scope.loadFiles = function (files) {
 				scope.updateQueueLength(files.length);
 				for (var i = 0; i < files.length; i++) {
