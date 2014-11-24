@@ -1,40 +1,24 @@
 'use strict';
 
 angular.module('emuwebApp')
-    .controller('FileCtrl', function ($scope, viewState, browserDetector, appStateService, 
-           Binarydatamaniphelper, Textgridparserservice, ConfigProviderService, Validationservice,
-           Iohandlerservice, Wavparserservice, Soundhandlerservice, DataService, loadedMetaDataService,
-           dbObjLoadSaveService, dialogService, DragnDropDataService, Ssffparserservice) {
+    .controller('FileCtrl', function ($scope, viewState, appStateService, Binarydatamaniphelper, 
+                                      ConfigProviderService, Validationservice, Iohandlerservice, 
+                                      Wavparserservice, Soundhandlerservice, DataService, dialogService) {
 
-        $scope.newfiles = [];
-        $scope.wav = {};
-        $scope.grid = {};
-        $scope.curBndl = {};
-
-        $scope.resetToInitState = function () {
-            $scope.newfiles = [];
-            $scope.wav = {};
-            $scope.grid = {};
-            $scope.curBndl = {};
-            $scope.dropText = $scope.dropDefault;
-            appStateService.resetToInitState();
-        };
-        
-		// listen for resetToInitState
-		$scope.$on('handle', function () {
-            $scope.handleLocalFiles();
+        $scope.$on('handle', function (event, bundles, sessionDefault) {
+            $scope.handleLocalFiles(bundles, sessionDefault);
         });
 
-        $scope.handleLocalFiles = function () {
+        $scope.handleLocalFiles = function (bundles, sessionDefault) {
             var validRes;
-            var wav = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].mediaFile.data;
+            var wav = bundles[sessionDefault].mediaFile.data;
             var ab = Binarydatamaniphelper.base64ToArrayBuffer(wav);
-            var annotation = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation;
+            var annotation = bundles[sessionDefault].annotation;
             viewState.showDropZone = false;
             viewState.setState('loadingSaving');
             // reset history
             viewState.somethingInProgress = true;
-            viewState.somethingInProgressTxt = 'Loading local File: ' + $scope.wav.name;
+            viewState.somethingInProgressTxt = 'Loading local File: ' + wav.name;
             Iohandlerservice.httpGetPath('configFiles/standalone_emuwebappConfig.json').then(function (resp) {
                 // first element of perspectives is default perspective
                 viewState.curPerspectiveIdx = 0;
@@ -81,24 +65,18 @@ angular.module('emuwebApp')
 						viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 						var validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
 						if (validRes === true) {
-							// set annotation
 							DataService.setData(annotation);
-							//loadedMetaDataService.setCurBndl(bndl);
 							viewState.setState('labeling');
 							viewState.somethingInProgress = false;
 							viewState.somethingInProgressTxt = 'Done!';
-							// FOR DEVELOPMENT:
-							// $scope.menuBundleSaveBtnClick(); // for testing save button
-							// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-							// $scope.spectSettingsBtnClick(); // for testing spect settings dial
 						} else {
 							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								$scope.resetToInitState();
+								appStateService.resetToInitState();
 							});
 						}
 				}, function (errMess) {
 						dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess).then(function () {
-							$scope.resetToInitState();
+							appStateService.resetToInitState();
 						});
 					});
 

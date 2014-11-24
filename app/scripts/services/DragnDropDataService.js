@@ -22,7 +22,7 @@ angular.module('emuwebApp')
 			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
 			});
 			sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
-			    $rootScope.$broadcast('handle');
+			    $rootScope.$broadcast('handle', sServObj.convertedBundles, sServObj.sessionDefault);
 			});
 		};
 		
