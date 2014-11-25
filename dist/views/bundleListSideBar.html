@@ -3,7 +3,7 @@
     <div ng-controller="bundleListSideBarCtrl" class="emuwebapp-bundleListSideBarInner">
         <h3>
             <div class="emuwebapp-bundleFilter">
-                <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)">
+                <input type="text" ng-model="filterText" ng-change="lmds.updateCollapseSessionState(filterText)" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)">
             </div>
         </h3>
         <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
