@@ -67,36 +67,16 @@
     <!-- use this div if you want to run the embedded version  -->
 
 <!-- use this div to run the regular (standalone+client) version -->
-    <div class="intro_head">
+    <div class="emuwebapp-tutorial-head">
         <img src="http://ips-lmu.github.io/images/emuIcon.png">
     </div>
     
-   <div class="intro_app">
+   <div class="emuwebapp-tutorial-intro">
         <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid" label-type="TEXTGRID"></emuwebapp>
     </div>    
 
-   <div class="intro_tutorial">
-        <h1>welcome to the <br />EMU-webApp Tutorial</h1>
-        <div>
-        In this tutorial you will learn how to label with the EMU-webApp. 
-        It consists of several parts:
-        <ul>
-             <li>Keyboard Shortcuts</li>
-             <li>Editing Labels</li>
-             <li>Loading and Saving local Data</li>
-             <li>Connecting to a remote Server</li>
-        </ul>
-        Lets's beginn with 
-        <h1>Keyboard Shortcuts</h1>
-        In order to navigate inside the currently loaded wav file
-        please press
-        <ul>
-             <li class="active"><b>w</b> in order to zoom In</li>
-             <li class="not_done"><b>a</b> in order to move left</li>
-             <li class="not_done"><b>d</b> in order to move right</li>
-             <li class="not_done"><b>s</b> in order to zoom Out</li>
-        </ul>        
-        </div>
+   <div class="emuwebapp-tutorial">
+       <tutorial></tutorial>
     </div>
 
     <!-- build:js scripts/emuwebAppExternal.min.js -->
@@ -174,6 +154,7 @@
     <script src="scripts/directives/myDropZone.js"></script>
     <script src="scripts/directives/myDropZoneInput.js"></script>
     <script src="scripts/directives/emuwebapp.js"></script>
+    <script src="scripts/directives/tutorial.js"></script>
     <script src="scripts/services/validationService.js"></script>
     <script src="scripts/controllers/ShowHierarchy.js"></script>
     <script src="scripts/services/HierarchyLayoutService.js"></script>
@@ -190,6 +171,7 @@
     <script src="scripts/workers/textGridParserWorkerClass.js"></script>
     <script src="scripts/workers/spectroDrawingWorkerClass.js"></script>
     <script src="scripts/workers/ssffParserWorkerClass.js"></script>
+    <script src="scripts/services/mathhelperservice.js"></script>
     <!-- endbuild -->
 
 </body>

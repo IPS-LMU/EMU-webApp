@@ -1,4 +1,4 @@
-.intro_app {
+.emuwebapp-tutorial-intro {
     position: absolute; 
     height:75%; 
     width:72%; 
@@ -14,7 +14,7 @@
 }
 
 
-.intro_tutorial {
+.emuwebapp-tutorial {
     position: absolute; 
     height:100%; 
     width:28%; 
@@ -27,48 +27,48 @@
     border-right: 1px dashed #aaa;
 }
 
-.intro_tutorial h1 {
+.emuwebapp-tutorial h1 {
     font-size: 22px;
     text-decoration: underline;
     text-align: center;
 }
 
-.intro_tutorial div {
+.emuwebapp-tutorial div {
     padding-left: 4px;
     padding-right: 12px;
 }
 
-.intro_tutorial ul {
+.emuwebapp-tutorial ul {
     list-style: none;
     padding: 0px;
     margin-top: 7px;
     margin-left: 7px;
 }
 
-.intro_tutorial ul li {
+.emuwebapp-tutorial ul li {
 	padding: 0px;
 	margin: 0px;
 }
 
-.intro_tutorial ul li:before {
+.emuwebapp-tutorial ul li:before {
     content: "\2192 \0020";
 }
 
-.active {
+.emuwebapp-tutorial-active {
     font-size: 18px;
     color: rgba(196,32,32,0.8);
 }
 
-.done {
+.emuwebapp-tutorial-done {
     color: rgba(128,128,128,0.5);
 }
 
-.not_done {
+.emuwebapp-tutorial-not-done {
     color: rgba(128,128,128,0.5);
 }
 
 
-.intro_head {
+.emuwebapp-tutorial-head {
     position: relative; 
     text-align: left; 
     height:12%; 
@@ -78,7 +78,7 @@
     border-bottom: 1px solid #111;
 }
 
-.intro_head img {
+.emuwebapp-tutorial-head img {
     position: relative;
     left: 50%;
     margin-top: -22px;
