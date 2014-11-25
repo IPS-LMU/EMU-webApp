@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler) {
+	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, DragnDropDataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -106,7 +106,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 			}
-
+			
 			return getProm;
 		};
 
@@ -118,6 +118,8 @@ angular.module('emuwebApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
 				alert('CORS version of getBundle not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'embedded') {
+				getProm = DragnDropDataService.getBundle(name, session);
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundle(name, session);
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {

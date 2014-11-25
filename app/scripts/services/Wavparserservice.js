@@ -13,7 +13,7 @@ angular.module('emuwebApp')
 			if (e.status.type === 'SUCCESS') {
 				defer.resolve(e.data);
 			} else {
-				defer.reject(e.data);
+				defer.reject(e);
 			}
 		});
 

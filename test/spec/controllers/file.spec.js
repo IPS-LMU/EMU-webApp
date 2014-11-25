@@ -19,20 +19,26 @@ describe('Controller: FileCtrl', function () {
        $scope = $rootScope.$new();
        $scope.$index = 1;
        $scope.cps = ConfigProviderService;
-       $scope.cps.setVals(defaultEmuwebappConfig);
        $scope.cps.curDbConfig = aeDbConfig;
        FileCtrl = $controller('FileCtrl', {
          $scope: $scope
-       });     
+       }); 
      }));  
      
-   it('should resetToInitState', function () {
-     $scope.resetToInitState();
-     expect($scope.newfiles).toEqual(emptyArr);
-     expect($scope.wav).toEqual(emptyObj);
-     expect($scope.grid).toEqual(emptyObj);
-     expect($scope.curBndl).toEqual(emptyObj);
-     expect($scope.dropText).toEqual($scope.dropDefault);
-   }); 
+   it('should handleLocalFiles', inject(function ($q, Iohandlerservice) {
+     var deferred = $q.defer();
+     spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(deferred.promise);
+     deferred.resolve({data: defaultEmuwebappConfig});
+     var sessionDefault = 0;
+     var bundles = [{
+         mediaFile: {
+             data: []
+         },
+         annotation: {}
+     }]
+     $scope.handleLocalFiles(bundles, sessionDefault);
+     expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
+     
+   })); 
 
 });
