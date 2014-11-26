@@ -23,6 +23,8 @@ angular.module('emuwebApp')
 			});
 			sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
 			    loadedMetaDataService.setBundleList(sServObj.bundleList);
+			    loadedMetaDataService.setCurBndlName(sServObj.bundleList[sServObj.sessionDefault]);
+			    loadedMetaDataService.setDemoDbName(sServObj.bundleList[sServObj.sessionDefault]);	
 			    $rootScope.$broadcast('handle', sServObj.convertedBundles, sServObj.sessionDefault);
 			});
 		};
@@ -46,8 +48,6 @@ angular.module('emuwebApp')
 			        name: bundle, 
 			        session: sServObj.sessionName
 			    });
-			    loadedMetaDataService.setCurBndlName(bundle);
-			    loadedMetaDataService.setDemoDbName(bundle);
 			    sServObj.sessionDefault = i;
 			}
 			if(type === 'wav') {

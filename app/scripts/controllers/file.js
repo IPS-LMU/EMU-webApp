@@ -2,7 +2,7 @@
 
 angular.module('emuwebApp')
     .controller('FileCtrl', function ($scope, viewState, appStateService, Binarydatamaniphelper, 
-                                      ConfigProviderService, Validationservice, Iohandlerservice, 
+                                      ConfigProviderService, Validationservice, Iohandlerservice, loadedMetaDataService, 
                                       Wavparserservice, Soundhandlerservice, DataService, dialogService) {
 
         $scope.$on('handle', function (event, bundles, sessionDefault) {
@@ -37,7 +37,7 @@ angular.module('emuwebApp')
 						viewState.curClickSegments = [];
 						viewState.curClickLevelName = undefined;
 						viewState.curClickLevelType = undefined;
-
+						loadedMetaDataService.setCurBndl(bundles[sessionDefault]);
 						viewState.resetSelect();
 						viewState.curPerspectiveIdx = 0;
 						var annot = annotation;
