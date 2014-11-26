@@ -19,7 +19,7 @@
                 </div>
                 <div collapse="lmds.getSessionCollapseState(key)">
                 <div class="bundleOuter" ng-repeat="bundle in value | regex:filterText">
-                    <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" draggable>
+                    <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" draggable url="{{bundle.downloadurl}}" name="{{bundle.name}}">
                         <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>
                         <div ng-show="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-click="changingMetaData();"/> <br /></div>
                         <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" /></div>

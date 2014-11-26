@@ -22,6 +22,7 @@ angular.module('emuwebApp')
 			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
 			});
 			sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
+			    loadedMetaDataService.setBundleList(sServObj.bundleList);
 			    $rootScope.$broadcast('handle', sServObj.convertedBundles, sServObj.sessionDefault);
 			});
 		};
@@ -45,9 +46,8 @@ angular.module('emuwebApp')
 			        name: bundle, 
 			        session: sServObj.sessionName,
 			        draggable: true,
-			        downloadurl: 'application/json:'+bundle+'_annot.json:URL'
-			    })
-			    loadedMetaDataService.setBundleList(sServObj.bundleList);
+			        downloadurl: 'application/json:'+bundle+'_annot.json:'
+			    });
 			    loadedMetaDataService.setCurBndlName(bundle);
 			    loadedMetaDataService.setDemoDbName(bundle);
 			    sServObj.sessionDefault = i;
