@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('draggable', function (DataService, loadedMetaDataService) {
+  .directive('dragout', function (DataService, loadedMetaDataService) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
         var el = element[0];
-        
         
         scope.generateURL = function (name) {
             return scope.getURL(angular.toJson(DataService.getData(), true));
@@ -34,21 +33,6 @@ angular.module('emuwebApp')
 		    }
 		    return blob;        
         };
-        
- 
-         el.addEventListener(
-            'mousedown',
-            function(e) {
-				if (attrs.name === loadedMetaDataService.getCurBndl().name) {
-					el.draggable = true;
-				}
-				else {
-					el.draggable = false;
-				} 
-                return false;
-            },
-            false
-        );
  
         
         el.addEventListener(
@@ -56,7 +40,7 @@ angular.module('emuwebApp')
 			function(e) {
 			    var url = scope.generateURL();
                 e.dataTransfer.effectAllowed = 'move';
-                e.dataTransfer.setData('DownloadURL', attrs.url + url);
+                e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
                 this.classList.add('drag');
                 return false;
             },

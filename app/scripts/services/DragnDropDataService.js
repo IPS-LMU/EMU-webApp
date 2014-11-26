@@ -44,9 +44,7 @@ angular.module('emuwebApp')
 			    sServObj.convertedBundles[i].name = bundle;
 			    sServObj.bundleList.push({
 			        name: bundle, 
-			        session: sServObj.sessionName,
-			        draggable: true,
-			        downloadurl: 'application/json:'+bundle+'_annot.json:'
+			        session: sServObj.sessionName
 			    });
 			    loadedMetaDataService.setCurBndlName(bundle);
 			    loadedMetaDataService.setDemoDbName(bundle);
