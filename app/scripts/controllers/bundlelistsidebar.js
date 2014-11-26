@@ -55,15 +55,6 @@ angular.module('emuwebApp')
 			}
 		};
 
-		$scope.allowDrag = function (bndl) {
-			if (bndl.name === loadedMetaDataService.getCurBndl().name) {
-				return 'draggable';
-			}
-			else {
-				return '';
-			}
-		}
-
 		/**
 		 * checks if name is undefined
 		 * @return bool
