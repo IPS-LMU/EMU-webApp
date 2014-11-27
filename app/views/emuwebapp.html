@@ -20,11 +20,9 @@
       <button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn" ng-click="downloadAnnotationBtnClick();">download Annotation</button> 
       <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn" ng-click="spectSettingsBtnClick();">spec. settings</button>
 
-
-
-	<nav class="btn-group emuwebapp-mini-btn-group emuwebapp-nav-wrap">
+	<div class="emuwebapp-nav-wrap">
 	<ul>
-	  <li>  <button id="demoDB" type="button" class="dropdown-toggle" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
+	  <li>  <button id="demoDB" type="button" class="emuwebapp-toggle-button" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
 			  open demo DB <span class="caret"></span>
 			</button>
 
@@ -38,8 +36,7 @@
 
 	  </li>
 	</ul>
-	</nav>
-
+	</div>
 
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
