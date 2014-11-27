@@ -33,7 +33,12 @@ angular.module('emuwebApp')
 				var domElement = $('.' + LevelService.getlasteditArea());
 				var str = domElement.val();
 				viewState.setSavingAllowed(true);
-				var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())];
+				var curAttrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
+				var lvlDefs = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
+				var definitions = {};
+				if(lvlDefs.attributeDefinitions !== undefined && lvlDefs.attributeDefinitions.length>0) {
+				    definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[curAttrIndex];
+				}
 				// if it is defined then check if characters are ok
 				if(definitions.legalLabels !== undefined && str.length > 0) {
 					if(definitions.legalLabels.indexOf(str) < 0) {
@@ -669,19 +674,11 @@ angular.module('emuwebApp')
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
-                          if(seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart+seg.sampleDur + 1) === viewState.curViewPort.selectE) {
-							  viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-							  viewState.setcurClickItem(seg.current);
-							  LevelService.setlasteditArea('_' + seg.id);
-							  viewState.setEditing(true);
-							  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-							  viewState.setEditing(true);
-                          }
-                          else {
-							  var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-							  if (!insSeg.ret) {
-								scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
-							  } else {
+                          if(seg === undefined) {
+						    var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+							if (!insSeg.ret) {
+							    scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+							} else {
 								HistoryService.addObjToUndoStack({
 								  'type': 'ANNOT',
 								  'action': 'INSERTSEGMENTS',
@@ -691,8 +688,34 @@ angular.module('emuwebApp')
 								  'ids': insSeg.ids,
 								  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
 								});
-							  }
 							}
+                          }
+                          else {
+							  if(seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart+seg.sampleDur + 1) === viewState.curViewPort.selectE) {
+								  viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+								  viewState.setcurClickItem(seg.current);
+								  LevelService.setlasteditArea('_' + seg.id);
+								  viewState.setEditing(true);
+								  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+								  viewState.setEditing(true);
+							  }
+							  else {
+								  var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+								  if (!insSeg.ret) {
+									scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+								  } else {
+									HistoryService.addObjToUndoStack({
+									  'type': 'ANNOT',
+									  'action': 'INSERTSEGMENTS',
+									  'name': viewState.getcurClickLevelName(),
+									  'start': viewState.curViewPort.selectS,
+									  'end': viewState.curViewPort.selectE,
+									  'ids': insSeg.ids,
+									  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+									});
+								  }
+								}
+                          }
                         } else {
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
                           if (typeof levelDef.anagestConfig === 'undefined') {

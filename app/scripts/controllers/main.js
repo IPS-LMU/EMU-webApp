@@ -102,6 +102,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
 			if (ConfigProviderService.embeddedVals.audioGetUrl) {
+			    ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 					viewState.showDropZone = false;
 					// set bundle name
@@ -286,7 +287,7 @@ angular.module('emuwebApp')
 			// hide drop zone 
 			viewState.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
-
+			ConfigProviderService.vals.activeButtons.openDemoDB = false;
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Checking protocol...';
 			// Check if server speaks the same protocol
@@ -637,6 +638,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.openDemoDBbtnClick = function (nameOfDB) {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
+			    ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				loadedMetaDataService.setDemoDbName(nameOfDB);
 				// hide drop zone 
 				viewState.showDropZone = false;
