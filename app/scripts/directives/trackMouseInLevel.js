@@ -50,7 +50,7 @@ angular.module('emuwebApp')
             var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
             scope.curMouseSampleNrInView = viewState.getX(event) * samplesPerPixel;
             var moveBy = (scope.curMouseSampleNrInView - scope.lastPCM);
-            if (samplesPerPixel <= 1 && scope.level.items.length > 0) {
+            if (samplesPerPixel <= 1) {
               var zoomEventMove = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
               // absolute movement in pcm below 1 pcm per pixel
               if (scope.levelType === 'SEGMENT') {
@@ -91,7 +91,8 @@ angular.module('emuwebApp')
             if (!viewState.getdragBarActive()) {
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
                 LevelService.deleteEditArea();
-                if (viewState.getcurMouseItem() !== undefined) {
+                var curMouseItem = viewState.getcurMouseItem();
+                if (curMouseItem !== undefined) {
                   viewState.movingBoundary = true;
                   if (scope.levelType === 'SEGMENT') {
                     if (viewState.getcurMouseisFirst() || viewState.getcurMouseisLast()) {
@@ -105,8 +106,8 @@ angular.module('emuwebApp')
                         viewState.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
                       }
                     } else {
-                      viewState.movingBoundarySample = viewState.getcurMouseItem().sampleStart + moveBy;
-                      seg = viewState.getcurMouseItem();
+                      viewState.movingBoundarySample = curMouseItem.sampleStart + moveBy;
+                      seg = curMouseItem;
                     }
                     LevelService.moveBoundary(scope.levelName, seg.id, moveBy, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
                     HistoryService.updateCurChangeObj({
@@ -120,8 +121,8 @@ angular.module('emuwebApp')
                     });
 
                   } else {
-                    seg = viewState.getcurMouseItem();
-                    viewState.movingBoundarySample = viewState.getcurMouseItem().samplePoint + moveBy;
+                    seg = curMouseItem;
+                    viewState.movingBoundarySample = curMouseItem.samplePoint + moveBy;
                     LevelService.moveEvent(scope.levelName, seg.id, moveBy);
                     HistoryService.updateCurChangeObj({
                       'type': 'ANNOT',

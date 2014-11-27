@@ -12,6 +12,6 @@
 			}
 		},
 		"required": ["name"],
-		"additionalProperties": false
+		"additionalProperties": true
 	}
 }

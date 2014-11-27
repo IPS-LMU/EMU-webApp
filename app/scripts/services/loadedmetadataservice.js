@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 		var bundleList = [];
 		var curBndl = {};
 		var demoDbName = '';
+		var drandropBundles = [];
 
 		//////////////////////
 		// private functions
@@ -102,20 +103,21 @@ angular.module('emuwebApp')
 		// demoDbName
 
 		/**
-		 * setter curBndl
+		 * setter demoDbName
 		 */
 		sServObj.setDemoDbName = function (name) {
 			demoDbName = name;
 		};
 
 		/**
-		 * getter curBndl
+		 * getter demoDbName
 		 */
 		sServObj.getDemoDbName = function () {
 			return demoDbName;
 		};
 
-		///////////////////
+		
+				///////////////////
 		// uniqSessionList
 
 		/**
@@ -138,15 +140,12 @@ angular.module('emuwebApp')
 			});
 		};
 
-
-
 		/**
 		 *
 		 */
 		sServObj.getSessionCollapseState = function (session) {
 			return uniqSessionList[session].collapsed;
 		};
-
 
 
 		///////////////////

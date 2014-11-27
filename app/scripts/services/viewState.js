@@ -84,6 +84,7 @@ angular.module('emuwebApp')
       sServObj.curTaskPercCompl = 0;
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
+      sServObj.lastKeyCode = undefined;
       // possible general states of state machine
       sServObj.states = [];
       sServObj.states.noDBorFilesloaded = {
@@ -1125,6 +1126,10 @@ angular.module('emuwebApp')
         }
       });
       return curAttrDef;
+    };
+    
+    sServObj.setlastKeyCode = function (e) {
+        this.lastKeyCode = e;
     };
     
     /**

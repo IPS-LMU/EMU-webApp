@@ -4,7 +4,7 @@ angular.module('emuwebApp')
   .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
-      link: function postLink(scope) {
+      link: function postLink(scope, element) {
 
         $(document).bind('keyup', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
@@ -58,6 +58,7 @@ angular.module('emuwebApp')
                 return;
               }
             }
+            viewState.setlastKeyCode(code);
             if (viewState.isEditing()) {
               var domElement = $('.' + LevelService.getlasteditArea());
               // preventing new line if saving not allowed
