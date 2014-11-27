@@ -47,8 +47,8 @@ angular.module('emuwebApp')
 			function(e) {
 				if(scope.isActive()) {		
 					var dragIcon = document.createElement('img');
-					dragIcon.src = 'img/saveBtn.png';
-					e.dataTransfer.setDragImage(dragIcon, 10, 10);			        
+					dragIcon.src = 'img/exportBtn.png';
+					e.dataTransfer.setDragImage(dragIcon, -10, -10);			        
 					var url = scope.generateURL();
 					e.dataTransfer.effectAllowed = 'move';
 					e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
