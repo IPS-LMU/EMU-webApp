@@ -9,6 +9,7 @@ angular.module('emuwebApp')
 		sServObj.bundleList = [];
 		sServObj.sessionName = 'File(s)';
 		sServObj.sessionDefault = '';
+		sServObj.maxDroppedBundles = 5;
 
 		///////////////////////////////
 		// public api
@@ -17,16 +18,20 @@ angular.module('emuwebApp')
 		// drag n drop data 
 		sServObj.setData = function (bundles) {
 		    var prom = [];
+		    var count = 0;
 			angular.forEach(bundles, function (bundle, i) {
 			    sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
 			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
+			    count = i;
 			});
-			sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
-			    loadedMetaDataService.setBundleList(sServObj.bundleList);
-			    loadedMetaDataService.setCurBndlName(sServObj.bundleList[sServObj.sessionDefault]);
-			    loadedMetaDataService.setDemoDbName(sServObj.bundleList[sServObj.sessionDefault]);	
-			    $rootScope.$broadcast('handle', sServObj.convertedBundles, sServObj.sessionDefault);
-			});
+			if(count<=sServObj.maxDroppedBundles) {
+				sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
+					loadedMetaDataService.setBundleList(sServObj.bundleList);
+					loadedMetaDataService.setCurBndlName(sServObj.bundleList[sServObj.sessionDefault]);
+					loadedMetaDataService.setDemoDbName(sServObj.bundleList[sServObj.sessionDefault]);	
+					$rootScope.$broadcast('handle', sServObj.convertedBundles, sServObj.sessionDefault);
+				});
+			}
 		};
 		
 		
