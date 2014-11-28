@@ -37,7 +37,11 @@
 			"maxConstrictionLabel": "mon"
 		}
 	}],
-	"linkDefinitions": [],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "ORT",
+		"sublevelName": "tongueTipGestures"
+	}],
 	"EMUwebAppConfig": {
 		"perspectives": [{
 			"name": "default",
@@ -57,7 +61,8 @@
 			"showPerspectivesSidebar": true
 		},
 		"activeButtons": {
-			"saveBundle": true
+			"saveBundle": true,
+			"showHierarchy": true
 		}
 	}
 }
