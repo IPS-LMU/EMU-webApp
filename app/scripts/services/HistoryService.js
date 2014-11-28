@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 		//////////////////////////////////////////
 		// new dual stack implementation
 
-		//private
+		// private
 		var undoStack = [];
 		var redoStack = [];
 		var curChangeObj = {};
@@ -214,6 +214,8 @@ angular.module('emuwebApp')
 				case 'MOVEBOUNDARY':
 				case 'MOVEEVENT':
 				case 'MOVESEGMENT':
+				case 'INSERTEVENT':
+				case 'DELETEEVENT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name + '#' + dataObj.id);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -228,7 +230,6 @@ angular.module('emuwebApp')
 				case 'DELETELINKSEGMENT':
 				case 'DELETEBOUNDARY':
 				case 'DELETESEGMENTS':
-				case 'DELETEEVENT':
 					dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.name);
 					if (!curChangeObj[dataKey]) {
 						curChangeObj[dataKey] = dataObj;
@@ -284,6 +285,7 @@ angular.module('emuwebApp')
 			if (undoStack.length > 0) {
 				// add to redo stack
 				var oldChangeObj = angular.copy(undoStack[undoStack.length - 1]);
+
 				redoStack.push(oldChangeObj);
 				applyChange(oldChangeObj, true);
 				// remove old 

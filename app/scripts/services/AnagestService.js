@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService, DataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -67,7 +67,7 @@ angular.module('emuwebApp')
 			var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
 			var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
+			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
 
 			// maxConstr
@@ -144,6 +144,7 @@ angular.module('emuwebApp')
 								'id': gdat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
 							var gdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
@@ -168,6 +169,7 @@ angular.module('emuwebApp')
 								'id': vdat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
 							var vdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
@@ -192,6 +194,7 @@ angular.module('emuwebApp')
 								'id': ndat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
 							var ndat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
@@ -233,6 +236,7 @@ angular.module('emuwebApp')
 									'parentID': linkLevelDetails.level.items[itemIdx].id,
 									'childIDs': childIDs
 								});
+
 
 								HistoryService.addCurChangeObjToUndoStack();
 							});
@@ -277,12 +281,6 @@ angular.module('emuwebApp')
 			var loguk = 0;
 			var higuk = lx - 1;
 
-			// console.log(lx);
-			// console.log(xx);
-			// console.log(xsh);
-			// console.log(loguk);
-			// console.log(higuk);
-
 			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
 			var vz = [];
 			for (var i = 0; i < xx.length; i++) {
@@ -317,11 +315,6 @@ angular.module('emuwebApp')
 
 				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
 					var ap = vz[anavv[resp]];
-					// console.log('-----')
-					// console.log(xx[ap])
-					// console.log(xx[ap + 1])
-					// console.log(ap);
-					// console.log(ap + 1);
 					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 					defer.resolve(ap);
 				});
