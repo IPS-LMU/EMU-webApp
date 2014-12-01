@@ -138,7 +138,7 @@
 
 @media (min-width: 950px) {
    /* wide browser windows */
-     .emuwebapp-mini-btn {
+     .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li  {
          width: 9%;
      }
      .emuwebapp-mini-btn-group{
@@ -152,7 +152,7 @@
 
 @media (min-width: 450px) and (max-width: 950px) {
    /* netbooks/tablets */ 
-     .emuwebapp-mini-btn {
+     .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
          width: 7.5%;
      }
     .emuwebapp-mini-btn-group{
@@ -165,7 +165,7 @@
 
 @media (max-width: 450px) {
      /* mobile devices */ 
-    .emuwebapp-mini-btn {
+    .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
         width: 6%;
     }
     .emuwebapp-mini-btn-group{

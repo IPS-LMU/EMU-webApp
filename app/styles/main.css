@@ -238,6 +238,8 @@ ul {
 	float:left;
 	margin:0;
 	padding:0;
+	width: 100%;
+	padding-right: 4px;
 }
 
 .emuwebapp-nav-wrap ul ul {
@@ -284,8 +286,8 @@ ul {
   padding: 1px;
   line-height: 12px;
   text-align: center;
-  min-width: 100px;
   height: 30px;
+  width: 100%;
 }
 
 .emuwebapp-nav-wrap ul li:hover > .emuwebapp-toggle-button ,
