@@ -8,6 +8,7 @@ describe('Directive: myDropZoneInput', function() {
     
     beforeEach(inject(function($rootScope, $compile) {
         scope = $rootScope.$new();
+        scope.$parent.loadFiles = function() {};
     }));
      
 
@@ -25,9 +26,9 @@ describe('Directive: myDropZoneInput', function() {
         expect(elm.find('input')[0].files.length).toBe(0);
     });
 
-    /*it('should load Data', function() {
+    it('should load Data', function() {
         compileDirective();
-        expect(scope.handler).not.toBeTruthy();
+        spyOn(scope.$parent, 'loadFiles');
         elm.triggerHandler({
           type: 'change',
           target: {
@@ -35,7 +36,7 @@ describe('Directive: myDropZoneInput', function() {
           }
         });
         scope.$apply();
-        expect(scope.handler).toBeTruthy();
-    });*/
-       
+        expect(scope.$parent.loadFiles).toHaveBeenCalled();
+    });
+
 });

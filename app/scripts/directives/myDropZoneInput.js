@@ -9,19 +9,15 @@ angular.module('emuwebApp')
 		scope: {	    
 		},
 		link: function postLink(scope, element, attr) {
-		  scope.handler = false;
-		  
-		  
 		  scope.acceptGrid = '.TextGrid';
 		  scope.acceptWav = 'audio/wav';
 		  scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid;
 		  scope.acceptFile = scope.acceptBoth;
 		  
 		  scope.handleFilesonChange = function() {
-		    scope.handler = true;
 		    var loadedFiles = element.context.children.fileDialog;
 		    scope.$parent.loadFiles(loadedFiles.files);
-          }
+		  }
           
           element.bind('change', function (event) {
             scope.handleFilesonChange(event);

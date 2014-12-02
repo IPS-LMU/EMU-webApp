@@ -6,27 +6,29 @@ angular.module('emuwebApp')
 	return {
 		templateUrl: 'views/myDropZone.html',
 		restrict: 'E',
+		replace: true,
 		scope: {
 		},
 		link: function postLink(scope, element, attr) {
+		    /* --------- Messages -------- */
 			scope.dropTextDefault = 'Drop your files here or click here to open a file';
 			scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID';
 			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
 			scope.dropAllowed = 'Drop file(s) to start loading !';
-			scope.dropParsingStarted = 'Parsing started';
 			scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
 			scope.dropFirefoxWarning = 'Sorry ! Firefox does not support dropping folders ! please drop single or multiple files !';
 
 			scope.dropText = scope.dropTextDefault;
-
 			scope.dropClass = '';
+			scope.dropClassDefault = '';
+			scope.dropClassOver = 'over';
+			scope.dropClassError = 'error';
 			scope.count = 0;
 			scope.handles = [];
 			scope.bundles = [];
 			scope.bundleNames = [];
-
-
-		    scope.updateQueueLength = function (quantity) {
+			
+			scope.updateQueueLength = function (quantity) {
 				scope.count += quantity;
 			}
  
@@ -44,29 +46,29 @@ angular.module('emuwebApp')
 				if(extension === 'WAV') {
 				    scope.bundles[j][1] = file;
     			    scope.handles.push(file); 
-			        scope.dropClass = '';
+			        scope.dropClass = scope.dropClassDefault;
 			        scope.dropText = scope.dropParsingWaiting;
 			        scope.startRendering();
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
 			        scope.bundles[j][2]= file;
 			        scope.handles.push(file); 
-			        scope.dropClass = '';
+			        scope.dropClass = scope.dropClassDefault;
 			        scope.dropText = scope.dropParsingWaiting;
 			    }
 			    else {
 			        if(browserDetector.isBrowser.Firefox()) {
 						if(file.size === 0) {
-							scope.dropClass = 'error';
+							scope.dropClass = scope.dropClassError;
 							scope.dropText = scope.dropFirefoxWarning;			        
 						}
 						else {
-							scope.dropClass = 'error';
+							scope.dropClass = scope.dropClassError;
 							scope.dropText = scope.dropTextErrorFileType;
 						}
 			        }
 			        else {
-		                scope.dropClass = 'error';
+		                scope.dropClass = scope.dropClassError;
 				        scope.dropText = scope.dropTextErrorFileType;
 			        }
 					scope.handles = [];
@@ -143,29 +145,13 @@ angular.module('emuwebApp')
 						}
 					}
 				}
-			}    
-
-		  scope.dragEnterLeave = function(evt) {
-		    evt.preventDefault();
-		    scope.$apply(function () {
-		      scope.dropText = scope.dropTextDefault;
-		      scope.dropClass = '';
-		    });
-		  }
-		  
-		  scope.handleDragOver = function(evt) {
-		    evt.preventDefault();
-		    scope.$apply(function () {
-		      scope.dropText = scope.dropAllowed;
-		      scope.dropClass = 'over';
-		    });
-		  }	
+		  }  
 		  
 		  scope.dropFiles = function(evt) {
 		    evt.stopPropagation();
 		    evt.preventDefault();
 		    scope.$apply(function () {
-              if (window.File && window.FileReader && window.FileList && window.Blob) {
+		      if (window.File && window.FileReader && window.FileList && window.Blob) {
 		        if(evt.originalEvent !== undefined) {          
                   if(browserDetector.isBrowser.Firefox()) {
                     var items = evt.originalEvent.dataTransfer.files;
@@ -175,22 +161,32 @@ angular.module('emuwebApp')
                   }
                   scope.loadFiles(items);
                 }
-                else {
-    		      scope.dropText = scope.dropTextErrorFileType;
-	    	      scope.dropClass = 'error';  
-                  dialogService.open('views/error.html', 'ModalCtrl', 'Error: Unknown File Type for File ' + scope.$parent.other.name).then(function (res) {
-                    scope.dropText = scope.dropTextDefault;
-                    scope.dropClass = '';
-                    appStateService.resetToInitState();
-                  });              
-                }
               }
               else {
-                dialogService.open('views/error.html', 'ModalCtrl', scope.dropTextErrorAPI);
-                scope.dropText = scope.dropTextDefault;
-                scope.dropClass = '';
+                  // no browser support for FileAPI
+                  dialogService.open('views/error.html', 'ModalCtrl', scope.dropTextErrorAPI).then(function (res) {
+                      scope.dropText = scope.dropTextDefault;
+                      scope.dropClass = scope.dropClassDefault;
+                      appStateService.resetToInitState();
+                  });   
               }
             });
+		  }			    
+
+		  scope.dragEnterLeave = function(evt) {
+		    evt.preventDefault();
+		    scope.$apply(function () {
+		      scope.dropText = scope.dropTextDefault;
+		      scope.dropClass = scope.dropClassDefault;
+		    });
+		  }
+		  
+		  scope.handleDragOver = function(evt) {
+		    evt.preventDefault();
+		    scope.$apply(function () {
+		      scope.dropText = scope.dropAllowed;
+		      scope.dropClass = scope.dropClassOver;
+		    });
 		  }		  
 
           element.bind('drop', function (event) {

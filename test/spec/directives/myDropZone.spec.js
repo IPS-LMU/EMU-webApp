@@ -2,69 +2,174 @@
 
 describe('Directive: myDropZone', function() {
 
-    var elm, scope;
+    var elm, scope, mockObject, mockObjectgrid, mockObjectother, mockDir;
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
     
     beforeEach(inject(function($rootScope, $compile) {
         scope = $rootScope.$new();
+        mockObject = {
+            name : 'test.wav',
+            file : function() {return mockObject},
+            isFile : function() {return true}
+        };
+        mockObjectgrid = {
+            name : 'test.textgrid',
+            file : function() {return mockObject},
+            isFile : function() {return true}
+        };
+        mockObjectother = {
+            name : 'test.other',
+            file : function() {return mockObject},
+            isFile : function() {return true}
+        };
+        mockDir = {
+            name : 'test.wav',
+            file : 'test',
+            isDirectory : function() {return true}
+        };
     }));
 
     function compileDirective(tpl) {
         if (!tpl) tpl = '<my-drop-zone></my-drop-zone>';
         inject(function($compile) {
-            var form = $compile(tpl)(scope);
-            elm = form.find('div');
+            elm = $compile(tpl)(scope);
         });
-        scope.$apply();
+        scope.$digest();
     }
-/*
- disabled while reorganizing
  
     it('should have init text', function() {
         compileDirective();
         expect(elm.isolateScope()).toBeDefined();
-        expect(elm.prevObject.html()).toContain('Drop your files here or click here to open a file');
-        expect(elm.isolateScope().dropClass).toBe('');
+        expect(elm.isolateScope().dropText).toContain(elm.isolateScope().dropTextDefault);
+        expect(elm.isolateScope().dropClass).toBe(elm.isolateScope().dropClassDefault);
     });
-
-
-    it('should change state when dragover', function() {
+    
+    
+    it('should react on Data drop', function() {
         compileDirective();
-        var e = $.Event('dragover');
-        e.dx = 10;
-        e.dy = 10;
-        elm.prevObject.triggerHandler(e);
+        spyOn(elm.isolateScope(), 'dropFiles');
+        elm.triggerHandler({
+          type: 'drop',
+          target: {
+            files: [ 'testFile' ]
+          }
+        });
         scope.$apply();
-        expect(elm.prevObject.html()).toContain('Drop files to start loading');
-        expect(scope.dropText).toContain('Drop files to start loading');
-        expect(scope.dropClass).toBe('over');
+        expect(elm.isolateScope().dropFiles).toHaveBeenCalled();
     });
-
-    it('should change state back when dragleave', function() {
+    
+    it('should react on Data dragover', function() {
         compileDirective();
-        var e = $.Event('dragover');
-        e.dx = 10;
-        e.dy = 10;
-        elm.prevObject.triggerHandler(e);
+        elm.triggerHandler({
+          type: 'dragover',
+          target: {
+            files: [ 'testFile' ]
+          }
+        });
         scope.$apply();
-        var e = $.Event('dragleave');
-        e.dx = 10;
-        e.dy = 10;
-        elm.prevObject.triggerHandler(e);
+        expect(elm.isolateScope().dropText).toContain(elm.isolateScope().dropAllowed);
+        expect(elm.isolateScope().dropClass).toBe(elm.isolateScope().dropClassOver);        
+
+    });   
+    
+    it('should react on Data dragenter', function() {
+        compileDirective();
+        elm.triggerHandler({
+          type: 'dragenter',
+          target: {
+            files: [ 'testFile' ]
+          }
+        });
         scope.$apply();
-        expect(scope.dropText).toContain('Drop your files here or click here to open a file');
-        expect(scope.dropClass).toBe('');
+        expect(elm.isolateScope().dropText).toContain(elm.isolateScope().dropTextDefault);
+        expect(elm.isolateScope().dropClass).toBe(elm.isolateScope().dropClassDefault);        
+
     });
-
-    it('should result in error when drop with no file', function() {
+    
+    it('should react on Event dragleave', function() {
         compileDirective();
-        var e = $.Event('drop');
-        elm.prevObject.triggerHandler(e);
+        elm.triggerHandler({
+          type: 'dragleave',
+          target: {
+            files: [ 'testFile' ]
+          }
+        });
         scope.$apply();
-        // nothing mocked : result in error
-        expect(elm.prevObject.html()).toContain('Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID');
-        expect(scope.dropText).toContain('Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID');
-        expect(scope.dropClass).toBe('');
-    });*/
-       
+        expect(elm.isolateScope().dropText).toContain(elm.isolateScope().dropTextDefault);
+        expect(elm.isolateScope().dropClass).toBe(elm.isolateScope().dropClassDefault);        
+    });
+    
+    it('should updateQueueLength', function() {
+        compileDirective();
+        elm.isolateScope().updateQueueLength(10);
+        expect(elm.isolateScope().count).toBe(10);
+        elm.isolateScope().updateQueueLength(10);
+        expect(elm.isolateScope().count).toBe(20);
+    }); 
+    
+    it('should startRendering', inject(function (DragnDropDataService) {
+        compileDirective();
+        spyOn(DragnDropDataService, 'setData');
+        elm.isolateScope().updateQueueLength(1);
+        elm.isolateScope().handles.push('test');
+        elm.isolateScope().bundles.push('test');
+        elm.isolateScope().startRendering();
+        expect(DragnDropDataService.setData).toHaveBeenCalledWith([ 'test' ]);
+    })); 
+    
+    it('should dropFiles', function() {
+        compileDirective();
+        spyOn(elm.isolateScope(), 'loadFiles');
+        elm.triggerHandler({
+          type: 'drop',
+          originalEvent: {
+            dataTransfer: {
+              files: [ 'testFile.wav' ]
+            }
+          }
+        });
+        scope.$apply(); 
+        expect(elm.isolateScope().loadFiles).toHaveBeenCalled();
+    }); 
+    
+    it('should not loadFiles with name .DS_Store', function() {
+        compileDirective();
+        spyOn(elm.isolateScope(), 'updateQueueLength');
+        elm.isolateScope().loadFiles([{name: '.DS_Store'}]);
+        expect(elm.isolateScope().updateQueueLength).toHaveBeenCalledWith(-1);
+    }); 
+    
+    it('should loadFiles (no file)', function() {
+        compileDirective();
+        spyOn(elm.isolateScope(), 'updateQueueLength');
+        elm.isolateScope().loadFiles([{name: 'test.wav'}]);
+        expect(elm.isolateScope().updateQueueLength).toHaveBeenCalledWith(-1);
+    }); 
+    
+    it('should loadFiles', function() {
+        compileDirective();
+        spyOn(elm.isolateScope(), 'updateQueueLength');
+        elm.isolateScope().loadFiles([mockObject]);
+        expect(elm.isolateScope().updateQueueLength).toHaveBeenCalledWith(1);
+    }); 
+    
+    
+    it('should enqueueFileAddition with wav', function() {
+        compileDirective();
+        spyOn(elm.isolateScope(), 'startRendering');
+        elm.isolateScope().enqueueFileAddition(mockObject);
+        expect(elm.isolateScope().startRendering).toHaveBeenCalled();
+    }); 
+    
+    it('should enqueueFileAddition with textgrid', function() {
+        compileDirective();
+        elm.isolateScope().enqueueFileAddition(mockObjectgrid);
+        expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropParsingWaiting);
+    }); 
+    
+    it('should enqueueFileAddition with other', function() {
+        compileDirective();
+        elm.isolateScope().enqueueFileAddition(mockObjectother);
+        expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropTextErrorFileType);
+    }); 
 });
