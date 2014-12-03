@@ -206,7 +206,7 @@ angular.module('emuwebApp')
           });
           
           element.bind('click', function (event) {
-            element.context.children[0].children[1].click();
+            element.context.children[1].children[0].click();
           });	
           
           
