@@ -16,8 +16,10 @@
 }
 
 .emuwebapp-SideMenuBtn2 img {
-    width: 28px;
-    height:28px;
+    width: 34px;
+    height:34px;
+    padding-top: 0;
+    padding-bottom: 4px;
 }
 
 .emuwebapp-SideMenuBtn, .emuwebapp-SideMenuBtn2 {

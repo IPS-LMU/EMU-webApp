@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, LevelService, HistoryService) {
+	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, LevelService, HistoryService, ConfigProviderService) {
 
+		$scope.cps = ConfigProviderService;
 		$scope.passedInTxt = passedInTxt;
 		$scope.passedOutTxt = {
 			'var': null,

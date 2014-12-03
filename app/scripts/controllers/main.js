@@ -709,7 +709,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.aboutBtnClick = function () {
-			dialogService.open('views/about.html', 'AboutCtrl');
+			dialogService.open('views/about.html', 'ModalCtrl');
 		};
 
 		/**

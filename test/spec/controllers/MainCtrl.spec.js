@@ -146,7 +146,7 @@ describe('Controller: MainCtrl', function () {
   it('should showAbout', function () {
     spyOn(scope.dialog, 'open');
     scope.aboutBtnClick();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/about.html', 'AboutCtrl');
+    expect(scope.dialog.open).toHaveBeenCalledWith('views/about.html', 'ModalCtrl');
   });
 
   it('should openDemoDB ae', inject(function ($q) {
