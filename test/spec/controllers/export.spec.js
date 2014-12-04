@@ -65,4 +65,10 @@ describe('Controller: ExportCtrl', function () {
      expect(scope.dialog.close).toHaveBeenCalled();
      expect(scope.SaveToDisk).toHaveBeenCalled();
    }); 
+
+   it('should SaveToDisk', function () {
+     spyOn(scope, 'updateHistoryService');
+     scope.SaveToDisk();
+     expect(scope.updateHistoryService).toHaveBeenCalled();
+   }); 
 });

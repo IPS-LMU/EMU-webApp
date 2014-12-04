@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-.directive('myDropZone', function ($animate, $compile, DragnDropDataService, browserDetector, appStateService, dialogService) {
+.directive('myDropZone', function ($animate, $compile, DragnDropService, browserDetector, appStateService, dialogService) {
 	return {
 		templateUrl: 'views/myDropZone.html',
 		restrict: 'E',
@@ -84,7 +84,11 @@ angular.module('emuwebApp')
 			scope.startRendering = function () { 
 				// If all the files we expect have shown up, then flush the queue.
 				if (scope.count === scope.handles.length) {
-					DragnDropDataService.setData(scope.bundles);
+					if(DragnDropService.setData(scope.bundles) === false) {
+					    dialogService.open('views/error.html', 'ModalCtrl', 'Sorry you dropped too many bundles ('+scope.handles.length+'). The maximum currently allowed is: ' + DragnDropService.maxDroppedBundles).then(function () {
+					        appStateService.resetToInitState();
+					    });					
+					}
 					scope.handles = [];
 					scope.bundles = [];
 					scope.bundleNames = [];

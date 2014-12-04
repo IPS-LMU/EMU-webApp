@@ -107,14 +107,14 @@ describe('Directive: myDropZone', function() {
         expect(elm.isolateScope().count).toBe(20);
     }); 
     
-    it('should startRendering', inject(function (DragnDropDataService) {
+    it('should startRendering', inject(function (DragnDropService) {
         compileDirective();
-        spyOn(DragnDropDataService, 'setData');
+        spyOn(DragnDropService, 'setData');
         elm.isolateScope().updateQueueLength(1);
         elm.isolateScope().handles.push('test');
         elm.isolateScope().bundles.push('test');
         elm.isolateScope().startRendering();
-        expect(DragnDropDataService.setData).toHaveBeenCalledWith([ 'test' ]);
+        expect(DragnDropService.setData).toHaveBeenCalledWith([ 'test' ]);
     })); 
     
     it('should dropFiles', function() {

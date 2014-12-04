@@ -6,7 +6,7 @@
                 <input type="text" ng-model="filterText" ng-change="lmds.updateCollapseSessionState(filterText)" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)"/>
             </div>
         </h3>
-        <my-drop-zone ng-controller="FileCtrl" ng-show="vs.showDropZone"></my-drop-zone>
+        <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
         <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
             <ul ng-repeat="(key, value) in lmds.getBundleList() | groupBy: 'session'">
                 <div class="emuwebapp-bundleListSession" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
