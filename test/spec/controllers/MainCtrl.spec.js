@@ -29,6 +29,7 @@ describe('Controller: MainCtrl', function () {
     HistoryService,
     Iohandlerservice,
     Validationservice,
+    loadedMetaDataService,
     Textgridparserservice) {
 
     // initiate the controller and mock the scope
@@ -50,6 +51,7 @@ describe('Controller: MainCtrl', function () {
     scope.cps.curDbConfig = aeDbConfig;
     scope.history = HistoryService;
     scope.txtgrid = Textgridparserservice;
+    scope.lmds = loadedMetaDataService;
 
     deferred = $q.defer();
     deferred.resolve('called');
@@ -137,6 +139,14 @@ describe('Controller: MainCtrl', function () {
     expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
   });
 
+  it('should clear with unsafed changes', function () {
+    spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
+    scope.cps.vals.main.comMode = 'embedded';
+    scope.history.movesAwayFromLastSave = 1;
+    scope.clearBtnClick();
+    expect(scope.dialog.open).toHaveBeenCalledWith( 'views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.');
+  });
+
   it('should showHierarchy', function () {
     spyOn(scope.dialog, 'open');
     scope.showHierarchyBtnClick();
@@ -150,7 +160,7 @@ describe('Controller: MainCtrl', function () {
   });
 
   it('should openDemoDB ae', inject(function ($q) {
-    /*var ioDeferredDBConfig = $q.defer();
+    var ioDeferredDBConfig = $q.defer();
     ioDeferredDBConfig.resolve({
       data: {
         EMUwebAppConfig: {}
@@ -162,14 +172,13 @@ describe('Controller: MainCtrl', function () {
     });
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.vs, 'setState');
-    spyOn(scope, 'menuBundleClick');
     spyOn(scope.io, 'getDBconfigFile').and.returnValue(ioDeferredDBConfig.promise);
     spyOn(scope.io, 'getBundleList').and.returnValue(ioDeferredBundleList.promise);
     spyOn(scope.valid, 'validateJSO').and.returnValue(true);
     scope.openDemoDBbtnClick('ae');
     expect(scope.vs.setState).toHaveBeenCalledWith('loadingSaving');
     expect(scope.vs.getPermission).toHaveBeenCalledWith('openDemoBtnDBclick');
-    expect(scope.demoDbName).toEqual('ae');
+    expect(scope.lmds.getDemoDbName()).toEqual('ae');
     expect(scope.cps.vals.main.comMode).toEqual('DEMO');
     expect(scope.vs.somethingInProgressTxt).toEqual('Loading DB config...');
     expect(scope.io.getDBconfigFile).toHaveBeenCalledWith('ae');
@@ -179,9 +188,31 @@ describe('Controller: MainCtrl', function () {
     expect(scope.io.getBundleList).toHaveBeenCalledWith('ae');
     ioDeferredBundleList.resolve();
     scope.$digest();
-    expect(scope.menuBundleClick).toHaveBeenCalled();*/
   }));
 
+  it('should downloadAnnotationBtnClick', inject(function ($q) {
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.dialog, 'openExport');
+    scope.lmds.setCurBndl({name: 'test'});
+    scope.downloadAnnotationBtnClick();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadAnnotationBtnClick');
+    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', '{}', 'test_annot.json' );
+  }));
+
+  it('should downloadTextGridBtnClick', inject(function ($q) {
+    var txtDeferred = $q.defer();
+    txtDeferred.resolve('test1');
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.txtgrid, 'asyncToTextGrid').and.returnValue(txtDeferred.promise);
+    spyOn(scope.dialog, 'openExport');
+    scope.lmds.setCurBndl({name: 'test2'});
+    scope.downloadTextGridBtnClick();
+    txtDeferred.resolve();
+    scope.$digest();
+    expect(scope.txtgrid.asyncToTextGrid).toHaveBeenCalled();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadTextGridBtnClick');
+    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test1', 'test2.TextGrid' );
+  }));
 
   it('should not openDemoDB ae (no permission)', inject(function ($q) {
     spyOn(scope.vs, 'getPermission').and.returnValue(false);

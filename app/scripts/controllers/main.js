@@ -22,6 +22,7 @@ angular.module('emuwebApp')
 		$scope.wps = Wavparserservice;
 		$scope.io = Iohandlerservice;
 		$scope.ach = Appcachehandler;
+		$scope.lmds = loadedMetaDataService;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
@@ -383,29 +384,6 @@ angular.module('emuwebApp')
 			return false;
 		};
 
-		$scope.getCurBndlName = function () {
-			return loadedMetaDataService.getCurBndlName();
-		};
-
-		/**
-		 *
-		 */
-		$scope.genUniqSessionList = function (bndlList) {
-			var sList = [];
-			var fistSes;
-			bndlList.forEach(function (bndl, idx) {
-				sList[bndl.session] = {
-					'collapsed': true
-				};
-				if (idx === 0) {
-					fistSes = bndl.session;
-				}
-			});
-			// open fist session up 
-			sList[fistSes].collapsed = false;
-			console.log(sList['0001'].collapsed);
-			return sList;
-		};
 
 		/**
 		 *
