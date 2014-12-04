@@ -24,6 +24,11 @@ angular.module('emuwebApp')
 		    });
 		    return defer.promise;
 		};
-		
+
+		sServObj.resetToInitState = function () {
+		    sServObj.convertedBundles = [];
+		    sServObj.sessionName = 'File(s)';
+		};		
+
 		return sServObj;
 	});

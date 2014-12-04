@@ -36,6 +36,11 @@ angular.module('emuwebApp')
 			}
 		};
 		
+		sServObj.resetToInitState = function () {
+    		sServObj.drandropBundles = [];
+	    	sServObj.bundleList = [];
+		};
+		
 		/**
 		 * setter sServObj.drandropBundles
 		 */

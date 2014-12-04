@@ -244,6 +244,10 @@ angular.module('emuwebApp')
 
 		// call function on init
 		$scope.loadDefaultConfig();
+		
+		$scope.getCurBndlName = function () {
+ 			return loadedMetaDataService.getCurBndlName();
+ 		};		
 
 		/**
 		 * function called after default config was loaded
@@ -369,17 +373,13 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.toggleCollapseSession = function (ses) {
-			alert($scope.uniqSessionList[ses].collapsed);
 			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
-			console.log($scope.uniqSessionList[ses].collapsed);
 		};
 
 		/**
 		 *
 		 */
 		$scope.sessionIsCollapsed = function (ses) {
-			console.log(ses);
-			console.log($scope.uniqSessionList[ses].collapsed);
 			// return $scope.uniqSessionList[ses].collapsed;
 			return false;
 		};

@@ -133,11 +133,14 @@ describe('Controller: MainCtrl', function () {
     expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.vals.colors.transitionTime);
   });
 
-  it('should clear', function () {
-    spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
+  it('should clear', inject(function ($q) {
+    var txtDeferred = $q.defer(); 
+    spyOn(scope.dialog, 'open').and.returnValue(txtDeferred.promise);
     scope.clearBtnClick();
+    txtDeferred.resolve(true);
+    scope.$digest();
     expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
-  });
+  }));
 
   it('should clear with unsafed changes', function () {
     spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
@@ -157,7 +160,7 @@ describe('Controller: MainCtrl', function () {
     spyOn(scope.dialog, 'open');
     scope.aboutBtnClick();
     expect(scope.dialog.open).toHaveBeenCalledWith('views/about.html', 'ModalCtrl');
-  });
+  }); 
 
   it('should openDemoDB ae', inject(function ($q) {
     var ioDeferredDBConfig = $q.defer();
@@ -498,6 +501,13 @@ describe('Controller: MainCtrl', function () {
   });
 
   it('should not cmdZoomAll (disallowed)', function () {
+    spyOn(scope.vs, 'getPermission').and.returnValue(false);
+    scope.cmdZoomAll();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
+  });
+
+  it('should getEnlarge', function () {
+    scope.cps.vals.perspectives[0].signalCanvases.order = [1, 2];
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.cmdZoomAll();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');

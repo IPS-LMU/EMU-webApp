@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 				    scope.bundles[j][1] = file;
     			    scope.handles.push(file); 
 			        scope.dropClass = scope.dropClassDefault;
-			        scope.dropText = scope.dropParsingWaiting;
+			        scope.dropText = scope.dropTextDefault;
 			        scope.startRendering();
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
