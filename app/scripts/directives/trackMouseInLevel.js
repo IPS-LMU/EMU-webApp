@@ -4,6 +4,7 @@ angular.module('emuwebApp')
   .directive('trackMouseInLevel', function (viewState, LevelService, ConfigProviderService, HistoryService, Soundhandlerservice) {
     return {
       restrict: 'A',
+      replace:true,
       scope: {
         levelName: '=',
         levelType: '='
