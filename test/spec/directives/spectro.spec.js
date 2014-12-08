@@ -7,7 +7,7 @@ describe('Directive: spectro', function () {
     var elm, tpl, scope, curLvl;
     var lvlName = 'Phonetic';
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
-
+    
     beforeEach(inject(function ($rootScope, $compile, Drawhelperservice, DataService, LevelService, ConfigProviderService, viewState, Soundhandlerservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
@@ -19,7 +19,7 @@ describe('Directive: spectro', function () {
         scope.cps.curDbConfig = aeDbConfig;
         scope.vs = viewState;
         scope.data.setData(msajc003_bndl.annotation);
-        scope.level = curLvl;
+        scope.level = curLvl;           
     }));
 
     function compileDirective() {
@@ -85,6 +85,17 @@ describe('Directive: spectro', function () {
         compileDirective();
         // (2048 + 1 - 1) / 2
         expect(elm.isolateScope().calcSamplesPerPxl()).toBe(1);
+    });
+
+    it('should startSpectroRenderingThread', function () {
+        compileDirective();
+        scope.vs.curViewPort.sS = 4000;
+        var buffer = new ArrayBuffer(58089);
+        var view = new Uint8Array(buffer);
+        spyOn(ArrayBuffer.prototype, 'subarray');
+        spyOn(elm.isolateScope(), 'setupEvent');
+        elm.isolateScope().startSpectroRenderingThread(view);
+        expect(elm.isolateScope().setupEvent).toHaveBeenCalled();
     });
 
 });

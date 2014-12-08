@@ -64,6 +64,30 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.setcurClickItem(lastEventMove.current);
     }
     
+    it('should react to keyup', function() {
+        spyOn(scope, 'applyKeyCodeUp');
+        scope.vs.setEditing(true); 
+        scope.vs.setcursorInTextField(false);
+        var e = jQuery.Event('keyup');
+        e.which = 40;
+        e.keyCode = 40; 
+        e.shiftKey = false;       
+        $(document).trigger(e); 
+        expect(scope.applyKeyCodeUp).toHaveBeenCalled();
+        scope.vs.setcursorInTextField(true);
+        scope.vs.setEditing(false);
+     });
+    
+    it('should react to keydown', function() {
+        spyOn(scope, 'applyKeyCode');
+        var e = jQuery.Event('keydown');
+        e.which = 40;
+        e.keyCode = 40; 
+        e.shiftKey = false;       
+        $(document).trigger(e); 
+        expect(scope.applyKeyCode).toHaveBeenCalled();
+     });
+    
 
     it('should not do anything because of catchMouseForKeyBinding', function() {
         // set catchMouseForKeyBinding to be true

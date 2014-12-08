@@ -9,7 +9,7 @@ angular.module('emuwebApp')
         $(document).bind('keyup', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
           if(viewState.isEditing() && !viewState.getcursorInTextField()) {
-              applyKeyCodeUp(code, e);
+              scope.applyKeyCodeUp(code, e);
           }
         });
       
@@ -17,17 +17,17 @@ angular.module('emuwebApp')
           if (!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 8 || code == 9 || code == 27 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
-              applyKeyCode(code, e);
+              scope.applyKeyCode(code, e);
             }
           }
         });
         
         $(document).bind('keypress', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
-          applyKeyCode(code, e);
+          scope.applyKeyCode(code, e);
         });
         
-        function applyKeyCodeUp(code, e) {
+        scope.applyKeyCodeUp = function (code, e) {
           scope.$apply(function () {
             if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
 				var domElement = $('.' + LevelService.getlasteditArea());
@@ -53,9 +53,9 @@ angular.module('emuwebApp')
 			    }  
 		     }              
           });
-       }        
-
-        function applyKeyCode(code, e) {
+       };
+       
+        scope.applyKeyCode = function (code, e) {
           scope.$apply(function () {
             // check if mouse has to be in labeler for key mappings
             if (ConfigProviderService.vals.main.catchMouseForKeyBinding) {
@@ -882,7 +882,7 @@ angular.module('emuwebApp')
               }
             }
           });
-        }
+        };
 
         scope.safeApply = function (fn) {
           var phase = this.$root.$$phase;

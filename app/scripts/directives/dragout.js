@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('dragout', function (DataService, loadedMetaDataService) {
+  .directive('dragout', function (DataService, loadedMetaDataService, browserDetector) {
     return {
       restrict: 'A',
       replace:true,
@@ -10,8 +10,12 @@ angular.module('emuwebApp')
       },
       link: function (scope, element, attrs) {
         var el = element[0];
+        var dragIcon = document.createElement('img');
+            dragIcon.src = 'img/exportBtn.png';
+        var dataString = '';
         
-        scope.generateURL = function (name) {
+        
+        scope.generateURL = function () {
             return scope.getURL(angular.toJson(DataService.getData(), true));
         };
         
@@ -45,18 +49,17 @@ angular.module('emuwebApp')
         el.addEventListener(
             'dragstart',
 			function(e) {
-				if(scope.isActive()) {		
-					var dragIcon = document.createElement('img');
-					dragIcon.src = 'img/exportBtn.png';
-					e.dataTransfer.setDragImage(dragIcon, -10, -10);			        
-					var url = scope.generateURL();
-					e.dataTransfer.effectAllowed = 'move';
-					e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
+				if(scope.isActive()) {
 					this.classList.add('drag');
+					var url = scope.generateURL();
+					if(browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
+					    e.dataTransfer.setDragImage(dragIcon, -10, -10);
+					    e.dataTransfer.effectAllowed = 'move';
+					    e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
+					}
                 } 
                 else {
-					var dragIcon = document.createElement('img');
-					e.dataTransfer.setDragImage(dragIcon, 10, 10);			        
+					console.log('dropping inactive bundles is not allowed');			        
                 }
                 return false;
             },
@@ -87,7 +90,6 @@ angular.module('emuwebApp')
             },
             false
         );
-        
       }
     };
   });
