@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainCtrl', function ($scope, $rootScope, $modal, $log, $compile, $timeout,
+	.controller('MainController', function ($scope, $rootScope, $modal, $log, $compile, $timeout,
 		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
 		LevelService, dialogService, Textgridparserservice, Espsparserservice,
