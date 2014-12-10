@@ -1,6 +1,6 @@
 {
 	"name": "msajc057",
-	"annotates": "0000_ses/msajc057/msajc057.wav",
+	"annotates": "msajc057.wav",
 	"sampleRate": 20000,
 	"levels": [{
 		"name": "Utterance",
