@@ -71,8 +71,6 @@ angular.module('emuwebApp')
 				//////////////////
 
 				scope.setGlobalMinMaxVals = function () {
-					// body...
-					//console.log(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases);
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 					for (var i = 0; i < dD.dots.length; i++) {
 						// get xCol
@@ -96,19 +94,6 @@ angular.module('emuwebApp')
 						}
 					}
 				}
-
-				function getScale(ctx, str, scale) {
-					return ctx.measureText(str).width * scale;
-				}
-
-				function getScaleWidth(ctx, str1, str2, scaleX) {
-					if (str1.toString().length > str2.toString().length) {
-						return getScale(ctx, str1, scaleX);
-					} else {
-						return getScale(ctx, str2, scaleX);
-					}
-				}
-
 
 				/**
 				 * drawing method to drawDots

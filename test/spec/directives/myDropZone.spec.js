@@ -130,8 +130,7 @@ describe('Directive: myDropZone', function() {
         });
         scope.$apply(); 
         expect(elm.isolateScope().loadFiles).toHaveBeenCalled();
-    }); 
-    
+    });
     it('should not loadFiles with name .DS_Store', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'updateQueueLength');
@@ -172,4 +171,29 @@ describe('Directive: myDropZone', function() {
         elm.isolateScope().enqueueFileAddition(mockObjectother);
         expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropTextErrorFileType);
     }); 
+    
+    it('should warn if no FileAPI available', inject(function ($q, dialogService, appStateService) {
+        compileDirective();
+        window.File = false;
+        window.FileReader = false;
+        window.FileList = false;
+        window.Blob = false;
+        var txtDeferred = $q.defer(); 
+        spyOn(dialogService, 'open').and.returnValue(txtDeferred.promise);
+        spyOn(appStateService, 'resetToInitState');
+        elm.triggerHandler({
+          type: 'drop',
+          originalEvent: {
+            dataTransfer: {
+              files: [ 'testFile.wav' ]
+            }
+          }
+        });
+        scope.$apply();
+        txtDeferred.resolve(true);
+        scope.$digest();
+        expect(appStateService.resetToInitState).toHaveBeenCalled();
+        expect(dialogService.open).toHaveBeenCalled();
+    })); 
+    
 });

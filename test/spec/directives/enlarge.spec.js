@@ -8,7 +8,6 @@ describe('Directive: enlarge', function() {
     beforeEach(inject(function($rootScope, $compile, viewState, dialogService, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
-        scope.vs.curPerspectiveIdx = 0;
     }));
 
     function compileDirective(tpl) {
@@ -22,12 +21,14 @@ describe('Directive: enlarge', function() {
     }
 
     it('should enlarge', function() {
+        scope.vs.curPerspectiveIdx = 0;
         compileDirective();
         elm.triggerHandler('click');
         expect(scope.vs.timelineSize).toEqual('0');
     });
 
     it('should enlarge and close', function() {
+        scope.vs.curPerspectiveIdx = 0;
         compileDirective();
         elm.triggerHandler('click');
         //scope.$digest();

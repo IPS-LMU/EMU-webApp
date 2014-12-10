@@ -8,13 +8,12 @@ angular.module('emuwebApp')
 		scope.$watch('viewState.curPerspectiveIdx', function () {
 		    if (!$.isEmptyObject(ConfigProviderService.vals.perspectives)) {
 		        if (!$.isEmptyObject(viewState.curPerspectiveIdx)) {
-		        console.log(viewState.curPerspectiveIdx);
-				if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length===1) {
-					element.hide();
-				}
-				else {
-					element.show();
-				}
+					if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length===1) {
+						element.hide();
+					}
+					else {
+						element.show();
+					}
 				}
             }
 		}, true);      

@@ -11,6 +11,7 @@ describe('Directive: dots', function() {
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs = viewState;
+        scope.vs.curPerspectiveIdx = 0;
         scope.data = DataService;
         scope.data.setData(msajc003_bndl.annotation);
         scope.ssffds = Ssffdataservice;    
@@ -28,6 +29,23 @@ describe('Directive: dots', function() {
         compileDirective();
         expect(elm.html()).toContain('<canvas width="512" height="512"></canvas>');
     });
+    
+    it('should setGlobalMinMaxVals', function() {
+        compileDirective();
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
+        spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({_minVal: 1, _maxVal: 2});
+        scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions = [ {dots: [1, 2]} ];
+        elm.isolateScope().setGlobalMinMaxVals();
+    });    
+    
+   /* it('should drawDots', function() {
+        compileDirective();
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
+        spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({_minVal: 1, _maxVal: 2, values: [[1, 2], [2, 3]]});
+        elm.isolateScope().drawDots();
+    }); */   
 
     it('should watch ssffds.data.length', function() {
         compileDirective();
