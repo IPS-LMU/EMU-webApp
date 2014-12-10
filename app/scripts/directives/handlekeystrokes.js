@@ -8,11 +8,11 @@ angular.module('emuwebApp')
 
         $(document).bind('keyup', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
-          if(viewState.isEditing() && !viewState.getcursorInTextField()) {
-              scope.applyKeyCodeUp(code, e);
+          if (viewState.isEditing() && !viewState.getcursorInTextField()) {
+            scope.applyKeyCodeUp(code, e);
           }
         });
-      
+
         $(document).bind('keydown', function (e) {
           if (!scope.firefox) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -21,40 +21,43 @@ angular.module('emuwebApp')
             }
           }
         });
-        
+
         $(document).bind('keypress', function (e) {
           var code = (e.keyCode ? e.keyCode : e.which);
           scope.applyKeyCode(code, e);
         });
-        
+
         scope.applyKeyCodeUp = function (code, e) {
           scope.$apply(function () {
             if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
-				var domElement = $('.' + LevelService.getlasteditArea());
-				var str = domElement.val();
-				viewState.setSavingAllowed(true);
-				var curAttrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
-				var lvlDefs = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
-				var definitions = {};
-				if(lvlDefs.attributeDefinitions !== undefined && lvlDefs.attributeDefinitions.length>0) {
-				    definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[curAttrIndex];
-				}
-				// if it is defined then check if characters are ok
-				if(definitions.legalLabels !== undefined && str.length > 0) {
-					if(definitions.legalLabels.indexOf(str) < 0) {
-						viewState.setSavingAllowed(false);
-					}
-				}
-			    if(viewState.isSavingAllowed()) {
-				  domElement.css({ "background-color": "rgba(255,255,0,1)"});
-			    }
-			    else {
-				  domElement.css({ "background-color": "rgba(255,0,0,1)"});
-			    }  
-		     }              
+              var domElement = $('.' + LevelService.getlasteditArea());
+              var str = domElement.val();
+              viewState.setSavingAllowed(true);
+              var curAttrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
+              var lvlDefs = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
+              var definitions = {};
+              if (lvlDefs.attributeDefinitions !== undefined && lvlDefs.attributeDefinitions.length > 0) {
+                definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[curAttrIndex];
+              }
+              // if it is defined then check if characters are ok
+              if (definitions.legalLabels !== undefined && str.length > 0) {
+                if (definitions.legalLabels.indexOf(str) < 0) {
+                  viewState.setSavingAllowed(false);
+                }
+              }
+              if (viewState.isSavingAllowed()) {
+                domElement.css({
+                  "background-color": "rgba(255,255,0,1)"
+                });
+              } else {
+                domElement.css({
+                  "background-color": "rgba(255,0,0,1)"
+                });
+              }
+            }
           });
-       };
-       
+        };
+
         scope.applyKeyCode = function (code, e) {
           scope.$apply(function () {
             // check if mouse has to be in labeler for key mappings
@@ -67,69 +70,68 @@ angular.module('emuwebApp')
             if (viewState.isEditing()) {
               var domElement = $('.' + LevelService.getlasteditArea());
               // preventing new line if saving not allowed
-              if(!viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
-                  var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())].legalLabels;
-                  e.preventDefault();
-                  e.stopPropagation(); 
-                  LevelService.deleteEditArea();
-                  viewState.setEditing(false);                  
-                  scope.dials.open('views/error.html', 'ModalCtrl', 'Editing Error: Sorry, characters allowed on this Level are "'+JSON.stringify(definitions)+'"');                  
+              if (!viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
+                var definitions = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).attributeDefinitions[viewState.getCurAttrIndex(viewState.getcurClickLevelName())].legalLabels;
+                e.preventDefault();
+                e.stopPropagation();
+                LevelService.deleteEditArea();
+                viewState.setEditing(false);
+                scope.dials.open('views/error.html', 'ModalCtrl', 'Editing Error: Sorry, characters allowed on this Level are "' + JSON.stringify(definitions) + '"');
               }
               // save text on enter if saving is allowed
-              if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {   
-                  var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
-                  var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
-                  var oldValue = editingElement.labels[attrIndex].value;
-                  LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), domElement.val());
-                  HistoryService.addObjToUndoStack({
-                    'type': 'ANNOT',
-                    'action': 'RENAMELABEL',
-                    'name': viewState.getcurClickLevelName(),
-                    'id': LevelService.getlastID(),
-                    'attrIndex': attrIndex,
-                    'oldValue': oldValue,
-                    'newValue': domElement.val()
-                  });
-                  LevelService.deleteEditArea();
-                  viewState.setEditing(false);
-                  viewState.setcurClickItem(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
+              if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
+                var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
+                var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
+                var oldValue = editingElement.labels[attrIndex].value;
+                LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), domElement.val());
+                HistoryService.addObjToUndoStack({
+                  'type': 'ANNOT',
+                  'action': 'RENAMELABEL',
+                  'name': viewState.getcurClickLevelName(),
+                  'id': LevelService.getlastID(),
+                  'attrIndex': attrIndex,
+                  'oldValue': oldValue,
+                  'newValue': domElement.val()
+                });
+                LevelService.deleteEditArea();
+                viewState.setEditing(false);
+                viewState.setcurClickItem(LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID()));
               }
               // escape from text if esc
               if (code === ConfigProviderService.vals.keyMappings.esc) {
                 LevelService.deleteEditArea();
                 viewState.setEditing(false);
               }
-              
+
             } else if (viewState.getcursorInTextField() === false) {
-              
+
               LevelService.deleteEditArea();
-              
+
               // escape from open modal dialog
               if (viewState.curState.permittedActions.length === 0 && code === ConfigProviderService.vals.keyMappings.esc) {
                 scope.dials.close();
-                if(viewState.isHierarchyOpen()) {
-                    viewState.showHierarchy();
+                if (viewState.isHierarchyOpen()) {
+                  viewState.showHierarchy();
                 }
-              } 
+              }
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
               // showHierarhy
               if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
-                  if(viewState.curState!==viewState.states.noDBorFilesloaded) {
-					  if(!viewState.isHierarchyOpen()) {
-						  dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
-					  }
-					  else {
-						  dialogService.close();
-					  }
-					  viewState.showHierarchy();
+                if (viewState.curState !== viewState.states.noDBorFilesloaded) {
+                  if (!viewState.isHierarchyOpen()) {
+                    dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+                  } else {
+                    dialogService.close();
                   }
+                  viewState.showHierarchy();
+                }
               }
 
               // rotateHierarhy
               if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
-                  viewState.rotateHierarchy();
+                viewState.rotateHierarchy();
               }
 
               // zoomAll
@@ -389,7 +391,7 @@ angular.module('emuwebApp')
                         var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
                           changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
-                        } 
+                        }
                         LevelService.expandSegment(true, viewState.getcurClickItems(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
                           'type': 'ANNOT',
@@ -550,12 +552,11 @@ angular.module('emuwebApp')
                       if (lastNeighboursMove.left.sampleStart !== undefined) {
                         // check if in view
                         if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
-                          if(e.shiftKey) { // select multiple while shift
+                          if (e.shiftKey) { // select multiple while shift
                             viewState.setcurClickItemMultiple(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
-                            viewState.selectBoundary();                          
-                          }
-                          else {
+                            viewState.selectBoundary();
+                          } else {
                             viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
@@ -563,12 +564,11 @@ angular.module('emuwebApp')
                       } else {
                         // check if in view
                         if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
-                          if(e.shiftKey) { // select multiple while shift
+                          if (e.shiftKey) { // select multiple while shift
                             viewState.setcurClickItemMultiple(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
-                            viewState.selectBoundary();                          
-                          }
-                          else {
+                            viewState.selectBoundary();
+                          } else {
                             viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
@@ -586,24 +586,22 @@ angular.module('emuwebApp')
                     var idLeft = viewState.getcurClickItems()[0].id;
                     var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
-                      if (lastNeighboursMove.right !== undefined) {
+                    if (lastNeighboursMove.right !== undefined) {
                       // check if in view
-                        if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
-                          if(e.shiftKey) { // select multiple while shift
-                            viewState.setcurClickItemMultiple(lastNeighboursMove.right);
-                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
-                            viewState.selectBoundary();
-                          }
-                          else {
-                            
-                            viewState.setcurClickItem(lastNeighboursMove.right);
-                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
-                          }
+                      if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
+                        if (e.shiftKey) { // select multiple while shift
+                          viewState.setcurClickItemMultiple(lastNeighboursMove.right);
+                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          viewState.selectBoundary();
+                        } else {
+
+                          viewState.setcurClickItem(lastNeighboursMove.right);
+                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                         }
                       }
-                      else {
-                      
-                      }
+                    } else {
+
+                    }
                   }
                 }
               }
@@ -632,11 +630,11 @@ angular.module('emuwebApp')
                         }
                       }
 
-                    } else {                    
-                      if (lastNeighboursMove.right !== undefined) {                      
-                        if (lastNeighboursMove.right.sampleStart !== undefined) {                        
+                    } else {
+                      if (lastNeighboursMove.right !== undefined) {
+                        if (lastNeighboursMove.right.sampleStart !== undefined) {
                           // check if in view
-                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {   
+                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
                             viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
@@ -674,47 +672,45 @@ angular.module('emuwebApp')
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
-                          if(seg === undefined) {
-						    var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-							if (!insSeg.ret) {
-							    scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
-							} else {
-								HistoryService.addObjToUndoStack({
-								  'type': 'ANNOT',
-								  'action': 'INSERTSEGMENTS',
-								  'name': viewState.getcurClickLevelName(),
-								  'start': viewState.curViewPort.selectS,
-								  'end': viewState.curViewPort.selectE,
-								  'ids': insSeg.ids,
-								  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-								});
-							}
-                          }
-                          else {
-							  if(seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart+seg.sampleDur + 1) === viewState.curViewPort.selectE) {
-								  viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-								  viewState.setcurClickItem(seg.current);
-								  LevelService.setlasteditArea('_' + seg.id);
-								  viewState.setEditing(true);
-								  LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-								  viewState.setEditing(true);
-							  }
-							  else {
-								  var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-								  if (!insSeg.ret) {
-									scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
-								  } else {
-									HistoryService.addObjToUndoStack({
-									  'type': 'ANNOT',
-									  'action': 'INSERTSEGMENTS',
-									  'name': viewState.getcurClickLevelName(),
-									  'start': viewState.curViewPort.selectS,
-									  'end': viewState.curViewPort.selectE,
-									  'ids': insSeg.ids,
-									  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-									});
-								  }
-								}
+                          if (seg === undefined) {
+                            var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                            if (!insSeg.ret) {
+                              scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+                            } else {
+                              HistoryService.addObjToUndoStack({
+                                'type': 'ANNOT',
+                                'action': 'INSERTSEGMENTS',
+                                'name': viewState.getcurClickLevelName(),
+                                'start': viewState.curViewPort.selectS,
+                                'end': viewState.curViewPort.selectE,
+                                'ids': insSeg.ids,
+                                'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+                              });
+                            }
+                          } else {
+                            if (seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart + seg.sampleDur + 1) === viewState.curViewPort.selectE) {
+                              viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+                              viewState.setcurClickItem(seg.current);
+                              LevelService.setlasteditArea('_' + seg.id);
+                              viewState.setEditing(true);
+                              LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                              viewState.setEditing(true);
+                            } else {
+                              var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                              if (!insSeg.ret) {
+                                scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+                              } else {
+                                HistoryService.addObjToUndoStack({
+                                  'type': 'ANNOT',
+                                  'action': 'INSERTSEGMENTS',
+                                  'name': viewState.getcurClickLevelName(),
+                                  'start': viewState.curViewPort.selectS,
+                                  'end': viewState.curViewPort.selectE,
+                                  'ids': insSeg.ids,
+                                  'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+                                });
+                              }
+                            }
                           }
                         } else {
                           var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
@@ -762,79 +758,77 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
                 if (viewState.getPermission('labelAction')) {
                   e.preventDefault();
-				  var seg = viewState.getcurMouseItem();
-				  var cseg = viewState.getcurClickItems();
-				  var isFirst = viewState.getcurMouseisFirst();
-				  var isLast = viewState.getcurMouseisLast();
-				  var levelname = viewState.getcurMouseLevelName();
-				  var type = viewState.getcurMouseLevelType();
+                  var seg = viewState.getcurMouseItem();
+                  var cseg = viewState.getcurClickItems();
+                  var isFirst = viewState.getcurMouseisFirst();
+                  var isLast = viewState.getcurMouseisLast();
+                  var levelname = viewState.getcurMouseLevelName();
+                  var type = viewState.getcurMouseLevelType();
                   if (!e.shiftKey) {
                     if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
                       if (seg !== undefined) {
-                          var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
-                          if (type === "SEGMENT") {
-                            var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
+                        var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
+                        if (type === "SEGMENT") {
+                          var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
+                          HistoryService.updateCurChangeObj({
+                            'type': 'ANNOT',
+                            'action': 'DELETEBOUNDARY',
+                            'name': levelname,
+                            'id': seg.id,
+                            'isFirst': isFirst,
+                            'isLast': isLast,
+                            'deletedSegment': deletedSegment
+                          });
+                          var deletedLinks
+                          if (neighbour.left !== undefined) {
+                            deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
                             HistoryService.updateCurChangeObj({
                               'type': 'ANNOT',
-                              'action': 'DELETEBOUNDARY',
+                              'action': 'DELETELINKBOUNDARY',
                               'name': levelname,
                               'id': seg.id,
-                              'isFirst': isFirst,
-                              'isLast': isLast,
-                              'deletedSegment': deletedSegment
+                              'neighbourId': neighbour.left.id,
+                              'deletedLinks': deletedLinks
                             });
-                            var deletedLinks
-                            if(neighbour.left!==undefined) {
-                                deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
-								HistoryService.updateCurChangeObj({
-									'type': 'ANNOT',
-									'action': 'DELETELINKBOUNDARY',
-									'name': levelname,
-									'id': seg.id,
-									'neighbourId': neighbour.left.id,
-									'deletedLinks': deletedLinks
-								});
-                            }
-                            else {
-                                deletedLinks = LinkService.deleteLinkBoundary(seg.id, -1);
-								HistoryService.updateCurChangeObj({
-									'type': 'ANNOT',
-									'action': 'DELETELINKBOUNDARY',
-									'name': levelname,
-									'id': seg.id,
-									'neighbourId': -1,
-									'deletedLinks': deletedLinks
-								});                                
-                            }
-							HistoryService.addCurChangeObjToUndoStack();
-						    var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
-						    if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
-						        var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
-						        viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
-						    }
-                            viewState.setcurClickItem(deletedSegment.clickSeg);
                           } else {
-                            var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
-                            if(deletedPoint!==false) {
-								HistoryService.updateCurChangeObj({
-								  'type': 'ANNOT',
-								  'action': 'DELETEEVENT',
-								  'name': levelname,
-								  'start': deletedPoint.samplePoint,
-								  'id': deletedPoint.id,
-								  'pointName': deletedPoint.labels[0].value
+                            deletedLinks = LinkService.deleteLinkBoundary(seg.id, -1);
+                            HistoryService.updateCurChangeObj({
+                              'type': 'ANNOT',
+                              'action': 'DELETELINKBOUNDARY',
+                              'name': levelname,
+                              'id': seg.id,
+                              'neighbourId': -1,
+                              'deletedLinks': deletedLinks
+                            });
+                          }
+                          HistoryService.addCurChangeObjToUndoStack();
+                          var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+                          if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+                            var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+                            viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+                          }
+                          viewState.setcurClickItem(deletedSegment.clickSeg);
+                        } else {
+                          var deletedPoint = LevelService.deleteEvent(levelname, seg.id);
+                          if (deletedPoint !== false) {
+                            HistoryService.updateCurChangeObj({
+                              'type': 'ANNOT',
+                              'action': 'DELETEEVENT',
+                              'name': levelname,
+                              'start': deletedPoint.samplePoint,
+                              'id': deletedPoint.id,
+                              'pointName': deletedPoint.labels[0].value
 
-								});
-								HistoryService.addCurChangeObjToUndoStack();
-								var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
-								if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
-									var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
-									viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
-								}
-						    }
-						    else {
-						        viewState.setcurMouseItem(undefined, undefined, undefined, undefined, undefined);
-						    }
+                            });
+                            HistoryService.addCurChangeObjToUndoStack();
+                            var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+                            if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+                              var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+                              viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+                            }
+                          } else {
+                            viewState.setcurMouseItem(undefined, undefined, undefined, undefined, undefined);
+                          }
                         }
                       } else {
                         // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
@@ -854,19 +848,19 @@ angular.module('emuwebApp')
                             'deletedSegment': deletedSegment
                           });
                           var deletedLinks = LinkService.deleteLinkSegment(cseg);
-						  HistoryService.updateCurChangeObj({
-							'type': 'ANNOT',
-							'action': 'DELETELINKSEGMENT',
-							'name': levelname,
-							'segments': cseg,
-							'deletedLinks': deletedLinks
-						  });
-						  HistoryService.addCurChangeObjToUndoStack();
-						  var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
-						  if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
-						    var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
-						    viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
-						  }
+                          HistoryService.updateCurChangeObj({
+                            'type': 'ANNOT',
+                            'action': 'DELETELINKSEGMENT',
+                            'name': levelname,
+                            'segments': cseg,
+                            'deletedLinks': deletedLinks
+                          });
+                          HistoryService.addCurChangeObjToUndoStack();
+                          var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+                          if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
+                            var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
+                            viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
+                          }
                           viewState.setcurClickItem(deletedSegment.clickSeg);
                         } else {
                           scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
