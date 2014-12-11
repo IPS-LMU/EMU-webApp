@@ -20,6 +20,8 @@ angular.module('emuwebApp')
 	scope.selectedItem;
 	scope.offsetX = 25;
 	scope.offsetY = 30;
+	scope.vertOffsetX = 150;
+	scope.vertOffsetY = 25;
 
 
 
@@ -80,12 +82,14 @@ angular.module('emuwebApp')
 	scope.zoom = function () {
 		svg.attr('transform', scope.getOrientatedTransform());
 
-		captionLayer.attr('transform','translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)');
+		captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
+		//captionLayer.attr('transform','translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)');
 
-		captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', function(d) {
+		captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
+		/*function(d) {
 			var revArr = angular.copy(scope.path).reverse();
 			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
-		});
+		});*/
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -144,9 +148,23 @@ angular.module('emuwebApp')
 		}
 	};
 
+	scope.getOrientatedLevelCaptionLayerTransform = function (d) {
+		if (scope.vertical) {
+			return 'translate(0, '+zoomListener.translate()[1]*zoomListener.scale()+')';
+		} else {
+			return 'translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)';
+		}
+	};
+
 	scope.getOrientatedLevelCaptionTransform = function (d) {
 		var revArr = angular.copy(scope.path).reverse();
-		return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
+		if (scope.vertical) {
+			return 'translate(20, '+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+')';//scale(-1,1)rotate(90)';
+			//return 'scale(-1,1)rotate(90)';
+		} else {
+			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
+			//return 'scale(1,1)rotate(0)';
+		}
 	};
 
 
@@ -287,13 +305,15 @@ angular.module('emuwebApp')
 
 	scope.depthToX = function (depth) {
 		var size = (scope.vertical) ? scope.height : scope.width;
-		return scope.offsetX + depth / scope.path.length * size;
+		var offset = (scope.vertical) ? scope.vertOffsetY : scope.offsetX;
+		return offset + depth / scope.path.length * size;
 	};
 
 	scope.posInLevelToY = function (posInLevel) {
 		var size = (scope.vertical) ? scope.width : scope.height;
-		size -= scope.offsetY;
-		return scope.offsetY + posInLevel * size;
+		var offset = (scope.vertical) ? scope.vertOffsetX : scope.offsetY;
+		size -= offset;
+		return offset + posInLevel * size;
 	};
 
 	//
