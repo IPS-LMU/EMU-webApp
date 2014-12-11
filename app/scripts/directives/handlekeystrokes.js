@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope, element) {
@@ -109,7 +109,7 @@ angular.module('emuwebApp')
 
               // escape from open modal dialog
               if (viewState.curState.permittedActions.length === 0 && code === ConfigProviderService.vals.keyMappings.esc) {
-                scope.dials.close();
+                modalService.close();
                 if (viewState.isHierarchyOpen()) {
                   viewState.showHierarchy();
                 }

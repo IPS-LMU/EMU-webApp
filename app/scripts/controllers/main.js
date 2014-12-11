@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 		LevelService, dialogService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService, DataService) {
+		appStateService, DataService, modalService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -595,7 +595,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
-				dialogService.open('views/connectModal.html', 'WsconnectionCtrl').then(function (url) {
+				/*dialogService.open('views/connectModal.html', 'WsconnectionCtrl').then(function (url) {
 					if (url) {
 						Iohandlerservice.wsH.initConnect(url).then(function (message) {
 							if (message.type === 'error') {
@@ -605,7 +605,8 @@ angular.module('emuwebApp')
 							}
 						});
 					}
-				});
+				});*/
+				modalService.open('views/connectModal.html', 'WsconnectionCtrl')
 			} else {
 				console.log('action currently not allowed');
 			}
@@ -687,7 +688,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.aboutBtnClick = function () {
-			dialogService.open('views/about.html', 'ModalCtrl');
+		    modalService.open('views/about.html', 'ModalCtrl');
+			//dialogService.open('views/about.html', 'ModalCtrl');
 		};
 
 		/**
