@@ -286,12 +286,12 @@ angular.module('emuwebApp')
 	};
 
 	scope.depthToX = function (depth) {
-		var size = (scope.vertical) ? height : width;
+		var size = (scope.vertical) ? scope.height : scope.width;
 		return scope.offsetX + depth / scope.path.length * size;
 	};
 
 	scope.posInLevelToY = function (posInLevel) {
-		var size = (scope.vertical) ? width : height;
+		var size = (scope.vertical) ? scope.width : scope.height;
 		size -= scope.offsetY;
 		return scope.offsetY + posInLevel * size;
 	};
@@ -331,8 +331,8 @@ angular.module('emuwebApp')
 	  .style('background-color', ConfigProviderService.vals.colors.levelColor)
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+          .append('g');
+          //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 	// Append a group which holds all overlay captions and which do not react to zooming
 	var captionLayer = svg.append('g').style('z-index', 5);
@@ -382,7 +382,7 @@ angular.module('emuwebApp')
 			.attr('transform', scope.getOrientatedLevelCaptionTransform);
 		
 		oldLevelCaptions = oldLevelCaptions.transition()
-			.duration(duration)
+			.duration(scope.duration)
 			.remove();
 
 		oldLevelCaptions.select('text')
