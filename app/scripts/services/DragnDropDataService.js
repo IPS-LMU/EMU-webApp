@@ -5,7 +5,6 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 		sServObj.convertedBundles = [];
-		sServObj.sessionName = 'File(s)';
 		sServObj.sessionDefault = '';
 
 		///////////////////////////////
@@ -27,7 +26,15 @@ angular.module('emuwebApp')
 
 		sServObj.resetToInitState = function () {
 		    sServObj.convertedBundles = [];
-		    sServObj.sessionName = 'File(s)';
+		    sServObj.sessionDefault = '';
+		};
+
+		sServObj.setDefaultSession = function (name) {
+		    sServObj.sessionDefault = name;
+		};
+		
+		sServObj.getDefaultSession = function () {
+		    return sServObj.sessionDefault;
 		};		
 
 		return sServObj;

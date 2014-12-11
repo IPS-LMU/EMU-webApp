@@ -54,13 +54,28 @@ angular.module('emuwebApp')
 			        name: bundle, 
 			        session: sServObj.sessionName
 			    });
-			    DragnDropDataService.sessionDefault = i;
+			    DragnDropDataService.setDefaultSession(i);
 			}
 			if(type === 'wav') {
                 sServObj.drandropBundles[i].wav = data;
 			}
 			else if(type === 'annotation') {
 			    sServObj.drandropBundles[i].annotation = data;
+			}
+		};
+		
+		/**
+		 * getter sServObj.drandropBundles
+		 */
+		sServObj.getDragnDropData = function (bundle, type) {
+			if(type === 'wav') {
+			    return sServObj.drandropBundles[bundle].wav;
+			}
+			else if(type === 'annotation') {
+			    return sServObj.drandropBundles[bundle].annotation;
+			}
+			else {
+			    return false;
 			}
 		};
 		
@@ -153,22 +168,6 @@ angular.module('emuwebApp')
                 return defer.promise;
             }			
 			return defer.promise;
-		};
-			
-		
-		/**
-		 * getter sServObj.drandropBundles
-		 */
-		sServObj.getDragnDropData = function (bundle, type) {
-			if(type === 'wav') {
-			    return sServObj.drandropBundles[bundle].wav;
-			}
-			else if(type === 'annotation') {
-			    return sServObj.drandropBundles[bundle].annotation;
-			}
-			else {
-			    return false;
-			}
 		};
 
 		/**
