@@ -4,14 +4,6 @@ angular.module('emuwebApp')
 	.controller('ModalCtrl', function ($scope, dialogService, viewState, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
-		$scope.passedInTxt = '';
-		$scope.passedOutTxt = {
-			'var': null,
-		};
-
-		$scope.cancel = function () {
-			dialogService.close();
-		};
 
 		/**
 		 *

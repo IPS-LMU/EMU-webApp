@@ -12,10 +12,11 @@ angular.module('emuwebApp')
         scope.templateUrl = '';
         scope.modal = modalService;
         scope.isOpen = false;
-        scope.controller = 'ModalCtrl';
+        scope.dataIn = '';
 		scope.$watch('modal.isOpen', function(newValue, oldValue) {
 			if(newValue!==undefined) {
 			    scope.templateUrl = modalService.getTemplateUrl();
+			    scope.dataIn = modalService.dataIn;
 				if(newValue) {
 				    element[0].classList.add('emuwebapp-modalDialog-isOpen');
 				}
@@ -24,13 +25,6 @@ angular.module('emuwebApp')
 				}
 			}
 		});
-		scope.closeModal = function() {
-		    modalService.close();
-		};
-		
-		scope.getController = function() {
-		    return modalService.getController();
-		};
       }
     };
   });

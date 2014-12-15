@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('spectSettingsCtrl', function ($scope, dialogService, viewState, DataService, mathHelperService, Soundhandlerservice) {
+	.controller('spectSettingsCtrl', function ($scope, modalService, viewState, DataService, mathHelperService, Soundhandlerservice) {
 
 		$scope.vs = viewState;
 
 		$scope.options = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
+		$scope.error = '';
+		$scope.cssErrorID = 0;
 
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
@@ -42,7 +44,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.getColorOfAnchor = function (anchorNr) {
-
 			var curStyle = {
 				'background-color': 'rgb(' + $scope.modalVals.heatMapColorAnchors[anchorNr][0] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][1] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][2] + ')',
 				'width': '10px',
@@ -58,7 +59,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.calcWindowSizeInSamples = function () {
-
 			$scope.modalVals._windowSizeInSamples = Soundhandlerservice.wavJSO.SampleRate * $scope.modalVals.windowSizeInSecs;
 		};
 
@@ -71,7 +71,6 @@ angular.module('emuwebApp')
 			if (fftN < 512) {
 				fftN = 512;
 			}
-			console.log(fftN);
 			$scope.modalVals._fftN = fftN;
 		};
 
@@ -89,43 +88,72 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.cancel = function () {
-			dialogService.close(false);
+		$scope.reset = function () {
+		    $scope.error = '';
+		    $scope.cssErrorID = 0;
+			$scope.modalVals = {
+				'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
+				'rangeTo': $scope.vs.spectroSettings.rangeTo,
+				'dynamicRange': $scope.vs.spectroSettings.dynamicRange,
+				'windowSizeInSecs': $scope.vs.spectroSettings.windowSizeInSecs,
+				'window': $scope.vs.spectroSettings.window,
+				'drawHeatMapColors': $scope.vs.spectroSettings.drawHeatMapColors,
+				'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
+				'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors,
+				'_fftN': 512,
+				'_windowSizeInSamples': Soundhandlerservice.wavJSO.SampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+			};		    
+			modalService.close();
 		};
 
 		/**
 		 *
 		 */
-		$scope.error = function (errorMsg) {
-			dialogService.close();
-			dialogService.open('views/error.html', 'ModalCtrl', 'Sorry: ' + errorMsg);
+		$scope.cssError = function (id) {
+		    if(id===$scope.cssErrorID) {
+		        return {'background': '#f00'}
+		    }
 		};
+		
+		$scope.isFloat = function (mixed_var) {
+		    return +mixed_var === mixed_var && (!isFinite(mixed_var) || !! (mixed_var % 1));
+		}
 
 		/**
 		 *
 		 */
 		$scope.saveSpectroSettings = function () {
-			if ($scope.modalVals.dynamicRange % 1 === 0) {
-				if ($scope.modalVals.rangeFrom % 1 === 0) {
-					if ($scope.modalVals.rangeTo % 1 === 0) {
-						if ($scope.modalVals.rangeFrom >= 0) {
-							if ($scope.modalVals.rangeTo <= DataService.data.sampleRate / 2) {
-								viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
-								$scope.cancel();
+		    if($scope.isFloat($scope.modalVals.windowSizeInSecs)) {
+				if ($scope.modalVals.dynamicRange % 1 === 0) {
+					if ($scope.modalVals.rangeFrom % 1 === 0) {
+						if ($scope.modalVals.rangeTo % 1 === 0) {
+							if ($scope.modalVals.rangeFrom >= 0) {
+								if ($scope.modalVals.rangeTo <= DataService.data.sampleRate / 2) {
+									viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+									$scope.reset();
+								} else {
+									$scope.cssErrorID = 2;
+									$scope.modalVals.rangeTo = '"' + $scope.modalVals.rangeTo + '" is bigger than ' + DataService.data.sampleRate / 2;
+								}
 							} else {
-								$scope.error('View Range (Hz) upper boundary is a value bigger than ' + DataService.data.sampleRate / 2);
+								$scope.cssErrorID = 1;
+								$scope.modalVals.rangeFrom = '"' + $scope.modalVals.rangeFrom + '" is below zero.';
 							}
 						} else {
-							$scope.error('View Range (Hz) lower boundary is a value below zero');
+							$scope.cssErrorID = 2;
+							$scope.modalVals.rangeTo = '"' + $scope.modalVals.rangeTo + '" is not an Integer.';
 						}
 					} else {
-						$scope.error('View Range (Hz) upper boundary has to be an Integer value.');
+						$scope.cssErrorID = 1;
+						$scope.modalVals.rangeFrom = '"' + $scope.modalVals.rangeFrom + '" is not an Integer.';
 					}
 				} else {
-					$scope.error('View Range (Hz) lower boundary has to be an Integer value.');
+					$scope.cssErrorID = 4;
+					$scope.modalVals.dynamicRange = '"' + $scope.modalVals.dynamicRange + '" is not an Integer.';
 				}
 			} else {
-				$scope.error('Dynamic Range has to be an Integer value.');
+				$scope.cssErrorID = 3;
+				$scope.modalVals.windowSizeInSecs = '"' + $scope.modalVals.windowSizeInSecs + '" is not an Float.';
 			}
 		};
 

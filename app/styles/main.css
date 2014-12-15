@@ -173,9 +173,10 @@ ul {
 
 .emuwebapp-aboutDiv {
     text-align:justify;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 90%;
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+    text-align: left;
 }
 
 .emuwebapp-aboutHr {

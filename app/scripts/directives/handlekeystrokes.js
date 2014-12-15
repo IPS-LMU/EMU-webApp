@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, dialogService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope, element) {
@@ -76,7 +76,7 @@ angular.module('emuwebApp')
                 e.stopPropagation();
                 LevelService.deleteEditArea();
                 viewState.setEditing(false);
-                scope.dials.open('views/error.html', 'ModalCtrl', 'Editing Error: Sorry, characters allowed on this Level are "' + JSON.stringify(definitions) + '"');
+                modalService.open('views/error.html', 'Editing Error: Sorry, characters allowed on this Level are "' + JSON.stringify(definitions) + '"');
               }
               // save text on enter if saving is allowed
               if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
@@ -121,9 +121,9 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
                   if (!viewState.isHierarchyOpen()) {
-                    dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+                    modalService.open('views/showHierarchyModal.html');
                   } else {
-                    dialogService.close();
+                    modalService.close();
                   }
                   viewState.showHierarchy();
                 }
@@ -383,10 +383,10 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     if (viewState.getcurClickLevelName() === undefined) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
+                      modalService.open('views/error.html', 'Expand Segments Error: Please select a Level first');
                     } else {
                       if (viewState.getselected().length === 0) {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                        modalService.open('views/error.html', 'Expand Segments Error: Please select one or more Segments first');
                       } else {
                         var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
@@ -413,17 +413,17 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     if (viewState.getcurClickLevelName() === undefined) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
+                      modalService.open('views/error.html', 'Expand Segments Error: Please select a Level first');
                     } else {
                       if (viewState.getselected().length === 0) {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                        modalService.open('views/error.html', 'Expand Segments Error: Please select one or more Segments first');
                       } else {
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                           var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                         } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
                           var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                         } else {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                          modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(false, viewState.getcurClickItems(), viewState.getcurClickLevelName(), changeTime);
                         HistoryService.addObjToUndoStack({
@@ -446,17 +446,17 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     if (viewState.getcurClickLevelName() === undefined) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
+                      modalService.open('views/error.html', 'Expand Segments Error: Please select a Level first');
                     } else {
                       if (viewState.getselected().length === 0) {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                        modalService.open('views/error.html', 'Expand Segments Error: Please select one or more Segments first');
                       } else {
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                           var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                         } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
                           var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                         } else {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                          modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(true, viewState.getcurClickItems(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
@@ -481,17 +481,17 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('labelAction')) {
                   if (ConfigProviderService.vals.restrictions.editItemSize) {
                     if (viewState.getcurClickLevelName() === undefined) {
-                      scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select a Level first');
+                      modalService.open('views/error.html', 'Expand Segments Error: Please select a Level first');
                     } else {
                       if (viewState.getselected().length === 0) {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segments Error: Please select one or more Segments first');
+                        modalService.open('views/error.html', 'Expand Segments Error: Please select one or more Segments first');
                       } else {
                         if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
                           var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
                         } else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
                           var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
                         } else {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
+                          modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
                         }
                         LevelService.expandSegment(false, viewState.getcurClickItems(), viewState.getcurClickLevelName(), -changeTime);
                         HistoryService.addObjToUndoStack({
@@ -534,7 +534,7 @@ angular.module('emuwebApp')
               if (code === ConfigProviderService.vals.keyMappings.selectItemsInSelection) {
                 if (viewState.getPermission('labelAction')) {
                   if (viewState.getcurClickLevelName() === undefined) {
-                    scope.dials.open('views/error.html', 'ModalCtrl', 'Selection Error : Please select a Level first');
+                    modalService.open('views/error.html', 'Selection Error : Please select a Level first');
                   } else {
                     viewState.selectItemsInSelection(DataService.data.levels);
                   }
@@ -664,18 +664,18 @@ angular.module('emuwebApp')
                           scope.cursorInTextField();
                         }
                       } else {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Modify Error: Please select a single Segment.');
+                        modalService.open('views/error.html', 'Modify Error: Please select a single Segment.');
                       }
                     } else {
                       if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
-                        scope.dials.open('views/error.html', 'ModalCtrl', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
+                        modalService.open('views/error.html', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                       } else {
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
                           var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
                           if (seg === undefined) {
                             var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                             if (!insSeg.ret) {
-                              scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+                              modalService.open('views/error.html', 'Error : You are not allowed to insert a Segment here.');
                             } else {
                               HistoryService.addObjToUndoStack({
                                 'type': 'ANNOT',
@@ -698,7 +698,7 @@ angular.module('emuwebApp')
                             } else {
                               var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                               if (!insSeg.ret) {
-                                scope.dials.open('views/error.html', 'ModalCtrl', 'Error : You are not allowed to insert a Segment here.');
+                                modalService.open('views/error.html', 'Error : You are not allowed to insert a Segment here.');
                               } else {
                                 HistoryService.addObjToUndoStack({
                                   'type': 'ANNOT',
@@ -717,7 +717,7 @@ angular.module('emuwebApp')
                           if (typeof levelDef.anagestConfig === 'undefined') {
                             var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                             if (insPoint.alreadyExists) {
-                              scope.dials.open('views/error.html', 'ModalCtrl', 'Error: You are not allowed to insert a Point here.');
+                              modalService.open('views/error.html', 'Error: You are not allowed to insert a Point here.');
                             } else {
                               HistoryService.addObjToUndoStack({
                                 'type': 'ANNOT',
@@ -830,9 +830,7 @@ angular.module('emuwebApp')
                             viewState.setcurMouseItem(undefined, undefined, undefined, undefined, undefined);
                           }
                         }
-                      } else {
-                        // scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: Please select a Boundary first.');
-                      }
+                      } 
                     }
                   } else {
                     if (ConfigProviderService.vals.restrictions.deleteItem) {
@@ -863,7 +861,7 @@ angular.module('emuwebApp')
                           }
                           viewState.setcurClickItem(deletedSegment.clickSeg);
                         } else {
-                          scope.dials.open('views/error.html', 'ModalCtrl', 'Delete Error: You can not delete Segments on Point Levels.');
+                          modalService.open('views/error.html', 'Delete Error: You can not delete Segments on Point Levels.');
                         }
                       }
                     }
