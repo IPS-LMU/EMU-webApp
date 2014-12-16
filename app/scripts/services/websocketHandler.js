@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, modalService) {
 		// shared service object
 		var sServObj = {};
 
@@ -40,7 +40,7 @@ angular.module('emuwebApp')
 			console.log(message);
 			if (!message.wasClean && connected) {
 				// show no clean disconnect error
-				dialogService.open('views/error.html', 'ModalCtrl', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
+				modalService.open('views/error.html', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
 					$rootScope.$broadcast('connectionDisrupted');
 				});
 
@@ -97,7 +97,7 @@ angular.module('emuwebApp')
 					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
 				} else {
 					// show protocol error and disconnect from server
-					dialogService.open('views/error.html', 'ModalCtrl', 'Communication error with server! Error message is: ' + messageObj.status.message);
+					modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message);
 				}
 
 				delete callbacks[messageObj.callbackID];
@@ -105,7 +105,7 @@ angular.module('emuwebApp')
 				if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
 				} else {
-					dialogService.open('views/error.html', 'ModalCtrl', 'What just happened? You should not be here...');
+					modalService.open('views/error.html', 'What just happened? You should not be here...');
 				}
 			}
 		}

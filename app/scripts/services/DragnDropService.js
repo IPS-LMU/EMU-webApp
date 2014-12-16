@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropService', function DragnDropService($q, $rootScope, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
+	.service('DragnDropService', function DragnDropService($q, $rootScope, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
@@ -234,12 +234,12 @@ angular.module('emuwebApp')
 							viewState.somethingInProgress = false;
 							viewState.somethingInProgressTxt = 'Done!';
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 								appStateService.resetToInitState();
 							});
 						}
 				}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess).then(function () {
+						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
 							appStateService.resetToInitState();
 						});
 					});

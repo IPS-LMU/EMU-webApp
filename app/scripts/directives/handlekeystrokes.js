@@ -125,10 +125,12 @@ angular.module('emuwebApp')
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
                   if (!viewState.isHierarchyOpen()) {
                     modalService.open('views/showHierarchyModal.html');
+                    viewState.showHierarchy();
                   } else {
                     modalService.close();
+                    viewState.showHierarchy();
                   }
-                  viewState.showHierarchy();
+                  
                 }
               }
 

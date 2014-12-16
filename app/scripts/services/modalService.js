@@ -47,8 +47,6 @@ angular.module('emuwebApp')
 			viewState.setState('modalShowing');
 		};
 		
-		
-		
 		/**
 		 *
 		 */
@@ -57,6 +55,16 @@ angular.module('emuwebApp')
 			viewState.setState(viewState.prevState);
 			sServObj.isOpen = false;
 			sServObj.defer.resolve(false);
+		};
+		
+		/**
+		 *
+		 */
+		sServObj.select = function (idx) {
+			viewState.setEditing(false);
+			viewState.setState(viewState.prevState);
+			sServObj.isOpen = false;
+			sServObj.defer.resolve(idx);
 		};
 		
 		/**

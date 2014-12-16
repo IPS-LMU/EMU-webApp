@@ -9,12 +9,12 @@ describe('Controller: WsconnectionCtrl', function () {
   
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, dialogService, viewState) {
+     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, modalService, viewState) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.modal = modalService;
        scope.vs = viewState;
        WsconnectionCtrl = $controller('WsconnectionCtrl', {
          $scope: scope
@@ -26,15 +26,15 @@ describe('Controller: WsconnectionCtrl', function () {
    });
 
    it('should cancel dialog', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalledWith(false);
+     expect(scope.modal.close).toHaveBeenCalledWith(false);
    });  
 
    it('should tryConnection', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.tryConnection();
-     expect(scope.dialog.close).toHaveBeenCalledWith(scope.cps.vals.main.serverUrl);
+     expect(scope.modal.close).toHaveBeenCalledWith(scope.cps.vals.main.serverUrl);
    });  
 
    it('should set cursorOutOfTextField', function () {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
+	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, modalService) {
 
 		$scope.loginData = {
 			'username': '',
@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 
 			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then(function (res) {
 				if (res === 'LOGGEDON') {
-					dialogService.close(true);
+					modalService.close();
 				} else {
 					$scope.loginData.errorMsg = 'ERROR: ' + res;
 				}
@@ -45,6 +45,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cancel = function () {
-			dialogService.close(false);
+			modalService.close();
 		};
 	});

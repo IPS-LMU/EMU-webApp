@@ -9,12 +9,12 @@ describe('Controller: spectSettingsCtrl', function () {
 
 
   //Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, DataService, ConfigProviderService, dialogService, viewState, LevelService) {
+  beforeEach(inject(function ($controller, $rootScope, DataService, ConfigProviderService, modalService, viewState, LevelService) {
     scope = $rootScope.$new();
     scope.cps = ConfigProviderService;
     scope.cps.setVals(defaultEmuwebappConfig);
     scope.cps.curDbConfig = aeDbConfig;
-    scope.dialog = dialogService;
+    scope.modal = modalService;
     scope.vs = viewState;
     scope.lvl = LevelService;
     scope.data = DataService;
@@ -38,8 +38,8 @@ describe('Controller: spectSettingsCtrl', function () {
 
   it('should saveSpectroSettings correctly', function () {
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'setspectroSettings');
     scope.saveSpectroSettings();
     expect(scope.vs.setspectroSettings).toHaveBeenCalledWith(scope.modalVals.windowSizeInSecs, scope.modalVals.rangeFrom, scope.modalVals.rangeTo, scope.modalVals.dynamicRange, scope.selWindowInfo.name, scope.modalVals.drawHeatMapColors, scope.modalVals.preEmphasisFilterFactor, scope.modalVals.heatMapColorAnchors);
@@ -48,8 +48,8 @@ describe('Controller: spectSettingsCtrl', function () {
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.dynamicRange = 'string';
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
     expect(scope.error).toHaveBeenCalledWith('Dynamic Range has to be an Integer value.');
@@ -58,8 +58,8 @@ describe('Controller: spectSettingsCtrl', function () {
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.rangeFrom = 'string';
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary has to be an Integer value.');
@@ -68,8 +68,8 @@ describe('Controller: spectSettingsCtrl', function () {
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.rangeTo = 'string';
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary has to be an Integer value.');
@@ -78,8 +78,8 @@ describe('Controller: spectSettingsCtrl', function () {
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.rangeFrom = -100;
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary is a value below zero');
@@ -88,8 +88,8 @@ describe('Controller: spectSettingsCtrl', function () {
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.rangeTo = 2000;
     scope.data.data.sampleRate = 1000;
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
     expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary is a value bigger than ' + scope.data.data.sampleRate / 2);
@@ -114,17 +114,17 @@ describe('Controller: spectSettingsCtrl', function () {
   });
 
   it('should show error', function () {
-    spyOn(scope.dialog, 'close');
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'close');
+    spyOn(scope.modal, 'open');
     scope.error('msg');
-    expect(scope.dialog.close).toHaveBeenCalled();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Sorry: msg');
+    expect(scope.modal.close).toHaveBeenCalled();
+    expect(scope.modal.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Sorry: msg');
   });
 
   it('should cancel dialog', function () {
-    spyOn(scope.dialog, 'close');
+    spyOn(scope.modal, 'close');
     scope.cancel();
-    expect(scope.dialog.close).toHaveBeenCalledWith(false);
+    expect(scope.modal.close).toHaveBeenCalledWith(false);
   });
 
   it('should set cursorOutOfTextField', function () {

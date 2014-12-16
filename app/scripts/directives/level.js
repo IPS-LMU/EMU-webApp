@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService, LevelService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
-				scope.dials = dialogService;
+				scope.modal = modalService;
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
 

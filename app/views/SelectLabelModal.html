@@ -1,17 +1,20 @@
-<div class="modal-header">
-	<h3>Please select a label to link to</h3>
-</div>
-<div class="modal-body">
-	<b>Please select one of the following options:</b>
-	<ul class="emuwebapp-modalUl">
-		<li ng-repeat="(key, curOpt) in passedInOpts">
-			<div class="emuwebapp-card" ng-click="select($index)">
-				{{curOpt}}
-			</div>
-		</li>
-	</ul>
-</div>
-<div class="modal-footer">
-	<br />&nbsp;<br />
-	<!-- <button ng-click="select();" id="modal-confirm" class="emuwebapp-mini-btn-dialog">Select</button> -->
+<div class="emuwebapp-modal-wrap" ng-controller="ModalCtrl">
+    <div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+        <h3 id="modalHeading">
+            Select label to link to
+        </h3>
+	</div>
+	<div class="emuwebapp-modal-body">
+		<b>Please select one of the following options:</b>
+		<ul class="emuwebapp-modalUl">
+			<li ng-repeat="(key, curOpt) in dataIn">
+				<div class="emuwebapp-card" ng-click="modal.select($index)">
+					{{curOpt}}
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="emuwebapp-modal-footer">
+	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	</div>
 </div>

@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-.directive('myDropZoneInput', function ($animate, browserDetector, dialogService, appStateService) {
+.directive('myDropZoneInput', function ($animate, browserDetector, appStateService) {
 	return {
 		templateUrl: 'views/myDropZoneInput.html',
 		restrict: 'E',
