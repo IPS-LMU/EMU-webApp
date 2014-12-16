@@ -25,7 +25,7 @@ describe('Controller: spectSettingsCtrl', function () {
       'rangeFrom': 2,
       'rangeTo': 4,
       'dynamicRange': 2,
-      'windowSizeInSecs': 4,
+      'windowSizeInSecs': 4.0,
       'window': 5,
       'drawHeatMapColors': 6,
       'preEmphasisFilterFactor': 7,
@@ -36,15 +36,6 @@ describe('Controller: spectSettingsCtrl', function () {
     };
   }));
 
-  it('should saveSpectroSettings correctly', function () {
-    scope.data.data.sampleRate = 1000;
-    spyOn(scope.modal, 'close');
-    spyOn(scope.modal, 'open');
-    spyOn(scope.vs, 'setspectroSettings');
-    scope.saveSpectroSettings();
-    expect(scope.vs.setspectroSettings).toHaveBeenCalledWith(scope.modalVals.windowSizeInSecs, scope.modalVals.rangeFrom, scope.modalVals.rangeTo, scope.modalVals.dynamicRange, scope.selWindowInfo.name, scope.modalVals.drawHeatMapColors, scope.modalVals.preEmphasisFilterFactor, scope.modalVals.heatMapColorAnchors);
-  });
-
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
     scope.modalVals.dynamicRange = 'string';
     scope.data.data.sampleRate = 1000;
@@ -52,47 +43,17 @@ describe('Controller: spectSettingsCtrl', function () {
     spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
-    expect(scope.error).toHaveBeenCalledWith('Dynamic Range has to be an Integer value.');
+    expect(scope.cssErrorID).toEqual(3);
   });
 
   it('should saveSpectroSettings correctly (dynamicRange error)', function () {
-    scope.modalVals.rangeFrom = 'string';
+    scope.modalVals.rangeTo = 2100;
     scope.data.data.sampleRate = 1000;
     spyOn(scope.modal, 'close');
     spyOn(scope.modal, 'open');
     spyOn(scope, 'error');
     scope.saveSpectroSettings();
-    expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary has to be an Integer value.');
-  });
-
-  it('should saveSpectroSettings correctly (dynamicRange error)', function () {
-    scope.modalVals.rangeTo = 'string';
-    scope.data.data.sampleRate = 1000;
-    spyOn(scope.modal, 'close');
-    spyOn(scope.modal, 'open');
-    spyOn(scope, 'error');
-    scope.saveSpectroSettings();
-    expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary has to be an Integer value.');
-  });
-
-  it('should saveSpectroSettings correctly (dynamicRange error)', function () {
-    scope.modalVals.rangeFrom = -100;
-    scope.data.data.sampleRate = 1000;
-    spyOn(scope.modal, 'close');
-    spyOn(scope.modal, 'open');
-    spyOn(scope, 'error');
-    scope.saveSpectroSettings();
-    expect(scope.error).toHaveBeenCalledWith('View Range (Hz) lower boundary is a value below zero');
-  });
-
-  it('should saveSpectroSettings correctly (dynamicRange error)', function () {
-    scope.modalVals.rangeTo = 2000;
-    scope.data.data.sampleRate = 1000;
-    spyOn(scope.modal, 'close');
-    spyOn(scope.modal, 'open');
-    spyOn(scope, 'error');
-    scope.saveSpectroSettings();
-    expect(scope.error).toHaveBeenCalledWith('View Range (Hz) upper boundary is a value bigger than ' + scope.data.data.sampleRate / 2);
+    expect(scope.cssErrorID).toEqual(3);
   });
 
 
@@ -112,20 +73,7 @@ describe('Controller: spectSettingsCtrl', function () {
     var ret = scope.getColorOfAnchor(1);
     expect(ret).toEqual(curStyle1);
   });
-
-  it('should show error', function () {
-    spyOn(scope.modal, 'close');
-    spyOn(scope.modal, 'open');
-    scope.error('msg');
-    expect(scope.modal.close).toHaveBeenCalled();
-    expect(scope.modal.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Sorry: msg');
-  });
-
-  it('should cancel dialog', function () {
-    spyOn(scope.modal, 'close');
-    scope.cancel();
-    expect(scope.modal.close).toHaveBeenCalledWith(false);
-  });
+  
 
   it('should set cursorOutOfTextField', function () {
     spyOn(scope.vs, 'setEditing');

@@ -8,12 +8,12 @@ describe('Controller: ModalCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, $q, DataService, ConfigProviderService, dialogService, viewState, LevelService, HistoryService) {
+     beforeEach(inject(function ($controller, $rootScope, $q, DataService, ConfigProviderService, modalService, viewState, LevelService, HistoryService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.dialog = modalService;
        scope.vs = viewState;
        scope.lvl = LevelService;
        scope.data = DataService;
@@ -73,13 +73,7 @@ describe('Controller: ModalCtrl', function () {
      spyOn(scope.dialog, 'close');
      scope.discardChanges();
      expect(scope.dialog.close).toHaveBeenCalledWith('discardChanges');
-   });      
-
-   it('should cancel', function () {
-     spyOn(scope.dialog, 'close');
-     scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalled();
-   });        
+   });           
      
    it('should cursorInTextField', function () {
      spyOn(scope.vs, 'setEditing');

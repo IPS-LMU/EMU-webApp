@@ -8,7 +8,7 @@
 		<b>Please select one of the following options:</b>
 		<ul class="emuwebapp-modalUl">
 			<li ng-repeat="(key, curOpt) in dataIn">
-				<div class="emuwebapp-card" ng-click="modal.select($index)">
+				<div class="emuwebapp-card" ng-click="modal.dataOut = $index; modal.confirmContent()">
 					{{curOpt}}
 				</div>
 			</li>
