@@ -1,17 +1,18 @@
- <div class="modal-header">
-  <h3>Delete Level</h3>
-</div>
-<div class="modal-body">
-
- <div>
-   <p> Really <i>delete</i> level "{{passedInTxt}}" ?</p>
-</div>
-
-</div>
-
-<div class="modal-footer">
-   <button ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
-   <button ng-click="deleteLevel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Delete</button>
+<div class="emuwebapp-modal-wrap" ng-controller="ModalCtrl">
+    <div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+        <h3 id="modalHeading">
+            Delete Level
+        </h3>
+	</div>
+	<div class="emuwebapp-modal-body">
+	    <div>
+	        <p> Really <i>delete</i> level "{{dataIn}}" ?</p>
+	    </div>
+	</div>
+	<div class="emuwebapp-modal-footer">
+	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	  <button ng-click="deleteLevel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Delete</button>
+	</div>
 </div>
 
 

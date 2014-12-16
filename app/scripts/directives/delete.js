@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('delete', function () {
+  .directive('delete', function (modalService) {
     return {
       restrict: 'A',
       link: function (scope, element, attr) {
         var name = scope.level.name;
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(name, attr.delete);
-          scope.dials.open('views/deleteLevel.html', 'ModalCtrl', name);
+          modalService.open('views/deleteLevel.html',  name);
         });
 
       }

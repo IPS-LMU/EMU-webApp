@@ -545,7 +545,7 @@ angular.module('emuwebApp')
 		$scope.renameSelLevelBtnClick = function () {
 			if (viewState.getPermission('renameSelLevelBtnClick')) {
 				if (viewState.getcurClickLevelName() !== undefined) {
-					mofalService.open('views/renameLevel.html', viewState.getcurClickLevelName());
+					modalService.open('views/renameLevel.html', viewState.getcurClickLevelName());
 				} else {
 					modalService.open('views/error.html', 'Rename Error : Please choose a Level first !');
 				}
@@ -558,7 +558,7 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-					modalService.openExport('views/export.html', 'ExportCtrl', parseMess, loadedMetaDataService.getCurBndl().name + '.TextGrid');
+					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
 			} 
 		};
@@ -568,7 +568,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadAnnotationBtnClick = function () {
 			if (viewState.getPermission('downloadAnnotationBtnClick')) {
-				modalService.openExport('views/export.html', 'ExportCtrl', angular.toJson(DataService.getData(), true), loadedMetaDataService.getCurBndl().name + '_annot.json');
+				modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '_annot.json', angular.toJson(DataService.getData(), true));
 			}
 		};
 

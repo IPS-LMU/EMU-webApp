@@ -244,7 +244,7 @@ angular.module('emuwebApp')
 								}
 
 								//draw helper lines
-								if (scope.open && curLabVal.length !== 0) { // only draw if label is not empty
+								if (scope.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
 									var labelCenter = posS + (posE - posS) / 2;
 
 									var hlY = canvas[0].height / 4;

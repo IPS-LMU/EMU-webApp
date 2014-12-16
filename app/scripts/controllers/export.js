@@ -1,18 +1,9 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, HistoryService) {
+	.controller('ExportCtrl', function ($scope, modalService, browserDetector, viewState, HistoryService) {
 		
-		$scope.exportData = exportData;
-		$scope.exportName = exportName;
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
-
-		/**
-		 *
-		 */
-		$scope.cancel = function () {
-			dialogService.close();
-		};
+		$scope.firefox = browserDetector.isBrowser.Firefox();
 		
 		/**
 		 *
@@ -20,7 +11,7 @@ angular.module('emuwebApp')
 		$scope.getBlob = function(){
 		    var blob;
 		    try {
-		        blob = new Blob([$scope.exportData], {type: 'text/plain'});
+		        blob = new Blob([modalService.dataExport], {type: 'text/plain'});
 		    } catch (e) { // Backwards-compatibility
 		        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 		        blob = new BlobBuilder();
@@ -63,8 +54,8 @@ angular.module('emuwebApp')
 		    } else {
 		        objURL = URL.createObjectURL($scope.getBlob());
 		    }		
-		    $scope.SaveToDisk(objURL, $scope.exportName);
-		    dialogService.close();
+		    $scope.SaveToDisk(objURL, modalService.dataIn);
+		    modalService.close();
 		};
 		
 		/**

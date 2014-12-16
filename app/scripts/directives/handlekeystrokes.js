@@ -82,7 +82,10 @@ angular.module('emuwebApp')
               if (viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
                 var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
                 var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
-                var oldValue = editingElement.labels[attrIndex].value;
+                var oldValue = '';
+                if(editingElement.labels[attrIndex] !== undefined ) {
+                    oldValue = editingElement.labels[attrIndex].value;
+                }
                 LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), domElement.val());
                 HistoryService.addObjToUndoStack({
                   'type': 'ANNOT',

@@ -18,21 +18,25 @@ angular.module('emuwebApp')
 		sServObj.defer = undefined; 
 		sServObj.dataOut = undefined; 
 		sServObj.dataIn = undefined; 
+		sServObj.dataExport = undefined; 
 		
 		/**
 		 *
 		 */
-		sServObj.open = function (template, param) {
-		    if(param!==undefined) {
-		        sServObj.dataIn = param;
+		sServObj.open = function (template, param1, param2) {
+		    if(param1!==undefined) {
+		        sServObj.dataIn = param1;
+		    }
+		    if(param2!==undefined) {
+		        sServObj.dataExport = param2;
 		    }
 		    sServObj.defer = $q.defer(); 
     		sServObj.templateUrl = template;
 			viewState.setState('modalShowing');
-			
 			sServObj.isOpen = true;
 			return sServObj.defer.promise;
 		};
+		
 		
 		/**
 		 *
