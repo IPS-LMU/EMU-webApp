@@ -25,7 +25,7 @@ describe('Controller: MainCtrl', function () {
     ConfigProviderService,
     viewState,
     Soundhandlerservice,
-    dialogService,
+    modalService,
     HistoryService,
     Iohandlerservice,
     Validationservice,
@@ -43,7 +43,7 @@ describe('Controller: MainCtrl', function () {
     scope.vs = viewState;
     scope.cps = ConfigProviderService;
     scope.shs = Soundhandlerservice;
-    scope.dialog = dialogService;
+    scope.modal = modalService;
     scope.io = Iohandlerservice;
     scope.valid = Validationservice;
     scope.shs.wavJSO.Data = new Array(testSizeAll);
@@ -135,31 +135,31 @@ describe('Controller: MainCtrl', function () {
 
   it('should clear', inject(function ($q) {
     var txtDeferred = $q.defer(); 
-    spyOn(scope.dialog, 'open').and.returnValue(txtDeferred.promise);
+    spyOn(scope.modal, 'open').and.returnValue(txtDeferred.promise);
     scope.clearBtnClick();
     txtDeferred.resolve(true);
     scope.$digest();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.');
   }));
 
   it('should clear with unsafed changes', function () {
-    spyOn(scope.dialog, 'open').and.returnValue(deferred.promise);
+    spyOn(scope.modal, 'open').and.returnValue(deferred.promise);
     scope.cps.vals.main.comMode = 'embedded';
     scope.history.movesAwayFromLastSave = 1;
     scope.clearBtnClick();
-    expect(scope.dialog.open).toHaveBeenCalledWith( 'views/confirmModal.html', 'ConfirmmodalCtrl', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.');
+    expect(scope.modal.open).toHaveBeenCalledWith( 'views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.');
   });
 
   it('should showHierarchy', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     scope.showHierarchyBtnClick();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/showHierarchyModal.html');
   });
 
   it('should showAbout', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     scope.aboutBtnClick();
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/about.html', 'ModalCtrl');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/about.html');
   }); 
 
   it('should openDemoDB ae', inject(function ($q) {
@@ -195,11 +195,11 @@ describe('Controller: MainCtrl', function () {
 
   it('should downloadAnnotationBtnClick', inject(function ($q) {
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    spyOn(scope.dialog, 'openExport');
+    spyOn(scope.modal, 'open');
     scope.lmds.setCurBndl({name: 'test'});
     scope.downloadAnnotationBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadAnnotationBtnClick');
-    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', '{}', 'test_annot.json' );
+    expect(scope.modal.open).toHaveBeenCalledWith('views/export.html', 'test_annot.json',  '{}');
   }));
 
   it('should downloadTextGridBtnClick', inject(function ($q) {
@@ -207,14 +207,14 @@ describe('Controller: MainCtrl', function () {
     txtDeferred.resolve('test1');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.txtgrid, 'asyncToTextGrid').and.returnValue(txtDeferred.promise);
-    spyOn(scope.dialog, 'openExport');
+    spyOn(scope.modal, 'open');
     scope.lmds.setCurBndl({name: 'test2'});
     scope.downloadTextGridBtnClick();
     txtDeferred.resolve();
     scope.$digest();
     expect(scope.txtgrid.asyncToTextGrid).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadTextGridBtnClick');
-    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test1', 'test2.TextGrid' );
+    expect(scope.modal.open).toHaveBeenCalledWith('views/export.html', 'test2.TextGrid' , 'test1');
   }));
 
   it('should not openDemoDB ae (no permission)', inject(function ($q) {
@@ -231,11 +231,11 @@ describe('Controller: MainCtrl', function () {
       type: 'error'
     });
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    spyOn(scope.dialog, 'open').and.returnValue(conDeferred.promise);
+    spyOn(scope.modal, 'open').and.returnValue(conDeferred.promise);
     spyOn(scope.io.wsH, 'initConnect').and.returnValue(ioDeferred.promise);
     scope.connectBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('connectBtnClick');
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/connectModal.html', 'WsconnectionCtrl');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/connectModal.html');
     conDeferred.resolve();
     scope.$digest();
     expect(scope.io.wsH.initConnect).toHaveBeenCalledWith('http://test:1234');
@@ -256,11 +256,11 @@ describe('Controller: MainCtrl', function () {
     });
     spyOn(scope, 'handleConnectedToWSserver');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    spyOn(scope.dialog, 'open').and.returnValue(conDeferred.promise);
+    spyOn(scope.modal, 'open').and.returnValue(conDeferred.promise);
     spyOn(scope.io.wsH, 'initConnect').and.returnValue(ioDeferred.promise);
     scope.connectBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('connectBtnClick');
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/connectModal.html', 'WsconnectionCtrl');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/connectModal.html');
     conDeferred.resolve();
     scope.$digest();
     expect(scope.handleConnectedToWSserver).toHaveBeenCalled();
@@ -268,19 +268,19 @@ describe('Controller: MainCtrl', function () {
   }));
 
   it('should open spectro Settings', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     scope.spectSettingsBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('spectSettingsChange');
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/spectSettings.html', 'spectSettingsCtrl', '');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/spectSettings.html');
   });
 
   it('should not open spectro Settings (not allowed)', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.spectSettingsBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('spectSettingsChange');
-    expect(scope.dialog.open).not.toHaveBeenCalledWith();
+    expect(scope.modal.open).not.toHaveBeenCalledWith();
   });
 
   it('should open download Textgrid', inject(function ($q) {
@@ -290,48 +290,48 @@ describe('Controller: MainCtrl', function () {
       data: 'test123'
     });
     spyOn(scope.txtgrid, 'asyncToTextGrid').and.returnValue(txtgridDeferred.promise);
-    spyOn(scope.dialog, 'openExport');
+    spyOn(scope.modal, 'openExport');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     scope.downloadTextGridBtnClick();
     txtgridDeferred.resolve();
     scope.$digest();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadTextGridBtnClick');
-    expect(scope.dialog.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test123', 'test.TextGrid');*/
+    expect(scope.modal.openExport).toHaveBeenCalledWith('views/export.html', 'ExportCtrl', 'test123', 'test.TextGrid');*/
   }));
 
   it('should not open download Textgrid (not allowed)', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.downloadTextGridBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('downloadTextGridBtnClick');
-    expect(scope.dialog.open).not.toHaveBeenCalledWith();
+    expect(scope.modal.open).not.toHaveBeenCalledWith();
   });
 
 
   it('should open rename selected Level', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.vs, 'getcurClickLevelName').and.returnValue('ae');
     scope.renameSelLevelBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('renameSelLevelBtnClick');
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/renameLevel.html', 'ModalCtrl', 'ae');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/renameLevel.html', 'ae');
   });
 
   it('should open rename selected Level error', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.vs, 'getcurClickLevelName').and.returnValue(undefined);
     scope.renameSelLevelBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('renameSelLevelBtnClick');
-    expect(scope.dialog.open).toHaveBeenCalledWith('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Level first !');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/error.html', 'Rename Error : Please choose a Level first !');
   });
 
   it('should not open rename selected Level (not allowed)', function () {
-    spyOn(scope.dialog, 'open');
+    spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.renameSelLevelBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('renameSelLevelBtnClick');
-    expect(scope.dialog.open).not.toHaveBeenCalledWith();
+    expect(scope.modal.open).not.toHaveBeenCalledWith();
   });
 
   it('should getPerspectiveColor', function () {

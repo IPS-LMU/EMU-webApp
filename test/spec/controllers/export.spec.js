@@ -8,31 +8,19 @@ describe('Controller: ExportCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, dialogService, viewState, HistoryService) {
+     beforeEach(inject(function ($controller, $rootScope, browserDetector, ConfigProviderService, modalService, viewState, HistoryService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.modal = modalService;
        scope.vs = viewState;
        scope.history = HistoryService;
        ExportCtrl = $controller('ExportCtrl', {
-         $scope: scope,
-         exportName: 'test',
-         exportData: 'test123'
+         $scope: scope
        });     
      }));  
      
-   it('should not be firefox', function () {
-     expect(scope.firefox).toBe(false);
-   });   
-     
-   it('should cancel', function () {
-     spyOn(scope.dialog, 'close');
-     scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalled();
-   });   
-
    it('should getBlob', function () {
      expect(scope.getBlob().toString()).toBe('[object Blob]');
    });   
@@ -59,10 +47,10 @@ describe('Controller: ExportCtrl', function () {
    }); 
 
    it('should export', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      spyOn(scope, 'SaveToDisk');
      scope.export();
-     expect(scope.dialog.close).toHaveBeenCalled();
+     expect(scope.modal.close).toHaveBeenCalled();
      expect(scope.SaveToDisk).toHaveBeenCalled();
    }); 
 
