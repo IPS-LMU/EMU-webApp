@@ -516,9 +516,9 @@ describe('navigation', function () {
 			.click()
 			.perform();
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.modal-body')).get(0);
+		var elem = element.all(by.css('.emuwebapp-modal-body')).get(0);
 		expect(elem.getText()).toEqual('Error : You are not allowed to insert a Segment here.');
-		element(by.id('modal-cancel')).click();
+		element(by.id('emuwebapp-modal-cancel')).click();
 	});
 
 	it('should insert a new segment on SEGMENT level', function () {
@@ -567,9 +567,9 @@ describe('navigation', function () {
 
 	it('should insert a new element on EVENT level (double elem should NOT work)', function () {
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.modal-body')).get(0);
+		var elem = element.all(by.css('.emuwebapp-modal-body')).get(0);
 		expect(elem.getText()).toEqual('Error: You are not allowed to insert a Point here.');
-		element(by.id('modal-cancel')).click();
+		element(by.id('emuwebapp-modal-cancel')).click();
 	});
 
 	it('should open, rename and save on EVENT', function () {
