@@ -16,7 +16,6 @@ angular.module('emuwebApp')
         scope.dataIn = '';
 		scope.$watch('modal.isOpen', function(newValue, oldValue) {
 			if(newValue!==undefined) {
-			    console.log(newValue);
 			    scope.templateUrl = modalService.getTemplateUrl();
 			    scope.dataIn = modalService.dataIn;
 			    scope.force = modalService.force;
