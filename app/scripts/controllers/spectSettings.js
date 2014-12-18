@@ -4,7 +4,6 @@ angular.module('emuwebApp')
 	.controller('spectSettingsCtrl', function ($scope, modalService, viewState, DataService, mathHelperService, Soundhandlerservice) {
 
 		$scope.vs = viewState;
-
 		$scope.options = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];

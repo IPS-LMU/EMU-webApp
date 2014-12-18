@@ -5,12 +5,11 @@ describe('Directive: delete', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, dialogService) {
+    beforeEach(inject(function($rootScope, $compile, viewState) {
         scope = $rootScope.$new();
         scope.level = new Object();
         scope.level = msajc003_bndl.annotation.levels[0];
         scope.vs = viewState;
-        scope.dials = dialogService;
     }));
 
     function compileDirective(tpl) {

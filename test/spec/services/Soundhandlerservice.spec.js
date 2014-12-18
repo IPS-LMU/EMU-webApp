@@ -17,10 +17,11 @@ describe('Service: Soundhandlerservice', function () {
    *
    */
   it('should resetPlayerSrcFromTo', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    /*Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data));   
+    /* phantomjs does not support subarray() 
+    Soundhandlerservice.setPlayerSrc(Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data));   
     Soundhandlerservice.resetPlayerSrcFromTo(0,2000)
     expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + msajc003_bndl.mediaFile.data);
-     subarray bug */
+    */
   }));
   
  /**

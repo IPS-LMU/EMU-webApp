@@ -86,7 +86,7 @@ describe('Controller: MainCtrl', function () {
     HistoryService,
     fontScaleService,
     LevelService,
-    dialogService,
+    modalService,
     Ssffdataservice,
     Soundhandlerservice,
     Drawhelperservice,
@@ -98,7 +98,7 @@ describe('Controller: MainCtrl', function () {
     expect(HistoryService).toBeDefined();
     expect(fontScaleService).toBeDefined();
     expect(LevelService).toBeDefined();
-    expect(dialogService).toBeDefined();
+    expect(modalService).toBeDefined();
     expect(Ssffdataservice).toBeDefined();
     expect(Soundhandlerservice).toBeDefined();
     expect(Drawhelperservice).toBeDefined();
