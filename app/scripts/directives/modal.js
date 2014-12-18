@@ -27,6 +27,14 @@ angular.module('emuwebApp')
 				}
 			}
 		});
+		scope.$watch('modal.templateUrl', function(newValue, oldValue) {
+			if(newValue!==undefined) {
+			    scope.templateUrl = newValue;
+			    scope.dataIn = modalService.dataIn;
+			    scope.force = modalService.force;
+			}
+		});
+
       }
     };
   });

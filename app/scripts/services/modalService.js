@@ -16,6 +16,7 @@ angular.module('emuwebApp')
 		sServObj.isOpen = false;
 		sServObj.templateUrl = '';
 		sServObj.defer = undefined; 
+		sServObj.deferChange = undefined; 
 		sServObj.force = false; 
 		sServObj.dataOut = undefined; 
 		sServObj.dataIn = undefined; 
@@ -45,6 +46,24 @@ angular.module('emuwebApp')
 		};
 		
 		
+	
+		/**
+		 *
+		 */
+		sServObj.change = function (template, param1, param2, force) {
+		    if(param1!==undefined) {
+		        sServObj.dataIn = param1;
+		    }
+		    if(param2!==undefined) {
+		        sServObj.dataExport = param2;
+		    }
+		    if(force!==undefined) { // force user to do sth
+		        sServObj.force = force;
+		    }
+		    sServObj.deferChange = $q.defer(); 
+    		sServObj.templateUrl = template;
+			return sServObj.deferChange.promise;
+		};
 	
 		/**
 		 *
@@ -81,9 +100,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.select = function (idx) {
-			sServObj.isOpen = false;
-			viewState.setEditing(false);
-			viewState.setState(viewState.prevState);
 			sServObj.defer.resolve(idx);
 		};	
 		

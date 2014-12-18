@@ -223,7 +223,7 @@ angular.module('emuwebApp')
 							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
 
-							modalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
+							modalService.change('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
 							    if(itemIdx!==false) {
 									var childIDs = [
 										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
