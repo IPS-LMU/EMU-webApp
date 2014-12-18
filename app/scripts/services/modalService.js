@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('modalService', function modalService($q, viewState) {
+	.service('modalService', function modalService($q, ArrayHelperService, viewState) {
 
 		// shared service object
 		var sServObj = {};
@@ -26,6 +26,9 @@ angular.module('emuwebApp')
 		sServObj.open = function (template, param1, param2) {
 		    if(param1!==undefined) {
 		        sServObj.dataIn = param1;
+				if(param1.y!==undefined) {
+					sServObj.dataIn.chartData = ArrayHelperService.convertArrayToXYjsoArray(param1.y);
+				}
 		    }
 		    if(param2!==undefined) {
 		        sServObj.dataExport = param2;
@@ -37,7 +40,7 @@ angular.module('emuwebApp')
 			return sServObj.defer.promise;
 		};
 		
-		
+	
 		/**
 		 *
 		 */
@@ -66,6 +69,15 @@ angular.module('emuwebApp')
 			viewState.setState(viewState.prevState);
 			sServObj.isOpen = false;
 			sServObj.defer.resolve(true);
+		};	
+		
+		
+		/**
+		 *
+		 */
+		sServObj.select = function (idx) {
+			sServObj.dataOut = idx;
+			sServObj.confirmContent();
 		};	
 		
 		/**

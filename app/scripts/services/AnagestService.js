@@ -224,21 +224,21 @@ angular.module('emuwebApp')
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
 
 							modalService.open('views/SelectLabelModal.html', linkLevelLabels).then(function (itemIdx) {
-								var childIDs = [
-									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
-									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
-								];
-								LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
-								HistoryService.updateCurChangeObj({
-									'type': 'ANNOT',
-									'action': 'INSERTLINKSTO',
-									'name': linkLevelDetails.level.name,
-									'parentID': linkLevelDetails.level.items[itemIdx].id,
-									'childIDs': childIDs
-								});
-
-
-								HistoryService.addCurChangeObjToUndoStack();
+							    if(itemIdx!==false) {
+									var childIDs = [
+										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
+										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
+									];
+									LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
+									HistoryService.updateCurChangeObj({
+										'type': 'ANNOT',
+										'action': 'INSERTLINKSTO',
+										'name': linkLevelDetails.level.name,
+										'parentID': linkLevelDetails.level.items[itemIdx].id,
+										'childIDs': childIDs
+									});
+									HistoryService.addCurChangeObjToUndoStack();
+								}
 							});
 
 							defer.resolve();
