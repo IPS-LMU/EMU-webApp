@@ -16,14 +16,15 @@ angular.module('emuwebApp')
 		sServObj.isOpen = false;
 		sServObj.templateUrl = '';
 		sServObj.defer = undefined; 
+		sServObj.force = false; 
 		sServObj.dataOut = undefined; 
 		sServObj.dataIn = undefined; 
 		sServObj.dataExport = undefined; 
 		
 		/**
-		 *
+		 * open modal normally
 		 */
-		sServObj.open = function (template, param1, param2) {
+		sServObj.open = function (template, param1, param2, force) {
 		    if(param1!==undefined) {
 		        sServObj.dataIn = param1;
 				if(param1.y!==undefined) {
@@ -33,12 +34,16 @@ angular.module('emuwebApp')
 		    if(param2!==undefined) {
 		        sServObj.dataExport = param2;
 		    }
+		    if(force!==undefined) { // force user to do sth
+		        sServObj.force = force;
+		    }
 		    sServObj.defer = $q.defer(); 
     		sServObj.templateUrl = template;
 			viewState.setState('modalShowing');
 			sServObj.isOpen = true;
 			return sServObj.defer.promise;
 		};
+		
 		
 	
 		/**
@@ -76,8 +81,10 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.select = function (idx) {
-			sServObj.dataOut = idx;
-			sServObj.confirmContent();
+			sServObj.isOpen = false;
+			viewState.setEditing(false);
+			viewState.setState(viewState.prevState);
+			sServObj.defer.resolve(idx);
 		};	
 		
 		/**

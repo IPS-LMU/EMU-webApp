@@ -111,7 +111,9 @@ angular.module('emuwebApp')
               LevelService.deleteEditArea();
 
               // escape from open modal dialog
-              if (viewState.curState.permittedActions.length === 0 && code === ConfigProviderService.vals.keyMappings.esc) {
+              if (viewState.curState.permittedActions.length === 0 && 
+                  code === ConfigProviderService.vals.keyMappings.esc &&
+                  modalService.force === false ) {
                 modalService.close();
                 if (viewState.isHierarchyOpen()) {
                   viewState.showHierarchy();
