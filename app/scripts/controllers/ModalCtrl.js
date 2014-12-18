@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, modalService, viewState, LevelService, HistoryService, ConfigProviderService) {
+	.controller('ModalCtrl', function ($scope, ArrayHelperService, modalService, viewState, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.data = undefined;
+		
+		//$scope.myData = ArrayHelperService.convertArrayToXYjsoArray(modalService.dataIn.y);
 
 		/**
 		 *

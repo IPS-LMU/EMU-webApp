@@ -8,8 +8,8 @@ angular.module('emuwebApp')
 		$scope.options = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
-		$scope.error = '';
-		$scope.cssErrorID = 0;
+		$scope.errorID = [];
+		$scope.upperBoundary = '';
 
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
@@ -89,8 +89,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.reset = function () {
-		    $scope.error = '';
-		    $scope.cssErrorID = 0;
+		    $scope.errorID = [];
 			$scope.modalVals = {
 				'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
 				'rangeTo': $scope.vs.spectroSettings.rangeTo,
@@ -109,52 +108,102 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.cssError = function (id) {
-		    if(id===$scope.cssErrorID) {
+		$scope.cssError = function (id, id2) {
+		    if($scope.errorID[id]) {
 		        return {'background': '#f00'}
 		    }
+		    if(id2!==undefined) {
+		        if($scope.errorID[id2]) {
+		            return {'background': '#f00'}
+		        }		        
+		    }
+		};
+
+		/**
+		 *
+		 */
+		$scope.htmlError = function (id) {
+		    return $scope.errorID[id];
 		};
 		
-		$scope.isFloat = function (mixed_var) {
-		    return +mixed_var === mixed_var && (!isFinite(mixed_var) || !! (mixed_var % 1));
-		}
 
 		/**
 		 *
 		 */
 		$scope.saveSpectroSettings = function () {
-		    if($scope.isFloat($scope.modalVals.windowSizeInSecs)) {
-				if ($scope.modalVals.dynamicRange % 1 === 0) {
-					if ($scope.modalVals.rangeFrom % 1 === 0) {
-						if ($scope.modalVals.rangeTo % 1 === 0) {
-							if ($scope.modalVals.rangeFrom >= 0) {
-								if ($scope.modalVals.rangeTo <= DataService.data.sampleRate / 2) {
-									viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
-									$scope.reset();
-								} else {
-									$scope.cssErrorID = 2;
-									$scope.modalVals.rangeTo = '"' + $scope.modalVals.rangeTo + '" is bigger than ' + DataService.data.sampleRate / 2;
-								}
-							} else {
-								$scope.cssErrorID = 1;
-								$scope.modalVals.rangeFrom = '"' + $scope.modalVals.rangeFrom + '" is below zero.';
-							}
-						} else {
-							$scope.cssErrorID = 2;
-							$scope.modalVals.rangeTo = '"' + $scope.modalVals.rangeTo + '" is not an Integer.';
-						}
-					} else {
-						$scope.cssErrorID = 1;
-						$scope.modalVals.rangeFrom = '"' + $scope.modalVals.rangeFrom + '" is not an Integer.';
-					}
-				} else {
-					$scope.cssErrorID = 4;
-					$scope.modalVals.dynamicRange = '"' + $scope.modalVals.dynamicRange + '" is not an Integer.';
-				}
-			} else {
-				$scope.cssErrorID = 3;
-				$scope.modalVals.windowSizeInSecs = '"' + $scope.modalVals.windowSizeInSecs + '" is not an Float.';
+		    var error = false;
+		    $scope.errorID.forEach(function(entry) {
+		        if(entry===true) {
+		            error = true;
+		        }
+		    });
+			if(!error) {
+				viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+				$scope.reset();
+			} 		
+		};
+		
+		/**
+		 *
+		 */
+		$scope.checkSpectroSettings = function () {
+		    if ($scope.modalVals.heatMapColorAnchors[0][0] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[0][1] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[0][2] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[1][0] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[1][1] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[1][2] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[2][0] % 1 !== 0 || 
+		        $scope.modalVals.heatMapColorAnchors[2][1] % 1 !== 0 ||
+		        $scope.modalVals.heatMapColorAnchors[2][2] % 1 !== 0 ) {
+		            $scope.errorID[8] = true;
+		    }
+		    else {
+		        $scope.errorID[8] = false;
+		    }
+			if(isNaN($scope.modalVals.preEmphasisFilterFactor * Soundhandlerservice.wavJSO.SampleRate)) {
+			    $scope.errorID[7] = true;
 			}
+		    else {
+		        $scope.errorID[7] = false;
+		    }
+			if(isNaN(Soundhandlerservice.wavJSO.SampleRate * $scope.modalVals.windowSizeInSecs)) {
+			    $scope.errorID[6] = true;		
+			}
+		    else {
+		        $scope.errorID[6] = false;
+		    }
+			if ($scope.modalVals.dynamicRange % 1 !== 0) {
+			    $scope.errorID[5] = true;
+			}
+		    else {
+		        $scope.errorID[5] = false;
+		    }
+			if ($scope.modalVals.rangeFrom % 1 !== 0) {
+			    $scope.errorID[4] = true;
+			}
+		    else {
+		        $scope.errorID[4] = false;
+		    }
+			if ($scope.modalVals.rangeTo % 1 !== 0) {
+			    $scope.errorID[3] = true;
+			}
+		    else {
+		        $scope.errorID[3] = false;
+		    }
+			if ($scope.modalVals.rangeFrom < 0) {
+			    $scope.errorID[2] = true;
+			}
+		    else {
+		        $scope.errorID[2] = false;
+		    }
+		    $scope.upperBoundary = DataService.data.sampleRate / 2;
+			if ($scope.modalVals.rangeTo > $scope.upperBoundary) {
+			    $scope.errorID[1] = true;			
+			}
+		    else {
+		        $scope.errorID[1] = false;
+		    }
 		};
 
 	});
