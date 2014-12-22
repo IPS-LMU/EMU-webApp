@@ -485,7 +485,7 @@ angular.module('emuwebApp')
 				});
 				
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -535,7 +535,7 @@ angular.module('emuwebApp')
 				});
 
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -598,7 +598,7 @@ angular.module('emuwebApp')
 					}
 				});
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -710,7 +710,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -722,7 +722,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.zoomViewPort(true);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -734,7 +734,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -746,7 +746,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -758,7 +758,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -770,7 +770,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -782,7 +782,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
 				viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -794,7 +794,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 				viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -806,7 +806,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 				viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 

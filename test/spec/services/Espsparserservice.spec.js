@@ -24,6 +24,18 @@ describe('Service: Espsparserservice', function () {
      });
      scope.$apply();
    }));
+   
+  /**
+   *
+   */
+   it('should do asyncParseEsps', inject(function (Espsparserservice, DataService) {
+     var result;
+     DataService.setData(msajc003_bndl.annotation);
+     Espsparserservice.asyncParseEsps('','','').then(function (res) {
+       expect(res).toEqual('');
+     });
+     scope.$apply();
+   }));
 
   /**
    *
@@ -45,6 +57,18 @@ describe('Service: Espsparserservice', function () {
    var result;
    DataService.setData(msajc003_bndl.annotation);
    spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
+   var ret = Espsparserservice.asyncParseJSO('').then(function (res) { //name
+    expect(res).toEqual('called');
+   });
+   scope.$apply();
+   }));
+
+  /**
+   *
+   */
+   it('should do asyncParseJSO', inject(function (Espsparserservice, DataService) {
+   var result;
+   DataService.setData(msajc003_bndl.annotation);
    var ret = Espsparserservice.asyncParseJSO('').then(function (res) { //name
     expect(res).toEqual('called');
    });
