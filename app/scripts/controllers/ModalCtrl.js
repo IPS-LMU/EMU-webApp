@@ -1,17 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, dialogService, passedInTxt, viewState, LevelService, HistoryService, ConfigProviderService) {
+	.controller('ModalCtrl', function ($scope, ArrayHelperService, modalService, viewState, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
-		$scope.passedInTxt = passedInTxt;
-		$scope.passedOutTxt = {
-			'var': null,
-		};
-
-		$scope.cancel = function () {
-			dialogService.close();
-		};
+		$scope.data = undefined;
+		
+		//$scope.myData = ArrayHelperService.convertArrayToXYjsoArray(modalService.dataIn.y);
 
 		/**
 		 *
@@ -33,7 +28,7 @@ angular.module('emuwebApp')
 		 *  Save changes made on SSFF
 		 */
 		$scope.saveChanges = function (name) {
-			dialogService.close('saveChanges');
+			modalService.close('saveChanges');
 		};
 
 
@@ -41,7 +36,7 @@ angular.module('emuwebApp')
 		 *  Save changes made on SSFF
 		 */
 		$scope.discardChanges = function (name) {
-			dialogService.close('discardChanges');
+			modalService.close('discardChanges');
 		};
 
 
@@ -49,16 +44,15 @@ angular.module('emuwebApp')
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
-
-			LevelService.renameLevel($scope.passedInTxt, $scope.passedOutTxt.var, viewState.curPerspectiveIdx);
+			LevelService.renameLevel(modalService.dataIn, $scope.data, viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ANNOT',
 				'action': 'RENAMELEVEL',
-				'newname': $scope.passedOutTxt.var,
-				'name': $scope.passedInTxt,
+				'newname': $scope.data,
+				'name': modalService.dataIn,
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
-			dialogService.close();
+			modalService.close();
 		};
 
 		/**
@@ -74,7 +68,7 @@ angular.module('emuwebApp')
 				'id': viewState.getcurClickLevelIndex(),
 				'curPerspectiveIdx': viewState.curPerspectiveIdx
 			});
-			dialogService.close();
+			modalService.close();
 		};
 
 	});

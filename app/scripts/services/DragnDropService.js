@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropService', function DragnDropService($q, $rootScope, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
+	.service('DragnDropService', function DragnDropService($q, $rootScope, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
@@ -110,17 +110,14 @@ angular.module('emuwebApp')
 		
 		sServObj.convertDragnDropData = function (bundles, i) {
 		    var defer = $q.defer();
-			var data = sServObj.drandropBundles[i];
-            var reader = new FileReader();
-            var reader2 = new FileReader();
-            var res;
-            if(bundles.length>i) {
-                if(data.wav===undefined) {
-                    
-                }
-                else {
-					reader.readAsArrayBuffer(data.wav);
-					reader.onloadend = function (evt) {
+		    var data = sServObj.drandropBundles[i];
+		    var reader = new FileReader();
+		    var reader2 = new FileReader();
+		    var res;
+		    if(bundles.length>i) {
+		        if(data.wav!==undefined) {
+		            reader.readAsArrayBuffer(data.wav);
+		            reader.onloadend = function (evt) {
 						if (evt.target.readyState == FileReader.DONE) {
 							if (browserDetector.isBrowser.Firefox()) {
 								res = evt.target.result;
@@ -222,7 +219,8 @@ angular.module('emuwebApp')
 						// set level defs
 						ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-						ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;							
+						ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
+						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;							
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files
@@ -234,12 +232,12 @@ angular.module('emuwebApp')
 							viewState.somethingInProgress = false;
 							viewState.somethingInProgressTxt = 'Done!';
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 								appStateService.resetToInitState();
 							});
 						}
 				}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess).then(function () {
+						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
 							appStateService.resetToInitState();
 						});
 					});

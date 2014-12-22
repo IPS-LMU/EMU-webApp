@@ -10,12 +10,12 @@ describe('Controller: LoginCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, $q, ConfigProviderService, dialogService, viewState, Iohandlerservice) {
+     beforeEach(inject(function ($controller, $rootScope, $q, ConfigProviderService, modalService, viewState, Iohandlerservice) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.modal = modalService;
        scope.vs = viewState;
        scope.io = Iohandlerservice;
        deferred1 = $q.defer();
@@ -34,18 +34,18 @@ describe('Controller: LoginCtrl', function () {
    });   
      
    it('should tryLogin successfully', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      spyOn(scope.io, 'logOnUser').and.returnValue(deferred1.promise);
      scope.tryLogin();
      expect(scope.io.logOnUser).toHaveBeenCalledWith('','');
      deferred1.resolve();
      scope.$digest();     
-     expect(scope.dialog.close).toHaveBeenCalledWith(true);
+     expect(scope.modal.close).toHaveBeenCalled();
    });      
      
      
    it('should tryLogin not successfully', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      spyOn(scope.io, 'logOnUser').and.returnValue(deferred2.promise);
      scope.tryLogin();
      expect(scope.io.logOnUser).toHaveBeenCalledWith('','');
@@ -55,9 +55,9 @@ describe('Controller: LoginCtrl', function () {
    });      
    
    it('should cancel', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalledWith(false);
+     expect(scope.modal.close).toHaveBeenCalled();
    });     
 
    it('should cursorInTextField', function () {

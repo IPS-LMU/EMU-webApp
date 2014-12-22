@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService, DataService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 			// precheck if there are items in selection
 			var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
 			if (itemInSel.length !== 0) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'There are already events in the selected area! This is not permitted...').then(function () {
+				modalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(function () {
 					defer.reject();
 				});
 				return defer;
@@ -38,7 +38,7 @@ angular.module('emuwebApp')
 			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
 
 			if (col.length !== 1 || vCol.length !== 1) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
+				modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
 					defer.reject();
 				});
 				return defer;
@@ -223,22 +223,22 @@ angular.module('emuwebApp')
 							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
 
-							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', linkLevelLabels).then(function (itemIdx) {
-								var childIDs = [
-									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
-									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
-								];
-								LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
-								HistoryService.updateCurChangeObj({
-									'type': 'ANNOT',
-									'action': 'INSERTLINKSTO',
-									'name': linkLevelDetails.level.name,
-									'parentID': linkLevelDetails.level.items[itemIdx].id,
-									'childIDs': childIDs
-								});
-
-
-								HistoryService.addCurChangeObjToUndoStack();
+							modalService.change('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
+							    if(itemIdx!==false) {
+									var childIDs = [
+										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
+										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
+									];
+									LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
+									HistoryService.updateCurChangeObj({
+										'type': 'ANNOT',
+										'action': 'INSERTLINKSTO',
+										'name': linkLevelDetails.level.name,
+										'parentID': linkLevelDetails.level.items[itemIdx].id,
+										'childIDs': childIDs
+									});
+									HistoryService.addCurChangeObjToUndoStack();
+								}
 							});
 
 							defer.resolve();
@@ -247,7 +247,7 @@ angular.module('emuwebApp')
 				});
 
 			}, function () {
-				console.error('rejected duuuude!!!!');
+				//console.error('rejected duuuude!!!!');
 			});
 			return defer.promise;
 		};
@@ -313,7 +313,8 @@ angular.module('emuwebApp')
 					});
 				}
 
-				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
+				modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then(function (resp) {
+				    console.log(resp);
 					var ap = vz[anavv[resp]];
 					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 					defer.resolve(ap);
@@ -321,7 +322,7 @@ angular.module('emuwebApp')
 				return defer.promise;
 			} else if (anavv.length === 0) {
 				defer = $q.defer();
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!').then(function () {
+				modalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(function () {
 					defer.reject('Could not find any values that step over the threshold!!');
 				});
 				return defer.promise;

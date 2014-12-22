@@ -14,7 +14,7 @@ describe('Directive: handleglobalkeystrokes', function() {
                                 viewState, 
                                 LevelService, 
                                 HistoryService,
-                                dialogService,
+                                modalService,
                                 DataService,
                                 Binarydatamaniphelper) {
         // scopes
@@ -25,7 +25,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.lvl = LevelService;
         scope.data = DataService;
         scope.history = HistoryService;
-        scope.dials = dialogService;
+        scope.modal = modalService;
         scope.binary = Binarydatamaniphelper;
         
         // load data
@@ -379,15 +379,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
 
         // no level selected
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select a Level first'
         ); 
         // no item selected
@@ -395,9 +394,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select one or more Segments first'
         ); 
     });  
@@ -407,15 +405,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
 
         // no level selected
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsLeft, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select a Level first'
         ); 
         // no item selected
@@ -423,9 +420,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select one or more Segments first'
         ); 
     }); 
@@ -435,15 +431,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
 
         // no level selected
         trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsLeft, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select a Level first'
         ); 
         // no item selected
@@ -451,9 +446,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select one or more Segments first'
         ); 
     }); 
@@ -463,15 +457,14 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
 
         // no level selected
         trigEvent(scope.cps.vals.keyMappings.shrinkSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select a Level first'
         ); 
         // no item selected
@@ -479,9 +472,8 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.expandSelSegmentsRight, false);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Expand Segments Error: Please select one or more Segments first'
         ); 
     }); 
@@ -491,7 +483,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
         
         // absolute
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
@@ -515,7 +507,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : fakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
         // relative
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
@@ -535,7 +527,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : newfakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
     }); 
     
     
@@ -544,7 +536,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
         
         // absolute
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
@@ -568,7 +560,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : fakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
         // relative
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
@@ -588,7 +580,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : newfakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
     }); 
     
@@ -598,7 +590,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
         
         // absolute
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
@@ -622,7 +614,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : -fakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
         // relative
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
@@ -642,7 +634,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : -newfakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
     });  
     
@@ -651,7 +643,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.vs.curPerspectiveIdx = 0;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.lvl, 'deleteEditArea');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
         
         // absolute
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'absolute';
@@ -675,7 +667,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : -fakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
         
         // relative
         scope.cps.vals.labelCanvasConfig.addTimeMode = 'relative';
@@ -695,7 +687,7 @@ describe('Directive: handleglobalkeystrokes', function() {
 			changeTime : -newfakePCMtime 
         });
         expect(scope.vs.selectBoundary).toHaveBeenCalled();
-        expect(scope.dials.open).not.toHaveBeenCalled();
+        expect(scope.modal.open).not.toHaveBeenCalled();
     });  
 
     it('should toggleSideBarLeft', function() {
@@ -722,14 +714,13 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
         spyOn(scope.vs, 'selectItemsInSelection');
-        spyOn(scope.dials, 'open');
+        spyOn(scope.modal, 'open');
         spyOn(scope.lvl, 'deleteEditArea');
         trigEvent(scope.cps.vals.keyMappings.selectItemsInSelection, false);
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();    
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');    
-        expect(scope.dials.open).toHaveBeenCalledWith(
+        expect(scope.modal.open).toHaveBeenCalledWith(
             'views/error.html', 
-            'ModalCtrl', 
             'Selection Error : Please select a Level first'
         );                 
         scope.vs.setcurClickLevel('Phonetic', 'SEGMENT', 0);

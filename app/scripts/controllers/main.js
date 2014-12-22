@@ -4,10 +4,10 @@ angular.module('emuwebApp')
 	.controller('MainController', function ($scope, $rootScope, $modal, $log, $compile, $timeout,
 		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
-		LevelService, dialogService, Textgridparserservice, Espsparserservice,
+		LevelService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService, DataService) {
+		appStateService, DataService, modalService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -15,7 +15,6 @@ angular.module('emuwebApp')
 		$scope.levServ = LevelService;
 		$scope.dataServ = DataService;
 		$scope.vs = viewState;
-		$scope.dials = dialogService;
 		$scope.ssffds = Ssffdataservice;
 		$scope.shs = Soundhandlerservice;
 		$scope.dhs = Drawhelperservice;
@@ -178,30 +177,30 @@ angular.module('emuwebApp')
 											viewState.setState('labeling');
 
 										}, function (errMess) {
-											dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+											modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
 										});
 
 									}, function (errMess) {
-										dialogService.open('views/error.html', 'ModalCtrl', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
+										modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
 									});
 
 
 								}, function (errMess) {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message);
+									modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
 								});
 
 							} else {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+								modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
 							}
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+							modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
 						}
 
 					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Could not get embedded_config.json: ' + errMess);
+						modalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
 					});
 				}, function (errMess) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
+					modalService.open('views/error.html', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
 				});
 			}
 		};
@@ -225,18 +224,18 @@ angular.module('emuwebApp')
 						$scope.loadFilesForEmbeddedApp();
 						viewState.somethingInProgress = false;
 					} else {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
 
 				}).error(function (data, status, header, config) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
+					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
 						appStateService.resetToInitState();
 					});
 				});
 			}, function (errMess) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
+				modalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
 					appStateService.resetToInitState();
 				});
 			});
@@ -261,7 +260,7 @@ angular.module('emuwebApp')
 			if (ConfigProviderService.vals.main.autoConnect) {
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
+						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
 					} else {
 						$scope.handleConnectedToWSserver();
 					}
@@ -305,7 +304,7 @@ angular.module('emuwebApp')
 							$scope.innerHandleConnectedToWSserver();
 						} else {
 							// show user management error 
-							dialogService.open('views/loginModal.html', 'LoginCtrl').then(function (res) {
+							modalService.open('views/loginModal.html').then(function (res) {
 								if (res) {
 									$scope.innerHandleConnectedToWSserver();
 								} else {
@@ -316,7 +315,7 @@ angular.module('emuwebApp')
 					});
 				} else {
 					// show protocol error and disconnect from server
-					dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
 						appStateService.resetToInitState();
 					});
 				}
@@ -348,20 +347,20 @@ angular.module('emuwebApp')
 								// then load first bundle in list
 								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 							} else {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
 									appStateService.resetToInitState();
 								});
 							}
 						});
 
 					} else {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
 
 				} else {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+					modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 						appStateService.resetToInitState();
 					});
 				}
@@ -486,7 +485,7 @@ angular.module('emuwebApp')
 				});
 				
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -536,7 +535,7 @@ angular.module('emuwebApp')
 				});
 
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -546,13 +545,11 @@ angular.module('emuwebApp')
 		$scope.renameSelLevelBtnClick = function () {
 			if (viewState.getPermission('renameSelLevelBtnClick')) {
 				if (viewState.getcurClickLevelName() !== undefined) {
-					dialogService.open('views/renameLevel.html', 'ModalCtrl', viewState.getcurClickLevelName());
+					modalService.open('views/renameLevel.html', viewState.getcurClickLevelName());
 				} else {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Rename Error : Please choose a Level first !');
+					modalService.open('views/error.html', 'Rename Error : Please choose a Level first !');
 				}
-			} else {
-				console.log('action currently not allowed');
-			}
+			} 
 		};
 
 		/**
@@ -561,11 +558,9 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-					dialogService.openExport('views/export.html', 'ExportCtrl', parseMess, loadedMetaDataService.getCurBndl().name + '.TextGrid');
+					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
-			} else {
-				console.log('action currently not allowed');
-			}
+			} 
 		};
 
 		/**
@@ -573,9 +568,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadAnnotationBtnClick = function () {
 			if (viewState.getPermission('downloadAnnotationBtnClick')) {
-				dialogService.openExport('views/export.html', 'ExportCtrl', angular.toJson(DataService.getData(), true), loadedMetaDataService.getCurBndl().name + '_annot.json');
-			} else {
-				console.log('action currently not allowed');
+				modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '_annot.json', angular.toJson(DataService.getData(), true));
 			}
 		};
 
@@ -584,10 +577,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
-				dialogService.open('views/spectSettings.html', 'spectSettingsCtrl', '');
-			} else {
-				console.log('action currently not allowed');
-			}
+			    modalService.open('views/spectSettings.html')
+			} 
 		};
 
 		/**
@@ -595,11 +586,11 @@ angular.module('emuwebApp')
 		 */
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
-				dialogService.open('views/connectModal.html', 'WsconnectionCtrl').then(function (url) {
+				modalService.open('views/connectModal.html').then(function (url) {
 					if (url) {
 						Iohandlerservice.wsH.initConnect(url).then(function (message) {
 							if (message.type === 'error') {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Could not connect to websocket server: ' + url);
+								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url)
 							} else {
 								$scope.handleConnectedToWSserver();
 							}
@@ -607,7 +598,7 @@ angular.module('emuwebApp')
 					}
 				});
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -650,44 +641,37 @@ angular.module('emuwebApp')
 								loadedMetaDataService.setBundleList(bdata);
 								// then load first bundle in list
 								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
-								// } else {
-								// 	dialogService.open('views/error.html', 'ModalCtrl', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								// 		appStateService.resetToInitState();
-								// 	});
-								// }
 							}, function (err) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+								modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 									appStateService.resetToInitState();
 								});
 							});
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 								appStateService.resetToInitState();
 							});
 						}
 
 
 					} else {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
 
 				}, function (err) {
-					dialogService.open('views/error.html', 'ModalCtrl', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+					modalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 						appStateService.resetToInitState();
 					});
 				});
-			} //else {
-			// 	console.log('action currently not allowed');
-			// }
+			} 
 		};
 
 		/**
 		 *
 		 */
 		$scope.aboutBtnClick = function () {
-			dialogService.open('views/about.html', 'ModalCtrl');
+		    modalService.open('views/about.html');
 		};
 
 		/**
@@ -695,7 +679,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.showHierarchyBtnClick = function () {
 			viewState.showHierarchy();
-			dialogService.open('views/showHierarchyModal.html', 'ShowhierarchyCtrl');
+			modalService.open('views/showHierarchyModal.html');
 		};
 
 		/**
@@ -709,7 +693,7 @@ angular.module('emuwebApp')
 			} else {
 				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.'
 			}
-			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', modalText).then(function (res) {
+			modalService.open('views/confirmModal.html', modalText).then(function (res) {
 				if (res) {
 					appStateService.resetToInitState();
 				}
@@ -726,7 +710,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -738,7 +722,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.zoomViewPort(true);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -750,7 +734,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.zoomViewPort(false);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -762,7 +746,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.shiftViewPort(false);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -774,7 +758,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.shiftViewPort(true);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -786,7 +770,7 @@ angular.module('emuwebApp')
 				LevelService.deleteEditArea();
 				viewState.setViewPort(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -798,7 +782,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
 				viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -810,7 +794,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 				viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 
@@ -822,7 +806,7 @@ angular.module('emuwebApp')
 				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
 				viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
 			} else {
-				console.log('action currently not allowed');
+				//console.log('action currently not allowed');
 			}
 		};
 

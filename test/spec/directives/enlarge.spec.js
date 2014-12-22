@@ -5,7 +5,7 @@ describe('Directive: enlarge', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, dialogService, ConfigProviderService) {
+    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
     }));

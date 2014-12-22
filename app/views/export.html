@@ -1,17 +1,18 @@
- <div class="modal-header">
-  <h3>Export Data</h3>
+<div class="emuwebapp-modal-wrap" ng-controller="ExportCtrl">
+    <div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+        <h3 id="modalHeading">
+            Export {{dataIn}}
+        </h3>
+	</div>
+	<div class="emuwebapp-modal-body">
+	    <div>
+	        <p> Really <i>export</i> "{{dataIn}}" ?</p>
+	    </div>
+	    <pre class="emuwebapp-exportdata">{{modal.dataExport}}</pre>
+	</div>
+	<div class="emuwebapp-modal-footer">
+	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	  <button ng-click="export();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Export</button>
+	</div>
 </div>
-<div class="modal-body">
-
- <div>
-   <p> Do you want to <i>export</i> "{{exportName}}" ?</p>
-</div>
-   <pre class="modal-exportdata">{{exportData}}</pre>
-</div>
-
-<div class="modal-footer">
-   <button id="modal-cancel" ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
-   <button id="modal-export" ng-click="export();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton" filename="{{exportName}}" get-data="getBlob()">Export</button>
-</div>
-
 

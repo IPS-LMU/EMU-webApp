@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('loadedMetaDataService', function loadedMetaDataService(dialogService, Validationservice) {
+	.service('loadedMetaDataService', function loadedMetaDataService(Validationservice) {
 		// shared service object
 		var sServObj = {};
 

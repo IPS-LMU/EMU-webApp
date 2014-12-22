@@ -8,12 +8,12 @@ describe('Controller: ShowhierarchyCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, DataService, viewState, dialogService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+     beforeEach(inject(function ($controller, $rootScope, DataService, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.modal = modalService;
        scope.vs = viewState;
        scope.lvl = LevelService;
        scope.data = DataService;
@@ -24,9 +24,9 @@ describe('Controller: ShowhierarchyCtrl', function () {
      }));  
      
    it('should cancel', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalled();
+     expect(scope.modal.close).toHaveBeenCalled();
    });   
    
    it('should set 4 correct paths', function () {

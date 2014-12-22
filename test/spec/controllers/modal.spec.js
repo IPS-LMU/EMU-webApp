@@ -8,49 +8,43 @@ describe('Controller: ModalCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, $q, DataService, ConfigProviderService, dialogService, viewState, LevelService, HistoryService) {
+     beforeEach(inject(function ($controller, $rootScope, $q, DataService, ConfigProviderService, modalService, viewState, LevelService, HistoryService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.dialog = dialogService;
+       scope.modal = modalService;
        scope.vs = viewState;
        scope.lvl = LevelService;
-       scope.data = DataService;
+       scope.datas = DataService;
        scope.history = HistoryService;
        ModalCtrl = $controller('ModalCtrl', {
-         $scope: scope,
-         passedInTxt: 'test'
+         $scope: scope
        });     
      }));  
-     
-   it('should set correct passedInTxt', function () {
-     expect(scope.passedInTxt).toBe('test');
-   }); 
    
    it('should renameLevel', function () {
-     scope.passedOutTxt.var = 'test1';
      spyOn(scope.history, 'addObjToUndoStack');
      spyOn(scope.lvl, 'renameLevel');
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.renameLevel();
-     expect(scope.lvl.renameLevel).toHaveBeenCalledWith(scope.passedInTxt,scope.passedOutTxt.var, scope.vs.curPerspectiveIdx);
+     expect(scope.lvl.renameLevel).toHaveBeenCalledWith(scope.modal.dataIn,scope.data, scope.vs.curPerspectiveIdx);
      expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
 		'type': 'ANNOT',
 		'action': 'RENAMELEVEL',
-		'newname': scope.passedOutTxt.var,
-		'name': scope.passedInTxt,
+		'newname': scope.data,
+		'name': scope.modal.dataIn,
 		'curPerspectiveIdx': scope.vs.curPerspectiveIdx
 	});
-     expect(scope.dialog.close).toHaveBeenCalled();
+     expect(scope.modal.close).toHaveBeenCalled();
    }); 
    
    it('should deleteLevel', function () {
-     scope.data.setData(msajc003_bndl.annotation);
+     scope.datas.setData(msajc003_bndl.annotation);
      scope.vs.setcurClickLevelName('Phonetic', 0);
      spyOn(scope.history, 'addObjToUndoStack');
      spyOn(scope.lvl, 'deleteLevel');
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.deleteLevel();
      expect(scope.lvl.deleteLevel).toHaveBeenCalledWith(scope.vs.getcurClickLevelIndex(), scope.vs.curPerspectiveIdx);
      expect(scope.history.addObjToUndoStack).toHaveBeenCalledWith({
@@ -60,26 +54,20 @@ describe('Controller: ModalCtrl', function () {
 		'id': scope.vs.getcurClickLevelIndex(),
 		'curPerspectiveIdx': scope.vs.curPerspectiveIdx
 	});
-     expect(scope.dialog.close).toHaveBeenCalled();
+     expect(scope.modal.close).toHaveBeenCalled();
    });         
 
    it('should saveChanges', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.saveChanges();
-     expect(scope.dialog.close).toHaveBeenCalledWith('saveChanges');
+     expect(scope.modal.close).toHaveBeenCalledWith('saveChanges');
    });    
 
    it('should discardChanges', function () {
-     spyOn(scope.dialog, 'close');
+     spyOn(scope.modal, 'close');
      scope.discardChanges();
-     expect(scope.dialog.close).toHaveBeenCalledWith('discardChanges');
-   });      
-
-   it('should cancel', function () {
-     spyOn(scope.dialog, 'close');
-     scope.cancel();
-     expect(scope.dialog.close).toHaveBeenCalled();
-   });        
+     expect(scope.modal.close).toHaveBeenCalledWith('discardChanges');
+   });           
      
    it('should cursorInTextField', function () {
      spyOn(scope.vs, 'setEditing');

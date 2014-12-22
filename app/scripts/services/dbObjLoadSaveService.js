@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, dialogService, ConfigProviderService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
@@ -21,7 +21,7 @@ angular.module('emuwebApp')
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 				if (bndl !== loadedMetaDataService.getCurBndl()) {
 					// $scope.lastclickedutt = bndl;
-					dialogService.open('views/saveChanges.html', 'ModalCtrl', bndl.name).then(function (messModal) {
+					modalService.open('views/saveChanges.html', bndl.name).then(function (messModal) {
 						if (messModal === 'saveChanges') {
 							// save current bundle
 							sServObj.saveBundle().then(function () {
@@ -94,17 +94,17 @@ angular.module('emuwebApp')
 									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
 								} else {
-									dialogService.open('views/error.html', 'ModalCtrl', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										$scope.resetToInitState();
 									});
 								}
 							}, function (errMess) {
-								dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+								modalService.open('views/error.html',  'Error parsing SSFF file: ' + errMess.status.message).then(function () {
 									$scope.resetToInitState();
 								});
 							});
 						}, function (errMess) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+							modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
 								$scope.resetToInitState();
 							});
 						});
@@ -112,11 +112,11 @@ angular.module('emuwebApp')
 					}, function (errMess) {
 						// check for http vs websocket response
 						if (errMess.data) {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.data).then(function () {
+							modalService.open('views/error.html', 'Error loading bundle: ' + errMess.data).then(function () {
 								$scope.resetToInitState();
 							});
 						} else {
-							dialogService.open('views/error.html', 'ModalCtrl', 'Error loading bundle: ' + errMess.status.message).then(function () {
+							modalService.open('views/error.html', 'Error loading bundle: ' + errMess.status.message).then(function () {
 								$scope.resetToInitState();
 							});
 						}
@@ -159,7 +159,7 @@ angular.module('emuwebApp')
 						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
 
 					}, function (errMess) {
-						dialogService.open('views/error.html', 'ModalCtrl', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
+						modalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
 						defer.reject();
 					});
 				} else {
@@ -196,7 +196,7 @@ angular.module('emuwebApp')
 				viewState.setState('labeling');
 			}, function (errMess) {
 				// console.log(mess);
-				dialogService.open('views/error.html', 'ModalCtrl', 'Error saving bundle: ' + errMess.status.message).then(function () {
+				modalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
 					$scope.resetToInitState();
 				});
 				defer.reject();

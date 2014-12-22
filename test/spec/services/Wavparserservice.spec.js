@@ -10,15 +10,14 @@ describe('Service: Wavparserservice', function () {
   
   var item;
   
-
-
   /**
    *
    */
-  it('should parseWavArrBuf', inject(function (Wavparserservice, Binarydatamaniphelper) {
-
-    
-
-  }));
+   it('should do parseWavArrBuf', inject(function (Wavparserservice) {
+     var result;
+     Wavparserservice.parseWavArrBuf([1, 2, 3]).then(function (res) {
+       expect(res).toEqual('');
+     });
+   }));
 
 });

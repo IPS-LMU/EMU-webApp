@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, dialogService, LevelService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
-				scope.dials = dialogService;
+				scope.modal = modalService;
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
 
@@ -244,7 +244,7 @@ angular.module('emuwebApp')
 								}
 
 								//draw helper lines
-								if (scope.open && curLabVal.length !== 0) { // only draw if label is not empty
+								if (scope.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
 									var labelCenter = posS + (posE - posS) / 2;
 
 									var hlY = canvas[0].height / 4;

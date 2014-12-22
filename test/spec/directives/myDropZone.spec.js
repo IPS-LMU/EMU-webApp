@@ -172,14 +172,14 @@ describe('Directive: myDropZone', function() {
         expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropTextErrorFileType);
     }); 
     
-    it('should warn if no FileAPI available', inject(function ($q, dialogService, appStateService) {
+    it('should warn if no FileAPI available', inject(function ($q, modalService, appStateService) {
         compileDirective();
         window.File = false;
         window.FileReader = false;
         window.FileList = false;
         window.Blob = false;
         var txtDeferred = $q.defer(); 
-        spyOn(dialogService, 'open').and.returnValue(txtDeferred.promise);
+        spyOn(modalService, 'open').and.returnValue(txtDeferred.promise);
         spyOn(appStateService, 'resetToInitState');
         elm.triggerHandler({
           type: 'drop',
@@ -193,7 +193,7 @@ describe('Directive: myDropZone', function() {
         txtDeferred.resolve(true);
         scope.$digest();
         expect(appStateService.resetToInitState).toHaveBeenCalled();
-        expect(dialogService.open).toHaveBeenCalled();
+        expect(modalService.open).toHaveBeenCalled();
     })); 
     
 });

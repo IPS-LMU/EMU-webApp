@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Appcachehandler', function Appcachehandler($http, dialogService) {
+	.service('Appcachehandler', function Appcachehandler($http, modalService) {
 		// shared service object
 		var sServObj = {};
 
@@ -95,7 +95,7 @@ angular.module('emuwebApp')
 		 */
 		function handleUpdatereadyEvent(e) {
 			console.log('###### handleUpdatereadyEvent ##########');
-			dialogService.open('views/confirmModal.html', 'ConfirmmodalCtrl', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
+			modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
 				if (res) {
 					appCache.swapCache();
 					window.location.reload();

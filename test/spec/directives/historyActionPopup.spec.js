@@ -5,10 +5,10 @@ describe('Directive: historyActionPopup', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $q, $compile, viewState, dialogService) {
+    beforeEach(inject(function($rootScope, $q, $compile, viewState, modalService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
-        scope.dials = dialogService;
+        scope.modal = modalService;
     }));
 
     function compileDirective(tpl) {

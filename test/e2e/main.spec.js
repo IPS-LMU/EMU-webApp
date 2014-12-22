@@ -21,7 +21,7 @@ describe('E2E: main page', function () {
 		var elem = element.all(by.css('.emuwebapp-levelOuter'));
 		expect(elem.count()).toBe(11);
 		element(by.id('clear')).click();
-		element(by.id('modal-confirm')).click();
+		element(by.id('emuwebapp-modal-confirm')).click();
 	});
 
 	it('should clear view and open demo1', function() {	
@@ -30,7 +30,7 @@ describe('E2E: main page', function () {
 		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas'))
 		expect(elem.count()).toBe(3);
 		element(by.id('clear')).click();	
-		element(by.id('modal-confirm')).click();	
+		element(by.id('emuwebapp-modal-confirm')).click();	
 	});	
 
 	it('should clear view and open demo2', function() {
@@ -39,7 +39,7 @@ describe('E2E: main page', function () {
 		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas'))
 		expect(elem.count()).toBe(1);
 		element(by.id('clear')).click();	
-		element(by.id('modal-confirm')).click();
+		element(by.id('emuwebapp-modal-confirm')).click();
 	});	
 
 	it('should open first demo DB with 2 levels', function () {

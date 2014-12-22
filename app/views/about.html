@@ -1,135 +1,141 @@
-<div class="modal-header-large modal-header">
-  <h3 id="modalHeading">
-    EMU-webApp
-  </h3>
-</div>
-<div class="modal-body">
-  <img src="assets/EMU-webAppIcon-roundCorners.svg" style="height:60px;"></img>
-  <h4 style="text-align:center;">Version: @@versionnr</h4>
-  <h5 style="font-size:8pt; text-align:center;">Build time stamp: @@timestamp</h5>
-  <h5 style="font-size:8pt; text-align:center;">Build GIT SHA-1: @@sha1</h5>
-  <div class="alert alert-danger"><b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.</div>
+<div class="emuwebapp-modal-wrap">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+		EMU-webApp
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
+	  <img src="assets/EMU-webAppIcon-roundCorners.svg" style="height:60px;"></img>
+	  <h4 style="text-align:center;">Version: @@versionnr</h4>
+	  <h5 style="font-size:8pt; text-align:center;">Build time stamp: @@timestamp</h5>
+	  <h5 style="font-size:8pt; text-align:center;">Build GIT SHA-1: @@sha1</h5>
+	  <div class="emuwebapp-aboutDiv">	  
+	  <div class="alert alert-danger">
+	      <b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.
+	  </div>
+	  </div>
 
-  <hr class="emuwebapp-aboutHr" />
+	  <hr class="emuwebapp-aboutHr" />
 
-  <div class="emuwebapp-aboutDiv">
-   <b>About</b><br />&nbsp;<br />
-   The EMU-webApp is an online and offline web application for labeling, visualizing
-   and correcting speech and derived speech data.
- </div>
+	  <div class="emuwebapp-aboutDiv">
+	   <b>About</b><br />&nbsp;<br />
+	   The EMU-webApp is an online and offline web application for labeling, visualizing
+	   and correcting speech and derived speech data.
+	 </div>
  
- <hr class="emuwebapp-aboutHr" />
+	 <hr class="emuwebapp-aboutHr" />
 
- <!-- general usage -->
+	 <!-- general usage -->
  
- <div class="emuwebapp-aboutDiv">
-  <b>General usage</b><br />&nbsp;<br />
-  Moving the mouse over segment and event levels automatically tracks the mouse movement
-  and calculates the nearest boundary to the current mouse position and
-  preselects it (indicated by marking it blue).
-  <span ng-show="cps.vals.restrictions.editItemSize">
-    To move the currently preselected boundary hold down the <b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
-    move the mouse to the desired position. The boundary will track the
-    mouse movement. A event is preselected by left-clicking it  (indicated by marking it yellow), holding down 
-    <b>{{cps.getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire event.
-  </span>
-</div>
+	 <div class="emuwebapp-aboutDiv">
+	  <b>General usage</b><br />&nbsp;<br />
+	  Moving the mouse over segment and event levels automatically tracks the mouse movement
+	  and calculates the nearest boundary to the current mouse position and
+	  preselects it (indicated by marking it blue).
+	  <span ng-show="cps.vals.restrictions.editItemSize">
+		To move the currently preselected boundary hold down the <b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
+		move the mouse to the desired position. The boundary will track the
+		mouse movement. A event is preselected by left-clicking it  (indicated by marking it yellow), holding down 
+		<b>{{cps.getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire event.
+	  </span>
+	</div>
 
-<hr class="emuwebapp-aboutHr" />
+	<hr class="emuwebapp-aboutHr" />
 
-<!-- navigation shortcuts -->
-<div class="emuwebapp-aboutDiv">
-<b>Main Navigation Shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-    <tbody>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open left submenu</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open right submenu</td></tr>
+	<!-- navigation shortcuts -->
+	<div class="emuwebapp-aboutDiv">
+	<b>Main Navigation Shortcuts</b><br />&nbsp;<br />
+	  <table class="emuwebapp-aboutTable">
+		<tbody>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open left submenu</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open right submenu</td></tr>
 
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarhy)}}</b></td><td>Open Hierarchy View</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.rotateHierarhy)}}</b></td><td>Rotate Hierarchy</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarhy)}}</b></td><td>Open Hierarchy View</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.rotateHierarhy)}}</b></td><td>Rotate Hierarchy</td></tr>
 
-      
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td><td>Zoom in<sup>1</sup></td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td><td>Zoom out<sup>1</sup></td></tr>
-      
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortLeft)}}</b></td><td>Move viewport left</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortRight)}}</b></td><td>Move viewport right</td></tr>
-      
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomAll)}}</b></td><td>View all</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomSel)}}</b></td><td>Zoom in to selected</td></tr>
-      
+	  
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td><td>Zoom in<sup>1</sup></td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td><td>Zoom out<sup>1</sup></td></tr>
+	  
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortLeft)}}</b></td><td>Move viewport left</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortRight)}}</b></td><td>Move viewport right</td></tr>
+	  
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomAll)}}</b></td><td>View all</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomSel)}}</b></td><td>Zoom in to selected</td></tr>
+	  
 
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td><td>Select next event</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td><td>Select previous event</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td><td>Select next event</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Select previous event</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td><td>Extend event selection right</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Extend event selection left</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectItemsInSelection)}}</b></td><td>Select all events in current viewport selection</td></tr>
-      
-    </tbody>
-  </table>
-  <small>1.) Zooming while a boundary is preselected will keep the position of that boundary fixed</small>
-</div>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td><td>Select next event</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td><td>Select previous event</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td><td>Select next event</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Select previous event</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td><td>Extend event selection right</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td><td>Extend event selection left</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectItemsInSelection)}}</b></td><td>Select all events in current viewport selection</td></tr>
+	  
+		</tbody>
+	  </table>
+	  <small>1.) Zooming while a boundary is preselected will keep the position of that boundary fixed</small>
+	</div>
 
-<hr class="emuwebapp-aboutHr" />
+	<hr class="emuwebapp-aboutHr" />
 
-<!-- labeling shortcuts -->
+	<!-- labeling shortcuts -->
 
-<div class="emuwebapp-aboutDiv">
-<b>Labeling shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-    <tbody>
-      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td><td>Undo last action</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td><td>Redo last action</td></tr>
-      <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></td><td>Add event or boundary at selected position (rename event if a single event is currently selected)</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td><td>Deleted selected event boundary</td></tr>
-      <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td><td>Deleted current events</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}</b></td><td>Snap preselected boundary to closest boundary in level above</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary)}}</b></td><td>Snap preselected boundary to closest boundary in level below</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestZeroCrossing)}}</b></td><td>Snap preselected boundary to nearest zero crossing</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsRight)}}</b></td><td>Add time to selected events (expand to right)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsRight)}}</b></td><td>Remove time to selected events (shrink from right)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsLeft)}}</b></td><td>Add time to selected events (expand to left)</td></tr>
-      <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeft)}}</b></td><td>Remove time to selected events (shrink from left)</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.levelUp)}}</b></td><td>Select level above</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.levelDown)}}</b></td><td>Select level above</td></tr>
-      
-    </tbody>
-  </table>
-</div>
+	<div class="emuwebapp-aboutDiv">
+	<b>Labeling shortcuts</b><br />&nbsp;<br />
+	  <table class="emuwebapp-aboutTable">
+		<tbody>
+		  <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td><td>Undo last action</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td><td>Redo last action</td></tr>
+		  <tr ng-show="cps.vals.restrictions.addItem"><td><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></td><td>Add event or boundary at selected position (rename event if a single event is currently selected)</td></tr>
+		  <tr ng-show="cps.vals.restrictions.deleteItem"><td><b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td><td>Deleted selected event boundary</td></tr>
+		  <tr ng-show="cps.vals.restrictions.deleteItemBoundary"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td><td>Deleted current events</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}</b></td><td>Snap preselected boundary to closest boundary in level above</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary)}}</b></td><td>Snap preselected boundary to closest boundary in level below</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestZeroCrossing)}}</b></td><td>Snap preselected boundary to nearest zero crossing</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsRight)}}</b></td><td>Add time to selected events (expand to right)</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsRight)}}</b></td><td>Remove time to selected events (shrink from right)</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsLeft)}}</b></td><td>Add time to selected events (expand to left)</td></tr>
+		  <tr ng-show="cps.vals.restrictions.editItemSize"><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeft)}}</b></td><td>Remove time to selected events (shrink from left)</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.levelUp)}}</b></td><td>Select level above</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.levelDown)}}</b></td><td>Select level above</td></tr>
+	  
+		</tbody>
+	  </table>
+	</div>
 
-<hr class="emuwebapp-aboutHr" ng-show="cps.vals.restrictions.playback"/>
+	<hr class="emuwebapp-aboutHr" ng-show="cps.vals.restrictions.playback"/>
 
-<!-- playback shortcuts -->
-<div class="emuwebapp-aboutDiv" ng-show="cps.vals.restrictions.playback">
-<b ng-show="cps.vals.restrictions.playback">Playback shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-    <tbody>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playEntireFile)}}</b></td><td>Play entire file</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playSelected)}}</b></td><td>Play selected</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
-    </tbody>
-  </table>
-</div>
+	<!-- playback shortcuts -->
+	<div class="emuwebapp-aboutDiv" ng-show="cps.vals.restrictions.playback">
+	<b ng-show="cps.vals.restrictions.playback">Playback shortcuts</b><br />&nbsp;<br />
+	  <table class="emuwebapp-aboutTable">
+		<tbody>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playEntireFile)}}</b></td><td>Play entire file</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playSelected)}}</b></td><td>Play selected</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td><td>Play/Pause in view (also use as general stop for playback)</td></tr>
+		</tbody>
+	  </table>
+	</div>
 
-<hr class="emuwebapp-aboutHr" ng-show="cps.vals.restrictions.correctionTool"/>
+	<hr class="emuwebapp-aboutHr" ng-show="cps.vals.restrictions.correctionTool"/>
 
-<!-- correction shortcuts -->
+	<!-- correction shortcuts -->
 
-<div class="emuwebapp-aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
-<b ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-    <tbody>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}</b></td><td>Choose first correction tool</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></td><td>Choose second correction tool</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></td><td>Choose third correction tool</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></td><td>Choose fourth correction tool</td></tr>
-      <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></td><td>Disable correction tool</td></tr>
-    </tbody>
-  </table>
-</div>
-</div>
-<div class="modal-footer">
-  <button id="modalCancelBtn" ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	<div class="emuwebapp-aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
+	<b ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</b><br />&nbsp;<br />
+	  <table class="emuwebapp-aboutTable">
+		<tbody>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}</b></td><td>Choose first correction tool</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></td><td>Choose second correction tool</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></td><td>Choose third correction tool</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></td><td>Choose fourth correction tool</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></td><td>Disable correction tool</td></tr>
+		</tbody>
+	  </table>
+	</div>
+	</div>
+	<div class="emuwebapp-modal-footer">
+	  <button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	</div>
 </div>
