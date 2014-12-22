@@ -25,7 +25,7 @@ module.exports = function (config) {
       'app/scripts/!(prototypeexpansions).js',
       'app/scripts/filters/*.js',
       'app/scripts/controllers/*.js',
-      'app/scripts/directives/*.js',
+      'app/scripts/directives/!(tutorial).js',
       'app/scripts/services/*.js',
       'app/scripts/workers/*.js',
       'test/spec/**/*.js',

@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
 								if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-									drawEpgGrid(scope);
+									scope.drawEpgGrid(scope);
 								}
 							}
 						}
@@ -31,7 +31,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawEpgGrid(scope);
+								scope.drawEpgGrid(scope);
 							}
 						}
 					}
@@ -43,8 +43,7 @@ angular.module('emuwebApp')
 				/**
 				 * drawing method to drawEpgGrid
 				 */
-
-				function drawEpgGrid(scope) {
+				 scope.drawEpgGrid = function (scope) {
 
 					tr = scope.cps.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
 					col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
@@ -62,7 +61,7 @@ angular.module('emuwebApp')
 
 					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
 					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
-
+					console.log(curFrame);
 
 					var binValStrArr;
 					angular.forEach(col.values[curFrame], function (el, elIdx) {
