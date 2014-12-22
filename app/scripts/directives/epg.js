@@ -45,24 +45,19 @@ angular.module('emuwebApp')
 				 */
 				 scope.drawEpgGrid = function (scope) {
 
+					var ctx = canvas.getContext('2d');
 					tr = scope.cps.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
 					col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
 					sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
-
-					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 					ctx.fillStyle = 'green';
 					ctx.strokeStyle = scope.cps.vals.colors.osciColor;
 					ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
 
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;
-
 					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
 					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
-					console.log(curFrame);
-
 					var binValStrArr;
 					angular.forEach(col.values[curFrame], function (el, elIdx) {
 						binValStrArr = el.toString(2).split('').reverse();
