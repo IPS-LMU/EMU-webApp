@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getColumnOfTrack = function (trackName, columnName) {
-			var res;
+			var res = {};
 			sServObj.data.forEach(function (tr) {
 				if (tr.ssffTrackName === trackName) {
 					tr.Columns.forEach(function (col) {
@@ -24,9 +24,7 @@ angular.module('emuwebApp')
 
 			if (res !== undefined) {
 				return res;
-			} else {
-				alert("could not getColumnOfTrack of trackname: " + trackName)
-			}
+			} 
 		};
 
 
@@ -43,9 +41,7 @@ angular.module('emuwebApp')
 			});
 			if (res !== undefined) {
 				return res;
-			} else {
-				alert("could not getSampleRateAndStartTimeOfTrack of trackname: " + trackName)
-			}
+			} 
 		};
 
 

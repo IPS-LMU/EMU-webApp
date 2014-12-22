@@ -115,6 +115,22 @@ angular.module('emuwebApp')
 
 			return res;
 		};
+
+		/**
+		 *
+		 */
+		sServObj.setPerspectivesOrder = function (curPerspective, levelName) {
+		    if(sServObj.vals !== undefined) {
+		        if(sServObj.vals.perspectives !== undefined) {
+		            if(sServObj.vals.perspectives[curPerspective] !== undefined ) {
+		                if(sServObj.vals.perspectives[curPerspective].levelCanvases !== undefined) {
+		                    sServObj.vals.perspectives[curPerspective].levelCanvases.order = levelName;	
+		                }
+		            }
+		        }
+		    }
+			
+		};
 		
 		/**
 		 *  replace ascii codes from config with strings

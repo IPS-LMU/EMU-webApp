@@ -92,7 +92,7 @@ describe('Directive: spectro', function () {
         scope.vs.curViewPort.sS = 4000;
         var buffer = new ArrayBuffer(58089);
         var view = new Uint8Array(buffer);
-        spyOn(ArrayBuffer.prototype, 'subarray');
+        //spyOn(ArrayBuffer.prototype, 'subarray');
         spyOn(elm.isolateScope(), 'setupEvent');
         elm.isolateScope().startSpectroRenderingThread(view);
         expect(elm.isolateScope().setupEvent).toHaveBeenCalled();

@@ -110,17 +110,14 @@ angular.module('emuwebApp')
 		
 		sServObj.convertDragnDropData = function (bundles, i) {
 		    var defer = $q.defer();
-			var data = sServObj.drandropBundles[i];
-            var reader = new FileReader();
-            var reader2 = new FileReader();
-            var res;
-            if(bundles.length>i) {
-                if(data.wav===undefined) {
-                    
-                }
-                else {
-					reader.readAsArrayBuffer(data.wav);
-					reader.onloadend = function (evt) {
+		    var data = sServObj.drandropBundles[i];
+		    var reader = new FileReader();
+		    var reader2 = new FileReader();
+		    var res;
+		    if(bundles.length>i) {
+		        if(data.wav!==undefined) {
+		            reader.readAsArrayBuffer(data.wav);
+		            reader.onloadend = function (evt) {
 						if (evt.target.readyState == FileReader.DONE) {
 							if (browserDetector.isBrowser.Firefox()) {
 								res = evt.target.result;
@@ -222,7 +219,8 @@ angular.module('emuwebApp')
 						// set level defs
 						ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-						ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;							
+						ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
+						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;							
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files

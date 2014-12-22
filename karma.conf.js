@@ -22,7 +22,7 @@ module.exports = function (config) {
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'app/bower_components/angular-filter/dist/angular-filter.js',
-      'app/scripts/*.js',
+      'app/scripts/!(prototypeexpansions).js',
       'app/scripts/filters/*.js',
       'app/scripts/controllers/*.js',
       'app/scripts/directives/*.js',
