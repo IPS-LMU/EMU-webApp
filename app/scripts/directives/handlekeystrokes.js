@@ -122,8 +122,8 @@ angular.module('emuwebApp')
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
-              // showHierarhy
-              if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
+              // showHierarchy
+              if (code === ConfigProviderService.vals.keyMappings.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
                   if (!viewState.isHierarchyOpen()) {
                     modalService.open('views/showHierarchyModal.html');
@@ -136,8 +136,8 @@ angular.module('emuwebApp')
                 }
               }
 
-              // rotateHierarhy
-              if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
+              // rotateHierarchy
+              if (code === ConfigProviderService.vals.keyMappings.rotateHierarchy) {
                 viewState.rotateHierarchy();
               }
 
