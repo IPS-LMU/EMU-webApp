@@ -1313,12 +1313,9 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
-		 * and all links that lead from or to it
-		 *
-		 * @param eid The ID of the element to be deleted
+		 * Returns a level object and an item object according to a given item id
 		 */
-		sServObj.deleteItemWithLinks = function (eid) {
+		sServObj.getLevelAndItem = function (eid) {
 			var i, ii;
 			var level, item;
 			var found = false;
@@ -1341,8 +1338,36 @@ angular.module('emuwebApp')
 			
 			if (!found) {
 				// No item with id === eid has been found
+				return null;
+			} else {
+				return {level: level, item: item};
+			}
+		};
+
+		/**
+		 * Add an item before the item with id === eid
+		 * Do nothing if eid is not of type ITEM (ie, if it is on a level with time information)
+		 */
+		sServObj.addItemBefore = function (eid) {
+//			for (i
+		};
+
+		/**
+		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
+		 * and all links that lead from or to it
+		 *
+		 * @param eid The ID of the element to be deleted
+		 */
+		sServObj.deleteItemWithLinks = function (eid) {
+			var levelAndItem = sServObj.getLevelAndItem (eid);
+
+			if (levelAndItem === null) {
+				// item with id === eid does not exist
 				return false;
 			}
+
+			var level = levelAndItem.level;
+			var item = levelAndItem.item;
 
 			if (level.type !== 'ITEM') {
 				// Never touch non-ITEMs
@@ -1350,13 +1375,15 @@ angular.module('emuwebApp')
 			}
 
 			// Delete the item itself			
-			level.items.splice(level.items.indexOf(item), 1);
+			console.log('Deleting item:', item,'From level:', level);
+			//level.items.splice(level.items.indexOf(item), 1);
 
 			// Delete all links that lead from or to the item
 			// Iterate over the links array backwards so we can manipulate the array from within the loop
 			var links = DataService.getLinkData();
-			for (i=links.length-1; i>=0; --i) {
+			for (var i=links.length-1; i>=0; --i) {
 				if (links[i].fromID === eid || links[i].toID === eid) {
+					console.log('Deleting link', i);
 					links.splice(i, 1);
 				}
 			}
