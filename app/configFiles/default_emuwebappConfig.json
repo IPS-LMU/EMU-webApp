@@ -69,6 +69,8 @@
 	"selectedNodeColor": "#0DC5FF",
 	"selectedLinkColor": "#A00",
 	"collapsedNodeColor": "rgba(255,0,0,1.0)",
+	"addItemButtonFG": "#FFF",
+	"addItemButtonBG": "#0DC5FF",
         "transitionTime": 400
     },
     "font": {

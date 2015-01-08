@@ -167,6 +167,14 @@ angular.module('emuwebApp')
 		}
 	};
 
+	scope.getOrientatedAddItemButtonTransform = function (d) {
+		if (scope.vertical) {
+			return 'translate(0,0)';
+		} else {
+			return 'translate(0, 20)';
+		}
+	};
+
 
 	scope.getPath = function (d) {
 		var controlX = d._fromX;
@@ -178,6 +186,20 @@ angular.module('emuwebApp')
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
 		//scope.centerNode(d);
+
+
+		///////// TEMPORARILY IN THIS FUNCTION
+		/////
+		//
+
+			LevelService.deleteItemWithLinks(d.id);
+
+			scope.render();
+			return;
+
+		//
+		/////
+		/////////
 
 		// (De-)Collapse sub-tree
 		var isCollapsing;
@@ -393,10 +415,29 @@ angular.module('emuwebApp')
 
 		newLevelCaptions = newLevelCaptions.append('g')
 			.attr('class', 'emuhierarchy-levelcaption')
+			;
+
+		newLevelCaptions
 			.append('text').text( function (d) {
 				return d;
 			});
 
+		var addItemButtons = newLevelCaptions
+			.append('g')
+			.attr('transform', scope.getOrientatedAddItemButtonTransform)
+			;
+
+		addItemButtons
+			.append('circle')
+			.style('fill', ConfigProviderService.vals.colors.addItemButtonBG)
+			.attr('r', 8)
+			;
+		
+		addItemButtons
+			.append('path')
+			.style('stroke', ConfigProviderService.vals.colors.addItemButtonFG)
+			.attr('d', 'M0,-6 V6 M-6,0 H6')
+			;
 		
 		levelCaptionSet
 			.attr('transform', scope.getOrientatedLevelCaptionTransform);

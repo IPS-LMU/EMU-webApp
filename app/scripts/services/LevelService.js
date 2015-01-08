@@ -1312,5 +1312,55 @@ angular.module('emuwebApp')
 			return labels;
 		};
 
+		/**
+		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
+		 * and all links that lead from or to it
+		 *
+		 * @param eid The ID of the element to be deleted
+		 */
+		sServObj.deleteItemWithLinks = function (eid) {
+			var i, ii;
+			var level, item;
+			var found = false;
+
+			// Iterate over all levels and their items
+			for (i=0; i<DataService.getLevelData().length; ++i) {
+				level = DataService.getLevelData()[i];
+				for (ii=0; ii<level.items.length; ++ii) {
+					item = level.items[ii];
+					if (item.id === eid) {
+						found = true;
+						break;
+					}
+				}
+
+				if (found) {
+					break;
+				}
+			}
+			
+			if (!found) {
+				// No item with id === eid has been found
+				return false;
+			}
+
+			if (level.type !== 'ITEM') {
+				// Never touch non-ITEMs
+				return false;
+			}
+
+			// Delete the item itself			
+			level.items.splice(level.items.indexOf(item), 1);
+
+			// Delete all links that lead from or to the item
+			// Iterate over the links array backwards so we can manipulate the array from within the loop
+			var links = DataService.getLinkData();
+			for (i=links.length-1; i>=0; --i) {
+				if (links[i].fromID === eid || links[i].toID === eid) {
+					links.splice(i, 1);
+				}
+			}
+		};
+
 		return sServObj;
 	});
