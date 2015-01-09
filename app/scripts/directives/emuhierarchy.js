@@ -193,10 +193,11 @@ angular.module('emuwebApp')
 		/////
 		//
 
+		if (d3.event.ctrlKey) {
 			LevelService.deleteItemWithLinks(d.id);
-
 			scope.render();
 			return;
+		}
 
 		//
 		/////
