@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 	// private variables
 
 	scope.selectedItem;
+	scope.selectedLink;
 	scope.offsetX = 25;
 	scope.offsetY = 30;
 	scope.vertOffsetX = 150;
@@ -242,6 +243,12 @@ angular.module('emuwebApp')
 	scope.nodeOnMouseOver = function (d) {
 		scope.selectedItem = d;
 		scope.render();
+	};
+
+	scope.linkOnMouseOver = function (d) {
+		scope.selectedLink = d;
+		scope.render();
+		console.log(d);
 	};
 		
 
@@ -731,8 +738,8 @@ angular.module('emuwebApp')
 
 		newLinks.insert('path', 'g')
 			.attr('class', 'emuhierarchy-link')
-			.style('stroke', ConfigProviderService.vals.colors.linkColor)
 			.style('opacity', 0)
+			.on('mouseover', scope.linkOnMouseOver)
 			.transition()
 			.duration(scope.duration)
 			.style('opacity', 1)
@@ -742,6 +749,17 @@ angular.module('emuwebApp')
 			.duration(scope.duration)
 			.style('opacity', 0)
 			.remove();
+
+		// Set color depending on whether the link is selected
+		linkSet
+			.style('stroke', function(d) {
+				if (scope.selectedLink === d) {
+					return 'yellow';
+				} else {
+					return ConfigProviderService.vals.colors.linkColor;
+				}
+			})
+			;
 		
 		// Transition links to their new position.
 		linkSet.transition()
