@@ -19,6 +19,7 @@ angular.module('emuwebApp')
 
 	scope.selectedItem;
 	scope.selectedLink;
+	scope.newLinkSrc;
 	scope.offsetX = 25;
 	scope.offsetY = 30;
 	scope.vertOffsetX = 150;
@@ -184,6 +185,18 @@ angular.module('emuwebApp')
 		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
 	};
 
+	scope.svgOnMouseMove = function (d) {
+		if (scope.newLinkSrc !== undefined) {
+			var x = d3.mouse(this)[0];
+			var y = d3.mouse(this)[1];
+
+			svg.select('path.emuhierarchy-newlink')
+				.attr('d', 'M'+scope.newLinkSrc._x+','+scope.newLinkSrc._y+' L'+x+','+y)
+				;
+		}
+		//svg.on
+	};
+
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
 		//scope.centerNode(d);
@@ -196,6 +209,11 @@ angular.module('emuwebApp')
 		if (d3.event.ctrlKey) {
 			LevelService.deleteItemWithLinks(d.id);
 			scope.render();
+			return;
+		}
+
+		if (d3.event.shiftKey) {
+			scope.newLinkSrc = d;
 			return;
 		}
 
@@ -243,13 +261,12 @@ angular.module('emuwebApp')
 	
 	scope.nodeOnMouseOver = function (d) {
 		scope.selectedItem = d;
-		scope.render();
+		scope.renderSelectionOnly();
 	};
 
 	scope.linkOnMouseOver = function (d) {
 		scope.selectedLink = d;
-		scope.render();
-		console.log(d);
+		scope.renderSelectionOnly();
 	};
 		
 
@@ -381,6 +398,7 @@ angular.module('emuwebApp')
 	  .style('background-color', ConfigProviderService.vals.colors.levelColor)
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
+	  .on('mousemove', scope.svgOnMouseMove)
           .append('g');
           //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -394,6 +412,31 @@ angular.module('emuwebApp')
 
 	//
         /////////////////////////////
+
+	scope.renderSelectionOnly = function() {
+		// Change the circle fill of all nodes depending on whether they are selected
+		svg.selectAll('circle.emuhierarchy-nodeCircle')
+			.style('fill', function(d) {
+				var color = ConfigProviderService.vals.colors.nodeColor;
+
+				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
+					color = ConfigProviderService.vals.colors.selectedNodeColor;
+				}
+
+				return color;
+			})
+			;
+
+		svg.selectAll('path.emuhierarchy-link')
+			.style('stroke', function(d) {
+				if (scope.selectedLink === d) {
+					return ConfigProviderService.vals.colors.selectedLinkColor;
+				} else {
+					return ConfigProviderService.vals.colors.linkColor;
+				}
+			})
+			;
+	};
 
 
         /**
@@ -768,6 +811,15 @@ angular.module('emuwebApp')
 			.attr('d', scope.getPath )
 			.style('opacity', 1)
 			;
+
+		// If the user is trying to add a new link,
+		// visualise what he's doing
+		if (scope.newLinkSrc !== undefined) {
+			svg.append('path')
+				.attr('class', 'emuhierarchy-newlink')
+				.style('stroke', 'black')
+				;
+		}
 	};
 
         /**
