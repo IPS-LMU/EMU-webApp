@@ -1,7 +1,7 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "serverUrl": "ws://localhost:17890",
         "serverTimeoutInterval": 5000,
         "comMode": "WS",
@@ -67,7 +67,7 @@
 	"nodeStrokeColor": "#888",
 	"linkColor": "#888",
 	"selectedNodeColor": "#0DC5FF",
-	"selectedLinkColor": "#A00",
+	"selectedLinkColor": "#FFFF16",
 	"collapsedNodeColor": "rgba(255,0,0,1.0)",
 	"addItemButtonFG": "#FFF",
 	"addItemButtonBG": "#0DC5FF",

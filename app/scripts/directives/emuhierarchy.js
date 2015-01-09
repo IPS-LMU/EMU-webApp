@@ -754,7 +754,7 @@ angular.module('emuwebApp')
 		linkSet
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
-					return 'yellow';
+					return ConfigProviderService.vals.colors.selectedLinkColor;
 				} else {
 					return ConfigProviderService.vals.colors.linkColor;
 				}
