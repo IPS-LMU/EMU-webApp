@@ -224,7 +224,7 @@
 					"type": "integer"
 				}
 			},
-			"required": ["labelColor", "osciColor", "playProgressColor", "selectedAreaColor", "selectedBorderColor", "selectedBoundaryColor", "selectedLevelColor", "selectedSegmentColor", "startBoundaryColor", "endBoundaryColor", "zeroLineColor", "crossHairsColor", "transitionTime"],
+			"required": ["labelColor", "osciColor", "playProgressColor", "selectedAreaColor", "selectedBorderColor", "selectedBoundaryColor", "selectedLevelColor", "selectedSegmentColor", "startBoundaryColor", "endBoundaryColor", "zeroLineColor", "crossHairsColor", "nodeColor", "nodeStrokeColor", "linkColor", "selectedNodeColor", "selectedLinkColor", "collapsedNodeColor", "addItemButtonBG", "addItemButtonFG", "transitionTime"],
 			"additionalProperties": false
 
 		},
