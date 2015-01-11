@@ -85,13 +85,7 @@ angular.module('emuwebApp')
 		svg.attr('transform', scope.getOrientatedTransform());
 
 		captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
-		//captionLayer.attr('transform','translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)');
-
 		captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
-		/*function(d) {
-			var revArr = angular.copy(scope.path).reverse();
-			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
-		});*/
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -457,6 +451,7 @@ angular.module('emuwebApp')
 
 		/////////
 		// Draw level captions and time arrow
+		captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 
 		var levelCaptionSet = captionLayer.selectAll('g.emuhierarchy-levelcaption')
 			.data(scope.path, function (d) { return d; });
@@ -471,7 +466,8 @@ angular.module('emuwebApp')
 		newLevelCaptions
 			.append('text').text( function (d) {
 				return d;
-			});
+			})
+			;
 
 		var addItemButtons = newLevelCaptions
 			.append('g')
@@ -491,14 +487,17 @@ angular.module('emuwebApp')
 			;
 		
 		levelCaptionSet
-			.attr('transform', scope.getOrientatedLevelCaptionTransform);
+			.attr('transform', scope.getOrientatedLevelCaptionTransform)
+			;
 		
 		oldLevelCaptions = oldLevelCaptions.transition()
 			.duration(scope.duration)
-			.remove();
+			.remove()
+			;
 
 		oldLevelCaptions.select('text')
-			.style('fill-opacity', 0);
+			.style('fill-opacity', 0)
+			;
 
 		//
 		////////
