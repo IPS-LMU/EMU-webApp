@@ -17,7 +17,15 @@
 
 .emuhierarchy-link {
 	fill: none;
-	stroke-width: 1.emuhierarchy-5px;
+	stroke-width: 1.5px;
+}
+
+.emuhierarchy-ghostlink {
+	fill: none;
+	stroke-width: 15px;
+	/* The stroke color will never be visible due to the opacity of 0 */
+	stroke: white;
+	opacity: 0;
 }
 
 .emuhierarchy-templink {

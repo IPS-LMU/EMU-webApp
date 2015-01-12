@@ -770,7 +770,7 @@ angular.module('emuwebApp')
 		//
 		//
 		// Now we turn to visualising links
-		var linkSet = svg.selectAll('path.emuhierarchy-link')
+		var linkSet = svg.selectAll('.emuhierarchy-linkgroup')
 			.data(links, function (d) {
 				// Form unique link ID
 				return 's' + d.fromID + 't' + d.toID;
@@ -779,22 +779,47 @@ angular.module('emuwebApp')
 		var newLinks = linkSet.enter();
 		var oldLinks = linkSet.exit();
 
-		newLinks.insert('path', 'g')
+		// The new link's paths are inserted within the svg element
+		// that linkSet was generated from.
+		// They must be inserted at the beginning (before the nodes,
+		// which have already been appended), because there is no CSS
+		// z-index for SVG.
+		// So the order of insertion is the only way to make sure that
+		// the lines are painted under the nodes.
+		newLinks = newLinks
+			.insert('g', ':first-child')
+			.attr('class', 'emuhierarchy-linkgroup')
+			;
+
+		// Append thicker ghost lines for better mouseover
+		newLinks
+			.append('path')
+			.attr('class', 'emuhierarchy-ghostlink')
+			.on('mouseover', scope.linkOnMouseOver)
+			;
+
+		newLinks
+			.append('path')
 			.attr('class', 'emuhierarchy-link')
 			.style('opacity', 0)
-			.on('mouseover', scope.linkOnMouseOver)
 			.transition()
 			.duration(scope.duration)
 			.style('opacity', 1)
 			;
+			
 
-		oldLinks.transition()
+		// Remove old links
+		oldLinks
+			.selectAll('path')
+			.transition()
 			.duration(scope.duration)
 			.style('opacity', 0)
-			.remove();
+			.remove()
+			;
 
 		// Set color depending on whether the link is selected
 		linkSet
+			.selectAll('.emuhierarchy-link')
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
 					return ConfigProviderService.vals.colors.selectedLinkColor;
@@ -805,11 +830,18 @@ angular.module('emuwebApp')
 			;
 		
 		// Transition links to their new position.
-		linkSet.transition()
+		linkSet
+			.selectAll('.emuhierarchy-link')
+			.transition()
 			.duration(scope.duration)
 			.attr('d', scope.getPath )
 			.style('opacity', 1)
 			;
+		linkSet
+			.selectAll('.emuhierarchy-ghostlink')
+			.attr('d', scope.getPath)
+			;
+		
 
 		// If the user is trying to add a new link,
 		// visualise what he's doing
