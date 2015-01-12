@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: MainController', function () {
 
   //load the controller's module
   beforeEach(module('emuwebApp'));
@@ -34,7 +34,7 @@ describe('Controller: MainCtrl', function () {
 
     // initiate the controller and mock the scope
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
+    MainCtrl = $controller('MainController', {
       $scope: scope,
       appStateService: mockAppStateService
     });
