@@ -551,6 +551,9 @@
 				},
 				"showHierarchy": {
 					"type": "boolean"
+				},
+				"editDBconfig": {
+					"type": "boolean"
 				}
 			},
 			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
