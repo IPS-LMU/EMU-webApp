@@ -332,6 +332,9 @@ angular.module('emuwebApp')
 				// first element of perspectives is default perspective
 				viewState.curPerspectiveIdx = 0;
 				ConfigProviderService.setVals(data.EMUwebAppConfig);
+				// FOR DEVELOPMENT
+				$scope.showEditDBconfigBtnClick();
+				
 				delete data.EMUwebAppConfig; // delete to avoid duplicate
 				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 				if (validRes === true) {
@@ -680,6 +683,13 @@ angular.module('emuwebApp')
 		$scope.showHierarchyBtnClick = function () {
 			viewState.showHierarchy();
 			modalService.open('views/showHierarchyModal.html');
+		};
+
+		/**
+		 *
+		 */
+		$scope.showEditDBconfigBtnClick = function () {
+			modalService.open('views/editDBconfigModal.html');
 		};
 
 		/**
