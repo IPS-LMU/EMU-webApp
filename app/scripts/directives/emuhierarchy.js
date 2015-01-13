@@ -810,7 +810,6 @@ angular.module('emuwebApp')
 
 		// Remove old links
 		oldLinks
-			.selectAll('path')
 			.transition()
 			.duration(scope.duration)
 			.style('opacity', 0)
