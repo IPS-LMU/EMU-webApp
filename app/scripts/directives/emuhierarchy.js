@@ -190,6 +190,36 @@ angular.module('emuwebApp')
 		}
 		//svg.on
 	};
+	
+	scope.svgOnKeyDown = function (d) {
+		// SIC FIXME WARNING THIS IS CURRENTLY IMPLEMENTED AS GLOBAL EVENT HANDLER VIA JQUERY
+		var code = d.keyCode;
+		var alt = d.altKey;
+		var shift = d.shiftKey;
+		var ctrl = d.ctrlKey;
+
+		console.debug(code);
+		if (code === 32) {
+			if (scope.selectedItem !== undefined) {
+				console.debug('Playing back due to key press', scope.selectedItem);
+				scope.play(scope.selectedItem);
+			}
+		}
+		if (code === 8) {
+			if (scope.selectedLink !== undefined) {
+				console.debug('Deleting a link due to key press', scope.selectedLink);
+				LevelService.deleteLink(scope.selectedLink.fromID, scope.selectedLink.toID);
+				scope.render();
+			}
+		}
+		if (code === 68) {
+			if (scope.selectedItem !== undefined) {
+				console.debug('Deleting an item due to key press', scope.selectedItem);
+				LevelService.deleteItemWithLinks(scope.selectedItem.id);
+				scope.render();
+			}
+		}
+	};
 
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
@@ -200,11 +230,6 @@ angular.module('emuwebApp')
 		/////
 		//
 
-		if (d3.event.ctrlKey) {
-			LevelService.deleteItemWithLinks(d.id);
-			scope.render();
-			return;
-		}
 
 		if (d3.event.shiftKey) {
 			scope.newLinkSrc = d;
@@ -393,8 +418,10 @@ angular.module('emuwebApp')
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
 	  .on('mousemove', scope.svgOnMouseMove)
+//	  .on('keydown', scope.svgOnKeyDown)
           .append('g');
           //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+	  $(document).bind('keydown', scope.svgOnKeyDown);
 
 	// Append a group which holds all overlay captions and which do not react to zooming
 	var captionLayer = svg.append('g').style('z-index', 5);

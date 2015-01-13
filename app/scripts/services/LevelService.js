@@ -1353,6 +1353,20 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * Delete a single link by passing in source and target
+		 */
+		sServObj.deleteLink = function (fromID, toID) {
+			var links = DataService.getLinkData();
+			
+			// Iterate over the links array backwards so we can manipulate the array from within the loop
+			for (var i=links.length-1; i>=0; --i) {
+				if (links[i].fromID === fromID && links[i].toID === toID) {
+					links.splice(i, 1);
+				}
+			}
+		};
+
+		/**
 		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
 		 * and all links that lead from or to it
 		 *
@@ -1376,7 +1390,7 @@ angular.module('emuwebApp')
 
 			// Delete the item itself			
 			console.log('Deleting item:', item,'From level:', level);
-			//level.items.splice(level.items.indexOf(item), 1);
+			level.items.splice(level.items.indexOf(item), 1);
 
 			// Delete all links that lead from or to the item
 			// Iterate over the links array backwards so we can manipulate the array from within the loop
