@@ -1,11 +1,10 @@
 .Grid {
   display: flex;
-  margin: 1em;
+  /*margin: 1em;*/
 }
 
 .Grid-cell {
   flex: 1;
-  background-color: rgba(0,0,0,0.5);
 }
 
 /* With gutters */

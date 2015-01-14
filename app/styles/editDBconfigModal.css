@@ -1,0 +1,8 @@
+.roundedBorderFrame {
+	border: 1px solid;
+    border-radius: 10px;	
+}
+
+.borderDashed {
+	border-style: dashed;
+}
