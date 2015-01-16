@@ -1,0 +1,30 @@
+<!-- levelDefinitions -->
+<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
+	<div class="Grid Grid--gutters">
+		<div class="Grid-cell">name:</div>
+			<div class="Grid-cell"><input type="text" value="{{value.name}}"></input></div>
+		</div>
+		<div class="Grid Grid--gutters">
+			<div class="Grid-cell">type:</div>
+		<div class="Grid-cell">
+			<select ng-options="opt for opt in possibleConfigValues.levelType"></select>
+		</div>
+	</div>
+	attributeDefinitions:
+	<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
+		<div ng-repeat="(key2, value2) in value.attributeDefinitions">
+			<div class="Grid Grid--gutters">
+				<div class="Grid-cell">name:</div>
+				<div class="Grid-cell">
+					<input type="text" value="{{value2.name}}"></input>
+				</div>
+				<div class="Grid-cell">type:</div>
+				<div class="Grid-cell">
+					<select ng-options="opt for opt in possibleConfigValues.attributeDefinitions"></select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button>Delete levelDefinition</button>
+</div>
+<button>Add new levelDefinition</button>	

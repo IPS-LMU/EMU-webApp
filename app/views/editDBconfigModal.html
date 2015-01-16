@@ -1,69 +1,21 @@
-<div class="emuwebapp-modal-wrap" ng-controller="editDBconfigModalCtrl">
+<div class="emuwebapp-modal-wrap">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
 	  <h3 id="modalHeading">
-	      Edit DBconfig
+	      Edit Configuration
 	  </h3>
 	</div>
-	<div class="emuwebapp-modal-body">
-
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="#">levelDefinitions</a></li>
-  <li role="presentation"><a href="#">linkDefinitions</a></li>
-  <li role="presentation"><a href="#">ssffTrackDefinitions</a></li>
-  <li role="presentation"><a href="#">EMUwebAppConfig</a></li>
-  <li role="presentation"><a href="#">global DB vars</a></li>
-</ul>
-
-
-<!-- levelDefinitions -->
-<div class="roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
-  <div class="Grid Grid--gutters">
-    <div class="Grid-cell">
-      name:
-    </div>
-    <div class="Grid-cell">
-      <input type="text" value="{{value.name}}"></input>
-    </div>
-  </div>
-  <div class="Grid Grid--gutters">
-    <div class="Grid-cell">
-      type:
-    </div>
-    <div class="Grid-cell">
-      <select ng-options="opt for opt in possibleConfigValues.levelType"></select>
-    </div>
-  </div>
-  attributeDefinitions:
-  <div class="roundedBorderFrame borderDashed">
-    <div ng-repeat="(key2, value2) in value.attributeDefinitions">
-      <div class="Grid Grid--gutters">
-        <div class="Grid-cell">
-          name:
-        </div>
-        <div class="Grid-cell">
-          <input type="text" value="{{value2.name}}"></input>
-        </div>
-
-        <div class="Grid-cell">
-          type:
-        </div>
-        <div class="Grid-cell">
-          <select ng-options="opt for opt in possibleConfigValues.attributeDefinitions"></select>
-        </div>
-      </div> 
-    </div>  
-  </div>
-
-
-  <button>Delete levelDefinition</button>
-</div>
-
-<button>Add new levelDefinition</button>
-
+	<div class="emuwebapp-modal-bodyConfig">
+		<!-- tabbed header -->
+		<div id="tabs" class="emuwebapp-tabbed" ng-controller="TabbedCtrl">
+			<ul class="emuwebapp-tabbed-ul">
+				<li ng-repeat="tab in tabs" ng-style="isActiveTab(tab.url)" class="emuwebapp-tabbed-li" ng-click="onClickTab(tab)">{{tab.title}}</li>
+			</ul>
+			<div ng-include="currentTab" class="emuwebapp-tabbed-view"></div>
+		</div>
   	</div>
   <div class="emuwebapp-modal-footer">
     <button ng-click="reset()" class="emuwebapp-mini-btn-dialog">Cancel</button>
-    <button id="emuwebapp-modal-save" ng-click="saveSpectroSettings()" class="emuwebapp-mini-btn-dialog">Save</button>
+    <button id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog">Save</button>
   </div>
 </div>
 

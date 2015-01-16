@@ -1,0 +1,78 @@
+.emuwebapp-tabbed {
+    margin-top: -40px;
+    margin-bottom: -40px;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: center;
+    position: relative;
+    top: 0;
+    left: 0;  
+    height: 100%;  
+}
+
+.emuwebapp-tabbed :after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.emuwebapp-tabbed-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.emuwebapp-tabbed-li {
+    float: left;
+    border: 1px solid #fff;
+    border-bottom-width: 0;
+    border-top-width: 0;
+    border-left-width: 0;
+    margin: 0px;
+    padding: 10px;
+    background-color: #0DC5FF;
+    color: #777;
+    font-size: 1.1em;
+    width: 20%;
+    cursor: pointer;
+}
+.emuwebapp-tabbed-li:last-child {
+    border-right-width: 0;
+}
+.emuwebapp-tabbed-view {
+    border: 0px;
+	clear: both;
+	overflow-y: -moz-scrollbars-vertical;
+	overflow-y: scroll;
+	overflow-x: hidden;	
+	padding-top: 0px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 12px;
+}
+
+.emuwebapp-roundedBorderFrame {
+	border: 1px solid;
+    border-radius: 10px;	
+}
+
+.emuwebapp-borderDashed {
+	border-style: dashed;
+}
+
+.emuwebapp-tabbed ::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+.emuwebapp-tabbed ::-webkit-scrollbar-track
+{
+  background: #0DC5FF;
+}
+
+.emuwebapp-tabbed ::-webkit-scrollbar-thumb
+{
+  background: rgba(255, 255, 255, 0.75);
+}
