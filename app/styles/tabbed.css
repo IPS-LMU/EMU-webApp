@@ -1,6 +1,5 @@
 .emuwebapp-tabbed {
     margin-top: -40px;
-    margin-bottom: -40px;
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
@@ -54,11 +53,41 @@
 
 .emuwebapp-roundedBorderFrame {
 	border: 1px solid;
-    border-radius: 10px;	
+    border-radius: 10px;
+    text-align: left;
+    background: #efefef;
+    margin-bottom: 15px;
+    padding: 10px;
+    position: relative;
 }
 
 .emuwebapp-borderDashed {
 	border-style: dashed;
+}
+
+.emuwebapp-tabbed-close {
+    position: absolute;
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 18px;
+	right: -9px;
+	text-align: center;
+	top: -9px;
+	width: 18px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+	z-index: 99999;
+}
+
+.emuwebapp-tabbed-close:hover { 
+    background: #00d9ff; 
+    text-decoration: none;
 }
 
 .emuwebapp-tabbed ::-webkit-scrollbar

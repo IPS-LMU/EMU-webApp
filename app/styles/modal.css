@@ -34,7 +34,7 @@
 .emuwebapp-modalDialog-close {
 	background: #606061;
 	color: #FFFFFF;
-	line-height: 25px;
+	line-height: 24px;
 	position: absolute;
 	right: -12px;
 	text-align: center;
@@ -52,7 +52,8 @@
 }
 
 .emuwebapp-modalDialog-close:hover { 
-    background: #00d9ff; 
+    background: #00d9ff;
+    text-decoration: none;
 }
 
 .emuwebapp-modalDialog-inner {

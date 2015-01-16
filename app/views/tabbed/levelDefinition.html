@@ -1,30 +1,20 @@
 <!-- levelDefinitions -->
 <div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
-	<div class="Grid Grid--gutters">
-		<div class="Grid-cell">name:</div>
-			<div class="Grid-cell"><input type="text" value="{{value.name}}"></input></div>
-		</div>
-		<div class="Grid Grid--gutters">
-			<div class="Grid-cell">type:</div>
-		<div class="Grid-cell">
-			<select ng-options="opt for opt in possibleConfigValues.levelType"></select>
-		</div>
+    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteLevelDefinition(key)">X</a>
+    <div class="emuwebapp-tabbed-level">
+		Name: <input type="text" value="{{value.name}}" style="margin-right: 20px;"></input>  
+	    Type: <select ng-model="levelTypes[key]" ng-options="opt as opt.label for opt in optionsLevelTypes"></select>
 	</div>
-	attributeDefinitions:
+	<br />
+	Attribute Definitions:
+	<small>
 	<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
-		<div ng-repeat="(key2, value2) in value.attributeDefinitions">
-			<div class="Grid Grid--gutters">
-				<div class="Grid-cell">name:</div>
-				<div class="Grid-cell">
-					<input type="text" value="{{value2.name}}"></input>
-				</div>
-				<div class="Grid-cell">type:</div>
-				<div class="Grid-cell">
-					<select ng-options="opt for opt in possibleConfigValues.attributeDefinitions"></select>
-				</div>
-			</div>
+		<div ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
+		    Name: <input type="text" value="{{valueAttribute.name}}"></input>
+		    Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes"></select>
 		</div>
 	</div>
-	<button>Delete levelDefinition</button>
+	</small>
+	
 </div>
 <button>Add new levelDefinition</button>	
