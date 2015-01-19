@@ -134,3 +134,23 @@
 {
   background: rgba(255, 255, 255, 0.75);
 }
+
+.emuwebapp-tabbed-table {
+    display:table;
+    width: 100%;
+}
+.header {
+    display:table-header-group;
+    font-weight:bold;
+}
+.emuwebapp-tabbed-rowGroup {
+    display:table-row-group;
+}
+.emuwebapp-tabbed-row {
+    display:table-row;
+    width: 100%;    
+}
+.emuwebapp-tabbed-cell {
+    display:table-cell;
+    width: 50%;
+}

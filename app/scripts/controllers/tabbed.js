@@ -78,6 +78,7 @@ angular.module('emuwebApp')
 			    });
 			    i++			    
 			});
+			console.log($scope.cps.vals);
 		}
 		
 		$scope.deleteLevelDefinition = function (key) {
@@ -99,6 +100,10 @@ angular.module('emuwebApp')
 		$scope.onClickTab = function (tab) {
 			$scope.currentTab = tab.url;
 		}
+		
+		$scope.isInteger = function (x) {
+            return Math.round(x) === x;
+        }
 	
 		$scope.isActiveTab = function(tabUrl) {
 			if(tabUrl == $scope.currentTab) {
