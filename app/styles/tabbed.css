@@ -63,16 +63,21 @@
 
 .emuwebapp-borderDashed {
 	border-style: dashed;
+	padding-top: 25px;
 }
 
-.emuwebapp-tabbed-close {
-    position: absolute;
+.emuwebapp-tabbed-attributeSpace {
+    margin: 0;
+    padding: 0;
+    padding-right: 20px;
+    display: inline-block;
+}
+
+.emuwebapp-tabbed-close, .emuwebapp-tabbed-delete, .emuwebapp-tabbed-add {
 	background: #606061;
 	color: #FFFFFF;
 	line-height: 18px;
-	right: -9px;
 	text-align: center;
-	top: -9px;
 	width: 18px;
 	text-decoration: none;
 	font-weight: bold;
@@ -83,12 +88,36 @@
 	-webkit-box-shadow: 1px 1px 3px #000;
 	box-shadow: 1px 1px 3px #000;
 	z-index: 99999;
+	text-decoration: none;
 }
 
-.emuwebapp-tabbed-close:hover { 
-    background: #00d9ff; 
-    text-decoration: none;
+.emuwebapp-tabbed-close {
+    position: absolute;
+	right: -9px; 
+	top: -9px;	   
 }
+
+.emuwebapp-tabbed-delete {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.emuwebapp-tabbed-add {
+    display: inline-block;
+}
+
+.emuwebapp-tabbed-close:hover, .emuwebapp-tabbed-delete:hover { 
+    background: #00d9ff; 
+}
+
+.emuwebapp-borderTitle {
+    position: absolute;
+	top: -12px; 
+	left: 5px;	
+	font-size: 1.2em;
+	background-color: #efefef;
+}
+
 
 .emuwebapp-tabbed ::-webkit-scrollbar
 {

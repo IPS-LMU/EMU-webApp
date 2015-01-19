@@ -2,19 +2,32 @@
 <div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteLevelDefinition(key)">X</a>
     <div class="emuwebapp-tabbed-level">
-		Name: <input type="text" value="{{value.name}}" style="margin-right: 20px;"></input>  
+		Name: <input type="text" ng-model="levelNames[key].attributeDefinitions[0].name" style="margin-right: 20px;" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
 	    Type: <select ng-model="levelTypes[key]" ng-options="opt as opt.label for opt in optionsLevelTypes"></select>
 	</div>
+	
 	<br />
-	Attribute Definitions:
+	
 	<small>
-	<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
-		<div ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
-		    Name: <input type="text" value="{{valueAttribute.name}}"></input>
-		    Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes"></select>
+	    <div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
+			<div class="emuwebapp-borderTitle">Attribute Definitions</div>
+				<div ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
+					<span class="emuwebapp-tabbed-attributeSpace">
+						Name: <input type="text" ng-model="levelNames[key].attributeDefinitions[keyAttribute].name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>
+					</span>
+					<span class="emuwebapp-tabbed-attributeSpace">
+						Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes"></select>
+						<a href ng-if="keyAttribute > 0" title="Delete" ng-click="deleteLevelAttribute(key)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
+					</span>
+				</div>
+				<div>
+					<br />
+					<a href title="Add new attribute definition" ng-click="deleteLevelAttribute(key)"><span class="emuwebapp-tabbed-add">+</span> add new attribute definition</a>
+				</div>
+			</div>
 		</div>
-	</div>
 	</small>
 	
+	<a href title="Add new attribute definition" ng-click="addLevelDefinition()"><span class="emuwebapp-tabbed-add">+</span> add new level definition</a>
+	
 </div>
-<button>Add new levelDefinition</button>	

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice) {
+	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.valid = Validationservice;
@@ -26,21 +26,30 @@ angular.module('emuwebApp')
 		$scope.optionsLevelTypes = [];
 		// holds all possible attribute values from config ie STRING
 		$scope.optionsLevelAttributes = [];
+		// holds all level types of the current levels
 		$scope.levelTypes = [];
+		// holds all level names of the current levels
+		$scope.levelNames = [];
+
+		// holds all level attributes of the current levels
 		$scope.levelAttributes = [];
 		
+		$scope.levelDefinitionProperties = {};
+		
 		$scope.setup = function () {
+		    
 		    var i = 1;
 		    // read db config file for enum types
 		    var dbconfigFileSchema = $scope.valid.getSchema('DBconfigFileSchema');
+		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
 		    // set levelDefinitions.items.properties.type.enum array
-			angular.forEach(dbconfigFileSchema.data.properties.levelDefinitions.items.properties.type.enum, function (type) {
+			angular.forEach($scope.levelDefinitionProperties.type.enum, function (type) {
 				$scope.optionsLevelTypes.push({ label: type, value: i });
 				++i;
 			});
 			// set attributeDefinitions.items.properties.type.enum array
 			i = 1
-			angular.forEach(dbconfigFileSchema.data.properties.levelDefinitions.items.properties.attributeDefinitions.items.properties.type.enum, function (type) {
+			angular.forEach($scope.levelDefinitionProperties.attributeDefinitions.items.properties.type.enum, function (type) {
 				$scope.optionsLevelAttributes.push({ label: type, value: i });
 				++i;
 			});
@@ -48,6 +57,7 @@ angular.module('emuwebApp')
 			// because of ng-option by reference :
 			angular.forEach($scope.cps.curDbConfig.levelDefinitions, function (definition) {
 				var j = 0;
+				$scope.levelNames.push(definition);
 				angular.forEach($scope.optionsLevelTypes, function (type) {
 				    if(type.label == definition.type) {
 				        $scope.levelTypes.push($scope.optionsLevelTypes[j]);
@@ -68,7 +78,6 @@ angular.module('emuwebApp')
 			    });
 			    i++			    
 			});
-			
 		}
 		
 		$scope.deleteLevelDefinition = function (key) {
@@ -100,5 +109,22 @@ angular.module('emuwebApp')
 			}
 			return {};
 		}
-		$scope.setup();
+
+		/**
+		 *
+		 */
+		$scope.cursorInTextField = function () {
+			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
+		};
+
+		/**
+		 *
+		 */
+		$scope.cursorOutOfTextField = function () {
+			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
+		};	
+		
+		$scope.setup();	
 });
