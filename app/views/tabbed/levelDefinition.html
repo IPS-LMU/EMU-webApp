@@ -17,8 +17,13 @@
 					</span>
 					<span class="emuwebapp-tabbed-attributeSpace">
 						Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes"></select>
-						<a href ng-if="keyAttribute > 0" title="Delete" ng-click="deleteLevelAttribute(key)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
+					</span>	
+					<span class="emuwebapp-tabbed-attributeSpace">
+						Legal Labels: <input type="text" title="Delete" value="{{valueAttribute.legalLabels.join()}}" />
 					</span>
+					<span class="emuwebapp-tabbed-attributeSpace">
+						<a ng-if="keyAttribute > 0" href title="Delete" ng-click="deleteLevelAttribute(key)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
+					</span>										
 				</div>
 				<div>
 					<br />

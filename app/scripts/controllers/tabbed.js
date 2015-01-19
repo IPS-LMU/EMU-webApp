@@ -24,10 +24,12 @@ angular.module('emuwebApp')
 		$scope.currentTab = 'views/tabbed/levelDefinition.html';
 		// holds all possible level type values from config ie ITEM EVENT etc
 		$scope.optionsLevelTypes = [];
+		$scope.optionsLinkTypes = [];
 		// holds all possible attribute values from config ie STRING
 		$scope.optionsLevelAttributes = [];
 		// holds all level types of the current levels
 		$scope.levelTypes = [];
+		$scope.linkTypes = [];
 		// holds all level names of the current levels
 		$scope.levelNames = [];
 
@@ -35,6 +37,7 @@ angular.module('emuwebApp')
 		$scope.levelAttributes = [];
 		
 		$scope.levelDefinitionProperties = {};
+		$scope.linkDefinitionProperties = {};
 		
 		$scope.setup = function () {
 		    
@@ -42,11 +45,17 @@ angular.module('emuwebApp')
 		    // read db config file for enum types
 		    var dbconfigFileSchema = $scope.valid.getSchema('DBconfigFileSchema');
 		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
+		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    // set levelDefinitions.items.properties.type.enum array
 			angular.forEach($scope.levelDefinitionProperties.type.enum, function (type) {
 				$scope.optionsLevelTypes.push({ label: type, value: i });
 				++i;
 			});
+		    // set linkDefinitions.items.properties.type.enum array
+			angular.forEach($scope.linkDefinitionProperties.type.enum, function (type) {
+				$scope.optionsLinkTypes.push({ label: type, value: i });
+				++i;
+			});			
 			// set attributeDefinitions.items.properties.type.enum array
 			i = 1
 			angular.forEach($scope.levelDefinitionProperties.attributeDefinitions.items.properties.type.enum, function (type) {
@@ -77,6 +86,17 @@ angular.module('emuwebApp')
 				    });
 			    });
 			    i++			    
+			});
+			
+			// because of ng-option by reference :
+			angular.forEach($scope.cps.curDbConfig.linkDefinitions, function (definition) {
+				var j = 0;
+				angular.forEach($scope.optionsLinkTypes, function (type) {
+				    if(type.label == definition.type) {
+				        $scope.linkTypes.push($scope.optionsLinkTypes[j]);
+				    }
+				    j++;
+			    });			    
 			});
 			console.log($scope.cps.vals);
 		}
