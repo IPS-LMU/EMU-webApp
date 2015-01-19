@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('dragout', function (DataService, loadedMetaDataService, browserDetector) {
+  .directive('dragout', function (DataService, loadedMetaDataService, browserDetector, ConfigProviderService) {
     return {
       restrict: 'A',
       replace:true,
@@ -20,7 +20,7 @@ angular.module('emuwebApp')
         };
         
         scope.isActive = function () {
-            return (scope.name === loadedMetaDataService.getCurBndl().name);
+            return (scope.name === loadedMetaDataService.getCurBndl().name && ConfigProviderService.vals.main.comMode === 'embedded');
         };
         
         scope.getURL = function (data) {
