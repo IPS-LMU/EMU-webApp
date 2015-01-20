@@ -5,8 +5,6 @@ angular.module('emuwebApp')
 
 		$scope.cps = ConfigProviderService;
 		$scope.data = undefined;
-		
-		//$scope.myData = ArrayHelperService.convertArrayToXYjsoArray(modalService.dataIn.y);
 
 		/**
 		 *
@@ -28,7 +26,7 @@ angular.module('emuwebApp')
 		 *  Save changes made on SSFF
 		 */
 		$scope.saveChanges = function (name) {
-			modalService.close('saveChanges');
+			modalService.close();
 		};
 
 
@@ -36,7 +34,7 @@ angular.module('emuwebApp')
 		 *  Save changes made on SSFF
 		 */
 		$scope.discardChanges = function (name) {
-			modalService.close('discardChanges');
+			modalService.close();
 		};
 
 
