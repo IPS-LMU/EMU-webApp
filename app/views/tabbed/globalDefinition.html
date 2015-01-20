@@ -1,9 +1,32 @@
 <!-- globalDefinitions -->
-<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig">
-    <div class="emuwebapp-tabbed-level">
-        <span class="emuwebapp-tabbed-attributeSpace">
-	        {{value}}
-	    </span>
+<div class="emuwebapp-roundedBorderFrame">
+    <div class="emuwebapp-tabbed-table">
+		<div class="emuwebapp-tabbed-row">
+			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
+				UUID
+			</span>
+			<span class="emuwebapp-tabbed-cell">
+				<input type="text" name="uuid" value="{{cps.curDbConfig.UUID}}" size="45">
+				<button class="emuwebapp-mini-btn-dialog">generate new UUID</button>
+			</span>			
+		</div>
+		<br />
+		<div class="emuwebapp-tabbed-row">
+			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
+				Name
+			</span>
+			<span class="emuwebapp-tabbed-cell">
+				<input type="text" name="uuid" value="{{cps.curDbConfig.name}}" size="45">
+			</span>
+		</div>
+		<br />
+		<div class="emuwebapp-tabbed-row">
+			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
+				Media File Extension
+			</span>
+			<span class="emuwebapp-tabbed-cell">
+				<input type="text" name="uuid" value="{{cps.curDbConfig.mediafileExtension}}" size="45">
+			</span>
+		</div>
 	</div>
-	<br />
 </div>

@@ -154,3 +154,11 @@
     display:table-cell;
     width: 50%;
 }
+.emuwebapp-tabbed-cell3 {
+    display:table-cell;
+    width: 33%;
+}
+.emuwebapp-align-right {
+    text-align: right;
+    padding-right: 10px;
+}

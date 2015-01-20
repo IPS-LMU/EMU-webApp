@@ -1,28 +1,40 @@
 <!-- emu app config -->
 <div class="emuwebapp-roundedBorderFrame" >
-    <div class="emuwebapp-tabbed-level">
-        <br />
-		<small ng-repeat="(key, value) in cps.vals">
-			<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table">
-				<div class="emuwebapp-borderTitle"> &rarr; {{key}} </div>
-					<div class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value">
-						<span class="emuwebapp-tabbed-cell">
-							{{subkey}}
-						</span>
-						<span ng-switch on="subvalue">
-							<span class="emuwebapp-tabbed-cell" ng-switch-when="true">
-								<input type="checkbox" name="{{subkey}}" value="false">
-							</span>
-							<span class="emuwebapp-tabbed-cell" ng-switch-when="false">
-								<input type="checkbox" name="{{subkey}}" value="true" checked>
-							</span>	
-							<span class="emuwebapp-tabbed-cell" ng-switch-default>
-								<input type="text" name="{{subkey}}" value="{{subvalue}}">
-							</span>		
-						</span>				
-					</div>
-				</div>
-			</div>
-		</small>
+    <!-- spectrogram Settings -->
+	<h3>Spectrogram Settings</h3>
+	<div class="emuwebapp-tabbed-row" ng-repeat="(key, value) in cps.vals.spectrogramSettings">
+		<span class="emuwebapp-tabbed-cell">{{key}}</span>
+		<span ng-switch on="value">
+		    <span class="emuwebapp-tabbed-cell" ng-switch-when="true">
+		        <input type="checkbox" name="{{key}}" value="false">
+		    </span>
+		    <span class="emuwebapp-tabbed-cell" ng-switch-when="false">
+		        <input type="checkbox" name="{{key}}" value="true" checked>
+		    </span>	
+		    <span class="emuwebapp-tabbed-cell" ng-switch-default>
+		        <input type="text" name="{{key}}" value="{{value}}">
+		    </span>
+		</span>
 	</div>
 </div>
+<br />
+<div class="emuwebapp-roundedBorderFrame" >
+    <!-- perspectives Settings -->
+	<h3>Perspectives Settings</h3>
+	<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives">
+		<div class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value">
+			<span ng-switch on="subvalue">
+				<span class="emuwebapp-tabbed-cell" ng-switch-when="true">
+					<input type="checkbox" name="{{subkey}}" value="false">
+				</span>
+				<span class="emuwebapp-tabbed-cell" ng-switch-when="false">
+					<input type="checkbox" name="{{subkey}}" value="true" checked>
+				</span>	
+				<span class="emuwebapp-tabbed-cell" ng-switch-default>
+					<input type="text" name="{{subkey}}" value="{{subvalue}}">
+				</span>		
+			</span>				
+		</div>
+	</div>
+</div>
+
