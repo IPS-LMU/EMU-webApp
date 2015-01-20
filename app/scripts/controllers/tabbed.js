@@ -22,14 +22,19 @@ angular.module('emuwebApp')
 				url: 'views/tabbed/globalDefinition.html'
 		}];
 		$scope.currentTab = 'views/tabbed/levelDefinition.html';
-		// holds all possible level type values from config ie ITEM EVENT etc
+		// holds all possible level select values from config ie ITEM EVENT etc
 		$scope.optionsLevelTypes = [];
+		// holds all possible link select values from config ie ONE_TO_MANY etc
 		$scope.optionsLinkTypes = [];
+		// holds all possible level select values
+		$scope.optionsLevels = [];
 		// holds all possible attribute values from config ie STRING
 		$scope.optionsLevelAttributes = [];
 		// holds all level types of the current levels
 		$scope.levelTypes = [];
 		$scope.linkTypes = [];
+		$scope.superLevel = [];
+		$scope.subLevel = [];
 		// holds all level names of the current levels
 		$scope.levelNames = [];
 
@@ -46,22 +51,35 @@ angular.module('emuwebApp')
 		    var dbconfigFileSchema = $scope.valid.getSchema('DBconfigFileSchema');
 		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
+		    
 		    // set levelDefinitions.items.properties.type.enum array
+			i = 1
 			angular.forEach($scope.levelDefinitionProperties.type.enum, function (type) {
 				$scope.optionsLevelTypes.push({ label: type, value: i });
 				++i;
 			});
+			
 		    // set linkDefinitions.items.properties.type.enum array
+			i = 1
 			angular.forEach($scope.linkDefinitionProperties.type.enum, function (type) {
 				$scope.optionsLinkTypes.push({ label: type, value: i });
 				++i;
-			});			
+			});		
+			
 			// set attributeDefinitions.items.properties.type.enum array
 			i = 1
 			angular.forEach($scope.levelDefinitionProperties.attributeDefinitions.items.properties.type.enum, function (type) {
 				$scope.optionsLevelAttributes.push({ label: type, value: i });
 				++i;
 			});
+				
+			i = 1
+		    // set linkDefinitions.items.properties.type.enum array
+			angular.forEach($scope.cps.curDbConfig.levelDefinitions, function (definition) {
+				$scope.optionsLevels.push({ label: definition.name, value: i });
+				++i;
+			});
+			
 			i = 0
 			// because of ng-option by reference :
 			angular.forEach($scope.cps.curDbConfig.levelDefinitions, function (definition) {
@@ -87,18 +105,23 @@ angular.module('emuwebApp')
 			    });
 			    i++			    
 			});
-			
+
 			// because of ng-option by reference :
 			angular.forEach($scope.cps.curDbConfig.linkDefinitions, function (definition) {
-				var j = 0;
 				angular.forEach($scope.optionsLinkTypes, function (type) {
 				    if(type.label == definition.type) {
-				        $scope.linkTypes.push($scope.optionsLinkTypes[j]);
+				        $scope.linkTypes.push(type);
 				    }
-				    j++;
-			    });			    
+			    });	
+				angular.forEach($scope.optionsLevels, function (level) {
+				    if(level.label == definition.superlevelName) {
+			            $scope.superLevel.push(level);
+				    }
+				    if(level.label == definition.sublevelName) {
+			            $scope.subLevel.push(level);
+				    } 
+			    });			      
 			});
-			console.log($scope.cps.vals);
 		}
 		
 		$scope.deleteLevelDefinition = function (key) {

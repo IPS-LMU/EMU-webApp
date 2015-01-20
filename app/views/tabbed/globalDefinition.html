@@ -1,4 +1,9 @@
-<div class="emuwebapp-tabbed-view">
-	<h1>global DB Definitions</h1>
-	<p>Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc.</p>
+<!-- globalDefinitions -->
+<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig">
+    <div class="emuwebapp-tabbed-level">
+        <span class="emuwebapp-tabbed-attributeSpace">
+	        {{value}}
+	    </span>
+	</div>
+	<br />
 </div>

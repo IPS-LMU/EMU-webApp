@@ -1,4 +1,19 @@
-<div class="emuwebapp-tabbed-view">
-	<h1>SSFF Definitions</h1>
-	<p>Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc.</p>
+<!-- ssffTrackDefinitions -->
+<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
+    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteSSFFTrackDefinition(key)">X</a>
+    <div class="emuwebapp-tabbed-level">
+        <span class="emuwebapp-tabbed-attributeSpace">
+	        Name: <input type="text" value="{{value.name}}"/>
+	    </span>
+	    <span class="emuwebapp-tabbed-attributeSpace">
+	        Column Name: <input type="text" value="{{value.columnName}}"/>
+	    </span>
+	    <span class="emuwebapp-tabbed-attributeSpace">	    
+	        File Extension: <input type="text" value="{{value.fileExtension}}"/>
+	    </span>
+	</div>
+	
+	<br />
+	
 </div>
+<a href title="Add new attribute definition" ng-click="addSSFFTrackDefinition()"><span class="emuwebapp-tabbed-add">+</span> add new ssff definition</a>

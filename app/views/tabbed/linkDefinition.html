@@ -1,10 +1,16 @@
-<!-- levelDefinitions -->
+<!-- linkDefinitions -->
 <div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteLinkDefinition(key)">X</a>
     <div class="emuwebapp-tabbed-level">
-	    Type: <select ng-model="linkTypes[key]" ng-options="opt as opt.label for opt in optionsLinkTypes"></select>
-	    Super Level: <select ng-model="superLevel[key]" ng-options="opt as opt.label for opt in levelNames"></select>
-	    Sub Level: <select ng-model="subLevel[key]" ng-options="opt as opt.label for opt in levelNames"></select>
+        <span class="emuwebapp-tabbed-attributeSpace">
+	        Type: <select ng-model="linkTypes[key]" ng-options="opt as opt.label for opt in optionsLinkTypes"></select>
+	    </span>
+	    <span class="emuwebapp-tabbed-attributeSpace">
+	        Super Level: <select ng-model="superLevel[key]" ng-options="opt as opt.label for opt in optionsLevels"></select>
+	    </span>
+	    <span class="emuwebapp-tabbed-attributeSpace">	    
+	        Sub Level: <select ng-model="subLevel[key]" ng-options="opt as opt.label for opt in optionsLevels"></select>
+	    </span>
 	</div>
 	
 	<br />
