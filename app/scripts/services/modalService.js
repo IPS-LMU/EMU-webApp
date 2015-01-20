@@ -88,6 +88,17 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		sServObj.closeAndResolve = function (status) {
+			viewState.setEditing(false);
+			viewState.setState(viewState.prevState);
+			sServObj.isOpen = false;
+			sServObj.defer.resolve(status);
+		};
+		
+		
+		/**
+		 *
+		 */
 		sServObj.confirm = function () {
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
