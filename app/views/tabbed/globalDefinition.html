@@ -6,8 +6,8 @@
 				UUID
 			</span>
 			<span class="emuwebapp-tabbed-cell">
-				<input type="text" name="uuid" value="{{cps.curDbConfig.UUID}}" size="45">
-				<button class="emuwebapp-mini-btn-dialog">generate new UUID</button>
+				<input type="text" name="uuid" value="{{cps.curDbConfig.UUID}}" size="45" class="emuwebapp-tabbed-input-bold">
+				<button ng-click="generateUUID()" class="emuwebapp-mini-btn-dialog" style="background: #0DC5FF">generate new UUID</button>
 			</span>			
 		</div>
 		<br />
@@ -16,7 +16,7 @@
 				Name
 			</span>
 			<span class="emuwebapp-tabbed-cell">
-				<input type="text" name="uuid" value="{{cps.curDbConfig.name}}" size="45">
+				<input type="text" name="uuid" value="{{cps.curDbConfig.name}}" size="45" class="emuwebapp-tabbed-input-bold">
 			</span>
 		</div>
 		<br />
@@ -25,7 +25,7 @@
 				Media File Extension
 			</span>
 			<span class="emuwebapp-tabbed-cell">
-				<input type="text" name="uuid" value="{{cps.curDbConfig.mediafileExtension}}" size="45">
+				<input type="text" name="uuid" value="{{cps.curDbConfig.mediafileExtension}}" size="45" class="emuwebapp-tabbed-input-bold">
 			</span>
 		</div>
 	</div>

@@ -1,9 +1,13 @@
 <!-- levelDefinitions -->
 <div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteLevelDefinition(key)">X</a>
-    <div class="emuwebapp-tabbed-level">
-		Name: <input type="text" ng-model="levelNames[key].attributeDefinitions[0].name" style="margin-right: 20px;" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
-	    Type: <select ng-model="levelTypes[key]" ng-options="opt as opt.label for opt in optionsLevelTypes"></select>
+    <div class="emuwebapp-tabbed-table">
+        <span class="emuwebapp-tabbed-cell3">
+		    Name <input name="levelname" type="text" ng-model="levelNames[key].attributeDefinitions[0].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
+		</span>
+		<span class="emuwebapp-tabbed-cell3">
+	        Type: <select ng-model="levelTypes[key]" ng-options="opt as opt.label for opt in optionsLevelTypes" class="emuwebapp-tabbed-input-bold" ></select>
+	    </span>
 	</div>
 	
 	<br />
@@ -11,17 +15,17 @@
 	<small>
 	    <div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
 			<div class="emuwebapp-borderTitle">Attribute Definitions</div>
-				<div ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
-					<span class="emuwebapp-tabbed-attributeSpace">
-						Name: <input type="text" ng-model="levelNames[key].attributeDefinitions[keyAttribute].name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>
+				<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
+					<span class="emuwebapp-tabbed-cell4">
+						Name: <input type="text" ng-model="levelNames[key].attributeDefinitions[keyAttribute].name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" class="emuwebapp-tabbed-input"></input>
 					</span>
-					<span class="emuwebapp-tabbed-attributeSpace">
-						Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes"></select>
+					<span class="emuwebapp-tabbed-cell4">
+						Type: <select ng-model="levelAttributes[key][keyAttribute]" ng-options="opt as opt.label for opt in optionsLevelAttributes" class="emuwebapp-tabbed-input"></select>
 					</span>	
-					<span class="emuwebapp-tabbed-attributeSpace">
-						Legal Labels: <input type="text" title="Delete" value="{{valueAttribute.legalLabels.join()}}" />
+					<span class="emuwebapp-tabbed-cell4">
+						Legal Labels: <input type="text" title="Delete" value="{{valueAttribute.legalLabels.join()}}" class="emuwebapp-tabbed-input" />
 					</span>
-					<span class="emuwebapp-tabbed-attributeSpace">
+					<span class="emuwebapp-tabbed-cell4">
 						<a ng-if="keyAttribute > 0" href title="Delete" ng-click="deleteLevelAttribute(key)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
 					</span>										
 				</div>

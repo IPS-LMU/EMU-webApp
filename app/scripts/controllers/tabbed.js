@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice) {
+	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice, uuid) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.valid = Validationservice;
@@ -128,16 +128,8 @@ angular.module('emuwebApp')
 		    console.log(key);
 		}
 		
-		$scope.getTypeOfLevel = function (name) {
-		    var i = 0;
-		    var ret = -1;
-			angular.forEach($scope.optionsLevelTypes, function (type) {
-				if(type.label == name) {
-				    ret = i;
-				}
-				i++;
-			});
-		    return ret;
+		$scope.generateUUID = function () {
+		    $scope.cps.curDbConfig.UUID = uuid.new();
 		}
 		
 		$scope.onClickTab = function (tab) {

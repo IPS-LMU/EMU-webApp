@@ -3,13 +3,13 @@
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteLinkDefinition(key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
-	        Type: <select ng-model="linkTypes[key]" ng-options="opt as opt.label for opt in optionsLinkTypes"></select>
+	        Type: <select ng-model="linkTypes[key]" ng-options="opt as opt.label for opt in optionsLinkTypes" class="emuwebapp-tabbed-input-bold"></select>
 	    </span>
 	    <span class="emuwebapp-tabbed-cell3">
-	        Super Level: <select ng-model="superLevel[key]" ng-options="opt as opt.label for opt in optionsLevels"></select>
+	        Super Level: <select ng-model="superLevel[key]" ng-options="opt as opt.label for opt in optionsLevels" class="emuwebapp-tabbed-input-bold"></select>
 	    </span>
 	    <span class="emuwebapp-tabbed-cell3">	    
-	        Sub Level: <select ng-model="subLevel[key]" ng-options="opt as opt.label for opt in optionsLevels"></select>
+	        Sub Level: <select ng-model="subLevel[key]" ng-options="opt as opt.label for opt in optionsLevels" class="emuwebapp-tabbed-input-bold"></select>
 	    </span>
 	</div>
 	

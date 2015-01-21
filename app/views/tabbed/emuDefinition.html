@@ -1,20 +1,23 @@
 <!-- emu app config -->
 <div class="emuwebapp-roundedBorderFrame" >
     <!-- spectrogram Settings -->
-	<h3>Spectrogram Settings</h3>
-	<div class="emuwebapp-tabbed-row" ng-repeat="(key, value) in cps.vals.spectrogramSettings">
-		<span class="emuwebapp-tabbed-cell">{{key}}</span>
-		<span ng-switch on="value">
-		    <span class="emuwebapp-tabbed-cell" ng-switch-when="true">
-		        <input type="checkbox" name="{{key}}" value="false">
-		    </span>
-		    <span class="emuwebapp-tabbed-cell" ng-switch-when="false">
-		        <input type="checkbox" name="{{key}}" value="true" checked>
-		    </span>	
-		    <span class="emuwebapp-tabbed-cell" ng-switch-default>
-		        <input type="text" name="{{key}}" value="{{value}}">
-		    </span>
-		</span>
+	<div class="emuwebapp-tabbed-table">
+		<div class="emuwebapp-tabbed-row"  ng-repeat="(key, value) in cps.vals.spectrogramSettings">
+			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
+			    {{key}}
+			</span>
+			<span ng-switch on="value">
+				<span class="emuwebapp-tabbed-cell" ng-switch-when="true">
+					<input type="checkbox" name="{{key}}" value="false" class="emuwebapp-tabbed-input">
+				</span>
+				<span class="emuwebapp-tabbed-cell" ng-switch-when="false">
+					<input type="checkbox" name="{{key}}" value="true" checked class="emuwebapp-tabbed-input">
+				</span>	
+				<span class="emuwebapp-tabbed-cell" ng-switch-default>
+					<input type="text" name="{{key}}" value="{{value}}" class="emuwebapp-tabbed-input">
+				</span>
+			</span>
+		</div>
 	</div>
 </div>
 <br />

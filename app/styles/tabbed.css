@@ -55,9 +55,11 @@
 	border: 1px solid;
     border-radius: 10px;
     text-align: left;
-    background: #efefef;
+    background: linear-gradient(#f1f1f1, #e2e2e2);    
     margin-bottom: 15px;
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     position: relative;
 }
 
@@ -119,20 +121,17 @@
 }
 
 
-.emuwebapp-tabbed ::-webkit-scrollbar
-{
-  width: 12px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
+.emuwebapp-tabbed ::-webkit-scrollbar {
+    width: 12px;  /* for vertical scrollbars */
+    height: 12px; /* for horizontal scrollbars */
 }
 
-.emuwebapp-tabbed ::-webkit-scrollbar-track
-{
-  background: #0DC5FF;
+.emuwebapp-tabbed ::-webkit-scrollbar-track {
+    background: #0DC5FF;
 }
 
-.emuwebapp-tabbed ::-webkit-scrollbar-thumb
-{
-  background: rgba(255, 255, 255, 0.75);
+.emuwebapp-tabbed ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.75);
 }
 
 .emuwebapp-tabbed-table {
@@ -158,7 +157,29 @@
     display:table-cell;
     width: 33%;
 }
+.emuwebapp-tabbed-cell4 {
+    display:table-cell;
+    width: 25%;
+}
 .emuwebapp-align-right {
     text-align: right;
     padding-right: 10px;
 }
+.emuwebapp-tabbed-input, .emuwebapp-tabbed-input-bold {
+    overflow: hidden;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 2px;
+	background: #fff;
+}
+.emuwebapp-tabbed-input {
+    font-size: 0.9em;
+    border: 1px solid #666;
+}
+
+.emuwebapp-tabbed-input-bold {
+    font-size: 1.1em;
+    border: 1px solid #0DC5FF;
+}
+
