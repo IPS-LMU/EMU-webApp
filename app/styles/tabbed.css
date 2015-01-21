@@ -172,11 +172,15 @@
     display:table-cell;
     width: 25%;
 }
+.emuwebapp-tabbed-cell5 {
+    display:table-cell;
+    width: 20%;
+}
 .emuwebapp-align-right {
     text-align: right;
     padding-right: 10px;
 }
-.emuwebapp-tabbed-input, .emuwebapp-tabbed-input-bold {
+.emuwebapp-tabbed-input, .emuwebapp-tabbed-input-bold, .emuwebapp-tabbed-input-small {
     overflow: hidden;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -192,5 +196,8 @@
 .emuwebapp-tabbed-input-bold {
     font-size: 1.1em;
     border: 1px solid #0DC5FF;
+}
+.emuwebapp-tabbed-input-small {
+    width: 50%;
 }
 

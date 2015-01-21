@@ -4,6 +4,7 @@ angular.module('emuwebApp')
 	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice, uuid) {
 
 		$scope.cps = ConfigProviderService;
+		$scope.vs = viewState;
 		$scope.valid = Validationservice;
 		$scope.currentTab = 'views/tabbed/levelDefinition.html';
 		$scope.levelDefinitionProperties = {};
@@ -33,7 +34,7 @@ angular.module('emuwebApp')
 		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
-		    console.log($scope.spectroDefinitionProperties);
+		    console.log($scope.cps.vals);
 		}
 		
 		$scope.generateUUID = function () {
@@ -88,7 +89,7 @@ angular.module('emuwebApp')
 		        case 'levelattribute':
 		            break;
 		    }		    
-		}
+		}		
 		
 		$scope.setup();	
 });

@@ -57,21 +57,21 @@
 		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-		  <td><div ng-style="getColorOfAnchor(0);"></div></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 0);"></div></td>
 		</tr>
 		<tr>
 		  <td>Second spectrogram color anchor: </td>
 		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-		  <td><div ng-style="getColorOfAnchor(1);"></div></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 1);"></div></td>
 		</tr>
 		<tr>
 		  <td>Third spectrogram color anchor: </td>
 		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
 		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-		  <td><div ng-style="getColorOfAnchor(2);"></div></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 2);"></div></td>
 		</tr>
 	  </table>
 	  <span ng-show="htmlError(8)"><b style="color: #f00;">Error:</b> Only Integers allowed.</span>

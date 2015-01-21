@@ -1151,6 +1151,18 @@ angular.module('emuwebApp')
     sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
+    
+    /**
+     *
+     */
+    sServObj.getColorOfAnchor = function (val, anchorNr) {
+	    var curStyle = {
+			'background-color': 'rgb(' + val[anchorNr][0] + ',' + val[anchorNr][1] + ',' + val[anchorNr][2] + ')',
+			'width': '10px',
+			'height': '10px'
+		};
+		return (curStyle);
+	};    
 
     return sServObj;
 

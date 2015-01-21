@@ -39,18 +39,6 @@ angular.module('emuwebApp')
 			viewState.setcursorInTextField(false);
 		};
 
-		/**
-		 *
-		 */
-		$scope.getColorOfAnchor = function (anchorNr) {
-			var curStyle = {
-				'background-color': 'rgb(' + $scope.modalVals.heatMapColorAnchors[anchorNr][0] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][1] + ',' + $scope.modalVals.heatMapColorAnchors[anchorNr][2] + ')',
-				'width': '10px',
-				'height': '10px'
-			};
-			return (curStyle);
-		};
-
 		//////////////////////////
 		// window size functions
 
