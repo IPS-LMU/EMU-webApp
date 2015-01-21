@@ -9,6 +9,10 @@
     height: 100%;  
 }
 
+.emuwebapp-tabbed-title {
+    font-size: 1.2em;
+}
+
 .emuwebapp-tabbed :after {
     content: '';
     clear: both;
@@ -109,7 +113,14 @@
 }
 
 .emuwebapp-tabbed-close:hover, .emuwebapp-tabbed-delete:hover { 
-    background: #00d9ff; 
+    background: #00d9ff;
+    text-decoration: none; 
+}
+
+.emuwebapp-tabbed-close:active, .emuwebapp-tabbed-delete:active { 
+    background: #f00;
+    color: #000;
+    text-decoration: none; 
 }
 
 .emuwebapp-borderTitle {
