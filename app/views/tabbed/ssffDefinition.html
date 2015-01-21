@@ -1,6 +1,6 @@
 <!-- ssffTrackDefinitions -->
 <div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
-    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteSSFFTrackDefinition(key)">X</a>
+    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
 	        Name: <input type="text" value="{{value.name}}" class="emuwebapp-tabbed-input-bold"/>
@@ -12,11 +12,7 @@
 	        File Extension: <input type="text" value="{{value.fileExtension}}" class="emuwebapp-tabbed-input-bold"/>
 	    </span>
 	</div>
-	
-	<br />
-	
 </div>
-
 <br />
 <a href title="Add new definition" ng-click="addDefinition('ssff')"><span class="emuwebapp-tabbed-add">+</span> add new ssff definition</a>
 <br />

@@ -34,7 +34,6 @@ angular.module('emuwebApp')
 		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
-		    console.log($scope.cps.vals);
 		}
 		
 		$scope.generateUUID = function () {
@@ -72,21 +71,41 @@ angular.module('emuwebApp')
 		};
 			
 		$scope.addDefinition = function (typeOfDefinition, key, keyAttribute) {
-		    console.log(typeOfDefinition, key, keyAttribute);
 		    switch(typeOfDefinition) {
 		        case 'level':
+		            $scope.cps.curDbConfig.levelDefinitions.push({name: '', type: 'ITEM', attributeDefinitions: [{name: '', type: 'STRING'}]});
 		            break;
 		        case 'levelattribute':
+		            $scope.cps.curDbConfig.levelDefinitions[key].attributeDefinitions.push({name: '', type: 'STRING', legalLabels: []});
 		            break;
+		        case 'link':
+		            $scope.cps.curDbConfig.linkDefinitions.push({type: 'undefined', superlevelName: 'undefined', sublevelName: 'undefined'});
+		            break;
+		        case 'ssff':
+		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: "undefined", columnName: "undefined", fileExtension: "undefined"})
+		            break;	
+		        case 'perspective':
+		            //$scope.cps.vals.push({name: '', signalCanvases: {}, levelCanvases: {}, twoDimCanvases: {}});
+		            break;	            
 		    }
 		}
 		
 		$scope.deleteDefinition = function (typeOfDefinition, key, keyAttribute) {
-		    console.log(typeOfDefinition, key, keyAttribute);
 		    switch(typeOfDefinition) {
 		        case 'level':
+		            $scope.cps.curDbConfig.levelDefinitions.splice(key, 1);
 		            break;
 		        case 'levelattribute':
+		            $scope.cps.curDbConfig.levelDefinitions[key].attributeDefinitions.splice(keyAttribute, 1);
+		            break;
+		        case 'link':
+		            $scope.cps.curDbConfig.linkDefinitions.splice(key, 1);
+		            break;
+		        case 'ssff':
+		            $scope.cps.curDbConfig.ssffTrackDefinitions.splice(key, 1);
+		            break;
+		        case 'perspective':
+		            $scope.cps.vals.perspectives.splice(key, 1);
 		            break;
 		    }		    
 		}		
