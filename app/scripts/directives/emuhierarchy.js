@@ -65,6 +65,21 @@ angular.module('emuwebApp')
 	//////////////////////
 	// helper functions
 
+
+	/**
+	 *
+	 */
+	scope.selectItem = function (item) {
+		scope.selectedItem = item;
+		viewState.selectedItemID = item.id;
+	};
+
+	scope.selectLink = function (link) {
+		scope.selectedLink = link;
+		viewState.selectedLinkID = link.id;
+		console.debug('Link ID', 's' + link.fromID + 't' + link.toID);
+	};
+
 	/**
 	 * Function to center node when clicked/dropped so node doesn't get lost when
 	 * collapsing/moving with large amount of children.
@@ -279,12 +294,12 @@ angular.module('emuwebApp')
 	};
 	
 	scope.nodeOnMouseOver = function (d) {
-		scope.selectedItem = d;
+		scope.selectItem(d);
 		scope.renderSelectionOnly();
 	};
 
 	scope.linkOnMouseOver = function (d) {
-		scope.selectedLink = d;
+		scope.selectLink(d);
 		scope.renderSelectionOnly();
 	};
 		
