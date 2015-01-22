@@ -218,3 +218,7 @@
     cursor: move;
     width: 100%;
 }
+.emuwebapp-tabbed-orderitemdelete {
+    top: -5px;
+    right: -5px;
+}

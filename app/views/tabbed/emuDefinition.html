@@ -63,9 +63,6 @@
     <div class="emuwebapp-tabbed-table">
 		<div class="emuwebapp-tabbed-title">Perspectives Settings</div>
 		<div>&nbsp;</div>
-		<div>{{cps.vals.perspectives[0]}}</div>
-		<div>&nbsp;</div>
-		<div>{{cps.vals.perspectives[1]}}</div> 
 		<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives">
 			<a href title="Delete" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('perspective', key)">X</a>
 			<div class="emuwebapp-tabbed-row">
@@ -83,15 +80,66 @@
 					</span>
 					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3" style="padding-bottom: 10px;">
 					    <span ng-switch-when="order">
-							 <table class="emuwebapp-tabbed-order">
-								<tbody ui-sortable ng-model="subvalue">
-									<tr ng-repeat="item in subvalue">
-										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
-									</tr>
-								</tbody>{{list}}
-							</table>
-							<a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ui-sortable ng-model="subvalue">
+					                <tr ng-repeat="item in subvalue">
+					                    <td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
 				        </span>
+					    <span ng-switch-when="assign">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem">Signal Canvas</td>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem">Track Name</td>
+					                </tr>
+					                <tr ng-repeat="item in subvalue">
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        {{item.signalCanvasName}}
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        {{item.ssffTrackName}}
+					                    </td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+					    <span ng-switch-when="contourLims">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="33%" class="emuwebapp-tabbed-assignitem">Track Name</td>
+					                    <td width="33%" class="emuwebapp-tabbed-assignitem">minContourIdx</td>
+					                    <td width="33%" class="emuwebapp-tabbed-assignitem">maxContourIdx</td>
+					                </tr>
+					                <tr ng-repeat="item in subvalue">
+					                    <td class="emuwebapp-tabbed-assignitem">{{item.ssffTrackName}}</td>
+					                    <td class="emuwebapp-tabbed-assignitem">{{item.minContourIdx}}</td>
+					                    <td class="emuwebapp-tabbed-assignitem">{{item.maxContourIdx}}</td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+					    <span ng-switch-when="contourColors">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem">Track Name</td>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem">Colors</td>
+					                </tr>
+					                <tr ng-repeat="item in subvalue">
+					                    <td class="emuwebapp-tabbed-assignitem">{{item.ssffTrackName}}</td>
+					                    <td class="emuwebapp-tabbed-assignitem">{{item.colors}}</td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>				        
 				        <span ng-switch-default class="emuwebapp-tabbed-cell">
 				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 				        </span>

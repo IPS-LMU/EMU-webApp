@@ -23,7 +23,7 @@
 						Type: <select ng-model="cps.curDbConfig.levelDefinitions[key].attributeDefinitions[keyAttribute].type" ng-options="opt as opt for opt in levelDefinitionProperties.attributeDefinitions.items.properties.type.enum" class="emuwebapp-tabbed-input"></select>
 					</span>	
 					<span class="emuwebapp-tabbed-cell4">
-						Legal Labels: <input type="text" title="Delete" value="{{valueAttribute.legalLabels.join()}}" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
+						Legal Labels: <input type="text" title="LegalLabel" value="{{valueAttribute.legalLabels.join()}}" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 					</span>
 					<span class="emuwebapp-tabbed-cell4">
 						<a ng-if="keyAttribute > 0" href title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
