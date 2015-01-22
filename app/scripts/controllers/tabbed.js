@@ -85,7 +85,7 @@ angular.module('emuwebApp')
 		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: "undefined", columnName: "undefined", fileExtension: "undefined"})
 		            break;	
 		        case 'perspective':
-		            //$scope.cps.vals.push({name: '', signalCanvases: {}, levelCanvases: {}, twoDimCanvases: {}});
+		            $scope.cps.vals.perspectives.push({name: '', signalCanvases: { order: [], assign: [], contourLims: [], contourColors: []}, levelCanvases: { order: [] }, twoDimCanvases: { order: [] }});
 		            break;	            
 		    }
 		}

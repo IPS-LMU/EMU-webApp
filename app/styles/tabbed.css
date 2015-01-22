@@ -8,17 +8,14 @@
     left: 0;  
     height: 100%;  
 }
-
 .emuwebapp-tabbed-title {
     font-size: 1.2em;
 }
-
 .emuwebapp-tabbed :after {
     content: '';
     clear: both;
     display: block;
 }
-
 .emuwebapp-tabbed-ul {
     list-style: none;
     padding: 0;
@@ -158,23 +155,28 @@
 }
 .emuwebapp-tabbed-row {
     display:table-row;
-    width: 100%;    
+    width: 100%;
+    vertical-align: top;    
 }
 .emuwebapp-tabbed-cell {
     display:table-cell;
     width: 50%;
+    vertical-align: top;
 }
 .emuwebapp-tabbed-cell3 {
     display:table-cell;
     width: 33%;
+    vertical-align: top;
 }
 .emuwebapp-tabbed-cell4 {
     display:table-cell;
     width: 25%;
+    vertical-align: top;
 }
 .emuwebapp-tabbed-cell5 {
     display:table-cell;
     width: 20%;
+    vertical-align: top;
 }
 .emuwebapp-align-right {
     text-align: right;
@@ -192,12 +194,27 @@
     font-size: 0.9em;
     border: 1px solid #666;
 }
-
 .emuwebapp-tabbed-input-bold {
     font-size: 1.1em;
     border: 1px solid #0DC5FF;
 }
 .emuwebapp-tabbed-input-small {
     width: 50%;
+    font-size: 0.8em;
+    border: 1px solid #666;    
 }
-
+.emuwebapp-tabbed-order {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 2px;
+    width: 100%;
+}
+.emuwebapp-tabbed-orderitem {
+    background: #fff;
+    border: 1px solid #0DC5FF;
+    margin: 4px;
+    padding: 4px;
+    cursor: move;
+    width: 100%;
+}

@@ -1,23 +1,5 @@
 <!-- emu app config -->
 <div class="emuwebapp-roundedBorderFrame" >
-    <!-- perspectives Settings -->
-    <div class="emuwebapp-tabbed-table">
-		<div class="emuwebapp-tabbed-title">Font Settings</div>
-		<div>&nbsp;</div>    
-		<div class="emuwebapp-tabbed-row" ng-repeat="(key, value) in cps.vals.font">
-			<span class="emuwebapp-tabbed-cell3">
-				{{key}}
-			</span>						
-			<span class="emuwebapp-tabbed-cell" style="padding-bottom: 10px;">
-				<input type="text" ng-model="cps.vals.font[key]" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
-			</span>						
-		</div>
-	</div>
-</div>
-
-<br />
-
-<div class="emuwebapp-roundedBorderFrame" >
     <!-- spectrogram Settings -->
 	<div class="emuwebapp-tabbed-table">
 	    <div class="emuwebapp-tabbed-title">Spectrogram Settings</div>
@@ -66,7 +48,7 @@
 							<select ng-model="value" ng-options="opt as opt for opt in spectroDefinitionProperties.window.enum" class="emuwebapp-tabbed-input-bold"></select>
 						</span>
 						<span ng-switch-default>
-							<input type="text" name="{{key}}" value="{{value}}" class="emuwebapp-tabbed-input">
+							<input type="text" name="{{key}}" value="{{value}}" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 						</span>
 				    </span>
 				</span>
@@ -80,22 +62,92 @@
     <!-- perspectives Settings -->
     <div class="emuwebapp-tabbed-table">
 		<div class="emuwebapp-tabbed-title">Perspectives Settings</div>
-		<div>&nbsp;</div>    
+		<div>&nbsp;</div>
+		<div>{{cps.vals.perspectives[0]}}</div>
+		<div>&nbsp;</div>
+		<div>{{cps.vals.perspectives[1]}}</div> 
 		<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives">
 			<a href title="Delete" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('perspective', key)">X</a>
-			<div class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value">
-				<span ng-switch on="subvalue">
-					<span class="emuwebapp-tabbed-cell" ng-switch-when="true">
-						<input type="checkbox" name="{{subkey}}" value="false">
-					</span>
-					<span class="emuwebapp-tabbed-cell" ng-switch-when="false">
-						<input type="checkbox" name="{{subkey}}" value="true" checked>
-					</span>	
-					<span class="emuwebapp-tabbed-cell" ng-switch-default>
-						<input type="text" name="{{subkey}}" value="{{subvalue}}">
-					</span>		
-				</span>				
+			<div class="emuwebapp-tabbed-row">
+			    <span class="emuwebapp-tabbed-cell">
+			        Perspective name: <input type="text" ng-model="cps.vals.perspectives[key].name" size="40" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+			    </span>
 			</div>
+			<div>&nbsp;</div>
+			<u><b>signal canvases:</b></u>
+			</br> 
+		    <div class="emuwebapp-tabbed-table">
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.signalCanvases">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}: 
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3" style="padding-bottom: 10px;">
+					    <span ng-switch-when="order">
+							 <table class="emuwebapp-tabbed-order">
+								<tbody ui-sortable ng-model="subvalue">
+									<tr ng-repeat="item in subvalue">
+										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+									</tr>
+								</tbody>{{list}}
+							</table>
+							<a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>	
+				</span>
+			</div>
+			<div>&nbsp;</div>
+			<b><u>level canvases:</u></b>
+			</br>
+		    <div class="emuwebapp-tabbed-table">
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.levelCanvases">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}: 
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3">
+					    <span ng-switch-when="order">
+							 <table class="emuwebapp-tabbed-order">
+								<tbody ui-sortable ng-model="subvalue">
+									<tr ng-repeat="item in subvalue">
+										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+									</tr>
+								</tbody>{{list}}
+							</table>
+							<a href title="Add new" ng-click="addDefinition('levelcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>					
+				</span>
+			</div>
+			<div>&nbsp;</div>
+			<b><u>two dimensional canvases:</u></b>
+			</br>
+		    <div class="emuwebapp-tabbed-table">
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.twoDimCanvases">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}: 
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3">
+					    <span ng-switch-when="order">
+							 <table class="emuwebapp-tabbed-order">
+								<tbody ui-sortable ng-model="subvalue">
+									<tr ng-repeat="item in subvalue">
+										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+									</tr>
+								</tbody>{{list}}
+							</table>
+							<a href title="Add new" ng-click="addDefinition('twoDimcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>	
+				</span>
+			</div>		
 		</div>
 	</div>
 	<br />
