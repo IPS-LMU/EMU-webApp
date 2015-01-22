@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			viewState.rotateHierarchy();
+			viewState.toggleHierarchyRotation();
 		};
 		
 		$scope.getRotation = function () {
