@@ -34,6 +34,7 @@ angular.module('emuwebApp')
         // watches 
 
 	scope.cLAD = viewState.curLevelAttrDefs;
+	scope.hierarchyState = viewState.hierarchyState;
 
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
@@ -59,6 +60,19 @@ angular.module('emuwebApp')
 		}
 	}, true);
 
+	scope.$watch('hierarchyState.playing', function (newValue) {
+		console.debug('Play() triggered by viewState', newValue);
+		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
+			scope.play(scope.selectedItem);
+		}
+
+	}, false);
+
+	scope.$watch('hierarchyState.sthHasChanged', function (newValue) {
+		console.debug('something has changed, therefore rendering');
+		scope.render();
+	}, false);
+
         //
         //////////////////////
 
@@ -71,13 +85,13 @@ angular.module('emuwebApp')
 	 */
 	scope.selectItem = function (item) {
 		scope.selectedItem = item;
-		viewState.selectedItemID = item.id;
+		viewState.hierarchyState.selectedItemID = item.id;
 	};
 
 	scope.selectLink = function (link) {
 		scope.selectedLink = link;
-		viewState.selectedLinkID = link.id;
-		console.debug('Link ID', 's' + link.fromID + 't' + link.toID);
+		viewState.hierarchyState.selectedLinkFromID = link.fromID;
+		viewState.hierarchyState.selectedLinkToID = link.toID;
 	};
 
 	/**
@@ -205,7 +219,7 @@ angular.module('emuwebApp')
 		}
 		//svg.on
 	};
-	
+	/*
 	scope.svgOnKeyDown = function (d) {
 		// SIC FIXME WARNING THIS IS CURRENTLY IMPLEMENTED AS GLOBAL EVENT HANDLER VIA JQUERY
 		var code = d.keyCode;
@@ -235,7 +249,7 @@ angular.module('emuwebApp')
 			}
 		}
 	};
-
+*/
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
 		//scope.centerNode(d);
@@ -436,7 +450,7 @@ angular.module('emuwebApp')
 //	  .on('keydown', scope.svgOnKeyDown)
           .append('g');
           //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-	  $(document).bind('keydown', scope.svgOnKeyDown);
+	  //$(document).bind('keydown', scope.svgOnKeyDown);
 
 	// Append a group which holds all overlay captions and which do not react to zooming
 	var captionLayer = svg.append('g').style('z-index', 5);

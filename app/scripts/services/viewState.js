@@ -54,6 +54,20 @@ angular.module('emuwebApp')
         endFreezeSample: -1
       };
 
+      // 
+      sServObj.hierarchyState = {
+      	// The following three will be set from within the emuhierarchy directive
+	// They will be IDs as they appear in the <bundle>_annot.json
+      	selectedItemID: undefined,
+	selectedLinkFromID: undefined,
+	selectedLinkToID: undefined,
+	
+	rotated: false,
+	
+	playing: 0,
+	sthHasChanged: 0
+      };
+
       sServObj.timelineSize = -1;
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';
@@ -61,7 +75,6 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
-      sServObj.hierarchyRotated = false;
       sServObj.hierarchyShown = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
@@ -800,14 +813,14 @@ angular.module('emuwebApp')
      *
      */
     sServObj.isHierarchyRotated = function () {
-      return sServObj.hierarchyRotated;
+      return sServObj.hierarchyState.rotated;
     };
 
     /**
      *
      */
-    sServObj.rotateHierarchy = function () {
-      sServObj.hierarchyRotated = !sServObj.hierarchyRotated;
+    sServObj.toggleHierarchyRotation = function () {
+      sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
     };
 
     /**

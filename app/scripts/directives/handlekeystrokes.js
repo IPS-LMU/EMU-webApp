@@ -136,10 +136,33 @@ angular.module('emuwebApp')
                 }
               }
 
-              // rotateHierarchy
-              if (code === ConfigProviderService.vals.keyMappings.rotateHierarchy) {
-                viewState.rotateHierarchy();
-              }
+	      // Handle key strokes for the hierarchy modal
+	      if (viewState.isHierarchyOpen()) {
+		// Play selected item
+		if (code === 32) {
+		  viewState.hierarchyState.playing += 1;
+		}
+
+		// Delete link
+		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteLink) {
+		  e.preventDefault(); // This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
+		  // But what if the key code is reconfigured (possibly by the user)? 
+		  LevelService.deleteLink(viewState.hierarchyState.selectedLinkFromID, viewState.hierarchyState.selectedLinkToID);
+		  viewState.hierarchyState.sthHasChanged += 1;
+
+		}
+
+		// Delete node
+		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteItem) {
+		  LevelService.deleteItemWithLinks(viewState.hierarchyState.selectedItemID);
+		  viewState.hierarchyState.sthHasChanged += 1;
+		}
+
+                // rotateHierarchy
+                if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
+                  viewState.toggleHierarchyRotation();
+                }
+	      }
 
               // zoomAll
               if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
