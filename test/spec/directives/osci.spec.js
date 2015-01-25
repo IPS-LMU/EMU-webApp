@@ -37,6 +37,68 @@ describe('Directive: osci', function () {
      expect(elm.find('div').length).toBe(3);
      expect(elm.find('img').length).toBe(1);
    });
-   
 
+   it('should react to refreshTimeline', function () {
+     compileDirective();
+     scope.shs.wavJSO = {};
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     expect(elm.isolateScope()).toBeDefined();
+     spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
+     scope.$broadcast('refreshTimeline');
+     expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
+   });
+
+   it('should watch viewState.playHeadAnimationInfos', function () {
+     scope.vs.playHeadAnimationInfos.sS = 1
+     compileDirective();
+     scope.shs.wavJSO = {};
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     expect(elm.isolateScope()).toBeDefined();
+     spyOn(elm.isolateScope(), 'drawPlayHead');
+     scope.vs.playHeadAnimationInfos.sS = 10
+     scope.$digest();
+     expect(elm.isolateScope().drawPlayHead).toHaveBeenCalled();
+   });
+
+   it('should watch viewState.movingBoundarySample', function () {
+     scope.vs.movingBoundarySample = 1
+     compileDirective();
+     scope.shs.wavJSO = {};
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     expect(elm.isolateScope()).toBeDefined();
+     spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
+     scope.vs.movingBoundarySample = 10
+     scope.$digest();
+     expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
+   });
+   
+   it('should watch viewState.movingBoundary', function () {
+     scope.vs.movingBoundary = false
+     compileDirective();
+     scope.shs.wavJSO = {};
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     expect(elm.isolateScope()).toBeDefined();
+     spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
+     scope.vs.movingBoundary = true
+     scope.$digest();
+     expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
+   });
+   
+   it('should watch viewState.curViewPort (same value)', function () {
+     scope.vs.curViewPort.sS = 1
+     scope.vs.curViewPort.eS = 2
+     compileDirective();
+     scope.shs.wavJSO = {};
+     scope.shs.wavJSO.Data = [1, 2, 3];
+     expect(elm.isolateScope()).toBeDefined();
+     spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
+     spyOn(scope.dhs, 'calculatePeaks');
+     spyOn(scope.dhs, 'freshRedrawDrawOsciOnCanvas');
+     scope.vs.curViewPort.sS = 2
+     scope.vs.curViewPort.eS = 3
+     scope.$digest();
+     expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
+     expect(scope.dhs.calculatePeaks).toHaveBeenCalled();
+     expect(scope.dhs.freshRedrawDrawOsciOnCanvas).toHaveBeenCalled();
+   });
 });

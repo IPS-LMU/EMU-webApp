@@ -181,10 +181,20 @@ angular.module('emuwebApp')
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			// annotation
 			bundleData.annotation = DataService.getData();
-			// add session
+
 			var curBndl = loadedMetaDataService.getCurBndl();
+
+			// add session if available
 			if (typeof curBndl.session !== 'undefined') {
 				bundleData.session = curBndl.session;
+			}
+			// add finishedEditing if available
+			if (typeof curBndl.finishedEditing !== 'undefined') {
+				bundleData.finishedEditing = curBndl.finishedEditing;
+			}
+			// add comment if available
+			if (typeof curBndl.comment !== 'undefined') {
+				bundleData.comment = curBndl.comment;
 			}
 
 			viewState.somethingInProgressTxt = 'Saving bundle...';

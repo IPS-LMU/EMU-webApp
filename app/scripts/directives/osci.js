@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 			scope: {},
 			controller: function ($scope) {
 				$scope.changeAttrDef = function(){
-					alert('sadf');
+					//alert('sadf');
 				};
 
 			},
@@ -32,7 +32,7 @@ angular.module('emuwebApp')
 				scope.$on('refreshTimeline', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							drawVpOsciMarkup(scope, ConfigProviderService, true);
+							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				});
@@ -44,14 +44,14 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.curPerspectiveIdx', function () {
-					drawVpOsciMarkup(scope, ConfigProviderService, true);
+					scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 				}, true);
 
 				//
 				scope.$watch('viewState.playHeadAnimationInfos', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							drawPlayHead(scope, ConfigProviderService);
+							scope.drawPlayHead(scope, ConfigProviderService);
 						}
 					}
 				}, true);
@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 				scope.$watch('viewState.movingBoundarySample', function (newValue) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							drawVpOsciMarkup(scope, ConfigProviderService, true);
+							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
 				scope.$watch('viewState.movingBoundary', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							drawVpOsciMarkup(scope, ConfigProviderService, true);
+							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
@@ -84,7 +84,7 @@ angular.module('emuwebApp')
 								Drawhelperservice.osciPeaks = allPeakVals;
 								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 							}
-							drawVpOsciMarkup(scope, ConfigProviderService, true);
+							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
@@ -93,49 +93,38 @@ angular.module('emuwebApp')
 				/////////////////////////
 
 				scope.redraw = function () {
-					drawVpOsciMarkup(scope, ConfigProviderService, true)
+					scope.drawVpOsciMarkup(scope, ConfigProviderService, true)
 				};
-
 
 				/**
 				 *
 				 */
-				function drawPlayHead(scope, config) {
+				 scope.drawPlayHead = function(scope, config) {
 					var ctx = markupCanvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 					var posS = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.sS);
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
-					// console.log(viewState.playHeadAnimationInfos.curS)
-
 					ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
-
-					//console.log(posS,posCur);
-
-					drawVpOsciMarkup(scope, config, false);
-
-				}
+					scope.drawVpOsciMarkup(scope, config, false);
+				};
 
 				/**
 				 * draws markup of osci according to
 				 * the information that is specified in
 				 * the viewport
 				 */
-				function drawVpOsciMarkup(scope, config, reset) {
-
+				 scope.drawVpOsciMarkup = function(scope, config, reset) {
 					var ctx = markupCanvas.getContext('2d');
 					if (reset) {
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					}
-
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
-
 					Drawhelperservice.drawViewPortTimes(ctx, true);
 					// draw current viewport selected
 					Drawhelperservice.drawCurViewPortSelected(ctx, true);
-				}
+				};
 			}
 		};
 	});
