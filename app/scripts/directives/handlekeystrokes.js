@@ -149,12 +149,23 @@ angular.module('emuwebApp')
 		  // But what if the key code is reconfigured (possibly by the user)? 
 		  LevelService.deleteLink(viewState.hierarchyState.selectedLinkFromID, viewState.hierarchyState.selectedLinkToID);
 		  viewState.hierarchyState.sthHasChanged += 1;
-
 		}
 
 		// Delete node
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteItem) {
 		  LevelService.deleteItemWithLinks(viewState.hierarchyState.selectedItemID);
+		  viewState.hierarchyState.sthHasChanged += 1;
+		}
+
+		// Add item ...
+		// ... before the currently selected one
+		if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemBefore) {
+		  LevelService.addItem(viewState.hierarchyState.selectedItemID, true);
+		  viewState.hierarchyState.sthHasChanged += 1;
+		}
+		// ... after the currently selected one
+		if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemAfter) {
+		  LevelService.addItem(viewState.hierarchyState.selectedItemID, false);
 		  viewState.hierarchyState.sthHasChanged += 1;
 		}
 

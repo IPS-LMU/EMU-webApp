@@ -18,6 +18,8 @@
         "hierarchyRotate": 114,
 	"hierarchyDeleteLink": 8,
 	"hierarchyDeleteItem": 100,
+	"hierarchyAddItemBefore": 98,
+	"hierarchyAddItemAfter": 97,
         "shiftViewPortLeft": 97,
         "shiftViewPortRight": 100,
         "playEntireFile": 102,

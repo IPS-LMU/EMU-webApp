@@ -1345,11 +1345,61 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Add an item before the item with id === eid
+		 * Add an item next to the item with id === eid.
 		 * Do nothing if eid is not of type ITEM (ie, if it is on a level with time information)
+		 * 
+		 * @param eid The ID of the element that will get a new sibling
+		 * @param before boolean to define whether the new sibling will be inserted before or after eid
+		 * @return nothing
 		 */
-		sServObj.addItemBefore = function (eid) {
-//			for (i
+		sServObj.addItem = function (eid, before) {
+			// Check parameters
+			if (eid === undefined) {
+				return;
+			}
+			if (typeof before !== 'boolean') {
+				return;
+			}
+
+			// Find the level and item objects corresponding to the given id
+			var levelAndItem = sServObj.getLevelAndItem(eid);
+			if (levelAndItem === null) {
+				console.debug('Could not find item with id:', eid);
+				return;
+			}
+			var level = levelAndItem.level;
+			var item = levelAndItem.item;
+
+
+			// Check whether the level has time information
+			// and only proceed if this is not the case
+			if (level.type === 'ITEM') {
+				// Find position of the given element and
+				// define position of the new one
+				var posOld = level.items.indexOf(item);
+				var posNew;
+				if (before === true) {
+					posNew = posOld;
+				} else {
+					posNew = posOld + 1;
+				}
+
+				// Create new item object
+				var newObject = { id: DataService.getNewId(), labels: [] };
+
+				// Add all necessary labels
+				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
+				for (var i=0; i<attrdefs.length; ++i) {
+					if (attrdefs[i].type === 'STRING') {
+						newObject.labels.push({name: attrdefs[i].name, value: ''});
+					} else {
+						newObject.labels.push({name: attrdefs[i].name, value: null});
+					}
+				}
+
+				// Insert item into level
+				level.items.splice(posNew ,0, newObject);
+			}
 		};
 
 		/**
@@ -1361,7 +1411,7 @@ angular.module('emuwebApp')
 			// Iterate over the links array backwards so we can manipulate the array from within the loop
 			for (var i=links.length-1; i>=0; --i) {
 				if (links[i].fromID === fromID && links[i].toID === toID) {
-					links.splice(i, 1);
+					links.splice(i, 1); // This is exactly what DataService.deleteLinkAt() does
 				}
 			}
 		};
