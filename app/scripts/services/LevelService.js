@@ -1453,5 +1453,41 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 * Add a new link if it does not yet exist
+		 */
+		sServObj.addLink = function (from, to) {
+			var links = DataService.getLinkData();
+			console.debug( from, to);
+
+			if (from === to) {
+				console.debug ('Not adding link (because they are the same) between: ', from, to);
+			}
+
+			for (var i=0; i<links.length; ++i) {
+				if (links[i].fromID === from && links[i].toID === to) {
+					console.debug ('Not adding link (because it already exists) between: ', from, to);
+					return;
+				}
+			}
+
+			DataService.insertLinkData({fromID: from, toID: to});
+			// FIXME NEVER ADD LINKS WHEN THEY'RE INVALID
+		};
+
+		sServObj.getItemByID = function (id) {
+			var levels = DataService.getLevelData();
+
+			for (var i=0; i<levels.length; ++i) {
+				for (var ii=0; ii<levels[i].items.length; ++ii) {
+					if (levels[i].items[ii].id === id) {
+						return levels[i].items[ii];
+					}
+				}
+			}
+
+			return undefined;
+		};
+
 		return sServObj;
 	});

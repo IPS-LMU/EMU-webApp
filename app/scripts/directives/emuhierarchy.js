@@ -73,6 +73,12 @@ angular.module('emuwebApp')
 		scope.render();
 	}, false);
 
+	scope.$watch('hierarchyState.newLinkFromID', function (newValue) {
+		scope.newLinkSrc = LevelService.getItemByID(newValue);
+		console.debug(scope.newLinkSrc);
+		scope.render();
+	}, false);
+
         //
         //////////////////////
 
@@ -200,6 +206,20 @@ angular.module('emuwebApp')
 		}
 	};
 
+	scope.getOrientatedMousePosition = function (mouse) {
+		if (scope.vertical) {
+			return [
+				mouse[1] / zoomListener.scale() - zoomListener.translate()[1],
+				mouse[0] / zoomListener.scale() - zoomListener.translate()[0]
+			];
+		} else {
+			return [
+				mouse[0] / zoomListener.scale() - zoomListener.translate()[0],
+				mouse[1] / zoomListener.scale() - zoomListener.translate()[1]
+			];
+		}
+	};
+
 
 	scope.getPath = function (d) {
 		var controlX = d._fromX;
@@ -210,46 +230,16 @@ angular.module('emuwebApp')
 
 	scope.svgOnMouseMove = function (d) {
 		if (scope.newLinkSrc !== undefined) {
-			var x = d3.mouse(this)[0];
-			var y = d3.mouse(this)[1];
+			var mouse = scope.getOrientatedMousePosition(d3.mouse(this));
+			var x = mouse[0];
+			var y = mouse[1];
 
 			svg.select('path.emuhierarchy-newlink')
 				.attr('d', 'M'+scope.newLinkSrc._x+','+scope.newLinkSrc._y+' L'+x+','+y)
 				;
 		}
-		//svg.on
 	};
-	/*
-	scope.svgOnKeyDown = function (d) {
-		// SIC FIXME WARNING THIS IS CURRENTLY IMPLEMENTED AS GLOBAL EVENT HANDLER VIA JQUERY
-		var code = d.keyCode;
-		var alt = d.altKey;
-		var shift = d.shiftKey;
-		var ctrl = d.ctrlKey;
-
-		console.debug(code);
-		if (code === 32) {
-			if (scope.selectedItem !== undefined) {
-				console.debug('Playing back due to key press', scope.selectedItem);
-				scope.play(scope.selectedItem);
-			}
-		}
-		if (code === 8) {
-			if (scope.selectedLink !== undefined) {
-				console.debug('Deleting a link due to key press', scope.selectedLink);
-				LevelService.deleteLink(scope.selectedLink.fromID, scope.selectedLink.toID);
-				scope.render();
-			}
-		}
-		if (code === 68) {
-			if (scope.selectedItem !== undefined) {
-				console.debug('Deleting an item due to key press', scope.selectedItem);
-				LevelService.deleteItemWithLinks(scope.selectedItem.id);
-				scope.render();
-			}
-		}
-	};
-*/
+	
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
 		//scope.centerNode(d);
@@ -260,10 +250,21 @@ angular.module('emuwebApp')
 		//
 
 
-		if (d3.event.shiftKey) {
+		/*
+		if (d3.event.ctrlKey) {
 			scope.newLinkSrc = d;
+			scope.render();
 			return;
 		}
+
+		if (scope.newLinkSrc !== undefined) {
+			LevelService.addLink(scope.newLinkSrc.id, d.id);
+			scope.newLinkSrc = undefined;
+			scope.render();
+			return;
+		}
+		*/
+		
 
 		//
 		/////
@@ -905,7 +906,10 @@ angular.module('emuwebApp')
 				.attr('class', 'emuhierarchy-newlink')
 				.style('stroke', 'black')
 				;
+		} else {
+			svg.select('.emuhierarchy-newlink').remove();
 		}
+		
 	};
 
         /**

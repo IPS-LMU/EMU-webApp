@@ -61,6 +61,7 @@ angular.module('emuwebApp')
       	selectedItemID: undefined,
 	selectedLinkFromID: undefined,
 	selectedLinkToID: undefined,
+	newLinkFromID: undefined,
 	
 	rotated: false,
 	

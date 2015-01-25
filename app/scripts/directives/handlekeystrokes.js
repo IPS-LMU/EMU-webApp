@@ -169,6 +169,16 @@ angular.module('emuwebApp')
 		  viewState.hierarchyState.sthHasChanged += 1;
 		}
 
+		// Add link
+		if (code === ConfigProviderService.vals.keyMappings.hierarchyAddLink) {
+		  if (viewState.hierarchyState.newLinkFromID === undefined) {
+		    viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
+		  } else {
+		    LevelService.addLink(viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
+		    viewState.hierarchyState.newLinkFromID = undefined;
+		  }
+		}
+
                 // rotateHierarchy
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
                   viewState.toggleHierarchyRotation();
