@@ -10,6 +10,7 @@ angular.module('emuwebApp')
 		$scope.levelDefinitionProperties = {};
 		$scope.linkDefinitionProperties = {};
 		$scope.spectroDefinitionProperties = {};
+		$scope.signalSelect = [];
 		$scope.tabs = [{
 				title: 'Level Definitions',
 				url: 'views/tabbed/levelDefinition.html'
@@ -34,6 +35,7 @@ angular.module('emuwebApp')
 		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
+		    $scope.resetSelections();
 		}
 		
 		$scope.generateUUID = function () {
@@ -42,6 +44,14 @@ angular.module('emuwebApp')
 		
 		$scope.onClickTab = function (tab) {
 			$scope.currentTab = tab.url;
+		}
+		
+		$scope.resetSelections = function () {
+			$scope.signalSelect = ['OSCI', 'SPEC'];
+			$scope.addSignalSelect = 'OSCI';
+			angular.forEach($scope.cps.curDbConfig.ssffTrackDefinitions, function (td) {
+			    $scope.signalSelect.push(td.name);
+			});
 		}
 		
 		$scope.isActiveTab = function(tabUrl) {
@@ -100,7 +110,7 @@ angular.module('emuwebApp')
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
 		            break;	
 		        case 'perspectiveOrder':
-		            $scope.cps.vals.perspectives[key].signalCanvases.order.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
+		            $scope.cps.vals.perspectives[key].signalCanvases.order.push(keyAttribute);
 		            break;	
 		    }
 		}
