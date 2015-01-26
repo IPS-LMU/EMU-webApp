@@ -82,15 +82,15 @@
 					    <span ng-switch-when="order">
 					        <table class="emuwebapp-tabbed-order">
 					            <tbody ui-sortable ng-model="subvalue">
-					                <tr ng-repeat="item in subvalue">
+					                <tr ng-repeat="(itemkey, item) in subvalue">
 					                    <td class="emuwebapp-tabbed-orderitem">{{item}}</td>
 					                    <td>
-    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrder', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>
 					                </tr>
 					            </tbody>{{list}}
 					        </table>
-					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+					        <a href title="Add new" ng-click="addDefinition('signalcanvasOrder', key)"><span class="emuwebapp-tabbed-add">+</span> add <select ng-options="opt as opt for opt in value.signalCanvases" class="emuwebapp-tabbed-input-bold"></select></a>
 				        </span>
 					    <span ng-switch-when="assign">
 					        <table class="emuwebapp-tabbed-order">
@@ -198,15 +198,15 @@
 					    <span ng-switch-when="order">
 							 <table class="emuwebapp-tabbed-order">
 								<tbody ui-sortable ng-model="subvalue">
-									<tr ng-repeat="item in subvalue">
+									<tr ng-repeat="(itemkey, item) in subvalue">
 										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
 					                    <td>
-    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderLevel', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>										
 									</tr>
 								</tbody>{{list}}
 							</table>
-							<a href title="Add new" ng-click="addDefinition('levelcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+							<a href title="Add new" ng-click="addDefinition('levelcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new </a>
 				        </span>
 				        <span ng-switch-default class="emuwebapp-tabbed-cell">
 				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
@@ -226,10 +226,10 @@
 					    <span ng-switch-when="order">
 							 <table class="emuwebapp-tabbed-order">
 								<tbody ui-sortable ng-model="subvalue">
-									<tr ng-repeat="item in subvalue">
+									<tr ng-repeat="(itemkey, item) in subvalue">
 										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
 					                    <td>
-    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderTwoDim', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>										
 									</tr>
 								</tbody>{{list}}

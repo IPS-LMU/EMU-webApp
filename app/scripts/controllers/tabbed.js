@@ -99,8 +99,9 @@ angular.module('emuwebApp')
 		        case 'perspectiveContourLims':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
 		            break;	
-		            
-		            	            
+		        case 'perspectiveOrder':
+		            $scope.cps.vals.perspectives[key].signalCanvases.order.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
+		            break;	
 		    }
 		}
 		
@@ -131,8 +132,16 @@ angular.module('emuwebApp')
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors[keyAttribute].colors.splice(subKeyAttribute, 1);
 		            break;
 		        case 'perspectiveContourLims':
-		            console.log(key, keyAttribute);
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.splice(keyAttribute, 1);
+		            break;
+		        case 'perspectiveOrder':
+		            $scope.cps.vals.perspectives[key].signalCanvases.order.splice(keyAttribute, 1);
+		            break;
+		        case 'perspectiveOrderLevel':
+		            $scope.cps.vals.perspectives[key].levelCanvases.order.splice(keyAttribute, 1);
+		            break;
+		        case 'perspectiveOrderTwoDim':
+		            $scope.cps.vals.perspectives[key].twoDimCanvases.order.splice(keyAttribute, 1);
 		            break;
 		    }		    
 		}		
