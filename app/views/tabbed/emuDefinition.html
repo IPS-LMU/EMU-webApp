@@ -85,12 +85,12 @@
 					                <tr ng-repeat="item in subvalue track by $index">
 					                    <td class="emuwebapp-tabbed-orderitem">{{item}}</td>
 					                    <td>
-    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrder', key, $index)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderSignal', key, $index)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>
 					                </tr>
 					            </tbody>{{list}}
 					        </table>
-					        <select ng-model="addSignalSelect" ng-options="opt as opt for opt in signalSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrder', key, addSignalSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
+					        <select ng-model="addSignalSelect" ng-options="opt as opt for opt in signalSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderSignal', key, addSignalSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
 				        </span>
 					    <span ng-switch-when="assign">
 					        <table class="emuwebapp-tabbed-order">
@@ -188,16 +188,14 @@
 				        </span>
 				    </span>	
 				</span>
-			</div>
-			<div>&nbsp;</div>
-			<b><u>level canvases:</u></b>
-			</br>
-		    <div class="emuwebapp-tabbed-table">
-				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.levelCanvases track by $index">
+				<span class="emuwebapp-tabbed-row">
+				    <b><u>level canvases:</u></b>
+				</span>	
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.levelCanvases">
 					<span class="emuwebapp-tabbed-cell3">
 						{{subkey}}: 
 					</span>
-					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3">
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell" style="padding-bottom: 20px;">
 					    <span ng-switch-when="order">
 							 <table class="emuwebapp-tabbed-order">
 								<tbody ui-sortable ng-model="subvalue">
@@ -209,21 +207,19 @@
 									</tr>
 								</tbody>{{list}}
 							</table>
-							<a href title="Add new" ng-click="addDefinition('levelcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new </a>
+							<select ng-model="addLevelSelect" ng-options="opt as opt for opt in levelSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderLevel', key, addLevelSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
 				        </span>
 				        <span ng-switch-default class="emuwebapp-tabbed-cell">
 				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 				        </span>
 				    </span>					
 				</span>
-			</div>
-			<div>&nbsp;</div>
-			<b><u>two dimensional canvases:</u></b>
-			</br>
-		    <div class="emuwebapp-tabbed-table">
+				<span class="emuwebapp-tabbed-row">
+				    <b><u>two dimensional canvases:</u></b>
+				</spa>
 				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.twoDimCanvases track by $index">
 					<span class="emuwebapp-tabbed-cell3">
-						{{subkey}}: 
+						{{subkey}}:
 					</span>
 					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3">
 					    <span ng-switch-when="order">
@@ -237,7 +233,7 @@
 									</tr>
 								</tbody>{{list}}
 							</table>
-							<a href title="Add new" ng-click="addDefinition('twoDimcanvasOrder')"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+							<select ng-model="addTwoDimSelect" ng-options="opt as opt for opt in twoDimSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderTwoDim', key, addTwoDimSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
 				        </span>
 				        <span ng-switch-default class="emuwebapp-tabbed-cell">
 				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">

@@ -171,6 +171,11 @@
     width: 100%;
     vertical-align: top;    
 }
+.emuwebapp-tabbed-cellfull {
+    display:table-cell;
+    width: 100%;
+    vertical-align: top;
+}
 .emuwebapp-tabbed-cell {
     display:table-cell;
     width: 50%;
@@ -229,7 +234,7 @@
     margin: 4px;
     padding: 4px;
     cursor: move;
-    width: 100%;
+    width: 300px !important;
 }
 .emuwebapp-tabbed-orderitemdelete {
     top: -5px;

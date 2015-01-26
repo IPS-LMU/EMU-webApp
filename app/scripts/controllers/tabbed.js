@@ -2,15 +2,31 @@
 
 angular.module('emuwebApp')
 	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice, uuid) {
-
+		
+		// service shortcuts
 		$scope.cps = ConfigProviderService;
 		$scope.vs = viewState;
 		$scope.valid = Validationservice;
-		$scope.currentTab = 'views/tabbed/levelDefinition.html';
+		
+		// definition shortcuts
 		$scope.levelDefinitionProperties = {};
 		$scope.linkDefinitionProperties = {};
 		$scope.spectroDefinitionProperties = {};
+		
+		// selection properties for "add signal canvases order"
 		$scope.signalSelect = [];
+		// selection properties for "add level canvases order"
+		$scope.levelSelect = [];
+		// selection properties for "add signal canvases order"
+		$scope.twoDimSelect = [];
+		// default selection for "add signal canvases order"
+		$scope.addSignalSelect = "";
+		// default selection for "add level canvases order"
+		$scope.addLevelSelect = "";
+		// default selection for "add two dim canvases order"
+		$scope.addTwoDimSelect = "";
+		
+		// all available tabs
 		$scope.tabs = [{
 				title: 'Level Definitions',
 				url: 'views/tabbed/levelDefinition.html'
@@ -27,6 +43,8 @@ angular.module('emuwebApp')
 				title: 'global DB',
 				url: 'views/tabbed/globalDefinition.html'
 		}];
+		// current open tab
+		$scope.currentTab = 'views/tabbed/levelDefinition.html';
 		
 		$scope.setup = function () {
 		    // read db config file for enum types
@@ -48,10 +66,28 @@ angular.module('emuwebApp')
 		
 		$scope.resetSelections = function () {
 			$scope.signalSelect = ['OSCI', 'SPEC'];
-			$scope.addSignalSelect = 'OSCI';
+			$scope.levelSelect = [];
+			$scope.twoDimSelect = [];
 			angular.forEach($scope.cps.curDbConfig.ssffTrackDefinitions, function (td) {
 			    $scope.signalSelect.push(td.name);
 			});
+			angular.forEach($scope.cps.curDbConfig.levelDefinitions, function (td) {
+			    $scope.levelSelect.push(td.name);
+			});
+			// the following will be rewritten : !
+			if($scope.cps.vals.perspectives[0].twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+				angular.forEach($scope.cps.vals.perspectives[key].twoDimCanvases.twoDimDrawingDefinitions, function (dd) {
+					$scope.twoDimSelect.push(dd.name);
+				});
+			}
+			else {
+			    $scope.twoDimSelect.push('under development');
+			}
+			////////////////////////////////
+			$scope.addSignalSelect = $scope.signalSelect[0];
+			$scope.addLevelSelect = $scope.levelSelect[0];
+			$scope.addTwoDimSelect = $scope.twoDimSelect[0];
+			
 		}
 		
 		$scope.isActiveTab = function(tabUrl) {
@@ -109,9 +145,17 @@ angular.module('emuwebApp')
 		        case 'perspectiveContourLims':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
 		            break;	
-		        case 'perspectiveOrder':
+		        case 'perspectiveOrderSignal':
 		            $scope.cps.vals.perspectives[key].signalCanvases.order.push(keyAttribute);
 		            break;	
+		        case 'perspectiveOrderLevel':
+		            $scope.cps.vals.perspectives[key].levelCanvases.order.push(keyAttribute);
+		            break;	
+		        case 'perspectiveOrderTwoDim':
+		            console.log($scope.cps.vals.perspectives[key].twoDimCanvases.twoDimDrawingDefinitions);
+		            $scope.cps.vals.perspectives[key].twoDimCanvases.order.push(keyAttribute);
+		            break;	
+
 		    }
 		}
 		
@@ -144,7 +188,7 @@ angular.module('emuwebApp')
 		        case 'perspectiveContourLims':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.splice(keyAttribute, 1);
 		            break;
-		        case 'perspectiveOrder':
+		        case 'perspectiveOrderSignal':
 		            $scope.cps.vals.perspectives[key].signalCanvases.order.splice(keyAttribute, 1);
 		            break;
 		        case 'perspectiveOrderLevel':
