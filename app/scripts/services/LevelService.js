@@ -40,6 +40,26 @@ angular.module('emuwebApp')
 				id: id
 			};
 		};
+
+		/**
+		 * returns level name by passing in id of an element
+		 * this was moved here from HierarchyLayoutService
+		 */
+		sServObj.getLevelNameByElementID = function (nodeID) {
+			var levelName = null;
+
+			for (var i = 0; i < DataService.getData().levels.length; ++i) {
+				for (var ii = 0; ii < DataService.getData().levels[i].items.length; ++ii) {
+					if (DataService.getData().levels[i].items[ii].id === nodeID) {
+						levelName = DataService.getData().levels[i].name;
+						break;
+					}
+				}
+			}
+
+			return levelName;
+		}
+
 		
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name

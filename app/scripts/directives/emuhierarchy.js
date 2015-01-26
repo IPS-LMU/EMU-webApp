@@ -38,13 +38,11 @@ angular.module('emuwebApp')
 
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
-		scope.selectVisibleNodes();
 		scope.render();
 	}, false);
 
 	scope.$watch('vertical', function (newValue) {
 		console.debug('Rendering due to rotation: ', newValue);
-		scope.selectVisibleNodes();
 		scope.render();
 	}, false);
 
@@ -75,7 +73,6 @@ angular.module('emuwebApp')
 
 	scope.$watch('hierarchyState.newLinkFromID', function (newValue) {
 		scope.newLinkSrc = LevelService.getItemByID(newValue);
-		console.debug(scope.newLinkSrc);
 		scope.render();
 	}, false);
 
@@ -145,7 +142,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getNodeText = function (d) {
-		var level = viewState.getCurAttrDef(HierarchyLayoutService.getLevelName(d.id));
+		var level = viewState.getCurAttrDef(LevelService.getLevelNameByElementID(d.id));
 		for (var i=0; i<d.labels.length; ++i) {
 			if (d.labels[i].name === level) {
 				return d.labels[i].value;
@@ -244,32 +241,6 @@ angular.module('emuwebApp')
 		console.debug('Clicked node', d);
 		//scope.centerNode(d);
 
-
-		///////// TEMPORARILY IN THIS FUNCTION
-		/////
-		//
-
-
-		/*
-		if (d3.event.ctrlKey) {
-			scope.newLinkSrc = d;
-			scope.render();
-			return;
-		}
-
-		if (scope.newLinkSrc !== undefined) {
-			LevelService.addLink(scope.newLinkSrc.id, d.id);
-			scope.newLinkSrc = undefined;
-			scope.render();
-			return;
-		}
-		*/
-		
-
-		//
-		/////
-		/////////
-
 		// (De-)Collapse sub-tree
 		var isCollapsing;
 		if (typeof d._collapsed === 'undefined' || d._collapsed === false) {
@@ -300,7 +271,6 @@ angular.module('emuwebApp')
 			currentDescendant._collapsePosition = [d._x, d._y];
 		}
 
-		scope.selectVisibleNodes();
 		scope.render();
 	};
 
@@ -363,40 +333,6 @@ angular.module('emuwebApp')
 
 		console.debug('Sample information for playback:', startSample, endSample);
 		Soundhandlerservice.playFromTo(startSample, endSample);
-	};
-
-	scope.selectVisibleNodes = function () {
-		// Try to set all nodes to invisible. Later we will search all
-		// paths and if we find one uncollasped path to a node, that
-		// node will be set visible.
-
-		var rootLevelItems = LevelService.getLevelDetails(scope.path[scope.path.length-1]).level.items;
-
-		var items = [];
-		items = items.concat(rootLevelItems);
-
-		var currentItem;
-
-		while (items.length > 0) {
-			currentItem = items.pop();
-			items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
-			currentItem._visible = false;
-		}		
-		
-
-		// Now all nodes on the selected scope.path have been set invisible
-
-		items = [];
-		items = items.concat(rootLevelItems);
-
-		while (items.length > 0) {
-			currentItem = items.pop();
-			if (! currentItem._collapsed) {
-				items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
-			}
-
-			currentItem._visible = true;
-		}		
 	};
 
 	scope.depthToX = function (depth) {
@@ -494,6 +430,7 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
+		console.info('rendering');
 		var i;
 
 		////
@@ -563,40 +500,9 @@ angular.module('emuwebApp')
 		// Compute the new tree layout (first nodes and then links)
 		//
 		var nodes = [];
-
-
-		// At the moment I have two different approaches to calculating the layout of a hierarchy
-		//
-		// The first is simpler and is used by first calling layoutNonItemLevel() for the bottom-most level (the one with time information)
-		// and then calling layoutItemLevel() for all other levels. Unfortunately, it will in some cases render multiple nodes to the same
-		// position (happens when they share the same set of children).
-		//
-		// The second one looks simpler in this file, because it is completely done in one function. But that function is actually quite
-		// complex.
-		//
-		// It might be desirable to find some sort of collision detection for the first approach (which is commented out below)
-		//
-		
-		
-		/////
-		// This is the aforementioned second approach
 		HierarchyLayoutService.calculateWeightsBottomUp(scope.path);
-		//
-		/////
 
 		for (var i=0; i<scope.path.length; ++i) {
-
-			/////
-			// This is the aformentioned first approach
-			/*
-			if (i === 0) {
-				HierarchyLayoutService.layoutNonItemLevel(scope.path[0], scope.path.length);
-			} else {
-				HierarchyLayoutService.layoutItemLevel(scope.path[i], scope.path.length-i);
-			}
-			*/
-			//////
-
 			// Add all nodes that are not collapsed
 			var levelItems = LevelService.getLevelDetails(scope.path[i]).level.items;
 			for (var ii=0; ii<levelItems.length; ++ii) {
@@ -604,9 +510,6 @@ angular.module('emuwebApp')
 					nodes.push(levelItems[ii]);
 				}
 			}
-
-			// Add all nodes, no matter whether they are collapsed or not
-			//nodes = nodes.concat(LevelService.getLevelDetails(scope.path[i]).level.items);
 		}
 		
 
