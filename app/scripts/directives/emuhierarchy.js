@@ -121,8 +121,8 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedTransform = function () {
-		var transform = 'scale('+zoomListener.scale()+')';
-		transform += 'translate('+zoomListener.translate()+')';
+		var transform = 'translate('+zoomListener.translate()+')';
+		transform += 'scale('+zoomListener.scale()+')';
 		if (scope.vertical) {
 			transform += 'scale(-1,1),rotate(90)';
 		} else {
@@ -178,9 +178,9 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedLevelCaptionLayerTransform = function (d) {
 		if (scope.vertical) {
-			return 'translate(0, '+zoomListener.translate()[1]*zoomListener.scale()+')';
+			return 'translate(0, '+zoomListener.translate()[1]+')';
 		} else {
-			return 'translate('+zoomListener.translate()[0]*zoomListener.scale()+',0)';
+			return 'translate('+zoomListener.translate()[0]+',0)';
 		}
 	};
 
@@ -204,13 +204,13 @@ angular.module('emuwebApp')
 	scope.getOrientatedMousePosition = function (mouse) {
 		if (scope.vertical) {
 			return [
-				mouse[1] / zoomListener.scale() - zoomListener.translate()[1],
-				mouse[0] / zoomListener.scale() - zoomListener.translate()[0]
+				( mouse[1] - zoomListener.translate()[1] ) / zoomListener.scale(),
+				( mouse[0] - zoomListener.translate()[0] ) / zoomListener.scale()
 			];
 		} else {
 			return [
-				mouse[0] / zoomListener.scale() - zoomListener.translate()[0],
-				mouse[1] / zoomListener.scale() - zoomListener.translate()[1]
+				( mouse[0] - zoomListener.translate()[0] ) / zoomListener.scale(),
+				( mouse[1] - zoomListener.translate()[1] ) / zoomListener.scale()
 			];
 		}
 	};
