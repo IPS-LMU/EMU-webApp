@@ -40,7 +40,7 @@ angular.module('emuwebApp')
 			console.log(message);
 			if (!message.wasClean && connected) {
 				// show no clean disconnect error
-				modalService.open('views/error.html', 'A non clean diconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
+				modalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
 					$rootScope.$broadcast('connectionDisrupted');
 				});
 
@@ -97,7 +97,9 @@ angular.module('emuwebApp')
 					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
 				} else {
 					// show protocol error and disconnect from server
-					modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message);
+					sServObj.closeConnect();
+					$rootScope.$broadcast('resetToInitState');
+					$rootScope.$apply(modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
 				}
 
 				delete callbacks[messageObj.callbackID];
@@ -137,6 +139,7 @@ angular.module('emuwebApp')
 
 		// close connection with ws
 		sServObj.closeConnect = function () {
+			console.log('closing connection')
 			ws.onclose = function () {};
 			ws.close();
 
