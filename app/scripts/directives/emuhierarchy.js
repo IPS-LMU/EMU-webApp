@@ -187,11 +187,9 @@ angular.module('emuwebApp')
 	scope.getOrientatedLevelCaptionTransform = function (d) {
 		var revArr = angular.copy(scope.path).reverse();
 		if (scope.vertical) {
-			return 'translate(20, '+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+')';//scale(-1,1)rotate(90)';
-			//return 'scale(-1,1)rotate(90)';
+			return 'translate(20, '+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+')';
 		} else {
 			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
-			//return 'scale(1,1)rotate(0)';
 		}
 	};
 
@@ -355,17 +353,6 @@ angular.module('emuwebApp')
         /////////////////////////////
         // inital d3.js setup stuff
 
-        /*var margin = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          },
-          barHeight = 20,
-          percent = d3.format('%'),
-	  duration = 750;
-	*/
-	
 	scope.element = element;
 	scope.width = 0;
 	scope.height = 0;
@@ -384,10 +371,8 @@ angular.module('emuwebApp')
 	  .call(zoomListener)
 	  .on('dblclick.zoom', null)
 	  .on('mousemove', scope.svgOnMouseMove)
-//	  .on('keydown', scope.svgOnKeyDown)
-          .append('g');
-          //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-	  //$(document).bind('keydown', scope.svgOnKeyDown);
+          .append('g')
+	  ;
 
 	// Append a group which holds all overlay captions and which do not react to zooming
 	var captionLayer = svg.append('g').style('z-index', 5);
@@ -430,7 +415,6 @@ angular.module('emuwebApp')
          *
          */
         scope.render = function () {
-		console.info('rendering');
 		var i;
 
 		////
@@ -697,10 +681,6 @@ angular.module('emuwebApp')
 					color = ConfigProviderService.vals.colors.selectedNodeColor;
 				}
 
-			/*	if (d._collapsed) {
-					color = ConfigProviderService.vals.colors.collapsedNodeColor;
-				}*/
-
 				return color;
 			})
 			// Highlight collapsed items
@@ -711,10 +691,6 @@ angular.module('emuwebApp')
 					return ConfigProviderService.vals.colors.nodeStrokeColor;
 				}
 			})
-			//.attr('r', 4.5)
-			//.style('fill', function (d) {
-			//	return d._children ? 'lightsteelblue' : '#fff';
-			//})
 			;
 
 		// Transition nodes to their new position
