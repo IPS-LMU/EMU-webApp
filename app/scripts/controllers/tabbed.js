@@ -86,11 +86,25 @@ angular.module('emuwebApp')
 		            break;	
 		        case 'perspective':
 		            $scope.cps.vals.perspectives.push({name: '', signalCanvases: { order: [], assign: [], contourLims: [], contourColors: []}, levelCanvases: { order: [] }, twoDimCanvases: { order: [] }});
-		            break;	            
+		            break;
+		        case 'perspectiveAssign':
+		            $scope.cps.vals.perspectives[key].signalCanvases.assign.push({signalCanvasName: '', ssffTrackName: ''});
+		            break;	
+		        case 'perspectiveContourColor':
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors.push({colors: ['rgba(0,0,0,1)'], ssffTrackName: ''});
+		            break;	
+		        case 'perspectiveContourColorColor':
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors[keyAttribute].colors.push('rgba(0,0,0,1)');
+		            break;	
+		        case 'perspectiveContourLims':
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
+		            break;	
+		            
+		            	            
 		    }
 		}
 		
-		$scope.deleteDefinition = function (typeOfDefinition, key, keyAttribute) {
+		$scope.deleteDefinition = function (typeOfDefinition, key, keyAttribute, subKeyAttribute) {
 		    switch(typeOfDefinition) {
 		        case 'level':
 		            $scope.cps.curDbConfig.levelDefinitions.splice(key, 1);
@@ -106,6 +120,19 @@ angular.module('emuwebApp')
 		            break;
 		        case 'perspective':
 		            $scope.cps.vals.perspectives.splice(key, 1);
+		            break;
+		        case 'perspectiveAssign':
+		            $scope.cps.vals.perspectives[key].signalCanvases.assign.splice(keyAttribute, 1);
+		            break;
+		        case 'perspectiveContourColor':
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors.splice(keyAttribute, 1);
+		            break;
+		        case 'perspectiveContourColorColor':
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors[keyAttribute].colors.splice(subKeyAttribute, 1);
+		            break;
+		        case 'perspectiveContourLims':
+		            console.log(key, keyAttribute);
+		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.splice(keyAttribute, 1);
 		            break;
 		    }		    
 		}		

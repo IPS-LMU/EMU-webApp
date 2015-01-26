@@ -3,7 +3,7 @@
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
-		    Name <input name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].attributeDefinitions[0].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
+		    Name <input name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
 		</span>
 		<span class="emuwebapp-tabbed-cell3">
 	        Type: <select ng-model="cps.curDbConfig.levelDefinitions[key].type" ng-options="opt as opt for opt in levelDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold" ></select>
@@ -16,7 +16,10 @@
 	    <div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
 			<div class="emuwebapp-borderTitle">Attribute Definitions</div>
 				<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
-					<span class="emuwebapp-tabbed-cell4">
+					<span ng-if="keyAttribute == 0" class="emuwebapp-tabbed-cell4">
+						Name: <b>{{cps.curDbConfig.levelDefinitions[key].name}}</b>
+					</span>
+					<span ng-if="keyAttribute > 0" class="emuwebapp-tabbed-cell4">
 						Name: <input type="text" ng-model="cps.curDbConfig.levelDefinitions[key].attributeDefinitions[keyAttribute].name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" class="emuwebapp-tabbed-input"></input>
 					</span>
 					<span class="emuwebapp-tabbed-cell4">
@@ -25,8 +28,8 @@
 					<span class="emuwebapp-tabbed-cell4">
 						Legal Labels: <input type="text" title="LegalLabel" value="{{valueAttribute.legalLabels.join()}}" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 					</span>
-					<span class="emuwebapp-tabbed-cell4">
-						<a ng-if="keyAttribute > 0" href title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
+					<span ng-if="keyAttribute > 0" class="emuwebapp-tabbed-cell4">
+						<a href title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
 					</span>										
 				</div>
 				<div>

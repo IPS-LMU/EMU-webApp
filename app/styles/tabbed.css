@@ -76,7 +76,11 @@
     display: inline-block;
 }
 
-.emuwebapp-tabbed-close, .emuwebapp-tabbed-delete, .emuwebapp-tabbed-add {
+.emuwebapp-tabbed-close, 
+.emuwebapp-tabbed-delete, 
+.emuwebapp-tabbed-delete-small, 
+.emuwebapp-tabbed-add,
+.emuwebapp-tabbed-add-small {
 	background: #606061;
 	color: #FFFFFF;
 	line-height: 18px;
@@ -93,22 +97,31 @@
 	z-index: 99999;
 	text-decoration: none;
 }
-
 .emuwebapp-tabbed-close {
     position: absolute;
 	right: -9px; 
 	top: -9px;	   
 }
-
 .emuwebapp-tabbed-delete {
     display: inline-block;
     margin-left: 20px;
 }
-
+.emuwebapp-tabbed-delete-small {
+    display: inline-block;
+    margin-left: 10px;
+    width: 9px;
+    line-height: 9px;
+    font-size: 0.5em;
+}
 .emuwebapp-tabbed-add {
     display: inline-block;
 }
-
+.emuwebapp-tabbed-add-small {
+    display: inline-block;
+    width: 9px;
+    line-height: 9px;
+    font-size: 0.5em;    
+}
 .emuwebapp-tabbed-close:hover, .emuwebapp-tabbed-delete:hover { 
     background: #00d9ff;
     text-decoration: none; 
@@ -221,4 +234,15 @@
 .emuwebapp-tabbed-orderitemdelete {
     top: -5px;
     right: -5px;
+}
+.emuwebapp-tabbed-assignitem {
+    vertical-align: top;
+}
+.emuwebapp-tabbed-rowframe {
+	border: 0px;
+    border-radius: 10px;
+    text-align: left;
+    background: linear-gradient(#f1f1f1, #e2e2e2);    
+    margin-bottom: 5px;
+    padding: 5px;
 }
