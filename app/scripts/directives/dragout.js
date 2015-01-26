@@ -9,18 +9,18 @@ angular.module('emuwebApp')
         name: '@'
       },
       link: function (scope, element, attrs) {
+        scope.cps = ConfigProviderService;
         var el = element[0];
         var dragIcon = document.createElement('img');
             dragIcon.src = 'img/exportBtn.png';
         var dataString = '';
-        
         
         scope.generateURL = function () {
             return scope.getURL(angular.toJson(DataService.getData(), true));
         };
         
         scope.isActive = function () {
-            return (scope.name === loadedMetaDataService.getCurBndl().name && ConfigProviderService.vals.main.comMode === 'embedded');
+            return (attrs.name === loadedMetaDataService.getCurBndl().name && scope.cps.vals.main.comMode === 'embedded');
         };
         
         scope.getURL = function (data) {

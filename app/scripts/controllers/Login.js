@@ -12,8 +12,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.tryLogin = function () {
-
-
 			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then(function (res) {
 				if (res === 'LOGGEDON') {
 					modalService.confirm();
