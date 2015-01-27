@@ -434,10 +434,10 @@ angular.module('emuwebApp')
 			})
 			;
 
-		svg.selectAll('.emuhierarchy-newlinkpreview')
-				.attr('d', scope.getPreviewPath)
-				.style('stroke', scope.getPreviewColor)
-				;
+		svg.select('.emuhierarchy-newlinkpreview')
+			.attr('d', scope.getPreviewPath)
+			.style('stroke', scope.getPreviewColor)
+			;
 	};
 
 
@@ -810,6 +810,9 @@ angular.module('emuwebApp')
 
 		// If the user is trying to add a new link,
 		// visualise what he's doing
+		svg.selectAll('.emuhierarchy-newlink').remove();
+		svg.selectAll('.emuhierarchy-newlinkpreview').remove();
+
 		if (scope.newLinkSrc !== undefined) {
 			svg.append('path')
 				.attr('class', 'emuhierarchy-newlink')
@@ -818,10 +821,9 @@ angular.module('emuwebApp')
 
 			svg.append('path')
 				.attr('class', 'emuhierarchy-newlinkpreview')
+				.attr('d', scope.getPreviewPath)
+				.style('stroke', scope.getPreviewColor)
 				;
-		} else {
-			svg.selectAll('.emuhierarchy-newlink').remove();
-			svg.selectAll('.emuhierarchy-newlinkpreview').remove();
 		}
 		
 	};
