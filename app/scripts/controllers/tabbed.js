@@ -59,10 +59,6 @@ angular.module('emuwebApp')
 		    $scope.resetSelections();
 		}
 		
-		$scope.generateUUID = function () {
-		    $scope.cps.curDbConfig.UUID = uuid.new();
-		}
-		
 		$scope.onClickTab = function (tab) {
 			$scope.currentTab = tab.url;
 		}
@@ -78,14 +74,8 @@ angular.module('emuwebApp')
 			    $scope.levelSelect.push(td.name);
 			});
 			// the following will be rewritten : !
-			if($scope.cps.vals.perspectives[0].twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-				angular.forEach($scope.cps.vals.perspectives[key].twoDimCanvases.twoDimDrawingDefinitions, function (dd) {
-					$scope.twoDimSelect.push(dd.name);
-				});
-			}
-			else {
-			    $scope.twoDimSelect.push('under development');
-			}
+			$scope.twoDimSelect.push('under development');
+			
 			////////////////////////////////
 			$scope.addSignalSelect = $scope.signalSelect[0];
 			$scope.addLevelSelect = $scope.levelSelect[0];
@@ -155,7 +145,6 @@ angular.module('emuwebApp')
 		            $scope.cps.vals.perspectives[key].levelCanvases.order.push(keyAttribute);
 		            break;	
 		        case 'perspectiveOrderTwoDim':
-		            console.log($scope.cps.vals.perspectives[key].twoDimCanvases.twoDimDrawingDefinitions);
 		            $scope.cps.vals.perspectives[key].twoDimCanvases.order.push(keyAttribute);
 		            break;	
 
