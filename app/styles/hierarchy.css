@@ -3,7 +3,7 @@
 	height: calc(100% - 34px);
 }
 
-.emuhierarchy-node {
+.emuhierarchy-node, .emuhierarchy-addbutton {
 	cursor: pointer;
 }
 

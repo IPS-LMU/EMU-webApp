@@ -188,7 +188,7 @@ angular.module('emuwebApp')
 	scope.getOrientatedLevelCaptionTransform = function (d) {
 		var revArr = angular.copy(scope.path).reverse();
 		if (scope.vertical) {
-			return 'translate(20, '+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+')';
+			return 'translate(25, '+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+')';
 		} else {
 			return 'translate('+scope.depthToX(revArr.indexOf(d))*zoomListener.scale()+', 20)';
 		}
@@ -196,9 +196,9 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedAddItemButtonTransform = function (d) {
 		if (scope.vertical) {
-			return 'translate(0,0)';
+			return 'translate(-12, -5)';
 		} else {
-			return 'translate(0, 20)';
+			return 'translate(-12, -5)';
 		}
 	};
 
@@ -310,6 +310,11 @@ angular.module('emuwebApp')
 	scope.linkOnMouseOver = function (d) {
 		scope.selectLink(d);
 		scope.renderSelectionOnly();
+	};
+
+	scope.addButtonOnClick = function (d) {
+		LevelService.pushNewItem (d);
+		scope.render();
 	};
 		
 
@@ -480,7 +485,9 @@ angular.module('emuwebApp')
 
 		var addItemButtons = newLevelCaptions
 			.append('g')
+			.attr('class', 'emuhierarchy-addbutton')
 			.attr('transform', scope.getOrientatedAddItemButtonTransform)
+			.on('click', scope.addButtonOnClick)
 			;
 
 		addItemButtons

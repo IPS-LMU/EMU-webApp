@@ -1365,6 +1365,34 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * Add an item to the end of the specified level
+		 */
+		sServObj.pushNewItem = function (levelName) {
+			var level = sServObj.getLevelDetails (levelName).level;
+			console.debug(levelName, level);
+
+			// Check whether the level has time information
+			// and only proceed if this is not the case
+			if (level.type === 'ITEM') {
+				// Create new item object
+				var newObject = { id: DataService.getNewId(), labels: [] };
+
+				// Add all necessary labels
+				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
+				for (var i=0; i<attrdefs.length; ++i) {
+					if (attrdefs[i].type === 'STRING') {
+						newObject.labels.push({name: attrdefs[i].name, value: ''});
+					} else {
+						newObject.labels.push({name: attrdefs[i].name, value: null});
+					}
+				}
+
+				// Insert item into level
+				level.items.push (newObject);
+			}
+		};
+
+		/**
 		 * Add an item next to the item with id === eid.
 		 * Do nothing if eid is not of type ITEM (ie, if it is on a level with time information)
 		 * 
