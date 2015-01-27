@@ -1475,24 +1475,17 @@ angular.module('emuwebApp')
 
 		/**
 		 * Add a new link if it does not yet exist
+		 * @param from ID of the source item
+		 * @param to ID of the target item
 		 */
 		sServObj.addLink = function (from, to) {
-			var links = DataService.getLinkData();
-			console.debug( from, to);
+			var validity = sServObj.checkLinkValidity(null, from, to);
 
-			if (from === to) {
-				console.debug ('Not adding link (because they are the same) between: ', from, to);
+			if (validity.valid) {
+				DataService.insertLinkData({fromID: from, toID: to});
+			} else {
+				console.debug('Not adding invalid link:', from, to);
 			}
-
-			for (var i=0; i<links.length; ++i) {
-				if (links[i].fromID === from && links[i].toID === to) {
-					console.debug ('Not adding link (because it already exists) between: ', from, to);
-					return;
-				}
-			}
-
-			DataService.insertLinkData({fromID: from, toID: to});
-			// FIXME NEVER ADD LINKS WHEN THEY'RE INVALID
 		};
 
 		sServObj.getItemByID = function (id) {
@@ -1512,10 +1505,54 @@ angular.module('emuwebApp')
 		/**
 		 * Test whether a link to be added would be valid
 		 *
-		 * @return boolean
+		 * Requirements for validity:
+		 * - No cross-over links
+		 * - Meet limitations defined by DBconfig.linkDefinitions
+		 * -- Only along the hierarchy's direction
+		 * - Only within the currently selected (and visualised) path
+		 * - No multiply defined links
+		 *
+		 * @param path Currently selected path (form: [..., 'level2name', 'level1name'])
+		 * @param from ID of the source item
+		 * @param to ID of the target item
+		 *
+		 * @return object with state and reason properties
+		 * reason may be one of:
+		 * 0: no error
+		 * 1: from and to are the same
+		 * 2: link already exists
+		 * 3: link does not meet the requirements of DBconfig.linkDefinitions
+		 * 4: link would cross another link
 		 **/
 		sServObj.checkLinkValidity = function (path, from, to) {
-			return false;
+			var result = { valid: true, reason: 0 };
+			var links = DataService.getLinkData();
+
+			// This case (from === to)  would also be caught below
+			// during linkDefinitions check. I treat it separately
+			// anyway because the current GUI implementation kindly
+			// facilitates this kind of error and I can therefore
+			// offer an 0.0000001 % increase in speed here :-)
+			if (from === to) {
+				result.valid = false;
+				result.reason = 1;
+				return result;
+			}
+
+			
+			// Check whether link already exists
+			for (var i=0; i<links.length; ++i) {
+				if (links[i].fromID === from && links[i].toID === to) {
+					result.valid = false;
+					result.reason = 2;
+					return result;
+				}
+			}
+
+			//
+
+			// No error found - returning success object
+			return result;
 		};
 
 		return sServObj;

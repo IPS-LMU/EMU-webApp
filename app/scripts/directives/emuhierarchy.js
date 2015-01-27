@@ -239,9 +239,9 @@ angular.module('emuwebApp')
 	 * trying to create.
 	 */
 	scope.getPreviewColor = function () {
-		var valid = LevelService.checkLinkValidity(scope.selectedPath, scope.newLinkSrc, scope.selectedItem);
+		var validity = LevelService.checkLinkValidity(scope.selectedPath, scope.newLinkSrc.id, scope.selectedItem.id);
 
-		if (valid) {
+		if (validity.valid) {
 			return 'green';
 		} else {
 			return 'red';
