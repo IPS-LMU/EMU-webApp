@@ -813,17 +813,10 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.isHierarchyOpen = function () {
-      return sServObj.hierarchyShown;
-    };
-
-    /**
-     *
-     */
-    sServObj.showHierarchy = function () {
+    sServObj.toggleHierarchy = function () {
       sServObj.hierarchyShown = !sServObj.hierarchyShown;
     };
-
+    
 
     /**
      *
