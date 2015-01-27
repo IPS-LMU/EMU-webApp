@@ -28,14 +28,17 @@ angular.module('emuwebApp')
 		
 		// all available tabs
 		$scope.tabs = [{
-				title: 'Level Definitions',
+				title: 'level definitions',
 				url: 'views/tabbed/levelDefinition.html'
 			}, {
-				title: 'Link Definitions',
+				title: 'link definitions',
 				url: 'views/tabbed/linkDefinition.html'
 			}, {
-				title: 'ssff Track Definitions',
+				title: 'ssff track definitions',
 				url: 'views/tabbed/ssffDefinition.html'
+			}, {
+				title: '2D definitions',
+				url: 'views/tabbed/twoDimDefinition.html'
 			}, {
 				title: 'EMU-webApp',
 				url: 'views/tabbed/emuDefinition.html'
