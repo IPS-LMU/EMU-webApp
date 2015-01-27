@@ -28,10 +28,10 @@
 	opacity: 0;
 }
 
-.emuhierarchy-templink {
+.emuhierarchy-newlinkpreview {
 	fill: none;
-	stroke: red;
-	stroke-width: 3px;
+	stroke-width: 2px;
+	stroke-dasharray: 5 5;
 }
 
 .emuhierarchy-ghostCircle .emuhierarchy-show {

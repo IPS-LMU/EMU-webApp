@@ -223,6 +223,31 @@ angular.module('emuwebApp')
 		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
 	};
 
+	/**
+	 * Calculate the path for the dashed preview link that is shown when
+	 * trying to add a new link.
+	 */
+	scope.getPreviewPath = function () {
+		var from = { x: scope.newLinkSrc._x, y: scope.newLinkSrc._y };
+		var to = { x: scope.selectedItem._x, y: scope.selectedItem._y };
+		
+		return 'M'+from.x+' '+from.y+'Q'+from.x+' '+to.y+' '+to.x+' '+to.y;
+	};
+
+	/**
+	 * Return a color depending on the validity of the link the user is
+	 * trying to create.
+	 */
+	scope.getPreviewColor = function () {
+		var valid = LevelService.checkLinkValidity(scope.selectedPath, scope.newLinkSrc, scope.selectedItem);
+
+		if (valid) {
+			return 'green';
+		} else {
+			return 'red';
+		}
+	};
+
 	scope.svgOnMouseMove = function (d) {
 		if (scope.newLinkSrc !== undefined) {
 			var mouse = scope.getOrientatedMousePosition(d3.mouse(this));
@@ -408,6 +433,11 @@ angular.module('emuwebApp')
 				}
 			})
 			;
+
+		svg.selectAll('.emuhierarchy-newlinkpreview')
+				.attr('d', scope.getPreviewPath)
+				.style('stroke', scope.getPreviewColor)
+				;
 	};
 
 
@@ -785,8 +815,13 @@ angular.module('emuwebApp')
 				.attr('class', 'emuhierarchy-newlink')
 				.style('stroke', 'black')
 				;
+
+			svg.append('path')
+				.attr('class', 'emuhierarchy-newlinkpreview')
+				;
 		} else {
-			svg.select('.emuhierarchy-newlink').remove();
+			svg.selectAll('.emuhierarchy-newlink').remove();
+			svg.selectAll('.emuhierarchy-newlinkpreview').remove();
 		}
 		
 	};

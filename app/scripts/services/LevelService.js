@@ -1509,5 +1509,14 @@ angular.module('emuwebApp')
 			return undefined;
 		};
 
+		/**
+		 * Test whether a link to be added would be valid
+		 *
+		 * @return boolean
+		 **/
+		sServObj.checkLinkValidity = function (path, from, to) {
+			return false;
+		};
+
 		return sServObj;
 	});
