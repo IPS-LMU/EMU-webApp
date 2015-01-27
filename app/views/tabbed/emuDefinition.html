@@ -10,10 +10,10 @@
 			</span>
 			<span ng-switch on="value" class="emuwebapp-tabbed-cell" style="padding-bottom: 10px;">
 				<span ng-switch-when="true">
-					<input type="checkbox" name="{{key}}" size="45" value="false" class="emuwebapp-tabbed-input">
+					<input type="checkbox" ng-model="value" class="emuwebapp-tabbed-input">
 				</span>
 				<span ng-switch-when="false">
-					<input type="checkbox" name="{{key}}" size="45" value="true" checked class="emuwebapp-tabbed-input">
+					<input type="checkbox" ng-model="value" class="emuwebapp-tabbed-input">
 				</span>	
 				<span ng-switch-default>
 				    <span ng-switch on="key">
@@ -48,7 +48,7 @@
 							<select ng-model="value" ng-options="opt as opt for opt in spectroDefinitionProperties.window.enum" class="emuwebapp-tabbed-input-bold"></select>
 						</span>
 						<span ng-switch-default>
-							<input type="text" name="{{key}}" value="{{value}}" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+							<input type="text" ng-model="value" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 						</span>
 				    </span>
 				</span>

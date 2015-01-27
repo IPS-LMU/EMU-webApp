@@ -16,7 +16,7 @@
 				Name
 			</span>
 			<span class="emuwebapp-tabbed-cell">
-				<input type="text" name="uuid" value="{{cps.curDbConfig.name}}" size="45" class="emuwebapp-tabbed-input-bold">
+				<input type="text" ng-model="cps.curDbConfig.name" size="45" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 			</span>
 		</div>
 		<br />
@@ -25,7 +25,7 @@
 				Media File Extension
 			</span>
 			<span class="emuwebapp-tabbed-cell">
-				<input type="text" name="uuid" value="{{cps.curDbConfig.mediafileExtension}}" size="45" class="emuwebapp-tabbed-input-bold">
+				<input type="text" ng-model="cps.curDbConfig.mediafileExtension" size="45" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 			</span>
 		</div>
 	</div>

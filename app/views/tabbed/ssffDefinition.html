@@ -3,13 +3,13 @@
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
-	        Name: <input type="text" value="{{value.name}}" class="emuwebapp-tabbed-input-bold"/>
+	        Name: <input type="text" ng-model="value.name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 	    </span>
 	    <span class="emuwebapp-tabbed-cell3">
-	        Column Name: <input type="text" value="{{value.columnName}}" class="emuwebapp-tabbed-input-bold"/>
+	        Column Name: <input type="text" ng-model="value.columnName" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 	    </span>
 	    <span class="emuwebapp-tabbed-cell3">	    
-	        File Extension: <input type="text" value="{{value.fileExtension}}" class="emuwebapp-tabbed-input-bold"/>
+	        File Extension: <input type="text" ng-model="value.fileExtension" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 	    </span>
 	</div>
 </div>
