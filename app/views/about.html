@@ -51,8 +51,6 @@
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open right submenu</td></tr>
 
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarchy)}}</b></td><td>Open Hierarchy View</td></tr>
-		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.rotateHierarchy)}}</b></td><td>Rotate Hierarchy</td></tr>
-
 	  
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td><td>Zoom in<sup>1</sup></td></tr>
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td><td>Zoom out<sup>1</sup></td></tr>
@@ -134,6 +132,29 @@
 		</tbody>
 	  </table>
 	</div>
+
+	<hr class="emuwebapp-aboutHr" ng-show="cps.vals.activeButtons.showHierarchy"/>
+
+	<!-- correction shortcuts -->
+
+	<div class="emuwebapp-aboutDiv" ng-show="cps.vals.activeButtons.showHierarchy">
+	<b>Hierarchy Tool shortcuts</b><br />&nbsp;<br />
+	  <table class="emuwebapp-aboutTable">
+	  	<tbody>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyRotate)}}</b></td><td>Rotate hierarchy by 90°</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemBefore)}}</b></td><td>Add item before the currently preselected one</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemAfter)}}</b></td><td>Add item after the currently preselected one</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddLink)}}</b></td><td>1. Start drawing a new link from the currently preselected item; 2. Finish drawing the link</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteItem)}}</b></td><td>Delete the currently preselected item</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteLink)}}</b></td><td>Delete the currently preselected link</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyPlayback)}}</b></td><td>Play back the portion of the file defined by the currently preselected item</td></tr>
+		</tbody>
+	  </table>
+	</div>
+
+
+
+
 	</div>
 	<div class="emuwebapp-modal-footer">
 	  <button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>

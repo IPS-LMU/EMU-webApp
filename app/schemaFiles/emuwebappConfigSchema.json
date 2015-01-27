@@ -69,6 +69,9 @@
 				"hierarchyRotate": {
 					"type": "integer"				
 				},
+				"hierarchyPlayback": {
+					"type": "integer"				
+				},
 				"shiftViewPortLeft": {
 					"type": "integer"
 				},
@@ -160,7 +163,7 @@
 					"type": "integer"
 				}
 			},
-			"required": ["toggleSideBarLeft", "toggleSideBarRight", "zoomSel", "zoomAll", "zoomOut", "zoomIn", "showHierarchy", "hierarchyDeleteLink", "hierarchyDeleteItem", "hierarchyAddItemBefore", "hierarchyAddItemAfter", "hierarchyAddLink", "hierarchyRotate", "shiftViewPortLeft", "shiftViewPortRight", "playEntireFile", "playAllInView", "playSelected", "deletePreselBoundary", "selNextPrevItem", "selNextItem", "selPrevItem", "createNewItemAtSelection", "levelUp", "levelDown", "undo", "redo", "shrinkSelSegmentsLeft", "shrinkSelSegmentsRight", "expandSelSegmentsRight", "expandSelSegmentsLeft", "selectFirstContourCorrectionTool", "selectSecondContourCorrectionTool", "selectThirdContourCorrectionTool", "selectFourthContourCorrectionTool", "selectNoContourCorrectionTool", "selectItemsInSelection", "snapBoundaryToNearestTopBoundary", "snapBoundaryToNearestBottomBoundary", "snapBoundaryToNearestZeroCrossing", "shift", "alt", "esc"],
+			"required": ["toggleSideBarLeft", "toggleSideBarRight", "zoomSel", "zoomAll", "zoomOut", "zoomIn", "showHierarchy", "hierarchyDeleteLink", "hierarchyDeleteItem", "hierarchyAddItemBefore", "hierarchyAddItemAfter", "hierarchyAddLink", "hierarchyRotate", "hierarchyPlayback", "shiftViewPortLeft", "shiftViewPortRight", "playEntireFile", "playAllInView", "playSelected", "deletePreselBoundary", "selNextPrevItem", "selNextItem", "selPrevItem", "createNewItemAtSelection", "levelUp", "levelDown", "undo", "redo", "shrinkSelSegmentsLeft", "shrinkSelSegmentsRight", "expandSelSegmentsRight", "expandSelSegmentsLeft", "selectFirstContourCorrectionTool", "selectSecondContourCorrectionTool", "selectThirdContourCorrectionTool", "selectFourthContourCorrectionTool", "selectNoContourCorrectionTool", "selectItemsInSelection", "snapBoundaryToNearestTopBoundary", "snapBoundaryToNearestBottomBoundary", "snapBoundaryToNearestZeroCrossing", "shift", "alt", "esc"],
 			"additionalProperties": false
 		},
 		"colors": {
