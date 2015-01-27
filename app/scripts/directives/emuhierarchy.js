@@ -238,6 +238,8 @@ angular.module('emuwebApp')
 	/**
 	 * Return a color depending on the validity of the link the user is
 	 * trying to create.
+	 *
+	 * If the link is invalid, this function will try reversing the link.
 	 */
 	scope.getPreviewColor = function () {
 		var validity = LevelService.checkLinkValidity(scope.path, scope.newLinkSrc.id, scope.selectedItem.id);
@@ -245,6 +247,12 @@ angular.module('emuwebApp')
 		if (validity.valid) {
 			return 'green';
 		} else {
+			if (validity.reason === 3) {
+				validity = LevelService.checkLinkValidity(scope.path, scope.selectedItem.id, scope.newLinkSrc.id);
+				if (validity.valid) {
+					return 'green';
+				}
+			}
 			return 'red';
 		}
 	};

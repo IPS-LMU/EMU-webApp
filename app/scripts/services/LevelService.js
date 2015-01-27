@@ -1502,7 +1502,11 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Add a new link if it does not yet exist
+		 * Add a new link if it is valid
+		 * 
+		 * If the specified link is invalid but its reverse is valid,
+		 * the reverse is added.
+		 *
 		 * @param from ID of the source item
 		 * @param to ID of the target item
 		 */
@@ -1513,6 +1517,13 @@ angular.module('emuwebApp')
 				DataService.insertLinkData({fromID: from, toID: to});
 			} else {
 				console.debug('Not adding invalid link:', from, '->', to, ' (Error code:', validity.reason, ')');
+				if (validity.reason === 3) {
+					validity = sServObj.checkLinkValidity(path, to, from);
+					if (validity.valid) {
+						console.debug('Adding reverse link instead');
+						DataService.insertLinkData({fromID: to, toID: from});
+					}
+				}
 			}
 		};
 
