@@ -39,6 +39,7 @@ angular.module('emuwebApp')
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
 		scope.hierarchyState.path = newValue;
+		scope.hierarchyState.newLinkFromID = undefined;
 		scope.render();
 	}, false);
 
