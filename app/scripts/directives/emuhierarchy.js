@@ -38,6 +38,7 @@ angular.module('emuwebApp')
 
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
+		scope.hierarchyState.path = newValue;
 		scope.render();
 	}, false);
 
@@ -239,7 +240,7 @@ angular.module('emuwebApp')
 	 * trying to create.
 	 */
 	scope.getPreviewColor = function () {
-		var validity = LevelService.checkLinkValidity(scope.selectedPath, scope.newLinkSrc.id, scope.selectedItem.id);
+		var validity = LevelService.checkLinkValidity(scope.path, scope.newLinkSrc.id, scope.selectedItem.id);
 
 		if (validity.valid) {
 			return 'green';

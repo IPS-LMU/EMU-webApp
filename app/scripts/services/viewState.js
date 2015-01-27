@@ -56,15 +56,16 @@ angular.module('emuwebApp')
 
       // 
       sServObj.hierarchyState = {
-      	// The following three will be set from within the emuhierarchy directive
-	// They will be IDs as they appear in the <bundle>_annot.json
+      	// These variables will be set from within the emuhierarchy directive
+	// They IDs are IDs as they appear in the <bundle>_annot.json
       	selectedItemID: undefined,
 	selectedLinkFromID: undefined,
 	selectedLinkToID: undefined,
+	path: [], // this should probably be set by the controller rather than the directive
+	
+	// These will be set by the handlekeystrokes directive
 	newLinkFromID: undefined,
-	
 	rotated: false,
-	
 	playing: 0,
 	sthHasChanged: 0
       };

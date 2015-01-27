@@ -1478,8 +1478,8 @@ angular.module('emuwebApp')
 		 * @param from ID of the source item
 		 * @param to ID of the target item
 		 */
-		sServObj.addLink = function (from, to) {
-			var validity = sServObj.checkLinkValidity(null, from, to);
+		sServObj.addLink = function (path, from, to) {
+			var validity = sServObj.checkLinkValidity(path, from, to);
 
 			if (validity.valid) {
 				DataService.insertLinkData({fromID: from, toID: to});
@@ -1549,7 +1549,47 @@ angular.module('emuwebApp')
 				}
 			}
 
+			// Check whether link is within the currently selected
+			// path (which implies that the DBconfig.linkDefinitions
+			// are met, apart from the link type that is specified
+			// there
+			var superlevel = sServObj.getLevelNameByElementID(from);
+			var sublevel = sServObj.getLevelNameByElementID(to);
+			var superlevelIndex = path.indexOf(superlevel);
+			if (path[superlevelIndex-1] !== sublevel) {
+				result.valid = false;
+				result.reason = 3;
+				return result;
+			}
+
+			// Check link type
+			var linkType;
+			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
+				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === sublevel &&
+				    ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevel)
+				{
+					linkType = ConfigProviderService.curDbConfig.linkDefinitions[i].type;
+				}
+			}
+			if (linkType === undefined) {
+				consle.debug('LIKELY A BUG: link to be added (', from, '->', to, ') has been found to be a part of the currently selected path but the link between the respective levels could not be found.');
+				result.valid = false;
+				result.reason = 3;
+				return result;
+			}
+			// Type can be one of 'MANY_TO_MANY', 'ONE_TO_MANY', 'ONE_TO_ONE'
+			// this is defined in schemaFiles/DBconfigFileSchema.json
 			//
+			// In case it is MANY_TO_MANY, the link is always valid
+			if (linkType === 'ONE_TO_MANY') {
+			}
+			if (linkType === 'ONE_TO_ONE') {
+			}
+
+
+			// Check for crossover
+
+
 
 			// No error found - returning success object
 			return result;
