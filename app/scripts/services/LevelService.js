@@ -1484,7 +1484,7 @@ angular.module('emuwebApp')
 			if (validity.valid) {
 				DataService.insertLinkData({fromID: from, toID: to});
 			} else {
-				console.debug('Not adding invalid link:', from, to);
+				console.debug('Not adding invalid link:', from, '->', to, ' (Error code:', validity.reason, ')');
 			}
 		};
 
@@ -1521,8 +1521,9 @@ angular.module('emuwebApp')
 		 * 0: no error
 		 * 1: from and to are the same
 		 * 2: link already exists
-		 * 3: link does not meet the requirements of DBconfig.linkDefinitions
-		 * 4: link would cross another link
+		 * 3: link does not meet the requirements of DBconfig.linkDefinitions (no link between its levels)
+		 * 4: link does not meet the requirements of DBconfig.linkDefinitions (link type not satisified)
+		 * 5: link would cross another link
 		 **/
 		sServObj.checkLinkValidity = function (path, from, to) {
 			var result = { valid: true, reason: 0 };
@@ -1581,9 +1582,25 @@ angular.module('emuwebApp')
 			// this is defined in schemaFiles/DBconfigFileSchema.json
 			//
 			// In case it is MANY_TO_MANY, the link is always valid
-			if (linkType === 'ONE_TO_MANY') {
+			//
+			if (linkType === 'ONE_TO_MANY' || linkType === 'ONE_TO_ONE') {
+				var toElement = sServObj.getItemByID(to);
+				if (toElement._parents.length > 0) {
+					result.valid = false;
+					result.reason = 4;
+					return result;
+				}
 			}
-			if (linkType === 'ONE_TO_ONE') {
+			if (linkType === 'ONE_TO_ONE') { // This case (one-to-one) is untested) FIXME
+				var fromElement = sServObj.getItemByID(from);
+				
+				// FIXME cant access HierarchyLayoutService because it would add a circular dependency
+				//var children = HierarchyLayoutService.findChildren(fromElement, path);
+				if (children.length > 0) {
+					result.valid = false;
+					result.reason = 4;
+					return result;
+				}
 			}
 
 
