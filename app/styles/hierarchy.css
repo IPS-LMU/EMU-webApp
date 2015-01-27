@@ -1,15 +1,17 @@
-.emuhierarchy-node {
-	cursor: pointer;
+.emuwebapp-hierarchy-container{
+	width: 100%;
+	height: calc(100% - 34px);
 }
 
-.emuhierarchy-overlay {
-	background-color:#EEE;
+.emuhierarchy-node {
+	cursor: pointer;
 }
 
 .emuhierarchy-node circle {
 	stroke-width: 1.5px;
 }
 
+/* Caption of individual items */
 .emuhierarchy-node text {
 	font-size:10px;
 	font-family:sans-serif;
@@ -20,6 +22,7 @@
 	stroke-width: 1.5px;
 }
 
+/* Invisible, thick background for every link to provide easier mouse-over */
 .emuhierarchy-ghostlink {
 	fill: none;
 	stroke-width: 15px;
@@ -32,13 +35,5 @@
 	fill: none;
 	stroke-width: 2px;
 	stroke-dasharray: 5 5;
-}
-
-.emuhierarchy-ghostCircle .emuhierarchy-show {
-		display:block;
-}
-
-.emuhierarchy-ghostCircle, .emuhierarchy-activeDrag .emuhierarchy-ghostCircle {
-		display: none;
 }
 
