@@ -333,7 +333,7 @@ angular.module('emuwebApp')
 				viewState.curPerspectiveIdx = 0;
 				ConfigProviderService.setVals(data.EMUwebAppConfig);
 				// FOR DEVELOPMENT
-				$scope.showEditDBconfigBtnClick();
+				//$scope.showEditDBconfigBtnClick();
 				
 				delete data.EMUwebAppConfig; // delete to avoid duplicate
 				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);

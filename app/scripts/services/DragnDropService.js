@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropService', function DragnDropService($q, $rootScope, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
+	.service('DragnDropService', function DragnDropService($q, $rootScope, appStateService, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
@@ -17,6 +17,7 @@ angular.module('emuwebApp')
 		sServObj.setData = function (bundles) {
 		    var prom = [];
 		    var count = 0;
+		    
 			angular.forEach(bundles, function (bundle, i) {
 			    sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
 			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
@@ -105,9 +106,6 @@ angular.module('emuwebApp')
 		    return blob;
 		};
 		
-		
-		
-		
 		sServObj.convertDragnDropData = function (bundles, i) {
 		    var defer = $q.defer();
 		    var data = sServObj.drandropBundles[i];
@@ -143,17 +141,31 @@ angular.module('emuwebApp')
 									});
 								}
 								else {
-									reader2.readAsText(data.annotation);
-									reader2.onloadend = function (evt) {
-										if (evt.target.readyState == FileReader.DONE) {
-											Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
-												DragnDropDataService.convertedBundles[i].annotation =  parseMess;
+								    if(data.annotation.type === 'textgrid') {
+										reader2.readAsText(data.annotation.file);
+										reader2.onloadend = function (evt) {
+											if (evt.target.readyState == FileReader.DONE) {
+												Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
+													DragnDropDataService.convertedBundles[i].annotation =  parseMess;
+													sServObj.convertDragnDropData(bundles, i+1).then( function () {
+														defer.resolve();
+													});
+												});                                                            
+											}
+										};
+								    }
+								    else if(data.annotation.type === 'annotation') {
+										reader2.readAsText(data.annotation.file);
+										reader2.onloadend = function (evt) {
+											if (evt.target.readyState == FileReader.DONE) {
+											    console.log(evt.currentTarget.result);
+												DragnDropDataService.convertedBundles[i].annotation = evt.currentTarget.result;
 												sServObj.convertDragnDropData(bundles, i+1).then( function () {
 													defer.resolve();
-												});
-											});                                                            
-										}
-									};
+												});                                                     
+											}
+										};
+								    }
 								}
 							});
 						}
@@ -233,11 +245,13 @@ angular.module('emuwebApp')
 							viewState.somethingInProgressTxt = 'Done!';
 						} else {
 							modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								sServObj.resetToInitState();
 								appStateService.resetToInitState();
 							});
 						}
 				}, function (errMess) {
 						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
+							sServObj.resetToInitState();
 							appStateService.resetToInitState();
 						});
 					});
