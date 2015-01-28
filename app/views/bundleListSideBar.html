@@ -17,7 +17,7 @@
                         ▽{{key}}
                     </div>
                 </div>
-                <div collapse="lmds.getSessionCollapseState(key)">
+                <div data-slide-toggle="!lmds.getSessionCollapseState(key)" data-slide-toggle-duration="250">
                 <div class="bundleOuter" ng-repeat="bundle in value | regex:filterText">
                     <div class="emuwebapp-bundleListItem" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" dragout name="{{bundle.name}}">
                         <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-show="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.png" /></button>

@@ -1,0 +1,18 @@
+<!-- linkDefinitions -->
+<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
+    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
+    <div class="emuwebapp-tabbed-table">
+        <span class="emuwebapp-tabbed-cell3">
+	        Type: <select ng-model="cps.curDbConfig.linkDefinitions[key].type" ng-options="opt as opt for opt in linkDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold"></select>
+	    </span>
+	    <span class="emuwebapp-tabbed-cell3">
+	        Super Level: <select ng-model="cps.curDbConfig.linkDefinitions[key].superlevelName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.levelDefinitions" class="emuwebapp-tabbed-input-bold"></select>
+	    </span>
+	    <span class="emuwebapp-tabbed-cell3">	    
+	        Sub Level: <select ng-model="cps.curDbConfig.linkDefinitions[key].sublevelName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.levelDefinitions" class="emuwebapp-tabbed-input-bold"></select>
+	    </span>
+	</div>
+</div>
+<br />
+<a href title="Add new definition" ng-click="addDefinition('link')"><span class="emuwebapp-tabbed-add">+</span> add new link definition</a>
+<br />

@@ -112,14 +112,14 @@ describe('Controller: spectSettingsCtrl', function () {
       'width': '10px',
       'height': '10px'
     };
-    var ret = scope.getColorOfAnchor(0);
+    var ret = scope.vs.getColorOfAnchor(scope.modalVals.heatMapColorAnchors, 0);
     expect(ret).toEqual(curStyle0);
     var curStyle1 = {
       'background-color': 'rgb(1,2,3)',
       'width': '10px',
       'height': '10px'
     };
-    var ret = scope.getColorOfAnchor(1);
+    var ret = scope.vs.getColorOfAnchor(scope.modalVals.heatMapColorAnchors, 1);
     expect(ret).toEqual(curStyle1);
   });
   

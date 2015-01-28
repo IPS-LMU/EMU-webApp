@@ -5,9 +5,12 @@ describe('Directive: dragout', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, loadedMetaDataService) {
+    beforeEach(inject(function($rootScope, $compile, viewState, loadedMetaDataService, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
+        scope.cps = ConfigProviderService;
+        scope.cps.vals.main = {};
+        scope.cps.vals.main.comMode = 'embedded';        
         scope.vs.curPerspectiveIdx = 0;
         scope.lmds = loadedMetaDataService;
     }));
@@ -67,10 +70,10 @@ describe('Directive: dragout', function() {
     });
 
     it('should generate url on dragstart', function() {
-        var curBundleName = 'test';
+        var curBundleName = 'test';        
         scope.lmds.setCurBndlName(curBundleName);
         compileDirective(curBundleName);
-        spyOn(elm.isolateScope(), 'generateURL').and.returnValue('test');
+        spyOn(elm.isolateScope(), 'generateURL');
         var event = document.createEvent('Event');
         event.initEvent('dragstart', true, true);
         elm[0].dispatchEvent(event);

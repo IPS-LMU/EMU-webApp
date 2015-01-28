@@ -60,13 +60,13 @@ describe('Controller: ModalCtrl', function () {
    it('should saveChanges', function () {
      spyOn(scope.modal, 'close');
      scope.saveChanges();
-     expect(scope.modal.close).toHaveBeenCalledWith('saveChanges');
+     expect(scope.modal.close).toHaveBeenCalled();
    });    
 
    it('should discardChanges', function () {
      spyOn(scope.modal, 'close');
      scope.discardChanges();
-     expect(scope.modal.close).toHaveBeenCalledWith('discardChanges');
+     expect(scope.modal.close).toHaveBeenCalled();
    });           
      
    it('should cursorInTextField', function () {

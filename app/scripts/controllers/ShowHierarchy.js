@@ -126,8 +126,6 @@ angular.module('emuwebApp')
 			};
 
 			traverse (DataService.getData());
-
 			modalService.close();
-			viewState.showHierarchy();
 		};
 	});

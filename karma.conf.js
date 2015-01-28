@@ -23,6 +23,7 @@ module.exports = function (config) {
       'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/bower_components/d3/d3.js',
+      'app/bower_components/angular-ui-sortable/sortable.js',
       'app/scripts/!(prototypeexpansions).js',
       'app/scripts/filters/*.js',
       'app/scripts/controllers/*.js',
