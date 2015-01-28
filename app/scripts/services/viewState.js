@@ -94,7 +94,7 @@ angular.module('emuwebApp')
         'permittedActions': []
       };
       sServObj.states.labeling = {
-        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'downloadAnnotationBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars', 'saveBndlBtnClick', 'showHierarchyBtnClick']
+        'permittedActions': ['zoom', 'playaudio', 'spectSettingsChange', 'addLevelSegBtnClick', 'addLevelPointBtnClick', 'renameSelLevelBtnClick', 'downloadTextGridBtnClick', 'downloadAnnotationBtnClick', 'spectSettingsChange', 'clearBtnClick', 'labelAction', 'toggleSideBars', 'saveBndlBtnClick', 'showHierarchyBtnClick', 'editDBconfigBtnClick']
       };
       sServObj.states.modalShowing = sServObj.states.loadingSaving;
       sServObj.prevState = sServObj.states.noDBorFilesloaded;
@@ -813,17 +813,10 @@ angular.module('emuwebApp')
     /**
      *
      */
-    sServObj.isHierarchyOpen = function () {
-      return sServObj.hierarchyShown;
-    };
-
-    /**
-     *
-     */
-    sServObj.showHierarchy = function () {
+    sServObj.toggleHierarchy = function () {
       sServObj.hierarchyShown = !sServObj.hierarchyShown;
     };
-
+    
 
     /**
      *
@@ -1151,6 +1144,18 @@ angular.module('emuwebApp')
     sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
+    
+    /**
+     *
+     */
+    sServObj.getColorOfAnchor = function (val, anchorNr) {
+	    var curStyle = {
+			'background-color': 'rgb(' + val[anchorNr][0] + ',' + val[anchorNr][1] + ',' + val[anchorNr][2] + ')',
+			'width': '10px',
+			'height': '10px'
+		};
+		return (curStyle);
+	};    
 
     return sServObj;
 

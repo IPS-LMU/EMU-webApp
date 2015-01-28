@@ -35,6 +35,19 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		sServObj.getSchema = function (schemaName) {
+			var schema = undefined;
+			angular.forEach(schemasJsos, function (s) {
+				if (s.name === 'schemaFiles/' + schemaName + '.json') {
+					schema = s;
+				}
+			});
+			return schema;
+		};
+
+		/**
+		 *
+		 */
 		sServObj.validateJSO = function (schemaName, jso) {
 			var schema;
 			angular.forEach(schemasJsos, function (s) {

@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('emuwebApp')
 .directive('myDropZone', function ($animate, $compile, DragnDropService, browserDetector, appStateService, modalService) {
 	return {
@@ -16,6 +15,7 @@ angular.module('emuwebApp')
 			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
 			scope.dropAllowed = 'Drop file(s) to start loading !';
 			scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
+			scope.dropParsingWaitingAnnot = 'Annotation file loaded! Please load .WAV file in order to start!';
 			scope.dropFirefoxWarning = 'Sorry ! Firefox does not support dropping folders ! please drop single or multiple files !';
 
 			scope.dropText = scope.dropTextDefault;
@@ -33,8 +33,15 @@ angular.module('emuwebApp')
 			}
  
 			scope.enqueueFileAddition = function (file) {
+                var identifier = file.name.substring(file.name.lastIndexOf('_') + 1, file.name.lastIndexOf('.')).toUpperCase();
                 var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-                var bundle = file.name.substr(0, file.name.lastIndexOf('.'));
+                var bundle = '';
+                if(identifier === 'ANNOT') {
+                    bundle = file.name.substr(0, file.name.lastIndexOf('_'));
+                }
+                else {
+                    bundle = file.name.substr(0, file.name.lastIndexOf('.'));
+                }
                 var j = scope.bundleNames.indexOf(bundle);
                 if(j === -1) {
                     scope.bundleNames.push(bundle);
@@ -51,10 +58,20 @@ angular.module('emuwebApp')
 			        scope.startRendering();
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
-			        scope.bundles[j][2]= file;
+			        scope.bundles[j][2] = {};
+			        scope.bundles[j][2].file = file;
+			        scope.bundles[j][2].type = 'textgrid';
 			        scope.handles.push(file); 
 			        scope.dropClass = scope.dropClassDefault;
 			        scope.dropText = scope.dropParsingWaiting;
+			    }
+			    else if ( extension === 'JSON' && identifier === 'ANNOT') {
+			        scope.bundles[j][2] = {};
+			        scope.bundles[j][2].file = file;
+			        scope.bundles[j][2].type = 'annotation';
+			        scope.handles.push(file); 
+			        scope.dropClass = scope.dropClassDefault;
+			        scope.dropText = scope.dropParsingWaitingAnnot;
 			    }
 			    else {
 			        if(browserDetector.isBrowser.Firefox()) {

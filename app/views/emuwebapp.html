@@ -42,6 +42,8 @@
 
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
+      <button class="emuwebapp-mini-btn" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editDBconfig">edit DBconfig</button>
+
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
       <button id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn right" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" /></button>
     </div>
@@ -51,7 +53,7 @@
       <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
       <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-topPane">
         <ul class="emuwebapp-timeline-flexcontainer">
-          <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order" ng-switch on="curTrack">
+          <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
             <spectro ng-switch-when="SPEC" order="{{$index}}" track-name="{{curTrack}}"></spectro>
             <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>

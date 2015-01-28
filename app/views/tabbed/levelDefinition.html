@@ -1,0 +1,45 @@
+<!-- levelDefinitions -->
+<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
+    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
+    <div class="emuwebapp-tabbed-table">
+        <span class="emuwebapp-tabbed-cell3">
+		    Name <input name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
+		</span>
+		<span class="emuwebapp-tabbed-cell3">
+	        Type: <select ng-model="cps.curDbConfig.levelDefinitions[key].type" ng-options="opt as opt for opt in levelDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold" ></select>
+	    </span>
+	</div>
+	
+	<br />
+	
+	<small>
+	    <div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed">
+			<div class="emuwebapp-borderTitle">Attribute Definitions</div>
+				<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
+					<span ng-if="keyAttribute == 0" class="emuwebapp-tabbed-cell4">
+						Name: <b>{{cps.curDbConfig.levelDefinitions[key].name}}</b>
+					</span>
+					<span ng-if="keyAttribute > 0" class="emuwebapp-tabbed-cell4">
+						Name: <input type="text" ng-model="cps.curDbConfig.levelDefinitions[key].attributeDefinitions[keyAttribute].name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" class="emuwebapp-tabbed-input"></input>
+					</span>
+					<span class="emuwebapp-tabbed-cell4">
+						Type: <select ng-model="cps.curDbConfig.levelDefinitions[key].attributeDefinitions[keyAttribute].type" ng-options="opt as opt for opt in levelDefinitionProperties.attributeDefinitions.items.properties.type.enum" class="emuwebapp-tabbed-input"></select>
+					</span>	
+					<span class="emuwebapp-tabbed-cell4">
+						Legal Labels: <input type="text" ng-model="valueAttribute.legalLabels" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
+					</span>
+					<span ng-if="keyAttribute > 0" class="emuwebapp-tabbed-cell4">
+						<a href title="Delete" ng-click="deleteDefinition('levelattribute', key, keyAttribute)"><span class="emuwebapp-tabbed-delete" >X</span> delete definition</a>
+					</span>										
+				</div>
+				<div>
+					<br />
+					<a href title="Add new attribute definition" ng-click="addDefinition('levelattribute', key)"><span class="emuwebapp-tabbed-add">+</span> &nbsp; Add attribute definition to {{cps.curDbConfig.levelDefinitions[key].attributeDefinitions[0].name}}</a>
+				</div>
+			</div>
+		</div>
+	</small>
+</div>
+<br />
+<a href title="Add new definition" ng-click="addDefinition('level')"><span class="emuwebapp-tabbed-add">+</span> add new level definition</a>
+<br />

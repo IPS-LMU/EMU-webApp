@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainController', function ($scope, $rootScope, $modal, $log, $compile, $timeout,
+	.controller('MainController', function ($scope, $rootScope, $log, $compile, $timeout,
 		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
 		LevelService, Textgridparserservice, Espsparserservice,
@@ -332,6 +332,9 @@ angular.module('emuwebApp')
 				// first element of perspectives is default perspective
 				viewState.curPerspectiveIdx = 0;
 				ConfigProviderService.setVals(data.EMUwebAppConfig);
+				// FOR DEVELOPMENT
+				//$scope.showEditDBconfigBtnClick();
+				
 				delete data.EMUwebAppConfig; // delete to avoid duplicate
 				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 				if (validRes === true) {
@@ -678,8 +681,17 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showHierarchyBtnClick = function () {
-			viewState.showHierarchy();
-			modalService.open('views/showHierarchyModal.html');
+			if(!viewState.hierarchyShown) {
+			    viewState.toggleHierarchy();
+			    modalService.open('views/showHierarchyModal.html');
+			}
+		};
+
+		/**
+		 *
+		 */
+		$scope.showEditDBconfigBtnClick = function () {
+			modalService.open('views/editDBconfigModal.html');
 		};
 
 		/**

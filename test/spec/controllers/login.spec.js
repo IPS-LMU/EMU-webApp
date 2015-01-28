@@ -33,17 +33,6 @@ describe('Controller: LoginCtrl', function () {
      expect(scope.loginData.errorMsg).toBe('');
    });   
      
-   it('should tryLogin successfully', function () {
-     spyOn(scope.modal, 'close');
-     spyOn(scope.io, 'logOnUser').and.returnValue(deferred1.promise);
-     scope.tryLogin();
-     expect(scope.io.logOnUser).toHaveBeenCalledWith('','');
-     deferred1.resolve();
-     scope.$digest();     
-     expect(scope.modal.close).toHaveBeenCalled();
-   });      
-     
-     
    it('should tryLogin not successfully', function () {
      spyOn(scope.modal, 'close');
      spyOn(scope.io, 'logOnUser').and.returnValue(deferred2.promise);

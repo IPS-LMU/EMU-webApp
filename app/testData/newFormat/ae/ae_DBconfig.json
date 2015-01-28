@@ -181,7 +181,8 @@
 		},
 		"activeButtons": {
 			"saveBundle": true,
-			"showHierarchy": true
+			"showHierarchy": true,
+			"editDBconfig": true
 		}
 	}
 }

@@ -114,10 +114,9 @@ angular.module('emuwebApp')
               if (viewState.curState.permittedActions.length === 0 && 
                   code === ConfigProviderService.vals.keyMappings.esc &&
                   modalService.force === false ) {
-                modalService.close();
-                if (viewState.isHierarchyOpen()) {
-                  viewState.showHierarchy();
-                }
+                  if(viewState.hierarchyShown) {
+                      modalService.close();
+                  }
               }
 
               // delegate keyboard keyMappings according to keyMappings of scope
@@ -125,14 +124,12 @@ angular.module('emuwebApp')
               // showHierarhy
               if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
-                  if (!viewState.isHierarchyOpen()) {
-                    modalService.open('views/showHierarchyModal.html');
-                    viewState.showHierarchy();
-                  } else {
+                  if (viewState.hierarchyShown) {
                     modalService.close();
-                    viewState.showHierarchy();
+                  } else {
+                    viewState.toggleHierarchy();
+                    modalService.open('views/showHierarchyModal.html');
                   }
-                  
                 }
               }
 
