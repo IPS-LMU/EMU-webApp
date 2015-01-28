@@ -25,6 +25,7 @@
 	</div>
 	<div class="emuwebapp-modal-bodyHierarchy">
 		<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
+		<history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
 		<emuhierarchy playing="getPlaying();" path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
 	</div>
 	<div class="emuwebapp-modal-footer">

@@ -1398,22 +1398,25 @@ angular.module('emuwebApp')
 		 * 
 		 * @param eid The ID of the element that will get a new sibling
 		 * @param before boolean to define whether the new sibling will be inserted before or after eid
-		 * @return nothing
+		 * @param newID optional, only used for redoing from within the history service. if given, no new id is requested from the DataService.
+		 *
+		 * @return the id of the newly added item (if an item has been added)
+		 * @return -1 (if no item has been added)
 		 */
-		sServObj.addItem = function (eid, before) {
+		sServObj.addItem = function (eid, before, newID) {
 			// Check parameters
 			if (eid === undefined) {
-				return;
+				return -1;
 			}
 			if (typeof before !== 'boolean') {
-				return;
+				return -1;
 			}
 
 			// Find the level and item objects corresponding to the given id
 			var levelAndItem = sServObj.getLevelAndItem(eid);
 			if (levelAndItem === null) {
 				console.debug('Could not find item with id:', eid);
-				return;
+				return -1; 
 			}
 			var level = levelAndItem.level;
 			var item = levelAndItem.item;
@@ -1433,7 +1436,11 @@ angular.module('emuwebApp')
 				}
 
 				// Create new item object
-				var newObject = { id: DataService.getNewId(), labels: [] };
+				if (newID === undefined) {
+					var newObject = { id: DataService.getNewId(), labels: [] };
+				} else {
+					var newObject = { id: newID, labels: [] };
+				}
 
 				// Add all necessary labels
 				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
@@ -1446,23 +1453,32 @@ angular.module('emuwebApp')
 				}
 
 				// Insert item into level
-				level.items.splice(posNew ,0, newObject);
+				level.items.splice(posNew, 0, newObject);
+
+				return newObject.id;
 			}
+
+			return -1;
 		};
 
 		/**
-		 * Delete a single link by passing in source and target
+		 * This is only used as an undo function for the above addItem()
+		 *
+		 * Deletes an item but doesn't check whether there are links to or from it
 		 */
-		sServObj.deleteLink = function (fromID, toID) {
-			var links = DataService.getLinkData();
-			
-			// Iterate over the links array backwards so we can manipulate the array from within the loop
-			for (var i=links.length-1; i>=0; --i) {
-				if (links[i].fromID === fromID && links[i].toID === toID) {
-					links.splice(i, 1); // This is exactly what DataService.deleteLinkAt() does
+		sServObj.addItemInvers = function (id) {
+			var levels = DataService.getLevelData();
+
+			for (var i=0; i<levels.length; ++i) {
+				for (var ii=0; ii<levels[i].items.length; ++ii) {
+					if (levels[i].items[ii].id === id) {
+						levels[i].items.splice(ii, 1);
+						return;
+					}
 				}
 			}
 		};
+
 
 		/**
 		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)

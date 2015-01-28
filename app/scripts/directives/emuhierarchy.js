@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
+  .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -35,6 +35,7 @@ angular.module('emuwebApp')
 
 	scope.cLAD = viewState.curLevelAttrDefs;
 	scope.hierarchyState = viewState.hierarchyState;
+	scope.historyService = HistoryService;
 
 	scope.$watch('path', function (newValue) {
 		console.debug('Rendering due to path change: ', newValue);
@@ -66,6 +67,11 @@ angular.module('emuwebApp')
 			scope.play(scope.selectedItem);
 		}
 
+	}, false);
+
+	scope.$watch('historyService.movesAwayFromLastSave', function () {
+		console.debug('history service is active, rendering');
+		scope.render();
 	}, false);
 
 	scope.$watch('hierarchyState.sthHasChanged', function (newValue) {

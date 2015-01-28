@@ -145,10 +145,21 @@ angular.module('emuwebApp')
 
 		// Delete link
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteLink) {
-		  e.preventDefault(); // This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
+		  // This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
 		  // But what if the key code is reconfigured (possibly by the user)? 
-		  LevelService.deleteLink(viewState.hierarchyState.selectedLinkFromID, viewState.hierarchyState.selectedLinkToID);
-		  viewState.hierarchyState.sthHasChanged += 1;
+		  e.preventDefault();
+		  
+		  var pos = LinkService.deleteLink(viewState.hierarchyState.selectedLinkFromID, viewState.hierarchyState.selectedLinkToID);
+
+		  if (pos !== -1) {
+		    HistoryService.addObjToUndoStack({
+		      type: 'HIERARCHY',
+		      action: 'DELETELINK',
+		      fromID: viewState.hierarchyState.selectedLinkFromID,
+		      toID: viewState.hierarchyState.selectedLinkToID,
+		      position: pos
+		    });
+		  }
 		}
 
 		// Delete node
@@ -160,13 +171,31 @@ angular.module('emuwebApp')
 		// Add item ...
 		// ... before the currently selected one
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemBefore) {
-		  LevelService.addItem(viewState.hierarchyState.selectedItemID, true);
-		  viewState.hierarchyState.sthHasChanged += 1;
+		  var newID = LevelService.addItem(viewState.hierarchyState.selectedItemID, true);
+		  
+		  if (newID !== -1) {
+		    HistoryService.addObjToUndoStack({
+		      type: 'HIERARCHY',
+		      action: 'ADDITEM',
+		      newID: newID,
+		      neighborID: viewState.hierarchyState.selectedItemID,
+		      before: true
+		    });
+		  }
 		}
 		// ... after the currently selected one
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemAfter) {
-		  LevelService.addItem(viewState.hierarchyState.selectedItemID, false);
-		  viewState.hierarchyState.sthHasChanged += 1;
+		  var newID = LevelService.addItem(viewState.hierarchyState.selectedItemID, false);
+		  
+		  if (newID !== -1) {
+		    HistoryService.addObjToUndoStack({
+		      type: 'HIERARCHY',
+		      action: 'ADDITEM',
+		      newID: newID,
+		      neighborID: viewState.hierarchyState.selectedItemID,
+		      before: false
+		    });
+		  }
 		}
 
 		// Add link
@@ -792,7 +821,7 @@ angular.module('emuwebApp')
 
               // undo
               if (code === ConfigProviderService.vals.keyMappings.undo) {
-                if (viewState.getPermission('labelAction')) {
+                if (viewState.getPermission('labelAction') || viewState.hierarchyShown) {
                   HistoryService.undo();
                 }
               }
@@ -800,7 +829,7 @@ angular.module('emuwebApp')
 
               // redo
               if (code === ConfigProviderService.vals.keyMappings.redo) {
-                if (viewState.getPermission('labelAction')) {
+                if (viewState.getPermission('labelAction') || viewState.hierarchyShown) {
                   HistoryService.redo();
                 }
               }

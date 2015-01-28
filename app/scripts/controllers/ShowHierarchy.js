@@ -13,6 +13,8 @@ angular.module('emuwebApp')
 			selected: ''
 		};
 
+		$scope.vs = viewState;
+
 		////////////
 		// Helper functions
 
