@@ -208,6 +208,16 @@ angular.module('emuwebApp')
 								LevelService.addItem(cur.neighborID, cur.before, cur.newID);
 							}
 							break;
+
+						case 'ADDLINK':
+							if (applyOldVal) {
+								viewState.historyActionTxt = 'UNDO: ADDLINK';
+								LinkService.deleteLink(cur.link.fromID, cur.link.toID);
+							} else {
+								viewState.historyActionTxt = 'REDO: ADDLINK';
+								LinkService.insertLink(cur.link.fromID, cur.link.toID);
+							}
+							break;
 					}
 				}
 			});

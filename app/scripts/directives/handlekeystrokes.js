@@ -200,8 +200,16 @@ angular.module('emuwebApp')
 		  if (viewState.hierarchyState.newLinkFromID === undefined) {
 		    viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
 		  } else {
-		    LevelService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
+		    var linkObj = LevelService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
 		    viewState.hierarchyState.newLinkFromID = undefined;
+
+		    if (linkObj !== null) {
+		      HistoryService.addObjToUndoStack({
+		        type: 'HIERARCHY',
+			action: 'ADDLINK',
+			link: linkObj
+		      });
+		    }
 		  }
 		}
 

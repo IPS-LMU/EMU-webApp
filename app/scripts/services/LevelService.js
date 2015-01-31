@@ -1518,27 +1518,39 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Add a new link if it is valid
+		 * Add a new link if it is valid and goes along the specfied path
 		 * 
 		 * If the specified link is invalid but its reverse is valid,
 		 * the reverse is added.
 		 *
+		 * @param path The current path through the hierarchy
 		 * @param from ID of the source item
 		 * @param to ID of the target item
+		 *
+		 * @return the link object that was added ({fromID: x, toID: y})
+		 * @return null if no link was added
 		 */
 		sServObj.addLink = function (path, from, to) {
 			var validity = sServObj.checkLinkValidity(path, from, to);
 
 			if (validity.valid) {
-				DataService.insertLinkData({fromID: from, toID: to});
+				var obj = {fromID: from, toID: to};
+				DataService.insertLinkData(obj);
+				return obj;
 			} else {
 				console.debug('Not adding invalid link:', from, '->', to, ' (Error code:', validity.reason, ')');
 				if (validity.reason === 3) {
 					validity = sServObj.checkLinkValidity(path, to, from);
 					if (validity.valid) {
 						console.debug('Adding reverse link instead');
-						DataService.insertLinkData({fromID: to, toID: from});
+						var obj = {fromID: to, toID: from};
+						DataService.insertLinkData(obj);
+						return obj;
+					} else {
+						return null;
 					}
+				} else {
+					return null;
 				}
 			}
 		};
