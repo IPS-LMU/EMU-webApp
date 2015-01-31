@@ -134,7 +134,7 @@ angular.module('emuwebApp')
               }
 
 	      // Handle key strokes for the hierarchy modal
-	      if (viewState.isHierarchyOpen()) {
+	      if (viewState.hierarchyShown) {
 		// Play selected item
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyPlayback) {
 		  viewState.hierarchyState.playing += 1;
