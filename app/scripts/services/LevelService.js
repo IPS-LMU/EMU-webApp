@@ -1484,14 +1484,22 @@ angular.module('emuwebApp')
 		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
 		 * and all links that lead from or to it
 		 *
-		 * @param eid The ID of the element to be deleted
+		 * @param id The ID of the item to be deleted
+		 * @return an object like {item: object/undefined, ...} (an undefined value of item means that nothing has been done)
 		 */
-		sServObj.deleteItemWithLinks = function (eid) {
-			var levelAndItem = sServObj.getLevelAndItem (eid);
+		sServObj.deleteItemWithLinks = function (id) {
+			var result = {
+				item: undefined,
+				levelName: undefined,
+				position: undefined,
+				deletedLinks: []
+			};
+
+			var levelAndItem = sServObj.getLevelAndItem (id);
 
 			if (levelAndItem === null) {
-				// item with id === eid does not exist
-				return false;
+				// item with the specified id does not exist
+				return result;
 			}
 
 			var level = levelAndItem.level;
@@ -1499,21 +1507,40 @@ angular.module('emuwebApp')
 
 			if (level.type !== 'ITEM') {
 				// Never touch non-ITEMs
-				return false;
+				return result;
 			}
 
-			// Delete the item itself			
+			// Delete the item itself
 			console.log('Deleting item:', item,'From level:', level);
+			result.item = item;
+			result.levelName = level.name;
+			result.position = level.items.indexOf(item);
 			level.items.splice(level.items.indexOf(item), 1);
-
+			
 			// Delete all links that lead from or to the item
 			// Iterate over the links array backwards so we can manipulate the array from within the loop
 			var links = DataService.getLinkData();
 			for (var i=links.length-1; i>=0; --i) {
-				if (links[i].fromID === eid || links[i].toID === eid) {
+				if (links[i].fromID === id || links[i].toID === id) {
 					console.log('Deleting link', i);
+					result.deletedLinks.push(links[i]);
 					links.splice(i, 1);
 				}
+			}
+
+			return result;
+		};
+
+		/**
+		 * undo the deletion of an item with its links
+		 */
+		sServObj.deleteItemWithLinksInvers = function (item, levelName, position, deletedLinks) {
+			// Re-add item
+			sServObj.getLevelDetails(levelName).level.items.splice(position, 0, item);
+
+			// Re-add deleted links
+			for (var i=0; i<deletedLinks.length; ++i) {
+				DataService.insertLinkData(deletedLinks[i]);
 			}
 		};
 

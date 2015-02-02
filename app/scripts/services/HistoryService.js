@@ -199,6 +199,16 @@ angular.module('emuwebApp')
 							}
 							break;
 
+						case 'DELETEITEM':
+							if (applyOldVal) {
+								viewState.historyActionTxt = 'UNDO: DELETEITEM';
+								LevelService.deleteItemWithLinksInvers(cur.item, cur.levelName, cur.position, cur.deletedLinks);
+							} else {
+								viewState.historyActionTxt = 'REDO: DELETEITEM';
+								LevelService.deleteItemWithLinks(cur.item.id);
+							}
+							break;
+
 						case 'ADDITEM':
 							if (applyOldVal) {
 								viewState.historyActionTxt = 'UNDO: ADDITEM';

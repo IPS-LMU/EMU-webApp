@@ -140,6 +140,11 @@ angular.module('emuwebApp')
 		  viewState.hierarchyState.playing += 1;
 		}
 
+                // rotateHierarchy
+                if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
+                  viewState.toggleHierarchyRotation();
+                }
+
 		// Delete link
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteLink) {
 		  // This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
@@ -159,10 +164,20 @@ angular.module('emuwebApp')
 		  }
 		}
 
-		// Delete node
+		// Delete item
 		if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteItem) {
-		  LevelService.deleteItemWithLinks(viewState.hierarchyState.selectedItemID);
-		  viewState.hierarchyState.sthHasChanged += 1;
+		  var result = LevelService.deleteItemWithLinks(viewState.hierarchyState.selectedItemID);
+
+		  if (result.item !== undefined) {
+		    HistoryService.addObjToUndoStack({
+		      type: 'HIERARCHY',
+		      action: 'DELETEITEM',
+		      item: result.item,
+		      levelName: result.levelName,
+		      position: result.position,
+		      deletedLinks: result.deletedLinks
+		    });
+		  }
 		}
 
 		// Add item ...
@@ -212,11 +227,6 @@ angular.module('emuwebApp')
 		    }
 		  }
 		}
-
-                // rotateHierarchy
-                if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
-                  viewState.toggleHierarchyRotation();
-                }
 	      }
 
               // zoomAll
