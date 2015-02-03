@@ -74,11 +74,6 @@ angular.module('emuwebApp')
 		scope.render();
 	}, false);
 
-	scope.$watch('hierarchyState.sthHasChanged', function (newValue) {
-		console.debug('something has changed, therefore rendering');
-		scope.render();
-	}, false);
-
 	scope.$watch('hierarchyState.newLinkFromID', function (newValue) {
 		scope.newLinkSrc = LevelService.getItemByID(newValue);
 		scope.render();

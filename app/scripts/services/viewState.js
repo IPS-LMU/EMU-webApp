@@ -67,7 +67,6 @@ angular.module('emuwebApp')
 	newLinkFromID: undefined,
 	rotated: false,
 	playing: 0,
-	sthHasChanged: 0
       };
 
       sServObj.timelineSize = -1;
