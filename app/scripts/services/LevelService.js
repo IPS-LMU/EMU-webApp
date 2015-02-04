@@ -1640,7 +1640,7 @@ angular.module('emuwebApp')
 			// during linkDefinitions check. I treat it separately
 			// anyway because the current GUI implementation kindly
 			// facilitates this kind of error and I can therefore
-			// offer an 0.0000001 % increase in speed here :-)
+			// offer a 0.0000001 % increase in speed here :-)
 			if (from === to) {
 				result.valid = false;
 				result.reason = 1;
@@ -1661,10 +1661,10 @@ angular.module('emuwebApp')
 			// path (which implies that the DBconfig.linkDefinitions
 			// are met, apart from the link type that is specified
 			// there
-			var superlevel = sServObj.getLevelNameByElementID(from);
-			var sublevel = sServObj.getLevelNameByElementID(to);
-			var superlevelIndex = path.indexOf(superlevel);
-			if (path[superlevelIndex-1] !== sublevel) {
+			var superlevelName = sServObj.getLevelNameByElementID(from);
+			var sublevelName = sServObj.getLevelNameByElementID(to);
+			var superlevelIndex = path.indexOf(superlevelName);
+			if (path[superlevelIndex-1] !== sublevelName) {
 				result.valid = false;
 				result.reason = 3;
 				return result;
@@ -1673,8 +1673,8 @@ angular.module('emuwebApp')
 			// Check link type
 			var linkType;
 			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
-				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === sublevel &&
-				    ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevel)
+				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === sublevelName &&
+				    ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevelName)
 				{
 					linkType = ConfigProviderService.curDbConfig.linkDefinitions[i].type;
 				}
@@ -1711,9 +1711,23 @@ angular.module('emuwebApp')
 			}
 
 
-			// Check for crossover
+			// Check for crossover links
+			var superlevel = sServObj.getLevelAndItem(from).level;
+			var sublevel = sServObj.getLevelAndItem(to).level;
 
+			var parentOrder = sServObj.getOrderById(superlevelName, from);
 
+			var prevSibling = superlevel.items[parentOrder-1];
+			var nextSibling = superlevel.items[parentOrder+1];
+			
+			console.debug(prevSibling, nextSibling);
+
+			if (prevSibling !== undefined) {
+				
+			}
+
+			if (nextSibling !== undefined) {
+			}
 
 			// No error found - returning success object
 			return result;
