@@ -1366,16 +1366,25 @@ angular.module('emuwebApp')
 
 		/**
 		 * Add an item to the end of the specified level
+		 *
+		 * @param level Name of the level onto which to push the new item
+		 * @param id (optional) if given, this id is used instead of a new one
+		 *
+		 * @returns id of the new item or -1 if no item has been added
 		 */
-		sServObj.pushNewItem = function (levelName) {
+		sServObj.pushNewItem = function (levelName, id) {
 			var level = sServObj.getLevelDetails (levelName).level;
-			console.debug(levelName, level);
+			console.debug(levelName, level, id);
 
 			// Check whether the level has time information
 			// and only proceed if this is not the case
 			if (level.type === 'ITEM') {
 				// Create new item object
-				var newObject = { id: DataService.getNewId(), labels: [] };
+				if (typeof id === 'number') {
+					var newObject = { id: id, labels: [] };
+				} else {
+					var newObject = { id: DataService.getNewId(), labels: [] };
+				}
 
 				// Add all necessary labels
 				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
@@ -1389,6 +1398,10 @@ angular.module('emuwebApp')
 
 				// Insert item into level
 				level.items.push (newObject);
+
+				return newObject.id;
+			} else {
+				return -1;
 			}
 		};
 
@@ -1462,7 +1475,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * This is only used as an undo function for the above addItem()
+		 * This is only used as an undo function for the above addItem() and pushNewItem()
 		 *
 		 * Deletes an item but doesn't check whether there are links to or from it
 		 */

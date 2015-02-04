@@ -323,8 +323,16 @@ angular.module('emuwebApp')
 	};
 
 	scope.addButtonOnClick = function (d) {
-		LevelService.pushNewItem (d);
-		scope.render();
+		var id = LevelService.pushNewItem (d);
+		if (id !== -1) {
+			scope.historyService.addObjToUndoStack({
+				type: 'HIERARCHY',
+				action: 'PUSHITEM',
+				newID: id,
+				level: d
+			});
+		}
+		scope.$apply();
 	};
 		
 

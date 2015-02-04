@@ -228,6 +228,16 @@ angular.module('emuwebApp')
 								LinkService.insertLink(cur.link.fromID, cur.link.toID);
 							}
 							break;
+
+						case 'PUSHITEM':
+							if (applyOldVal) {
+								viewState.historyActionTxt = 'UNDO: PUSHITEM';
+								LevelService.addItemInvers(cur.newID);
+							} else {
+								viewState.historyActionTxt = 'REDO: PUSHITEM';
+								LevelService.pushNewItem(cur.level, cur.newID);
+							}
+							break;
 					}
 				}
 			});
