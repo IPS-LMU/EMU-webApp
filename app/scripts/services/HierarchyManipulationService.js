@@ -132,11 +132,10 @@ angular.module('emuwebApp')
 					return result;
 				}
 			}
-			if (linkType === 'ONE_TO_ONE') { // This case (one-to-one) is untested) FIXME
+			if (linkType === 'ONE_TO_ONE') {
 				var fromElement = LevelService.getItemByID(from);
 				
-				// FIXME cant access HierarchyLayoutService because it would add a circular dependency
-				//var children = HierarchyLayoutService.findChildren(fromElement, path);
+				var children = HierarchyLayoutService.findChildren(fromElement, path);
 				if (children.length > 0) {
 					result.valid = false;
 					result.reason = 4;
