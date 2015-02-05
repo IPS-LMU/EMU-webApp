@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
+  .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
     return {
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
@@ -244,13 +244,13 @@ angular.module('emuwebApp')
 	 * If the link is invalid, this function will try reversing the link.
 	 */
 	scope.getPreviewColor = function () {
-		var validity = LevelService.checkLinkValidity(scope.path, scope.newLinkSrc.id, scope.selectedItem.id);
+		var validity = HierarchyManipulationService.checkLinkValidity(scope.path, scope.newLinkSrc.id, scope.selectedItem.id);
 
 		if (validity.valid) {
 			return 'green';
 		} else {
 			if (validity.reason === 3) {
-				validity = LevelService.checkLinkValidity(scope.path, scope.selectedItem.id, scope.newLinkSrc.id);
+				validity = HierarchyManipulationService.checkLinkValidity(scope.path, scope.selectedItem.id, scope.newLinkSrc.id);
 				if (validity.valid) {
 					return 'green';
 				}

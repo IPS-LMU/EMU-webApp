@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, HierarchyManipulationService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope, element) {
@@ -215,7 +215,7 @@ angular.module('emuwebApp')
 		  if (viewState.hierarchyState.newLinkFromID === undefined) {
 		    viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
 		  } else {
-		    var linkObj = LevelService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
+		    var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
 		    viewState.hierarchyState.newLinkFromID = undefined;
 
 		    if (linkObj !== null) {
