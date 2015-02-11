@@ -144,22 +144,87 @@ angular.module('emuwebApp')
 			}
 
 
+			//////
 			// Check for crossover links
+			//
+			// We'll try to find the first and last position in the sublevel
+			// where the supposed link's parent can have children.
+			//
+			// First, we'll check the preceding sibling of that parent node.
+			// Its last child node is the first one that can be a child of the
+			// supposed parent node.
+			// Note that if the sibling has no children, we have to skip it and
+			// check the next sibling.
+			//
+			// Next, we'll chek the siblings that come after the supposed
+			// parent node. Their first child is the last one that can be a
+			// child of the supposed parent.
+			//
+
+			var firstAllowedChildIndex = undefined;
+			var lastAllowedChildIndex = undefined;
+
 			var superlevel = LevelService.getLevelAndItem(from).level;
 			var sublevel = LevelService.getLevelAndItem(to).level;
-
 			var parentOrder = LevelService.getOrderById(superlevelName, from);
+			var childOrder = LevelService.getOrderById(sublevelName, to);
 
-			var prevSibling = superlevel.items[parentOrder-1];
-			var nextSibling = superlevel.items[parentOrder+1];
-			
-			console.debug(prevSibling, nextSibling);
 
-			if (prevSibling !== undefined) {
+			var siblingRelativeIndex = 0;
+			var sibling;
+
+			while (firstAllowedChildIndex === undefined) {
+				siblingRelativeIndex -= 1;
+				sibling = superlevel.items[parentOrder + siblingRelativeIndex];
 				
+				if (sibling === undefined) {
+					firstAllowedChildIndex = 0;
+					break;
+				}
+				
+				console.debug('found preceding sibling', sibling.id, sibling.labels[0]);
+
+				var children = HierarchyLayoutService.findChildren(sibling, path);
+				
+				for (var i=0; i<children.length; ++i) {
+					var index = LevelService.getOrderById(sublevelName, children[i].id);
+					if (firstAllowedChildIndex === undefined || index > firstAllowedChildIndex) {
+						firstAllowedChildIndex = index;
+					}
+				}
 			}
 
-			if (nextSibling !== undefined) {
+			siblingRelativeIndex = 0;
+
+			while (lastAllowedChildIndex === undefined) {
+				siblingRelativeIndex += 1;
+				sibling = superlevel.items[parentOrder + siblingRelativeIndex];
+
+				if (sibling === undefined) {
+					lastAllowedChildIndex = sublevel.items.length - 1;
+					break;
+				}
+
+				console.debug('found successive sibling', sibling.id, sibling.labels[0]);
+
+				var children = HierarchyLayoutService.findChildren(sibling, path);
+				if (children.length === 0) {
+					continue;
+				}
+
+				for (var i=0; i<children.length; ++i) {
+					var index = LevelService.getOrderById(sublevelName, children[i].id);
+					if (lastAllowedChildIndex === undefined || index < lastAllowedChildIndex) {
+						lastAllowedChildIndex = index;
+					}
+				}
+			}
+
+			console.debug( 'child must be within', firstAllowedChildIndex, lastAllowedChildIndex);
+			if ( childOrder < firstAllowedChildIndex || childOrder > lastAllowedChildIndex) {
+				result.valid = false;
+				result.reason = 5;
+				return result;
 			}
 
 			// No error found - returning success object
