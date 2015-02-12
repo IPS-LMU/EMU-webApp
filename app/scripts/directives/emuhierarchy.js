@@ -426,6 +426,10 @@ angular.module('emuwebApp')
 	// Append a group which holds all overlay captions and which do not react to zooming
 	var captionLayer = svg.append('g').style('z-index', 5);
 
+	var timeArrow = svg.append('g')
+		.append('text')
+		.text('time →');
+
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
 	svg = svg.append('g').style('z-index', 1);
 
@@ -483,6 +487,15 @@ angular.module('emuwebApp')
 
 		/////////
 		// Draw level captions and time arrow
+
+		
+		if (scope.vertical) {
+			timeArrow.attr('transform', 'translate('+(scope.width/2)+','+(scope.height-10)+')')
+		} else {
+			timeArrow.attr('transform', 'translate('+(scope.width-20)+','+(scope.height/2)+')rotate(90)')
+		}
+
+
 		captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 
 		var levelCaptionSet = captionLayer.selectAll('g.emuhierarchy-levelcaption')
