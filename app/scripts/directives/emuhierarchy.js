@@ -502,6 +502,10 @@ angular.module('emuwebApp')
 			;
 
 		var addItemButtons = newLevelCaptions
+			.filter(function(d) {
+				var levelType = LevelService.getLevelDetails(d).level.type;
+				return (levelType === 'ITEM');
+			})
 			.append('g')
 			.attr('class', 'emuhierarchy-addbutton')
 			.attr('transform', scope.getOrientatedAddItemButtonTransform)
