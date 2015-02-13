@@ -38,28 +38,16 @@ describe('Directive: spectro', function () {
         expect(elm.find('img').length).toBe(1);
     });
 
-    it('should watch vs.timelineSize', inject(function ($timeout) {
-        scope.shs.wavJSO.Data = {};
-        scope.vs.timelineSize = 2;
-        compileDirective();
-        expect(elm.isolateScope()).toBeDefined();
-        spyOn(elm.isolateScope(), 'redraw');
-        scope.vs.timelineSize = 4;
-        scope.$apply();
-        $timeout.flush();
-        expect(elm.isolateScope().redraw).toHaveBeenCalled();
-    }));
-
     it('should watch vs.curViewPort', inject(function ($timeout) {
         scope.shs.wavJSO.Data = {};
         compileDirective();
         scope.vs.curViewPort.sS = 1;
         scope.$apply();
         expect(elm.isolateScope()).toBeDefined();
-        spyOn(elm.isolateScope(), 'redraw');
+        spyOn(elm.isolateScope(), 'clearAndDrawSpectMarkup');
         scope.vs.curViewPort.sS = 10;
         scope.$apply();
-        expect(elm.isolateScope().redraw).toHaveBeenCalled();
+        expect(elm.isolateScope().clearAndDrawSpectMarkup).toHaveBeenCalled();
     }));
 
     it('should killSpectroRenderingThread', function () {

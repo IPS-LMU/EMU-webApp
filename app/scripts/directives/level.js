@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
+	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -24,13 +24,10 @@ angular.module('emuwebApp')
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
 				};
-
-				// on broadcast msg from main ctrl openSubmenu refresh timeline
-				scope.$on('refreshTimeline', function () {
-					scope.drawLevelDetails();
-					scope.drawLevelMarkup();
+				
+				scope.$watch('vs.submenuOpen', function (newValue, oldValue) {				
+					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
 				});
-
 
 				///////////////
 				// watches
@@ -82,6 +79,11 @@ angular.module('emuwebApp')
 
 				//
 				/////////////////
+				
+				scope.redraw = function () {
+					scope.drawLevelDetails();
+					scope.drawLevelMarkup();				
+				};
 
 				/**
 				 *

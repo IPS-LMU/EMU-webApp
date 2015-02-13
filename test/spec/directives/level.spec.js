@@ -37,16 +37,6 @@ describe('Directive: level', function () {
      expect(elm.find('img').length).toBe(3);
    });
    
-   it('should react to $broadcast refreshTimeline', inject(function($rootScope) {
-     compileDirective(curLvl);
-     expect(elm.isolateScope()).toBeDefined();
-     spyOn(elm.isolateScope(), 'drawLevelMarkup');
-     spyOn(elm.isolateScope(), 'drawLevelDetails');
-     $rootScope.$broadcast('refreshTimeline');
-     expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalledWith();
-     expect(elm.isolateScope().drawLevelDetails).toHaveBeenCalledWith();
-   }));
-   
    it('should watch to vs.curViewPort', function () {
      scope.vs.curViewPort.windowWidth = 64;
      scope.vs.select(0,100);
@@ -162,7 +152,7 @@ describe('Directive: level', function () {
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
      scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, false);
      spyOn(scope.vs, 'getPos');
-     $rootScope.$broadcast('refreshTimeline');
+     elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
        
@@ -176,7 +166,7 @@ describe('Directive: level', function () {
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
      scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, false);
      spyOn(scope.vs, 'getPos');
-     $rootScope.$broadcast('refreshTimeline');
+     elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
        
@@ -190,7 +180,7 @@ describe('Directive: level', function () {
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
      scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, true, false);
      spyOn(scope.vs, 'getPos');
-     $rootScope.$broadcast('refreshTimeline');
+     elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
        
@@ -204,7 +194,7 @@ describe('Directive: level', function () {
      var neigh = scope.lvl.getItemNeighboursFromLevel(lvlName, seg.nearest.id, seg.nearest.id);
      scope.vs.setcurMouseItem(seg.nearest, neigh, pcm, false, true);
      spyOn(scope.vs, 'getPos');
-     $rootScope.$broadcast('refreshTimeline');
+     elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
        
@@ -216,7 +206,7 @@ describe('Directive: level', function () {
      scope.vs.setcurClickItemMultiple(scope.lvl.getClosestItem(pcm, lvlName, 58089).current);
      scope.vs.setcurClickItemMultiple(scope.lvl.getClosestItem(pcm+600, lvlName, 58089).current);
      spyOn(scope.vs, 'getPos');
-     $rootScope.$broadcast('refreshTimeline');
+     elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
           

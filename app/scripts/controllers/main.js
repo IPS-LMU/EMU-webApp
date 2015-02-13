@@ -370,23 +370,13 @@ angular.module('emuwebApp')
 			});
 		};
 
-
 		/**
 		 *
 		 */
 		$scope.toggleCollapseSession = function (ses) {
 			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
 		};
-
-		/**
-		 *
-		 */
-		$scope.sessionIsCollapsed = function (ses) {
-			// return $scope.uniqSessionList[ses].collapsed;
-			return false;
-		};
-
-
+		
 		/**
 		 *
 		 */

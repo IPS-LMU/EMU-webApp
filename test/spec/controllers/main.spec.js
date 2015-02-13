@@ -11,6 +11,7 @@ describe('Controller: MainController', function () {
   var testSizeAll = 58809;
   var testSizeStart = 10;
   var testSizeEnd = 1337;
+  var orig = [];
 
   var mockAppStateService = {
     resetToInitState: function () {}
@@ -506,10 +507,95 @@ describe('Controller: MainController', function () {
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
 
-  it('should getEnlarge', function () {
+  it('should cmdZoomAll', function () {
     scope.cps.vals.perspectives[0].signalCanvases.order = [1, 2];
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.cmdZoomAll();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
+  
+  it('should showEditDBconfig on BtnClick', function () {
+    spyOn(scope.modal, 'open');
+    scope.showEditDBconfigBtnClick();
+    expect(scope.modal.open).toHaveBeenCalledWith('views/editDBconfigModal.html');
+  });  
+  
+  it('should addLevelPoint on BtnClick', function () {
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.lvl, 'insertLevel');
+    spyOn(scope.history, 'addObjToUndoStack');
+    scope.addLevelPointBtnClick();
+    expect(scope.lvl.insertLevel).toHaveBeenCalled();
+    expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelPointBtnClick');
+  });  
+  
+  it('should addLevelSeg on BtnClick', function () {
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.lvl, 'insertLevel');
+    spyOn(scope.history, 'addObjToUndoStack');
+    scope.addLevelSegBtnClick();
+    expect(scope.lvl.insertLevel).toHaveBeenCalled();
+    expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelSegBtnClick');
+  });    
+  
+   it('should getEnlarge (-1)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(-1);
+    var ret = scope.getEnlarge();
+    expect(ret).toEqual('auto');
+  }));   
+    
+   it('should getEnlarge (2 / small)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('27%');
+  })); 
+  
+   it('should getEnlarge (2 / large)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(3);
+    expect(ret).toEqual('70%');
+  }));  
+  
+   it('should getEnlarge (3 / small)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    orig = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('24%');
+  })); 
+  
+   it('should getEnlarge (3 / large)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(3);
+    expect(ret).toEqual('50%');
+  }));        
+  
+   it('should getEnlarge (1)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('auto');
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order = orig;
+  }));    
+  
+   it('should toggleCollapseSession', function () {
+    scope.uniqSessionList = [];
+    scope.uniqSessionList[0]= {};
+    scope.uniqSessionList[0].collapsed = true;
+    scope.toggleCollapseSession(0);
+    expect(scope.uniqSessionList[0].collapsed).toEqual(false);
+  });    
+  
+  
 });

@@ -41,6 +41,16 @@ describe('Service: modalService', function () {
   /**
    *
    */
+  it('should change', function () {
+    scope.modal.change('template','dataIn','dataExport','force');
+    expect(scope.modal.templateUrl).toEqual('template');
+    expect(scope.modal.dataIn).toEqual('dataIn');
+    expect(scope.modal.dataExport).toEqual('dataExport'); 
+  });
+  
+  /**
+   *
+   */
   it('should confirm', function () {
     scope.modal.open();
     spyOn(scope.vs, 'setEditing');
