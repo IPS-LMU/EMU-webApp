@@ -591,7 +591,7 @@ describe('Controller: MainController', function () {
   
    it('should toggleCollapseSession', function () {
     scope.uniqSessionList = [];
-    scope.uniqSessionList[0]= {};
+    scope.uniqSessionList[0] = {};
     scope.uniqSessionList[0].collapsed = true;
     scope.toggleCollapseSession(0);
     expect(scope.uniqSessionList[0].collapsed).toEqual(false);
