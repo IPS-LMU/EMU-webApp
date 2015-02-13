@@ -25,29 +25,35 @@ angular.module('emuwebApp')
         //////////////////////
         // watches 
 
-	scope.cLAD = viewState.curLevelAttrDefs;
-
 	scope.$watch('path', function (newValue) {
-		console.debug('Rendering due to path change: ', newValue);
-		scope.selectVisibleNodes();
-		scope.render();
+	    if(newValue !== undefined) {
+			console.debug('Rendering due to path change: ', newValue);
+			scope.selectVisibleNodes();
+			scope.render();
+	    }
 	}, false);
 
 	scope.$watch('vertical', function (newValue) {
-		console.debug('Rendering due to rotation: ', newValue);
-		scope.selectVisibleNodes();
-		scope.render();
+	    if(newValue !== undefined) {	
+			console.debug('Rendering due to rotation: ', newValue);
+			scope.selectVisibleNodes();
+			scope.render();
+		}
 	}, false);
 
-	scope.$watch('cLAD', function (newValue) {
-		console.debug('Rendering due to attribute change: ', newValue);
-		scope.render();
+	scope.$watch('viewState.curLevelAttrDefs', function (newValue) {
+	    if(newValue !== undefined) {	
+			console.debug('Rendering due to attribute change: ', newValue);
+			scope.render();
+		}
 	}, true);
 
 	scope.$watch('playing', function (newValue) {
-		console.debug('Play() triggered', newValue, scope.selectedItem);
-		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-			scope.play(scope.selectedItem);
+	    if(newValue !== undefined) {
+			console.debug('Play() triggered', newValue, scope.selectedItem);
+			if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
+				scope.play(scope.selectedItem);
+			}
 		}
 	}, true);
 
@@ -99,7 +105,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getNodeText = function (d) {
-		var level = viewState.getCurAttrDef(HierarchyLayoutService.getLevelName(d.id));
+		var level = viewState.getCurAttrDef(LevelService.getLevelName(d.id));
 		for (var i=0; i<d.labels.length; ++i) {
 			if (d.labels[i].name === level) {
 				return d.labels[i].value;
@@ -238,34 +244,35 @@ angular.module('emuwebApp')
 		// Try to set all nodes to invisible. Later we will search all
 		// paths and if we find one uncollasped path to a node, that
 		// node will be set visible.
+		if(scope.path !== undefined && scope.path.length > 0) {
+			var rootLevelItems = LevelService.getLevelDetails(scope.path[scope.path.length-1]).level.items;
 
-		var rootLevelItems = LevelService.getLevelDetails(scope.path[scope.path.length-1]).level.items;
+			var items = [];
+			items = items.concat(rootLevelItems);
 
-		var items = [];
-		items = items.concat(rootLevelItems);
+			var currentItem;
 
-		var currentItem;
-
-		while (items.length > 0) {
-			currentItem = items.pop();
-			items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
-			currentItem._visible = false;
-		}		
+			while (items.length > 0) {
+				currentItem = items.pop();
+				items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+				currentItem._visible = false;
+			}		
 		
 
-		// Now all nodes on the selected scope.path have been set invisible
+			// Now all nodes on the selected scope.path have been set invisible
 
-		items = [];
-		items = items.concat(rootLevelItems);
+			items = [];
+			items = items.concat(rootLevelItems);
 
-		while (items.length > 0) {
-			currentItem = items.pop();
-			if (! currentItem._collapsed) {
-				items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+			while (items.length > 0) {
+				currentItem = items.pop();
+				if (! currentItem._collapsed) {
+					items = items.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+				}
+
+				currentItem._visible = true;
 			}
-
-			currentItem._visible = true;
-		}		
+		}				
 	};
 
 	//
