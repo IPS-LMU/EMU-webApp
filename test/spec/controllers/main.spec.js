@@ -7,7 +7,7 @@ describe('Controller: MainController', function () {
 
   var emptyObject = {};
 
-  var MainCtrl, scope, ret, deferred, $location;
+  var MainCtrl, scope, ret, deferred, deferred2, $location;
   var testSizeAll = 58809;
   var testSizeStart = 10;
   var testSizeEnd = 1337;
@@ -16,13 +16,14 @@ describe('Controller: MainController', function () {
   var mockAppStateService = {
     resetToInitState: function () {}
   };
-
+  
   //Initialize the controller and a mock scope
   beforeEach(inject(function ($controller,
     $rootScope,
     $q,
     $httpBackend,
     LevelService,
+    DataService,
     ConfigProviderService,
     viewState,
     Soundhandlerservice,
@@ -30,6 +31,7 @@ describe('Controller: MainController', function () {
     HistoryService,
     Iohandlerservice,
     Validationservice,
+    Wavparserservice,
     loadedMetaDataService,
     Textgridparserservice) {
 
@@ -53,6 +55,8 @@ describe('Controller: MainController', function () {
     scope.history = HistoryService;
     scope.txtgrid = Textgridparserservice;
     scope.lmds = loadedMetaDataService;
+    scope.wav = Wavparserservice;
+    scope.data = DataService;
 
     deferred = $q.defer();
     deferred.resolve('called');
@@ -65,6 +69,7 @@ describe('Controller: MainController', function () {
     $httpBackend.whenGET("views/error.html").respond('');
     $httpBackend.whenGET("views/connectModal.html").respond('');
     $httpBackend.whenGET("views/export.html").respond('');
+    $httpBackend.whenGET("configFiles/default_emuwebappConfig.json").respond(defaultEmuwebappConfig);
   }));
 
   it('should react to $broadcast connectionDisrupted', inject(function ($rootScope) {
@@ -72,6 +77,12 @@ describe('Controller: MainController', function () {
     $rootScope.$broadcast('connectionDisrupted');
     expect(mockAppStateService.resetToInitState).toHaveBeenCalled();
   }));
+  
+  it('should react to $broadcast resetToInitState', inject(function ($rootScope) {
+    spyOn(scope, 'loadDefaultConfig');
+    $rootScope.$broadcast('resetToInitState');
+    expect(scope.loadDefaultConfig).toHaveBeenCalled();
+  }));  
 
 
   it('should have all variables defined', function () {
@@ -595,7 +606,55 @@ describe('Controller: MainController', function () {
     scope.uniqSessionList[0].collapsed = true;
     scope.toggleCollapseSession(0);
     expect(scope.uniqSessionList[0].collapsed).toEqual(false);
-  });    
+  });  
+  
+   it('should react on resize window', function () {
+     spyOn(scope.lvl, 'deleteEditArea');
+     spyOn(scope.vs, 'setWindowWidth');
+     var e = jQuery.Event('resize');
+     $(window).trigger(e); 
+     expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+     expect(scope.vs.setWindowWidth).toHaveBeenCalled();
+  });  
+  
+   it('should loadFilesForEmbeddedApp', inject(function ($q) {
+     var ioDeferred = $q.defer();
+     var ioDeferred2 = $q.defer();
+     var wavDeferred = $q.defer();
+     spyOn(scope.io, 'httpGetPath').and.returnValue(ioDeferred.promise);
+     spyOn(scope.cps, 'setVals');
+     spyOn(scope.valid, 'validateJSO').and.returnValue(true);
+     spyOn(scope.wav, 'parseWavArrBuf').and.returnValue(wavDeferred.promise);
+     spyOn(scope.io, 'parseLabelFile').and.returnValue(ioDeferred2.promise);
+     spyOn(scope.data, 'setData');
+     scope.cps.embeddedVals.audioGetUrl = 'test.wav';
+     scope.loadFilesForEmbeddedApp();
+     ioDeferred.resolve({data: defaultEmuwebappConfig});
+     scope.$apply();
+     expect(scope.cps.setVals).toHaveBeenCalled();
+     wavDeferred.resolve({Data: [1, 2, 3]});
+     scope.$apply();
+     expect(scope.wav.parseWavArrBuf).toHaveBeenCalled();
+     ioDeferred2.resolve({levels: [{ name: 'test' }]});
+     scope.$apply();
+     expect(scope.valid.validateJSO).toHaveBeenCalled();
+     expect(scope.io.parseLabelFile).toHaveBeenCalled();
+     expect(scope.data.setData).toHaveBeenCalled();
+  }));  
+  
+   it('should loadDefaultConfig', inject(function ($httpBackend, $q, Validationservice, Iohandlerservice) {
+     var ioDeferred = $q.defer();
+     var jsonDeferred = $q.defer();
+     spyOn(Validationservice, 'loadSchemas').and.returnValue(ioDeferred.promise);
+     spyOn(Validationservice, 'validateJSO').and.returnValue(jsonDeferred.promise);
+     scope.loadDefaultConfig();
+     ioDeferred.resolve();
+     scope.$apply();
+     $httpBackend.flush();
+     jsonDeferred.resolve(true);
+     scope.$apply();
+  }));  
+  
   
   
 });

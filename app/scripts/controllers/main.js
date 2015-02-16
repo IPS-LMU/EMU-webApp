@@ -51,6 +51,7 @@ angular.module('emuwebApp')
 			}
 		});
 
+
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
 			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect) {

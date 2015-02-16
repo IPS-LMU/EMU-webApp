@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 		var callbacks = {};
 
 		// Create our websocket object with the address to the websocket
-		var ws = {};
+		sServObj.ws = {};
 
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
@@ -31,15 +31,12 @@ angular.module('emuwebApp')
 		}
 
 		function wsonerror(message) {
-			// console.log(message);
 			console.error('WEBSOCKET ERROR!!!!!');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
 
 		function wsonclose(message) {
-			console.log(message);
 			if (!message.wasClean && connected) {
-				// show no clean disconnect error
 				modalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
 					$rootScope.$broadcast('connectionDisrupted');
 				});
@@ -57,7 +54,7 @@ angular.module('emuwebApp')
 				cb: defer
 			};
 			request.callbackID = callbackId;
-			ws.send(angular.toJson(request));
+			sServObj.ws.send(angular.toJson(request));
 			// timeout request if not answered
 			$timeout(function () {
 				var tOutResp = {
@@ -122,11 +119,11 @@ angular.module('emuwebApp')
 		// public api
 		sServObj.initConnect = function (url) {
 			var defer = $q.defer();
-			ws = new WebSocket(url);
-			ws.onopen = wsonopen;
-			ws.onmessage = wsonmessage;
-			ws.onerror = wsonerror;
-			ws.onclose = wsonclose;
+			sServObj.ws = new WebSocket(url);
+			sServObj.ws.onopen = wsonopen;
+			sServObj.ws.onmessage = wsonmessage;
+			sServObj.ws.onerror = wsonerror;
+			sServObj.ws.onclose = wsonclose;
 
 			conPromise = defer;
 			return defer.promise;
@@ -139,10 +136,13 @@ angular.module('emuwebApp')
 
 		// close connection with ws
 		sServObj.closeConnect = function () {
-			console.log('closing connection')
-			ws.onclose = function () {};
-			ws.close();
-
+		    if(sServObj.isConnected()) {
+    			sServObj.ws.onclose = function () {};
+	    		sServObj.ws.close();    
+		    }
+		    else {
+		        console.log('WEBSOCKET ERROR: was not connected!');
+		    }
 		};
 
 		////////////////////////////

@@ -63,6 +63,8 @@ describe('Worker: spectroDrawingWorker', function () {
 
 		// set samples
 		samples = [5, -2, 17, -5, -5, -2, -2, 9, 1, 6, 18, -1, 5, 0, 0, -3, -4, 5, 11, 6, -9, 5, 14, 5, 11, 10, 1, -12, -20, -17, -5, -1, -13, -11, -32, -39, -22, -32, -12, -21, -31, -31, -30, -28, -41, -46, -37, -24, -23, -30, -48, -45, -47, -47, -55, -70, -30, -60, -59, -50, -76, -74, -86, -78, -76, -91, -60, -66, -83, -77, -78, -68, -75, -78, -81, -70, -65, -70, -69, -73, -70, -61, -75, -77, -69, -78, -81, -68, -95, -92, -84, -97, -104, -94, -96, -95, -99, -92, -105, -97]
+		
+		mockGlobal.resultImgArr = [];
 	});
 
 	/**
@@ -383,8 +385,51 @@ describe('Worker: spectroDrawingWorker', function () {
 
 	});
 
+	/**
+	 *
+	 */
+	it('should convertToHeatmap', function () {
+		var ret = mockGlobal.convertToHeatmap(1, 10, 5, [[255, 0, 0],[0, 255, 0],[0, 0, 255]]);
+		expect(ret).toEqual({r: 28, g: 226, b: 0});
+		var ret = mockGlobal.convertToHeatmap(1, 10, 5, [[128, 0, 0],[0, 128, 0],[0, 0, 128]]);
+		expect(ret).toEqual({r: 14, g: 113, b: 0 });
+	});
 
-	// TODO: write tests for renderSpectrogram, calcMagnitudeSpectrum, drawVerticalLineOfSpectogram, convertToHeatmap and 
+	/**
+	 *
+	 */
+	it('should drawVerticalLineOfSpectogram and pixelHeight>1', function () {
+    	mockGlobal.N = 512;
+    	mockGlobal.pixelHeight = 5;
+    	mockGlobal.paint = [samples, samples, samples, samples, samples];
+		mockGlobal.drawVerticalLineOfSpectogram(0);
+		expect(mockGlobal.resultImgArr).toEqual([0, 0, 0, 0]);
+	});
+
+	/**
+	 *
+	 */
+	it('should drawVerticalLineOfSpectogram and pixelHeight<1', function () {
+    	mockGlobal.N = 512;
+    	mockGlobal.pixelHeight = 0.25;
+    	mockGlobal.paint = [samples, samples, samples, samples, samples];
+		mockGlobal.drawVerticalLineOfSpectogram(0);
+		expect(mockGlobal.resultImgArr).toEqual([0, 0, 0, 0]);
+	});
+
+	/**
+	 *
+	 */
+	it('should drawVerticalLineOfSpectogram with heatmaps', function () {
+    	mockGlobal.N = 512;
+    	mockGlobal.pixelHeight = 5;
+    	mockGlobal.drawHeatMapColors = true;    	
+    	mockGlobal.paint = [samples, samples, samples];
+		mockGlobal.drawVerticalLineOfSpectogram(0);
+		expect(mockGlobal.resultImgArr).toEqual([255, 0, 0, 0]);
+	});
+	
+	// TODO: write tests for renderSpectrogram, calcMagnitudeSpectrum and 
 	// probably getWorkerURL, kill, tell, says
 
 });

@@ -101,6 +101,5 @@ describe('Directive: drawssff', function() {
         spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
         elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
         expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
-    });  
-    
+    });    
 });
