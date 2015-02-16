@@ -51,7 +51,7 @@ angular.module('emuwebApp')
 					dragEndSample = dragStartSample;
 					viewState.select(dragStartSample, dragStartSample);
 					//Drawhelperservice.drawViewPortTimes(ctx, true);
-					switchMarkupContext(event);
+					scope.switchMarkupContext(event);
 					scope.$apply();
 				});
 
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
 					switch (mbutton) {
 					case 0:
 						if (viewState.getPermission('labelAction')) {
-							switchMarkupContext(event);
+							scope.switchMarkupContext(event);
 							if (!$.isEmptyObject(Ssffdataservice.data)) {
 								if (Ssffdataservice.data.length !== 0) {
 									if (!viewState.getdragBarActive()) {
@@ -159,7 +159,7 @@ angular.module('emuwebApp')
 						break;
 					case 1:
 						if (!viewState.getdragBarActive()) {
-							setSelectDrag(event);
+							scope.setSelectDrag(event);
 
 						}
 						break;
@@ -169,8 +169,8 @@ angular.module('emuwebApp')
 
 				element.bind('mouseup', function (event) {
 					if (!viewState.getdragBarActive()) {
-						setSelectDrag(event);
-						switchMarkupContext(event);
+						scope.setSelectDrag(event);
+						scope.switchMarkupContext(event);
 					}
 				});
 
@@ -179,15 +179,11 @@ angular.module('emuwebApp')
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							// if (!$.isEmptyObject(Ssffdataservice.data)) {
-							// if (Ssffdataservice.data.length !== 0) {
 							if (!viewState.getdragBarActive()) {
 								if (viewState.getPermission('labelAction')) {
-									switchMarkupContext(event, false);
+									scope.switchMarkupContext(event, false);
 								}
 							}
-							// }
-							// }
 						}
 					}
 				});
@@ -196,7 +192,7 @@ angular.module('emuwebApp')
 				////////////////////
 
 
-				function switchMarkupContext(event, leave) {
+				scope.switchMarkupContext = function (event, leave) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					// draw current viewport selected
 					if (atts.ssffTrackname == 'OSCI') {
@@ -218,13 +214,9 @@ angular.module('emuwebApp')
 					}
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
+				};
 
-
-
-				}
-
-
-				function setSelectDrag(event) {
+				scope.setSelectDrag = function (event) {
 					curMouseSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					if (curMouseSample > dragStartSample) {
 						dragEndSample = curMouseSample;
@@ -234,7 +226,7 @@ angular.module('emuwebApp')
 						viewState.select(dragStartSample, dragEndSample);
 					}
 					scope.$apply();
-				}
+				};
 			}
 		};
 	});
