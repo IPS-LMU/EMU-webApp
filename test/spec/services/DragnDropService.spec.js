@@ -77,23 +77,6 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.getDragnDropData(pak2, 'annotation')).toEqual(testData[pak2][2]);
     expect(DragnDropService.getDragnDropData(pak2, 'annotation12')).toEqual(false);
   }));
-  
-  /*it('should convertDragnDropData', inject(function ($rootScope, $q, DragnDropService, Wavparserservice) {
-    var scope = $rootScope.$new();
-    var def = $q.defer(); 
-    var reader = new FileReader();
-    var reader2 = new FileReader();
-    reader.readAsArrayBuffer = jasmine.createSpy("readAsArrayBuffer spy");  
-    reader2.readAsArrayBuffer = jasmine.createSpy("readAsArrayBuffer spy");  
-    spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(def.promise);
-    spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(def.promise);
-    DragnDropService.convertDragnDropData(DragnDropService.drandropBundles, 1);
-    expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
-    //def.resolve();
-    //scope.$apply();
-  }));*/
-  
-     
     
   it('should handleLocalFiles', inject(function ($rootScope, 
                                                  $q, 
@@ -129,7 +112,50 @@ describe('Service: DragnDropService', function () {
     ConfigProviderService.vals = {};
     ConfigProviderService.vals.perspectives = [];
   }));  
-  
-  
+    
+  it('should handleLocalFiles', inject(function ($rootScope, 
+                                                 $q, 
+                                                 Wavparserservice, 
+                                                 ConfigProviderService,
+                                                 Validationservice, 
+                                                 Iohandlerservice, 
+                                                 DragnDropService, 
+                                                 modalService,
+                                                 appStateService,
+                                                 Soundhandlerservice,
+                                                 DragnDropDataService, 
+                                                 Binarydatamaniphelper) {
+    var scope = $rootScope.$new();
+    var def = $q.defer();   
+    var defio = $q.defer();   
+    var defwav = $q.defer();   
+    var defmodal = $q.defer();   
+    DragnDropDataService.sessionDefault = 0;
+    DragnDropDataService.convertedBundles[0] = {};
+    DragnDropDataService.convertedBundles[0].mediaFile = {};
+    DragnDropDataService.convertedBundles[0].mediaFile.data = msajc003_bndl.mediaFile.data;
+    DragnDropDataService.convertedBundles[0].annotation = msajc003_bndl.annotation;
+    spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(def.promise);
+    spyOn(modalService, 'open').and.returnValue(defmodal.promise);
+    spyOn(appStateService, 'resetToInitState');
+    spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(defio.promise);
+    spyOn(Validationservice, 'validateJSO').and.callFake(function(param1, param2){
+        if (param1 === 'emuwebappConfigSchema') return true;
+        if (param1 === 'annotationFileSchema') return false;
+    });
+    spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(defwav.promise);
+    DragnDropService.handleLocalFiles();
+    expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
+    expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
+    defio.resolve({data: defaultEmuwebappConfig});
+    scope.$apply();
+    expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
+    defwav.resolve({Data: [1, 2, 3]});
+    defmodal.resolve();
+    scope.$apply();
+    ConfigProviderService.vals = {};
+    ConfigProviderService.vals.perspectives = [];
+    expect(appStateService.resetToInitState).toHaveBeenCalled();
+  }));  
   
 });
