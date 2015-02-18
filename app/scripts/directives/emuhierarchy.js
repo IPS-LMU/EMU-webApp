@@ -34,6 +34,7 @@ angular.module('emuwebApp')
         // watches 
 
 	scope.cLAD = viewState.curLevelAttrDefs;
+	scope.viewState = viewState;
 	scope.hierarchyState = viewState.hierarchyState;
 	scope.historyService = HistoryService;
 
@@ -77,6 +78,13 @@ angular.module('emuwebApp')
 	scope.$watch('hierarchyState.newLinkFromID', function (newValue) {
 		scope.newLinkSrc = LevelService.getItemByID(newValue);
 		scope.render();
+	}, false);
+
+	scope.$watch('viewState.hierarchyShown', function (newValue) {
+		if (newValue === true) {
+			console.debug ('Hierarchy modal activated, rendering');
+			scope.render();
+		}
 	}, false);
 
         //
