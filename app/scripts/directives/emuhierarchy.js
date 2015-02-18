@@ -284,34 +284,7 @@ angular.module('emuwebApp')
 		//scope.centerNode(d);
 
 		// (De-)Collapse sub-tree
-		var isCollapsing;
-		if (typeof d._collapsed === 'undefined' || d._collapsed === false) {
-			isCollapsing = true;
-		} else if (d._collapsed === true) {
-			isCollapsing = false;
-		} else {
-			console.debug ('Likely a bug: the following node appears to be neither collapsed nor uncollapsed:', d);
-		}
-		d._collapsed = isCollapsing;
-		
-		var currentDescendant;
-		var descendants = HierarchyLayoutService.findChildren(d, scope.path);
-		while (descendants.length > 0) {
-			currentDescendant = descendants.pop();
-			descendants = descendants.concat(HierarchyLayoutService.findChildren(currentDescendant, scope.path));
-
-			if (isCollapsing) {
-				if (typeof currentDescendant._collapsedParents === 'undefined') {
-					currentDescendant._collapsedParents = 1;
-				} else {
-					currentDescendant._collapsedParents += 1;
-				}
-			} else {
-				currentDescendant._collapsedParents -= 1;
-			}
-
-			currentDescendant._collapsePosition = [d._x, d._y];
-		}
+		HierarchyLayoutService.toggleCollapse(d, scope.path);
 
 		scope.render();
 	};

@@ -305,6 +305,49 @@ angular.module('emuwebApp')
 			}		
 		};
 
+		/**
+		 * Toggle the state of a single item with its subtree
+		 */
+		sServObj.toggleCollapse = function (d, selectedPath) {
+
+			// Find out whether we're collapsing or decollapsing
+			var isCollapsing;
+
+			if (typeof d._collapsed === 'undefined' || d._collapsed === false) {
+				isCollapsing = true;
+			} else if (d._collapsed === true) {
+				isCollapsing = false;
+			} else {
+				console.debug ('Likely a bug: the following node appears to be neither collapsed nor uncollapsed:', d);
+				return;
+			}
+			d._collapsed = isCollapsing;
+
+
+			// Traverse sub-tree and change each item's number of collapsend parents
+			//
+			// Set each item's collapsePosition as well
+			// collapsePosition is the coordinate where they fade out to or fade in from
+			
+			var currentDescendant;
+			var descendants = sServObj.findChildren(d, selectedPath);
+			while (descendants.length > 0) {
+				currentDescendant = descendants.pop();
+				descendants = descendants.concat(sServObj.findChildren(currentDescendant, selectedPath));
+
+				if (isCollapsing) {
+					if (typeof currentDescendant._collapsedParents === 'undefined') {
+						currentDescendant._collapsedParents = 1;
+					} else {
+						currentDescendant._collapsedParents += 1;
+					}
+				} else {
+					currentDescendant._collapsedParents -= 1;
+				}
+
+				currentDescendant._collapsePosition = [d._x, d._y];
+			}
+		}
 
 		return sServObj;
 	});
