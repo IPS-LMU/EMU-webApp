@@ -41,8 +41,8 @@ describe('Service: modalService', function () {
   /**
    *
    */
-  it('should change', function () {
-    scope.modal.change('template','dataIn','dataExport','force');
+  it('should changeModal', function () {
+    scope.modal.changeModal('template','dataIn','dataExport','force');
     expect(scope.modal.templateUrl).toEqual('template');
     expect(scope.modal.dataIn).toEqual('dataIn');
     expect(scope.modal.dataExport).toEqual('dataExport'); 

@@ -28,12 +28,13 @@ describe('Service: Soundhandlerservice', function () {
   }));
   
  /**
-   *
-   */
   it('should playFromTo', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    /*Soundhandlerservice.setPlayerSrc(b64);   
-    Soundhandlerservice.resetPlayerSrcFromTo(0,2000)
-    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + base64Wav);
-    no subarray in phantomjs bug */
+    Soundhandlerservice.setPlayerSrc(b64);   
+    spyOn(Soundhandlerservice, 'resetPlayerSrcFromTo');
+    console.log(Soundhandlerservice.player);
+    Soundhandlerservice.playFromTo(0,2000);
+    expect(Soundhandlerservice.resetPlayerSrcFromTo).toHaveBeenCalled();
   }));
+   *
+   */  
 });
