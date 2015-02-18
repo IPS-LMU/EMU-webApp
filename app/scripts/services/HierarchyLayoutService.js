@@ -16,7 +16,7 @@
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', function (ConfigProviderService, LevelService, DataService) {
+	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -297,7 +297,7 @@ angular.module('emuwebApp')
 
 			while (items.length > 0) {
 				currentItem = items.pop();
-				if (! currentItem._collapsed) {
+				if (! viewState.getCollapsed(currentItem.id)) {
 					items = items.concat(sServObj.findChildren(currentItem, selectedPath));
 				}
 
@@ -311,18 +311,8 @@ angular.module('emuwebApp')
 		sServObj.toggleCollapse = function (d, selectedPath) {
 
 			// Find out whether we're collapsing or decollapsing
-			var isCollapsing;
-
-			if (typeof d._collapsed === 'undefined' || d._collapsed === false) {
-				isCollapsing = true;
-			} else if (d._collapsed === true) {
-				isCollapsing = false;
-			} else {
-				console.debug ('Likely a bug: the following node appears to be neither collapsed nor uncollapsed:', d);
-				return;
-			}
-			d._collapsed = isCollapsing;
-
+			var isCollapsing = !viewState.getCollapsed (d.id);
+			viewState.setCollapsed (d.id, isCollapsing);
 
 			// Traverse sub-tree and change each item's number of collapsend parents
 			//
@@ -335,17 +325,15 @@ angular.module('emuwebApp')
 				currentDescendant = descendants.pop();
 				descendants = descendants.concat(sServObj.findChildren(currentDescendant, selectedPath));
 
+				var num = viewState.getNumCollapsedParents(currentDescendant.id);
+
 				if (isCollapsing) {
-					if (typeof currentDescendant._collapsedParents === 'undefined') {
-						currentDescendant._collapsedParents = 1;
-					} else {
-						currentDescendant._collapsedParents += 1;
-					}
+					viewState.setNumCollapsedParents(currentDescendant.id, num + 1);
 				} else {
-					currentDescendant._collapsedParents -= 1;
+					viewState.setNumCollapsedParents(currentDescendant.id, num - 1);
 				}
 
-				currentDescendant._collapsePosition = [d._x, d._y];
+				viewState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
 			}
 		}
 
