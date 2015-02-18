@@ -160,7 +160,6 @@ angular.module('emuwebApp')
 						curFrame = xCol.values.length - 1;
 					}
 
-
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
 					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
 					var degrees = 90;
@@ -199,6 +198,8 @@ angular.module('emuwebApp')
 							alert('xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample');
 							return;
 						}
+						
+						
 
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);

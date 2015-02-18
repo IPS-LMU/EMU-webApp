@@ -5,7 +5,7 @@ describe('Directive: dots', function() {
     var elm, scope, worker;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, DataService, LevelService, Ssffdataservice) {
+    beforeEach(inject(function($rootScope, $compile, Soundhandlerservice, viewState, ConfigProviderService, DataService, LevelService, Ssffdataservice) {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
@@ -14,7 +14,9 @@ describe('Directive: dots', function() {
         scope.vs.curPerspectiveIdx = 0;
         scope.data = DataService;
         scope.data.setData(msajc003_bndl.annotation);
-        scope.ssffds = Ssffdataservice;    
+        scope.ssffds = Ssffdataservice;  
+        scope.shs = Soundhandlerservice;  
+        scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions = [ {dots: [{xContourNr: 1}, {xContourNr: 2}], connectLines: []} ];
     }));
     
     function compileDirective() {
@@ -35,17 +37,20 @@ describe('Directive: dots', function() {
         expect(elm.isolateScope()).toBeDefined();
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({_minVal: 1, _maxVal: 2});
-        scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions = [ {dots: [1, 2]} ];
         elm.isolateScope().setGlobalMinMaxVals();
     });    
     
-   /* it('should drawDots', function() {
+    it('should drawDots', function() {
         compileDirective();
         expect(elm.isolateScope()).toBeDefined();
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({_minVal: 1, _maxVal: 2, values: [[1, 2], [2, 3]]});
+        spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue({startTime: 0, sampleRate: 1});
+        
+        scope.vs.curMousePosSample = 20000;
+        scope.shs.wavJSO.SampleRate = 20000;
         elm.isolateScope().drawDots();
-    }); */   
+    }); 
 
     it('should watch ssffds.data.length', function() {
         compileDirective();
