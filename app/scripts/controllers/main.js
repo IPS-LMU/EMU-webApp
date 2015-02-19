@@ -682,7 +682,19 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
-			modalService.open('views/editDBconfigModal.html');
+		    var currentConfig = $scope.cps.curDbConfig;
+		    var currentVals = $scope.cps.vals;
+			modalService.open('views/editDBconfigModal.html').then(function (res) {
+				if(res) {
+				    // todo save and transfer curDbConfig & vals
+				    console.log($scope.cps.curDbConfig);
+				    console.log($scope.cps.vals);
+				}
+				else {
+				    $scope.cps.curDbConfig = currentConfig;
+				    $scope.cps.vals = currentVals;
+				}
+			});
 		};
 
 		/**

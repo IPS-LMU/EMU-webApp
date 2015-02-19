@@ -525,12 +525,15 @@ describe('Controller: MainController', function () {
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
   
-  it('should showEditDBconfig on BtnClick', function () {
-    spyOn(scope.modal, 'open');
+  it('should showEditDBconfig on BtnClick', inject(function ($q) {
+    var editDef = $q.defer();
+    spyOn(scope.modal, 'open').and.returnValue(editDef.promise);
     scope.showEditDBconfigBtnClick();
+    editDef.resolve(false);
+    scope.$apply();
     expect(scope.modal.open).toHaveBeenCalledWith('views/editDBconfigModal.html');
-  });  
-  
+  })); 
+
   it('should addLevelPoint on BtnClick', function () {
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.lvl, 'insertLevel');
