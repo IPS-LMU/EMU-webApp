@@ -38,7 +38,7 @@ describe('Service: HierarchyLayoutService', function () {
     scope.hierarchy.findParents('Phonetic');
     expect(scope.hierarchy.findChildren).toHaveBeenCalled();
   });
-  
+
   /**
    *
    */  

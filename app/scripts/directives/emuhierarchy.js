@@ -140,10 +140,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getPath = function (d) {
-		var controlX = d._fromX;
-		var controlY = d._toY;
-
-		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
+		return 'M'+d._fromX+' '+d._fromY+'Q'+d._fromX+' '+d._toY+' '+d._toX+' '+d._toY;
 	};
 
 	scope.nodeOnClick = function (d) {
