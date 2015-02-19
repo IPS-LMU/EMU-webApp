@@ -13,7 +13,6 @@ angular.module('emuwebApp')
 		 */
 		sServObj.loadSchemas = function () {
 			var proms = [];
-
 			angular.forEach(names, function (n) {
 				proms.push($http.get('schemaFiles/' + n + '.json'));
 			});
@@ -49,12 +48,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.validateJSO = function (schemaName, jso) {
-			var schema;
-			angular.forEach(schemasJsos, function (s) {
-				if (s.name === 'schemaFiles/' + schemaName + '.json') {
-					schema = s;
-				}
-			});
+			var schema = sServObj.getSchema(schemaName);
 			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				return true;
 			} else {
