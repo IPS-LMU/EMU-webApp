@@ -51,6 +51,7 @@ angular.module('emuwebApp')
 			}
 		});
 
+
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
 			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect) {
@@ -370,23 +371,13 @@ angular.module('emuwebApp')
 			});
 		};
 
-
 		/**
 		 *
 		 */
 		$scope.toggleCollapseSession = function (ses) {
 			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
 		};
-
-		/**
-		 *
-		 */
-		$scope.sessionIsCollapsed = function (ses) {
-			// return $scope.uniqSessionList[ses].collapsed;
-			return false;
-		};
-
-
+		
 		/**
 		 *
 		 */
@@ -691,7 +682,19 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
-			modalService.open('views/editDBconfigModal.html');
+		    var currentConfig = $scope.cps.curDbConfig;
+		    var currentVals = $scope.cps.vals;
+			modalService.open('views/editDBconfigModal.html').then(function (res) {
+				if(res) {
+				    // todo save and transfer curDbConfig & vals
+				    console.log($scope.cps.curDbConfig);
+				    console.log($scope.cps.vals);
+				}
+				else {
+				    $scope.cps.curDbConfig = currentConfig;
+				    $scope.cps.vals = currentVals;
+				}
+			});
 		};
 
 		/**

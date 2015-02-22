@@ -1331,6 +1331,21 @@ angular.module('emuwebApp')
 			}
 			return labels;
 		};
+		
+		/**
+		 * returns level name of a given node id
+		 */
+		sServObj.getLevelName = function (nodeID) {
+			var levelName = null;
+			angular.forEach(DataService.getLevelData(), function (level) {
+				angular.forEach(level.items, function (item) {
+					if (item.id === nodeID) {
+						levelName = level.name;
+					}
+			    });
+			});
+			return levelName;
+		}		
 
 		/**
 		 * Returns a level object and an item object according to a given item id

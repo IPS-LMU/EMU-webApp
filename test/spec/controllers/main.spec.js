@@ -7,21 +7,23 @@ describe('Controller: MainController', function () {
 
   var emptyObject = {};
 
-  var MainCtrl, scope, ret, deferred, $location;
+  var MainCtrl, scope, ret, deferred, deferred2, $location;
   var testSizeAll = 58809;
   var testSizeStart = 10;
   var testSizeEnd = 1337;
+  var orig = [];
 
   var mockAppStateService = {
     resetToInitState: function () {}
   };
-
+  
   //Initialize the controller and a mock scope
   beforeEach(inject(function ($controller,
     $rootScope,
     $q,
     $httpBackend,
     LevelService,
+    DataService,
     ConfigProviderService,
     viewState,
     Soundhandlerservice,
@@ -29,6 +31,7 @@ describe('Controller: MainController', function () {
     HistoryService,
     Iohandlerservice,
     Validationservice,
+    Wavparserservice,
     loadedMetaDataService,
     Textgridparserservice) {
 
@@ -52,6 +55,8 @@ describe('Controller: MainController', function () {
     scope.history = HistoryService;
     scope.txtgrid = Textgridparserservice;
     scope.lmds = loadedMetaDataService;
+    scope.wav = Wavparserservice;
+    scope.data = DataService;
 
     deferred = $q.defer();
     deferred.resolve('called');
@@ -64,6 +69,7 @@ describe('Controller: MainController', function () {
     $httpBackend.whenGET("views/error.html").respond('');
     $httpBackend.whenGET("views/connectModal.html").respond('');
     $httpBackend.whenGET("views/export.html").respond('');
+    $httpBackend.whenGET("configFiles/default_emuwebappConfig.json").respond(defaultEmuwebappConfig);
   }));
 
   it('should react to $broadcast connectionDisrupted', inject(function ($rootScope) {
@@ -71,6 +77,12 @@ describe('Controller: MainController', function () {
     $rootScope.$broadcast('connectionDisrupted');
     expect(mockAppStateService.resetToInitState).toHaveBeenCalled();
   }));
+  
+  it('should react to $broadcast resetToInitState', inject(function ($rootScope) {
+    spyOn(scope, 'loadDefaultConfig');
+    $rootScope.$broadcast('resetToInitState');
+    expect(scope.loadDefaultConfig).toHaveBeenCalled();
+  }));  
 
 
   it('should have all variables defined', function () {
@@ -506,10 +518,146 @@ describe('Controller: MainController', function () {
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
 
-  it('should getEnlarge', function () {
+  it('should cmdZoomAll', function () {
     scope.cps.vals.perspectives[0].signalCanvases.order = [1, 2];
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
     scope.cmdZoomAll();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
+  
+  it('should showEditDBconfig on BtnClick', inject(function ($q) {
+    var editDef = $q.defer();
+    spyOn(scope.modal, 'open').and.returnValue(editDef.promise);
+    scope.showEditDBconfigBtnClick();
+    editDef.resolve(false);
+    scope.$apply();
+    expect(scope.modal.open).toHaveBeenCalledWith('views/editDBconfigModal.html');
+  })); 
+
+  it('should addLevelPoint on BtnClick', function () {
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.lvl, 'insertLevel');
+    spyOn(scope.history, 'addObjToUndoStack');
+    scope.addLevelPointBtnClick();
+    expect(scope.lvl.insertLevel).toHaveBeenCalled();
+    expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelPointBtnClick');
+  });  
+  
+  it('should addLevelSeg on BtnClick', function () {
+    spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(scope.lvl, 'insertLevel');
+    spyOn(scope.history, 'addObjToUndoStack');
+    scope.addLevelSegBtnClick();
+    expect(scope.lvl.insertLevel).toHaveBeenCalled();
+    expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
+    expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelSegBtnClick');
+  });    
+  
+   it('should getEnlarge (-1)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(-1);
+    var ret = scope.getEnlarge();
+    expect(ret).toEqual('auto');
+  }));   
+    
+   it('should getEnlarge (2 / small)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('27%');
+  })); 
+  
+   it('should getEnlarge (2 / large)', inject(function (viewState) {
+    viewState.curPerspectiveIdx = 0;
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(3);
+    expect(ret).toEqual('70%');
+  }));  
+  
+   it('should getEnlarge (3 / small)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    orig = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('24%');
+  })); 
+  
+   it('should getEnlarge (3 / large)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(3);
+    expect(ret).toEqual('50%');
+  }));        
+  
+   it('should getEnlarge (1)', inject(function (viewState, ConfigProviderService) {
+    viewState.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+    spyOn(scope.vs, 'getenlarge').and.returnValue(3);
+    var ret = scope.getEnlarge(2);
+    expect(ret).toEqual('auto');
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order = orig;
+  }));    
+  
+   it('should toggleCollapseSession', function () {
+    scope.uniqSessionList = [];
+    scope.uniqSessionList[0] = {};
+    scope.uniqSessionList[0].collapsed = true;
+    scope.toggleCollapseSession(0);
+    expect(scope.uniqSessionList[0].collapsed).toEqual(false);
+  });  
+  
+   it('should react on resize window', function () {
+     spyOn(scope.lvl, 'deleteEditArea');
+     spyOn(scope.vs, 'setWindowWidth');
+     var e = jQuery.Event('resize');
+     $(window).trigger(e); 
+     expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
+     expect(scope.vs.setWindowWidth).toHaveBeenCalled();
+  });  
+  
+   it('should loadFilesForEmbeddedApp', inject(function ($q) {
+     var ioDeferred = $q.defer();
+     var ioDeferred2 = $q.defer();
+     var wavDeferred = $q.defer();
+     spyOn(scope.io, 'httpGetPath').and.returnValue(ioDeferred.promise);
+     spyOn(scope.cps, 'setVals');
+     spyOn(scope.valid, 'validateJSO').and.returnValue(true);
+     spyOn(scope.wav, 'parseWavArrBuf').and.returnValue(wavDeferred.promise);
+     spyOn(scope.io, 'parseLabelFile').and.returnValue(ioDeferred2.promise);
+     spyOn(scope.data, 'setData');
+     scope.cps.embeddedVals.audioGetUrl = 'test.wav';
+     scope.loadFilesForEmbeddedApp();
+     ioDeferred.resolve({data: defaultEmuwebappConfig});
+     scope.$apply();
+     expect(scope.cps.setVals).toHaveBeenCalled();
+     wavDeferred.resolve({Data: [1, 2, 3]});
+     scope.$apply();
+     expect(scope.wav.parseWavArrBuf).toHaveBeenCalled();
+     ioDeferred2.resolve({levels: [{ name: 'test' }]});
+     scope.$apply();
+     expect(scope.valid.validateJSO).toHaveBeenCalled();
+     expect(scope.io.parseLabelFile).toHaveBeenCalled();
+     expect(scope.data.setData).toHaveBeenCalled();
+  }));  
+  
+   it('should loadDefaultConfig', inject(function ($httpBackend, $q, Validationservice, Iohandlerservice) {
+     var ioDeferred = $q.defer();
+     var jsonDeferred = $q.defer();
+     spyOn(Validationservice, 'loadSchemas').and.returnValue(ioDeferred.promise);
+     spyOn(Validationservice, 'validateJSO').and.returnValue(jsonDeferred.promise);
+     scope.loadDefaultConfig();
+     ioDeferred.resolve();
+     scope.$apply();
+     $httpBackend.flush();
+     jsonDeferred.resolve(true);
+     scope.$apply();
+  }));  
+  
+  
+  
 });

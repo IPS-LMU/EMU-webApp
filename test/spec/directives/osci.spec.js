@@ -38,16 +38,6 @@ describe('Directive: osci', function () {
      expect(elm.find('img').length).toBe(1);
    });
 
-   it('should react to refreshTimeline', function () {
-     compileDirective();
-     scope.shs.wavJSO = {};
-     scope.shs.wavJSO.Data = [1, 2, 3];
-     expect(elm.isolateScope()).toBeDefined();
-     spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
-     scope.$broadcast('refreshTimeline');
-     expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
-   });
-
    it('should watch viewState.playHeadAnimationInfos', function () {
      scope.vs.playHeadAnimationInfos.sS = 1
      compileDirective();

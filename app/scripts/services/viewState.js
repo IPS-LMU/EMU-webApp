@@ -409,7 +409,6 @@ angular.module('emuwebApp')
      */
     sServObj.togglesubmenuOpen = function (time) {
       this.submenuOpen = !this.submenuOpen;
-      $timeout(function () {$rootScope.$broadcast('refreshTimeline')}, time, false);
     };
 
     /**

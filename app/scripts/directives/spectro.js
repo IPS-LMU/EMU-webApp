@@ -37,10 +37,19 @@ angular.module('emuwebApp')
         scope.$watch('vs.timelineSize', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              $timeout(scope.redraw, 5);
+              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
             }
           }
         });
+        
+        //
+        scope.$watch('vs.submenuOpen', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
+            }
+          }
+        });        
 
 
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -50,7 +59,7 @@ angular.module('emuwebApp')
               if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
                 scope.redraw();
               }
-              scope.drawSpectMarkup(true);
+              scope.clearAndDrawSpectMarkup();
             }
           }
         }, true);
@@ -58,8 +67,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundarySample', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-              scope.drawSpectMarkup();
+              scope.clearAndDrawSpectMarkup();
             }
           }
         }, true);
@@ -68,7 +76,7 @@ angular.module('emuwebApp')
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
               // scope.redraw();
-              scope.drawSpectMarkup(true);
+              scope.clearAndDrawSpectMarkup();
             }
           }
         }, true);
@@ -99,13 +107,14 @@ angular.module('emuwebApp')
 
         scope.calcSamplesPerPxl = function () {
           return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
-
         }
+        
+        scope.clearAndDrawSpectMarkup = function () {
+          scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
+          scope.drawSpectMarkup();
+        }        
 
-        scope.drawSpectMarkup = function (reset) {
-          if (reset) {
-            scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-          }
+        scope.drawSpectMarkup = function () {
           // draw moving boundary line if moving
           scope.dhs.drawMovingBoundaryLine(scope.markupCtx);
           // draw current viewport selected

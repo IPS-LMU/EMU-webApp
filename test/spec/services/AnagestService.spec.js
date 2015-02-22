@@ -11,10 +11,10 @@ describe('Service: AnagestService', function () {
 	beforeEach(module('emuwebApp'));
 
 	beforeEach(module(function ($provide) {
-		$provide.value('dialogService', mockDialogService);
+		$provide.value('modalService', mockDialogService);
 	}));
 
-	beforeEach(inject(function (dialogService, $q, _$rootScope_) {
+	beforeEach(inject(function (modalService, $q, _$rootScope_) {
 		$rootScope = _$rootScope_;
 
 		// mock open function 
@@ -22,6 +22,13 @@ describe('Service: AnagestService', function () {
 			var deferred = $q.defer();
 			deferred.resolve('called open on dialogService');
 			return deferred.promise;
+		};
+
+		// mock open function 
+		mockDialogService.changeModal = function (p1, p2, p3, p4) {
+			var deferred2 = $q.defer();
+			deferred2.resolve(0);
+			return deferred2.promise;
 		};
 
 		// spyOn(dialogService, 'open');
@@ -79,7 +86,61 @@ describe('Service: AnagestService', function () {
 		$rootScope.$apply();
 
 		// TODO: SHOULD spy on mock open function to see if it is called with the correct values 
-
 	}));
+	
+	/**
+	*
+	*/
+	it('should not insertAnagestEvents with selected events', inject(function ($q, AnagestService, viewState) {
+	    spyOn(viewState, 'getItemsInSelection').and.returnValue([1, 2, 3]);
+	    AnagestService.insertAnagestEvents();
+		expect(viewState.getItemsInSelection).toHaveBeenCalled();    
+  }));
+	
+	/**
+	*
+	*/
+	it('should insertAnagestEvents', inject(function ($q, LevelService, LinkService, HistoryService, ConfigProviderService, Ssffdataservice, AnagestService, viewState) {
+	    
+	    var defer = $q.defer();
+	    spyOn(HistoryService, 'updateCurChangeObj');
+	    spyOn(HistoryService, 'addCurChangeObjToUndoStack');
+	    spyOn(LinkService, 'insertLinksTo');
+	    spyOn(LevelService, 'getLevelDetails').and.returnValue({level: {name: 'test', items: [ {id:1}, {id:2}]}});
+	    spyOn(LevelService, 'getAllLabelsOfLevel').and.returnValue({});
+	    spyOn(viewState, 'getcurClickLevelName').and.returnValue('Phonetic');
+	    spyOn(viewState, 'getItemsInSelection').and.returnValue([]);
+	    spyOn(ConfigProviderService, 'getLevelDefinition').and.returnValue({ 
+	        anagestConfig: { 
+	            velocitySsffTrackName: 'velocity', 
+	            verticalPosSsffTrackName: 'ssff' , 
+	            gestureOnOffsetLabels: ['test'], 
+	            maxVelocityOnOffsetLabels: [10], 
+	            constrictionPlateauBeginEndLabels: ['test']
+	        }
+	    });
+	    spyOn(ConfigProviderService, 'getSsffTrackConfig').and.returnValue({ name: 'test', columnName: 'test'});
+	    spyOn(Ssffdataservice, 'getSampleRateAndStartTimeOfTrack').and.returnValue({ startTime: 0, sampleRate: 20000 });
+	    spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue([1]);
+	    spyOn(AnagestService, 'interactiveFindThresholds').and.returnValue(defer.promise);
+	    
+	    AnagestService.insertAnagestEvents();
+	    
+		expect(viewState.getcurClickLevelName).toHaveBeenCalled();    
+		expect(viewState.getItemsInSelection).toHaveBeenCalled();    
+		expect(ConfigProviderService.getLevelDefinition).toHaveBeenCalled();    
+		expect(ConfigProviderService.getSsffTrackConfig).toHaveBeenCalled();   
+		expect(Ssffdataservice.getSampleRateAndStartTimeOfTrack).toHaveBeenCalled();   
+		expect(Ssffdataservice.getColumnOfTrack).toHaveBeenCalled(); 
+		defer.resolve({}); 
+		$rootScope.$apply(); 
+		expect(AnagestService.interactiveFindThresholds).toHaveBeenCalled(); 
+		expect(HistoryService.updateCurChangeObj).toHaveBeenCalled(); 
+		expect(HistoryService.addCurChangeObjToUndoStack).toHaveBeenCalled(); 
+		expect(LinkService.insertLinksTo).toHaveBeenCalled(); 
+  }));
+  	
+	
+	
 
 });

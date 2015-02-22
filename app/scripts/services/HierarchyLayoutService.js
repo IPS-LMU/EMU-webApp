@@ -141,7 +141,7 @@ angular.module('emuwebApp')
 				}
 			}
 		};
-		
+
 		/**
 		 * Find all children of a node d that are part of the currently selected
 		 * path through the hierarchy
@@ -258,51 +258,53 @@ angular.module('emuwebApp')
 			// connection since the whole graph is directed and the
 			// connections can never be along the direction of an
 			// edge.
-			
-			var rootLevelItems = [];
-			
-			var level;
-			for (var i=0; i < selectedPath.length; ++i) {
-				level = LevelService.getLevelDetails(selectedPath[i]).level;
 
-				for (var ii=0; ii < level.items.length; ++ii) {
-					if (level.items[ii]._parents.length === 0) {
-						rootLevelItems.push(level.items[ii]);
+			if (selectedPath !== undefined && selectedPath.length > 0) {
+				var rootLevelItems = [];
+				
+				var level;
+				for (var i=0; i < selectedPath.length; ++i) {
+					level = LevelService.getLevelDetails(selectedPath[i]).level;
+
+					for (var ii=0; ii < level.items.length; ++ii) {
+						if (level.items[ii]._parents.length === 0) {
+							rootLevelItems.push(level.items[ii]);
+						}
 					}
 				}
-			}
-			
+				
 
-			// First, set all nodes invisible. Later we will search
-			// all paths and if we find one uncollasped path to a
-			// node, that node will be set visible.
+				// First, set all nodes invisible. Later we will search
+				// all paths and if we find one uncollasped path to a
+				// node, that node will be set visible.
 
-			var currentItem;
-			var items = [];
-			items = items.concat(rootLevelItems);
-			
-			while (items.length > 0) {
-				currentItem = items.pop();
-				items = items.concat(sServObj.findChildren(currentItem, selectedPath));
-				currentItem._visible = false;
-			}
-
-			// Now all nodes on the selectedPath have been set
-			// invisible. Try and find those that must be visible,
-			// i.e. either they are a root node or there is an
-			// uncollapsed path to them from a root node.
-
-			items = [];
-			items = items.concat(rootLevelItems);
-
-			while (items.length > 0) {
-				currentItem = items.pop();
-				if (! viewState.getCollapsed(currentItem.id)) {
+				var currentItem;
+				var items = [];
+				items = items.concat(rootLevelItems);
+				
+				while (items.length > 0) {
+					currentItem = items.pop();
 					items = items.concat(sServObj.findChildren(currentItem, selectedPath));
+					currentItem._visible = false;
 				}
 
-				currentItem._visible = true;
-			}		
+				// Now all nodes on the selectedPath have been set
+				// invisible. Try and find those that must be visible,
+				// i.e. either they are a root node or there is an
+				// uncollapsed path to them from a root node.
+
+				items = [];
+				items = items.concat(rootLevelItems);
+
+				while (items.length > 0) {
+					currentItem = items.pop();
+					if (! viewState.getCollapsed(currentItem.id)) {
+						items = items.concat(sServObj.findChildren(currentItem, selectedPath));
+					}
+
+					currentItem._visible = true;
+				}
+			}
 		};
 
 		/**

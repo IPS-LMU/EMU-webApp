@@ -50,7 +50,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.change = function (template, param1, param2, force) {
+		sServObj.changeModal = function (template, param1, param2, force) {
 		    if(param1!==undefined) {
 		        sServObj.dataIn = param1;
 		    }

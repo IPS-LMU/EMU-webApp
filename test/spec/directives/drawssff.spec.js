@@ -101,6 +101,22 @@ describe('Directive: drawssff', function() {
         spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
         elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
         expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
-    });  
+    });   
     
+    it('should drawValues on SPEC', function() {
+        setData();
+        scope.vs.curCorrectionToolNr = 1;
+        spyOn(scope.cps, 'getContourColorsOfTrack').and.returnValue(undefined);
+        spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name : 'test'});
+        spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({ values: [0, 1, 2, 3]});
+        spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue({startTime: 0, smapleRate: 20000});
+        compileDirective('SPEC');
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(scope.vs, 'getViewPortStartTime').and.returnValue(0);
+        spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
+        elm.isolateScope().assTrackName = 'FORMANTS';
+        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
+        expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
+    });
+     
 });

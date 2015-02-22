@@ -835,6 +835,32 @@ describe('Service: LevelService', function () {
   /**
    *
    */
+  it('should deleteBoundary (first)', inject(function (DataService, LevelService) {
+    // test on msajc003_bndl.annotation
+    // delete and deleteSegmentsInvers 2 segments
+    DataService.setData(msajc003_bndl.annotation);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    // delete 1 boundary
+    var ret = LevelService.deleteBoundary('Phonetic', 147, true, false);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+  }));
+
+  /**
+   *
+   */
+  it('should deleteBoundary (last)', inject(function (DataService, LevelService) {
+    // test on msajc003_bndl.annotation
+    // delete and deleteSegmentsInvers 2 segments
+    DataService.setData(msajc003_bndl.annotation);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    // delete 1 boundary
+    var ret = LevelService.deleteBoundary('Phonetic', 180, false, true);
+    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+  }));
+
+  /**
+   *
+   */
   it('should deleteBoundaryInvers', inject(function (DataService, LevelService) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments

@@ -26,19 +26,15 @@ angular.module('emuwebApp')
         
         /////////////////////
         // watches
-
-		// on broadcast msg from main ctrl openSubmenu refresh timeline
-		scope.$on('refreshTimeline', function () {
-          if (!$.isEmptyObject(scope.shs)) {
-            if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup();
-            }
-          }
-		});  
+        
+		//
+		scope.$watch('vs.submenuOpen', function () {
+          $timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
+		});
 
 		//
 		scope.$watch('vs.timelineSize', function () {
-    		$timeout(scope.redraw, 10); 
+    		$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
 		}); 
 		
         scope.$watch('vs.curViewPort', function () {

@@ -93,15 +93,14 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		function handleUpdatereadyEvent(e) {
-			console.log('###### handleUpdatereadyEvent ##########');
+		sServObj.handleUpdatereadyEvent = function () {
 			modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
 				if (res) {
 					appCache.swapCache();
 					window.location.reload();
 				}
 			});
-		}
+		};
 
 		// function handleObsoleteEvent(e) {
 		// 	console.log('###### handleObsoleteEvent ##########');
@@ -122,7 +121,7 @@ angular.module('emuwebApp')
 		// appCache.addEventListener('downloading', handleDownloadingEvent, false);
 		// appCache.addEventListener('progress', handleProgressEvent, false);
 		// appCache.addEventListener('cached', handleCachedEvent, false);
-		appCache.addEventListener('updateready', handleUpdatereadyEvent, false);
+		appCache.addEventListener('updateready', sServObj.handleUpdatereadyEvent, false);
 		// appCache.addEventListener('obsolete', handleObsoleteEvent, false);
 		// appCache.addEventListener('error', handleErrorEvent, false);
 

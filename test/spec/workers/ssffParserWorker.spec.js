@@ -38,6 +38,13 @@ describe('Worker: ssffParserWorker', function() {
 	});
   });
   
+  it('should base64encode', function () { 
+    var ret = mockGlobal.btoa('test');
+    expect(ret).toEqual('dGVzdA==');
+    var ret = mockGlobal.atob('dGVzdA==');
+    expect(ret).toEqual('test');    
+  });
+  
   it('should parseArr', function () {
     mockGlobal.onmessage({data: {
       'cmd': 'parseArr',
@@ -45,7 +52,7 @@ describe('Worker: ssffParserWorker', function() {
     }});    
     expect(mockGlobal.postMessage).toHaveBeenCalled();
       // todo : need small testable data
-  });
+  });  
   
   it('should parseArr', function () {
     mockGlobal.onmessage({data: {

@@ -33,51 +33,69 @@ angular.module('emuwebApp')
         //////////////////////
         // watches 
 
-	scope.cLAD = viewState.curLevelAttrDefs;
 	scope.viewState = viewState;
 	scope.hierarchyState = viewState.hierarchyState;
 	scope.historyService = HistoryService;
 
 	scope.$watch('path', function (newValue) {
-		console.debug('Rendering due to path change: ', newValue);
-		scope.hierarchyState.path = newValue;
-		scope.hierarchyState.newLinkFromID = undefined;
-		scope.render();
+		if (newValue !== undefined) {
+			console.debug('Rendering due to path change: ', newValue);
+			scope.hierarchyState.path = newValue;
+			scope.hierarchyState.newLinkFromID = undefined;
+			scope.render();
+		}
 	}, false);
 
 	scope.$watch('vertical', function (newValue) {
-		console.debug('Rendering due to rotation: ', newValue);
-		scope.render();
+		if (newValue !== undefined) {	
+			console.debug('Rendering due to rotation: ', newValue);
+			scope.render();
+		}
 	}, false);
 
-	scope.$watch('cLAD', function (newValue) {
-		console.debug('Rendering due to attribute change: ', newValue);
-		scope.render();
+	scope.$watch('viewState.curLevelAttrDefs', function (newValue) {
+		if (newValue !== undefined) {	
+			console.debug('Rendering due to attribute change: ', newValue);
+			scope.render();
+		}
 	}, true);
 
 	scope.$watch('playing', function (newValue) {
-		console.debug('Play() triggered', newValue, scope.selectedItem);
-		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-			scope.play(scope.selectedItem);
+		if(newValue !== undefined) {
+			console.debug('Play() triggered', newValue, scope.selectedItem);
+			if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
+				scope.play(scope.selectedItem);
+			}
 		}
 	}, true);
 
 	scope.$watch('hierarchyState.playing', function (newValue) {
-		console.debug('Play() triggered by viewState', newValue);
-		if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-			scope.play(scope.selectedItem);
+		if (newValue !== undefined) {
+			console.debug('Play() triggered by viewState', newValue);
+			if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
+				scope.play(scope.selectedItem);
+			}
 		}
-
 	}, false);
 
-	scope.$watch('historyService.movesAwayFromLastSave', function () {
-		console.debug('history service is active, rendering');
-		scope.render();
+	scope.$watch('historyService.movesAwayFromLastSave', function (newValue) {
+		if (newValue !== undefined) {
+			console.debug('history service is active, rendering');
+			scope.render();
+		}
 	}, false);
 
 	scope.$watch('hierarchyState.newLinkFromID', function (newValue) {
-		scope.newLinkSrc = LevelService.getItemByID(newValue);
-		scope.render();
+		// FIXME
+		// I added the check for undefined because @graess added it to the
+		// other watches
+		// See whether it is okay in this case, since undefined is a value
+		// that newLinkSrc might actually adopt
+		// FIXME
+		if (newValue !== undefined) {
+			scope.newLinkSrc = LevelService.getItemByID(newValue);
+			scope.render();
+		}
 	}, false);
 
 	scope.$watch('viewState.hierarchyShown', function (newValue) {
@@ -228,10 +246,7 @@ angular.module('emuwebApp')
 
 
 	scope.getPath = function (d) {
-		var controlX = d._fromX;
-		var controlY = d._toY;
-
-		return 'M'+d._fromX+' '+d._fromY+'Q'+controlX+' '+controlY+' '+d._toX+' '+d._toY;
+		return 'M'+d._fromX+' '+d._fromY+'Q'+d._fromX+' '+d._toY+' '+d._toX+' '+d._toY;
 	};
 
 	/**
