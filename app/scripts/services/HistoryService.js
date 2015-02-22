@@ -190,6 +190,7 @@ angular.module('emuwebApp')
 				} else if (cur.type === 'HIERARCHY') {
 					switch (cur.action) {
 						case 'DELETELINK':
+							// The order of links is not preserved on undo
 							if (applyOldVal) {
 								viewState.historyActionTxt = 'UNDO: DELETELINK';
 								LinkService.insertLinkAt(cur.fromID, cur.toID, cur.position);
