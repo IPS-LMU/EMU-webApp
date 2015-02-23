@@ -687,8 +687,7 @@ angular.module('emuwebApp')
 			modalService.open('views/editDBconfigModal.html').then(function (res) {
 				if(res) {
 				    // todo save and transfer curDbConfig & vals
-				    console.log($scope.cps.curDbConfig);
-				    console.log($scope.cps.vals);
+				    console.log(angular.toJson({ dbconfig: $scope.cps.curDbConfig, vals: $scope.cps.vals }));
 				}
 				else {
 				    $scope.cps.curDbConfig = currentConfig;

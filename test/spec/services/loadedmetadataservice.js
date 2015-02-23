@@ -3,16 +3,17 @@
 describe('Service: loadedMetaDataService', function () {
 
   // // load the service's module
-  // beforeEach(module('emuWebAppApp'));
+   beforeEach(module('emuwebApp'));
 
   // // instantiate service
-  // var loadedMetaDataService;
-  // beforeEach(inject(function (_loadedMetaDataService_) {
-  //   loadedMetaDataService = _loadedMetaDataService_;
-  // }));
+   var loadedMetaDataService;
+   beforeEach(inject(function (_loadedMetaDataService_) {
+     loadedMetaDataService = _loadedMetaDataService_;
+   }));
 
-  // it('should do something', function () {
-  //   expect(!!loadedMetaDataService).toBe(true);
-  // });
-
+   /*
+   it('should getSessionCollapseState', function () {
+     expect(loadedMetaDataService.getSessionCollapseState(0)).toBe(true);
+   });
+   */
 });
