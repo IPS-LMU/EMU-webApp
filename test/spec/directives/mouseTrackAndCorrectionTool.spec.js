@@ -7,10 +7,11 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
 
   var elm, scope;
 
-   beforeEach(inject(function ($rootScope, Ssffdataservice) {
+   beforeEach(inject(function ($rootScope, Ssffdataservice, ConfigProviderService) {
      scope = $rootScope.$new();
      scope.ssff = Ssffdataservice;
      scope.ssff.data = [1, 2, 3];
+     spyOn(ConfigProviderService, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
    }));
    
    function compile(track) {
@@ -62,20 +63,19 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      $(elm).trigger(e);
      expect(elm.isolateScope().setSelectDrag).toHaveBeenCalled();
    }));
-
-   /*
-   TODO: complete
-   it('should react to mousemove (button 0)', inject(function ($compile, Ssffdataservice, ConfigProviderService, Soundhandlerservice, viewState) {
+   
+   it('should react to mousemove (button 0) -> early return', inject(function ($compile, Ssffdataservice, ConfigProviderService, Soundhandlerservice, viewState) {
      compile('test');
-     spyOn(viewState, 'getPermission').and.returnValue(true);
-     spyOn(viewState, 'getX').and.returnValue(500);
-     spyOn(ConfigProviderService, 'getAssignment').and.returnValue({ data: [1, 2]});
-     spyOn(ConfigProviderService, 'getSsffTrackConfig').and.returnValue({ name: 'test', columnName: 'test'});
-     spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue({ values: [[1, 2, 3], [1, 2, 3], [1, 2, 3]] });
-     spyOn(Ssffdataservice, 'getSampleRateAndStartTimeOfTrack').and.returnValue({ sampleRate: 1000, startTime: 10 });
-     spyOn(elm.isolateScope(), 'switchMarkupContext');
-     viewState.curCorrectionToolNr = 1;
      viewState.curPreselColumnSample = 0;
+     viewState.curCorrectionToolNr = 1;     
+     spyOn(viewState, 'getPermission').and.returnValue(true);
+     spyOn(viewState, 'getX').and.returnValue(1);
+     spyOn(viewState, 'getViewPortStartTime').and.returnValue(1);
+     spyOn(viewState, 'getViewPortEndTime').and.returnValue(-3);
+     spyOn(ConfigProviderService, 'getAssignment').and.returnValue({ data: [1, 2]});
+     spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue({ values: [[1, 2, 3], [1, 2, 3], [1, 2, 3]] });
+     spyOn(Ssffdataservice, 'getSampleRateAndStartTimeOfTrack').and.returnValue({ sampleRate: 1, startTime: 0 });
+     spyOn(elm.isolateScope(), 'switchMarkupContext');
      var e = jQuery.Event('mousemove');
      e.buttons = 0;
      e.originalEvent = {};
@@ -84,8 +84,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      $(elm).trigger(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
      expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
-   }));
-   */
+   }));   
    
    it('should setSelectDrag', inject(function ($compile, viewState) {
      compile('test');
@@ -95,7 +94,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      elm.isolateScope().setSelectDrag();
      expect(viewState.select).toHaveBeenCalled();
    }));
-   
+
    it('should switchMarkupContext (OSCI)', inject(function ($compile, ConfigProviderService, viewState, Drawhelperservice) {
      compile('OSCI');
      ConfigProviderService.setVals(defaultEmuwebappConfig);
@@ -109,7 +108,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      expect(Drawhelperservice.drawViewPortTimes).toHaveBeenCalled();
      expect(Drawhelperservice.drawCurViewPortSelected).toHaveBeenCalled();
      expect(Drawhelperservice.drawCrossHairs).toHaveBeenCalled();
-   }));   
+   }));
    
    it('should switchMarkupContext (SPEC)', inject(function ($compile, ConfigProviderService, viewState, Drawhelperservice) {
      compile('SPEC');
@@ -124,7 +123,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      expect(Drawhelperservice.drawCurViewPortSelected).toHaveBeenCalled();
      expect(Drawhelperservice.drawMinMaxAndName).toHaveBeenCalled();
      expect(Drawhelperservice.drawCrossHairs).toHaveBeenCalled();
-   }));    
+   }));
    
    it('should switchMarkupContext (other)', inject(function ($compile, Ssffdataservice, ConfigProviderService, viewState, Drawhelperservice) {
      compile('other');
@@ -134,7 +133,6 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      spyOn(Drawhelperservice, 'drawCurViewPortSelected');
      spyOn(Drawhelperservice, 'drawMinMaxAndName');
      spyOn(Drawhelperservice, 'drawCrossHairs');
-     spyOn(ConfigProviderService, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
      spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue({_minVal: 1, _maxVal: 2});
      elm.isolateScope().switchMarkupContext();
      expect(Drawhelperservice.drawMovingBoundaryLine).toHaveBeenCalled();
@@ -143,10 +141,6 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      expect(Drawhelperservice.drawCrossHairs).toHaveBeenCalled();
      expect(ConfigProviderService.getSsffTrackConfig).toHaveBeenCalled();
      expect(Ssffdataservice.getColumnOfTrack).toHaveBeenCalled();
-     
-   }));   
-  
-   
-   
+   }));
    
 });

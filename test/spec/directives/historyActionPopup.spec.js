@@ -23,11 +23,12 @@ describe('Directive: historyActionPopup', function() {
         expect(elm.hasClass('emuwebapp-historyActionPopup')).toBe(true);
     });
    
-   it('should watch vs.historyActionTxt', inject(function ($animate) {
+   it('should watch vs.historyActionTxt', inject(function ($timeout, $animate) {
         scope.vs.historyActionTxt = '';
         compileDirective();
         scope.vs.historyActionTxt = 'warning';
         scope.$apply();
-        expect(elm.hasClass('emuwebapp-historyActionPopupThere')).toBe(true);
+        $timeout.flush();
+        expect(elm.hasClass('emuwebapp-historyActionPopupThere')).toBe(false);
    }));
 });

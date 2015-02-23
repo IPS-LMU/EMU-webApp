@@ -2,7 +2,7 @@
 
 describe('Directive: myDropZone', function() {
 
-    var elm, scope, mockObject, mockObjectgrid, mockObjectother, mockDir;
+    var elm, scope, mockObject, mockObjectgrid, mockObjectother, mockObjectannot, mockDir;
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
     
     beforeEach(inject(function($rootScope, $compile) {
@@ -14,6 +14,11 @@ describe('Directive: myDropZone', function() {
         };
         mockObjectgrid = {
             name : 'test.textgrid',
+            file : function() {return mockObject},
+            isFile : function() {return true}
+        };
+        mockObjectannot = {
+            name : 'test_annot.json',
             file : function() {return mockObject},
             isFile : function() {return true}
         };
@@ -171,6 +176,12 @@ describe('Directive: myDropZone', function() {
         elm.isolateScope().enqueueFileAddition(mockObjectother);
         expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropTextErrorFileType);
     }); 
+    
+    it('should enqueueFileAddition with annotation', function() {
+        compileDirective();
+        elm.isolateScope().enqueueFileAddition(mockObjectannot);
+        expect(elm.isolateScope().dropText).toBe(elm.isolateScope().dropParsingWaitingAnnot);
+    });     
     
     it('should warn if no FileAPI available', inject(function ($q, modalService, appStateService) {
         compileDirective();

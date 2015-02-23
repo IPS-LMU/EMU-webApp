@@ -12,15 +12,12 @@ angular.module('emuwebApp')
         var markupCanvas = element.find('canvas')[canvasLength - 1];
         // var context = canvas0.getContext('2d');
         var markupCtx = markupCanvas.getContext('2d');
-
         var trackName;
-
         attrs.$observe('trackName', function (val) {
           if (val) {
             trackName = val;
           }
         });
-        
         scope.order = attrs.order;
         
         
@@ -29,18 +26,18 @@ angular.module('emuwebApp')
         
 		//
 		scope.$watch('vs.submenuOpen', function () {
-          $timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
+          $timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime); 
 		});
 
 		//
 		scope.$watch('vs.timelineSize', function () {
-    		$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
+    		$timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime); 
 		}); 
 		
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup();
+              scope.drawSsffTrackMarkup();
             }
           }
         }, true);
@@ -48,7 +45,7 @@ angular.module('emuwebApp')
         scope.$watch('ssffds.data.length', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup();
+              scope.drawSsffTrackMarkup();
             }
           }
         }, true);
@@ -56,7 +53,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundary', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup();
+              scope.drawSsffTrackMarkup();
             }
           }
         }, true);
@@ -65,23 +62,18 @@ angular.module('emuwebApp')
         scope.$watch('vs.movingBoundarySample', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              drawSsffTrackMarkup();
+              scope.drawSsffTrackMarkup();
             }
           }
         }, true);
 
-
         //
         /////////////////////
         
-        scope.redraw = function () {
-          drawSsffTrackMarkup();
-        };
-
         /**
          *
          */
-        function drawSsffTrackMarkup() {
+        scope.drawSsffTrackMarkup = function () {
           if (!$.isEmptyObject(scope.ssffds.data)) {
             if (scope.ssffds.data.length !== 0) {
 
@@ -99,10 +91,7 @@ angular.module('emuwebApp')
               scope.dhs.drawMinMaxAndName(markupCtx, trackName, col._minVal, col._maxVal, 2);
             }
           }
-
         }
-
-
       }
     };
   });

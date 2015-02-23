@@ -48,4 +48,12 @@ describe('Service: HierarchyLayoutService', function () {
     expect(children).toEqual([]);
   });
 
+  /**
+   *
+   */  
+  it('should calculateWeightsBottomUp', function () {
+    scope.hierarchy.calculateWeightsBottomUp(['Phonetic']);
+    //todo: expect ?
+  });
+
 });

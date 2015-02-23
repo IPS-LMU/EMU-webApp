@@ -26,5 +26,12 @@ describe('Directive: lineChart', function () {
      scope.data = 1;
      scope.$apply();
      expect(element.isolateScope().render).toHaveBeenCalled();
+   })); 
+   
+   it('should render data', inject(function ($compile) {
+     scope.data = 0;
+     element = angular.element('<line-chart></line-chart>');
+     element = $compile(element)(scope);
+     element.isolateScope().render([1, 2, 3]);
    }));   
 });
