@@ -46,31 +46,24 @@
 </head>
 <body ng-app="emuwebApp">
     <!-- use this div if you want to run the embedded version  -->
-<!--  
-    <div style="position: relative; height:75%; width:50%; margin-left: 25%; margin-top: 4%;">
+
+<!-- use this div to run the regular (standalone+client) version -->
+    <div class="emuwebapp-tutorial-head">
+        <img src="http://ips-lmu.github.io/images/emuIcon.png">
+    </div>
+    
+   <div class="emuwebapp-tutorial-intro">
         <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid" label-type="TEXTGRID"></emuwebapp>
+    </div>    
+
+   <div class="emuwebapp-tutorial">
+       <tutorial></tutorial>
     </div>
- -->
-    <!-- use this div to run the regular (standalone+client) version -->
-    <div style="position: relative; height:100%; width:100%">
-        <emuwebapp class="emuwebapp"></emuwebapp>
-    </div>
-
-
-    <!-- Google Analytics -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-51798885-1');
-       ga('send', 'pageview');
-    </script>
 
     <script src="scripts/444ca2d5.emuwebAppExternal.min.js"></script>
 
     <script src="scripts/e62302c2.emuwebApp.min.js"></script>
+
 
 </body>
 </html>
