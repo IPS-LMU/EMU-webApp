@@ -31,6 +31,15 @@ angular.module('emuwebApp')
 			}
 		};
 
+		/**
+		 * Return a reversed copy of an array
+		 */
+		sServObj.reverseCopy = function (a) {
+			var r = angular.copy(a);
+			r.reverse();
+			return r;
+		};
+
 		return sServObj;
 	});
 	

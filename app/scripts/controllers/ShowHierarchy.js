@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
 	
 		// Scope data
 		
@@ -14,20 +14,7 @@ angular.module('emuwebApp')
 		};
 
 		$scope.vs = viewState;
-
-
-		////////////
-		// Helper functions
-
-		// Return a reversed copy of an array
-		$scope.reverseCopy = function (a) {
-			var r = angular.copy(a);
-			r.reverse();
-			return r;
-		};
-
-		//
-		////////////
+		$scope.standardFuncServ = StandardFuncsService;
 
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
@@ -38,7 +25,7 @@ angular.module('emuwebApp')
 
 		// convert array paths to strings
 		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
-			var revArr = $scope.reverseCopy(arr);
+			var revArr = StandardFuncsService.reverseCopy(arr);
 			
 			if (arrIdx === 0) {
 				// select first possible path on load

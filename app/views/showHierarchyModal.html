@@ -1,7 +1,7 @@
 <div class="emuwebapp-modal-wrap" ng-controller="ShowhierarchyCtrl">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
 	  <h2>
-	  <div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in reverseCopy(paths.possible[getSelIdx()])">
+	  <div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in standardFuncServ.reverseCopy(paths.possible[getSelIdx()])">
 			<ul>
 			  <li>
 				  <button type="button" class="emuwebapp-toggle-button">
