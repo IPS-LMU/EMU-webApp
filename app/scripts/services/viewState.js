@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice) {
+  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice, DataService, StandardFuncsService) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -830,6 +830,12 @@ angular.module('emuwebApp')
      */
     sServObj.toggleHierarchy = function () {
       sServObj.hierarchyShown = !sServObj.hierarchyShown;
+      if (sServObj.hierarchyShown === false) {
+        // Make sure no private attributes (such as do start with an underscore
+        // are left in the data when the hierarchy modal is closed
+        console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
+        StandardFuncsService.traverseAndClean (DataService.getData());
+      }
     };
 
     /**

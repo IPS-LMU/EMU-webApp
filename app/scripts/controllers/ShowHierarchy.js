@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, DataService, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService) {
 	
 		// Scope data
 		
@@ -15,29 +15,6 @@ angular.module('emuwebApp')
 
 		$scope.vs = viewState;
 
-		// Make sure no private attributes (such as do start with an
-		// underscore) are left in the data when the hierarchy modal is
-		// closed
-		$scope.$watch('vs.hierarchyShown', function (newValue) {
-			if (newValue === false) {
-				var traverseAndClean = function (o) 
-				{
-					for (var i in o) {
-						if ( i.substr(0,1) === '_') {
-							delete o[i];
-						}
-		
-						if (o[i] !== null && typeof(o[i])==='object') {
-							//going one step down in the object tree
-							traverseAndClean(o[i]);
-						}
-					}
-				};
-
-				console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
-				traverseAndClean (DataService.getData());
-			}
-		}, false);
 
 		////////////
 		// Helper functions
