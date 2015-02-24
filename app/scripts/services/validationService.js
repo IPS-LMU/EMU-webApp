@@ -6,15 +6,17 @@ angular.module('emuwebApp')
 		//shared service object to be returned
 		var sServObj = {};
 		var schemasJsos = [];
-		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema','bundleListSchema'];
+		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema', 'bundleListSchema', 'bundleSchema'];
 
 		/**
 		 *
 		 */
 		sServObj.loadSchemas = function () {
 			var proms = [];
+			var uri;
 			angular.forEach(names, function (n) {
-				proms.push($http.get('schemaFiles/' + n + '.json'));
+				uri = 'schemaFiles/' + n + '.json';
+				proms.push($http.get(uri));
 			});
 			return $q.all(proms);
 		};
@@ -28,6 +30,10 @@ angular.module('emuwebApp')
 					name: s.config.url,
 					data: s.data
 				});
+				// add annotationFileSchema to tv4 for de-referencing $ref
+				if (s.config.url === 'schemaFiles/annotationFileSchema.json') {
+					tv4.addSchema(s.config.url, s.data);
+				}
 			});
 		};
 
@@ -49,6 +55,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.validateJSO = function (schemaName, jso) {
 			var schema = sServObj.getSchema(schemaName);
+
 			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				return true;
 			} else {

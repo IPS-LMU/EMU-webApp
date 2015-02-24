@@ -53,6 +53,11 @@ angular.module('emuwebApp')
 							bundleData = bundleData.data;
 						}
 
+						// validate bundle
+						var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
+						console.log(validRes);
+						console.log(tv4.missing)
+
 						var arrBuff;
 
 						// set wav file
