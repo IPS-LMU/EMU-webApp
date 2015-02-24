@@ -1,30 +1,53 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice) {
+	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
+		// stores files referred to by ssffTrackDefinitions
 		sServObj.data = [];
+
+
+
+		/////////////////////
+		// public API
+
+		/**
+		 * Search through ssffTrackDefinitions to find correct
+		 * file. Then search thought data and return file.
+		 * @param trackName name of track to get file for
+		 */
+		sServObj.getFile = function (trackName) {
+			var res;
+			ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
+				if (std.name === trackName) {
+					sServObj.data.forEach(function (f) {
+						if (f.fileExtension === std.fileExtension) {
+							res = f;
+						}
+					});
+				}
+			});
+			return res;
+		};
 
 		/**
 		 *
 		 */
 		sServObj.getColumnOfTrack = function (trackName, columnName) {
-			var res = {};
-			sServObj.data.forEach(function (tr) {
-				if (tr.ssffTrackName === trackName) {
-					tr.Columns.forEach(function (col) {
-						if (col.name === columnName) {
-							res = col;
-						}
-					});
+			var res;
+			var file = sServObj.getFile(trackName);
+
+			file.Columns.forEach(function (col) {
+				if (col.name === columnName) {
+					res = col;
 				}
 			});
 
 			if (res !== undefined) {
 				return res;
-			} 
+			}
 		};
 
 
@@ -33,15 +56,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
 			var res = {};
-			sServObj.data.forEach(function (tr) {
-				if (tr.ssffTrackName === trackName) {
-					res.sampleRate = tr.sampleRate;
-					res.startTime = tr.startTime;
-				}
-			});
-			if (res !== undefined) {
+			var file = sServObj.getFile(trackName);
+
+			if (file !== undefined) {
+				res.sampleRate = file.sampleRate;
+				res.startTime = file.startTime;
 				return res;
-			} 
+			}
 		};
 
 

@@ -460,7 +460,7 @@ angular.module('emuwebApp')
 			ctx.closePath();
 
 
-			// draw ssffTrackName
+			// draw trackName
 			if (trackName !== '') {
 				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
 				var trackNameImg = fontScaleService.getTextImage(ctx, trackName, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);

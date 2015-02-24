@@ -90,6 +90,7 @@ angular.module('emuwebApp')
 									viewState.somethingInProgress = false;
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
+									// sServObj.saveBundle(); // for testing save function
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
 									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
@@ -142,17 +143,12 @@ angular.module('emuwebApp')
 				bundleData.ssffFiles = [];
 				var formants = {};
 				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-				Ssffdataservice.data.forEach(function (el) {
+				var formants = Ssffdataservice.getFile('FORMANTS');
 
-					if (el.ssffTrackName === 'FORMANTS') {
-						formants = el;
-					}
-				});
-
-				if (!$.isEmptyObject(formants)) {
+				if (formants !== undefined) {
 					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
 						bundleData.ssffFiles.push({
-							'ssffTrackName': formants.ssffTrackName,
+							'fileExtension': formants.fileExtension,
 							'encoding': 'BASE64',
 							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 						});
