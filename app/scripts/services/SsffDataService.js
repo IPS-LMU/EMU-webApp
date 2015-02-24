@@ -20,15 +20,17 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getFile = function (trackName) {
 			var res;
-			ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
-				if (std.name === trackName) {
-					sServObj.data.forEach(function (f) {
-						if (f.fileExtension === std.fileExtension) {
-							res = f;
-						}
-					});
-				}
-			});
+			if (ConfigProviderService.curDbConfig.ssffTrackDefinitions !== undefined) {
+				ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
+					if (std.name === trackName) {
+						sServObj.data.forEach(function (f) {
+							if (f.fileExtension === std.fileExtension) {
+								res = f;
+							}
+						});
+					}
+				});
+			}
 			return res;
 		};
 
@@ -39,13 +41,13 @@ angular.module('emuwebApp')
 			var res;
 			var file = sServObj.getFile(trackName);
 
-			file.Columns.forEach(function (col) {
-				if (col.name === columnName) {
-					res = col;
-				}
-			});
 
-			if (res !== undefined) {
+			if (file !== undefined) {
+				file.Columns.forEach(function (col) {
+					if (col.name === columnName) {
+						res = col;
+					}
+				});
 				return res;
 			}
 		};
