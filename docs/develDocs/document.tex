@@ -491,7 +491,7 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=response content (if changes where made), language=json]
+\begin{lstlisting}[caption=response content (if changes could be applied to DB), language=json]
 {
   'callbackID': request.callbackID,
   'data': 'YES'
@@ -502,11 +502,29 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 }
 \end{lstlisting}
 
+\begin{lstlisting}[caption=response content (if changes could NOT be applied to DB), language=json]
+{
+  'callbackID': request.callbackID,
+  'data': {
+    'EDITDBCONFIG-errorMsg': '',
+    'subtype': 'MODIFYATTRIBUTEDEFINITION',
+    'levelDefinitionsName': 'Phonetic',
+    'attributeDefinitionsName': 'IPA'
+  },
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
+
+
 The current subtypes are: 
 
 \begin{itemize}
   \item \texttt{ADDLEVELDEFINITION}
-  \item \texttt{}
+  \item \texttt{ADDATTRIBUTEDEFINITION}
+  \item \texttt{MODIFYATTRIBUTEDEFINITION}
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%
