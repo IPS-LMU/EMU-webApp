@@ -28,7 +28,7 @@ ssffParserWorker.prototype = {
 	var headID = 'SSFF -- (c) SHLRC\n';
 	var machineID = 'Machine IBM-PC\n';
 	var sepString = '-----------------\n';
-	ssffData.ssffTrackName = '';
+	ssffData.fileExtension = '';
 	ssffData.sampleRate = -1;
 	ssffData.startTime = -1;
 	ssffData.origFreq = -1;
@@ -195,11 +195,11 @@ ssffParserWorker.prototype = {
 	 * convert arraybuffer containing a ssff file
 	 * to a javascript object
 	 * @param buf arraybuffer containing ssff file
-	 * @param name is ssffTrackName
+	 * @param name is fileExtension
 	 * @returns ssff javascript object
 	 */
 	 global.ssff2jso = function (buf, name) {
-		ssffData.ssffTrackName = name;
+		ssffData.fileExtension = name;
 		ssffData.Columns = [];
 		// console.log('SSFF loaded');
 
@@ -221,7 +221,7 @@ ssffParserWorker.prototype = {
 			return ({
 				'status': {
 					'type': 'ERROR',
-					'message': 'SSFF parse error: first line != SSFF -- (c) SHLRC in ssffTrackName ' + name
+					'message': 'SSFF parse error: first line != SSFF -- (c) SHLRC in file with fileExtension ' + name
 				}
 			});
 		}
@@ -230,7 +230,7 @@ ssffParserWorker.prototype = {
 			return ({
 				'status': {
 					'type': 'ERROR',
-					'message': 'SSFF parse error: machineID != Machine IBM-PC in ssffTrackName ' + name
+					'message': 'SSFF parse error: machineID != Machine IBM-PC in file with fileExtension ' + name
 				}
 			});
 		}
@@ -257,7 +257,7 @@ ssffParserWorker.prototype = {
 			return ({
 				'status': {
 					'type': 'ERROR',
-					'message': 'SSFF parse error: Required fields Record_Freq or Start_Time not set in ssffTrackName ' + name
+					'message': 'SSFF parse error: Required fields Record_Freq or Start_Time not set in file with fileExtension ' + name
 				}
 			});
 		}
@@ -359,7 +359,7 @@ ssffParserWorker.prototype = {
 					return ({
 						'status': {
 							'type': 'ERROR',
-							'message': 'Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported in ssffTrackName ' + name
+							'message': 'Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported in file with fileExtension ' + name
 						}
 					});
 				}
@@ -470,7 +470,7 @@ ssffParserWorker.prototype = {
 			ssffJso = {};
 			var arrBuff;
 			arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
-			ssffJso = global.ssff2jso(arrBuff, ssffArr[i].ssffTrackName);
+			ssffJso = global.ssff2jso(arrBuff, ssffArr[i].fileExtension);
 			if (ssffJso.status === undefined) {
 				resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
 			} else {
