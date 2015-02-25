@@ -297,7 +297,7 @@ angular.module('emuwebApp')
 			viewState.somethingInProgressTxt = 'Checking protocol...';
 			// Check if server speaks the same protocol
 			Iohandlerservice.getProtocol().then(function (res) {
-				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.2') {
 					viewState.somethingInProgressTxt = 'Checking user management...';
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {

@@ -17,8 +17,15 @@ describe('Service: Drawhelperservice', function () {
   /**
    *
    */
-  it('should drawCrossHairs (trackname undefined)', inject(function (ConfigProviderService) {
+  it('should drawCrossHairs (trackname undefined)', inject(function (ConfigProviderService, Ssffdataservice) {
+    // add mock track definition
+    ConfigProviderService.curDbConfig.ssffTrackDefinitions = [{
+      'name': 'test',
+      'columnName': 'test',
+      'fileExtension': 'testFileExt'
+    }];
     spyOn(ConfigProviderService, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
+    spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue({_maxVal: 0, _minVal: 0});
     ConfigProviderService.vals = {};
     ConfigProviderService.vals.restrictions = {};
     ConfigProviderService.vals.colors = {};
@@ -37,6 +44,7 @@ describe('Service: Drawhelperservice', function () {
     expect(scope.vs.getX).toHaveBeenCalled();
     expect(scope.vs.getY).toHaveBeenCalled();
     expect(ConfigProviderService.getSsffTrackConfig).toHaveBeenCalled();
+    expect(Ssffdataservice.getColumnOfTrack).toHaveBeenCalled();
   }));
   
   /**

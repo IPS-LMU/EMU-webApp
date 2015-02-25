@@ -64,6 +64,7 @@ describe('Controller: MainController', function () {
     $httpBackend.whenGET("schemaFiles/emuwebappConfigSchema.json").respond(emuwebappConfigSchema);
     $httpBackend.whenGET("schemaFiles/DBconfigFileSchema.json").respond(DBconfigFileSchema);
     $httpBackend.whenGET("schemaFiles/bundleListSchema.json").respond(bundleListSchema);
+    $httpBackend.whenGET("schemaFiles/bundleSchema.json").respond(bundleSchema);
     $httpBackend.whenGET("demoDBs/ae/ae_bundleList.json").respond(ae_bundleList);
     $httpBackend.whenGET("demoDBs/ae/msajc003_bndl.json").respond(msajc003_bndl);
     $httpBackend.whenGET("views/error.html").respond('');

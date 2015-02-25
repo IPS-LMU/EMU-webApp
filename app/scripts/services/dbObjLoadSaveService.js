@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService) {
 		// shared service object
 		var sServObj = {};
 
@@ -53,36 +53,39 @@ angular.module('emuwebApp')
 							bundleData = bundleData.data;
 						}
 
-						var arrBuff;
+						// validate bundle
+						var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
 
-						// set wav file
-						arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
-						viewState.somethingInProgressTxt = 'Parsing WAV file...';
+						if (validRes === true) {
 
-						Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
-							var wavJSO = messWavParser;
-							viewState.curViewPort.sS = 0;
-							viewState.curViewPort.eS = wavJSO.Data.length;
-							viewState.curViewPort.selectS = -1;
-							viewState.curViewPort.selectE = -1;
-							viewState.curClickSegments = [];
-							viewState.curClickLevelName = undefined;
-							viewState.curClickLevelType = undefined;
+							var arrBuff;
 
-							viewState.resetSelect();
-							// FOR DEVELOPMENT:
-							// viewState.curViewPort.sS = 52063;
-							// viewState.curViewPort.eS = 52100;
-							// viewState.curViewPort.selectS = 27575;
-							// viewState.curViewPort.selectE = 34538;
-							Soundhandlerservice.wavJSO = wavJSO;
+							// set wav file
+							arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
+							viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-							// set all ssff files
-							viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-							Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
-								Ssffdataservice.data = ssffJso.data;
-								var validRes = Validationservice.validateJSO('annotationFileSchema', bundleData.annotation);
-								if (validRes === true) {
+							Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
+								var wavJSO = messWavParser;
+								viewState.curViewPort.sS = 0;
+								viewState.curViewPort.eS = wavJSO.Data.length;
+								viewState.curViewPort.selectS = -1;
+								viewState.curViewPort.selectE = -1;
+								viewState.curClickSegments = [];
+								viewState.curClickLevelName = undefined;
+								viewState.curClickLevelType = undefined;
+
+								viewState.resetSelect();
+								// FOR DEVELOPMENT:
+								// viewState.curViewPort.sS = 52063;
+								// viewState.curViewPort.eS = 52100;
+								// viewState.curViewPort.selectS = 27575;
+								// viewState.curViewPort.selectE = 34538;
+								Soundhandlerservice.wavJSO = wavJSO;
+
+								// set all ssff files
+								viewState.somethingInProgressTxt = 'Parsing SSFF files...';
+								Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
+									Ssffdataservice.data = ssffJso.data;
 									// set annotation
 									DataService.setData(bundleData.annotation);
 									loadedMetaDataService.setCurBndl(bndl);
@@ -90,34 +93,36 @@ angular.module('emuwebApp')
 									viewState.somethingInProgress = false;
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
+									// sServObj.saveBundle(); // for testing save function
 									// $scope.menuBundleSaveBtnClick(); // for testing save button
 									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
-								} else {
-									modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
-										$scope.resetToInitState();
+								}, function (errMess) {
+									modalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+										appStateService.resetToInitState();
 									});
-								}
+								});
 							}, function (errMess) {
-								modalService.open('views/error.html',  'Error parsing SSFF file: ' + errMess.status.message).then(function () {
-									$scope.resetToInitState();
+								modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+									appStateService.resetToInitState();
 								});
 							});
-						}, function (errMess) {
-							modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
-								$scope.resetToInitState();
+						} else {
+							modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								appStateService.resetToInitState();
 							});
-						});
+						}
+
 
 					}, function (errMess) {
 						// check for http vs websocket response
 						if (errMess.data) {
 							modalService.open('views/error.html', 'Error loading bundle: ' + errMess.data).then(function () {
-								$scope.resetToInitState();
+								appStateService.resetToInitState();
 							});
 						} else {
 							modalService.open('views/error.html', 'Error loading bundle: ' + errMess.status.message).then(function () {
-								$scope.resetToInitState();
+								appStateService.resetToInitState();
 							});
 						}
 					});
@@ -142,17 +147,12 @@ angular.module('emuwebApp')
 				bundleData.ssffFiles = [];
 				var formants = {};
 				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
-				Ssffdataservice.data.forEach(function (el) {
+				var formants = Ssffdataservice.getFile('FORMANTS');
 
-					if (el.ssffTrackName === 'FORMANTS') {
-						formants = el;
-					}
-				});
-
-				if (!$.isEmptyObject(formants)) {
+				if (formants !== undefined) {
 					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
 						bundleData.ssffFiles.push({
-							'ssffTrackName': formants.ssffTrackName,
+							'fileExtension': formants.fileExtension,
 							'encoding': 'BASE64',
 							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 						});
@@ -207,7 +207,7 @@ angular.module('emuwebApp')
 			}, function (errMess) {
 				// console.log(mess);
 				modalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
-					$scope.resetToInitState();
+					appStateService.resetToInitState();
 				});
 				defer.reject();
 			});
