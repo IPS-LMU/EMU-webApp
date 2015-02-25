@@ -9,9 +9,15 @@
 			},
 			"session": {
 				"type": "string"
+			},
+			"finishedEditing": {
+				"type": "boolean"
+			},
+			"comment": {
+				"type": "string"
 			}
 		},
 		"required": ["name"],
-		"additionalProperties": false
+		"additionalProperties": true
 	}
 }

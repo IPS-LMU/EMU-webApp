@@ -121,23 +121,49 @@
 
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{File structure of json files}
 
-Until the labeler can also display the hierarchical structure of the annotation it will only 
-display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
+The EMU-webApp supports several JSON file types for which individual schema are available (all of type:
+\texttt{http://json-schema.org/draft-04/schema\#})
 
-\lstinputlisting[caption=aeDBconfig.json, label=idsr, language=json,firstnumber=1]{../../app/testData/newFormat/ae/ae_DBconfig.json}
+\section{Schema files}
 
+There are two sets of schema files. The ones being used by the current live version of the web application 
+(\url{http://ips-lmu.github.io/EMU-webApp/}) and the ones used by the current development version.
+The two sets are usually quite similar if not identical as we try to keep the file definitions as
+constant as possible.
+
+The schema files used by the current live version are:
+
+\todo[inline]{redo after schema cleanup}
 
 \begin{itemize}
-  \item \texttt{constaints[0].type} can be \texttt{"ONE\_TO\_ONE"}, \texttt{"ONE\_TO\_MANY"}or \texttt{"MANY\_TO\_MANY"}
-  \item \texttt{perspectives.signalCanvases.order} \texttt{"OSCI"} and \texttt{"SPEC"} are always available! Other entries have to be predefined in tracks
-  \item \texttt{FORMANTS} is a special reserved track name that can be manipulated (== formant corrections)
+  \item \textbf{DBconfigFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/DBconfigFileSchema.json}{GitHub link}
+  \item \textbf{annotationFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/annotationFileSchema.json}{GitHub link}
+  \item \textbf{bundleSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleSchema.json}{GitHub link}
+  \item \textbf{bundleListSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleListSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+\end{itemize}
+
+The schema files for the development version are:
+
+\begin{itemize}
+  \item \textbf{DBconfigFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/DBconfigFileSchema.json}{GitHub link}
+  \item \textbf{annotationFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/annotationFileSchema.json}{GitHub link}
+  \item \textbf{bundleSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleSchema.json}{GitHub link}
+  \item \textbf{bundleListSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleListSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
 \end{itemize}
 
 
-\lstinputlisting[caption=instanceOfAnnotationFile.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/instanceOfAnnotationFile.json}
+Examples of files that validate against these schemas can be found here: 
+
+\todo[inline]{List files that validate here}
 
 
 \begin{lstlisting}[caption=EMU-webApp internal derived signal representation, label=idsr, language=json,firstnumber=1]
@@ -167,279 +193,7 @@ display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
 
 \clearpage
 
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-\section{Websocket protocol definition (Version 0.0.1)}
-
-All notation in nodejs / javascript syntax. The \texttt{request.callbackID} variable is a UUID that is echoed by the server on every request to remap the reply to the request on the client. \texttt{xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx} is used as a placeholder for all UUIDs.
 
 
-\subsection{The Protocol}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{GETPROTOCOL}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Initial request to see if client and server speak the same protocol.}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'GETPROTOCOL', 
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': {
-    'protocol': 'EMU-webApp-websocket-protocol',
-    'version': '0.0.1'
-  },
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{GETDOUSERMANAGEMENT}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Ask server if a it wishes to perform user management (will toggle login dialog if YES)}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'GETDOUSERMANAGEMENT', 
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': 'NO'
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{LOGONUSER}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Ask server to log on user. Username and password are sent to server.}
-
-  \line(1,0){250}
-\end{center}
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'LOGONUSER',
-  'data': {
-    'userName': 'smith', 
-    'pwd':'mySecretPwd'
-  },
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': 'BADUSERNAME' | 'BADPASSWORD' | 'LOGGEDON'
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{GETGLOBALDBCONFIG}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Next the globalDBconfig.json is requested from the DB. This is needed for the level definitions (future version) $+$ the legal values of each level $+$ the custom config specified in the field EMU-webAppConfig}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'GETGLOBALDBCONFIG', 
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': configData,
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-Where \texttt{configData} is the javascript object representing \texttt{globalDBconfig.json}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{GETBUNDLELIST}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Next a bundlelist is requested.}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'GETBUNDLELIST', 
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': bundleList,
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{GETBUNDLE}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{After receiving the bundleList by default the first bundle in the bundleList is requested. This request is also sent when the user clicks a bundle in the bundleList}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'GETBUNDLE',
-  'name': 'msajc003',
-  'session': '0000',
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'data': bundleData,
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-Where \texttt{bundleData} is the javascript object containing all the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details).
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{SAVEBUNDLE}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Function to be called if the user saves a loaded bundle (by pushing the save button).}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'SAVEBUNDLE',
-  'data': bundleData,
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-Where \texttt{bundleData} is the javascript object OPTIONALLY containing the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details). It only sends the data that has been altered.
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{\texttt{DISCONNECTWARNING}}
-\begin{center}
-  \line(1,0){250}
-
-  \textit{Function that tells server that it is about to disconnect. This is currently needed because the httpuv R package can't listen to the websockets own close event.}
-
-  \line(1,0){250}
-\end{center}
-
-
-\begin{lstlisting}[caption=Request content, language=json]
-{
-  'type': 'DISCONNECTWARNING'
-  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption=Reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'status': {
-    'type': 'SUCCESS',
-    'message': ''
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Error handling}
-
-If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.
-
-\begin{lstlisting}[caption=ERROR reply content, language=json]
-{
-  'callbackID': request.callbackID,
-  'status': {
-    'type': 'ERROR',
-    'message': 'An error occured trying to read a file from disk. Please make sure: /path/to/file exists or check the config...
-  }
-}
-\end{lstlisting}
-
-%%%%%%%%%%%%%%%%%%
-\subsection{Example bundle JSON}
-
-\lstinputlisting[caption=exampleBundle.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
-
-Currently only BASE64 encoding of binary files allowed.
 
 \end{document}
