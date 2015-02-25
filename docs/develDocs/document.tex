@@ -474,7 +474,9 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 \begin{center}
   \line(1,0){250}
 
-  \textit{Send DBconfig edit command to server}
+  \textit{Send DBconfig edit command to server. Compared to the other protocol 
+  request this request has several subtypes that specify the various edit operations
+  to the \_DBconfig }
 
   \line(1,0){250}
 \end{center}
@@ -482,12 +484,14 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 
 \begin{lstlisting}[caption=Request content, language=json]
 {
-  'type': 'GETDOEDITDBCONFIG', 
+  'type': 'EDITDBCONFIG',
+  'subtype': 'ADDLEVELDEFINITION', 
+  'data': newLevelDefinition
   'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=response content, language=json]
+\begin{lstlisting}[caption=response content (if changes where made), language=json]
 {
   'callbackID': request.callbackID,
   'data': 'YES'
@@ -497,6 +501,13 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
   }
 }
 \end{lstlisting}
+
+The current subtypes are: 
+
+\begin{itemize}
+  \item \texttt{ADDLEVELDEFINITION}
+  \item \texttt{}
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{DISCONNECTWARNING}}
