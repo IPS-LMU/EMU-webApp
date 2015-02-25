@@ -121,23 +121,49 @@
 
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{File structure of json files}
 
-Until the labeler can also display the hierarchical structure of the annotation it will only 
-display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
+The EMU-webApp supports several JSON file types for which individual schema are available (all of type:
+\texttt{http://json-schema.org/draft-04/schema\#})
 
-\lstinputlisting[caption=aeDBconfig.json, label=idsr, language=json,firstnumber=1]{../../app/testData/newFormat/ae/ae_DBconfig.json}
+\section{Schema files}
 
+There are two sets of schema files. The ones being used by the current live version of the web application 
+(\url{http://ips-lmu.github.io/EMU-webApp/}) and the ones used by the current development version.
+The two sets are usually quite similar if not identical as we try to keep the file definitions as
+constant as possible.
+
+The schema files used by the current live version are:
+
+\todo[inline]{redo after schema cleanup}
 
 \begin{itemize}
-  \item \texttt{constaints[0].type} can be \texttt{"ONE\_TO\_ONE"}, \texttt{"ONE\_TO\_MANY"}or \texttt{"MANY\_TO\_MANY"}
-  \item \texttt{perspectives.signalCanvases.order} \texttt{"OSCI"} and \texttt{"SPEC"} are always available! Other entries have to be predefined in tracks
-  \item \texttt{FORMANTS} is a special reserved track name that can be manipulated (== formant corrections)
+  \item \textbf{DBconfigFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/DBconfigFileSchema.json}{GitHub link}
+  \item \textbf{annotationFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/annotationFileSchema.json}{GitHub link}
+  \item \textbf{bundleSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleSchema.json}{GitHub link}
+  \item \textbf{bundleListSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleListSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+\end{itemize}
+
+The schema files for the development version are:
+
+\begin{itemize}
+  \item \textbf{DBconfigFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/DBconfigFileSchema.json}{GitHub link}
+  \item \textbf{annotationFileSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/annotationFileSchema.json}{GitHub link}
+  \item \textbf{bundleSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleSchema.json}{GitHub link}
+  \item \textbf{bundleListSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/bundleListSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
+  \item \textbf{emuwebappConfigSchema}: \href{https://github.com/IPS-LMU/EMU-webApp/blob/master/dist/schemaFiles/emuwebappConfigSchema.json}{GitHub link}
 \end{itemize}
 
 
-\lstinputlisting[caption=instanceOfAnnotationFile.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/instanceOfAnnotationFile.json}
+Examples of files that validate against these schemas can be found here: 
+
+\todo[inline]{List files that validate here}
 
 
 \begin{lstlisting}[caption=EMU-webApp internal derived signal representation, label=idsr, language=json,firstnumber=1]
@@ -170,11 +196,31 @@ display a subset of the levels namely \textbf{SEGMENT} and \textbf{EVENT}
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
-\section{Websocket protocol definition (Version 0.0.1)}
+\section{Websocket protocol definition (Version 0.0.2)}
 
-All notation in nodejs / javascript syntax. The \texttt{request.callbackID} variable is a UUID that is echoed by the server on every request to remap the reply to the request on the client. \texttt{xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx} is used as a placeholder for all UUIDs.
+All notation in nodejs / javascript syntax. The \texttt{request.callbackID} variable is a UUID that is echoed by the server on every request to remap the response to the request on the client. \texttt{xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx} is used as a placeholder for all UUIDs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Version history}
+\begin{itemize}
+  \item \textbf{0.0.1}: Initial protocol version
+  \item \textbf{0.0.2}: Updated \texttt{\_bundle.json} schema (\texttt{ssffTrackName} $\rightarrow$ \texttt{fileExtention}) to remove SSFF file redundancy (current version)
+  \item \textbf{0.0.3}: Future version to include EDITDBCONFIG operations (currently under development)
+\end{itemize}
 
 
+A graph depicting the protocol can be seen in figure \ref{fig:emuwsprot}
+
+\begin{figure}[!ht]
+\caption{EMU-webApp-websocket-protocol version 0.0.3 (currently under development) ($^{*1}$: has multiple subcommands! See section)}\label{fig:emuwsprot}
+\begin{center}
+\input{pics/protocol}
+\end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Protocol}
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -195,7 +241,7 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': {
@@ -227,7 +273,7 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': 'NO'
@@ -259,7 +305,7 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': 'BADUSERNAME' | 'BADPASSWORD' | 'LOGGEDON'
@@ -288,7 +334,7 @@ All notation in nodejs / javascript syntax. The \texttt{request.callbackID} vari
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': configData,
@@ -318,7 +364,7 @@ Where \texttt{configData} is the javascript object representing \texttt{globalDB
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': bundleList,
@@ -349,7 +395,7 @@ Where \texttt{configData} is the javascript object representing \texttt{globalDB
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'data': bundleData,
@@ -381,7 +427,7 @@ Where \texttt{bundleData} is the javascript object containing all the values of 
 \end{lstlisting}
 Where \texttt{bundleData} is the javascript object OPTIONALLY containing the values of ssffTracks + audio + annotation.json in the DB (see example bundle for details). It only sends the data that has been altered.
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'status': {
@@ -391,6 +437,66 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 }
 \end{lstlisting}
 
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{GETDOEDITDBCONFIG}}
+\label{GETDOEDITDBCONFIG}
+\begin{center}
+  \line(1,0){250}
+
+  \textit{Ask server if it allows editing of the \_DBconfig}
+
+  \line(1,0){250}
+\end{center}
+
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'GETDOEDITDBCONFIG', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=response content, language=json]
+{
+  'callbackID': request.callbackID,
+  'data': 'YES'
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{EDITDBCONFIG}}
+\label{EDITDBCONFIG}
+\begin{center}
+  \line(1,0){250}
+
+  \textit{Send DBconfig edit command to server}
+
+  \line(1,0){250}
+\end{center}
+
+
+\begin{lstlisting}[caption=Request content, language=json]
+{
+  'type': 'GETDOEDITDBCONFIG', 
+  'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=response content, language=json]
+{
+  'callbackID': request.callbackID,
+  'data': 'YES'
+  'status': {
+    'type': 'SUCCESS',
+    'message': ''
+  }
+}
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{DISCONNECTWARNING}}
@@ -410,7 +516,7 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Reply content, language=json]
+\begin{lstlisting}[caption=response content, language=json]
 {
   'callbackID': request.callbackID,
   'status': {
@@ -420,12 +526,14 @@ Where \texttt{bundleData} is the javascript object OPTIONALLY containing the val
 }
 \end{lstlisting}
 
+
+
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Error handling}
 
 If an error occurs with any of the request types above a response should still be sent to the client. The status of this response should be set to \texttt{ERROR} and an error message should be given in the message field. This message will then be displayed on the client.
 
-\begin{lstlisting}[caption=ERROR reply content, language=json]
+\begin{lstlisting}[caption=ERROR response content, language=json]
 {
   'callbackID': request.callbackID,
   'status': {
@@ -435,11 +543,5 @@ If an error occurs with any of the request types above a response should still b
 }
 \end{lstlisting}
 
-%%%%%%%%%%%%%%%%%%
-\subsection{Example bundle JSON}
-
-\lstinputlisting[caption=exampleBundle.json, label=idsr, language=json,firstnumber=1]{../../validators/exampleInstances/exampleBundle.json}
-
-Currently only BASE64 encoding of binary files allowed.
 
 \end{document}
