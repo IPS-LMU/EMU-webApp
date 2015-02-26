@@ -1,24 +1,27 @@
-<div class="modal-header">
-	<h3>User Login</h3>
-</div>
-<div class="modal-body">
-
-	Please enter:
-	<hr>
-	<table class="emuwebapp-loginModalTable">
-		<tr>
-			<td>User name:</td>
-			<td><input type="text" ng-model="loginData.username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td><input type="password" ng-model="loginData.password" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
-		</tr>
-	</table>
-	<hr>
-	<p style="color:red">{{loginData.errorMsg}}</p>
-</div>
-<div class="modal-footer">
-	<button ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>
-	<button ng-click="tryLogin();" class="emuwebapp-mini-btn-dialog">Login</button>
+<div class="emuwebapp-modal-wrap" ng-controller="LoginCtrl">
+    <div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+        <h3 id="modalHeading">
+            User Login
+        </h3>
+	</div>
+	<div class="emuwebapp-modal-body">
+		Please enter:
+		<hr>
+		<table class="emuwebapp-loginModalTable">
+			<tr>
+				<td>User name:</td>
+				<td><input type="text" ng-model="loginData.username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input type="password" ng-model="loginData.password" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
+			</tr>
+		</table>
+		<hr>
+		<p style="color:red">{{loginData.errorMsg}}</p>
+	</div>
+	<div class="emuwebapp-modal-footer">
+	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
+	  <button ng-click="tryLogin();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Login</button>
+	</div>
 </div>

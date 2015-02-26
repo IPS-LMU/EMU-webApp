@@ -50,8 +50,8 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSsffTrackConfig = function (name) {
 			var res;
-			if (sServObj.curDbConfig.ssffTracks !== undefined) {
-				angular.forEach(sServObj.curDbConfig.ssffTracks, function (tr) {
+			if (sServObj.curDbConfig.ssffTrackDefinitions !== undefined) {
+				angular.forEach(sServObj.curDbConfig.ssffTrackDefinitions, function (tr) {
 					if (tr.name === name) {
 						res = tr;
 					}
@@ -67,8 +67,21 @@ angular.module('emuwebApp')
 			var res = {};
 			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
 				if (cL.ssffTrackName === trackName) {
-					res.min = cL.min;
-					res.max = cL.max;
+					res = cL;
+				}
+			});
+
+			return res;
+		};
+
+		/**
+		 *
+		 */
+		sServObj.getContourColorsOfTrack = function (trackName) {
+			var res;
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors, function (cC) {
+				if (cC.ssffTrackName === trackName) {
+					res = cC;
 				}
 			});
 
@@ -102,6 +115,78 @@ angular.module('emuwebApp')
 
 			return res;
 		};
+
+		/**
+		 *
+		 */
+		sServObj.setPerspectivesOrder = function (curPerspective, levelName) {
+		    if(sServObj.vals !== undefined) {
+		        if(sServObj.vals.perspectives !== undefined) {
+		            if(sServObj.vals.perspectives[curPerspective] !== undefined ) {
+		                if(sServObj.vals.perspectives[curPerspective].levelCanvases !== undefined) {
+		                    sServObj.vals.perspectives[curPerspective].levelCanvases.order = levelName;	
+		                }
+		            }
+		        }
+		    }
+			
+		};
+		
+		/**
+		 *  replace ascii codes from config with strings
+		 */		
+		sServObj.getStrRep = function (code) {
+			var str;
+			switch (code) {
+			case 8:
+				str = 'BACKSPACE';
+				break;
+			case 9:
+				str = 'TAB';
+				break;
+			case 13:
+				str = 'ENTER';
+				break;
+			case 16:
+				str = 'SHIFT';
+				break;
+			case 18:
+				str = 'ALT';
+				break;
+			case 32:
+				str = 'SPACE';
+				break;
+			case 37:
+				str = '←';
+				break;
+			case 39:
+				str = '→';
+				break;
+			case 38:
+				str = '↑';
+				break;
+			case 40:
+				str = '↓';
+				break;
+			case 42:
+				str = '+';
+				break;
+			case 43:
+				str = '+';
+				break;								
+			case 45:
+				str = '-';
+				break;
+			case 95:
+				str = '-';
+				break;				
+			default:
+				str = String.fromCharCode(code);
+			}
+			return str;
+		};		
+
+
 
 		return sServObj;
 

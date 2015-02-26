@@ -5,17 +5,17 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		var worker = new Worker('scripts/workers/wavParserWorker.js');
+		var worker = new wavParserWorker();
 		var defer;
-
+		
 		// add event listener to worker to respond to messages
-		worker.addEventListener('message', function (e) {
-			if (e.data.status.type === 'SUCCESS') {
-				defer.resolve(e.data.data);
+		worker.says(function(e) {
+			if (e.status.type === 'SUCCESS') {
+				defer.resolve(e.data);
 			} else {
-				defer.reject(e.data);
+				defer.reject(e);
 			}
-		}, false);
+		});
 
 		/**
 		 * parse buffer containing wav file using webworker
@@ -24,10 +24,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.parseWavArrBuf = function (buf) {
 			defer = $q.defer();
-			worker.postMessage({
+			worker.tell({
 				'cmd': 'parseBuf',
 				'buffer': buf
-			}, [buf]); // Send data to our worker.
+			});
 			return defer.promise;
 		};
 

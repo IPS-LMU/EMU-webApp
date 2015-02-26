@@ -2,7 +2,7 @@
 	"name": "ae",
 	"UUID": "cd45b08a-3a13-4e42-b566-585844efabd4",
 	"mediafileExtension": "wav",
-	"ssffTracks": [{
+	"ssffTrackDefinitions": [{
 		"name": "FORMANTS",
 		"columnName": "fm",
 		"fileExtension": "fms"
@@ -20,79 +20,80 @@
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Utterance",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Intonational",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Intonational",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Intermediate",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Intermediate",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Word",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Word",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Accent",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Text",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Syllable",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Syllable",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Phoneme",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Phoneme",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Phonetic",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "Phonetic",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "IPA",
-			"type": "string"
+			"type": "STRING",
+			"legalLabels": ["ʌ", "m", "ŋ", "s", "t", "ɥ", "@:", "f", "r", "ɛ", "n", "z", "ʃ", "iː", "w", "ə", "k", "ɪ", "d", "db", "j", "uː", "dH", "l"]
 		}]
 	}, {
 		"name": "Tone",
 		"type": "EVENT",
 		"attributeDefinitions": [{
 			"name": "Tone",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Foot",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Foot",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Syllable",
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Syllable",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}],
 	"linkDefinitions": [{
@@ -143,8 +144,12 @@
 				}],
 				"contourLims": [{
 					"ssffTrackName": "FORMANTS",
-					"min": 0,
-					"max": 1
+					"minContourIdx": 0,
+					"maxContourIdx": 1
+				}],
+				"contourColors": [{
+				    "ssffTrackName": "FORMANTS",
+				    "colors": ["rgb(238,130,238)", "rgb(127,255,212)"]
 				}]
 			},
 			"levelCanvases": {
@@ -160,8 +165,8 @@
 				"assign": [],
 				"contourLims": [{
 					"ssffTrackName": "dftSpec",
-					"min": 0,
-					"max": 9
+					"minContourIdx": 0,
+					"maxContourIdx": 9
 				}]
 			},
 			"levelCanvases": {
@@ -175,7 +180,9 @@
 			"showPerspectivesSidebar": true
 		},
 		"activeButtons": {
-			"saveBundle": true
+			"saveBundle": true,
+			"showHierarchy": true,
+			"editDBconfig": true
 		}
 	}
 }

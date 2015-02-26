@@ -58,10 +58,10 @@
     -moz-background-size:50px 50px;
     -ms-background-size:50px 50px;
     background-size:50px 50px;
-/*    -webkit-animation:emuwebapp-move 2s linear infinite;
+    -webkit-animation:emuwebapp-move 2s linear infinite;
     -moz-animation:emuwebapp-move 2s linear infinite;
     -ms-animation:emuwebapp-move 2s linear infinite;
-    animation:emuwebapp-move 2s linear infinite;*/
+    animation:emuwebapp-move 2s linear infinite;
     overflow: hidden;
     -webkit-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
     -moz-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
@@ -117,3 +117,14 @@ Animate the stripes
   -moz-transition: height 0.4s;
   transition: height 0.4s;
 }  
+
+.emuwebapp-animationRunning {
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+
+}
+
+.emuwebapp-animationStopped {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+}

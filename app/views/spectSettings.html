@@ -1,67 +1,86 @@
- <div class="modal-header">
-  <h3>Spectrogram Settings</h3>
-</div>
-<div class="modal-body">
- <div>
-  <p>View Range (Hz)</p>
-  <input type="text" ng-model="modalVals.rangeFrom" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
-  <input type="text" ng-model="modalVals.rangeTo" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
-</div>
-<hr />
-<div>
-  <p>Window Length (samples)</p>
-  <!-- <input type="text" ng-model="modalVals.windowLength" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> -->
-  <select id="windowLength" ng-model="modalVals.windowLength" ng-options="l for l in windowLengths"></select>
-</div>
-<hr />
-<div>          
-  <p>Dynamic Range for Maximum (dB)</p>  
-  <input type="text" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
-</div>
-<hr />
-<div>          
-  <p>Pre-emphasis filter factor (resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1))</em></p> 
-  <input type="text" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
-</div>
-<hr />
-<div>      
-  <p>Window Function</p>
-  <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
-</div>
-<hr />
-<div>      
-  <p>Color Options</p>
-  <p>
-    Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
-  </p>
-  <table class='emuwebapp-modalTable'>
-    <tr>
-      <td>First spectrogram color anchor:</td>
-      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td><div ng-style="getColorOfAnchor(0);"></div></td>
-    </tr>
-    <tr>
-      <td>Second spectrogram color anchor: </td>
-      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td><div ng-style="getColorOfAnchor(1);"></div></td>
-    </tr>
-    <tr>
-      <td>Third spectrogram color anchor: </td>
-      <td>r: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>g: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td>b: <input class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-      <td><div ng-style="getColorOfAnchor(2);"></div></td>
-    </tr>
-  </table>
-</div>
-</div>
-
-<div class="modal-footer">
-  <button ng-click="cancel();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
-  <button id="dialogSaveButton" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton" ng-click="saveSpectroSettings();" >Save</button>
+<div class="emuwebapp-modal-wrap" ng-controller="spectSettingsCtrl">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+	      Spectrogram Settings
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-body">
+	 <div>
+	 <div>
+	  <h4>View Range (Hz)</h4>
+	  From: <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(2,4)" ng-model="modalVals.rangeFrom" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+	  To: <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(1,3)"  ng-model="modalVals.rangeTo" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+	  <br />
+	  <span ng-show="htmlError(1)"><b style="color: #f00;">Error:</b> Upper Range is bigger then {{upperBoundary}}</span>
+	  <span ng-show="htmlError(2)"><b style="color: #f00;">Error:</b> Only positive Integers are allowed.</span>
+	  <span ng-show="htmlError(3)"><b style="color: #f00;">Error:</b> Only Integers allowed.</span>
+	  <span ng-show="htmlError(4)"><b style="color: #f00;">Error:</b> Only Integers allowed.</span>
+	</div>
+	<hr />
+	<div>
+	  <h4>Window Size (seconds)</h4>
+		<p>resulting number of samples <em>{{modalVals._windowSizeInSamples}}</em> 
+		zero-padded to <em>{{modalVals._fftN}} (min. = 512)</em></p>
+	  <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(6)" ng-model="modalVals.windowSizeInSecs" ng-change="calcWindowSizeVals()" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+	  <br />
+	  <span ng-show="htmlError(6)"><b style="color: #f00;">Error:</b> Only Floats are allowed.</span>
+	</div>
+	<hr />
+	<div>          
+	  <h4>Dynamic Range for Maximum (dB)</h4>  
+	  <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(5)" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+	  <br />
+	  <span ng-show="htmlError(5)"><b style="color: #f00;">Error:</b> Only Integers are allowed.</span>
+	</div>
+	<hr />
+	<div>          
+	  <h4>Pre-emphasis filter factor</h4> 
+	  <p>resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1)</em></p>
+	  <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(7)" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+	  <br />
+	  <span ng-show="htmlError(7)"><b style="color: #f00;">Error:</b> Only Floats are allowed.</span>
+	</div>
+	<hr />
+	<div>      
+	  <h4>Window Function</h4>
+	  <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
+	</div>
+	<hr />
+	<div>      
+	  <h4>Color Options</h4>
+	  <p>
+		Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors">
+	  </p>
+	  <table class='emuwebapp-modalTable' ng-style="cssError(8)">
+		<tr>
+		  <td>First spectrogram color anchor:</td>
+		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 0);"></div></td>
+		</tr>
+		<tr>
+		  <td>Second spectrogram color anchor: </td>
+		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 1);"></div></td>
+		</tr>
+		<tr>
+		  <td>Third spectrogram color anchor: </td>
+		  <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>g: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td>b: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
+		  <td><div ng-style="vs.getColorOfAnchor(modalVals.heatMapColorAnchors, 2);"></div></td>
+		</tr>
+	  </table>
+	  <span ng-show="htmlError(8)"><b style="color: #f00;">Error:</b> Only Integers allowed.</span>
+	</div>
+	</div>
+  </div>
+  <div class="emuwebapp-modal-footer">
+    <button ng-click="reset()" class="emuwebapp-mini-btn-dialog">Cancel</button>
+    <button id="emuwebapp-modal-save" ng-click="saveSpectroSettings()" class="emuwebapp-mini-btn-dialog">Save</button>
+  </div>
 </div>
 

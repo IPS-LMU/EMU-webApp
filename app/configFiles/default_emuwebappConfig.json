@@ -2,7 +2,7 @@
     "main": {
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
-        "serverUrl": "ws://localhost:8080",
+        "serverUrl": "ws://localhost:17890",
         "serverTimeoutInterval": 5000,
         "comMode": "WS",
         "catchMouseForKeyBinding": false
@@ -14,6 +14,8 @@
         "zoomAll": 113,
         "zoomOut": 115,
         "zoomIn": 119,
+        "rotateHierarhy": 114,
+        "showHierarhy": 104,
         "shiftViewPortLeft": 97,
         "shiftViewPortRight": 100,
         "playEntireFile": 102,
@@ -37,7 +39,7 @@
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
         "selectNoContourCorrectionTool": 48,
-        "selectSegmentsInSelection": 103,
+        "selectItemsInSelection": 103,
         "snapBoundaryToNearestTopBoundary": 116,
         "snapBoundaryToNearestBottomBoundary": 98,
         "snapBoundaryToNearestZeroCrossing": 120,
@@ -68,7 +70,7 @@
         "fontPxSize": 14
     },
     "spectrogramSettings": {
-        "N": 256,
+        "windowSizeInSecs": 0.01,
         "rangeFrom": 0,
         "rangeTo": 5000,
         "dynamicRange": 70,
@@ -123,6 +125,7 @@
         "addLevelEvent": false,
         "renameSelLevel": false,
         "downloadTextGrid": false,
+        "downloadAnnotation": false,
         "specSettings": true,
         "connect": true,
         "clear": true,
@@ -132,7 +135,9 @@
         "resizePerspectives": true,
         "openDemoDB": true,
         "saveBundle": false,
-        "openMenu": true
+        "openMenu": true,
+        "showHierarchy": false,
+        "editDBconfig": false
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }

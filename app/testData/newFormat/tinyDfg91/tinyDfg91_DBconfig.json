@@ -2,7 +2,7 @@
 	"name": "tinyDfg91",
 	"UUID": "3412D5E3-E0EA-4E81-9F1C-E0A864D0D403",
 	"mediafileExtension": "wav",
-	"ssffTracks": [{
+	"ssffTrackDefinitions": [{
 		"name": "tt_posz",
 		"columnName": "tt_posz",
 		"fileExtension": "t_tip"
@@ -16,14 +16,14 @@
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "ORT",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "tongueTipGestures",
 		"type": "EVENT",
 		"attributeDefinitions": [{
 			"name": "tongueTipGestures",
-			"type": "string"
+			"type": "STRING"
 		}],
 		"anagestConfig": {
 			"verticalPosSsffTrackName": "tt_posz",
@@ -37,7 +37,11 @@
 			"maxConstrictionLabel": "mon"
 		}
 	}],
-	"linkDefinitions": [],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "ORT",
+		"sublevelName": "tongueTipGestures"
+	}],
 	"EMUwebAppConfig": {
 		"perspectives": [{
 			"name": "default",
@@ -57,7 +61,8 @@
 			"showPerspectivesSidebar": true
 		},
 		"activeButtons": {
-			"saveBundle": true
+			"saveBundle": true,
+			"showHierarchy": true
 		}
 	}
 }

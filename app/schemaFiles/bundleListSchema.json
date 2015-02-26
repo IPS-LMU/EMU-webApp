@@ -1,14 +1,23 @@
 {
 	"description": "Schema for bundleList for the EMU-webApp",
 	"type": "array",
-	"items":{
+	"items": {
 		"type": "object",
 		"properties": {
-			"name":{
+			"name": {
+				"type": "string"
+			},
+			"session": {
+				"type": "string"
+			},
+			"finishedEditing": {
+				"type": "boolean"
+			},
+			"comment": {
 				"type": "string"
 			}
 		},
 		"required": ["name"],
-		"additionalProperties": false
+		"additionalProperties": true
 	}
 }

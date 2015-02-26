@@ -1,31 +1,54 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice) {
+	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
+		// stores files referred to by ssffTrackDefinitions
 		sServObj.data = [];
+
+
+
+		/////////////////////
+		// public API
+
+		/**
+		 * Search through ssffTrackDefinitions to find correct
+		 * file. Then search thought data and return file.
+		 * @param trackName name of track to get file for
+		 */
+		sServObj.getFile = function (trackName) {
+			var res;
+			if (ConfigProviderService.curDbConfig.ssffTrackDefinitions !== undefined) {
+				ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
+					if (std.name === trackName) {
+						sServObj.data.forEach(function (f) {
+							if (f.fileExtension === std.fileExtension) {
+								res = f;
+							}
+						});
+					}
+				});
+			}
+			return res;
+		};
 
 		/**
 		 *
 		 */
 		sServObj.getColumnOfTrack = function (trackName, columnName) {
 			var res;
-			sServObj.data.forEach(function (tr) {
-				if (tr.ssffTrackName === trackName) {
-					tr.Columns.forEach(function (col) {
-						if (col.name === columnName) {
-							res = col;
-						}
-					});
-				}
-			});
+			var file = sServObj.getFile(trackName);
 
-			if (res !== undefined) {
+
+			if (file !== undefined) {
+				file.Columns.forEach(function (col) {
+					if (col.name === columnName) {
+						res = col;
+					}
+				});
 				return res;
-			} else {
-				alert("could not getColumnOfTrack of trackname: " + trackName)
 			}
 		};
 
@@ -35,16 +58,12 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
 			var res = {};
-			sServObj.data.forEach(function (tr) {
-				if (tr.ssffTrackName === trackName) {
-					res.sampleRate = tr.sampleRate;
-					res.startTime = tr.startTime;
-				}
-			});
-			if (res !== undefined) {
+			var file = sServObj.getFile(trackName);
+
+			if (file !== undefined) {
+				res.sampleRate = file.sampleRate;
+				res.startTime = file.startTime;
 				return res;
-			} else {
-				alert("could not getSampleRateAndStartTimeOfTrack of trackname: " + trackName)
 			}
 		};
 

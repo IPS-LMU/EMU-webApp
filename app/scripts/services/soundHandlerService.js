@@ -16,9 +16,9 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.resetPlayerSrcFromTo = function (sampleStart, endSample) {
-			var bytePerSample = this.wavJSO.BitsPerSample / 8;
-			var header = this.wavJSO.origArrBuf.subarray(0, 44);
-			var data = this.wavJSO.origArrBuf.subarray(44, this.wavJSO.Data.length * bytePerSample);
+			var bytePerSample = sServObj.wavJSO.BitsPerSample / 8;
+			var header = sServObj.wavJSO.origArrBuf.subarray(0, 44);
+			var data = sServObj.wavJSO.origArrBuf.subarray(44, sServObj.wavJSO.Data.length * bytePerSample);
 
 			var dv = new DataView(header);
 			dv.setUint32(40, (endSample - sampleStart) * bytePerSample, true);
@@ -32,7 +32,7 @@ angular.module('emuwebApp')
 			tmp.set(new Uint8Array(newData), header.byteLength);
 
 			var base64String = Binarydatamaniphelper.arrayBufferToBase64(tmp.buffer);
-			this.player.src = 'data:audio/wav;base64,' + base64String;
+			sServObj.player.src = 'data:audio/wav;base64,' + base64String;
 		};
 
 		sServObj.playFromTo = function (sampleStart, endSample) {

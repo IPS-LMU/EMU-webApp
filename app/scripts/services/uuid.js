@@ -17,7 +17,7 @@ angular.module('emuwebApp')
     
     sServObj.newHash = function () {
       return rand() + rand(true) + rand(true) + rand();
-    };    
+    };
 
     //
     sServObj.empty = function () {

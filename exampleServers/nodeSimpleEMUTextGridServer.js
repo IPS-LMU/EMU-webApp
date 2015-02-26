@@ -27,7 +27,7 @@ var vm = require('vm');
 // read in external worker file
 var tgp = fs.readFileSync('../app/scripts/workers/textGridParserWorker.js', 'utf8');
 // hack to remove addEventListner function
-tgp = tgp.split('self.addEventListener(\'message\', function (e) {')[0];
+tgp = tgp.split('addEventListener(\'message\', function (e) {')[0];
 // run in current context
 vm.runInThisContext(tgp);
 
@@ -37,7 +37,7 @@ vm.runInThisContext(tgp);
 // read external worker file
 var wp = fs.readFileSync('../app/scripts/workers/wavParserWorker.js', 'utf8');
 // hack to remove addEventListner function
-wp = wp.split('self.addEventListener(\'message\', function (e) {')[0];
+wp = wp.split('addEventListener(\'message\', function (e) {')[0];
 // run in current context
 vm.runInThisContext(wp);
 
@@ -250,14 +250,14 @@ wss.on('connection', function (ws) {
             bundle.annotation.filePath = p;
           }
 
-          // set ssffTracks file infos
-          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
-            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTracks[i].fileExtension + '$');
-            var pattTrack = new RegExp(mJSO.name + '.' + dbConfig.ssffTracks[i].fileExtension + '$');
+          // set ssffTrackDefinitions file infos
+          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
+            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
+            var pattTrack = new RegExp(mJSO.name + '.' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
             if (pattTrack.test(p)) {
               console.log(p);
               bundle.ssffFiles.push({
-                ssffTrackName: dbConfig.ssffTracks[i].name,
+                ssffTrackName: dbConfig.ssffTrackDefinitions[i].name,
                 encoding: 'BASE64',
                 filePath: p
               });
@@ -296,11 +296,11 @@ wss.on('connection', function (ws) {
           delete bundle.mediaFile.filePath;
 
           // sync read ssff file
-          for (var i = 0; i < dbConfig.ssffTracks.length; i++) {
+          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
             bundle.ssffFiles[i].data = fs.readFileSync(path2folder + bundle.ssffFiles[i].filePath, 'base64');
             delete bundle.ssffFiles[i].filePath;
           }
-          console.log(dbConfig.ssffTracks.length);
+          console.log(dbConfig.ssffTrackDefinitions.length);
           console.log(bundle.ssffFiles.length);
 
           console.log('##########################');
@@ -346,6 +346,19 @@ wss.on('connection', function (ws) {
         }
       }), undefined, 0);
 
+      break;
+
+      // DISCONNECTING method
+    case 'DISCONNECTWARNING':
+      console.log('preparing to disconnect...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
       break;
 
     default:

@@ -47,11 +47,11 @@ angular.module('emuwebApp')
 				/////////////////////////////
 				// Bindings
 				element.bind('mousedown', function (event) {
-					dragStartSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
+					dragStartSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					dragEndSample = dragStartSample;
 					viewState.select(dragStartSample, dragStartSample);
 					//Drawhelperservice.drawViewPortTimes(ctx, true);
-					switchMarkupContext(event);
+					scope.switchMarkupContext(event);
 					scope.$apply();
 				});
 
@@ -63,13 +63,13 @@ angular.module('emuwebApp')
 						mbutton = event.buttons;
 					}
 					// perform mouse tracking
-					var mouseX = Drawhelperservice.getX(event);
+					var mouseX = viewState.getX(event);
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
 					switch (mbutton) {
 					case 0:
 						if (viewState.getPermission('labelAction')) {
-							switchMarkupContext(event);
+							scope.switchMarkupContext(event);
 							if (!$.isEmptyObject(Ssffdataservice.data)) {
 								if (Ssffdataservice.data.length !== 0) {
 									if (!viewState.getdragBarActive()) {
@@ -77,34 +77,23 @@ angular.module('emuwebApp')
 											// var col = Ssffdataservice.data[0].Columns[0];
 											if (tr === undefined) {
 												tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-												col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-												sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 											}
-
+											col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+											sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 											var startTimeVP = viewState.getViewPortStartTime();
 											var endTimeVP = viewState.getViewPortEndTime();
-
 											var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
 											var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
 											var nrOfSamples = colEndSampleNr - colStartSampleNr;
 											var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-
-											// console.log(colStartSampleNr)
-
-
-											var curMouseTime = startTimeVP + (Drawhelperservice.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
+											var curMouseTime = startTimeVP + (viewState.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
 											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-
 											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
-
-
 											if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
 												console.log('early return');
 												return;
 											}
-
 											viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
-
 											var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
 											var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
@@ -120,9 +109,9 @@ angular.module('emuwebApp')
 
 											if (event.shiftKey) {
 												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
-												var newValue = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
+												var newValue = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
-												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - Drawhelperservice.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
+												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
 												var updateObj = HistoryService.updateCurChangeObj({
 													'type': 'SSFF',
 													'trackName': tr.name,
@@ -159,7 +148,7 @@ angular.module('emuwebApp')
 						break;
 					case 1:
 						if (!viewState.getdragBarActive()) {
-							setSelectDrag(event);
+							scope.setSelectDrag(event);
 
 						}
 						break;
@@ -169,8 +158,8 @@ angular.module('emuwebApp')
 
 				element.bind('mouseup', function (event) {
 					if (!viewState.getdragBarActive()) {
-						setSelectDrag(event);
-						switchMarkupContext(event);
+						scope.setSelectDrag(event);
+						scope.switchMarkupContext(event);
 					}
 				});
 
@@ -179,15 +168,11 @@ angular.module('emuwebApp')
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-							// if (!$.isEmptyObject(Ssffdataservice.data)) {
-							// if (Ssffdataservice.data.length !== 0) {
 							if (!viewState.getdragBarActive()) {
 								if (viewState.getPermission('labelAction')) {
-									switchMarkupContext(event, false);
+									scope.switchMarkupContext(event, false);
 								}
 							}
-							// }
-							// }
 						}
 					}
 				});
@@ -196,7 +181,7 @@ angular.module('emuwebApp')
 				////////////////////
 
 
-				function switchMarkupContext(event, leave) {
+				scope.switchMarkupContext = function (event, leave) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					// draw current viewport selected
 					if (atts.ssffTrackname == 'OSCI') {
@@ -218,14 +203,10 @@ angular.module('emuwebApp')
 					}
 					// draw moving boundary line if moving
 					Drawhelperservice.drawMovingBoundaryLine(ctx);
+				};
 
-
-
-				}
-
-
-				function setSelectDrag(event) {
-					curMouseSample = Math.round(Drawhelperservice.getX(event) * viewState.getPCMpp(event) + viewState.curViewPort.sS);
+				scope.setSelectDrag = function (event) {
+					curMouseSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					if (curMouseSample > dragStartSample) {
 						dragEndSample = curMouseSample;
 						viewState.select(dragStartSample, dragEndSample);
@@ -234,7 +215,7 @@ angular.module('emuwebApp')
 						viewState.select(dragStartSample, dragEndSample);
 					}
 					scope.$apply();
-				}
+				};
 			}
 		};
 	});

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, dialogService) {
+	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, modalService) {
 
 		$scope.loginData = {
 			'username': '',
@@ -12,11 +12,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.tryLogin = function () {
-
-
 			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then(function (res) {
 				if (res === 'LOGGEDON') {
-					dialogService.close(true);
+					modalService.confirm();
 				} else {
 					$scope.loginData.errorMsg = 'ERROR: ' + res;
 				}
@@ -29,21 +27,22 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.focusInTextField = true;
-			// console.log("CURSOR");
+			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.focusInTextField = false;
+			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cancel = function () {
-			dialogService.close(false);
+			modalService.close();
 		};
 	});

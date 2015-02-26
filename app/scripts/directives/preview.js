@@ -32,7 +32,7 @@ angular.module('emuwebApp')
 				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
 					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 						if (oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS) {
-							drawPreview();
+							scope.drawPreview();
 						}
 					}
 				}, true);
@@ -47,13 +47,15 @@ angular.module('emuwebApp')
 				            'width': '100%',
                             'height': '100%'					            
 				        }
-						drawPreview();
+						scope.drawPreview();
 
 					}
 					//clear on empty bundle name
 					if (scope.currentBundleName === '') {
 						var ctx = canvas.getContext('2d');
+						var ctxMarkup = markupCanvas.getContext('2d');
 						ctx.clearRect(0, 0, canvas.width, canvas.height);
+						ctxMarkup.clearRect(0, 0, canvas.width, canvas.height);
 					}
 				}, true);
 
@@ -63,13 +65,15 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-				function drawPreview() {
+				 scope.drawPreview = function() {
 					if (!initialized) {
+						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
+						Drawhelperservice.osciPeaks = allPeakVals;
 						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
 						initialized = true;
-						drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
+						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					} else {
-						drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
+						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					}
 				}
 
@@ -78,7 +82,7 @@ angular.module('emuwebApp')
 				 * the information that is specified in
 				 * the viewport
 				 */
-				function drawVpOsciMarkup(vs, canvas, config) {
+				 scope.drawVpOsciMarkup = function(vs, canvas, config) {
 					var ctx = markupCanvas.getContext('2d');
 					var posS = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.sS;
 					var posE = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.eS;

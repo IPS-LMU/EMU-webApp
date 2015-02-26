@@ -10,7 +10,7 @@ describe('Directive: bundleListSideBar', function() {
     }));
 
     function compileDirective(val) {
-        tpl = '<bundle-list-side-bar></bundle-list-side-bar>';
+        tpl = '<bundle-list-side-bar is-open="{{vs.submenuOpen}}"></bundle-list-side-bar>';
         inject(function($compile) {
             elm = $compile(tpl)(scope);
         });

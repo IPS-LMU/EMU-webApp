@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
 			var img = document.createElement('canvas');
 			img.setAttribute('width',Math.round(scaleX*200));
-			img.setAttribute('height',Math.round(scaleY*100));			
+			img.setAttribute('height',Math.round(scaleY*100));
 			var ctx = img.getContext('2d');
 			ctx.save();
 			ctx.font = (fontPxSize + 'px' + ' ' + fontType);

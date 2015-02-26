@@ -16,20 +16,29 @@
 }
 
 .emuwebapp-SideMenuBtn2 img {
-    width: 40px;
-    height:40px;
+    width: 34px;
+    height:34px;
+    padding-top: 0;
+    padding-bottom: 4px;
 }
 
 .emuwebapp-SideMenuBtn, .emuwebapp-SideMenuBtn2 {
     display:inline-block;
     position: relative;
     background: transparent;
+    /*padding-top: 7px;*/
     border: 0;
     width: 40px;
     height: 40px;
     text-align: center;
     top: 0px;
 }
+
+.emuwebapp-aboutBtn{
+    padding-top: 7px;
+    cursor: pointer;
+}
+
 
 .emuwebapp-SideMenuBtn img {
     width: 20px;
@@ -112,6 +121,17 @@
     border:1px solid rgb(33,217,255);
 }
 
+.emuwebapp-mini-btn-dialog:hover:enabled {
+    background-color:white;
+    color:#000;
+}
+
+.emuwebapp-mini-btn-dialog:disabled {
+    color:rgb(33,217,255);
+    border:1px solid rgb(33,217,255);
+}
+
+
 .emuwebapp-mini-btn:active {
     top:1px;
 }
@@ -120,7 +140,7 @@
 
 @media (min-width: 950px) {
    /* wide browser windows */
-     .emuwebapp-mini-btn {
+     .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li  {
          width: 9%;
      }
      .emuwebapp-mini-btn-group{
@@ -134,7 +154,7 @@
 
 @media (min-width: 450px) and (max-width: 950px) {
    /* netbooks/tablets */ 
-     .emuwebapp-mini-btn {
+     .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
          width: 7.5%;
      }
     .emuwebapp-mini-btn-group{
@@ -147,7 +167,7 @@
 
 @media (max-width: 450px) {
      /* mobile devices */ 
-    .emuwebapp-mini-btn {
+    .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
         width: 6%;
     }
     .emuwebapp-mini-btn-group{

@@ -1,32 +1,24 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ExportCtrl', function ($scope, dialogService, exportData, exportName, viewState, HistoryService) {
+	.controller('ExportCtrl', function ($scope, modalService, browserDetector, viewState, HistoryService) {
 		
-		$scope.exportData = exportData;
-		$scope.exportName = exportName;
-		$scope.firefox = (navigator.userAgent.match(/Firefox/i) ? true: false);
-
-		/**
-		 *
-		 */
-		$scope.cancel = function () {
-			dialogService.close();
-		};
+		$scope.firefox = browserDetector.isBrowser.Firefox();
 		
 		/**
 		 *
 		 */
 		$scope.getBlob = function(){
-		    return new Blob([$scope.exportData], {type: 'text/plain'});
-		};
-		
-		/**
-		 *
-		 */
-		$scope.export = function(){
-		    $scope.SaveToDisk(URL.createObjectURL($scope.getBlob()), $scope.exportName);
-		    dialogService.close();
+		    var blob;
+		    try {
+		        blob = new Blob([modalService.dataExport], {type: 'text/plain'});
+		    } catch (e) { // Backwards-compatibility
+		        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+		        blob = new BlobBuilder();
+		        blob.append($scope.exportData);
+		        blob = blob.getBlob();
+		    }
+		    return blob;
 		};
 
 		/**
@@ -40,16 +32,32 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.focusInTextField = true;
+			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.focusInTextField = false;
+			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
 		};
-
+		
+		/**
+		 *
+		 */
+		$scope.export = function(){
+		    var objURL;
+		    if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+		        objURL = webkitURL.createObjectURL($scope.getBlob());
+		    } else {
+		        objURL = URL.createObjectURL($scope.getBlob());
+		    }		
+		    $scope.SaveToDisk(objURL, modalService.dataIn);
+		    modalService.close();
+		};
+		
 		/**
 		 *  Save file to disk // Non-IE ONLY !!
 		 */

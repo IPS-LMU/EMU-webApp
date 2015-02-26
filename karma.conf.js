@@ -21,21 +21,29 @@ module.exports = function (config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ngprogress-lite/ngprogress-lite.min.js',
       'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-      'app/scripts/*.js',
-      'app/scripts/workers/*.js',
+      'app/bower_components/angular-filter/dist/angular-filter.js',
+      'app/bower_components/d3/d3.js',
+      'app/bower_components/tv4/tv4.js',
+      'app/bower_components/angular-ui-sortable/sortable.js',
+      'app/scripts/!(prototypeexpansions).js',
       'app/scripts/filters/*.js',
-      'app/scripts/**/*.js',
+      'app/scripts/controllers/*.js',
+      'app/scripts/directives/!(tutorial).js',
+      'app/scripts/services/*.js',
+      'app/scripts/workers/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
 
-      // JSON fixture
+      // demoDBs JSON fixtures
       {
         pattern: 'app/demoDBs/*/*.json',
         watched: true,
         served: true,
         included: false
-      },
+      }, 
+
+      // configFiles JSON fixtures
       {
         pattern: 'app/configFiles/*.json',
         watched: true,
@@ -43,14 +51,20 @@ module.exports = function (config) {
         included: false
       },
 
-      // fixtures
+      // schemaFiles fixtures
       {
         pattern: 'app/schemaFiles/*.json',
         watched: true,
         served: true,
         included: false
+      },
+      // fixtures
+      {
+        pattern: 'app/testData/oldFormat/msajc003/*',
+        watched: true,
+        served: true,
+        included: false
       }
-
     ],
 
     // generate js files from html templates to expose them during testing.
@@ -70,8 +84,8 @@ module.exports = function (config) {
     },
 
     proxies: {
-      '/scripts/workers/': 'http://localhost:9000/scripts/workers/',
-      '/img/': 'http://localhost:9000/img/'
+      '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/',
+      '/assets/': 'http://ips-lmu.github.io/EMU-webApp/assets/'
     },
 
     // list of files / patterns to exclude
@@ -89,13 +103,16 @@ module.exports = function (config) {
     autoWatch: true,
 
     // coverage reporter
-    reporters: ['dots'],
+    reporters: ['progress', 'coverage'],
 
     coverageReporter: {
-      type: 'html',
+      type: 'lcov',
       dir: 'test/coverage/',
     },
 
+    // plugins: [
+    //   'karma-coverage',
+    // ],
 
     // Start these browsers, currently available:
     // - Chrome
@@ -106,6 +123,8 @@ module.exports = function (config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
+    
+    captureTimeout: 60000,
 
 
     // Continuous Integration mode

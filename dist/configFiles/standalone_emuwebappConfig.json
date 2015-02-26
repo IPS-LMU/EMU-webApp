@@ -2,7 +2,7 @@
 	"name": "embedded",
 	"UUID": "cd45b08a-3a13-4e42-b566-585844efabd5",
 	"mediafileExtension": "wav",
-	"ssffTracks": [],
+	"ssffTrackDefinitions": [],
 	"levelDefinitions": [],
 	"linkDefinitions": [],
 	"EMUwebAppConfig": {
@@ -38,6 +38,7 @@
 			"addLevelEvent": true,
 			"renameSelLevel": true,
 			"downloadTextGrid": true,
+			"downloadAnnotation": true,
 			"specSettings": true,
 			"connect": false,
 			"clear": true,

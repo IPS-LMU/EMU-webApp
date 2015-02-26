@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ArrayHelperService', function ArrayHelperService($q, dialogService) {
+	.service('ArrayHelperService', function ArrayHelperService($q) {
 		// shared service object
 		var sServObj = {};
 

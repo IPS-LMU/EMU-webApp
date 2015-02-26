@@ -1,20 +1,24 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('dots', function (viewState) {
+	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice) {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
+			scope: {
+			},
 			link: function postLink(scope, element, attrs) {
-				//element.text('this is the dots directive');
+				scope.cps = ConfigProviderService;
+				scope.ssffds = Ssffdataservice;
+				scope.vs = viewState;
+				scope.fontImage = fontScaleService;
+				scope.shs = Soundhandlerservice;
 				var canvas = element.find('canvas')[0];
-
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
 				var globalMinY = Infinity;
 				var globalMaxY = -Infinity;
-
 				var tr, col, sRaSt;
 
 				////////////////////
@@ -25,7 +29,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawDots(scope);
+								scope.drawDots();
 							}
 						}
 					}
@@ -37,7 +41,7 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
 								if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-									drawDots(scope);
+									scope.drawDots();
 								}
 							}
 						}
@@ -49,7 +53,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
-								drawDots(scope);
+								scope.drawDots();
 							}
 						}
 					}
@@ -66,8 +70,7 @@ angular.module('emuwebApp')
 				//
 				//////////////////
 
-				function setGlobalMinMaxVals() {
-					// body...
+				scope.setGlobalMinMaxVals = function () {
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 					for (var i = 0; i < dD.dots.length; i++) {
 						// get xCol
@@ -92,25 +95,12 @@ angular.module('emuwebApp')
 					}
 				}
 
-				function getScale(ctx, str, scale) {
-					return ctx.measureText(str).width * scale;
-				}
-
-				function getScaleWidth(ctx, str1, str2, scaleX) {
-					if (str1.toString().length > str2.toString().length) {
-						return getScale(ctx, str1, scaleX);
-					} else {
-						return getScale(ctx, str2, scaleX);
-					}
-				}
-
-
 				/**
 				 * drawing method to drawDots
 				 */
-				function drawDots() {
+				scope.drawDots = function () {
 					if (globalMinX === Infinity) {
-						setGlobalMinMaxVals();
+						scope.setGlobalMinMaxVals();
 					}
 
 					var ctx = canvas.getContext('2d');
@@ -170,7 +160,6 @@ angular.module('emuwebApp')
 						curFrame = xCol.values.length - 1;
 					}
 
-
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
 					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
 					var degrees = 90;
@@ -209,6 +198,8 @@ angular.module('emuwebApp')
 							alert('xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample');
 							return;
 						}
+						
+						
 
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
@@ -262,7 +253,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 					});
 
-				}
+				};
 			}
 		};
 	});

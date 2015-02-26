@@ -2,7 +2,7 @@
 	"name": "epgdorsal",
 	"UUID": "92d08e8f-d12e-4d18-847b-dde40318c407",
 	"mediafileExtension": "wav",
-	"ssffTracks": [{
+	"ssffTrackDefinitions": [{
 		"name": "EPG",
 		"columnName": "epg",
 		"fileExtension": "epg"
@@ -16,23 +16,23 @@
 		"type": "ITEM",
 		"attributeDefinitions": [{
 			"name": "Word",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Kommentar",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}, {
 		"name": "Phonetic",
 		"type": "SEGMENT",
 		"attributeDefinitions": [{
 			"name": "Phonetic",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Links",
-			"type": "string"
+			"type": "STRING"
 		}, {
 			"name": "Rechts",
-			"type": "string"
+			"type": "STRING"
 		}]
 	}],
 	"linkDefinitions": [{

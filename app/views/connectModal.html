@@ -1,15 +1,18 @@
-<div class="modal-header">
-	<h3>Connect to server</h3>
-</div>
-<div class="modal-body">
-	Please enter:
-
-	<ul>
-		<li>server URL:<input type="text" ng-model="serverInfos.Url"></li>
-		<li>{{connectionError}}</li>
-	</ul>
-</div>
-<div class="modal-footer">
-	<button ng-click="cancel();" class="emuwebapp-mini-btn-dialog">Cancel</button>
-	<button ng-click="tryConnection();" class="emuwebapp-mini-btn-dialog">Connect</button>
+<div class="emuwebapp-modal-wrap">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+		Connect to Server
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
+		Please enter:
+		<ul>
+			<li>server URL:<input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></li>
+			<li>{{connectionError}}</li>
+		</ul>
+	</div>
+	<div class="emuwebapp-modal-footer">
+		<button ng-click="modal.close();" class="emuwebapp-mini-btn-dialog">Cancel</button>
+		<button ng-click="modal.confirmContent();" class="emuwebapp-mini-btn-dialog">Connect</button>
+	</div>
 </div>

@@ -1,0 +1,250 @@
+<!-- emu app config -->
+<div class="emuwebapp-roundedBorderFrame" >
+    <!-- spectrogram Settings -->
+	<div class="emuwebapp-tabbed-table">
+	    <div class="emuwebapp-tabbed-title">Spectrogram Settings</div>
+	    <div>&nbsp;</div>
+		<div class="emuwebapp-tabbed-row" ng-repeat="(key, value) in cps.vals.spectrogramSettings">
+			<span class="emuwebapp-tabbed-cell3">
+			    {{key}}
+			</span>
+			<span ng-switch on="value" class="emuwebapp-tabbed-cell" style="padding-bottom: 10px;">
+				<span ng-switch-when="true">
+					<input type="checkbox" ng-model="value" class="emuwebapp-tabbed-input">
+				</span>
+				<span ng-switch-when="false">
+					<input type="checkbox" ng-model="value" class="emuwebapp-tabbed-input">
+				</span>	
+				<span ng-switch-default>
+				    <span ng-switch on="key">
+						<span ng-switch-when="heatMapColorAnchors">
+							<small>
+							  <div class="emuwebapp-tabbed-title">
+								<div class="emuwebapp-tabbed-row">
+								  <div class="emuwebapp-tabbed-cell5">First:</div>
+								  <div class="emuwebapp-tabbed-cell5">r: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">g: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">b: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5"><div ng-style="vs.getColorOfAnchor(value, 0);"></div></div>
+								</div>
+								<div class="emuwebapp-tabbed-row">
+								  <div class="emuwebapp-tabbed-cell5">Second: </div>
+								  <div class="emuwebapp-tabbed-cell5">r: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">g: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">b: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5"><div ng-style="vs.getColorOfAnchor(value, 1);"></div></div>
+								</div>
+								<div class="emuwebapp-tabbed-row">
+								  <div class="emuwebapp-tabbed-cell5">Third: </div>
+								  <div class="emuwebapp-tabbed-cell5">r: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">g: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5">b: <input class="emuwebapp-tabbed-input-small" type="text" ng-model="value[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></div>
+								  <div class="emuwebapp-tabbed-cell5"><div ng-style="vs.getColorOfAnchor(value, 2);"></div></div>
+								</div>
+							  </div>
+							</small>
+						</span>
+						<span ng-switch-when="window">
+							<select ng-model="value" ng-options="opt as opt for opt in spectroDefinitionProperties.window.enum" class="emuwebapp-tabbed-input-bold"></select>
+						</span>
+						<span ng-switch-default>
+							<input type="text" ng-model="value" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+						</span>
+				    </span>
+				</span>
+			</span>
+		</div>
+	</div>
+</div>
+<br />
+
+<div class="emuwebapp-roundedBorderFrame">
+    <!-- perspectives Settings -->
+    <div class="emuwebapp-tabbed-table">
+		<div class="emuwebapp-tabbed-title">Perspectives Settings</div>
+		<div>&nbsp;</div>
+		<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives track by $index">
+			<a href title="Delete" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('perspective', key)">X</a>
+			<div class="emuwebapp-tabbed-row">
+			    <span class="emuwebapp-tabbed-cell">
+			        Perspective name: <input type="text" ng-model="cps.vals.perspectives[key].name" size="40" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+			    </span>
+			</div>
+			<div>&nbsp;</div>
+			<u><b>signal canvases:</b></u>
+			</br> 
+		    <div class="emuwebapp-tabbed-table">
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.signalCanvases track by $index">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}: 
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3" style="padding-bottom: 20px;">
+					    <span ng-switch-when="order">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ui-sortable ng-model="subvalue">
+					                <tr ng-repeat="item in subvalue track by $index">
+					                    <td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+					                    <td>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderSignal', key, $index)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <select ng-model="addSignalSelect" ng-options="opt as opt for opt in signalSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderSignal', key, addSignalSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
+				        </span>
+					    <span ng-switch-when="assign">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="45%" class="emuwebapp-tabbed-assignitem"><u>Signal Canvas</u></td>
+					                    <td width="5%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
+					                    <td width="45%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
+					                    <td width="5%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
+					                </tr>
+					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <select ng-model="item.signalCanvasName" class="emuwebapp-tabbed-input-bold">
+					                            <option>SPEC</option>
+					                            <option>OSCI</option>
+					                        </select>
+					                    </td>
+					                    <td>
+					                        &rarr; 
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
+					                    </td>
+					                    <td>
+					                        <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveAssign', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('perspectiveAssign', key)"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+					    <span ng-switch-when="contourLims">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
+					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>minContourIdx</u></td>
+					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>maxContourIdx</u></td>
+					                    <td width="32%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
+					                </tr>
+					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <input type="text" ng-model="item.minContourIdx" size="15" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <input type="text" ng-model="item.maxContourIdx" size="15" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveContourLims', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>					                    
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('perspectiveContourLims', key)"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>
+					    <span ng-switch-when="contourColors">
+					        <table class="emuwebapp-tabbed-order">
+					            <tbody ng-model="subvalue">
+					                <tr>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
+					                    <td width="50%" class="emuwebapp-tabbed-assignitem"><u>Colors</u></td>
+					                </tr>
+					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
+					                    <td class="emuwebapp-tabbed-assignitem">
+					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+										    <small>
+											  <div class="emuwebapp-tabbed-title" ng-repeat="color in item.colors track by $index">
+												<div class="emuwebapp-tabbed-row">
+												  <div class="emuwebapp-tabbed-cell5">
+													  <input type="text" ng-model="color" size="15" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> 
+												  </div>
+												  <div class="emuwebapp-tabbed-cell5">
+												      <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveContourColorColor', key, itemkey, $index)"><span class="emuwebapp-tabbed-delete-small" >X</span></a>
+												  </div>												  
+												</div>
+											  </div>
+											  <a href title="Add new" ng-click="addDefinition('perspectiveContourColorColor', key, itemkey)"><span class="emuwebapp-tabbed-add-small">+</span> add new</a>
+											</small>
+					                    </td>
+					                    <td class="emuwebapp-tabbed-assignitem">
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveContourColor', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>
+					                </tr>
+					            </tbody>{{list}}
+					        </table>
+					        <a href title="Add new" ng-click="addDefinition('perspectiveContourColor', key)"><span class="emuwebapp-tabbed-add">+</span> add new</a>
+				        </span>				        
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>	
+				</span>
+				<span class="emuwebapp-tabbed-row">
+				    <b><u>level canvases:</u></b>
+				</span>	
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.levelCanvases">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}: 
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell" style="padding-bottom: 20px;">
+					    <span ng-switch-when="order">
+							 <table class="emuwebapp-tabbed-order">
+								<tbody ui-sortable ng-model="subvalue">
+									<tr ng-repeat="(itemkey, item) in subvalue track by $index">
+										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+					                    <td>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderLevel', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>										
+									</tr>
+								</tbody>{{list}}
+							</table>
+							<select ng-model="addLevelSelect" ng-options="opt as opt for opt in levelSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderLevel', key, addLevelSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
+				        </span>
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>					
+				</span>
+				<span class="emuwebapp-tabbed-row">
+				    <b><u>two dimensional canvases:</u></b>
+				</spa>
+				<span class="emuwebapp-tabbed-row" ng-repeat="(subkey, subvalue) in value.twoDimCanvases track by $index">
+					<span class="emuwebapp-tabbed-cell3">
+						{{subkey}}:
+					</span>
+					<span ng-switch on="subkey" class="emuwebapp-tabbed-cell3">
+					    <span ng-switch-when="order">
+							 <table class="emuwebapp-tabbed-order">
+								<tbody ui-sortable ng-model="subvalue">
+									<tr ng-repeat="(itemkey, item) in subvalue track by $index">
+										<td class="emuwebapp-tabbed-orderitem">{{item}}</td>
+					                    <td>
+    					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveOrderTwoDim', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
+					                    </td>										
+									</tr>
+								</tbody>{{list}}
+							</table>
+							<select ng-model="addTwoDimSelect" ng-options="opt as opt for opt in twoDimSelect" class="emuwebapp-tabbed-input-bold"></select> <a href title="Add new" ng-click="addDefinition('perspectiveOrderTwoDim', key, addTwoDimSelect)"><span class="emuwebapp-tabbed-add">+</span></a>
+				        </span>
+				        <span ng-switch-default class="emuwebapp-tabbed-cell">
+				            <input type="text" ng-model="cps.vals.perspectives[key].signalCanvases[subkey]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+				        </span>
+				    </span>	
+				</span>
+			</div>		
+		</div>
+	</div>
+	<br />
+	<a href title="Add new definition" ng-click="addDefinition('perspective')"><span class="emuwebapp-tabbed-add">+</span> add new perspective</a>
+	<br />	
+</div>
+

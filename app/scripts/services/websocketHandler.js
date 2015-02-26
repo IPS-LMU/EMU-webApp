@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, dialogService) {
+	.service('Websockethandler', function Websockethandler($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, modalService) {
 		// shared service object
 		var sServObj = {};
 
@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 		var callbacks = {};
 
 		// Create our websocket object with the address to the websocket
-		var ws = {};
+		sServObj.ws = {};
 
 		// empty promise object to be resolved when connection is up
 		var conPromise = {};
@@ -31,14 +31,18 @@ angular.module('emuwebApp')
 		}
 
 		function wsonerror(message) {
-			// console.log(message);
 			console.error('WEBSOCKET ERROR!!!!!');
 			$rootScope.$apply(conPromise.resolve(message));
 		}
 
 		function wsonclose(message) {
+			if (!message.wasClean && connected) {
+				modalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
+					$rootScope.$broadcast('connectionDisrupted');
+				});
+
+			}
 			connected = false;
-			// console.log(message);
 			console.log('WEBSOCKET closed!!!!!');
 		}
 
@@ -50,7 +54,7 @@ angular.module('emuwebApp')
 				cb: defer
 			};
 			request.callbackID = callbackId;
-			ws.send(angular.toJson(request));
+			sServObj.ws.send(angular.toJson(request));
 			// timeout request if not answered
 			$timeout(function () {
 				var tOutResp = {
@@ -76,11 +80,12 @@ angular.module('emuwebApp')
 				// console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
 				case 'getESPSfile':
-					handleReceivedESPS(messageObj.fileName, messageObj.data);
+				  alert('espsfile');
+					//handleReceivedESPS(messageObj.fileName, messageObj.data);
 					break;
 				case 'getSSFFfile':
-					alert("esps")
-					handleReceivedSSFF(messageObj.fileName, messageObj.data);
+				  alert('ssfffile');
+					//handleReceivedSSFF(messageObj.fileName, messageObj.data);
 					break;
 				}
 
@@ -89,7 +94,9 @@ angular.module('emuwebApp')
 					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
 				} else {
 					// show protocol error and disconnect from server
-					dialogService.open('views/error.html', 'ModalCtrl', 'Communication error with server! Error message is: ' + messageObj.status.message);
+					sServObj.closeConnect();
+					$rootScope.$broadcast('resetToInitState');
+					$rootScope.$apply(modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
 				}
 
 				delete callbacks[messageObj.callbackID];
@@ -97,7 +104,7 @@ angular.module('emuwebApp')
 				if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
 				} else {
-					dialogService.open('views/error.html', 'ModalCtrl', 'What just happened? You should not be here...');
+					modalService.open('views/error.html', 'What just happened? You should not be here...');
 				}
 			}
 		}
@@ -112,11 +119,11 @@ angular.module('emuwebApp')
 		// public api
 		sServObj.initConnect = function (url) {
 			var defer = $q.defer();
-			ws = new WebSocket(url);
-			ws.onopen = wsonopen;
-			ws.onmessage = wsonmessage;
-			ws.onerror = wsonerror;
-			ws.onclose = wsonclose;
+			sServObj.ws = new WebSocket(url);
+			sServObj.ws.onopen = wsonopen;
+			sServObj.ws.onmessage = wsonmessage;
+			sServObj.ws.onerror = wsonerror;
+			sServObj.ws.onclose = wsonclose;
 
 			conPromise = defer;
 			return defer.promise;
@@ -129,9 +136,13 @@ angular.module('emuwebApp')
 
 		// close connection with ws
 		sServObj.closeConnect = function () {
-			ws.onclose = function () {};
-			ws.close();
-
+		    if(sServObj.isConnected()) {
+    			sServObj.ws.onclose = function () {};
+	    		sServObj.ws.close();    
+		    }
+		    else {
+		        console.log('WEBSOCKET ERROR: was not connected!');
+		    }
 		};
 
 		////////////////////////////
@@ -191,11 +202,12 @@ angular.module('emuwebApp')
 		};
 
 		// ws  getBundle
-		sServObj.getBundle = function (name) {
+		sServObj.getBundle = function (name, session) {
 
 			var request = {
 				type: 'GETBUNDLE',
-				name: name
+				name: name,
+				session: session
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
@@ -208,6 +220,16 @@ angular.module('emuwebApp')
 			var request = {
 				type: 'SAVEBUNDLE',
 				data: bundleData
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};
+
+		// ws  disconnecting
+		sServObj.disconnectWarning = function () {
+			var request = {
+				type: 'DISCONNECTWARNING'
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);

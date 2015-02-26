@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, ConfigProviderService, Ssffdataservice, ArrayHelperService, dialogService, HistoryService) {
+	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -16,9 +16,9 @@ angular.module('emuwebApp')
 			var defer = $q.defer();
 
 			// precheck if there are items in selection
-			var itemInSel = viewState.getItemsInSelection(LevelService.data.levels);
+			var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
 			if (itemInSel.length !== 0) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'There are already events in the selected area! This is not permitted...').then(function () {
+				modalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(function () {
 					defer.reject();
 				});
 				return defer;
@@ -38,7 +38,7 @@ angular.module('emuwebApp')
 			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
 
 			if (col.length !== 1 || vCol.length !== 1) {
-				dialogService.open('views/error.html', 'ModalCtrl', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
+				modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
 					defer.reject();
 				});
 				return defer;
@@ -67,7 +67,7 @@ angular.module('emuwebApp')
 			var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
 			var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);;
+			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
 
 			// maxConstr
@@ -135,20 +135,21 @@ angular.module('emuwebApp')
 							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
-							var gdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[0], curLabel);
+							var gdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[0],
 								'id': gdat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
-							var gdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), gdat[1], curLabel);
+							var gdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': gdat[1],
 								'id': gdat1insPoint.id,
@@ -159,20 +160,21 @@ angular.module('emuwebApp')
 							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
-							var vdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[0], curLabel);
+							var vdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[0],
 								'id': vdat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
-							var vdat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), vdat[1], curLabel);
+							var vdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': vdat[1],
 								'id': vdat1insPoint.id,
@@ -183,20 +185,21 @@ angular.module('emuwebApp')
 							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
 							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
-							var ndat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[0], curLabel);
+							var ndat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[0],
 								'id': ndat0insPoint.id,
 								'pointName': curLabel
 							});
+
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
-							var ndat1insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), ndat[1], curLabel);
+							var ndat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[1], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': ndat[1],
 								'id': ndat1insPoint.id,
@@ -206,10 +209,10 @@ angular.module('emuwebApp')
 							// console.log(cdat);
 							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
 							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
-							var cdat0insPoint = LevelService.insertPoint(viewState.getcurClickLevelName(), cdat[0], curLabel);
+							var cdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), cdat[0], curLabel);
 							HistoryService.updateCurChangeObj({
-								'type': 'ESPS',
-								'action': 'insertPoint',
+								'type': 'ANNOT',
+								'action': 'INSERTEVENT',
 								'name': viewState.getcurClickLevelName(),
 								'start': cdat[0],
 								'id': cdat0insPoint.id,
@@ -219,23 +222,23 @@ angular.module('emuwebApp')
 							var linkLevelName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
 							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
-							console.log(linkLevelLabels);
 
-
-							dialogService.open('views/SelectLabelModal.html', 'SelectLabelModalCtrl', linkLevelLabels).then(function (itemIdx) {
-								var childIDs = [
-									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
-									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
-								];
-								LevelService.addLinkToParent(linkLevelDetails.level.items[itemIdx].id, childIDs);
-								HistoryService.updateCurChangeObj({
-									'type': 'ESPS',
-									'action': 'LINKTOPARENT',
-									'parentID': linkLevelDetails.level.items[itemIdx].id,
-									'childIDs': childIDs
-								});
-
-								HistoryService.addCurChangeObjToUndoStack();
+							modalService.changeModal('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
+							    if(itemIdx!==false) {
+									var childIDs = [
+										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
+										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
+									];
+									LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
+									HistoryService.updateCurChangeObj({
+										'type': 'ANNOT',
+										'action': 'INSERTLINKSTO',
+										'name': linkLevelDetails.level.name,
+										'parentID': linkLevelDetails.level.items[itemIdx].id,
+										'childIDs': childIDs
+									});
+									HistoryService.addCurChangeObjToUndoStack();
+								}
 							});
 
 							defer.resolve();
@@ -244,7 +247,7 @@ angular.module('emuwebApp')
 				});
 
 			}, function () {
-				console.error('rejected duuuude!!!!');
+				//console.error('rejected duuuude!!!!');
 			});
 			return defer.promise;
 		};
@@ -278,12 +281,6 @@ angular.module('emuwebApp')
 			var loguk = 0;
 			var higuk = lx - 1;
 
-			// console.log(lx);
-			// console.log(xx);
-			// console.log(xsh);
-			// console.log(loguk);
-			// console.log(higuk);
-
 			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
 			var vz = [];
 			for (var i = 0; i < xx.length; i++) {
@@ -316,20 +313,16 @@ angular.module('emuwebApp')
 					});
 				}
 
-				dialogService.open('views/SelectThresholdModal.html', 'SelectThresholdModalCtrl', infos).then(function (resp) {
+				modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then(function (resp) {
+				    console.log(resp);
 					var ap = vz[anavv[resp]];
-					// console.log('-----')
-					// console.log(xx[ap])
-					// console.log(xx[ap + 1])
-					// console.log(ap);
-					// console.log(ap + 1);
 					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 					defer.resolve(ap);
 				});
 				return defer.promise;
 			} else if (anavv.length === 0) {
 				defer = $q.defer();
-				dialogService.open('views/error.html', 'ModalCtrl', 'Could not find any values that step over the threshold!!').then(function () {
+				modalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(function () {
 					defer.reject('Could not find any values that step over the threshold!!');
 				});
 				return defer.promise;

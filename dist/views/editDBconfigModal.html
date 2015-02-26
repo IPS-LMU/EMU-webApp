@@ -1,0 +1,20 @@
+<div class="emuwebapp-modal-wrap">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+	      Edit Configuration
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-bodyConfig">
+		<!-- tabbed header -->
+		<div id="tabs" class="emuwebapp-tabbed" ng-controller="TabbedCtrl">
+			<ul class="emuwebapp-tabbed-ul">
+				<li ng-repeat="tab in tabs" ng-style="isActiveTab(tab.url)" class="emuwebapp-tabbed-li" ng-click="onClickTab(tab)">{{tab.title}}</li>
+			</ul>
+			<div ng-include="currentTab" class="emuwebapp-tabbed-view"></div>
+		</div>
+  	</div>
+  <div class="emuwebapp-modal-footer">
+    <button ng-click="modal.closeAndResolve(false)" class="emuwebapp-mini-btn-dialog">Cancel</button>
+    <button ng-click="modal.closeAndResolve(true)" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog">Save</button>
+  </div>
+</div>

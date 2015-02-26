@@ -1,10 +1,14 @@
-<div class="modal-header">
-	<h3>Confirm</h3>
-</div>
-<div class="modal-body">
-	{{passedInTxt}}
-</div>
-<div class="modal-footer">
-	<button ng-click="cancel();" id="modal-cancel" class="emuwebapp-mini-btn-dialog">Cancel</button>
-	<button ng-click="confirm();" id="modal-confirm" class="emuwebapp-mini-btn-dialog">Confirm</button>
+<div class="emuwebapp-modal-wrap" ng-controller="ModalCtrl">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+		Confirm
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
+		{{dataIn}}
+	</div>
+	<div class="emuwebapp-modal-footer">
+		<button id="emuwebapp-modal-cancel" ng-click="modal.close();" class="emuwebapp-mini-btn-dialog">Cancel</button>
+		<button id="emuwebapp-modal-confirm" ng-click="modal.confirm();" class="emuwebapp-mini-btn-dialog">Confirm</button>
+	</div>
 </div>

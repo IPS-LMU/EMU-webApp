@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Textgridparserservice', function Textgridparserservice($q, LevelService, viewState, Soundhandlerservice) {
+	.service('Textgridparserservice', function Textgridparserservice($q, DataService, viewState, Soundhandlerservice) {
 		// shared service object
 		var sServObj = {};
 
-		var worker = new Worker('scripts/workers/textGridParserWorker.js');
+		var worker = new textGridParserWorker();
 		var defer;
 
 		// add event listener to worker to respond to messages
-		worker.addEventListener('message', function (e) {
-			if (e.data.status.type === 'SUCCESS') {
+		worker.says(function(e) {
+			if (e.status.type === 'SUCCESS') {
 				defer.resolve(e.data);
 			} else {
 				defer.reject(e.data);
@@ -25,12 +25,12 @@ angular.module('emuwebApp')
 		 */
 		sServObj.asyncToTextGrid = function () {
 			defer = $q.defer();
-			worker.postMessage({
+			worker.tell({
 				'cmd': 'toTextGrid',
-				'levels': LevelService.getData().levels,
+				'levels': DataService.getData().levels,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
 				'buffLength': Soundhandlerservice.wavJSO.Data.length
-			}); // Send data to our worker.
+			});
 			return defer.promise;
 		};
 		
@@ -42,13 +42,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.asyncParseTextGrid = function (textGrid, annotates, name) {
 			defer = $q.defer();
-			worker.postMessage({
+			worker.tell({
 				'cmd': 'parseTG',
 				'textGrid': textGrid,
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
 				'annotates': annotates,
 				'name': name
-			}); // Send data to our worker.
+			});
 			return defer.promise;
 		};
 

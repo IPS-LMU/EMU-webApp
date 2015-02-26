@@ -11,18 +11,18 @@
 		"mediafileExtension": {
 			"enum": ["wav"]
 		},
-		"ssffTracks": {
+		"ssffTrackDefinitions": {
 			"type": "array",
 			"items": {
 				"type": "object",
 				"properties": {
-					"name": {
-						"type": "string"
-					},
 					"columnName": {
 						"type": "string"
 					},
 					"fileExtension": {
+						"type": "string"
+					},
+					"name": {
 						"type": "string"
 					}
 				},
@@ -50,18 +50,89 @@
 									"type": "string"
 								},
 								"type": {
-									"enum": ["string"]
+									"enum": ["STRING"]
 								},
 								"legalLabels": {
 									"type": "array",
 									"items": {
 										"type": "string"
 									}
+								},
+								"labelGroups": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										},
+										"required": ["name", "values"],
+										"additionalProperties": false
+									}
 								}
 							},
 							"required": ["name", "type"],
 							"additionalProperties": false
 						}
+					},
+					"anagestConfig": {
+						"type": "object",
+						"properties": {
+							"verticalPosSsffTrackName": {
+								"type": "string"
+							},
+							"velocitySsffTrackName": {
+								"type": "string"
+							},
+							"autoLinkLevelName": {
+								"type": "string"
+							},
+							"multiplicationFactor": {
+								"enum": [-1, 1]
+							},
+							"threshold": {
+								"type": "number",
+								"minimun": "0.0",
+								"maximum": "1.0"
+							},
+							"gestureOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxVelocityOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"constrictionPlateauBeginEndLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxConstrictionLabel": {
+								"type": "string"
+							}
+						},
+						"required": ["verticalPosSsffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "multiplicationFactor", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
+						"additionalProperties": false,
+						"uniqueItems": true
 					}
 				},
 				"required": ["name", "type", "attributeDefinitions"],
@@ -88,8 +159,25 @@
 				"required": ["type", "superlevelName", "sublevelName"],
 				"additionalProperties": false
 			}
+		},
+		"labelGroups": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"values": {
+						"type": "array",
+						"items": {
+							"type": "sting"
+						}
+					}
+				}
+			}
 		}
 	},
-	"required": ["name", "UUID", "mediafileExtension", "ssffTracks", "levelDefinitions", "linkDefinitions"],
+	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions"],
 	"additionalProperties": false
 }

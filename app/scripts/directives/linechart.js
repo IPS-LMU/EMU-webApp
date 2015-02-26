@@ -9,7 +9,6 @@
 angular.module('emuwebApp')
 	.directive('lineChart', function () {
 		return {
-			// template: '<svg></svg>',
 			restrict: 'E',
 			scope: {
 				data: '=',
@@ -22,7 +21,6 @@ angular.module('emuwebApp')
 					scope.render(scope.data);
 				}, true);
 				//////////////////////
-
 
 
 				//Set margins, width, and height
@@ -70,6 +68,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.render = function (data) {
+				
 					//Set our scale's domains
 					// x.domain(data.map(function (d) {
 					// 	return d.name;
