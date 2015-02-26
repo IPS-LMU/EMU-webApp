@@ -20,16 +20,20 @@ describe('Service: AnagestService', function () {
 		// mock open function 
 		mockDialogService.open = function (p1, p2, p3) {
 			var deferred = $q.defer();
-			deferred.resolve('called open on dialogService');
+			if(p1 === 'views/SelectLabelModal.html'){
+				deferred.resolve(0);
+			}else{
+				deferred.resolve('called open on dialogService');
+			}
 			return deferred.promise;
 		};
 
-		// mock open function 
-		mockDialogService.changeModal = function (p1, p2, p3, p4) {
-			var deferred2 = $q.defer();
-			deferred2.resolve(0);
-			return deferred2.promise;
-		};
+		// mock changeModal function (not needed any more as it was changed to open)
+		// mockDialogService.changeModal = function (p1, p2, p3, p4) {
+		// 	var deferred2 = $q.defer();
+		// 	deferred2.resolve(0);
+		// 	return deferred2.promise;
+		// };
 
 		// spyOn(dialogService, 'open');
 	}));
