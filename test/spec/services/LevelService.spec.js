@@ -1012,7 +1012,7 @@ describe('Service: LevelService', function () {
   /**
    *
    */
-  it('should moveEvent', inject(function (DataService, LevelService, Soundhandlerservice) {
+  it('should moveEvent', inject(function (DataService, LevelService, LinkService, Soundhandlerservice) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
@@ -1022,12 +1022,101 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(msajc003_bndl.annotation, 181);
     expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
 
+    //////////////////////////////////////////
+    // linked events
+
+    ////////////////
+    // first event
+    ////////////////
+
+    item = getItemFromJSON(msajc003_bndl.annotation, 181);
+
+    // first event (allowed move)
     // move point with id 181 on level 'Tone' by 10 samples
     LevelService.moveEvent('Tone', 181, 10);
     expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint + 10);
     // move point with id 181 on level 'Tone' back by 10 samples
     LevelService.moveEvent('Tone', 181, -10);
     expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
+
+    // first event (left boundary check)
+    // move point with id 181 on level 'Tone' by -20000 samples -> should not change anything as this would cause a negative sample number
+    LevelService.moveEvent('Tone', 181, -20000);
+    expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
+
+    // first event (right boundary check)
+    // move point with id 181 on level 'Tone' by 20000 samples -> should not change anything as the next event starts at 18631
+    LevelService.moveEvent('Tone', 181, 20000);
+    expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
+
+    ////////////////
+    // last event
+    ////////////////    
+
+    // add temporary link to last event
+    LinkService.insertLink(113, 187);
+
+    item = getItemFromJSON(msajc003_bndl.annotation, 187);
+    
+    // last event (allowed move)
+    // move point with id 187 on level 'Tone' by 10 samples
+    LevelService.moveEvent('Tone', 187, 10);
+    expect(LevelService.getItemFromLevelById('Tone', 187).samplePoint).toEqual(item.samplePoint + 10);
+    // move point with id 187 on level 'Tone' back by 10 samples
+    LevelService.moveEvent('Tone', 187, -10);
+    expect(LevelService.getItemFromLevelById('Tone', 187).samplePoint).toEqual(item.samplePoint);
+
+    // last event (left boundary check)
+    // move point with id 187 on level 'Tone' by -2000 samples -> should not change anything as overlaps left neighbor
+    LevelService.moveEvent('Tone', 187, -2000);
+    expect(LevelService.getItemFromLevelById('Tone', 187).samplePoint).toEqual(item.samplePoint);
+
+    // last event (right boundary check)
+    // move point with id 187 on level 'Tone' by 100000000 samples -> should not change anything as longer than audio file
+    LevelService.moveEvent('Tone', 187, 100000000);
+    expect(LevelService.getItemFromLevelById('Tone', 187).samplePoint).toEqual(item.samplePoint);
+
+    // delete temporary link to last event
+    LinkService.deleteLink(113, 187);
+
+    /////////////////////
+    // in-between event 
+    /////////////////////
+    item = getItemFromJSON(msajc003_bndl.annotation, 185);
+
+    // in-between event (allowed move)
+    // move point with id 185 on level 'Tone' by 10 samples
+    LevelService.moveEvent('Tone', 185, 10);
+    expect(LevelService.getItemFromLevelById('Tone', 185).samplePoint).toEqual(item.samplePoint + 10);
+    // move point with id 185 on level 'Tone' back by 10 samples
+    LevelService.moveEvent('Tone', 185, -10);
+    expect(LevelService.getItemFromLevelById('Tone', 185).samplePoint).toEqual(item.samplePoint);
+
+    // in-between event (left boundary check)
+    // move point with id 185 on level 'Tone' by -20000 samples -> should not change anything as overlaps left neighbor
+    LevelService.moveEvent('Tone', 185, -20000);
+    expect(LevelService.getItemFromLevelById('Tone', 185).samplePoint).toEqual(item.samplePoint);
+
+    // in-between event (right boundary check)
+    // move point with id 185 on level 'Tone' by 20000 samples -> should not change anything as overlaps right neighbor
+    LevelService.moveEvent('Tone', 185, 20000);
+    expect(LevelService.getItemFromLevelById('Tone', 185).samplePoint).toEqual(item.samplePoint);
+
+
+    ////////////////////////////////////////////
+    // unlinked events
+
+    spyOn(LinkService, 'isLinked').and.returnValue(false);
+    item = getItemFromJSON(msajc003_bndl.annotation, 181);
+
+    // move point with id 181 on level 'Tone' by 2000 samples (past next EVENT)
+    LevelService.moveEvent('Tone', 181, 2000);
+    expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint + 2000);
+    // move point with id 181 on level 'Tone' back by 10 samples
+    LevelService.moveEvent('Tone', 181, -2000);
+    expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
+
+
   }));
 
 

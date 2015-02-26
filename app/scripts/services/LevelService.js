@@ -1124,6 +1124,7 @@ angular.module('emuwebApp')
 				}			
 			}
 			else {
+				// console.log('unlinked event')
 				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 				}
