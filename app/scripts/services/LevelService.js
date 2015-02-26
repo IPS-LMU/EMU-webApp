@@ -1099,26 +1099,32 @@ angular.module('emuwebApp')
 		 */
 		sServObj.moveEvent = function (name, id, changeTime) {
 			var orig = sServObj.getItemFromLevelById(name, id);
-			if(LinkService.isIntermediate(id)) {
+			if(LinkService.isLinked(id)) {
 			    var neighbour = sServObj.getItemNeighboursFromLevel(name, id, id);
-				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
-				    if(neighbour.left !== undefined) { // if not first event
-						if((orig.samplePoint + changeTime) > (neighbour.left.samplePoint)) {
-							if((orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
-								sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
-							}
+				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) { // if within audio
+					if(neighbour.left !== undefined && neighbour.right !== undefined){ // if between two events
+						// console.log('between two events')
+						if((orig.samplePoint + changeTime) > (neighbour.left.samplePoint) && (orig.samplePoint + changeTime) < (neighbour.right.samplePoint)){
+							sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 						}
-					}
-					else { // if first event
-						if((orig.samplePoint + changeTime) > 0) {
-							if((orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
-								sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
-							}
-						}					
+					}else if(neighbour.left === undefined && neighbour.right === undefined){ // if only event
+						// console.log('only element')
+						sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+					}else if(neighbour.left === undefined && neighbour.right !== undefined){ // if first event
+						// console.log('first event')
+						if((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) < (neighbour.right.samplePoint)){
+							sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
+						}
+					}else if(neighbour.left !== undefined && neighbour.right === undefined){ // if last event
+						// console.log('last event')
+						if((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length){
+							sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));	
+						}
 					}
 				}			
 			}
 			else {
+				// console.log('unlinked event')
 				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
 					sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 				}

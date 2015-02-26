@@ -94,7 +94,7 @@ angular.module('emuwebApp')
 		 * checks if a given node has parents or children
 		 * @param ID node to check
 		 */
-		sServObj.isIntermediate = function (ID) {
+		sServObj.isLinked = function (ID) {
 			return (sServObj.hasChildren(ID) || sServObj.hasParents(ID));
 		};
 		
