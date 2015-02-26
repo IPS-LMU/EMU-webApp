@@ -1012,7 +1012,7 @@ describe('Service: LevelService', function () {
   /**
    *
    */
-  it('should movePoint', inject(function (DataService, LevelService, Soundhandlerservice) {
+  it('should moveEvent', inject(function (DataService, LevelService, Soundhandlerservice) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
@@ -1021,6 +1021,7 @@ describe('Service: LevelService', function () {
     LevelService.moveEvent('Tone', 181, 100000000000);
     item = getItemFromJSON(msajc003_bndl.annotation, 181);
     expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint);
+
     // move point with id 181 on level 'Tone' by 10 samples
     LevelService.moveEvent('Tone', 181, 10);
     expect(LevelService.getItemFromLevelById('Tone', 181).samplePoint).toEqual(item.samplePoint + 10);
