@@ -6,8 +6,7 @@ angular.module('emuwebApp')
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
-			scope: {
-			},
+			scope: {},
 			link: function postLink(scope, element, attrs) {
 				scope.cps = ConfigProviderService;
 				scope.ssffds = Ssffdataservice;
@@ -93,7 +92,27 @@ angular.module('emuwebApp')
 							globalMaxY = yCol._maxVal;
 						}
 					}
-				}
+
+					// also check staticDots
+					dD.staticDots.forEach(function (sD) {
+						sD.xCoordinates.forEach(function (xVal, xIdx) {
+							// check x
+							if(xVal < globalMinX){
+								globalMinX = xVal;
+							}
+							if(xVal > globalMaxX){
+								globalMaxX = xVal;
+							}
+							// check y
+							if(sD.yCoordinates[xIdx] < globalMinY){
+								globalMinY = sD.yCoordinates[xIdx];
+							}
+							if(sD.yCoordinates[xIdx] > globalMaxY){
+								globalMaxY = sD.yCoordinates[xIdx];
+							}
+						});
+					});
+				};
 
 				/**
 				 * drawing method to drawDots
@@ -105,6 +124,7 @@ angular.module('emuwebApp')
 
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
 					//////////////////////////////
 					// markup to improve visualization 
@@ -198,8 +218,8 @@ angular.module('emuwebApp')
 							alert('xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample');
 							return;
 						}
-						
-						
+
+
 
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
@@ -232,7 +252,8 @@ angular.module('emuwebApp')
 						});
 
 					}
-
+					//////////////////////////
+					// draw connect lines
 					var f, t;
 					dD.connectLines.forEach(function (c) {
 						allDots.forEach(function (d) {
@@ -251,6 +272,42 @@ angular.module('emuwebApp')
 						ctx.lineTo(t.x, t.y);
 						ctx.stroke();
 						ctx.closePath();
+					});
+
+					//////////////////////////
+					// draw static dots
+					var startPoint = (Math.PI / 180) * 0;
+					var endPoint = (Math.PI / 180) * 360;
+
+					dD.staticDots.forEach(function (sD) {
+						ctx.strokeStyle = sD.color;
+						ctx.fillStyle = sD.color;
+						// draw name
+						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
+						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
+
+						var labelTxtImg = scope.fontImage.getTextImage(ctx, sD.name, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, sD.color);
+						ctx.drawImage(labelTxtImg, labelX, labelY, labelTxtImg.width, labelTxtImg.height);
+
+						sD.xCoordinates.forEach(function (xVal, xIdx) {
+							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
+							var y = canvas.height - ((sD.yCoordinates[xIdx] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
+							// draw dot
+							ctx.beginPath();
+							ctx.arc(x, y, 2, startPoint, endPoint, true);
+							ctx.fill();
+							ctx.closePath();
+							// draw connection
+							if (sD.connect && xIdx >= 1) {
+								var prevX = ((sD.xCoordinates[xIdx - 1] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
+								var prevY = canvas.height - ((sD.yCoordinates[xIdx - 1] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
+								ctx.beginPath();
+								ctx.moveTo(prevX, prevY);
+								ctx.lineTo(x, y);
+								ctx.stroke();
+								ctx.closePath();
+							}
+						});
 					});
 
 				};
