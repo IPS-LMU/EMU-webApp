@@ -133,7 +133,7 @@ angular.module('emuwebApp')
 	/**
 	 * Function to center node when clicked/dropped so node doesn't get lost when
 	 * collapsing/moving with large amount of children.
-	 */
+	 *
 	scope.centerNode = function (node) {
 		var x = -node._x + scope.width/2;
 		var y = -node._y  + scope.height/2;
@@ -142,6 +142,7 @@ angular.module('emuwebApp')
 			.attr('transform', scope.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
 		scope.zoomListener.translate([x, y]);
 	};
+	*/
 	
 	/**
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
@@ -183,6 +184,22 @@ angular.module('emuwebApp')
 		}
 		console.debug ('Likely a bug: Did not find the label selected for display', 'Selected level:', level, 'Node: ', d);
 		return 'NO VALUE';
+	};
+
+	scope.getOrientatedNodeCollapseText = function(d) {
+		if (scope.vertical) {
+			if (viewState.getCollapsed(d.id)) {
+				return '↓';
+			} else {
+				return '↑';
+			}
+		} else {
+			if (viewState.getCollapsed(d.id)) {
+				return '→';
+			} else {
+				return '←';
+			}
+		}	
 	};
 
 	scope.getOrientatedTextAnchor = function (d) {
@@ -297,21 +314,39 @@ angular.module('emuwebApp')
 				;
 		}
 	};
+
+	scope.svgOnClick = function (d) {
+		if (viewState.hierarchyState.contextMenuID !== undefined) {
+			viewState.hierarchyState.contextMenuID = undefined;
+			scope.render();
+		}
+	};
 	
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
-		//scope.centerNode(d);
+		
+		if (viewState.hierarchyState.contextMenuID === undefined) {
+			d3.event.stopPropagation();
+			viewState.hierarchyState.contextMenuID = d.id;
+			scope.render();
+		}
 
+		if (viewState.hierarchyState.contextMenuID === d.id) {
+			d3.event.stopPropagation();
+		}
+	};
+
+	scope.nodeOnPlayClick = function(d) {
+		scope.play(d);
+	};
+
+	scope.nodeOnCollapseClick = function(d) {
+		console.debug('collapsing', d);
 		// (De-)Collapse sub-tree
 		HierarchyLayoutService.toggleCollapse(d, scope.path);
-
 		scope.render();
 	};
 
-	scope.nodeOnRightClick = function (d) {
-		scope.play(d);
-	};
-	
 	scope.nodeOnMouseOver = function (d) {
 		scope.selectItem(d);
 		scope.renderSelectionOnly();
@@ -418,6 +453,7 @@ angular.module('emuwebApp')
 	  .call(scope.zoomListener)
 	  .on('dblclick.zoom', null)
 	  .on('mousemove', scope.svgOnMouseMove)
+	  .on('click', scope.svgOnClick)
           .append('g')
 	  ;
 
@@ -688,7 +724,6 @@ angular.module('emuwebApp')
 			.on('click', scope.nodeOnClick)
 			//.on('dblclick', scope.nodeOnRightClick)
 			.on('mouseover', scope.nodeOnMouseOver)
-			.on('contextmenu', scope.play)
 			;
 
 		newNodes.append('circle')
@@ -783,6 +818,99 @@ angular.module('emuwebApp')
 			.attr('transform', function (d) {
 				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
 			});
+	
+
+		/////
+		// Create context menu
+
+		// If the context menu has been closed, remove the elements
+		if (viewState.hierarchyState.contextMenuID === undefined) {
+			scope.svg.selectAll('.emuhierarchy-contextmenu')
+				.remove()
+				;
+		}
+
+		// If the context menu does not yet exist, create it
+		var contextMenu = scope.svg.select('.emuhierarchy-contextmenu');
+		
+		if (contextMenu[0][0] === null) {
+			contextMenu = dataSet
+				.filter(function(d) {
+					return d.id === viewState.hierarchyState.contextMenuID;
+				})
+				.append('g')
+				.attr('class', 'emuhierarchy-contextmenu')
+				;
+
+			contextMenu
+				.append('circle')
+				.style('fill', 'darkgrey')
+				.attr('r', 50)
+				.style('cursor', 'default')
+				.style('opacity', 0)
+				.transition()
+				.duration(scope.transitionDuration)
+				.style('opacity', 0.5)
+				;
+
+			contextMenu
+				.append('text')
+				.text(scope.getOrientatedNodeCollapseText)
+				.attr('x', -25)
+				.attr('y', -25)
+				.attr('text-anchor', 'middle')
+				.on('click', scope.nodeOnCollapseClick)
+				.style('opacity', 0)
+				.transition()
+				.duration(scope.transitionDuration)
+				.style('opacity', 1)
+				;
+
+			contextMenu
+				.append('text')
+				.text('play')
+				.attr('x', -25)
+				.attr('y', +25)
+				.attr('text-anchor', 'middle')
+				.on('click', scope.nodeOnPlayClick)
+				.style('opacity', 0)
+				.transition()
+				.duration(scope.transitionDuration)
+				.style('opacity', 1)
+				;
+
+
+			var foreignObject = contextMenu
+				.append('foreignObject')
+				.attr('height', 30)
+				.attr('x', 10)
+				.attr('y', -15)
+				.attr('width', 0)
+				;
+
+			foreignObject
+				.transition()
+				.duration(scope.transitionDuration)
+				.attr('width', 100)
+				;
+
+			foreignObject
+				.append('xhtml:body')
+				.append('input').attr('value', scope.getNodeText)
+				.style('width', '100%')
+				.style('height', '100%')
+				.style('outline', 'none')
+				.style('border', '0')
+				.on('click', function(d) { d3.event.stopPropagation(); })
+				.on('keydown', function(d) { d3.event.stopPropagation(); })
+				.on('keypress', function(d) { d3.event.stopPropagation(); })
+				.on('keyup', function(d) { d3.event.stopPropagation(); })
+				;
+		} else {
+			scope.svg.select('.emuhierarchy-contextmenu text').text(scope.getOrientatedNodeCollapseText);
+		}
+
+
 
 
 
