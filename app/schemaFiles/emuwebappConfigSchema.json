@@ -49,10 +49,10 @@
 					"type": "integer"
 				},
 				"showHierarhy": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"rotateHierarhy": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"shiftViewPortLeft": {
 					"type": "integer"
@@ -416,9 +416,47 @@
 												"required": ["fromDot", "toDot", "color"],
 												"additionalProperties": false
 											}
+										},
+										"staticDots": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"name": {
+														"type": "string"
+													},
+													"xNameCoordinate": {
+														"type": "integer"
+													},
+													"yNameCoordinate": {
+														"type": "integer"
+													},
+													"xCoordinates": {
+														"type": "array",
+														"items": {
+															"type": "integer"
+														}
+													},
+													"yCoordinates": {
+														"type": "array",
+														"items": {
+															"type": "integer"
+														}
+													},
+													"connect": {
+														"type": "boolean"
+													},
+													"color": {
+														"type": "string"
+													}
+
+												},
+												"required": ["name", "xNameCoordinate", "yNameCoordinate", "xCoordinates", "yCoordinates", "connect", "color"],
+												"additionalProperties": false
+											}
 										}
 									},
-									"required": ["name", "dots", "connectLines"],
+									"required": ["name", "dots", "connectLines", "staticDots"],
 									"additionalProperties": false
 								}
 							}
