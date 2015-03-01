@@ -83,8 +83,8 @@ angular.module('emuwebApp')
 		 * @param levelName name of level
 		 * @param attrDef name of attribute definition
 		 */
-		$scope.setCurrentAttrDef = function (levelName, attrDef) {
-			viewState.setCurAttrDef(levelName, attrDef);
+		$scope.setCurrentAttrDef = function (levelName, attrDefName, attrDefIndex) {
+			viewState.setCurAttrDef(levelName, attrDefName, attrDefIndex);
 		};
 
 		/**

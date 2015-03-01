@@ -22,6 +22,8 @@
 	"hierarchyAddLink": 108,
         "hierarchyRotate": 114,
         "hierarchyPlayback": 32,
+        "hierarchyCommitEdit": 13,
+        "hierarchyCancelEdit": 27,
         "shiftViewPortLeft": 97,
         "shiftViewPortRight": 100,
         "playEntireFile": 102,

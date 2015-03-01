@@ -57,20 +57,23 @@ angular.module('emuwebApp')
       // 
       sServObj.hierarchyState = {
       	// These variables will be set from within the emuhierarchy directive
-	// The IDs are IDs as they appear in the <bundle>_annot.json
+	// The directive will not watch for outside changes
       	selectedItemID: undefined,
 	selectedLinkFromID: undefined,
 	selectedLinkToID: undefined,
-	contextMenuID: undefined,
+	editValue: undefined,
+	inputFocus: false,
+	collapseInfo: {}
+	
+	// These can be set from within the emuhierarchy directive
+	// But the directive will also watch for outside changes
 	path: [], // this should probably be set by the controller rather than the directive
-	
-	
-	// These will be set by the handlekeystrokes directive
+	contextMenuID: undefined,
 	newLinkFromID: undefined,
+
+	// These will be set by the handlekeystrokes directive
 	rotated: false,
 	playing: 0,
-
-	collapseInfo: {}
       };
 
       sServObj.timelineSize = -1;
@@ -838,6 +841,38 @@ angular.module('emuwebApp')
         console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
         StandardFuncsService.traverseAndClean (DataService.getData());
       }
+    };
+
+    sServObj.hierarchyState.contextMenuIsOpen = function () {
+	    return sServObj.hierarchyState.contextMenuID !== undefined;
+    };
+
+    sServObj.hierarchyState.closeContextMenu = function () {
+	    sServObj.hierarchyState.contextMenuID = undefined;
+    };
+
+    sServObj.hierarchyState.getContextMenuID = function () {
+	    return sServObj.hierarchyState.contextMenuID;
+    };
+
+    sServObj.hierarchyState.setContextMenuID = function (id) {
+	    sServObj.hierarchyState.contextMenuID = id;
+    };
+
+    sServObj.hierarchyState.getInputFocus = function () {
+	    return sServObj.hierarchyState.inputFocus;
+    };
+
+    sServObj.hierarchyState.setInputFocus = function (f) {
+	    sServObj.hierarchyState.inputFocus = f;
+    };
+
+    sServObj.hierarchyState.getEditValue = function () {
+	    return sServObj.hierarchyState.editValue;
+    };
+
+    sServObj.hierarchyState.setEditValue = function (e) {
+	    sServObj.hierarchyState.editValue = e;
     };
 
     /**

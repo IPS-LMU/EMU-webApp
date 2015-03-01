@@ -109,6 +109,12 @@ angular.module('emuwebApp')
 		}
 	}, false);
 
+	scope.$watch('hierarchyState.contextMenuID', function (newValue, oldValue) {
+		if (newValue !== oldValue) {
+			scope.render();
+		}
+	}, false);
+
         //
         //////////////////////
 
@@ -317,8 +323,9 @@ angular.module('emuwebApp')
 
 	scope.svgOnClick = function (d) {
 		if (viewState.hierarchyState.contextMenuID !== undefined) {
-			viewState.hierarchyState.contextMenuID = undefined;
-			scope.render();
+			scope.$apply(function() {
+				viewState.hierarchyState.contextMenuID = undefined;
+			});
 		}
 	};
 	
@@ -328,7 +335,9 @@ angular.module('emuwebApp')
 		if (viewState.hierarchyState.contextMenuID === undefined) {
 			d3.event.stopPropagation();
 			viewState.hierarchyState.contextMenuID = d.id;
-			scope.render();
+			scope.$apply(function() {
+				scope.render();
+			});
 		}
 
 		if (viewState.hierarchyState.contextMenuID === d.id) {
@@ -350,6 +359,22 @@ angular.module('emuwebApp')
 	scope.nodeOnMouseOver = function (d) {
 		scope.selectItem(d);
 		scope.renderSelectionOnly();
+	};
+
+	scope.nodeOnInput = function (d) {
+		// select() returns a single-element selection, which is always
+		// a multi-dimensional array with [0][0] being the DOM node I'm
+		// looking for
+		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
+		viewState.hierarchyState.setEditValue(dom.value);
+	};
+
+	scope.nodeOnFocusIn = function (d) {
+		viewState.hierarchyState.inputFocus = true;
+	};
+
+	scope.nodeOnFocusOut = function (d) {
+		viewState.hierarchyState.inputFocus = false;
 	};
 
 	scope.linkOnMouseOver = function (d) {
@@ -901,16 +926,19 @@ angular.module('emuwebApp')
 				.style('height', '100%')
 				.style('outline', 'none')
 				.style('border', '0')
-				.on('click', function(d) { d3.event.stopPropagation(); })
-				.on('keydown', function(d) { d3.event.stopPropagation(); })
-				.on('keypress', function(d) { d3.event.stopPropagation(); })
-				.on('keyup', function(d) { d3.event.stopPropagation(); })
+				.on('input', scope.nodeOnInput)
+				.on('focusin', scope.nodeOnFocusIn)
+				.on('focusout', scope.nodeOnFocusOut)
 				;
+
+			if (foreignObject[0].length !== 0) {
+				foreignObject.select('input')[0][0].focus();
+				foreignObject.select('input')[0][0].select();
+			}
+
 		} else {
 			scope.svg.select('.emuhierarchy-contextmenu text').text(scope.getOrientatedNodeCollapseText);
 		}
-
-
 
 
 

@@ -11,7 +11,7 @@
 					<li><em style="color: #111;">Choose current label:</em></li>
 					<li class="divider"></li>
 					<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)">
-						<a ng-click="setCurrentAttrDef(levelName, attrDef.name)">
+						<a ng-click="setCurrentAttrDef(levelName, attrDef.name, $index)">
 							<span ng-show="isCurrentAttrDef(levelName, attrDef.name)" class="glyphicon glyphicon-arrow-right"></span>
 							{{attrDef.name}}
 						</a>
