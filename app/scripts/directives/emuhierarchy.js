@@ -7,7 +7,6 @@ angular.module('emuwebApp')
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
       scope: {
-      	path: '=', // This directive actually never writes back to path
 	vertical: '=',
 	playing: '='
       },
@@ -47,10 +46,9 @@ angular.module('emuwebApp')
 	scope.hierarchyState = viewState.hierarchyState;
 	scope.historyService = HistoryService;
 
-	scope.$watch('path', function (newValue, oldValue) {
+	scope.$watch('hierarchyState.path', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
 			console.debug('Rendering due to path change: ', newValue);
-			scope.hierarchyState.path = newValue;
 			scope.hierarchyState.newLinkFromID = undefined;
 			scope.render();
 		}
@@ -241,7 +239,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedLevelCaptionTransform = function (d) {
-		var revArr = angular.copy(scope.path).reverse();
+		var revArr = angular.copy(viewState.hierarchyState.path).reverse();
 		if (scope.vertical) {
 			return 'translate(25, '+scope.depthToX(revArr.indexOf(d))*scope.zoomListener.scale()+')';
 		} else {
@@ -294,13 +292,13 @@ angular.module('emuwebApp')
 	 * If the link is invalid, this function will try reversing the link.
 	 */
 	scope.getPreviewColor = function () {
-		var validity = HierarchyManipulationService.checkLinkValidity(scope.path, scope.newLinkSrc.id, scope.selectedItem.id);
+		var validity = HierarchyManipulationService.checkLinkValidity(viewState.hierarchyState.path, scope.newLinkSrc.id, scope.selectedItem.id);
 
 		if (validity.valid) {
 			return 'green';
 		} else {
 			if (validity.reason === 3) {
-				validity = HierarchyManipulationService.checkLinkValidity(scope.path, scope.selectedItem.id, scope.newLinkSrc.id);
+				validity = HierarchyManipulationService.checkLinkValidity(viewState.hierarchyState.path, scope.selectedItem.id, scope.newLinkSrc.id);
 				if (validity.valid) {
 					return 'green';
 				}
@@ -352,7 +350,7 @@ angular.module('emuwebApp')
 	scope.nodeOnCollapseClick = function(d) {
 		console.debug('collapsing', d);
 		// (De-)Collapse sub-tree
-		HierarchyLayoutService.toggleCollapse(d, scope.path);
+		HierarchyLayoutService.toggleCollapse(d, viewState.hierarchyState.path);
 		scope.render();
 	};
 
@@ -397,7 +395,7 @@ angular.module('emuwebApp')
 		
 
 	scope.play = function (d) {
-		var timeInfoLevel = scope.path[0];
+		var timeInfoLevel = viewState.hierarchyState.path[0];
 		if (typeof timeInfoLevel === 'undefined') {
 			console.debug('Likely a bug: There is no path selection. Not executing play():', d);
 			return;
@@ -418,7 +416,7 @@ angular.module('emuwebApp')
 				
 				firstTimeItem = currentItem;
 			}
-			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, scope.path));
+			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
 		}
 
 		console.debug('Node info for playback: ', timeInfoType, d, firstTimeItem, lastTimeItem);
@@ -445,7 +443,7 @@ angular.module('emuwebApp')
 	scope.depthToX = function (depth) {
 		var size = (scope.vertical) ? scope.height : scope.width;
 		var offset = (scope.vertical) ? scope.vertOffsetY : scope.offsetX;
-		return offset + depth / scope.path.length * size;
+		return offset + depth / viewState.hierarchyState.path.length * size;
 	};
 
 	scope.posInLevelToY = function (posInLevel) {
@@ -587,7 +585,7 @@ angular.module('emuwebApp')
 		// for reference on the .data() call, compare the comment on
 		// scope.render() above
 		var levelCaptionSet = scope.captionLayer.selectAll('g.emuhierarchy-levelcaption')
-			.data(scope.path, function (d) { return d; });
+			.data(viewState.hierarchyState.path, function (d) { return d; });
 
 		var newLevelCaptions = levelCaptionSet.enter();
 		var oldLevelCaptions = levelCaptionSet.exit();
@@ -645,11 +643,11 @@ angular.module('emuwebApp')
 		// Compute the new tree layout (first nodes and then links)
 		//
 		var nodes = [];
-		HierarchyLayoutService.calculateWeightsBottomUp(scope.path);
+		HierarchyLayoutService.calculateWeightsBottomUp(viewState.hierarchyState.path);
 
-		for (var i=0; i<scope.path.length; ++i) {
+		for (var i=0; i<viewState.hierarchyState.path.length; ++i) {
 			// Add all nodes that are not collapsed
-			var levelItems = LevelService.getLevelDetails(scope.path[i]).level.items;
+			var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).level.items;
 			for (var ii=0; ii<levelItems.length; ++ii) {
 				if (levelItems[ii]._visible) {
 					nodes.push(levelItems[ii]);
@@ -672,9 +670,9 @@ angular.module('emuwebApp')
 		var links = [];
 		var allLinks = DataService.getData().links;
 		for (var l=0; l<allLinks.length; ++l) {
-			for (var i=0; i<scope.path.length-1; ++i) {
-				var element = LevelService.getItemFromLevelById(scope.path[i], allLinks[l].toID);
-				var parentElement = LevelService.getItemFromLevelById(scope.path[i+1], allLinks[l].fromID);
+			for (var i=0; i<viewState.hierarchyState.path.length-1; ++i) {
+				var element = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
+				var parentElement = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i+1], allLinks[l].fromID);
 				
 				if (element === null) {
 					continue;

@@ -67,11 +67,11 @@ angular.module('emuwebApp')
 	
 	// These can be set from within the emuhierarchy directive
 	// But the directive will also watch for outside changes
-	path: [], // this should probably be set by the controller rather than the directive
 	contextMenuID: undefined,
 	newLinkFromID: undefined,
 
-	// These will be set by the handlekeystrokes directive
+	// These will be set by outside components
+	path: [],
 	rotated: false,
 	playing: 0
       };

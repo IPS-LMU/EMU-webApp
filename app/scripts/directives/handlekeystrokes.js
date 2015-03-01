@@ -203,8 +203,8 @@ angular.module('emuwebApp')
 						if (linkObj !== null) {
 							HistoryService.addObjToUndoStack({
 								type: 'HIERARCHY',
-					action: 'ADDLINK',
-					link: linkObj
+								action: 'ADDLINK',
+								link: linkObj
 							});
 						}
 					}
