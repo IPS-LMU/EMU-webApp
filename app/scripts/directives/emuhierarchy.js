@@ -307,6 +307,20 @@ angular.module('emuwebApp')
 		}
 	};
 
+	scope.getLabelLegalnessColor = function (d) {
+		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
+		var levelName = LevelService.getLevelNameByElementID(d.id);
+		var attrIndex = viewState.getCurAttrIndex(levelName);
+		var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
+
+		if (legalLabels === undefined || (dom.value.length > 0 && legalLabels.indexOf(dom.value) >= 0)) {
+			return 'lightgreen';
+		} else {
+			return 'red';
+		}
+	}
+
+
 	scope.svgOnMouseMove = function (d) {
 		if (scope.newLinkSrc !== undefined) {
 			var mouse = scope.getOrientatedMousePosition(d3.mouse(this));
@@ -365,6 +379,9 @@ angular.module('emuwebApp')
 		// looking for
 		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
 		viewState.hierarchyState.setEditValue(dom.value);
+		
+		// Give feedback on legalness 
+		dom.style.backgroundColor = scope.getLabelLegalnessColor(d);
 	};
 
 	scope.nodeOnFocusIn = function (d) {
@@ -924,6 +941,7 @@ angular.module('emuwebApp')
 				.style('height', '100%')
 				.style('outline', 'none')
 				.style('border', '0')
+				.style('background-color', scope.getLabelLegalnessColor)
 				.on('input', scope.nodeOnInput)
 				.on('focusin', scope.nodeOnFocusIn)
 				.on('focusout', scope.nodeOnFocusOut)

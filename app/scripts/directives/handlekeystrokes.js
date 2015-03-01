@@ -78,6 +78,7 @@ angular.module('emuwebApp')
 					var element = LevelService.getItemByID(elementID);
 					var levelName = LevelService.getLevelNameByElementID(elementID);
 					var attrIndex = viewState.getCurAttrIndex(levelName);
+					var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 					
 					var newValue = viewState.hierarchyState.getEditValue();
 					var oldValue;
@@ -87,22 +88,25 @@ angular.module('emuwebApp')
 						oldValue = '';
 					}
 
-					LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
+					// Check if new value is legal
+					if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
+						LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
 
-					HistoryService.addObjToUndoStack({
-					  // Re-Using the already existing ANNOT/RENAMELABEL
-					  // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
-					  // but it would have the same code
-					  'type': 'ANNOT',
-					  'action': 'RENAMELABEL',
-					  'name': levelName,
-					  'id': elementID,
-					  'attrIndex': attrIndex,
-					  'oldValue': oldValue,
-					  'newValue': newValue
-					});
+						HistoryService.addObjToUndoStack({
+						  // Re-Using the already existing ANNOT/RENAMELABEL
+						  // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
+						  // but it would have the same code
+						  'type': 'ANNOT',
+						  'action': 'RENAMELABEL',
+						  'name': levelName,
+						  'id': elementID,
+						  'attrIndex': attrIndex,
+						  'oldValue': oldValue,
+						  'newValue': newValue
+						});
 
-					viewState.hierarchyState.closeContextMenu();
+						viewState.hierarchyState.closeContextMenu();
+					}
 				}
 				if (code === ConfigProviderService.vals.keyMappings.hierarchyCancelEdit) {
 					viewState.hierarchyState.closeContextMenu();
