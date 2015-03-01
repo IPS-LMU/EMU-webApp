@@ -49,34 +49,34 @@
 					"type": "integer"
 				},
 				"showHierarchy": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyDeleteLink": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyDeleteItem": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyAddItemBefore": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyAddItemAfter": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyAddLink": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyRotate": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyPlayback": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyCommitEdit": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"hierarchyCancelEdit": {
-					"type": "integer"				
+					"type": "integer"
 				},
 				"shiftViewPortLeft": {
 					"type": "integer"
