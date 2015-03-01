@@ -63,7 +63,7 @@ angular.module('emuwebApp')
 	selectedLinkToID: undefined,
 	editValue: undefined,
 	inputFocus: false,
-	collapseInfo: {}
+	collapseInfo: {},
 	
 	// These can be set from within the emuhierarchy directive
 	// But the directive will also watch for outside changes
@@ -73,7 +73,7 @@ angular.module('emuwebApp')
 
 	// These will be set by the handlekeystrokes directive
 	rotated: false,
-	playing: 0,
+	playing: 0
       };
 
       sServObj.timelineSize = -1;
