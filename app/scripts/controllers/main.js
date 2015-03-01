@@ -297,7 +297,7 @@ angular.module('emuwebApp')
 			viewState.somethingInProgressTxt = 'Checking protocol...';
 			// Check if server speaks the same protocol
 			Iohandlerservice.getProtocol().then(function (res) {
-				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.1') {
+				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.2') {
 					viewState.somethingInProgressTxt = 'Checking user management...';
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
@@ -687,8 +687,7 @@ angular.module('emuwebApp')
 			modalService.open('views/editDBconfigModal.html').then(function (res) {
 				if(res) {
 				    // todo save and transfer curDbConfig & vals
-				    console.log($scope.cps.curDbConfig);
-				    console.log($scope.cps.vals);
+				    console.log(angular.toJson({ dbconfig: $scope.cps.curDbConfig, vals: $scope.cps.vals }));
 				}
 				else {
 				    $scope.cps.curDbConfig = currentConfig;

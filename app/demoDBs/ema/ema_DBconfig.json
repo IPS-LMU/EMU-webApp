@@ -175,7 +175,8 @@
 						"fromDot": "ul",
 						"toDot": "ll",
 						"color": "rgb(0,0,0)"
-					}]
+					}],
+					"staticDots": []
 				}]
 			}
 		}, {
@@ -224,7 +225,8 @@
 						"yContourNr": 3,
 						"color": "rgb(255,0,0)"
 					}],
-					"connectLines": []
+					"connectLines": [],
+					"staticDots": []
 				}]
 			}
 		}],

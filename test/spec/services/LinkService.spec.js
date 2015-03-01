@@ -211,7 +211,7 @@ describe('Service: LinkService', function () {
   /**
    *
    */
-  it('should check if isIntermediate', inject(function (DataService, LinkService) {
+  it('should check if isLinked', inject(function (DataService, LinkService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
     DataService.setLinkData([]);
@@ -221,9 +221,9 @@ describe('Service: LinkService', function () {
     //      /  \
     //     1    2  
     LinkService.insertLinksTo(parentID, childIDs);
-    expect(LinkService.isIntermediate(1)).toEqual(true);
-    expect(LinkService.isIntermediate(2)).toEqual(true);
-    expect(LinkService.isIntermediate(1234)).toEqual(true);
+    expect(LinkService.isLinked(1)).toEqual(true);
+    expect(LinkService.isLinked(2)).toEqual(true);
+    expect(LinkService.isLinked(1234)).toEqual(true);
   }));
 
   /**

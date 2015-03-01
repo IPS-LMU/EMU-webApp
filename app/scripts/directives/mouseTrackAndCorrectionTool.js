@@ -77,34 +77,23 @@ angular.module('emuwebApp')
 											// var col = Ssffdataservice.data[0].Columns[0];
 											if (tr === undefined) {
 												tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-												col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-												sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 											}
-
+											col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+											sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 											var startTimeVP = viewState.getViewPortStartTime();
 											var endTimeVP = viewState.getViewPortEndTime();
-
 											var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
 											var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
 											var nrOfSamples = colEndSampleNr - colStartSampleNr;
 											var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-
-											// console.log(colStartSampleNr)
-
-
 											var curMouseTime = startTimeVP + (viewState.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
 											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-
 											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
-
-
 											if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
 												console.log('early return');
 												return;
 											}
-
 											viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
-
 											var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
 											var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 

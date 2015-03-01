@@ -56,6 +56,11 @@ jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('bundleListSchema.json');
 var bundleListSchema = JSON.parse(f);
 
+// emuwebappConfigSchema
+jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
+var f = readFixtures('bundleSchema.json');
+var bundleSchema = JSON.parse(f);
+
 // DBconfigFileSchema
 jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('DBconfigFileSchema.json');

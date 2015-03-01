@@ -19,18 +19,21 @@ var filewalker = require('filewalker');
 
 // allow to set vars from command line
 if (process.argv.length === 2) {
-  
-  var portNr = 17890;
-  var pathToDbRoot = '../app/testData/newFormat/ae/';
-  var configName = 'ae_DBconfig.json';
 
-} else if (process.argv.length === 3){
+  var portNr = 17890;
+  var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
+  var configName = 'gersC_DBconfig.json';
+  // var pathToDbRoot = '../app/testData/newFormat/ae/';
+  // var configName = 'ae_DBconfig.json';
+
+
+} else if (process.argv.length === 3) {
 
   var portNr = process.argv[2];
   var pathToDbRoot = '../app/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
 
-} else if(process.argv.length === 5){
+} else if (process.argv.length === 5) {
 
   var portNr = process.argv[2];
   var pathToDbRoot = process.argv[3];;
@@ -41,6 +44,7 @@ if (process.argv.length === 2) {
 
 
 var dbConfig = {};
+var ssffFilesMap = {};
 
 // demo of user management
 var doUserManagement = 'NO';
@@ -70,7 +74,7 @@ wss.on('connection', function (ws) {
         'callbackID': mJSO.callbackID,
         'data': {
           'protocol': 'EMU-webApp-websocket-protocol',
-          'version': '0.0.1'
+          'version': '0.0.2'
         },
         'status': {
           'type': 'SUCCESS',
@@ -130,6 +134,7 @@ wss.on('connection', function (ws) {
 
       // GETGLOBALDBCONFIG method
     case 'GETGLOBALDBCONFIG':
+      console.log('############## GETGLOBALDBCONFIG ####################')
       fs.readFile(pathToDbRoot + configName, 'utf8', function (err, data) {
         if (err) {
           console.log('Error: ' + err);
@@ -143,6 +148,18 @@ wss.on('connection', function (ws) {
           return;
         } else {
           dbConfig = JSON.parse(data);
+
+          // figure out which SSFF files should be sent with each bundle 
+          // (could further reduce the files being sent by looking at the perspectives)
+          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
+            if (ssffFilesMap[dbConfig.ssffTrackDefinitions[i].fileExtension] !== undefined) {
+              ssffFilesMap[dbConfig.ssffTrackDefinitions[i].fileExtension] += 1;
+            } else {
+              ssffFilesMap[dbConfig.ssffTrackDefinitions[i].fileExtension] = 1;
+            }
+          }
+          console.log(ssffFilesMap);
+
           // curUttList = dbConfig;
           // curStrippedUttList = stripUttList(dbConfig);
 
@@ -170,8 +187,6 @@ wss.on('connection', function (ws) {
           // var patt = new RegExp('^SES[^/]+/[^/]+$');
 
           if (patt.test(p)) {
-            console.log('###########');
-            console.log(p);
             var arr = p.split('/');
             var nArr = arr[arr.length - 1].split('_');
             var sArr = arr[0].split('_');
@@ -204,7 +219,6 @@ wss.on('connection', function (ws) {
 
       // GETBUNDLE method
     case 'GETBUNDLE':
-      console.log(mJSO.name);
 
       var bundle = {};
       bundle.ssffFiles = [];
@@ -230,17 +244,17 @@ wss.on('connection', function (ws) {
           }
           // read ssffTrackDefinitions
 
-          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
-            // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
-            var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
-            if (pattTrack.test(p)) {
-              bundle.ssffFiles.push({
-                ssffTrackName: dbConfig.ssffTrackDefinitions[i].name,
-                encoding: 'BASE64',
-                filePath: p
-              });
-            }
-          }
+          // for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
+          //   // var pattTrack = new RegExp('^SES[^/]+/' + mJSO.name + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
+          //   var pattTrack = new RegExp('^.+_ses+/' + mJSO.name + '_bndl' + '/[^/]+' + dbConfig.ssffTrackDefinitions[i].fileExtension + '$');
+          //   if (pattTrack.test(p)) {
+          //     bundle.ssffFiles.push({
+          //       ssffTrackName: dbConfig.ssffTrackDefinitions[i].name,
+          //       encoding: 'BASE64',
+          //       filePath: p
+          //     });
+          //   }
+          // }
 
 
         }).on('error', function (err) {
@@ -252,18 +266,22 @@ wss.on('connection', function (ws) {
             }
           }), undefined, 0);
         }).on('done', function () {
-          console.log(bundle);
-
+          console.log(mJSO)
           bundle.mediaFile.data = fs.readFileSync(pathToDbRoot + bundle.mediaFile.filePath, 'base64');
           delete bundle.mediaFile.filePath;
 
           bundle.annotation = JSON.parse(fs.readFileSync(pathToDbRoot + bundle.annotation.filePath, 'utf8'));
-          // delete bundle.annotation.filePath;
-          console.log(bundle.ssffFiles)
-          for (var i = 0; i < dbConfig.ssffTrackDefinitions.length; i++) {
-            bundle.ssffFiles[i].data = fs.readFileSync(pathToDbRoot + bundle.ssffFiles[i].filePath, 'base64');
-            delete bundle.ssffFiles[i].filePath;
+          delete bundle.annotation.filePath;
+          for (var key in ssffFilesMap) {
+              bundle.ssffFiles.push({
+                fileExtension: key,
+                encoding: 'BASE64',
+                data: fs.readFileSync(pathToDbRoot + mJSO.session + '_ses/' + mJSO.name + '_bndl/' + mJSO.name + '.' + key, 'base64')
+              });
+          //   bundle.ssffFiles[i].data = fs.readFileSync(pathToDbRoot + bundle.ssffFiles[i].filePath, 'base64');
+          //   delete bundle.ssffFiles[i].filePath;
           }
+
           console.log('##########################');
           console.log('done');
           // fs.writeFileSync('/Users/raphaelwinkelmann/Desktop/bundle.json', JSON.stringify(bundle, undefined, 0));

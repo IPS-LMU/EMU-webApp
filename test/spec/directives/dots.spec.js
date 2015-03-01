@@ -16,7 +16,7 @@ describe('Directive: dots', function() {
         scope.data.setData(msajc003_bndl.annotation);
         scope.ssffds = Ssffdataservice;  
         scope.shs = Soundhandlerservice;  
-        scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions = [ {dots: [{xContourNr: 1}, {xContourNr: 2}], connectLines: []} ];
+        scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions = [ {dots: [{xContourNr: 1}, {xContourNr: 2}], connectLines: [], staticDots: []} ];
     }));
     
     function compileDirective() {

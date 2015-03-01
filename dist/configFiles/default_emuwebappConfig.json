@@ -136,7 +136,8 @@
         "openDemoDB": true,
         "saveBundle": false,
         "openMenu": true,
-        "showHierarchy": false
+        "showHierarchy": false,
+        "editDBconfig": false
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }

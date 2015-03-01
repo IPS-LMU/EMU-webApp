@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2014-11-21T16:24:04.339Z
+# rev 1 - 2015-02-27T13:18:32.056Z
 
 CACHE:
 404.html
@@ -28,6 +28,7 @@ fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
 fonts/glyphicons-halflings-regular.woff
 img/deleteBtn.png
+img/exportBtn.png
 img/glyphicons-halflings-white.png
 img/glyphicons-halflings.png
 img/handle-vert.png
@@ -36,22 +37,24 @@ img/resizeBtn.png
 img/saveBtn.png
 img/search-dark.png
 index.html
+intro.html
 manifest.json
 robots.txt
 schemaFiles/DBconfigFileSchema.json
 schemaFiles/annotationFileSchema.json
 schemaFiles/bundleListSchema.json
+schemaFiles/bundleSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/dff8f23f.emuwebApp.min.js
+scripts/444ca2d5.emuwebAppExternal.min.js
+scripts/bcb87f79.emuwebApp.min.js
 scripts/emuwebApp.min.js.map
-scripts/f1bbfc05.emuwebAppExternal.min.js
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
 scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
-styles/1ec4b2f5.emuwebApp.min.css
+styles/766b661a.emuwebApp.min.css
 styles/89202259.emuwebAppExternal.min.css
 styles/images/rightSideMenuBtn.png
 views/SelectLabelModal.html
@@ -61,12 +64,14 @@ views/bundleListSideBar.html
 views/confirmModal.html
 views/connectModal.html
 views/deleteLevel.html
+views/editDBconfigModal.html
 views/emuwebapp.html
 views/error.html
 views/export.html
 views/level.html
 views/loadFiles.html
 views/loginModal.html
+views/modal.html
 views/myDropZone.html
 views/myDropZoneInput.html
 views/osci.html
@@ -77,6 +82,7 @@ views/showHierarchyModal.html
 views/spectSettings.html
 views/spectro.html
 views/ssffTrack.html
+views/tutorial.html
 views/twoDcanvases.html
 views/waitDial.html
 

@@ -7,7 +7,7 @@
 	<div class="emuwebapp-modal-body">
 		<b>Please select one of the following options:</b>
 		<ul class="emuwebapp-modalUl">
-			<li ng-repeat="(key, curOpt) in dataIn">
+			<li ng-repeat="(key, curOpt) in dataIn track by $index">
 				<div class="emuwebapp-card" ng-click="modal.dataOut = $index; modal.confirmContent()">
 					{{curOpt}}
 				</div>

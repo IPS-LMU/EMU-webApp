@@ -5,9 +5,10 @@ describe('Directive: emuhierarchy', function() {
     var elm, scope;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService) {
+    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, HierarchyLayoutService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
+        scope.hls = HierarchyLayoutService;
         compileDirective();
     }));
 
@@ -21,8 +22,8 @@ describe('Directive: emuhierarchy', function() {
     
     it('should have correct html', function () {
         expect(elm.find('svg').length).toBe(1);
-    });    
-        
+    });   
+    
     it('should centerNode', function () {
         spyOn(elm.isolateScope(), 'getOrientatedTransform');
         elm.isolateScope().width = 100;
@@ -95,6 +96,17 @@ describe('Directive: emuhierarchy', function() {
     
     it('should getPath', function () {
         expect(elm.isolateScope().getPath({_fromX: 1,_toX: 2,_fromY: 3,_toY: 4})).toEqual('M1 3Q1 4 2 4');
-    });     
+    });  
+    
+    it('should react to nodeOnClick', function () {
+        spyOn(elm.isolateScope(), 'selectVisibleNodes');
+        spyOn(elm.isolateScope(), 'render');
+        spyOn(scope.hls, 'findChildren').and.returnValue([]);
+        elm.isolateScope().nodeOnClick({});
+        expect(elm.isolateScope().selectVisibleNodes).toHaveBeenCalled();
+        expect(elm.isolateScope().render).toHaveBeenCalled();
+    });  
+    
+       
     
 });
