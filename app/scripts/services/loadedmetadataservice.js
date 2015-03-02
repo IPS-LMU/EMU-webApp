@@ -146,6 +146,12 @@ angular.module('emuwebApp')
 		 */
 		sServObj.toggleCollapseSession = function (session) {
 			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
+			// close all other sessions
+			Object.keys(uniqSessionList).forEach(function (key) {
+				if (key !== session) {
+					uniqSessionList[key].collapsed = true;
+				}
+			});
 		};
 
 		/**

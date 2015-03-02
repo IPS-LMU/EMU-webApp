@@ -21,10 +21,10 @@ var filewalker = require('filewalker');
 if (process.argv.length === 2) {
 
   var portNr = 17890;
-  // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
-  // var configName = 'gersC_DBconfig.json';
-  var pathToDbRoot = '../app/testData/newFormat/ae/';
-  var configName = 'ae_DBconfig.json';
+  var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/dfgvowels/';
+  var configName = 'dfgvowels_DBconfig.json';
+  // var pathToDbRoot = '../app/testData/newFormat/ae/';
+  // var configName = 'ae_DBconfig.json';
 
 
 } else if (process.argv.length === 3) {
