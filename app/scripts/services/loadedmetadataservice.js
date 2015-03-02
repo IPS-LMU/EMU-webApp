@@ -19,6 +19,7 @@ angular.module('emuwebApp')
 		var curBndl = {};
 		var demoDbName = '';
 		var drandropBundles = [];
+		var rendOptBndlList = {}; // render optimized bundle list
 
 		//////////////////////
 		// private functions
@@ -36,6 +37,17 @@ angular.module('emuwebApp')
 			// open fist session up 
 			sList[fistSes].collapsed = false;
 			return sList;
+		}
+
+		function genRendOptBndlList(bndlList) {
+			bndlList.forEach(function (bndl, idx) {
+				if (rendOptBndlList[bndl.session] === undefined) {
+					rendOptBndlList[bndl.session] = [];
+				} else {
+					rendOptBndlList[bndl.session].push(bndl);
+				}
+			});
+			return rendOptBndlList;
 		}
 
 		//////////////////////
@@ -57,6 +69,8 @@ angular.module('emuwebApp')
 				bundleList = bList;
 				// generate uniqSessionList
 				uniqSessionList = genUniqSessionList(bundleList);
+				// generate render optimized bundlList
+				rendOptBndlList = genRendOptBndlList(bundleList);
 			}
 			return validRes;
 		};
@@ -66,6 +80,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getBundleList = function () {
 			return bundleList;
+		};
+
+		/**
+		 * getter for rendOptBndlList
+		 */
+		sServObj.getRendOptBndlList = function () {
+			return rendOptBndlList;
 		};
 
 		///////////
@@ -116,8 +137,8 @@ angular.module('emuwebApp')
 			return demoDbName;
 		};
 
-		
-				///////////////////
+
+		///////////////////
 		// uniqSessionList
 
 		/**

@@ -8,7 +8,7 @@
         </h3>
         <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
         <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
-            <ul ng-repeat="(key, value) in lmds.getBundleList() | groupBy: 'session'">
+            <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()">
                 <div class="emuwebapp-bundleListSession" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
                     <div ng-if="lmds.getSessionCollapseState(key)">
                         ▷{{key}}
@@ -25,7 +25,7 @@
                         <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" /></div>
                     </div>
                 </div>
-                </div>
+
             </ul>
         </div>
     </div>
