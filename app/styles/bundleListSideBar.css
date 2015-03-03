@@ -159,3 +159,10 @@
 .emuwebapp-saveBundleButton img:hover{
     background-color:#0DC5FF;
 }
+
+.emuwebapp-shrinkWidthTo0px{
+  width: 0px;
+  -webkit-transition: width 0.4s;
+  -moz-transition: width 0.4s;
+  transition: width 0.4s;
+}
