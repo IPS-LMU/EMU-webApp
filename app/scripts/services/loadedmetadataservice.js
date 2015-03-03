@@ -93,12 +93,27 @@ angular.module('emuwebApp')
 		// curBndl 
 
 		/**
-		 * set curBndl
+		 * getter curBndl
+		 */
+		sServObj.getCurBndl = function () {
+			return curBndl;
+		};
+
+		/**
+		 * setter curBndl
 		 */
 		sServObj.setCurBndl = function (bndl) {
 			curBndl = bndl;
 		};
 
+
+		/**
+		 * getter curBndl name
+		 */
+		sServObj.getCurBndlName = function () {
+			return curBndl.name;
+		};
+		
 		/**
 		 * setter curBndl name
 		 */
@@ -106,19 +121,7 @@ angular.module('emuwebApp')
 			curBndl.name = name;
 		};
 
-		/**
-		 * setter curBndl name
-		 */
-		sServObj.getCurBndlName = function () {
-			return curBndl.name;
-		};
 
-		/**
-		 * getter curBndl
-		 */
-		sServObj.getCurBndl = function () {
-			return curBndl;
-		};
 
 		//////////////
 		// demoDbName
