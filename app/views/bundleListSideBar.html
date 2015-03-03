@@ -34,6 +34,15 @@
                             <div ng-show="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-keyup="changingMetaData();" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" /></div>
                         </div>
                     </div>
+                    <div class="emuwebapp-bundleListSessionPager" ng-show="value.length > pageSize">
+                        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                            ←
+                        </button>
+                        {{currentPage+1}}/{{numberOfPages(value.length)}}
+                        <button ng-disabled="currentPage >= value.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                            →
+                        </button>
+                    </div>
 
                 </ul>
             </div>
