@@ -187,6 +187,7 @@ angular.module('emuwebApp')
 			uniqSessionList = [];
 			bundleList = [];
 			curBndl = {};
+			rendOptBndlList = {};
 		};
 
 		return (sServObj);
