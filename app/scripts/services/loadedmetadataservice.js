@@ -159,15 +159,15 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.updateCollapseSessionState = function (text) {
-			angular.forEach(sServObj.getBundleList(), function (bundle) {
-				if (bundle.name.indexOf(text)) {
-					uniqSessionList[bundle.session].collapsed = false;
-				} else {
-					uniqSessionList[bundle.session].collapsed = true;
-				}
-			});
-		};
+		// sServObj.updateCollapseSessionState = function (text) {
+		// 	angular.forEach(sServObj.getBundleList(), function (bundle) {
+		// 		if (bundle.name.indexOf(text)) {
+		// 			uniqSessionList[bundle.session].collapsed = false;
+		// 		} else {
+		// 			uniqSessionList[bundle.session].collapsed = true;
+		// 		}
+		// 	});
+		// };
 
 		/**
 		 *
