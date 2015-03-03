@@ -43,9 +43,8 @@ angular.module('emuwebApp')
 			bndlList.forEach(function (bndl, idx) {
 				if (rendOptBndlList[bndl.session] === undefined) {
 					rendOptBndlList[bndl.session] = [];
-				} else {
-					rendOptBndlList[bndl.session].push(bndl);
 				}
+				rendOptBndlList[bndl.session].push(bndl);
 			});
 			return rendOptBndlList;
 		}
@@ -113,7 +112,7 @@ angular.module('emuwebApp')
 		sServObj.getCurBndlName = function () {
 			return curBndl.name;
 		};
-		
+
 		/**
 		 * setter curBndl name
 		 */
