@@ -21,8 +21,8 @@ var filewalker = require('filewalker');
 if (process.argv.length === 2) {
 
   var portNr = 17890;
-  // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
-  // var configName = 'gersC_DBconfig.json';
+  // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/dfgvowels/';
+  // var configName = 'dfgvowels_DBconfig.json';
   var pathToDbRoot = '../app/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
 
@@ -324,6 +324,36 @@ wss.on('connection', function (ws) {
         }
       }), undefined, 0);
       break;
+      
+      // GETDOEDITDBCONFIG method
+    case 'GETDOEDITDBCONFIG':
+      console.log('checking if editDBConfig is allowed...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': 'YES',
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+      
+      // GETDOEDITDBCONFIG method
+    case 'EDITDBCONFIG':
+      console.log('editing dbConfig...');
+      // console.log(mJSO.data.annotation);
+      // todo: edit dbconfig and return success or error
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': 'YES',
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+      
 
     default:
       ws.send(JSON.stringify({

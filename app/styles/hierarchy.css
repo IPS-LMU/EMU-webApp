@@ -1,25 +1,17 @@
-.emuhierarchy-node {
+.emuwebapp-hierarchy-container{
+	width: 100%;
+	height: calc(100% - 34px);
+}
+
+.emuhierarchy-node, .emuhierarchy-addbutton {
 	cursor: pointer;
 }
 
-.emuhierarchy-overlay {
-	background-color:#EEE;
-}
-
 .emuhierarchy-node circle {
-	fill: #fff;
-	stroke: steelblue;
 	stroke-width: 1.5px;
 }
 
-.emuhierarchy-node circle.selected {
-	stroke: red;
-}
-
-.emuhierarchy-node circle.collapsed {
-	fill: red;
-}
-
+/* Caption of individual items */
 .emuhierarchy-node text {
 	font-size:10px;
 	font-family:sans-serif;
@@ -27,21 +19,21 @@
 
 .emuhierarchy-link {
 	fill: none;
-	stroke: #ccc;
-	stroke-width: 1.emuhierarchy-5px;
+	stroke-width: 1.5px;
 }
 
-.emuhierarchy-templink {
+/* Invisible, thick background for every link to provide easier mouse-over */
+.emuhierarchy-ghostlink {
 	fill: none;
-	stroke: red;
-	stroke-width: 3px;
+	stroke-width: 15px;
+	/* The stroke color will never be visible due to the opacity of 0 */
+	stroke: white;
+	opacity: 0;
 }
 
-.emuhierarchy-ghostCircle .emuhierarchy-show {
-		display:block;
-}
-
-.emuhierarchy-ghostCircle, .emuhierarchy-activeDrag .emuhierarchy-ghostCircle {
-		display: none;
+.emuhierarchy-newlinkpreview {
+	fill: none;
+	stroke-width: 2px;
+	stroke-dasharray: 5 5;
 }
 

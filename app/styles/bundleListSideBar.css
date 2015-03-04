@@ -10,6 +10,22 @@
     background: rgb(56,54,62);
     color: #fff;
 }
+/**
+ * ng-hide animation
+ */
+
+.emuwebapp-bundleListSideBarOuter.ng-hide-add.ng-hide-add-active,
+.emuwebapp-bundleListSideBarOuter.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: width 0.4s;
+  -moz-transition: width 0.4s;
+  transition: width 0.4s;
+}
+
+.emuwebapp-bundleListSideBarOuter.ng-hide {
+    width:0px;
+}
+
+
 
 .emuwebapp-bundleListSideBarOuter h3 {
     font-size: 1.4em;
@@ -57,6 +73,65 @@
     position: relative;
     cursor: default;
 }
+
+.emuwebapp-bundleListSessionBndlsContainer {
+  max-height: 25000px;
+}
+
+
+/**
+ * ng-hide animation
+ */
+
+.emuwebapp-bundleListSessionBndlsContainer.ng-hide-add.ng-hide-add-active{
+  -webkit-transition: max-height 0.05s ease-out;
+  -moz-transition: max-height 0.05s ease-out;
+  transition: max-height 0.05s ease-out;
+
+}
+
+.emuwebapp-bundleListSessionBndlsContainer.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: max-height 0.25s ease-in;
+  -moz-transition: max-height 0.25s ease-in;
+  transition: max-height 0.25s ease-in;
+}
+
+.emuwebapp-bundleListSessionBndlsContainer.ng-hide {
+  max-height: 0;
+}
+
+
+.emuwebapp-bundleListSessionPager{
+    margin: 0px;
+    padding: 5px 0 5px 0;
+    border-style:none;
+    position: relative;
+    text-align: center;
+    cursor: default;
+
+}
+
+.emuwebapp-bundleListSessionPager button{
+    background: transparent;
+    color: white;
+    border-radius: 25%;
+    border:2px solid white;
+    font-size: 15px;
+}
+.emuwebapp-bundleListSessionPager button:hover{
+    background-color: rgba(152, 152, 152, 0.25);
+}
+
+.emuwebapp-bundleListSessionPager button:focus{
+    outline:0;
+}
+
+
+.emuwebapp-bundleListSessionPager button:disabled{
+    color: rgba(152, 152, 152, 0.25);
+    border:2px solid rgba(152, 152, 152, 0.25);
+}
+
 
 .emuwebapp-bundleListSession:hover{
     background-color:rgba(152, 152, 152, 0.18);
@@ -110,14 +185,6 @@
 
 .emuwebapp-saveBundleButton img:hover{
     background-color:#0DC5FF;
-}
-
-
-.emuwebapp-expandWidthTo240px{
-  width: 240px;
-  -webkit-transition: width 0.4s;
-  -moz-transition: width 0.4s;
-  transition: width 0.4s;
 }
 
 .emuwebapp-shrinkWidthTo0px{

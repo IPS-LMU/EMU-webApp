@@ -271,7 +271,7 @@ angular.module('emuwebApp')
 
 			var thdir = direction;
 
-			thdat = thdat * thdir
+			thdat = thdat * thdir;
 
 
 			var xx = ArrayHelperService.multiplyEachElement(x, thdir); // handle positive/neg.

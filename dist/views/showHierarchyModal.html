@@ -1,7 +1,7 @@
 <div class="emuwebapp-modal-wrap" ng-controller="ShowhierarchyCtrl">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
 	  <h2>
-	  <div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in paths.possible[getSelIdx()]">
+	  <div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in standardFuncServ.reverseCopy(paths.possible[getSelIdx()])">
 			<ul>
 			  <li>
 				  <button type="button" class="emuwebapp-toggle-button">
@@ -11,7 +11,7 @@
 					<li><em style="color: #111">Choose current label:</em></li>
 					<li class="divider"></li>
 					<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)">
-						<a ng-click="setCurrentAttrDef(levelName, attrDef.name)">
+						<a ng-click="setCurrentAttrDef(levelName, attrDef.name, $index)">
 							<span ng-show="isCurrentAttrDef(levelName, attrDef.name)" class="glyphicon glyphicon-arrow-right"></span>
 							{{attrDef.name}}
 						</a>
@@ -25,7 +25,8 @@
 	</div>
 	<div class="emuwebapp-modal-bodyHierarchy">
 		<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
-		<emuhierarchy playing="getPlaying();" path="paths.possible[getSelIdx()];" vertical="getRotation();"></emuhierarchy>
+		<history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
+		<emuhierarchy playing="getPlaying();" vertical="getRotation();"></emuhierarchy>
 	</div>
 	<div class="emuwebapp-modal-footer">
 

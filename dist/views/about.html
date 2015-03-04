@@ -6,9 +6,10 @@
 	</div>
 	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
 	  <img src="assets/EMU-webAppIcon-roundCorners.svg" style="height:60px">
-	  <h4 style="text-align:center">Version: 0.0.11</h4>
-	  <h5 style="font-size:8pt; text-align:center">Build time stamp: Wed Feb 25 2015 18:03:35</h5>
-	  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: f10dd9cd438134c3199b1b220ba271b3625d44b5 - master</h5>
+	  <h4 style="text-align:center">Version: 0.0.13</h4>
+	  <h5 style="font-size:8pt; text-align:center">Build time stamp: Wed Mar 04 2015 16:29:38</h5>
+	  <h5 style="font-size:8pt; text-align:center">Build GIT SHA-1: db1659b288160ea73aacaf30e4491eda4d44015c - master</h5>
+	  <h5 style="font-size:8pt; text-align:center">EMU-webApp-websocket-protocol version: 0.0.2</h5>
 	  <div class="emuwebapp-aboutDiv">	  
 	  <div class="alert alert-danger">
 	      <b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.
@@ -50,9 +51,7 @@
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open left submenu</td></tr>
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} {{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td><td>Open right submenu</td></tr>
 
-		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarhy)}}</b></td><td>Open Hierarchy View</td></tr>
-		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.rotateHierarhy)}}</b></td><td>Rotate Hierarchy</td></tr>
-
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarchy)}}</b></td><td>Open Hierarchy View</td></tr>
 	  
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td><td>Zoom in<sup>1</sup></td></tr>
 		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td><td>Zoom out<sup>1</sup></td></tr>
@@ -134,6 +133,29 @@
 		</tbody>
 	  </table>
 	</div>
+
+	<hr class="emuwebapp-aboutHr" ng-show="cps.vals.activeButtons.showHierarchy">
+
+	<!-- correction shortcuts -->
+
+	<div class="emuwebapp-aboutDiv" ng-show="cps.vals.activeButtons.showHierarchy">
+	<b>Hierarchy Tool shortcuts</b><br>&nbsp;<br>
+	  <table class="emuwebapp-aboutTable">
+	  	<tbody>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyRotate)}}</b></td><td>Rotate hierarchy by 90°</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemBefore)}}</b></td><td>Add item before the currently preselected one</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemAfter)}}</b></td><td>Add item after the currently preselected one</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddLink)}}</b></td><td>1. Start drawing a new link from the currently preselected item; 2. Finish drawing the link</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteItem)}}</b></td><td>Delete the currently preselected item</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteLink)}}</b></td><td>Delete the currently preselected link</td></tr>
+		  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyPlayback)}}</b></td><td>Play back the portion of the file defined by the currently preselected item</td></tr>
+		</tbody>
+	  </table>
+	</div>
+
+
+
+
 	</div>
 	<div class="emuwebapp-modal-footer">
 	  <button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>

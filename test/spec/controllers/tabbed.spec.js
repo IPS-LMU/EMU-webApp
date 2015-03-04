@@ -53,6 +53,8 @@ describe('Controller: TabbedCtrl', function () {
      expect(scope.isActiveTab('nothing')).toEqual({});
    }); 
    
+   
+   /*
    it('should addDefinition (level)', function () {
      var origLength = scope.cps.curDbConfig.levelDefinitions.length;
      scope.addDefinition('level');
@@ -170,5 +172,5 @@ describe('Controller: TabbedCtrl', function () {
      expect(scope.cps.vals.perspectives.length).toEqual(origLength - 1);
    });   
    // deleteDefinition all other : todo !
-         
+   */      
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice) {
+  .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice, DataService, StandardFuncsService) {
 
     //shared service object to be returned
     var sServObj = {};
@@ -54,6 +54,28 @@ angular.module('emuwebApp')
         endFreezeSample: -1
       };
 
+      // 
+      sServObj.hierarchyState = {
+      	// These variables will be set from within the emuhierarchy directive
+	// The directive will not watch for outside changes
+      	selectedItemID: undefined,
+	selectedLinkFromID: undefined,
+	selectedLinkToID: undefined,
+	editValue: undefined,
+	inputFocus: false,
+	collapseInfo: {},
+	
+	// These can be set from within the emuhierarchy directive
+	// But the directive will also watch for outside changes
+	contextMenuID: undefined,
+	newLinkFromID: undefined,
+
+	// These will be set by outside components
+	path: [],
+	rotated: false,
+	playing: 0
+      };
+
       sServObj.timelineSize = -1;
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';
@@ -61,7 +83,6 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
-      sServObj.hierarchyRotated = false;
       sServObj.hierarchyShown = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
@@ -266,26 +287,34 @@ angular.module('emuwebApp')
           idxOfNow = idx;
         }
       });
-
-      if (next) {
-        if (idxOfNow + 1 < order.length) {
-          curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
-          // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
-          sServObj.curClickItems = [];
-          sServObj.selectBoundary();
-          //sServObj.resetSelect();
-        }
-      } else {
-        if (idxOfNow - 1 >= 0) {
-          curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
-          // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
-          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
-          sServObj.curClickItems = [];
-          sServObj.selectBoundary();
-          //sServObj.resetSelect();
-        }
+      if(idxOfNow === undefined) {
+		  curLev = Levelserv.getLevelDetails(order[0]);
+		  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+		  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+		  sServObj.curClickItems = [];
+		  sServObj.selectBoundary();      
       }
+      else {
+		  if (next) {
+			if (idxOfNow + 1 < order.length) {
+			  curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
+			  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
+			  sServObj.curClickItems = [];
+			  sServObj.selectBoundary();
+			  //sServObj.resetSelect();
+			}
+		  } else {
+			if (idxOfNow - 1 >= 0) {
+			  curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
+			  // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
+			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
+			  sServObj.curClickItems = [];
+			  sServObj.selectBoundary();
+			  //sServObj.resetSelect();
+			}
+		  }
+		}
     };
 
 
@@ -799,14 +828,14 @@ angular.module('emuwebApp')
      *
      */
     sServObj.isHierarchyRotated = function () {
-      return sServObj.hierarchyRotated;
+      return sServObj.hierarchyState.rotated;
     };
 
     /**
      *
      */
-    sServObj.rotateHierarchy = function () {
-      sServObj.hierarchyRotated = !sServObj.hierarchyRotated;
+    sServObj.toggleHierarchyRotation = function () {
+      sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
     };
 
     /**
@@ -814,7 +843,124 @@ angular.module('emuwebApp')
      */
     sServObj.toggleHierarchy = function () {
       sServObj.hierarchyShown = !sServObj.hierarchyShown;
+      if (sServObj.hierarchyShown === false) {
+        // Make sure no private attributes (such as do start with an underscore
+        // are left in the data when the hierarchy modal is closed
+        console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
+        StandardFuncsService.traverseAndClean (DataService.getData());
+      }
     };
+
+    sServObj.hierarchyState.contextMenuIsOpen = function () {
+	    return sServObj.hierarchyState.contextMenuID !== undefined;
+    };
+
+    sServObj.hierarchyState.closeContextMenu = function () {
+	    sServObj.hierarchyState.contextMenuID = undefined;
+    };
+
+    sServObj.hierarchyState.getContextMenuID = function () {
+	    return sServObj.hierarchyState.contextMenuID;
+    };
+
+    sServObj.hierarchyState.setContextMenuID = function (id) {
+	    sServObj.hierarchyState.contextMenuID = id;
+    };
+
+    sServObj.hierarchyState.getInputFocus = function () {
+	    return sServObj.hierarchyState.inputFocus;
+    };
+
+    sServObj.hierarchyState.setInputFocus = function (f) {
+	    sServObj.hierarchyState.inputFocus = f;
+    };
+
+    sServObj.hierarchyState.getEditValue = function () {
+	    return sServObj.hierarchyState.editValue;
+    };
+
+    sServObj.hierarchyState.setEditValue = function (e) {
+	    sServObj.hierarchyState.editValue = e;
+    };
+
+    /**
+     *
+     */
+    sServObj.getCollapsed = function (id) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    return false;
+	    } else {
+		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsed === 'boolean') {
+			    return sServObj.hierarchyState.collapseInfo[id].collapsed;
+		    } else {
+			    return false;
+		    }
+	    }
+    };
+
+    /**
+     *
+     */
+    sServObj.getCollapsePosition = function (id) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    return undefined;
+	    } else {
+		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsePosition === 'object') {
+			    return sServObj.hierarchyState.collapseInfo[id].collapsePosition;
+		    } else {
+			    return undefined;
+		    }
+	    }
+    };
+
+    /**
+     *
+     */
+    sServObj.getNumCollapsedParents = function (id) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    return 0;
+	    } else {
+		    if (typeof sServObj.hierarchyState.collapseInfo[id].numCollapsedParents === 'number') {
+			    return sServObj.hierarchyState.collapseInfo[id].numCollapsedParents;
+		    } else {
+			    return 0;
+		    }
+	    }
+    };
+
+    /**
+     *
+     */
+    sServObj.setCollapsed = function (id, newState) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    sServObj.hierarchyState.collapseInfo[id] = {};
+	    }
+
+	    sServObj.hierarchyState.collapseInfo[id].collapsed = newState;
+    };
+
+    /**
+     *
+     */
+    sServObj.setCollapsePosition = function (id, newPosition) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    sServObj.hierarchyState.collapseInfo[id] = {};
+	    }
+
+	    sServObj.hierarchyState.collapseInfo[id].collapsePosition = newPosition;
+    };
+
+    /**
+     *
+     */
+    sServObj.setNumCollapsedParents = function (id, newNum) {
+	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+		    sServObj.hierarchyState.collapseInfo[id] = {};
+	    }
+
+	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
+    };
+
     
 
     /**

@@ -19,9 +19,10 @@ angular.module('emuwebApp')
 		sServObj.loadBundle = function (bndl) {
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-				if (bndl !== loadedMetaDataService.getCurBndl()) {
+				var curBndl = loadedMetaDataService.getCurBndl(); 
+				if (bndl !== curBndl) {
 					// $scope.lastclickedutt = bndl;
-					modalService.open('views/saveChanges.html', bndl.name).then(function (messModal) {
+					modalService.open('views/saveChanges.html', curBndl.session + ':' + curBndl.name).then(function (messModal) {
 						if (messModal === 'saveChanges') {
 							// save current bundle
 							sServObj.saveBundle().then(function () {

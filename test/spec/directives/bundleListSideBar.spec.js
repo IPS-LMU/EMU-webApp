@@ -23,12 +23,10 @@ describe('Directive: bundleListSideBar', function() {
         scope.vs = viewState;
         scope.vs.submenuOpen = true;
         compileDirective();
-        expect(elm.prop('className')).toContain('emuwebapp-expandWidthTo240px');
-        expect(elm.prop('className')).not.toContain('emuwebapp-shrinkWidthTo0px');
+        expect(elm.prop('className')).not.toContain('ng-hide');
         scope.vs.submenuOpen = false;
         compileDirective();
-        expect(elm.prop('className')).toContain('emuwebapp-shrinkWidthTo0px');
-        expect(elm.prop('className')).not.toContain('emuwebapp-expandWidthTo240px');
+        expect(elm.prop('className')).not.toContain('ng-hide');
     }));
     
 

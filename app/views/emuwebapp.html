@@ -4,7 +4,7 @@
   <modal></modal>
   
   <!-- left side menu bar -->
-  <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu" is-open="{{vs.submenuOpen}}"></bundle-list-side-bar>
+  <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu && vs.submenuOpen"></bundle-list-side-bar>
   <!-- container for everything (top + bottom menu and all cans) but left sub-menu -->
   <div class="emuwebapp-mainWindow" id="mainWindow">
 
@@ -101,7 +101,7 @@
   <button id="playAllBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn" id="cmd_playAll">play entire file</button>
 </div>
 
-<!-- right side menu bar -->
+<!-- perspectives menu bar (right) -->
 <nav class="emuwebapp-rightSideMenu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="vs.getRightsubmenuOpen()">
   <button class="emuwebapp-rightSideMenuOpenBtn" ng-click="vs.setRightsubmenuOpen(!vs.getRightsubmenuOpen());"><img src="styles/images/rightSideMenuBtn.png" /></button>
   <h3>Perspectives</h3>

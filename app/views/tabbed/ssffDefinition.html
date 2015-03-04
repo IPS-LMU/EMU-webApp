@@ -1,5 +1,5 @@
 <!-- ssffTrackDefinitions -->
-<div class="emuwebapp-roundedBorderFrame" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
+<div ng-class="classDefinition('ssff', key)" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
     <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
@@ -12,6 +12,8 @@
 	        File Extension: <input type="text" ng-model="value.fileExtension" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
 	    </span>
 	</div>
+	<button ng-show="value.added" ng-click="saveDefinition('ssff', key)" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
+	<span class="emuwebapp-tabbed-error" ng-show="response[key].show"><b>Error:</b>{{response[key].text}}</span>	
 </div>
 <br />
 <a href title="Add new definition" ng-click="addDefinition('ssff')"><span class="emuwebapp-tabbed-add">+</span> add new ssff definition</a>
