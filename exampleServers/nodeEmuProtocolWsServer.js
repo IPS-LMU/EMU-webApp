@@ -343,15 +343,29 @@ wss.on('connection', function (ws) {
     case 'EDITDBCONFIG':
       console.log('editing dbConfig...');
       // console.log(mJSO.data.annotation);
-      // todo: edit dbconfig and return success or error
-      ws.send(JSON.stringify({
-        'callbackID': mJSO.callbackID,
-        'data': 'YES',
-        'status': {
-          'type': 'SUCCESS',
-          'message': ''
-        }
-      }), undefined, 0);
+      switch(mJSO.subtype) {
+          case 'ADDLEVELDEFINITION':
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);
+          break;
+          
+          case 'ADDSSFFDEFINITION':
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);          
+          break;          
+      }
       break;
       
 

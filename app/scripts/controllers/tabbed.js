@@ -154,47 +154,91 @@ angular.module('emuwebApp')
 									// check if saving is allowed
 									Websockethandler.getDoEditDBConfig().then(function (response) {
 									    if(response === 'YES') {
-											$scope.cps.curDbConfig.levelDefinitions[key].added = undefined;
-											delete $scope.cps.curDbConfig.levelDefinitions[key].added;
 									        Websockethandler.editDBConfig('ADDLEVELDEFINITION', angular.toJson($scope.cps.curDbConfig.levelDefinitions[key], false)).then(function (response) {
 												if(response === 'YES') {
-												    $scope.response[key].show = false;
+													$scope.cps.curDbConfig.levelDefinitions[key].added = undefined;
+													delete $scope.cps.curDbConfig.levelDefinitions[key].added;
+													$scope.hideResponse(key);
 												}
 												else {
-												    $scope.response[key] = {};
-												    $scope.response[key].show = true;
-												    $scope.response[key].text = 'Error while communicating with server.';
+												    $scope.showResponse(key, 'Error while communicating with server (ADDLEVELDEFINITION).');
 												}
 									        });
 									    }
 									    else {
-									        $scope.response[key] = {};
-									        $scope.response[key].show = true;
-									        $scope.response[key].text = 'Editing of Config is not allowed.';
+									        $scope.showResponse(key, 'Editing of Config is not allowed.');
 									    }
 									});
 								}
 								else {
-								    $scope.response[key] = {};
-								    $scope.response[key].show = true;
-								    $scope.response[key].text = 'The level type is not set.';
+								    $scope.showResponse(key, 'The level type is not set.');
 								}
 		                    }
 		                    else {
-								$scope.response[key] = {};
-		                        $scope.response[key].show = true;
-		                        $scope.response[key].text = 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" already exists.';
+								$scope.showResponse(key, 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" already exists.');
 		                    }
 		                }
 		                else {
-						    $scope.response[key] = {};
-		                    $scope.response[key].show = true;
-		                    $scope.response[key].text = 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" is not valid.';
+		                    $scope.showResponse(key, 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" is not valid.');
+		                }
+		            }
+		            break;
+		            
+		        case 'link':
+		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
+		                // check if name of level is empty
+		                if($scope.cps.curDbConfig.linkDefinitions[key].superlevelName.length > 0) {
+		                    // check if name of level already exists
+		                    if($scope.cps.curDbConfig.linkDefinitions[key].sublevelName.length > 0) {
+								if($scope.cps.curDbConfig.linkDefinitions[key].type !== '') {
+									// check if saving is allowed
+									Websockethandler.getDoEditDBConfig().then(function (response) {
+									    if(response === 'YES') {
+									        Websockethandler.editDBConfig('ADDSSFFDEFINITION', angular.toJson($scope.cps.curDbConfig.linkDefinitions[key], false)).then(function (response) {
+												if(response === 'YES') {
+													$scope.cps.curDbConfig.linkDefinitions[key].added = undefined;
+													delete $scope.cps.curDbConfig.linkDefinitions[key].added;
+													$scope.hideResponse(key);
+												}
+												else {
+												    $scope.showResponse(key, 'Error while communicating with server (ADDSSFFDEFINITION).');
+												}
+									        });
+									    }
+									    else {
+									        $scope.showResponse(key, 'Editing of Config is not allowed.');
+									    }
+									});
+								}
+								else {
+								    $scope.showResponse(key, 'The type \"'+$scope.cps.curDbConfig.linkDefinitions[key].type+'\" is not valid.');
+								}
+		                    }
+		                    else {
+								$scope.showResponse(key, 'The sublevelName \"'+$scope.cps.curDbConfig.linkDefinitions[key].sublevelName+'\" is not valid.');
+		                    }
+		                }
+		                else {
+		                    $scope.showResponse(key, 'The superlevelName \"'+$scope.cps.curDbConfig.linkDefinitions[key].superlevelName+'\" is not valid.');
 		                }
 		            }
 		            break;
 		    }
 		};
+		
+		$scope.showResponse = function(key, text) {
+			$scope.response[key] = {};
+            $scope.response[key].show = true;
+		    $scope.response[key].text = text;
+		}; 
+		
+		$scope.hideResponse = function(key) {
+			if($scope.response[key] !== undefined) {
+				if($scope.response[key].show === true) {
+					$scope.response[key].show = false;
+				}
+			}
+		}; 		
 			
 		$scope.addDefinition = function (typeOfDefinition, key, keyAttribute) {
 		    switch(typeOfDefinition) {
