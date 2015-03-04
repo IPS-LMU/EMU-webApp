@@ -7,208 +7,21 @@
  * service.
  *
  * While the DBConfig allows for a complex network of levels, the visualisation
- * is always limited to one straight path of levels. Set this path via the
- * public function setPath(p).
+ * is always limited to one straight path of levels. This path has to be passed
+ * in to the individual functions that expect a selectedPath parameter.
  *
  * A selection menu shall be offered comprising all possible paths through the
- * hierarchy.
+ * hierarchy. Therefore, this service offers the function findPaths() to return
+ * all possible paths.
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', function (ConfigProviderService, LevelService, DataService) {
+	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService) {
 		// shared service object
 		var sServObj = {};
 
-		////////////////////////////////////////////
-		// private vars and functions
-		var svgGroup;
-		var parentsFound;
-
-		//
-		/////////////////////
-
 		/////////////////////
 		// public API
-
-		/**
-		 * Find all parent levels of a given level by iterating through the
-		 * current database's linkDefinitions.
-		 *
-		 * @param childLevel The name of the level whose parents to find
-		 * @returns An array of names of childLevel's parent levels
-		 */
-		sServObj.findParentLevels = function (childLevel) {
-			var parents = [];
-			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
-				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
-					parents.push(ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
-				}
-			}
-			return parents;
-		};
-
-		/**
-		 * Calculate the position of nodes within a non-item level (ie, one with time information)
-		 *
-		 * The nodes are positioned at a regular distance to each other.
-		 * The first node will be at position -0.5, the last at somewhat
-		 * below 0.5.
-		 *
-		 * It is taken for granted that the order of the nodes within
-		 * the array is coherent with the time information.
-
-		sServObj.layoutNonItemLevel = function (name, levelDepth) {
-			var nodes = LevelService.getLevelDetails(name).level.items;
-			for (var i=0; i<nodes.length; ++i) {
-				nodes[i]._posInLevel = i / nodes.length + 0.01 ;//- 0.5;
-				nodes[i]._depth = levelDepth;
-
-				// Additionally, calculate link positions
-				var links = DataService.getData().links;
-				for (var l=0; l<links.length; ++l) {
-					if (links[l].toID === nodes[i].id) {
-						links[l]._toPosInLevel = nodes[i]._posInLevel;
-						links[l]._toDepth = nodes[i]._depth;
-					}
-				}
-			}
-		};
-		 */
-		/**
-		 * Calculate the position of nodes within an item level (ie, one without time information)
-		 * 
-		 * This is done by looking at the position of the first and the
-		 * last child of each node and centering the node in-between
-
-		sServObj.layoutItemLevel = function (name, levelDepth) {
-			var nodes = LevelService.getLevelDetails(name).level.items;
-			for (var i=0; i<nodes.length; ++i) {
-				// Find first and last child of nodes[i]
-				var children = sServObj.findChildren (nodes[i], selectedPath);
-				if (children.length === 0) {
-					nodes[i]._posInLevel = null;
-				}
-				// FIXME if this function was actually used, the following would of course fail if children was an empty array
-				var firstChild = children[0];
-				var lastChild = children[children.length-1];
-
-				nodes[i]._posInLevel = firstChild._posInLevel + (lastChild._posInLevel - firstChild._posInLevel)/2;
-				nodes[i]._depth = levelDepth;
-				
-				// Additionally, calculate link positions
-				var links = DataService.getData().links;
-				for (var l=0; l<links.length; ++l) {
-					if (links[l].toID === nodes[i].id) {
-						links[l]._toPosInLevel = nodes[i]._posInLevel;
-						links[l]._toDepth = nodes[i]._depth;
-					}
-					if (links[l].fromID === nodes[i].id) {
-						links[l]._fromPosInLevel = nodes[i]._posInLevel;
-						links[l]._fromDepth = nodes[i]._depth;
-					}
-				}
-			}
-		};
-		 */
-		 
-		 
-		/**
-		 * This function aims to find and store the parents of every node
-		 */
-		sServObj.findParents = function (selectedPath) {
-			var i, ii, c;
-
-			if (parentsFound) {
-				return;
-			} else {
-				parentsFound = true;
-			}
-
-			/////
-			// Iterate throug levels top-down
-			for (i = selectedPath.length-1; i>=0; --i) {
-				var level = LevelService.getLevelDetails(selectedPath[i]).level;
-
-				// Iterate through the current level's items
-				// And save them as _parents in their children
-				for (ii = 0; ii<level.items.length; ++ii) {
-					var children = sServObj.findChildren(level.items[ii], selectedPath);
-
-					//console.debug('label', level.items[ii].labels[0].value, 'number of children: ', children.length);
-
-					for (c = 0; c < children.length; ++c) {
-						if (typeof children[c]._parents === 'undefined') {
-							children[c]._parents = [];
-						}
-						children[c]._parents.push (level.items[ii]);
-					}
-				}
-			}
-		};
-
-
-		/**
-		 * Calculate the weights (size within their level) of all nodes bottom-up
-		 * This is most likely rather slow and definitely needs tweaking
-		 */
-		sServObj.calculateWeightsBottomUp = function (selectedPath) {
-			var i, ii, iii;
-
-			sServObj.findParents(selectedPath);
-
-			// Iterate through levels bottom-up
-			for (i = 0; i < selectedPath.length; ++i) {
-				var level = LevelService.getLevelDetails(selectedPath[i]).level;
-				level._weight = 0;
-
-				//////
-				// Iterate through items to calculate their _weight and the level's _weight
-				for (ii = 0; ii < level.items.length; ++ii) {
-					var itemWeight = level.items[ii]._weight;
-					if (typeof itemWeight === 'undefined') {
-						itemWeight = 1;
-						level.items[ii]._weight = 1;
-					}
-
-					// This would create tidier drawings but depends on knowledge of each node's parents 
-					if (typeof level.items[ii]._parents !== 'undefined') {
-						//console.debug(level.items[ii]._parents.length);
-						/*
-						for (iii = 0; iii < level.items[ii]._parents.length; ++iii) {
-							level.items[ii]._parents[iii]._weight += itemWeight / level.items[ii]._parents.length;
-						}
-						*/
-					}
-					
-
-					level._weight += itemWeight;
-				}
-
-				/////
-				// Iterate through items again to calculate their _posInLevel and _depth.
-				// This is done in a new for loop because it depends on the correctness of level._weight
-				var posInLevel = 0;
-				for (ii = 0; ii < level.items.length; ++ii) {
-					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
-					posInLevel += level.items[ii]._weight;
-					level.items[ii]._depth = selectedPath.length - i - 1;
-				
-					//////
-					// Additionally, calculate link positions
-					var links = DataService.getData().links;
-					for (var l=0; l<links.length; ++l) {
-						if (links[l].toID === level.items[ii].id) {
-							links[l]._toPosInLevel = level.items[ii]._posInLevel;
-							links[l]._toDepth = level.items[ii]._depth;
-						}
-						if (links[l].fromID === level.items[ii].id) {
-							links[l]._fromPosInLevel = level.items[ii]._posInLevel;
-							links[l]._fromDepth = level.items[ii]._depth;
-						}
-					}
-				}
-			}
-		};
 
 		/**
 		 * Recursively find all paths through the hierarchy of levels.
@@ -244,6 +57,92 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * Find all parent levels of a given level by iterating through the
+		 * current database's linkDefinitions.
+		 *
+		 * @param childLevel The name of the level whose parents to find
+		 * @returns An array of names of childLevel's parent levels
+		 */
+		sServObj.findParentLevels = function (childLevel) {
+			var parents = [];
+			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
+				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
+					parents.push(ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
+				}
+			}
+			return parents;
+		};
+
+		/**
+		 * Calculate the weights (size within their level) of all
+		 * nodes bottom-up.
+		 *
+		 * This is most likely rather slow and -definitely needs- could
+		 * use some tweaking
+		 */
+		sServObj.calculateWeightsBottomUp = function (selectedPath) {
+			var i, ii, iii;
+
+			/////
+			// Make sure all items have proper _parents and
+			// _visibile attributes
+			sServObj.findParents(selectedPath);
+			sServObj.findVisibility(selectedPath);
+
+			/////
+			// Iterate through levels bottom-up
+			for (i = 0; i < selectedPath.length; ++i) {
+				var level = LevelService.getLevelDetails(selectedPath[i]).level;
+
+				// This will be the total of the weights of all
+				// items on this level
+				level._weight = 0;
+
+				//////
+				// Iterate through items to calculate their
+				// _weight and the level's _weight
+				for (ii = 0; ii < level.items.length; ++ii) {
+					var itemWeight = level.items[ii]._weight;
+
+					if (level.items[ii]._visible === false) {
+						level.items[ii]._weight = 0.35;
+					} else {
+						level.items[ii]._weight = 1;
+					}
+					
+					// Calculate weight of the level
+					level._weight += level.items[ii]._weight;
+				}
+
+				/////
+				// Iterate through items again to calculate
+				// their _posInLevel and _depth.
+				// This is done in a new for loop because it
+				// depends on the correctness of level._weight
+				var posInLevel = 0;
+				for (ii = 0; ii < level.items.length; ++ii) {
+					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
+					posInLevel += level.items[ii]._weight;
+					level.items[ii]._depth = selectedPath.length - i - 1;
+				
+					//////
+					// Additionally, calculate link positions
+					var links = DataService.getData().links;
+					for (var l=0; l<links.length; ++l) {
+						if (links[l].toID === level.items[ii].id) {
+							links[l]._toPosInLevel = level.items[ii]._posInLevel;
+							links[l]._toDepth = level.items[ii]._depth;
+						}
+						if (links[l].fromID === level.items[ii].id) {
+							links[l]._fromPosInLevel = level.items[ii]._posInLevel;
+							links[l]._fromDepth = level.items[ii]._depth;
+						}
+					}
+				}
+			}
+		};
+
+		/**
 		 * Find all children of a node d that are part of the currently selected
 		 * path through the hierarchy
 		 *
@@ -255,7 +154,7 @@ angular.module('emuwebApp')
 
 			// Find the level that d is a part of
 			// Return empty array if that fails (which shouldn't happen at all)
-			var currentLevel = LevelService.getLevelName(d.id);
+			var currentLevel = LevelService.getLevelNameByElementID(d.id);
 			if (currentLevel === null) {
 				console.log('Likely a bug: failed to find a node\'s level', d)
 				return [];
@@ -294,5 +193,152 @@ angular.module('emuwebApp')
 			return children;
 		}
 
+
+		/**
+		 * This function aims to find and store the parents of every
+		 * node (along the selected path).
+		 * 
+		 * First clears the _parents attribute from all item and then
+		 * re-calculates them.
+		 * 
+		 * All items on the currently selected path will then have a
+		 * _parents property that is either an empty array (if it has
+		 * no parents) or an array containing its parents.
+		 */
+		sServObj.findParents = function (selectedPath) {
+			var i, ii, c;
+
+			//////
+			// Clear _parents from all items
+			var level;
+			for (i = 0; i < selectedPath.length; ++i) {
+				level = LevelService.getLevelDetails(selectedPath[i]).level;
+
+				for (ii=0; ii < level.items.length; ++ii) {
+					level.items[ii]._parents = [];
+				}
+			}
+			
+			
+			/////
+			// Iterate through levels
+			for (i = 0; i < selectedPath.length; ++i) {
+				level = LevelService.getLevelDetails(selectedPath[i]).level;
+
+				// Iterate through the current level's items
+				// And save them as _parents in their children
+				for (ii = 0; ii < level.items.length; ++ii) {
+					var children = sServObj.findChildren(level.items[ii], selectedPath);
+
+					for (c = 0; c < children.length; ++c) {
+						children[c]._parents.push (level.items[ii]);
+					}
+				}
+			}
+		};
+
+
+
+		/**
+		 * Find out, which paths ought to be drawn because they are not
+		 * collapsed.
+		 *
+		 * Will add a boolean attribute _visible to all items on the
+		 * currently selected path.
+		 */
+		sServObj.findVisibility = function (selectedPath) {
+			// Root nodes are all nodes that have no parents and
+			// thus form a sub-graph.
+			//
+			// Note that some descendants of a given root node
+			// might also be the descendant of another root node.
+			// thus "connecting" the different sub-graphs. If this
+			// were a real connection, the different sub-graphs
+			// would actually be one graph. But it is not a real
+			// connection since the whole graph is directed and the
+			// connections can never be along the direction of an
+			// edge.
+
+			if (selectedPath !== undefined && selectedPath.length > 0) {
+				var rootLevelItems = [];
+				
+				var level;
+				for (var i=0; i < selectedPath.length; ++i) {
+					level = LevelService.getLevelDetails(selectedPath[i]).level;
+
+					for (var ii=0; ii < level.items.length; ++ii) {
+						if (level.items[ii]._parents.length === 0) {
+							rootLevelItems.push(level.items[ii]);
+						}
+					}
+				}
+				
+
+				// First, set all nodes invisible. Later we will search
+				// all paths and if we find one uncollasped path to a
+				// node, that node will be set visible.
+
+				var currentItem;
+				var items = [];
+				items = items.concat(rootLevelItems);
+				
+				while (items.length > 0) {
+					currentItem = items.pop();
+					items = items.concat(sServObj.findChildren(currentItem, selectedPath));
+					currentItem._visible = false;
+				}
+
+				// Now all nodes on the selectedPath have been set
+				// invisible. Try and find those that must be visible,
+				// i.e. either they are a root node or there is an
+				// uncollapsed path to them from a root node.
+
+				items = [];
+				items = items.concat(rootLevelItems);
+
+				while (items.length > 0) {
+					currentItem = items.pop();
+					if (! viewState.getCollapsed(currentItem.id)) {
+						items = items.concat(sServObj.findChildren(currentItem, selectedPath));
+					}
+
+					currentItem._visible = true;
+				}
+			}
+		};
+
+		/**
+		 * Toggle the state of a single item with its subtree
+		 */
+		sServObj.toggleCollapse = function (d, selectedPath) {
+
+			// Find out whether we're collapsing or decollapsing
+			var isCollapsing = !viewState.getCollapsed (d.id);
+			viewState.setCollapsed (d.id, isCollapsing);
+
+			// Traverse sub-tree and change each item's number of collapsend parents
+			//
+			// Set each item's collapsePosition as well
+			// collapsePosition is the coordinate where they fade out to or fade in from
+			
+			var currentDescendant;
+			var descendants = sServObj.findChildren(d, selectedPath);
+			while (descendants.length > 0) {
+				currentDescendant = descendants.pop();
+				descendants = descendants.concat(sServObj.findChildren(currentDescendant, selectedPath));
+
+				var num = viewState.getNumCollapsedParents(currentDescendant.id);
+
+				if (isCollapsing) {
+					viewState.setNumCollapsedParents(currentDescendant.id, num + 1);
+				} else {
+					viewState.setNumCollapsedParents(currentDescendant.id, num - 1);
+				}
+
+				viewState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
+			}
+		}
+
 		return sServObj;
 	});
+

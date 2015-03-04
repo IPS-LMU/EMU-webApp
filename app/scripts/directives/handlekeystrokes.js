@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
+  .directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, HierarchyManipulationService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
     return {
       restrict: 'A',
       link: function postLink(scope, element) {
@@ -67,7 +67,169 @@ angular.module('emuwebApp')
               }
             }
             viewState.setlastKeyCode(code);
-            if (viewState.isEditing()) {
+	    
+	    
+	    // Handle key strokes for the hierarchy modal
+	    if (viewState.hierarchyShown) {
+			if (viewState.hierarchyState.getInputFocus()) {
+				// Commit label change
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyCommitEdit) {
+					var elementID = viewState.hierarchyState.getContextMenuID();
+					var element = LevelService.getItemByID(elementID);
+					var levelName = LevelService.getLevelNameByElementID(elementID);
+					var attrIndex = viewState.getCurAttrIndex(levelName);
+					var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
+					
+					var newValue = viewState.hierarchyState.getEditValue();
+					var oldValue;
+					if (element.labels[attrIndex] !== undefined ) {
+						oldValue = element.labels[attrIndex].value;
+					} else {
+						oldValue = '';
+					}
+
+					// Check if new value is legal
+					if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
+						LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
+
+						HistoryService.addObjToUndoStack({
+						  // Re-Using the already existing ANNOT/RENAMELABEL
+						  // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
+						  // but it would have the same code
+						  'type': 'ANNOT',
+						  'action': 'RENAMELABEL',
+						  'name': levelName,
+						  'id': elementID,
+						  'attrIndex': attrIndex,
+						  'oldValue': oldValue,
+						  'newValue': newValue
+						});
+
+						viewState.hierarchyState.closeContextMenu();
+					}
+				}
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyCancelEdit) {
+					viewState.hierarchyState.closeContextMenu();
+				}
+			} else {
+				//if (!e.metaKey && !e.ctrlKey) {
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteLink) {
+					e.preventDefault();
+				}
+
+				// Play selected item
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyPlayback) {
+					viewState.hierarchyState.playing += 1;
+				}
+
+				// rotateHierarchy
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
+					viewState.toggleHierarchyRotation();
+				}
+
+				// Delete link
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteLink) {
+					/*
+					 This block is currently obsoleted because e.preventDefault() is called above
+					 at the beginning of the hierarchy block
+					// This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
+					// But what if the key code is reconfigured (possibly by the user)? 
+					e.preventDefault();
+					*/
+					
+					var pos = LinkService.deleteLink(viewState.hierarchyState.selectedLinkFromID, viewState.hierarchyState.selectedLinkToID);
+
+					if (pos !== -1) {
+						HistoryService.addObjToUndoStack({
+							type: 'HIERARCHY',
+							action: 'DELETELINK',
+							fromID: viewState.hierarchyState.selectedLinkFromID,
+							toID: viewState.hierarchyState.selectedLinkToID,
+							position: pos
+						});
+					}
+				}
+
+				// Delete item
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyDeleteItem) {
+					var result = LevelService.deleteItemWithLinks(viewState.hierarchyState.selectedItemID);
+
+					if (result.item !== undefined) {
+						HistoryService.addObjToUndoStack({
+							type: 'HIERARCHY',
+							action: 'DELETEITEM',
+							item: result.item,
+							levelName: result.levelName,
+							position: result.position,
+							deletedLinks: result.deletedLinks
+						});
+					}
+				}
+
+				// Add item ...
+				// ... before the currently selected one
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemBefore) {
+					var newID = LevelService.addItem(viewState.hierarchyState.selectedItemID, true);
+					
+					if (newID !== -1) {
+						HistoryService.addObjToUndoStack({
+							type: 'HIERARCHY',
+							action: 'ADDITEM',
+							newID: newID,
+							neighborID: viewState.hierarchyState.selectedItemID,
+							before: true
+						});
+					}
+				}
+				// ... after the currently selected one
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyAddItemAfter) {
+					var newID = LevelService.addItem(viewState.hierarchyState.selectedItemID, false);
+					
+					if (newID !== -1) {
+						HistoryService.addObjToUndoStack({
+							type: 'HIERARCHY',
+							action: 'ADDITEM',
+							newID: newID,
+							neighborID: viewState.hierarchyState.selectedItemID,
+							before: false
+						});
+					}
+				}
+
+				// Add link
+				if (code === ConfigProviderService.vals.keyMappings.hierarchyAddLink) {
+					if (viewState.hierarchyState.newLinkFromID === undefined) {
+						viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
+					} else {
+						var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
+						viewState.hierarchyState.newLinkFromID = undefined;
+
+						if (linkObj !== null) {
+							HistoryService.addObjToUndoStack({
+								type: 'HIERARCHY',
+								action: 'ADDLINK',
+								link: linkObj
+							});
+						}
+					}
+				}
+				
+				// undo
+				if (code === ConfigProviderService.vals.keyMappings.undo) {
+					HistoryService.undo();
+				}
+
+				// redo
+				if (code === ConfigProviderService.vals.keyMappings.redo) {
+					HistoryService.redo();
+				}
+
+				// close modal
+				if (code === ConfigProviderService.vals.keyMappings.esc) {
+					modalService.close();
+				}
+			}
+	    } else if (viewState.isEditing()) {
               var domElement = $('.' + LevelService.getlasteditArea());
               // preventing new line if saving not allowed
               if (!viewState.isSavingAllowed() && code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
@@ -110,7 +272,12 @@ angular.module('emuwebApp')
 
               LevelService.deleteEditArea();
 
+		/*
               // escape from open modal dialog
+	      //
+	      // FIXME the handler that closes the hierarchy modal now rests above with the other handlers valid in hierarchy mode
+	      // FIXME should other modals be closed by hitting Escape? Otherwise this block can be removed
+	      //
               if (viewState.curState.permittedActions.length === 0 && 
                   code === ConfigProviderService.vals.keyMappings.esc &&
                   modalService.force === false ) {
@@ -118,11 +285,12 @@ angular.module('emuwebApp')
                       modalService.close();
                   }
               }
+	        */
 
               // delegate keyboard keyMappings according to keyMappings of scope
 
-              // showHierarhy
-              if (code === ConfigProviderService.vals.keyMappings.showHierarhy) {
+              // showHierarchy
+              if (code === ConfigProviderService.vals.keyMappings.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
                   if (viewState.hierarchyShown) {
                     modalService.close();
@@ -133,10 +301,6 @@ angular.module('emuwebApp')
                 }
               }
 
-              // rotateHierarhy
-              if (code === ConfigProviderService.vals.keyMappings.rotateHierarhy) {
-                viewState.rotateHierarchy();
-              }
 
               // zoomAll
               if (code === ConfigProviderService.vals.keyMappings.zoomAll) {

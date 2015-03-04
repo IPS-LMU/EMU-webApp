@@ -98,7 +98,7 @@
 .emuwebapp-modal-body {
     width: 100%;
     height: 80%;
-    height: calc(100%-120px);
+    height: calc(100% - 120px); /* The spaces around the operator are important */
     position: absolute;
     top: 60px;
     overflow: auto;
@@ -124,12 +124,12 @@
 .emuwebapp-modal-bodyHierarchy {
     width: 100%;
     height: 80%;
-    height: calc(100%-120px);
+    height: calc(100% - 120px); /* The spaces around the operator are important */
     position: absolute;
     top: 60px;
-    overflow: auto;
+    overflow: hidden;
     padding-top: 0px;
-    padding-bottom: 60px;
+    /*padding-bottom: 60px;*/
 }
 
 .emuwebapp-modal-body hr {

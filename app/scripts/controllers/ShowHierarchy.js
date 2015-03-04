@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, DataService, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService) {
+	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
 	
 		// Scope data
 		
@@ -13,6 +13,9 @@ angular.module('emuwebApp')
 			selected: ''
 		};
 
+		$scope.vs = viewState;
+		$scope.standardFuncServ = StandardFuncsService;
+
 		// Find non-ITEM levels to start calculating possible paths through the hierarchy of levels
 		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
 			if (l.type !== 'ITEM') {
@@ -22,16 +25,21 @@ angular.module('emuwebApp')
 
 		// convert array paths to strings
 		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
+			var revArr = StandardFuncsService.reverseCopy(arr);
+			
 			if (arrIdx === 0) {
 				// select first possible path on load
-				$scope.paths.selected = arr.join(' ← ');
+				$scope.paths.selected = revArr.join(' → ');
 			}
-			$scope.paths.possibleAsStr.push(arr.join(' ← '));
+			$scope.paths.possibleAsStr.push(revArr.join(' → '));
 		});
 
 		//////////////
 		// watches
 
+		$scope.$watch ('paths.selected', function(newValue) {
+			viewState.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
+		}, false);
 		
 		//
 		//////////////
@@ -45,7 +53,7 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			viewState.rotateHierarchy();
+			viewState.toggleHierarchyRotation();
 		};
 		
 		$scope.getRotation = function () {
@@ -78,8 +86,8 @@ angular.module('emuwebApp')
 		 * @param levelName name of level
 		 * @param attrDef name of attribute definition
 		 */
-		$scope.setCurrentAttrDef = function (levelName, attrDef) {
-			viewState.setCurAttrDef(levelName, attrDef);
+		$scope.setCurrentAttrDef = function (levelName, attrDefName, attrDefIndex) {
+			viewState.setCurAttrDef(levelName, attrDefName, attrDefIndex);
 		};
 
 		/**
@@ -94,21 +102,6 @@ angular.module('emuwebApp')
 		 * cancel dialog i.e. close
 		 */
 		$scope.cancel = function () {
-			var traverse = function (o) 
-			{
-				for (var i in o) {
-					if ( i.substr(0,1) === '_') {
-						delete o[i];
-					}
-	
-					if (o[i] !== null && typeof(o[i])==='object') {
-						//going one step down in the object tree
-						traverse(o[i]);
-					}
-				}
-			};
-
-			traverse (DataService.getData());
 			modalService.close();
 		};
 	});
