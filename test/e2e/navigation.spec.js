@@ -565,13 +565,6 @@ describe('navigation', function () {
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
-	it('should insert a new element on EVENT level (double elem should NOT work)', function () {
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.emuwebapp-modal-body')).get(0);
-		expect(elem.getText()).toEqual('Error: You are not allowed to insert a Point here.');
-		element(by.id('emuwebapp-modal-cancel')).click();
-	});
-
 	it('should open, rename and save on EVENT', function () {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();

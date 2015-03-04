@@ -287,26 +287,34 @@ angular.module('emuwebApp')
           idxOfNow = idx;
         }
       });
-
-      if (next) {
-        if (idxOfNow + 1 < order.length) {
-          curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
-          // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
-          sServObj.curClickItems = [];
-          sServObj.selectBoundary();
-          //sServObj.resetSelect();
-        }
-      } else {
-        if (idxOfNow - 1 >= 0) {
-          curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
-          // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
-          sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
-          sServObj.curClickItems = [];
-          sServObj.selectBoundary();
-          //sServObj.resetSelect();
-        }
+      if(idxOfNow === undefined) {
+		  curLev = Levelserv.getLevelDetails(order[0]);
+		  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+		  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+		  sServObj.curClickItems = [];
+		  sServObj.selectBoundary();      
       }
+      else {
+		  if (next) {
+			if (idxOfNow + 1 < order.length) {
+			  curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
+			  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
+			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
+			  sServObj.curClickItems = [];
+			  sServObj.selectBoundary();
+			  //sServObj.resetSelect();
+			}
+		  } else {
+			if (idxOfNow - 1 >= 0) {
+			  curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
+			  // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
+			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
+			  sServObj.curClickItems = [];
+			  sServObj.selectBoundary();
+			  //sServObj.resetSelect();
+			}
+		  }
+		}
     };
 
 

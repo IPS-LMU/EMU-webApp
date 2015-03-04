@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, viewState, ConfigProviderService, Validationservice, uuid) {
+	.controller('TabbedCtrl', function ($scope, Websockethandler, viewState, ConfigProviderService, Validationservice, uuid, LevelService) {
 		
 		// service shortcuts
 		$scope.cps = ConfigProviderService;
 		$scope.vs = viewState;
 		$scope.valid = Validationservice;
+		$scope.lvl = LevelService;
 		
 		// definition shortcuts
 		$scope.levelDefinitionProperties = {};
@@ -25,6 +26,9 @@ angular.module('emuwebApp')
 		$scope.addLevelSelect = "";
 		// default selection for "add two dim canvases order"
 		$scope.addTwoDimSelect = "";
+		
+		// user feedback after saving data
+		$scope.response = [];
 		
 		// all available tabs
 		$scope.tabs = [{
@@ -46,6 +50,7 @@ angular.module('emuwebApp')
 				title: 'global DB',
 				url: 'views/tabbed/globalDefinition.html'
 		}];
+		
 		// current open tab
 		$scope.currentTab = 'views/tabbed/levelDefinition.html';
 		
@@ -108,20 +113,102 @@ angular.module('emuwebApp')
 			viewState.setEditing(false);
 			viewState.setcursorInTextField(false);
 		};
+
+		/**
+		 *
+		 */
+		$scope.classDefinition = function (typeOfDefinition, key) {
+		    var style = 'emuwebapp-roundedBorderFrame';
+		    switch(typeOfDefinition) {
+		        case 'level':
+		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
+		                style = 'emuwebapp-roundedBorderFrame-new';
+		            }
+		            break;
+		        case 'ssff':
+		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
+		                style = 'emuwebapp-roundedBorderFrame-new';
+		            }
+		            break;		
+		        case 'link':
+		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
+		                style = 'emuwebapp-roundedBorderFrame-new';
+		            }
+		            break;			                        
+		    }
+		    return style;
+		};
+
+		/**
+		 *
+		 */
+		$scope.saveDefinition = function (typeOfDefinition, key) {
+		    switch(typeOfDefinition) {
+		        case 'level':
+		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
+		                // check if name of level is empty
+		                if($scope.cps.curDbConfig.levelDefinitions[key].name.length > 0) {
+		                    // check if name of level already exists
+		                    if($scope.lvl.getLevelDetails($scope.cps.curDbConfig.levelDefinitions[key].name).level === null) {
+								if($scope.cps.curDbConfig.levelDefinitions[key].type !== '') {
+									// check if saving is allowed
+									Websockethandler.getDoEditDBConfig().then(function (response) {
+									    if(response === 'YES') {
+											$scope.cps.curDbConfig.levelDefinitions[key].added = undefined;
+											delete $scope.cps.curDbConfig.levelDefinitions[key].added;
+									        Websockethandler.editDBConfig('ADDLEVELDEFINITION', angular.toJson($scope.cps.curDbConfig.levelDefinitions[key], false)).then(function (response) {
+												if(response === 'YES') {
+												    $scope.response[key].show = false;
+												}
+												else {
+												    $scope.response[key] = {};
+												    $scope.response[key].show = true;
+												    $scope.response[key].text = 'Error while communicating with server.';
+												}
+									        });
+									    }
+									    else {
+									        $scope.response[key] = {};
+									        $scope.response[key].show = true;
+									        $scope.response[key].text = 'Editing of Config is not allowed.';
+									    }
+									});
+								}
+								else {
+								    $scope.response[key] = {};
+								    $scope.response[key].show = true;
+								    $scope.response[key].text = 'The level type is not set.';
+								}
+		                    }
+		                    else {
+								$scope.response[key] = {};
+		                        $scope.response[key].show = true;
+		                        $scope.response[key].text = 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" already exists.';
+		                    }
+		                }
+		                else {
+						    $scope.response[key] = {};
+		                    $scope.response[key].show = true;
+		                    $scope.response[key].text = 'The level name \"'+$scope.cps.curDbConfig.levelDefinitions[key].name+'\" is not valid.';
+		                }
+		            }
+		            break;
+		    }
+		};
 			
 		$scope.addDefinition = function (typeOfDefinition, key, keyAttribute) {
 		    switch(typeOfDefinition) {
 		        case 'level':
-		            $scope.cps.curDbConfig.levelDefinitions.push({name: '', type: 'ITEM', attributeDefinitions: [{name: '', type: 'STRING'}]});
+		            $scope.cps.curDbConfig.levelDefinitions.push({name: '', type: '', attributeDefinitions: [{name: '', type: 'STRING'}], added: true});
 		            break;
 		        case 'levelattribute':
 		            $scope.cps.curDbConfig.levelDefinitions[key].attributeDefinitions.push({name: '', type: 'STRING', legalLabels: []});
 		            break;
 		        case 'link':
-		            $scope.cps.curDbConfig.linkDefinitions.push({type: 'undefined', superlevelName: 'undefined', sublevelName: 'undefined'});
+		            $scope.cps.curDbConfig.linkDefinitions.push({type: '', superlevelName: '', sublevelName: '', added: true});
 		            break;
 		        case 'ssff':
-		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: "undefined", columnName: "undefined", fileExtension: "undefined"})
+		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: '', columnName: '', fileExtension: '', added: true})
 		            break;	
 		        case 'perspective':
 		            $scope.cps.vals.perspectives.push({name: '', signalCanvases: { order: [], assign: [], contourLims: [], contourColors: []}, levelCanvases: { order: [] }, twoDimCanvases: { order: [] }});
