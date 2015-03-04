@@ -582,7 +582,7 @@ describe('Controller: MainController', function () {
     ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
-    expect(ret).toEqual('24%');
+    expect(ret).toEqual('22.5%');
   })); 
   
    it('should getEnlarge (3 / large)', inject(function (viewState, ConfigProviderService) {
