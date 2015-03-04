@@ -93,7 +93,7 @@ describe('Controller: ShowhierarchyCtrl', function () {
    it('should setCurrentAttrDef', function () {
      scope.data.setData(msajc003_bndl.annotation);
      spyOn(scope.vs, 'setCurAttrDef');
-     scope.setCurrentAttrDef('Tone',1);
-     expect(scope.vs.setCurAttrDef).toHaveBeenCalledWith('Tone',1);
+     scope.setCurrentAttrDef('Tone',1, 1);
+     expect(scope.vs.setCurAttrDef).toHaveBeenCalledWith('Tone',1, 1);
    });      
 });
