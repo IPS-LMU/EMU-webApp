@@ -325,6 +325,50 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
       
+      // GETDOEDITDBCONFIG method
+    case 'GETDOEDITDBCONFIG':
+      console.log('checking if editDBConfig is allowed...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': 'YES',
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+      
+      // GETDOEDITDBCONFIG method
+    case 'EDITDBCONFIG':
+      console.log('editing dbConfig...');
+      // console.log(mJSO.data.annotation);
+      switch(mJSO.subtype) {
+          case 'ADDLEVELDEFINITION':
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);
+          break;
+          
+          case 'ADDSSFFDEFINITION':
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);          
+          break;          
+      }
+      break;
+      
+
     default:
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
