@@ -2,26 +2,14 @@
 
 
 angular.module('emuwebApp')
-	.directive('bundleListSideBar', function ($animate) {
+	.directive('bundleListSideBar', function () {
 		return {
 			templateUrl: 'views/bundleListSideBar.html',
 			restrict: 'E',
 			replace: true,
-			scope: {
-				isOpen: '@'
-			},
+			scope: {},
 			link: function postLink(scope, element, attr) {
 
-				////////////////
-				// observes
-				attr.$observe('isOpen', function (value) {
-					if (value === 'true') {
-						$animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
-						$animate.addClass(element, 'emuwebapp-expandWidthTo240px');
-					} else {
-						$animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');
-					}
-				});
 			}
 		};
 	});

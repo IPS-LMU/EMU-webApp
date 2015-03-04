@@ -19,6 +19,7 @@ angular.module('emuwebApp')
 		var curBndl = {};
 		var demoDbName = '';
 		var drandropBundles = [];
+		var rendOptBndlList = {}; // render optimized bundle list
 
 		//////////////////////
 		// private functions
@@ -36,6 +37,16 @@ angular.module('emuwebApp')
 			// open fist session up 
 			sList[fistSes].collapsed = false;
 			return sList;
+		}
+
+		function genRendOptBndlList(bndlList) {
+			bndlList.forEach(function (bndl, idx) {
+				if (rendOptBndlList[bndl.session] === undefined) {
+					rendOptBndlList[bndl.session] = [];
+				}
+				rendOptBndlList[bndl.session].push(bndl);
+			});
+			return rendOptBndlList;
 		}
 
 		//////////////////////
@@ -57,6 +68,8 @@ angular.module('emuwebApp')
 				bundleList = bList;
 				// generate uniqSessionList
 				uniqSessionList = genUniqSessionList(bundleList);
+				// generate render optimized bundlList
+				rendOptBndlList = genRendOptBndlList(bundleList);
 			}
 			return validRes;
 		};
@@ -68,14 +81,36 @@ angular.module('emuwebApp')
 			return bundleList;
 		};
 
+		/**
+		 * getter for rendOptBndlList
+		 */
+		sServObj.getRendOptBndlList = function () {
+			return rendOptBndlList;
+		};
+
 		///////////
 		// curBndl 
 
 		/**
-		 * set curBndl
+		 * getter curBndl
+		 */
+		sServObj.getCurBndl = function () {
+			return curBndl;
+		};
+
+		/**
+		 * setter curBndl
 		 */
 		sServObj.setCurBndl = function (bndl) {
 			curBndl = bndl;
+		};
+
+
+		/**
+		 * getter curBndl name
+		 */
+		sServObj.getCurBndlName = function () {
+			return curBndl.name;
 		};
 
 		/**
@@ -85,19 +120,7 @@ angular.module('emuwebApp')
 			curBndl.name = name;
 		};
 
-		/**
-		 * setter curBndl name
-		 */
-		sServObj.getCurBndlName = function () {
-			return curBndl.name;
-		};
 
-		/**
-		 * getter curBndl
-		 */
-		sServObj.getCurBndl = function () {
-			return curBndl;
-		};
 
 		//////////////
 		// demoDbName
@@ -116,8 +139,8 @@ angular.module('emuwebApp')
 			return demoDbName;
 		};
 
-		
-				///////////////////
+
+		///////////////////
 		// uniqSessionList
 
 		/**
@@ -125,20 +148,26 @@ angular.module('emuwebApp')
 		 */
 		sServObj.toggleCollapseSession = function (session) {
 			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
+			// close all other sessions
+			Object.keys(uniqSessionList).forEach(function (key) {
+				if (key !== session) {
+					uniqSessionList[key].collapsed = true;
+				}
+			});
 		};
 
 		/**
 		 *
 		 */
-		sServObj.updateCollapseSessionState = function (text) {
-			angular.forEach(sServObj.getBundleList(), function (bundle) {
-				if (bundle.name.indexOf(text)) {
-					uniqSessionList[bundle.session].collapsed = false;
-				} else {
-					uniqSessionList[bundle.session].collapsed = true;
-				}
-			});
-		};
+		// sServObj.updateCollapseSessionState = function (text) {
+		// 	angular.forEach(sServObj.getBundleList(), function (bundle) {
+		// 		if (bundle.name.indexOf(text)) {
+		// 			uniqSessionList[bundle.session].collapsed = false;
+		// 		} else {
+		// 			uniqSessionList[bundle.session].collapsed = true;
+		// 		}
+		// 	});
+		// };
 
 		/**
 		 *
@@ -158,6 +187,7 @@ angular.module('emuwebApp')
 			uniqSessionList = [];
 			bundleList = [];
 			curBndl = {};
+			rendOptBndlList = {};
 		};
 
 		return (sServObj);

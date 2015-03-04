@@ -3,7 +3,7 @@
         "osciSpectroZoomFactor": 2,
         "autoConnect": false,
         "serverUrl": "ws://localhost:17890",
-        "serverTimeoutInterval": 5000,
+        "serverTimeoutInterval": 30000,
         "comMode": "WS",
         "catchMouseForKeyBinding": false
     },
