@@ -17,7 +17,7 @@
                         ▽{{key}}
                     </div>
                 </div>
-                <div data-slide-toggle="!lmds.getSessionCollapseState(key)" data-slide-toggle-duration="250">
+                <div class="emuwebapp-bundleListSessionBndlsContainer" ng-show="!lmds.getSessionCollapseState(key)">
                     <div class="emuwebapp-bundleListSessionPager" ng-show="value.length > pageSize">
                         <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
                             ←
