@@ -153,17 +153,24 @@ angular.module('emuwebApp')
 								if($scope.cps.curDbConfig.levelDefinitions[key].type !== '') {
 									// check if saving is allowed
 									Websockethandler.getDoEditDBConfig().then(function (response) {
-									    if(response.data === 'YES') {
-											// save here
-											$scope.response[key].show = false;
+									    if(response === 'YES') {
 											$scope.cps.curDbConfig.levelDefinitions[key].added = undefined;
 											delete $scope.cps.curDbConfig.levelDefinitions[key].added;
-											$scope.response[key] = '';
-											// todo: add server communication
-											// todo: check server response
+									        Websockethandler.editDBConfig('ADDLEVELDEFINITION', angular.toJson($scope.cps.curDbConfig.levelDefinitions[key], false)).then(function (response) {
+												if(response === 'YES') {
+												    $scope.response[key].show = false;
+												}
+												else {
+												    $scope.response[key] = {};
+												    $scope.response[key].show = true;
+												    $scope.response[key].text = 'Error while communicating with server.';
+												}
+									        });
 									    }
 									    else {
-									    
+									        $scope.response[key] = {};
+									        $scope.response[key].show = true;
+									        $scope.response[key].text = 'Editing of Config is not allowed.';
 									    }
 									});
 								}

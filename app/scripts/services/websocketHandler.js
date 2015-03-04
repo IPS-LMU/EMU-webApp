@@ -238,10 +238,23 @@ angular.module('emuwebApp')
 		};
 		
 
-		// ws  disconnecting
+		// ws  GetDoEditDBConfig
 		sServObj.getDoEditDBConfig = function () {
 			var request = {
 				type: 'GETDOEDITDBCONFIG'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};	
+		
+
+		// ws  editDBConfig with subtype and data
+		sServObj.editDBConfig = function (subtype, data) {
+			var request = {
+				type: 'EDITDBCONFIG',
+				subtype: subtype,
+				data: data
 			};
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
