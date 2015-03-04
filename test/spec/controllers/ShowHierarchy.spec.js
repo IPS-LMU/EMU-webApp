@@ -32,9 +32,9 @@ describe('Controller: ShowhierarchyCtrl', function () {
    it('should set 4 correct paths', function () {
      expect(scope.paths.possible.length).toBe(4);
      expect(scope.paths.possibleAsStr[0]).toBe('Utterance → Intonational → Intermediate → Word → Syllable → Phoneme → Phonetic');
-     expect(scope.paths.possibleAsStr[0]).toBe('Utterance → Intonational → Foot → Syllable → Phoneme → Phonetic');
-     expect(scope.paths.possibleAsStr[0]).toBe('Utterance → Intonational → Intermediate → Word → Syllable → Tone');
-     expect(scope.paths.possibleAsStr[0]).toBe('Utterance → Intonational → Foot → Syllable → Tone');
+     expect(scope.paths.possibleAsStr[1]).toBe('Utterance → Intonational → Foot → Syllable → Phoneme → Phonetic');
+     expect(scope.paths.possibleAsStr[2]).toBe('Utterance → Intonational → Intermediate → Word → Syllable → Tone');
+     expect(scope.paths.possibleAsStr[3]).toBe('Utterance → Intonational → Foot → Syllable → Tone');
    }); 
    
    it('should getSelIdx', function () {
