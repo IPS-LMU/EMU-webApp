@@ -58,11 +58,30 @@
     padding: 12px;
 }
 
+.emuwebapp-tabbed-error {
+    color: #f00; 
+    margin-left: 10px;
+    width: 100%;
+    font-size: 1.1em;
+}
+
 .emuwebapp-roundedBorderFrame {
 	border: 1px solid;
     border-radius: 10px;
     text-align: left;
-    background: linear-gradient(#f1f1f1, #e2e2e2);    
+    background: #eee;    
+    margin-bottom: 15px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+}
+
+.emuwebapp-roundedBorderFrame-new {
+	border: 1px solid;
+    border-radius: 10px;
+    text-align: left;
+    background: #fff;    
     margin-bottom: 15px;
     padding: 10px;
     padding-left: 20px;

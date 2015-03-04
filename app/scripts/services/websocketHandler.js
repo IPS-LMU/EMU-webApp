@@ -225,6 +225,7 @@ angular.module('emuwebApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
+		
 
 		// ws  disconnecting
 		sServObj.disconnectWarning = function () {
@@ -235,6 +236,17 @@ angular.module('emuwebApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
+		
+
+		// ws  disconnecting
+		sServObj.getDoEditDBConfig = function () {
+			var request = {
+				type: 'GETDOEDITDBCONFIG'
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};		
 
 		//
 		// EMU-webApp protocol ends here
