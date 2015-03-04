@@ -838,8 +838,8 @@ angular.module('emuwebApp')
                       if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
                         modalService.open('views/error.html', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
                       } else {
+                        var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
                         if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
                           if (seg === undefined) {
                             var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                             if (!insSeg.ret) {
@@ -860,7 +860,6 @@ angular.module('emuwebApp')
                               viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
                               viewState.setcurClickItem(seg.current);
                               LevelService.setlasteditArea('_' + seg.id);
-                              viewState.setEditing(true);
                               LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
                               viewState.setEditing(true);
                             } else {
@@ -885,7 +884,11 @@ angular.module('emuwebApp')
                           if (typeof levelDef.anagestConfig === 'undefined') {
                             var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
                             if (insPoint.alreadyExists) {
-                              modalService.open('views/error.html', 'Error: You are not allowed to insert a Point here.');
+                                viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+                                viewState.setcurClickItem(seg.current);
+                                LevelService.setlasteditArea('_' + seg.id);
+                                LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                                viewState.setEditing(true);
                             } else {
                               HistoryService.addObjToUndoStack({
                                 'type': 'ANNOT',
