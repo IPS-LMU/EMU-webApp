@@ -400,7 +400,7 @@ angular.module('emuwebApp')
 					if (viewState.getenlarge() == index) {
 						return large + '%';
 					} else {
-						return (98 - large) / (len - 1) + '%';
+						return (95 - large) / (len - 1) + '%';
 					}
 				}
 			}

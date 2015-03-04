@@ -31,6 +31,9 @@ angular.module('emuwebApp')
           if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
             scope.handleUpdate();
           }
+          if (oldValue.windowWidth !== newValue.windowWidth) {
+              scope.handleUpdate();
+          }
         }, true);
 
         //watch perspective change
@@ -47,7 +50,6 @@ angular.module('emuwebApp')
         scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
           scope.handleUpdate();
         }, true);
-
 
         // watch ssffds.data change
         scope.$watch('ssffds.data.length', function (newValue, oldValue) {
