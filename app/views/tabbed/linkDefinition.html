@@ -1,6 +1,6 @@
 <!-- linkDefinitions -->
 <div ng-class="classDefinition('link', key)" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
-    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
+    <a ng-if="value.added" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
 	        Type: <select ng-model="cps.curDbConfig.linkDefinitions[key].type" ng-options="opt as opt for opt in linkDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold"></select>

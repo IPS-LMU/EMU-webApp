@@ -69,24 +69,26 @@
 	border: 1px solid;
     border-radius: 10px;
     text-align: left;
-    background: #bbb;    
-    margin-bottom: 15px;
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    position: relative;
-}
-
-.emuwebapp-roundedBorderFrame-new {
-	border: 1px solid;
-    border-radius: 10px;
-    text-align: left;
     background: #fff;    
     margin-bottom: 15px;
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
     position: relative;
+    font-size: 0.9em;
+}
+
+.emuwebapp-roundedBorderFrame-new {
+	border: 1px solid;
+    border-radius: 10px;
+    text-align: left;
+    background: #bbb;    
+    margin-bottom: 15px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    font-size: 0.9em;
 }
 
 .emuwebapp-borderDashed {
@@ -162,16 +164,14 @@
     position: absolute;
 	top: -12px; 
 	left: 5px;	
-	font-size: 1.2em;
-	background-color: #bbb;
+	background-color: #fff;
 }
 
 .emuwebapp-borderTitle-new {
     position: absolute;
 	top: -12px; 
 	left: 5px;	
-	font-size: 1.2em;
-	background-color: #fff;
+	background-color: #bbb;
 }
 
 
