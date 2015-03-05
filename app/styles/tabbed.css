@@ -69,7 +69,7 @@
 	border: 1px solid;
     border-radius: 10px;
     text-align: left;
-    background: #eee;    
+    background: #bbb;    
     margin-bottom: 15px;
     padding: 10px;
     padding-left: 20px;
@@ -163,7 +163,15 @@
 	top: -12px; 
 	left: 5px;	
 	font-size: 1.2em;
-	background-color: #efefef;
+	background-color: #bbb;
+}
+
+.emuwebapp-borderTitle-new {
+    position: absolute;
+	top: -12px; 
+	left: 5px;	
+	font-size: 1.2em;
+	background-color: #fff;
 }
 
 

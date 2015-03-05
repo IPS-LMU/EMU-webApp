@@ -1,6 +1,6 @@
 <!-- levelDefinitions -->
 <div ng-class="classDefinition('level', key)" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
-    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
+    <a href ng-show="value.added" title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
 		    Name <input name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
@@ -11,7 +11,7 @@
 	</div>
 	<br />
 	<div ng-class="classDefinition('level', key)" class="emuwebapp-borderDashed">
-		<div class="emuwebapp-borderTitle">Attribute Definitions</div>
+		<div ng-class="classBorderDefinition('level', key)">Attribute Definitions</div>
 			<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
 				<span ng-if="keyAttribute == 0" class="emuwebapp-tabbed-cell4">
 					Name: <b>{{cps.curDbConfig.levelDefinitions[key].name}}</b>

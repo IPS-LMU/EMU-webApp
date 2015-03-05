@@ -138,6 +138,36 @@ angular.module('emuwebApp')
 		    }
 		    return style;
 		};
+		
+		
+		/**
+		 *
+		 */
+		$scope.classBorderDefinition = function (typeOfDefinition, key) {
+		    var style = 'emuwebapp-borderTitle';
+		    switch(typeOfDefinition) {
+		        case 'level':
+		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
+		                style = 'emuwebapp-borderTitle-new';
+		            }
+		            break;
+		        case 'ssff':
+		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
+		                style = 'emuwebapp-borderTitle-new';
+		            }
+		            break;		
+		        case 'link':
+		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
+		                style = 'emuwebapp-borderTitle-new';
+		            }
+		            break;			                        
+		    }
+		    return style;
+		};
+		
+		
+		
+		
 
 		/**
 		 *
@@ -194,14 +224,14 @@ angular.module('emuwebApp')
 									// check if saving is allowed
 									Websockethandler.getDoEditDBConfig().then(function (response) {
 									    if(response === 'YES') {
-									        Websockethandler.editDBConfig('ADDSSFFDEFINITION', angular.toJson($scope.cps.curDbConfig.linkDefinitions[key], false)).then(function (response) {
+									        Websockethandler.editDBConfig('ADDLINKDEFINITION', angular.toJson($scope.cps.curDbConfig.linkDefinitions[key], false)).then(function (response) {
 												if(response === 'YES') {
 													$scope.cps.curDbConfig.linkDefinitions[key].added = undefined;
 													delete $scope.cps.curDbConfig.linkDefinitions[key].added;
 													$scope.hideResponse(key);
 												}
 												else {
-												    $scope.showResponse(key, 'Error while communicating with server (ADDSSFFDEFINITION).');
+												    $scope.showResponse(key, 'Error while communicating with server (ADDLINKDEFINITION).');
 												}
 									        });
 									    }
@@ -223,6 +253,47 @@ angular.module('emuwebApp')
 		                }
 		            }
 		            break;
+		            
+
+		        case 'ssff':
+		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
+		                // check if name of level is empty
+		                if($scope.cps.curDbConfig.ssffTrackDefinitions[key].name.length > 0) {
+		                    // check if name of level already exists
+		                    if($scope.cps.curDbConfig.ssffTrackDefinitions[key].columnName.length > 0) {
+								if($scope.cps.curDbConfig.ssffTrackDefinitions[key].fileExtension.length > 0) {
+									// check if saving is allowed
+									Websockethandler.getDoEditDBConfig().then(function (response) {
+									    if(response === 'YES') {
+									        Websockethandler.editDBConfig('ADDSSFFDEFINITION', angular.toJson($scope.cps.curDbConfig.ssffTrackDefinitions[key], false)).then(function (response) {
+												if(response === 'YES') {
+													$scope.cps.curDbConfig.ssffTrackDefinitions[key].added = undefined;
+													delete $scope.cps.curDbConfig.ssffTrackDefinitions[key].added;
+													$scope.hideResponse(key);
+												}
+												else {
+												    $scope.showResponse(key, 'Error while communicating with server (ADDSSFFDEFINITION).');
+												}
+									        });
+									    }
+									    else {
+									        $scope.showResponse(key, 'Editing of Config is not allowed.');
+									    }
+									});
+								}
+								else {
+								    $scope.showResponse(key, 'The fileExtension \"'+$scope.cps.curDbConfig.ssffTrackDefinitions[key].fileExtension+'\" is not valid.');
+								}
+		                    }
+		                    else {
+								$scope.showResponse(key, 'The columnName \"'+$scope.cps.curDbConfig.ssffTrackDefinitions[key].columnName+'\" is not valid.');
+		                    }
+		                }
+		                else {
+		                    $scope.showResponse(key, 'The name \"'+$scope.cps.curDbConfig.ssffTrackDefinitions[key].name+'\" is not valid.');
+		                }
+		            }
+		            break;		            
 		    }
 		};
 		

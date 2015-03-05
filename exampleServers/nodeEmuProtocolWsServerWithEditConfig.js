@@ -341,10 +341,9 @@ wss.on('connection', function (ws) {
       
       // GETDOEDITDBCONFIG method
     case 'EDITDBCONFIG':
-      console.log('editing dbConfig...');
-      // console.log(mJSO.data.annotation);
       switch(mJSO.subtype) {
           case 'ADDLEVELDEFINITION':
+              console.log('editing dbConfig... (ADDLEVELDEFINITION)');
 			  ws.send(JSON.stringify({
 				'callbackID': mJSO.callbackID,
 				'data': 'YES',
@@ -355,7 +354,20 @@ wss.on('connection', function (ws) {
 			  }), undefined, 0);
           break;
           
+          case 'ADDLINKDEFINITION':
+              console.log('editing dbConfig... (ADDLINKDEFINITION)');
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);          
+          break;             
+          
           case 'ADDSSFFDEFINITION':
+              console.log('editing dbConfig... (ADDSSFFDEFINITION)');
 			  ws.send(JSON.stringify({
 				'callbackID': mJSO.callbackID,
 				'data': 'YES',
