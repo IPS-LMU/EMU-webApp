@@ -81,7 +81,10 @@ angular.module('emuwebApp')
             handler.css('top', pos + 'px');
             pane1.elem.css('height', pos + 'px');
             pane2.elem.css('top', pos + 'px');
+            
             viewState.setdragBarHeight(pos);
+            $rootScope.$digest();
+            
           }
 
           if (dragBottomRightResizePaneTopResizer) {
@@ -127,8 +130,6 @@ angular.module('emuwebApp')
             var tmp = width - pos;
             pane3.elem.css('width', tmp + 'px');
           }
-
-
         });
 
         handler.bind('mousedown', function (ev) {
