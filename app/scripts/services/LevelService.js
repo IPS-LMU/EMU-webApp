@@ -40,6 +40,26 @@ angular.module('emuwebApp')
 				id: id
 			};
 		};
+
+		/**
+		 * returns level name by passing in id of an element
+		 * this was moved here from HierarchyLayoutService
+		 */
+		sServObj.getLevelNameByElementID = function (nodeID) {
+			var levelName = null;
+
+			for (var i = 0; i < DataService.getData().levels.length; ++i) {
+				for (var ii = 0; ii < DataService.getData().levels[i].items.length; ++ii) {
+					if (DataService.getData().levels[i].items[ii].id === nodeID) {
+						levelName = DataService.getData().levels[i].name;
+						break;
+					}
+				}
+			}
+
+			return levelName;
+		}
+
 		
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name
@@ -1332,6 +1352,245 @@ angular.module('emuwebApp')
 			});
 			return levelName;
 		}		
+
+		/**
+		 * Returns a level object and an item object according to a given item id
+		 */
+		sServObj.getLevelAndItem = function (eid) {
+			var i, ii;
+			var level, item;
+			var found = false;
+
+			// Iterate over all levels and their items
+			for (i=0; i<DataService.getLevelData().length; ++i) {
+				level = DataService.getLevelData()[i];
+				for (ii=0; ii<level.items.length; ++ii) {
+					item = level.items[ii];
+					if (item.id === eid) {
+						found = true;
+						break;
+					}
+				}
+
+				if (found) {
+					break;
+				}
+			}
+			
+			if (!found) {
+				// No item with id === eid has been found
+				return null;
+			} else {
+				return {level: level, item: item};
+			}
+		};
+
+		/**
+		 * Add an item to the end of the specified level
+		 *
+		 * @param level Name of the level onto which to push the new item
+		 * @param id (optional) if given, this id is used instead of a new one
+		 *
+		 * @returns id of the new item or -1 if no item has been added
+		 */
+		sServObj.pushNewItem = function (levelName, id) {
+			var level = sServObj.getLevelDetails (levelName).level;
+			console.debug(levelName, level, id);
+
+			// Check whether the level has time information
+			// and only proceed if this is not the case
+			if (level.type === 'ITEM') {
+				// Create new item object
+				if (typeof id === 'number') {
+					var newObject = { id: id, labels: [] };
+				} else {
+					var newObject = { id: DataService.getNewId(), labels: [] };
+				}
+
+				// Add all necessary labels
+				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
+				for (var i=0; i<attrdefs.length; ++i) {
+					if (attrdefs[i].type === 'STRING') {
+						newObject.labels.push({name: attrdefs[i].name, value: ''});
+					} else {
+						newObject.labels.push({name: attrdefs[i].name, value: null});
+					}
+				}
+
+				// Insert item into level
+				level.items.push (newObject);
+
+				return newObject.id;
+			} else {
+				return -1;
+			}
+		};
+
+		/**
+		 * Add an item next to the item with id === eid.
+		 * Do nothing if eid is not of type ITEM (ie, if it is on a level with time information)
+		 * 
+		 * @param eid The ID of the element that will get a new sibling
+		 * @param before boolean to define whether the new sibling will be inserted before or after eid
+		 * @param newID optional, only used for redoing from within the history service. if given, no new id is requested from the DataService.
+		 *
+		 * @return the id of the newly added item (if an item has been added)
+		 * @return -1 (if no item has been added)
+		 */
+		sServObj.addItem = function (eid, before, newID) {
+			// Check parameters
+			if (eid === undefined) {
+				return -1;
+			}
+			if (typeof before !== 'boolean') {
+				return -1;
+			}
+
+			// Find the level and item objects corresponding to the given id
+			var levelAndItem = sServObj.getLevelAndItem(eid);
+			if (levelAndItem === null) {
+				console.debug('Could not find item with id:', eid);
+				return -1; 
+			}
+			var level = levelAndItem.level;
+			var item = levelAndItem.item;
+
+
+			// Check whether the level has time information
+			// and only proceed if this is not the case
+			if (level.type === 'ITEM') {
+				// Find position of the given element and
+				// define position of the new one
+				var posOld = level.items.indexOf(item);
+				var posNew;
+				if (before === true) {
+					posNew = posOld;
+				} else {
+					posNew = posOld + 1;
+				}
+
+				// Create new item object
+				if (newID === undefined) {
+					var newObject = { id: DataService.getNewId(), labels: [] };
+				} else {
+					var newObject = { id: newID, labels: [] };
+				}
+
+				// Add all necessary labels
+				var attrdefs = ConfigProviderService.getLevelDefinition(level.name).attributeDefinitions;
+				for (var i=0; i<attrdefs.length; ++i) {
+					if (attrdefs[i].type === 'STRING') {
+						newObject.labels.push({name: attrdefs[i].name, value: ''});
+					} else {
+						newObject.labels.push({name: attrdefs[i].name, value: null});
+					}
+				}
+
+				// Insert item into level
+				level.items.splice(posNew, 0, newObject);
+
+				return newObject.id;
+			}
+
+			return -1;
+		};
+
+		/**
+		 * This is only used as an undo function for the above addItem() and pushNewItem()
+		 *
+		 * Deletes an item but doesn't check whether there are links to or from it
+		 */
+		sServObj.addItemInvers = function (id) {
+			var levels = DataService.getLevelData();
+
+			for (var i=0; i<levels.length; ++i) {
+				for (var ii=0; ii<levels[i].items.length; ++ii) {
+					if (levels[i].items[ii].id === id) {
+						levels[i].items.splice(ii, 1);
+						return;
+					}
+				}
+			}
+		};
+
+
+		/**
+		 * Delete an item (of type ITEM, not of type SEGMENT or EVENT)
+		 * and all links that lead from or to it
+		 *
+		 * @param id The ID of the item to be deleted
+		 * @return an object like {item: object/undefined, ...} (an undefined value of item means that nothing has been done)
+		 */
+		sServObj.deleteItemWithLinks = function (id) {
+			var result = {
+				item: undefined,
+				levelName: undefined,
+				position: undefined,
+				deletedLinks: []
+			};
+
+			var levelAndItem = sServObj.getLevelAndItem (id);
+
+			if (levelAndItem === null) {
+				// item with the specified id does not exist
+				return result;
+			}
+
+			var level = levelAndItem.level;
+			var item = levelAndItem.item;
+
+			if (level.type !== 'ITEM') {
+				// Never touch non-ITEMs
+				return result;
+			}
+
+			// Delete the item itself
+			console.log('Deleting item:', item,'From level:', level);
+			result.item = item;
+			result.levelName = level.name;
+			result.position = level.items.indexOf(item);
+			level.items.splice(level.items.indexOf(item), 1);
+			
+			// Delete all links that lead from or to the item
+			// Iterate over the links array backwards so we can manipulate the array from within the loop
+			var links = DataService.getLinkData();
+			for (var i=links.length-1; i>=0; --i) {
+				if (links[i].fromID === id || links[i].toID === id) {
+					console.log('Deleting link', i);
+					result.deletedLinks.push(links[i]);
+					links.splice(i, 1);
+				}
+			}
+
+			return result;
+		};
+
+		/**
+		 * undo the deletion of an item with its links
+		 */
+		sServObj.deleteItemWithLinksInvers = function (item, levelName, position, deletedLinks) {
+			// Re-add item
+			sServObj.getLevelDetails(levelName).level.items.splice(position, 0, item);
+
+			// Re-add deleted links
+			for (var i=0; i<deletedLinks.length; ++i) {
+				DataService.insertLinkData(deletedLinks[i]);
+			}
+		};
+
+		sServObj.getItemByID = function (id) {
+			var levels = DataService.getLevelData();
+
+			for (var i=0; i<levels.length; ++i) {
+				for (var ii=0; ii<levels[i].items.length; ++ii) {
+					if (levels[i].items[ii].id === id) {
+						return levels[i].items[ii];
+					}
+				}
+			}
+
+			return undefined;
+		};
 
 		return sServObj;
 	});

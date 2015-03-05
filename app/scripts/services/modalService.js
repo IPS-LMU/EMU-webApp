@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.select = function (idx) {
-			sServObj.defer.resolve(idx);
+			sServObj.closeAndResolve(idx);
 		};	
 		
 		/**
