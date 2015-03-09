@@ -255,7 +255,6 @@ angular.module('emuwebApp')
 			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				if (schemaName === 'DBconfigFileSchema') {
 					var semCheckRes = sServObj.semCheckLoadedConfigs(ConfigProviderService.vals, ConfigProviderService.curDbConfig);
-					console.log(semCheckRes);
 					if (semCheckRes === true) {
 						res = true;
 					} else {
