@@ -1,7 +1,7 @@
 {
     "main": {
         "osciSpectroZoomFactor": 2,
-        "autoConnect": false,
+        "autoConnect": true,
         "serverUrl": "ws://localhost:17890",
         "serverTimeoutInterval": 30000,
         "comMode": "WS",
