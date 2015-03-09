@@ -191,7 +191,7 @@ angular.module('emuwebApp')
 								});
 
 							} else {
-								modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4));
+								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));
 							}
 						} else {
 							modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
@@ -225,7 +225,7 @@ angular.module('emuwebApp')
 						$scope.loadFilesForEmbeddedApp();
 						viewState.somethingInProgress = false;
 					} else {
-						modalService.open('views/error.html', 'Error validating emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
@@ -358,7 +358,7 @@ angular.module('emuwebApp')
 						});
 
 					} else {
-						modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
@@ -641,7 +641,7 @@ angular.module('emuwebApp')
 								});
 							});
 						} else {
-							modalService.open('views/error.html', 'Error validating DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 								appStateService.resetToInitState();
 							});
 						}
