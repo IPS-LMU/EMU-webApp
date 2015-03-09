@@ -42,4 +42,33 @@ describe('Service: Validationservice', function () {
      expect(Validationservice.getSchema('emuwebappConfigSchema')).toEqual(undefined);
   }));
 
+  /**
+   * 
+   */
+  it('should semCheckLoadedConfig', inject(function (Validationservice, ConfigProviderService) {
+    // set default
+    ConfigProviderService.setVals(defaultEmuwebappConfig);
+
+    var tmpDBconfig = angular.copy(aeDbConfig);
+    console.log('SIC!!! Have to reset aeDbConfig.EMUwebAppConfig.perspectives[0].levelCanvases.order back to original!! Why? Who has not changed it back or did not work on a copy?');
+    tmpDBconfig.EMUwebAppConfig.perspectives[0].levelCanvases.order = ["Phonetic", "Tone"];
+
+    var res;
+
+    ConfigProviderService.curDbConfig = tmpDBconfig;
+
+    // should pass checks if not manipulated
+    res = Validationservice.semCheckLoadedConfigs(tmpDBconfig.EMUwebAppConfig, tmpDBconfig);
+    expect(res).toEqual(true);
+    
+    // fail on bad track name
+    tmpDBconfig.EMUwebAppConfig.perspectives[0].signalCanvases.order[0] = 'badTrackName';
+    res = Validationservice.semCheckLoadedConfigs(tmpDBconfig.EMUwebAppConfig, tmpDBconfig);
+    expect(res).toContain("/EMUwebAppConfig/perspectives/signalCanvases/order/");
+    tmpDBconfig.EMUwebAppConfig.perspectives[0].signalCanvases.order[0] = 'OSCI';
+
+    console.log(res);
+  }));
+
+
 });
