@@ -66,111 +66,143 @@ angular.module('emuwebApp')
 		 */
 		sServObj.semCheckLoadedConfigs = function (EMUwebAppConfig, DBconfig) {
 			var res = true;
+			var keepGoing = true;
 			// TODO check for unique perspective names
 
 			////////////////////////////////////////////////////////////////////
 			// check perspectives
 			EMUwebAppConfig.perspectives.forEach(function (p) {
-				/////////////////////////
-				// check signalCanvases
+				if (keepGoing) {
+					/////////////////////////
+					// check signalCanvases
 
-				// check only defined signalCanvases are displayed
-				var tDefRes = checkIfSsffTracksAreDefined(angular.copy(p.signalCanvases.order), DBconfig);
-				if (tDefRes !== true) {
-					res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/order! References to undefined ssffTracks are present. ' + tDefRes;
-				}
-				// check only defined and displayed (in order array) assignments are present
-				p.signalCanvases.assign.forEach(function (ass) {
-					// self assignments are not allowed
-					if (ass.signalCanvasName === ass.ssffTrackName) {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! Assignment to self is not possible! signalCanvasesName: ' + ass.signalCanvasName;
-					}
-					// OSCI and SPEC can not be assigned 
-					if (ass.ssffTrackName === 'OSCI' || ass.ssffTrackName === 'SPEC') {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! Assignment of OSCI or SPEC is not possible!';
-					}
-
-					// are defined
-					tDefRes = checkIfSsffTracksAreDefined([ass.signalCanvasName, ass.ssffTrackName], DBconfig);
+					// check only defined signalCanvases are displayed
+					var tDefRes = checkIfSsffTracksAreDefined(angular.copy(p.signalCanvases.order), DBconfig);
 					if (tDefRes !== true) {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! References to undefined ssffTracks are present. ' + tDefRes;
+						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/order! References to undefined ssffTracks are present. ' + tDefRes;
+						keepGoing = false;
 					}
-					// are displayed
-					var tnIdx = p.signalCanvases.order.indexOf(ass.signalCanvasName);
-					if (tnIdx === -1) {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! References to ssffTracks that are not displayed (not in order array of that perspective) are: ' + ass.signalCanvasName;
-					}
-				});
+					var assTrackNames = [];
+					// check only defined and displayed (in order array) assignments are present
+					p.signalCanvases.assign.forEach(function (ass) {
+						if (keepGoing) {
+							assTrackNames.push(ass.ssffTrackName);
 
-				// check only defined and displayed contourLims are present
-				p.signalCanvases.contourLims.forEach(function (cl) {
-					// are defined
-					tDefRes = checkIfSsffTracksAreDefined([cl.ssffTrackName], DBconfig);
-					if (tDefRes !== true) {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/contourLims! References to undefined ssffTracks are present. ' + tDefRes;
-					}
-					// are displayed
-					var tnIdx = p.signalCanvases.order.indexOf(cl.ssffTrackName);
-					if (tnIdx === -1) {
-						res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/contourLims! References to ssffTracks that are not displayed (not in order array of that perspective) are: ' + cl.ssffTrackName;
-					}
-				});
+							// self assignments are not allowed
+							if (ass.signalCanvasName === ass.ssffTrackName) {
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! Assignment to self is not possible! signalCanvasesName: ' + ass.signalCanvasName;
+								keepGoing = false;
+							}
+							// OSCI and SPEC can not be assigned 
+							if (ass.ssffTrackName === 'OSCI' || ass.ssffTrackName === 'SPEC') {
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! Assignment of OSCI or SPEC is not possible!';
+								keepGoing = false;
+							}
 
-				/////////////////////////
-				// check levelCanvases
-
-				// check only defined levels are displayed
-				var lDefRes = checkIfLevelsAreDefined(angular.copy(p.levelCanvases.order), DBconfig);
-				if (lDefRes !== true) {
-					res = 'Error in EMUwebAppConfig/perspectives/levelCanvases/order! References to undefined levels are present. ' + lDefRes;
-				}
-
-				// check only SEGMENT or EVENT levels are displayed
-				p.levelCanvases.order.forEach(function (ln) {
-					var ld = ConfigProviderService.getLevelDefinition(ln);
-					if (ld.type !== 'SEGMENT' && ld.type !== 'EVENT') {
-						res = 'Error in EMUwebAppConfig/perspectives/levelCanvases/order! Configured to display levels of type ITEM as levels containing time information (ITEM level in order array). LevelName: ' + ln;
-					}
-				});
-
-				/////////////////////////
-				// check twoDimCanvases
-				if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-					p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
-						var dotNames = [];
-						// check dots
-						tddd.dots.forEach(function (d) {
-							dotNames.push(d.name);
 							// are defined
-							tDefRes = checkIfSsffTracksAreDefined([d.xSsffTrack, d.ySsffTrack], DBconfig);
+							tDefRes = checkIfSsffTracksAreDefined([ass.signalCanvasName, ass.ssffTrackName], DBconfig);
 							if (tDefRes !== true) {
-								res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/dots! References to undefined ssffTracks are present. ' + tDefRes;
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! References to undefined ssffTracks are present. ' + tDefRes;
+								keepGoing = false;
 							}
-						});
-						// check connectLines
-						tddd.connectLines.forEach(function (cl) {
-							// fromDot is defined
-							var tnIdx = dotNames.indexOf(cl.fromDot);
+							// are displayed
+							var tnIdx = p.signalCanvases.order.indexOf(ass.signalCanvasName);
 							if (tnIdx === -1) {
-								res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in fromDot that are not defined. dots.name: ' + cl.fromDot;
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/assign! References to ssffTracks that are not displayed (not in order array of that perspective) are: ' + ass.signalCanvasName;
+								keepGoing = false;
 							}
-							// toDot is defined
-							tnIdx = dotNames.indexOf(cl.toDot);
-							if (tnIdx === -1) {
-								res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in toDot that are not defined. dots.name: ' + cl.toDot;
-							}
-						});
-						// check staticDots
-						tddd.staticDots.forEach(function (sd) {
-							// check array is of the same length
-							if(sd.xCoordinates.length !== sd.yCoordinates.length){
-								res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/staticDots! xCoordinates and yCoordinates are not of the same length!';
-							}
-						});
+						}
 					});
+
+					// check only defined and displayed contourLims are present
+					p.signalCanvases.contourLims.forEach(function (cl) {
+						if (keepGoing) {
+							// are defined
+							tDefRes = checkIfSsffTracksAreDefined([cl.ssffTrackName], DBconfig);
+							if (tDefRes !== true) {
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/contourLims! References to undefined ssffTracks are present. ' + tDefRes;
+								keepGoing = false;
+							}
+							// are displayed (concat to find assigned ssffTracks as well)
+							var tnIdx = p.signalCanvases.order.concat(assTrackNames).indexOf(cl.ssffTrackName);
+							if (tnIdx === -1) {
+								res = 'Error in EMUwebAppConfig/perspectives/signalCanvases/contourLims! References to ssffTracks that are not displayed (not in order array of that perspective) are: ' + cl.ssffTrackName;
+								keepGoing = false;
+							}
+						}
+					});
+
+					/////////////////////////
+					// check levelCanvases
+
+					// check only defined levels are displayed
+					var lDefRes = checkIfLevelsAreDefined(angular.copy(p.levelCanvases.order), DBconfig);
+					if (lDefRes !== true) {
+						res = 'Error in EMUwebAppConfig/perspectives/levelCanvases/order! References to undefined levels are present. ' + lDefRes;
+						keepGoing = false;
+					}
+
+					// check only SEGMENT or EVENT levels are displayed
+					p.levelCanvases.order.forEach(function (ln) {
+						if (keepGoing) {
+							var ld = ConfigProviderService.getLevelDefinition(ln);
+							if (ld.type !== 'SEGMENT' && ld.type !== 'EVENT') {
+								res = 'Error in EMUwebAppConfig/perspectives/levelCanvases/order! Configured to display levels of type ITEM as levels containing time information (ITEM level in order array). LevelName: ' + ln;
+								keepGoing = false;
+							}
+						}
+					});
+
+					/////////////////////////
+					// check twoDimCanvases
+					if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+						p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
+							if (keepGoing) {
+								var dotNames = [];
+								// check dots
+								tddd.dots.forEach(function (d) {
+									if (keepGoing) {
+										dotNames.push(d.name);
+										// are defined
+										tDefRes = checkIfSsffTracksAreDefined([d.xSsffTrack, d.ySsffTrack], DBconfig);
+										if (tDefRes !== true) {
+											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/dots! References to undefined ssffTracks are present. ' + tDefRes;
+											keepGoing = false;
+										}
+									}
+								});
+								// check connectLines
+								tddd.connectLines.forEach(function (cl) {
+									if (keepGoing) {
+										// fromDot is defined
+										var tnIdx = dotNames.indexOf(cl.fromDot);
+										if (tnIdx === -1) {
+											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in fromDot that are not defined. dots.name: ' + cl.fromDot;
+											keepGoing = false;
+										}
+										// toDot is defined
+										tnIdx = dotNames.indexOf(cl.toDot);
+										if (tnIdx === -1) {
+											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in toDot that are not defined. dots.name: ' + cl.toDot;
+											keepGoing = false;
+										}
+									}
+								});
+								// check staticDots
+								tddd.staticDots.forEach(function (sd) {
+									if (keepGoing) {
+										// check array is of the same length
+										if (sd.xCoordinates.length !== sd.yCoordinates.length) {
+											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/staticDots! xCoordinates and yCoordinates are not of the same length!';
+											keepGoing = false;
+										}
+									}
+								});
+							}
+						});
+					}
+
 				}
-
-
 
 			});
 
