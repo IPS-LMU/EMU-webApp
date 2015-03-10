@@ -52,11 +52,11 @@ describe('Service: ArrayHelperService', function () {
 	/**
 	 *
 	 */
-	it('should do calculate correct interpolation', inject(function (ArrayHelperService, viewState) {
+	it('should do calculate correct interpolation', inject(function (ArrayHelperService, mathHelperService) {
 		var res = ArrayHelperService.interp2points(1, 1, 2, 2, 1.5);
 		expect(res).toEqual(1.5);
 		var res = ArrayHelperService.interp2points(14, 4, 15, 5, 14.2);
-		expect(viewState.round(res, 1)).toEqual(4.2);
+		expect(mathHelperService.roundToNdigitsAfterDecPoint(res, 1)).toEqual(4.2);
 		var res = ArrayHelperService.interp2points(-42, 3, 125, 41, 0);
 		expect(res).toEqual(12.55688622754491);
 
