@@ -46,8 +46,9 @@ angular.module('emuwebApp')
 			// check levels are defined
 			DBconfig.ssffTrackDefinitions.forEach(function (td) {
 				var tnIdx = trackNames.indexOf(td.name);
-				if (tnIdx !== -1) {
+				while(tnIdx !== -1) {
 					trackNames.splice(tnIdx, 1);
+					tnIdx = trackNames.indexOf(td.name);
 				}
 			});
 
