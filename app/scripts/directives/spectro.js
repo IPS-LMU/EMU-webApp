@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('spectro', function ($timeout, viewState, ConfigProviderService, Drawhelperservice, fontScaleService, Soundhandlerservice, mathHelperService) {
+  .directive('spectro', function ($timeout, viewState, ConfigProviderService, Drawhelperservice, fontScaleService, Soundhandlerservice, mathHelperService, loadedMetaDataService) {
     return {
       templateUrl: 'views/spectro.html',
       restrict: 'E',
@@ -14,6 +14,7 @@ angular.module('emuwebApp')
         scope.vs = viewState;
         scope.cps = ConfigProviderService;
         scope.dhs = Drawhelperservice;
+        scope.lmds = loadedMetaDataService;
         scope.trackName = attrs.trackName;
         // select the needed DOM elements from the template
         scope.canvas0 = element.find('canvas')[0];
@@ -41,7 +42,7 @@ angular.module('emuwebApp')
             }
           }
         });
-        
+
         //
         scope.$watch('vs.submenuOpen', function () {
           if (!$.isEmptyObject(scope.shs)) {
@@ -49,7 +50,7 @@ angular.module('emuwebApp')
               $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
             }
           }
-        });        
+        });
 
 
         scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -92,6 +93,16 @@ angular.module('emuwebApp')
           }
         }, true);
 
+        //
+        scope.$watch('lmds.getCurBndl()', function () {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              scope.redraw();
+            }
+          }
+        }, true);
+
+
         ///////////////
         // bindings
 
@@ -108,11 +119,11 @@ angular.module('emuwebApp')
         scope.calcSamplesPerPxl = function () {
           return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
         }
-        
+
         scope.clearAndDrawSpectMarkup = function () {
           scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
           scope.drawSpectMarkup();
-        }        
+        }
 
         scope.drawSpectMarkup = function () {
           // draw moving boundary line if moving
