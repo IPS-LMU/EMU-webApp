@@ -340,6 +340,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
+			// console.log(viewState.round(min, round))
 			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
 
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -404,7 +405,8 @@ angular.module('emuwebApp')
 				        // draw min max an name of track
                         var tr = ConfigProviderService.getSsffTrackConfig(trackname);
                         var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-                        mouseFreq = viewState.round(col._maxVal - mouseY / ctx.canvas.height * col._maxVal, 2);
+                        mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
+                        mouseFreq = viewState.round(mouseFreq, 2); // crop
                         horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
 					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
@@ -439,7 +441,6 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
-
 			// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 			ctx.strokeStyle = ConfigProviderService.vals.colors.labelColor;
 			ctx.fillStyle = ConfigProviderService.vals.colors.labelColor;
