@@ -249,11 +249,10 @@ angular.module('emuwebApp')
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				if(viewState.getcurMouseisLast()) {
-				    ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
-				}
-				else {
-				    ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				if (viewState.getcurMouseisLast()) {
+					ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
+				} else {
+					ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 				}
 			}
 
@@ -359,7 +358,7 @@ angular.module('emuwebApp')
 				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);
 				}
-				
+
 
 				// draw frequency / sample / time
 				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
@@ -371,59 +370,56 @@ angular.module('emuwebApp')
 				var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
 				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
-				
-				
-				if (max !== undefined || min !== undefined) {
-				    if(trackname == "OSCI" ) {
-				        // no horizontal values		
-	    				ctx.beginPath();
-			    		//ctx.moveTo(0, mouseY);
-					    //ctx.lineTo(5, mouseY + 5);
-	    				//ctx.moveTo(0, mouseY);
-			    		//ctx.lineTo(ctx.canvas.width, mouseY);
-					    //ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
-				        		    
-				    }
-				    else if(trackname == "SPEC" ) {
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-	    				ctx.beginPath();
-			    		ctx.moveTo(0, mouseY);
-					    ctx.lineTo(5, mouseY + 5);
-	    				ctx.moveTo(0, mouseY);
-			    		ctx.lineTo(ctx.canvas.width, mouseY);
-					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
-					    
-				    }
-				    else {
-				        // draw min max an name of track
-                        var tr = ConfigProviderService.getSsffTrackConfig(trackname);
-                        var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-                        mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
-                        mouseFreq = viewState.round(mouseFreq, 2); // crop
-                        horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-	    				ctx.beginPath();
-			    		ctx.moveTo(0, mouseY);
-					    ctx.lineTo(5, mouseY + 5);
-	    				ctx.moveTo(0, mouseY);
-			    		ctx.lineTo(ctx.canvas.width, mouseY);
-					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
 
-				    }
-				    
-				    
-				    
+
+				if (max !== undefined || min !== undefined) {
+					if (trackname == "OSCI") {
+						// no horizontal values		
+						ctx.beginPath();
+						//ctx.moveTo(0, mouseY);
+						//ctx.lineTo(5, mouseY + 5);
+						//ctx.moveTo(0, mouseY);
+						//ctx.lineTo(ctx.canvas.width, mouseY);
+						//ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					} else if (trackname == "SPEC") {
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+						ctx.beginPath();
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(5, mouseY + 5);
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(ctx.canvas.width, mouseY);
+						ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					} else {
+						// draw min max an name of track
+						var tr = ConfigProviderService.getSsffTrackConfig(trackname);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
+						mouseFreq = viewState.round(mouseFreq, 2); // crop
+						horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+						ctx.beginPath();
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(5, mouseY + 5);
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(ctx.canvas.width, mouseY);
+						ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					}
+
+
 
 				}
 				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
