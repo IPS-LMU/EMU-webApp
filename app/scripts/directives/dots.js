@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice) {
+	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice, loadedMetaDataService) {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
@@ -13,6 +13,7 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.fontImage = fontScaleService;
 				scope.shs = Soundhandlerservice;
+				scope.lmds = loadedMetaDataService;
 				var canvas = element.find('canvas')[0];
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
@@ -65,6 +66,15 @@ angular.module('emuwebApp')
 					globalMinY = Infinity;
 					globalMaxY = -Infinity;
 				}, true);
+
+				//
+				scope.$watch('lmds.getCurBndl()', function (newVal) {
+					globalMinX = Infinity;
+					globalMaxX = -Infinity;
+					globalMinY = Infinity;
+					globalMaxY = -Infinity;
+				}, true);
+
 
 				//
 				//////////////////
