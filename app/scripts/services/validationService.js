@@ -18,8 +18,9 @@ angular.module('emuwebApp')
 			// check levels are defined
 			DBconfig.levelDefinitions.forEach(function (ld) {
 				var lnIdx = levelNames.indexOf(ld.name);
-				if (lnIdx !== -1) {
+				while (lnIdx !== -1) {
 					levelNames.splice(lnIdx, 1);
+					lnIdx = levelNames.indexOf(ld.name);
 				}
 			});
 
@@ -46,7 +47,7 @@ angular.module('emuwebApp')
 			// check levels are defined
 			DBconfig.ssffTrackDefinitions.forEach(function (td) {
 				var tnIdx = trackNames.indexOf(td.name);
-				while(tnIdx !== -1) {
+				while (tnIdx !== -1) {
 					trackNames.splice(tnIdx, 1);
 					tnIdx = trackNames.indexOf(td.name);
 				}
@@ -156,51 +157,53 @@ angular.module('emuwebApp')
 
 					/////////////////////////
 					// check twoDimCanvases
-					if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-						p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
-							if (keepGoing) {
-								var dotNames = [];
-								// check dots
-								tddd.dots.forEach(function (d) {
-									if (keepGoing) {
-										dotNames.push(d.name);
-										// are defined
-										tDefRes = checkIfSsffTracksAreDefined([d.xSsffTrack, d.ySsffTrack], DBconfig);
-										if (tDefRes !== true) {
-											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/dots! References to undefined ssffTracks are present. ' + tDefRes;
-											keepGoing = false;
+					if (p.twoDimCanvases !== undefined) {
+						if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+							p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
+								if (keepGoing) {
+									var dotNames = [];
+									// check dots
+									tddd.dots.forEach(function (d) {
+										if (keepGoing) {
+											dotNames.push(d.name);
+											// are defined
+											tDefRes = checkIfSsffTracksAreDefined([d.xSsffTrack, d.ySsffTrack], DBconfig);
+											if (tDefRes !== true) {
+												res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/dots! References to undefined ssffTracks are present. ' + tDefRes;
+												keepGoing = false;
+											}
 										}
-									}
-								});
-								// check connectLines
-								tddd.connectLines.forEach(function (cl) {
-									if (keepGoing) {
-										// fromDot is defined
-										var tnIdx = dotNames.indexOf(cl.fromDot);
-										if (tnIdx === -1) {
-											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in fromDot that are not defined. dots.name: ' + cl.fromDot;
-											keepGoing = false;
+									});
+									// check connectLines
+									tddd.connectLines.forEach(function (cl) {
+										if (keepGoing) {
+											// fromDot is defined
+											var tnIdx = dotNames.indexOf(cl.fromDot);
+											if (tnIdx === -1) {
+												res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in fromDot that are not defined. dots.name: ' + cl.fromDot;
+												keepGoing = false;
+											}
+											// toDot is defined
+											tnIdx = dotNames.indexOf(cl.toDot);
+											if (tnIdx === -1) {
+												res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in toDot that are not defined. dots.name: ' + cl.toDot;
+												keepGoing = false;
+											}
 										}
-										// toDot is defined
-										tnIdx = dotNames.indexOf(cl.toDot);
-										if (tnIdx === -1) {
-											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/connectLines! References dots in toDot that are not defined. dots.name: ' + cl.toDot;
-											keepGoing = false;
+									});
+									// check staticDots
+									tddd.staticDots.forEach(function (sd) {
+										if (keepGoing) {
+											// check array is of the same length
+											if (sd.xCoordinates.length !== sd.yCoordinates.length) {
+												res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/staticDots! xCoordinates and yCoordinates are not of the same length!';
+												keepGoing = false;
+											}
 										}
-									}
-								});
-								// check staticDots
-								tddd.staticDots.forEach(function (sd) {
-									if (keepGoing) {
-										// check array is of the same length
-										if (sd.xCoordinates.length !== sd.yCoordinates.length) {
-											res = 'Error in EMUwebAppConfig/perspectives/twoDimCanvases/twoDimDrawingDefinitions/staticDots! xCoordinates and yCoordinates are not of the same length!';
-											keepGoing = false;
-										}
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}
 					}
 
 				}
