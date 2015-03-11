@@ -18,8 +18,9 @@ angular.module('emuwebApp')
 			// check levels are defined
 			DBconfig.levelDefinitions.forEach(function (ld) {
 				var lnIdx = levelNames.indexOf(ld.name);
-				if (lnIdx !== -1) {
+				while (lnIdx !== -1) {
 					levelNames.splice(lnIdx, 1);
+					lnIdx = levelNames.indexOf(ld.name);
 				}
 			});
 
@@ -156,7 +157,7 @@ angular.module('emuwebApp')
 
 					/////////////////////////
 					// check twoDimCanvases
-					if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+					if (p.twoDimCanvases !== undefined) {
 						p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
 							if (keepGoing) {
 								var dotNames = [];
