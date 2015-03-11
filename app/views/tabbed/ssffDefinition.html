@@ -1,6 +1,6 @@
 <!-- ssffTrackDefinitions -->
 <div ng-class="classDefinition('ssff', key)" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
-    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
+    <a ng-if="value.added" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
 	        Name: <input type="text" ng-model="value.name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>

@@ -6,6 +6,14 @@ describe('Service: LevelService', function () {
   beforeEach(module('emuwebApp'));
   
   var item;
+  var aetmpDBconfig, epgdorsaltmpDbConfig, ematmpDbConfig, defaultEmuwebappConfigTmp;
+  
+  beforeEach(inject(function () {
+    aetmpDBconfig = angular.copy(aeDbConfig);
+    epgdorsaltmpDbConfig = angular.copy(epgdorsalDbConfig);
+    ematmpDbConfig = angular.copy(emaDbConfig);
+    defaultEmuwebappConfigTmp = angular.copy(defaultEmuwebappConfig);
+  }));
 
   /**
    *
@@ -219,8 +227,8 @@ describe('Service: LevelService', function () {
    */
   it('should insert a new element on level', inject(function (DataService, LevelService, viewState, ConfigProviderService) {
     // test on JDR10_bndl.annotation
-    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = epgdorsaltmpDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
     DataService.setData(JDR10_bndl.annotation);
     LevelService.insertItemDetails(5, 'Phonetic', 0, 'test', 87610, 100);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
@@ -230,8 +238,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
     expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('test');
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    ConfigProviderService.curDbConfig = emaDbConfig;
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = ematmpDbConfig;
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.insertItemDetails(112, 'TB', 0, 'test', 29509, 100);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
@@ -247,7 +255,7 @@ describe('Service: LevelService', function () {
    */
   it('should change element (segment) details on level based on name and id', inject(function (DataService, LevelService, viewState) {
     // test on JDR10_bndl.annotation
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
     DataService.setData(JDR10_bndl.annotation);
     LevelService.updateSegItemInLevel('Phonetic', 3, 'test', 0, 87700, 939);
     expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(3);
@@ -257,7 +265,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemDetails('Phonetic', 0).labels[0].value).toEqual('test');
 
     // // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.updateSegItemInLevel('TB', 40, 'test', 0, 29604, 2700);
     expect(LevelService.getItemDetails('TB', 0).id).toEqual(40);
@@ -424,7 +432,7 @@ describe('Service: LevelService', function () {
    */
   it('should delete a level', inject(function (DataService, LevelService, ConfigProviderService) {
     // test on msajc003_bndl.annotation
-    ConfigProviderService.setVals(defaultEmuwebappConfig);
+    ConfigProviderService.setVals(defaultEmuwebappConfigTmp);
     DataService.setData(msajc003_bndl.annotation);
     expect(DataService.getLevelData().length).toEqual(9);
     LevelService.deleteLevel(0, 0);
@@ -448,7 +456,7 @@ describe('Service: LevelService', function () {
    */
   it('should add a level', inject(function (DataService, LevelService, ConfigProviderService) {
     // test on msajc003_bndl.annotation
-    ConfigProviderService.setVals(defaultEmuwebappConfig);
+    ConfigProviderService.setVals(defaultEmuwebappConfigTmp);
     DataService.setData(msajc003_bndl.annotation);
     expect(DataService.getLevelData().length).toEqual(9);
     LevelService.insertLevel({
@@ -512,19 +520,19 @@ describe('Service: LevelService', function () {
   it('should rename an element', inject(function (DataService, LevelService, viewState) {
 
     // test on msajc003_bndl.annotation
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     DataService.setData(msajc003_bndl.annotation);
     LevelService.renameLabel('Phonetic', 147, 0, 'test');
     expect(LevelService.getItemFromLevelById('Phonetic', 147).labels[0].value).toEqual('test');
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.renameLabel('TB', 40, 0, 'test');
     expect(LevelService.getItemFromLevelById('TB', 40).labels[0].value).toEqual('test');
 
     // test on JDR10_bndl.annotation
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
     DataService.setData(JDR10_bndl.annotation);
     LevelService.renameLabel('Phonetic', 3, 0, 'test');
     expect(LevelService.getItemFromLevelById('Phonetic', 3).labels[0].value).toEqual('test');
@@ -536,7 +544,7 @@ describe('Service: LevelService', function () {
   it('should rename a level', inject(function (DataService, LevelService, ConfigProviderService) {
     // test on msajc003_bndl.annotation
     DataService.setData(msajc003_bndl.annotation);
-    ConfigProviderService.setVals(defaultEmuwebappConfig);
+    ConfigProviderService.setVals(defaultEmuwebappConfigTmp);
     expect(LevelService.getLevelDetails('Phonetic').id).toEqual(6);
     LevelService.renameLevel('Phonetic', 'test', 0);
     expect(LevelService.getLevelDetails('test').id).toEqual(6);
@@ -634,7 +642,7 @@ describe('Service: LevelService', function () {
   it('should deleteSegmentsInvers', inject(function (DataService, LevelService, viewState) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions)
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions)
     DataService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     var deleted = LevelService.deleteSegments('Phonetic', 148, 2);
@@ -650,7 +658,7 @@ describe('Service: LevelService', function () {
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // 1 elements on left side
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions)
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions)
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     var deleted = LevelService.deleteSegments('TB', 41, 1);
@@ -664,7 +672,7 @@ describe('Service: LevelService', function () {
 
     // test on JDR10_bndl.annotation
     // 1 elements on right side
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions)
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions)
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     var deleted = LevelService.deleteSegments('Phonetic', 4, 1);
@@ -683,8 +691,8 @@ describe('Service: LevelService', function () {
   it('should insertSegment', inject(function (DataService, LevelService, viewState, ConfigProviderService) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    ConfigProviderService.curDbConfig = aeDbConfig;
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = aetmpDBconfig;
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     DataService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
     // insert 1 new segment on the left side
@@ -698,8 +706,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    ConfigProviderService.curDbConfig = emaDbConfig;
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = ematmpDbConfig;
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
 
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
@@ -714,8 +722,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('TB', ret2.ids[1]).labels[0].value).toEqual('test2');
 
     // test on JDR10_bndl.annotation
-    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = epgdorsaltmpDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
 
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
@@ -736,8 +744,8 @@ describe('Service: LevelService', function () {
   it('should insertSegmentInvers', inject(function (DataService, LevelService, viewState, ConfigProviderService) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    ConfigProviderService.curDbConfig = aeDbConfig;
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = aetmpDBconfig;
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
 
     DataService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
@@ -751,8 +759,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    ConfigProviderService.curDbConfig = emaDbConfig;
-    viewState.setCurLevelAttrDefs(emaDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = ematmpDbConfig;
+    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
 
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
@@ -766,8 +774,8 @@ describe('Service: LevelService', function () {
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
 
     // test on JDR10_bndl.annotation
-    ConfigProviderService.curDbConfig = epgdorsalDbConfig;
-    viewState.setCurLevelAttrDefs(epgdorsalDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = epgdorsaltmpDbConfig;
+    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
 
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
@@ -787,8 +795,8 @@ describe('Service: LevelService', function () {
   it('should insertPoint', inject(function (DataService, LevelService, viewState, ConfigProviderService) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
-    ConfigProviderService.curDbConfig = aeDbConfig;
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    ConfigProviderService.curDbConfig = aetmpDBconfig;
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
 
     DataService.setData(msajc003_bndl.annotation);
     expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
@@ -1224,7 +1232,7 @@ describe('Service: LevelService', function () {
   it('should get all labels of level', inject(function (DataService, LevelService, viewState) {
     // set according data
     DataService.setData(msajc003_bndl.annotation);
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     var levelDetails = LevelService.getLevelDetails('Phonetic');
 
     // console.log(levelDetails.level);
@@ -1241,7 +1249,7 @@ describe('Service: LevelService', function () {
   it('should getLevelsByType', inject(function (DataService, LevelService, viewState) {
     // set according data
     DataService.setData(msajc003_bndl.annotation);
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     var levels = LevelService.getLevelsByType('SEGMENT');
     expect(levels.length).toEqual(1);
     expect(levels[0].name).toEqual('Phonetic');
@@ -1253,7 +1261,7 @@ describe('Service: LevelService', function () {
   it('should getItemsFromLevelByIdAndLength', inject(function (DataService, LevelService, viewState) {
     // set according data
     DataService.setData(msajc003_bndl.annotation);
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     var items = LevelService.getItemsFromLevelByIdAndLength('Phonetic', 148, 1);
     expect(items.length).toEqual(1);
     expect(items[0].sampleStart).toEqual(5140);
@@ -1266,7 +1274,7 @@ describe('Service: LevelService', function () {
     // set according data
     DataService.setData(msajc003_bndl.annotation);
     Soundhandlerservice.wavJSO.Data = new Array(1000);
-    viewState.setCurLevelAttrDefs(aeDbConfig.levelDefinitions);
+    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     for (var i = 0; i < Soundhandlerservice.wavJSO.Data.length; i++) {
         Soundhandlerservice.wavJSO.Data[i] = 0;
     }

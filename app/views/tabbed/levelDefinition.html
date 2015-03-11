@@ -1,17 +1,19 @@
 <!-- levelDefinitions -->
 <div ng-class="classDefinition('level', key)" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
-    <a href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
+    <a href ng-show="value.added" title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
-		    Name <input name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
+		    Name: <input ng-if="value.added" name="levelname" type="text" ng-model="cps.curDbConfig.levelDefinitions[key].name" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></input>  
+		         <span ng-if="!value.added"><b>{{cps.curDbConfig.levelDefinitions[key].name}}</b></span>
 		</span>
 		<span class="emuwebapp-tabbed-cell3">
-	        Type: <select ng-model="cps.curDbConfig.levelDefinitions[key].type" ng-options="opt as opt for opt in levelDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold" ></select>
+	        Type: <select ng-if="value.added" ng-model="cps.curDbConfig.levelDefinitions[key].type" ng-options="opt as opt for opt in levelDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold" ></select>
+	        <span ng-if="!value.added"><b>{{cps.curDbConfig.levelDefinitions[key].type}}</b></span>
 	    </span>
 	</div>
 	<br />
 	<div ng-class="classDefinition('level', key)" class="emuwebapp-borderDashed">
-		<div class="emuwebapp-borderTitle">Attribute Definitions</div>
+		<div ng-class="classBorderDefinition('level', key)">Attribute Definitions</div>
 			<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
 				<span ng-if="keyAttribute == 0" class="emuwebapp-tabbed-cell4">
 					Name: <b>{{cps.curDbConfig.levelDefinitions[key].name}}</b>
@@ -30,7 +32,7 @@
 				</span>										
 			</div>
 			<br />
-			<a href title="Add new attribute definition" ng-click="addDefinition('levelattribute', key)"><span class="emuwebapp-tabbed-add">+</span> &nbsp; Add attribute definition to {{cps.curDbConfig.levelDefinitions[key].attributeDefinitions[0].name}}</a>
+			<a href title="Add new attribute definition" ng-click="addDefinition('levelattribute', key)"><span class="emuwebapp-tabbed-add">+</span> &nbsp; Add attribute definition</a>
 		</div>
 		<button ng-show="value.added" ng-click="saveDefinition('level', key)" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
 		<span class="emuwebapp-tabbed-error" ng-show="response[key].show"><b>Error:</b>{{response[key].text}}</span>

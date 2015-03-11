@@ -325,6 +325,62 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
       
+      // GETDOEDITDBCONFIG method
+    case 'GETDOEDITDBCONFIG':
+      console.log('checking if editDBConfig is allowed...');
+      // console.log(mJSO.data.annotation);
+      ws.send(JSON.stringify({
+        'callbackID': mJSO.callbackID,
+        'data': 'YES',
+        'status': {
+          'type': 'SUCCESS',
+          'message': ''
+        }
+      }), undefined, 0);
+      break;
+      
+      // GETDOEDITDBCONFIG method
+    case 'EDITDBCONFIG':
+      switch(mJSO.subtype) {
+          case 'ADDLEVELDEFINITION':
+              console.log('editing dbConfig... (ADDLEVELDEFINITION)');
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);
+          break;
+          
+          case 'ADDLINKDEFINITION':
+              console.log('editing dbConfig... (ADDLINKDEFINITION)');
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);          
+          break;             
+          
+          case 'ADDSSFFDEFINITION':
+              console.log('editing dbConfig... (ADDSSFFDEFINITION)');
+			  ws.send(JSON.stringify({
+				'callbackID': mJSO.callbackID,
+				'data': 'YES',
+				'status': {
+				  'type': 'SUCCESS',
+				  'message': ''
+				}
+			  }), undefined, 0);          
+          break;          
+      }
+      break;
+      
+
     default:
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
