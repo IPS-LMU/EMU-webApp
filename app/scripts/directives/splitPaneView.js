@@ -104,7 +104,7 @@ angular.module('emuwebApp')
             if (pos <= 10 || width - pos <= 10) {
               return;
             }
-            pane3.elem.css('left', pos + 'px');
+            //pane3.elem.css('left', pos + 'px');
             var tmp = width - pos;
             pane3.elem.css('width', tmp + 'px');
           }
@@ -126,7 +126,7 @@ angular.module('emuwebApp')
             if (pos <= 10 || width - pos <= 10) {
               return;
             }
-            pane3.elem.css('left', pos + 'px');
+            //pane3.elem.css('left', pos + 'px');
             var tmp = width - pos;
             pane3.elem.css('width', tmp + 'px');
           }
