@@ -308,6 +308,8 @@ The current subtypes are (more will be added in the near future):
 
 -   `MODIFYATTRIBUTEDEFINITION`
 
+-   `ADDSSFFDEFINITION`
+
 ### DISCONNECTWARNING
 
 

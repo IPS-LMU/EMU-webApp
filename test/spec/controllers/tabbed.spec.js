@@ -52,6 +52,8 @@ describe('Controller: TabbedCtrl', function () {
 	 });
      expect(scope.isActiveTab('nothing')).toEqual({});
    }); 
+
+
    
    
    /*

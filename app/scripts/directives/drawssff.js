@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('drawssff', function (viewState, ConfigProviderService, Ssffdataservice, HistoryService, fontScaleService) {
+  .directive('drawssff', function ($timeout, viewState, ConfigProviderService, Ssffdataservice, HistoryService, fontScaleService) {
     return {
       restrict: 'A',
       scope: {},
@@ -14,6 +14,7 @@ angular.module('emuwebApp')
         scope.vs = viewState;
         scope.hists = HistoryService;
         scope.ssffds = Ssffdataservice;
+        scope.cps = ConfigProviderService;
 
         ////////////////////
         // observes
@@ -34,6 +35,9 @@ angular.module('emuwebApp')
           if (oldValue.windowWidth !== newValue.windowWidth) {
               scope.handleUpdate();
           }
+          if (oldValue.dragBarHeight !== newValue.dragBarHeight) {
+              scope.handleUpdate();
+          }          
         }, true);
 
         //watch perspective change
@@ -60,6 +64,21 @@ angular.module('emuwebApp')
         scope.$watch('vs.spectroSettings', function (newValue, oldValue) {
           scope.handleUpdate();
         }, true);
+        
+		//
+		scope.$watch('vs.submenuOpen', function (oldValue, newValue) {
+		    if (oldValue !== newValue) {
+		        $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime); 
+		    }
+		});   
+		
+		//
+		scope.$watch('vs.timelineSize', function (oldValue, newValue) {
+		    if (oldValue !== newValue) {
+		        $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime/10); 
+		    }
+		}); 		 
+			    
 
         //
         //////////////////////

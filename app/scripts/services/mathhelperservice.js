@@ -34,5 +34,26 @@ angular.module('emuwebApp')
 
 		};
 
+		/**
+		 * round to n digits after decimal point
+		 * used to help display numbers with a given
+		 * precision
+		 * @param x number 
+		 * @param n digits after decimal point
+		 * @returns rounded number
+		 */
+		sServObj.roundToNdigitsAfterDecPoint = function (x, n) {
+			if (n < 1 || n > 14) {
+				console.error('error in call of round function!!');
+			}
+			var e = Math.pow(10, n);
+			var k = (Math.round(x * e) / e).toString();
+			if (k.indexOf('.') === -1) {
+				k += '.';
+			}
+			k += e.toString().substring(1);
+			return parseFloat(k.substring(0, k.indexOf('.') + n + 1));
+		};
+
 		return (sServObj);
 	});

@@ -52,8 +52,6 @@ describe('Service: Validationservice', function () {
     // set default
     ConfigProviderService.setVals(defaultEmuwebappConfig);
 
-    console.log('SIC SIC SIC!!! Have to reset aeDbConfig.EMUwebAppConfig.perspectives[0].levelCanvases.order back to original!! Why? Who has not changed it back or did not work on a copy?');
-    aeDbConfig.EMUwebAppConfig.perspectives[0].levelCanvases.order = ["Phonetic", "Tone"];
     // console.log(JSON.stringify(emaDbConfig.levelDefinitions, undefined, 1));
     var tmpDBconfig = angular.copy(aeDbConfig);
 

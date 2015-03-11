@@ -1021,23 +1021,6 @@ angular.module('emuwebApp')
       return (end - start) / event.originalEvent.target.width;
     };
 
-    /**
-     * round to n decimal digits after the comma
-     * used to help display numbers with a given
-     * precision
-     */
-    sServObj.round = function (x, n) {
-      if (n < 1 || n > 14) {
-        console.error('error in call of round function!!');
-      }
-      var e = Math.pow(10, n);
-      var k = (Math.round(x * e) / e).toString();
-      if (k.indexOf('.') === -1) {
-        k += '.';
-      }
-      k += e.toString().substring(1);
-      return parseFloat(k.substring(0, k.indexOf('.') + n + 1));
-    };
 
     /**
      * calcs and returns start in secs

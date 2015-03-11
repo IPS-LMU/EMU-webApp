@@ -226,7 +226,16 @@
 						"color": "rgb(255,0,0)"
 					}],
 					"connectLines": [],
-					"staticDots": []
+					"staticDots": [{
+						"name": "static square (no real meaning)",
+						"xNameCoordinate": 1200,
+						"yNameCoordinate": 2000,
+						"xCoordinates": [300, 300, 900, 900, 300],
+						"yCoordinates": [880, 2540, 2540, 880, 880],
+						"connect": true,
+						"color": "rgb(0,0,255)"
+					}]
+
 				}]
 			}
 		}],
