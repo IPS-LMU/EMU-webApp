@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice) {
+	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice, loadedMetaDataService, mathHelperService) {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
@@ -13,6 +13,8 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.fontImage = fontScaleService;
 				scope.shs = Soundhandlerservice;
+				scope.lmds = loadedMetaDataService;
+				scope.mhs = mathHelperService;
 				var canvas = element.find('canvas')[0];
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
@@ -65,6 +67,15 @@ angular.module('emuwebApp')
 					globalMinY = Infinity;
 					globalMaxY = -Infinity;
 				}, true);
+
+				//
+				scope.$watch('lmds.getCurBndl()', function (newVal) {
+					globalMinX = Infinity;
+					globalMaxX = -Infinity;
+					globalMinY = Infinity;
+					globalMaxY = -Infinity;
+				}, true);
+
 
 				//
 				//////////////////
@@ -145,16 +156,16 @@ angular.module('emuwebApp')
 
 					var smallFontSize = scope.cps.vals.font.fontPxSize * 3 / 4;
 					// ymax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.vs.round(globalMaxY, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
 					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
 
 					// xmin + y min
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.vs.round(globalMinY, 2), 'xMin: ' + scope.vs.round(globalMinX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor, true);
+					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor, true);
 					ctx.drawImage(labelTxtImg, 5, canvas.height - smallFontSize * scaleY * 2 - 5, labelTxtImg.width, labelTxtImg.height);
 
 					// xmax
-					var tw = ctx.measureText('xMax: ' + scope.vs.round(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.vs.round(globalMaxX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
 					ctx.drawImage(labelTxtImg, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, labelTxtImg.width, labelTxtImg.height);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded

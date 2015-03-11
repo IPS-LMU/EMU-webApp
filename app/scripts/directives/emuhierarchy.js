@@ -33,8 +33,14 @@ angular.module('emuwebApp')
 	// Possible zoom range
 	scope.scaleExtent = [0.5, 10];
 	
-	// Duration of the CSS transitions
-	scope.transitionDuration = 750;
+	// Settings for CSS transitions
+	scope.transition = {
+		duration: 750,
+		links: false,
+		nodes: true,
+		rotation: true,
+		contextMenu: true
+	};
 
 	//
 	//////////////////////
@@ -142,7 +148,7 @@ angular.module('emuwebApp')
 		var x = -node._x + scope.width/2;
 		var y = -node._y  + scope.height/2;
 		scope.svg.transition()
-			.duration(scope.transitionDuration)
+			.duration(scope.transition.duration)
 			.attr('transform', scope.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
 		scope.zoomListener.translate([x, y]);
 	};
@@ -580,9 +586,14 @@ angular.module('emuwebApp')
 		scope.height = parseInt(d3.select(scope.element[0]).style('height'), 10);
 
 		// Set orientation
-		scope.svg.transition()
-		  .duration(scope.transitionDuration)
-		  .attr('transform', scope.getOrientatedTransform()); 
+		if (scope.transition.rotation) {
+			scope.svg.transition()
+			.duration(scope.transition.duration)
+			.attr('transform', scope.getOrientatedTransform())
+			;
+		} else {
+			scope.svg.attr('transform', scope.getOrientatedTransform());
+		}
 
 
 		/////////
@@ -644,10 +655,14 @@ angular.module('emuwebApp')
 			.attr('transform', scope.getOrientatedLevelCaptionTransform)
 			;
 		
-		oldLevelCaptions = oldLevelCaptions.transition()
-			.duration(scope.transitionDuration)
-			.remove()
-			;
+		if (scope.transition.rotation) {
+			oldLevelCaptions = oldLevelCaptions.transition()
+				.duration(scope.transition.duration)
+				.remove()
+				;
+		} else {
+			oldLevelCaptions.remove();
+		}
 
 		oldLevelCaptions.select('text')
 			.style('fill-opacity', 0)
@@ -766,18 +781,23 @@ angular.module('emuwebApp')
 			.on('mouseover', scope.nodeOnMouseOver)
 			;
 
-		newNodes.append('circle')
+		var circle = newNodes.append('circle')
 			.attr('class', 'emuhierarchy-nodeCircle')
 			.style('stroke', ConfigProviderService.vals.colors.nodeStrokeColor)
-
-			// Make circle invisible at first
-			.attr('r', 0)
-
-			// And then transition it to its normal size
-			.transition()
-			.duration(scope.transitionDuration)
-			.attr('r', 4.5)
 			;
+
+		if (scope.transition.nodes) {
+			circle
+				// Make circle invisible at first
+				.attr('r', 0)
+				// And then transition it to its normal size
+				.transition()
+				.duration(scope.transition.duration)
+				.attr('r', 4.5)
+				;
+		} else {
+			circle.attr('r', 4.5);
+		}
 
 		newNodes.append('text')
 			.attr('class', 'emuhierarchy-nodeText')
@@ -799,20 +819,39 @@ angular.module('emuwebApp')
 		// Remove nodes that shall no longer be part of the svg
 
 		// Transition exiting nodes to the origin
-		oldNodes = oldNodes.transition()
-			.duration(scope.transitionDuration)
-			.attr('transform', function (d) {
-				var collapsePosition = viewState.getCollapsePosition(d.id);
-				if (typeof collapsePosition !== 'undefined') {
-					var x = collapsePosition[0];
-					var y = collapsePosition[1];
-					viewState.setCollapsePosition(d.id, undefined);
-					return 'translate(' + x + ',' + y + ')';
-				} else {
-					return 'translate(' + 0 + ',' + 0 + ')';
-				}
-			})
-			.remove();
+		// FIXME put that anyonymous transform function on scope
+
+		if (scope.transition.nodes) {
+			oldNodes = oldNodes
+				.transition()
+				.duration(scope.transition.duration)
+				.attr('transform', function (d) {
+					var collapsePosition = viewState.getCollapsePosition(d.id);
+					if (typeof collapsePosition !== 'undefined') {
+						var x = collapsePosition[0];
+						var y = collapsePosition[1];
+						viewState.setCollapsePosition(d.id, undefined);
+						return 'translate(' + x + ',' + y + ')';
+					} else {
+						return 'translate(' + 0 + ',' + 0 + ')';
+					}
+				})
+				.remove();
+		} else {
+			oldNodes = oldNodes
+				.attr('transform', function (d) {
+					var collapsePosition = viewState.getCollapsePosition(d.id);
+					if (typeof collapsePosition !== 'undefined') {
+						var x = collapsePosition[0];
+						var y = collapsePosition[1];
+						viewState.setCollapsePosition(d.id, undefined);
+						return 'translate(' + x + ',' + y + ')';
+					} else {
+						return 'translate(' + 0 + ',' + 0 + ')';
+					}
+				})
+				.remove();
+		}
 		
 		oldNodes.select('text')
 			.style('fill-opacity', 0);
@@ -853,11 +892,19 @@ angular.module('emuwebApp')
 
 		// Transition nodes to their new position
 
-		dataSet.transition()
-			.duration(scope.transitionDuration)
-			.attr('transform', function (d) {
-				return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
-			});
+		if (scope.transition.nodes) {
+			dataSet
+				.transition()
+				.duration(scope.transition.duration)
+				.attr('transform', function (d) {
+					return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
+				});
+		} else {
+			dataSet
+				.attr('transform', function (d) {
+					return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
+				});
+		}
 	
 
 		/////
@@ -887,11 +934,16 @@ angular.module('emuwebApp')
 				.style('fill', 'darkgrey')
 				.attr('r', 50)
 				.style('cursor', 'default')
-				.style('opacity', 0)
-				.transition()
-				.duration(scope.transitionDuration)
-				.style('opacity', 0.5)
 				;
+
+			if (scope.transition.contextMenu) {
+				contextMenu
+					.style('opacity', 0)
+					.transition()
+					.duration(scope.transition.duration)
+					.style('opacity', 0.5)
+					;
+			}
 
 			contextMenu
 				.append('text')
@@ -900,11 +952,16 @@ angular.module('emuwebApp')
 				.attr('y', -25)
 				.attr('text-anchor', 'middle')
 				.on('click', scope.nodeOnCollapseClick)
-				.style('opacity', 0)
-				.transition()
-				.duration(scope.transitionDuration)
-				.style('opacity', 1)
 				;
+
+			if (scope.transition.contextMenu) {
+				contextMenu
+					.style('opacity', 0)
+					.transition()
+					.duration(scope.transition.duration)
+					.style('opacity', 1)
+					;
+			}
 
 			contextMenu
 				.append('text')
@@ -913,11 +970,16 @@ angular.module('emuwebApp')
 				.attr('y', +25)
 				.attr('text-anchor', 'middle')
 				.on('click', scope.nodeOnPlayClick)
-				.style('opacity', 0)
-				.transition()
-				.duration(scope.transitionDuration)
-				.style('opacity', 1)
 				;
+
+			if (scope.transition.contextMenu) {
+				contextMenu
+					.style('opacity', 0)
+					.transition()
+					.duration(scope.transition.duration)
+					.style('opacity', 1)
+					;
+			}
 
 
 			var foreignObject = contextMenu
@@ -927,12 +989,16 @@ angular.module('emuwebApp')
 				.attr('y', -15)
 				.attr('width', 0)
 				;
-
-			foreignObject
-				.transition()
-				.duration(scope.transitionDuration)
-				.attr('width', 100)
-				;
+			
+			if (scope.transition.contextMenu) { 
+				foreignObject
+					.transition()
+					.duration(scope.transition.duration)
+					.attr('width', 100)
+					;
+			} else {
+				foreignObject.attr('width', 100);
+			}
 
 			foreignObject
 				.append('xhtml:body')
@@ -995,20 +1061,29 @@ angular.module('emuwebApp')
 		newLinks
 			.append('path')
 			.attr('class', 'emuhierarchy-link')
-			.style('opacity', 0)
-			.transition()
-			.duration(scope.transitionDuration)
-			.style('opacity', 1)
 			;
+
+		if (scope.transition.links) {
+			newLinks
+				.style('opacity', 0)
+				.transition()
+				.duration(scope.transition.duration)
+				.style('opacity', 1)
+				;
+		}
 			
 
 		// Remove old links
-		oldLinks
-			.transition()
-			.duration(scope.transitionDuration)
-			.style('opacity', 0)
-			.remove()
-			;
+		if (scope.transition.links) {
+			oldLinks
+				.transition()
+				.duration(scope.transition.duration)
+				.style('opacity', 0)
+				.remove()
+				;
+		} else {
+			oldLinks.remove();
+		}
 
 		// Set color depending on whether the link is selected
 		linkSet
@@ -1023,17 +1098,27 @@ angular.module('emuwebApp')
 			;
 		
 		// Transition links to their new position.
-		linkSet
-			.selectAll('.emuhierarchy-link')
-			.transition()
-			.duration(scope.transitionDuration)
-			.attr('d', scope.getPath )
-			.style('opacity', 1)
-			;
+
+		if (scope.transition.rotation) {
+			linkSet
+				.selectAll('.emuhierarchy-link')
+				.transition()
+				.duration(scope.transition.duration)
+				.attr('d', scope.getPath )
+				.style('opacity', 1)
+				;
+		} else {
+			linkSet
+				.selectAll('.emuhierarchy-link')
+				.attr('d', scope.getPath )
+				;
+		}
+
 		linkSet
 			.selectAll('.emuhierarchy-ghostlink')
 			.attr('d', scope.getPath)
 			;
+
 		
 
 		// If the user is trying to add a new link,

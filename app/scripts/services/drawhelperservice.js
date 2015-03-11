@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Ssffdataservice) {
+	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Ssffdataservice, mathHelperService) {
 
 		//shared service object to be returned
 		var sServObj = {};
@@ -249,11 +249,10 @@ angular.module('emuwebApp')
 			if (viewState.movingBoundary) {
 				ctx.fillStyle = ConfigProviderService.vals.colors.selectedBoundaryColor;
 				var p = Math.round(viewState.getPos(ctx.canvas.width, viewState.movingBoundarySample));
-				if(viewState.getcurMouseisLast()) {
-				    ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
-				}
-				else {
-				    ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
+				if (viewState.getcurMouseisLast()) {
+					ctx.fillRect(p + sDist, 0, 1, ctx.canvas.height);
+				} else {
+					ctx.fillRect(p + xOffset, 0, 1, ctx.canvas.height);
 				}
 			}
 
@@ -287,8 +286,8 @@ angular.module('emuwebApp')
 				if (drawTimeAndSamples) {
 					if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
 						scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-						space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+						space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
 
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width, horizontalText.height);
 					}
@@ -308,20 +307,20 @@ angular.module('emuwebApp')
 				if (drawTimeAndSamples) {
 					// start values
 					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					space = getScaleWidth(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
-					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, viewState.round(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
+					space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posS - space - 5, 0, horizontalText.width, horizontalText.height);
 
 					// end values
-					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectE, viewState.round(viewState.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
+					horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate, 6), ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, posE + 5, 0, horizontalText.width, horizontalText.height);
 					// dur values
 					// check if space
-					space = getScale(ctx, viewState.round((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
+					space = getScale(ctx, mathHelperService.roundToNdigitsAfterDecPoint((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
 
 					if (posE - posS > space) {
 						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
-						var str2 = viewState.round(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
+						var str2 = mathHelperService.roundToNdigitsAfterDecPoint(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
 
 						space = getScaleWidth(ctx, str1, str2, scaleX);
 						horizontalText = fontScaleService.getTextImageTwoLines(ctx, str1, str2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, false);
@@ -340,6 +339,7 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
+			// console.log(mathHelperService.roundToNdigitsAfterDecPoint(min, round))
 			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
 
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -358,70 +358,68 @@ angular.module('emuwebApp')
 				if (navigator.vendor === 'Google Inc.') {
 					ctx.setLineDash([0]);
 				}
-				
+
 
 				// draw frequency / sample / time
 				ctx.font = (ConfigProviderService.vals.font.fontPxSize + 'px' + ' ' + ConfigProviderService.vals.font.fontType);
 
-				var mouseFreq = viewState.round(max - mouseY / ctx.canvas.height * max, 2); // SIC only uses max
+				var mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(max - mouseY / ctx.canvas.height * max, 2); // SIC only uses max
 
 				var tW = ctx.measureText(mouseFreq + unit).width;
 				var s1 = Math.round(viewState.curViewPort.sS + mouseX / ctx.canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
-				var s2 = viewState.round(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
+				var s2 = mathHelperService.roundToNdigitsAfterDecPoint(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
 				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
 				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
-				
-				
-				if (max !== undefined || min !== undefined) {
-				    if(trackname == "OSCI" ) {
-				        // no horizontal values		
-	    				ctx.beginPath();
-			    		//ctx.moveTo(0, mouseY);
-					    //ctx.lineTo(5, mouseY + 5);
-	    				//ctx.moveTo(0, mouseY);
-			    		//ctx.lineTo(ctx.canvas.width, mouseY);
-					    //ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
-				        		    
-				    }
-				    else if(trackname == "SPEC" ) {
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-	    				ctx.beginPath();
-			    		ctx.moveTo(0, mouseY);
-					    ctx.lineTo(5, mouseY + 5);
-	    				ctx.moveTo(0, mouseY);
-			    		ctx.lineTo(ctx.canvas.width, mouseY);
-					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
-					    
-				    }
-				    else {
-				        // draw min max an name of track
-                        var tr = ConfigProviderService.getSsffTrackConfig(trackname);
-                        var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-                        mouseFreq = viewState.round(col._maxVal - mouseY / ctx.canvas.height * col._maxVal, 2);
-                        horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
-					    ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
-	    				ctx.beginPath();
-			    		ctx.moveTo(0, mouseY);
-					    ctx.lineTo(5, mouseY + 5);
-	    				ctx.moveTo(0, mouseY);
-			    		ctx.lineTo(ctx.canvas.width, mouseY);
-					    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-	    				ctx.moveTo(mouseX, 0);
-			    		ctx.lineTo(mouseX, ctx.canvas.height);
-					    ctx.stroke();					    
 
-				    }
-				    
-				    
-				    
+
+				if (max !== undefined || min !== undefined) {
+					if (trackname == "OSCI") {
+						// no horizontal values		
+						ctx.beginPath();
+						//ctx.moveTo(0, mouseY);
+						//ctx.lineTo(5, mouseY + 5);
+						//ctx.moveTo(0, mouseY);
+						//ctx.lineTo(ctx.canvas.width, mouseY);
+						//ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					} else if (trackname == "SPEC") {
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+						ctx.beginPath();
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(5, mouseY + 5);
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(ctx.canvas.width, mouseY);
+						ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					} else {
+						// draw min max an name of track
+						var tr = ConfigProviderService.getSsffTrackConfig(trackname);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
+						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
+						horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor, true);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
+						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
+						ctx.beginPath();
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(5, mouseY + 5);
+						ctx.moveTo(0, mouseY);
+						ctx.lineTo(ctx.canvas.width, mouseY);
+						ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+						ctx.moveTo(mouseX, 0);
+						ctx.lineTo(mouseX, ctx.canvas.height);
+						ctx.stroke();
+
+					}
+
+
 
 				}
 				ctx.drawImage(verticalText, 0, 0, verticalText.width, verticalText.height, mouseX + 5, 0, verticalText.width, verticalText.height);
@@ -439,7 +437,6 @@ angular.module('emuwebApp')
 		 */
 
 		sServObj.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
-
 			// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 			ctx.strokeStyle = ConfigProviderService.vals.colors.labelColor;
 			ctx.fillStyle = ConfigProviderService.vals.colors.labelColor;
@@ -470,12 +467,12 @@ angular.module('emuwebApp')
 
 			// draw min/max vals
 			if (max !== undefined) {
-				var labelTxtImg = fontScaleService.getTextImage(ctx, 'max: ' + viewState.round(max, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+				var labelTxtImg = fontScaleService.getTextImage(ctx, 'max: ' + mathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
 				ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
 			}
 			// draw min/max vals
 			if (min !== undefined) {
-				labelTxtImg = fontScaleService.getTextImage(ctx, 'min: ' + viewState.round(min, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
+				labelTxtImg = fontScaleService.getTextImage(ctx, 'min: ' + mathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.endBoundaryColor);
 				ctx.drawImage(labelTxtImg, 5, ctx.canvas.height - th - 5, labelTxtImg.width, labelTxtImg.height);
 			}
 		};
@@ -508,8 +505,8 @@ angular.module('emuwebApp')
 			if (viewState.curViewPort) {
 				//draw time and sample nr
 
-				sTime = viewState.round(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
-				eTime = viewState.round(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
+				sTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
+				eTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
 
 				horizontalText = fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.labelColor, true);
 				// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
