@@ -55,7 +55,6 @@ angular.module('emuwebApp')
     			    scope.handles.push(file); 
 			        scope.dropClass = scope.dropClassDefault;
 			        scope.dropText = scope.dropTextDefault;
-			        scope.startRendering();
 			    }
 			    else if ( extension === 'TEXTGRID' ) {
 			        scope.bundles[j][2] = {};
@@ -95,7 +94,12 @@ angular.module('emuwebApp')
     			}
 			    if(!browserDetector.isBrowser.Firefox()) {
 			        scope.$digest();
-		        }		
+		        }
+		        if(scope.bundles[j] !== undefined) {
+					if(scope.bundles[j][2] !== undefined && scope.bundles[j][1] !== undefined) {
+						scope.startRendering();
+					}		
+		        }
 			};
 			
 			scope.startRendering = function () { 

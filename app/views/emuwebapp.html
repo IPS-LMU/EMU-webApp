@@ -64,7 +64,7 @@
     <div>
       
       <ul>
-        <li ng-repeat="level in dataServ.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
+        <li ng-repeat="level in dataServ.getLevelData() | levelsFilter track by $index" id="{{$index}}">
           <level id='{{level.name}}' open='true' level="level" idx="$index"></level>
         </li>
       </ul>

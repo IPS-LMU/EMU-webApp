@@ -158,8 +158,7 @@ angular.module('emuwebApp')
 										reader2.readAsText(data.annotation.file);
 										reader2.onloadend = function (evt) {
 											if (evt.target.readyState == FileReader.DONE) {
-											    console.log(evt.currentTarget.result);
-												DragnDropDataService.convertedBundles[i].annotation = evt.currentTarget.result;
+												DragnDropDataService.convertedBundles[i].annotation = angular.fromJson(evt.currentTarget.result);
 												sServObj.convertDragnDropData(bundles, i+1).then( function () {
 													defer.resolve();
 												});                                                     
@@ -213,8 +212,7 @@ angular.module('emuwebApp')
 						loadedMetaDataService.setCurBndl(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault]);
 						viewState.resetSelect();
 						viewState.curPerspectiveIdx = 0;
-						var annot = annotation;
-						DataService.setData(annotation);
+						DataService.setLevelData(annotation.levels);
 						var lNames = [];
 						var levelDefs = [];
 						annotation.levels.forEach(function (l) {
@@ -228,6 +226,7 @@ angular.module('emuwebApp')
 								}
 							});
 						});
+						
 						// set level defs
 						ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
@@ -239,7 +238,7 @@ angular.module('emuwebApp')
 						viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 						var validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
 						if (validRes === true) {
-							DataService.setData(annotation);
+							DataService.setLinkData(annotation.links);
 							viewState.setState('labeling');
 							viewState.somethingInProgress = false;
 							viewState.somethingInProgressTxt = 'Done!';

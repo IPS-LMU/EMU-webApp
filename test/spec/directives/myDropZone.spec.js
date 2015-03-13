@@ -160,9 +160,9 @@ describe('Directive: myDropZone', function() {
     
     it('should enqueueFileAddition with wav', function() {
         compileDirective();
-        spyOn(elm.isolateScope(), 'startRendering');
+        var l = elm.isolateScope().handles.length;
         elm.isolateScope().enqueueFileAddition(mockObject);
-        expect(elm.isolateScope().startRendering).toHaveBeenCalled();
+        expect(elm.isolateScope().handles.length).toBe(l + 1);
     }); 
     
     it('should enqueueFileAddition with textgrid', function() {
