@@ -21,6 +21,7 @@ var filewalker = require('filewalker');
 if (process.argv.length === 2) {
 
   var portNr = 17890;
+  var host = 'localhost';
   // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
   // var configName = 'gersC_DBconfig.json';
   var pathToDbRoot = '../app/testData/newFormat/ae/';
@@ -54,10 +55,11 @@ var userPwd = '1234'; // high security plain text password! This is for demo pur
 
 var WebSocketServer = require('ws').Server,
   wss = new WebSocketServer({
+    host: host,
     port: portNr
   });
 
-console.log('websocketserver running @: ws://' + os.hostname() + ':' + portNr);
+console.log('websocketserver running @: ws://' + host + ':' + portNr);
 
 wss.on('connection', function (ws) {
 
@@ -302,6 +304,7 @@ wss.on('connection', function (ws) {
       console.log('### Pretending to save bundle:');
       console.log('\tname:', mJSO.data.annotation.name);
       console.log('\tsession:', mJSO.data.session);
+      console.log('\tssffFiles:', mJSO.data.ssffFiles);
       // console.log(mJSO.data.annotation);
       ws.send(JSON.stringify({
         'callbackID': mJSO.callbackID,
