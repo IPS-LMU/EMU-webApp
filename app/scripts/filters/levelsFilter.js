@@ -12,7 +12,7 @@ angular.module('emuwebApp')
 					    if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases!== undefined) {
 	    					idx = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order.indexOf(input[i].name);
     						if (idx !== -1) {
-							    out[idx] = input[i];
+							    out.push(input[i]);
 						    }					    
 					    }
 					}
