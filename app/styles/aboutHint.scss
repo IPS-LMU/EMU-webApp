@@ -1,0 +1,105 @@
+$overlayColor: grey;
+// imports
+@import 'mixins';
+@import 'EMUwebAppColors';
+
+@include keyframes(shrinkToAboutButton) {
+  25% 
+  { 
+  	top: 25px;
+  	right: 25px;
+  	border-radius: 10% 0 10% 10%;
+  }
+  50%
+  {
+  	border-radius: 100% 0 100% 100%;	
+  }
+
+  100% 
+  { 
+  	top: 25px;
+  	right: 25px;
+  	border-radius: 100% 0 100% 100%;
+  	width: 0%;
+  	height: 0%;
+  }
+}
+
+
+@include keyframes(wiggleUpDown) {
+    0% {@include transform(translate(0, 2px));}
+    50% {@include transform(translate(0, -2px));}
+    100% {@include transform(translate(0, 2px));}
+}
+
+.emuwebapp-aboutHint {
+  	position: absolute;
+	top: 0;
+	right: 0;
+	// left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.65);
+	z-index: 99998;
+}
+
+.emuwebapp-aboutHint-content {
+  	position: relative;
+  	margin: 0 auto;
+  	padding: 50px;
+	width: 90%;
+	height: 90%;
+	color: white;
+	overflow: auto;
+}
+
+.emuwebapp-aboutHint-content button{
+	color: white;
+	background-color: transparent;
+	padding: 10px;
+	border-radius:0px;
+    border:1px solid white;
+}
+
+.emuwebapp-aboutHint-content button:hover{
+	color: black;
+	background-color: white;
+}
+
+
+
+.emuwebapp-aboutHint-arrowOverlay{
+	position: absolute;
+	color: $EMUwebApp-blue;
+	font-size: 200%;
+	top: 40px;
+	right: 8px;
+	@include animation('wiggleUpDown 0.5s infinite');
+}
+
+.emuwebapp-aboutHint-svgContainer{
+	position: relative;
+	height: 60%;
+}
+
+.emuwebapp-aboutHint-svg{
+	height: 100%;
+	width: 100%;
+}
+
+.emuwebapp-aboutHint-svgOverlay{
+	position: absolute;
+	top: 40%;
+	color: $overlayColor;
+	font-size: 200%;
+	-webkit-transform: rotate(20deg);
+}
+
+/**
+ * ng-hide animation
+ */
+
+.emuwebapp-aboutHint.ng-hide-add.ng-hide-add-active{
+	@include animation('shrinkToAboutButton 0.5s 1');
+}
+

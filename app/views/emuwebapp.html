@@ -2,7 +2,25 @@
 <div ng-controller="MainController" class="emuwebapp-MainCtrl" id="MainCtrl" handleglobalkeystrokes ng-style="{'font-family': cps.vals.font.fontType, 'font-size': cps.vals.font.fontPxSize, 'background': ConfigProviderService.vals.colors.appBackground}">
 
   <modal></modal>
-  
+
+  <div ng-show="showAboutHint" class="emuwebapp-aboutHint">
+    <div class="emuwebapp-aboutHint-content">
+      <h1>Welcome to the EMU-webApp</h1>
+      <p>
+        an online and offline web application for labeling, visualizing and correcting speech and derived speech data.
+      </p>
+      <div class="emuwebapp-aboutHint-svgContainer">
+        <img src="assets/EMU-webAppEmu.svg" class="emuwebapp-aboutHint-svg"/>
+        <div class="emuwebapp-aboutHint-svgOverlay">click on this icon in the top menu bar for more information (incl. manual)</div>
+      </div>
+      <p>
+        <button class="" ng-click="showAboutHint = !showAboutHint">Close message</button>
+      </p>
+
+    </div>
+    <div class="emuwebapp-aboutHint-arrowOverlay">⇧</div>
+  </div>
+
   <!-- left side menu bar -->
   <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu && vs.submenuOpen"></bundle-list-side-bar>
   <!-- container for everything (top + bottom menu and all cans) but left sub-menu -->

@@ -68,3 +68,7 @@ app/testData/ignoredData
 # test coverage folder #
 ########################
 test/coverage
+
+*.scssc
+
+*.sassc

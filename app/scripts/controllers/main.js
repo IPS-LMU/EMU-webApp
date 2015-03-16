@@ -30,6 +30,8 @@ angular.module('emuwebApp')
 		$scope.is2dCancasesHidden = true;
 		$scope.windowWidth = $window.outerWidth;
 
+		$scope.showAboutHint = false;
+
 		// check for new version
 		$scope.ach.checkForNewVersion();
 
@@ -223,6 +225,7 @@ angular.module('emuwebApp')
 						$scope.handleDefaultConfigLoaded();
 						// loadFilesForEmbeddedApp if these are set 
 						$scope.loadFilesForEmbeddedApp();
+						$scope.checkIfToShowWelcomeModal();
 						viewState.somethingInProgress = false;
 					} else {
 						modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -245,6 +248,16 @@ angular.module('emuwebApp')
 		// call function on init
 		$scope.loadDefaultConfig();
 		
+		$scope.checkIfToShowWelcomeModal = function (argument) {
+			var curVal = localStorage.getItem("haveShownWelcomeModal");
+			if(curVal === undefined){
+				localStorage.setItem("haveShownWelcomeModal", "true");
+				$scope.showAboutHint = true;
+			}
+			// FOR DEVELOPMENT
+			$scope.showAboutHint = true;
+		};
+
 		$scope.getCurBndlName = function () {
  			return loadedMetaDataService.getCurBndlName();
  		};		
