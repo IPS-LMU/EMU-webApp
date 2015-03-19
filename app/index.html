@@ -61,6 +61,7 @@
     <link rel="stylesheet" href="styles/flexBoxGrid.css">
     <link rel="stylesheet" href="styles/tabbed.css">
     <link rel="stylesheet" href="styles/aboutHint.css">
+    <link rel="stylesheet" href="styles/helpModal.css">
     <!-- endbuild -->
 
     <!-- set basedir for angular app change if not running in root of server-->
@@ -101,6 +102,9 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/showdown/src/showdown.js"></script>
+    <script src="bower_components/angular-markdown-directive/markdown.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/emuwebApp.min.js -->
@@ -183,9 +187,11 @@
     <script src="scripts/directives/modal.js"></script>
     <script src="scripts/services/modalService.js"></script>
     <script src="scripts/controllers/tabbed.js"></script>
+    <script src="scripts/controllers/TabbedHelp.js"></script>
     <script src="scripts/services/HierarchyManipulationService.js"></script>
     <script src="scripts/services/StandardFuncsService.js"></script>
     <script src="scripts/filters/startfromfilter.js"></script>
+    <script src="scripts/controllers/manual.js"></script>
     <!-- endbuild -->
 
 </body>
