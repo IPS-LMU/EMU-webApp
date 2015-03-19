@@ -689,4 +689,6 @@ describe('navigation', function () {
 		element(by.id('playAllBtn')).click();
 		ptor.sleep(2950);
 	});
+	
+	
 });
