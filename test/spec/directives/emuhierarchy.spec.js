@@ -2,27 +2,28 @@
 
 describe('Directive: emuhierarchy', function() {
 
-    var elm, scope;
+    var elm, scope, tpl;
     beforeEach(module('emuwebApp'));
 
-    beforeEach(inject(function($rootScope, $compile, viewState, ConfigProviderService, HierarchyLayoutService) {
+    beforeEach(inject(function($rootScope, viewState, HierarchyLayoutService, ConfigProviderService) {
         scope = $rootScope.$new();
         scope.vs = viewState;
         scope.hls = HierarchyLayoutService;
-        compileDirective();
+        scope.cps = ConfigProviderService;
     }));
 
     function compileDirective() {
-        var tpl = '<emuhierarchy></emuhierarchy>';
-        inject(function($compile) {
+        tpl = "<emuhierarchy></emuhierarchy>";
+        inject(function ($compile) {
             elm = $compile(tpl)(scope);
         });
         scope.$digest();
-    }
+    }    
     
-    // it('should have correct html', function () {
-    //     expect(elm.find('svg').length).toBe(1);
-    // });   
+     it('should have correct html', inject(function (ConfigProviderService) {
+         compileDirective();
+         expect(elm.html()).toEqual('<svg width="100%" height="100%" style="background-color: rgb(221, 221, 221); "><g><g style="z-index: 5; "></g><g><text>time →</text></g><g style="z-index: 1; "></g></g></svg>');
+     }));   
     
     // it('should centerNode', function () {
     //     spyOn(elm.isolateScope(), 'getOrientatedTransform');

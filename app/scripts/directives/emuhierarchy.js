@@ -51,6 +51,7 @@ angular.module('emuwebApp')
 	scope.viewState = viewState;
 	scope.hierarchyState = viewState.hierarchyState;
 	scope.historyService = HistoryService;
+	scope.cps = ConfigProviderService;
 
 	scope.$watch('hierarchyState.path', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
@@ -317,7 +318,7 @@ angular.module('emuwebApp')
 		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
 		var levelName = LevelService.getLevelNameByElementID(d.id);
 		var attrIndex = viewState.getCurAttrIndex(levelName);
-		var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
+		var legalLabels = scope.cps.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 
 		if (legalLabels === undefined || (dom.value.length > 0 && legalLabels.indexOf(dom.value) >= 0)) {
 			return 'lightgreen';
@@ -486,16 +487,22 @@ angular.module('emuwebApp')
 	scope.element = element;
 	scope.width = 0;
 	scope.height = 0;
+	// lazy loading
+	scope.background = '#ddd';
+	// set background according to config only if config is loaded
+	if(scope.cps.vals.colors !== undefined) {
+	    scope.background = scope.cps.vals.colors.levelColor;
+	}
 
 	// scaleExtent limits the amount of zooming possible
 	scope.zoomListener = d3.behavior.zoom().scaleExtent(scope.scaleExtent).on('zoom', scope.zoom);
 
         // Create the d3 element and position it based on margins
-        scope.svg = d3.select(element[0])
+    scope.svg = d3.select(element[0])
           .append('svg')
           .attr('width', '100%')
           .attr('height', '100%')
-	  .style('background-color', ConfigProviderService.vals.colors.levelColor)
+	  .style('background-color', scope.background)
 	  .call(scope.zoomListener)
 	  .on('dblclick.zoom', null)
 	  .on('mousemove', scope.svgOnMouseMove)
@@ -536,10 +543,10 @@ angular.module('emuwebApp')
 		// Change the circle fill of all nodes depending on whether they are selected
 		scope.svg.selectAll('circle.emuhierarchy-nodeCircle')
 			.style('fill', function(d) {
-				var color = ConfigProviderService.vals.colors.nodeColor;
+				var color = scope.cps.vals.colors.nodeColor;
 
 				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-					color = ConfigProviderService.vals.colors.selectedNodeColor;
+					color = scope.cps.vals.colors.selectedNodeColor;
 				}
 
 				return color;
@@ -549,9 +556,9 @@ angular.module('emuwebApp')
 		scope.svg.selectAll('path.emuhierarchy-link')
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
-					return ConfigProviderService.vals.colors.selectedLinkColor;
+					return scope.cps.vals.colors.selectedLinkColor;
 				} else {
-					return ConfigProviderService.vals.colors.linkColor;
+					return scope.cps.vals.colors.linkColor;
 				}
 			})
 			;
@@ -641,13 +648,13 @@ angular.module('emuwebApp')
 
 		addItemButtons
 			.append('circle')
-			.style('fill', ConfigProviderService.vals.colors.addItemButtonBG)
+			.style('fill', scope.cps.vals.colors.addItemButtonBG)
 			.attr('r', 8)
 			;
 		
 		addItemButtons
 			.append('path')
-			.style('stroke', ConfigProviderService.vals.colors.addItemButtonFG)
+			.style('stroke', scope.cps.vals.colors.addItemButtonFG)
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
 		
@@ -783,7 +790,7 @@ angular.module('emuwebApp')
 
 		var circle = newNodes.append('circle')
 			.attr('class', 'emuhierarchy-nodeCircle')
-			.style('stroke', ConfigProviderService.vals.colors.nodeStrokeColor)
+			.style('stroke', scope.cps.vals.colors.nodeStrokeColor)
 			;
 
 		if (scope.transition.nodes) {
@@ -872,10 +879,10 @@ angular.module('emuwebApp')
 		dataSet.select('circle.emuhierarchy-nodeCircle')
 			// Highlight selected item
 			.style('fill', function(d) {
-				var color = ConfigProviderService.vals.colors.nodeColor;
+				var color = scope.cps.vals.colors.nodeColor;
 
 				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-					color = ConfigProviderService.vals.colors.selectedNodeColor;
+					color = scope.cps.vals.colors.selectedNodeColor;
 				}
 
 				return color;
@@ -883,9 +890,9 @@ angular.module('emuwebApp')
 			// Highlight collapsed items
 			.style('stroke', function(d) {
 				if (viewState.getCollapsed(d.id)) {
-					return ConfigProviderService.vals.colors.collapsedNodeColor;
+					return scope.cps.vals.colors.collapsedNodeColor;
 				} else {
-					return ConfigProviderService.vals.colors.nodeStrokeColor;
+					return scope.cps.vals.colors.nodeStrokeColor;
 				}
 			})
 			;
@@ -1090,9 +1097,9 @@ angular.module('emuwebApp')
 			.selectAll('.emuhierarchy-link')
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
-					return ConfigProviderService.vals.colors.selectedLinkColor;
+					return scope.cps.vals.colors.selectedLinkColor;
 				} else {
-					return ConfigProviderService.vals.colors.linkColor;
+					return scope.cps.vals.colors.linkColor;
 				}
 			})
 			;
