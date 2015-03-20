@@ -57,36 +57,6 @@ describe('Controller: TabbedCtrl', function () {
      expect(scope.isActiveTab('nothing')).toEqual({});
    }); 
 
-   it('should return classDefinition', function () {
-     expect(scope.classDefinition('level',0)).toEqual('emuwebapp-roundedBorderFrame');
-     expect(scope.classDefinition('ssff',0)).toEqual('emuwebapp-roundedBorderFrame');
-     expect(scope.classDefinition('link',0)).toEqual('emuwebapp-roundedBorderFrame');
-     scope.cps.curDbConfig.levelDefinitions[0].added = true;
-     scope.cps.curDbConfig.ssffTrackDefinitions[0].added = true;
-     scope.cps.curDbConfig.linkDefinitions[0].added = true;
-     expect(scope.classDefinition('level',0)).toEqual('emuwebapp-roundedBorderFrame-new');
-     expect(scope.classDefinition('ssff',0)).toEqual('emuwebapp-roundedBorderFrame-new');
-     expect(scope.classDefinition('link',0)).toEqual('emuwebapp-roundedBorderFrame-new');     
-     delete scope.cps.curDbConfig.levelDefinitions[0].added;
-     delete scope.cps.curDbConfig.ssffTrackDefinitions[0].added;
-     delete scope.cps.curDbConfig.linkDefinitions[0].added;
-   });  
-
-   it('should return classBorderDefinition', function () {
-     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-borderTitle');
-     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-borderTitle');
-     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-borderTitle');
-     scope.cps.curDbConfig.levelDefinitions[0].added = true;
-     scope.cps.curDbConfig.ssffTrackDefinitions[0].added = true;
-     scope.cps.curDbConfig.linkDefinitions[0].added = true;
-     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-borderTitle-new');
-     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-borderTitle-new');
-     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-borderTitle-new'); 
-     delete scope.cps.curDbConfig.levelDefinitions[0].added;
-     delete scope.cps.curDbConfig.ssffTrackDefinitions[0].added;
-     delete scope.cps.curDbConfig.linkDefinitions[0].added;         
-   }); 
-
    it('should showResponse', function () {
      scope.showResponse(0, 'test');	
      expect(scope.response[0].show).toBe(true);
