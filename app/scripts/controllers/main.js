@@ -586,7 +586,9 @@ angular.module('emuwebApp')
 					viewState.somethingInProgress = true;
 						Iohandlerservice.wsH.initConnect(url).then(function (message) {
 							if (message.type === 'error') {
-								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url)
+								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
+									appStateService.resetToInitState();
+								});
 							} else {
 								$scope.handleConnectedToWSserver();
 							}
