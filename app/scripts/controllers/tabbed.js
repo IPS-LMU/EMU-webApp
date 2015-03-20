@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 			},{
 				title: 'global DB',
 				url: 'views/tabbed/globalDefinition.html'
-		}];
+		}];	
 		
 		// current open tab
 		$scope.currentTab = 'views/tabbed/levelDefinition.html';
@@ -113,57 +113,6 @@ angular.module('emuwebApp')
 			viewState.setEditing(false);
 			viewState.setcursorInTextField(false);
 		};
-
-		/**
-		 *
-		 */
-		$scope.classDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-roundedBorderFrame';
-		    switch(typeOfDefinition) {
-		        case 'level':
-		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
-		            }
-		            break;
-		        case 'ssff':
-		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
-		            }
-		            break;		
-		        case 'link':
-		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
-		            }
-		            break;			                        
-		    }
-		    return style;
-		};
-		
-		
-		/**
-		 *
-		 */
-		$scope.classBorderDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-borderTitle';
-		    switch(typeOfDefinition) {
-		        case 'level':
-		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
-		            }
-		            break;
-		        case 'ssff':
-		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
-		            }
-		            break;		
-		        case 'link':
-		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
-		            }
-		            break;			                        
-		    }
-		    return style;
-		};
 		
 		
         /**
@@ -177,7 +126,7 @@ angular.module('emuwebApp')
 				    var allowed = false;
 				    switch(typeOfDefinition) {
 				        case 'level':
-				            if(localData.added === true) {
+				            if(localData.modified === true) {
 				                if(localData.name.length > 0) {
 				                    if($scope.lvl.getLevelDetails(localData.name).level === null) {
 				                        if(localData.type !== '') {
@@ -197,14 +146,14 @@ angular.module('emuwebApp')
 				            }
 				            break;
 				        case 'link':
-				            if(localData.added === true) {
+				            if(localData.modified === true) {
 				                if(localData.superlevelName.length > 0) {
 				                    if(localData.sublevelName.length > 0) {
 				                        if(localData.type !== '') {
 				                            allowed = true;
 				                        }
 				                        else {
-				                            $scope.showResponse(key, 'The level type is not set.');
+				                            $scope.showResponse(key, 'The link type is not set.');
 				                        }
 				                    }
 				                    else {
@@ -217,7 +166,7 @@ angular.module('emuwebApp')
 				            }
 				            break;
 				        case 'ssff':
-				            if(localData.added === true) {
+				            if(localData.modified === true) {
 				                if(localData.name.length > 0) {
 				                    if(localData.columnName.length > 0) {
 				                        if(localData.fileExtension.length > 0) {
@@ -240,8 +189,8 @@ angular.module('emuwebApp')
 				    if(allowed) {
 						Websockethandler.editDBConfig(protocolParameter, protocolData).then(function (response) {
 							if(response === 'YES') {
-								localData.added = undefined;
-								delete localData.added;
+								localData.modified = undefined;
+								delete localData.modified;
 								$scope.hideResponse(key);
 							}
 							else {
@@ -268,21 +217,25 @@ angular.module('emuwebApp')
 					$scope.response[key].show = false;
 				}
 			}
-		}; 		
+		}; 	
+		
+		$scope.change = function(key) {
+			key.modified = true;
+		}; 			
 			
 		$scope.addDefinition = function (typeOfDefinition, key, keyAttribute) {
 		    switch(typeOfDefinition) {
 		        case 'level':
-		            $scope.cps.curDbConfig.levelDefinitions.push({name: '', type: '', attributeDefinitions: [{name: '', type: 'STRING'}], added: true});
+		            $scope.cps.curDbConfig.levelDefinitions.push({name: '', type: '', attributeDefinitions: [{name: '', type: 'STRING', modified: true}], modified: true});
 		            break;
 		        case 'levelattribute':
-		            $scope.cps.curDbConfig.levelDefinitions[key].attributeDefinitions.push({name: '', type: 'STRING', legalLabels: []});
+		            $scope.cps.curDbConfig.levelDefinitions[key].attributeDefinitions.push({name: '', type: 'STRING', legalLabels: [], modified: true});
 		            break;
 		        case 'link':
-		            $scope.cps.curDbConfig.linkDefinitions.push({type: '', superlevelName: '', sublevelName: '', added: true});
+		            $scope.cps.curDbConfig.linkDefinitions.push({type: '', superlevelName: '', sublevelName: '', modified: true});
 		            break;
 		        case 'ssff':
-		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: '', columnName: '', fileExtension: '', added: true})
+		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: '', columnName: '', fileExtension: '', modified: true})
 		            break;	
 		        case 'perspective':
 		            $scope.cps.vals.perspectives.push({name: '', signalCanvases: { order: [], assign: [], contourLims: [], contourColors: []}, levelCanvases: { order: [] }, twoDimCanvases: { order: [] }});

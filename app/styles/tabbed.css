@@ -82,7 +82,7 @@
 	border: 1px solid;
     border-radius: 10px;
     text-align: left;
-    background: #bbb;    
+    background: #E7E7E7;    
     margin-bottom: 15px;
     padding: 10px;
     padding-left: 20px;
@@ -171,7 +171,7 @@
     position: absolute;
 	top: -12px; 
 	left: 5px;	
-	background-color: #bbb;
+	background-color: #E7E7E7;
 }
 
 

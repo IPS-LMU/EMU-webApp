@@ -1,6 +1,6 @@
 <!-- linkDefinitions -->
 <div ng-class="classDefinition('link', key)" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
-    <a ng-if="value.added" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
+    <a ng-if="value.modified" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
 	        Type: <select ng-model="cps.curDbConfig.linkDefinitions[key].type" ng-options="opt as opt for opt in linkDefinitionProperties.type.enum" class="emuwebapp-tabbed-input-bold"></select>
@@ -12,7 +12,7 @@
 	        Sub Level: <select ng-model="cps.curDbConfig.linkDefinitions[key].sublevelName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.levelDefinitions" class="emuwebapp-tabbed-input-bold"></select>
 	    </span>
 	</div>
-	<button ng-show="value.added" ng-click="saveDefinition('link', key, 'ADDLINKDEFINITION', cps.curDbConfig.linkDefinitions[key])" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
+	<button ng-show="value.modified" ng-click="saveDefinition('link', key, 'ADDLINKDEFINITION', cps.curDbConfig.linkDefinitions[key])" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
 	<span class="emuwebapp-tabbed-error" ng-show="response[key].show"><b>Error:</b>{{response[key].text}}</span>	
 </div>
 <br />
