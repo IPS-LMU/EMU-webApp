@@ -1,0 +1,11 @@
+<div ng-controller="ManualCtrl" class="emuwebapp-aboutDiv">
+	<h1>Table of contents:</h1>
+	<ul>
+		<li ng-repeat="mdFile in listOfMarkdownFiles" ng-click="setCurrentMdFile(mdFile)" class="emuwebapp-manualLink" ng-style="getManualLinkColor(mdFile);">{{mdFile.title}}</li>
+	</ul>
+
+	<hr class="emuwebapp-aboutHr" />
+	<div>
+		<btf-markdown class="emuwebapp-markdown" ng-include="curMdFile.url"></btf-markdown>
+	</div>
+</div>

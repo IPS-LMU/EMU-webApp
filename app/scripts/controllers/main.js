@@ -226,6 +226,8 @@ angular.module('emuwebApp')
 						// loadFilesForEmbeddedApp if these are set 
 						$scope.loadFilesForEmbeddedApp();
 						$scope.checkIfToShowWelcomeModal();
+						// FOR DEVELOPMENT
+						$scope.aboutBtnClick();
 						viewState.somethingInProgress = false;
 					} else {
 						modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -255,7 +257,7 @@ angular.module('emuwebApp')
 				$scope.showAboutHint = true;
 			}
 			// FOR DEVELOPMENT
-			$scope.showAboutHint = true;
+			// $scope.showAboutHint = true;
 		};
 
 		$scope.getCurBndlName = function () {
@@ -678,7 +680,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.aboutBtnClick = function () {
-		    modalService.open('views/about.html');
+		    modalService.open('views/help.html');
 		};
 
 		/**
