@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedHelpCtrl', function ($scope) {
+	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService) {
 
 		// all available tabs
 		$scope.tabs = [{
-			title: 'about',
+			title: 'About',
 			url: 'views/helpTabs/about.html'
 		}, {
-			title: 'manual',
+			title: 'Manual',
 			url: 'views/helpTabs/manual.html'
 		}, {
 			title: 'FAQ',
@@ -29,7 +29,10 @@ angular.module('emuwebApp')
 					'color': '#000'
 				};
 			}
-			return {};
+			return {
+					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
+					'color': '#FFF'
+				};
 		};
 
 

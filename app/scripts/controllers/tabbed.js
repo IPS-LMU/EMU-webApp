@@ -52,7 +52,24 @@ angular.module('emuwebApp')
 		}];
 		
 		// current open tab
-		$scope.currentTab = 'views/tabbed/levelDefinition.html';
+		$scope.currentTabUrl = $scope.tabs[0].url;
+		
+		$scope.onClickTab = function (tab) {
+			$scope.currentTabUrl = tab.url;
+		};
+		
+		$scope.isActiveTab = function (tabUrl) {
+			if (tabUrl === $scope.currentTabUrl) {
+				return {
+					'background-color': '#FFF',
+					'color': '#000'
+				};
+			}
+			return {
+					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
+					'color': '#FFF'
+				};
+		};			
 		
 		$scope.setup = function () {
 		    // read db config file for enum types
@@ -62,10 +79,6 @@ angular.module('emuwebApp')
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
 		    $scope.resetSelections();
-		}
-		
-		$scope.onClickTab = function (tab) {
-			$scope.currentTab = tab.url;
 		}
 		
 		$scope.resetSelections = function () {
@@ -86,16 +99,6 @@ angular.module('emuwebApp')
 			$scope.addLevelSelect = $scope.levelSelect[0];
 			$scope.addTwoDimSelect = $scope.twoDimSelect[0];
 			
-		}
-		
-		$scope.isActiveTab = function(tabUrl) {
-			if(tabUrl == $scope.currentTab) {
-				return {
-					'background-color': '#FFF',
-					'color': '#000'
-				}
-			}
-			return {};
 		}
 
 		/**

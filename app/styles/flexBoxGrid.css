@@ -1,93 +1,91 @@
-.Grid {
+.emuwebapp-grid {
   display: flex;
   /*margin: 1em;*/
 }
 
-.Grid-cell {
+.emuwebapp-grid-cell {
   flex: 1;
 }
 
-/* With gutters */
-.Grid--gutters {
-  margin-left: -1em;
-}
-.Grid--gutters > .Grid-cell {
-  padding-left: 1em;
+.emuwebapp-grid-button {
+  height: 30px;
+  padding-top: 5px;
+  cursor: pointer;
 }
 
 /* Alignment per row */
-.Grid--top {
+.emuwebapp-grid-top {
   align-items: flex-start;
 }
-.Grid--bottom {
+.emuwebapp-grid-bottom {
   align-items: flex-end;
 }
-.Grid--center {
+.emuwebapp-grid-center {
   align-items: center;
 }
 
 /* Alignment per cell */
-.Grid-cell--top {
+.emuwebapp-grid-cell--top {
   align-self: flex-start;
 }
-.Grid-cell--bottom {
+.emuwebapp-grid-cell--bottom {
   align-self: flex-end;
 }
-.Grid-cell--center {
+.emuwebapp-grid-cell--center {
   align-self: center;
 }
 
 /* Base classes for all media */
-.Grid--fit > .Grid-cell {
+.emuwebapp-grid--fit > .emuwebapp-grid-cell {
   flex: 1;
 }
-.Grid--full > .Grid-cell {
+.emuwebapp-grid--full > .emuwebapp-grid-cell {
   flex: 0 0 100%;
 }
-.Grid--1of2 > .Grid-cell {
+.emuwebapp-grid--1of2 > .emuwebapp-grid-cell {
   flex: 0 0 50%
 }
-.Grid--1of3 > .Grid-cell {
+.emuwebapp-grid--1of3 > .emuwebapp-grid-cell {
   flex: 0 0 33.3333%
 }
-.Grid--1of4 > .Grid-cell {
+.emuwebapp-grid--1of4 > .emuwebapp-grid-cell {
   flex: 0 0 25%
 }
 
 /* Small to medium screens */
 @media (min-width: 24em) {
-  .small-Grid--fit > .Grid-cell {
+  .emuwebapp-grid-small--fit > .emuwebapp-grid-cell {
     flex: 1;
   }
-  .small-Grid--full > .Grid-cell {
+  .emuwebapp-grid-small--full > .emuwebapp-grid-cell {
     flex: 0 0 100%;
   }
-  .small-Grid--1of2 > .Grid-cell {
+  .emuwebapp-grid-small--1of2 > .emuwebapp-grid-cell {
     flex: 0 0 50%
   }
-  .small-Grid--1of3 > .Grid-cell {
+  .emuwebapp-grid-small--1of3 > .emuwebapp-grid-cell {
     flex: 0 0 33.3333%
   }
-  .small-Grid--1of4 > .Grid-cell {
+  .emuwebapp-grid-small--1of4 > .emuwebapp-grid-cell {
     flex: 0 0 25%
   }
 }
 
 /* Large screens */
 @media (min-width: 48em) {
-  .large-Grid--fit > .Grid-cell {
+  .emuwebapp-grid-large--fit > .emuwebapp-grid-cell {
     flex: 1;
   }
-  .large-Grid--full > .Grid-cell {
+  .emuwebapp-grid-large--full > .emuwebapp-grid-cell {
     flex: 0 0 100%;
   }
-  .large-Grid--1of2 > .Grid-cell {
+  .emuwebapp-grid-large--1of2 > .emuwebapp-grid-cell {
     flex: 0 0 50%
   }
-  .large-Grid--1of3 > .Grid-cell {
+  .emuwebapp-grid-large--1of3 > .emuwebapp-grid-cell {
     flex: 0 0 33.3333%
   }
-  .large-Grid--1of4 > .Grid-cell {
+  .emuwebapp-grid-large--1of4 > .emuwebapp-grid-cell {
     flex: 0 0 25%
   }
 }
