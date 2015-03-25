@@ -1,0 +1,41 @@
+@import 'EMUwebAppColors';
+
+.emuwebapp-text {
+    font-family: $EMUwebApp-font;
+    font-size: 1em;
+}
+
+.emuwebapp-text-large {
+    font-family: $EMUwebApp-font;
+    font-size: 1.3em;
+}
+
+.emuwebapp-text-small {
+    font-family: $EMUwebApp-font;
+    font-size: 0.7em;
+} 
+
+.emuwebapp-alert {
+    color: #a94442;
+    background-color: #f2dede;
+    border: 3px dashed #ebccd1;
+    margin: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.emuwebapp-text h2 {
+    font-size: 1.45em;
+    text-decoration: underline;
+    margin: 5px;
+    padding: 5px;
+    background: $EMUwebApp-light-grey;
+}
+
+.emuwebapp-text p {
+    font-size: 1em;
+    text-align: left;
+    margin-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}

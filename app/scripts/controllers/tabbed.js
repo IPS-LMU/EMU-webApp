@@ -51,6 +51,8 @@ angular.module('emuwebApp')
 				url: 'views/tabbed/globalDefinition.html'
 		}];
 		
+		$scope.cps = ConfigProviderService;
+		
 		// current open tab
 		$scope.currentTabUrl = $scope.tabs[0].url;
 		
@@ -61,13 +63,13 @@ angular.module('emuwebApp')
 		$scope.isActiveTab = function (tabUrl) {
 			if (tabUrl === $scope.currentTabUrl) {
 				return {
-					'background-color': '#FFF',
-					'color': '#000'
+					'background-color': ConfigProviderService.vals.colors.addItemButtonFG,
+					'color': ConfigProviderService.vals.colors.labelColor
 				};
 			}
 			return {
 					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
-					'color': '#FFF'
+					'color': ConfigProviderService.vals.colors.addItemButtonFG
 				};
 		};			
 		

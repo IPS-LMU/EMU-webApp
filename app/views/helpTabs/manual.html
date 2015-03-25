@@ -1,4 +1,4 @@
-<div ng-controller="ManualCtrl" class="emuwebapp-aboutDiv">
+<div ng-controller="ManualCtrl" class="emuwebapp-text">
 	<h1>Table of contents:</h1>
 	<ul>
 		<li ng-repeat="mdFile in listOfMarkdownFiles" ng-click="setCurrentMdFile(mdFile)" class="emuwebapp-manualLink" ng-style="getManualLinkColor(mdFile);">{{mdFile.title}}</li>

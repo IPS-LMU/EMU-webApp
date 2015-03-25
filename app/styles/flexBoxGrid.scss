@@ -1,16 +1,40 @@
+@import 'EMUwebAppColors';
+
 .emuwebapp-grid {
   display: flex;
-  /*margin: 1em;*/
 }
 
 .emuwebapp-grid-cell {
   flex: 1;
 }
 
+.emuwebapp-grid-row {
+display: -webkit-flex;
+   display: flex;
+   -webkit-align-items: center;
+   align-items: center;
+   -webkit-justify-content: center;
+   justify-content: center;
+   -webkit-flex-flow: column wrap;
+   flex-flow: column wrap;
+   -webkit-align-content: center;
+   align-content: center;
+}
+ 
 .emuwebapp-grid-button {
   height: 30px;
   padding-top: 5px;
-  cursor: pointer;
+  border: 0px;
+  border-left: 1px solid $EMUwebApp-white;
+  border-right: 1px solid $EMUwebApp-white;
+}
+
+.emuwebapp-grid-button:first-child { 
+  border-left: 0px;
+}
+
+.emuwebapp-grid-button:last-child  { 
+  border-right: 0px;
 }
 
 /* Alignment per row */
