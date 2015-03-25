@@ -4,6 +4,33 @@
   display: flex;
 }
 
+.emuwebapp-grid-row {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.emuwebapp-grid-dotted {
+    border: 0px;
+    border-bottom: 1px dotted #999;
+    margin-bottom: 3px;
+    margin-top: 6px;
+    text-align: left;
+    padding-left: 22%;
+}
+
+.emuwebapp-grid-head {
+    border: 0px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    text-align: left;
+    padding-left: 22%;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+
 .emuwebapp-grid-cell {
   flex: 1;
 }

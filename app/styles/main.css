@@ -175,34 +175,6 @@ ul {
     text-align: left;
 }
 
-/*.emuwebapp-aboutHr {
-    margin-top: 30px;
-    padding-bottom: 30px;
-    width: 100%;
-}*/
-
-.emuwebapp-aboutTable {
-    width: 100%;
-    padding-left: 40px;
-    padding-right: 40px;
-
-}
-
-.emuwebapp-aboutTable tr {
-    border: 0px;
-    border-bottom: 1px dotted #999;
-    margin-bottom: 12px;
-    margin-top: 12px;
-}
-
-.emuwebapp-aboutTable tr td:first-child {
-    width: 40%;
-}
-
-.emuwebapp-aboutTable tr td {
-    width: 60%;
-}
-
 .emuwebapp-enlarge {
     height: 200%;
 }
