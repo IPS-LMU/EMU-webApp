@@ -1,5 +1,4 @@
 <img src="assets/EMU-webAppIcon-roundCorners.svg" alt="EMU-webApp" style="width: 60px; height:60px; margin: 12px;" />
-
 <div class="emuwebapp-text">
     Version: @@versionnr
 	<div class="emuwebapp-text-small">
@@ -11,13 +10,13 @@
 	    <b>Warning!</b> This webApp is still in ALPHA and is not meant to be used in production. <br />
 	    So please use with caution! If you have any issues or you find a bug please create an issue on the GitHub project page.
 	</div>
-	
+	<!-- ///////////////////////////////////////////// -->
 	<h2>About</h2>
 	<p>
 	    The EMU-webApp is an online and offline web application for labeling, visualizing 
 	    and correcting speech and derived speech data.
 	</p>
-	
+	<!-- ///////////////////////////////////////////// -->
 	<h2>General usage</h2>
 	<p>
 	    Moving the mouse over segment and event levels automatically tracks the mouse movement
@@ -30,7 +29,7 @@
 	        <b>{{cps.getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire event.
 	    </span>
 	</p>
-	
+	<!-- ///////////////////////////////////////////// -->
 	<h2>Main Navigation Shortcuts</h2>
 	<p>
 		<div class="emuwebapp-grid">
@@ -75,7 +74,7 @@
 		</div>
 	    <small>1.) Zooming while a boundary is preselected will keep the position of that boundary fixed</small>
 	</p>
-	
+	<!-- ///////////////////////////////////////////// -->
 	<h2>Labeling shortcuts</h2>
 	<p>
 		<div class="emuwebapp-grid">
@@ -84,6 +83,7 @@
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></div>
 			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted"><b>select event </b>or<b> segment</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
 			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></div>
 			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></div>
 			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}</b></div>
@@ -100,9 +100,10 @@
 		    <div class="emuwebapp-grid-head">Function</div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted">undo last action</div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted">redo last action</div>
-			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">add event or boundary at selected position (rename event if a single event is currently selected)</div>
-			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted">delete selected event boundary</div>
-			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted">deleted selected event(s)</div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">add event or boundary at selected position</div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">rename event</div>
+			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted">delete selected event or segment boundary</div>
+			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted">deleted selected event or segment(s) </div>
 			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to closest boundary in level above</div>
 			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to closest boundary in level below</div>
 			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to nearest zero crossing</div>
@@ -115,7 +116,7 @@
 		  </div>
 		</div>
 	</p>
-	
+	<!-- ///////////////////////////////////////////// -->
 	<h2 ng-show="cps.vals.restrictions.playback">Playback shortcuts</h2>
 	<p ng-show="cps.vals.restrictions.playback">
 		<div class="emuwebapp-grid">
@@ -133,40 +134,52 @@
 		  </div>
 		</div>
 	</p>	    
-	    
-<div class="emuwebapp-aboutDiv" ng-show="cps.vals.restrictions.correctionTool">
-<b ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-	<tbody>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}</b></td><td>Choose first correction tool</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></td><td>Choose second correction tool</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></td><td>Choose third correction tool</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></td><td>Choose fourth correction tool</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></td><td>Disable correction tool</td></tr>
-	</tbody>
-  </table>
+	<!-- ///////////////////////////////////////////// -->
+	<h2 ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</h2>	    
+	<p ng-show="cps.vals.restrictions.correctionTool">
+		<div class="emuwebapp-grid">
+		  <div class="emuwebapp-grid-cell">
+			<div class="emuwebapp-grid-head">Keyboard Shortcut</div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></div>						
+		  </div>
+		  <div class="emuwebapp-grid-cell">
+		    <div class="emuwebapp-grid-head">Function</div>
+			<div class="emuwebapp-grid-dotted">choose first correction tool</div>
+			<div class="emuwebapp-grid-dotted">choose second correction tool</div>
+			<div class="emuwebapp-grid-dotted">choose third correction tool</div>
+			<div class="emuwebapp-grid-dotted">choose fourth correction tool</div>
+			<div class="emuwebapp-grid-dotted">disable correction tool</div>
+		  </div>
+		</div>
+	</p>
+	<!-- ///////////////////////////////////////////// -->
+	<h2 ng-show="cps.vals.activeButtons.showHierarchy">Hierarchy Tool shortcuts</h2>	    
+	<p ng-show="cps.vals.activeButtons.showHierarchy">
+		<div class="emuwebapp-grid">
+		  <div class="emuwebapp-grid-cell">
+			<div class="emuwebapp-grid-head">Keyboard Shortcut</div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyRotate)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemBefore)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemAfter)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddLink)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteItem)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteLink)}}</b></div>
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyPlayback)}}</b></div>
+		  </div>
+		  <div class="emuwebapp-grid-cell">
+		    <div class="emuwebapp-grid-head">Function</div>
+			<div class="emuwebapp-grid-dotted">rotate hierarchy by 90&deg;</div>
+			<div class="emuwebapp-grid-dotted">add item before the currently preselected one</div>
+			<div class="emuwebapp-grid-dotted">add item after the currently preselected one</div>
+			<div class="emuwebapp-grid-dotted">draw a new link from the currently preselected item (press and hold)</div>
+			<div class="emuwebapp-grid-dotted">delete the currently preselected item</div>
+			<div class="emuwebapp-grid-dotted">delete the currently preselected link</div>
+			<div class="emuwebapp-grid-dotted">play back the portion defined by the currently preselected item</div>						
+		  </div>
+		</div>
+	</p>
 </div>
-
-<hr class="emuwebapp-aboutHr" ng-show="cps.vals.activeButtons.showHierarchy"/>
-
-<!-- correction shortcuts -->
-
-<div class="emuwebapp-aboutDiv" ng-show="cps.vals.activeButtons.showHierarchy">
-<b>Hierarchy Tool shortcuts</b><br />&nbsp;<br />
-  <table class="emuwebapp-aboutTable">
-	<tbody>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyRotate)}}</b></td><td>Rotate hierarchy by 90°</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemBefore)}}</b></td><td>Add item before the currently preselected one</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemAfter)}}</b></td><td>Add item after the currently preselected one</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddLink)}}</b></td><td>1. Start drawing a new link from the currently preselected item; 2. Finish drawing the link</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteItem)}}</b></td><td>Delete the currently preselected item</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteLink)}}</b></td><td>Delete the currently preselected link</td></tr>
-	  <tr><td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyPlayback)}}</b></td><td>Play back the portion of the file defined by the currently preselected item</td></tr>
-	</tbody>
-  </table>
-</div>
-
-
-</div>
-
-
