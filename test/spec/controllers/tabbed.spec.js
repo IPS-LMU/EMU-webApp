@@ -93,6 +93,13 @@ describe('Controller: TabbedCtrl', function () {
      scope.hideResponse(0);	
      expect(scope.response[0].show).toBe(false);
    }); 
+  /* 
+   it('should addDefinition', function () {
+     // level
+     scope.addDefinition('level', 0, 0);
+     expect(scope.cps.curDbConfig.levelDefinitions[scope.cps.curDbConfig.levelDefinitions.length-1].added).toBe(true);
+   });       
+   */
    
    it('should deleteDefinition', function () {
      // level
@@ -160,4 +167,5 @@ describe('Controller: TabbedCtrl', function () {
      scope.deleteDefinition('perspectiveOrderTwoDim', 0, 0, 0);
      expect(scope.cps.vals.perspectives[0].twoDimCanvases.order.length).toBe(0);          
    });
+   
 });
