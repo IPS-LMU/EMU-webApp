@@ -41,16 +41,16 @@ describe('Controller: TabbedCtrl', function () {
      expect(scope.vs.setcursorInTextField).toHaveBeenCalledWith(false);
    });  
 
-   /*it('should set onClickTab', function () {
+   it('should set onClickTab', function () {
      scope.onClickTab({url: 'test'});	
-     expect(scope.currentTab).toEqual('test');
+     expect(scope.currentTabUrl).toEqual('test');
    });  
 
    it('should check if isActiveTab', function () {
-     scope.currentTab = 'test';
-     expect(scope.isActiveTab('test')).toEqual({ background-color : '#0DC5FF', color : '#FFF' });
-     expect(scope.isActiveTab('nothing')).toEqual({ background-color : '#0DC5FF', color : '#FFF' });
-   }); */
+     scope.currentTabUrl = 'test';
+     expect(scope.isActiveTab('test')).toEqual({ 'background-color' : '#FFF', color : '#000' });
+     expect(scope.isActiveTab('nothing')).toEqual({ 'background-color' : '#0DC5FF', color : '#FFF' });
+   }); 
 
    it('should return classDefinition', function () {
      expect(scope.classDefinition('level',0)).toEqual('emuwebapp-roundedBorderFrame');
