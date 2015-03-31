@@ -172,7 +172,7 @@ describe('Controller: MainController', function () {
   it('should showAbout', function () {
     spyOn(scope.modal, 'open');
     scope.aboutBtnClick();
-    expect(scope.modal.open).toHaveBeenCalledWith('views/about.html');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/help.html');
   }); 
 
   it('should openDemoDB ae', inject(function ($q) {

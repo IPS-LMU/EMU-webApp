@@ -488,6 +488,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'compass:server',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -507,6 +508,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'compass:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',

@@ -3,7 +3,7 @@
 describe('Controller: ManualctrlCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('emuWebAppApp'));
+  beforeEach(module('emuWebApp'));
 
   var ManualctrlCtrl,
     scope;
@@ -11,12 +11,9 @@ describe('Controller: ManualctrlCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ManualctrlCtrl = $controller('ManualctrlCtrl', {
+    ManualCtrl = $controller('ManualCtrl', {
       $scope: scope
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
-  });
 });
