@@ -21,7 +21,7 @@
 
 .emuwebapp-bottomRightResizePane {
   position: absolute;
-  left: calc(100% - 200px);
+  right: 0px;
   top: calc(100% - 200px);
   height: 200px;
   width: 200px;

@@ -605,13 +605,19 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * rename the label of a level by passing in level name and id
+		 * rename a level by passing in old and new level name and perspective id
 		 */
 		sServObj.renameLevel = function (oldname, newname, curPerspectiveIdx) {
 			//rename level name
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === oldname) {
 					level.name = newname;
+					angular.forEach(viewState.curLevelAttrDefs, function (def, i) {
+						if(def.curAttrDefName === oldname && def.levelName === oldname) {
+						    viewState.curLevelAttrDefs.slice(i, 1);
+						}
+					});
+					viewState.curLevelAttrDefs.push({curAttrDefName: newname, levelName: newname});
 					// rename all first label names to match new 
 					angular.forEach(level.items, function (item) {
 						item.labels[0].name = newname;

@@ -34,7 +34,7 @@
 			<br />
 			<a href title="Add new attribute definition" ng-click="addDefinition('levelattribute', key)"><span class="emuwebapp-tabbed-add">+</span> &nbsp; Add attribute definition</a>
 		</div>
-		<button ng-show="value.added" ng-click="saveDefinition('level', key)" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
+		<button ng-show="value.added" ng-click="saveDefinition('level', key, 'ADDLEVELDEFINITION', cps.curDbConfig.levelDefinitions[key])" id="emuwebapp-modal-save" class="emuwebapp-mini-btn-dialog" style="color: #000; border: 1px solid #000;">Save</button>
 		<span class="emuwebapp-tabbed-error" ng-show="response[key].show"><b>Error:</b>{{response[key].text}}</span>
 	</div>
 </div>

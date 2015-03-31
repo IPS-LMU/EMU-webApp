@@ -59,8 +59,8 @@
 	</div>
 
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
-      <button class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
-      <button class="emuwebapp-mini-btn" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editDBconfig">edit DBconfig</button>
+      <button id="showHierarchy" class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
+      <button id="showeditDB" class="emuwebapp-mini-btn" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editDBconfig">edit DBconfig</button>
 
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
       <button id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn right" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" /></button>
@@ -80,9 +80,8 @@
     </bg-pane>
     <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane">
     <div>
-      
       <ul>
-        <li ng-repeat="level in dataServ.data.levels | levelsFilter" class="{{level.type}}" id="{{$index}}">
+        <li ng-repeat="level in dataServ.getLevelData() | levelsFilter track by $index" id="{{$index}}">
           <level id='{{level.name}}' open='true' level="level" idx="$index"></level>
         </li>
       </ul>

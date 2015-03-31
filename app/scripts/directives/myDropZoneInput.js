@@ -11,7 +11,8 @@ angular.module('emuwebApp')
 		link: function postLink(scope, element, attr) {
 		  scope.acceptGrid = '.TextGrid';
 		  scope.acceptWav = 'audio/wav';
-		  scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid;
+		  scope.acceptJson = 'application/json';
+		  scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid+ ',' + scope.acceptJson;
 		  scope.acceptFile = scope.acceptBoth;
 		  
 		  scope.handleFilesonChange = function() {

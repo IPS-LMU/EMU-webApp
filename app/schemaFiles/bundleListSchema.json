@@ -19,5 +19,6 @@
 		},
 		"required": ["name"],
 		"additionalProperties": true
-	}
+	},
+	"minItems": 1
 }

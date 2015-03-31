@@ -94,10 +94,12 @@ angular.module('emuwebApp')
         }, true);
 
         //
-        scope.$watch('lmds.getCurBndl()', function () {
+        scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              scope.redraw();
+              if(newValue.name !== oldValue.name || newValue.session !== oldValue.session){
+                scope.redraw();
+              }
             }
           }
         }, true);

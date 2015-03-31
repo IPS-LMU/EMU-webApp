@@ -45,7 +45,7 @@ describe('E2E: main page', function () {
 	it('should open first demo DB with 2 levels', function () {
 		element(by.id('demoDB')).click();
 		element(by.id('demo0')).click();
-		var elems = element.all(by.repeater('level in dataServ.data.levels | levelsFilter'));
+		var elems = element.all(by.repeater('level in dataServ.getLevelData() | levelsFilter track by $index'));
 		expect(elems.count()).toBe(2);
 	});
 });

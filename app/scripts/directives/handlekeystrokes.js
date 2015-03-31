@@ -225,7 +225,7 @@ angular.module('emuwebApp')
                 }
 
                 // close modal
-                if (code === ConfigProviderService.vals.keyMappings.esc) {
+                if (code === ConfigProviderService.vals.keyMappings.esc || code === ConfigProviderService.vals.keyMappings.showHierarchy) {
                   modalService.close();
                 }
               }
@@ -275,8 +275,6 @@ angular.module('emuwebApp')
 
               // escape from open modal dialog
               //
-              // FIXME should modals be closed by hitting Escape? Otherwise this block can be removed
-              //
               if (viewState.curState.permittedActions.length === 0 &&
                 code === ConfigProviderService.vals.keyMappings.esc &&
                 modalService.force === false) {
@@ -285,9 +283,8 @@ angular.module('emuwebApp')
 
 
               // delegate keyboard keyMappings according to keyMappings of scope
-
               // showHierarchy
-              if (code === ConfigProviderService.vals.keyMappings.showHierarchy) {
+              if (code === ConfigProviderService.vals.keyMappings.showHierarchy && ConfigProviderService.vals.activeButtons.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
                   if (viewState.hierarchyShown) {
                     modalService.close();
@@ -297,7 +294,6 @@ angular.module('emuwebApp')
                   }
                 }
               }
-
 
               // zoomAll
               if (code === ConfigProviderService.vals.keyMappings.zoomAll) {

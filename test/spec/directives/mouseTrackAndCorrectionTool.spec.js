@@ -84,7 +84,32 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      $(elm).trigger(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
      expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
-   }));   
+   }));  
+   
+   it('should react to mousemove (button 0)', inject(function ($compile, HistoryService, Ssffdataservice, ConfigProviderService, Soundhandlerservice, viewState) {
+     compile('test');
+     viewState.curPreselColumnSample = 0;
+     viewState.curCorrectionToolNr = 1;    
+     spyOn(HistoryService, 'updateCurChangeObj').and.returnValue([{sampleBlockIdx: 0, newValue: 10}]);
+     spyOn(viewState, 'getPermission').and.returnValue(true);
+     spyOn(viewState, 'getX').and.returnValue(1);
+     spyOn(viewState, 'getViewPortStartTime').and.returnValue(0);
+     spyOn(viewState, 'getViewPortEndTime').and.returnValue(2);
+     spyOn(ConfigProviderService, 'getAssignment').and.returnValue({ data: [1, 2]});
+     spyOn(Ssffdataservice, 'getColumnOfTrack').and.returnValue({ values: [[1, 2, 3], [1, 2, 3], [1, 2, 3]] });
+     spyOn(Ssffdataservice, 'getSampleRateAndStartTimeOfTrack').and.returnValue({ sampleRate: 100, startTime: 0 });
+     spyOn(elm.isolateScope(), 'switchMarkupContext');
+     var e = jQuery.Event('mousemove');
+     e.buttons = 0;
+     e.shiftKey = true;
+     e.originalEvent = {};
+     e.originalEvent.target = {};
+     e.originalEvent.target.width = 100;
+     $(elm).trigger(e);
+     expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
+     expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
+     expect(HistoryService.updateCurChangeObj).toHaveBeenCalled();
+   }));      
    
    it('should setSelectDrag', inject(function ($compile, viewState) {
      compile('test');
