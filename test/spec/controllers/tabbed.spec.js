@@ -92,5 +92,72 @@ describe('Controller: TabbedCtrl', function () {
      scope.showResponse(0, 'test');
      scope.hideResponse(0);	
      expect(scope.response[0].show).toBe(false);
-   });  
+   }); 
+   
+   it('should deleteDefinition', function () {
+     // level
+     var x = scope.cps.curDbConfig.levelDefinitions.length;
+     scope.deleteDefinition('level', 0, 0, 0);
+     expect(scope.cps.curDbConfig.levelDefinitions.length).toBe(x-1);
+
+     // levelattribute
+     x = scope.cps.curDbConfig.levelDefinitions[1].attributeDefinitions.length;
+     scope.deleteDefinition('levelattribute', 1, 0, 0);
+     expect(scope.cps.curDbConfig.levelDefinitions[1].attributeDefinitions.length).toBe(x-1);
+
+     // link
+     x = scope.cps.curDbConfig.linkDefinitions.length;
+     scope.deleteDefinition('link', 0, 0, 0);
+     expect(scope.cps.curDbConfig.linkDefinitions.length).toBe(x-1);
+     
+     // ssff
+     x = scope.cps.curDbConfig.ssffTrackDefinitions.length;
+     scope.deleteDefinition('ssff', 0, 0, 0);
+     expect(scope.cps.curDbConfig.ssffTrackDefinitions.length).toBe(x-1);     
+
+     // perspective
+     x = scope.cps.vals.perspectives.length;
+     scope.deleteDefinition('perspective', 0, 0, 0);
+     expect(scope.cps.vals.perspectives.length).toBe(x-1);     
+
+     // push some value into perspectives
+     scope.cps.vals.perspectives.push({ signalCanvases: {assign: [1], contourColors: [],contourLims: [1],order: [1]}, levelCanvases: {order: [1]}, twoDimCanvases: {order: [1]}});
+     
+     // perspectiveAssign
+     x = scope.cps.vals.perspectives[0].signalCanvases.assign.length;
+     scope.deleteDefinition('perspectiveAssign', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].signalCanvases.assign.length).toBe(x-1);      
+
+     // perspectiveContourColor
+     x = scope.cps.vals.perspectives[0].signalCanvases.contourColors.length;
+     scope.deleteDefinition('perspectiveContourColor', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].signalCanvases.contourColors.length).toBe(0);      
+
+     // perspectiveContourColorColor
+     var color = ['#f00', '#0f0', '#00f'];
+     scope.cps.vals.perspectives[0].signalCanvases.contourColors.push({colors: color});
+     x = scope.cps.vals.perspectives[0].signalCanvases.contourColors[0].colors.length;
+     scope.deleteDefinition('perspectiveContourColorColor', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].signalCanvases.contourColors[0].colors.length).toBe(x-1);      
+
+     // perspectiveContourLims
+     x = scope.cps.vals.perspectives[0].signalCanvases.contourLims.length;
+     scope.deleteDefinition('perspectiveContourLims', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].signalCanvases.contourLims.length).toBe(0);      
+
+     // perspectiveOrderSignal
+     x = scope.cps.vals.perspectives[0].signalCanvases.order.length;
+     scope.deleteDefinition('perspectiveOrderSignal', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].signalCanvases.order.length).toBe(0);      
+
+     // perspectiveOrderLevel
+     x = scope.cps.vals.perspectives[0].levelCanvases.order.length;
+     scope.deleteDefinition('perspectiveOrderLevel', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].levelCanvases.order.length).toBe(0);  
+
+     // perspectiveOrderTwoDim
+     x = scope.cps.vals.perspectives[0].twoDimCanvases.order.length;
+     scope.deleteDefinition('perspectiveOrderTwoDim', 0, 0, 0);
+     expect(scope.cps.vals.perspectives[0].twoDimCanvases.order.length).toBe(0);          
+   });
 });
