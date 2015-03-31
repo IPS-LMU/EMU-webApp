@@ -8,7 +8,7 @@
  * Controller of the emuwebApp
  */
 angular.module('emuwebApp')
-	.controller('ManualCtrl', function ($scope) {
+	.controller('ManualCtrl', function ($scope, ConfigProviderService) {
 		$scope.listOfMarkdownFiles = [{
 			title: 'Introduction',
 			url: 'manual/Introduction.md'
@@ -25,22 +25,22 @@ angular.module('emuwebApp')
 		$scope.setCurrentMdFile = function (mdFile) {
 			$scope.curMdFile = mdFile;
 		};
-
-
-		$scope.getManualLinkColor = function (ml) {
-			var curColor;
-			if (ml.title === $scope.curMdFile.title) {
-				curColor = {
-					'color': 'grey'
-				};
-			} else {
-				curColor = {
-					'color': 'blue'
+		
+		$scope.isCurrentMdFile = function (tabUrl) {
+		    console.log(tabUrl);
+		    console.log($scope.curMdFile.url);
+			if (tabUrl === $scope.curMdFile.url) {
+				return {
+					'background-color': ConfigProviderService.vals.colors.addItemButtonFG,
+					'color': ConfigProviderService.vals.colors.labelColor,
+					'font-weight': '500'
 				};
 			}
-
-			return curColor;
-
-		};
+			return {
+					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
+					'color': ConfigProviderService.vals.colors.addItemButtonFG,
+					'font-weight': '400'
+				};
+		};		
 
 	});

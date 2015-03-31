@@ -3,6 +3,8 @@
 .emuwebapp-text {
     font-family: $EMUwebApp-font;
     font-size: 1em;
+    padding-left: 18px;
+    padding-right: 18px;
 }
 
 .emuwebapp-text-large {
@@ -25,17 +27,41 @@
 }
 
 .emuwebapp-text h2 {
-    font-size: 1.45em;
+    font-size: 1.55em;
     text-decoration: underline;
+    text-align: center;
     margin: 5px;
     padding: 5px;
     background: $EMUwebApp-light-grey;
 }
 
-.emuwebapp-text p {
-    font-size: 1em;
+.emuwebapp-text p, .emuwebapp-text h3, .emuwebapp-text pre {
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+.emuwebapp-text p img {
+    text-align: center;
+}
+
+.emuwebapp-text ul li, .emuwebapp-text p, .emuwebapp-text h3 {
     text-align: left;
-    margin-left: 25px;
-    margin-top: 10px;
-    margin-bottom: 25px;
+}
+
+.emuwebapp-text pre {
+    text-align: left;
+}
+
+.emuwebapp-toc {
+    font-family: $EMUwebApp-font;
+    font-size: 1em;
+    text-align: center;
+    margin-left: 40%;
+}
+
+.emuwebapp-toc li {
+    font-family: $EMUwebApp-font;
+    font-size: 1.2em;
+    text-align: left;
+    list-style-type: circle;
 }
