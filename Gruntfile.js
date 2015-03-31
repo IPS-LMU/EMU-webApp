@@ -518,6 +518,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('e2e', [
     'clean:server',
+    'compass:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
