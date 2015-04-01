@@ -98,8 +98,6 @@
     right:0;    
 }
 
-
-
 .emuwebapp-modal-body {
     width: 100%;
     height: 80%;
@@ -107,7 +105,7 @@
     position: absolute;
     top: 60px;
     overflow: auto;
-    padding-top: 40px;
+    padding-top: 0px;
     padding-bottom: 100px;
 }
 
@@ -116,7 +114,7 @@
     height: 100%;
     height: calc(100%-120px);
     top: 60px;
-    padding-top: 40px;
+    padding-top: 0px;
     padding-bottom: 120px;
     position: relative;
 }

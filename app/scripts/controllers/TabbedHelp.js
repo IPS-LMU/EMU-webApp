@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 		$scope.cps = ConfigProviderService;
 
 		// current open tab
-		$scope.currentTabUrl = $scope.tabs[1].url;
+		$scope.currentTabUrl = $scope.tabs[0].url;
 		
 		$scope.onClickTab = function (tab) {
 			$scope.currentTabUrl = tab.url;

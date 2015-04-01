@@ -1,9 +1,13 @@
+@import 'EMUwebAppColors';
+
 .emuwebapp-tabbed {
-    margin-top: -40px;
+    margin-top: 0px;
+    padding-top: 0px;
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
     position: relative;
+    overflow-x: hidden;	
     top: 0;
     left: 0;  
     height: 100%;  
@@ -21,6 +25,7 @@
     height: 100%;
     overflow: auto;
     padding: 0px;
+    max-width: 100%;
 }
 
 .emuwebapp-tabbed-error {
@@ -141,12 +146,12 @@
 
 
 .emuwebapp-tabbed ::-webkit-scrollbar {
-    width: 12px;  /* for vertical scrollbars */
-    height: 12px; /* for horizontal scrollbars */
+    width: 20px;  /* for vertical scrollbars */
+    height: 0px; /* for horizontal scrollbars */
 }
 
 .emuwebapp-tabbed ::-webkit-scrollbar-track {
-    background: #0DC5FF;
+    background: $EMUwebApp-blue;
 }
 
 .emuwebapp-tabbed ::-webkit-scrollbar-thumb {
@@ -212,7 +217,7 @@
 }
 .emuwebapp-tabbed-input-bold {
     font-size: 1.1em;
-    border: 1px solid #0DC5FF;
+    border: 1px solid $EMUwebApp-blue;
 }
 .emuwebapp-tabbed-input-small {
     width: 50%;
@@ -228,7 +233,7 @@
 }
 .emuwebapp-tabbed-orderitem {
     background: #fff;
-    border: 1px solid #0DC5FF;
+    border: 1px solid $EMUwebApp-blue;
     margin: 4px;
     padding: 4px;
     cursor: move;
