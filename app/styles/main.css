@@ -1,6 +1,7 @@
 /** 
     ###################################
-    global CSS
+        main controller css
+    ###################################
 */
 
 .emuwebapp * {
@@ -8,13 +9,6 @@
     margin: 0;
     padding: 0;
 }
-
-/** 
-    ###################################
-    MainCtrl CSS
-    see: main.html
-    is meant for the basic layout (top/bottom/right side menus + split panes +...)
-*/
 
 .emuwebapp {
     left:0;
