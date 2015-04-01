@@ -1,3 +1,5 @@
+@import 'EMUwebAppColors';
+
 /** 
     ###################################
     submenu CSS
@@ -7,8 +9,8 @@
 .emuwebapp-bundleListSideBarOuter {
     width:240px;
     height: 100%;
-    background: rgb(56,54,62);
-    color: #fff;
+    background: $EMUwebApp-dark-grey;
+    color: $EMUwebApp-white;
 }
 /**
  * ng-hide animation
@@ -32,11 +34,11 @@
     padding-top: 5px;
     padding-bottom: 5px;
     margin: 0;
-    border-bottom:thin solid white;
+    border-bottom:thin solid $EMUwebApp-white;
 }
 
 .emuwebapp-bundleFilter input[type="text"]{
-    background: url(../img/search-dark.png) no-repeat 10px 6px #fff;
+    background: url(../img/search-dark.png) no-repeat 10px 6px $EMUwebApp-white;
     border: 0 none;
     font: bold 12px Arial,Helvetica,Sans-serif;
     color: #777;
@@ -184,7 +186,7 @@
 }
 
 .emuwebapp-saveBundleButton img:hover{
-    background-color:#0DC5FF;
+    background-color: $EMUwebApp-blue;
 }
 
 .emuwebapp-shrinkWidthTo0px{

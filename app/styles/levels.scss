@@ -1,62 +1,62 @@
+@import 'EMUwebAppColors';
+
 /** 
-    ###################################
-    Level CSS
-    see: level directive and template
-    */
+###################################
+Level CSS
+see: level directive and template
+*/
 
-    .emuwebapp-levelOuter {
-        /*display: inline-block;*/
-        /*float: left;*/
-        width: 100%;
-        height: 64px;
-        perspective: 800px;
-    }
+.emuwebapp-levelOuter {
+	width: 100%;
+	height: 64px;
+	perspective: 800px;
+}
 
-    .emuwebapp-levelCanvasContainer {
-        position: relative;
-        float:left;
-        width: calc(100% - 30px);
-        height: 100%;
-        padding: 5px;
-    }
+.emuwebapp-levelCanvasContainer {
+	position: relative;
+	float:left;
+	width: calc(100% - 30px);
+	height: 100%;
+	padding: 5px;
+}
 
-    @-webkit-keyframes emuwebapp-levelCanvasContainer{
-        from { -webkit-transform: rotateX(0deg);    }
-        to   { -webkit-transform: rotateX(-180deg); }
-    }
+@-webkit-keyframes emuwebapp-levelCanvasContainer{
+	from { -webkit-transform: rotateX(0deg);    }
+	to   { -webkit-transform: rotateX(-180deg); }
+}
 
-    /* all other browsers */
-    @keyframes emuwebapp-levelCanvasContainer{
-        from {
-          -moz-transform: rotateX(0deg);
-          -ms-transform: rotateX(0deg);
-          transform: rotateX(0deg);
-      }
-      to {
-          -moz-transform: rotateX(-180deg);
-          -ms-transform: rotateX(-180deg);
-          transform: rotateX(-180deg);
-      }
+/* all other browsers */
+@keyframes emuwebapp-levelCanvasContainer{
+	from {
+	  -moz-transform: rotateX(0deg);
+	  -ms-transform: rotateX(0deg);
+	  transform: rotateX(0deg);
   }
+  to {
+	  -moz-transform: rotateX(-180deg);
+	  -ms-transform: rotateX(-180deg);
+	  transform: rotateX(-180deg);
+  }
+}
 
 
-  .emuwebapp-levelCanvasContainer-animate{
-    -webkit-animation-name: emuwebapp-levelCanvasContainer;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.3s;
+.emuwebapp-levelCanvasContainer-animate{
+	-webkit-animation-name: emuwebapp-levelCanvasContainer;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.3s;
 
-    animation-name: emuwebapp-levelCanvasContainer;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
-    animation-duration: 0.3s;
+	animation-name: emuwebapp-levelCanvasContainer;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-duration: 0.3s;
 
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
-    transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 
-    /*animation-play-state: running;*/
+	/*animation-play-state: running;*/
 }
 
 
@@ -109,7 +109,7 @@
 }
 
 .emuwebapp-levelDeleteBtn img:hover{
-    background-color:#0DC5FF;
+    background-color: $EMUwebApp-blue;
 }
 
 /*resize*/
@@ -129,7 +129,7 @@
 }
 
 .emuwebapp-levelResizeBtn img:hover{
-    background-color:#0DC5FF;
+    background-color: $EMUwebApp-blue;
 }
 
 /*save*/
@@ -149,7 +149,7 @@
 }
 
 .emuwebapp-levelSaveBtn img:hover{
-    background-color:#0DC5FF;
+    background-color: $EMUwebApp-blue;
 }
 
 /*emuwebapp-selectAttrDef*/
@@ -192,12 +192,11 @@
     width: 8px;
     border-radius: 50%;
     border:1px solid gray;
-    /*background: -webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));*/
 
 }
 
 .emuwebapp-selectAttrDef button:hover{
-    border:1px solid #0DC5FF;
+    border:1px solid $EMUwebApp-blue;
 }
 
 .emuwebapp-selectAttrDef button:focus{

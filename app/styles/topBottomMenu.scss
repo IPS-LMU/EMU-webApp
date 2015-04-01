@@ -1,6 +1,8 @@
+@import 'EMUwebAppColors';
+
 .emuwebapp-menuBarTop {
     height:40px;
-    background: #0DC5FF;
+    background: $EMUwebApp-blue;
     -webkit-touch-callout: none;
     text-align:left;
 }
@@ -8,7 +10,7 @@
 .emuwebapp-menuBarBottom {
     width:100%;
     height:87px;
-    background: #0DC5FF;
+    background: $EMUwebApp-blue;
     -webkit-touch-callout: none;
     text-align:left;
     padding-left:5px;
