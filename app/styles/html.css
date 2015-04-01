@@ -1,0 +1,19 @@
+html, body{
+    overflow: auto;
+    overflow-x:hidden;
+    height: 100%;
+    width:100%;
+    padding: 0;
+    margin: 0;
+    z-index: 0; 
+    background: white;
+    text-align:center;
+}
+
+table { 
+    border-collapse: collapse; 
+}
+
+ul {
+    list-style-type: none;
+}

@@ -32,7 +32,7 @@
     
     <!-- top menu bar -->
     <div class="emuwebapp-menuBarTop">
-      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn left"><img src="img/menuBtn.png" /></button>
+      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn" style="float: left;"><img src="img/menuBtn.png" /></button>
       <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
@@ -61,9 +61,8 @@
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button id="showHierarchy" class="emuwebapp-mini-btn" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
       <button id="showeditDB" class="emuwebapp-mini-btn" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editDBconfig">edit DBconfig</button>
-
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn" ng-click="clearBtnClick();">clear</button>
-      <button id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn right" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" /></button>
+      <button id="aboutBtn" class="emuwebapp-SideMenuBtn2 emuwebapp-aboutBtn" style="float: right;" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" /></button>
     </div>
 
     <!-- vertical split layout that contains top and bottom pane -->
