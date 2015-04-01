@@ -8,93 +8,79 @@
     padding-right: 18px;
     word-wrap: break-word;
     padding-bottom: 120px;
-}
-
-.emuwebapp-text h1, 
-.emuwebapp-text h2, 
-.emuwebapp-text h3, 
-.emuwebapp-text h4{
-    position: relative;
-    margin-top: 1em;
-    margin-bottom: 16px;
-    padding-bottom: 0.3em;
-    line-height: 1.255;
-    border-bottom: 1px solid #eee;
-    display: block;
-}
-
-.emuwebapp-text pre{
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f7f7f7;
-    border-radius: 3px;
-    word-wrap: normal;
-    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-} 
-
-.emuwebapp-text img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.emuwebapp-text-large {
-    font-family: $EMUwebApp-font;
-    font-size: 1.3em;
-}
-
-.emuwebapp-text-center {
-    text-align: center;
-} 
-
-.emuwebapp-text-small-center {
-    font-family: $EMUwebApp-font;
-    text-align: center;
-    font-size: 0.7em;
-} 
-
-.emuwebapp-alert {
-    text-align: center;
-    color: #a94442;
-    background-color: #f2dede;
-    border: 3px dashed #ebccd1;
-    border-radius: 3px;
-    margin: 5px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
-.emuwebapp-text p, .emuwebapp-text h3, .emuwebapp-text pre {
-    padding-left: 35px;
-    padding-right: 35px;
-}
-
-.emuwebapp-text p img {
-    text-align: center;
-}
-
-.emuwebapp-text ul li, .emuwebapp-text p, .emuwebapp-text h3 {
-    text-align: left;
-}
-
-.emuwebapp-text pre {
-    text-align: left;
+    
+    h1, h2, h3, h4 {
+		position: relative;
+		margin-top: 1em;
+		margin-bottom: 16px;
+		padding-bottom: 0.3em;
+		line-height: 1.255;
+		border-bottom: 1px solid #eee;
+		display: block;    
+    }
+    pre{
+		padding: 16px;
+		overflow: auto;
+		line-height: 1.45;
+		background-color: #f7f7f7;
+		border-radius: 3px;
+		word-wrap: normal;
+		font-size: 12px;
+		font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+    img {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+    }
+    p img {
+        text-align: center;
+    }
+    pre {
+        text-align: left;
+    }
+    p, h3, pre {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    ul li, p, h3 {
+		text-align: left;
+	}
+	span {
+	    display: block;
+	    font-size: 1.3em;
+	    text-align: center;
+	    line-height: 0.85;
+	}
+	small {
+		font-family: $EMUwebApp-font;
+		text-align: center;
+		font-size: 0.7em;
+	}
+	alert {
+	    display: block;
+		text-align: center;
+		color: #a94442;
+		background-color: #f2dede;
+		border: 3px dashed #ebccd1;
+		border-radius: 3px;
+		margin: 5px;
+		margin-top: 25px;
+		margin-bottom: 25px;	
+	}
 }
 
 .emuwebapp-toc {
     font-family: $EMUwebApp-font;
     font-size: 1em;
-    text-align: center; 
-}
-
-.emuwebapp-toc li {
-    font-family: $EMUwebApp-font;
-    font-size: 1.2em;
-    text-align: left;
-    list-style-type: circle;
-    margin-left: 25px;
-    margin-top: 0px;
-    margin-bottom: 5px;
+    text-align: center;
+    li {
+		font-family: $EMUwebApp-font;
+		font-size: 1.2em;
+		text-align: left;
+		list-style-type: circle;
+		margin-left: 25px;
+		margin-top: 0px;
+		margin-bottom: 5px;
+    } 
 }
