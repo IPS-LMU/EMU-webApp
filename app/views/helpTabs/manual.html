@@ -1,9 +1,11 @@
 <div ng-controller="ManualCtrl" class="emuwebapp-text">
 	<h2>Table of contents:</h2>
-	<ul class="emuwebapp-toc">
+	<toc>
+	<ul>
 		<li ng-repeat="mdFile in listOfMarkdownFiles"><a href ng-click="setCurrentMdFile(mdFile)">{{mdFile.title}}</a></li>
 		<li><a href="/intro.html" target="_blank">EMU-webApp Tutorial</a></li>
 	</ul>
+	</toc>
 	<hr class="emuwebapp-aboutHr" />
 	<div style="margin-top: 40px;">
 		<btf-markdown class="emuwebapp-markdown" ng-include="curMdFile.url"></btf-markdown>

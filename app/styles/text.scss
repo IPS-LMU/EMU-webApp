@@ -68,19 +68,18 @@
 		margin-top: 25px;
 		margin-bottom: 25px;	
 	}
-}
-
-.emuwebapp-toc {
-    font-family: $EMUwebApp-font;
-    font-size: 1em;
-    text-align: center;
-    li {
-		font-family: $EMUwebApp-font;
-		font-size: 1.2em;
-		text-align: left;
-		list-style-type: circle;
-		margin-left: 25px;
-		margin-top: 0px;
-		margin-bottom: 5px;
-    } 
+	toc {
+	    font-family: $EMUwebApp-font;
+        font-size: 1em;
+        text-align: center;
+		li {
+			font-family: $EMUwebApp-font;
+			font-size: 1.2em;
+			text-align: left;
+			list-style-type: circle;
+			margin-left: 25px;
+			margin-top: 0px;
+			margin-bottom: 5px;
+		}        
+	}
 }
