@@ -1,4 +1,4 @@
-/** 
+@import 'EMUwebAppColors';/** 
     ###################################
         main controller css
     ###################################
@@ -8,28 +8,27 @@
     text-rendering: optimizeLegibility;
     margin: 0;
     padding: 0;
+    font-family: $EMUwebApp-font-family;
 }
 
 .emuwebapp {
-    left:0;
-    top:0;
+    left: 0px;
+    top: 0px;
     width: 100%;
     height: 100%;
     position: absolute;
+    font-family: $EMUwebApp-font-family;
+
+    > .emuwebapp-main {
+		display: flex;
+		background-color: pink;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+    }
 }
 
-.emuwebapp > .emuwebapp-MainCtrl {
-    display: flex;
-    /*flex-direction: row;*/
-    background-color: pink;
-    position: absolute;
-    /*top: 100px;*/
-    /*left: 0;*/
-    width: 100%;
-    height: 100%;
-}
-
-.emuwebapp > .emuwebapp-MainCtrl > .emuwebapp-mainWindow {
+.emuwebapp > .emuwebapp-main > .emuwebapp-mainWindow {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -41,7 +40,7 @@
     background-color: red;
 }
 
-.emuwebapp > .emuwebapp-MainCtrl > .emuwebapp-mainWindow > .emuwebapp-allCans {
+.emuwebapp > .emuwebapp-main > .emuwebapp-mainWindow > .emuwebapp-allCans {
     flex: 1;
     position:relative;
     /*top: 0;*/
@@ -179,8 +178,8 @@
 }
 
 .emuwebapp-nav-wrap ul ul ul {
-	top:0;
-	left:100%
+	top: 0px;
+	left: 100%;
 	z-index: 99999;
 }
 
