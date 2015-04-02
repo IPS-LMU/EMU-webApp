@@ -8,7 +8,10 @@
     padding-right: 18px;
     word-wrap: break-word;
     padding-bottom: 120px;
-    
+    div {
+        margin-left: 25px;
+        margin-right: 25px;            
+    }
     h1, h2, h3, h4 {
 		position: relative;
 		margin-top: 1em;
