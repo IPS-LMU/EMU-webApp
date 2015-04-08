@@ -83,7 +83,7 @@ angular.module('emuwebApp')
         //
         scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
           if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-            scope.drawSsffTrackMarkup();
+            scope.handleUpdate();
           }
         }, true);
 
