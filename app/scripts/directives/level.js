@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
+	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -18,15 +18,16 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.modal = modalService;
+				scope.lmds = loadedMetaDataService;
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
 
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.vals.colors.levelColor
 				};
-				
-				scope.$watch('vs.submenuOpen', function (newValue, oldValue) {				
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
+
+				scope.$watch('vs.submenuOpen', function (newValue, oldValue) {
+					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime);
 				});
 
 				///////////////
@@ -78,11 +79,19 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
+					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
+						scope.drawLevelDetails();
+						scope.drawLevelMarkup();
+					}
+				}, true);
+
+				//
 				/////////////////
-				
+
 				scope.redraw = function () {
 					scope.drawLevelDetails();
-					scope.drawLevelMarkup();				
+					scope.drawLevelMarkup();
 				};
 
 				/**
@@ -147,7 +156,7 @@ angular.module('emuwebApp')
 				 * @param levelDetails
 				 */
 				scope.drawLevelDetails = function () {
-				    
+
 					var fontSize = scope.cps.vals.font.fontPxSize;
 					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
 
