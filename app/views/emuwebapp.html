@@ -25,7 +25,7 @@
     <!-- left side menu bar end -->
     
     <!-- main window start -->
-    <div class="emuwebapp-mainWindow" id="mainWindow">
+    <div class="emuwebapp-window" id="mainWindow">
         <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
         <div class="printTitle">{{lmds.getCurBndlName()}}</div>
         <!-- top menu bar start -->
@@ -60,9 +60,9 @@
         <!-- top menu bar end -->
         
         <!-- vertical split layout that contains top and bottom pane -->
-        <div class="emuwebapp-allCans">
+        <div class="emuwebapp-canvas">
             <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
-                <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-topPane">
+                <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-top">
                     <ul class="emuwebapp-timeline-flexcontainer">
                         <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
                             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
@@ -71,7 +71,7 @@
                         </li>
                     </ul>
                 </bg-pane>
-            <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane">
+            <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottom">
                 <div>
                     <ul>
                         <li ng-repeat="level in dataServ.getLevelData() | levelsFilter track by $index" id="{{$index}}">

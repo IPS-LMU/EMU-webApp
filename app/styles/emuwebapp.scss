@@ -1,0 +1,166 @@
+@import 'EMUwebAppColors';
+
+/** 
+    ###################################
+        emuwebapp directive css
+    ###################################
+*/
+
+.emuwebapp * {
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    padding: 0;
+    font-family: $EMUwebApp-font-family;
+}
+
+.emuwebapp {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-family: $EMUwebApp-font-family;
+
+    > .emuwebapp-main {
+		display: flex;
+		background-color: $EMUwebApp-white;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		
+		> .emuwebapp-window {
+		    flex: 1;
+		    display: flex;
+		    flex-direction: column;
+		    background-color: $EMUwebApp-white;
+		    
+		    > .emuwebapp-canvas {
+		        flex: 1;
+		        position:relative;
+		        background-color: $EMUwebApp-white;
+		        z-index:1;
+		        @include vendor-prefix(user-select, none);
+		    }
+		}
+    }
+}
+
+.emuwebapp-top {
+	text-align: left;
+	position: absolute;
+}
+
+.emuwebapp-bottom {
+	margin-top: 20px;
+	text-align: left;
+	overflow: auto;
+} 
+
+.emuwebapp-edit {
+	z-index:9999;
+	position: absolute;
+	font-size: 0.8em;
+	text-align: center;
+	overflow: scroll;
+	padding:0;
+	margin:0;
+	border: 1px $EMUwebApp-dark-grey;
+	outline: none;
+	resize: none;
+	white-space: nowrap;
+	background-color: $EMUwebApp-yellow;
+	box-shadow: 0px 0px 15px $EMUwebApp-dark-grey;
+	vertical-align: middle !important; 
+	overflow-x: hidden;
+	overflow-y: hidden;
+}	
+
+.emuwebapp-enlarge {
+    height: 200%;
+}
+
+/**-----------------------------*/
+.emuwebapp-loginModalTable {
+    width: 100%;
+    text-align:center;
+}
+
+.emuwebapp-bundleListSideBarOuter {
+    height: 100%;
+}
+
+.emuwebapp-bundleListSideBarInner {
+    height: 100%;
+}
+
+.emuwebapp-nav-wrap {
+	z-index: 99999;
+}
+
+.emuwebapp-nav-wrap ul {
+	list-style:none;
+	position:relative;
+}
+
+.emuwebapp-nav-wrap ul li {
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0;
+	width: 100%;
+	padding-right: 4px;
+}
+
+.emuwebapp-nav-wrap ul ul {
+	display:none;
+	position:absolute;
+	top:100%;
+	left:0;
+	background:#fff;
+	margin:0px;
+	margin-left: 2px;
+}
+
+.emuwebapp-nav-wrap ul ul li {
+	float:none;
+	width:150px
+}
+
+.emuwebapp-nav-wrap ul ul a {
+	z-index: 99999;	
+}
+
+.emuwebapp-nav-wrap ul ul ul {
+	top: 0px;
+	left: 100%;
+	z-index: 99999;
+}
+
+.emuwebapp-nav-wrap ul li:hover > ul {
+	display:block;
+	z-index: 99999;
+}
+
+.emuwebapp-toggle-button {
+  background: transparent;
+  border-radius: 0px;
+  border: 1px solid white;
+  color: white;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  margin: 2px;
+  margin-top: 5px;
+  padding: 1px;
+  line-height: 12px;
+  text-align: center;
+  height: 30px;
+  width: 100%;
+}
+
+.emuwebapp-nav-wrap ul li:hover > .emuwebapp-toggle-button ,
+.emuwebapp-toggle-button:hover {
+  background: #fff;
+  color: #000;
+}
