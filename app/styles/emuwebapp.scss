@@ -1,4 +1,5 @@
 @import 'EMUwebAppColors';
+@import 'EMUwebAppClassesAndFunctions';
 
 /** 
     ###################################
@@ -10,8 +11,7 @@
     text-rendering: optimizeLegibility;
     margin: 0;
     padding: 0;
-    font-family: $EMUwebApp-font-family;
-    font-size: $EMUwebApp-font-size;    
+    @extend .emuwebapp-font;
 }
 
 .emuwebapp {
@@ -24,8 +24,7 @@
     position: absolute;
     background-color: $EMUwebApp-white; 
     text-align: center;
-    font-family: $EMUwebApp-font-family;
-    font-size: $EMUwebApp-font-size;    
+    @extend .emuwebapp-font;   
 
     > .emuwebapp-main {
 		flex: 1;

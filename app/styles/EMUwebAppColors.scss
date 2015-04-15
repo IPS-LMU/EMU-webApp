@@ -1,30 +1,16 @@
-/** SETTINGS **/
+/*********************/
+/***    SETTINGS   ***/
+/*********************/
 
 // color-settings
 $EMUwebApp-blue: #0DC5FF;
 $EMUwebApp-white: #FFFFFF;
+$EMUwebApp-black: #000000;
 $EMUwebApp-yellow: rgba(255,255,0,1);
 $EMUwebApp-light-grey: #E7E7E7;
 $EMUwebApp-dark-grey: rgb(56,54,62);
-
 // timing settings
-$EMUwebApp-animation-duration: '400';
-
+$EMUwebApp-animation-duration: '400ms';
 // font-settings
 $EMUwebApp-font-family: 'HelveticaNeue';
 $EMUwebApp-font-size: '2px';
-
-
-
-
-/** FUNCTIONS **/
-
-// vendor prefix
-@mixin vendor-prefix($name, $argument) {
-  -webkit-#{$name}: #{$argument};
-  -ms-#{$name}: #{$argument};
-  -moz-#{$name}: #{$argument};
-  -o-#{$name}: #{$argument};
-  #{$name}: #{$argument};
-}
-

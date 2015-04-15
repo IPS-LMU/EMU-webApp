@@ -1,0 +1,24 @@
+@import 'EMUwebAppColors';
+
+/*********************/
+/** DEFAULT CLASSES **/
+/*********************/
+.emuwebapp-font {
+    font-family: $EMUwebApp-font-family;
+    font-size: $EMUwebApp-font-size;
+}
+.emuwebapp-left {
+    float: left;
+}
+
+/*********************/
+/****  FUNCTIONS  ****/
+/*********************/
+// vendor prefix
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}

@@ -1,31 +1,34 @@
 @import 'EMUwebAppColors';
+@import 'EMUwebAppClassesAndFunctions';
 
 /** 
-    ###################################
-    submenu CSS
-    see: bundleListSideBar directive and template
+    ######################################
+        bundleListSideBar directive css
+    ######################################
 */
-
 
 .emuwebapp-bundle-outer {
     height: 100%;
     width:240px;
     background: $EMUwebApp-dark-grey;
     color: $EMUwebApp-white;
+    @extend .emuwebapp-font;
+    
+    h3 {
+		font-size: 1.4em;
+		padding-top: 6px;
+		padding-bottom: 6px;
+		margin: 0;
+		border-bottom:thin solid $EMUwebApp-white;
+    }
+
 }
 
 .emuwebapp-bundle-inner {
     height: 100%;
+    @extend .emuwebapp-font;
 }
 
-
-
-.emuwebapp-bundle-outer {
-    width:240px;
-    height: 100%;
-    background: $EMUwebApp-dark-grey;
-    color: $EMUwebApp-white;
-}
 /**
  * ng-hide animation
  */
@@ -36,19 +39,12 @@
 }
 
 .emuwebapp-bundle-outer.ng-hide {
-    width:0px;
+    margin-left: -240px;
 }
 
 
 
-.emuwebapp-bundle-outer h3 {
-    font-size: 1.4em;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin: 0;
-    border-bottom:thin solid $EMUwebApp-white;
-}
-
+.emuwebapp-bundle-outer 
 .emuwebapp-bundleFilter input[type="text"]{
     background: url(../img/search-dark.png) no-repeat 10px 6px $EMUwebApp-white;
     border: 0 none;
