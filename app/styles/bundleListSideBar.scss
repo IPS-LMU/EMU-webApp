@@ -6,7 +6,21 @@
     see: bundleListSideBar directive and template
 */
 
-.emuwebapp-bundleListSideBarOuter {
+
+.emuwebapp-bundle-outer {
+    height: 100%;
+    width:240px;
+    background: $EMUwebApp-dark-grey;
+    color: $EMUwebApp-white;
+}
+
+.emuwebapp-bundle-inner {
+    height: 100%;
+}
+
+
+
+.emuwebapp-bundle-outer {
     width:240px;
     height: 100%;
     background: $EMUwebApp-dark-grey;
@@ -16,20 +30,18 @@
  * ng-hide animation
  */
 
-.emuwebapp-bundleListSideBarOuter.ng-hide-add.ng-hide-add-active,
-.emuwebapp-bundleListSideBarOuter.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition: width 0.4s;
-  -moz-transition: width 0.4s;
-  transition: width 0.4s;
+.emuwebapp-bundle-outer.ng-hide-add.ng-hide-add-active,
+.emuwebapp-bundle-outer.ng-hide-remove.ng-hide-remove-active {
+  @include vendor-prefix(transition, $EMUwebApp-animation-duration);
 }
 
-.emuwebapp-bundleListSideBarOuter.ng-hide {
+.emuwebapp-bundle-outer.ng-hide {
     width:0px;
 }
 
 
 
-.emuwebapp-bundleListSideBarOuter h3 {
+.emuwebapp-bundle-outer h3 {
     font-size: 1.4em;
     padding-top: 5px;
     padding-bottom: 5px;

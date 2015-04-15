@@ -29,7 +29,7 @@
         <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
         <div class="printTitle">{{lmds.getCurBndlName()}}</div>
         <!-- top menu bar start -->
-        <div class="emuwebapp-menuBarTop">
+        <div class="emuwebapp-top-menu">
             <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-SideMenuBtn" style="float: left;"><img src="img/menuBtn.png" /></button>
             <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
             <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
@@ -40,7 +40,9 @@
             <div class="emuwebapp-nav-wrap">
                 <ul>
                     <li>
-                        <button id="demoDB" type="button" class="emuwebapp-toggle-button" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">open demo DB <span class="caret"></span></button>
+                        <button id="demoDB" type="button" class="emuwebapp-mini-btn" style="width: 100%;" ng-show="cps.vals.activeButtons.openDemoDB" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
+                            open demo DB <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu" ng-show="cps.vals.activeButtons.openDemoDB">
                             <li><em>Choose DB:</em></li>
                             <li class="divider"></li>
@@ -62,7 +64,7 @@
         <!-- vertical split layout that contains top and bottom pane -->
         <div class="emuwebapp-canvas">
             <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
-                <bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-top">
+                <bg-pane type="topPane" min-size="80" max-size="500">
                     <ul class="emuwebapp-timeline-flexcontainer">
                         <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
                             <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
@@ -71,8 +73,8 @@
                         </li>
                     </ul>
                 </bg-pane>
-            <bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottom">
-                <div>
+            <bg-pane type="bottomPane" min-size="80">
+                <div style="margin-top: 25px;">
                     <ul>
                         <li ng-repeat="level in dataServ.getLevelData() | levelsFilter track by $index" id="{{$index}}">
                             <level id='{{level.name}}' open='true' level="level" idx="$index"></level>
@@ -93,7 +95,7 @@
     </div>
     
     <!-- bottom menu bar -->
-    <div class="emuwebapp-menuBarBottom">
+    <div class="emuwebapp-bottom-menu">
         <div><preview id="preview" class="preview" current-bundle-name="{{getCurBndlName()}}"></preview></div>
         <button id="zoomAllBtn" ng-click="cmdZoomAll();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn" id="cmd_viewZoomAll">all</button>
         <button id="zoomInBtn" ng-click="cmdZoomIn();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn" id="cmd_viewZoomIn">in</button>

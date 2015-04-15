@@ -2,9 +2,9 @@
     ###################################
         normal html tag css
     ###################################
-*/
 
-html, body{
+
+html,  body {
     overflow: auto;
     overflow-x:hidden;
     height: 100%;
@@ -16,10 +16,6 @@ html, body{
     text-align:center;
 }
 
-table { 
-    border-collapse: collapse; 
-}
+*/
 
-ul {
-    list-style-type: none;
-}
+
