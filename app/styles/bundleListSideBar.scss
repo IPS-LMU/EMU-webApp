@@ -1,5 +1,5 @@
 @import 'EMUwebAppColors';
-@import 'EMUwebAppClassesAndFunctions';
+@import 'mixins';
 
 /** 
     ######################################
@@ -13,7 +13,6 @@
     background: $EMUwebApp-dark-grey;
     color: $EMUwebApp-white;
     @extend .emuwebapp-font;
-    
     h3 {
 		font-size: 1.4em;
 		padding-top: 6px;

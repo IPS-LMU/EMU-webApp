@@ -14,3 +14,16 @@ $EMUwebApp-animation-duration: '400ms';
 // font-settings
 $EMUwebApp-font-family: 'HelveticaNeue';
 $EMUwebApp-font-size: '2px';
+$EMUwebApp-font-weight: '400';
+
+
+/************************/
+/** DEFAULT FONT CLASS **/
+/************************/
+
+.emuwebapp-font {
+    font-family: $EMUwebApp-font-family;
+    font-size: $EMUwebApp-font-size;
+    font-weight: $EMUwebApp-font-weight;
+}
+

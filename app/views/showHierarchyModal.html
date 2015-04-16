@@ -4,7 +4,7 @@
 	  <div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in standardFuncServ.reverseCopy(paths.possible[getSelIdx()])">
 			<ul>
 			  <li>
-				  <button type="button" class="emuwebapp-toggle-button">
+				  <button type="button" class="emuwebapp-mini-btn emuwebapp-left" style="width: 100%;">
 					  {{levelName}}<span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
@@ -30,16 +30,16 @@
 	</div>
 	<div class="emuwebapp-modal-footer">
 
-	<button class="emuwebapp-mini-btn-dialog" ng-click="playSelection()">
+	<button class="emuwebapp-mini-btn" ng-click="playSelection()">
 		play selected item
 	</button>
 
-	<button id="modalRotateBtn" class="emuwebapp-mini-btn-dialog" ng-click="rotateHierarchy()">
-		<span class="glyphicon glyphicon-repeat"></span> 
+	<button id="modalRotateBtn" class="emuwebapp-mini-btn" ng-click="rotateHierarchy()">
+		<i class="glyphicon glyphicon-repeat"></i> 
 		rotate by 90°
 	</button>
 
-		<button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn-dialog">Close</button>
+		<button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn">Close</button>
 	</div>
 </div>
 

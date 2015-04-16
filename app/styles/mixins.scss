@@ -1,5 +1,13 @@
 // scss mixins used by EMU-webApp
 
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
 /**
  * mixin for vedor prefixing transitions
  */
@@ -51,3 +59,4 @@
   -o-animation: #{$str};
   animation: #{$str};
 }
+

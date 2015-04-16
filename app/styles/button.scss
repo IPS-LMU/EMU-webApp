@@ -1,11 +1,16 @@
 @import 'EMUwebAppColors';
-@import 'EMUwebAppClassesAndFunctions';
+@import 'mixins';
 
 .emuwebapp-nav-wrap {
 	z-index: 99999;
 	ul {
 		list-style:none;
 		position:relative;
+		
+		li:hover > ul {
+			display:block;
+			z-index: 99999;
+		}
 		
 		ul {
 			display:none;
@@ -15,6 +20,7 @@
 			background:#fff;
 			margin:0px;
 			margin-left: 2px;
+			
 			ul {
 				top: 0px;
 				left: 100%;
@@ -35,22 +41,9 @@
 			margin:0;
 			padding:0;
 			width: 100%;
-			padding-right: 4px;
 		}
 	}
 }
-
-.emuwebapp-nav-wrap ul li:hover > ul {
-	display:block;
-	z-index: 99999;
-}
-
-
-.emuwebapp-nav-wrap ul li:hover > .emuwebapp-toggle-button {
-  background: #fff;
-  color: #000;
-}
-
 
 .emuwebapp-label-edit {
 	z-index:9999;
@@ -73,16 +66,13 @@
 
 .emuwebapp-mini-btn {
     background: transparent;
-    border-radius:0px;
-    border:1px solid $EMUwebApp-white;
+    border-radius: 0px;
+    border: 1px solid $EMUwebApp-white;
     color: $EMUwebApp-white;
-    font-weight:bold;
     text-decoration:none;
     text-align:center;
-    margin: 2px;
-    margin-top: 5px;    
-    padding: 1px;
-    line-height: 12px;
+    margin: 0px;
+    padding: 0px;
     text-align:center;
     width: 120px;
     height: 30px;
