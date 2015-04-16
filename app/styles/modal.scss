@@ -9,7 +9,7 @@
     left:0;
     right:0;
     margin: auto;
-    @extend .emuwebapp-font;
+    @extend .emuwebapp-font-small;
 }
 
 .emuwebapp-modal-header {
@@ -107,6 +107,8 @@
     bottom: 60px;
     overflow: auto;
     padding: 0px;
+    margin-top: 20px;
+    @extend .emuwebapp-font-small;
 }
 
 .emuwebapp-modal-bodyConfig {

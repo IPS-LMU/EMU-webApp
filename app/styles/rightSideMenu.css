@@ -57,11 +57,11 @@
   left: -15px;
   height: 25px;
   width: 15px;
-  background-color: #FFF;
+  background: #FFF;
   box-shadow: -3px 0 5px 1px #ccc;
   /*border-radius: 2px;*/
   border-style: none;
-  z-index: 1001;
+  z-index: 2001;
 }
 
 .emuwebapp-rightSideMenuOpenBtn img{

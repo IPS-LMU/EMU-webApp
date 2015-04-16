@@ -1,13 +1,13 @@
 @import 'EMUwebAppColors';
 
 .emuwebapp-text {
-    font-family: $EMUwebApp-font-family;
     text-align: left;
-    font-size: $EMUwebApp-font-size;
     padding-left: 18px;
     padding-right: 18px;
     word-wrap: break-word;
     padding-bottom: 120px;
+    @extend .emuwebapp-font-small;
+    
     div {
         margin-left: 25px;
         margin-right: 25px;            
@@ -56,7 +56,7 @@
 	    line-height: 0.85;
 	}
 	small {
-		font-family: $EMUwebApp-font-family;
+		@extend .emuwebapp-font-small;
 		text-align: center;
 		font-size: 0.7em;
 	}
@@ -72,8 +72,7 @@
 		margin-bottom: 25px;	
 	}
 	toc {
-	    font-family: $EMUwebApp-font-family;
-        font-size: $EMUwebApp-font-size;
+        @extend .emuwebapp-font-menu;
         text-align: center;
 		li {
 			font-family: $EMUwebApp-font-family;

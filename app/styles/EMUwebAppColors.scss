@@ -14,19 +14,28 @@ $EMUwebApp-animation-duration: '400ms';
 // font-settings
 $EMUwebApp-font-family: HelveticaNeue;
 $EMUwebApp-font-size-small: 12px;
+$EMUwebApp-font-size-menu: 14px;
 $EMUwebApp-font-size-large: 18px;
 $EMUwebApp-font-weight-small: 400;
-$EMUwebApp-font-weight-large: 800;
+$EMUwebApp-font-weight-menu: 600;
+$EMUwebApp-font-weight-large: 900;
 
 /**************************/
 /** DEFAULT FONT CLASSES **/
 /**************************/
 
-.emuwebapp-font {
+.emuwebapp-font-small {
     font-family: $EMUwebApp-font-family;
     font-size: $EMUwebApp-font-size-small;
     font-weight: $EMUwebApp-font-weight-small;
 }
+
+.emuwebapp-font-menu {
+    font-family: $EMUwebApp-font-family;
+    font-size: $EMUwebApp-font-size-menu;
+    font-weight: $EMUwebApp-font-weight-menu;
+}
+
 
 .emuwebapp-font-large {
     font-family: $EMUwebApp-font-family;

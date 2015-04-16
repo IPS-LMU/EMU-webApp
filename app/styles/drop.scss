@@ -1,9 +1,12 @@
+@import 'EMUwebAppColors';
+
 .emuwebapp-dropzone {
     height: 80%;
     border: 1px dashed white;
     border-radius: 4px;
     text-align: center;
     color: #BBB;
+    @extend .emuwebapp-font-large;
     padding: 15px;
     margin: 15px;
 }
@@ -29,7 +32,6 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  /* Required to make elements draggable in old WebKit */
   -khtml-user-drag: element;
   -webkit-user-drag: element;
 }

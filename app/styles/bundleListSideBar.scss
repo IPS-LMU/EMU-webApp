@@ -12,7 +12,7 @@
     width:240px;
     background: $EMUwebApp-dark-grey;
     color: $EMUwebApp-white;
-    @extend .emuwebapp-font;
+    @extend .emuwebapp-font-small;
     h3 {
 		font-size: 1.4em;
 		padding-top: 6px;
@@ -25,7 +25,7 @@
 
 .emuwebapp-bundle-inner {
     height: 100%;
-    @extend .emuwebapp-font;
+    @extend .emuwebapp-font-small;
 }
 
 /**

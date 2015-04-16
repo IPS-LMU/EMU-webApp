@@ -347,9 +347,9 @@ angular.module('emuwebApp')
 				'autofocus': 'true'
 			}).css({
 				'left': Math.round(x + 2) + 'px',
-				'top': Math.round(y) + 'px',
-				'width': Math.round(width) - 4 + 'px',
-				'height': Math.round(height) - 1 + 'px',
+				'top': Math.round(y + 1) + 'px',
+				'width': Math.round(width) - 2 + 'px',
+				'height': Math.round(height) - 20 + 'px',
 				'padding-top': Math.round(height / 3 + 1) + 'px'
 			}).text(label));
 		};
