@@ -113,7 +113,6 @@
     }
     
     .emuwebapp-dropdown-menu {
-        width: 100%;
         background: $EMUwebApp-white;
         list-style: none outside none;
         margin: 0;
@@ -128,6 +127,12 @@
             @extend .emuwebapp-font;
             padding: 5px;
             margin: 0px;
+            max-width: 90px;
+        }
+        
+        li:hover {
+            color: $EMUwebApp-blue;
+            cursor: pointer;
         }
     }
 }
