@@ -23,13 +23,14 @@
 
 .emuwebapp-modal-header h2 {
     padding-top: 17px;
-    font-size: 1.4em;
     color: #fff;
+    @extend .emuwebapp-font-large;
 }
 
 .emuwebapp-modal-header h3 {
     padding-top: 17px;
     color: #fff;
+    @extend .emuwebapp-font-large;
 }
 
 .emuwebapp-modalDialog {
