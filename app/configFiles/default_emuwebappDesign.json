@@ -1,12 +1,31 @@
 {
-    "/*": "This file will be overwritten. It is generated out of configFiles/default_emuwebappDesign.json .Please make all necessary changes there.",
+    "/*": "This file will be overwritten. It will be generated out of 'configFiles/default_emuwebappDesign.json' .Please make all necessary changes there.",
     "color": {
         "black": "#000",
         "white": "#fff",
-        "blue": "#0DC5FF"
+        "blue": "#0DC5FF",
+        "yellow": "rgba(255,255,0,1)",
+        "light-grey": "#E7E7E7",
+        "dark-grey": "rgb(56,54,62)"
+    },
+    "animation": {
+        "duration": "400"
     },
     "font": {
-        "type": "HelveticaNeue",
-        "size": 14
+        "small": {
+            "family": "HelveticaNeue",
+            "size": "12px",
+            "weight": "400"
+        },
+        "medium": {
+            "family": "HelveticaNeue",        
+            "size": "14px",
+            "weight": "600"
+        },
+        "large": {
+            "family": "HelveticaNeue",        
+            "size": "18px",
+            "weight": "900"
+        }                
     }
 }
