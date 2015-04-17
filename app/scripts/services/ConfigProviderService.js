@@ -6,6 +6,7 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 		sServObj.vals = {};
+		sServObj.design = {};
 		sServObj.curDbConfig = {};
 
 		// embedded values -> if these are set this overrides the normal config  
@@ -14,6 +15,10 @@ angular.module('emuwebApp')
 			labelGetUrl: '',
 			labelType: '',
 			fromUrlParams: false
+		};
+
+		sServObj.setDesign = function (data) {
+		    angular.copy(data, sServObj.design);
 		};
 
 		/**

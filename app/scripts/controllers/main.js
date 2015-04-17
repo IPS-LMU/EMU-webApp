@@ -217,29 +217,36 @@ angular.module('emuwebApp')
 			// load schemas first
 			Validationservice.loadSchemas().then(function (replies) {
 				Validationservice.setSchemas(replies);
-				Iohandlerservice.httpGetDefaultConfig().success(function (data) {
-					viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
-					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
-					if (validRes === true) {
-						ConfigProviderService.setVals(data);
-						$scope.handleDefaultConfigLoaded();
-						// loadFilesForEmbeddedApp if these are set 
-						$scope.loadFilesForEmbeddedApp();
-						$scope.checkIfToShowWelcomeModal();
-						// FOR DEVELOPMENT
-						//$scope.aboutBtnClick();
-						viewState.somethingInProgress = false;
-					} else {
-						modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
+				    ConfigProviderService.setDesign(data);
+					Iohandlerservice.httpGetDefaultConfig().success(function (data) {
+						viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
+						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
+						if (validRes === true) {
+							ConfigProviderService.setVals(data);
+							$scope.handleDefaultConfigLoaded();
+							// loadFilesForEmbeddedApp if these are set 
+							$scope.loadFilesForEmbeddedApp();
+							$scope.checkIfToShowWelcomeModal();
+							// FOR DEVELOPMENT
+							//$scope.aboutBtnClick();
+							viewState.somethingInProgress = false;
+						} else {
+							modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								appStateService.resetToInitState();
+							});
+						}
+
+					}).error(function (data, status, header, config) {
+						modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
 							appStateService.resetToInitState();
 						});
-					}
-
+					});
 				}).error(function (data, status, header, config) {
 					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
 						appStateService.resetToInitState();
 					});
-				});
+				});	
 			}, function (errMess) {
 				modalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
 					appStateService.resetToInitState();
@@ -270,7 +277,7 @@ angular.module('emuwebApp')
 		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
-				viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
+				viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
@@ -294,7 +301,7 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors);
 
 			// setting transition values
-			viewState.setTransitionTime(ConfigProviderService.vals.colors.transitionTime / 1000);
+			viewState.setTransitionTime(ConfigProviderService.design.animation.duration);
 
 		};
 
@@ -441,7 +448,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.openSubmenu = function () {
-			viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
+			viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
 		};
 
 		/////////////////////////////////////////

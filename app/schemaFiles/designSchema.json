@@ -1,0 +1,99 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "Schema for the Design of the EMU-webApp",
+	"type": "object",
+	"properties": {
+		"color": {
+			"type": "object",
+			"properties": {
+				"black": {
+					"type": "string"
+				},
+				"white": {
+					"type": "string"
+				},
+				"blue": {
+					"type": "string"
+				},
+				"yellow": {
+					"type": "string"
+				},
+				"light-grey": {
+					"type": "string"
+				},
+				"dark-grey": {
+					"type": "string"
+				}
+			},
+			"required": ["black", "white", "blue", "yellow", "light-grey", "dark-grey"],
+			"additionalProperties": false
+		},
+		"animation": {
+			"type": "object",
+			"properties": {
+				"duration": {
+					"type": "integer"
+				}
+			},
+			"required": ["duration"],
+			"additionalProperties": false	
+		},
+		"font": {
+			"type": "object",
+			"properties": {
+				"small": {
+					"type": "object",
+					"properties": {
+						"family": {
+							"type": "string"
+						},
+						"size": {
+							"type": "string"
+						},
+						"weight": {
+							"type": "string"
+						},
+						"required": ["family", "size", "weight"],
+						"additionalProperties": false
+					}
+				},
+				"medium": {
+					"type": "object",
+					"properties": {
+						"family": {
+							"type": "string"
+						},
+						"size": {
+							"type": "string"
+						},
+						"weight": {
+							"type": "string"
+						},
+						"required": ["family", "size", "weight"],
+						"additionalProperties": false					
+					}
+				},
+				"large": {
+					"type": "object",
+					"properties": {
+						"family": {
+							"type": "string"
+						},
+						"size": {
+							"type": "string"
+						},
+						"weight": {
+							"type": "string"
+						},
+						"required": ["family", "size", "weight"],
+						"additionalProperties": false					
+					}
+				}
+			},
+			"required": ["small", "medium", "large"],
+			"additionalProperties": false
+		}
+	},
+	"required": ["color", "animation", "font"],
+	"additionalProperties": false
+}

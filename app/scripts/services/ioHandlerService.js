@@ -18,6 +18,14 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * default design is always loaded from same origin
+		 */
+		sServObj.httpGetDefaultDesign = function () {
+			var prom = $http.get('configFiles/default_emuwebappDesign.json');
+			return prom;
+		};
+
+		/**
 		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetPath = function (path, respType) {
