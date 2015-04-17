@@ -169,7 +169,7 @@ angular.module('emuwebApp')
         scope.startSpectroRenderingThread = function (buffer) {
           if (buffer.length > 0) {
             scope.primeWorker = new spectroDrawingWorker();
-            var parseData;
+            var parseData = [];
             var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs);
             // fftN must be greater than 512 (leads to better resolution of spectrogram)
             if (fftN < 512) {
@@ -178,11 +178,15 @@ angular.module('emuwebApp')
 
             if (scope.vs.curViewPort.sS >= fftN / 2) {
               // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
-              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN));
+              parseData = buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN);
             } else {
               // tolerate window/2 alignment issue if at beginning of file
-              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN));
+              parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
             }
+            
+            
+            console.log(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
+            console.log(parseData.length);
 
             scope.setupEvent();
 
@@ -200,7 +204,7 @@ angular.module('emuwebApp')
               'pixelRatio': scope.devicePixelRatio,
               'sampleRate': scope.shs.wavJSO.SampleRate,
               'transparency': scope.cps.vals.spectrogramSettings.transparency,
-              'audioBuffer': parseData.buffer,
+              'audioBuffer': parseData,
               'audioBufferChannels': scope.shs.wavJSO.NumChannels,
               'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
               'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,

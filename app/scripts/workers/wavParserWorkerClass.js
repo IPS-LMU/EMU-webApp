@@ -215,7 +215,7 @@ wavParserWorker.prototype = {
 		curBinIdx = 44;
 		curBuffer = buf.subarray(curBinIdx, wavRep.Subchunk2Size);
 		curBufferView = new Int16Array(curBuffer);
-		wavRep.Data = curBufferView;
+		wavRep.Data = new Float32Array(curBufferView);
 		// console.log(wavRep);
 
 		// finally append original array buffer

@@ -730,7 +730,7 @@ spectroDrawingWorker.prototype = {
 					render = false;
 				}
 				if (data.audioBuffer !== undefined) {
-					global.audioBuffer = new Float32Array(data.audioBuffer);
+					global.audioBuffer = data.audioBuffer;
 				} else {
 					renderError = 'audioBuffer';
 					render = false;
