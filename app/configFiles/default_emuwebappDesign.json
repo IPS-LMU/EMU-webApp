@@ -5,6 +5,7 @@
         "white": "#fff",
         "blue": "#0DC5FF",
         "yellow": "#ff0",
+        "red": "#f00",
         "grey": "#888",
         "lightGrey": "#E7E7E7",
         "darkGrey": "#38363e",
@@ -21,12 +22,12 @@
     "font": {
         "small": {
             "family": "HelveticaNeue",
-            "size": "12px",
+            "size": "14px",
             "weight": "400"
         },
         "medium": {
             "family": "HelveticaNeue",        
-            "size": "14px",
+            "size": "16px",
             "weight": "600"
         },
         "large": {

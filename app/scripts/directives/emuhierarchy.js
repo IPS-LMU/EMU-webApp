@@ -7,8 +7,8 @@ angular.module('emuwebApp')
       template: '<div class="emuwebapp-hierarchy-container"></div>',
       restrict: 'E',
       scope: {
-	vertical: '=',
-	playing: '='
+          vertical: '=',
+          playing: '='
       },
       replace: true,
       link: function postLink(scope, element, attrs) {
@@ -543,10 +543,10 @@ angular.module('emuwebApp')
 		// Change the circle fill of all nodes depending on whether they are selected
 		scope.svg.selectAll('circle.emuhierarchy-nodeCircle')
 			.style('fill', function(d) {
-				var color = scope.cps.vals.colors.nodeColor;
+				var color = ConfigProviderService.design.color.white;
 
 				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-					color = scope.cps.vals.colors.selectedNodeColor;
+					color = ConfigProviderService.design.color.blue;
 				}
 
 				return color;
@@ -556,9 +556,9 @@ angular.module('emuwebApp')
 		scope.svg.selectAll('path.emuhierarchy-link')
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
-					return scope.cps.vals.colors.selectedLinkColor;
+					return ConfigProviderService.design.color.yellow;
 				} else {
-					return scope.cps.vals.colors.linkColor;
+					return ConfigProviderService.design.color.grey;
 				}
 			})
 			;
@@ -648,13 +648,13 @@ angular.module('emuwebApp')
 
 		addItemButtons
 			.append('circle')
-			.style('fill', scope.cps.vals.colors.addItemButtonBG)
+			.style('fill', scope.cps.design.color.blue)
 			.attr('r', 8)
 			;
 		
 		addItemButtons
 			.append('path')
-			.style('stroke', scope.cps.vals.colors.addItemButtonFG)
+			.style('stroke', scope.cps.design.color.white)
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
 		
@@ -790,7 +790,7 @@ angular.module('emuwebApp')
 
 		var circle = newNodes.append('circle')
 			.attr('class', 'emuhierarchy-nodeCircle')
-			.style('stroke', scope.cps.vals.colors.nodeStrokeColor)
+			.style('stroke', scope.cps.design.color.grey)
 			;
 
 		if (scope.transition.nodes) {
@@ -879,10 +879,10 @@ angular.module('emuwebApp')
 		dataSet.select('circle.emuhierarchy-nodeCircle')
 			// Highlight selected item
 			.style('fill', function(d) {
-				var color = scope.cps.vals.colors.nodeColor;
+				var color = scope.cps.design.color.white;
 
 				if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-					color = scope.cps.vals.colors.selectedNodeColor;
+					color = scope.cps.design.color.blue;
 				}
 
 				return color;
@@ -890,9 +890,9 @@ angular.module('emuwebApp')
 			// Highlight collapsed items
 			.style('stroke', function(d) {
 				if (viewState.getCollapsed(d.id)) {
-					return scope.cps.vals.colors.collapsedNodeColor;
+					return scope.cps.design.color.red;
 				} else {
-					return scope.cps.vals.colors.nodeStrokeColor;
+					return scope.cps.design.color.grey;
 				}
 			})
 			;
@@ -1097,9 +1097,9 @@ angular.module('emuwebApp')
 			.selectAll('.emuhierarchy-link')
 			.style('stroke', function(d) {
 				if (scope.selectedLink === d) {
-					return scope.cps.vals.colors.selectedLinkColor;
+					return scope.cps.design.color.yellow;
 				} else {
-					return scope.cps.vals.colors.linkColor;
+					return scope.cps.design.color.grey;
 				}
 			})
 			;

@@ -15,6 +15,9 @@
 				"blue": {
 					"type": "string"
 				},
+				"red": {
+					"type": "string"
+				},
 				"yellow": {
 					"type": "string"
 				},
@@ -44,7 +47,7 @@
 					"additionalProperties": false
 				}
 			},
-			"required": ["black", "white", "blue", "yellow", "lightGrey", "darkGrey", "transparent"],
+			"required": ["black", "white", "blue", "red", "yellow", "lightGrey", "darkGrey", "transparent"],
 			"additionalProperties": false
 		},
 		"animation": {
