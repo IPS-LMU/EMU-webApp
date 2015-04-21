@@ -76,6 +76,11 @@ jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('emuwebappConfigSchema.json');
 var emuwebappConfigSchema = JSON.parse(f);
 
+// emuwebappConfigSchema
+jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
+var f = readFixtures('designSchema.json');
+var designSchema = JSON.parse(f);
+
 
 ////////////////////////////
 // files for parsing tests

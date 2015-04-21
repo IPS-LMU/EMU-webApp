@@ -13,6 +13,7 @@ describe('Directive: emuwebapp', function() {
         httpBackend.whenGET('schemaFiles/DBconfigFileSchema.json').respond(DBconfigFileSchema);  
         httpBackend.whenGET('schemaFiles/bundleListSchema.json').respond(bundleListSchema);  
         httpBackend.whenGET('schemaFiles/bundleSchema.json').respond(bundleSchema);
+        httpBackend.whenGET('schemaFiles/designSchema.json').respond(designSchema);
     }));
 
     function compileDirective(tpl) {

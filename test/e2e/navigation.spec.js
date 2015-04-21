@@ -27,7 +27,7 @@ describe('navigation', function () {
 		expect(ptor.isElementPresent(by.id('aboutBtn'))).toBe(true);
 		element(by.id('aboutBtn')).click();
 		heading = ptor.findElement(protractor.By.id('modalHeading'));
-		expect(heading.getText()).toEqual('EMU-webApp');
+		expect(heading.getText()).toEqual('EMU-webApp Help');
 		element(by.id('modalCancelBtn')).click('EMU-webApp');
 	});
 
@@ -77,7 +77,6 @@ describe('navigation', function () {
 		for (var i = 0; i < 5; i++) {
 			var button = elem.get(i);
 			button.click();
-			
 			button.click();
 		}
 	});
@@ -200,7 +199,7 @@ describe('navigation', function () {
 	});
 
 	it('should undo last 2 changes', function () {
-		var elem = element.all(by.css('.emuwebapp-MainCtrl'));
+		var elem = element.all(by.css('.emuwebapp-main'));
 		ptor.actions()
 			.mouseMove(elem.get(0))
 			.click()

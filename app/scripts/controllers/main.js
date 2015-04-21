@@ -352,44 +352,47 @@ angular.module('emuwebApp')
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
 			Iohandlerservice.getDBconfigFile().then(function (data) {
-				// first element of perspectives is default perspective
-				viewState.curPerspectiveIdx = 0;
-				ConfigProviderService.setVals(data.EMUwebAppConfig);
-				// FOR DEVELOPMENT
-				//$scope.showEditDBconfigBtnClick();
+				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
+				    ConfigProviderService.setDesign(data);
+					// first element of perspectives is default perspective
+					viewState.curPerspectiveIdx = 0;
+					ConfigProviderService.setVals(data.EMUwebAppConfig);
+					// FOR DEVELOPMENT
+					//$scope.showEditDBconfigBtnClick();
 				
-				delete data.EMUwebAppConfig; // delete to avoid duplicate
-				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-				if (validRes === true) {
-					ConfigProviderService.curDbConfig = data;
-					viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-					validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
+					delete data.EMUwebAppConfig; // delete to avoid duplicate
+					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
-						// then get the DBconfigFile
-						viewState.somethingInProgressTxt = 'Loading bundle list...';
-						Iohandlerservice.getBundleList().then(function (bdata) {
-							validRes = loadedMetaDataService.setBundleList(bdata);
-							if (validRes === true) {
-								// then load first bundle in list
-								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
-							} else {
-								modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-									appStateService.resetToInitState();
-								});
-							}
-						});
+						ConfigProviderService.curDbConfig = data;
+						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+						validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
+						if (validRes === true) {
+							// then get the DBconfigFile
+							viewState.somethingInProgressTxt = 'Loading bundle list...';
+							Iohandlerservice.getBundleList().then(function (bdata) {
+								validRes = loadedMetaDataService.setBundleList(bdata);
+								if (validRes === true) {
+									// then load first bundle in list
+									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+								} else {
+									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+										appStateService.resetToInitState();
+									});
+								}
+							});
+
+						} else {
+							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								appStateService.resetToInitState();
+							});
+						}
 
 					} else {
-						modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 							appStateService.resetToInitState();
 						});
 					}
-
-				} else {
-					modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-						appStateService.resetToInitState();
-					});
-				}
+			    });					
 			});
 		};
 
@@ -637,53 +640,56 @@ angular.module('emuwebApp')
 				viewState.setState('loadingSaving');
 				ConfigProviderService.vals.main.comMode = 'DEMO';
 				viewState.somethingInProgressTxt = 'Loading DB config...';
-				Iohandlerservice.getDBconfigFile(nameOfDB).then(function (res) {
-					var data = res.data;
-					// first element of perspectives is default perspective
-					viewState.curPerspectiveIdx = 0;
-					ConfigProviderService.setVals(data.EMUwebAppConfig);
-					delete data.EMUwebAppConfig; // delete to avoid duplicate
+				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
+				    ConfigProviderService.setDesign(data);
+					Iohandlerservice.getDBconfigFile(nameOfDB).then(function (res) {
+						var data = res.data;
+						// first element of perspectives is default perspective
+						viewState.curPerspectiveIdx = 0;
+						ConfigProviderService.setVals(data.EMUwebAppConfig);
+						delete data.EMUwebAppConfig; // delete to avoid duplicate
 
-					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-					if (validRes === true) {
-						ConfigProviderService.curDbConfig = data;
-						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-						validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
-
+						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 						if (validRes === true) {
-							// then get the DBconfigFile
-							viewState.somethingInProgressTxt = 'Loading bundle list...';
+							ConfigProviderService.curDbConfig = data;
+							viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
 
-							Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
-								var bdata = res.data;
-								// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
-								// if (validRes === true) {
-								loadedMetaDataService.setBundleList(bdata);
-								// then load first bundle in list
-								dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
-							}, function (err) {
-								modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+							if (validRes === true) {
+								// then get the DBconfigFile
+								viewState.somethingInProgressTxt = 'Loading bundle list...';
+
+								Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
+									var bdata = res.data;
+									// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
+									// if (validRes === true) {
+									loadedMetaDataService.setBundleList(bdata);
+									// then load first bundle in list
+									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+								}, function (err) {
+									modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+										appStateService.resetToInitState();
+									});
+								});
+							} else {
+								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
 									appStateService.resetToInitState();
 								});
-							});
+							}
+
+
 						} else {
-							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
 								appStateService.resetToInitState();
 							});
 						}
 
-
-					} else {
-						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+					}, function (err) {
+						modalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 							appStateService.resetToInitState();
 						});
-					}
-
-				}, function (err) {
-					modalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-						appStateService.resetToInitState();
 					});
-				});
+				});					
 			} 
 		};
 
