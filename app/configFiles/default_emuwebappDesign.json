@@ -4,9 +4,16 @@
         "black": "#000",
         "white": "#fff",
         "blue": "#0DC5FF",
-        "yellow": "rgba(255,255,0,1)",
-        "light-grey": "#E7E7E7",
-        "dark-grey": "rgb(56,54,62)"
+        "yellow": "#ff0",
+        "grey": "#888",
+        "lightGrey": "#E7E7E7",
+        "darkGrey": "#38363e",
+        "transparent": {
+            "grey": "rgba(22, 22, 22, 0.1)",
+            "black": "rgba(0, 0, 0, 0.7)",
+            "darkBlack": "rgba(255, 0, 0, 0.95)",
+            "yellow": "rgba(255, 255, 22, 0.5)"
+        }
     },
     "animation": {
         "duration": "400"

@@ -28,12 +28,12 @@ angular.module('emuwebApp')
 
         //
         scope.$watch('vs.submenuOpen', function () {
-          $timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime);
+          $timeout(scope.drawSsffTrackMarkup, ConfigProviderService.design.animation.duration);
         });
 
         //
         scope.$watch('vs.timelineSize', function () {
-          $timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime);
+          $timeout(scope.drawSsffTrackMarkup, ConfigProviderService.design.animation.duration);
         });
 
         scope.$watch('vs.curViewPort', function () {

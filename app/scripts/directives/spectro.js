@@ -38,7 +38,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.timelineSize', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
+              $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
             }
           }
         });
@@ -47,7 +47,7 @@ angular.module('emuwebApp')
         scope.$watch('vs.submenuOpen', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
+              $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
             }
           }
         });
@@ -137,11 +137,11 @@ angular.module('emuwebApp')
         }
 
         scope.killSpectroRenderingThread = function () {
-          scope.context.fillStyle = scope.cps.vals.colors.levelColor;
+          scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;
           scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-          var horizontalText = fontScaleService.getTextImage(scope.context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          var horizontalText = fontScaleService.getTextImage(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
           scope.context.drawImage(horizontalText, 10, 50);
 
           if (scope.primeWorker !== null) {

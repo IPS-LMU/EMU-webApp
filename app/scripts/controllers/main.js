@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						viewState.togglesubmenuOpen(ConfigProviderService.vals.colors.transitionTime);
+						viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';

@@ -69,14 +69,14 @@ angular.module('emuwebApp')
         //
         scope.$watch('vs.submenuOpen', function (oldValue, newValue) {
           if (oldValue !== newValue) {
-            $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime);
+            $timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration);
           }
         });
 
         //
         scope.$watch('vs.timelineSize', function (oldValue, newValue) {
           if (oldValue !== newValue) {
-            $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime / 10);
+            $timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration / 10);
           }
         });
 

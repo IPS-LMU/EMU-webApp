@@ -31,12 +31,12 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.submenuOpen', function () {
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime);
+					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
 				});
 
 				//
 				scope.$watch('viewState.timelineSize', function () {
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime);
+					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
 				});
 
 				//

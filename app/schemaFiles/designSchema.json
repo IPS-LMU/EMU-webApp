@@ -18,14 +18,33 @@
 				"yellow": {
 					"type": "string"
 				},
-				"light-grey": {
+				"lightGrey": {
 					"type": "string"
 				},
-				"dark-grey": {
+				"darkGrey": {
 					"type": "string"
+				},
+				"transparent": {
+				    "type": "object",
+				    "properties": {
+						"grey": {
+							"type": "string"
+						},
+						"black": {
+							"type": "string"
+						},
+						"darkBlack": {
+							"type": "string"
+						},
+						"yellow": {
+							"type": "string"
+						}
+				    },
+					"required": ["grey", "black", "darkBlack", "yellow"],
+					"additionalProperties": false
 				}
 			},
-			"required": ["black", "white", "blue", "yellow", "light-grey", "dark-grey"],
+			"required": ["black", "white", "blue", "yellow", "lightGrey", "darkGrey", "transparent"],
 			"additionalProperties": false
 		},
 		"animation": {
