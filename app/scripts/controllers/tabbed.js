@@ -63,13 +63,13 @@ angular.module('emuwebApp')
 		$scope.isActiveTab = function (tabUrl) {
 			if (tabUrl === $scope.currentTabUrl) {
 				return {
-					'background-color': ConfigProviderService.vals.colors.addItemButtonFG,
-					'color': ConfigProviderService.vals.colors.labelColor
+					'background-color': ConfigProviderService.design.color.white,
+					'color': ConfigProviderService.design.color.black
 				};
 			}
 			return {
-					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
-					'color': ConfigProviderService.vals.colors.addItemButtonFG
+					'background-color': ConfigProviderService.design.color.blue,
+					'color': ConfigProviderService.design.color.white
 				};
 		};			
 		

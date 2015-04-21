@@ -31,14 +31,14 @@ angular.module('emuwebApp')
 		    console.log($scope.curMdFile.url);
 			if (tabUrl === $scope.curMdFile.url) {
 				return {
-					'background-color': ConfigProviderService.vals.colors.addItemButtonFG,
-					'color': ConfigProviderService.vals.colors.labelColor,
+					'background-color': ConfigProviderService.design.color.white,
+					'color': ConfigProviderService.design.color.black,
 					'font-weight': '500'
 				};
 			}
 			return {
-					'background-color': ConfigProviderService.vals.colors.addItemButtonBG,
-					'color': ConfigProviderService.vals.colors.addItemButtonFG,
+					'background-color': ConfigProviderService.design.color.blue,
+					'color': ConfigProviderService.design.color.white,
 					'font-weight': '400'
 				};
 		};		
