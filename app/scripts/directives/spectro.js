@@ -182,14 +182,8 @@ angular.module('emuwebApp')
             } else {
               // tolerate window/2 alignment issue if at beginning of file
               parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
-            }
-            
-            
-            console.log(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
-            console.log(parseData.length);
-
+            }            
             scope.setupEvent();
-
             scope.primeWorker.tell({
               'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,
               'fftN': fftN,

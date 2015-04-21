@@ -110,7 +110,7 @@ angular.module('emuwebApp')
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					var posS = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.sS);
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
-					ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
+					ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
 					scope.drawVpOsciMarkup(scope, config, false);
 				};
