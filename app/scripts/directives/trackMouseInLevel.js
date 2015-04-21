@@ -232,7 +232,7 @@ angular.module('emuwebApp')
         scope.setLastDblClick = function (x) {
           scope.curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
-          if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
+          if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined  && viewState.getPermission('labelAction')) {
             if (scope.levelType === 'SEGMENT') {
               if (scope.lastEventClick.current.sampleStart >= viewState.curViewPort.sS) {
                 if ((scope.lastEventClick.current.sampleStart + scope.lastEventClick.current.sampleDur) <= viewState.curViewPort.eS) {
