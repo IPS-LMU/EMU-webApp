@@ -16,9 +16,7 @@ angular.module('emuwebApp')
 					}
 				}
             }
-		}, true);      
-      
-
+		}, true);
         var open = false;
         element.bind('click', function () {
           if (open) {

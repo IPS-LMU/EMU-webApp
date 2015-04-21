@@ -158,7 +158,8 @@ angular.module('emuwebApp')
 				scope.drawLevelDetails = function () {
 
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
-					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
+					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);					
+					var isOpen = element.parent().css('height') === '25px' ? false : true;
 
 					if ($.isEmptyObject(scope.level)) {
 						console.log('undef levelDetails');
@@ -172,7 +173,7 @@ angular.module('emuwebApp')
 						console.log('undef config');
 						return;
 					}
-					if (!scope.open) {
+					if (!isOpen) {
 						fontSize -= 1;
 					}
 					var ctx = canvas[0].getContext('2d');
@@ -188,7 +189,12 @@ angular.module('emuwebApp')
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					if (scope.level.name === curAttrDef) {
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
+					    if(isOpen) {
+    						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
+    					}
+    					else {
+    					    horizontalText = fontScaleService.getTextImage(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
+    					}
 					} else {
 						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
 					}
@@ -247,10 +253,10 @@ angular.module('emuwebApp')
 									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
 									var tW = fontScaleService.getLastImageWidth();
 									var tX = posS + (posE - posS) / 2 - tW / 2;
-									if (scope.open) {
+									if (isOpen) {
 										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize - 2), horizontalText.width, horizontalText.height);
 									} else {
-										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, 0, horizontalText.width, horizontalText.height);
+										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - fontSize , horizontalText.width, horizontalText.height);
 									}
 								}
 
@@ -280,7 +286,7 @@ angular.module('emuwebApp')
 
 								// draw sampleStart numbers
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length) {
+								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length && isOpen) {
 									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
 								}
@@ -288,7 +294,7 @@ angular.module('emuwebApp')
 								// draw sampleDur numbers.
 
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length)) {
+								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length) && isOpen) {
 									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);

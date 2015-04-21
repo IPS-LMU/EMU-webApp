@@ -232,6 +232,11 @@ angular.module('emuwebApp')
         scope.setLastDblClick = function (x) {
           scope.curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
+          var isOpen = element.parent().css('height') === '25px' ? false : true;
+          // expand to full size on dbl click if level is in small size
+          if(!isOpen) {
+              element.parent().parent().find('div.emuwebapp-levelResizeBtn').click();
+          }
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined  && viewState.getPermission('labelAction')) {
             if (scope.levelType === 'SEGMENT') {
               if (scope.lastEventClick.current.sampleStart >= viewState.curViewPort.sS) {
